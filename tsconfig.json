@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "module": "CommonJS",
+        "target": "es5",
+        "lib": ["es2015", "DOM"],
+        "esModuleInterop": true,
+        "declaration": true,
+        "outDir": "./dist",
+        "sourceMap": true,
+        "newLine": "LF",
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "incremental": true,
+        "strict": true,
+        "downlevelIteration": true,
+        "jsx": "react-jsx",
+        "noFallthroughCasesInSwitch": true
+    },
+    "include": [
+        "src"
+    ]
+}

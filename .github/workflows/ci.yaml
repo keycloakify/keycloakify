@@ -1,0 +1,89 @@
+name: ci
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+
+  test_lint:
+    runs-on: ubuntu-latest
+    if: ${{ !github.event.created }}
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+    - run: npm ci
+    - name: Making sure 'npm run lint' and 'npm run format' does not changes anything.
+      run: |
+        npm run lint:check
+        npm run format:check
+
+  test_node:
+    runs-on: ${{ matrix.os }}
+    needs: test_lint
+    strategy:
+      matrix:
+        node: [ '14', '13', '12', '11', '10', '8' ]
+        os: [ windows-latest, ubuntu-latest ]
+    name: Test with Node v${{ matrix.node }} on ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node }}
+    - run: npm ci
+    - run: npm run build
+    - run: npm run test
+
+
+  trigger_publish:
+    name: Trigger publish.yaml workflow if package.json version updated ( and secrets.PAT is set ).
+    runs-on: ubuntu-latest
+    env:
+      PAT: ${{secrets.PAT}}
+    if: github.event_name == 'push' && github.event.head_commit.author.name != 'ts_ci'
+    needs: test_node
+    steps:
+
+    - name: Get version on latest
+      id: v_latest
+      uses: garronej/github_actions_toolkit@v1.9
+      with: 
+        action_name: get_package_json_version
+        owner: ${{github.repository_owner}}
+        repo: ${{github.event.repository.name}}
+        branch: latest
+        compare_to_version: '0.0.0'
+
+    - name: Get version on develop
+      id: v_develop
+      uses: garronej/github_actions_toolkit@v1.9
+      with: 
+        action_name: get_package_json_version
+        owner: ${{github.repository_owner}}
+        repo: ${{github.event.repository.name}}
+        branch: ${{ github.sha }}
+        compare_to_version: ${{steps.v_latest.outputs.version || '0.0.0'}}
+
+    - name: 'Trigger the ''publish'' workflow' 
+      if: ${{ !!env.PAT && steps.v_develop.outputs.compare_result == '1' }}
+      uses: garronej/github_actions_toolkit@v1.9
+      env:
+        GITHUB_TOKEN: ${{ secrets.PAT }} 
+      with:
+        action_name: dispatch_event
+        owner: ${{github.repository_owner}}
+        repo: ${{github.event.repository.name}}
+        event_type: publish
+        client_payload_json: |
+          ${{
+            format(
+              '{{"from_version":"{0}","to_version":"{1}","repo":"{2}"}}',
+              steps.v_latest.outputs.version,
+              steps.v_develop.outputs.version,
+              github.event.repository.name
+            )
+          }}

@@ -1,0 +1,65 @@
+name: template_initialization
+on:
+  create:
+    branches:
+      - develop
+
+jobs:
+  template_initialization:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checking availability for module name ${{github.event.repository.name}} on NPM.
+      id: id1
+      uses: garronej/github_actions_toolkit@v1.9
+      with:
+        action_name: is_well_formed_and_available_module_name
+        module_name: ${{github.event.repository.name}}
+      
+    - name: Checks results
+      run: |
+        if [ "$IS_VALID_NODE_MODULE_NAME" = "false" ]; then
+          echo $MODULE_NAME" is not a valid node module name"
+          false
+        fi
+        if [ "$IS_AVAILABLE_ON_NPM" = "false" ]; then
+          echo "WARNING: There is already a NPM module named "$MODULE_NAME", if you are not the owner consider picking another name"
+        fi
+        true
+      env: 
+        MODULE_NAME: ${{github.event.repository.name}}
+        IS_VALID_NODE_MODULE_NAME: ${{steps.id1.outputs.is_valid_node_module_name}}
+        IS_AVAILABLE_ON_NPM: ${{steps.id1.outputs.is_available_on_npm}}
+
+    - uses: actions/checkout@v2
+    - run: mv README.template.md README.md
+    - run: mv LICENSE.template LICENSE
+    - name : String replace
+      id: id2
+      uses: garronej/github_actions_toolkit@v1.9
+      with:
+        action_name: string_replace
+        input_string: ${{github.event.repository.name}}
+        search_value: '-'
+        replace_value: '_'
+    - name: Replace tokens in README.MD and package.json
+      uses: cschleiden/replace-tokens@v1
+      with: 
+        files: '["README.md","package.json","LICENSE","package-lock.json"]'
+      env:
+        REPO_NAME: ${{ github.event.repository.name }}
+        USER_OR_ORG: ${{ github.repository_owner }}
+        DESC: ${{ github.event.repository.description }}
+        REPO_NAME_NO_DASHES: ${{ steps.id2.outputs.replace_result }}
+    - name: Remove this workflow, it only needs to be run once.
+      run: rm .github/workflows/template_initialization.yaml
+    - name: Commit files
+      run: |
+        git config --local user.email "ts_ci@github.com"
+        git config --local user.name "ts_ci"
+        git commit -am "Replacing the template's placeholders"
+    - name: Push changes
+      uses: ad-m/github-push-action@v0.5.0
+      with:
+        github_token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
+        branch: develop
