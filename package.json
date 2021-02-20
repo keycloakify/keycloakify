@@ -1,16 +1,16 @@
 {
-    "name": "#{REPO_NAME}#",
+    "name": "keycloak-react-theming",
     "version": "0.0.0",
-    "description": "#{DESC}#",
+    "description": "Provides a way to customise Keycloak login and register pages with React",
     "repository": {
         "type": "git",
-        "url": "git://github.com/#{USER_OR_ORG}#/#{REPO_NAME}#.git"
+        "url": "git://github.com/garronej/keycloak-react-theming.git"
     },
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
         "test": "node dist/test/",
-        "cdn:bundle:.js": "simplifyify dist/index.js -s #{REPO_NAME_NO_DASHES}# -o dist/bundle.js --debug --bundle",
+        "cdn:bundle:.js": "simplifyify dist/index.js -s keycloak_react_theming -o dist/bundle.js --debug --bundle",
         "cdn:bundle:.min.js": "terser dist/bundle.js -cmo dist/bundle.min.js",
         "cdn:bundle": "npm run cdn:bundle:.js && npm run cdn:bundle:.min.js",
         "cdn:esm": "tsc -p tsconfig.esm.json",
@@ -36,7 +36,7 @@
             "pre-commit": "lint-staged -v"
         }
     },
-    "author": "u/#{USER_OR_ORG}#",
+    "author": "u/garronej",
     "license": "MIT",
     "files": [
         "src/",
@@ -46,7 +46,7 @@
         "!dist/tsconfig.tsbuildinfo"
     ],
     "keywords": [],
-    "homepage": "https://github.com/#{USER_OR_ORG}#/#{REPO_NAME}#",
+    "homepage": "https://github.com/garronej/keycloak-react-theming",
     "devDependencies": {
         "typescript": "^4.1.5",
         "@types/node": "^10.0.0",
