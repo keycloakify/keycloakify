@@ -1,6 +1,6 @@
 name: template_initialization
 on:
-  create:
+  push:
     branches:
       - develop
 
