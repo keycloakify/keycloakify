@@ -1,6 +1,6 @@
 {
     "name": "keycloak-react-theming",
-    "version": "0.0.0",
+    "version": "0.0.2",
     "description": "Provides a way to customise Keycloak login and register pages with React",
     "repository": {
         "type": "git",
