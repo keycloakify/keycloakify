@@ -3,6 +3,7 @@ import { generateJavaStackFiles } from "./generateJavaStackFiles";
 import type { ParsedPackageJson } from "./generateJavaStackFiles";
 import { join as pathJoin } from "path";
 import * as child_process from "child_process";
+import { generateDebugFiles } from "./generateDebugFiles";
 
 const reactProjectDirPath = process.cwd();
 
@@ -21,4 +22,12 @@ generateJavaStackFiles({
     keycloakThemeBuildingDirPath
 });
 
-child_process.execSync("mvn package");
+child_process.execSync(
+    "mvn package", 
+    { "cwd": keycloakThemeBuildingDirPath }
+);
+
+generateDebugFiles({ 
+    keycloakThemeBuildingDirPath, 
+    "packageJsonName": parsedPackageJson.name 
+});

@@ -16,21 +16,24 @@ export function generateJavaStackFiles(
     }
 ): void {
 
-    const { parsedPackageJson, keycloakThemeBuildingDirPath } = params;
+    const {
+        parsedPackageJson: { name, version, homepage },
+        keycloakThemeBuildingDirPath
+    } = params;
 
     {
 
         const { pomFileCode } = (function generatePomFileCode(): { pomFileCode: string; } {
 
-            const { name, version, homepage } = parsedPackageJson;
 
             const groupId = (() => {
 
-                const fallbackGroupId = `there.was.no.homepage.field.in.the.package.json.${name}.keycloak`;
+                const fallbackGroupId = `there.was.no.homepage.field.in.the.package.json.${name}`;
 
-                return !homepage ?
+                return (!homepage ?
                     fallbackGroupId :
-                    url.parse(homepage).host?.split(".").reverse().join(".") ?? fallbackGroupId;
+                    url.parse(homepage).host?.split(".").reverse().join(".") ?? fallbackGroupId
+                ) + ".keycloak";
 
             })();
 
@@ -80,8 +83,8 @@ export function generateJavaStackFiles(
                 JSON.stringify({
                     "themes": [
                         {
-                            "name": "onyxia",
-                            "types": ["login", "email", "account", "welcome"]
+                            "name": name,
+                            "types": ["login"]
                         }
                     ]
                 }, null, 2),
