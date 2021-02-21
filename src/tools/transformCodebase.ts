@@ -2,8 +2,7 @@
 
 import * as fs from "fs";
 import * as path from "path";
-import { crawl } from "denoify/tools/crawl";
-import { createDirectoryIfNotExistsRecursive } from "denoify/tools/createDirectoryIfNotExistsRecursive";
+import { crawl } from "./crawl";
 
 /** Apply a transformation function to every file of directory */
 export function transformCodebase(
@@ -35,15 +34,15 @@ export function transformCodebase(
             continue;
         }
 
-        createDirectoryIfNotExistsRecursive(
+        fs.mkdirSync(
             path.dirname(
                 path.join(
                     destDirPath,
                     file_relative_path
                 )
-            )
+            ),
+            { "recursive": true }
         );
-
 
         const { newFileName, modifiedSourceCode } = transformSourceCodeStringResult;
 

@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 
 import * as fs from "fs";
 import { join as pathJoin, basename as pathBasename } from "path";

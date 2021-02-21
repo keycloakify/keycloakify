@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { generateKeycloakThemeResources } from "./generateKeycloakThemeResources";
 import { generateJavaStackFiles } from "./generateJavaStackFiles";
 import type { ParsedPackageJson } from "./generateJavaStackFiles";
