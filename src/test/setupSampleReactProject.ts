@@ -2,9 +2,9 @@
 import * as st from "scripting-tools";
 import { join as pathJoin, basename as pathBasename } from "path";
 
-export function setupSampleReactProject() {
+export const sampleReactProjectDirPath = pathJoin(__dirname, "..", "..", "sample_react_project");
 
-    const sampleReactProjectDirPath = pathJoin(__dirname, "..", "..", "sample_react_project");
+export function setupSampleReactProject() {
 
     st.execSync(`rm -rf ${sampleReactProjectDirPath}`);
     st.execSync(`mkdir ${sampleReactProjectDirPath}`);

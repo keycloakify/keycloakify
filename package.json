@@ -10,12 +10,13 @@
     "types": "dist/lib/index.d.ts",
     "scripts": {
         "build": "tsc && npm run grant-exec-perms",
-        "grant-exec-perms": "chmod +x dist/bin/build-keycloak-theme/index.js",
-        "test": "node dist/test/build-keycloak-theme.js",
+        "grant-exec-perms": "chmod +x dist/bin/{build-keycloak-theme/index,download-sample-keycloak-themes}.js",
+        "test": "node dist/test/build-keycloak-theme && node dist/test/download-sample-keycloak-themes",
         "enable_short_import_path": "npm run build && denoify_enable_short_npm_import_path"
     },
     "bin": {
-        "build-keycloak-theme": "dist/bin/build-keycloak-theme"
+        "build-keycloak-theme": "dist/bin/build-keycloak-theme",
+        "download-sample-keycloak-themes": "dist/bin/download-sample-keycloak-themes"
     },
     "author": "u/garronej",
     "license": "MIT",

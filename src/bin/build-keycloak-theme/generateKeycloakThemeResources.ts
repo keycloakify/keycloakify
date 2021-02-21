@@ -8,20 +8,6 @@ import {
 } from "./replaceImportFromStatic";
 import { generateFtlFilesCodeFactory } from "./generateFtl";
 
-
-/*
-const reactAppBuildDirPath = pathJoin(process.cwd(), "build");
-
-assert(
-    fs.existsSync(reactAppBuildDirPath),
-    "Run 'react-script build' first (the build dir should be present)"
-);
-
-const keycloakDir = pathJoin(reactAppBuildDirPath, "..", "keycloak_build");
-
-
-*/
-
 const ftlValuesGlobalName = "keycloakFtlValues";
 
 export function generateKeycloakThemeResources(

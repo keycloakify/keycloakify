@@ -15,3 +15,26 @@
   -
   <a href="https://github.com/garronej/keycloak-react-theming">Documentation</a>
 </p>
+
+# REQUIREMENT
+## For building the theme: 
+
+- `mvn` must be installed
+
+## For development, (testing the theme on a docker container ect ):
+
+- `rm`
+- `mkdir` )
+- `wget`
+- `unzip`
+
+Tested on MacOS
+
+# USAGE
+
+## Build the theme: 
+`npx build-keycloak-theme`
+
+## (Optional/Debug) Download more themes: 
+
+`npx download-sample-keycloak-themes`
