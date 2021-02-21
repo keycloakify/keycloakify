@@ -42,5 +42,4 @@ jspm_packages
 
 /dist
 
-/build
-/keycloak_build
+/etc_tmp/
