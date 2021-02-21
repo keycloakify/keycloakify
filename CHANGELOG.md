@@ -1,3 +1,8 @@
+### **0.0.7** (2021-02-21)  
+  
+- fix build  
+- Fix bundle    
+  
 ### **0.0.6** (2021-02-21)  
   
 - Include missing files in the release bundle    
