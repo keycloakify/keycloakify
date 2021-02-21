@@ -79,5 +79,10 @@ export function generateKeycloakThemeResources(
 
     });
 
+    fs.writeFileSync(
+        pathJoin(themeDirPath, "theme.properties"),
+        Buffer.from("parent=base\n", "utf8")
+    );
+
 }
 
