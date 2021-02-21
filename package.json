@@ -25,8 +25,7 @@
         "!src/test/",
         "dist/",
         "!dist/test/",
-        "!dist/tsconfig.tsbuildinfo",
-        "res/"
+        "!dist/tsconfig.tsbuildinfo"
     ],
     "keywords": [
         "keycloak",
