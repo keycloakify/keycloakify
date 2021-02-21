@@ -1,3 +1,7 @@
+### **0.0.8** (2021-02-21)  
+  
+- Include theme properties    
+  
 ### **0.0.7** (2021-02-21)  
   
 - fix build  
