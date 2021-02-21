@@ -63,9 +63,7 @@ export function generateDebugFiles(
 
     fs.writeFileSync(
         standaloneHaFilePath,
-        fs.readFileSync(
-            pathJoin(__dirname, pathBasename(standaloneHaFilePath)),
-        )
+        fs.readFileSync(pathJoin(__dirname, pathBasename(standaloneHaFilePath)))
     );
 
 }
