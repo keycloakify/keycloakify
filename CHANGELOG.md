@@ -1,3 +1,8 @@
+### **0.0.5** (2021-02-21)  
+  
+- Bump version number  
+- Make the install faster    
+  
 ### **0.0.4** (2021-02-21)  
   
 - Fix script visibility    
