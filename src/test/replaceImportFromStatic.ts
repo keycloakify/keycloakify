@@ -3,7 +3,7 @@ import { 
     replaceImportFromStaticInJsCode,
     replaceImportFromStaticInCssCode,
     generateCssCodeToDefineGlobals
-} from "bin/build-keycloak-theme/replaceImportFromStatic";
+} from "../bin/build-keycloak-theme/replaceImportFromStatic";
 
 const { fixedJsCode } = replaceImportFromStaticInJsCode({
     "ftlValuesGlobalName": "keycloakFtlValues",

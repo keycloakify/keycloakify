@@ -55,7 +55,7 @@ export function generateJavaStackFiles(
         })();
 
         fs.writeFileSync(
-            keycloakThemeBuildingDirPath,
+            pathJoin(keycloakThemeBuildingDirPath, "pom.xml"),
             Buffer.from(pomFileCode, "utf8")
         );
 

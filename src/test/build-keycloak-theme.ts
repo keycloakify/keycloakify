@@ -7,5 +7,5 @@ process.chdir(sampleReactProjectDirPath);
 
 console.log(`Running main in ${sampleReactProjectDirPath}`);
 
-import("bin/build-keycloak-theme");
+import("../bin/build-keycloak-theme");
 

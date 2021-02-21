@@ -9,7 +9,7 @@
     "main": "dist/lib/index.js",
     "types": "dist/lib/index.d.ts",
     "scripts": {
-        "build": "npm run tsc && npm run grant-exec-perms",
+        "build": "tsc && npm run grant-exec-perms",
         "grant-exec-perms": "chmod +x dist/bin/build-keycloak-theme/index.js",
         "test": "node dist/test/build-keycloak-theme.js",
         "enable_short_import_path": "npm run build && denoify_enable_short_npm_import_path"
@@ -36,8 +36,8 @@
         "@types/node": "^10.0.0",
         "denoify": "^0.6.4",
         "evt": "beta",
-        "typescript": "^4.1.5",
-        "scripting-tools": "^0.19.13"
+        "scripting-tools": "^0.19.13",
+        "typescript": "^4.1.5"
     },
     "dependencies": {
         "cheerio": "^1.0.0-rc.5"
