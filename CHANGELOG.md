@@ -1,3 +1,7 @@
+### **0.0.6** (2021-02-21)  
+  
+- Include missing files in the release bundle    
+  
 ### **0.0.5** (2021-02-21)  
   
 - Bump version number  
