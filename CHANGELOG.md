@@ -1,3 +1,7 @@
+### **0.0.4** (2021-02-21)  
+  
+- Fix script visibility    
+  
 ### **0.0.3** (2021-02-21)  
   
 - Do not run tests on window  
