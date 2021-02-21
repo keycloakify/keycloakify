@@ -1,6 +1,6 @@
 {
     "name": "keycloak-react-theming",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "Provides a way to customize Keycloak login and register pages with React",
     "repository": {
         "type": "git",
@@ -15,8 +15,8 @@
         "enable_short_import_path": "npm run build && denoify_enable_short_npm_import_path"
     },
     "bin": {
-        "build-keycloak-theme": "dist/bin/build-keycloak-theme",
-        "download-sample-keycloak-themes": "dist/bin/download-sample-keycloak-themes"
+        "build-keycloak-theme": "dist/bin/build-keycloak-theme/index.js",
+        "download-sample-keycloak-themes": "dist/bin/download-sample-keycloak-themes.js"
     },
     "author": "u/garronej",
     "license": "MIT",
@@ -35,12 +35,11 @@
     "homepage": "https://github.com/garronej/keycloak-react-theming",
     "devDependencies": {
         "@types/node": "^10.0.0",
-        "denoify": "^0.6.4",
-        "evt": "beta",
         "scripting-tools": "^0.19.13",
         "typescript": "^4.1.5"
     },
     "dependencies": {
-        "cheerio": "^1.0.0-rc.5"
+        "cheerio": "^1.0.0-rc.5",
+        "denoify": "^0.6.4"
     }
 }
