@@ -41,3 +41,6 @@ jspm_packages
 .DS_Store
 
 /dist
+
+/build
+/keycloak_build

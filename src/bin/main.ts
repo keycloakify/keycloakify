@@ -10,7 +10,7 @@ import {
 import { generateFtlFilesCodeFactory } from "./generateFtl";
 
 
-const reactAppBuildDirPath = pathJoin(__dirname, "build");
+const reactAppBuildDirPath = pathJoin(process.cwd(), "build");
 
 assert(
     fs.existsSync(reactAppBuildDirPath),

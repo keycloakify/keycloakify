@@ -6,7 +6,7 @@ import { crawl } from "denoify/tools/crawl";
 import { createDirectoryIfNotExistsRecursive } from "denoify/tools/createDirectoryIfNotExistsRecursive";
 
 /** Apply a transformation function to every file of directory */
-export async function transformCodebase(
+export function transformCodebase(
     params: {
         srcDirPath: string;
         destDirPath: string;
@@ -35,7 +35,7 @@ export async function transformCodebase(
             continue;
         }
 
-        await createDirectoryIfNotExistsRecursive(
+        createDirectoryIfNotExistsRecursive(
             path.dirname(
                 path.join(
                     destDirPath,

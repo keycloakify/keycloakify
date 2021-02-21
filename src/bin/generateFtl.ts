@@ -25,7 +25,7 @@ export function generateFtlFilesCodeFactory(
             "jsCode": $(element).html()!
         });
 
-        $(element).html(fixedJsCode);
+        $(element).text(fixedJsCode);
 
     });
 
@@ -88,7 +88,7 @@ export function generateFtlFilesCodeFactory(
             [
                 '',
                 '<script>',
-                `   window.${ftlValuesGlobalName} = { "pageBasename": "${pageBasename}" };'`,
+                `   window.${ftlValuesGlobalName} = { "pageBasename": "${pageBasename}" };`,
                 '</script>',
                 ''
             ].join("\n"),

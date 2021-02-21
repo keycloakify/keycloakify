@@ -12,7 +12,7 @@ export function replaceImportFromStaticInJsCode(
 
     const fixedJsCode = jsCode!.replace(
         /"static\//g,
-        `window.${ftlValuesGlobalName}.url.resourcesPath.replace(/^\//,"") + "/" + "static/`
+        `window.${ftlValuesGlobalName}.url.resourcesPath.replace(/^\\//,"") + "/" + "static/`
     );
 
     return { fixedJsCode };
@@ -80,7 +80,7 @@ export function generateCssCodeToDefineGlobals(
                         ")"
                     ].join("")
                 ].join(" "))
-                .map(line => "    " + line),
+                .map(line => `    ${line};`),
             "}"
         ].join("\n")
     };
