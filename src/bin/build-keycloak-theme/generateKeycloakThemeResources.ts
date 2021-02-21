@@ -1,5 +1,5 @@
 
-import { transformCodebase } from "../tools/transformCodebase";
+import { transformCodebase } from "tools/transformCodebase";
 import * as fs from "fs";
 import { join as pathJoin } from "path";
 import {

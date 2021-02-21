@@ -2,6 +2,7 @@ import { generateKeycloakThemeResources } from "./generateKeycloakThemeResources
 import { generateJavaStackFiles } from "./generateJavaStackFiles";
 import type { ParsedPackageJson } from "./generateJavaStackFiles";
 import { join as pathJoin } from "path";
+import * as child_process from "child_process";
 
 const reactProjectDirPath = process.cwd();
 
@@ -20,3 +21,4 @@ generateJavaStackFiles({
     keycloakThemeBuildingDirPath
 });
 
+child_process.execSync("mvn package");
