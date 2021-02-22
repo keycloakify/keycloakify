@@ -48,7 +48,8 @@ export function generateDebugFiles(
                 `	--name ${containerName} \\`,
                 "	-e KEYCLOAK_USER=admin \\",
                 "	-e KEYCLOAK_PASSWORD=admin \\",
-                `	-v ${pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", "onyxia")}:/opt/jboss/keycloak/themes/onyxia:rw \\`,
+                `	-v ${pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", packageJsonName)
+                }:/opt/jboss/keycloak/themes/${packageJsonName}:rw \\`,
                 `	-it ${dockerImage}:latest`,
                 ""
             ].join("\n"),
