@@ -16,6 +16,4 @@ export function setupSampleReactProject() {
         ...["unzip", "rm"].map(prg => `${prg} ${pathBasename(url)}`)
     ].forEach(cmd => st.execSync(cmd, { "cwd": sampleReactProjectDirPath }));
 
-    return { sampleReactProjectDirPath };
-
 }

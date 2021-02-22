@@ -1,9 +1,12 @@
 
 import { join as pathJoin } from "path";
 import { generateKeycloakThemeResources } from "../bin/build-keycloak-theme/generateKeycloakThemeResources";
-import { setupSampleReactProject } from "./setupSampleReactProject";
+import { 
+    setupSampleReactProject,
+    sampleReactProjectDirPath
+} from "./setupSampleReactProject";
 
-const { sampleReactProjectDirPath } = setupSampleReactProject();
+setupSampleReactProject();
 
 generateKeycloakThemeResources({
     "themeName": "onyxia-ui",
