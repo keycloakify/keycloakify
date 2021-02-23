@@ -18,10 +18,10 @@ The problem:
 ![keycloak_before](https://user-images.githubusercontent.com/6702424/108838381-dbbbcf80-75d3-11eb-8ae8-db41563ef9db.gif)
 
 When we redirected to Keycloak the user suffers from a harsh context switch.
-The language is set back to default and the theme is different, 
+The language is set back to default and the theme is different.  
 
-Keycloak does offer a way to customize the theme of theses pages but it will require a lot of raw HTML/CSS hacking
-to reproduce the look and feel of your app. Not mentioning the maintenance cost of such an endeavour.
+Keycloak does offer a way to customize theses pages but it requires a lot of raw HTML/CSS hacking
+to reproduce the look and feel of a specific app. Not mentioning the maintenance cost of such an endeavour.  
 
 Wouldn't it be great if we could just design the login and register pages as if they where part of our app while
 still letting Keycloak handle the heavy lifting of actually authenticating the users? 
