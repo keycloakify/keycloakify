@@ -8,7 +8,7 @@ import {
 } from "./replaceImportFromStatic";
 import { generateFtlFilesCodeFactory } from "./generateFtl";
 
-const ftlValuesGlobalName = "keycloakFtlValues";
+export const ftlValuesGlobalName = "keycloakPagesContext";
 
 export function generateKeycloakThemeResources(
     params: {

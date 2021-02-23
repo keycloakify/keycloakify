@@ -65,11 +65,17 @@ if (require.main === module) {
         '            - name: extensions',
         '              mountPath: /opt/jboss/keycloak/standalone/deployments',
         '',
-        `To enable the theme within keycloak log into the admin console, go to your realm settings, click on the theme tab then select ${parsedPackageJson.name} `,
         '',
-        'To test your theme locally you can spin up a Keycloak container image with the theme loaded by running:',
+        'To test your theme locally, with hot reloading, you can spin up a Keycloak container image with the theme loaded by running:',
         '',
-        `$ ./${pathRelative(reactProjectDirPath, pathJoin(keycloakThemeBuildingDirPath, containerLaunchScriptBasename))}`
+        `$ ./${pathRelative(reactProjectDirPath, pathJoin(keycloakThemeBuildingDirPath, containerLaunchScriptBasename))}`,
+        '',
+        'To enable the theme within keycloak log into the admin console, create a realm (called "myrealm" for example),',
+        `go to your realm settings, click on the theme tab then select ${parsedPackageJson.name}.`,
+        `More details: https://www.keycloak.org/getting-started/getting-started-docker`,
+        '',
+        'Once your container is up and configured 👉 http://localhost:8080/auth/realms/myrealm/account',
+        '',
     ].join("\n"));
 
 }
