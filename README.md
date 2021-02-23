@@ -18,7 +18,7 @@ The problem:
 ![keycloak_before](https://user-images.githubusercontent.com/6702424/108838381-dbbbcf80-75d3-11eb-8ae8-db41563ef9db.gif)
 
 When we redirected to Keycloak the user suffers from a harsh context switch.
-The language is set back to default and the theme is different.  
+On je login/register pages the language is set back to default and the theme is different that the one on the app.  
 
 Keycloak does offer a way to customize theses pages but it requires a lot of raw HTML/CSS hacking
 to reproduce the look and feel of a specific app. Not mentioning the maintenance cost of such an endeavour.  
