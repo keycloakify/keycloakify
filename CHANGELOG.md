@@ -1,3 +1,7 @@
+### **0.0.11** (2021-02-23)  
+  
+- Add documentation    
+  
 ### **0.0.10** (2021-02-23)  
   
 - Remove extra closing bracket    
