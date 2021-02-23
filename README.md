@@ -28,13 +28,7 @@ still letting Keycloak handle the heavy lifting of actually authenticating the u
 
 Here is `yarn add keycloak-react-theming` for you 🍸
 
-![image](https://user-images.githubusercontent.com/6702424/108833938-c9d72e00-75cd-11eb-8263-4334ca79275c.png)
-![image](https://user-images.githubusercontent.com/6702424/108834054-f68b4580-75cd-11eb-9661-b1a43836c4b0.png)
-
-
-Setup from a blanc `create-react-app` project:
-
-[![kickstart_video](https://user-images.githubusercontent.com/6702424/108877866-f146ee80-75ff-11eb-8120-003b3c5f6dd8.png)](https://youtu.be/xTz0Rj7i2v8)
+TODO: Insert video after.
 
 # How to use
 
@@ -59,6 +53,8 @@ Typically you will get:
 
 Then build your app with `yarn run build` or `npm run build`, you will be provided with instructions
 about how to load the theme into Keycloak.
+
+[![kickstart_video](https://user-images.githubusercontent.com/6702424/108877866-f146ee80-75ff-11eb-8120-003b3c5f6dd8.png)](https://youtu.be/xTz0Rj7i2v8)
 
 ## Developing your login and register pages in your React app
 
