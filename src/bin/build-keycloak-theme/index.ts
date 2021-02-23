@@ -70,7 +70,7 @@ if (require.main === module) {
         '',
         `$ ./${pathRelative(reactProjectDirPath, pathJoin(keycloakThemeBuildingDirPath, containerLaunchScriptBasename))}`,
         '',
-        'To enable the theme within keycloak log into the admin console, create a realm (called "myrealm" for example),',
+        'To enable the theme within keycloak log into the admin console ( username: admin, password: admin), create a realm (called "myrealm" for example),',
         `go to your realm settings, click on the theme tab then select ${parsedPackageJson.name}.`,
         `More details: https://www.keycloak.org/getting-started/getting-started-docker`,
         '',
