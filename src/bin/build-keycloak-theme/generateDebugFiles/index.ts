@@ -2,6 +2,8 @@
 import * as fs from "fs";
 import { join as pathJoin, dirname as pathDirname, basename as pathBasename } from "path";
 
+export const containerLaunchScriptBasename = "start_keycloak_testing_container.sh";
+
 /** Files for being able to run a hot reload keycloak container */
 export function generateDebugFiles(
     params: {
@@ -34,7 +36,7 @@ export function generateDebugFiles(
     const containerName = "keycloak-testing-container";
 
     fs.writeFileSync(
-        pathJoin(keycloakThemeBuildingDirPath, "start_keycloak_testing_container.sh"),
+        pathJoin(keycloakThemeBuildingDirPath, containerLaunchScriptBasename),
         Buffer.from(
             [
                 "#!/bin/bash",

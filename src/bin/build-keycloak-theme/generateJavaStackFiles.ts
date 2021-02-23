@@ -14,7 +14,7 @@ export function generateJavaStackFiles(
         parsedPackageJson: ParsedPackageJson;
         keycloakThemeBuildingDirPath: string;
     }
-): void {
+): { jarFilePath: string; } {
 
     const {
         parsedPackageJson: { name, version, homepage },
@@ -93,6 +93,8 @@ export function generateJavaStackFiles(
         );
 
     }
+
+    return { "jarFilePath": pathJoin(keycloakThemeBuildingDirPath, "target", `${name}-${version}.jar`) };
 
 }
 
