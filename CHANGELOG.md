@@ -1,3 +1,8 @@
+### **0.0.14** (2021-02-23)  
+  
+- Bump version number  
+- enable the docker container to be run from the root of the react project    
+  
 ### **0.0.13** (2021-02-23)  
   
 - bump version    
