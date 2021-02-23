@@ -1,3 +1,7 @@
+### **0.0.10** (2021-02-23)  
+  
+- Remove extra closing bracket    
+  
 ### **0.0.9** (2021-02-22)  
   
 - fix container startup script  
