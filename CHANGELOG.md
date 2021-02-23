@@ -1,3 +1,8 @@
+### **0.0.16** (2021-02-23)  
+  
+- Bump version  
+- Give test container credentials    
+  
 ### **0.0.14** (2021-02-23)  
   
 - Bump version number  
