@@ -1,3 +1,8 @@
+### **0.0.9** (2021-02-22)  
+  
+- fix container startup script  
+- minor update    
+  
 ### **0.0.8** (2021-02-21)  
   
 - Include theme properties    
