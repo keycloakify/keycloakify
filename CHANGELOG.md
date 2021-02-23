@@ -1,3 +1,11 @@
+### **0.0.18** (2021-02-23)  
+  
+- Bump version number  
+- Moving on with implementation of the lib  
+- Update readme  
+- Readme eddit  
+- Fixing video link    
+  
 ### **0.0.16** (2021-02-23)  
   
 - Bump version  
