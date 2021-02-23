@@ -49,13 +49,16 @@ export function generateFtlFilesCodeFactory(
 
     $("head").prepend(
         [
-            '',
-            '<style>',
-            generateCssCodeToDefineGlobals(
-                { cssGlobalsToDefine }
-            ).cssCodeToPrependInHead,
-            '</style>',
-            '',
+            ...(Object.keys(cssGlobalsToDefine).length === 0 ? [] : [
+                '',
+                '<style>',
+                generateCssCodeToDefineGlobals(
+                    { cssGlobalsToDefine }
+                ).cssCodeToPrependInHead,
+                '</style>',
+                ''
+            ]),
+
             '<script>',
             '    Object.assign(',
             `        window.${ftlValuesGlobalName},`,
@@ -65,7 +68,7 @@ export function generateFtlFilesCodeFactory(
             '                "resourcesPath": "${url.resourcesPath}"',
             '            }',
             '        }',
-            '    });',
+            '    );',
             '</script>',
             ''
         ].join("\n"),
