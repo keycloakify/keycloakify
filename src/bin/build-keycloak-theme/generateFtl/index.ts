@@ -4,7 +4,10 @@ import cheerio from "cheerio";
 import {
     replaceImportFromStaticInJsCode,
     generateCssCodeToDefineGlobals
-} from "./replaceImportFromStatic";
+} from "../replaceImportFromStatic";
+import fs from "fs";
+import { join as pathJoin } from "path";
+import { objectKeys } from "evt/tools/typeSafety/objectKeys";
 
 export function generateFtlFilesCodeFactory(
     params: {
@@ -47,6 +50,22 @@ export function generateFtlFilesCodeFactory(
         })
     );
 
+    //FTL is no valid html, we can't insert with cheerio, we put placeholder for injecting later.
+    const ftlPlaceholders = {
+        '{ "x": "xIdLqMeOed9sdLdIdOxdK0d" }':
+            fs.readFileSync(pathJoin(__dirname, "ftl2js.ftl"))
+                .toString("utf8")
+                .match(/^<script>const _=((?:.|\n)+)<\/script>[\n]?$/)![1],
+        '<!-- xIdLqMeOedErIdLsPdNdI9dSlxI -->':
+            [
+                '<#if scripts??>',
+                '    <#list scripts as script>',
+                '        <script src="${script}" type="text/javascript"></script>',
+                '    </#list>',
+                '</#if>',
+            ].join("\n")
+    };
+
     $("head").prepend(
         [
             ...(Object.keys(cssGlobalsToDefine).length === 0 ? [] : [
@@ -58,18 +77,14 @@ export function generateFtlFilesCodeFactory(
                 '</style>',
                 ''
             ]),
-
             '<script>',
             '    Object.assign(',
             `        window.${ftlValuesGlobalName},`,
-            '        {',
-            '            "url": {',
-            '                "loginAction": "${url.loginAction}",',
-            '                "resourcesPath": "${url.resourcesPath}"',
-            '            }',
-            '        }',
+            `        ${objectKeys(ftlPlaceholders)[0]}`,
             '    );',
             '</script>',
+            '',
+            objectKeys(ftlPlaceholders)[1],
             ''
         ].join("\n"),
     );
@@ -94,11 +109,15 @@ export function generateFtlFilesCodeFactory(
                 `   window.${ftlValuesGlobalName} = { "pageBasename": "${pageBasename}" };`,
                 '</script>',
                 ''
-            ].join("\n"),
-
+            ].join("\n")
         );
 
-        return { "ftlCode": $.html() };
+        let ftlCode = $.html();
+
+        objectKeys(ftlPlaceholders)
+            .forEach(id => ftlCode = ftlCode.replace(id, ftlPlaceholders[id]));
+
+        return { ftlCode };
 
     }
 

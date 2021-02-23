@@ -9,8 +9,9 @@
     "main": "dist/lib/index.js",
     "types": "dist/lib/index.d.ts",
     "scripts": {
-        "build": "tsc && npm run grant-exec-perms && npm run copy-standalone-ha",
+        "build": "tsc && npm run grant-exec-perms && npm run copy-standalone-ha && npm run copy-ftl2js",
         "copy-standalone-ha": "cp src/bin/build-keycloak-theme/generateDebugFiles/standalone-ha.xml dist/bin/build-keycloak-theme/generateDebugFiles/",
+        "copy-ftl2js": "cp src/bin/build-keycloak-theme/generateFtl/ftl2js.ftl dist/bin/build-keycloak-theme/generateFtl/",
         "grant-exec-perms": "cd dist/bin && chmod +x build-keycloak-theme/index.js download-sample-keycloak-themes.js",
         "test": "node dist/test/build-keycloak-theme && node dist/test/download-sample-keycloak-themes",
         "enable_short_import_path": "npm run build && denoify_enable_short_npm_import_path"
