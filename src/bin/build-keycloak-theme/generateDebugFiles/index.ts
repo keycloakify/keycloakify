@@ -41,6 +41,8 @@ export function generateDebugFiles(
             [
                 "#!/bin/bash",
                 "",
+                `cd ${keycloakThemeBuildingDirPath}`,
+                "",
                 `docker rm ${containerName} || true`,
                 "",
                 `docker build . -t ${dockerImage}`,
