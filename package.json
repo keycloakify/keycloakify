@@ -1,6 +1,6 @@
 {
     "name": "keycloak-react-theming",
-    "version": "0.0.18",
+    "version": "0.0.19",
     "description": "Keycloak theme generator for Reacts app",
     "repository": {
         "type": "git",
