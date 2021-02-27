@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Synchronize package.json  and package-lock.json version if needed.
-      uses: garronej/github_actions_toolkit@v1.9
+      uses: garronej/github_actions_toolkit@v1.11
       env:
         GITHUB_TOKEN: ${{ secrets.PAT }} 
       with:
@@ -19,7 +19,7 @@ jobs:
         commit_author_email: ts_ci@github.com
     - name: Update CHANGELOG.md
       if: ${{ !!github.event.client_payload.from_version }}
-      uses: garronej/github_actions_toolkit@v1.9
+      uses: garronej/github_actions_toolkit@v1.11
       env:
         GITHUB_TOKEN: ${{ secrets.PAT }} 
       with:
@@ -51,8 +51,18 @@ jobs:
         git branch latest
         git checkout latest
     - uses: actions/setup-node@v1
-    - run: npm ci
-    - run: npm run enable_short_import_path
+    - run: |
+        if [ -f "./yarn.lock" ]; then
+            yarn install --frozen-lockfile                                                                                                                                                                                        
+        else
+            npm ci
+        fi
+    - run: |
+        PACKAGE_MANAGER=npm
+        if [ -f "./yarn.lock" ]; then
+            PACKAGE_MANAGER=yarn
+        fi
+        $PACKAGE_MANAGER run enable_short_import_path
       env:
         DRY_RUN: "0"
     - name: (DEBUG) Show how the files have been moved to enable short import

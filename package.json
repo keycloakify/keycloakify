@@ -27,7 +27,8 @@
         "!src/test/",
         "dist/",
         "!dist/test/",
-        "!dist/tsconfig.tsbuildinfo"
+        "!dist/tsconfig.tsbuildinfo",
+        "res/"
     ],
     "keywords": [
         "keycloak",
@@ -38,7 +39,7 @@
     "devDependencies": {
         "@types/node": "^10.0.0",
         "copyfiles": "^2.4.1",
-        "denoify": "^0.6.4",
+        "denoify": "^0.6.5",
         "scripting-tools": "^0.19.13",
         "typescript": "^4.1.5"
     },

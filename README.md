@@ -42,12 +42,10 @@ Typically you will get:
 `package.json`:
 ```json
   "devDependencies": {
-    "keycloak-react-theming": "^0.0.10",
-    [...]
+    "keycloak-react-theming": "^0.0.10"
   },
   "scripts": {
-    "build": "react-scripts build && build-keycloak-theme",
-    [...]
+    "build": "react-scripts build && build-keycloak-theme"
   },
 ```
 
