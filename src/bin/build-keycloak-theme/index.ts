@@ -68,13 +68,13 @@ if (require.main === module) {
         '',
         'To test your theme locally, with hot reloading, you can spin up a Keycloak container image with the theme loaded by running:',
         '',
-        `$ ./${pathRelative(reactProjectDirPath, pathJoin(keycloakThemeBuildingDirPath, containerLaunchScriptBasename))}`,
+        `👉 $ ./${pathRelative(reactProjectDirPath, pathJoin(keycloakThemeBuildingDirPath, containerLaunchScriptBasename))} 👈`,
         '',
-        'To enable the theme within keycloak log into the admin console ( username: admin, password: admin), create a realm (called "myrealm" for example),',
+        'To enable the theme within keycloak log into the admin console ( 👉 http://localhost:8080 username: admin, password: admin 👈), create a realm (called "myrealm" for example),',
         `go to your realm settings, click on the theme tab then select ${parsedPackageJson.name}.`,
         `More details: https://www.keycloak.org/getting-started/getting-started-docker`,
         '',
-        'Once your container is up and configured 👉 http://localhost:8080/auth/realms/myrealm/account',
+        'Once your container is up and configured 👉 http://localhost:8080/auth/realms/myrealm/account 👈',
         '',
     ].join("\n"));
 
