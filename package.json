@@ -1,6 +1,6 @@
 {
     "name": "keycloak-react-theming",
-    "version": "0.0.20",
+    "version": "0.0.21",
     "description": "Keycloak theme generator for Reacts app",
     "repository": {
         "type": "git",
@@ -11,10 +11,12 @@
     "scripts": {
         "clean": "rimraf dist/",
         "build": "yarn clean && tsc && yarn grant-exec-perms && yarn copy-files",
-        "grant-exec-perms": "cd dist/bin && chmod +x build-keycloak-theme/index.js download-sample-keycloak-themes.js",
+        "grant-exec-perms": "node dist/bin/tools/grant-exec-perms.js",
         "test": "node dist/test/build-keycloak-theme && node dist/test/download-sample-keycloak-themes",
         "enable_short_import_path": "yarn build && denoify_enable_short_npm_import_path",
-        "copy-files": "copyfiles -u 1 src/**/*.ftl src/**/*.xml dist/"
+        "copy-files": "copyfiles -u 1 src/**/*.ftl src/**/*.xml dist/",
+        "generate-messages": "node dist/bin/generate-i18n-messages.js",
+        "watch": "tsc -w"
     },
     "bin": {
         "build-keycloak-theme": "dist/bin/build-keycloak-theme/index.js",
@@ -32,19 +34,25 @@
     "keywords": [
         "keycloak",
         "react",
-        "theme"
+        "theme",
+        "FreeMarker",
+        "ftl",
+        "login",
+        "register"
     ],
     "homepage": "https://github.com/garronej/keycloak-react-theming",
     "devDependencies": {
         "@types/node": "^10.0.0",
         "copyfiles": "^2.4.1",
         "denoify": "^0.6.5",
+        "properties-parser": "^0.3.1",
         "rimraf": "^3.0.2",
         "scripting-tools": "^0.19.13",
         "typescript": "^4.1.5"
     },
     "dependencies": {
         "cheerio": "^1.0.0-rc.5",
-        "evt": "^1.9.12"
+        "evt": "^1.9.12",
+        "powerhooks": "^0.0.13"
     }
 }

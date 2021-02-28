@@ -5,14 +5,6 @@ import { ftlValuesGlobalName } from "../bin/build-keycloak-theme/generateKeycloa
 import type { generateFtlFilesCodeFactory } from "../bin/build-keycloak-theme/generateFtl";
 import { id } from "evt/tools/typeSafety/id";
 
-export type LanguageLabel =
-    /* spell-checker: disable */
-    "Deutsch" | "Norsk" | "Русский" | "Svenska" | "Português (Brasil)" | "Lietuvių" |
-    "English" | "Italiano" | "Français" | "中文简体" | "Español" | "Čeština" | "日本語" |
-    "Slovenčina" | "Polish" | "Català" | "Nederlands" | "tr";
-/* spell-checker: enable */
-
-export type LanguageTag = "de" | "no" | "ru" | "sv" | "pt-BR" | "lt" | "en" | "it" | "fr" | "zh-CN" | "es" | "cs" | "ja" | "sk" | "pl" | "ca" | "nl" | "tr";
 
 export type KeycloakFtlValues = {
     pageBasename: Parameters<ReturnType<typeof generateFtlFilesCodeFactory>["generateFtlFilesCode"]>[0]["pageBasename"];
@@ -28,14 +20,18 @@ export type KeycloakFtlValues = {
         internationalizationEnabled: boolean;
     },
     //NOTE: Undefined if !realm.internationalizationEnabled
+    //We hide this since we provide a client side internationalization engine
+    /*
     locale?: {
         supported: {
             url: string;
+            languageTag: AvailableLanguages;
+            //NOTE: Is determined by languageTag. Ex: languageTag === "en" => label === "English"
             label: LanguageLabel;
-            languageTag: LanguageTag;
         },
         current: LanguageLabel;
     },
+    */
     auth?: {
         showUsername: boolean;
         showResetCredentials: boolean;

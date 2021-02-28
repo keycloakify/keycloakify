@@ -2,11 +2,12 @@
 import { sampleReactProjectDirPath } from "./setupSampleReactProject";
 import * as st from "scripting-tools";
 import { join as pathJoin } from "path";
+import { getProjectRoot } from "../bin/tools/getProjectRoot";
 
 console.log(`Running main in ${sampleReactProjectDirPath}`);
 
 st.execSync(
-    `node ${pathJoin(__dirname, "../bin/download-sample-keycloak-themes")}`,
+    `node ${pathJoin(getProjectRoot(), "src","bin","download-sample-keycloak-themes")}`,
     { "cwd": sampleReactProjectDirPath }
 );
 

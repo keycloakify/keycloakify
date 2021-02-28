@@ -1,8 +1,9 @@
 
+import { getProjectRoot } from "../bin/tools/getProjectRoot";
 import * as st from "scripting-tools";
 import { join as pathJoin, basename as pathBasename } from "path";
 
-export const sampleReactProjectDirPath = pathJoin(__dirname, "..", "..", "sample_react_project");
+export const sampleReactProjectDirPath = pathJoin(getProjectRoot(), "sample_react_project");
 
 export function setupSampleReactProject() {
 
