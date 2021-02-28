@@ -1,10 +1,10 @@
 
 import { createUseGlobalState } from "powerhooks";
-import { messages } from "./messages.generated";
+import { messages } from "./generated_messages/login";
 import { objectKeys } from "evt/tools/typeSafety/objectKeys";
 import { getLanguageLabel } from "./getLanguageLabel";
 
-const availableLanguages = objectKeys(messages["login"]);
+const availableLanguages = objectKeys(messages);
 
 export type AvailableLanguages = typeof availableLanguages[number];
 

@@ -1,6 +1,4 @@
 
-
-
 import { ftlValuesGlobalName } from "../bin/build-keycloak-theme/generateKeycloakThemeResources";
 import type { generateFtlFilesCodeFactory } from "../bin/build-keycloak-theme/generateFtl";
 import { id } from "evt/tools/typeSafety/id";
