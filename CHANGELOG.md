@@ -1,3 +1,19 @@
+### **0.0.21** (2021-02-28)  
+  
+- Restore yarn file  
+- Multiple fixes  
+- Update deps  
+- Update deps  
+- includes translations  
+- Update README.md  
+- improve docs  
+- update  
+- Update README.md  
+- update  
+- update  
+- update  
+- update    
+  
 ### **0.0.20** (2021-02-27)  
   
 - update  
