@@ -621,10 +621,10 @@ path-is-absolute@^1.0.0:
   resolved "https://registry.yarnpkg.com/path-is-absolute/-/path-is-absolute-1.0.1.tgz#174b9268735534ffbc7ace6bf53a5a9e1b5c5f5f"
   integrity sha1-F0uSaHNVNP+8es5r9TpanhtcX18=
 
-powerhooks@^0.0.13:
-  version "0.0.13"
-  resolved "https://registry.yarnpkg.com/powerhooks/-/powerhooks-0.0.13.tgz#4c58da69ada231fe579d6d2f22957490579e4c5f"
-  integrity sha512-++fJro/8kauc9mgwS2FPhuWFobMAsNNRkOu55OxgUtGEsHmImKAkqk+Qu/YIxggMWHmmdjs+zNzCGyOi/VoZ4A==
+powerhooks@^0.0.14:
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/powerhooks/-/powerhooks-0.0.14.tgz#1456620de2d2b899f54509a8ef909c4c15694c81"
+  integrity sha512-fse74qwumuETne++wc3asYlhuaQYvKHUUzsAbNQfBb5OK3J12KbBYM3kh+ZPOf5C9/OAJg/qAAXsz2G/5ROS4w==
   dependencies:
     evt "2.0.0-beta.12"
     memoizee "^0.4.15"

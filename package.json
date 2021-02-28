@@ -55,6 +55,6 @@
     "dependencies": {
         "cheerio": "^1.0.0-rc.5",
         "evt": "^1.9.12",
-        "powerhooks": "^0.0.13"
+        "powerhooks": "^0.0.14"
     }
 }
