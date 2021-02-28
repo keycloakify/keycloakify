@@ -1,3 +1,7 @@
+### **0.0.22** (2021-02-28)  
+  
+- Split page messages    
+  
 ### **0.0.21** (2021-02-28)  
   
 - Restore yarn file  
