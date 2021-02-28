@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-import { join as pathJoin } from "path";
 import { keycloakThemeBuildingDirPath } from "./build-keycloak-theme";
 import { downloadAndUnzip } from "./tools/downloadAndUnzip";
 
@@ -12,8 +11,8 @@ if (require.main === module) {
     console.log("execute!");
 
     downloadAndUnzip({
-        "url": keycloakThemeBuildingDirPath,
-        "destDirPath": pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme")
+        "url": keycloakBuiltinThemesAndThirdPartyExamplesThemsUrl,
+        "destDirPath": keycloakThemeBuildingDirPath
     });
 
 }

@@ -15,7 +15,7 @@ console.log(`Running main in ${sampleReactProjectDirPath}`);
 
 console.log(
     st.execSync(
-        `node ${pathJoin(getProjectRoot(), "src", "bin", "build-keycloak-theme")}`,
+        `node ${pathJoin(getProjectRoot(), "dist", "bin", "build-keycloak-theme")}`,
         { "cwd": sampleReactProjectDirPath }
     )
 );
