@@ -11,6 +11,10 @@
     <img src="https://img.shields.io/npm/l/keycloak-react-theming">
 </p>
 
+
+
+**!!! This module is under active developement. It is not usable yet!!!**
+
 # Motivations
 
 The problem: 
