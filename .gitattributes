@@ -1,1 +1,3 @@
 src/lib/i18n/generated_messages/* linguist-documentation
+src/bin/build-keycloak-theme/index.ts linguist-documentation
+src/bin/download-sample-keycloak-themes.ts linguist-documentation
