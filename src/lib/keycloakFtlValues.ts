@@ -2,6 +2,8 @@
 import { ftlValuesGlobalName } from "../bin/build-keycloak-theme/generateKeycloakThemeResources";
 import type { generateFtlFilesCodeFactory } from "../bin/build-keycloak-theme/generateFtl";
 import { id } from "evt/tools/typeSafety/id";
+//import type { LanguageLabel } from "./i18n/getLanguageLabel";
+import type { AvailableLanguages } from "./i18n/useKeycloakLanguage";
 
 
 export type KeycloakFtlValues = {
@@ -17,19 +19,20 @@ export type KeycloakFtlValues = {
         displayNameHtml?: string;
         internationalizationEnabled: boolean;
     },
-    //NOTE: Undefined if !realm.internationalizationEnabled
-    //We hide this since we provide a client side internationalization engine
-    /*
+    /** Undefined if !realm.internationalizationEnabled */
     locale?: {
         supported: {
-            url: string;
+            //url: string;
             languageTag: AvailableLanguages;
-            //NOTE: Is determined by languageTag. Ex: languageTag === "en" => label === "English"
-            label: LanguageLabel;
-        },
-        current: LanguageLabel;
+            /** Is determined by languageTag. Ex: languageTag === "en" => label === "English"
+             * or getLanguageLabel(languageTag) === label
+             */
+            //label: LanguageLabel;
+        }[];
+        //NOTE: We do not expose this because the language is managed
+        //client side. We use this value however to set the default.
+        //current: LanguageLabel;
     },
-    */
     auth?: {
         showUsername: boolean;
         showResetCredentials: boolean;

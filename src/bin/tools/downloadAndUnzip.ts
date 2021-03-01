@@ -14,6 +14,8 @@ export function downloadAndUnzip(
 
     fs.mkdirSync(destDirPath, { "recursive": true });
 
+    console.log({ url, destDirPath });
+
     [
         `wget ${url}`,
         ...["unzip", "rm"].map(prg => `${prg} ${pathBasename(url)}`),

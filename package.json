@@ -43,18 +43,19 @@
     "homepage": "https://github.com/garronej/keycloak-react-theming",
     "devDependencies": {
         "@types/node": "^10.0.0",
+        "@types/react": "^17.0.0",
         "copyfiles": "^2.4.1",
         "denoify": "^0.6.5",
         "properties-parser": "^0.3.1",
+        "react": "^17.0.1",
         "rimraf": "^3.0.2",
         "scripting-tools": "^0.19.13",
-        "typescript": "^4.1.5",
-        "@types/react": "^17.0.0",
-        "react": "^17.0.1"
+        "typescript": "^4.1.5"
     },
     "dependencies": {
         "cheerio": "^1.0.0-rc.5",
         "evt": "^1.9.12",
-        "powerhooks": "^0.0.14"
+        "powerhooks": "^0.0.14",
+        "tss-react": "^0.0.9"
     }
 }
