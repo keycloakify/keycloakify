@@ -1,5 +1,1 @@
-
-**/* linguist-vendored
-src/lib/i18n/generated_messages linguist-vendored=false
-src/bin/download-sample-keycloak-themes.ts linguist-vendored=false
-src/bin/build-keycloak-theme/index.ts linguist-vendored=false
+src/lib/i18n/generated_messages/* linguist-documentation
