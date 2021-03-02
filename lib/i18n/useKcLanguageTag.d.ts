@@ -1,0 +1,1 @@
+export declare const useKcLanguageTag: () => import("powerhooks").UseNamedStateReturnType<"tr" | "no" | "en" | "ca" | "cs" | "de" | "es" | "fr" | "it" | "ja" | "lt" | "nl" | "pl" | "pt_BR" | "ru" | "sk" | "sv" | "zh_CN", "kcLanguageTag">;
