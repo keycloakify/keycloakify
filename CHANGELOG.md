@@ -1,3 +1,7 @@
+### **0.0.27** (2021-03-02)  
+  
+- Implement entrypoint    
+  
 ### **0.0.26** (2021-03-02)  
   
 - Login page implemented  
