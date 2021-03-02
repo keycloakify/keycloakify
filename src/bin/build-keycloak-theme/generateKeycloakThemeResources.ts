@@ -10,8 +10,7 @@ import { generateFtlFilesCodeFactory } from "./generateFtl";
 import { keycloakBuiltinThemesAndThirdPartyExamplesThemsUrl } from "../download-sample-keycloak-themes";
 import { downloadAndUnzip } from "../tools/downloadAndUnzip";
 import * as child_process from "child_process";
-
-export const ftlValuesGlobalName = "keycloakPagesContext";
+import { ftlValuesGlobalName } from "./ftlValuesGlobalName";
 
 export function generateKeycloakThemeResources(
     params: {

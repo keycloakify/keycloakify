@@ -15,18 +15,11 @@ import { useConstCallback } from "powerhooks";
 
 type KcClasses<T extends string> = { [key in T]?: string[] | string };
 
-
-export type Props = {
-    displayInfo?: boolean;
-    displayMessage: boolean;
-    displayRequiredFields: boolean;
-    displayWide: boolean;
-    showAnotherWayIfPresent: boolean;
-    properties?: {
+export type KcProperties = {
         stylesCommon?: string[];
         styles?: string[];
         scripts?: string[];
-    } & KcClasses<
+} & KcClasses<
         "kcLoginClass" |
         "kcHeaderClass" |
         "kcHeaderWrapperClass" |
@@ -50,7 +43,15 @@ export type Props = {
         "kcFormSocialAccountClass" |
         "kcSignUpClass" |
         "kcInfoAreaWrapperClass"
-    >;
+>;
+
+export type Props = {
+    displayInfo?: boolean;
+    displayMessage: boolean;
+    displayRequiredFields: boolean;
+    displayWide: boolean;
+    showAnotherWayIfPresent: boolean;
+    properties?: KcProperties;
     headerNode: ReactNode;
     showUsernameNode: ReactNode;
     formNode: ReactNode;

@@ -1,5 +1,5 @@
 
-import { ftlValuesGlobalName } from "../bin/build-keycloak-theme/generateKeycloakThemeResources";
+import { ftlValuesGlobalName } from "../bin/build-keycloak-theme/ftlValuesGlobalName";
 import type { generateFtlFilesCodeFactory } from "../bin/build-keycloak-theme/generateFtl";
 import { id } from "evt/tools/typeSafety/id";
 //import type { LanguageLabel } from "./i18n/getLanguageLabel";
