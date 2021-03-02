@@ -1,3 +1,9 @@
+### **0.0.26** (2021-03-02)  
+  
+- Login page implemented  
+- Implement login  
+- remove unesseary log    
+  
 ### **0.0.25** (2021-03-02)  
   
 - Fix build and reduce size  
