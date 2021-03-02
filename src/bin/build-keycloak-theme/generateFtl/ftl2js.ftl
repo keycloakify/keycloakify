@@ -4,12 +4,19 @@
         "loginAction": "${url.loginAction}",
         "resourcesPath": "${url.resourcesPath}",
         "resourcesCommonPath": "${url.resourcesCommonPath}",
-        "loginRestartFlowUrl": "${url.loginRestartFlowUrl}"
+        "loginRestartFlowUrl": "${url.loginRestartFlowUrl}",
+        "loginResetCredentialsUrl": "${url.loginResetCredentialsUrl}",
+        "registrationUrl": "${url.registrationUrl}"
     },
     "realm": {
         "displayName": "${realm.displayName!''}" || undefined,
         "displayNameHtml": "${realm.displayNameHtml!''}" || undefined,
-        "internationalizationEnabled": ${realm.internationalizationEnabled?c}
+        "internationalizationEnabled": ${realm.internationalizationEnabled?c},
+        "password": ${realm.password?c},
+        "loginWithEmailAllowed": ${realm.loginWithEmailAllowed?c},
+        "registrationEmailAsUsername": ${realm.registrationEmailAsUsername?c},
+        "rememberMe": ${realm.rememberMe?c},
+        "resetPasswordAllowed": ${realm.resetPasswordAllowed?c} 
     },
     "locale": (function (){
 
@@ -54,6 +61,7 @@
                 "showUsername": ${auth.showUsername()?c},
                 "showResetCredentials": ${auth.showResetCredentials()?c},
                 "showTryAnotherWayLink": ${auth.showTryAnotherWayLink()?c}
+                "selectedCredential": "${auth.selectedCredential!''}" || undefined
             };
 
             <#if auth.showUsername() && !auth.showResetCredentials()>
@@ -79,7 +87,7 @@
 
         <#if scripts??>
             <#list scripts as script>
-        out.push("${script}");
+                out.push("${script}");
             </#list>
         </#if>
 
@@ -107,7 +115,59 @@
         </#if>
         return false;
 
-    })()
+    })(),
+    "social": {
+        "displayInfo": ${social.displayInfo?c},
+        "providers": (()=>{
 
+            <#if social.providers??>
+
+                var out= [];
+
+                <#list social.providers as p>
+                    out.push({ 
+                        "loginUrl": "${p.loginUrl}",
+                        "alias": "${p.alias}",
+                        "providerId": "${p.providerId}",
+                        "displayName": "${p.displayName}"
+                    });
+                </#list>
+
+                return out;
+
+            </#if>
+
+            return undefined;
+
+        })()
+    },
+    "usernameEditDisabled": (function () {
+
+        <#if usernameEditDisabled??>
+            return true;
+        </#if>
+        return false;
+
+    })(),
+    "login": {
+        "username": "${login.username!''}" || undefined,
+        "rememberMe": (function (){
+
+            <#if login.rememberMe??>
+                return true;
+            </#if>
+            return false;
+
+
+        })()
+    },
+    "registrationDisabled": (function (){
+
+        <#if registrationDisabled??>
+            return true;
+        </#if>
+        return false;
+
+    })
 }
 </script>

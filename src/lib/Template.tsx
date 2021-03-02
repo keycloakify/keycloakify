@@ -1,6 +1,6 @@
 
+import { useState, useEffect, memo } from "react";
 import type { ReactNode } from "react";
-import { useState, useEffect } from "react";
 import { useKeycloakThemeTranslation } from "./i18n/useKeycloakTranslation";
 import { keycloakPagesContext } from "./keycloakFtlValues";
 import { assert } from "evt/tools/typeSafety/assert";
@@ -12,53 +12,84 @@ import { appendLinkInHead } from "./tools/appendLinkInHead";
 import { appendScriptInHead } from "./tools/appendScriptInHead";
 import { join as pathJoin } from "path";
 import { useConstCallback } from "powerhooks";
-
-type KcClasses<T extends string> = { [key in T]?: string[] | string };
-
-export type KcProperties = {
-        stylesCommon?: string[];
-        styles?: string[];
-        scripts?: string[];
-} & KcClasses<
-        "kcLoginClass" |
-        "kcHeaderClass" |
-        "kcHeaderWrapperClass" |
-        "kcFormCardClass" |
-        "kcFormCardAccountClass" |
-        "kcFormHeaderClass" |
-        "kcLocaleWrapperClass" |
-        "kcContentWrapperClass" |
-        "kcLabelWrapperClass" |
-        "kcContentWrapperClass" |
-        "kcLabelWrapperClass" |
-        "kcFormGroupClass" |
-        "kcResetFlowIcon" |
-        "kcResetFlowIcon" |
-        "kcFeedbackSuccessIcon" |
-        "kcFeedbackWarningIcon" |
-        "kcFeedbackErrorIcon" |
-        "kcFeedbackInfoIcon" |
-        "kcContentWrapperClass" |
-        "kcFormSocialAccountContentClass" |
-        "kcFormSocialAccountClass" |
-        "kcSignUpClass" |
-        "kcInfoAreaWrapperClass"
->;
+import { allPropertiesValuesToUndefined } from "./tools/allPropertiesValuesToUndefined";
 
 export type Props = {
     displayInfo?: boolean;
-    displayMessage: boolean;
-    displayRequiredFields: boolean;
-    displayWide: boolean;
-    showAnotherWayIfPresent: boolean;
-    properties?: KcProperties;
+    displayMessage?: boolean;
+    displayRequiredFields?: boolean;
+    displayWide?: boolean;
+    showAnotherWayIfPresent?: boolean;
+    properties: KcTemplateProperties;
     headerNode: ReactNode;
     showUsernameNode: ReactNode;
     formNode: ReactNode;
     displayInfoNode: ReactNode;
 };
 
-export function Template(props: Props) {
+/** Class names can be provided as an array or separated by whitespace */
+export type KcClasses<T extends string> = { [key in T]?: string[] | string };
+
+export type KcTemplateProperties = {
+    stylesCommon?: string[];
+    styles?: string[];
+    scripts?: string[];
+} & KcClasses<
+    "kcLoginClass" |
+    "kcHeaderClass" |
+    "kcHeaderWrapperClass" |
+    "kcFormCardClass" |
+    "kcFormCardAccountClass" |
+    "kcFormHeaderClass" |
+    "kcLocaleWrapperClass" |
+    "kcContentWrapperClass" |
+    "kcLabelWrapperClass" |
+    "kcContentWrapperClass" |
+    "kcLabelWrapperClass" |
+    "kcFormGroupClass" |
+    "kcResetFlowIcon" |
+    "kcResetFlowIcon" |
+    "kcFeedbackSuccessIcon" |
+    "kcFeedbackWarningIcon" |
+    "kcFeedbackErrorIcon" |
+    "kcFeedbackInfoIcon" |
+    "kcContentWrapperClass" |
+    "kcFormSocialAccountContentClass" |
+    "kcFormSocialAccountClass" |
+    "kcSignUpClass" |
+    "kcInfoAreaWrapperClass"
+>;
+
+export const defaultKcTemplateProperties: KcTemplateProperties = {
+    "styles": ["css/login.css"],
+    "stylesCommon": [
+        ...[".min.css", "-additions.min.css"]
+            .map(end => `node_modules/patternfly/dist/css/patternfly${end}`),
+        "lib/zocial/zocial.css"
+    ],
+    "kcLoginClass": "login-pf-page",
+    "kcContentWrapperClass": "row",
+    "kcHeaderClass": "login-pf-page-header",
+    "kcFormCardClass": "card-pf",
+    "kcFormCardAccountClass": "login-pf-accounts",
+    "kcFormSocialAccountClass": "login-pf-social-section",
+    "kcFormSocialAccountContentClass": "col-xs-12 col-sm-6",
+    "kcFormHeaderClass": "login-pf-header",
+    "kcFeedbackErrorIcon": "pficon pficon-error-circle-o",
+    "kcFeedbackWarningIcon": "pficon pficon-warning-triangle-o",
+    "kcFeedbackSuccessIcon": "pficon pficon-ok",
+    "kcFeedbackInfoIcon": "pficon pficon-info",
+    "kcResetFlowIcon": "pficon pficon-arrow fa-2x",
+    "kcFormGroupClass": "form-group",
+    "kcLabelWrapperClass": "col-xs-12 col-sm-12 col-md-12 col-lg-12",
+    "kcSignUpClass": "login-pf-sighup"
+};
+
+/** Tu use if you don't want any default */
+export const allClearKcTemplateProperties = 
+    allPropertiesValuesToUndefined(defaultKcTemplateProperties);
+
+export const Template = memo((props: Props) =>{
 
     const {
         displayInfo = false,
@@ -74,6 +105,8 @@ export function Template(props: Props) {
     } = props;
 
     const { t } = useKeycloakThemeTranslation();
+
+    Object.assign(properties, defaultKcTemplateProperties);
 
     const { keycloakLanguage, setKeycloakLanguage } = useKeycloakLanguage();
 
@@ -286,4 +319,4 @@ export function Template(props: Props) {
             </div >
         </div >
     );
-}
+});

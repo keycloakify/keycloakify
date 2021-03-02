@@ -13,12 +13,19 @@ export type KeycloakFtlValues = {
         resourcesPath: string;
         resourcesCommonPath: string;
         loginRestartFlowUrl: string;
-    },
+        loginResetCredentialsUrl: string;
+        registrationUrl: string;
+    };
     realm: {
         displayName?: string;
         displayNameHtml?: string;
         internationalizationEnabled: boolean;
-    },
+        password: boolean;
+        loginWithEmailAllowed: boolean;
+        registrationEmailAsUsername: boolean;
+        rememberMe: boolean;
+        resetPasswordAllowed: boolean;
+    };
     /** Undefined if !realm.internationalizationEnabled */
     locale?: {
         supported: {
@@ -38,13 +45,29 @@ export type KeycloakFtlValues = {
         showResetCredentials: boolean;
         showTryAnotherWayLink: boolean;
         attemptedUsername?: boolean;
-    },
+        selectedCredential?: string;
+    };
     scripts: string[];
     message?: {
         type: "success" | "warning" | "error" | "info";
         summary: string;
-    },
+    };
     isAppInitiatedAction: boolean;
+    social: {
+        displayInfo: boolean;
+        providers?: {
+            loginUrl: string;
+            alias: string;
+            providerId: string;
+            displayName: string;
+        }[]
+    };
+    usernameEditDisabled: boolean;
+    login: {
+        username?: string;
+        rememberMe: boolean;
+    };
+    registrationDisabled: boolean;
 };
 
 export const { keycloakPagesContext } =

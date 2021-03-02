@@ -816,7 +816,7 @@ memoizee@^0.4.15:
     next-tick "^1.1.0"
     timers-ext "^0.1.7"
 
-minimal-polyfills@^2.1.5:
+minimal-polyfills@^2.1.5, minimal-polyfills@^2.1.6:
   version "2.1.6"
   resolved "https://registry.yarnpkg.com/minimal-polyfills/-/minimal-polyfills-2.1.6.tgz#eab50832add31afd40a22b38fb76d1fdcd2a51e4"
   integrity sha512-vqoxj7eMzsqX0M6/dkgoNFPw6Mztgn5qjSl0bWGboQeU7Y4UPLeyoqQw6JI+0qmBcJYdkr3nK7dqY8u/fgRp5g==
