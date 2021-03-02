@@ -1,3 +1,8 @@
+### **0.0.25** (2021-03-02)  
+  
+- Fix build and reduce size  
+- Implement the template    
+  
 ### **0.0.24** (2021-03-01)  
   
 - update  
