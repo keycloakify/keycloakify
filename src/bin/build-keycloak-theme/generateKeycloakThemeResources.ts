@@ -7,6 +7,9 @@ import {
     replaceImportFromStaticInJsCode
 } from "./replaceImportFromStatic";
 import { generateFtlFilesCodeFactory } from "./generateFtl";
+import { keycloakBuiltinThemesAndThirdPartyExamplesThemsUrl } from "../download-sample-keycloak-themes";
+import { downloadAndUnzip } from "../tools/downloadAndUnzip";
+import * as child_process from "child_process";
 
 export const ftlValuesGlobalName = "keycloakPagesContext";
 
@@ -25,7 +28,7 @@ export function generateKeycloakThemeResources(
     let allCssGlobalsToDefine: Record<string, string> = {};
 
     transformCodebase({
-        "destDirPath": pathJoin(themeDirPath, "resources"),
+        "destDirPath": pathJoin(themeDirPath, "resources", "build"),
         "srcDirPath": reactAppBuildDirPath,
         "transformSourceCodeString": ({ filePath, sourceCode }) => {
 
@@ -79,9 +82,31 @@ export function generateKeycloakThemeResources(
 
     });
 
+    {
+
+        const destDirPath = pathJoin(themeDirPath, "..", "tmp_xxKdLpdIdLd");
+
+        downloadAndUnzip({
+            "url": keycloakBuiltinThemesAndThirdPartyExamplesThemsUrl,
+            destDirPath
+        });
+
+        child_process.execSync(
+            [
+                "mv", 
+                pathJoin("keycloak", "common"), 
+                pathJoin("..", "common")
+            ].join(" "),
+            { "cwd": destDirPath }
+        );
+
+        child_process.execSync(`rm -r ${destDirPath}`);
+
+    }
+
     fs.writeFileSync(
         pathJoin(themeDirPath, "theme.properties"),
-        Buffer.from("parent=base\n", "utf8")
+        Buffer.from(`import=common/${themeName}\n`, "utf8")
     );
 
 }

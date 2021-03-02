@@ -45,7 +45,7 @@ export function generateFtlFilesCodeFactory(
                 return;
             }
 
-            $(element).attr(attrName, "${url.resourcesPath}" + href);
+            $(element).attr(attrName, "${url.resourcesPath}/build" + href);
 
         })
     );
