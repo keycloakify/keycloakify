@@ -2,11 +2,10 @@
 import { ftlValuesGlobalName } from "../bin/build-keycloak-theme/ftlValuesGlobalName";
 import type { generateFtlFilesCodeFactory } from "../bin/build-keycloak-theme/generateFtl";
 import { id } from "evt/tools/typeSafety/id";
-//import type { LanguageLabel } from "./i18n/getLanguageLabel";
-import type { AvailableLanguages } from "./i18n/useKeycloakLanguage";
+import type { KcLanguageTag } from "./i18n/KcLanguageTag";
 
 
-export type KeycloakFtlValues = {
+export type KcContext = {
     pageBasename: Parameters<ReturnType<typeof generateFtlFilesCodeFactory>["generateFtlFilesCode"]>[0]["pageBasename"];
     url: {
         loginAction: string;
@@ -30,7 +29,7 @@ export type KeycloakFtlValues = {
     locale?: {
         supported: {
             //url: string;
-            languageTag: AvailableLanguages;
+            languageTag: KcLanguageTag;
             /** Is determined by languageTag. Ex: languageTag === "en" => label === "English"
              * or getLanguageLabel(languageTag) === label
              */
@@ -70,6 +69,4 @@ export type KeycloakFtlValues = {
     registrationDisabled: boolean;
 };
 
-export const { keycloakPagesContext } =
-    { [ftlValuesGlobalName]: id<KeycloakFtlValues | undefined>((window as any)[ftlValuesGlobalName]) };
-;
+export const kcContext = id<KcContext | undefined>((window as any)[ftlValuesGlobalName]);

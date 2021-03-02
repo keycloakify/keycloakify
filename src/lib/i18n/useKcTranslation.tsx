@@ -1,5 +1,5 @@
 
-import { useKeycloakLanguage } from "./useKeycloakLanguage";
+import { useKcLanguageTag } from "./useKcLanguageTag";
 import { messages } from "./generated_messages/login";
 import { useConstCallback } from "powerhooks";
 import type { ReactNode } from "react";
@@ -7,14 +7,14 @@ import { id } from "evt/tools/typeSafety/id";
 
 export type MessageKey = keyof typeof messages["en"];
 
-export function useKeycloakThemeTranslation() {
+export function useKcTranslation() {
 
-    const { keycloakLanguage } = useKeycloakLanguage();
+    const { kcLanguageTag } = useKcLanguageTag();
 
     const tStr = useConstCallback(
         (key: MessageKey, ...args: (string | undefined)[]): string => {
 
-            let str: string = messages[keycloakLanguage as any as "en"][key] ?? messages["en"][key];
+            let str: string = messages[kcLanguageTag as any as "en"][key] ?? messages["en"][key];
 
             args.forEach((arg, i) => {
 

@@ -1,2 +1,2 @@
 
-export const ftlValuesGlobalName = "keycloakPagesContext";
+export const ftlValuesGlobalName = "kcContext";
