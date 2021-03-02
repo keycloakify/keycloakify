@@ -7,3 +7,4 @@ export * from "./i18n/useKcTranslation";
 export * from "./components/KcProperties";
 export * from "./components/Login";
 export * from "./components/Template";
+export * from "./components/KcApp";
