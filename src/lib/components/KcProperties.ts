@@ -5,6 +5,7 @@ import { allPropertiesValuesToUndefined } from "../tools/allPropertiesValuesToUn
 export type KcClasses<CssClasses extends string> = { [key in CssClasses]?: string[] | string };
 
 export type KcTemplateCssClasses = 
+    "kcHtmlClass" |
     "kcLoginClass" |
     "kcHeaderClass" |
     "kcHeaderWrapperClass" |
@@ -43,6 +44,7 @@ export const defaultKcTemplateProperties: KcTemplateProperties = {
             .map(end => `node_modules/patternfly/dist/css/patternfly${end}`),
         "lib/zocial/zocial.css"
     ],
+    "kcHtmlClass": "login-pf",
     "kcLoginClass": "login-pf-page",
     "kcContentWrapperClass": "row",
     "kcHeaderClass": "login-pf-page-header",

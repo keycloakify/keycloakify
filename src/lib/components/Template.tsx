@@ -92,6 +92,10 @@ export const Template = memo((props: TemplateProps) => {
                 )
         );
 
+        document.getElementsByTagName("html")[0]
+            .classList
+            .add(cx(kcProperties.kcHtmlClass));
+
 
     }, []);
 

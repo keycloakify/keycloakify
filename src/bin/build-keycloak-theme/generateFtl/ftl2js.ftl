@@ -60,7 +60,7 @@
             var out= {
                 "showUsername": ${auth.showUsername()?c},
                 "showResetCredentials": ${auth.showResetCredentials()?c},
-                "showTryAnotherWayLink": ${auth.showTryAnotherWayLink()?c}
+                "showTryAnotherWayLink": ${auth.showTryAnotherWayLink()?c},
                 "selectedCredential": "${auth.selectedCredential!''}" || undefined
             };
 
