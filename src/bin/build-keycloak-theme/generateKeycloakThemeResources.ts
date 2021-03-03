@@ -29,7 +29,7 @@ export function generateKeycloakThemeResources(
     transformCodebase({
         "destDirPath": pathJoin(themeDirPath, "resources", "build"),
         "srcDirPath": reactAppBuildDirPath,
-        "transformSourceCodeString": ({ filePath, sourceCode }) => {
+        "transformSourceCode": ({ filePath, sourceCode }) => {
 
             if (/\.css?$/i.test(filePath)) {
 
@@ -83,23 +83,24 @@ export function generateKeycloakThemeResources(
 
     {
 
-        const destDirPath = pathJoin(themeDirPath, "..", "tmp_xxKdLpdIdLd");
+        const tmpDirPath = pathJoin(themeDirPath, "..", "tmp_xxKdLpdIdLd");
 
         downloadAndUnzip({
             "url": keycloakBuiltinThemesAndThirdPartyExamplesThemsUrl,
-            destDirPath
+            "destDirPath": tmpDirPath
         });
 
-        child_process.execSync(
-            [
-                "mv", 
-                pathJoin("keycloak", "common"), 
-                pathJoin("..", "common")
-            ].join(" "),
-            { "cwd": destDirPath }
-        );
+        transformCodebase({
+            "srcDirPath": pathJoin(tmpDirPath, "keycloak", "common"),
+            "destDirPath": pathJoin(tmpDirPath, "..", "common")
+        });
 
-        child_process.execSync(`rm -r ${destDirPath}`);
+        transformCodebase({
+            "srcDirPath": pathJoin(tmpDirPath, "keycloak", "login", "resources"),
+            "destDirPath": pathJoin(themeDirPath, "resources")
+        });
+
+        child_process.execSync(`rm -r ${tmpDirPath}`);
 
     }
 

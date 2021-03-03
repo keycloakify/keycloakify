@@ -1,8 +1,10 @@
 
-import { basename as pathBasename } from "path";
-import child_process from "child_process";
+import { basename as pathBasename, join as pathJoin } from "path";
+import { execSync } from "child_process";
 import fs from "fs";
+import { transformCodebase } from "../tools/transformCodebase";
 
+/** assert url ends with .zip */
 export function downloadAndUnzip(
     params: {
         url: string;
@@ -12,11 +14,21 @@ export function downloadAndUnzip(
 
     const { url, destDirPath } = params;
 
-    fs.mkdirSync(destDirPath, { "recursive": true });
+    const tmpDirPath = pathJoin(destDirPath, "..", "tmp_xxKdOxnEdx");
 
-    [
-        `wget ${url}`,
-        ...["unzip", "rm"].map(prg => `${prg} ${pathBasename(url)}`),
-    ].forEach(cmd => child_process.execSync(cmd, { "cwd": destDirPath }));
+    execSync(`rm -rf ${tmpDirPath}`);
+
+    fs.mkdirSync(tmpDirPath, { "recursive": true });
+
+    execSync(`wget ${url}`, { "cwd": tmpDirPath })
+    execSync(`unzip ${pathBasename(url)}`, { "cwd": tmpDirPath });
+    execSync(`rm ${pathBasename(url)}`, { "cwd": tmpDirPath });
+
+    transformCodebase({
+        "srcDirPath": tmpDirPath,
+        "destDirPath": destDirPath,
+    });
+
+    execSync(`rm -r ${tmpDirPath}`);
 
 }
