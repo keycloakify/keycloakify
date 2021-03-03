@@ -1,3 +1,8 @@
+### **0.0.28** (2021-03-03)  
+  
+- fix build  
+- There is no reason not to let use translations outside of keycloak    
+  
 ### **0.0.27** (2021-03-02)  
   
 - Implement entrypoint    
