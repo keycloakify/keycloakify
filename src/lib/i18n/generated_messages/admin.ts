@@ -10,8 +10,8 @@ export const messages= {
     "invalidPasswordMinLowerCaseCharsMessage": "Contrasenya incorrecta: ha de contenir almenys {0} lletres minúscules.",
     "invalidPasswordMinSpecialCharsMessage": "Contrasenya incorrecta: ha de contenir almenys {0} caràcters especials.",
     "invalidPasswordMinUpperCaseCharsMessage": "Contrasenya incorrecta: ha de contenir almenys {0} lletres majúscules.",
-    "invalidPasswordNotUsernameMessage": "Contrasenya incorrecta: no pot ser igual al nom d''usuari.",
-    "invalidPasswordRegexPatternMessage": "Contrasenya incorrecta: no compleix l''expressió regular."
+    "invalidPasswordNotUsernameMessage": "Contrasenya incorrecta: no pot ser igual al nom d'usuari.",
+    "invalidPasswordRegexPatternMessage": "Contrasenya incorrecta: no compleix l'expressió regular."
   },
   "de": {
     "invalidPasswordMinLengthMessage": "Ungültiges Passwort: muss mindestens {0} Zeichen beinhalten.",
@@ -77,8 +77,8 @@ export const messages= {
     "invalidPasswordMinDigitsMessage": "Mot de passe invalide : doit contenir au moins {0} chiffre(s).",
     "invalidPasswordMinUpperCaseCharsMessage": "Mot de passe invalide : doit contenir au moins {0} lettre(s) en majuscule.",
     "invalidPasswordMinSpecialCharsMessage": "Mot de passe invalide : doit contenir au moins {0} caractère(s) spéciaux.",
-    "invalidPasswordNotUsernameMessage": "Mot de passe invalide : ne doit pas être identique au nom d''utilisateur.",
-    "invalidPasswordRegexPatternMessage": "Mot de passe invalide : ne valide pas l''expression rationnelle.",
+    "invalidPasswordNotUsernameMessage": "Mot de passe invalide : ne doit pas être identique au nom d'utilisateur.",
+    "invalidPasswordRegexPatternMessage": "Mot de passe invalide : ne valide pas l'expression rationnelle.",
     "invalidPasswordHistoryMessage": "Mot de passe invalide : ne doit pas être égal aux {0} derniers mot de passe."
   },
   "it": {},

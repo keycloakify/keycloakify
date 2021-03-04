@@ -1,3 +1,4 @@
+import "minimal-polyfills/Object.fromEntries";
 import * as fs from "fs";
 import { join as pathJoin, relative as pathRelative } from "path";
 import { crawl } from "./tools/crawl";
@@ -34,10 +35,14 @@ crawl(".").forEach(filePath => {
 
     const [, typeOfPage, language] = match;
 
-    (record[typeOfPage] ??= {})[language.replace(/_/g,"-")] =
-        propertiesParser.parse(
-            fs.readFileSync(filePath)
-                .toString("utf8")
+    (record[typeOfPage] ??= {})[language.replace(/_/g, "-")] =
+        Object.fromEntries(
+            Object.entries(
+                propertiesParser.parse(
+                    fs.readFileSync(filePath)
+                        .toString("utf8")
+                )
+            ).map(([key, value]: any) => [key, value.replace(/''/g, "'")])
         );
 
 });
