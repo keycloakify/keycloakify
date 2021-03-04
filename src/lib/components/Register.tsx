@@ -53,7 +53,7 @@ export const Register = memo((props: RegisterPageProps) => {
                         </div>
                         <div className={cx(kcProperties.kcInputWrapperClass)}>
                             <input type="text" id="firstName" className={cx(kcProperties.kcInputClass)} name="firstName"
-                                value={register.formData.firstName ?? ""}
+                                defaultValue={register.formData.firstName ?? ""}
                             />
                         </div>
                     </div>
@@ -64,7 +64,7 @@ export const Register = memo((props: RegisterPageProps) => {
                         </div>
                         <div className={cx(kcProperties.kcInputWrapperClass)}>
                             <input type="text" id="lastName" className={cx(kcProperties.kcInputClass)} name="lastName"
-                                value={register.formData.lastName ?? ""}
+                                defaultValue={register.formData.lastName ?? ""}
                             />
                         </div>
                     </div>
@@ -75,7 +75,7 @@ export const Register = memo((props: RegisterPageProps) => {
                         </div>
                         <div className={cx(kcProperties.kcInputWrapperClass)}>
                             <input type="text" id="email" className={cx(kcProperties.kcInputClass)} name="email"
-                                value={register.formData.email ?? ""} autoComplete="email"
+                                defaultValue={register.formData.email ?? ""} autoComplete="email"
                             />
                         </div>
                     </div>
@@ -89,7 +89,7 @@ export const Register = memo((props: RegisterPageProps) => {
                             </div>
                             <div className={cx(kcProperties.kcInputWrapperClass)}>
                                 <input type="text" id="username" className={cx(kcProperties.kcInputClass)} name="username"
-                                    value={register.formData.username ?? ""} autoComplete="username" />
+                                    defaultValue={register.formData.username ?? ""} autoComplete="username" />
                             </div>
                         </div >
 
@@ -139,7 +139,7 @@ export const Register = memo((props: RegisterPageProps) => {
 
                         <div id="kc-form-buttons" className={cx(kcProperties.kcFormButtonsClass)}>
                             <input className={cx(kcProperties.kcButtonClass, kcProperties.kcButtonPrimaryClass, kcProperties.kcButtonBlockClass, kcProperties.kcButtonLargeClass)} type="submit"
-                                value={tStr("doRegister")} />
+                                defaultValue={tStr("doRegister")} />
                         </div>
                     </div>
                 </form >
@@ -148,4 +148,9 @@ export const Register = memo((props: RegisterPageProps) => {
     );
 });
 
+
+
+
+
+// JSX.IntrinsicElements.input: React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
 

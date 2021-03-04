@@ -44,13 +44,6 @@ export const Login = memo((props: LoginProps) => {
         (setIsLoginButtonDisabled(true), true)
     );
 
-    const [ usernameInputValue, setUsernameInputValue ] = useState(login.username ?? '');
-
-    const onUsernameChange = useConstCallback(
-        (event: React.ChangeEvent<HTMLInputElement>)=> 
-            setUsernameInputValue(event.target.value)
-    );
-
     return (
         <Template
             displayInfo={social.displayInfo}
@@ -88,9 +81,8 @@ export const Login = memo((props: LoginProps) => {
                                             id="username"
                                             className={cx(kcProperties.kcInputClass)}
                                             name="username"
-                                            value={usernameInputValue}
+                                            defaultValue={login.username ?? ''}
                                             type="text"
-                                            onChange={onUsernameChange}
                                             {...(usernameEditDisabled ? { "disabled": true } : { "autoFocus": true, "autocomplete": "off" })}
                                         />
                                     </div>
@@ -103,13 +95,14 @@ export const Login = memo((props: LoginProps) => {
                                     <div className={cx(kcProperties.kcFormGroupClass, kcProperties.kcFormSettingClass)}>
                                         <div id="kc-form-options">
                                             {
-                                                (
-                                                    realm.rememberMe &&
+                                                ( 
+                                                    realm.rememberMe && 
                                                     !usernameEditDisabled
                                                 ) &&
                                                 <div className="checkbox">
                                                     <label>
-                                                        <input tabIndex={3} id="rememberMe" name="rememberMe" type="checkbox" {...(login.rememberMe ? { "checked": true } : {})}> {t("rememberMe")}</input>
+                                                        <input tabIndex={3} id="rememberMe" name="rememberMe" type="checkbox" {...(login.rememberMe ? { "checked": true } : {})}/> 
+                                                        {t("rememberMe")}
                                                     </label>
                                                 </div>
                                             }
