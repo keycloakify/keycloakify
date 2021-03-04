@@ -60,7 +60,7 @@ export const defaultKcTemplateProperties: KcTemplateProperties = {
     "kcResetFlowIcon": "pficon pficon-arrow fa-2x",
     "kcFormGroupClass": "form-group",
     "kcLabelWrapperClass": "col-xs-12 col-sm-12 col-md-12 col-lg-12",
-    "kcSignUpClass": "login-pf-sighup"
+    "kcSignUpClass": "login-pf-signup"
 };
 
 /** Tu use if you don't want any default */
