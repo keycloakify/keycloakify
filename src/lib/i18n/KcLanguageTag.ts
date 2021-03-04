@@ -22,13 +22,13 @@ export function getKcLanguageTagLabel(language: KcLanguageTag): LanguageLabel {
         case "en": return "English";
         case "de": return "Deutsch";
         case "no": return "Norsk";
-        case "pt_BR": return "Português (Brasil)";
+        case "pt-BR": return "Português (Brasil)";
         case "ru": return "Русский";
         case "sk":
         case "sv": return "Slovenčina";
         case "ja": return "日本語";
         case "pl": return "Polish";
-        case "zh_CN": return "中文简体"
+        case "zh-CN": return "中文简体"
         case "sv": return "Svenska";
         case "lt": return "Lietuvių";
         case "cs": return "Čeština";
