@@ -113,6 +113,8 @@ export const Template = memo((props: TemplateProps) => {
     return (
         <div className={cx(kcProperties.kcLoginClass)}>
 
+            <h1>REACT</h1>
+
             <div id="kc-header" className={cx(kcProperties.kcHeaderClass)}>
                 <div id="kc-header-wrapper" className={cx(kcProperties.kcHeaderWrapperClass)}>
                     {t("loginTitleHtml", realm.displayNameHtml)}

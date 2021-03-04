@@ -62,6 +62,7 @@ export declare namespace KcContext {
             loginWithEmailAllowed: boolean;
             rememberMe: boolean;
             resetPasswordAllowed: boolean;
+            registrationAllowed: boolean;
         };
         auth: {
             selectedCredential?: string;

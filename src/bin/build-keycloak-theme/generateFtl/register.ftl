@@ -32,7 +32,7 @@
         </#if>
         return false;
 
-    }),
+    })(),
     "recaptchaRequired": (function (){
 
         <#if passwordRequired??>
@@ -40,7 +40,7 @@
         </#if>
         return false;
 
-    }),
+    })(),
     "recaptchaSiteKey": "${recaptchaSiteKey}"
 }
 </script>

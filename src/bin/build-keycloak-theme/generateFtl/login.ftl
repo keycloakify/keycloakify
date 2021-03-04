@@ -7,7 +7,8 @@
     "realm": {
         "loginWithEmailAllowed": ${realm.loginWithEmailAllowed?c},
         "rememberMe": ${realm.rememberMe?c},
-        "resetPasswordAllowed": ${realm.resetPasswordAllowed?c} 
+        "resetPasswordAllowed": ${realm.resetPasswordAllowed?c},
+        "registrationAllowed": ${realm.registrationAllowed?c}
     },
     "auth": (function (){
 
@@ -76,6 +77,6 @@
         </#if>
         return false;
 
-    })
+    })()
 }
 </script>

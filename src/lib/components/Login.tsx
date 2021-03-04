@@ -32,6 +32,8 @@ export const Login = memo((props: LoginProps) => {
             kcContext.pageBasename === "login.ftl"
         );
 
+        console.log(kcContext);
+
         return kcContext;
 
     });
@@ -154,7 +156,7 @@ export const Login = memo((props: LoginProps) => {
             displayInfoNode={
                 (
                     realm.password &&
-                    realm.resetPasswordAllowed &&
+                    realm.registrationAllowed &&
                     !registrationDisabled
                 ) &&
                 <div id="kc-registration">
