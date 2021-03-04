@@ -3,6 +3,32 @@ import { ftlValuesGlobalName } from "../bin/build-keycloak-theme/ftlValuesGlobal
 import type { generateFtlFilesCodeFactory } from "../bin/build-keycloak-theme/generateFtl";
 import { id } from "evt/tools/typeSafety/id";
 import type { KcLanguageTag } from "./i18n/KcLanguageTag";
+import { doExtends } from "evt/tools/typeSafety/doExtends";
+
+export type KcContext = KcContext.Login | KcContext.Register;
+
+export declare namespace KcContext { 
+
+    export type Template = {};
+
+    export type Login = Template & { 
+        pageBasename: "login.ftl";
+    };
+
+    export type Register = Template & { 
+        pageBasename: "register.ftl";
+    };
+
+}
+
+{
+    type T =  KcContext["pageBasename"];
+    type U = Parameters<ReturnType<typeof generateFtlFilesCodeFactory>["generateFtlFilesCode"]>[0]["pageBasename"];
+
+    doExtends<T, U>();
+    doExtends<U, T>();
+
+}
 
 
 export type KcContext = {
@@ -14,7 +40,6 @@ export type KcContext = {
         loginRestartFlowUrl: string;
         loginResetCredentialsUrl: string;
         registrationUrl: string;
-        //Specific to register
         registrationAction: string;
         loginUrl: string;
     };
@@ -70,7 +95,6 @@ export type KcContext = {
         rememberMe: boolean;
     };
     registrationDisabled: boolean;
-    //Specific to register
     messagesPerField: {
         printIfExists<T>(
             key:

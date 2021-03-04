@@ -4,6 +4,7 @@ import { kcContext } from "../kcContext";
 import { assert } from "evt/tools/typeSafety/assert";
 import type { KcPagesProperties } from "./KcProperties";
 import { Login } from "./Login";
+import { Register } from "./Register";
 
 export type KcAppProps = {
     kcProperties?: KcPagesProperties;
@@ -16,10 +17,8 @@ export const KcApp = memo((props: KcAppProps) => {
     assert(kcContext !== undefined, "App is not currently served by a Keycloak server");
 
     switch (kcContext.pageBasename) {
-        case "login.ftl": return <Login kcProperties={kcProperties} />
-        case "register.ftl":
-            alert(`TODO: Implement ${kcContext.pageBasename}`);
-            return null;
+        case "login.ftl": return <Login kcProperties={kcProperties} />;
+        case "register.ftl": return <Register kcProperties={kcProperties} />;
     }
 
 });

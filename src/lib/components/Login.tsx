@@ -46,7 +46,6 @@ export const Login = memo((props: LoginProps) => {
             displayWide={realm.password && social.providers !== undefined}
             kcProperties={kcProperties}
             headerNode={t("doLogIn")}
-            showUsernameNode={null}
             formNode={
                 <div
                     id="kc-form"

@@ -23,9 +23,9 @@ export type TemplateProps = {
     displayWide?: boolean;
     showAnotherWayIfPresent?: boolean;
     headerNode: ReactNode;
-    showUsernameNode: ReactNode;
+    showUsernameNode?: ReactNode;
     formNode: ReactNode;
-    displayInfoNode: ReactNode;
+    displayInfoNode?: ReactNode;
 };
 
 
@@ -39,9 +39,9 @@ export const Template = memo((props: TemplateProps) => {
         showAnotherWayIfPresent = true,
         kcProperties = {},
         headerNode,
-        showUsernameNode,
+        showUsernameNode = null,
         formNode,
-        displayInfoNode
+        displayInfoNode = null
     } = props;
 
     const { t } = useKcTranslation();

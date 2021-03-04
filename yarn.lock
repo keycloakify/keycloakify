@@ -623,7 +623,15 @@ evt@2.0.0-beta.12:
     minimal-polyfills "^2.1.5"
     run-exclusive "^2.2.14"
 
-evt@^1.9.12, evt@^1.9.2:
+evt@2.0.0-beta.15:
+  version "2.0.0-beta.15"
+  resolved "https://registry.yarnpkg.com/evt/-/evt-2.0.0-beta.15.tgz#a34ef224c827152c06f29157a9af5a41644e1a36"
+  integrity sha512-AZIuA8ujBsDX/rPC9mJ2sGvrBJAvV2OGj/yzACbuT4pRLKii5PMjYPitNk4xJMKuXSDwvwCsQzuGPDCcbRc60A==
+  dependencies:
+    minimal-polyfills "^2.1.5"
+    run-exclusive "^2.2.14"
+
+evt@^1.9.2:
   version "1.9.12"
   resolved "https://registry.yarnpkg.com/evt/-/evt-1.9.12.tgz#8d06177259cbcb09ef936e18945bf7ddd087170c"
   integrity sha512-u8wC4Xif2pcDJ9cEm0wzWCIQb+Y214m1eUgsgm2hVIuXuvC6LToryA0Ecl1O8Slii2E9l6USLsyxXWntjlnIbw==

@@ -54,7 +54,7 @@
     "dependencies": {
         "scripting-tools": "^0.19.13",
         "cheerio": "^1.0.0-rc.5",
-        "evt": "^1.9.12",
+        "evt": "2.0.0-beta.15",
         "minimal-polyfills": "^2.1.6",
         "powerhooks": "^0.0.14",
         "tss-react": "^0.0.9"
