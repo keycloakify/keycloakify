@@ -426,7 +426,7 @@ export const messages= {
     "emailVerificationBodyCode": "Potwierdź swój adres e-mail wprowadzając następujący kod.\n\n{0}\n\n.",
     "emailVerificationBodyCodeHtml": "<p>Potwierdź swój adres e-mail, wprowadzając następujący kod.</p><p><b>{0}</b></p>"
   },
-  "pt_BR": {
+  "pt-BR": {
     "emailVerificationSubject": "Verificação de e-mail",
     "emailVerificationBody": "Alguém criou uma conta {2} com este endereço de e-mail. Se foi você, clique no link abaixo para verificar o seu endereço de email\n\n{0}\n\nEste link irá expirar dentro de {3}.\n\nSe não foi você que criou esta conta, basta ignorar esta mensagem.",
     "emailVerificationBodyHtml": "<p>Alguém criou uma conta {2} com este endereço de e-mail. Se foi você, clique no link abaixo para verificar o seu endereço de email</p><p><a href=\"{0}\">{0}</a></p><p>Este link irá expirar dentro de {3}.</p><p>Se não foi você que criou esta conta, basta ignorar esta mensagem.</p>",
@@ -608,7 +608,7 @@ export const messages= {
     "emailVerificationBodyCode": "Lütfen aşağıdaki kodu girerek e-posta adresinizi doğrulayın.\n\n{0}\n\n.",
     "emailVerificationBodyCodeHtml": "<p>Lütfen aşağıdaki kodu girerek e-posta adresinizi doğrulayın.</p><p><b>{0}</b></p>"
   },
-  "zh_CN": {
+  "zh-CN": {
     "emailVerificationSubject": "验证电子邮件",
     "emailVerificationBody": "用户使用当前电子邮件注册 {2} 账户。如是本人操作，请点击以下链接完成邮箱验证\n\n{0}\n\n这个链接会在 {1} 分钟后过期.\n\n如果您没有注册用户，请忽略这条消息。",
     "emailVerificationBodyHtml": "<p>用户使用当前电子邮件注册 {2} 账户。如是本人操作，请点击以下链接完成邮箱验证</p><p><a href=\"{0}\">{0}</a></p><p>这个链接会在 {1} 分钟后过期.</p><p>如果您没有注册用户，请忽略这条消息。</p>",

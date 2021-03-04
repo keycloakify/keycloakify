@@ -2944,7 +2944,7 @@ export const messages= {
     "console-accept-terms": "Akceptujesz warunki? [t/n]:",
     "console-accept": "t"
   },
-  "pt_BR": {
+  "pt-BR": {
     "doLogIn": "Entrar",
     "doRegister": "Cadastre-se",
     "doCancel": "Cancelar",
@@ -4155,7 +4155,7 @@ export const messages= {
     "console-accept-terms": "Şartları kabul et? [e/h]:",
     "console-accept": "e"
   },
-  "zh_CN": {
+  "zh-CN": {
     "doLogIn": "登录",
     "doRegister": "注册",
     "doCancel": "取消",

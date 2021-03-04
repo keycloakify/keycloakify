@@ -175,7 +175,7 @@ export const messages= {
     "ldapErrorCantWriteOnlyAndReadOnly": "Kan ikke sette både write-only og read-only"
   },
   "pl": {},
-  "pt_BR": {
+  "pt-BR": {
     "invalidPasswordMinLengthMessage": "Senha inválida: deve conter ao menos {0} caracteres.",
     "invalidPasswordMinLowerCaseCharsMessage": "Senha inválida: deve conter ao menos {0} caracteres minúsculos.",
     "invalidPasswordMinDigitsMessage": "Senha inválida: deve conter ao menos {0} digitos numéricos.",
@@ -216,7 +216,7 @@ export const messages= {
     "pairwiseFailedToGetRedirectURIs": "Не удалось получить идентификаторы URI перенаправления из части идентификатора URI.",
     "pairwiseRedirectURIsMismatch": "Клиент URI переадресации не соответствует URI переадресации, полученной из части идентификатора URI."
   },
-  "zh_CN": {
+  "zh-CN": {
     "invalidPasswordMinLengthMessage": "无效的密码：最短长度 {0}.",
     "invalidPasswordMinLowerCaseCharsMessage": "无效的密码：至少包含 {0} 小写字母",
     "invalidPasswordMinDigitsMessage": "无效的密码：至少包含 {0} 个数字",

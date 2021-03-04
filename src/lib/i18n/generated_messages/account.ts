@@ -2044,7 +2044,7 @@ export const messages= {
     "locale_zh-CN": "中文简体"
   },
   "pl": {},
-  "pt_BR": {
+  "pt-BR": {
     "doSave": "Salvar",
     "doCancel": "Cancelar",
     "doLogOutAllSessions": "Sair de todas as sessões",
@@ -2913,7 +2913,7 @@ export const messages= {
     "waitingforApproval": "Onay bekleniyor",
     "anyPermission": "Herhangi bir izin"
   },
-  "zh_CN": {
+  "zh-CN": {
     "doSave": "保存",
     "doCancel": "取消",
     "doLogOutAllSessions": "登出所有会话",

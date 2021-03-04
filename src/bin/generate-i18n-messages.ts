@@ -34,7 +34,7 @@ crawl(".").forEach(filePath => {
 
     const [, typeOfPage, language] = match;
 
-    (record[typeOfPage] ??= {})[language] =
+    (record[typeOfPage] ??= {})[language.replace(/_/g,"-")] =
         propertiesParser.parse(
             fs.readFileSync(filePath)
                 .toString("utf8")
