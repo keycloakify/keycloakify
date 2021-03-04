@@ -44,6 +44,12 @@ export const Login = memo((props: LoginProps) => {
         (setIsLoginButtonDisabled(true), true)
     );
 
+    const [ usernameInputValue, setUsernameInputValue ] = useState(login.username ?? '');
+
+    const onUsernameChange = useConstCallback(
+        (event: React.ChangeEvent<HTMLInputElement>)=> 
+            setUsernameInputValue(event.target.value)
+    );
 
     return (
         <Template
@@ -82,9 +88,10 @@ export const Login = memo((props: LoginProps) => {
                                             id="username"
                                             className={cx(kcProperties.kcInputClass)}
                                             name="username"
-                                            value={login.username ?? ''}
+                                            value={usernameInputValue}
                                             type="text"
-                                            {...(usernameEditDisabled ? { "disabled": true } : { "autofocus": true, "autocomplete": "off" })}
+                                            onChange={onUsernameChange}
+                                            {...(usernameEditDisabled ? { "disabled": true } : { "autoFocus": true, "autocomplete": "off" })}
                                         />
                                     </div>
                                     <div className={cx(kcProperties.kcFormGroupClass)}>
