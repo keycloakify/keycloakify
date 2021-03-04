@@ -1,7 +1,7 @@
 
 import { memo } from "react";
 import { kcContext } from "../kcContext";
-import { assert } from "evt/tools/typeSafety/assert";
+import { assert } from "../tools/assert";
 import type { KcPagesProperties } from "./KcProperties";
 import { Login } from "./Login";
 import { Register } from "./Register";

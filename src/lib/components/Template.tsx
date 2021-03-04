@@ -3,7 +3,7 @@ import { useState, useReducer ,useEffect, memo } from "react";
 import type { ReactNode } from "react";
 import { useKcTranslation } from "../i18n/useKcTranslation";
 import { kcContext } from "../kcContext";
-import { assert } from "evt/tools/typeSafety/assert";
+import { assert } from "../tools/assert";
 import { cx } from "tss-react";
 import { useKcLanguageTag } from "../i18n/useKcLanguageTag";
 import type { KcLanguageTag } from "../i18n/KcLanguageTag";

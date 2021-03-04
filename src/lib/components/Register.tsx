@@ -4,7 +4,7 @@ import { useState, memo } from "react";
 import { Template } from "./Template";
 import type { KcPagesProperties } from "./KcProperties";
 import { defaultKcPagesProperties } from "./KcProperties";
-import { assert } from "evt/tools/typeSafety/assert";
+import { assert } from "../tools/assert";
 import { kcContext } from "../kcContext";
 import { useKcTranslation } from "../i18n/useKcTranslation";
 import { cx } from "tss-react";
@@ -29,13 +29,16 @@ export const Register = memo((props: RegisterPageProps) => {
         passwordRequired,
         recaptchaRequired,
         recaptchaSiteKey
-    }] = useState(() => (
+    }] = useState(() => {
+
         assert(
-            kcContext !== undefined,
-            "App is currently being served by keycloak"
-        ),
-        kcContext
-    ));
+            kcContext !== undefined && 
+            kcContext.pageBasename === "register.ftl"
+        );
+
+        return kcContext;
+
+    });
 
     return (
         <Template

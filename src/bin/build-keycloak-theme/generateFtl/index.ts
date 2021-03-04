@@ -7,7 +7,14 @@ import {
 } from "../replaceImportFromStatic";
 import fs from "fs";
 import { join as pathJoin } from "path";
-import { objectKeys } from "evt/tools/typeSafety/objectKeys";
+import { objectKeys } from "evt/tools/typeSafety/objectKeys";
+
+function loadFtlFile(ftlFileBasename: "template.ftl" | "login.ftl" | "register.ftl") {
+    return fs.readFileSync(pathJoin(__dirname, ftlFileBasename))
+        .toString("utf8")
+        .match(/^<script>const _=((?:.|\n)+)<\/script>[\n]?$/)![1];
+}
+
 
 export function generateFtlFilesCodeFactory(
     params: {
@@ -51,11 +58,8 @@ export function generateFtlFilesCodeFactory(
     );
 
     //FTL is no valid html, we can't insert with cheerio, we put placeholder for injecting later.
-    const ftlPlaceholders = {
-        '{ "x": "xIdLqMeOed9sdLdIdOxdK0d" }':
-            fs.readFileSync(pathJoin(__dirname, "ftl2js.ftl"))
-                .toString("utf8")
-                .match(/^<script>const _=((?:.|\n)+)<\/script>[\n]?$/)![1],
+    const ftlCommonPlaceholders = {
+        '{ "x": "vIdLqMeOed9sdLdIdOxdK0d" }': loadFtlFile("template.ftl"),
         '<!-- xIdLqMeOedErIdLsPdNdI9dSlxI -->':
             [
                 '<#if scripts??>',
@@ -78,13 +82,13 @@ export function generateFtlFilesCodeFactory(
                 ''
             ]),
             '<script>',
-            '    Object.assign(',
+            '    Object.deepAssign(',
             `        window.${ftlValuesGlobalName},`,
-            `        ${objectKeys(ftlPlaceholders)[0]}`,
+            `        ${objectKeys(ftlCommonPlaceholders)[0]}`,
             '    );',
             '</script>',
             '',
-            objectKeys(ftlPlaceholders)[1],
+            objectKeys(ftlCommonPlaceholders)[1],
             ''
         ].join("\n"),
     );
@@ -102,11 +106,42 @@ export function generateFtlFilesCodeFactory(
 
         const $ = cheerio.load(partiallyFixedIndexHtmlCode);
 
+        const ftlPlaceholders = {
+            '{ "x": "kxOlLqMeOed9sdLdIdOxd444" }': loadFtlFile(pageBasename),
+            ...ftlCommonPlaceholders
+        };
+
         $("head").prepend(
             [
                 '',
                 '<script>',
-                `   window.${ftlValuesGlobalName} = { "pageBasename": "${pageBasename}" };`,
+                '',
+                `    window.${ftlValuesGlobalName} = Object.assign(`,
+                `        { "pageBasename": "${pageBasename}" },`,
+                `        ${objectKeys(ftlPlaceholders)[0]}`,
+                '    );',
+                '',
+                '    Object.defineProperty(',
+                '        Object,',
+                '        "deepAssign",',
+                '        {',
+                '            "value": function (target, source) {',
+                '                Object.keys(source).forEach(function (key) {',
+                '                    var value = source[key];',
+                '                    if (value instanceof Object) {',
+                '                        if (!(target[key] instanceof Object)) {',
+                '                            target[key] = {};',
+                '                        }',
+                '                        deepAssign(target[key], value);',
+                '                    } else {',
+                '                        target[key] = value;',
+                '                    }',
+                '                });',
+                '                return target;',
+                '            }',
+                '        }',
+                '    );',
+                '',
                 '</script>',
                 ''
             ].join("\n")
