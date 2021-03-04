@@ -1,5 +1,5 @@
 
-import { useState, useEffect, memo } from "react";
+import { useState, useReducer ,useEffect, memo } from "react";
 import type { ReactNode } from "react";
 import { useKcTranslation } from "../i18n/useKcTranslation";
 import { kcContext } from "../kcContext";
@@ -9,8 +9,7 @@ import { useKcLanguageTag } from "../i18n/useKcLanguageTag";
 import type { KcLanguageTag } from "../i18n/KcLanguageTag";
 import { getKcLanguageTagLabel } from "../i18n/KcLanguageTag";
 import { useCallbackFactory } from "powerhooks";
-import { appendLinkInHead } from "../tools/appendLinkInHead";
-import { appendScriptInHead } from "../tools/appendScriptInHead";
+import { appendHead } from "../tools/appendHead";
 import { join as pathJoin } from "path";
 import { useConstCallback } from "powerhooks";
 import type { KcTemplateProperties } from "./KcProperties";
@@ -69,35 +68,47 @@ export const Template = memo((props: TemplateProps) => {
         kcContext
     ));
 
+    const [isExtraCssLoaded, setExtraCssLoaded] = useReducer(() => true, false);
+
     useEffect(() => {
 
-        kcProperties.stylesCommon?.forEach(
-            relativePath =>
-                appendLinkInHead(
-                    { "href": pathJoin(url.resourcesCommonPath, relativePath) }
-                )
-        );
+        let isUnmounted = false;
 
-        kcProperties.styles?.forEach(
-            relativePath =>
-                appendLinkInHead(
-                    { "href": pathJoin(url.resourcesPath, relativePath) }
-                )
-        );
+        Promise.all(
+            [
+                ...(kcProperties.stylesCommon ?? []).map(relativePath => pathJoin(url.resourcesCommonPath, relativePath)),
+                ...(kcProperties.styles ?? []).map(relativePath => pathJoin(url.resourcesPath, relativePath))
+            ].map(href => appendHead({
+                "type": "css",
+                href
+            }))).then(() => {
+
+                if (isUnmounted) {
+                    return;
+                }
+
+                setExtraCssLoaded();
+
+            });
 
         kcProperties.scripts?.forEach(
-            relativePath =>
-                appendScriptInHead(
-                    { "src": pathJoin(url.resourcesPath, relativePath) }
-                )
+            relativePath => appendHead({
+                "type": "javascript",
+                "src": pathJoin(url.resourcesPath, relativePath)
+            })
         );
 
         document.getElementsByTagName("html")[0]
             .classList
             .add(cx(kcProperties.kcHtmlClass));
 
+        return () => { isUnmounted = true; };
 
     }, []);
+
+    if (!isExtraCssLoaded) {
+        return null;
+    }
 
     return (
         <div className={cx(kcProperties.kcLoginClass)}>
@@ -108,7 +119,7 @@ export const Template = memo((props: TemplateProps) => {
                 </div>
             </div>
 
-            <div className={cx("kcFormCardClass", displayWide && kcProperties.kcFormCardAccountClass)}>
+            <div className={cx(kcProperties.kcFormCardClass, displayWide && kcProperties.kcFormCardAccountClass)}>
                 <header className={cx(kcProperties.kcFormHeaderClass)}>
                     {
                         (
@@ -142,7 +153,7 @@ export const Template = memo((props: TemplateProps) => {
 
                     }
                     {
-                        (
+                        !(
                             auth !== undefined &&
                             auth.showUsername &&
                             !auth.showResetCredentials

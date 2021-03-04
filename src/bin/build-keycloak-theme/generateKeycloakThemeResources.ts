@@ -106,7 +106,10 @@ export function generateKeycloakThemeResources(
 
     fs.writeFileSync(
         pathJoin(themeDirPath, "theme.properties"),
-        Buffer.from(`import=common/${themeName}\n`, "utf8")
+        Buffer.from([
+            `[import=common/${themeName}`,
+            "locales=ca,cs,de,en,es,fr,it,ja,lt,nl,no,pl,pt-BR,ru,sk,sv,tr,zh-CN"
+        ].join("\n"), "utf8")
     );
 
 }
