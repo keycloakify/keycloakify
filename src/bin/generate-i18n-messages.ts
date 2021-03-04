@@ -2,7 +2,7 @@ import * as fs from "fs";
 import { join as pathJoin, relative as pathRelative } from "path";
 import { crawl } from "./tools/crawl";
 import { downloadAndUnzip } from "./tools/downloadAndUnzip";
-import { keycloakBuiltinThemesAndThirdPartyExamplesThemsUrl } from "./download-sample-keycloak-themes";
+import { builtinThemesUrl } from "./install-builtin-keycloak-themes";
 import { getProjectRoot } from "./tools/getProjectRoot";
 import * as child_process from "child_process";
 
@@ -15,7 +15,7 @@ child_process.execSync(`rm -rf ${tmpDirPath}`);
 
 downloadAndUnzip({
     "destDirPath": tmpDirPath,
-    "url": keycloakBuiltinThemesAndThirdPartyExamplesThemsUrl
+    "url": builtinThemesUrl
 });
 
 type Dictionary = { [idiomId: string]: string };

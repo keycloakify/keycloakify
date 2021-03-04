@@ -7,7 +7,7 @@ import {
     replaceImportFromStaticInJsCode
 } from "./replaceImportFromStatic";
 import { generateFtlFilesCodeFactory } from "./generateFtl";
-import { keycloakBuiltinThemesAndThirdPartyExamplesThemsUrl } from "../download-sample-keycloak-themes";
+import { builtinThemesUrl } from "../install-builtin-keycloak-themes";
 import { downloadAndUnzip } from "../tools/downloadAndUnzip";
 import * as child_process from "child_process";
 import { ftlValuesGlobalName } from "./ftlValuesGlobalName";
@@ -86,7 +86,7 @@ export function generateKeycloakThemeResources(
         const tmpDirPath = pathJoin(themeDirPath, "..", "tmp_xxKdLpdIdLd");
 
         downloadAndUnzip({
-            "url": keycloakBuiltinThemesAndThirdPartyExamplesThemsUrl,
+            "url": builtinThemesUrl,
             "destDirPath": tmpDirPath
         });
 

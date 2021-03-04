@@ -12,7 +12,7 @@
         "clean": "rimraf dist/",
         "build": "yarn clean && tsc && yarn grant-exec-perms && yarn copy-files",
         "grant-exec-perms": "node dist/bin/tools/grant-exec-perms.js",
-        "test": "node dist/test/build-keycloak-theme.js && node dist/test/download-sample-keycloak-themes.js",
+        "test": "node dist/test",
         "enable_short_import_path": "yarn build && denoify_enable_short_npm_import_path",
         "copy-files": "copyfiles -u 1 src/**/*.ftl src/**/*.xml dist/",
         "generate-messages": "node dist/bin/generate-i18n-messages.js",
@@ -20,7 +20,7 @@
     },
     "bin": {
         "build-keycloak-theme": "dist/bin/build-keycloak-theme/index.js",
-        "download-sample-keycloak-themes": "dist/bin/download-sample-keycloak-themes.js"
+        "install-builtin-keycloak-themes": "dist/bin/install-builtin-keycloak-themes.js"
     },
     "author": "u/garronej",
     "license": "MIT",
