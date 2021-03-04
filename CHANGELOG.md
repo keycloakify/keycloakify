@@ -1,3 +1,10 @@
+### **0.0.29** (2021-03-04)  
+  
+- Fix build  
+- Fix i18n  
+- Login appear to be working now  
+- closer but not there yet    
+  
 ### **0.0.28** (2021-03-03)  
   
 - fix build  
