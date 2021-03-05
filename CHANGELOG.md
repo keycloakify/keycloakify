@@ -1,3 +1,16 @@
+### **0.0.30** (2021-03-05)  
+  
+- avoid escaping urls  
+- Use default value instead of value  
+- Fix double single quote problem in messages  
+- Fix typo  
+- Fix non editable username  
+- Fix some bugs  
+- Fix Object.deepAssign  
+- Make the dongle to download smaller  
+- Split kcContext among pages  
+- Implement register    
+  
 ### **0.0.29** (2021-03-04)  
   
 - Fix build  
