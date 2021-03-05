@@ -9,5 +9,5 @@ export const { useKcLanguageTag } = createUseGlobalState(
         kcContext?.locale?.["current" as never] ??
         navigator.language
     ),
-    { "persistance": "cookies" }
+    { "persistance": "cookie" }
 );

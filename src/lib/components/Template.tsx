@@ -44,7 +44,7 @@ export const Template = memo((props: TemplateProps) => {
         displayInfoNode = null
     } = props;
 
-    console.log("Rendering this page with react using keycloak-react-theming");
+    useEffect(()=> { console.log("Rendering this page with react using keycloak-react-theming") },[]);
 
     const { t } = useKcTranslation();
 
@@ -53,7 +53,7 @@ export const Template = memo((props: TemplateProps) => {
     const { kcLanguageTag, setKcLanguageTag } = useKcLanguageTag();
 
     const onChangeLanguageClickFactory = useCallbackFactory(
-        ([languageTag]: [KcLanguageTag]) =>
+        ([languageTag]: [KcLanguageTag]) => 
             setKcLanguageTag(languageTag)
     );
 
@@ -138,9 +138,9 @@ export const Template = memo((props: TemplateProps) => {
                                     <ul>
                                         {
                                             locale.supported.map(
-                                                ({ languageTag }) =>
+                                                ({ languageTag, url }) =>
                                                     <li className="kc-dropdown-item">
-                                                        <a href="#" onClick={onChangeLanguageClickFactory(languageTag)}>
+                                                        <a href={url} onClick={onChangeLanguageClickFactory(languageTag)}>
                                                             {getKcLanguageTagLabel(languageTag)}
                                                         </a>
 

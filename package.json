@@ -56,7 +56,7 @@
         "cheerio": "^1.0.0-rc.5",
         "evt": "2.0.0-beta.15",
         "minimal-polyfills": "^2.1.6",
-        "powerhooks": "^0.0.14",
+        "powerhooks": "^0.0.17",
         "tss-react": "^0.0.9"
     }
 }

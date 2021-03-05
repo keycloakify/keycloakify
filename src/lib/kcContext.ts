@@ -27,7 +27,7 @@ export declare namespace KcContext {
         /** Undefined if !realm.internationalizationEnabled */
         locale?: {
             supported: {
-                //url: string;
+                url: string;
                 languageTag: KcLanguageTag;
                 /** Is determined by languageTag. Ex: languageTag === "en" => label === "English"
                  * or getLanguageLabel(languageTag) === label

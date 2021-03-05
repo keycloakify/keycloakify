@@ -91,11 +91,6 @@ export function generateKeycloakThemeResources(
         });
 
         transformCodebase({
-            "srcDirPath": pathJoin(tmpDirPath, "keycloak", "common"),
-            "destDirPath": pathJoin(tmpDirPath, "..", "common")
-        });
-
-        transformCodebase({
             "srcDirPath": pathJoin(tmpDirPath, "keycloak", "login", "resources"),
             "destDirPath": pathJoin(themeDirPath, "resources")
         });
@@ -106,10 +101,7 @@ export function generateKeycloakThemeResources(
 
     fs.writeFileSync(
         pathJoin(themeDirPath, "theme.properties"),
-        Buffer.from([
-            `import=common/${themeName}`,
-            "locales=ca,cs,de,en,es,fr,it,ja,lt,nl,no,pl,pt-BR,ru,sk,sv,tr,zh-CN"
-        ].join("\n"), "utf8")
+        Buffer.from("parent=keycloak", "utf8")
     );
 
 }

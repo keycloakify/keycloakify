@@ -55,12 +55,16 @@ export function getBestMatchAmongKcLanguageTag(
 
     const iso2LanguageLike = languageLike.split("-")[0].toLowerCase();
 
-    const language = availableLanguages.find(language =>
+    const kcLanguageTag = availableLanguages.find(language =>
         language.toLowerCase().includes(iso2LanguageLike) ||
         getKcLanguageTagLabel(language).toLocaleLowerCase() === languageLike.toLocaleLowerCase()
     );
 
-    if (language === undefined && languageLike !== navigator.language) {
+    if (kcLanguageTag !== undefined) {
+        return kcLanguageTag;
+    }
+
+    if (languageLike !== navigator.language) {
         return getBestMatchAmongKcLanguageTag(navigator.language);
     }
 
