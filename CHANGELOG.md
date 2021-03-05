@@ -1,5 +1,9 @@
 ### **0.0.30** (2021-03-05)  
   
+- Edit language statistique    
+  
+### **0.0.30** (2021-03-05)  
+  
 - avoid escaping urls  
 - Use default value instead of value  
 - Fix double single quote problem in messages  
