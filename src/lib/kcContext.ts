@@ -113,7 +113,8 @@ export declare namespace KcContext {
         };
         passwordRequired: boolean;
         recaptchaRequired: boolean;
-        recaptchaSiteKey: string;
+        /** undefined if !recaptchaRequired */
+        recaptchaSiteKey?: string;
     };
 
 }

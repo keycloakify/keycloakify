@@ -41,6 +41,6 @@
         return false;
 
     })(),
-    "recaptchaSiteKey": "${recaptchaSiteKey}"
+    "recaptchaSiteKey": "${recaptchaSiteKey!''}" || undefined
 }
 </script>
