@@ -32,8 +32,6 @@ export const Login = memo((props: LoginProps) => {
             kcContext.pageBasename === "login.ftl"
         );
 
-        console.log(kcContext);
-
         return kcContext;
 
     });

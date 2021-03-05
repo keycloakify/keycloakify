@@ -1,11 +1,11 @@
 <script>const _= 
 {
     "url": {
-        "loginAction": "${url.loginAction}",
-        "resourcesPath": "${url.resourcesPath}",
-        "resourcesCommonPath": "${url.resourcesCommonPath}",
-        "loginRestartFlowUrl": "${url.loginRestartFlowUrl}",
-        "loginUrl": "${url.loginUrl}"
+        "loginAction": "${url.loginAction?no_esc}",
+        "resourcesPath": "${url.resourcesPath?no_esc}",
+        "resourcesCommonPath": "${url.resourcesCommonPath?no_esc}",
+        "loginRestartFlowUrl": "${url.loginRestartFlowUrl?no_esc}",
+        "loginUrl": "${url.loginUrl?no_esc}"
     },
     "realm": {
         "displayName": "${realm.displayName!''}" || undefined,
@@ -27,7 +27,7 @@
 
                         <#list locale.supported as lng>
                             out.push({ 
-                                "url": "${lng.url}", 
+                                "url": "${lng.url?no_esc}", 
                                 "label": "${lng.label}",
                                 "languageTag": "${lng.languageTag}"
                             });

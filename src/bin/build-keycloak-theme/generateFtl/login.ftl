@@ -1,8 +1,8 @@
 <script>const _= 
 {
     "url": {
-        "loginResetCredentialsUrl": "${url.loginResetCredentialsUrl}",
-        "registrationUrl": "${url.registrationUrl}"
+        "loginResetCredentialsUrl": "${url.loginResetCredentialsUrl?no_esc}",
+        "registrationUrl": "${url.registrationUrl?no_esc}"
     },
     "realm": {
         "loginWithEmailAllowed": ${realm.loginWithEmailAllowed?c},
@@ -35,7 +35,7 @@
 
                 <#list social.providers as p>
                     out.push({ 
-                        "loginUrl": "${p.loginUrl}",
+                        "loginUrl": "${p.loginUrl?no_esc}",
                         "alias": "${p.alias}",
                         "providerId": "${p.providerId}",
                         "displayName": "${p.displayName}"

@@ -1,7 +1,7 @@
 <script>const _= 
 {
     "url": {
-        "registrationAction": "${url.registrationAction}"
+        "registrationAction": "${url.registrationAction?no_esc}"
     },
     "messagesPerField": {
         "printIfExists": function (key, x) {
