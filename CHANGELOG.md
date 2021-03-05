@@ -1,3 +1,7 @@
+### **0.0.33** (2021-03-05)  
+  
+- Fix syncronization with non react pages    
+  
 ### **0.0.32** (2021-03-05)  
   
 - bump version  
