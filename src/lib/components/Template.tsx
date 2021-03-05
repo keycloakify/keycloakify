@@ -44,7 +44,7 @@ export const Template = memo((props: TemplateProps) => {
         displayInfoNode = null
     } = props;
 
-    useEffect(()=> { console.log("Rendering this page with react using keycloak-react-theming") },[]);
+    useEffect(()=> { console.log("Rendering this page with react using keycloakify") },[]);
 
     const { t } = useKcTranslation();
 

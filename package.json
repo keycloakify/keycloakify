@@ -1,10 +1,10 @@
 {
-    "name": "keycloak-react-theming",
-    "version": "0.0.33",
+    "name": "keycloakify",
+    "version": "0.1.0",
     "description": "Keycloak theme generator for Reacts app",
     "repository": {
         "type": "git",
-        "url": "git://github.com/garronej/keycloak-react-theming.git"
+        "url": "git://github.com/garronej/keycloakify.git"
     },
     "main": "dist/lib/index.js",
     "types": "dist/lib/index.d.ts",
@@ -40,7 +40,7 @@
         "login",
         "register"
     ],
-    "homepage": "https://github.com/garronej/keycloak-react-theming",
+    "homepage": "https://github.com/garronej/keycloakify",
     "devDependencies": {
         "@types/node": "^10.0.0",
         "@types/react": "^17.0.0",

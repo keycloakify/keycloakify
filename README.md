@@ -5,10 +5,10 @@
     <i>🔏 Keycloak theme generator for Reacts app 🔏</i>
     <br>
     <br>
-    <img src="https://github.com/garronej/keycloak-react-theming/workflows/ci/badge.svg?branch=develop">
-    <img src="https://img.shields.io/bundlephobia/minzip/keycloak-react-theming">
-    <img src="https://img.shields.io/npm/dw/keycloak-react-theming">
-    <img src="https://img.shields.io/npm/l/keycloak-react-theming">
+    <img src="https://github.com/garronej/keycloakify/workflows/ci/badge.svg?branch=develop">
+    <img src="https://img.shields.io/bundlephobia/minzip/keycloakify">
+    <img src="https://img.shields.io/npm/dw/keycloakify">
+    <img src="https://img.shields.io/npm/l/keycloakify">
 </p>
 
 
@@ -30,7 +30,7 @@ to reproduce the look and feel of a specific app. Not mentioning the maintenance
 Wouldn't it be great if we could just design the login and register pages as if they where part of our app while
 still letting Keycloak handle the heavy lifting of actually authenticating the users? 
 
-Here is `yarn add keycloak-react-theming` for you 🍸
+Here is `yarn add keycloakify` for you 🍸
 
 TODO: Insert video after.
 
@@ -38,7 +38,7 @@ TODO: Insert video after.
 
 ## Setting up the build tool
 
-Add `keycloak-react-theming` to the dev dependencies of your project `npm install --save-dev keycloak-react-theming` or `yarn add --dev keycloak-react-theming`
+Add `keycloakify` to the dev dependencies of your project `npm install --save-dev keycloakify` or `yarn add --dev keycloakify`
 then configure your `package.json` build's script to build the keycloak's theme by adding `&& build-keycloak-theme`.
 
 Typically you will get: 
@@ -46,7 +46,7 @@ Typically you will get:
 `package.json`:
 ```json
   "devDependencies": {
-    "keycloak-react-theming": "^0.0.10"
+    "keycloakify": "^0.0.10"
   },
   "scripts": {
     "build": "react-scripts build && build-keycloak-theme"
