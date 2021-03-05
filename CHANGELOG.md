@@ -1,3 +1,9 @@
+### **0.0.32** (2021-03-05)  
+  
+- bump version  
+- Add log to tell when we are using react  
+- Fix missing parentesis    
+  
 ### **0.0.31** (2021-03-05)  
   
 - Fix typo  
