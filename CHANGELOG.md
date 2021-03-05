@@ -1,3 +1,8 @@
+### **0.0.31** (2021-03-05)  
+  
+- Fix typo  
+- Fix register page 500    
+  
 ### **0.0.30** (2021-03-05)  
   
 - Edit language statistique    
