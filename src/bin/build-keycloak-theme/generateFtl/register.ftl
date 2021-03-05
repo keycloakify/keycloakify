@@ -6,13 +6,13 @@
     "messagesPerField": {
         "printIfExists": function (key, x) {
             switch(key){
-                case "userLabel": "${messagesPerField.printIfExists('userLabel','1'}" ? x : undefined;
-                case "username": "${messagesPerField.printIfExists('username','1'}" ? x : undefined;
-                case "email": "${messagesPerField.printIfExists('email','1'}" ? x : undefined;
-                case "firstName": "${messagesPerField.printIfExists('firstName','1'}" ? x : undefined;
-                case "lastName": "${messagesPerField.printIfExists('lastName','1'}" ? x : undefined;
-                case "password": "${messagesPerField.printIfExists('password','1'}" ? x : undefined;
-                case "password-confirm": "${messagesPerField.printIfExists('password-confirm','1'}" ? x : undefined;
+                case "userLabel": "${messagesPerField.printIfExists('userLabel','1')}" ? x : undefined;
+                case "username": "${messagesPerField.printIfExists('username','1')}" ? x : undefined;
+                case "email": "${messagesPerField.printIfExists('email','1')}" ? x : undefined;
+                case "firstName": "${messagesPerField.printIfExists('firstName','1')}" ? x : undefined;
+                case "lastName": "${messagesPerField.printIfExists('lastName','1')}" ? x : undefined;
+                case "password": "${messagesPerField.printIfExists('password','1')}" ? x : undefined;
+                case "password-confirm": "${messagesPerField.printIfExists('password-confirm','1')}" ? x : undefined;
             }
         }
     },
