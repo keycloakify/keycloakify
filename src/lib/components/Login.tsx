@@ -1,40 +1,27 @@
 
 import { useState, memo } from "react";
 import { Template } from "./Template";
-import type { KcPagesProperties } from "./KcProperties";
-import { defaultKcPagesProperties } from "./KcProperties";
+import type { KcProps } from "./KcProps";
 import { assert } from "../tools/assert";
-import { kcContext } from "../kcContext";
+import { kcContext } from "../kcContext";
 import { useKcTranslation } from "../i18n/useKcTranslation";
 import { cx } from "tss-react";
 import { useConstCallback } from "powerhooks";
 
-export type LoginProps = {
-    kcProperties?: KcPagesProperties;
-};
-
-export const Login = memo((props: LoginProps) => {
-
-    const { kcProperties = {} } = props;
+export const Login = memo((props: KcProps) => {
 
     const { t, tStr } = useKcTranslation();
 
-    Object.assign(kcProperties, defaultKcPagesProperties);
+    assert(
+        kcContext !== undefined &&
+        kcContext.pageBasename === "login.ftl"
+    );
 
-    const [{
+    const {
         social, realm, url,
         usernameEditDisabled, login,
         auth, registrationDisabled
-    }] = useState(() => {
-
-        assert(
-            kcContext !== undefined && 
-            kcContext.pageBasename === "login.ftl"
-        );
-
-        return kcContext;
-
-    });
+    } = kcContext;
 
     const [isLoginButtonDisabled, setIsLoginButtonDisabled] = useState(false);
 
@@ -44,25 +31,25 @@ export const Login = memo((props: LoginProps) => {
 
     return (
         <Template
+            {...props}
             displayInfo={social.displayInfo}
             displayWide={realm.password && social.providers !== undefined}
-            kcProperties={kcProperties}
             headerNode={t("doLogIn")}
             formNode={
                 <div
                     id="kc-form"
-                    className={cx(realm.password && social.providers !== undefined && kcProperties.kcContentWrapperClass)}
+                    className={cx(realm.password && social.providers !== undefined && props.kcContentWrapperClass)}
                 >
                     <div
                         id="kc-form-wrapper"
-                        className={cx(realm.password && social.providers && [kcProperties.kcFormSocialAccountContentClass, kcProperties.kcFormSocialAccountClass])}
+                        className={cx(realm.password && social.providers && [props.kcFormSocialAccountContentClass, props.kcFormSocialAccountClass])}
                     >
                         {
                             realm.password &&
                             (
                                 <form id="kc-form-login" onSubmit={onSubmit} action={url.loginAction} method="post">
-                                    <div className={cx(kcProperties.kcFormGroupClass)}>
-                                        <label htmlFor="username" className={cx(kcProperties.kcLabelClass)}>
+                                    <div className={cx(props.kcFormGroupClass)}>
+                                        <label htmlFor="username" className={cx(props.kcLabelClass)}>
                                             {
                                                 !realm.loginWithEmailAllowed ?
                                                     t("username")
@@ -77,35 +64,35 @@ export const Login = memo((props: LoginProps) => {
                                         <input
                                             tabIndex={1}
                                             id="username"
-                                            className={cx(kcProperties.kcInputClass)}
+                                            className={cx(props.kcInputClass)}
                                             name="username"
                                             defaultValue={login.username ?? ''}
                                             type="text"
                                             {...(usernameEditDisabled ? { "disabled": true } : { "autoFocus": true, "autocomplete": "off" })}
                                         />
                                     </div>
-                                    <div className={cx(kcProperties.kcFormGroupClass)}>
-                                        <label htmlFor="password" className={cx(kcProperties.kcLabelClass)}>
+                                    <div className={cx(props.kcFormGroupClass)}>
+                                        <label htmlFor="password" className={cx(props.kcLabelClass)}>
                                             {t("password")}
                                         </label>
-                                        <input tabIndex={2} id="password" className={cx(kcProperties.kcInputClass)} name="password" type="password" autoComplete="off" />
+                                        <input tabIndex={2} id="password" className={cx(props.kcInputClass)} name="password" type="password" autoComplete="off" />
                                     </div>
-                                    <div className={cx(kcProperties.kcFormGroupClass, kcProperties.kcFormSettingClass)}>
+                                    <div className={cx(props.kcFormGroupClass, props.kcFormSettingClass)}>
                                         <div id="kc-form-options">
                                             {
-                                                ( 
-                                                    realm.rememberMe && 
+                                                (
+                                                    realm.rememberMe &&
                                                     !usernameEditDisabled
                                                 ) &&
                                                 <div className="checkbox">
                                                     <label>
-                                                        <input tabIndex={3} id="rememberMe" name="rememberMe" type="checkbox" {...(login.rememberMe ? { "checked": true } : {})}/> 
+                                                        <input tabIndex={3} id="rememberMe" name="rememberMe" type="checkbox" {...(login.rememberMe ? { "checked": true } : {})} />
                                                         {t("rememberMe")}
                                                     </label>
                                                 </div>
                                             }
                                         </div>
-                                        <div className={cx(kcProperties.kcFormOptionsWrapperClass)}>
+                                        <div className={cx(props.kcFormOptionsWrapperClass)}>
                                             {
                                                 realm.resetPasswordAllowed &&
                                                 <span>
@@ -115,7 +102,7 @@ export const Login = memo((props: LoginProps) => {
                                         </div>
 
                                     </div>
-                                    <div id="kc-form-buttons" className={cx(kcProperties.kcFormGroupClass)}>
+                                    <div id="kc-form-buttons" className={cx(props.kcFormGroupClass)}>
                                         <input
                                             type="hidden"
                                             id="id-hidden-input"
@@ -124,7 +111,7 @@ export const Login = memo((props: LoginProps) => {
                                         />
                                         <input
                                             tabIndex={4}
-                                            className={cx(kcProperties.kcButtonClass, kcProperties.kcButtonPrimaryClass, kcProperties.kcButtonBlockClass, kcProperties.kcButtonLargeClass)} name="login" id="kc-login" type="submit"
+                                            className={cx(props.kcButtonClass, props.kcButtonPrimaryClass, props.kcButtonBlockClass, props.kcButtonLargeClass)} name="login" id="kc-login" type="submit"
                                             value={tStr("doLogIn")}
                                             disabled={isLoginButtonDisabled}
                                         />
@@ -135,11 +122,11 @@ export const Login = memo((props: LoginProps) => {
                     </div>
                     {
                         (realm.password && social.providers !== undefined) &&
-                        <div id="kc-social-providers" className={cx(kcProperties.kcFormSocialAccountContentClass, kcProperties.kcFormSocialAccountClass)}>
-                            <ul className={cx(kcProperties.kcFormSocialAccountListClass, social.providers.length > 4 && kcProperties.kcFormSocialAccountDoubleListClass)}>
+                        <div id="kc-social-providers" className={cx(props.kcFormSocialAccountContentClass, props.kcFormSocialAccountClass)}>
+                            <ul className={cx(props.kcFormSocialAccountListClass, social.providers.length > 4 && props.kcFormSocialAccountDoubleListClass)}>
                                 {
                                     social.providers.map(p =>
-                                        <li className={cx(kcProperties.kcFormSocialAccountListLinkClass)}>
+                                        <li className={cx(props.kcFormSocialAccountListLinkClass)}>
                                             <a href={p.loginUrl} id={`zocial-${p.alias}`} className={cx("zocial", p.providerId)}>
                                                 <span>{p.displayName}</span>
                                             </a>

@@ -9,7 +9,7 @@ import fs from "fs";
 import { join as pathJoin } from "path";
 import { objectKeys } from "evt/tools/typeSafety/objectKeys";
 
-function loadFtlFile(ftlFileBasename: "template.ftl" | "login.ftl" | "register.ftl") {
+function loadFtlFile(ftlFileBasename: "template.ftl" | "login.ftl" | "register.ftl" | "info.ftl") {
     return fs.readFileSync(pathJoin(__dirname, ftlFileBasename))
         .toString("utf8")
         .match(/^<script>const _=((?:.|\n)+)<\/script>[\n]?$/)![1];
@@ -98,7 +98,7 @@ export function generateFtlFilesCodeFactory(
 
     function generateFtlFilesCode(
         params: {
-            pageBasename: "login.ftl" | "register.ftl"
+            pageBasename: "login.ftl" | "register.ftl" | "info.ftl"
         }
     ): { ftlCode: string; } {
 

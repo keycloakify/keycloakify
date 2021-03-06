@@ -4,9 +4,18 @@ import type { generateFtlFilesCodeFactory } from "../bin/build-keycloak-theme/ge
 import { id } from "evt/tools/typeSafety/id";
 import type { KcLanguageTag } from "./i18n/KcLanguageTag";
 import { doExtends } from "evt/tools/typeSafety/doExtends";
+import type { MessageKey } from "./i18n/useKcTranslation";
 
-export type KcContext = KcContext.Login | KcContext.Register;
+type ExtractAfterStartingWith<Prefix extends string, StrEnum> = 
+    StrEnum extends `${Prefix}${infer U}` ? U : never;
 
+const x: "33" | "44" = null as any;;
+
+const y: `foo.${typeof x}` = `foo.${x}` as const;
+
+y;
+
+export type KcContext = KcContext.Login | KcContext.Register | KcContext.Info;
 export declare namespace KcContext {
 
     export type Template = {
@@ -115,6 +124,18 @@ export declare namespace KcContext {
         recaptchaRequired: boolean;
         /** undefined if !recaptchaRequired */
         recaptchaSiteKey?: string;
+    };
+
+    export type Info = Template & {
+        pageBasename: "info.ftl";
+        messageHeader?: string;
+        requiredActions?: ExtractAfterStartingWith<"requiredAction.",MessageKey>[];
+        skipLink: boolean;
+        pageRedirectUri?: string;
+        actionUri?: string;
+        client: {
+            baseUrl?: string;
+        }
     };
 
 }

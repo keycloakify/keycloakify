@@ -12,11 +12,9 @@ import { useCallbackFactory } from "powerhooks";
 import { appendHead } from "../tools/appendHead";
 import { join as pathJoin } from "path";
 import { useConstCallback } from "powerhooks";
-import type { KcTemplateProperties } from "./KcProperties";
-import { defaultKcTemplateProperties } from "./KcProperties";
+import type { KcTemplateProps } from "./KcProps";
 
 export type TemplateProps = {
-    kcProperties: KcTemplateProperties;
     displayInfo?: boolean;
     displayMessage?: boolean;
     displayRequiredFields?: boolean;
@@ -26,7 +24,7 @@ export type TemplateProps = {
     showUsernameNode?: ReactNode;
     formNode: ReactNode;
     displayInfoNode?: ReactNode;
-};
+} & KcTemplateProps;
 
 
 export const Template = memo((props: TemplateProps) => {
@@ -37,7 +35,6 @@ export const Template = memo((props: TemplateProps) => {
         displayRequiredFields = false,
         displayWide = false,
         showAnotherWayIfPresent = true,
-        kcProperties = {},
         headerNode,
         showUsernameNode = null,
         formNode,
@@ -47,8 +44,6 @@ export const Template = memo((props: TemplateProps) => {
     useEffect(()=> { console.log("Rendering this page with react using keycloakify") },[]);
 
     const { t } = useKcTranslation();
-
-    Object.assign(kcProperties, defaultKcTemplateProperties);
 
     const { kcLanguageTag, setKcLanguageTag } = useKcLanguageTag();
 
@@ -76,10 +71,12 @@ export const Template = memo((props: TemplateProps) => {
 
         let isUnmounted = false;
 
+        const toArr= (x: string | readonly string[] | undefined )=> typeof x === "string" ? x.split(" ") : x ?? [];
+
         Promise.all(
             [
-                ...(kcProperties.stylesCommon ?? []).map(relativePath => pathJoin(url.resourcesCommonPath, relativePath)),
-                ...(kcProperties.styles ?? []).map(relativePath => pathJoin(url.resourcesPath, relativePath))
+                ...toArr(props.stylesCommon).map(relativePath => pathJoin(url.resourcesCommonPath, relativePath)),
+                ...toArr(props.styles).map(relativePath => pathJoin(url.resourcesPath, relativePath))
             ].map(href => appendHead({
                 "type": "css",
                 href
@@ -93,7 +90,7 @@ export const Template = memo((props: TemplateProps) => {
 
             });
 
-        kcProperties.scripts?.forEach(
+        toArr(props.scripts).forEach(
             relativePath => appendHead({
                 "type": "javascript",
                 "src": pathJoin(url.resourcesPath, relativePath)
@@ -102,7 +99,7 @@ export const Template = memo((props: TemplateProps) => {
 
         document.getElementsByTagName("html")[0]
             .classList
-            .add(cx(kcProperties.kcHtmlClass));
+            .add(cx(props.kcHtmlClass));
 
         return () => { isUnmounted = true; };
 
@@ -113,16 +110,16 @@ export const Template = memo((props: TemplateProps) => {
     }
 
     return (
-        <div className={cx(kcProperties.kcLoginClass)}>
+        <div className={cx(props.kcLoginClass)}>
 
-            <div id="kc-header" className={cx(kcProperties.kcHeaderClass)}>
-                <div id="kc-header-wrapper" className={cx(kcProperties.kcHeaderWrapperClass)}>
+            <div id="kc-header" className={cx(props.kcHeaderClass)}>
+                <div id="kc-header-wrapper" className={cx(props.kcHeaderWrapperClass)}>
                     {t("loginTitleHtml", realm.displayNameHtml)}
                 </div>
             </div>
 
-            <div className={cx(kcProperties.kcFormCardClass, displayWide && kcProperties.kcFormCardAccountClass)}>
-                <header className={cx(kcProperties.kcFormHeaderClass)}>
+            <div className={cx(props.kcFormCardClass, displayWide && props.kcFormCardAccountClass)}>
+                <header className={cx(props.kcFormHeaderClass)}>
                     {
                         (
                             realm.internationalizationEnabled &&
@@ -130,7 +127,7 @@ export const Template = memo((props: TemplateProps) => {
                             locale.supported.length > 1
                         ) &&
                         <div id="kc-locale">
-                            <div id="kc-locale-wrapper" className={cx(kcProperties.kcLocaleWrapperClass)}>
+                            <div id="kc-locale-wrapper" className={cx(props.kcLocaleWrapperClass)}>
                                 <div className="kc-dropdown" id="kc-locale-dropdown">
                                     <a href="#" id="kc-current-locale-link">
                                         {getKcLanguageTagLabel(kcLanguageTag)}
@@ -164,8 +161,8 @@ export const Template = memo((props: TemplateProps) => {
                                 displayRequiredFields ?
                                     (
 
-                                        <div className={cx(kcProperties.kcContentWrapperClass)}>
-                                            <div className={cx(kcProperties.kcLabelWrapperClass, "subtitle")}>
+                                        <div className={cx(props.kcContentWrapperClass)}>
+                                            <div className={cx(props.kcLabelWrapperClass, "subtitle")}>
                                                 <span className="subtitle">
                                                     <span className="required">*</span>
                                                     {t("requiredFields")}
@@ -185,18 +182,18 @@ export const Template = memo((props: TemplateProps) => {
                                     )
                             ) : (
                                 displayRequiredFields ? (
-                                    <div className={cx(kcProperties.kcContentWrapperClass)}>
-                                        <div className={cx(kcProperties.kcLabelWrapperClass, "subtitle")}>
+                                    <div className={cx(props.kcContentWrapperClass)}>
+                                        <div className={cx(props.kcLabelWrapperClass, "subtitle")}>
                                             <span className="subtitle"><span className="required">*</span> {t("requiredFields")}</span>
                                         </div>
                                         <div className="col-md-10">
                                             {showUsernameNode}
-                                            <div className={cx(kcProperties.kcFormGroupClass)}>
+                                            <div className={cx(props.kcFormGroupClass)}>
                                                 <div id="kc-username">
                                                     <label id="kc-attempted-username">{auth?.attemptedUsername}</label>
                                                     <a id="reset-login" href={url.loginRestartFlowUrl}>
                                                         <div className="kc-login-tooltip">
-                                                            <i className={cx(kcProperties.kcResetFlowIcon)}></i>
+                                                            <i className={cx(props.kcResetFlowIcon)}></i>
                                                             <span className="kc-tooltip-text">{t("restartLoginTooltip")}</span>
                                                         </div>
                                                     </a>
@@ -207,12 +204,12 @@ export const Template = memo((props: TemplateProps) => {
                                 ) : (
                                         <>
                                             {showUsernameNode}
-                                            <div className={cx(kcProperties.kcFormGroupClass)}>
+                                            <div className={cx(props.kcFormGroupClass)}>
                                                 <div id="kc-username">
                                                     <label id="kc-attempted-username">{auth?.attemptedUsername}</label>
                                                     <a id="reset-login" href={url.loginRestartFlowUrl}>
                                                         <div className="kc-login-tooltip">
-                                                            <i className={cx(kcProperties.kcResetFlowIcon)}></i>
+                                                            <i className={cx(props.kcResetFlowIcon)}></i>
                                                             <span className="kc-tooltip-text">{t("restartLoginTooltip")}</span>
                                                         </div>
                                                     </a>
@@ -236,10 +233,10 @@ export const Template = memo((props: TemplateProps) => {
                                 )
                             ) &&
                             <div className={cx("alert", `alert-${message.type}`)}>
-                                {message.type === "success" && <span className={cx(kcProperties.kcFeedbackSuccessIcon)}></span>}
-                                {message.type === "warning" && <span className={cx(kcProperties.kcFeedbackWarningIcon)}></span>}
-                                {message.type === "error" && <span className={cx(kcProperties.kcFeedbackErrorIcon)}></span>}
-                                {message.type === "info" && <span className={cx(kcProperties.kcFeedbackInfoIcon)}></span>}
+                                {message.type === "success" && <span className={cx(props.kcFeedbackSuccessIcon)}></span>}
+                                {message.type === "warning" && <span className={cx(props.kcFeedbackWarningIcon)}></span>}
+                                {message.type === "error" && <span className={cx(props.kcFeedbackErrorIcon)}></span>}
+                                {message.type === "info" && <span className={cx(props.kcFeedbackInfoIcon)}></span>}
                                 <span className="kc-feedback-text">{message.summary}</span>
                             </div>
                         }
@@ -251,9 +248,9 @@ export const Template = memo((props: TemplateProps) => {
                                 showAnotherWayIfPresent
                             ) &&
 
-                            <form id="kc-select-try-another-way-form" action={url.loginAction} method="post" className={cx(displayWide && kcProperties.kcContentWrapperClass)} >
-                                <div className={cx(displayWide && [kcProperties.kcFormSocialAccountContentClass, kcProperties.kcFormSocialAccountClass])} >
-                                    <div className={cx(kcProperties.kcFormGroupClass)}>
+                            <form id="kc-select-try-another-way-form" action={url.loginAction} method="post" className={cx(displayWide && props.kcContentWrapperClass)} >
+                                <div className={cx(displayWide && [props.kcFormSocialAccountContentClass, props.kcFormSocialAccountClass])} >
+                                    <div className={cx(props.kcFormGroupClass)}>
                                         <input type="hidden" name="tryAnotherWay" value="on" />
                                         <a href="#" id="try-another-way" onClick={onTryAnotherWayClick}>{t("doTryAnotherWay")}</a>
                                     </div>
@@ -263,8 +260,8 @@ export const Template = memo((props: TemplateProps) => {
                         {
                             displayInfo &&
 
-                            <div id="kc-info" className={cx(kcProperties.kcSignUpClass)}>
-                                <div id="kc-info-wrapper" className={cx(kcProperties.kcInfoAreaWrapperClass)}>
+                            <div id="kc-info" className={cx(props.kcSignUpClass)}>
+                                <div id="kc-info-wrapper" className={cx(props.kcInfoAreaWrapperClass)}>
                                     {displayInfoNode}
                                 </div>
                             </div>
