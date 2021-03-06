@@ -14,7 +14,7 @@ export const Login = memo((props: KcProps) => {
 
     assert(
         kcContext !== undefined &&
-        kcContext.pageBasename === "login.ftl"
+        kcContext.pageId === "login.ftl"
     );
 
     const {

@@ -1,6 +1,6 @@
 
 import { ftlValuesGlobalName } from "../bin/build-keycloak-theme/ftlValuesGlobalName";
-import type { generateFtlFilesCodeFactory } from "../bin/build-keycloak-theme/generateFtl";
+import type { PageId } from "../bin/build-keycloak-theme/generateFtl";
 import { id } from "evt/tools/typeSafety/id";
 import type { KcLanguageTag } from "./i18n/KcLanguageTag";
 import { doExtends } from "evt/tools/typeSafety/doExtends";
@@ -10,7 +10,7 @@ import type { LanguageLabel } from "./i18n/KcLanguageTag";
 type ExtractAfterStartingWith<Prefix extends string, StrEnum> = 
     StrEnum extends `${Prefix}${infer U}` ? U : never;
 
-export type KcContext = KcContext.Login | KcContext.Register | KcContext.Info;
+export type KcContext = KcContext.Login | KcContext.Register | KcContext.Info | KcContext.Error;
 export declare namespace KcContext {
 
     export type Template = {
@@ -55,7 +55,7 @@ export declare namespace KcContext {
     };
 
     export type Login = Template & {
-        pageBasename: "login.ftl";
+        pageId: "login.ftl";
         url: {
             loginResetCredentialsUrl: string;
             registrationUrl: string;
@@ -87,7 +87,7 @@ export declare namespace KcContext {
     };
 
     export type Register = Template & {
-        pageBasename: "register.ftl";
+        pageId: "register.ftl";
         url: {
             registrationAction: string;
         };
@@ -120,7 +120,7 @@ export declare namespace KcContext {
     };
 
     export type Info = Template & {
-        pageBasename: "info.ftl";
+        pageId: "info.ftl";
         messageHeader?: string;
         requiredActions?: ExtractAfterStartingWith<"requiredAction.",MessageKey>[];
         skipLink: boolean;
@@ -131,14 +131,13 @@ export declare namespace KcContext {
         }
     };
 
+    export type Error = Template & {
+        pageId: "error.ftl"
+    };
+
 }
 
-{
-    type T = KcContext["pageBasename"];
-    type U = Parameters<ReturnType<typeof generateFtlFilesCodeFactory>["generateFtlFilesCode"]>[0]["pageBasename"];
-
-    doExtends<T, U>();
-    doExtends<U, T>();
-}
+doExtends<KcContext["pageId"], PageId>();
+doExtends<PageId, KcContext["pageId"]>();
 
 export const kcContext = id<KcContext | undefined>((window as any)[ftlValuesGlobalName]);

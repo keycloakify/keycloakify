@@ -9,5 +9,6 @@ export * from "./components/Login";
 export * from "./components/Template";
 export * from "./components/KcApp";
 export * from "./components/Info";
+export * from "./components/Error";
 
 export * from "./tools/assert";

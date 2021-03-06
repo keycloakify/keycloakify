@@ -12,7 +12,7 @@ export const Info = memo((props: KcProps) => {
 
     assert(
         kcContext !== undefined &&
-        kcContext.pageBasename === "info.ftl" &&
+        kcContext.pageId === "info.ftl" &&
         kcContext.message !== undefined
     );
 

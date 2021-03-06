@@ -12,7 +12,7 @@ export const KcApp = memo((props: KcProps) => {
 
     assert(kcContext !== undefined, "App is not currently served by a Keycloak server");
 
-    switch (kcContext.pageBasename) {
+    switch (kcContext.pageId) {
         case "login.ftl": return <Login {...props} />;
         case "register.ftl": return <Register {...props} />;
         case "info.ftl": return <Info {...props} />;

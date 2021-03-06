@@ -70,12 +70,12 @@ export function generateKeycloakThemeResources(
         ).toString("utf8")
     });
 
-    (["login.ftl", "register.ftl"] as const).forEach(pageBasename => {
+    (["login.ftl", "register.ftl"] as const).forEach(pageId => {
 
-        const { ftlCode } = generateFtlFilesCode({ pageBasename });
+        const { ftlCode } = generateFtlFilesCode({ pageId });
 
         fs.writeFileSync(
-            pathJoin(themeDirPath, pageBasename),
+            pathJoin(themeDirPath, pageId),
             Buffer.from(ftlCode, "utf8")
         )
 

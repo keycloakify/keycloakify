@@ -9,7 +9,9 @@ import fs from "fs";
 import { join as pathJoin } from "path";
 import { objectKeys } from "evt/tools/typeSafety/objectKeys";
 
-function loadFtlFile(ftlFileBasename: "template.ftl" | "login.ftl" | "register.ftl" | "info.ftl") {
+export type PageId =  "login.ftl" | "register.ftl" | "info.ftl" | "error.ftl";
+
+function loadFtlFile(ftlFileBasename: PageId | "template.ftl") {
     return fs.readFileSync(pathJoin(__dirname, ftlFileBasename))
         .toString("utf8")
         .match(/^<script>const _=((?:.|\n)+)<\/script>[\n]?$/)![1];
@@ -98,16 +100,16 @@ export function generateFtlFilesCodeFactory(
 
     function generateFtlFilesCode(
         params: {
-            pageBasename: "login.ftl" | "register.ftl" | "info.ftl"
+            pageId: PageId;
         }
     ): { ftlCode: string; } {
 
-        const { pageBasename } = params;
+        const { pageId } = params;
 
         const $ = cheerio.load(partiallyFixedIndexHtmlCode);
 
         const ftlPlaceholders = {
-            '{ "x": "kxOlLqMeOed9sdLdIdOxd444" }': loadFtlFile(pageBasename),
+            '{ "x": "kxOlLqMeOed9sdLdIdOxd444" }': loadFtlFile(pageId),
             ...ftlCommonPlaceholders
         };
 
@@ -117,7 +119,7 @@ export function generateFtlFilesCodeFactory(
                 '<script>',
                 '',
                 `    window.${ftlValuesGlobalName} = Object.assign(`,
-                `        { "pageBasename": "${pageBasename}" },`,
+                `        { "pageId": "${pageId}" },`,
                 `        ${objectKeys(ftlPlaceholders)[0]}`,
                 '    );',
                 '',
