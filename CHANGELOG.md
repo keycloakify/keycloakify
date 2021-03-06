@@ -1,3 +1,7 @@
+## **0.1.0** (2021-03-05)  
+  
+- Rename keycloakify    
+  
 ### **0.0.33** (2021-03-05)  
   
 - Fix syncronization with non react pages    
