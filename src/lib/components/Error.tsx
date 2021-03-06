@@ -24,12 +24,17 @@ export const Error = memo((props: KcProps) => {
             displayMessage={false}
             headerNode={t("errorTitle")}
             formNode={
-        <div id="kc-error-message">
-            <p className="instruction">{message.summary}</p>
-            <#if client?? && client.baseUrl?has_content>
-                <p><a id="backToApplication" href="${client.baseUrl}">${kcSanitize(msg("backToApplication"))?no_esc}</a></p>
-            </#if>
-        </div>
+                <div id="kc-error-message">
+                    <p className="instruction">{message.summary}</p>
+                    {
+                        client !== undefined && client.baseUrl !== undefined &&
+                        <p>
+                            <a id="backToApplication" href={client.baseUrl}>
+                                {t("backToApplication")}
+                            </a>
+                        </p>
+                    }
+                </div>
             }
         />
     );

@@ -11,7 +11,6 @@
         "displayName": "${realm.displayName!''}" || undefined,
         "displayNameHtml": "${realm.displayNameHtml!''}" || undefined,
         "internationalizationEnabled": ${realm.internationalizationEnabled?c},
-        "password": ${realm.password?c},
         "registrationEmailAsUsername": ${realm.registrationEmailAsUsername?c},
     },
     "locale": (function (){

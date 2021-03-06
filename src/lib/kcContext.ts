@@ -25,8 +25,7 @@ export declare namespace KcContext {
             displayName?: string;
             displayNameHtml?: string;
             internationalizationEnabled: boolean;
-            password: boolean;
-            registrationEmailAsUsername: boolean;
+            registrationEmailAsUsername: boolean; //<---
         };
         /** Undefined if !realm.internationalizationEnabled */
         locale?: {
@@ -63,6 +62,7 @@ export declare namespace KcContext {
         realm: {
             loginWithEmailAllowed: boolean;
             rememberMe: boolean;
+            password: boolean;
             resetPasswordAllowed: boolean;
             registrationAllowed: boolean;
         };
@@ -132,7 +132,10 @@ export declare namespace KcContext {
     };
 
     export type Error = Template & {
-        pageId: "error.ftl"
+        pageId: "error.ftl";
+        client?: {
+            baseUrl?: string;
+        }
     };
 
 }

@@ -31,7 +31,7 @@
     "pageRedirectUri": "${(pageRedirectUri!'')?no_esc}" || undefined,
     "actionUri": "${(actionUri!'')?no_esc}" || undefined,
     "client": {
-        "baseUrl": "${(actionUri!'')?no_esc}" || undefined
+        "baseUrl": "${(client.baseUrl!'')?no_esc}" || undefined
     }
 }
 </script>

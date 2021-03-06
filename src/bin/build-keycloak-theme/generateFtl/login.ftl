@@ -7,6 +7,7 @@
     "realm": {
         "loginWithEmailAllowed": ${realm.loginWithEmailAllowed?c},
         "rememberMe": ${realm.rememberMe?c},
+        "password": ${realm.password?c},
         "resetPasswordAllowed": ${realm.resetPasswordAllowed?c},
         "registrationAllowed": ${realm.registrationAllowed?c}
     },
