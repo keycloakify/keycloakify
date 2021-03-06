@@ -6,7 +6,7 @@ import { getBestMatchAmongKcLanguageTag } from "./KcLanguageTag";
 export const { useKcLanguageTag } = createUseGlobalState(
     "kcLanguageTag",
     () => getBestMatchAmongKcLanguageTag(
-        kcContext?.locale?.["current" as never] ??
+        kcContext?.locale?.current ??
         navigator.language
     ),
     { "persistance": "cookie" }

@@ -1,12 +1,13 @@
 
-import { useState, useReducer ,useEffect, memo } from "react";
+import { useReducer, useEffect, memo } from "react";
 import type { ReactNode } from "react";
 import { useKcTranslation } from "../i18n/useKcTranslation";
+import { useKcLanguageTag } from "../i18n/useKcLanguageTag";
 import { kcContext } from "../kcContext";
 import { assert } from "../tools/assert";
 import { cx } from "tss-react";
-import { useKcLanguageTag } from "../i18n/useKcLanguageTag";
 import type { KcLanguageTag } from "../i18n/KcLanguageTag";
+import { getBestMatchAmongKcLanguageTag } from "../i18n/KcLanguageTag";
 import { getKcLanguageTagLabel } from "../i18n/KcLanguageTag";
 import { useCallbackFactory } from "powerhooks";
 import { appendHead } from "../tools/appendHead";
@@ -41,29 +42,45 @@ export const Template = memo((props: TemplateProps) => {
         displayInfoNode = null
     } = props;
 
-    useEffect(()=> { console.log("Rendering this page with react using keycloakify") },[]);
+    useEffect(() => { console.log("Rendering this page with react using keycloakify") }, []);
 
     const { t } = useKcTranslation();
 
     const { kcLanguageTag, setKcLanguageTag } = useKcLanguageTag();
 
+
     const onChangeLanguageClickFactory = useCallbackFactory(
-        ([languageTag]: [KcLanguageTag]) => 
+        ([languageTag]: [KcLanguageTag]) =>
             setKcLanguageTag(languageTag)
     );
 
-    const onTryAnotherWayClick = useConstCallback(() => {
+    const onTryAnotherWayClick = useConstCallback(() =>
+        (document.forms["kc-select-try-another-way-form" as never].submit(), false)
+    );
 
-        document.forms["kc-select-try-another-way-form" as never].submit();
+    assert(kcContext !== undefined);
 
-        return false;
+    const {
+        realm, locale, auth, 
+        url, message, isAppInitiatedAction
+    }= kcContext;
 
-    });
+    useEffect(()=>{
 
-    const [{ realm, locale, auth, url, message, isAppInitiatedAction }] = useState(() => (
-        assert(kcContext !== undefined, "App is not currently being served by KeyCloak"),
-        kcContext
-    ));
+        if( !realm.internationalizationEnabled ){
+            return;
+        }
+
+        assert( locale !== undefined );
+
+        if( kcLanguageTag === getBestMatchAmongKcLanguageTag(locale.current) ){
+            return;
+        }
+
+        window.location.href = 
+            locale.supported.find(({ languageTag }) => languageTag === kcLanguageTag)!.url;
+
+    },[kcLanguageTag]);
 
     const [isExtraCssLoaded, setExtraCssLoaded] = useReducer(() => true, false);
 
@@ -71,7 +88,8 @@ export const Template = memo((props: TemplateProps) => {
 
         let isUnmounted = false;
 
-        const toArr= (x: string | readonly string[] | undefined )=> typeof x === "string" ? x.split(" ") : x ?? [];
+        const toArr = (x: string | readonly string[] | undefined) => 
+            typeof x === "string" ? x.split(" ") : x ?? [];
 
         Promise.all(
             [
@@ -135,15 +153,14 @@ export const Template = memo((props: TemplateProps) => {
                                     <ul>
                                         {
                                             locale.supported.map(
-                                                ({ languageTag, url }) =>
+                                                ({ languageTag }) =>
                                                     <li className="kc-dropdown-item">
-                                                        <a href={url} onClick={onChangeLanguageClickFactory(languageTag)}>
+                                                        <a href="#" onClick={onChangeLanguageClickFactory(languageTag)}>
                                                             {getKcLanguageTagLabel(languageTag)}
                                                         </a>
 
                                                     </li>
                                             )
-
                                         }
                                     </ul>
                                 </div>

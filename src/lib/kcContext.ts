@@ -5,15 +5,10 @@ import { id } from "evt/tools/typeSafety/id";
 import type { KcLanguageTag } from "./i18n/KcLanguageTag";
 import { doExtends } from "evt/tools/typeSafety/doExtends";
 import type { MessageKey } from "./i18n/useKcTranslation";
+import type { LanguageLabel } from "./i18n/KcLanguageTag";
 
 type ExtractAfterStartingWith<Prefix extends string, StrEnum> = 
     StrEnum extends `${Prefix}${infer U}` ? U : never;
-
-const x: "33" | "44" = null as any;;
-
-const y: `foo.${typeof x}` = `foo.${x}` as const;
-
-y;
 
 export type KcContext = KcContext.Login | KcContext.Register | KcContext.Info;
 export declare namespace KcContext {
@@ -43,9 +38,7 @@ export declare namespace KcContext {
                  */
                 //label: LanguageLabel;
             }[];
-            //NOTE: We do not expose this because the language is managed
-            //client side. We use this value however to set the default.
-            //current: LanguageLabel;
+            current: LanguageLabel;
         },
         auth?: {
             showUsername: boolean;
