@@ -1,0 +1,1 @@
+{"version":3,"file":"setupSampleReactProject.js","sourceRoot":"","sources":["../src/test/setupSampleReactProject.ts"],"names":[],"mappings":";;;AACA,8DAA6D;AAC7D,6BAAwC;AACxC,kEAAiE;AAEpD,QAAA,yBAAyB,GAAG,WAAQ,CAAC,+BAAc,EAAE,EAAE,sBAAsB,CAAC,CAAC;AAE5F,SAAgB,uBAAuB;IAEnC,mCAAgB,CAAC;QACb,KAAK,EAAE,wGAAwG;QAC/G,aAAa,EAAE,iCAAyB;KAC3C,CAAC,CAAC;AACP,CAAC;AAND,0DAMC"}
