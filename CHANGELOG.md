@@ -1,3 +1,10 @@
+### **0.1.1** (2021-03-06)  
+  
+- Implement Error page  
+- rename pageBasename by pageId  
+- Implement reactive programing for language switching  
+- Add Info page, refactor    
+  
 ## **0.1.0** (2021-03-05)  
   
 - Rename keycloakify    
