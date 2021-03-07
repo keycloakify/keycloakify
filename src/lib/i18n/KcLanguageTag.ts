@@ -8,7 +8,7 @@ export type LanguageLabel =
     /* spell-checker: disable */
     "Deutsch" | "Norsk" | "Русский" | "Svenska" | "Português (Brasil)" | "Lietuvių" |
     "English" | "Italiano" | "Français" | "中文简体" | "Español" | "Čeština" | "日本語" |
-    "Slovenčina" | "Polish" | "Català" | "Nederlands" | "tr";
+    "Slovenčina" | "Polski" | "Català" | "Nederlands" | "Türkçe";
 /* spell-checker: enable */
 
 export function getKcLanguageTagLabel(language: KcLanguageTag): LanguageLabel {
@@ -26,13 +26,13 @@ export function getKcLanguageTagLabel(language: KcLanguageTag): LanguageLabel {
         case "ru": return "Русский";
         case "sk": return "Slovenčina";
         case "ja": return "日本語";
-        case "pl": return "Polish";
+        case "pl": return "Polski";
         case "zh-CN": return "中文简体"
         case "sv": return "Svenska";
         case "lt": return "Lietuvių";
         case "cs": return "Čeština";
         case "nl": return "Nederlands";
-        case "tr": return "tr";
+        case "tr": return "Türkçe";
         /* spell-checker: enable */
     }
 
