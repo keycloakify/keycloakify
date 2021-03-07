@@ -3,24 +3,20 @@ import { memo } from "react";
 import { Template } from "./Template";
 import type { KcProps } from "./KcProps";
 import { assert } from "../tools/assert";
-import { kcContext } from "../kcContext";
+import type { KcContext } from "../KcContext";
 import { useKcMessage } from "../i18n/useKcMessage";
 
-export const Error = memo((props: KcProps) => {
+export const Error = memo(({ kcContext, ...props }: { kcContext: KcContext.Error; } & KcProps) => {
 
     const { msg } = useKcMessage();
 
-    assert(
-        kcContext !== undefined &&
-        kcContext.pageId === "error.ftl" &&
-        kcContext.message !== undefined
-    );
+    assert(kcContext.message !== undefined);
 
     const { message, client } = kcContext;
 
     return (
         <Template
-            {...props}
+            {...{ kcContext, ...props }}
             displayMessage={false}
             headerNode={msg("errorTitle")}
             formNode={

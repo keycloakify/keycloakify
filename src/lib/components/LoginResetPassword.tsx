@@ -2,19 +2,13 @@
 import { memo } from "react";
 import { Template } from "./Template";
 import type { KcProps } from "./KcProps";
-import { assert } from "../tools/assert";
-import { kcContext } from "../kcContext";
+import type { KcContext } from "../KcContext";
 import { useKcMessage } from "../i18n/useKcMessage";
 import { cx } from "tss-react";
 
-export const LoginResetPassword = memo((props: KcProps) => {
+export const LoginResetPassword = memo(({ kcContext, ...props }: { kcContext: KcContext.LoginResetPassword; } & KcProps) => {
 
     const { msg, msgStr } = useKcMessage();
-
-    assert(
-        kcContext !== undefined &&
-        kcContext.pageId === "login-reset-password.ftl"
-    );
 
     const {
         url,
@@ -24,7 +18,7 @@ export const LoginResetPassword = memo((props: KcProps) => {
 
     return (
         <Template
-            {...props}
+            {...{ kcContext, ...props }}
             displayMessage={false}
             headerNode={msg("emailForgotTitle")}
             formNode={

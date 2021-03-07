@@ -2,18 +2,12 @@
 import { memo } from "react";
 import { Template } from "./Template";
 import type { KcProps } from "./KcProps";
-import { assert } from "../tools/assert";
-import { kcContext } from "../kcContext";
+import type { KcContext } from "../KcContext";
 import { useKcMessage } from "../i18n/useKcMessage";
 
-export const LoginVerifyEmail = memo((props: KcProps) => {
+export const LoginVerifyEmail = memo(({ kcContext, ...props }: { kcContext: KcContext.LoginVerifyEmail; } & KcProps) => {
 
     const { msg } = useKcMessage();
-
-    assert(
-        kcContext !== undefined &&
-        kcContext.pageId === "login-verify-email.ftl"
-    );
 
     const {
         url
@@ -21,7 +15,7 @@ export const LoginVerifyEmail = memo((props: KcProps) => {
 
     return (
         <Template
-            {...props}
+            {...{ kcContext, ...props }}
             displayMessage={false}
             headerNode={msg("emailVerifyTitle")}
             formNode={

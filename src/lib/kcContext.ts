@@ -157,3 +157,5 @@ doExtends<KcContext["pageId"], PageId>();
 doExtends<PageId, KcContext["pageId"]>();
 
 export const kcContext = id<KcContext | undefined>((window as any)[ftlValuesGlobalName]);
+
+

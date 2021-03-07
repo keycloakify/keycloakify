@@ -2,20 +2,14 @@
 import { useState, memo } from "react";
 import { Template } from "./Template";
 import type { KcProps } from "./KcProps";
-import { assert } from "../tools/assert";
-import { kcContext } from "../kcContext";
+import type { KcContext } from "../KcContext";
 import { useKcMessage } from "../i18n/useKcMessage";
 import { cx } from "tss-react";
 import { useConstCallback } from "powerhooks";
 
-export const Login = memo((props: KcProps) => {
+export const Login = memo(({ kcContext, ...props }: { kcContext: KcContext.Login; } & KcProps) => {
 
     const { msg, msgStr } = useKcMessage();
-
-    assert(
-        kcContext !== undefined &&
-        kcContext.pageId === "login.ftl"
-    );
 
     const {
         social, realm, url,
@@ -31,7 +25,7 @@ export const Login = memo((props: KcProps) => {
 
     return (
         <Template
-            {...props}
+            {...{ kcContext, ...props }}
             displayInfo={social.displayInfo}
             displayWide={realm.password && social.providers !== undefined}
             headerNode={msg("doLogIn")}
@@ -68,7 +62,7 @@ export const Login = memo((props: KcProps) => {
                                             name="username"
                                             defaultValue={login.username ?? ''}
                                             type="text"
-                                            {...(usernameEditDisabled ? { "disabled": true } : { "autoFocus": true, "autocomplete": "off" })}
+                                            {...(usernameEditDisabled ? { "disabled": true } : { "autoFocus": true, "autoComplete": "off" })}
                                         />
                                     </div>
                                     <div className={cx(props.kcFormGroupClass)}>

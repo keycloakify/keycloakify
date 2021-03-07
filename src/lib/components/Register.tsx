@@ -1,19 +1,13 @@
 import { memo } from "react";
 import { Template } from "./Template";
 import type { KcProps } from "./KcProps";
-import { assert } from "../tools/assert";
-import { kcContext } from "../kcContext";
+import type { KcContext } from "../KcContext";
 import { useKcMessage } from "../i18n/useKcMessage";
 import { cx } from "tss-react";
 
-export const Register = memo((props: KcProps) => {
+export const Register = memo(({ kcContext, ...props }: { kcContext: KcContext.Register; } & KcProps) => {
 
     const { msg, msgStr } = useKcMessage();
-
-    assert(
-        kcContext !== undefined &&
-        kcContext.pageId === "register.ftl"
-    );
 
     const {
         url,
@@ -27,7 +21,7 @@ export const Register = memo((props: KcProps) => {
 
     return (
         <Template
-            {...props}
+            {...{ kcContext, ...props }}
             headerNode={msg("registerTitle")}
             formNode={
                 <form id="kc-register-form" className={cx(props.kcFormClass)} action={url.registrationAction} method="post">

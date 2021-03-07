@@ -3,7 +3,7 @@ import { useReducer, useEffect, memo } from "react";
 import type { ReactNode } from "react";
 import { useKcMessage } from "../i18n/useKcMessage";
 import { useKcLanguageTag } from "../i18n/useKcLanguageTag";
-import { kcContext } from "../kcContext";
+import type { KcContext } from "../KcContext";
 import { assert } from "../tools/assert";
 import { cx } from "tss-react";
 import type { KcLanguageTag } from "../i18n/KcLanguageTag";
@@ -25,7 +25,7 @@ export type TemplateProps = {
     showUsernameNode?: ReactNode;
     formNode: ReactNode;
     infoNode?: ReactNode;
-} & KcTemplateProps;
+} & { kcContext: KcContext.Template; }  & KcTemplateProps;
 
 
 export const Template = memo((props: TemplateProps) => {
@@ -39,7 +39,8 @@ export const Template = memo((props: TemplateProps) => {
         headerNode,
         showUsernameNode = null,
         formNode,
-        infoNode = null
+        infoNode = null,
+        kcContext
     } = props;
 
     useEffect(() => { console.log("Rendering this page with react using keycloakify") }, []);
@@ -57,8 +58,6 @@ export const Template = memo((props: TemplateProps) => {
     const onTryAnotherWayClick = useConstCallback(() =>
         (document.forms["kc-select-try-another-way-form" as never].submit(), false)
     );
-
-    assert(kcContext !== undefined);
 
     const {
         realm, locale, auth, 
@@ -153,8 +152,8 @@ export const Template = memo((props: TemplateProps) => {
                                     <ul>
                                         {
                                             locale.supported.map(
-                                                ({ languageTag }) =>
-                                                    <li className="kc-dropdown-item">
+                                                ({ languageTag  }) =>
+                                                    <li key={languageTag} className="kc-dropdown-item">
                                                         <a href="#" onClick={onChangeLanguageClickFactory(languageTag)}>
                                                             {getKcLanguageTagLabel(languageTag)}
                                                         </a>

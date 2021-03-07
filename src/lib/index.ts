@@ -1,4 +1,4 @@
-export * from "./kcContext";
+export * from "./KcContext";
 
 export * from "./i18n/KcLanguageTag";
 export * from "./i18n/useKcLanguageTag";
@@ -14,3 +14,5 @@ export * from "./components/LoginResetPassword";
 export * from "./components/LoginVerifyEmail";
 
 export * from "./tools/assert";
+
+export * as kcContextMock from "./kcMockContext";

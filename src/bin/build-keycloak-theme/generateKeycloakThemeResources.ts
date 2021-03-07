@@ -11,6 +11,7 @@ import { builtinThemesUrl } from "../install-builtin-keycloak-themes";
 import { downloadAndUnzip } from "../tools/downloadAndUnzip";
 import * as child_process from "child_process";
 import { ftlValuesGlobalName } from "./ftlValuesGlobalName";
+import { resourcesCommonPath, resourcesPath, subDirOfPublicDirBasename } from "../../lib/kcMockContext/urlResourcesPath";
 
 export function generateKeycloakThemeResources(
     params: {
@@ -90,10 +91,53 @@ export function generateKeycloakThemeResources(
             "destDirPath": tmpDirPath
         });
 
+        const themeResourcesDirPath= pathJoin(themeDirPath, "resources");
+
         transformCodebase({
             "srcDirPath": pathJoin(tmpDirPath, "keycloak", "login", "resources"),
-            "destDirPath": pathJoin(themeDirPath, "resources")
+            "destDirPath": themeResourcesDirPath
         });
+
+        //const keycloakResourcesWithinPublicDirPath = pathJoin(reactAppBuildDirPath, "..", "public", "keycloak_static");
+
+        const reactAppPublicDirPath = pathJoin(reactAppBuildDirPath, "..", "public");
+
+
+
+        transformCodebase({
+            "srcDirPath": themeResourcesDirPath,
+            "destDirPath": pathJoin(
+                reactAppPublicDirPath, 
+                resourcesPath
+            )
+        });
+
+        transformCodebase({
+            "srcDirPath": pathJoin(tmpDirPath, "keycloak", "common", "resources"),
+            "destDirPath": pathJoin(
+                reactAppPublicDirPath,
+                resourcesCommonPath
+            )
+        });
+
+        const keycloakResourcesWithinPublicDirPath = 
+            pathJoin(reactAppPublicDirPath, subDirOfPublicDirBasename);
+
+        fs.writeFileSync(
+            pathJoin(keycloakResourcesWithinPublicDirPath, ".gitignore"),
+            Buffer.from([
+                resourcesPath,
+                resourcesCommonPath
+            ].join("\n"))
+        );
+
+        fs.writeFileSync(
+            pathJoin(keycloakResourcesWithinPublicDirPath, "README.txt"),
+            Buffer.from([
+                "This is just a test folder that helps develop",
+                "the login and register page without having to yarn build"
+            ].join(" "))
+        );
 
         child_process.execSync(`rm -r ${tmpDirPath}`);
 

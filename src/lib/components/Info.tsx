@@ -3,18 +3,14 @@ import { memo } from "react";
 import { Template } from "./Template";
 import type { KcProps } from "./KcProps";
 import { assert } from "../tools/assert";
-import { kcContext } from "../kcContext";
+import type { KcContext } from "../KcContext";
 import { useKcMessage } from "../i18n/useKcMessage";
 
-export const Info = memo((props: KcProps) => {
+export const Info = memo(({ kcContext, ...props }: { kcContext: KcContext.Info; } & KcProps) => {
 
     const { msg } = useKcMessage();
 
-    assert(
-        kcContext !== undefined &&
-        kcContext.pageId === "info.ftl" &&
-        kcContext.message !== undefined
-    );
+    assert(kcContext.message !== undefined);
 
     const {
         messageHeader,
@@ -28,7 +24,7 @@ export const Info = memo((props: KcProps) => {
 
     return (
         <Template
-            {...props}
+            {...{ kcContext, ...props }}
             displayMessage={false}
             headerNode={
                 messageHeader !== undefined ?
