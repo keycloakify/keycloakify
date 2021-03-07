@@ -7,11 +7,11 @@ import { id } from "evt/tools/typeSafety/id";
 
 export type MessageKey = keyof typeof messages["en"];
 
-export function useKcTranslation() {
+export function useKcMessage() {
 
     const { kcLanguageTag } = useKcLanguageTag();
 
-    const tStr = useConstCallback(
+    const msgStr = useConstCallback(
         (key: MessageKey, ...args: (string | undefined)[]): string => {
 
             let str: string = messages[kcLanguageTag as any as "en"][key] ?? messages["en"][key];
@@ -31,13 +31,13 @@ export function useKcTranslation() {
         }
     );
 
-    const t = useConstCallback(
-        id<(...args: Parameters<typeof tStr>) => ReactNode>(
+    const msg = useConstCallback(
+        id<(...args: Parameters<typeof msgStr>) => ReactNode>(
             (key, ...args) =>
-                <span className={key} dangerouslySetInnerHTML={{ "__html": tStr(key, ...args) }} />
+                <span className={key} dangerouslySetInnerHTML={{ "__html": msgStr(key, ...args) }} />
         )
     );
 
-    return { t, tStr };
+    return { msg, msgStr };
 
 }

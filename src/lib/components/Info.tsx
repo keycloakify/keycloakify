@@ -4,11 +4,11 @@ import { Template } from "./Template";
 import type { KcProps } from "./KcProps";
 import { assert } from "../tools/assert";
 import { kcContext } from "../kcContext";
-import { useKcTranslation } from "../i18n/useKcTranslation";
+import { useKcMessage } from "../i18n/useKcMessage";
 
 export const Info = memo((props: KcProps) => {
 
-    const { t } = useKcTranslation();
+    const { msg } = useKcMessage();
 
     assert(
         kcContext !== undefined &&
@@ -45,7 +45,7 @@ export const Info = memo((props: KcProps) => {
                             <b>
                                 {
                                     requiredActions
-                                        .map(requiredAction => t(`requiredAction.${requiredAction}` as const))
+                                        .map(requiredAction => msg(`requiredAction.${requiredAction}` as const))
                                         .join(",")
                                 }
 
@@ -57,13 +57,13 @@ export const Info = memo((props: KcProps) => {
                     {
                         !skipLink &&
                             pageRedirectUri !== undefined ?
-                            <p><a href="${pageRedirectUri}">${(t("backToApplication"))}</a></p>
+                            <p><a href="${pageRedirectUri}">${(msg("backToApplication"))}</a></p>
                             :
                             actionUri !== undefined ?
-                                <p><a href="${actionUri}">${t("proceedWithAction")}</a></p>
+                                <p><a href="${actionUri}">${msg("proceedWithAction")}</a></p>
                                 :
                                 client.baseUrl !== undefined &&
-                                <p><a href="${client.baseUrl}">${t("backToApplication")}</a></p>
+                                <p><a href="${client.baseUrl}">${msg("backToApplication")}</a></p>
                     }
                 </div>
 

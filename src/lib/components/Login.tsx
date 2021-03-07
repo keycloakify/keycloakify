@@ -4,13 +4,13 @@ import { Template } from "./Template";
 import type { KcProps } from "./KcProps";
 import { assert } from "../tools/assert";
 import { kcContext } from "../kcContext";
-import { useKcTranslation } from "../i18n/useKcTranslation";
+import { useKcMessage } from "../i18n/useKcMessage";
 import { cx } from "tss-react";
 import { useConstCallback } from "powerhooks";
 
 export const Login = memo((props: KcProps) => {
 
-    const { t, tStr } = useKcTranslation();
+    const { msg, msgStr } = useKcMessage();
 
     assert(
         kcContext !== undefined &&
@@ -34,7 +34,7 @@ export const Login = memo((props: KcProps) => {
             {...props}
             displayInfo={social.displayInfo}
             displayWide={realm.password && social.providers !== undefined}
-            headerNode={t("doLogIn")}
+            headerNode={msg("doLogIn")}
             formNode={
                 <div
                     id="kc-form"
@@ -52,12 +52,12 @@ export const Login = memo((props: KcProps) => {
                                         <label htmlFor="username" className={cx(props.kcLabelClass)}>
                                             {
                                                 !realm.loginWithEmailAllowed ?
-                                                    t("username")
+                                                    msg("username")
                                                     :
                                                     (
                                                         !realm.registrationEmailAsUsername ?
-                                                            t("usernameOrEmail") :
-                                                            t("email")
+                                                            msg("usernameOrEmail") :
+                                                            msg("email")
                                                     )
                                             }
                                         </label>
@@ -73,7 +73,7 @@ export const Login = memo((props: KcProps) => {
                                     </div>
                                     <div className={cx(props.kcFormGroupClass)}>
                                         <label htmlFor="password" className={cx(props.kcLabelClass)}>
-                                            {t("password")}
+                                            {msg("password")}
                                         </label>
                                         <input tabIndex={2} id="password" className={cx(props.kcInputClass)} name="password" type="password" autoComplete="off" />
                                     </div>
@@ -87,7 +87,7 @@ export const Login = memo((props: KcProps) => {
                                                 <div className="checkbox">
                                                     <label>
                                                         <input tabIndex={3} id="rememberMe" name="rememberMe" type="checkbox" {...(login.rememberMe ? { "checked": true } : {})} />
-                                                        {t("rememberMe")}
+                                                        {msg("rememberMe")}
                                                     </label>
                                                 </div>
                                             }
@@ -96,7 +96,7 @@ export const Login = memo((props: KcProps) => {
                                             {
                                                 realm.resetPasswordAllowed &&
                                                 <span>
-                                                    <a tabIndex={5} href={url.loginResetCredentialsUrl}>{t("doForgotPassword")}</a>
+                                                    <a tabIndex={5} href={url.loginResetCredentialsUrl}>{msg("doForgotPassword")}</a>
                                                 </span>
                                             }
                                         </div>
@@ -112,7 +112,7 @@ export const Login = memo((props: KcProps) => {
                                         <input
                                             tabIndex={4}
                                             className={cx(props.kcButtonClass, props.kcButtonPrimaryClass, props.kcButtonBlockClass, props.kcButtonLargeClass)} name="login" id="kc-login" type="submit"
-                                            value={tStr("doLogIn")}
+                                            value={msgStr("doLogIn")}
                                             disabled={isLoginButtonDisabled}
                                         />
                                     </div>
@@ -138,7 +138,7 @@ export const Login = memo((props: KcProps) => {
                     }
                 </div>
             }
-            displayInfoNode={
+            infoNode={
                 (
                     realm.password &&
                     realm.registrationAllowed &&
@@ -146,9 +146,9 @@ export const Login = memo((props: KcProps) => {
                 ) &&
                 <div id="kc-registration">
                     <span>
-                        {t("noAccount")}
+                        {msg("noAccount")}
                         <a tabIndex={6} href={url.registrationUrl}>
-                            {t("doRegister")}
+                            {msg("doRegister")}
                         </a>
                     </span>
                 </div>

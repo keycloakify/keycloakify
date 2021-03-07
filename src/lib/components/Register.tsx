@@ -3,12 +3,12 @@ import { Template } from "./Template";
 import type { KcProps } from "./KcProps";
 import { assert } from "../tools/assert";
 import { kcContext } from "../kcContext";
-import { useKcTranslation } from "../i18n/useKcTranslation";
+import { useKcMessage } from "../i18n/useKcMessage";
 import { cx } from "tss-react";
 
 export const Register = memo((props: KcProps) => {
 
-    const { t, tStr } = useKcTranslation();
+    const { msg, msgStr } = useKcMessage();
 
     assert(
         kcContext !== undefined &&
@@ -28,13 +28,13 @@ export const Register = memo((props: KcProps) => {
     return (
         <Template
             {...props}
-            headerNode={t("registerTitle")}
+            headerNode={msg("registerTitle")}
             formNode={
                 <form id="kc-register-form" className={cx(props.kcFormClass)} action={url.registrationAction} method="post">
 
                     <div className={cx(props.kcFormGroupClass, messagesPerField.printIfExists('firstName', props.kcFormGroupErrorClass))}>
                         <div className={cx(props.kcLabelWrapperClass)}>
-                            <label htmlFor="firstName" className={cx(props.kcLabelClass)}>{t("firstName")}</label>
+                            <label htmlFor="firstName" className={cx(props.kcLabelClass)}>{msg("firstName")}</label>
                         </div>
                         <div className={cx(props.kcInputWrapperClass)}>
                             <input type="text" id="firstName" className={cx(props.kcInputClass)} name="firstName"
@@ -45,7 +45,7 @@ export const Register = memo((props: KcProps) => {
 
                     <div className={cx(props.kcFormGroupClass, messagesPerField.printIfExists("lastName", props.kcFormGroupErrorClass))}>
                         <div className={cx(props.kcLabelWrapperClass)}>
-                            <label htmlFor="lastName" className={cx(props.kcLabelClass)}>{t("lastName")}</label>
+                            <label htmlFor="lastName" className={cx(props.kcLabelClass)}>{msg("lastName")}</label>
                         </div>
                         <div className={cx(props.kcInputWrapperClass)}>
                             <input type="text" id="lastName" className={cx(props.kcInputClass)} name="lastName"
@@ -56,7 +56,7 @@ export const Register = memo((props: KcProps) => {
 
                     <div className={cx(props.kcFormGroupClass, messagesPerField.printIfExists('email', props.kcFormGroupErrorClass))}>
                         <div className={cx(props.kcLabelWrapperClass)}>
-                            <label htmlFor="email" className={cx(props.kcLabelClass)}>{t("email")}</label>
+                            <label htmlFor="email" className={cx(props.kcLabelClass)}>{msg("email")}</label>
                         </div>
                         <div className={cx(props.kcInputWrapperClass)}>
                             <input type="text" id="email" className={cx(props.kcInputClass)} name="email"
@@ -69,7 +69,7 @@ export const Register = memo((props: KcProps) => {
 
                         <div className={cx(props.kcFormGroupClass, messagesPerField.printIfExists('username', props.kcFormGroupErrorClass))}>
                             <div className={cx(props.kcLabelWrapperClass)}>
-                                <label htmlFor="username" className={cx(props.kcLabelClass)}>{t("username")}</label>
+                                <label htmlFor="username" className={cx(props.kcLabelClass)}>{msg("username")}</label>
                             </div>
                             <div className={cx(props.kcInputWrapperClass)}>
                                 <input type="text" id="username" className={cx(props.kcInputClass)} name="username"
@@ -84,7 +84,7 @@ export const Register = memo((props: KcProps) => {
 
                             <div className={cx(props.kcFormGroupClass, messagesPerField.printIfExists("password", props.kcFormGroupErrorClass))}>
                                 <div className={cx(props.kcLabelWrapperClass)}>
-                                    <label htmlFor="password" className={cx(props.kcLabelClass)}>{t("password")}</label>
+                                    <label htmlFor="password" className={cx(props.kcLabelClass)}>{msg("password")}</label>
                                 </div>
                                 <div className={cx(props.kcInputWrapperClass)}>
                                     <input type="password" id="password" className={cx(props.kcInputClass)} name="password" autoComplete="new-password" />
@@ -93,7 +93,7 @@ export const Register = memo((props: KcProps) => {
 
                             <div className={cx(props.kcFormGroupClass, messagesPerField.printIfExists("password-confirm", props.kcFormGroupErrorClass))}>
                                 <div className={cx(props.kcLabelWrapperClass)}>
-                                    <label htmlFor="password-confirm" className={cx(props.kcLabelClass)}>{t("passwordConfirm")}</label>
+                                    <label htmlFor="password-confirm" className={cx(props.kcLabelClass)}>{msg("passwordConfirm")}</label>
                                 </div>
                                 <div className={cx(props.kcInputWrapperClass)}>
                                     <input type="password" id="password-confirm" className={cx(props.kcInputClass)} name="password-confirm" />
@@ -113,13 +113,13 @@ export const Register = memo((props: KcProps) => {
                     <div className={cx(props.kcFormGroupClass)}>
                         <div id="kc-form-options" className={cx(props.kcFormOptionsClass)}>
                             <div className={cx(props.kcFormOptionsWrapperClass)}>
-                                <span><a href={url.loginUrl}>{t("backToLogin")}</a></span>
+                                <span><a href={url.loginUrl}>{msg("backToLogin")}</a></span>
                             </div>
                         </div>
 
                         <div id="kc-form-buttons" className={cx(props.kcFormButtonsClass)}>
                             <input className={cx(props.kcButtonClass, props.kcButtonPrimaryClass, props.kcButtonBlockClass, props.kcButtonLargeClass)} type="submit"
-                                defaultValue={tStr("doRegister")} />
+                                defaultValue={msgStr("doRegister")} />
                         </div>
                     </div>
                 </form >

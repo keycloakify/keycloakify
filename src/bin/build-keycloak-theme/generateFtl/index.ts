@@ -9,7 +9,7 @@ import fs from "fs";
 import { join as pathJoin } from "path";
 import { objectKeys } from "evt/tools/typeSafety/objectKeys";
 
-export const pageIds= [ "login.ftl", "register.ftl", "info.ftl", "error.ftl", "login-reset-password.ftl"] as const;
+export const pageIds = ["login.ftl", "register.ftl", "info.ftl", "error.ftl", "login-reset-password.ftl", "login-verify-email.ftl"] as const;
 
 export type PageId =  typeof pageIds[number];
 
@@ -19,8 +19,14 @@ function loadAdjacentFile(fileBasename: string){
 };
 
 function loadFtlFile(ftlFileBasename: PageId | "template.ftl") {
-    return loadAdjacentFile(ftlFileBasename)
-        .match(/^<script>const _=((?:.|\n)+)<\/script>[\n]?$/)![1];
+    try {
+
+        return loadAdjacentFile(ftlFileBasename)
+            .match(/^<script>const _=((?:.|\n)+)<\/script>[\n]?$/)![1];
+
+    } catch {
+        return "{}";
+    }
 }
 
 export function generateFtlFilesCodeFactory(

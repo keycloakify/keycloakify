@@ -4,11 +4,11 @@ import { Template } from "./Template";
 import type { KcProps } from "./KcProps";
 import { assert } from "../tools/assert";
 import { kcContext } from "../kcContext";
-import { useKcTranslation } from "../i18n/useKcTranslation";
+import { useKcMessage } from "../i18n/useKcMessage";
 
 export const Error = memo((props: KcProps) => {
 
-    const { t } = useKcTranslation();
+    const { msg } = useKcMessage();
 
     assert(
         kcContext !== undefined &&
@@ -22,7 +22,7 @@ export const Error = memo((props: KcProps) => {
         <Template
             {...props}
             displayMessage={false}
-            headerNode={t("errorTitle")}
+            headerNode={msg("errorTitle")}
             formNode={
                 <div id="kc-error-message">
                     <p className="instruction">{message.summary}</p>
@@ -30,7 +30,7 @@ export const Error = memo((props: KcProps) => {
                         client !== undefined && client.baseUrl !== undefined &&
                         <p>
                             <a id="backToApplication" href={client.baseUrl}>
-                                {t("backToApplication")}
+                                {msg("backToApplication")}
                             </a>
                         </p>
                     }

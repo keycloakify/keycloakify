@@ -4,12 +4,12 @@ import { Template } from "./Template";
 import type { KcProps } from "./KcProps";
 import { assert } from "../tools/assert";
 import { kcContext } from "../kcContext";
-import { useKcTranslation } from "../i18n/useKcTranslation";
+import { useKcMessage } from "../i18n/useKcMessage";
 import { cx } from "tss-react";
 
 export const LoginResetPassword = memo((props: KcProps) => {
 
-    const { t, tStr } = useKcTranslation();
+    const { msg, msgStr } = useKcMessage();
 
     assert(
         kcContext !== undefined &&
@@ -26,7 +26,7 @@ export const LoginResetPassword = memo((props: KcProps) => {
         <Template
             {...props}
             displayMessage={false}
-            headerNode={t("emailForgotTitle")}
+            headerNode={msg("emailForgotTitle")}
             formNode={
                 <form id="kc-reset-password-form" className={cx(props.kcFormClass)} action={url.loginAction} method="post">
                     <div className={cx(props.kcFormGroupClass)}>
@@ -34,11 +34,11 @@ export const LoginResetPassword = memo((props: KcProps) => {
                             <label htmlFor="username" className={cx(props.kcLabelClass)}>
                                 {
                                     !realm.loginWithEmailAllowed ?
-                                        t("username")
+                                        msg("username")
                                         :
                                         !realm.registrationEmailAsUsername ?
-                                            t("usernameOrEmail") :
-                                            t("email")
+                                            msg("usernameOrEmail") :
+                                            msg("email")
                                 }
                             </label>
                         </div>
@@ -60,7 +60,7 @@ export const LoginResetPassword = memo((props: KcProps) => {
                         <div id="kc-form-options" className={cx(props.kcFormOptionsClass)}>
                             <div className={cx(props.kcFormOptionsWrapperClass)}>
                                 <span>
-                                    <a href={url.loginUrl}>{t("backToLogin")}</a>
+                                    <a href={url.loginUrl}>{msg("backToLogin")}</a>
                                 </span>
                             </div>
                         </div>
@@ -72,13 +72,13 @@ export const LoginResetPassword = memo((props: KcProps) => {
                                     props.kcButtonBlockClass, props.kcButtonLargeClass
                                 )}
                                 type="submit"
-                                defaultValue={tStr("doSubmit")}
+                                defaultValue={msgStr("doSubmit")}
                             />
                         </div>
                     </div>
                 </form>
             }
-            infoNode={t("emailInstruction")}
+            infoNode={msg("emailInstruction")}
         />
     );
 });

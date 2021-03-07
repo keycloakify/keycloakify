@@ -4,13 +4,15 @@ import type { PageId } from "../bin/build-keycloak-theme/generateFtl";
 import { id } from "evt/tools/typeSafety/id";
 import type { KcLanguageTag } from "./i18n/KcLanguageTag";
 import { doExtends } from "evt/tools/typeSafety/doExtends";
-import type { MessageKey } from "./i18n/useKcTranslation";
-import type { LanguageLabel } from "./i18n/KcLanguageTag";
+import type { MessageKey } from "./i18n/useKcMessage";
+import type { LanguageLabel } from "./i18n/KcLanguageTag";
 
-type ExtractAfterStartingWith<Prefix extends string, StrEnum> = 
+type ExtractAfterStartingWith<Prefix extends string, StrEnum> =
     StrEnum extends `${Prefix}${infer U}` ? U : never;
 
-export type KcContext = KcContext.Login | KcContext.Register | KcContext.Info | KcContext.Error | KcContext.LoginResetPassword;
+export type KcContext =
+    KcContext.Login | KcContext.Register | KcContext.Info |
+    KcContext.Error | KcContext.LoginResetPassword | KcContext.LoginVerifyEmail;
 export declare namespace KcContext {
 
     export type Template = {
@@ -122,7 +124,7 @@ export declare namespace KcContext {
     export type Info = Template & {
         pageId: "info.ftl";
         messageHeader?: string;
-        requiredActions?: ExtractAfterStartingWith<"requiredAction.",MessageKey>[];
+        requiredActions?: ExtractAfterStartingWith<"requiredAction.", MessageKey>[];
         skipLink: boolean;
         pageRedirectUri?: string;
         actionUri?: string;
@@ -143,6 +145,10 @@ export declare namespace KcContext {
         realm: {
             loginWithEmailAllowed: boolean;
         }
+    };
+
+    export type LoginVerifyEmail = Template & {
+        pageId: "login-verify-email.ftl";
     };
 
 }

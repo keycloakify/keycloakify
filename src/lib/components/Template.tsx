@@ -1,7 +1,7 @@
 
 import { useReducer, useEffect, memo } from "react";
 import type { ReactNode } from "react";
-import { useKcTranslation } from "../i18n/useKcTranslation";
+import { useKcMessage } from "../i18n/useKcMessage";
 import { useKcLanguageTag } from "../i18n/useKcLanguageTag";
 import { kcContext } from "../kcContext";
 import { assert } from "../tools/assert";
@@ -44,7 +44,7 @@ export const Template = memo((props: TemplateProps) => {
 
     useEffect(() => { console.log("Rendering this page with react using keycloakify") }, []);
 
-    const { t } = useKcTranslation();
+    const { msg } = useKcMessage();
 
     const { kcLanguageTag, setKcLanguageTag } = useKcLanguageTag();
 
@@ -132,7 +132,7 @@ export const Template = memo((props: TemplateProps) => {
 
             <div id="kc-header" className={cx(props.kcHeaderClass)}>
                 <div id="kc-header-wrapper" className={cx(props.kcHeaderWrapperClass)}>
-                    {t("loginTitleHtml", realm.displayNameHtml)}
+                    {msg("loginTitleHtml", realm.displayNameHtml)}
                 </div>
             </div>
 
@@ -182,7 +182,7 @@ export const Template = memo((props: TemplateProps) => {
                                             <div className={cx(props.kcLabelWrapperClass, "subtitle")}>
                                                 <span className="subtitle">
                                                     <span className="required">*</span>
-                                                    {t("requiredFields")}
+                                                    {msg("requiredFields")}
                                                 </span>
                                             </div>
                                             <div className="col-md-10">
@@ -201,7 +201,7 @@ export const Template = memo((props: TemplateProps) => {
                                 displayRequiredFields ? (
                                     <div className={cx(props.kcContentWrapperClass)}>
                                         <div className={cx(props.kcLabelWrapperClass, "subtitle")}>
-                                            <span className="subtitle"><span className="required">*</span> {t("requiredFields")}</span>
+                                            <span className="subtitle"><span className="required">*</span> {msg("requiredFields")}</span>
                                         </div>
                                         <div className="col-md-10">
                                             {showUsernameNode}
@@ -211,7 +211,7 @@ export const Template = memo((props: TemplateProps) => {
                                                     <a id="reset-login" href={url.loginRestartFlowUrl}>
                                                         <div className="kc-login-tooltip">
                                                             <i className={cx(props.kcResetFlowIcon)}></i>
-                                                            <span className="kc-tooltip-text">{t("restartLoginTooltip")}</span>
+                                                            <span className="kc-tooltip-text">{msg("restartLoginTooltip")}</span>
                                                         </div>
                                                     </a>
                                                 </div>
@@ -227,7 +227,7 @@ export const Template = memo((props: TemplateProps) => {
                                                     <a id="reset-login" href={url.loginRestartFlowUrl}>
                                                         <div className="kc-login-tooltip">
                                                             <i className={cx(props.kcResetFlowIcon)}></i>
-                                                            <span className="kc-tooltip-text">{t("restartLoginTooltip")}</span>
+                                                            <span className="kc-tooltip-text">{msg("restartLoginTooltip")}</span>
                                                         </div>
                                                     </a>
                                                 </div>
@@ -269,7 +269,7 @@ export const Template = memo((props: TemplateProps) => {
                                 <div className={cx(displayWide && [props.kcFormSocialAccountContentClass, props.kcFormSocialAccountClass])} >
                                     <div className={cx(props.kcFormGroupClass)}>
                                         <input type="hidden" name="tryAnotherWay" value="on" />
-                                        <a href="#" id="try-another-way" onClick={onTryAnotherWayClick}>{t("doTryAnotherWay")}</a>
+                                        <a href="#" id="try-another-way" onClick={onTryAnotherWayClick}>{msg("doTryAnotherWay")}</a>
                                     </div>
                                 </div >
                             </form>

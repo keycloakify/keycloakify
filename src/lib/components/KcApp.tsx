@@ -8,7 +8,7 @@ import { Register } from "./Register";
 import { Info } from "./Info";
 import { Error } from "./Error";
 import { LoginResetPassword } from "./LoginResetPassword";
-
+import { LoginVerifyEmail } from "./LoginVerifyEmail";
 
 export const KcApp = memo((props: KcProps) => {
 
@@ -20,6 +20,7 @@ export const KcApp = memo((props: KcProps) => {
         case "info.ftl": return <Info {...props} />;
         case "error.ftl": return <Error {...props} />;
         case "login-reset-password.ftl": return <LoginResetPassword {...props} />;
+        case "login-verify-email.ftl": return <LoginVerifyEmail {...props} />;
     }
 
 });
