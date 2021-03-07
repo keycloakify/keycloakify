@@ -10,7 +10,7 @@ import type { LanguageLabel } from "./i18n/KcLanguageTag";
 type ExtractAfterStartingWith<Prefix extends string, StrEnum> = 
     StrEnum extends `${Prefix}${infer U}` ? U : never;
 
-export type KcContext = KcContext.Login | KcContext.Register | KcContext.Info | KcContext.Error;
+export type KcContext = KcContext.Login | KcContext.Register | KcContext.Info | KcContext.Error | KcContext.LoginResetPassword;
 export declare namespace KcContext {
 
     export type Template = {
@@ -43,7 +43,7 @@ export declare namespace KcContext {
             showUsername: boolean;
             showResetCredentials: boolean;
             showTryAnotherWayLink: boolean;
-            attemptedUsername?: boolean;
+            attemptedUsername?: string;
         };
         scripts: string[];
         message?: {
@@ -135,6 +135,13 @@ export declare namespace KcContext {
         pageId: "error.ftl";
         client?: {
             baseUrl?: string;
+        }
+    };
+
+    export type LoginResetPassword = Template & {
+        pageId: "login-reset-password.ftl";
+        realm: {
+            loginWithEmailAllowed: boolean;
         }
     };
 

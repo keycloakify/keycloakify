@@ -6,7 +6,8 @@ import type { KcProps } from "./KcProps";
 import { Login } from "./Login";
 import { Register } from "./Register";
 import { Info } from "./Info";
-import { Error } from "./Error";
+import { Error } from "./Error";
+import { LoginResetPassword } from "./LoginResetPassword";
 
 
 export const KcApp = memo((props: KcProps) => {
@@ -18,6 +19,7 @@ export const KcApp = memo((props: KcProps) => {
         case "register.ftl": return <Register {...props} />;
         case "info.ftl": return <Info {...props} />;
         case "error.ftl": return <Error {...props} />;
+        case "login-reset-password.ftl": return <LoginResetPassword {...props} />;
     }
 
 });

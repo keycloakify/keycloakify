@@ -24,7 +24,7 @@ export type TemplateProps = {
     headerNode: ReactNode;
     showUsernameNode?: ReactNode;
     formNode: ReactNode;
-    displayInfoNode?: ReactNode;
+    infoNode?: ReactNode;
 } & KcTemplateProps;
 
 
@@ -39,7 +39,7 @@ export const Template = memo((props: TemplateProps) => {
         headerNode,
         showUsernameNode = null,
         formNode,
-        displayInfoNode = null
+        infoNode = null
     } = props;
 
     useEffect(() => { console.log("Rendering this page with react using keycloakify") }, []);
@@ -279,7 +279,7 @@ export const Template = memo((props: TemplateProps) => {
 
                             <div id="kc-info" className={cx(props.kcSignUpClass)}>
                                 <div id="kc-info-wrapper" className={cx(props.kcInfoAreaWrapperClass)}>
-                                    {displayInfoNode}
+                                    {infoNode}
                                 </div>
                             </div>
                         }

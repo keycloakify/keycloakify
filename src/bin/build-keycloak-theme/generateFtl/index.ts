@@ -9,7 +9,7 @@ import fs from "fs";
 import { join as pathJoin } from "path";
 import { objectKeys } from "evt/tools/typeSafety/objectKeys";
 
-export const pageIds= [ "login.ftl", "register.ftl", "info.ftl", "error.ftl"] as const;
+export const pageIds= [ "login.ftl", "register.ftl", "info.ftl", "error.ftl", "login-reset-password.ftl"] as const;
 
 export type PageId =  typeof pageIds[number];
 
