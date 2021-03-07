@@ -24,8 +24,7 @@ export function getKcLanguageTagLabel(language: KcLanguageTag): LanguageLabel {
         case "no": return "Norsk";
         case "pt-BR": return "Português (Brasil)";
         case "ru": return "Русский";
-        case "sk":
-        case "sv": return "Slovenčina";
+        case "sk": return "Slovenčina";
         case "ja": return "日本語";
         case "pl": return "Polish";
         case "zh-CN": return "中文简体"
@@ -33,7 +32,7 @@ export function getKcLanguageTagLabel(language: KcLanguageTag): LanguageLabel {
         case "lt": return "Lietuvių";
         case "cs": return "Čeština";
         case "nl": return "Nederlands";
-        case "tr": return "tr"
+        case "tr": return "tr";
         /* spell-checker: enable */
     }
 
