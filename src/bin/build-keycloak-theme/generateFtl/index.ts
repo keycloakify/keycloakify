@@ -9,14 +9,19 @@ import fs from "fs";
 import { join as pathJoin } from "path";
 import { objectKeys } from "evt/tools/typeSafety/objectKeys";
 
-export type PageId =  "login.ftl" | "register.ftl" | "info.ftl" | "error.ftl";
+export const pageIds= [ "login.ftl", "register.ftl", "info.ftl", "error.ftl"] as const;
+
+export type PageId =  typeof pageIds[number];
+
+function loadAdjacentFile(fileBasename: string){
+    return fs.readFileSync(pathJoin(__dirname, fileBasename))
+        .toString("utf8");
+};
 
 function loadFtlFile(ftlFileBasename: PageId | "template.ftl") {
-    return fs.readFileSync(pathJoin(__dirname, ftlFileBasename))
-        .toString("utf8")
+    return loadAdjacentFile(ftlFileBasename)
         .match(/^<script>const _=((?:.|\n)+)<\/script>[\n]?$/)![1];
 }
-
 
 export function generateFtlFilesCodeFactory(
     params: {
@@ -40,7 +45,6 @@ export function generateFtlFilesCodeFactory(
         $(element).text(fixedJsCode);
 
     });
-
 
     ([
         ["link", "href"],
@@ -68,9 +72,11 @@ export function generateFtlFilesCodeFactory(
                 '    <#list scripts as script>',
                 '        <script src="${script}" type="text/javascript"></script>',
                 '    </#list>',
-                '</#if>',
+                '</#if>'
             ].join("\n")
     };
+
+    const pageSpecificCodePlaceholder = "<!-- dIddLqMeOedErIdLsPdNdI9dSl42sw -->";
 
     $("head").prepend(
         [
@@ -83,18 +89,25 @@ export function generateFtlFilesCodeFactory(
                 '</style>',
                 ''
             ]),
+            ...["Object.deepAssign.js", "String.htmlUnescape.js"].map(
+                fileBasename => [
+                    "<script>",
+                    loadAdjacentFile(fileBasename),
+                    "</script>"
+                ].join("\n")
+            ),
             '<script>',
-            '    Object.deepAssign(',
-            `        window.${ftlValuesGlobalName},`,
+            `    window.${ftlValuesGlobalName}= Object.assign(`,
+            `        {},`,
             `        ${objectKeys(ftlCommonPlaceholders)[0]}`,
             '    );',
             '</script>',
             '',
-            objectKeys(ftlCommonPlaceholders)[1],
-            ''
+            pageSpecificCodePlaceholder,
+            '',
+            objectKeys(ftlCommonPlaceholders)[1]
         ].join("\n"),
     );
-
 
     const partiallyFixedIndexHtmlCode = $.html();
 
@@ -113,50 +126,22 @@ export function generateFtlFilesCodeFactory(
             ...ftlCommonPlaceholders
         };
 
-        $("head").prepend(
-            [
-                '',
-                '<script>',
-                '',
-                `    window.${ftlValuesGlobalName} = Object.assign(`,
-                `        { "pageId": "${pageId}" },`,
-                `        ${objectKeys(ftlPlaceholders)[0]}`,
-                '    );',
-                '',
-                '    Object.defineProperty(',
-                '        Object,',
-                '        "deepAssign",',
-                '        {',
-                '            "value": function callee(target, source) {',
-                '                Object.keys(source).forEach(function (key) {',
-                '                    var value = source[key];',
-                '                    if( target[key] === undefined ){',
-                '                            target[key]= value;',
-                '                            return;',
-                '                    }',
-                '                    if( value instanceof Object ){',
-                '                            if( value instanceof Array ){',
-                '                                value.forEach(function (entry){',
-                '                                        target[key].push(entry);',
-                '                                });',
-                '                                return;',
-                '                            }',
-                '                            callee(target[key], value);',
-                '                            return;',
-                '                    }',
-                '                    target[key]= value;',
-                '                });',
-                '                return target;',
-                '            }',
-                '        }',
-                '    );',
-                '',
-                '</script>',
-                ''
-            ].join("\n")
-        );
-
-        let ftlCode = $.html();
+        let ftlCode = $.html()
+            .replace(
+                pageSpecificCodePlaceholder,
+                [
+                    '<script>',
+                    `    Object.assign(`,
+                    `        window.${ftlValuesGlobalName},`,
+                    `        { "pageId": "${pageId}" }`,
+                    '    );',
+                    `    Object.assign(`,
+                    `        window.${ftlValuesGlobalName},`,
+                    `        ${objectKeys(ftlPlaceholders)[0]}`,
+                    '    );',
+                    '</script>'
+                ].join("\n")
+            );
 
         objectKeys(ftlPlaceholders)
             .forEach(id => ftlCode = ftlCode.replace(id, ftlPlaceholders[id]));

@@ -6,7 +6,7 @@ import {
     replaceImportFromStaticInCssCode,
     replaceImportFromStaticInJsCode
 } from "./replaceImportFromStatic";
-import { generateFtlFilesCodeFactory } from "./generateFtl";
+import { generateFtlFilesCodeFactory, pageIds } from "./generateFtl";
 import { builtinThemesUrl } from "../install-builtin-keycloak-themes";
 import { downloadAndUnzip } from "../tools/downloadAndUnzip";
 import * as child_process from "child_process";
@@ -70,14 +70,14 @@ export function generateKeycloakThemeResources(
         ).toString("utf8")
     });
 
-    (["login.ftl", "register.ftl"] as const).forEach(pageId => {
+    pageIds.forEach(pageId => {
 
         const { ftlCode } = generateFtlFilesCode({ pageId });
 
         fs.writeFileSync(
             pathJoin(themeDirPath, pageId),
             Buffer.from(ftlCode, "utf8")
-        )
+        );
 
     });
 

@@ -708,6 +708,11 @@ has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
+html-escaper@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/html-escaper/-/html-escaper-3.0.3.tgz#4d336674652beb1dcbc29ef6b6ba7f6be6fdfed6"
+  integrity sha512-RuMffC89BOWQoY0WKGpIhn5gX3iI54O6nRA0yC124NYVtzjmFWBIiFd8M0x+ZdX0P9R4lADg1mgP8C7PxGOWuQ==
+
 htmlparser2@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/htmlparser2/-/htmlparser2-6.0.0.tgz#c2da005030390908ca4c91e5629e418e0665ac01"
@@ -932,10 +937,10 @@ path-type@^4.0.0:
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
-powerhooks@^0.0.17:
-  version "0.0.17"
-  resolved "https://registry.yarnpkg.com/powerhooks/-/powerhooks-0.0.17.tgz#840295271d989c27b83047fad44973434c509ba7"
-  integrity sha512-9z0C5pnVJI3SRKgcoAjbOxVa1lf/e58N+YdByThue1C4DUqfp8umx9XvrRJJ3dGwl6A0RRrJlyPM1KXjVChQMQ==
+powerhooks@^0.0.19:
+  version "0.0.19"
+  resolved "https://registry.yarnpkg.com/powerhooks/-/powerhooks-0.0.19.tgz#86f4157dbde32cd44082c756ab747c64f6045449"
+  integrity sha512-yaODFWkflrZCSz4lvRQ2O4AjolheiE6oXa1F4mny2LUOwai4ip+zer16fgXEM53R+IiDnqj6ff8wooU5x4GslQ==
   dependencies:
     evt "2.0.0-beta.13"
     memoizee "^0.4.15"

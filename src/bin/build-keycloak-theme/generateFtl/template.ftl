@@ -94,7 +94,7 @@
 
             return { 
                 "type": "${message.type}",
-                "summary": "${kcSanitize(message.summary)?no_esc}"
+                "summary": String.htmlUnescape("${message.summary}")
             };
 
         </#if>

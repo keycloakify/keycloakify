@@ -14,7 +14,7 @@
         "grant-exec-perms": "node dist/bin/tools/grant-exec-perms.js",
         "test": "node dist/test",
         "enable_short_import_path": "yarn build && denoify_enable_short_npm_import_path",
-        "copy-files": "copyfiles -u 1 src/**/*.ftl src/**/*.xml dist/",
+        "copy-files": "copyfiles -u 1 src/**/*.ftl src/**/*.xml src/**/*.js dist/",
         "generate-messages": "node dist/bin/generate-i18n-messages.js",
         "watch": "tsc -w"
     },
@@ -52,11 +52,11 @@
         "typescript": "^4.1.5"
     },
     "dependencies": {
-        "scripting-tools": "^0.19.13",
         "cheerio": "^1.0.0-rc.5",
         "evt": "2.0.0-beta.15",
         "minimal-polyfills": "^2.1.6",
-        "powerhooks": "^0.0.17",
+        "powerhooks": "^0.0.19",
+        "scripting-tools": "^0.19.13",
         "tss-react": "^0.0.11"
     }
 }
