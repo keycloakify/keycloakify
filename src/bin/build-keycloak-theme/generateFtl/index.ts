@@ -131,11 +131,11 @@ export function generateFtlFilesCodeFactory(
                 pageSpecificCodePlaceholder,
                 [
                     '<script>',
-                    `    Object.assign(`,
+                    `    Object.deepAssign(`,
                     `        window.${ftlValuesGlobalName},`,
                     `        { "pageId": "${pageId}" }`,
                     '    );',
-                    `    Object.assign(`,
+                    `    Object.deepAssign(`,
                     `        window.${ftlValuesGlobalName},`,
                     `        ${objectKeys(ftlPlaceholders)[0]}`,
                     '    );',
