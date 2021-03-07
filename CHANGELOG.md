@@ -1,3 +1,8 @@
+### **0.1.3** (2021-03-07)  
+  
+- Implement LoginVerifyEmail  
+- Implement login-reset-password.ftl    
+  
 ### **0.1.2** (2021-03-07)  
   
 - Fix build  
