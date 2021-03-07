@@ -1,3 +1,8 @@
+### **0.1.2** (2021-03-07)  
+  
+- Fix build  
+- Fix build    
+  
 ### **0.1.1** (2021-03-06)  
   
 - Implement Error page  
