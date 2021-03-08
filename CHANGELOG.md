@@ -1,3 +1,13 @@
+## **0.2.1** (2021-03-08)  
+  
+- Update ci.yaml  
+- Update readme  
+- Update readme  
+- update deps  
+- Update readme  
+- Add all mocks for testing  
+- many small fixes    
+  
 ### **0.1.6** (2021-03-07)  
   
 - Fix Turkish    
