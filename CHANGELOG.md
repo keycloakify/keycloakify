@@ -1,3 +1,9 @@
+### **0.2.2** (2021-03-08)  
+  
+- Add table of content  
+- Update README.md  
+- Update README.md    
+  
 ## **0.2.1** (2021-03-08)  
   
 - Update ci.yaml  
