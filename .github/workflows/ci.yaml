@@ -10,7 +10,7 @@ on:
 jobs:
 
   test_node:
-    runs-on: ubuntu-latest
+    runs-on: macos-10.15
     strategy:
       matrix:
         node: [ '14', '13', '12' ]
