@@ -93,7 +93,7 @@ reactDom.render(
     <img src="https://user-images.githubusercontent.com/6702424/110261408-688d6280-7fb0-11eb-9822-7003d268b459.png">
 </p>
 
-### Changing the look and feel
+### Changing the look **and** feel
 
 If you want to really re-implement the pages the best approach is to 
 create you own version of the [`<KcApp />`](https://github.com/garronej/keycloakify/blob/develop/src/lib/components/KcApp.tsx).
