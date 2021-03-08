@@ -30,6 +30,22 @@ Wouldn't it be great if we could just design the login and register pages as if 
 Here is `yarn add keycloakify` for you 🍸
 
 TODO: Insert video after.
+
+- [Motivations](#motivations)
+- [How to use](#how-to-use)
+  - [Setting up the build tool](#setting-up-the-build-tool)
+  - [Developing your login and register pages in your React app](#developing-your-login-and-register-pages-in-your-react-app)
+    - [Just changing the look](#just-changing-the-look)
+    - [Changing the look **and** feel](#changing-the-look-and-feel)
+    - [Hot reload](#hot-reload)
+- [How to implement context persistance](#how-to-implement-context-persistance)
+  - [If your keycloak is a subdomain of your app.](#if-your-keycloak-is-a-subdomain-of-your-app)
+  - [Else](#else)
+- [REQUIREMENTS](#requirements)
+- [API Reference](#api-reference)
+  - [The build tool](#the-build-tool)
+  - [The fronted lib ( imported into your react app )](#the-fronted-lib--imported-into-your-react-app-)
+
 # How to use
 ## Setting up the build tool
 
