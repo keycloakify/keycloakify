@@ -39,14 +39,14 @@ then configure your `package.json` build's script to build the keycloak's theme 
 
 Typically you will get: 
 
-`package.json`:
+`package.json`
 ```json
-  "devDependencies": {
+"devDependencies": {
     "keycloakify": "^0.0.10"
-  },
-  "scripts": {
+},
+"scripts": {
     "build": "react-scripts build && build-keycloak-theme"
-  },
+},
 ```
 
 Then build your app with `yarn run build` or `npm run build`, you will be provided with instructions
