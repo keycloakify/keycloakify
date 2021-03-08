@@ -11,9 +11,8 @@
     <img src="https://img.shields.io/npm/l/keycloakify">
 </p>
 
-<i>Ultimately this build tool Generates a Keycloak theme</i>
-
 <p align="center">
+    <i>Ultimately this build tool Generates a Keycloak theme</i>
     <img src="https://user-images.githubusercontent.com/6702424/110260457-a1c3d380-7fac-11eb-853a-80459b65626b.png">
 </p>
 
