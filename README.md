@@ -141,7 +141,7 @@ E.g: Your app url is `my-app.com` and your keycloak url is `auth.my-app.com`.
 In this case there is a very straightforward approach and it is to use [`powerhooks/useGlobalState`](https://github.com/garronej/powerhooks).
 Instead of `{ "persistance": "localStorage" }` use `{ "persistance": "cookie" }`.
 
-## Else
+## Else
 
 You will have to use URL parameters to passes states when you redirect to 
 the login page.
