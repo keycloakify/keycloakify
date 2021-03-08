@@ -117,7 +117,6 @@ export declare namespace KcContext {
         };
         passwordRequired: boolean;
         recaptchaRequired: boolean;
-        /** undefined if !recaptchaRequired */
         recaptchaSiteKey?: string;
     };
 

@@ -145,3 +145,57 @@ export const kcLoginContext: KcContext.Login = {
     },
     "registrationDisabled": false,
 };
+
+export const kcRegisterContext: KcContext.Register = {
+    ...kcTemplateContext,
+    "url": {
+        ...kcLoginContext.url,
+        "registrationAction": "http://localhost:8080/auth/realms/myrealm/login-actions/registration?session_code=gwZdUeO7pbYpFTRxiIxRg_QtzMbtFTKrNu6XW_f8asM&execution=12146ce0-b139-4bbd-b25b-0eccfee6577e&client_id=account&tab_id=uS8lYfebLa0"
+    },
+    "messagesPerField": {
+        "printIfExists": (...[,x]) => x
+    },
+    "scripts": [],
+    "isAppInitiatedAction": false,
+    "pageId": "register.ftl",
+    "register": {
+        "formData": {}
+    },
+    "passwordRequired": true,
+    "recaptchaRequired": false
+};
+
+export const kcInfoContext: KcContext.Info ={
+    ...kcTemplateContext,
+    "pageId": "info.ftl",
+    "messageHeader": "<Message header>",
+    "requiredActions": undefined,
+    "skipLink": false,
+    "actionUri": "#",
+    "client": {
+        "baseUrl": "#"
+    }
+};
+
+export const kcErrorContext: KcContext.Error = {
+    ...kcTemplateContext,
+    "pageId": "error.ftl",
+    "client": {
+        "baseUrl": "#"
+    }
+};
+
+export const kcLoginResetPasswordContext: KcContext.LoginResetPassword = {
+    ...kcTemplateContext,
+    "pageId": "login-reset-password.ftl",
+    "realm":{
+        ...kcTemplateContext.realm,
+        "loginWithEmailAllowed": false
+    }
+};
+
+export const kcLoginVerifyEmailContext: KcContext.LoginVerifyEmail = {
+    ...kcTemplateContext,
+    "pageId": "login-verify-email.ftl"
+};
+

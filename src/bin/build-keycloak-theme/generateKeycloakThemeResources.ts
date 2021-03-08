@@ -11,7 +11,7 @@ import { builtinThemesUrl } from "../install-builtin-keycloak-themes";
 import { downloadAndUnzip } from "../tools/downloadAndUnzip";
 import * as child_process from "child_process";
 import { ftlValuesGlobalName } from "./ftlValuesGlobalName";
-import { resourcesCommonPath, resourcesPath, subDirOfPublicDirBasename } from "../../lib/kcMockContext/urlResourcesPath";
+import { resourcesCommonPath, resourcesPath, subDirOfPublicDirBasename } from "../../lib/kcContextMocks/urlResourcesPath";
 
 export function generateKeycloakThemeResources(
     params: {

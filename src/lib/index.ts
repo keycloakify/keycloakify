@@ -15,4 +15,4 @@ export * from "./components/LoginVerifyEmail";
 
 export * from "./tools/assert";
 
-export * as kcContextMock from "./kcMockContext";
+export * as kcContextMocks from "./kcContextMocks";
