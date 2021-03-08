@@ -27,7 +27,7 @@ When we redirected to Keycloak the user suffers from a harsh context switch.
 Keycloak does offer a way to customize theses pages but it requires a lot of raw HTML/CSS hacking
 to reproduce the look and feel of a specific app. Not mentioning the maintenance cost of such an endeavour.  
 
-Wouldn't it be great if we could just design the login and register pages as if they where part of our app? 
+Wouldn't it be great if we could just design the login and register pages as if they where part of our app?  
 Here is `yarn add keycloakify` for you 🍸
 
 TODO: Insert video after.
