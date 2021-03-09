@@ -1,7 +1,7 @@
 
 import { transformCodebase } from "../tools/transformCodebase";
 import * as fs from "fs";
-import { join as pathJoin } from "path";
+import { join as pathJoin, basename as pathBasename } from "path";
 import {
     replaceImportFromStaticInCssCode,
     replaceImportFromStaticInJsCode
@@ -128,7 +128,7 @@ export function generateKeycloakThemeResources(
             Buffer.from([
                 resourcesPath,
                 resourcesCommonPath
-            ].join("\n"))
+            ].map(s=>pathBasename(s)).join("\n"))
         );
 
         fs.writeFileSync(
