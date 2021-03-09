@@ -41,6 +41,7 @@ TODO: Insert video after.
 - [How to implement context persistance](#how-to-implement-context-persistance)
   - [If your keycloak is a subdomain of your app.](#if-your-keycloak-is-a-subdomain-of-your-app)
   - [Else](#else)
+- [GitHub Actions](#github-actions)
 - [REQUIREMENTS](#requirements)
 - [API Reference](#api-reference)
   - [The build tool](#the-build-tool)
@@ -163,6 +164,11 @@ You will have to use URL parameters to passes states when you redirect to
 the login page.
 
 TOTO: Provide a clean way, as abstracted as possible, way to do that.
+
+# GitHub Actions
+
+[Here is a demo repo](https://github.com/garronej/keycloakify-demo-app) to show how to automate
+the building and publishing of the theme (the .jar file).
 
 # REQUIREMENTS
 
