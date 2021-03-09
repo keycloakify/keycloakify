@@ -1,3 +1,7 @@
+### **0.2.3** (2021-03-09)  
+  
+- fix gitignore generation    
+  
 ### **0.2.2** (2021-03-08)  
   
 - Add table of content  
