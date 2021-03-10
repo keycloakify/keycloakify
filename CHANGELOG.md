@@ -1,3 +1,7 @@
+### **0.2.4** (2021-03-10)  
+  
+- Update README.md    
+  
 ### **0.2.3** (2021-03-09)  
   
 - fix gitignore generation    
