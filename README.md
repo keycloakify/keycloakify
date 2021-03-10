@@ -61,11 +61,11 @@ Typically you will get:
     "keycloakify": "^0.0.10"
 },
 "scripts": {
-    "build": "react-scripts build && build-keycloak-theme"
+    "keycloak": "yarn build && build-keycloak-theme",
 },
 ```
 
-Then build your app with `yarn run build` or `npm run build`, you will be provided with instructions
+Then run `yarn keycloak` or `npm run keycloak`, you will be provided with instructions
 about how to load the theme into Keycloak.
 
 ## Developing your login and register pages in your React app
