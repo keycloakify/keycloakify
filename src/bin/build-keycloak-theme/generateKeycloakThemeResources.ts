@@ -1,7 +1,7 @@
 
 import { transformCodebase } from "../tools/transformCodebase";
 import * as fs from "fs";
-import { join as pathJoin, basename as pathBasename } from "path";
+import { join as pathJoin } from "path";
 import {
     replaceImportFromStaticInCssCode,
     replaceImportFromStaticInJsCode
@@ -98,11 +98,7 @@ export function generateKeycloakThemeResources(
             "destDirPath": themeResourcesDirPath
         });
 
-        //const keycloakResourcesWithinPublicDirPath = pathJoin(reactAppBuildDirPath, "..", "public", "keycloak_static");
-
         const reactAppPublicDirPath = pathJoin(reactAppBuildDirPath, "..", "public");
-
-
 
         transformCodebase({
             "srcDirPath": themeResourcesDirPath,
@@ -123,13 +119,6 @@ export function generateKeycloakThemeResources(
         const keycloakResourcesWithinPublicDirPath = 
             pathJoin(reactAppPublicDirPath, subDirOfPublicDirBasename);
 
-        fs.writeFileSync(
-            pathJoin(keycloakResourcesWithinPublicDirPath, ".gitignore"),
-            Buffer.from([
-                resourcesPath,
-                resourcesCommonPath
-            ].map(s=>pathBasename(s)).join("\n"))
-        );
 
         fs.writeFileSync(
             pathJoin(keycloakResourcesWithinPublicDirPath, "README.txt"),
@@ -137,6 +126,14 @@ export function generateKeycloakThemeResources(
                 "This is just a test folder that helps develop",
                 "the login and register page without having to yarn build"
             ].join(" "))
+        );
+
+        fs.writeFileSync(
+            pathJoin(keycloakResourcesWithinPublicDirPath, ".gitignore"),
+            Buffer.from([
+                "*",
+                "!.gitignore"
+            ].join("\n"))
         );
 
         child_process.execSync(`rm -r ${tmpDirPath}`);
