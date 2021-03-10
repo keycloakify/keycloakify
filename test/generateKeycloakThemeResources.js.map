@@ -1,0 +1,1 @@
+{"version":3,"file":"generateKeycloakThemeResources.js","sourceRoot":"","sources":["../src/test/generateKeycloakThemeResources.ts"],"names":[],"mappings":";;AACA,6BAAwC;AACxC,6GAA4G;AAC5G,qEAGmC;AAEnC,iDAAuB,EAAE,CAAC;AAE1B,+DAA8B,CAAC;IAC3B,WAAW,EAAE,WAAW;IACxB,sBAAsB,EAAE,WAAQ,CAAC,mDAAyB,EAAE,OAAO,CAAC;IACpE,8BAA8B,EAAE,WAAQ,CAAC,mDAAyB,EAAE,sBAAsB,CAAC;CAC9F,CAAC,CAAC"}
