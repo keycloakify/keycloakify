@@ -167,6 +167,8 @@ TOTO: Provide a clean way, as abstracted as possible, way to do that.
 
 # GitHub Actions
 
+![image](https://user-images.githubusercontent.com/6702424/110417203-6bae4e80-8095-11eb-8211-2592a5758668.png)
+
 [Here is a demo repo](https://github.com/garronej/keycloakify-demo-app) to show how to automate
 the building and publishing of the theme (the .jar file).
 
