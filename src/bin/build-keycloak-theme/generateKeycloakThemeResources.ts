@@ -130,10 +130,7 @@ export function generateKeycloakThemeResources(
 
         fs.writeFileSync(
             pathJoin(keycloakResourcesWithinPublicDirPath, ".gitignore"),
-            Buffer.from([
-                "*",
-                "!.gitignore"
-            ].join("\n"))
+            Buffer.from("*", "utf8")
         );
 
         child_process.execSync(`rm -r ${tmpDirPath}`);
