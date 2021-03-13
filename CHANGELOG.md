@@ -1,3 +1,7 @@
+### **0.2.6** (2021-03-10)  
+  
+- Fix generated gitignore    
+  
 ### **0.2.5** (2021-03-10)  
   
 - Fix generated .gitignore    

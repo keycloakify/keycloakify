@@ -61,11 +61,11 @@ Typically you will get:
     "keycloakify": "^0.0.10"
 },
 "scripts": {
-    "build": "react-scripts build && build-keycloak-theme"
+    "keycloak": "yarn build && build-keycloak-theme",
 },
 ```
 
-Then build your app with `yarn run build` or `npm run build`, you will be provided with instructions
+Then run `yarn keycloak` or `npm run keycloak`, you will be provided with instructions
 about how to load the theme into Keycloak.
 
 ## Developing your login and register pages in your React app
@@ -142,6 +142,8 @@ reactDom.render(
 
 then `yarn start` ...
 
+Checkout [this concrete example](https://github.com/garronej/keycloakify-demo-app/blob/main/src/index.tsx)
+
 
 *NOTE: keycloak-react-theming was renamed keycloakify since this video was recorded*
 [![kickstart_video](https://user-images.githubusercontent.com/6702424/108877866-f146ee80-75ff-11eb-8120-003b3c5f6dd8.png)](https://youtu.be/xTz0Rj7i2v8)
@@ -167,7 +169,7 @@ TOTO: Provide a clean way, as abstracted as possible, way to do that.
 
 # GitHub Actions
 
-![image](https://user-images.githubusercontent.com/6702424/110417203-6bae4e80-8095-11eb-8211-2592a5758668.png)
+![image](https://user-images.githubusercontent.com/6702424/110708305-c44b2c00-81fa-11eb-8152-eeaaac0883d6.png)
 
 [Here is a demo repo](https://github.com/garronej/keycloakify-demo-app) to show how to automate
 the building and publishing of the theme (the .jar file).
