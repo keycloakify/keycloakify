@@ -1,3 +1,9 @@
+### **0.2.7** (2021-03-13)  
+  
+- Bump version  
+- Update README.md  
+- Update README.md    
+  
 ### **0.2.6** (2021-03-10)  
   
 - Fix generated gitignore    
