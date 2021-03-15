@@ -31,6 +31,10 @@ Here is `yarn add keycloakify` for you 🍸
 
 TODO: Insert video after.
 
+Tested with the following Keycloak versions: 
+- [11.0.3](https://hub.docker.com/layers/jboss/keycloak/11.0.3/images/sha256-4438f1e51c1369371cb807dffa526e1208086b3ebb9cab009830a178de949782?context=explore)  
+- [12.0.4](https://hub.docker.com/layers/jboss/keycloak/12.0.4/images/sha256-67e0c88e69bd0c7aef972c40bdeb558a974013a28b3668ca790ed63a04d70584?context=explore)  
+
 - [Motivations](#motivations)
 - [How to use](#how-to-use)
   - [Setting up the build tool](#setting-up-the-build-tool)
