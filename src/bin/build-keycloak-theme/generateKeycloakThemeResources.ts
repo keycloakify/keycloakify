@@ -12,6 +12,7 @@ import { downloadAndUnzip } from "../tools/downloadAndUnzip";
 import * as child_process from "child_process";
 import { ftlValuesGlobalName } from "./ftlValuesGlobalName";
 import { resourcesCommonPath, resourcesPath, subDirOfPublicDirBasename } from "../../lib/kcContextMocks/urlResourcesPath";
+import { isInside } from "../tools/isInside";
 
 export function generateKeycloakThemeResources(
     params: {
@@ -31,6 +32,17 @@ export function generateKeycloakThemeResources(
         "destDirPath": pathJoin(themeDirPath, "resources", "build"),
         "srcDirPath": reactAppBuildDirPath,
         "transformSourceCode": ({ filePath, sourceCode }) => {
+
+            //NOTE: Prevent cycles, excludes the folder we generated for debug in public/
+            if (
+                isInside({
+                    "dirPath": pathJoin(reactAppBuildDirPath, subDirOfPublicDirBasename),
+                    filePath
+                })
+            ) {
+                return undefined;
+            }
+
 
             if (/\.css?$/i.test(filePath)) {
 
@@ -91,7 +103,7 @@ export function generateKeycloakThemeResources(
             "destDirPath": tmpDirPath
         });
 
-        const themeResourcesDirPath= pathJoin(themeDirPath, "resources");
+        const themeResourcesDirPath = pathJoin(themeDirPath, "resources");
 
         transformCodebase({
             "srcDirPath": pathJoin(tmpDirPath, "keycloak", "login", "resources"),
@@ -103,7 +115,7 @@ export function generateKeycloakThemeResources(
         transformCodebase({
             "srcDirPath": themeResourcesDirPath,
             "destDirPath": pathJoin(
-                reactAppPublicDirPath, 
+                reactAppPublicDirPath,
                 resourcesPath
             )
         });
@@ -116,7 +128,7 @@ export function generateKeycloakThemeResources(
             )
         });
 
-        const keycloakResourcesWithinPublicDirPath = 
+        const keycloakResourcesWithinPublicDirPath =
             pathJoin(reactAppPublicDirPath, subDirOfPublicDirBasename);
 
 
