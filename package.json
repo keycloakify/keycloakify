@@ -13,7 +13,6 @@
         "build": "yarn clean && tsc && yarn grant-exec-perms && yarn copy-files",
         "grant-exec-perms": "node dist/bin/tools/grant-exec-perms.js",
         "test": "node dist/test",
-        "enable_short_import_path": "yarn build && denoify_enable_short_npm_import_path",
         "copy-files": "copyfiles -u 1 src/**/*.ftl src/**/*.xml src/**/*.js dist/",
         "generate-messages": "node dist/bin/generate-i18n-messages.js",
         "watch": "tsc -w"
@@ -45,7 +44,6 @@
         "@types/node": "^10.0.0",
         "@types/react": "^17.0.0",
         "copyfiles": "^2.4.1",
-        "denoify": "^0.6.5",
         "properties-parser": "^0.3.1",
         "react": "^17.0.1",
         "rimraf": "^3.0.2",
