@@ -1,3 +1,7 @@
+### **0.2.10** (2021-03-19)  
+  
+- Remove dependency to denoify    
+  
 ### **0.2.9** (2021-03-19)  
   
 - Update deps and CI workflow    
