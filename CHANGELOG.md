@@ -1,3 +1,9 @@
+### **0.2.8** (2021-03-19)  
+  
+- Bugfix: keycloak_build that grow and grow in size  
+- Add disclaimer about maitainment strategy  
+- Add a note for tested version support    
+  
 ### **0.2.7** (2021-03-13)  
   
 - Bump version  
