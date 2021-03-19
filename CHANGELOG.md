@@ -1,3 +1,7 @@
+### **0.2.9** (2021-03-19)  
+  
+- Update deps and CI workflow    
+  
 ### **0.2.8** (2021-03-19)  
   
 - Bugfix: keycloak_build that grow and grow in size  
