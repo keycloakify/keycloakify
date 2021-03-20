@@ -1,3 +1,9 @@
+## **0.3.0** (2021-03-20)  
+  
+- Bump version  
+- Feat: Cary over states using URL search params  
+- Bugfix: with kcHtmlClass    
+  
 ### **0.2.10** (2021-03-19)  
   
 - Remove dependency to denoify    
