@@ -114,9 +114,13 @@ export const Template = memo((props: TemplateProps) => {
             })
         );
 
-        document.getElementsByTagName("html")[0]
-            .classList
-            .add(cx(props.kcHtmlClass));
+        if (props.kcHtmlClass !== undefined) {
+
+            document.getElementsByTagName("html")[0]
+                .classList
+                .add(...cx(props.kcHtmlClass).split(" "));
+
+        }
 
         return () => { isUnmounted = true; };
 
@@ -152,7 +156,7 @@ export const Template = memo((props: TemplateProps) => {
                                     <ul>
                                         {
                                             locale.supported.map(
-                                                ({ languageTag  }) =>
+                                                ({ languageTag }) =>
                                                     <li key={languageTag} className="kc-dropdown-item">
                                                         <a href="#" onClick={onChangeLanguageClickFactory(languageTag)}>
                                                             {getKcLanguageTagLabel(languageTag)}
@@ -218,21 +222,21 @@ export const Template = memo((props: TemplateProps) => {
                                         </div>
                                     </div>
                                 ) : (
-                                        <>
-                                            {showUsernameNode}
-                                            <div className={cx(props.kcFormGroupClass)}>
-                                                <div id="kc-username">
-                                                    <label id="kc-attempted-username">{auth?.attemptedUsername}</label>
-                                                    <a id="reset-login" href={url.loginRestartFlowUrl}>
-                                                        <div className="kc-login-tooltip">
-                                                            <i className={cx(props.kcResetFlowIcon)}></i>
-                                                            <span className="kc-tooltip-text">{msg("restartLoginTooltip")}</span>
-                                                        </div>
-                                                    </a>
-                                                </div>
+                                    <>
+                                        {showUsernameNode}
+                                        <div className={cx(props.kcFormGroupClass)}>
+                                            <div id="kc-username">
+                                                <label id="kc-attempted-username">{auth?.attemptedUsername}</label>
+                                                <a id="reset-login" href={url.loginRestartFlowUrl}>
+                                                    <div className="kc-login-tooltip">
+                                                        <i className={cx(props.kcResetFlowIcon)}></i>
+                                                        <span className="kc-tooltip-text">{msg("restartLoginTooltip")}</span>
+                                                    </div>
+                                                </a>
                                             </div>
-                                        </>
-                                    )
+                                        </div>
+                                    </>
+                                )
                             )
                     }
                 </header>
