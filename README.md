@@ -45,9 +45,7 @@ Tested with the following Keycloak versions:
     - [Just changing the look](#just-changing-the-look)
     - [Changing the look **and** feel](#changing-the-look-and-feel)
     - [Hot reload](#hot-reload)
-- [How to implement context persistance](#how-to-implement-context-persistance)
-  - [If your keycloak is a subdomain of your app.](#if-your-keycloak-is-a-subdomain-of-your-app)
-  - [Else](#else)
+- [Implement context persistance (optional)](#implement-context-persistance-optional)
 - [GitHub Actions](#github-actions)
 - [REQUIREMENTS](#requirements)
 - [API Reference](#api-reference)
@@ -154,25 +152,64 @@ Checkout [this concrete example](https://github.com/garronej/keycloakify-demo-ap
 
 *NOTE: keycloak-react-theming was renamed keycloakify since this video was recorded*
 [![kickstart_video](https://user-images.githubusercontent.com/6702424/108877866-f146ee80-75ff-11eb-8120-003b3c5f6dd8.png)](https://youtu.be/xTz0Rj7i2v8)
-# How to implement context persistance
+# Implement context persistance (optional)
 
-If you want dark mode preference, language and others users preferences 
-to persist within the page served by keycloak here are the methods you can
-adopt.
+If, before logging in, a user has selected a specific language 
+you don't want it to be reset to default when the user gets redirected to
+the login or register pages.  
+  
+Same goes for the dark mode, you don't want, if the user had it enabled
+to show the login page with light themes.  
+  
+The problem is that you are probably using `localStorage` to persist theses values across
+reload but, as the Keycloak pages are not served on the same domain that the rest of your
+app you won't be able to carry over states using `localStorage`.  
 
-## If your keycloak is a subdomain of your app.
+The only reliable solution is to inject parameters into the URL before
+redirecting to Keycloak. We integrate with 
+[`keycloak-js`](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/javascript-adapter.adoc), 
+by providing you a way to tell `keycloak-js` that you would like to inject
+some search parameters before redirecting.  
 
-E.g: Your app url is `my-app.com` and your keycloak url is `auth.my-app.com`.
+The method also works with [`@react-keycloak/web`](https://www.npmjs.com/package/@react-keycloak/web) (use the `initOptions`).
 
-In this case there is a very straightforward approach and it is to use [`powerhooks/useGlobalState`](https://github.com/garronej/powerhooks).
-Instead of `{ "persistance": "localStorage" }` use `{ "persistance": "cookie" }`.
+You can implement your own mechanism to pass the states in the URL and
+restore it on the other side but we recommend using `powerhooks/useGlobalState`
+from the library [`powerhooks`](https://www.powerhooks.dev) that provide an elegant
+way to handle states such as `isDarkModeEnabled` or `selectedLanguage`.
 
-## Else
+Let's modify [the example](https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/javascript-adapter.adoc) from the official `keycloak-js` documentation to
+enables the states of `useGlobalStates` to be injected in the URL before redirecting.  
+Note that the states are automatically restored on the other side by `powerhooks`
 
-You will have to use URL parameters to passes states when you redirect to 
-the login page.
+```typescript
+import keycloak_js from "keycloak-js";
+import { injectGlobalStatesInSearchParams } from "powerhooks/useGlobalState";
+import { createKeycloakAdapter } from "keycloakify";
 
-TOTO: Provide a clean way, as abstracted as possible, way to do that.
+//...
+
+const keycloakInstance = keycloak_js({
+    "url": "http://keycloak-server/auth",
+    "realm": "myrealm",
+    "clientId": "myapp"
+});
+
+keycloakInstance.init({
+    "onLoad": 'check-sso',
+    "silentCheckSsoRedirectUri": window.location.origin + "/silent-check-sso.html",
+    "adapter": createKeycloakAdapter({
+        "transformUrlBeforeRedirect": injectGlobalStatesInSearchParams,
+        keycloakInstance
+    })
+});
+
+//...
+```
+
+If you really want to go the extra miles and avoid having the white
+flash of the blank html before the js bundle have been evaluated
+[here is a snippet](https://github.com/InseeFrLab/onyxia-ui/blob/a77eb502870cfe6878edd0d956c646d28746d053/public/index.html#L5-L54) that you can place in your `public/index.html` if you are using `powerhooks/useGlobalState`.
 
 # GitHub Actions
 
