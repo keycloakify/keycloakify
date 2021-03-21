@@ -25,7 +25,7 @@ export type TemplateProps = {
     showUsernameNode?: ReactNode;
     formNode: ReactNode;
     infoNode?: ReactNode;
-} & { kcContext: KcContext.Template; }  & KcTemplateProps;
+} & { kcContext: KcContext.Template; } & KcTemplateProps;
 
 
 export const Template = memo((props: TemplateProps) => {
@@ -60,34 +60,35 @@ export const Template = memo((props: TemplateProps) => {
     );
 
     const {
-        realm, locale, auth, 
+        realm, locale, auth,
         url, message, isAppInitiatedAction
-    }= kcContext;
+    } = kcContext;
 
-    useEffect(()=>{
+    useEffect(() => {
 
-        if( !realm.internationalizationEnabled ){
+        if (!realm.internationalizationEnabled) {
             return;
         }
 
-        assert( locale !== undefined );
+        assert(locale !== undefined);
 
-        if( kcLanguageTag === getBestMatchAmongKcLanguageTag(locale.current) ){
+        if (kcLanguageTag === getBestMatchAmongKcLanguageTag(locale.current)) {
             return;
         }
 
-        window.location.href = 
+        window.location.href =
             locale.supported.find(({ languageTag }) => languageTag === kcLanguageTag)!.url;
 
-    },[kcLanguageTag]);
+    }, [kcLanguageTag]);
 
     const [isExtraCssLoaded, setExtraCssLoaded] = useReducer(() => true, false);
 
     useEffect(() => {
 
         let isUnmounted = false;
+        const cleanups: (() => void)[] = [];
 
-        const toArr = (x: string | readonly string[] | undefined) => 
+        const toArr = (x: string | readonly string[] | undefined) =>
             typeof x === "string" ? x.split(" ") : x ?? [];
 
         Promise.all(
@@ -116,15 +117,27 @@ export const Template = memo((props: TemplateProps) => {
 
         if (props.kcHtmlClass !== undefined) {
 
-            document.getElementsByTagName("html")[0]
-                .classList
-                .add(...cx(props.kcHtmlClass).split(" "));
+            const htmlClassList =
+                document.getElementsByTagName("html")[0]
+                    .classList;
+
+            const tokens = cx(props.kcHtmlClass).split(" ")
+
+            htmlClassList.add(...tokens);
+
+            cleanups.push(() => htmlClassList.remove(...tokens));
 
         }
 
-        return () => { isUnmounted = true; };
+        return () => {
 
-    }, []);
+            isUnmounted = true;
+
+            cleanups.forEach(f => f());
+
+        };
+
+    }, [props.kcHeaderClass]);
 
     if (!isExtraCssLoaded) {
         return null;
