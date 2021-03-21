@@ -27,7 +27,6 @@ export type TemplateProps = {
     infoNode?: ReactNode;
 } & { kcContext: KcContext.Template; } & KcTemplateProps;
 
-
 export const Template = memo((props: TemplateProps) => {
 
     const {
@@ -137,7 +136,7 @@ export const Template = memo((props: TemplateProps) => {
 
         };
 
-    }, [props.kcHeaderClass]);
+    }, [props.kcHtmlClass]);
 
     if (!isExtraCssLoaded) {
         return null;
