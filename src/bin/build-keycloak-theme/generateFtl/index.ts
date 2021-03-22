@@ -29,16 +29,25 @@ function loadFtlFile(ftlFileBasename: PageId | "template.ftl") {
     }
 }
 
+export type Mode = {
+    type: "standalone";
+    urlPathname: string;
+} | {
+    type: "static fetched from app";
+    urlPathname: string;
+    urlOrigin: string;
+}
+
 export function generateFtlFilesCodeFactory(
     params: {
         ftlValuesGlobalName: string;
         cssGlobalsToDefine: Record<string, string>;
         indexHtmlCode: string;
-        urlPathname: string;
+        mode: Mode;
     }
 ) {
 
-    const { ftlValuesGlobalName, cssGlobalsToDefine, indexHtmlCode, urlPathname } = params;
+    const { ftlValuesGlobalName, cssGlobalsToDefine, indexHtmlCode, mode } = params;
 
     const $ = cheerio.load(indexHtmlCode);
 
@@ -46,7 +55,8 @@ export function generateFtlFilesCodeFactory(
 
         const { fixedJsCode } = replaceImportFromStaticInJsCode({
             ftlValuesGlobalName,
-            "jsCode": $(element).html()!
+            "jsCode": $(element).html()!,
+            mode
         });
 
         $(element).text(fixedJsCode);
@@ -65,13 +75,24 @@ export function generateFtlFilesCodeFactory(
                 return;
             }
 
-            $(element).attr(
-                attrName,
-                href.replace(
-                    new RegExp(`^${urlPathname.replace(/\//g, "\\/")}`),
-                    "${url.resourcesPath}/build/"
-                )
-            );
+            switch (mode.type) {
+                case "static fetched from app":
+                    $(element).attr(
+                        attrName,
+                        href.replace(/^\//, `${mode.urlOrigin}/`)
+                    );
+                    break;
+                case "standalone":
+                    $(element).attr(
+                        attrName,
+                        href.replace(
+                            new RegExp(`^${mode.urlPathname.replace(/\//g, "\\/")}`),
+                            "${url.resourcesPath}/build/"
+                        )
+                    );
+                    break;
+            }
+
 
         })
     );
@@ -96,9 +117,9 @@ export function generateFtlFilesCodeFactory(
             ...(Object.keys(cssGlobalsToDefine).length === 0 ? [] : [
                 '',
                 '<style>',
-                generateCssCodeToDefineGlobals({ 
+                generateCssCodeToDefineGlobals({
                     cssGlobalsToDefine,
-                    urlPathname
+                    "urlPathname": mode.urlPathname
                 }).cssCodeToPrependInHead,
                 '</style>',
                 ''

@@ -1,19 +1,39 @@
 
 import * as crypto from "crypto";
 
+type Mode = {
+    type: "standalone";
+} | {
+    type: "static fetched from app";
+    urlOrigin: string;
+    urlPathname: string;
+}
+
 export function replaceImportFromStaticInJsCode(
     params: {
         ftlValuesGlobalName: string;
         jsCode: string;
+        mode: Mode;
     }
 ): { fixedJsCode: string; } {
 
-    const { jsCode, ftlValuesGlobalName } = params;
+    const { jsCode, ftlValuesGlobalName, mode } = params;
 
-    const fixedJsCode = jsCode!.replace(
-        /[a-z]+\.[a-z]+\+"static\//g,
-        `window.${ftlValuesGlobalName}.url.resourcesPath + "/build/static/`
-    );
+    const fixedJsCode = (() => {
+        switch (mode.type) {
+            case "standalone":
+                return jsCode!.replace(
+                    /[a-z]+\.[a-z]+\+"static\//g,
+                    `window.${ftlValuesGlobalName}.url.resourcesPath + "/build/static/`
+                );
+            case "static fetched from app":
+                return jsCode!.replace(
+                    /[a-z]+\.[a-z]+\+"static\//g,
+                    `"${mode.urlOrigin}${mode.urlPathname}static/`
+                );
+        }
+    })();
+
 
     return { fixedJsCode };
 
@@ -60,7 +80,7 @@ export function replaceImportFromStaticInCssCode(
 export function generateCssCodeToDefineGlobals(
     params: {
         cssGlobalsToDefine: Record<string, string>;
-        urlPathname: string; 
+        urlPathname: string;
     }
 ): {
     cssCodeToPrependInHead: string;
@@ -75,7 +95,7 @@ export function generateCssCodeToDefineGlobals(
                 .map(cssVariableName => [
                     `--${cssVariableName}:`,
                     cssGlobalsToDefine[cssVariableName]
-                        .replace(new RegExp(`url\\(${urlPathname.replace(/\//g,"\\/")}`, "g"),"url(${url.resourcesPath}/build/")
+                        .replace(new RegExp(`url\\(${urlPathname.replace(/\//g, "\\/")}`, "g"), "url(${url.resourcesPath}/build/")
                 ].join(" "))
                 .map(line => `    ${line};`),
             "}"

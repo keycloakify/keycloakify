@@ -1,7 +1,7 @@
 
 import { join as pathJoin } from "path";
 import { generateKeycloakThemeResources } from "../bin/build-keycloak-theme/generateKeycloakThemeResources";
-import { 
+import {
     setupSampleReactProject,
     sampleReactProjectDirPath
 } from "./setupSampleReactProject";
@@ -12,6 +12,9 @@ generateKeycloakThemeResources({
     "themeName": "keycloakify-demo-app",
     "reactAppBuildDirPath": pathJoin(sampleReactProjectDirPath, "build"),
     "keycloakThemeBuildingDirPath": pathJoin(sampleReactProjectDirPath, "build_keycloak_theme"),
-    "urlPathname": "/keycloakify-demo-app/"
+    "mode": {
+        "type": "standalone",
+        "urlPathname": "/keycloakify-demo-app/"
+    }
 });
 

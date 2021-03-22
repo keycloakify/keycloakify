@@ -6,10 +6,12 @@ import type { ParsedPackageJson } from "./generateJavaStackFiles";
 import { join as pathJoin, relative as pathRelative, basename as pathBasename } from "path";
 import * as child_process from "child_process";
 import { generateDebugFiles, containerLaunchScriptBasename } from "./generateDebugFiles";
-import { URL } from "url";
+import { URL } from "url";
 
 
 const reactProjectDirPath = process.cwd();
+
+const isStandalone = process.argv[2]?.toLowerCase() === "--standalone";
 
 const parsedPackageJson: ParsedPackageJson = require(pathJoin(reactProjectDirPath, "package.json"));
 
@@ -24,15 +26,50 @@ if (require.main === module) {
         keycloakThemeBuildingDirPath,
         "reactAppBuildDirPath": pathJoin(reactProjectDirPath, "build"),
         "themeName": parsedPackageJson.name,
-        "urlPathname": (()=>{
+        "mode": (() => {
 
-            const { homepage } = parsedPackageJson;
 
-            return homepage === undefined ? 
-                "/" : 
-                new URL(homepage).pathname.replace(/([^/])$/, "$1/");
+            const url = (() => {
+
+                const { homepage } = parsedPackageJson;
+
+                return homepage === undefined ?
+                    undefined :
+                    new URL(homepage);
+
+            })();
+
+            const urlPathname =
+                url === undefined ?
+                    "/" :
+                    url.pathname.replace(/([^/])$/, "$1/");
+
+
+
+            return isStandalone ?
+                {
+                    "type": "standalone",
+                    urlPathname
+                } as const
+                :
+                {
+                    "type": "static fetched from app",
+                    urlPathname,
+                    "urlOrigin": (() => {
+
+                        if (url === undefined) {
+                            console.error("ERROR: You must specify 'homepage' in your package.json");
+                            process.exit(-1);
+                        }
+
+                        return url.origin;
+
+                    })()
+
+                } as const;
 
         })()
+
     });
 
     const { jarFilePath } = generateJavaStackFiles({

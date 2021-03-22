@@ -19,7 +19,8 @@ const { fixedJsCode } = replaceImportFromStaticInJsCode({
                 3: "0664cdc0"
             }[e] + ".chunk.js"
         }
-    `
+    `,
+    "mode": { "type": "standalone" }
 });
 
 console.log({ fixedJsCode });

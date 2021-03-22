@@ -6,24 +6,25 @@ import {
     replaceImportFromStaticInCssCode,
     replaceImportFromStaticInJsCode
 } from "./replaceImportFromStatic";
-import { generateFtlFilesCodeFactory, pageIds } from "./generateFtl";
-import { builtinThemesUrl } from "../install-builtin-keycloak-themes";
-import { downloadAndUnzip } from "../tools/downloadAndUnzip";
+import { generateFtlFilesCodeFactory, pageIds, Mode } from "./generateFtl";
+import { builtinThemesUrl } from "../install-builtin-keycloak-themes";
+import { downloadAndUnzip } from "../tools/downloadAndUnzip";
 import * as child_process from "child_process";
-import { ftlValuesGlobalName } from "./ftlValuesGlobalName";
-import { resourcesCommonPath, resourcesPath, subDirOfPublicDirBasename } from "../../lib/kcContextMocks/urlResourcesPath";
-import { isInside } from "../tools/isInside";
+import { ftlValuesGlobalName } from "./ftlValuesGlobalName";
+import { resourcesCommonPath, resourcesPath, subDirOfPublicDirBasename } from "../../lib/kcContextMocks/urlResourcesPath";
+import { isInside } from "../tools/isInside";
+
 
 export function generateKeycloakThemeResources(
     params: {
-        urlPathname: string;
         themeName: string;
         reactAppBuildDirPath: string;
         keycloakThemeBuildingDirPath: string;
+        mode: Mode;
     }
 ) {
 
-    const { themeName, reactAppBuildDirPath, keycloakThemeBuildingDirPath, urlPathname } = params;
+    const { themeName, reactAppBuildDirPath, keycloakThemeBuildingDirPath, mode } = params;
 
     const themeDirPath = pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", themeName, "login");
 
@@ -44,30 +45,34 @@ export function generateKeycloakThemeResources(
                 return undefined;
             }
 
+            if (mode.type === "standalone") {
 
-            if (/\.css?$/i.test(filePath)) {
+                if (/\.css?$/i.test(filePath)) {
 
-                const { cssGlobalsToDefine, fixedCssCode } = replaceImportFromStaticInCssCode(
-                    { "cssCode": sourceCode.toString("utf8") }
-                );
+                    const { cssGlobalsToDefine, fixedCssCode } = replaceImportFromStaticInCssCode(
+                        { "cssCode": sourceCode.toString("utf8") }
+                    );
 
-                allCssGlobalsToDefine = {
-                    ...allCssGlobalsToDefine,
-                    ...cssGlobalsToDefine
-                };
+                    allCssGlobalsToDefine = {
+                        ...allCssGlobalsToDefine,
+                        ...cssGlobalsToDefine
+                    };
 
-                return { "modifiedSourceCode": Buffer.from(fixedCssCode, "utf8") };
+                    return { "modifiedSourceCode": Buffer.from(fixedCssCode, "utf8") };
 
-            }
+                }
 
-            if (/\.js?$/i.test(filePath)) {
+                if (/\.js?$/i.test(filePath)) {
 
-                const { fixedJsCode } = replaceImportFromStaticInJsCode({
-                    "jsCode": sourceCode.toString("utf8"),
-                    ftlValuesGlobalName
-                });
+                    const { fixedJsCode } = replaceImportFromStaticInJsCode({
+                        "jsCode": sourceCode.toString("utf8"),
+                        ftlValuesGlobalName,
+                        mode
+                    });
 
-                return { "modifiedSourceCode": Buffer.from(fixedJsCode, "utf8") };
+                    return { "modifiedSourceCode": Buffer.from(fixedJsCode, "utf8") };
+
+                }
 
             }
 
@@ -82,7 +87,7 @@ export function generateKeycloakThemeResources(
         "indexHtmlCode": fs.readFileSync(
             pathJoin(reactAppBuildDirPath, "index.html")
         ).toString("utf8"),
-        urlPathname
+        mode
     });
 
     pageIds.forEach(pageId => {
