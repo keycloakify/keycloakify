@@ -1,3 +1,7 @@
+### **0.3.5** (2021-03-22)  
+  
+- support homepage with urlPath    
+  
 ### **0.3.4** (2021-03-22)  
   
 - Bugfix: Import assets from CSS    
