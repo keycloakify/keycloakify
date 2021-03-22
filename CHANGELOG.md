@@ -1,3 +1,7 @@
+### **0.3.7** (2021-03-22)  
+  
+- (test) external asset mode by default    
+  
 ### **0.3.6** (2021-03-22)  
   
 - Fix previous release    
