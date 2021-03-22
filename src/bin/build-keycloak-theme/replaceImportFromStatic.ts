@@ -32,7 +32,7 @@ export function replaceImportFromStaticInCssCode(
 
     const cssGlobalsToDefine: Record<string, string> = {};
 
-    new Set(cssCode.match(/(url\(\/[^)]+\))/g) ?? [])
+    new Set(cssCode.match(/url\(\/[^)]+\)[^;}]*/g) ?? [])
         .forEach(match =>
             cssGlobalsToDefine[
             "url" + crypto
@@ -73,12 +73,8 @@ export function generateCssCodeToDefineGlobals(
             ...Object.keys(cssGlobalsToDefine)
                 .map(cssVariableName => [
                     `--${cssVariableName}:`,
-                    [
-                        "url(",
-                        "${url.resourcesPath}/build" +
-                        cssGlobalsToDefine[cssVariableName].match(/^url\(([^)]+)\)$/)![1],
-                        ")"
-                    ].join("")
+                    cssGlobalsToDefine[cssVariableName]
+                        .replace(/url\(/g, "url(${url.resourcesPath}/build")
                 ].join(" "))
                 .map(line => `    ${line};`),
             "}"
