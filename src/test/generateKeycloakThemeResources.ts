@@ -9,8 +9,9 @@ import {
 setupSampleReactProject();
 
 generateKeycloakThemeResources({
-    "themeName": "onyxia-ui",
+    "themeName": "keycloakify-demo-app",
     "reactAppBuildDirPath": pathJoin(sampleReactProjectDirPath, "build"),
-    "keycloakThemeBuildingDirPath": pathJoin(sampleReactProjectDirPath, "build_keycloak_theme")
+    "keycloakThemeBuildingDirPath": pathJoin(sampleReactProjectDirPath, "build_keycloak_theme"),
+    "urlPathname": "/keycloakify-demo-app/"
 });
 

@@ -6,6 +6,7 @@ import type { ParsedPackageJson } from "./generateJavaStackFiles";
 import { join as pathJoin, relative as pathRelative, basename as pathBasename } from "path";
 import * as child_process from "child_process";
 import { generateDebugFiles, containerLaunchScriptBasename } from "./generateDebugFiles";
+import { URL } from "url";
 
 
 const reactProjectDirPath = process.cwd();
@@ -22,7 +23,16 @@ if (require.main === module) {
     generateKeycloakThemeResources({
         keycloakThemeBuildingDirPath,
         "reactAppBuildDirPath": pathJoin(reactProjectDirPath, "build"),
-        "themeName": parsedPackageJson.name
+        "themeName": parsedPackageJson.name,
+        "urlPathname": (()=>{
+
+            const { homepage } = parsedPackageJson;
+
+            return homepage === undefined ? 
+                "/" : 
+                new URL(homepage).pathname.replace(/([^/])$/, "$1/");
+
+        })()
     });
 
     const { jarFilePath } = generateJavaStackFiles({

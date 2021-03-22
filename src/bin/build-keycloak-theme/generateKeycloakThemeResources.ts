@@ -16,13 +16,14 @@ import { isInside } from "../tools/isInside";
 
 export function generateKeycloakThemeResources(
     params: {
+        urlPathname: string;
         themeName: string;
         reactAppBuildDirPath: string;
         keycloakThemeBuildingDirPath: string;
     }
 ) {
 
-    const { themeName, reactAppBuildDirPath, keycloakThemeBuildingDirPath } = params;
+    const { themeName, reactAppBuildDirPath, keycloakThemeBuildingDirPath, urlPathname } = params;
 
     const themeDirPath = pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", themeName, "login");
 
@@ -80,7 +81,8 @@ export function generateKeycloakThemeResources(
         ftlValuesGlobalName,
         "indexHtmlCode": fs.readFileSync(
             pathJoin(reactAppBuildDirPath, "index.html")
-        ).toString("utf8")
+        ).toString("utf8"),
+        urlPathname
     });
 
     pageIds.forEach(pageId => {

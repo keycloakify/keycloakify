@@ -11,8 +11,8 @@ export function replaceImportFromStaticInJsCode(
     const { jsCode, ftlValuesGlobalName } = params;
 
     const fixedJsCode = jsCode!.replace(
-        /"static\//g,
-        `window.${ftlValuesGlobalName}.url.resourcesPath.replace(/^\\//,"") + "/build/static/`
+        / [^ ]+"static\//g,
+        ` window.${ftlValuesGlobalName}.url.resourcesPath + "/build/static/`
     );
 
     return { fixedJsCode };
@@ -60,12 +60,13 @@ export function replaceImportFromStaticInCssCode(
 export function generateCssCodeToDefineGlobals(
     params: {
         cssGlobalsToDefine: Record<string, string>;
+        urlPathname: string; 
     }
 ): {
     cssCodeToPrependInHead: string;
 } {
 
-    const { cssGlobalsToDefine } = params;
+    const { cssGlobalsToDefine, urlPathname } = params;
 
     return {
         "cssCodeToPrependInHead": [
@@ -74,7 +75,7 @@ export function generateCssCodeToDefineGlobals(
                 .map(cssVariableName => [
                     `--${cssVariableName}:`,
                     cssGlobalsToDefine[cssVariableName]
-                        .replace(/url\(/g, "url(${url.resourcesPath}/build")
+                        .replace(new RegExp(`url\\(${urlPathname.replace(/\//g,"\\/")}`, "g"),"url(${url.resourcesPath}/build/")
                 ].join(" "))
                 .map(line => `    ${line};`),
             "}"

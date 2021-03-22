@@ -11,9 +11,9 @@ import { objectKeys } from "evt/tools/typeSafety/objectKeys";
 
 export const pageIds = ["login.ftl", "register.ftl", "info.ftl", "error.ftl", "login-reset-password.ftl", "login-verify-email.ftl"] as const;
 
-export type PageId =  typeof pageIds[number];
+export type PageId = typeof pageIds[number];
 
-function loadAdjacentFile(fileBasename: string){
+function loadAdjacentFile(fileBasename: string) {
     return fs.readFileSync(pathJoin(__dirname, fileBasename))
         .toString("utf8");
 };
@@ -34,10 +34,11 @@ export function generateFtlFilesCodeFactory(
         ftlValuesGlobalName: string;
         cssGlobalsToDefine: Record<string, string>;
         indexHtmlCode: string;
+        urlPathname: string;
     }
 ) {
 
-    const { ftlValuesGlobalName, cssGlobalsToDefine, indexHtmlCode } = params;
+    const { ftlValuesGlobalName, cssGlobalsToDefine, indexHtmlCode, urlPathname } = params;
 
     const $ = cheerio.load(indexHtmlCode);
 
@@ -60,11 +61,17 @@ export function generateFtlFilesCodeFactory(
 
             const href = $(element).attr(attrName);
 
-            if (!href?.startsWith("/")) {
+            if (href === undefined) {
                 return;
             }
 
-            $(element).attr(attrName, "${url.resourcesPath}/build" + href);
+            $(element).attr(
+                attrName,
+                href.replace(
+                    new RegExp(`^${urlPathname.replace(/\//g, "\\/")}`),
+                    "${url.resourcesPath}/build/"
+                )
+            );
 
         })
     );
@@ -89,9 +96,10 @@ export function generateFtlFilesCodeFactory(
             ...(Object.keys(cssGlobalsToDefine).length === 0 ? [] : [
                 '',
                 '<style>',
-                generateCssCodeToDefineGlobals(
-                    { cssGlobalsToDefine }
-                ).cssCodeToPrependInHead,
+                generateCssCodeToDefineGlobals({ 
+                    cssGlobalsToDefine,
+                    urlPathname
+                }).cssCodeToPrependInHead,
                 '</style>',
                 ''
             ]),

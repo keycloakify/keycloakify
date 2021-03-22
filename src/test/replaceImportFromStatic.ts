@@ -45,6 +45,6 @@ const { fixedCssCode, cssGlobalsToDefine } = replaceImportFromStaticInCssCode({
 console.log({ fixedCssCode, cssGlobalsToDefine });
 
 
-const { cssCodeToPrependInHead } = generateCssCodeToDefineGlobals({ cssGlobalsToDefine });
+const { cssCodeToPrependInHead } = generateCssCodeToDefineGlobals({ cssGlobalsToDefine, "urlPathname": "/" });
 
 console.log({ cssCodeToPrependInHead });
