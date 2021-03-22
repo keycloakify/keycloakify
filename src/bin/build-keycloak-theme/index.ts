@@ -11,7 +11,7 @@ import { URL } from "url";
 
 const reactProjectDirPath = process.cwd();
 
-const isStandalone = process.argv[2]?.toLowerCase() === "--standalone";
+const doUseExternalAssets = process.argv[2]?.toLowerCase() === "--external-assets";
 
 const parsedPackageJson: ParsedPackageJson = require(pathJoin(reactProjectDirPath, "package.json"));
 
@@ -46,14 +46,14 @@ if (require.main === module) {
 
 
 
-            return isStandalone ?
+            return !doUseExternalAssets ?
                 {
                     "type": "standalone",
                     urlPathname
                 } as const
                 :
                 {
-                    "type": "static fetched from app",
+                    "type": "external assets",
                     urlPathname,
                     "urlOrigin": (() => {
 

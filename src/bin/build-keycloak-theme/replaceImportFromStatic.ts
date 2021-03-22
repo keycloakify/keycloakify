@@ -4,7 +4,7 @@ import * as crypto from "crypto";
 type Mode = {
     type: "standalone";
 } | {
-    type: "static fetched from app";
+    type: "external assets";
     urlOrigin: string;
     urlPathname: string;
 }
@@ -26,7 +26,7 @@ export function replaceImportFromStaticInJsCode(
                     /[a-z]+\.[a-z]+\+"static\//g,
                     `window.${ftlValuesGlobalName}.url.resourcesPath + "/build/static/`
                 );
-            case "static fetched from app":
+            case "external assets":
                 return jsCode!.replace(
                     /[a-z]+\.[a-z]+\+"static\//g,
                     `"${mode.urlOrigin}${mode.urlPathname}static/`

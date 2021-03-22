@@ -33,7 +33,7 @@ export type Mode = {
     type: "standalone";
     urlPathname: string;
 } | {
-    type: "static fetched from app";
+    type: "external assets";
     urlPathname: string;
     urlOrigin: string;
 }
@@ -76,7 +76,7 @@ export function generateFtlFilesCodeFactory(
             }
 
             switch (mode.type) {
-                case "static fetched from app":
+                case "external assets":
                     $(element).attr(
                         attrName,
                         href.replace(/^\//, `${mode.urlOrigin}/`)
