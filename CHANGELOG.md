@@ -1,3 +1,7 @@
+### **0.3.3** (2021-03-22)  
+  
+- Fix submit not receving correct text    
+  
 ### **0.3.2** (2021-03-21)  
   
 - Fix broken previous release    
