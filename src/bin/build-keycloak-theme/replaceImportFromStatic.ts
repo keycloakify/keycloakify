@@ -11,8 +11,8 @@ export function replaceImportFromStaticInJsCode(
     const { jsCode, ftlValuesGlobalName } = params;
 
     const fixedJsCode = jsCode!.replace(
-        / [^ ]+"static\//g,
-        ` window.${ftlValuesGlobalName}.url.resourcesPath + "/build/static/`
+        /[a-z]+\.[a-z]+\+"static\//g,
+        `window.${ftlValuesGlobalName}.url.resourcesPath + "/build/static/`
     );
 
     return { fixedJsCode };
