@@ -1,3 +1,7 @@
+### **0.3.2** (2021-03-21)  
+  
+- Fix broken previous release    
+  
 ### **0.3.1** (2021-03-21)  
   
 - kcHeaderClass can be updated after initial mount    
