@@ -1,3 +1,7 @@
+### **0.3.4** (2021-03-22)  
+  
+- Bugfix: Import assets from CSS    
+  
 ### **0.3.3** (2021-03-22)  
   
 - Fix submit not receving correct text    
