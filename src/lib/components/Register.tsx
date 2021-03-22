@@ -113,7 +113,7 @@ export const Register = memo(({ kcContext, ...props }: { kcContext: KcContext.Re
 
                         <div id="kc-form-buttons" className={cx(props.kcFormButtonsClass)}>
                             <input className={cx(props.kcButtonClass, props.kcButtonPrimaryClass, props.kcButtonBlockClass, props.kcButtonLargeClass)} type="submit"
-                                defaultValue={msgStr("doRegister")} />
+                                value={msgStr("doRegister")} />
                         </div>
                     </div>
                 </form >

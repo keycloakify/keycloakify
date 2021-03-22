@@ -66,7 +66,7 @@ export const LoginResetPassword = memo(({ kcContext, ...props }: { kcContext: Kc
                                     props.kcButtonBlockClass, props.kcButtonLargeClass
                                 )}
                                 type="submit"
-                                defaultValue={msgStr("doSubmit")}
+                                value={msgStr("doSubmit")}
                             />
                         </div>
                     </div>
