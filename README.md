@@ -30,7 +30,7 @@ Wouldn't it be great if we could just design the login and register pages as if 
 Here is `yarn add keycloakify` for you 🍸
 
 <p align="center">
-    <i>With keycloakify:</i>
+    <i>With keycloakify:</i><br>
     <img src="https://github.com/InseeFrLab/keycloakify/releases/download/v0.3.8/keycloakify_after.gif">
 </p>
 
