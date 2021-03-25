@@ -41,12 +41,13 @@ Tested with the following Keycloak versions:
 - [Motivations](#motivations)
 - [How to use](#how-to-use)
   - [Setting up the build tool](#setting-up-the-build-tool)
+    - [Specify from where the resources should be downloaded.](#specify-from-where-the-resources-should-be-downloaded)
   - [Developing your login and register pages in your React app](#developing-your-login-and-register-pages-in-your-react-app)
     - [Just changing the look](#just-changing-the-look)
     - [Changing the look **and** feel](#changing-the-look-and-feel)
     - [Hot reload](#hot-reload)
 - [GitHub Actions](#github-actions)
-- [REQUIREMENTS](#requirements)
+- [Requirements and limitations](#requirements-and-limitations)
 - [API Reference](#api-reference)
   - [The build tool](#the-build-tool)
 - [Implement context persistance (optional)](#implement-context-persistance-optional)
@@ -54,14 +55,10 @@ Tested with the following Keycloak versions:
 # How to use
 ## Setting up the build tool
 
-Add `keycloakify` to the dev dependencies of your project `npm install --save-dev keycloakify` or `yarn add --dev keycloakify`
-then configure your `package.json` build's script to build the keycloak's theme by adding `&& build-keycloak-theme`.
-
-Typically you will get: 
-
-`package.json`
+[`package.json`](https://github.com/garronej/keycloakify-demo-app/blob/main/package.json)
 ```json
-"devDependencies": {
+"homepage": "https://URL.OF/YOUR-APP"
+"dependencies": {
     "keycloakify": "^0.0.10"
 },
 "scripts": {
@@ -69,8 +66,26 @@ Typically you will get:
 },
 ```
 
-Then run `yarn keycloak` or `npm run keycloak`, you will be provided with instructions
-about how to load the theme into Keycloak.
+It is mandatory that you specify the url where your app will be available
+using the `homepage` field.
+
+Once you've edited your `package.json` you can install your new
+dependency with `yarn install` and build the keycloak theme with
+`yarn keycloak`. 
+
+Once the build will be completed you instructions about how to load
+the theme into Keycloak will be printed in the console.
+
+### Specify from where the resources should be downloaded.
+
+When you run `npx build-keycloak-theme` without arguments, Keycloakify will build
+a standalone version of the keycloak theme. That is to say even if your app, the
+one hosted at the url specified as `homepage` in your package.json, is down the
+keycloak theme will still work. 
+In this mode (the default) every asset are served by the keycloak server. It is 
+convergent for debugging but it production you probably want the assets to be
+fetched from your app.
+Indeed  
 
 ## Developing your login and register pages in your React app
 
@@ -159,7 +174,7 @@ Checkout [this concrete example](https://github.com/garronej/keycloakify-demo-ap
 [Here is a demo repo](https://github.com/garronej/keycloakify-demo-app) to show how to automate
 the building and publishing of the theme (the .jar file).
 
-# REQUIREMENTS
+# Requirements and limitations
 
 This tools assumes you are bundling your app with Webpack (tested with 4.44.2) .
 It assumes there is a `build/` directory at the root of your react project directory containing a `index.html` file
