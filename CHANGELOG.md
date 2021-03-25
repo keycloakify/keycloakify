@@ -1,3 +1,11 @@
+### **0.3.9** (2021-03-25)  
+  
+- Update readme  
+- Document  --external-assets  
+- Update README.md  
+- Update README.md  
+- Update README.md    
+  
 ### **0.3.8** (2021-03-22)  
   
 - Make standalone mode the default    
