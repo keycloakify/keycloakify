@@ -20,8 +20,10 @@
 
 The problem: 
 
-![keycloak_before](https://user-images.githubusercontent.com/6702424/108838381-dbbbcf80-75d3-11eb-8ae8-db41563ef9db.gif)
-
+<p align="center">
+    <i>Without keycloakify:</i><br>
+    <img src="https://user-images.githubusercontent.com/6702424/108838381-dbbbcf80-75d3-11eb-8ae8-db41563ef9db.gif">
+</p>
 When we redirected to Keycloak the user suffers from a harsh context switch.
 Keycloak does offer a way to customize theses pages but it requires a lot of raw HTML/CSS hacking
 to reproduce the look and feel of a specific app. Not mentioning the maintenance cost of such an endeavour.  
@@ -34,12 +36,7 @@ Here is `yarn add keycloakify` for you 🍸
     <img src="https://github.com/InseeFrLab/keycloakify/releases/download/v0.3.8/keycloakify_after.gif">
 </p>
 
-Tested with the following Keycloak versions: 
-- [11.0.3](https://hub.docker.com/layers/jboss/keycloak/11.0.3/images/sha256-4438f1e51c1369371cb807dffa526e1208086b3ebb9cab009830a178de949782?context=explore)  
-- [12.0.4](https://hub.docker.com/layers/jboss/keycloak/12.0.4/images/sha256-67e0c88e69bd0c7aef972c40bdeb558a974013a28b3668ca790ed63a04d70584?context=explore)  
-
-**Disclaimer**: This tool will be maintained to stay compatible with Keycloak v11 and up, however, the default pages you will get 
-(before you customize it) will always be the ones of the Keycloak v11.
+**TL;DR**: [Here](https://github.com/garronej/keycloakify-demo-app) is a Hello World React project with Keycloakify set up.  
 
 - [Motivations](#motivations)
 - [How to use](#how-to-use)
@@ -50,10 +47,11 @@ Tested with the following Keycloak versions:
     - [Changing the look **and** feel](#changing-the-look-and-feel)
     - [Hot reload](#hot-reload)
 - [GitHub Actions](#github-actions)
-- [Requirements and limitations](#requirements-and-limitations)
+- [Requirements](#requirements)
+- [Limitations](#limitations)
 - [API Reference](#api-reference)
   - [The build tool](#the-build-tool)
-- [Implement context persistance (optional)](#implement-context-persistance-optional)
+- [Implement context persistence (optional)](#implement-context-persistence-optional)
 
 # How to use
 ## Setting up the build tool
@@ -76,25 +74,41 @@ Once you've edited your `package.json` you can install your new
 dependency with `yarn install` and build the keycloak theme with
 `yarn keycloak`. 
 
-Once the build will be completed you instructions about how to load
-the theme into Keycloak will be printed in the console.
+Once the build is complete instructions about how to load
+the theme into Keycloak are printed in the console.
 
 ### Specify from where the resources should be downloaded.
 
 When you run `npx build-keycloak-theme` without arguments, Keycloakify will build
-a standalone version of the keycloak theme. That is to say even if your app, the
+a standalone version of the Keycloak theme. That is to say even if your app, the
 one hosted at the url specified as `homepage` in your package.json, is down the
-keycloak theme will still work. 
+Keycloak theme will still work. 
 In this mode (the default) every asset are served by the keycloak server. It is 
 convergent for debugging but it production you probably want the assets to be
 fetched from your app.
-Indeed  
+Indeed in the default mode your users have to download again the whole app just
+to access the login page. You probably have [long-term asset caching](https://create-react-app.dev/docs/production-build/#static-file-caching)
+enabled in the server that host your app ([example](https://github.com/garronej/keycloakify-demo-app/blob/224c43383548635a463fa68e8909c147ac189f0e/nginx.conf#L14)) 
+so it's better if only the html is served by the Keycloak server and everything
+else, your JS bundles, your CSS ect point to your app.  
+
+To enable this behavior you car run:
+```bash
+npx build-keycloak-theme --external-assets
+```
+(instead of `npx build-keycloak-theme`)
+
+This is something you probably want to do in your CI pipeline. [Example](https://github.com/garronej/keycloakify-demo-app/blob/224c43383548635a463fa68e8909c147ac189f0e/.github/workflows/ci.yaml#L112)
+
+Also note that there is [a same-origin policy exception for fonts](https://en.wikipedia.org/wiki/Same-origin_policy#cite_note-3) so you must enabled
+CORS for fonts on the server hosting your app. Concretely this mean that your server should add a `Access-Control-Allow-Origin: *` response header to 
+GET request on *.woff2?. [Example with Nginx](https://github.com/garronej/keycloakify-demo-app/blob/224c43383548635a463fa68e8909c147ac189f0e/nginx.conf#L18-L20)
 
 ## Developing your login and register pages in your React app
 
 ### Just changing the look
 
-The fist approach is to only arr/replace the default class names by your
+The first approach is to only arr/replace the default class names by your
 own.
 
 ```tsx
@@ -177,30 +191,44 @@ Checkout [this concrete example](https://github.com/garronej/keycloakify-demo-ap
 [Here is a demo repo](https://github.com/garronej/keycloakify-demo-app) to show how to automate
 the building and publishing of the theme (the .jar file).
 
-# Requirements and limitations
+# Requirements 
+
+Tested with the following Keycloak versions: 
+- [11.0.3](https://hub.docker.com/layers/jboss/keycloak/11.0.3/images/sha256-4438f1e51c1369371cb807dffa526e1208086b3ebb9cab009830a178de949782?context=explore)  
+- [12.0.4](https://hub.docker.com/layers/jboss/keycloak/12.0.4/images/sha256-67e0c88e69bd0c7aef972c40bdeb558a974013a28b3668ca790ed63a04d70584?context=explore)  
+
+This tool will be maintained to stay compatible with Keycloak v11 and up, however, the default pages you will get 
+(before you customize it) will always be the ones of the Keycloak v11.
 
 This tools assumes you are bundling your app with Webpack (tested with 4.44.2) .
 It assumes there is a `build/` directory at the root of your react project directory containing a `index.html` file
-and a `static/` directory generated by webpack.
+and a `build/static/` directory generated by webpack.
 
 **All this is defaults with [`create-react-app`](https://create-react-app.dev)** (tested with 4.0.3=)
 
 - For building the theme: `mvn` (Maven) must be installed
-- For development, (testing the theme in a local container ): `rm`, `mkdir`, `wget`, `unzip` are assumed to be available
+- For development (testing the theme in a local container ): `rm`, `mkdir`, `wget`, `unzip` are assumed to be available
   and `docker` up and running.
 
 NOTE: This build tool has only be tested on MacOS.
 
+# Limitations
+
+In the standalone mode (when you run `npx build-keycloak-theme` without `--external-assets`) the fonts won't work if you are self
+hosting them. This, for example, won’t work: [`src: url("/assets/worksans-bold-webfont.woff2") format("woff2")`](https://github.com/InseeFrLab/onyxia-ui/blob/b24df3a9b34b505ce00619bb8ec0174223ecfaca/src/app/theme/fonts.scss#L5-L6)
+you will have to [host them externally](https://github.com/InseeFrLab/onyxia-ui/blob/43bf4a508419072a4ae202698e59d20b69feb9c0/src/app/theme/fonts.scss#L8-L9) 
+on a server that has CORS enabled.  
+Again this apply ony if you are not building your theme with `--external-assets` which is advised against in production.
 # API Reference 
 
 ## The build tool 
 
 Part of the lib that runs with node, at build time.
 
-- `npx build-keycloak-theme`: Builds the theme, the CWD is assumed to be the root of your react project.
+- `npx build-keycloak-theme [--external-assets]`: Builds the theme, the CWD is assumed to be the root of your react project.
 - `npx download-sample-keycloak-themes`: Downloads the keycloak default themes (for development purposes)
 
-# Implement context persistance (optional)
+# Implement context persistence (optional)
 
 If, before logging in, a user has selected a specific language 
 you don't want it to be reset to default when the user gets redirected to
