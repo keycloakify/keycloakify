@@ -1,3 +1,7 @@
+### **0.3.8** (2021-03-22)  
+  
+- Make standalone mode the default    
+  
 ### **0.3.7** (2021-03-22)  
   
 - (test) external asset mode by default    
