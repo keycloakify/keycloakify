@@ -1,3 +1,7 @@
+### **0.3.11** (2021-03-26)  
+  
+- Fix previous build, improve README    
+  
 ### **0.3.10** (2021-03-26)  
   
 - Handle <style> tag, improve documentation    
