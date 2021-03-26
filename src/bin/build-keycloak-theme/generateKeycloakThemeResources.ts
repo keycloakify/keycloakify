@@ -6,7 +6,7 @@ import {
     replaceImportsInCssCode,
     replaceImportsFromStaticInJsCode
 } from "./replaceImportFromStatic";
-import { generateFtlFilesCodeFactory, pageIds, Mode } from "./generateFtl";
+import { generateFtlFilesCodeFactory, pageIds } from "./generateFtl";
 import { builtinThemesUrl } from "../install-builtin-keycloak-themes";
 import { downloadAndUnzip } from "../tools/downloadAndUnzip";
 import * as child_process from "child_process";
@@ -20,11 +20,16 @@ export function generateKeycloakThemeResources(
         themeName: string;
         reactAppBuildDirPath: string;
         keycloakThemeBuildingDirPath: string;
-        mode: Mode;
-    }
+        urlPathname: string;
+    } & ({
+        mode: "standalone";
+    } | {
+        mode: "external assets";
+        urlOrigin: string;
+    })
 ) {
 
-    const { themeName, reactAppBuildDirPath, keycloakThemeBuildingDirPath, mode } = params;
+    const { themeName, reactAppBuildDirPath, keycloakThemeBuildingDirPath, urlPathname } = params;
 
     const themeDirPath = pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", themeName, "login");
 
@@ -45,7 +50,7 @@ export function generateKeycloakThemeResources(
                 return undefined;
             }
 
-            if (mode.type === "standalone") {
+            if (params.mode === "standalone") {
 
                 if (/\.css?$/i.test(filePath)) {
 
@@ -67,7 +72,7 @@ export function generateKeycloakThemeResources(
                     const { fixedJsCode } = replaceImportsFromStaticInJsCode({
                         "jsCode": sourceCode.toString("utf8"),
                         ftlValuesGlobalName,
-                        mode
+                        "mode": params.mode
                     });
 
                     return { "modifiedSourceCode": Buffer.from(fixedJsCode, "utf8") };
@@ -87,7 +92,18 @@ export function generateKeycloakThemeResources(
         "indexHtmlCode": fs.readFileSync(
             pathJoin(reactAppBuildDirPath, "index.html")
         ).toString("utf8"),
-        mode
+        urlPathname,
+        ...(() => {
+            switch (params.mode) {
+                case "external assets": return {
+                    "mode": params.mode,
+                    "urlOrigin": params.urlOrigin
+                };
+                case "standalone": return {
+                    "mode": params.mode
+                };
+            }
+        })()
     });
 
     pageIds.forEach(pageId => {

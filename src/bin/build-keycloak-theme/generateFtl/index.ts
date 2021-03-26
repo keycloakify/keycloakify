@@ -30,25 +30,22 @@ function loadFtlFile(ftlFileBasename: PageId | "template.ftl") {
     }
 }
 
-export type Mode = {
-    type: "standalone";
-    urlPathname: string;
-} | {
-    type: "external assets";
-    urlPathname: string;
-    urlOrigin: string;
-}
 
 export function generateFtlFilesCodeFactory(
     params: {
         ftlValuesGlobalName: string;
         cssGlobalsToDefine: Record<string, string>;
         indexHtmlCode: string;
-        mode: Mode;
-    }
+        urlPathname: string;
+    } & ({
+        mode: "standalone";
+    } | {
+        mode: "external assets";
+        urlOrigin: string;
+    })
 ) {
 
-    const { ftlValuesGlobalName, cssGlobalsToDefine, indexHtmlCode, mode } = params;
+    const { ftlValuesGlobalName, cssGlobalsToDefine, indexHtmlCode, urlPathname } = params;
 
     const $ = cheerio.load(indexHtmlCode);
 
@@ -57,7 +54,18 @@ export function generateFtlFilesCodeFactory(
         const { fixedJsCode } = replaceImportsFromStaticInJsCode({
             ftlValuesGlobalName,
             "jsCode": $(element).html()!,
-            mode
+            ...(() => {
+                switch (params.mode) {
+                    case "standalone": return {
+                        "mode": params.mode
+                    };
+                    case "external assets": return {
+                        "mode": params.mode,
+                        "urlOrigin": params.urlOrigin,
+                        "urlPathname": params.urlPathname,
+                    };
+                }
+            })()
         });
 
         $(element).text(fixedJsCode);
@@ -68,7 +76,18 @@ export function generateFtlFilesCodeFactory(
 
         const { fixedCssCode } = replaceImportsInInlineCssCode({
             "cssCode": $(element).html()!,
-            mode
+            "urlPathname": params.urlPathname,
+            ...(() => {
+                switch (params.mode) {
+                    case "standalone": return {
+                        "mode": params.mode
+                    };
+                    case "external assets": return {
+                        "mode": params.mode,
+                        "urlOrigin": params.urlOrigin,
+                    };
+                }
+            })()
         });
 
         $(element).text(fixedCssCode);
@@ -87,18 +106,18 @@ export function generateFtlFilesCodeFactory(
                 return;
             }
 
-            switch (mode.type) {
+            switch (params.mode) {
                 case "external assets":
                     $(element).attr(
                         attrName,
-                        href.replace(/^\//, `${mode.urlOrigin}/`)
+                        href.replace(/^\//, `${params.urlOrigin}/`)
                     );
                     break;
                 case "standalone":
                     $(element).attr(
                         attrName,
                         href.replace(
-                            new RegExp(`^${mode.urlPathname.replace(/\//g, "\\/")}`),
+                            new RegExp(`^${urlPathname.replace(/\//g, "\\/")}`),
                             "${url.resourcesPath}/build/"
                         )
                     );
@@ -131,7 +150,7 @@ export function generateFtlFilesCodeFactory(
                 '<style>',
                 generateCssCodeToDefineGlobals({
                     cssGlobalsToDefine,
-                    "urlPathname": mode.urlPathname
+                    urlPathname
                 }).cssCodeToPrependInHead,
                 '</style>',
                 ''

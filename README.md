@@ -70,6 +70,10 @@ Here is `yarn add keycloakify` for you 🍸
     "keycloak": "yarn build && build-keycloak-theme",
 },
 ```
+`"homepage"` must be specified only if the theme is build using 
+`--external-assets`(#specify-from-where-the-resources-should-be-downloaded) or if
+the url path is not `/` (only the url path will be considered so it doesn't matter if the
+base url is wrong)
 
 It is mandatory that you specify the url where your app will be available
 using the `homepage` field.
@@ -88,6 +92,7 @@ page to load faster for first time users but it also implies that:
 - If the app is down, your Keycloak login and register pages are down as well.
 - Each time the app is updated, the theme must be updated.
 - CORS must be enabled for fonts.
+- You must know at build time what will be the url of your app (`"homepage"` in `package.json`).  
 
 <details>
   <summary>Click to expand</summary>

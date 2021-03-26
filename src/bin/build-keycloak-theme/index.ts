@@ -26,7 +26,7 @@ if (require.main === module) {
         keycloakThemeBuildingDirPath,
         "reactAppBuildDirPath": pathJoin(reactProjectDirPath, "build"),
         "themeName": parsedPackageJson.name,
-        "mode": (() => {
+        ...(() => {
 
 
             const url = (() => {
@@ -44,16 +44,14 @@ if (require.main === module) {
                     "/" :
                     url.pathname.replace(/([^/])$/, "$1/");
 
-
-
             return !doUseExternalAssets ?
                 {
-                    "type": "standalone",
+                    "mode": "standalone",
                     urlPathname
                 } as const
                 :
                 {
-                    "type": "external assets",
+                    "mode": "external assets",
                     urlPathname,
                     "urlOrigin": (() => {
 

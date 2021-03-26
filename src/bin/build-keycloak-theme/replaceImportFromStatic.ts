@@ -1,32 +1,29 @@
 
 import * as crypto from "crypto";
 
-type Mode = {
-    type: "standalone";
-} | {
-    type: "external assets";
-    urlOrigin: string;
-    urlPathname: string;
-}
-
 export function replaceImportsFromStaticInJsCode(
     params: {
         ftlValuesGlobalName: string;
         jsCode: string;
-        mode: Mode;
-    }
+    } & ({
+        mode: "standalone";
+    } | {
+        mode: "external assets";
+        urlOrigin: string;
+        urlPathname: string;
+    })
 ): { fixedJsCode: string; } {
 
-    const { jsCode, ftlValuesGlobalName, mode } = params;
+    const { jsCode, ftlValuesGlobalName } = params;
 
     const fixedJsCode = jsCode.replace(
         /[a-z]+\.[a-z]+\+"static\//g,
         (() => {
-            switch (mode.type) {
+            switch (params.mode) {
                 case "standalone":
                     return `window.${ftlValuesGlobalName}.url.resourcesPath + "/build/static/`;
                 case "external assets":
-                    return `"${mode.urlOrigin}${mode.urlPathname}static/`;
+                    return `"${params.urlOrigin}${params.urlPathname}static/`;
             }
         })()
     );
@@ -38,22 +35,28 @@ export function replaceImportsFromStaticInJsCode(
 export function replaceImportsInInlineCssCode(
     params: {
         cssCode: string;
-        mode: Mode;
-    }
+        urlPathname: string;
+    } & ({
+        mode: "standalone";
+    } | {
+        mode: "external assets";
+        urlOrigin: string;
+    })
 ): { fixedCssCode: string; } {
 
-    const { cssCode, mode } = params;
+    const { cssCode, urlPathname } = params;
 
     const fixedCssCode = cssCode.replace(
-        /url\((\/[^/][^)]+)\)/g,
-        (...[,group])=> `url(${
-            (()=>{
-                switch(mode.type){
-                    case "standalone": return "${url.resourcesPath}/build" + group;
-                    case "external assets": return mode.urlOrigin + group
-                }
-            })()
-        })`
+        urlPathname === "/" ?
+            /url\(\/([^/][^)]+)\)/g :
+            new RegExp(`url\\(${urlPathname}([^)]+)\\)`, "g"),
+        (...[, group]) => `url(${(() => {
+            switch (params.mode) {
+                case "standalone": return "${url.resourcesPath}/build/" + group;
+                case "external assets": return params.urlOrigin + urlPathname + group
+            }
+        })()
+            })`
     );
 
     return { fixedCssCode };
