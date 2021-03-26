@@ -9,7 +9,7 @@ type Mode = {
     urlPathname: string;
 }
 
-export function replaceImportFromStaticInJsCode(
+export function replaceImportsFromStaticInJsCode(
     params: {
         ftlValuesGlobalName: string;
         jsCode: string;
@@ -19,27 +19,48 @@ export function replaceImportFromStaticInJsCode(
 
     const { jsCode, ftlValuesGlobalName, mode } = params;
 
-    const fixedJsCode = (() => {
-        switch (mode.type) {
-            case "standalone":
-                return jsCode!.replace(
-                    /[a-z]+\.[a-z]+\+"static\//g,
-                    `window.${ftlValuesGlobalName}.url.resourcesPath + "/build/static/`
-                );
-            case "external assets":
-                return jsCode!.replace(
-                    /[a-z]+\.[a-z]+\+"static\//g,
-                    `"${mode.urlOrigin}${mode.urlPathname}static/`
-                );
-        }
-    })();
-
+    const fixedJsCode = jsCode.replace(
+        /[a-z]+\.[a-z]+\+"static\//g,
+        (() => {
+            switch (mode.type) {
+                case "standalone":
+                    return `window.${ftlValuesGlobalName}.url.resourcesPath + "/build/static/`;
+                case "external assets":
+                    return `"${mode.urlOrigin}${mode.urlPathname}static/`;
+            }
+        })()
+    );
 
     return { fixedJsCode };
 
 }
 
-export function replaceImportFromStaticInCssCode(
+export function replaceImportsInInlineCssCode(
+    params: {
+        cssCode: string;
+        mode: Mode;
+    }
+): { fixedCssCode: string; } {
+
+    const { cssCode, mode } = params;
+
+    const fixedCssCode = cssCode.replace(
+        /url\((\/[^/][^)]+)\)/g,
+        (...[,group])=> `url(${
+            (()=>{
+                switch(mode.type){
+                    case "standalone": return "${url.resourcesPath}/build" + group;
+                    case "external assets": return mode.urlOrigin + group
+                }
+            })()
+        })`
+    );
+
+    return { fixedCssCode };
+
+}
+
+export function replaceImportsInCssCode(
     params: {
         cssCode: string;
     }
@@ -52,7 +73,7 @@ export function replaceImportFromStaticInCssCode(
 
     const cssGlobalsToDefine: Record<string, string> = {};
 
-    new Set(cssCode.match(/url\(\/[^)]+\)[^;}]*/g) ?? [])
+    new Set(cssCode.match(/url\(\/[^/][^)]+\)[^;}]*/g) ?? [])
         .forEach(match =>
             cssGlobalsToDefine[
             "url" + crypto

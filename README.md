@@ -49,9 +49,12 @@ Here is `yarn add keycloakify` for you 🍸
 - [GitHub Actions](#github-actions)
 - [Requirements](#requirements)
 - [Limitations](#limitations)
+  - [`process.env.PUBLIC_URL` not supported.](#processenvpublic_url-not-supported)
+  - [`@font-face` importing fonts from the `src/` dir](#font-face-importing-fonts-from-thesrc-dir)
+    - [Example of setup that **won't** work](#example-of-setup-that-wont-work)
+- [Implement context persistence (optional)](#implement-context-persistence-optional)
 - [API Reference](#api-reference)
   - [The build tool](#the-build-tool)
-- [Implement context persistence (optional)](#implement-context-persistence-optional)
 
 # How to use
 ## Setting up the build tool
@@ -79,18 +82,27 @@ the theme into Keycloak are printed in the console.
 
 ### Specify from where the resources should be downloaded.
 
+*TL;DR*: Building the theme with the `--external-assets` option enables the login
+page to load faster for first time users but it also implies that:  
+- If the app is down, your Keycloak login and register pages are down as well.
+- Each time the app is updated, the theme must be updated as well.
+- CORS must be enabled for fonts.
+
+<details>
+  <summary>Click to expand</summary>
+
 When you run `npx build-keycloak-theme` without arguments, Keycloakify will build
 a standalone version of the Keycloak theme. That is to say even if your app, the
-one hosted at the url specified as `homepage` in your package.json, is down the
-Keycloak theme will still work. 
-In this mode (the default) every asset are served by the keycloak server. It is 
-convergent for debugging but it production you probably want the assets to be
-fetched from your app.
-Indeed in the default mode your users have to download again the whole app just
-to access the login page. You probably have [long-term asset caching](https://create-react-app.dev/docs/production-build/#static-file-caching)
+one hosted at the url specified as `homepage`, is down the Keycloak theme will still work.  
+It also mean that you won't have to update your theme on your Keycloak server each time 
+your app is updated.  
+In this mode, the default, every asset are served by the keycloak server. 
+The drawback of this approach is that when users access the login page for the first time 
+they have to download the whole app again. 
+You probably have [long-term asset caching](https://create-react-app.dev/docs/production-build/#static-file-caching)
 enabled in the server that host your app ([example](https://github.com/garronej/keycloakify-demo-app/blob/224c43383548635a463fa68e8909c147ac189f0e/nginx.conf#L14)) 
-so it's better if only the html is served by the Keycloak server and everything
-else, your JS bundles, your CSS ect point to your app.  
+so it can be interesting to only serve the html from Keycloak server and everything
+else, your JS bundles, your CSS ect from the server that host your app.  
 
 To enable this behavior you car run:
 ```bash
@@ -103,6 +115,9 @@ This is something you probably want to do in your CI pipeline. [Example](https:/
 Also note that there is [a same-origin policy exception for fonts](https://en.wikipedia.org/wiki/Same-origin_policy#cite_note-3) so you must enabled
 CORS for fonts on the server hosting your app. Concretely this mean that your server should add a `Access-Control-Allow-Origin: *` response header to 
 GET request on *.woff2?. [Example with Nginx](https://github.com/garronej/keycloakify-demo-app/blob/224c43383548635a463fa68e8909c147ac189f0e/nginx.conf#L18-L20)
+
+</details>
+
 
 ## Developing your login and register pages in your React app
 
@@ -214,19 +229,27 @@ NOTE: This build tool has only be tested on MacOS.
 
 # Limitations
 
-In the standalone mode (when you run `npx build-keycloak-theme` without `--external-assets`) the fonts won't work if you are self
-hosting them. This, for example, won’t work: [`src: url("/assets/worksans-bold-webfont.woff2") format("woff2")`](https://github.com/InseeFrLab/onyxia-ui/blob/b24df3a9b34b505ce00619bb8ec0174223ecfaca/src/app/theme/fonts.scss#L5-L6)
-you will have to [host them externally](https://github.com/InseeFrLab/onyxia-ui/blob/43bf4a508419072a4ae202698e59d20b69feb9c0/src/app/theme/fonts.scss#L8-L9) 
-on a server that has CORS enabled.  
-Again this apply ony if you are not building your theme with `--external-assets` which is advised against in production.
-# API Reference 
+## `process.env.PUBLIC_URL` not supported.
 
-## The build tool 
+You won't be able to [import things from your public directory in your JavaScript code](https://create-react-app.dev/docs/using-the-public-folder/#adding-assets-outside-of-the-module-system). (This isn't recommended anyway).
 
-Part of the lib that runs with node, at build time.
+## `@font-face` importing fonts from the `src/` dir
 
-- `npx build-keycloak-theme [--external-assets]`: Builds the theme, the CWD is assumed to be the root of your react project.
-- `npx download-sample-keycloak-themes`: Downloads the keycloak default themes (for development purposes)
+**If you are building the theme with `--external-assets` this limitation doesn't apply.**  
+### Example of setup that **won't** work 
+
+- We have a `fonts/` directory in `src/`
+- We import the font like this [`src: url("/fonts/my-font.woff2") format("woff2");`(https://github.com/garronej/keycloakify-demo-app/blob/07d54a3012ef354ee12b1374c6f7ad1cb125d56b/src/fonts.scss#L4) in a `.scss` a file.
+
+### Workarounds
+
+If it is possible, use Google Fonts or any other font provider.
+
+If you want to host your font recommended approach is to move your fonts into the `public` 
+directory and to place your `@font-face` statements in the `public/index.html`.  
+Example [here]().  
+
+You can also [use your explicit url](https://github.com/garronej/keycloakify-demo-app/blob/2de8a9eb6f5de9c94f9cd3991faad0377e63268c/src/fonts.scss#L16) but don't forget [`Access-Control-Allow-Origin`](https://github.com/garronej/keycloakify-demo-app/blob/2de8a9eb6f5de9c94f9cd3991faad0377e63268c/nginx.conf#L17-L19).
 
 # Implement context persistence (optional)
 
@@ -286,3 +309,12 @@ keycloakInstance.init({
 If you really want to go the extra miles and avoid having the white
 flash of the blank html before the js bundle have been evaluated
 [here is a snippet](https://github.com/InseeFrLab/onyxia-ui/blob/a77eb502870cfe6878edd0d956c646d28746d053/public/index.html#L5-L54) that you can place in your `public/index.html` if you are using `powerhooks/useGlobalState`.
+
+# API Reference 
+
+## The build tool 
+
+Part of the lib that runs with node, at build time.
+
+- `npx build-keycloak-theme [--external-assets]`: Builds the theme, the CWD is assumed to be the root of your react project.
+- `npx download-sample-keycloak-themes`: Downloads the keycloak default themes (for development purposes)

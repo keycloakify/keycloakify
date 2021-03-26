@@ -3,8 +3,8 @@ import { transformCodebase } from "../tools/transformCodebase";
 import * as fs from "fs";
 import { join as pathJoin } from "path";
 import {
-    replaceImportFromStaticInCssCode,
-    replaceImportFromStaticInJsCode
+    replaceImportsInCssCode,
+    replaceImportsFromStaticInJsCode
 } from "./replaceImportFromStatic";
 import { generateFtlFilesCodeFactory, pageIds, Mode } from "./generateFtl";
 import { builtinThemesUrl } from "../install-builtin-keycloak-themes";
@@ -49,7 +49,7 @@ export function generateKeycloakThemeResources(
 
                 if (/\.css?$/i.test(filePath)) {
 
-                    const { cssGlobalsToDefine, fixedCssCode } = replaceImportFromStaticInCssCode(
+                    const { cssGlobalsToDefine, fixedCssCode } = replaceImportsInCssCode(
                         { "cssCode": sourceCode.toString("utf8") }
                     );
 
@@ -64,7 +64,7 @@ export function generateKeycloakThemeResources(
 
                 if (/\.js?$/i.test(filePath)) {
 
-                    const { fixedJsCode } = replaceImportFromStaticInJsCode({
+                    const { fixedJsCode } = replaceImportsFromStaticInJsCode({
                         "jsCode": sourceCode.toString("utf8"),
                         ftlValuesGlobalName,
                         mode

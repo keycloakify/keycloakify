@@ -1,11 +1,11 @@
 
 import { 
-    replaceImportFromStaticInJsCode,
-    replaceImportFromStaticInCssCode,
+    replaceImportsFromStaticInJsCode,
+    replaceImportsInCssCode,
     generateCssCodeToDefineGlobals
 } from "../bin/build-keycloak-theme/replaceImportFromStatic";
 
-const { fixedJsCode } = replaceImportFromStaticInJsCode({
+const { fixedJsCode } = replaceImportsFromStaticInJsCode({
     "ftlValuesGlobalName": "keycloakFtlValues",
     "jsCode": `
         function f() {
@@ -25,7 +25,7 @@ const { fixedJsCode } = replaceImportFromStaticInJsCode({
 
 console.log({ fixedJsCode });
 
-const { fixedCssCode, cssGlobalsToDefine } = replaceImportFromStaticInCssCode({
+const { fixedCssCode, cssGlobalsToDefine } = replaceImportsInCssCode({
     "cssCode": `
 
     .my-div {

@@ -2,7 +2,8 @@
 
 import cheerio from "cheerio";
 import {
-    replaceImportFromStaticInJsCode,
+    replaceImportsFromStaticInJsCode,
+    replaceImportsInInlineCssCode,
     generateCssCodeToDefineGlobals
 } from "../replaceImportFromStatic";
 import fs from "fs";
@@ -53,13 +54,24 @@ export function generateFtlFilesCodeFactory(
 
     $("script:not([src])").each((...[, element]) => {
 
-        const { fixedJsCode } = replaceImportFromStaticInJsCode({
+        const { fixedJsCode } = replaceImportsFromStaticInJsCode({
             ftlValuesGlobalName,
             "jsCode": $(element).html()!,
             mode
         });
 
         $(element).text(fixedJsCode);
+
+    });
+
+    $("style").each((...[, element]) => {
+
+        const { fixedCssCode } = replaceImportsInInlineCssCode({
+            "cssCode": $(element).html()!,
+            mode
+        });
+
+        $(element).text(fixedCssCode);
 
     });
 
