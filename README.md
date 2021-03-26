@@ -86,7 +86,7 @@ the theme into Keycloak are printed in the console.
 *TL;DR*: Building the theme with the `--external-assets` option enables the login
 page to load faster for first time users but it also implies that:  
 - If the app is down, your Keycloak login and register pages are down as well.
-- Each time the app is updated, the theme must be updated as well.
+- Each time the app is updated, the theme must be updated.
 - CORS must be enabled for fonts.
 
 <details>
