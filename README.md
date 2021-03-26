@@ -52,6 +52,7 @@ Here is `yarn add keycloakify` for you 🍸
   - [`process.env.PUBLIC_URL` not supported.](#processenvpublic_url-not-supported)
   - [`@font-face` importing fonts from the `src/` dir](#font-face-importing-fonts-from-thesrc-dir)
     - [Example of setup that **won't** work](#example-of-setup-that-wont-work)
+    - [Workarounds](#workarounds)
 - [Implement context persistence (optional)](#implement-context-persistence-optional)
 - [API Reference](#api-reference)
   - [The build tool](#the-build-tool)
@@ -239,9 +240,9 @@ You won't be able to [import things from your public directory in your JavaScrip
 ### Example of setup that **won't** work 
 
 - We have a `fonts/` directory in `src/`
-- We import the font like this [`src: url("/fonts/my-font.woff2") format("woff2");`(https://github.com/garronej/keycloakify-demo-app/blob/07d54a3012ef354ee12b1374c6f7ad1cb125d56b/src/fonts.scss#L4) in a `.scss` a file.
+- We import the font like this [`src: url("/fonts/my-font.woff2") format("woff2");`(https://github.com/garronej/keycloakify-demo-app/blob/07d54a3012ef354ee12b1374c6f7ad1cb125d56b/src/fonts.scss#L4) in a `.scss` a file.  
 
-### Workarounds
+### Workarounds  
 
 If it is possible, use Google Fonts or any other font provider.
 
