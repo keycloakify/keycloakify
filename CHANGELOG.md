@@ -1,3 +1,7 @@
+### **0.3.12** (2021-03-26)  
+  
+- Fix mocksContext    
+  
 ### **0.3.11** (2021-03-26)  
   
 - Fix previous build, improve README    
