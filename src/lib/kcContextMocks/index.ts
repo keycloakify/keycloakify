@@ -9,8 +9,8 @@ import { resourcesCommonPath, resourcesPath } from "./urlResourcesPath";
 export const kcTemplateContext: KcContext.Template = {
     "url": {
         "loginAction": "#",
-        "resourcesPath": "/" + resourcesPath,
-        "resourcesCommonPath": "/" + resourcesCommonPath,
+        "resourcesPath": `/${resourcesPath}`,
+        "resourcesCommonPath": `${process.env["PUBLIC_URL"]}/${resourcesCommonPath}`,
         "loginRestartFlowUrl": "/auth/realms/myrealm/login-actions/restart?client_id=account&tab_id=HoAx28ja4xg",
         "loginUrl": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg",
     },
