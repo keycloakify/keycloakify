@@ -5,27 +5,14 @@ export function replaceImportsFromStaticInJsCode(
     params: {
         ftlValuesGlobalName: string;
         jsCode: string;
-    } & ({
-        mode: "standalone";
-    } | {
-        mode: "external assets";
-        urlOrigin: string;
-        urlPathname: string;
-    })
+    }
 ): { fixedJsCode: string; } {
 
     const { jsCode, ftlValuesGlobalName } = params;
 
     const fixedJsCode = jsCode.replace(
         /[a-z]+\.[a-z]+\+"static\//g,
-        (() => {
-            switch (params.mode) {
-                case "standalone":
-                    return `window.${ftlValuesGlobalName}.url.resourcesPath + "/build/static/`;
-                case "external assets":
-                    return `"${params.urlOrigin}${params.urlPathname}static/`;
-            }
-        })()
+        `window.${ftlValuesGlobalName}.url.resourcesPath + "/build/static/`
     );
 
     return { fixedJsCode };
@@ -36,12 +23,7 @@ export function replaceImportsInInlineCssCode(
     params: {
         cssCode: string;
         urlPathname: string;
-    } & ({
-        mode: "standalone";
-    } | {
-        mode: "external assets";
-        urlOrigin: string;
-    })
+    }
 ): { fixedCssCode: string; } {
 
     const { cssCode, urlPathname } = params;
@@ -50,13 +32,7 @@ export function replaceImportsInInlineCssCode(
         urlPathname === "/" ?
             /url\(\/([^/][^)]+)\)/g :
             new RegExp(`url\\(${urlPathname}([^)]+)\\)`, "g"),
-        (...[, group]) => `url(${(() => {
-            switch (params.mode) {
-                case "standalone": return "${url.resourcesPath}/build/" + group;
-                case "external assets": return params.urlOrigin + urlPathname + group
-            }
-        })()
-            })`
+        (...[, group]) => `url(${"${url.resourcesPath}/build/" + group})`
     );
 
     return { fixedCssCode };

@@ -41,7 +41,6 @@ Here is `yarn add keycloakify` for you 🍸
 - [Motivations](#motivations)
 - [How to use](#how-to-use)
   - [Setting up the build tool](#setting-up-the-build-tool)
-    - [Specify from where the resources should be downloaded.](#specify-from-where-the-resources-should-be-downloaded)
   - [Developing your login and register pages in your React app](#developing-your-login-and-register-pages-in-your-react-app)
     - [Just changing the look](#just-changing-the-look)
     - [Changing the look **and** feel](#changing-the-look-and-feel)
@@ -70,10 +69,8 @@ Here is `yarn add keycloakify` for you 🍸
     "keycloak": "yarn build && build-keycloak-theme",
 },
 ```
-`"homepage"` must be specified only if the theme is build using 
-`--external-assets`(#specify-from-where-the-resources-should-be-downloaded) or if
-the url path is not `/` (only the url path will be considered so it doesn't matter if the
-base url is wrong)
+`"homepage"` must be specified only if the url path is not `/` 
+(Onl `/YOUR-APP` matters `URL.OF` don't have to be the actual domain)
 
 It is mandatory that you specify the url where your app will be available
 using the `homepage` field.
@@ -84,46 +81,6 @@ dependency with `yarn install` and build the keycloak theme with
 
 Once the build is complete instructions about how to load
 the theme into Keycloak are printed in the console.
-
-### Specify from where the resources should be downloaded.
-
-*TL;DR*: Building the theme with the `--external-assets` option enables the login
-page to load faster for first time users but it also implies that:  
-- If the app is down, your Keycloak login and register pages are down as well.
-- Each time the app is updated, the theme must be updated.
-- CORS must be enabled for fonts.
-- You must know at build time what will be the url of your app (`"homepage"` in `package.json`).  
-
-<details>
-  <summary>Click to expand</summary>
-
-When you run `npx build-keycloak-theme` without arguments, Keycloakify will build
-a standalone version of the Keycloak theme. That is to say even if your app, the
-one hosted at the url specified as `homepage`, is down the Keycloak theme will still work.  
-It also mean that you won't have to update your theme on your Keycloak server each time 
-your app is updated.  
-In this mode, the default, every asset are served by the keycloak server. 
-The drawback of this approach is that when users access the login page for the first time 
-they have to download the whole app again. 
-You probably have [long-term asset caching](https://create-react-app.dev/docs/production-build/#static-file-caching)
-enabled in the server that host your app ([example](https://github.com/garronej/keycloakify-demo-app/blob/224c43383548635a463fa68e8909c147ac189f0e/nginx.conf#L14)) 
-so it can be interesting to only serve the html from Keycloak server and everything
-else, your JS bundles, your CSS ect from the server that host your app.  
-
-To enable this behavior you car run:
-```bash
-npx build-keycloak-theme --external-assets
-```
-(instead of `npx build-keycloak-theme`)
-
-This is something you probably want to do in your CI pipeline. [Example](https://github.com/garronej/keycloakify-demo-app/blob/224c43383548635a463fa68e8909c147ac189f0e/.github/workflows/ci.yaml#L112)
-
-Also note that there is [a same-origin policy exception for fonts](https://en.wikipedia.org/wiki/Same-origin_policy#cite_note-3) so you must enabled
-CORS for fonts on the server hosting your app. Concretely this mean that your server should add a `Access-Control-Allow-Origin: *` response header to 
-GET request on *.woff2?. [Example with Nginx](https://github.com/garronej/keycloakify-demo-app/blob/224c43383548635a463fa68e8909c147ac189f0e/nginx.conf#L18-L20)
-
-</details>
-
 
 ## Developing your login and register pages in your React app
 
@@ -240,8 +197,6 @@ NOTE: This build tool has only be tested on MacOS.
 You won't be able to [import things from your public directory in your JavaScript code](https://create-react-app.dev/docs/using-the-public-folder/#adding-assets-outside-of-the-module-system). (This isn't recommended anyway).
 
 ## `@font-face` importing fonts from the `src/` dir
-
-**If you are building the theme with `--external-assets` this limitation doesn't apply.**  
 ### Example of setup that **won't** work 
 
 - We have a `fonts/` directory in `src/`
@@ -322,5 +277,5 @@ flash of the blank html before the js bundle have been evaluated
 
 Part of the lib that runs with node, at build time.
 
-- `npx build-keycloak-theme [--external-assets]`: Builds the theme, the CWD is assumed to be the root of your react project.
+- `npx build-keycloak-theme`: Builds the theme, the CWD is assumed to be the root of your react project.
 - `npx download-sample-keycloak-themes`: Downloads the keycloak default themes (for development purposes)

@@ -37,12 +37,7 @@ export function generateFtlFilesCodeFactory(
         cssGlobalsToDefine: Record<string, string>;
         indexHtmlCode: string;
         urlPathname: string;
-    } & ({
-        mode: "standalone";
-    } | {
-        mode: "external assets";
-        urlOrigin: string;
-    })
+    }
 ) {
 
     const { ftlValuesGlobalName, cssGlobalsToDefine, indexHtmlCode, urlPathname } = params;
@@ -53,19 +48,7 @@ export function generateFtlFilesCodeFactory(
 
         const { fixedJsCode } = replaceImportsFromStaticInJsCode({
             ftlValuesGlobalName,
-            "jsCode": $(element).html()!,
-            ...(() => {
-                switch (params.mode) {
-                    case "standalone": return {
-                        "mode": params.mode
-                    };
-                    case "external assets": return {
-                        "mode": params.mode,
-                        "urlOrigin": params.urlOrigin,
-                        "urlPathname": params.urlPathname,
-                    };
-                }
-            })()
+            "jsCode": $(element).html()!
         });
 
         $(element).text(fixedJsCode);
@@ -76,18 +59,7 @@ export function generateFtlFilesCodeFactory(
 
         const { fixedCssCode } = replaceImportsInInlineCssCode({
             "cssCode": $(element).html()!,
-            "urlPathname": params.urlPathname,
-            ...(() => {
-                switch (params.mode) {
-                    case "standalone": return {
-                        "mode": params.mode
-                    };
-                    case "external assets": return {
-                        "mode": params.mode,
-                        "urlOrigin": params.urlOrigin,
-                    };
-                }
-            })()
+            "urlPathname": params.urlPathname
         });
 
         $(element).text(fixedCssCode);
@@ -106,24 +78,13 @@ export function generateFtlFilesCodeFactory(
                 return;
             }
 
-            switch (params.mode) {
-                case "external assets":
-                    $(element).attr(
-                        attrName,
-                        href.replace(/^\//, `${params.urlOrigin}/`)
-                    );
-                    break;
-                case "standalone":
-                    $(element).attr(
-                        attrName,
-                        href.replace(
-                            new RegExp(`^${urlPathname.replace(/\//g, "\\/")}`),
-                            "${url.resourcesPath}/build/"
-                        )
-                    );
-                    break;
-            }
-
+            $(element).attr(
+                attrName,
+                href.replace(
+                    new RegExp(`^${urlPathname.replace(/\//g, "\\/")}`),
+                    "${url.resourcesPath}/build/"
+                )
+            );
 
         })
     );

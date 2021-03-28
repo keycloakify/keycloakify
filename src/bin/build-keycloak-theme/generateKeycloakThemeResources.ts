@@ -21,12 +21,7 @@ export function generateKeycloakThemeResources(
         reactAppBuildDirPath: string;
         keycloakThemeBuildingDirPath: string;
         urlPathname: string;
-    } & ({
-        mode: "standalone";
-    } | {
-        mode: "external assets";
-        urlOrigin: string;
-    })
+    }
 ) {
 
     const { themeName, reactAppBuildDirPath, keycloakThemeBuildingDirPath, urlPathname } = params;
@@ -50,42 +45,28 @@ export function generateKeycloakThemeResources(
                 return undefined;
             }
 
-            if (params.mode === "standalone") {
 
-                if (/\.css?$/i.test(filePath)) {
+            if (/\.css?$/i.test(filePath)) {
 
-                    const { cssGlobalsToDefine, fixedCssCode } = replaceImportsInCssCode(
-                        { "cssCode": sourceCode.toString("utf8") }
-                    );
+                const { cssGlobalsToDefine, fixedCssCode } = replaceImportsInCssCode(
+                    { "cssCode": sourceCode.toString("utf8") }
+                );
 
-                    allCssGlobalsToDefine = {
-                        ...allCssGlobalsToDefine,
-                        ...cssGlobalsToDefine
-                    };
+                allCssGlobalsToDefine = {
+                    ...allCssGlobalsToDefine,
+                    ...cssGlobalsToDefine
+                };
 
-                    return { "modifiedSourceCode": Buffer.from(fixedCssCode, "utf8") };
-
-                }
+                return { "modifiedSourceCode": Buffer.from(fixedCssCode, "utf8") };
 
             }
+
 
             if (/\.js?$/i.test(filePath)) {
 
                 const { fixedJsCode } = replaceImportsFromStaticInJsCode({
                     "jsCode": sourceCode.toString("utf8"),
-                    ftlValuesGlobalName,
-                    ...(() => {
-                        switch (params.mode) {
-                            case "external assets": return {
-                                "mode": params.mode,
-                                "urlOrigin": params.urlOrigin,
-                                "urlPathname": params.urlPathname
-                            };
-                            case "standalone": return {
-                                "mode": params.mode
-                            };
-                        }
-                    })()
+                    ftlValuesGlobalName
                 });
 
                 return { "modifiedSourceCode": Buffer.from(fixedJsCode, "utf8") };
@@ -103,18 +84,7 @@ export function generateKeycloakThemeResources(
         "indexHtmlCode": fs.readFileSync(
             pathJoin(reactAppBuildDirPath, "index.html")
         ).toString("utf8"),
-        urlPathname,
-        ...(() => {
-            switch (params.mode) {
-                case "external assets": return {
-                    "mode": params.mode,
-                    "urlOrigin": params.urlOrigin
-                };
-                case "standalone": return {
-                    "mode": params.mode
-                };
-            }
-        })()
+        urlPathname
     });
 
     pageIds.forEach(pageId => {
