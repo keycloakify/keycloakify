@@ -1,3 +1,7 @@
+### **0.3.14** (2021-03-28)  
+  
+- Fix standalone mode: imports from js    
+  
 ### **0.3.13** (2021-03-26)  
   
   
