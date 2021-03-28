@@ -67,17 +67,28 @@ export function generateKeycloakThemeResources(
 
                 }
 
-                if (/\.js?$/i.test(filePath)) {
+            }
 
-                    const { fixedJsCode } = replaceImportsFromStaticInJsCode({
-                        "jsCode": sourceCode.toString("utf8"),
-                        ftlValuesGlobalName,
-                        "mode": params.mode
-                    });
+            if (/\.js?$/i.test(filePath)) {
 
-                    return { "modifiedSourceCode": Buffer.from(fixedJsCode, "utf8") };
+                const { fixedJsCode } = replaceImportsFromStaticInJsCode({
+                    "jsCode": sourceCode.toString("utf8"),
+                    ftlValuesGlobalName,
+                    ...(() => {
+                        switch (params.mode) {
+                            case "external assets": return {
+                                "mode": params.mode,
+                                "urlOrigin": params.urlOrigin,
+                                "urlPathname": params.urlPathname
+                            };
+                            case "standalone": return {
+                                "mode": params.mode
+                            };
+                        }
+                    })()
+                });
 
-                }
+                return { "modifiedSourceCode": Buffer.from(fixedJsCode, "utf8") };
 
             }
 
