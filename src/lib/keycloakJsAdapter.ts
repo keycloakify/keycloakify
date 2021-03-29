@@ -66,13 +66,12 @@ export function createKeycloakAdapter(
 
     return {
         "login": options => {
-            window.location.replace(
+            window.location.href= 
                 transformUrlBeforeRedirect(
                     keycloakInstance.createLoginUrl(
                         options
                     )
-                )
-            );
+                );
             return neverResolvingPromise;
         },
         "logout": options => {
@@ -86,13 +85,13 @@ export function createKeycloakAdapter(
             return neverResolvingPromise;
         },
         "register": options => {
-            window.location.replace(
+            window.location.href =
                 transformUrlBeforeRedirect(
                     keycloakInstance.createRegisterUrl(
                         options
                     )
-                )
-            );
+                );
+
             return neverResolvingPromise;
         },
         "accountManagement": () => {

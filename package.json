@@ -1,6 +1,6 @@
 {
     "name": "keycloakify",
-    "version": "0.3.15",
+    "version": "0.3.17",
     "description": "Keycloak theme generator for Reacts app",
     "repository": {
         "type": "git",
@@ -14,8 +14,7 @@
         "grant-exec-perms": "node dist/bin/tools/grant-exec-perms.js",
         "test": "node dist/test",
         "copy-files": "copyfiles -u 1 src/**/*.ftl src/**/*.xml src/**/*.js dist/",
-        "generate-messages": "node dist/bin/generate-i18n-messages.js",
-        "watch": "tsc -w"
+        "generate-messages": "node dist/bin/generate-i18n-messages.js"
     },
     "bin": {
         "build-keycloak-theme": "dist/bin/build-keycloak-theme/index.js",
