@@ -1,3 +1,7 @@
+### **0.3.15** (2021-03-28)  
+  
+- Remove all reference to --external-assets, broken feature    
+  
 ### **0.3.14** (2021-03-28)  
   
 - Fix standalone mode: imports from js    
