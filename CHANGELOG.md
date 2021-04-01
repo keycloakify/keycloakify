@@ -1,3 +1,7 @@
+### **0.3.20** (2021-04-01)  
+  
+- Always catch freemarker errors    
+  
 ### **0.3.19** (2021-04-01)  
   
 - Fix previous release    
