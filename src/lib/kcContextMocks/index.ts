@@ -6,7 +6,7 @@ import { getKcLanguageTagLabel } from "../i18n/KcLanguageTag";
 //NOTE: Aside because we want to be able to import them from node
 import { resourcesCommonPath, resourcesPath } from "./urlResourcesPath";
 
-export const kcTemplateContext: KcContext.Template = {
+const kcCommonContext: KcContext.Common = {
     "url": {
         "loginAction": "#",
         "resourcesPath": `${process.env["PUBLIC_URL"]}/${resourcesPath}`,
@@ -111,7 +111,7 @@ export const kcTemplateContext: KcContext.Template = {
 };
 
 Object.defineProperty(
-    kcTemplateContext.locale!,
+    kcCommonContext.locale!,
     "current",
     {
         "get": () => getKcLanguageTagLabel(getEvtKcLanguage().state),
@@ -120,22 +120,22 @@ Object.defineProperty(
 );
 
 export const kcLoginContext: KcContext.Login = {
-    ...kcTemplateContext,
+    ...kcCommonContext,
     "pageId": "login.ftl",
     "url": {
-        ...kcTemplateContext.url,
+        ...kcCommonContext.url,
         "loginResetCredentialsUrl": "/auth/realms/myrealm/login-actions/reset-credentials?client_id=account&tab_id=HoAx28ja4xg",
         "registrationUrl": "/auth/realms/myrealm/login-actions/registration?client_id=account&tab_id=HoAx28ja4xg"
     },
     "realm": {
-        ...kcTemplateContext.realm,
+        ...kcCommonContext.realm,
         "loginWithEmailAllowed": true,
         "rememberMe": true,
         "password": true,
         "resetPasswordAllowed": true,
         "registrationAllowed": true
     },
-    "auth": kcTemplateContext.auth!,
+    "auth": kcCommonContext.auth!,
     "social": {
         "displayInfo": true
     },
@@ -147,7 +147,7 @@ export const kcLoginContext: KcContext.Login = {
 };
 
 export const kcRegisterContext: KcContext.Register = {
-    ...kcTemplateContext,
+    ...kcCommonContext,
     "url": {
         ...kcLoginContext.url,
         "registrationAction": "http://localhost:8080/auth/realms/myrealm/login-actions/registration?session_code=gwZdUeO7pbYpFTRxiIxRg_QtzMbtFTKrNu6XW_f8asM&execution=12146ce0-b139-4bbd-b25b-0eccfee6577e&client_id=account&tab_id=uS8lYfebLa0"
@@ -166,7 +166,7 @@ export const kcRegisterContext: KcContext.Register = {
 };
 
 export const kcInfoContext: KcContext.Info ={
-    ...kcTemplateContext,
+    ...kcCommonContext,
     "pageId": "info.ftl",
     "messageHeader": "<Message header>",
     "requiredActions": undefined,
@@ -178,7 +178,7 @@ export const kcInfoContext: KcContext.Info ={
 };
 
 export const kcErrorContext: KcContext.Error = {
-    ...kcTemplateContext,
+    ...kcCommonContext,
     "pageId": "error.ftl",
     "client": {
         "baseUrl": "#"
@@ -186,16 +186,16 @@ export const kcErrorContext: KcContext.Error = {
 };
 
 export const kcLoginResetPasswordContext: KcContext.LoginResetPassword = {
-    ...kcTemplateContext,
+    ...kcCommonContext,
     "pageId": "login-reset-password.ftl",
     "realm":{
-        ...kcTemplateContext.realm,
+        ...kcCommonContext.realm,
         "loginWithEmailAllowed": false
     }
 };
 
 export const kcLoginVerifyEmailContext: KcContext.LoginVerifyEmail = {
-    ...kcTemplateContext,
+    ...kcCommonContext,
     "pageId": "login-verify-email.ftl"
 };
 

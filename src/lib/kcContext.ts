@@ -10,12 +10,17 @@ import type { LanguageLabel } from "./i18n/KcLanguageTag";
 type ExtractAfterStartingWith<Prefix extends string, StrEnum> =
     StrEnum extends `${Prefix}${infer U}` ? U : never;
 
+/** Take theses type definition with a grain of salt. 
+ * Some values might be undefined on some pages.
+ * (ex: url.loginAction is undefined on error.ftl)
+ */
 export type KcContext =
     KcContext.Login | KcContext.Register | KcContext.Info |
     KcContext.Error | KcContext.LoginResetPassword | KcContext.LoginVerifyEmail;
+
 export declare namespace KcContext {
 
-    export type Template = {
+    export type Common = {
         url: {
             loginAction: string;
             resourcesPath: string;
@@ -27,7 +32,7 @@ export declare namespace KcContext {
             displayName?: string;
             displayNameHtml?: string;
             internationalizationEnabled: boolean;
-            registrationEmailAsUsername: boolean; //<---
+            registrationEmailAsUsername: boolean;
         };
         /** Undefined if !realm.internationalizationEnabled */
         locale?: {
@@ -55,7 +60,7 @@ export declare namespace KcContext {
         isAppInitiatedAction: boolean;
     };
 
-    export type Login = Template & {
+    export type Login = Common & {
         pageId: "login.ftl";
         url: {
             loginResetCredentialsUrl: string;
@@ -88,7 +93,7 @@ export declare namespace KcContext {
         };
     };
 
-    export type Register = Template & {
+    export type Register = Common & {
         pageId: "register.ftl";
         url: {
             registrationAction: string;
@@ -120,7 +125,7 @@ export declare namespace KcContext {
         recaptchaSiteKey?: string;
     };
 
-    export type Info = Template & {
+    export type Info = Common & {
         pageId: "info.ftl";
         messageHeader?: string;
         requiredActions?: ExtractAfterStartingWith<"requiredAction.", MessageKey>[];
@@ -132,21 +137,21 @@ export declare namespace KcContext {
         }
     };
 
-    export type Error = Template & {
+    export type Error = Common & {
         pageId: "error.ftl";
         client?: {
             baseUrl?: string;
         }
     };
 
-    export type LoginResetPassword = Template & {
+    export type LoginResetPassword = Common & {
         pageId: "login-reset-password.ftl";
         realm: {
             loginWithEmailAllowed: boolean;
         }
     };
 
-    export type LoginVerifyEmail = Template & {
+    export type LoginVerifyEmail = Common & {
         pageId: "login-verify-email.ftl";
     };
 

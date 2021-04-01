@@ -25,7 +25,7 @@ export type TemplateProps = {
     showUsernameNode?: ReactNode;
     formNode: ReactNode;
     infoNode?: ReactNode;
-} & { kcContext: KcContext.Template; } & KcTemplateProps;
+} & { kcContext: KcContext; } & KcTemplateProps;
 
 export const Template = memo((props: TemplateProps) => {
 

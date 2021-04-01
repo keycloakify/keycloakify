@@ -19,7 +19,7 @@ function loadAdjacentFile(fileBasename: string) {
         .toString("utf8");
 };
 
-function loadFtlFile(ftlFileBasename: PageId | "template.ftl") {
+function loadFtlFile(ftlFileBasename: PageId | "common.ftl") {
     try {
 
         return loadAdjacentFile(ftlFileBasename)
@@ -91,7 +91,7 @@ export function generateFtlFilesCodeFactory(
 
     //FTL is no valid html, we can't insert with cheerio, we put placeholder for injecting later.
     const ftlCommonPlaceholders = {
-        '{ "x": "vIdLqMeOed9sdLdIdOxdK0d" }': loadFtlFile("template.ftl"),
+        '{ "x": "vIdLqMeOed9sdLdIdOxdK0d" }': loadFtlFile("common.ftl"),
         '<!-- xIdLqMeOedErIdLsPdNdI9dSlxI -->':
             [
                 '<#if scripts??>',
