@@ -1,3 +1,7 @@
+### **0.3.17** (2021-03-29)  
+  
+- Use push instead of replace in keycloak-js adapter to enable going back    
+  
 ### **0.3.15** (2021-03-28)  
   
 - Remove all reference to --external-assets, broken feature    
