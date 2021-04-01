@@ -1,3 +1,7 @@
+### **0.3.19** (2021-04-01)  
+  
+- Fix previous release    
+  
 ### **0.3.18** (2021-04-01)  
   
 - Fix error.ftt, Adopt best effort strategy to convert ftl values into JS    
