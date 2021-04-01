@@ -2,17 +2,19 @@
 {
     "url": (function (){
 
-        <#if !url?has_content>
-            return undefined;
+        <#if url?has_content>
+
+            return {
+                "loginAction": "${(url.loginAction!'')?no_esc}",
+                "resourcesPath": "${(url.resourcesPath!'')?no_esc}",
+                "resourcesCommonPath": "${(url.resourcesCommonPath!'')?no_esc}",
+                "loginRestartFlowUrl": "${(url.loginRestartFlowUrl!'')?no_esc}",
+                "loginUrl": "${(url.loginUrl!'')?no_esc}"
+            };
+
         </#if>
 
-        return {
-            "loginAction": "${(url.loginAction!'')?no_esc}",
-            "resourcesPath": "${(url.resourcesPath!'')?no_esc}",
-            "resourcesCommonPath": "${(url.resourcesCommonPath!'')?no_esc}",
-            "loginRestartFlowUrl": "${(url.loginRestartFlowUrl!'')?no_esc}",
-            "loginUrl": "${(url.loginUrl!'')?no_esc}"
-        };
+        return undefined;
 
     })(),
     "realm": {
@@ -23,56 +25,58 @@
     },
     "locale": (function (){
 
-        <#if !realm.internationalizationEnabled>
-            return undefined;
+        <#if realm.internationalizationEnabled>
+
+            return {
+                "supported": (function(){
+
+                    var out= [];
+
+                    <#list locale.supported as lng>
+                        out.push({ 
+                            "url": "${lng.url?no_esc}", 
+                            "label": "${lng.label}",
+                            "languageTag": "${lng.languageTag}"
+                        });
+                    </#list>
+
+                    return out;
+
+                })(),
+                "current": "${locale.current}"
+            };
+
         </#if>
 
-        return {
-            "supported": (function(){
+        return undefined;
 
-                <#if !realm.internationalizationEnabled>
-                    return undefined;
-                </#if>
-
-                var out= [];
-
-                <#list locale.supported as lng>
-                    out.push({ 
-                        "url": "${lng.url?no_esc}", 
-                        "label": "${lng.label}",
-                        "languageTag": "${lng.languageTag}"
-                    });
-                </#list>
-
-                return out;
-
-            })(),
-            "current": "${locale.current}"
-        };
 
     })(),
     "auth": (function (){
 
-        <#if !auth?has_content>
-            return undefined;
+        <#if auth?has_content>
+
+            var out= {
+                "showUsername": ${auth.showUsername()?c},
+                "showResetCredentials": ${auth.showResetCredentials()?c},
+                "showTryAnotherWayLink": ${auth.showTryAnotherWayLink()?c},
+            };
+
+            <#if auth.showUsername() && !auth.showResetCredentials()>
+                Object.assign(
+                    out,
+                    {
+                        "attemptedUsername": "${auth.attemptedUsername}"
+                    }
+                );
+            </#if>
+
+            return out;
+
         </#if>
 
-        var out= {
-            "showUsername": ${auth.showUsername()?c},
-            "showResetCredentials": ${auth.showResetCredentials()?c},
-            "showTryAnotherWayLink": ${auth.showTryAnotherWayLink()?c},
-        };
+        return undefined;
 
-        <#if auth.showUsername() && !auth.showResetCredentials()>
-            Object.assign(
-                out,
-                {
-                    "attemptedUsername": "${auth.attemptedUsername}"
-                }
-            );
-        </#if>
-
-        return out;
 
     })(),
     "scripts": (function(){
@@ -90,14 +94,16 @@
     })(),
     "message": (function (){
 
-        <#if !message?has_content>
-            return undefined;
+        <#if message?has_content>
+
+            return { 
+                "type": "${message.type}",
+                "summary": String.htmlUnescape("${message.summary}")
+            };
+
         </#if>
 
-        return { 
-            "type": "${message.type}",
-            "summary": String.htmlUnescape("${message.summary}")
-        };
+        return undefined;
 
     })(),
     "isAppInitiatedAction": (function (){
