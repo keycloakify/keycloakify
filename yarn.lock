@@ -747,10 +747,10 @@ path@^0.12.7:
     process "^0.11.1"
     util "^0.10.3"
 
-powerhooks@^0.0.27:
-  version "0.0.27"
-  resolved "https://registry.yarnpkg.com/powerhooks/-/powerhooks-0.0.27.tgz#e9dc29258860d2f6bf32b249d9cba07c6f53f393"
-  integrity sha512-ohayWhtIEdLqiC2th/GEhaRfOhqekFg2uFo0JZ8Dn7oTnAZybs618QJeq5ag9oy3lFVzl+kbROpVa8Ch5zrkaA==
+powerhooks@^0.0.32:
+  version "0.0.32"
+  resolved "https://registry.yarnpkg.com/powerhooks/-/powerhooks-0.0.32.tgz#a6aa19573b22f38f4f0bb44573c3242116e9eed1"
+  integrity sha512-atxsb/zcN8O72hqtfz6tv4XLlh4X22+iTO96PPKpa//nrdvX8KTpFoGiUTh+RQ9RONdR4hP/RmfsDu1zPp2G8Q==
   dependencies:
     evt "2.0.0-beta.15"
     memoizee "^0.4.15"
@@ -927,10 +927,10 @@ to-fast-properties@^2.0.0:
   resolved "https://registry.yarnpkg.com/to-fast-properties/-/to-fast-properties-2.0.0.tgz#dc5e698cbd079265bc73e0377681a4e4e83f616e"
   integrity sha1-3F5pjL0HkmW8c+A3doGk5Og/YW4=
 
-tss-react@^0.0.11:
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/tss-react/-/tss-react-0.0.11.tgz#1cd061927744cd4fc9b7346e2fd1cfcf896a18d5"
-  integrity sha512-j8CDpHHIl6S6/mX+AmK08v7waPqwgNA7urHOD3qknCgbY79LRlS7he5DF4NUNE/5B4/Btc3F25w+KqgChNbyGw==
+tss-react@^0.0.12:
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/tss-react/-/tss-react-0.0.12.tgz#6463617ae5e7f670742e48e497d8825d59e2a2e9"
+  integrity sha512-oHekukqdaE71uhHx4XEdHy6aMnDYhoHLWB94iy2Fy9X8btH2lJH1joPj0zS1q7+1Xy2TydkLEZsTq3ElVd7ZqA==
   dependencies:
     "@emotion/css" "^11.1.3"
 

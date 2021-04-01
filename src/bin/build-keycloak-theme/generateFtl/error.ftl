@@ -2,13 +2,21 @@
 {
     "client": (function (){
 
+        <#attempt>
             <#if client??>
                 return {
-                    "baseUrl": "${(client.baseUrl!'')?no_esc}" || undefined
+                    "baseUrl": (function (){
+
+                        <#attempt>
+                            return "${(client.baseUrl!'')?no_esc}" || undefined;
+                        <#recover>
+                        </#attempt>
+
+                    })()
                 };
             </#if>
-
-            return undefined;
+        <#recover>
+        </#attempt>
 
     })()
 }

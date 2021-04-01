@@ -1,37 +1,82 @@
 <script>const _= 
 {
-    "messageHeader": "${messageHeader!''}" || undefined,
+    "messageHeader": (function (){
+
+        <#attempt>
+            return "${messageHeader!''}" || undefined;
+        <#recover>
+        </#attempt>
+
+    })(),
     "requiredActions": (function (){
 
+        <#attempt>
         <#if requiredActions??>
 
             var out =[];
 
+            <#attempt>
             <#list requiredActions>
+                <#attempt>
                 <#items as reqActionItem>
-                    out.push("${reqActionItem}");
-                </#items></b>
+                    out.push((function (){
+
+                        <#attempt>
+                            return "${reqActionItem}";
+                        <#recover>
+                        </#attempt>
+
+                    })());
+                </#items>
+                <#recover>
+                </#attempt>
             </#list>
+            <#recover>
+            </#attempt>
 
             return out;
 
-        <#else>
-
-        return undefined;
+        </#if>
+        <#recover>
+        </#attempt>
 
     })(),
     "skipLink": (function (){
 
+        <#attempt>
         <#if skipLink??>
             return true;
         </#if>
+        <#recover>
+        </#attempt>
         return false;
 
     })(),
-    "pageRedirectUri": "${(pageRedirectUri!'')?no_esc}" || undefined,
-    "actionUri": "${(actionUri!'')?no_esc}" || undefined,
+    "pageRedirectUri": (function (){
+
+        <#attempt>
+            return "${(pageRedirectUri!'')?no_esc}" || undefined;
+        <#recover>
+        </#attempt>
+
+    })(),
+    "actionUri": (function (){
+
+        <#attempt>
+            return "${(actionUri!'')?no_esc}" || undefined;
+        <#recover>
+        </#attempt>
+
+    })(),
     "client": {
-        "baseUrl": "${(client.baseUrl!'')?no_esc}" || undefined
+        "baseUrl": (function(){
+
+            <#attempt>
+                return "${(client.baseUrl!'')?no_esc}" || undefined;
+            <#recover>
+            </#attempt>
+
+        })()
     }
 }
 </script>

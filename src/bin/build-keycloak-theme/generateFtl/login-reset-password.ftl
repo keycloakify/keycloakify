@@ -1,7 +1,14 @@
 <script>const _= 
 {
     "realm": {
-        "loginWithEmailAllowed": ${realm.loginWithEmailAllowed?c}
-    },
+        "loginWithEmailAllowed": (function (){
+
+            <#attempt>
+                return ${realm.loginWithEmailAllowed?c};
+            <#recover>
+            </#attempt>
+
+        })()
+    }
 }
 </script>
