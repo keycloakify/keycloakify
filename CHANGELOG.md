@@ -1,3 +1,7 @@
+### **0.3.18** (2021-04-01)  
+  
+- Fix error.ftt, Adopt best effort strategy to convert ftl values into JS    
+  
 ### **0.3.17** (2021-03-29)  
   
 - Use push instead of replace in keycloak-js adapter to enable going back    
