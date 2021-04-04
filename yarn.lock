@@ -747,10 +747,10 @@ path@^0.12.7:
     process "^0.11.1"
     util "^0.10.3"
 
-powerhooks@^0.0.32:
-  version "0.0.32"
-  resolved "https://registry.yarnpkg.com/powerhooks/-/powerhooks-0.0.32.tgz#a6aa19573b22f38f4f0bb44573c3242116e9eed1"
-  integrity sha512-atxsb/zcN8O72hqtfz6tv4XLlh4X22+iTO96PPKpa//nrdvX8KTpFoGiUTh+RQ9RONdR4hP/RmfsDu1zPp2G8Q==
+powerhooks@^0.0.35:
+  version "0.0.35"
+  resolved "https://registry.yarnpkg.com/powerhooks/-/powerhooks-0.0.35.tgz#efc5e87475ec35bcfe695ba2da6caf63524aae21"
+  integrity sha512-wCUDQdDawv5txiHKYUIUitqF9p+6sYGL0Fvqzbze3PcGHlyQsvHkODpVWdRwi87Qc4SrRs5xfwdwvpuaEflkAQ==
   dependencies:
     evt "2.0.0-beta.15"
     memoizee "^0.4.15"
