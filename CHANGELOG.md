@@ -1,3 +1,7 @@
+### **0.3.21** (2021-04-04)  
+  
+- Update powerhooks    
+  
 ### **0.3.20** (2021-04-01)  
   
 - Always catch freemarker errors    
