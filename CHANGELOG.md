@@ -1,3 +1,7 @@
+### **0.3.23** (2021-04-08)  
+  
+- Allow to lazily load therms    
+  
 ### **0.3.22** (2021-04-08)  
   
 - update powerhooks  
