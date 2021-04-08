@@ -2,7 +2,7 @@
 //PLEASE DO NOT EDIT MANUALLY
 
 /* spell-checker: disable */
-export const messages= {
+export const kcMessages= {
   "ca": {
     "doSave": "Desa",
     "doCancel": "Cancel·la",

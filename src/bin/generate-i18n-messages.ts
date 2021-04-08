@@ -49,7 +49,7 @@ crawl(".").forEach(filePath => {
 
 child_process.execSync(`rm -r ${tmpDirPath}`);
 
-const targetDirPath = pathJoin(getProjectRoot(), "src", "lib", "i18n", "generated_messages");
+const targetDirPath = pathJoin(getProjectRoot(), "src", "lib", "i18n", "generated_kcMessages");
 
 fs.mkdirSync(targetDirPath, { "recursive": true });
 
@@ -65,7 +65,7 @@ Object.keys(record).forEach(pageType => {
                 '//PLEASE DO NOT EDIT MANUALLY',
                 '',
                 '/* spell-checker: disable */',
-                `export const messages= ${JSON.stringify(record[pageType], null, 2)};`,
+                `export const kcMessages= ${JSON.stringify(record[pageType], null, 2)};`,
                 '/* spell-checker: enable */'
             ].join("\n"), "utf8")
     );

@@ -2,7 +2,7 @@
 //PLEASE DO NOT EDIT MANUALLY
 
 /* spell-checker: disable */
-export const messages= {
+export const kcMessages= {
   "ca": {
     "emailVerificationSubject": "Verificació d'email",
     "emailVerificationBody": "Algú ha creat un compte de {2} amb aquesta adreça de correu electrònic. Si has estat tu, fes clic a l'enllaç següent per verificar la teva adreça de correu electrònic.\n\n{0}\n\nAquest enllaç expirarà en {1} minuts.\n\nSi tu no has creat aquest compte, simplement ignora aquest missatge.",

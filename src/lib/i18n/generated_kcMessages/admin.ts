@@ -2,7 +2,7 @@
 //PLEASE DO NOT EDIT MANUALLY
 
 /* spell-checker: disable */
-export const messages= {
+export const kcMessages= {
   "ca": {
     "invalidPasswordHistoryMessage": "Contrasenya incorrecta: no pot ser igual a cap de les últimes {0} contrasenyes.",
     "invalidPasswordMinDigitsMessage": "Contraseña incorrecta: debe contener al menos {0} caracteres numéricos.",

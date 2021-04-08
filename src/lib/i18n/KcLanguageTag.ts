@@ -1,8 +1,8 @@
 
 import { objectKeys } from "evt/tools/typeSafety/objectKeys";
-import { messages } from "./generated_messages/login";
+import { kcMessages } from "./kcMessages/login";
 
-export type KcLanguageTag = keyof typeof messages;
+export type KcLanguageTag = keyof typeof kcMessages;
 
 export type LanguageLabel =
     /* spell-checker: disable */
@@ -40,7 +40,7 @@ export function getKcLanguageTagLabel(language: KcLanguageTag): LanguageLabel {
 
 }
 
-const availableLanguages = objectKeys(messages);
+const availableLanguages = objectKeys(kcMessages);
 
 /** 
  * Pass in "fr-FR" or "français" for example, it will return the AvailableLanguage

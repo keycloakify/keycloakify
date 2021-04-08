@@ -3,6 +3,7 @@ export * from "./KcContext";
 export * from "./i18n/KcLanguageTag";
 export * from "./i18n/useKcLanguageTag";
 export * from "./i18n/useKcMessage";
+export * from "./i18n/kcMessages/login";
 
 export * from "./components/KcProps";
 export * from "./components/Login";
@@ -15,5 +16,6 @@ export * from "./components/LoginVerifyEmail";
 export * from "./keycloakJsAdapter";
 
 export * from "./tools/assert";
+
 
 export * as kcContextMocks from "./kcContextMocks";

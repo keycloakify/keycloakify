@@ -1,21 +1,26 @@
 
-import { useCallback } from "react";
+import { useCallback, useReducer } from "react";
 import { useKcLanguageTag } from "./useKcLanguageTag";
-import { messages } from "./generated_messages/login";
+import { kcMessages, evtTermsUpdated } from "./kcMessages/login";
 import type { ReactNode } from "react";
+import { useEvt } from "evt/hooks";
 //@ts-ignore
 import * as markdown from "markdown";
 
-export type MessageKey = keyof typeof messages["en"];
+export type MessageKey = keyof typeof kcMessages["en"];
 
 export function useKcMessage() {
 
     const { kcLanguageTag } = useKcLanguageTag();
 
+    const [trigger, forceUpdate] = useReducer((counter: number) => counter + 1, 0);
+
+    useEvt(ctx => evtTermsUpdated.attach(ctx, forceUpdate), []);
+
     const msgStr = useCallback(
         (key: MessageKey, ...args: (string | undefined)[]): string => {
 
-            let str: string = messages[kcLanguageTag as any as "en"][key] ?? messages["en"][key];
+            let str: string = kcMessages[kcLanguageTag as any as "en"][key] ?? kcMessages["en"][key];
 
             args.forEach((arg, i) => {
 
@@ -30,7 +35,7 @@ export function useKcMessage() {
             return str;
 
         },
-        [kcLanguageTag]
+        [kcLanguageTag, trigger]
     );
 
     const msg = useCallback<(...args: Parameters<typeof msgStr>) => ReactNode>(
@@ -43,7 +48,7 @@ export function useKcMessage() {
                 }}
             />
         ,
-        [kcLanguageTag]
+        [kcLanguageTag, trigger]
     );
 
     return { msg, msgStr };
