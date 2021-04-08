@@ -1,9 +1,10 @@
 
-import { useCallback } from "react";
+import { useCallback } from "react";
 import { useKcLanguageTag } from "./useKcLanguageTag";
 import { messages } from "./generated_messages/login";
 import type { ReactNode } from "react";
-import { id } from "evt/tools/typeSafety/id";
+//@ts-ignore
+import * as markdown from "markdown";
 
 export type MessageKey = keyof typeof messages["en"];
 
@@ -32,11 +33,16 @@ export function useKcMessage() {
         [kcLanguageTag]
     );
 
-    const msg = useCallback(
-        id<(...args: Parameters<typeof msgStr>) => ReactNode>(
-            (key, ...args) =>
-                <span className={key} dangerouslySetInnerHTML={{ "__html": msgStr(key, ...args) }} />
-        ),
+    const msg = useCallback<(...args: Parameters<typeof msgStr>) => ReactNode>(
+        (key, ...args) =>
+            <span
+                className={key}
+                dangerouslySetInnerHTML={{
+                    "__html":
+                        markdown.toHTML(msgStr(key, ...args))
+                }}
+            />
+        ,
         [kcLanguageTag]
     );
 

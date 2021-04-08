@@ -3060,5 +3060,5 @@ export const messages= {
     "locale_ru": "Русский",
     "locale_zh-CN": "中文简体"
   }
-} as const;
+};
 /* spell-checker: enable */

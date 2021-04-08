@@ -65,7 +65,7 @@ Object.keys(record).forEach(pageType => {
                 '//PLEASE DO NOT EDIT MANUALLY',
                 '',
                 '/* spell-checker: disable */',
-                `export const messages= ${JSON.stringify(record[pageType], null, 2)} as const;`,
+                `export const messages= ${JSON.stringify(record[pageType], null, 2)};`,
                 '/* spell-checker: enable */'
             ].join("\n"), "utf8")
     );

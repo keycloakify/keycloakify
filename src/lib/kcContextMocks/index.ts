@@ -199,3 +199,8 @@ export const kcLoginVerifyEmailContext: KcContext.LoginVerifyEmail = {
     "pageId": "login-verify-email.ftl"
 };
 
+export const kcTermContext: KcContext.Terms = {
+    ...kcCommonContext,
+    "pageId": "terms.ftl"
+};
+

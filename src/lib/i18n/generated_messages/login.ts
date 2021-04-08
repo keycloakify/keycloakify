@@ -4360,5 +4360,5 @@ export const messages= {
     "invalidParameterMessage": "无效的参数 : {0}",
     "alreadyLoggedIn": "您已经登录"
   }
-} as const;
+};
 /* spell-checker: enable */

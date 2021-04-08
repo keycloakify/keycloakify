@@ -634,5 +634,5 @@ export const messages= {
     "eventUpdateTotpBody": "您账户的OTP 配置在{0} 由 {1}更改. 如非本人操作，请联系管理员。",
     "eventUpdateTotpBodyHtml": "<p>您账户的OTP 配置在{0} 由 {1}更改. 如非本人操作，请联系管理员。</p>"
   }
-} as const;
+};
 /* spell-checker: enable */

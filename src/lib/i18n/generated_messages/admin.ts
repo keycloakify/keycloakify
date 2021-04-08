@@ -240,5 +240,5 @@ export const messages= {
     "pairwiseFailedToGetRedirectURIs": "无法从服务器获得重定向URL",
     "pairwiseRedirectURIsMismatch": "客户端的重定向URI与服务器端获取的URI配置不匹配。"
   }
-} as const;
+};
 /* spell-checker: enable */

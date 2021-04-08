@@ -8,6 +8,7 @@ import { Info } from "./Info";
 import { Error } from "./Error";
 import { LoginResetPassword } from "./LoginResetPassword";
 import { LoginVerifyEmail } from "./LoginVerifyEmail";
+import { Terms } from "./Terms";
 
 export const KcApp = memo(({ kcContext, ...props }: { kcContext: KcContext; } & KcProps ) => {
     switch (kcContext.pageId) {
@@ -17,5 +18,6 @@ export const KcApp = memo(({ kcContext, ...props }: { kcContext: KcContext; } & 
         case "error.ftl": return <Error {...{ kcContext, ...props }} />;
         case "login-reset-password.ftl": return <LoginResetPassword {...{ kcContext, ...props }} />;
         case "login-verify-email.ftl": return <LoginVerifyEmail {...{ kcContext, ...props }} />;
+        case "terms.ftl": return <Terms {...{ kcContext, ...props }}/>;
     }
 });
