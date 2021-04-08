@@ -1,3 +1,7 @@
+### **0.3.24** (2021-04-08)  
+  
+- Add missing dependency: markdown    
+  
 ### **0.3.23** (2021-04-08)  
   
 - Allow to lazily load therms    
