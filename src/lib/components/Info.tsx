@@ -53,13 +53,13 @@ export const Info = memo(({ kcContext, ...props }: { kcContext: KcContext.Info; 
                     {
                         !skipLink &&
                             pageRedirectUri !== undefined ?
-                            <p><a href="${pageRedirectUri}">${(msg("backToApplication"))}</a></p>
+                            <p><a href={pageRedirectUri}>{(msg("backToApplication"))}</a></p>
                             :
                             actionUri !== undefined ?
-                                <p><a href="${actionUri}">${msg("proceedWithAction")}</a></p>
+                                <p><a href={actionUri}>{msg("proceedWithAction")}</a></p>
                                 :
                                 client.baseUrl !== undefined &&
-                                <p><a href="${client.baseUrl}">${msg("backToApplication")}</a></p>
+                                <p><a href={client.baseUrl}>{msg("backToApplication")}</a></p>
                     }
                 </div>
 
