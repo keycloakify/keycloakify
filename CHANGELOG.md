@@ -1,3 +1,10 @@
+### **0.3.22** (2021-04-08)  
+  
+- update powerhooks  
+- Support terms and condition  
+- Fix info.ftl  
+- For useKcMessage we prefer returning callbacks with a changing references    
+  
 ### **0.3.21** (2021-04-04)  
   
 - Update powerhooks    
