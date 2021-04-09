@@ -1,3 +1,7 @@
+## **0.4.0** (2021-04-09)  
+  
+- Acual support of Therms of services    
+  
 ### **0.3.24** (2021-04-08)  
   
 - Add missing dependency: markdown    
