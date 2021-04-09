@@ -130,6 +130,7 @@ If you want to really re-implement the pages the best approach is to
 create you own version of the [`<KcApp />`](https://github.com/garronej/keycloakify/blob/develop/src/lib/components/KcApp.tsx).
 Copy/past some of [the components](https://github.com/garronej/keycloakify/tree/develop/src/lib/components) provided by this module and start hacking around. 
 
+You can find an example of a fancy customization [here](https://github.com/InseeFrLab/onyxia-ui/tree/master/src/app/components/KcApp).
 ### Hot reload
 
 By default, in order to see your changes you will have to wait for 
