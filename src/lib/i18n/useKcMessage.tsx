@@ -4,8 +4,8 @@ import { useKcLanguageTag } from "./useKcLanguageTag";
 import { kcMessages, evtTermsUpdated } from "./kcMessages/login";
 import type { ReactNode } from "react";
 import { useEvt } from "evt/hooks";
-//@ts-ignore
-import * as markdown from "markdown";
+//NOTE for later: https://github.com/remarkjs/react-markdown/blob/236182ecf30bd89c1e5a7652acaf8d0bf81e6170/src/renderers.js#L7-L35
+import ReactMarkdown from "react-markdown";
 
 export type MessageKey = keyof typeof kcMessages["en"];
 
@@ -40,15 +40,10 @@ export function useKcMessage() {
 
     const msg = useCallback<(...args: Parameters<typeof msgStr>) => ReactNode>(
         (key, ...args) =>
-            <span
-                className={key}
-                dangerouslySetInnerHTML={{
-                    "__html":
-                        markdown.toHTML(msgStr(key, ...args))
-                }}
-            />
-        ,
-        [kcLanguageTag, trigger]
+            <ReactMarkdown allowDangerousHtml renderers={key === "termsText" ? undefined : { "paragraph": "span" }}>
+                {msgStr(key, ...args)}
+            </ReactMarkdown>,
+        [msgStr]
     );
 
     return { msg, msgStr };

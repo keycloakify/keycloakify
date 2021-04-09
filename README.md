@@ -45,6 +45,7 @@ Here is `yarn add keycloakify` for you 🍸
     - [Just changing the look](#just-changing-the-look)
     - [Changing the look **and** feel](#changing-the-look-and-feel)
     - [Hot reload](#hot-reload)
+- [Terms and conditions](#terms-and-conditions)
 - [GitHub Actions](#github-actions)
 - [Requirements](#requirements)
 - [Limitations](#limitations)
@@ -162,6 +163,15 @@ Checkout [this concrete example](https://github.com/garronej/keycloakify-demo-ap
 *NOTE: keycloak-react-theming was renamed keycloakify since this video was recorded*
 [![kickstart_video](https://user-images.githubusercontent.com/6702424/108877866-f146ee80-75ff-11eb-8120-003b3c5f6dd8.png)](https://youtu.be/xTz0Rj7i2v8)
 
+# Terms and conditions
+
+[Many organizations have a requirement that when a new user logs in for the first time, they need to agree to the terms and conditions of the website.](https://www.keycloak.org/docs/4.8/server_admin/#terms-and-conditions).
+
+First you need to enable the required action on the Keycloak server admin console:  
+![image](https://user-images.githubusercontent.com/6702424/114114637-87e61b00-98e1-11eb-9da9-1ca6c13d5d2e.png)
+
+Then to load your own therms of services using [like this](https://github.com/garronej/keycloakify-demo-app/blob/8168c928a66605f2464f9bd28a4dc85fb0a231f9/src/index.tsx#L42-L66).
+
 # GitHub Actions
 
 ![image](https://user-images.githubusercontent.com/6702424/110708305-c44b2c00-81fa-11eb-8152-eeaaac0883d6.png)
@@ -208,7 +218,7 @@ If it is possible, use Google Fonts or any other font provider.
 
 If you want to host your font recommended approach is to move your fonts into the `public` 
 directory and to place your `@font-face` statements in the `public/index.html`.  
-Example [here]().  
+Example [here](https://github.com/InseeFrLab/onyxia-ui/blob/0e3a04610cfe872ca71dad59e05ced8f785dee4b/public/index.html#L6-L51).  
 
 You can also [use your explicit url](https://github.com/garronej/keycloakify-demo-app/blob/2de8a9eb6f5de9c94f9cd3991faad0377e63268c/src/fonts.scss#L16) but don't forget [`Access-Control-Allow-Origin`](https://github.com/garronej/keycloakify-demo-app/blob/2de8a9eb6f5de9c94f9cd3991faad0377e63268c/nginx.conf#L17-L19).
 
