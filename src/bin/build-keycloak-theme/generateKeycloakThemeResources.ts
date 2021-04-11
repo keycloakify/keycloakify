@@ -10,7 +10,6 @@ import { generateFtlFilesCodeFactory, pageIds } from "./generateFtl";
 import { builtinThemesUrl } from "../install-builtin-keycloak-themes";
 import { downloadAndUnzip } from "../tools/downloadAndUnzip";
 import * as child_process from "child_process";
-import { ftlValuesGlobalName } from "./ftlValuesGlobalName";
 import { resourcesCommonPath, resourcesPath, subDirOfPublicDirBasename } from "../../lib/kcContextMocks/urlResourcesPath";
 import { isInside } from "../tools/isInside";
 
@@ -21,22 +20,28 @@ export function generateKeycloakThemeResources(
         reactAppBuildDirPath: string;
         keycloakThemeBuildingDirPath: string;
         urlPathname: string;
+        //If urlOrigin is not undefined then it means --externals-assets
+        urlOrigin: undefined | string;
     }
 ) {
 
-    const { themeName, reactAppBuildDirPath, keycloakThemeBuildingDirPath, urlPathname } = params;
+    const { themeName, reactAppBuildDirPath, keycloakThemeBuildingDirPath, urlPathname, urlOrigin } = params;
 
     const themeDirPath = pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", themeName, "login");
 
     let allCssGlobalsToDefine: Record<string, string> = {};
 
     transformCodebase({
-        "destDirPath": pathJoin(themeDirPath, "resources", "build"),
+        "destDirPath":
+            urlOrigin === undefined ?
+                pathJoin(themeDirPath, "resources", "build") :
+                reactAppBuildDirPath,
         "srcDirPath": reactAppBuildDirPath,
         "transformSourceCode": ({ filePath, sourceCode }) => {
 
             //NOTE: Prevent cycles, excludes the folder we generated for debug in public/
             if (
+                urlOrigin === undefined &&
                 isInside({
                     "dirPath": pathJoin(reactAppBuildDirPath, subDirOfPublicDirBasename),
                     filePath
@@ -45,8 +50,7 @@ export function generateKeycloakThemeResources(
                 return undefined;
             }
 
-
-            if (/\.css?$/i.test(filePath)) {
+            if (urlOrigin === undefined && /\.css?$/i.test(filePath)) {
 
                 const { cssGlobalsToDefine, fixedCssCode } = replaceImportsInCssCode(
                     { "cssCode": sourceCode.toString("utf8") }
@@ -61,35 +65,38 @@ export function generateKeycloakThemeResources(
 
             }
 
-
             if (/\.js?$/i.test(filePath)) {
 
                 const { fixedJsCode } = replaceImportsFromStaticInJsCode({
                     "jsCode": sourceCode.toString("utf8"),
-                    ftlValuesGlobalName
+                    urlOrigin
                 });
 
                 return { "modifiedSourceCode": Buffer.from(fixedJsCode, "utf8") };
 
             }
 
-            return { "modifiedSourceCode": sourceCode };
+            return urlOrigin === undefined ? 
+                { "modifiedSourceCode": sourceCode } :
+                undefined;
 
         }
     });
 
     const { generateFtlFilesCode } = generateFtlFilesCodeFactory({
         "cssGlobalsToDefine": allCssGlobalsToDefine,
-        ftlValuesGlobalName,
         "indexHtmlCode": fs.readFileSync(
             pathJoin(reactAppBuildDirPath, "index.html")
         ).toString("utf8"),
-        urlPathname
+        urlPathname,
+        urlOrigin
     });
 
     pageIds.forEach(pageId => {
 
         const { ftlCode } = generateFtlFilesCode({ pageId });
+
+        fs.mkdirSync(themeDirPath, { "recursive": true });
 
         fs.writeFileSync(
             pathJoin(themeDirPath, pageId),

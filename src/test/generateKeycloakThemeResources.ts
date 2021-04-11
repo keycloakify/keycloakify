@@ -12,6 +12,7 @@ generateKeycloakThemeResources({
     "themeName": "keycloakify-demo-app",
     "reactAppBuildDirPath": pathJoin(sampleReactProjectDirPath, "build"),
     "keycloakThemeBuildingDirPath": pathJoin(sampleReactProjectDirPath, "build_keycloak_theme"),
-    "urlPathname": "/keycloakify-demo-app/"
+    "urlPathname": "/keycloakify-demo-app/",
+    "urlOrigin": undefined
 });
 

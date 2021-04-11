@@ -11,6 +11,8 @@ import { URL } from "url";
 
 const reactProjectDirPath = process.cwd();
 
+const doUseExternalAssets = process.argv[2]?.toLowerCase() === "--external-assets";
+
 const parsedPackageJson: ParsedPackageJson = require(pathJoin(reactProjectDirPath, "package.json"));
 
 export const keycloakThemeBuildingDirPath = pathJoin(reactProjectDirPath, "build_keycloak");
@@ -24,7 +26,7 @@ if (require.main === module) {
         keycloakThemeBuildingDirPath,
         "reactAppBuildDirPath": pathJoin(reactProjectDirPath, "build"),
         "themeName": parsedPackageJson.name,
-        "urlPathname": (() => {
+        ...(() => {
 
             const url = (() => {
 
@@ -36,10 +38,23 @@ if (require.main === module) {
 
             })();
 
-            return url === undefined ?
-                "/" :
-                url.pathname.replace(/([^/])$/, "$1/");
+            return {
+                "urlPathname":
+                    url === undefined ?
+                        "/" :
+                        url.pathname.replace(/([^/])$/, "$1/"),
+                "urlOrigin": !doUseExternalAssets ? undefined : (() => {
 
+                    if (url === undefined) {
+                        console.error("ERROR: You must specify 'homepage' in your package.json");
+                        process.exit(-1);
+                    }
+
+                    return url.origin;
+
+                })()
+
+            };
 
         })()
     });

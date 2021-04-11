@@ -32,7 +32,7 @@ export function generateJavaStackFiles(
 
                 return (!homepage ?
                     fallbackGroupId :
-                    url.parse(homepage).host?.split(".").reverse().join(".") ?? fallbackGroupId
+                    url.parse(homepage).host?.replace(/:[0-9]+$/,"")?.split(".").reverse().join(".") ?? fallbackGroupId
                 ) + ".keycloak";
 
             })();

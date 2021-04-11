@@ -6,23 +6,40 @@ import { 
 } from "../bin/build-keycloak-theme/replaceImportFromStatic";
 
 const { fixedJsCode } = replaceImportsFromStaticInJsCode({
-    "ftlValuesGlobalName": "keycloakFtlValues",
     "jsCode": `
         function f() {
-            return a.p + "static/js/" + ({}[e] || e) + "." + {
+            return a.p+"static/js/" + ({}[e] || e) + "." + {
                 3: "0664cdc0"
             }[e] + ".chunk.js"
         }
 
         function f2() {
-            return a.p +"static/js/" + ({}[e] || e) + "." + {
+            return a.p+"static/js/" + ({}[e] || e) + "." + {
                 3: "0664cdc0"
             }[e] + ".chunk.js"
         }
-    `
+    `,
+    "urlOrigin": undefined
 });
 
-console.log({ fixedJsCode });
+const { fixedJsCode: fixedJsCodeExternal } = replaceImportsFromStaticInJsCode({
+    "jsCode": `
+        function f() {
+            return a.p+"static/js/" + ({}[e] || e) + "." + {
+                3: "0664cdc0"
+            }[e] + ".chunk.js"
+        }
+
+        function f2() {
+            return a.p+"static/js/" + ({}[e] || e) + "." + {
+                3: "0664cdc0"
+            }[e] + ".chunk.js"
+        }
+    `,
+    "urlOrigin": "https://www.example.com"
+});
+
+console.log({ fixedJsCode, fixedJsCodeExternal });
 
 const { fixedCssCode, cssGlobalsToDefine } = replaceImportsInCssCode({
     "cssCode": `

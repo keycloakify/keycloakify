@@ -9,6 +9,7 @@ import {
 import fs from "fs";
 import { join as pathJoin } from "path";
 import { objectKeys } from "evt/tools/typeSafety/objectKeys";
+import { ftlValuesGlobalName } from "../ftlValuesGlobalName";
 
 export const pageIds = [
     "login.ftl", "register.ftl", "info.ftl", 
@@ -37,22 +38,22 @@ function loadFtlFile(ftlFileBasename: PageId | "common.ftl") {
 
 export function generateFtlFilesCodeFactory(
     params: {
-        ftlValuesGlobalName: string;
         cssGlobalsToDefine: Record<string, string>;
         indexHtmlCode: string;
         urlPathname: string;
+        urlOrigin: undefined | string;
     }
 ) {
 
-    const { ftlValuesGlobalName, cssGlobalsToDefine, indexHtmlCode, urlPathname } = params;
+    const { cssGlobalsToDefine, indexHtmlCode, urlPathname, urlOrigin } = params;
 
     const $ = cheerio.load(indexHtmlCode);
 
     $("script:not([src])").each((...[, element]) => {
 
         const { fixedJsCode } = replaceImportsFromStaticInJsCode({
-            ftlValuesGlobalName,
-            "jsCode": $(element).html()!
+            "jsCode": $(element).html()!,
+            urlOrigin
         });
 
         $(element).text(fixedJsCode);
@@ -63,7 +64,8 @@ export function generateFtlFilesCodeFactory(
 
         const { fixedCssCode } = replaceImportsInInlineCssCode({
             "cssCode": $(element).html()!,
-            "urlPathname": params.urlPathname
+            "urlPathname": params.urlPathname,
+            urlOrigin
         });
 
         $(element).text(fixedCssCode);
@@ -84,10 +86,12 @@ export function generateFtlFilesCodeFactory(
 
             $(element).attr(
                 attrName,
-                href.replace(
-                    new RegExp(`^${urlPathname.replace(/\//g, "\\/")}`),
-                    "${url.resourcesPath}/build/"
-                )
+                urlOrigin !== undefined ?
+                    href.replace(/^\//, `${urlOrigin}/`) :
+                    href.replace(
+                        new RegExp(`^${urlPathname.replace(/\//g, "\\/")}`),
+                        "${url.resourcesPath}/build/"
+                    )
             );
 
         })

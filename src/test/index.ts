@@ -13,6 +13,7 @@ setupSampleReactProject();
 const binDirPath= pathJoin(getProjectRoot(), "dist", "bin");
 
 st.execSyncTrace(
+    //`node ${pathJoin(binDirPath, "build-keycloak-theme")} --external-assets`,
     `node ${pathJoin(binDirPath, "build-keycloak-theme")}`,
     { "cwd": sampleReactProjectDirPath }
 );
@@ -21,4 +22,3 @@ st.execSyncTrace(
     `node ${pathJoin(binDirPath, "install-builtin-keycloak-themes")}`,
     { "cwd": sampleReactProjectDirPath }
 );
-

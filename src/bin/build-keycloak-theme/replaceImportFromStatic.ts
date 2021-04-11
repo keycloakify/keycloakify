@@ -1,18 +1,22 @@
 
 import * as crypto from "crypto";
+import { ftlValuesGlobalName } from "./ftlValuesGlobalName";
 
 export function replaceImportsFromStaticInJsCode(
     params: {
-        ftlValuesGlobalName: string;
         jsCode: string;
+        urlOrigin: undefined | string;
     }
 ): { fixedJsCode: string; } {
 
-    const { jsCode, ftlValuesGlobalName } = params;
+    const { jsCode, urlOrigin } = params;
 
     const fixedJsCode = jsCode.replace(
-        /[a-z]+\.[a-z]+\+"static\//g,
-        `window.${ftlValuesGlobalName}.url.resourcesPath + "/build/static/`
+        /([a-z]+\.[a-z]+)\+"static\//g,
+        (...[, group]) =>
+            urlOrigin === undefined ?
+                `window.${ftlValuesGlobalName}.url.resourcesPath + "/build/static/` :
+                `("${ftlValuesGlobalName}" in window ? "${urlOrigin}" : "") + ${group} + "static/`
     );
 
     return { fixedJsCode };
@@ -23,16 +27,19 @@ export function replaceImportsInInlineCssCode(
     params: {
         cssCode: string;
         urlPathname: string;
+        urlOrigin: undefined | string;
     }
 ): { fixedCssCode: string; } {
 
-    const { cssCode, urlPathname } = params;
+    const { cssCode, urlPathname, urlOrigin } = params;
 
     const fixedCssCode = cssCode.replace(
         urlPathname === "/" ?
             /url\(\/([^/][^)]+)\)/g :
             new RegExp(`url\\(${urlPathname}([^)]+)\\)`, "g"),
-        (...[, group]) => `url(${"${url.resourcesPath}/build/" + group})`
+        (...[, group]) => `url(${urlOrigin === undefined ?
+            "${url.resourcesPath}/build/" + group :
+            params.urlOrigin + urlPathname + group})`
     );
 
     return { fixedCssCode };
