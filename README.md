@@ -38,7 +38,7 @@ Here is `keycloakify` for you 🍸
 <p align="center">
     <i> <a href="https://datalab.sspcloud.fr">With keycloakify:</a> </i> 
     <br>
-    <img src="https://github.com/InseeFrLab/keycloakify/releases/download/v0.3.8/keycloakify_after.gif">
+    <img src="https://user-images.githubusercontent.com/6702424/114332075-c5e37900-9b45-11eb-910b-48a05b3d90d9.gif">
 </p>
 
 If you already have a Keycloak custom theme, it can be easily ported to Keycloakify.
@@ -158,7 +158,12 @@ Example of a customization using only CSS: [here](https://github.com/InseeFrLab/
 (the [index.tsx](https://github.com/InseeFrLab/onyxia-ui/blob/012639d62327a9a56be80c46e32c32c9497b82db/src/app/index.tsx#L89-L94) )
 and the result you can expect: 
 
-//TODO
+<p align="center">
+    <i> <a href="https://datalab.sspcloud.fr">Customization using only CSS:</a> </i> 
+    <br>
+    <img src="https://github.com/InseeFrLab/keycloakify/releases/download/v0.3.8/keycloakify_after.gif">
+</p>
+
 ### Changing the look **and** feel
 
 If you want to really re-implement the pages, the best approach is to 
