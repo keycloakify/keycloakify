@@ -260,7 +260,7 @@ this limitation doesn't apply, you can import fonts however you see fit.
 ### Example of setup that **won't** work 
 
 - We have a `fonts/` directory in `src/`
-- We import the font like this [`src: url("/fonts/my-font.woff2") format("woff2");`(https://github.com/garronej/keycloakify-demo-app/blob/07d54a3012ef354ee12b1374c6f7ad1cb125d56b/src/fonts.scss#L4) in a `.scss` a file.  
+- We import the font like this [`src: url("/fonts/my-font.woff2") format("woff2");`](https://github.com/garronej/keycloakify-demo-app/blob/07d54a3012ef354ee12b1374c6f7ad1cb125d56b/src/fonts.scss#L4) in a `.scss` a file.  
 
 ### Possible workarounds  
 
