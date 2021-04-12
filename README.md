@@ -38,7 +38,7 @@ Here is `keycloakify` for you 🍸
 <p align="center">
     <i> <a href="https://datalab.sspcloud.fr">With keycloakify:</a> </i> 
     <br>
-    <img src="https://user-images.githubusercontent.com/6702424/114332075-c5e37900-9b45-11eb-910b-48a05b3d90d9.gif">
+    <img src="https://github.com/InseeFrLab/keycloakify/releases/download/v0.0.1/keycloakify_external_assets_larger.gif">
 </p>
 
 If you already have a Keycloak custom theme, it can be easily ported to Keycloakify.
