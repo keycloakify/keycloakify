@@ -2,7 +2,7 @@
     <img src="https://user-images.githubusercontent.com/6702424/109387840-eba11f80-7903-11eb-9050-db1dad883f78.png">  
 </p>
 <p align="center">
-    <i>🔏  Build Keycloak theme with React 🔏</i>
+    <i>🔏  Create Keycloak themes using React 🔏</i>
     <br>
     <br>
     <img src="https://github.com/garronej/keycloakify/workflows/ci/badge.svg?branch=develop">
