@@ -64,6 +64,7 @@ If you already have a Keycloak custom theme, it can be easily ported to Keycloak
     - [Example of setup that **won't** work](#example-of-setup-that-wont-work)
     - [Possible workarounds](#possible-workarounds)
 - [Implement context persistence (optional)](#implement-context-persistence-optional)
+- [Kickstart video](#kickstart-video)
 
 # How to use
 
@@ -336,3 +337,8 @@ keycloakInstance.init({
 If you really want to go the extra miles and avoid having the white
 flash of the blank html before the js bundle have been evaluated
 [here is a snippet](https://github.com/InseeFrLab/onyxia-ui/blob/a77eb502870cfe6878edd0d956c646d28746d053/public/index.html#L5-L54) that you can place in your `public/index.html` if you are using `powerhooks/useGlobalState`.
+
+# Kickstart video
+
+*NOTE: keycloak-react-theming was renamed keycloakify since this video was recorded*
+[![kickstart_video](https://user-images.githubusercontent.com/6702424/108877866-f146ee80-75ff-11eb-8120-003b3c5f6dd8.png)](https://youtu.be/xTz0Rj7i2v8)
