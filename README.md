@@ -76,11 +76,11 @@ yarn add keycloakify
 ```json
 "scripts": {
     "keycloak": "yarn build && build-keycloak-theme",
-},
+}
 ```
 
 ```bash
-yarn keycloak # generate a keycloak-theme.jar
+yarn keycloak # generates keycloak-theme.jar
 ```
 
 On the console will be printed all the instructions about how to load the generated theme in Keycloak
@@ -150,7 +150,7 @@ reactDom.render(
 
 
 <p align="center">
-<i>result:</i>
+    <i>result:</i></br>
     <img src="https://user-images.githubusercontent.com/6702424/114326299-6892fc00-9b34-11eb-8d75-85696e55458f.png">
 </p>
 
