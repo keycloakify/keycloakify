@@ -1,3 +1,8 @@
+### **0.4.1** (2021-04-11)  
+  
+- Quietly re-introduce --external-assets  
+- Give example of customization    
+  
 ## **0.4.0** (2021-04-09)  
   
 - Acual support of Therms of services    
