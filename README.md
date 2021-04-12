@@ -223,7 +223,7 @@ Then to load your own therms of services using [like this](https://github.com/ga
 
 # GitHub Actions
 
-![image](https://user-images.githubusercontent.com/6702424/110708577-2d32a400-81fb-11eb-98ae-499d5746c2f2.png)
+![image](https://user-images.githubusercontent.com/6702424/114286938-47aea600-9a63-11eb-936e-17159e8826e8.png)
 
 [Here is a demo repo](https://github.com/garronej/keycloakify-demo-app) to show how to automate
 the building and publishing of the theme (the .jar file).
