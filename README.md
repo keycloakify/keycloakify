@@ -2,7 +2,7 @@
     <img src="https://user-images.githubusercontent.com/6702424/109387840-eba11f80-7903-11eb-9050-db1dad883f78.png">  
 </p>
 <p align="center">
-    <i>🔏  Build Keycloak theme with React 🔏</i>
+    <i>🔏  Create Keycloak themes using React 🔏</i>
     <br>
     <br>
     <img src="https://github.com/garronej/keycloakify/workflows/ci/badge.svg?branch=develop">
@@ -38,7 +38,7 @@ Here is `keycloakify` for you 🍸
 <p align="center">
     <i> <a href="https://datalab.sspcloud.fr">With keycloakify:</a> </i> 
     <br>
-    <img src="https://github.com/InseeFrLab/keycloakify/releases/download/v0.0.1/keycloakify_external_assets_larger.gif">
+    <img src="https://user-images.githubusercontent.com/6702424/114332075-c5e37900-9b45-11eb-910b-48a05b3d90d9.gif">
 </p>  
 
 *NOTE: No autocomplete here just because it was an incognito window.*  
