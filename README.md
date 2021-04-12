@@ -39,7 +39,9 @@ Here is `keycloakify` for you 🍸
     <i> <a href="https://datalab.sspcloud.fr">With keycloakify:</a> </i> 
     <br>
     <img src="https://github.com/InseeFrLab/keycloakify/releases/download/v0.0.1/keycloakify_external_assets_larger.gif">
-</p>
+</p>  
+
+*NOTE: No autocomplete here just because it was an incognito window.*  
 
 If you already have a Keycloak custom theme, it can be easily ported to Keycloakify.
 
