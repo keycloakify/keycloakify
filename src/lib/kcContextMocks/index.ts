@@ -153,7 +153,7 @@ export const kcRegisterContext: KcContext.Register = {
         "registrationAction": "http://localhost:8080/auth/realms/myrealm/login-actions/registration?session_code=gwZdUeO7pbYpFTRxiIxRg_QtzMbtFTKrNu6XW_f8asM&execution=12146ce0-b139-4bbd-b25b-0eccfee6577e&client_id=account&tab_id=uS8lYfebLa0"
     },
     "messagesPerField": {
-        "printIfExists": (...[,x]) => x
+        "printIfExists": (...[, x]) => x
     },
     "scripts": [],
     "isAppInitiatedAction": false,
@@ -162,10 +162,17 @@ export const kcRegisterContext: KcContext.Register = {
         "formData": {}
     },
     "passwordRequired": true,
-    "recaptchaRequired": false
+    "recaptchaRequired": false,
+    "authorizedMailDomains": [
+        "example.com",
+        "another-example.com",
+        "*.yet-another-example.com",
+        "*.example.com",
+        "hello-world.com"
+    ]
 };
 
-export const kcInfoContext: KcContext.Info ={
+export const kcInfoContext: KcContext.Info = {
     ...kcCommonContext,
     "pageId": "info.ftl",
     "messageHeader": "<Message header>",
@@ -188,7 +195,7 @@ export const kcErrorContext: KcContext.Error = {
 export const kcLoginResetPasswordContext: KcContext.LoginResetPassword = {
     ...kcCommonContext,
     "pageId": "login-reset-password.ftl",
-    "realm":{
+    "realm": {
         ...kcCommonContext.realm,
         "loginWithEmailAllowed": false
     }

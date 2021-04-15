@@ -124,6 +124,7 @@ export declare namespace KcContext {
         passwordRequired: boolean;
         recaptchaRequired: boolean;
         recaptchaSiteKey?: string;
+        authorizedMailDomains?: string[];
     };
 
     export type Info = Common & {

@@ -65,6 +65,7 @@ If you already have a Keycloak custom theme, it can be easily ported to Keycloak
     - [Possible workarounds](#possible-workarounds)
 - [Implement context persistence (optional)](#implement-context-persistence-optional)
 - [Kickstart video](#kickstart-video)
+- [Email domain whitelist](#email-domain-whitelist)
 
 # How to use
 
@@ -342,3 +343,8 @@ flash of the blank html before the js bundle have been evaluated
 
 *NOTE: keycloak-react-theming was renamed keycloakify since this video was recorded*
 [![kickstart_video](https://user-images.githubusercontent.com/6702424/108877866-f146ee80-75ff-11eb-8120-003b3c5f6dd8.png)](https://youtu.be/xTz0Rj7i2v8)
+
+# Email domain whitelist
+
+If you want to restrict the emails domain that can register, you can use [this plugin](https://github.com/micedre/keycloak-mail-whitelisting) 
+and `kcRegisterContext["authorizedMailDomains"]` to validate on.

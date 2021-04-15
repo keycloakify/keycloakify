@@ -147,6 +147,43 @@
         <#recover>
         </#attempt>
 
-    })()
+    })(),
+    "authorizedMailDomains": (function (){
+
+        <#attempt>
+            return "${authorizedMailDomains!''}" || undefined;
+        <#recover>
+        </#attempt>
+
+    })(),
+    "authorizedMailDomains": (function(){
+
+        var out = undefined;
+
+        <#attempt>
+            <#if authorizedMailDomains??>
+
+                out = [];
+
+                <#attempt>
+                    <#list authorizedMailDomains as authorizedMailDomain>
+                        out.push((function (){
+
+                            <#attempt>
+                                return "${authorizedMailDomain}";
+                            <#recover>
+                            </#attempt>
+
+                        })());
+                    </#list>
+                <#recover>
+                </#attempt>
+            </#if>
+        <#recover>
+        </#attempt>
+
+        return out;
+
+    })(),
 }
 </script>
