@@ -120,7 +120,7 @@ reactDom.render(
 );
 ```
 
-If you have a unique project for your app and the Keycloak theme, your index should look
+If you share a unique project for your app and the Keycloak theme, your index should look
 more like this: 
 
 `src/index.tsx`
