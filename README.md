@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-    <i>Ultimately this build tool Generates a Keycloak theme</i>
+    <i>Ultimately this build tool generates a Keycloak theme</i>
     <img src="https://user-images.githubusercontent.com/6702424/110260457-a1c3d380-7fac-11eb-853a-80459b65626b.png">
 </p>
 
@@ -121,7 +121,7 @@ reactDom.render(
 );
 ```
 
-If you have a unique project for your app and the Keycloak theme, your index should look
+If you share a unique project for your app and the Keycloak theme, your index should look
 more like this: 
 
 `src/index.tsx`
