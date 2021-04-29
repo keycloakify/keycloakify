@@ -1,3 +1,7 @@
+### **0.4.3** (2021-04-29)  
+  
+- Add infos about the plugin that defines authorizedMailDomains    
+  
 ### **0.4.2** (2021-04-29)  
   
 - Client side validation of allowed email domains  
