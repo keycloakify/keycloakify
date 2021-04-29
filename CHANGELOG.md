@@ -1,3 +1,12 @@
+### **0.4.2** (2021-04-29)  
+  
+- Client side validation of allowed email domains  
+- Support email whitlisting  
+- Restore kickstart video in the readme  
+- Update README.md  
+- Update README.md  
+- Important readme update    
+  
 ### **0.4.1** (2021-04-11)  
   
 - Quietly re-introduce --external-assets  
