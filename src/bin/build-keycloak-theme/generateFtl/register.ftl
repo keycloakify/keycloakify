@@ -170,7 +170,7 @@
                         out.push((function (){
 
                             <#attempt>
-                                return "${authorizedMailDomains}";
+                                return "${authorizedMailDomain}";
                             <#recover>
                             </#attempt>
 
