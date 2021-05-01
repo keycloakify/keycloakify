@@ -54,9 +54,9 @@ If you already have a Keycloak custom theme, it can be easily ported to Keycloak
     - [Changing just the look of the default Keycloak theme](#changing-just-the-look-of-the-default-keycloak-theme)
     - [Changing the look **and** feel](#changing-the-look-and-feel)
     - [Hot reload](#hot-reload)
-  - [Some pages aren't customizable. Why?](#some-pages-arent-customizable-why)
   - [Enable loading in a blink of an eye of login pages ⚡ (--external-assets)](#enable-loading-in-a-blink-of-an-eye-of-login-pages----external-assets)
 - [Support for Terms and conditions](#support-for-terms-and-conditions)
+- [Some pages still have the default theme. Why?](#some-pages-still-have-the-default-theme-why)
 - [GitHub Actions](#github-actions)
 - [Requirements](#requirements)
 - [Limitations](#limitations)
@@ -213,14 +213,6 @@ Then `yarn start`, you will see your login page.
 
 Checkout [this concrete example](https://github.com/garronej/keycloakify-demo-app/blob/main/src/index.tsx)
 
-## Some pages aren't customizable. Why?
-
-This project only support the most common user facing pages of Keycloak login.
-[Here is](https://user-images.githubusercontent.com/6702424/116784128-d4f97f00-aa92-11eb-92c9-b024c2521aa3.png) the complete list of pages.  
-And [here are](https://github.com/InseeFrLab/keycloakify/tree/main/src/lib/components) the pages currently implemented.  
-If you need to customize pages that are not supported yet you can submit an issue about it and wait for me get it implemented.
-If you can't wait PR are welcome! [Here](https://github.com/InseeFrLab/keycloakify/commit/0163459ad6b1ad0afcc34fae5f3cc28dbcf8b4a7) is the commit that adds support 
-for the `login-otp.ftl` page. You can use it as a model for implementing other pages.
 ## Enable loading in a blink of an eye of login pages ⚡ (--external-assets)
 
 By default the theme generated is standalone. Meaning that when your users
@@ -246,6 +238,15 @@ First you need to enable the required action on the Keycloak server admin consol
 ![image](https://user-images.githubusercontent.com/6702424/114280501-dad2e600-9a39-11eb-9c39-a225572dd38a.png)
 
 Then to load your own therms of services using [like this](https://github.com/garronej/keycloakify-demo-app/blob/8168c928a66605f2464f9bd28a4dc85fb0a231f9/src/index.tsx#L42-L66).
+
+# Some pages still have the default theme. Why?
+
+This project only support the most common user facing pages of Keycloak login.
+[Here is](https://user-images.githubusercontent.com/6702424/116784128-d4f97f00-aa92-11eb-92c9-b024c2521aa3.png) the complete list of pages.  
+And [here](https://github.com/InseeFrLab/keycloakify/tree/main/src/lib/components) are the pages currently implemented by this module.  
+If you need to customize pages that are not supported yet you can submit an issue about it and wait for me get it implemented.
+If you can't wait, PR are welcome! [Here](https://github.com/InseeFrLab/keycloakify/commit/0163459ad6b1ad0afcc34fae5f3cc28dbcf8b4a7) is the commit that adds support 
+for the `login-otp.ftl` page. You can use it as a model for implementing other pages.
 
 # GitHub Actions
 
