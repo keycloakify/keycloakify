@@ -17,7 +17,7 @@ type ExtractAfterStartingWith<Prefix extends string, StrEnum> =
 export type KcContext =
     KcContext.Login | KcContext.Register | KcContext.Info |
     KcContext.Error | KcContext.LoginResetPassword | KcContext.LoginVerifyEmail |
-    KcContext.Terms;
+    KcContext.Terms | KcContext.LoginOtp;
 
 export declare namespace KcContext {
 
@@ -163,6 +163,13 @@ export declare namespace KcContext {
 
     export type Terms = Common & {
         pageId: "terms.ftl";
+    };
+
+    export type LoginOtp = Common & {
+        pageId: "login-otp.ftl";
+        otpLogin: {
+            userOtpCredentials: { id: string; userLabel: string; }[];
+        }
     };
 
 }

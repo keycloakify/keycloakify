@@ -14,7 +14,8 @@ import { ftlValuesGlobalName } from "../ftlValuesGlobalName";
 export const pageIds = [
     "login.ftl", "register.ftl", "info.ftl", 
     "error.ftl", "login-reset-password.ftl", 
-    "login-verify-email.ftl", "terms.ftl"
+    "login-verify-email.ftl", "terms.ftl",
+    "login-otp.ftl"
 ] as const;
 
 export type PageId = typeof pageIds[number];
