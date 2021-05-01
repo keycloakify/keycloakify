@@ -211,7 +211,7 @@ export const kcTermsContext: KcContext.Terms = {
     "pageId": "terms.ftl"
 };
 
-export const kcLoginOtcContext: KcContext.LoginOtp = {
+export const kcLoginOtpContext: KcContext.LoginOtp = {
     ...kcCommonContext,
     "pageId": "login-otp.ftl",
     "otpLogin": {
