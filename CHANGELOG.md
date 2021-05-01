@@ -1,3 +1,7 @@
+### **1.0.1** (2021-05-01)  
+  
+- Fix: LoginOtp (and not otc)    
+  
 # **1.0.0** (2021-05-01)  
   
 - #4: Guide for implementing a missing page  
