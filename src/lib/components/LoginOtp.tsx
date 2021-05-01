@@ -58,7 +58,7 @@ export const LoginOtp = memo(({ kcContext, ...props }: { kcContext: KcContext.Lo
                             <div className={cx(props.kcInputWrapperClass)}>
                                 {
                                     otpLogin.userOtpCredentials.map(otpCredential =>
-                                        <div className={cx(props.kcSelectOTPListClass)}>
+                                        <div key={otpCredential.id} className={cx(props.kcSelectOTPListClass)}>
                                             <input type="hidden" value="${otpCredential.id}" />
                                             <div className={cx(props.kcSelectOTPListItemClass)}>
                                                 <span className={cx(props.kcAuthenticatorOtpCircleClass)} />
