@@ -1,3 +1,7 @@
+### **0.4.4** (2021-04-29)  
+  
+- Fix previous release    
+  
 ### **0.4.3** (2021-04-29)  
   
 - Add infos about the plugin that defines authorizedMailDomains    
