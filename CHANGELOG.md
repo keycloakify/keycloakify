@@ -1,3 +1,8 @@
+# **1.0.0** (2021-05-01)  
+  
+- #4: Guide for implementing a missing page  
+- Support OTP #4    
+  
 ### **0.4.4** (2021-04-29)  
   
 - Fix previous release    
