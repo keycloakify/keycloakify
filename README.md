@@ -9,6 +9,9 @@
     <img src="https://img.shields.io/bundlephobia/minzip/keycloakify">
     <img src="https://img.shields.io/npm/dw/keycloakify">
     <img src="https://img.shields.io/npm/l/keycloakify">
+    <a href="https://github.com/thomasdarimont/awesome-keycloak">
+        <img src="https://awesome.re/mentioned-badge.svg"/>
+    </a>
 </p>
 
 <p align="center">
