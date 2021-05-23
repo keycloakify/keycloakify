@@ -1,3 +1,8 @@
+### **1.0.3** (2021-05-23)  
+  
+- Instuction about how to integrate with non CRA projects  
+- Add mention to awesome list    
+  
 ### **1.0.2** (2021-05-01)  
   
   
