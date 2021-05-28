@@ -205,13 +205,18 @@ You can find an example of such customization [here](https://github.com/InseeFrL
 
 And you can test the result in production by trying the login register page of [Onyxia](https://datalab.sspcloud.fr)
 
+Note that you don’t have to re write **all** components, only the ones that you most need customized.  
+Look at [here for example](https://github.com/InseeFrLab/onyxia-ui/blob/3bf18aa82b198fc6ba7998c30abf0a9ae54a58b1/src/app/components/KcApp/KcApp.tsx#L112-L120). 
+We want to have our very own login and register page, so we wrote customs [Login.tsx](https://github.com/InseeFrLab/onyxia-ui/blob/master/src/app/components/KcApp/Login.tsx) and [Register.txs](https://github.com/InseeFrLab/onyxia-ui/blob/master/src/app/components/KcApp/Register.tsx), we import them [here](https://github.com/InseeFrLab/onyxia-ui/blob/3bf18aa82b198fc6ba7998c30abf0a9ae54a58b1/src/app/components/KcApp/KcApp.tsx#L9-L10) and use them [here](https://github.com/InseeFrLab/onyxia-ui/blob/3bf18aa82b198fc6ba7998c30abf0a9ae54a58b1/src/app/components/KcApp/KcApp.tsx#L113-L114).  
+We don't want to bother, however, customizing `login-reset-password.ftl`. We are fine using the component from [the default theme](https://github.com/InseeFrLab/onyxia-ui/blob/3bf18aa82b198fc6ba7998c30abf0a9ae54a58b1/src/app/components/KcApp/KcApp.tsx#L13) with just some [CSS customization](https://github.com/InseeFrLab/onyxia-ui/blob/3bf18aa82b198fc6ba7998c30abf0a9ae54a58b1/src/app/components/KcApp/KcApp.tsx#L103-L110).  
+
 WARNING: If you chose to go this way use:
 ```json
 "dependencies": {
     "keycloakify": "~X.Y.Z"
 }
 ```
-in your `package.json` instead of `^X.Y.Z`. A minor release might break your app.
+in your `package.json` instead of `^X.Y.Z`. A minor update of Keycloakify might break your app.
 
 ### Hot reload
 
