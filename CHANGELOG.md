@@ -1,3 +1,7 @@
+### **1.0.4** (2021-05-28)  
+  
+- Instructions for custom themes with custom components    
+  
 ### **1.0.3** (2021-05-23)  
   
 - Instuction about how to integrate with non CRA projects  
