@@ -46,8 +46,6 @@ Here is `keycloakify` for you 🍸
 
 **TL;DR**: [Here](https://github.com/garronej/keycloakify-demo-app) is a Hello World React project with Keycloakify set up.  
 
-*NOTE: No autocomplete here just because it was an incognito window.*  
-
 If you already have a Keycloak custom theme, it can be easily ported to Keycloakify.
 
 ---
