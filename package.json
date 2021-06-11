@@ -54,7 +54,7 @@
         "markdown": "^0.5.0",
         "minimal-polyfills": "^2.1.6",
         "path": "^0.12.7",
-        "powerhooks": "^0.0.36",
+        "powerhooks": "^0.1.0",
         "react-markdown": "^5.0.3",
         "scripting-tools": "^0.19.13",
         "tss-react": "^0.0.12"

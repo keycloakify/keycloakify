@@ -819,6 +819,11 @@ minimal-polyfills@^2.1.5, minimal-polyfills@^2.1.6:
   resolved "https://registry.yarnpkg.com/minimal-polyfills/-/minimal-polyfills-2.1.6.tgz#eab50832add31afd40a22b38fb76d1fdcd2a51e4"
   integrity sha512-vqoxj7eMzsqX0M6/dkgoNFPw6Mztgn5qjSl0bWGboQeU7Y4UPLeyoqQw6JI+0qmBcJYdkr3nK7dqY8u/fgRp5g==
 
+minimal-polyfills@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/minimal-polyfills/-/minimal-polyfills-2.2.1.tgz#7249d7ece666d3b4e1ec1c1b8f949eb9d44e2308"
+  integrity sha512-WLmHQrsZob4rVYf8yHapZPNJZ3sspGa/sN8abuSD59b0FifDEE7HMfLUi24z7mPZqTpBXy4Svp+iGvAmclCmXg==
+
 minimatch@^3.0.3, minimatch@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.0.4.tgz#5166e286457f03306064be5497e8dbb0c3d32083"
@@ -944,14 +949,16 @@ path@^0.12.7:
     process "^0.11.1"
     util "^0.10.3"
 
-powerhooks@^0.0.36:
-  version "0.0.36"
-  resolved "https://registry.yarnpkg.com/powerhooks/-/powerhooks-0.0.36.tgz#d973d339ad8ca7ce52ea9d288ebe8e138df7d769"
-  integrity sha512-0fEGKLfJmuFeEYDGsAlTuvGKKdqOH059xezosmYRoGurfC1bbUlaNJD+TuzOT5cTGURi88DCLcDnhk/2eLyCyA==
+powerhooks@^0.1.0:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/powerhooks/-/powerhooks-0.1.1.tgz#5ce825d595673a5c6f86b227e0fcaca1972bd90d"
+  integrity sha512-I8bzTU/uRUyeTkeyAR54g862pwMcAX/ErN3xqdUt7n28riqv93N0Cm900018bNRKBq8ovnb+VxOQ+MXJwhkUOA==
   dependencies:
     evt "2.0.0-beta.15"
     memoizee "^0.4.15"
+    minimal-polyfills "^2.2.1"
     resize-observer-polyfill "^1.5.1"
+    tsafe "^0.1.0"
 
 process-nextick-args@~2.0.0:
   version "2.0.1"
@@ -1170,6 +1177,11 @@ trough@^1.0.0:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/trough/-/trough-1.0.5.tgz#b8b639cefad7d0bb2abd37d433ff8293efa5f406"
   integrity sha512-rvuRbTarPXmMb79SmzEp8aqXNKcK+y0XaB298IXueQ8I2PsrATcPBCSPyK/dDNa2iWOhKlfNnOjdAOTBU/nkFA==
+
+tsafe@^0.1.0:
+  version "0.1.15"
+  resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-0.1.15.tgz#9e2b6137fb5a49fc7c23cb0bc49ae09bab215f2a"
+  integrity sha512-aAWMOACHXMmwE2zRcQpBv+whxYqB4zvAbs+dzwbnGaGK9NAOQ65m0+WyO+jw/41JzCX7orJU/ieFHTmgehTOKA==
 
 tss-react@^0.0.12:
   version "0.0.12"

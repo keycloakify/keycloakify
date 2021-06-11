@@ -10,7 +10,7 @@ const wrap = createUseGlobalState(
         kcContext?.locale?.current ??
         navigator.language
     ),
-    { "persistance": "cookie" }
+    { "persistance": "localStorage" }
 );
 
 export const { useKcLanguageTag } = wrap;
