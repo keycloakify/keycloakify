@@ -11,9 +11,10 @@ jobs:
 
   test:
     runs-on: macos-10.15
+    needs: test_lint
     strategy:
       matrix:
-        node: [ '14', '13', '12' ]
+        node: [ '15', '14', '13' ]
     name: Test with Node v${{ matrix.node }}
     steps:
     - name: Tell if project is using npm or yarn
@@ -25,14 +26,13 @@ jobs:
     - uses: actions/setup-node@v2.1.3
       with:
         node-version: ${{ matrix.node }}
+    - uses: bahmutov/npm-install@v1
     - if: steps.step1.outputs.npm_or_yarn == 'yarn'
       run: |
-        yarn install --frozen-lockfile                                                                                                                                                                                        
         yarn build
         yarn test
     - if: steps.step1.outputs.npm_or_yarn == 'npm'
       run: |
-        npm ci                                                                                                                                                                                        
         npm run build
         npm test
   check_if_version_upgraded:
@@ -55,11 +55,10 @@ jobs:
     needs: check_if_version_upgraded
     if: needs.check_if_version_upgraded.outputs.is_upgraded_version == 'true'
     steps:
-    - uses: garronej/github_actions_toolkit@v2.2
+    - uses: garronej/github_actions_toolkit@v2.4
       with:
         action_name: update_changelog
         branch: ${{ github.ref }}
-        commit_author_email: ts_ci@github.com
 
   create_github_release:
     runs-on: ubuntu-latest
@@ -104,15 +103,12 @@ jobs:
     - uses: actions/setup-node@v2.1.3
       with:
         node-version: '15'
+        registry-url: https://registry.npmjs.org/
+    - uses: bahmutov/npm-install@v1
     - run: |
         PACKAGE_MANAGER=npm
         if [ -f "./yarn.lock" ]; then
             PACKAGE_MANAGER=yarn
-        fi
-        if [ "$PACKAGE_MANAGER" = "yarn" ]; then
-            yarn install --frozen-lockfile                                                                                                                                                                                        
-        else
-            npm ci
         fi
         $PACKAGE_MANAGER run build
     - run: npx -y -p denoify@0.6.5 denoify_enable_short_npm_import_path
@@ -124,13 +120,11 @@ jobs:
           echo "This version is already published"
           exit 0
         fi
-        if [ "$NPM_TOKEN" = "" ]; then
+        if [ "$NODE_AUTH_TOKEN" = "" ]; then
           echo "Can't publish on NPM, You must first create a secret called NPM_TOKEN that contains your NPM auth token. https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets"
           false
         fi
-        echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > .npmrc
         npm publish
-        rm .npmrc
       env:
-        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
         VERSION: ${{ needs.check_if_version_upgraded.outputs.to_version }}
