@@ -17,7 +17,8 @@ type ExtractAfterStartingWith<Prefix extends string, StrEnum> =
 export type KcContext =
     KcContext.Login | KcContext.Register | KcContext.Info |
     KcContext.Error | KcContext.LoginResetPassword | KcContext.LoginVerifyEmail |
-    KcContext.Terms | KcContext.LoginOtp | KcContext.LoginUpdateProfile;
+    KcContext.Terms | KcContext.LoginOtp | KcContext.LoginUpdateProfile |
+    KcContext.LoginIdpLinkConfirm;
 
 export declare namespace KcContext {
 
@@ -188,6 +189,11 @@ export declare namespace KcContext {
             ): T | undefined;
         };
 
+    };
+
+    export type LoginIdpLinkConfirm = Common & {
+        pageId: "login-idp-link-confirm.ftl";
+        idpAlias: string;
     };
 
 }

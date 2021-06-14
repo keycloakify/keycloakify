@@ -241,3 +241,9 @@ export const kcLoginUpdateProfileContext: KcContext.LoginUpdateProfile = {
     }
 };
 
+export const kcLoginIdpLinkConfirmContext: KcContext.LoginIdpLinkConfirm ={
+    ...kcCommonContext,
+    "pageId": "login-idp-link-confirm.ftl",
+    "idpAlias": "FranceConnect"
+};
+

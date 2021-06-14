@@ -15,7 +15,8 @@ export const pageIds = [
     "login.ftl", "register.ftl", "info.ftl", 
     "error.ftl", "login-reset-password.ftl", 
     "login-verify-email.ftl", "terms.ftl",
-    "login-otp.ftl", "login-update-profile.ftl"
+    "login-otp.ftl", "login-update-profile.ftl", 
+    "login-idp-link-confirm.ftl"
 ] as const;
 
 export type PageId = typeof pageIds[number];
