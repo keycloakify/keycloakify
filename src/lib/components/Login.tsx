@@ -120,7 +120,7 @@ export const Login = memo(({ kcContext, ...props }: { kcContext: KcContext.Login
                             <ul className={cx(props.kcFormSocialAccountListClass, social.providers.length > 4 && props.kcFormSocialAccountDoubleListClass)}>
                                 {
                                     social.providers.map(p =>
-                                        <li className={cx(props.kcFormSocialAccountListLinkClass)}>
+                                        <li key={p.providerId} className={cx(props.kcFormSocialAccountListLinkClass)}>
                                             <a href={p.loginUrl} id={`zocial-${p.alias}`} className={cx("zocial", p.providerId)}>
                                                 <span>{p.displayName}</span>
                                             </a>
