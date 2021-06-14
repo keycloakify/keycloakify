@@ -1,3 +1,7 @@
+### **1.1.3** (2021-06-14)  
+  
+- Add missing key in Login for providers    
+  
 ### **1.1.2** (2021-06-14)  
   
   
