@@ -62,7 +62,7 @@ export function createKeycloakAdapter(
             "success": { "value": () => { } },
             "error": { "value": () => { } }
         }
-    );
+    ) as any;
 
     return {
         "login": options => {

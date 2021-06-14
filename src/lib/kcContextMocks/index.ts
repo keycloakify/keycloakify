@@ -1,5 +1,3 @@
-
-
 import type { KcContext } from "../KcContext";
 import { getEvtKcLanguage } from "../i18n/useKcLanguageTag";
 import { getKcLanguageTagLabel } from "../i18n/KcLanguageTag";
@@ -225,6 +223,21 @@ export const kcLoginOtpContext: KcContext.LoginOtp = {
                 "userLabel": "label2"
             }
         ]
+    }
+};
+
+export const kcLoginUpdateProfileContext: KcContext.LoginUpdateProfile = {
+    ...kcCommonContext,
+    "pageId": "login-update-profile.ftl",
+    "user": {
+        "editUsernameAllowed": true,
+        "username": "anUsername",
+        "email": "foo@example.com",
+        "firstName": "aFirstName",
+        "lastName": "aLastName"
+    },
+    "messagesPerField": {
+        "printIfExists": () => undefined
     }
 };
 

@@ -17,7 +17,7 @@ type ExtractAfterStartingWith<Prefix extends string, StrEnum> =
 export type KcContext =
     KcContext.Login | KcContext.Register | KcContext.Info |
     KcContext.Error | KcContext.LoginResetPassword | KcContext.LoginVerifyEmail |
-    KcContext.Terms | KcContext.LoginOtp;
+    KcContext.Terms | KcContext.LoginOtp | KcContext.LoginUpdateProfile;
 
 export declare namespace KcContext {
 
@@ -170,6 +170,24 @@ export declare namespace KcContext {
         otpLogin: {
             userOtpCredentials: { id: string; userLabel: string; }[];
         }
+    };
+
+    export type LoginUpdateProfile = Common & {
+        pageId: "login-update-profile.ftl";
+        user: {
+            editUsernameAllowed: boolean;
+            username?: string;
+            email?: string;
+            firstName?: string;
+            lastName?: string;
+        };
+        messagesPerField: {
+            printIfExists<T>(
+                key: "username" | "email" | "firstName" | "lastName",
+                x: T
+            ): T | undefined;
+        };
+
     };
 
 }
