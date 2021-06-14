@@ -1,3 +1,13 @@
+## **1.1.0** (2021-06-14)  
+  
+- Add login-idp-link-confirm.ftl  
+- Fix login-update-profile.ftl  
+- Add login-update-profile.ftl page  
+- Fix default background bug  
+- Remove unused 'markdown' dependency  
+- Fix warning related to powerhooks_useGlobalState_kcLanguageTag  
+- Update README.md    
+  
 ### **1.0.4** (2021-05-28)  
   
 - Instructions for custom themes with custom components    
