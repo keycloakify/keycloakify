@@ -15,8 +15,7 @@ const parsedPackageJson: ParsedPackageJson = require(pathJoin(reactProjectDirPat
 
 export const keycloakThemeBuildingDirPath = pathJoin(reactProjectDirPath, "build_keycloak");
 
-
-if (require.main === module) {
+export function main() {
 
     console.log("🔏 Building the keycloak theme...⌚");
 
