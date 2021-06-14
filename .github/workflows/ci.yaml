@@ -11,7 +11,6 @@ jobs:
 
   test:
     runs-on: macos-10.15
-    needs: test_lint
     strategy:
       matrix:
         node: [ '15', '14', '13' ]
