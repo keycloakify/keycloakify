@@ -13,7 +13,7 @@
             <#recover>
             </#attempt>
         })(),
-        "emal": (function (){
+        "email": (function (){
             <#attempt>
                 return "${user.email!''}" || undefined;
             <#recover>
