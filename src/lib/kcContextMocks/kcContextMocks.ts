@@ -168,7 +168,10 @@ export const kcRegisterContext: KcContext.Register = {
         "*.yet-another-example.com",
         "*.example.com",
         "hello-world.com"
-    ]
+    ],
+    "social": {
+        "displayInfo": true
+    },
 };
 
 export const kcInfoContext: KcContext.Info = {

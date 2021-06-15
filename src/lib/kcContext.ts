@@ -130,6 +130,15 @@ export declare namespace KcContext {
          * (https://github.com/micedre/keycloak-mail-whitelisting)
          */
         authorizedMailDomains?: string[];
+        social: {
+            displayInfo: boolean;
+            providers?: {
+                loginUrl: string;
+                alias: string;
+                providerId: string;
+                displayName: string;
+            }[]
+        };
     };
 
     export type Info = Common & {

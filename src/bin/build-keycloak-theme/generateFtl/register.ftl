@@ -185,5 +185,59 @@
         return out;
 
     })(),
+    "social": {
+        "displayInfo": (function (){
+            <#attempt>
+                return ${social.displayInfo?c};
+            <#recover>
+            </#attempt>
+        })(),
+        "providers": (()=>{
+
+            <#attempt>
+            <#if social.providers??>
+
+                var out= [];
+
+                <#attempt>
+                <#list social.providers as p>
+                    out.push({ 
+                        "loginUrl": (function (){
+                            <#attempt>
+                                return "${p.loginUrl?no_esc}";
+                            <#recover>
+                            </#attempt>
+                        })(),
+                        "alias": (function (){
+                            <#attempt>
+                                return "${p.alias}";
+                            <#recover>
+                            </#attempt>
+                        })(),
+                        "providerId": (function (){
+                            <#attempt>
+                                return "${p.providerId}";
+                            <#recover>
+                            </#attempt>
+                        })(),
+                        "displayName": (function (){
+                            <#attempt>
+                                return "${p.displayName}";
+                            <#recover>
+                            </#attempt>
+                        })()
+                    });
+                </#list>
+                <#recover>
+                </#attempt>
+
+                return out;
+
+            </#if>
+            <#recover>
+            </#attempt>
+
+        })()
+    }
 }
 </script>
