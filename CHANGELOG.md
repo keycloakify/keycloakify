@@ -1,3 +1,10 @@
+### **1.1.4** (2021-06-15)  
+  
+- Merge pull request #12 from InseeFrLab/email-typo
+
+Fix typo on email  
+- Fix typo on email    
+  
 ### **1.1.3** (2021-06-14)  
   
 - Add missing key in Login for providers    
