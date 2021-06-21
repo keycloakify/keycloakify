@@ -1,3 +1,7 @@
+### **1.1.5** (2021-06-15)  
+  
+- #11: Provide socials in the register    
+  
 ### **1.1.4** (2021-06-15)  
   
 - Merge pull request #12 from InseeFrLab/email-typo
