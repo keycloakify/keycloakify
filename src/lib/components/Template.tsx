@@ -269,7 +269,10 @@ export const Template = memo((props: TemplateProps) => {
                                 {message.type === "warning" && <span className={cx(props.kcFeedbackWarningIcon)}></span>}
                                 {message.type === "error" && <span className={cx(props.kcFeedbackErrorIcon)}></span>}
                                 {message.type === "info" && <span className={cx(props.kcFeedbackInfoIcon)}></span>}
-                                <span className="kc-feedback-text">{message.summary}</span>
+                                <span 
+                                    className="kc-feedback-text" 
+                                    dangerouslySetInnerHTML={{ "__html": message.summary }} 
+                                />
                             </div>
                         }
                         {formNode}
