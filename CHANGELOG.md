@@ -1,3 +1,8 @@
+### **1.1.6** (2021-06-21)  
+  
+- Fix: Alert messages sometimes includes HTML that is not rendered  
+- Update dist    
+  
 ### **1.1.5** (2021-06-15)  
   
 - #11: Provide socials in the register    
