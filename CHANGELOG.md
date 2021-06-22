@@ -1,3 +1,7 @@
+## **1.2.0** (2021-06-22)  
+  
+- Generate kcContext automatically :rocket:    
+  
 ### **1.1.6** (2021-06-21)  
   
 - Fix: Alert messages sometimes includes HTML that is not rendered  
