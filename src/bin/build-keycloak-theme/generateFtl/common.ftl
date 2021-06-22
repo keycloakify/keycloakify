@@ -23,8 +23,6 @@
             </#attempt>
 
             {${'\n'}
-                
-            /* <#list keys as key> ${key} </#list> */
 
             <#list keys as key>
 
