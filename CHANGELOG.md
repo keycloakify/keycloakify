@@ -1,3 +1,7 @@
+### **1.2.1** (2021-06-22)  
+  
+- Remove unessesary log    
+  
 ## **1.2.0** (2021-06-22)  
   
 - Generate kcContext automatically :rocket:    
