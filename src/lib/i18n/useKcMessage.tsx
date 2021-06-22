@@ -9,6 +9,13 @@ import ReactMarkdown from "react-markdown";
 
 export type MessageKey = keyof typeof kcMessages["en"];
 
+/** 
+ * When the language is switched the page is reloaded, this may appear
+ * as a bug as you might notice that the language successfully switch before
+ * reload.
+ * However we need to tell Keycloak that the user have changed the language
+ * during login so we can retrieve the "local" field of the JWT encoded accessToken.
+ */
 export function useKcMessage() {
 
     const { kcLanguageTag } = useKcLanguageTag();

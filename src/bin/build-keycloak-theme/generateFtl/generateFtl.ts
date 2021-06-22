@@ -12,10 +12,10 @@ import { objectKeys } from "evt/tools/typeSafety/objectKeys";
 import { ftlValuesGlobalName } from "../ftlValuesGlobalName";
 
 export const pageIds = [
-    "login.ftl", "register.ftl", "info.ftl", 
-    "error.ftl", "login-reset-password.ftl", 
+    "login.ftl", "register.ftl", "info.ftl",
+    "error.ftl", "login-reset-password.ftl",
     "login-verify-email.ftl", "terms.ftl",
-    "login-otp.ftl", "login-update-profile.ftl", 
+    "login-otp.ftl", "login-update-profile.ftl",
     "login-idp-link-confirm.ftl"
 ] as const;
 
@@ -25,17 +25,6 @@ function loadAdjacentFile(fileBasename: string) {
     return fs.readFileSync(pathJoin(__dirname, fileBasename))
         .toString("utf8");
 };
-
-function loadFtlFile(ftlFileBasename: PageId | "common.ftl") {
-    try {
-
-        return loadAdjacentFile(ftlFileBasename)
-            .match(/^<script>const _=((?:.|\n)+)<\/script>[\n]?$/)![1];
-
-    } catch {
-        return "{}";
-    }
-}
 
 
 export function generateFtlFilesCodeFactory(
@@ -100,8 +89,9 @@ export function generateFtlFilesCodeFactory(
     );
 
     //FTL is no valid html, we can't insert with cheerio, we put placeholder for injecting later.
-    const ftlCommonPlaceholders = {
-        '{ "x": "vIdLqMeOed9sdLdIdOxdK0d" }': loadFtlFile("common.ftl"),
+    const ftlPlaceholders = {
+        '{ "x": "vIdLqMeOed9sdLdIdOxdK0d" }': loadAdjacentFile("common.ftl")
+            .match(/^<script>const _=((?:.|\n)+)<\/script>[\n]?$/)![1],
         '<!-- xIdLqMeOedErIdLsPdNdI9dSlxI -->':
             [
                 '<#if scripts??>',
@@ -126,23 +116,19 @@ export function generateFtlFilesCodeFactory(
                 '</style>',
                 ''
             ]),
-            ...["Object.deepAssign.js", "String.htmlUnescape.js"].map(
-                fileBasename => [
-                    "<script>",
-                    loadAdjacentFile(fileBasename),
-                    "</script>"
-                ].join("\n")
-            ),
+            "<script>",
+            loadAdjacentFile("Object.deepAssign.js"),
+            "</script>",
             '<script>',
             `    window.${ftlValuesGlobalName}= Object.assign(`,
             `        {},`,
-            `        ${objectKeys(ftlCommonPlaceholders)[0]}`,
+            `        ${objectKeys(ftlPlaceholders)[0]}`,
             '    );',
             '</script>',
             '',
             pageSpecificCodePlaceholder,
             '',
-            objectKeys(ftlCommonPlaceholders)[1]
+            objectKeys(ftlPlaceholders)[1]
         ].join("\n"),
     );
 
@@ -158,11 +144,6 @@ export function generateFtlFilesCodeFactory(
 
         const $ = cheerio.load(partiallyFixedIndexHtmlCode);
 
-        const ftlPlaceholders = {
-            '{ "x": "kxOlLqMeOed9sdLdIdOxd444" }': loadFtlFile(pageId),
-            ...ftlCommonPlaceholders
-        };
-
         let ftlCode = $.html()
             .replace(
                 pageSpecificCodePlaceholder,
@@ -171,10 +152,6 @@ export function generateFtlFilesCodeFactory(
                     `    Object.deepAssign(`,
                     `        window.${ftlValuesGlobalName},`,
                     `        { "pageId": "${pageId}" }`,
-                    '    );',
-                    `    Object.deepAssign(`,
-                    `        window.${ftlValuesGlobalName},`,
-                    `        ${objectKeys(ftlPlaceholders)[0]}`,
                     '    );',
                     '</script>'
                 ].join("\n")
