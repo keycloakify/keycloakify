@@ -5,14 +5,14 @@ import { ftlValuesGlobalName } from "../../bin/build-keycloak-theme/ftlValuesGlo
 
 export function getKcContext<KcContextExtended extends { pageId: string; } = never>(
 	params?: {
-		mockPageId: KcContextBase["pageId"] | KcContextExtended["pageId"] | false;
+		mockPageId?: KcContextBase["pageId"] | KcContextExtended["pageId"];
 		kcContextExtendedMock?: KcContextExtended[];
 	}
-): { kcContext: KcContextBase | KcContextExtended & KcContextBase.Common; } {
+): { kcContext: (KcContextBase | KcContextExtended & KcContextBase.Common) | undefined; } {
 
 	const { mockPageId, kcContextExtendedMock } = params ?? { "mockPageId": false };
 
-	if (typeof mockPageId === "string") {
+	if (mockPageId !== undefined) {
 
 		return {
 			"pageId": mockPageId,

@@ -123,11 +123,6 @@ export declare namespace KcContextBase {
         passwordRequired: boolean;
         recaptchaRequired: boolean;
         recaptchaSiteKey?: string;
-        /** 
-         * Defined when you use the keycloak-mail-whitelisting keycloak plugin
-         * (https://github.com/micedre/keycloak-mail-whitelisting)
-         */
-        authorizedMailDomains?: string[];
         social: {
             displayInfo: boolean;
             providers?: {

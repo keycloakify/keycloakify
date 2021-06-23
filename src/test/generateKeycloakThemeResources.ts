@@ -13,6 +13,7 @@ generateKeycloakThemeResources({
     "reactAppBuildDirPath": pathJoin(sampleReactProjectDirPath, "build"),
     "keycloakThemeBuildingDirPath": pathJoin(sampleReactProjectDirPath, "build_keycloak_theme"),
     "urlPathname": "/keycloakify-demo-app/",
-    "urlOrigin": undefined
+    "urlOrigin": undefined,
+    "extraPagesId": ["my-custom-page.ftl"]
 });
 

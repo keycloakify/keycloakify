@@ -22,10 +22,14 @@ export function generateKeycloakThemeResources(
         urlPathname: string;
         //If urlOrigin is not undefined then it means --externals-assets
         urlOrigin: undefined | string;
+        extraPagesId: string[];
     }
 ) {
 
-    const { themeName, reactAppBuildDirPath, keycloakThemeBuildingDirPath, urlPathname, urlOrigin } = params;
+    const { 
+        themeName, reactAppBuildDirPath, keycloakThemeBuildingDirPath, 
+        urlPathname, urlOrigin, extraPagesId
+    } = params;
 
     const themeDirPath = pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", themeName, "login");
 
@@ -92,7 +96,7 @@ export function generateKeycloakThemeResources(
         urlOrigin
     });
 
-    pageIds.forEach(pageId => {
+    [...pageIds, ...extraPagesId].forEach(pageId => {
 
         const { ftlCode } = generateFtlFilesCode({ pageId });
 

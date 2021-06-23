@@ -166,13 +166,6 @@ export const kcContextMocks: KcContextBase[] = [
 		},
 		"passwordRequired": true,
 		"recaptchaRequired": false,
-		"authorizedMailDomains": [
-			"example.com",
-			"another-example.com",
-			"*.yet-another-example.com",
-			"*.example.com",
-			"hello-world.com"
-		],
 		"social": {
 			"displayInfo": true
 		},

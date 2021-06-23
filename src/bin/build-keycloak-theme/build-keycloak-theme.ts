@@ -6,7 +6,6 @@ import * as child_process from "child_process";
 import { generateDebugFiles, containerLaunchScriptBasename } from "./generateDebugFiles";
 import { URL } from "url";
 
-
 const reactProjectDirPath = process.cwd();
 
 const doUseExternalAssets = process.argv[2]?.toLowerCase() === "--external-assets";
@@ -18,6 +17,8 @@ export const keycloakThemeBuildingDirPath = pathJoin(reactProjectDirPath, "build
 export function main() {
 
     console.log("🔏 Building the keycloak theme...⌚");
+
+    const extraPagesId: string[] = (parsedPackageJson as any)["keycloakify"]?.["extraPages"] ?? [];
 
     generateKeycloakThemeResources({
         keycloakThemeBuildingDirPath,
@@ -53,7 +54,8 @@ export function main() {
 
             };
 
-        })()
+        })(),
+        extraPagesId
     });
 
     const { jarFilePath } = generateJavaStackFiles({

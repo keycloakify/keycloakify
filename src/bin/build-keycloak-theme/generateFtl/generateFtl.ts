@@ -136,7 +136,7 @@ export function generateFtlFilesCodeFactory(
 
     function generateFtlFilesCode(
         params: {
-            pageId: PageId;
+            pageId: string;
         }
     ): { ftlCode: string; } {
 
