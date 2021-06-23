@@ -1,6 +1,6 @@
 
 import { memo } from "react";
-import type { KcContext } from "../KcContext";
+import type { KcContextBase } from "../getKcContext/KcContextBase";
 import type { KcProps } from "./KcProps";
 import { Login } from "./Login";
 import { Register } from "./Register";
@@ -13,7 +13,7 @@ import { LoginOtp } from "./LoginOtp";
 import { LoginUpdateProfile } from "./LoginUpdateProfile";
 import { LoginIdpLinkConfirm } from "./LoginIdpLinkConfirm";
 
-export const KcApp = memo(({ kcContext, ...props }: { kcContext: KcContext; } & KcProps) => {
+export const KcApp = memo(({ kcContext, ...props }: { kcContext: KcContextBase; } & KcProps) => {
     switch (kcContext.pageId) {
         case "login.ftl": return <Login {...{ kcContext, ...props }} />;
         case "register.ftl": return <Register {...{ kcContext, ...props }} />;

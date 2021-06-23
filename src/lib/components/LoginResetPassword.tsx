@@ -2,11 +2,11 @@
 import { memo } from "react";
 import { Template } from "./Template";
 import type { KcProps } from "./KcProps";
-import type { KcContext } from "../KcContext";
+import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { useKcMessage } from "../i18n/useKcMessage";
 import { cx } from "tss-react";
 
-export const LoginResetPassword = memo(({ kcContext, ...props }: { kcContext: KcContext.LoginResetPassword; } & KcProps) => {
+export const LoginResetPassword = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LoginResetPassword; } & KcProps) => {
 
     const { msg, msgStr } = useKcMessage();
 

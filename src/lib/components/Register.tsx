@@ -1,11 +1,11 @@
 import { memo } from "react";
 import { Template } from "./Template";
 import type { KcProps } from "./KcProps";
-import type { KcContext } from "../KcContext";
+import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { useKcMessage } from "../i18n/useKcMessage";
 import { cx } from "tss-react";
 
-export const Register = memo(({ kcContext, ...props }: { kcContext: KcContext.Register; } & KcProps) => {
+export const Register = memo(({ kcContext, ...props }: { kcContext: KcContextBase.Register; } & KcProps) => {
 
     const { msg, msgStr } = useKcMessage();
 

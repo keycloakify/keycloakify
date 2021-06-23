@@ -3,7 +3,7 @@ import { useReducer, useEffect, memo } from "react";
 import type { ReactNode } from "react";
 import { useKcMessage } from "../i18n/useKcMessage";
 import { useKcLanguageTag } from "../i18n/useKcLanguageTag";
-import type { KcContext } from "../KcContext";
+import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { assert } from "../tools/assert";
 import { cx } from "tss-react";
 import type { KcLanguageTag } from "../i18n/KcLanguageTag";
@@ -25,7 +25,7 @@ export type TemplateProps = {
     showUsernameNode?: ReactNode;
     formNode: ReactNode;
     infoNode?: ReactNode;
-} & { kcContext: KcContext; } & KcTemplateProps;
+} & { kcContext: KcContextBase; } & KcTemplateProps;
 
 export const Template = memo((props: TemplateProps) => {
 

@@ -2,12 +2,12 @@
 import { useState, memo } from "react";
 import { Template } from "./Template";
 import type { KcProps } from "./KcProps";
-import type { KcContext } from "../KcContext";
+import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { useKcMessage } from "../i18n/useKcMessage";
 import { cx } from "tss-react";
 import { useConstCallback } from "powerhooks";
 
-export const Login = memo(({ kcContext, ...props }: { kcContext: KcContext.Login; } & KcProps) => {
+export const Login = memo(({ kcContext, ...props }: { kcContext: KcContextBase.Login; } & KcProps) => {
 
     const { msg, msgStr } = useKcMessage();
 

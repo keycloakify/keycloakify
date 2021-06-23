@@ -10,7 +10,7 @@ import { generateFtlFilesCodeFactory, pageIds } from "./generateFtl";
 import { builtinThemesUrl } from "../install-builtin-keycloak-themes";
 import { downloadAndUnzip } from "../tools/downloadAndUnzip";
 import * as child_process from "child_process";
-import { resourcesCommonPath, resourcesPath, subDirOfPublicDirBasename } from "../../lib/kcContextMocks/urlResourcesPath";
+import { resourcesCommonPath, resourcesPath, subDirOfPublicDirBasename } from "../../lib/getKcContext/kcContextMocks/urlResourcesPath";
 import { isInside } from "../tools/isInside";
 
 

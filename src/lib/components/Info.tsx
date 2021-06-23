@@ -3,10 +3,10 @@ import { memo } from "react";
 import { Template } from "./Template";
 import type { KcProps } from "./KcProps";
 import { assert } from "../tools/assert";
-import type { KcContext } from "../KcContext";
+import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { useKcMessage } from "../i18n/useKcMessage";
 
-export const Info = memo(({ kcContext, ...props }: { kcContext: KcContext.Info; } & KcProps) => {
+export const Info = memo(({ kcContext, ...props }: { kcContext: KcContextBase.Info; } & KcProps) => {
 
     const { msg } = useKcMessage();
 

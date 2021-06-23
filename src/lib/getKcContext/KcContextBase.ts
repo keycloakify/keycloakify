@@ -1,11 +1,9 @@
 
-import { ftlValuesGlobalName } from "../bin/build-keycloak-theme/ftlValuesGlobalName";
-import type { PageId } from "../bin/build-keycloak-theme/generateFtl";
-import { id } from "evt/tools/typeSafety/id";
-import type { KcLanguageTag } from "./i18n/KcLanguageTag";
+import type { PageId } from "../../bin/build-keycloak-theme/generateFtl";
+import type { KcLanguageTag } from "../i18n/KcLanguageTag";
 import { doExtends } from "evt/tools/typeSafety/doExtends";
-import type { MessageKey } from "./i18n/useKcMessage";
-import type { LanguageLabel } from "./i18n/KcLanguageTag";
+import type { MessageKey } from "../i18n/useKcMessage";
+import type { LanguageLabel } from "../i18n/KcLanguageTag";
 
 type ExtractAfterStartingWith<Prefix extends string, StrEnum> =
     StrEnum extends `${Prefix}${infer U}` ? U : never;
@@ -14,13 +12,13 @@ type ExtractAfterStartingWith<Prefix extends string, StrEnum> =
  * Some values might be undefined on some pages.
  * (ex: url.loginAction is undefined on error.ftl)
  */
-export type KcContext =
-    KcContext.Login | KcContext.Register | KcContext.Info |
-    KcContext.Error | KcContext.LoginResetPassword | KcContext.LoginVerifyEmail |
-    KcContext.Terms | KcContext.LoginOtp | KcContext.LoginUpdateProfile |
-    KcContext.LoginIdpLinkConfirm;
+export type KcContextBase =
+    KcContextBase.Login | KcContextBase.Register | KcContextBase.Info |
+    KcContextBase.Error | KcContextBase.LoginResetPassword | KcContextBase.LoginVerifyEmail |
+    KcContextBase.Terms | KcContextBase.LoginOtp | KcContextBase.LoginUpdateProfile |
+    KcContextBase.LoginIdpLinkConfirm;
 
-export declare namespace KcContext {
+export declare namespace KcContextBase {
 
     export type Common = {
         url: {
@@ -207,9 +205,8 @@ export declare namespace KcContext {
 
 }
 
-doExtends<KcContext["pageId"], PageId>();
-doExtends<PageId, KcContext["pageId"]>();
+doExtends<KcContextBase["pageId"], PageId>();
+doExtends<PageId, KcContextBase["pageId"]>();
 
-export const kcContext = id<KcContext | undefined>((window as any)[ftlValuesGlobalName]);
 
 

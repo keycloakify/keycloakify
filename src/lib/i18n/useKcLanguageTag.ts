@@ -1,7 +1,9 @@
 
 import { createUseGlobalState } from "powerhooks";
-import { kcContext } from "../KcContext";
+import { getKcContext } from "../getKcContext";
 import { getBestMatchAmongKcLanguageTag } from "./KcLanguageTag";
+
+const { kcContext } = getKcContext();
 
 //export const { useKcLanguageTag, evtKcLanguageTag } = createUseGlobalState(
 const wrap = createUseGlobalState(

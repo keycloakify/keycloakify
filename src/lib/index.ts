@@ -1,4 +1,4 @@
-export * from "./KcContext";
+export * from "./getKcContext";
 
 export * from "./i18n/KcLanguageTag";
 export * from "./i18n/useKcLanguageTag";
@@ -17,5 +17,3 @@ export * from "./keycloakJsAdapter";
 
 export * from "./tools/assert";
 
-
-export * as kcContextMocks from "./kcContextMocks";

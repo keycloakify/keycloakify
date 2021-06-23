@@ -3,13 +3,13 @@
 import { useEffect, memo } from "react";
 import { Template } from "./Template";
 import type { KcProps } from "./KcProps";
-import type { KcContext } from "../KcContext";
+import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { useKcMessage } from "../i18n/useKcMessage";
 import { appendHead } from "../tools/appendHead";
 import { join as pathJoin } from "path";
 import { cx } from "tss-react";
 
-export const LoginOtp = memo(({ kcContext, ...props }: { kcContext: KcContext.LoginOtp; } & KcProps) => {
+export const LoginOtp = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LoginOtp; } & KcProps) => {
 
     const { otpLogin, url } = kcContext;
 
