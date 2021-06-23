@@ -17,6 +17,7 @@ export const Error = memo(({ kcContext, ...props }: { kcContext: KcContextBase.E
     return (
         <Template
             {...{ kcContext, ...props }}
+            doFetchDefaultThemeResources={true}
             displayMessage={false}
             headerNode={msg("errorTitle")}
             formNode={

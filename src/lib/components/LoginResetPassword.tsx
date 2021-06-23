@@ -19,6 +19,7 @@ export const LoginResetPassword = memo(({ kcContext, ...props }: { kcContext: Kc
     return (
         <Template
             {...{ kcContext, ...props }}
+            doFetchDefaultThemeResources={true}
             displayMessage={false}
             headerNode={msg("emailForgotTitle")}
             formNode={

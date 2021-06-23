@@ -14,6 +14,7 @@ export const LoginUpdateProfile = memo(({ kcContext, ...props }: { kcContext: Kc
 	return (
 		<Template
 			{...{ kcContext, ...props }}
+			doFetchDefaultThemeResources={true}
 			headerNode={msg("loginProfileTitle")}
 			formNode={
 				<form id="kc-update-profile-form" className={cx(props.kcFormClass)} action={url.loginAction} method="post">

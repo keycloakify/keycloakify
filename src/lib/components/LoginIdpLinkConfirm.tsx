@@ -15,6 +15,7 @@ export const LoginIdpLinkConfirm = memo(({ kcContext, ...props }: { kcContext: K
 	return (
 		<Template
 			{...{ kcContext, ...props }}
+			doFetchDefaultThemeResources={true}
 			headerNode={msg("confirmLinkIdpTitle")}
 			formNode={
 				<form id="kc-register-form" action={url.loginAction} method="post">

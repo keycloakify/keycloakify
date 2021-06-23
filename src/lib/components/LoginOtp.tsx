@@ -43,6 +43,7 @@ export const LoginOtp = memo(({ kcContext, ...props }: { kcContext: KcContextBas
     return (
         <Template
             {...{ kcContext, ...props }}
+            doFetchDefaultThemeResources={true}
             headerNode={msg("doLogIn")}
             formNode={
 

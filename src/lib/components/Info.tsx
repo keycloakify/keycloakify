@@ -25,6 +25,7 @@ export const Info = memo(({ kcContext, ...props }: { kcContext: KcContextBase.In
     return (
         <Template
             {...{ kcContext, ...props }}
+            doFetchDefaultThemeResources={true}
             displayMessage={false}
             headerNode={
                 messageHeader !== undefined ?

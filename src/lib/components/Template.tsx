@@ -25,6 +25,10 @@ export type TemplateProps = {
     showUsernameNode?: ReactNode;
     formNode: ReactNode;
     infoNode?: ReactNode;
+    /** If you write your own page you probably want
+     * to avoid pulling the default theme assets.
+     */
+    doFetchDefaultThemeResources: boolean;
 } & { kcContext: KcContextBase; } & KcTemplateProps;
 
 export const Template = memo((props: TemplateProps) => {
@@ -39,7 +43,8 @@ export const Template = memo((props: TemplateProps) => {
         showUsernameNode = null,
         formNode,
         infoNode = null,
-        kcContext
+        kcContext,
+        doFetchDefaultThemeResources
     } = props;
 
     useEffect(() => { console.log("Rendering this page with react using keycloakify") }, []);
@@ -83,6 +88,11 @@ export const Template = memo((props: TemplateProps) => {
     const [isExtraCssLoaded, setExtraCssLoaded] = useReducer(() => true, false);
 
     useEffect(() => {
+
+        if (!doFetchDefaultThemeResources) {
+            setExtraCssLoaded();
+            return;
+        }
 
         let isUnmounted = false;
         const cleanups: (() => void)[] = [];

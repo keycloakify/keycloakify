@@ -16,6 +16,7 @@ export const LoginVerifyEmail = memo(({ kcContext, ...props }: { kcContext: KcCo
     return (
         <Template
             {...{ kcContext, ...props }}
+            doFetchDefaultThemeResources={true}
             displayMessage={false}
             headerNode={msg("emailVerifyTitle")}
             formNode={

@@ -14,6 +14,7 @@ export const Terms = memo(({ kcContext, ...props }: { kcContext: KcContextBase.T
     return (
         <Template
             {...{ kcContext, ...props }}
+            doFetchDefaultThemeResources={true}
             displayMessage={false}
             headerNode={msg("termsTitle")}
             formNode={
