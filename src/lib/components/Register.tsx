@@ -27,7 +27,7 @@ export const Register = memo(({ kcContext, ...props }: { kcContext: KcContextBas
             formNode={
                 <form id="kc-register-form" className={cx(props.kcFormClass)} action={url.registrationAction} method="post">
 
-                    <div className={cx(props.kcFormGroupClass, messagesPerField.printIfExists('firstName', props.kcFormGroupErrorClass))}>
+                    <div className={cx(props.kcFormGroupClass, messagesPerField.printIfExists("firstName", props.kcFormGroupErrorClass))}>
                         <div className={cx(props.kcLabelWrapperClass)}>
                             <label htmlFor="firstName" className={cx(props.kcLabelClass)}>{msg("firstName")}</label>
                         </div>
