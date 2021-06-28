@@ -5,12 +5,15 @@ import { getKcLanguageTagLabel } from "../../i18n/KcLanguageTag";
 //NOTE: Aside because we want to be able to import them from node
 import { resourcesCommonPath, resourcesPath } from "./urlResourcesPath";
 import { id } from "tsafe/id";
+import { join as pathJoin } from "path";
+
+const PUBLIC_URL = process.env["PUBLIC_URL"] ?? "/";
 
 export const kcContextCommonMock: KcContextBase.Common = {
 	"url": {
 		"loginAction": "#",
-		"resourcesPath": `${process.env["PUBLIC_URL"]}/${resourcesPath}`,
-		"resourcesCommonPath": `${process.env["PUBLIC_URL"]}/${resourcesCommonPath}`,
+		"resourcesPath": pathJoin(PUBLIC_URL, resourcesPath),
+		"resourcesCommonPath": pathJoin(PUBLIC_URL, resourcesCommonPath),
 		"loginRestartFlowUrl": "/auth/realms/myrealm/login-actions/restart?client_id=account&tab_id=HoAx28ja4xg",
 		"loginUrl": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg",
 	},
@@ -95,7 +98,8 @@ export const kcContextCommonMock: KcContextBase.Common = {
 				"languageTag": "tr"
 			}
 		],
-		"current": null as any
+		//"current": null as any
+		"current": "English"
 	},
 	"auth": {
 		"showUsername": false,
@@ -109,6 +113,7 @@ export const kcContextCommonMock: KcContextBase.Common = {
 	},
 	"isAppInitiatedAction": false,
 };
+
 
 Object.defineProperty(
 	kcContextCommonMock.locale!,
@@ -188,6 +193,10 @@ export const kcContextMocks: KcContextBase[] = [
 		"pageId": "error.ftl",
 		"client": {
 			"baseUrl": "#"
+		},
+		"message": {
+			"type": "error",
+			"summary": "This is the error message"
 		}
 	}),
 	id<KcContextBase.LoginResetPassword>({

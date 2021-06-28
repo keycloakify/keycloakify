@@ -1,6 +1,6 @@
 
 import { join as pathJoin } from "path";
-import { generateKeycloakThemeResources } from "../bin/build-keycloak-theme/generateKeycloakThemeResources";
+import { generateKeycloakThemeResources } from "../../bin/build-keycloak-theme/generateKeycloakThemeResources";
 import {
     setupSampleReactProject,
     sampleReactProjectDirPath

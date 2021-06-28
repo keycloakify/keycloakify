@@ -8,7 +8,7 @@ import {
 } from "../replaceImportFromStatic";
 import fs from "fs";
 import { join as pathJoin } from "path";
-import { objectKeys } from "evt/tools/typeSafety/objectKeys";
+import { objectKeys } from "tsafe/objectKeys";
 import { ftlValuesGlobalName } from "../ftlValuesGlobalName";
 
 export const pageIds = [

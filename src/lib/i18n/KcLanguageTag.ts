@@ -1,5 +1,5 @@
 
-import { objectKeys } from "evt/tools/typeSafety/objectKeys";
+import { objectKeys } from "tsafe/objectKeys";
 import { kcMessages } from "./kcMessages/login";
 
 export type KcLanguageTag = keyof typeof kcMessages;

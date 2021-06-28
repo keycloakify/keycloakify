@@ -1,7 +1,7 @@
 
 import type { PageId } from "../../bin/build-keycloak-theme/generateFtl";
 import type { KcLanguageTag } from "../i18n/KcLanguageTag";
-import { doExtends } from "evt/tools/typeSafety/doExtends";
+import { doExtends } from "tsafe/doExtends";
 import type { MessageKey } from "../i18n/useKcMessage";
 import type { LanguageLabel } from "../i18n/KcLanguageTag";
 
@@ -150,7 +150,8 @@ export declare namespace KcContextBase {
         pageId: "error.ftl";
         client?: {
             baseUrl?: string;
-        }
+        },
+        message: NonNullable<Common["message"]>;
     };
 
     export type LoginResetPassword = Common & {

@@ -6,7 +6,7 @@ import {
 } from "./setupSampleReactProject";
 import * as st from "scripting-tools";
 import { join as pathJoin } from "path";
-import { getProjectRoot } from "../bin/tools/getProjectRoot";
+import { getProjectRoot } from "../../bin/tools/getProjectRoot";
 
 setupSampleReactProject();
 

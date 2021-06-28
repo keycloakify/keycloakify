@@ -2,22 +2,39 @@
 import { createUseGlobalState } from "powerhooks";
 import { getKcContext } from "../getKcContext";
 import { getBestMatchAmongKcLanguageTag } from "./KcLanguageTag";
+import type { StatefulEvt } from "powerhooks";
+import { KcLanguageTag } from "./KcLanguageTag";
 
-const { kcContext } = getKcContext();
 
 //export const { useKcLanguageTag, evtKcLanguageTag } = createUseGlobalState(
 const wrap = createUseGlobalState(
     "kcLanguageTag",
-    () => getBestMatchAmongKcLanguageTag(
-        kcContext?.locale?.current ??
-        navigator.language
-    ),
+    () => {
+
+
+        const { kcContext } = getKcContext();
+
+        const languageLike =
+            kcContext?.locale?.current ??
+            (
+                typeof navigator === "undefined" ?
+                    undefined :
+                    navigator.language
+            );
+
+        if (languageLike === undefined) {
+            return "en";
+        }
+
+        return getBestMatchAmongKcLanguageTag(languageLike);
+
+    },
     { "persistance": "localStorage" }
 );
 
 export const { useKcLanguageTag } = wrap;
 
-export function getEvtKcLanguage() {
+export function getEvtKcLanguage(): StatefulEvt<KcLanguageTag> {
     return wrap.evtKcLanguageTag;
 }
 

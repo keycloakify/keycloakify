@@ -1,7 +1,7 @@
 
 import { kcMessages } from "../generated_kcMessages/login";
 import { Evt } from "evt";
-import { objectKeys } from "evt/tools/typeSafety/objectKeys";
+import { objectKeys } from "tsafe/objectKeys";
 
 export const evtTermsUpdated = Evt.asNonPostable(Evt.create<void>());
 

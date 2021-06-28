@@ -1,2 +1,2 @@
 
-export { assert } from "evt/tools/typeSafety/assert";
+export { assert } from "tsafe/assert";

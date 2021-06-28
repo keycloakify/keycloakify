@@ -3,7 +3,7 @@ import { 
     replaceImportsFromStaticInJsCode,
     replaceImportsInCssCode,
     generateCssCodeToDefineGlobals
-} from "../bin/build-keycloak-theme/replaceImportFromStatic";
+} from "../../bin/build-keycloak-theme/replaceImportFromStatic";
 
 const { fixedJsCode } = replaceImportsFromStaticInJsCode({
     "jsCode": `

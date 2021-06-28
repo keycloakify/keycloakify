@@ -1,6 +1,6 @@
 
 import { allPropertiesValuesToUndefined } from "../tools/allPropertiesValuesToUndefined";
-import { doExtends } from "evt/tools/typeSafety/doExtends";
+import { doExtends } from "tsafe/doExtends";
 
 /** Class names can be provided as an array or separated by whitespace */
 export type KcPropsGeneric<CssClasses extends string> = { [key in CssClasses]: readonly string[] | string | undefined; };

@@ -514,6 +514,15 @@ evt@2.0.0-beta.15:
     minimal-polyfills "^2.1.5"
     run-exclusive "^2.2.14"
 
+evt@2.0.0-beta.20:
+  version "2.0.0-beta.20"
+  resolved "https://registry.yarnpkg.com/evt/-/evt-2.0.0-beta.20.tgz#a018ff46a7dcb475c488e6508ac3aec7910e76fb"
+  integrity sha512-aIIqrDkQ5Hm4zzW7v9STZbO9RcwAI2vMQUkjQ7Bw4YkWOv2zoIl6ooJZ6942JU7UCYKWSi1u5BBtyoiXUSsnMA==
+  dependencies:
+    minimal-polyfills "^2.2.1"
+    run-exclusive "^2.2.14"
+    tsafe "^0.2.2"
+
 ext@^1.1.2:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/ext/-/ext-1.4.0.tgz#89ae7a07158f79d35517882904324077e4379244"
@@ -770,7 +779,7 @@ micromark@~2.11.0:
     debug "^4.0.0"
     parse-entities "^2.0.0"
 
-minimal-polyfills@^2.1.5, minimal-polyfills@^2.1.6:
+minimal-polyfills@^2.1.5, minimal-polyfills@^2.1.6, minimal-polyfills@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/minimal-polyfills/-/minimal-polyfills-2.2.1.tgz#7249d7ece666d3b4e1ec1c1b8f949eb9d44e2308"
   integrity sha512-WLmHQrsZob4rVYf8yHapZPNJZ3sspGa/sN8abuSD59b0FifDEE7HMfLUi24z7mPZqTpBXy4Svp+iGvAmclCmXg==
@@ -893,10 +902,10 @@ path@^0.12.7:
     process "^0.11.1"
     util "^0.10.3"
 
-powerhooks@^0.1.0:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/powerhooks/-/powerhooks-0.1.4.tgz#82aae8dae5485a154d3ce4e89342a2d68cb2a413"
-  integrity sha512-ig47hJIW/b75gCS3l2EtK8NVAduNVd9vem8IvaWkuPuZIP4mbDAy4Rc0/hvjXVUPs9OzK7jc/zIQika3tTacYg==
+powerhooks@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/powerhooks/-/powerhooks-0.1.6.tgz#23dfb6c781bbfdd20ea37ff5a2a0fd5a9799d591"
+  integrity sha512-S1b5awSAimyt9jXZsm+N8/GFBtzLPzmVIUyVLq/IADDe4aAcxFWBgXSWTOFc31PlWE9uz2K/NovsQNDf4Fr52A==
   dependencies:
     evt "2.0.0-beta.15"
     memoizee "^0.4.15"
@@ -1121,10 +1130,25 @@ trough@^1.0.0:
   resolved "https://registry.yarnpkg.com/trough/-/trough-1.0.5.tgz#b8b639cefad7d0bb2abd37d433ff8293efa5f406"
   integrity sha512-rvuRbTarPXmMb79SmzEp8aqXNKcK+y0XaB298IXueQ8I2PsrATcPBCSPyK/dDNa2iWOhKlfNnOjdAOTBU/nkFA==
 
+ts-toolbelt@^9.6.0:
+  version "9.6.0"
+  resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-9.6.0.tgz#50a25426cfed500d4a09bd1b3afb6f28879edfd5"
+  integrity sha512-nsZd8ZeNUzukXPlJmTBwUAuABDe/9qtVDelJeT/qW0ow3ZS3BsQJtNkan1802aM9Uf68/Y8ljw86Hu0h5IUW3w==
+
 tsafe@^0.1.0:
   version "0.1.15"
   resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-0.1.15.tgz#9e2b6137fb5a49fc7c23cb0bc49ae09bab215f2a"
   integrity sha512-aAWMOACHXMmwE2zRcQpBv+whxYqB4zvAbs+dzwbnGaGK9NAOQ65m0+WyO+jw/41JzCX7orJU/ieFHTmgehTOKA==
+
+tsafe@^0.2.2:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-0.2.4.tgz#f2cffb9b33e4d20c6f9800aa1c45bee02d917aa1"
+  integrity sha512-oS/0wJKgEv/iDow/6U51xjAascJVtUQfZQMCDdoOS+VnMlWZFdXGMKuoH47JYs6hEWHpO+Z5pC5oAFFHiPfTLg==
+
+tsafe@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-0.4.1.tgz#00af1be2db82abb4be531209b90232d7954e1a03"
+  integrity sha512-+OZ0gdgmwcru+MOSheCx+ymAvQz+1/ui+KFJRuaq0t2m8RNrlf7eSzEieptoPQXPY67Mdkqgkdjknn8azoD5sw==
 
 tslib@^2.2.0:
   version "2.3.0"
