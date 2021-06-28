@@ -78,6 +78,7 @@ If you already have a Keycloak custom theme, it can be easily ported to Keycloak
 Tested with the following Keycloak versions: 
 - [11.0.3](https://hub.docker.com/layers/jboss/keycloak/11.0.3/images/sha256-4438f1e51c1369371cb807dffa526e1208086b3ebb9cab009830a178de949782?context=explore)  
 - [12.0.4](https://hub.docker.com/layers/jboss/keycloak/12.0.4/images/sha256-67e0c88e69bd0c7aef972c40bdeb558a974013a28b3668ca790ed63a04d70584?context=explore)  
+- Tests ongoing with [14.0.0](https://hub.docker.com/layers/jboss/keycloak/14.0.0/images/sha256-ca713e87ad163da71ab329010de2464a41ff030a25ae0aef15c1c290252f3d7f?context=explore) 
 
 This tool will be maintained to stay compatible with Keycloak v11 and up, however, the default pages you will get 
 (before you customize it) will always be the ones of Keycloak v11.
