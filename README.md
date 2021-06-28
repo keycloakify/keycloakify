@@ -286,16 +286,10 @@ Then to load your own therms of services using [like this](https://github.com/ga
 
 # Some pages still have the default theme. Why?
 
-**NEW in v1.2 it is now much more easy to add support for custom pages since the
-Keycloak context is now automatically converted into a JavaScript object (kcContext).
-In v2 (coming soon) it won't be required to fork for adding support for custom pages.**
-
-This project only support the most common user facing pages of Keycloak login.  
+This project only support out of the box the most common user facing pages of Keycloak login.  
 [Here](https://user-images.githubusercontent.com/6702424/116787906-227fe700-aaa7-11eb-92ee-22e7673717c2.png) is the complete list of pages (you get them after running `yarn test`)
 and [here](https://github.com/InseeFrLab/keycloakify/tree/main/src/lib/components) are the pages currently implemented by this module.  
-If you need to customize pages that are not supported yet you can submit an issue about it and wait for me get it implemented.  
-If you can't wait, PR are welcome! [Here](https://github.com/InseeFrLab/keycloakify/commit/0163459ad6b1ad0afcc34fae5f3cc28dbcf8b4a7) is the commit that adds support 
-for the `login-otp.ftl` page. You can use it as a model for implementing other pages.
+If you need to customize pages that are not supported yet or if you need to implement some non standard `.ftl` pages please refer to [Advanced pages configuration](#advanced-pages-configuration).
 
 # GitHub Actions
 
