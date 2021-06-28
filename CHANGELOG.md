@@ -1,3 +1,12 @@
+# **2.0.0** (2021-06-28)  
+  
+- Fix last bugs before relasing v2  
+- Implement a mechanism to overload kcContext  
+- Give the option in template to pull the default assets or not  
+- Enable possiblity to support custom pages (without forking keycloakify)  
+- Implement a getter for kcContext  
+- Update README.md    
+  
 ### **1.2.1** (2021-06-22)  
   
 - Remove unessesary log    
