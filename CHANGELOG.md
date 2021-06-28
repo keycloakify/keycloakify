@@ -1,3 +1,7 @@
+### **2.0.2** (2021-06-28)  
+  
+- Updagte README for implementing non incuded pages    
+  
 ### **2.0.1** (2021-06-28)  
   
 - Update documentation for v2    
