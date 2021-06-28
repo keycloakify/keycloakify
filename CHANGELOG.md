@@ -1,3 +1,7 @@
+### **2.0.1** (2021-06-28)  
+  
+- Update documentation for v2    
+  
 # **2.0.0** (2021-06-28)  
   
 - Fix last bugs before relasing v2  
