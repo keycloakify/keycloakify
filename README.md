@@ -24,8 +24,6 @@
 - It's now possible to implement custom `.ftl` pages.
 - Support for Keycloak plugins that introduce non standard ftl values. 
   (Like for example [this plugin](https://github.com/micedre/keycloak-mail-whitelisting) that define `authorizedMailDomains` in `register.ftl`).
-
-**V2 is not yet documented, most users should stick with v1.x.x**
 # Motivations
 
 Keycloak provides [theme support](https://www.keycloak.org/docs/latest/server_development/#_themes) for web pages. This allows customizing the look and feel of end-user facing pages so they can be integrated with your applications.
@@ -64,7 +62,7 @@ If you already have a Keycloak custom theme, it can be easily ported to Keycloak
 - [How to use](#how-to-use)
   - [Setting up the build tool](#setting-up-the-build-tool)
     - [Changing just the look of the default Keycloak theme](#changing-just-the-look-of-the-default-keycloak-theme)
-    - [Changing the look **and** feel](#changing-the-look-and-feel)
+    - [Advanced pages configuration](#advanced-pages-configuration)
     - [Hot reload](#hot-reload)
   - [Enable loading in a blink of an eye of login pages ⚡ (--external-assets)](#enable-loading-in-a-blink-of-an-eye-of-login-pages----external-assets)
 - [Support for Terms and conditions](#support-for-terms-and-conditions)
@@ -136,9 +134,11 @@ import { App } from "./<wherever>/App";
 import { 
   KcApp, 
   defaultKcProps, 
-  kcContext
+  getKcContext
 } from "keycloakify";
 import { css } from "tss-react";
+
+const { kcContext } = getKcContext();
 
 const myClassName = css({ "color": "red" });
 
@@ -163,9 +163,11 @@ import { App } from "./<wherever>/App";
 import { 
   KcApp, 
   defaultKcProps, 
-  kcContext
+  getKcContext
 } from "keycloakify";
 import { css } from "tss-react";
+
+const { kcContext } = getKcContext();
 
 const myClassName = css({ "color": "red" });
 
@@ -201,20 +203,23 @@ and the result you can expect:
     <img src="https://github.com/InseeFrLab/keycloakify/releases/download/v0.3.8/keycloakify_after.gif">
 </p>
 
-### Changing the look **and** feel
+### Advanced pages configuration
 
-If you want to really re-implement the pages, the best approach is to 
-create your own version of the [`<KcApp />`](https://github.com/garronej/keycloakify/blob/develop/src/lib/components/KcApp.tsx).
-Copy/past some of [the components](https://github.com/garronej/keycloakify/tree/develop/src/lib/components) provided by this module and start hacking around. 
+If you want to go beyond only customizing the CSS you can re-implement some of the 
+pages or event add new ones. 
 
-You can find an example of such customization [here](https://github.com/InseeFrLab/onyxia-ui/tree/master/src/app/components/KcApp).
+If you want to go this way checkout the demo setup provided [here](https://github.com/garronej/keycloakify-demo-app/tree/look_and_feel)
 
-And you can test the result in production by trying the login register page of [Onyxia](https://datalab.sspcloud.fr)
-
-Note that you don’t have to re write **all** components, only the ones that you most need customized.  
-Look at [here for example](https://github.com/InseeFrLab/onyxia-ui/blob/3bf18aa82b198fc6ba7998c30abf0a9ae54a58b1/src/app/components/KcApp/KcApp.tsx#L112-L120). 
-We want to have our very own login and register page, so we wrote customs [Login.tsx](https://github.com/InseeFrLab/onyxia-ui/blob/master/src/app/components/KcApp/Login.tsx) and [Register.txs](https://github.com/InseeFrLab/onyxia-ui/blob/master/src/app/components/KcApp/Register.tsx), we import them [here](https://github.com/InseeFrLab/onyxia-ui/blob/3bf18aa82b198fc6ba7998c30abf0a9ae54a58b1/src/app/components/KcApp/KcApp.tsx#L9-L10) and use them [here](https://github.com/InseeFrLab/onyxia-ui/blob/3bf18aa82b198fc6ba7998c30abf0a9ae54a58b1/src/app/components/KcApp/KcApp.tsx#L113-L114).  
-We don't want to bother, however, customizing `login-reset-password.ftl`. We are fine using the component from [the default theme](https://github.com/InseeFrLab/onyxia-ui/blob/3bf18aa82b198fc6ba7998c30abf0a9ae54a58b1/src/app/components/KcApp/KcApp.tsx#L13) with just some [CSS customization](https://github.com/InseeFrLab/onyxia-ui/blob/3bf18aa82b198fc6ba7998c30abf0a9ae54a58b1/src/app/components/KcApp/KcApp.tsx#L103-L110).  
+Main takeaways are:
+- You must declare your custom pages in the package.json. [example](https://github.com/garronej/keycloakify-demo-app/blob/4eb2a9f63e9823e653b2d439495bda55e5ecc134/package.json#L17-L22)
+- (TS only) You must declare theses page in the type argument of the getter 
+  function for the `kcContext` in order to have the correct typings. [example](https://github.com/garronej/keycloakify-demo-app/blob/4eb2a9f63e9823e653b2d439495bda55e5ecc134/src/KcApp/kcContext.ts#L16-L21)
+- (TS only) If you use Keycloak plugins that defines non standard `.ftl` values
+  (Like for example [this plugin](https://github.com/micedre/keycloak-mail-whitelisting) 
+  that define `authorizedMailDomains` in `register.ftl`) you should 
+  declare theses value to get the type. [example](https://github.com/garronej/keycloakify-demo-app/blob/4eb2a9f63e9823e653b2d439495bda55e5ecc134/src/KcApp/kcContext.ts#L6-L13)
+- You should provide sample data for all the non standard value if you want to be able
+  to debug the page outside of keycloak. [example](https://github.com/garronej/keycloakify-demo-app/blob/4eb2a9f63e9823e653b2d439495bda55e5ecc134/src/KcApp/kcContext.ts#L28-L43)
 
 WARNING: If you chose to go this way use:
 ```json
@@ -227,15 +232,18 @@ in your `package.json` instead of `^X.Y.Z`. A minor update of Keycloakify might 
 ### Hot reload
 
 Rebuild the theme each time you make a change to see the result is not practical.
-If you want to test your login screens outside of Keycloak, in [storybook](https://storybook.js.org/)
-for example you can use `kcContextMocks`.
+If you want to test your login screens outside of Keycloak you can mock a given `kcContext`: 
 
 ```tsx
 import {
     KcApp,
     defaultKcProps,
-    kcContextMocks
+    getKcContext
 } from "keycloakify";
+
+const { kcContext } = getKcContext({
+    "mockPageId": "login.ftl"
+});
 
 reactDom.render(
         <KcApp 
