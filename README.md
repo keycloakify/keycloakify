@@ -20,6 +20,12 @@
     <img src="https://user-images.githubusercontent.com/6702424/110260457-a1c3d380-7fac-11eb-853a-80459b65626b.png">
 </p>
 
+**NEW in v2**  
+- It's now possible to implement custom `.ftl` pages.
+- Support for Keycloak plugins that introduce non standard ftl values. 
+  (Like for example [this plugin](https://github.com/micedre/keycloak-mail-whitelisting) that define `authorizedMailDomains` in `register.ftl`).
+
+**V2 is not yet documented, most users should stick with v1.x.x**
 # Motivations
 
 Keycloak provides [theme support](https://www.keycloak.org/docs/latest/server_development/#_themes) for web pages. This allows customizing the look and feel of end-user facing pages so they can be integrated with your applications.
