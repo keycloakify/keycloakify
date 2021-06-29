@@ -208,7 +208,9 @@ and the result you can expect:
 If you want to go beyond only customizing the CSS you can re-implement some of the 
 pages or event add new ones. 
 
-If you want to go this way checkout the demo setup provided [here](https://github.com/garronej/keycloakify-demo-app/tree/look_and_feel)
+If you want to go this way checkout the demo setup provided [here](https://github.com/garronej/keycloakify-demo-app/tree/look_and_feel).
+If you prefer a real life example you can checkout [onyxia-web's source](https://github.com/InseeFrLab/onyxia-web/tree/main/src/app/components/KcApp). 
+The web app is in production [here](https://datalab.sspcloud.fr).
 
 Main takeaways are:
 - You must declare your custom pages in the package.json. [example](https://github.com/garronej/keycloakify-demo-app/blob/4eb2a9f63e9823e653b2d439495bda55e5ecc134/package.json#L17-L22)
