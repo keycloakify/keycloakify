@@ -113,7 +113,7 @@
 
 
         <#attempt>
-            "${object?no_esc}"
+            "${object?replace('"', '\\"')?no_esc}"
         <#recover>
             /* couldn't convert into string non hash, non method, non boolean, non enumerable object */
             undefined;
