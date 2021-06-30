@@ -1,3 +1,8 @@
+### **2.0.3** (2021-06-30)  
+  
+- Escape double quote in ftl to js conversion #15  
+- Update readme    
+  
 ### **2.0.2** (2021-06-28)  
   
 - Updagte README for implementing non incuded pages    
