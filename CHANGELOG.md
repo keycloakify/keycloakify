@@ -1,3 +1,7 @@
+### **2.0.4** (2021-07-03)  
+  
+- Fix: #7    
+  
 ### **2.0.3** (2021-06-30)  
   
 - Escape double quote in ftl to js conversion #15  
