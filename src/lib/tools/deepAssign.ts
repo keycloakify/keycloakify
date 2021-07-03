@@ -2,6 +2,7 @@
 import { assert } from "tsafe/assert";
 import { is } from "tsafe/is";
 
+//Warning: Be mindful that because of array this is not idempotent.
 export function deepAssign(
 	params: {
 		target: Record<string, unknown>;

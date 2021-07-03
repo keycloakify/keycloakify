@@ -8,9 +8,9 @@ import { deepAssign } from "../tools/deepAssign";
 
 
 export type ExtendsKcContextBase<
-	KcContextExtended extends ({ pageId: string; } | undefined)
+	KcContextExtended extends { pageId: string; }
 	> =
-	KcContextExtended extends undefined ?
+	[KcContextExtended] extends [never] ?
 	KcContextBase :
 	AndByDiscriminatingKey<
 		"pageId",
@@ -18,7 +18,7 @@ export type ExtendsKcContextBase<
 		KcContextBase
 	>;
 
-export function getKcContext<KcContextExtended extends ({ pageId: string; } | undefined) = undefined>(
+export function getKcContext<KcContextExtended extends { pageId: string; } = never>(
 	params?: {
 		mockPageId?: ExtendsKcContextBase<KcContextExtended>["pageId"];
 		mockData?: readonly DeepPartial<ExtendsKcContextBase<KcContextExtended>>[];
@@ -51,21 +51,14 @@ export function getKcContext<KcContextExtended extends ({ pageId: string; } | un
 
 		}
 
-		const kcContext: any = { "pageId": mockPageId };
+		const kcContext: any = {};
 
 		deepAssign({
 			"target": kcContext,
-			"source": kcContextCommonMock
+			"source": kcContextDefaultMock !== undefined ?
+				kcContextDefaultMock :
+				{ "pageId": mockPageId, ...kcContextCommonMock,  }
 		});
-
-		if (kcContextDefaultMock !== undefined) {
-
-			deepAssign({
-				"target": kcContext,
-				"source": kcContextDefaultMock
-			});
-
-		}
 
 		if (partialKcContextCustomMock !== undefined) {
 
