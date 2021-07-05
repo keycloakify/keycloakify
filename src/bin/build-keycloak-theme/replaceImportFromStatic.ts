@@ -5,19 +5,40 @@ import { ftlValuesGlobalName } from "./ftlValuesGlobalName";
 export function replaceImportsFromStaticInJsCode(
     params: {
         jsCode: string;
-        urlOrigin: undefined | string;
+        urlOrigin: undefined | string;
     }
 ): { fixedJsCode: string; } {
 
+    /* 
+    NOTE:
+
+    When we have urlOrigin defined it means that 
+    we are building with --external-assets
+    so we have to make sur that the fixed js code will run 
+    inside and outside keycloak.
+
+    When urlOrigin isn't defined we can assume the fixedJsCode
+    will always run in keycloak context.
+    */
+
     const { jsCode, urlOrigin } = params;
 
-    const fixedJsCode = jsCode.replace(
-        /([a-z]+\.[a-z]+)\+"static\//g,
-        (...[, group]) =>
-            urlOrigin === undefined ?
-                `window.${ftlValuesGlobalName}.url.resourcesPath + "/build/static/` :
-                `("${ftlValuesGlobalName}" in window ? "${urlOrigin}" : "") + ${group} + "static/`
-    );
+    const fixedJsCode =
+        jsCode
+            .replace(
+                /([a-z]+\.[a-z]+)\+"static\//g,
+                (...[, group]) =>
+                    urlOrigin === undefined ?
+                        `window.${ftlValuesGlobalName}.url.resourcesPath + "/build/static/` :
+                        `("${ftlValuesGlobalName}" in window ? "${urlOrigin}" : "") + ${group} + "static/`
+            )
+            .replace(
+                /".chunk.css",([a-z])+=([a-z]+\.[a-z]+)\+([a-z]+),/,
+                (...[, group1, group2, group3]) =>
+                    urlOrigin === undefined ?
+                        `".chunk.css",${group1} = window.${ftlValuesGlobalName}.url.resourcesPath + "/build/" + ${group3},` :
+                        `".chunk.css",${group1} = ("${ftlValuesGlobalName}" in window ? "${urlOrigin}" : "") + ${group2} + ${group3},`
+            );
 
     return { fixedJsCode };
 
