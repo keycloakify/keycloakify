@@ -23,12 +23,13 @@ export function generateKeycloakThemeResources(
         //If urlOrigin is not undefined then it means --externals-assets
         urlOrigin: undefined | string;
         extraPagesId: string[];
+        extraThemeProperties: string[];
     }
 ) {
 
     const { 
         themeName, reactAppBuildDirPath, keycloakThemeBuildingDirPath, 
-        urlPathname, urlOrigin, extraPagesId
+        urlPathname, urlOrigin, extraPagesId, extraThemeProperties
     } = params;
 
     const themeDirPath = pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", themeName, "login");
@@ -166,7 +167,10 @@ export function generateKeycloakThemeResources(
 
     fs.writeFileSync(
         pathJoin(themeDirPath, "theme.properties"),
-        Buffer.from("parent=keycloak", "utf8")
+        Buffer.from(
+            "parent=keycloak".concat("\n\n", extraThemeProperties.join("\n\n")),
+            "utf8"
+        )
     );
 
 }
