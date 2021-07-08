@@ -1,3 +1,10 @@
+### **2.0.6** (2021-07-08)  
+  
+- Merge pull request #18 from asashay/add-custom-props-to-theme-properties
+
+Add possibility to add custom properties to theme.properties file  
+- add possibility to add custom properties to theme.properties file    
+  
 ### **2.0.5** (2021-07-05)  
   
 - Fix broken url for big stylesheet #16    
