@@ -19,6 +19,7 @@ export function main() {
     console.log("🔏 Building the keycloak theme...⌚");
 
     const extraPagesId: string[] = (parsedPackageJson as any)["keycloakify"]?.["extraPages"] ?? [];
+    const extraThemeProperties: string[] = (parsedPackageJson as any)["keycloakify"]?.["extraThemeProperties"] ?? [];
 
     generateKeycloakThemeResources({
         keycloakThemeBuildingDirPath,
@@ -55,7 +56,8 @@ export function main() {
             };
 
         })(),
-        extraPagesId
+        extraPagesId,
+        extraThemeProperties
     });
 
     const { jarFilePath } = generateJavaStackFiles({
