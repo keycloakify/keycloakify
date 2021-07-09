@@ -1,1 +1,3 @@
 src/lib/i18n/generated_kcMessages/* linguist-documentation
+src/bin/build-keycloak-theme/index.ts -linguist-detectable
+src/bin/install-builtin-keycloak-themes.ts -linguist-detectable
