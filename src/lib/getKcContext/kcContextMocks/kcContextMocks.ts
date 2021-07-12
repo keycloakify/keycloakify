@@ -106,6 +106,9 @@ export const kcContextCommonMock: KcContextBase.Common = {
 		"showResetCredentials": false,
 		"showTryAnotherWayLink": false
 	},
+	"client": {
+		"clientId": "myApp"
+	},
 	"scripts": [],
 	"message": {
 		"type": "success",
@@ -184,6 +187,7 @@ export const kcContextMocks: KcContextBase[] = [
 		"skipLink": false,
 		"actionUri": "#",
 		"client": {
+			"clientId": "myApp",
 			"baseUrl": "#"
 		}
 
@@ -192,6 +196,7 @@ export const kcContextMocks: KcContextBase[] = [
 		...kcContextCommonMock,
 		"pageId": "error.ftl",
 		"client": {
+			"clientId": "myApp",
 			"baseUrl": "#"
 		},
 		"message": {
