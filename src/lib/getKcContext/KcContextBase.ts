@@ -57,6 +57,10 @@ export declare namespace KcContextBase {
             type: "success" | "warning" | "error" | "info";
             summary: string;
         };
+        client: {
+            clientId: string;
+            name?: string;
+        }
         isAppInitiatedAction: boolean;
     };
 
