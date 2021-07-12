@@ -1,3 +1,8 @@
+### **2.0.8** (2021-07-12)  
+  
+- Fix previous release  
+- #20: Add def for clientId and name on kcContext.client    
+  
 ### **2.0.6** (2021-07-08)  
   
 - Merge pull request #18 from asashay/add-custom-props-to-theme-properties
