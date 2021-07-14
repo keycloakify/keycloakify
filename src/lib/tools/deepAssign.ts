@@ -25,6 +25,8 @@ export function deepAssign(
 				key,
 				{
 					"enumerable": true,
+					"writable": true,
+					"configurable": true,
 					"value": dereferencedSource
 				}
 			);
