@@ -1,5 +1,5 @@
 
-import { createUseGlobalState } from "powerhooks";
+import { createUseGlobalState } from "powerhooks/useGlobalState";
 import { getKcContext } from "../getKcContext";
 import { getBestMatchAmongKcLanguageTag } from "./KcLanguageTag";
 import type { StatefulEvt } from "powerhooks";

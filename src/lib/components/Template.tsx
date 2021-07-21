@@ -9,10 +9,10 @@ import { cx } from "tss-react";
 import type { KcLanguageTag } from "../i18n/KcLanguageTag";
 import { getBestMatchAmongKcLanguageTag } from "../i18n/KcLanguageTag";
 import { getKcLanguageTagLabel } from "../i18n/KcLanguageTag";
-import { useCallbackFactory } from "powerhooks";
+import { useCallbackFactory } from "powerhooks/useCallbackFactory";
 import { appendHead } from "../tools/appendHead";
 import { join as pathJoin } from "path";
-import { useConstCallback } from "powerhooks";
+import { useConstCallback } from "powerhooks/useConstCallback";
 import type { KcTemplateProps } from "./KcProps";
 
 export type TemplateProps = {
