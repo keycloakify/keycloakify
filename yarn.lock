@@ -382,14 +382,23 @@ event-emitter@^0.3.5:
     d "1"
     es5-ext "~0.10.14"
 
-evt@2.0.0-beta.21:
-  version "2.0.0-beta.21"
-  resolved "https://registry.yarnpkg.com/evt/-/evt-2.0.0-beta.21.tgz#3be2592566c2a99f9a4bc2b7f5d05d960463407d"
-  integrity sha512-8mBIrjyzOowmHfWKjaHBm9BBCs3s2iDD0gusmbBZAXmD0XL1g7gQ+wYt8kaSWSq9EVT9liX4H8Mx54jdk1cbRw==
+evt@2.0.0-beta.26:
+  version "2.0.0-beta.26"
+  resolved "https://registry.yarnpkg.com/evt/-/evt-2.0.0-beta.26.tgz#9eff02525ecccda53dc12e1691c72accbdeb251e"
+  integrity sha512-qZNpjUT1A5h1TwDDcl7j5VDn5/7/c9hJtvJMVSMkyqBxCJulrTAxkjntHjjQJlZUy8sQYg2aPH6FNL6zwXFThg==
   dependencies:
     minimal-polyfills "^2.2.1"
     run-exclusive "^2.2.14"
-    tsafe "^0.2.2"
+    tsafe "^0.4.1"
+
+evt@2.0.0-beta.27:
+  version "2.0.0-beta.27"
+  resolved "https://registry.yarnpkg.com/evt/-/evt-2.0.0-beta.27.tgz#b9f59026f706487dd87a5ac4c91211d9ddb068b5"
+  integrity sha512-v9hFipQFn3qIo3dwawS1DOQKf/CYZYRn4QR+1FoASGePRgKVQ/YB0dDpI6v5/PFb8z6Kobz6JBrOaYKnltaz6A==
+  dependencies:
+    minimal-polyfills "^2.2.1"
+    run-exclusive "^2.2.14"
+    tsafe "^0.4.1"
 
 ext@^1.1.2:
   version "1.4.0"
@@ -750,12 +759,12 @@ path@^0.12.7:
     process "^0.11.1"
     util "^0.10.3"
 
-powerhooks@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/powerhooks/-/powerhooks-0.5.0.tgz#9b1b112bfebeef5a69e986a39efc89ba6abf1736"
-  integrity sha512-YCXPKd5z0nP7ZY/NLDYWPlkMhlqzcWjg6BIwLtHolKIOnwrRAtBmpDzlDwaA/g0q5MJIM9qItUzRvgl+4KUrTA==
+powerhooks@^0.6.2:
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/powerhooks/-/powerhooks-0.6.2.tgz#a523d1aa15e41bbdea2785a08cf4d49eac86a3b7"
+  integrity sha512-HGaAZJk6Oa8/WelE+pkGzlr2yRBOJQwOVJZDAZeGPIIqLgliW4v+XG4rTRzHsVSFhhz5evDSKPWcx4m8f2PWYg==
   dependencies:
-    evt "2.0.0-beta.21"
+    evt "2.0.0-beta.26"
     memoizee "^0.4.15"
     resize-observer-polyfill "^1.5.1"
     tsafe "^0.4.1"
@@ -985,11 +994,6 @@ ts-toolbelt@^9.6.0:
   resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-9.6.0.tgz#50a25426cfed500d4a09bd1b3afb6f28879edfd5"
   integrity sha512-nsZd8ZeNUzukXPlJmTBwUAuABDe/9qtVDelJeT/qW0ow3ZS3BsQJtNkan1802aM9Uf68/Y8ljw86Hu0h5IUW3w==
 
-tsafe@^0.2.2:
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-0.2.4.tgz#f2cffb9b33e4d20c6f9800aa1c45bee02d917aa1"
-  integrity sha512-oS/0wJKgEv/iDow/6U51xjAascJVtUQfZQMCDdoOS+VnMlWZFdXGMKuoH47JYs6hEWHpO+Z5pC5oAFFHiPfTLg==
-
 tsafe@^0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-0.4.1.tgz#00af1be2db82abb4be531209b90232d7954e1a03"
@@ -1000,10 +1004,10 @@ tslib@^2.2.0:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.3.0.tgz#803b8cdab3e12ba581a4ca41c8839bbb0dacb09e"
   integrity sha512-N82ooyxVNm6h1riLCoyS9e3fuJ3AMG2zIZs2Gd1ATcSFjSA23Q0fzjjZeh0jbJvWVDZ0cJT8yaNNaaXHzueNjg==
 
-tss-react@^0.3.3:
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/tss-react/-/tss-react-0.3.3.tgz#21e5bd8f31d059291c7bee6f9a5767604f42a1b5"
-  integrity sha512-D3dKsFWUpGW9zayHgO4iaHLpd13enS/cvxJM7WcQ3elP1pN1MS0kq7iR/QHHm1VxB9l1vuADNYK2znGnR14CjQ==
+tss-react@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/tss-react/-/tss-react-0.4.1.tgz#6826176e1d6fa3ccc72cafaa103da3484d7095aa"
+  integrity sha512-0I3hkeEvN79puvpxXQiqkquZ6INKaH12+boi0czSni4F6ciF/hm9sLLbzsbdgDvMQXjKDPr6WtUDvNWpoTPdfQ==
   dependencies:
     "@emotion/cache" "^11.0.0"
     "@emotion/react" "^11.0.0"

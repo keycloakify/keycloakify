@@ -51,13 +51,13 @@
     },
     "dependencies": {
         "cheerio": "^1.0.0-rc.5",
-        "evt": "2.0.0-beta.21",
+        "evt": "2.0.0-beta.27",
         "minimal-polyfills": "^2.2.1",
         "path": "^0.12.7",
-        "powerhooks": "^0.5.0",
+        "powerhooks": "^0.6.2",
         "react-markdown": "^5.0.3",
         "scripting-tools": "^0.19.13",
-        "tss-react": "^0.3.3",
+        "tss-react": "^0.4.1",
         "tsafe": "^0.4.1"
     }
 }
