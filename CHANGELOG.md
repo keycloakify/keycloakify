@@ -1,3 +1,9 @@
+### **2.0.11** (2021-07-21)  
+  
+- Spaces in file path #22  
+- uptdate dependnecies  
+- Inport specific powerhooks files to reduce bundle size    
+  
 ### **2.0.10** (2021-07-16)  
   
 - Update dependencies    
