@@ -5,14 +5,14 @@ import { crawl } from "./tools/crawl";
 import { downloadAndUnzip } from "./tools/downloadAndUnzip";
 import { builtinThemesUrl } from "./install-builtin-keycloak-themes";
 import { getProjectRoot } from "./tools/getProjectRoot";
-import * as child_process from "child_process";
+import { rm_rf, rm_r } from "./tools/rm";
 
 //@ts-ignore
 const propertiesParser = require("properties-parser");
 
 const tmpDirPath = pathJoin(getProjectRoot(), "tmp_xImOef9dOd44");
 
-child_process.execSync(`rm -rf ${tmpDirPath}`);
+rm_rf(tmpDirPath);
 
 downloadAndUnzip({
     "destDirPath": tmpDirPath,
@@ -47,7 +47,7 @@ crawl(".").forEach(filePath => {
 
 });
 
-child_process.execSync(`rm -r ${tmpDirPath}`);
+rm_r(tmpDirPath);
 
 const targetDirPath = pathJoin(getProjectRoot(), "src", "lib", "i18n", "generated_kcMessages");
 
