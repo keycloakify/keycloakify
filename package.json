@@ -30,6 +30,7 @@
         "!dist/tsconfig.tsbuildinfo"
     ],
     "keywords": [
+        "bluehats",
         "keycloak",
         "react",
         "theme",
