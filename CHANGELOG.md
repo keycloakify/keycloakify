@@ -1,3 +1,11 @@
+### **2.0.12** (2021-07-28)  
+  
+- Merge pull request #27 from jchn-codes/patch-1
+
+add maven to requirements  
+- add maven to requirements  
+- Add #bluehats in the keyworks    
+  
 ### **2.0.11** (2021-07-21)  
   
 - Spaces in file path #22  
