@@ -1,3 +1,10 @@
+### **2.0.13** (2021-08-04)  
+  
+- Merge pull request #28 from marcmrf/main
+
+fix(mvn): scoped packages compatibility  
+- fix(mvn): scoped packages compatibility    
+  
 ### **2.0.12** (2021-07-28)  
   
 - Merge pull request #27 from jchn-codes/patch-1
