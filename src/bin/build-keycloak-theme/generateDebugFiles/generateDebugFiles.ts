@@ -7,12 +7,12 @@ export const containerLaunchScriptBasename = "start_keycloak_testing_container.s
 /** Files for being able to run a hot reload keycloak container */
 export function generateDebugFiles(
     params: {
-        packageJsonName: string;
+        themeName: string;
         keycloakThemeBuildingDirPath: string;
     }
 ) {
 
-    const { packageJsonName, keycloakThemeBuildingDirPath } = params;
+    const { themeName, keycloakThemeBuildingDirPath } = params;
 
     fs.writeFileSync(
         pathJoin(keycloakThemeBuildingDirPath, "Dockerfile"),
@@ -32,7 +32,7 @@ export function generateDebugFiles(
         )
     );
 
-    const dockerImage = `${packageJsonName}/keycloak-hot-reload`;
+    const dockerImage = `${themeName}/keycloak-hot-reload`;
     const containerName = "keycloak-testing-container";
 
     fs.writeFileSync(
@@ -52,8 +52,8 @@ export function generateDebugFiles(
                 `	--name ${containerName} \\`,
                 "	-e KEYCLOAK_USER=admin \\",
                 "	-e KEYCLOAK_PASSWORD=admin \\",
-                `	-v ${pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", packageJsonName)
-                }:/opt/jboss/keycloak/themes/${packageJsonName}:rw \\`,
+                `	-v ${pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", themeName)
+                }:/opt/jboss/keycloak/themes/${themeName}:rw \\`,
                 `	-it ${dockerImage}:latest`,
                 ""
             ].join("\n"),

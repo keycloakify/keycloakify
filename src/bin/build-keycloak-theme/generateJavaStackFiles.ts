@@ -3,21 +3,20 @@ import * as url from "url";
 import * as fs from "fs";
 import { join as pathJoin, dirname as pathDirname } from "path";
 
-export type ParsedPackageJson = {
-    name: string;
-    version: string;
-    homepage?: string;
-};
 
 export function generateJavaStackFiles(
     params: {
-        parsedPackageJson: ParsedPackageJson;
+        version: string;
+        themeName: string;
+        homepage?: string;
         keycloakThemeBuildingDirPath: string;
     }
 ): { jarFilePath: string; } {
 
     const {
-        parsedPackageJson: { name, version, homepage },
+        themeName,
+        version,
+        homepage,
         keycloakThemeBuildingDirPath
     } = params;
 
@@ -28,7 +27,7 @@ export function generateJavaStackFiles(
 
             const groupId = (() => {
 
-                const fallbackGroupId = `there.was.no.homepage.field.in.the.package.json.${name}`;
+                const fallbackGroupId = `there.was.no.homepage.field.in.the.package.json.${themeName}`;
 
                 return (!homepage ?
                     fallbackGroupId :
@@ -37,7 +36,7 @@ export function generateJavaStackFiles(
 
             })();
 
-            const artefactId = `${name}-keycloak-theme`;
+            const artefactId = `${themeName}-keycloak-theme`;
 
             const pomFileCode = [
                 `<?xml version="1.0"?>`,
@@ -83,7 +82,7 @@ export function generateJavaStackFiles(
                 JSON.stringify({
                     "themes": [
                         {
-                            "name": name,
+                            "name": themeName,
                             "types": ["login"]
                         }
                     ]
@@ -94,7 +93,7 @@ export function generateJavaStackFiles(
 
     }
 
-    return { "jarFilePath": pathJoin(keycloakThemeBuildingDirPath, "target", `${name}-${version}.jar`) };
+    return { "jarFilePath": pathJoin(keycloakThemeBuildingDirPath, "target", `${themeName}-${version}.jar`) };
 
 }
 

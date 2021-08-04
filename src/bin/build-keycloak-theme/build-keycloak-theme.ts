@@ -1,10 +1,15 @@
 import { generateKeycloakThemeResources } from "./generateKeycloakThemeResources";
 import { generateJavaStackFiles } from "./generateJavaStackFiles";
-import type { ParsedPackageJson } from "./generateJavaStackFiles";
 import { join as pathJoin, relative as pathRelative, basename as pathBasename } from "path";
 import * as child_process from "child_process";
 import { generateDebugFiles, containerLaunchScriptBasename } from "./generateDebugFiles";
 import { URL } from "url";
+
+type ParsedPackageJson = {
+    name: string;
+    version: string;
+    homepage?: string;
+};
 
 const reactProjectDirPath = process.cwd();
 
@@ -14,17 +19,21 @@ const parsedPackageJson: ParsedPackageJson = require(pathJoin(reactProjectDirPat
 
 export const keycloakThemeBuildingDirPath = pathJoin(reactProjectDirPath, "build_keycloak");
 
-export function main() {
+function sanitizeThemeName(name: string) {
+    return name.replace(/^@(.*)/, '$1').split('/').join('-');
+}
 
+export function main() {
     console.log("🔏 Building the keycloak theme...⌚");
 
     const extraPagesId: string[] = (parsedPackageJson as any)["keycloakify"]?.["extraPages"] ?? [];
     const extraThemeProperties: string[] = (parsedPackageJson as any)["keycloakify"]?.["extraThemeProperties"] ?? [];
+    const themeName = sanitizeThemeName(parsedPackageJson.name);
 
     generateKeycloakThemeResources({
         keycloakThemeBuildingDirPath,
         "reactAppBuildDirPath": pathJoin(reactProjectDirPath, "build"),
-        "themeName": parsedPackageJson.name,
+        themeName,
         ...(() => {
 
             const url = (() => {
@@ -61,7 +70,9 @@ export function main() {
     });
 
     const { jarFilePath } = generateJavaStackFiles({
-        parsedPackageJson,
+        version: parsedPackageJson.version,
+        themeName,
+        homepage: parsedPackageJson.homepage,
         keycloakThemeBuildingDirPath
     });
 
@@ -72,7 +83,7 @@ export function main() {
 
     generateDebugFiles({
         keycloakThemeBuildingDirPath,
-        "packageJsonName": parsedPackageJson.name
+        themeName
     });
 
     console.log([
@@ -106,7 +117,7 @@ export function main() {
         `👉 $ ./${pathRelative(reactProjectDirPath, pathJoin(keycloakThemeBuildingDirPath, containerLaunchScriptBasename))} 👈`,
         '',
         'To enable the theme within keycloak log into the admin console ( 👉 http://localhost:8080 username: admin, password: admin 👈), create a realm (called "myrealm" for example),',
-        `go to your realm settings, click on the theme tab then select ${parsedPackageJson.name}.`,
+        `go to your realm settings, click on the theme tab then select ${themeName}.`,
         `More details: https://www.keycloak.org/getting-started/getting-started-docker`,
         '',
         'Once your container is up and configured 👉 http://localhost:8080/auth/realms/myrealm/account 👈',
