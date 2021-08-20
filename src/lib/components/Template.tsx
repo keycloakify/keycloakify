@@ -5,7 +5,6 @@ import { useKcMessage } from "../i18n/useKcMessage";
 import { useKcLanguageTag } from "../i18n/useKcLanguageTag";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { assert } from "../tools/assert";
-import { cx } from "tss-react";
 import type { KcLanguageTag } from "../i18n/KcLanguageTag";
 import { getBestMatchAmongKcLanguageTag } from "../i18n/KcLanguageTag";
 import { getKcLanguageTagLabel } from "../i18n/KcLanguageTag";
@@ -14,6 +13,7 @@ import { appendHead } from "../tools/appendHead";
 import { join as pathJoin } from "path";
 import { useConstCallback } from "powerhooks/useConstCallback";
 import type { KcTemplateProps } from "./KcProps";
+import { useCssAndCx } from "tss-react";
 
 export type TemplateProps = {
     displayInfo?: boolean;
@@ -46,6 +46,8 @@ export const Template = memo((props: TemplateProps) => {
         kcContext,
         doFetchDefaultThemeResources
     } = props;
+
+    const { cx } = useCssAndCx();
 
     useEffect(() => { console.log("Rendering this page with react using keycloakify") }, []);
 
@@ -279,9 +281,9 @@ export const Template = memo((props: TemplateProps) => {
                                 {message.type === "warning" && <span className={cx(props.kcFeedbackWarningIcon)}></span>}
                                 {message.type === "error" && <span className={cx(props.kcFeedbackErrorIcon)}></span>}
                                 {message.type === "info" && <span className={cx(props.kcFeedbackInfoIcon)}></span>}
-                                <span 
-                                    className="kc-feedback-text" 
-                                    dangerouslySetInnerHTML={{ "__html": message.summary }} 
+                                <span
+                                    className="kc-feedback-text"
+                                    dangerouslySetInnerHTML={{ "__html": message.summary }}
                                 />
                             </div>
                         }

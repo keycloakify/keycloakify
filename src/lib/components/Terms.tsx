@@ -3,11 +3,13 @@ import { Template } from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { useKcMessage } from "../i18n/useKcMessage";
-import { cx } from "tss-react";
+import { useCssAndCx } from "tss-react";
 
 export const Terms = memo(({ kcContext, ...props }: { kcContext: KcContextBase.Terms; } & KcProps) => {
 
     const { msg, msgStr } = useKcMessage();
+
+    const { cx } = useCssAndCx();
 
     const { url } = kcContext;
 

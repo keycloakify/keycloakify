@@ -144,7 +144,7 @@ import {
   defaultKcProps, 
   getKcContext
 } from "keycloakify";
-import { css } from "tss-react";
+import { css } from "tss-react/@emotion/css";
 
 const { kcContext } = getKcContext();
 
@@ -173,7 +173,7 @@ import {
   defaultKcProps, 
   getKcContext
 } from "keycloakify";
-import { css } from "tss-react";
+import { css } from "tss-react/@emotion/css";
 
 const { kcContext } = getKcContext();
 

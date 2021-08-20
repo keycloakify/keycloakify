@@ -4,18 +4,20 @@ import { Template } from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { useKcMessage } from "../i18n/useKcMessage";
-import { cx } from "tss-react";
+import { useCssAndCx } from "tss-react";
 import { useConstCallback } from "powerhooks/useConstCallback";
 
 export const Login = memo(({ kcContext, ...props }: { kcContext: KcContextBase.Login; } & KcProps) => {
-
-    const { msg, msgStr } = useKcMessage();
 
     const {
         social, realm, url,
         usernameEditDisabled, login,
         auth, registrationDisabled
     } = kcContext;
+
+    const { msg, msgStr } = useKcMessage();
+
+    const { cx } = useCssAndCx();
 
     const [isLoginButtonDisabled, setIsLoginButtonDisabled] = useState(false);
 

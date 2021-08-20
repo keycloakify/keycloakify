@@ -4,13 +4,15 @@ import { Template } from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { useKcMessage } from "../i18n/useKcMessage";
-import { cx } from "tss-react";
+import { useCssAndCx } from "tss-react";
 
 export const LoginIdpLinkConfirm = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LoginIdpLinkConfirm; } & KcProps) => {
 
+	const { url, idpAlias } = kcContext;
+
 	const { msg } = useKcMessage();
 
-	const { url, idpAlias } = kcContext;
+	const { cx } = useCssAndCx();
 
 	return (
 		<Template

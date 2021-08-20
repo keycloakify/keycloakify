@@ -7,11 +7,13 @@ import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { useKcMessage } from "../i18n/useKcMessage";
 import { appendHead } from "../tools/appendHead";
 import { join as pathJoin } from "path";
-import { cx } from "tss-react";
+import { useCssAndCx } from "tss-react";
 
 export const LoginOtp = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LoginOtp; } & KcProps) => {
 
     const { otpLogin, url } = kcContext;
+
+    const { cx } = useCssAndCx();
 
     const { msg, msgStr } = useKcMessage();
 
