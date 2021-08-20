@@ -1,3 +1,7 @@
+### **2.0.14** (2021-08-20)  
+  
+- Update tss-react    
+  
 ### **2.0.13** (2021-08-04)  
   
 - Merge pull request #28 from marcmrf/main
