@@ -55,10 +55,10 @@
         "evt": "2.0.0-beta.27",
         "minimal-polyfills": "^2.2.1",
         "path": "^0.12.7",
-        "powerhooks": "^0.7.1",
+        "powerhooks": "^0.7.3",
         "react-markdown": "^5.0.3",
         "scripting-tools": "^0.19.13",
-        "tss-react": "^0.7.3",
+        "tss-react": "^0.8.1",
         "@emotion/react": "^11.4.1",
         "tsafe": "^0.4.1"
     }
