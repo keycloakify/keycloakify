@@ -215,7 +215,7 @@ and the result you can expect:
 ### Advanced pages configuration
 
 If you want to go beyond only customizing the CSS you can re-implement some of the 
-pages or event add new ones. 
+pages or even add new ones. 
 
 If you want to go this way checkout the demo setup provided [here](https://github.com/garronej/keycloakify-demo-app/tree/look_and_feel).
 If you prefer a real life example you can checkout [onyxia-web's source](https://github.com/InseeFrLab/onyxia-web/tree/main/src/app/components/KcApp). 
