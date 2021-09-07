@@ -75,6 +75,7 @@ If you already have a Keycloak custom theme, it can be easily ported to Keycloak
     - [Possible workarounds](#possible-workarounds)
 - [Implement context persistence (optional)](#implement-context-persistence-optional)
 - [Kickstart video](#kickstart-video)
+- [About the errors related to `objectToJson` in Keycloak logs.](#about-the-errors-related-to-objecttojson-in-keycloak-logs)
 - [Email domain whitelist](#email-domain-whitelist)
 
 # Requirements 
@@ -397,6 +398,23 @@ flash of the blank html before the js bundle have been evaluated
 
 *NOTE: keycloak-react-theming was renamed keycloakify since this video was recorded*
 [![kickstart_video](https://user-images.githubusercontent.com/6702424/108877866-f146ee80-75ff-11eb-8120-003b3c5f6dd8.png)](https://youtu.be/xTz0Rj7i2v8)
+
+# About the errors related to `objectToJson` in Keycloak logs.  
+
+The logs of your keycloak server will always show this kind of errors every time a client request a page:  
+```log
+FTL stack trace ("~" means nesting-related):
+        - Failed at: #local value = object[key]  [in template "login.ftl" in macro "objectToJson" at line 70, column 21]
+        - Reached through: @compress  [in template "login.ftl" in macro "objectToJson" at line 36, column 5]
+        - Reached through: @objectToJson object=value depth=(dep...  [in template "login.ftl" in macro "objectToJson" at line 81, column 27]
+        - Reached through: @compress  [in template "login.ftl" in macro "objectToJson" at line 36, column 5]
+        - Reached through: @objectToJson object=(.data_model) de...  [in template "login.ftl" at line 163, column 43]
+```
+Theses are expected and can be safely ignored.  
+
+To [converts the `.ftl` values into a JavaScript object](https://github.com/InseeFrLab/keycloakify/blob/main/src/bin/build-keycloak-theme/generateFtl/common.ftl) 
+without making assumptions on the `.data_model` we have to do things that throws.  
+It's all-right though because every statement that can fail is inside an `<#attempt><#recorver>` block but it results in errors being printed to the logs.
 
 # Email domain whitelist
 
