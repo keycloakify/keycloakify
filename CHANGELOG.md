@@ -1,3 +1,7 @@
+### **2.0.16** (2021-09-12)  
+  
+- Add explaination about errors in logs    
+  
 ### **2.0.15** (2021-08-31)  
   
 - Update tss-react    
