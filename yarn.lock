@@ -382,19 +382,10 @@ event-emitter@^0.3.5:
     d "1"
     es5-ext "~0.10.14"
 
-evt@2.0.0-beta.27:
-  version "2.0.0-beta.27"
-  resolved "https://registry.yarnpkg.com/evt/-/evt-2.0.0-beta.27.tgz#b9f59026f706487dd87a5ac4c91211d9ddb068b5"
-  integrity sha512-v9hFipQFn3qIo3dwawS1DOQKf/CYZYRn4QR+1FoASGePRgKVQ/YB0dDpI6v5/PFb8z6Kobz6JBrOaYKnltaz6A==
-  dependencies:
-    minimal-polyfills "^2.2.1"
-    run-exclusive "^2.2.14"
-    tsafe "^0.4.1"
-
-evt@2.0.0-beta.29:
-  version "2.0.0-beta.29"
-  resolved "https://registry.yarnpkg.com/evt/-/evt-2.0.0-beta.29.tgz#2cc940a4202d63bdcde21b282269d8b41829ec93"
-  integrity sha512-NgkSE9GV/aiXFqKYsMRZpOc2XihuPc4z5/OV6gxwwxJEZE1NURZ/GaAmHSEPuICHIQFwjI5xMOujhGIStHxgJg==
+evt@2.0.0-beta.36:
+  version "2.0.0-beta.36"
+  resolved "https://registry.yarnpkg.com/evt/-/evt-2.0.0-beta.36.tgz#2fc1814ba0b09e4080895fab497167734d3c9508"
+  integrity sha512-uJux/yTut2N7xFQ1uwoGwGkfkSo8bKj06Nvmc9ZY1+SsPMCznqRxygI0N3IlqNwDG0JCAisb5qXpZCEVWZQ2Jg==
   dependencies:
     minimal-polyfills "^2.2.1"
     run-exclusive "^2.2.14"
@@ -759,12 +750,12 @@ path@^0.12.7:
     process "^0.11.1"
     util "^0.10.3"
 
-powerhooks@^0.7.3:
-  version "0.7.3"
-  resolved "https://registry.yarnpkg.com/powerhooks/-/powerhooks-0.7.3.tgz#904d76bfbcee77d0c19e30ef1c9aa5552a378870"
-  integrity sha512-5CpUwelVPrZbWGjhUsLLeEuPUenvyYngOh7PBy2rW+KZBPQcuTi6zWkVrQ2WBn6KS2sDRmfNK+25L5KqIQQDUw==
+powerhooks@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/powerhooks/-/powerhooks-0.9.1.tgz#4d0f1a7abae630e70a7f061e0c70740bba357e7e"
+  integrity sha512-rVdo5s4EzsbjlvXjVIR1mhIqssZhluMe1oN5qFawllZxoZBwhgR1itnvpJt0La/qZMQPMfy1n52U5/U80EMKUw==
   dependencies:
-    evt "2.0.0-beta.29"
+    evt "2.0.0-beta.36"
     memoizee "^0.4.15"
     resize-observer-polyfill "^1.5.1"
     tsafe "^0.4.1"
