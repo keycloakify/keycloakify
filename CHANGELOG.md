@@ -1,3 +1,7 @@
+### **2.0.17** (2021-09-14)  
+  
+  
+  
 ### **2.0.16** (2021-09-12)  
   
 - Add explaination about errors in logs    
