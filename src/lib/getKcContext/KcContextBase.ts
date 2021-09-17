@@ -83,7 +83,7 @@ export declare namespace KcContextBase {
         registrationDisabled: boolean;
         login: {
             username?: string;
-            rememberMe: boolean;
+            rememberMe?: boolean;
         };
         usernameEditDisabled: boolean;
         social: {
