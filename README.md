@@ -37,7 +37,7 @@ the cheer amount of maintenance that it involves.
 
 <p align="center">
     <i>Without keycloakify, users suffers from a harsh context switch, no fronted form pre-validation</i><br>
-    <img src="https://user-images.githubusercontent.com/6702424/108838381-dbbbcf80-75d3-11eb-8ae8-db41563ef9db.gif">
+    <img src="https://user-images.githubusercontent.com/6702424/134997335-a28b4a57-0884-47ec-9341-a0e49f835c4d.gif">
 </p>
 
 Wouldn't it be great if we could just design the login and register pages as if they were part of our app?  
