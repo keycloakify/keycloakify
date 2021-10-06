@@ -66,7 +66,8 @@ export function main() {
 
         })(),
         extraPagesId,
-        extraThemeProperties
+        extraThemeProperties,
+        "keycloakVersion": "11.0.3"
     });
 
     const { jarFilePath } = generateJavaStackFiles({
@@ -83,13 +84,14 @@ export function main() {
 
     generateDebugFiles({
         keycloakThemeBuildingDirPath,
-        themeName
+        themeName,
+        "keycloakVersion": "15.0.1"
     });
 
     console.log([
         '',
         `✅ Your keycloak theme has been generated and bundled into ./${pathRelative(reactProjectDirPath, jarFilePath)} 🚀`,
-        `It is to be placed in "/opt/jboss/keycloak/standalone/deployments" in the container running a jboss/keycloak Docker image. (Tested with 11.0.3)`,
+        `It is to be placed in "/opt/jboss/keycloak/standalone/deployments" in the container running a jboss/keycloak Docker image.`,
         '',
         'Using Helm (https://github.com/codecentric/helm-charts), edit to reflect:',
         '',

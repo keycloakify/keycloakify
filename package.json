@@ -12,7 +12,7 @@
         "clean": "rimraf dist/",
         "build": "yarn clean && tsc && yarn grant-exec-perms && yarn copy-files",
         "grant-exec-perms": "node dist/bin/tools/grant-exec-perms.js",
-        "test": "node dist/test/bin && node dist/test/lib",
+        "test": "node dist/test/bin/main && node dist/test/lib",
         "copy-files": "copyfiles -u 1 src/**/*.ftl src/**/*.xml src/**/*.js dist/",
         "generate-messages": "node dist/bin/generate-i18n-messages.js"
     },
@@ -47,10 +47,11 @@
         "properties-parser": "^0.3.1",
         "react": "^17.0.1",
         "rimraf": "^3.0.2",
-        "typescript": "^4.2.3",
-        "ts-toolbelt": "^9.6.0"
+        "ts-toolbelt": "^9.6.0",
+        "typescript": "^4.2.3"
     },
     "dependencies": {
+        "@emotion/react": "^11.4.1",
         "cheerio": "^1.0.0-rc.5",
         "evt": "2.0.0-beta.38",
         "minimal-polyfills": "^2.2.1",
@@ -58,8 +59,7 @@
         "powerhooks": "^0.9.3",
         "react-markdown": "^5.0.3",
         "scripting-tools": "^0.19.13",
-        "tss-react": "^0.9.1",
-        "@emotion/react": "^11.4.1",
-        "tsafe": "^0.4.1"
+        "tsafe": "^0.4.1",
+        "tss-react": "^0.9.1"
     }
 }

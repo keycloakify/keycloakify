@@ -15,6 +15,7 @@ generateKeycloakThemeResources({
     "urlPathname": "/keycloakify-demo-app/",
     "urlOrigin": undefined,
     "extraPagesId": ["my-custom-page.ftl"],
-    "extraThemeProperties": ["env=test"]
+    "extraThemeProperties": ["env=test"],
+    "keycloakVersion": "11.0.3"
 });
 

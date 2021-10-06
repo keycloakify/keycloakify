@@ -1,24 +1,25 @@
 
 import * as fs from "fs";
-import { join as pathJoin, dirname as pathDirname, basename as pathBasename } from "path";
+import { join as pathJoin, dirname as pathDirname, } from "path";
 
 export const containerLaunchScriptBasename = "start_keycloak_testing_container.sh";
 
 /** Files for being able to run a hot reload keycloak container */
 export function generateDebugFiles(
     params: {
+        keycloakVersion: "11.0.3" | "15.0.1";
         themeName: string;
         keycloakThemeBuildingDirPath: string;
     }
 ) {
 
-    const { themeName, keycloakThemeBuildingDirPath } = params;
+    const { themeName, keycloakThemeBuildingDirPath, keycloakVersion } = params;
 
     fs.writeFileSync(
         pathJoin(keycloakThemeBuildingDirPath, "Dockerfile"),
         Buffer.from(
             [
-                "FROM jboss/keycloak:11.0.3",
+                `FROM jboss/keycloak:${keycloakVersion}`,
                 "",
                 "USER root",
                 "",
@@ -62,13 +63,32 @@ export function generateDebugFiles(
         { "mode": 0o755 }
     );
 
-    const standaloneHaFilePath = pathJoin(keycloakThemeBuildingDirPath, "configuration", "standalone-ha.xml");
+    const standaloneHaFilePath = pathJoin(keycloakThemeBuildingDirPath, "configuration", `standalone-ha.xml`);
 
     try { fs.mkdirSync(pathDirname(standaloneHaFilePath)); } catch { }
 
     fs.writeFileSync(
         standaloneHaFilePath,
-        fs.readFileSync(pathJoin(__dirname, pathBasename(standaloneHaFilePath)))
+        fs.readFileSync(
+            pathJoin(
+                __dirname,
+                `standalone-ha_${keycloakVersion}.xml`
+            )
+        )
+            .toString("utf8")
+            .replace(
+                new RegExp([
+                    "<staticMaxAge>2592000</staticMaxAge>",
+                    "<cacheThemes>true</cacheThemes>",
+                    "<cacheTemplates>true</cacheTemplates>"
+                ].join("\\s*"), "g"
+                ),
+                [
+                    "<staticMaxAge>-1</staticMaxAge>",
+                    "<cacheThemes>false</cacheThemes>",
+                    "<cacheTemplates>false</cacheTemplates>"
+                ].join("\n")
+            )
     );
 
 }

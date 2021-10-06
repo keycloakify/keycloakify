@@ -7,8 +7,7 @@ import {
     replaceImportsFromStaticInJsCode
 } from "./replaceImportFromStatic";
 import { generateFtlFilesCodeFactory, pageIds } from "./generateFtl";
-import { builtinThemesUrl } from "../install-builtin-keycloak-themes";
-import { downloadAndUnzip } from "../tools/downloadAndUnzip";
+import { downloadBuiltinKeycloakTheme } from "../install-builtin-keycloak-themes";
 import * as child_process from "child_process";
 import { resourcesCommonPath, resourcesPath, subDirOfPublicDirBasename } from "../../lib/getKcContext/kcContextMocks/urlResourcesPath";
 import { isInside } from "../tools/isInside";
@@ -24,12 +23,14 @@ export function generateKeycloakThemeResources(
         urlOrigin: undefined | string;
         extraPagesId: string[];
         extraThemeProperties: string[];
+        keycloakVersion: "11.0.3" | "15.0.1"
     }
 ) {
 
     const { 
         themeName, reactAppBuildDirPath, keycloakThemeBuildingDirPath, 
-        urlPathname, urlOrigin, extraPagesId, extraThemeProperties
+        urlPathname, urlOrigin, extraPagesId, extraThemeProperties,
+        keycloakVersion
     } = params;
 
     const themeDirPath = pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", themeName, "login");
@@ -114,8 +115,8 @@ export function generateKeycloakThemeResources(
 
         const tmpDirPath = pathJoin(themeDirPath, "..", "tmp_xxKdLpdIdLd");
 
-        downloadAndUnzip({
-            "url": builtinThemesUrl,
+        downloadBuiltinKeycloakTheme({
+            keycloakVersion,
             "destDirPath": tmpDirPath
         });
 
