@@ -165,7 +165,9 @@ export const kcContextMocks: KcContextBase[] = [
 			"registrationAction": "http://localhost:8080/auth/realms/myrealm/login-actions/registration?session_code=gwZdUeO7pbYpFTRxiIxRg_QtzMbtFTKrNu6XW_f8asM&execution=12146ce0-b139-4bbd-b25b-0eccfee6577e&client_id=account&tab_id=uS8lYfebLa0"
 		},
 		"messagesPerField": {
-			"printIfExists": (...[, x]) => x
+			"printIfExists": (...[, x]) => x,
+			"existsError": ()=> true,
+			"get": key=> `Fake error for ${key}`
 		},
 		"scripts": [],
 		"isAppInitiatedAction": false,

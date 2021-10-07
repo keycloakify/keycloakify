@@ -103,7 +103,7 @@ export declare namespace KcContextBase {
             registrationAction: string;
         };
         messagesPerField: {
-            printIfExists<T>(
+            printIfExists: <T>(
                 key:
                     "userLabel" |
                     "username" |
@@ -113,7 +113,9 @@ export declare namespace KcContextBase {
                     "password" |
                     "password-confirm",
                 x: T
-            ): T | undefined;
+            )=> T | undefined;
+            existsError: (key: string)=> boolean;
+            get: (key: string) => string;
         };
         register: {
             formData: {

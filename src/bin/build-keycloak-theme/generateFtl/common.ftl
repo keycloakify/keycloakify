@@ -179,7 +179,49 @@
                             </#attempt>
                         })();
                     }
-                }
+                },
+                "existsError": function (key) {
+
+                    <#attempt>
+
+						<#list profile.attributes as attribute>
+
+							if(key === "${attribute.name}" ){
+
+								return <#if messagesPerField.existsError('${attribute.name}')>true<#else>false</#if>;
+
+							}
+
+						</#list>
+
+                    <#recover>
+                    </#attempt>
+
+					throw new Error(key + " is not an exsisting profile attribute name");
+
+				},
+				"get": function (key) {
+
+                    <#attempt>
+
+						<#list profile.attributes as attribute>
+
+		        				<#if messagesPerField.existsError('${attribute.name}')>
+
+									if(key === "${attribute.name}" ){
+										return "${messagesPerField.get('${attribute.name}')?no_esc}"
+									}
+
+								</#if>
+
+						</#list>
+
+                    <#recover>
+                    </#attempt>
+
+					throw new Error(" there is no message for " + key);
+
+				}
             },
             "msg": function(){ throw new Error("use import { useKcMessage } from 'keycloakify'"); },
             "advancedMsg": function(){ throw new Error("use import { useKcMessage } from 'keycloakify'"); },
