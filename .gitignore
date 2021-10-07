@@ -43,3 +43,4 @@ jspm_packages
 /dist
 
 /sample_react_project/
+/.yarn_home/

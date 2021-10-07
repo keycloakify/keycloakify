@@ -14,11 +14,12 @@
         "grant-exec-perms": "node dist/bin/tools/grant-exec-perms.js",
         "test": "node dist/test/bin/main && node dist/test/lib",
         "copy-files": "copyfiles -u 1 src/**/*.ftl src/**/*.xml src/**/*.js dist/",
-        "generate-messages": "node dist/bin/generate-i18n-messages.js"
+        "generate-messages": "node dist/bin/generate-i18n-messages.js",
+        "link_in_test_app": "node dist/bin/link_in_test_app.js"
     },
     "bin": {
         "build-keycloak-theme": "dist/bin/build-keycloak-theme/index.js",
-        "install-builtin-keycloak-themes": "dist/bin/install-builtin-keycloak-themes.js"
+        "download-builtin-keycloak-theme": "dist/bin/download-builtin-keycloak-theme.js"
     },
     "author": "u/garronej",
     "license": "MIT",

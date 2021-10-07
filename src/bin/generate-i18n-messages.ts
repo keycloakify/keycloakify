@@ -2,7 +2,7 @@ import "minimal-polyfills/Object.fromEntries";
 import * as fs from "fs";
 import { join as pathJoin, relative as pathRelative } from "path";
 import { crawl } from "./tools/crawl";
-import { downloadBuiltinKeycloakTheme } from "./install-builtin-keycloak-themes";
+import { downloadBuiltinKeycloakTheme } from "./download-builtin-keycloak-theme";
 import { getProjectRoot } from "./tools/getProjectRoot";
 import { rm_rf, rm_r } from "./tools/rm";
 import { keycloakVersions } from "./KeycloakVersion";

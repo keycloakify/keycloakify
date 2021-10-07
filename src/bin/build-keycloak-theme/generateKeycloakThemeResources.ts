@@ -7,7 +7,7 @@ import {
     replaceImportsFromStaticInJsCode
 } from "./replaceImportFromStatic";
 import { generateFtlFilesCodeFactory, pageIds } from "./generateFtl";
-import { downloadBuiltinKeycloakTheme } from "../install-builtin-keycloak-themes";
+import { downloadBuiltinKeycloakTheme } from "../download-builtin-keycloak-theme";
 import * as child_process from "child_process";
 import { resourcesCommonPath, resourcesPath, subDirOfPublicDirBasename } from "../../lib/getKcContext/kcContextMocks/urlResourcesPath";
 import { isInside } from "../tools/isInside";
