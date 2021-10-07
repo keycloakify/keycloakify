@@ -2,7 +2,6 @@
 import { useCallback, useReducer } from "react";
 import { useKcLanguageTag } from "./useKcLanguageTag";
 import { kcMessages, evtTermsUpdated } from "./kcMessages/login";
-import type { ReactNode } from "react";
 import { useEvt } from "evt/hooks";
 //NOTE for later: https://github.com/remarkjs/react-markdown/blob/236182ecf30bd89c1e5a7652acaf8d0bf81e6170/src/renderers.js#L7-L35
 import ReactMarkdown from "react-markdown";
@@ -45,7 +44,7 @@ export function useKcMessage() {
         [kcLanguageTag, trigger]
     );
 
-    const msg = useCallback<(...args: Parameters<typeof msgStr>) => ReactNode>(
+    const msg = useCallback<(...args: Parameters<typeof msgStr>) => JSX.Element>(
         (key, ...args) =>
             <ReactMarkdown allowDangerousHtml renderers={key === "termsText" ? undefined : { "paragraph": "span" }}>
                 {msgStr(key, ...args)}
@@ -53,6 +52,21 @@ export function useKcMessage() {
         [msgStr]
     );
 
-    return { msg, msgStr };
+    const advancedMsg = useCallback(
+        (key: string): string => {
+
+            const match = key.match(/^\$\{([^{]+)\}$/);
+
+            if( match === null ){
+                return key;
+            }
+
+            return msgStr(match[1] as MessageKey);
+
+        },
+        [msgStr]
+    );
+
+    return { msg, msgStr, advancedMsg };
 
 }

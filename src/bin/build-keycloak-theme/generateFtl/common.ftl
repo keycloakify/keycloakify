@@ -182,6 +182,7 @@
                 }
             },
             "msg": function(){ throw new Error("use import { useKcMessage } from 'keycloakify'"); },
+            "advancedMsg": function(){ throw new Error("use import { useKcMessage } from 'keycloakify'"); },
         }
     );
 
