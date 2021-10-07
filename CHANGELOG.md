@@ -1,3 +1,9 @@
+## **2.2.0** (2021-10-07)  
+  
+- Feat scrip: download-builtin-keycloak-theme for downloading any version of the builtin themes  
+- Use the latest version of keycloak for testing  
+- Test locally with 15.0.2 instead of 11.0.3    
+  
 ## **2.1.0** (2021-10-06)  
   
 - Support Hungarian and Danish (use Keycloak 15 language resources)    
