@@ -1,3 +1,7 @@
+## **2.1.0** (2021-10-06)  
+  
+- Support Hungarian and Danish (use Keycloak 15 language resources)    
+  
 ### **2.0.20** (2021-10-05)  
   
 - Update README.md    
