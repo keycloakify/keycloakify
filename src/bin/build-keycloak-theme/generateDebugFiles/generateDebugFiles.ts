@@ -7,7 +7,7 @@ export const containerLaunchScriptBasename = "start_keycloak_testing_container.s
 /** Files for being able to run a hot reload keycloak container */
 export function generateDebugFiles(
     params: {
-        keycloakVersion: "11.0.3" | "15.0.1";
+        keycloakVersion: "11.0.3" | "15.0.2";
         themeName: string;
         keycloakThemeBuildingDirPath: string;
     }
@@ -49,13 +49,14 @@ export function generateDebugFiles(
                 `docker build . -t ${dockerImage}`,
                 "",
                 "docker run \\",
-                "	-p 8080:8080 \\",
-                `	--name ${containerName} \\`,
-                "	-e KEYCLOAK_USER=admin \\",
-                "	-e KEYCLOAK_PASSWORD=admin \\",
-                `	-v ${pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", themeName)
+                "   -p 8080:8080 \\",
+                `   --name ${containerName} \\`,
+                "   -e KEYCLOAK_USER=admin \\",
+                "   -e KEYCLOAK_PASSWORD=admin \\",
+                "   -e JAVA_OPTS=-Dkeycloak.profile=preview \\",
+                `   -v ${pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", themeName)
                 }:/opt/jboss/keycloak/themes/${themeName}:rw \\`,
-                `	-it ${dockerImage}:latest`,
+                `   -it ${dockerImage}:latest`,
                 ""
             ].join("\n"),
             "utf8"

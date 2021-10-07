@@ -85,7 +85,7 @@ export function main() {
     generateDebugFiles({
         keycloakThemeBuildingDirPath,
         themeName,
-        "keycloakVersion": "15.0.1"
+        "keycloakVersion": "15.0.2"
     });
 
     console.log([
@@ -112,6 +112,13 @@ export function main() {
         '        extraVolumeMounts: |',
         '            - name: extensions',
         '              mountPath: /opt/jboss/keycloak/standalone/deployments',
+        '    extraEnv: |',
+        '    - name: KEYCLOAK_USER',
+        '      value: admin',
+        '    - name: KEYCLOAK_PASSWORD',
+        '      value: xxxxxxxxx',
+        '    - name: JAVA_OPTS',
+        '      value: -Dkeycloak.profile=preview',
         '',
         '',
         'To test your theme locally, with hot reloading, you can spin up a Keycloak container image with the theme loaded by running:',

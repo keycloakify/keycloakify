@@ -1,5 +1,5 @@
 
-import { kcMessages } from "../generated_kcMessages/15.0.1/login";
+import { kcMessages } from "../generated_kcMessages/15.0.2/login";
 import { Evt } from "evt";
 import { objectKeys } from "tsafe/objectKeys";
 

@@ -23,7 +23,7 @@ export function generateKeycloakThemeResources(
         urlOrigin: undefined | string;
         extraPagesId: string[];
         extraThemeProperties: string[];
-        keycloakVersion: "11.0.3" | "15.0.1"
+        keycloakVersion: "11.0.3" | "15.0.2"
     }
 ) {
 
