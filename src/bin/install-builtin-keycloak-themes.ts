@@ -3,7 +3,7 @@
 import { keycloakThemeBuildingDirPath } from "./build-keycloak-theme";
 import { join as pathJoin } from "path";
 import { downloadAndUnzip } from "./tools/downloadAndUnzip"
-import type { KeycloakVersion } from "./KeycloakVersion";
+import type { KeycloakVersion } from "../bin/KeycloakVersion";
 
 export function downloadBuiltinKeycloakTheme(
     params: {
@@ -29,7 +29,17 @@ export function downloadBuiltinKeycloakTheme(
 if (require.main === module) {
 
     downloadBuiltinKeycloakTheme({
-        "keycloakVersion": "11.0.3",
+        "keycloakVersion": (() => {
+
+            const keycloakVersion = process.argv[2] as (KeycloakVersion | undefined);
+
+            if (keycloakVersion === undefined) {
+                return "15.0.2";
+            }
+
+            return keycloakVersion;
+
+        })(),
         "destDirPath": pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme")
     });
 

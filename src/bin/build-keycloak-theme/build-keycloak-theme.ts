@@ -4,12 +4,15 @@ import { join as pathJoin, relative as pathRelative, basename as pathBasename } 
 import * as child_process from "child_process";
 import { generateDebugFiles, containerLaunchScriptBasename } from "./generateDebugFiles";
 import { URL } from "url";
+import type { KeycloakVersion } from "../KeycloakVersion";
 
 type ParsedPackageJson = {
     name: string;
     version: string;
     homepage?: string;
 };
+
+const keycloakVersion: KeycloakVersion = "15.0.2";
 
 const reactProjectDirPath = process.cwd();
 
@@ -67,7 +70,7 @@ export function main() {
         })(),
         extraPagesId,
         extraThemeProperties,
-        "keycloakVersion": "11.0.3"
+        keycloakVersion
     });
 
     const { jarFilePath } = generateJavaStackFiles({
@@ -85,7 +88,7 @@ export function main() {
     generateDebugFiles({
         keycloakThemeBuildingDirPath,
         themeName,
-        "keycloakVersion": "15.0.2"
+        keycloakVersion
     });
 
     console.log([
