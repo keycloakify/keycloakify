@@ -19,6 +19,6 @@ st.execSyncTrace(
 );
 
 st.execSyncTrace(
-    `node ${pathJoin(binDirPath, "install-builtin-keycloak-themes")}`,
+    `node ${pathJoin(binDirPath, "download-builtin-keycloak-theme")}`,
     { "cwd": sampleReactProjectDirPath }
 );
