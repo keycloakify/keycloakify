@@ -1,3 +1,7 @@
+## **2.3.0** (2021-10-07)  
+  
+- #20: Support advancedMsg    
+  
 ## **2.2.0** (2021-10-07)  
   
 - Feat scrip: download-builtin-keycloak-theme for downloading any version of the builtin themes  
