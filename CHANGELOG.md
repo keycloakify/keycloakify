@@ -1,3 +1,7 @@
+## **2.4.0** (2021-10-08)  
+  
+-  #38: Implement messagesPerField existsError and get    
+  
 ## **2.3.0** (2021-10-07)  
   
 - #20: Support advancedMsg    
