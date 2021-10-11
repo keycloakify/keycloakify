@@ -21,7 +21,6 @@ jobs:
         if [ -f "./yarn.lock" ]; then
             PACKAGE_MANAGER=yarn
         fi
-        $PACKAGE_MANAGER run lint:check
         $PACKAGE_MANAGER run format:check
 
   test:
