@@ -16,8 +16,6 @@
         "copy-files": "copyfiles -u 1 src/**/*.ftl src/**/*.xml src/**/*.js dist/",
         "generate-messages": "node dist/bin/generate-i18n-messages.js",
         "link_in_test_app": "node dist/bin/link_in_test_app.js",
-        "lint:check": "eslint . --ext .ts,.tsx",
-        "lint": "yarn lint:check --fix",
         "_format": "prettier '**/*.{ts,tsx,json,md}'",
         "format": "yarn _format --write",
         "format:check": "yarn _format --list-different",
@@ -28,9 +26,6 @@
         "download-builtin-keycloak-theme": "dist/bin/download-builtin-keycloak-theme.js"
     },
     "lint-staged": {
-        "*.{ts,tsx}": [
-            "eslint --fix"
-        ],
         "*.{ts,tsx,json,md}": [
             "prettier --write"
         ]
@@ -68,12 +63,9 @@
         "react": "^17.0.1",
         "rimraf": "^3.0.2",
         "typescript": "^4.2.3",
-        "@typescript-eslint/eslint-plugin": "^4.24.0",
-        "@typescript-eslint/parser": "^4.24.0",
-        "eslint": "^7.26.0",
-        "eslint-config-prettier": "^8.3.0",
         "husky": "^4.3.8",
-        "lint-staged": "^11.0.0"
+        "lint-staged": "^11.0.0",
+        "prettier": "^2.3.0"
     },
     "dependencies": {
         "@emotion/react": "^11.4.1",

@@ -1,4 +1,3 @@
-
 import { kcMessages } from "../generated_kcMessages/15.0.2/login";
 import { Evt } from "evt";
 import { objectKeys } from "tsafe/objectKeys";
@@ -11,8 +10,8 @@ export const evtTermsUpdated = Evt.asNonPostable(Evt.create<void>());
             kcMessages[kcLanguage],
             key,
             (() => {
-
-                let value = key === "termsText" ? "⏳" : kcMessages[kcLanguage][key];
+                let value =
+                    key === "termsText" ? "⏳" : kcMessages[kcLanguage][key];
 
                 return {
                     "enumerable": true,
@@ -20,14 +19,11 @@ export const evtTermsUpdated = Evt.asNonPostable(Evt.create<void>());
                     "set": (newValue: string) => {
                         value = newValue;
                         Evt.asPostable(evtTermsUpdated).post();
-                    }
+                    },
                 };
-
-
-            })()
-        )
-    )
+            })(),
+        ),
+    ),
 );
 
 export { kcMessages };
-

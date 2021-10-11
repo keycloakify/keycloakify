@@ -1,4 +1,3 @@
-
 import { execSync } from "child_process";
 import { join as pathJoin, relative as pathRelative } from "path";
 import * as fs from "fs";
@@ -12,7 +11,9 @@ fs.writeFileSync(
             (() => {
                 const packageJsonParsed = JSON.parse(
                     fs
-                        .readFileSync(pathJoin(keycloakifyDirPath, "package.json"))
+                        .readFileSync(
+                            pathJoin(keycloakifyDirPath, "package.json"),
+                        )
                         .toString("utf8"),
                 );
 
@@ -31,7 +32,13 @@ fs.writeFileSync(
 
 const commonThirdPartyDeps = (() => {
     const namespaceModuleNames = ["@emotion"];
-    const standaloneModuleNames = ["react", "@types/react", "powerhooks", "tss-react", "evt"];
+    const standaloneModuleNames = [
+        "react",
+        "@types/react",
+        "powerhooks",
+        "tss-react",
+        "evt",
+    ];
 
     return [
         ...namespaceModuleNames
@@ -69,7 +76,9 @@ const execYarnLink = (params: { targetModuleName?: string; cwd: string }) => {
         ...(targetModuleName !== undefined ? [targetModuleName] : []),
     ].join(" ");
 
-    console.log(`$ cd ${pathRelative(keycloakifyDirPath, cwd) || "."} && ${cmd}`);
+    console.log(
+        `$ cd ${pathRelative(keycloakifyDirPath, cwd) || "."} && ${cmd}`,
+    );
 
     execSync(cmd, {
         cwd,

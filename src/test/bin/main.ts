@@ -1,8 +1,6 @@
-
-
 import {
     setupSampleReactProject,
-    sampleReactProjectDirPath
+    sampleReactProjectDirPath,
 } from "./setupSampleReactProject";
 import * as st from "scripting-tools";
 import { join as pathJoin } from "path";
@@ -10,15 +8,15 @@ import { getProjectRoot } from "../../bin/tools/getProjectRoot";
 
 setupSampleReactProject();
 
-const binDirPath= pathJoin(getProjectRoot(), "dist", "bin");
+const binDirPath = pathJoin(getProjectRoot(), "dist", "bin");
 
 st.execSyncTrace(
     //`node ${pathJoin(binDirPath, "build-keycloak-theme")} --external-assets`,
     `node ${pathJoin(binDirPath, "build-keycloak-theme")}`,
-    { "cwd": sampleReactProjectDirPath }
+    { "cwd": sampleReactProjectDirPath },
 );
 
 st.execSyncTrace(
     `node ${pathJoin(binDirPath, "download-builtin-keycloak-theme")}`,
-    { "cwd": sampleReactProjectDirPath }
+    { "cwd": sampleReactProjectDirPath },
 );

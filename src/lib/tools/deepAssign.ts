@@ -1,59 +1,47 @@
-
 import { assert } from "tsafe/assert";
 import { is } from "tsafe/is";
 
 //Warning: Be mindful that because of array this is not idempotent.
-export function deepAssign(
-	params: {
-		target: Record<string, unknown>;
-		source: Record<string, unknown>;
-	}
-) {
+export function deepAssign(params: {
+    target: Record<string, unknown>;
+    source: Record<string, unknown>;
+}) {
+    const { target, source } = params;
 
-	const { target, source } = params;
+    Object.keys(source).forEach(key => {
+        var dereferencedSource = source[key];
 
-	Object.keys(source).forEach(key => {
-		var dereferencedSource = source[key];
+        if (
+            target[key] === undefined ||
+            !(dereferencedSource instanceof Object)
+        ) {
+            Object.defineProperty(target, key, {
+                "enumerable": true,
+                "writable": true,
+                "configurable": true,
+                "value": dereferencedSource,
+            });
 
-		if (
-			target[key] === undefined ||
-			!(dereferencedSource instanceof Object)
-		) {
+            return;
+        }
 
-			Object.defineProperty(
-				target,
-				key,
-				{
-					"enumerable": true,
-					"writable": true,
-					"configurable": true,
-					"value": dereferencedSource
-				}
-			);
+        const dereferencedTarget = target[key];
 
-			return;
-		}
+        if (dereferencedSource instanceof Array) {
+            assert(is<unknown[]>(dereferencedTarget));
+            assert(is<unknown[]>(dereferencedSource));
 
-		const dereferencedTarget = target[key];
+            dereferencedSource.forEach(entry => dereferencedTarget.push(entry));
 
-		if (dereferencedSource instanceof Array) {
+            return;
+        }
 
-			assert(is<unknown[]>(dereferencedTarget));
-			assert(is<unknown[]>(dereferencedSource));
+        assert(is<Record<string, unknown>>(dereferencedTarget));
+        assert(is<Record<string, unknown>>(dereferencedSource));
 
-			dereferencedSource.forEach(entry => dereferencedTarget.push(entry));
-
-			return;
-		}
-
-		assert(is<Record<string, unknown>>(dereferencedTarget));
-		assert(is<Record<string, unknown>>(dereferencedSource));
-
-		deepAssign({
-			"target": dereferencedTarget,
-			"source": dereferencedSource
-		});
-
-	});
-
+        deepAssign({
+            "target": dereferencedTarget,
+            "source": dereferencedSource,
+        });
+    });
 }

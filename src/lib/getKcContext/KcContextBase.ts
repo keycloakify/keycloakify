@@ -1,4 +1,3 @@
-
 import type { PageId } from "../../bin/build-keycloak-theme/generateFtl";
 import type { KcLanguageTag } from "../i18n/KcLanguageTag";
 import { assert } from "tsafe/assert";
@@ -6,21 +5,29 @@ import type { Equals } from "tsafe";
 import type { MessageKey } from "../i18n/useKcMessage";
 import type { LanguageLabel } from "../i18n/KcLanguageTag";
 
-type ExtractAfterStartingWith<Prefix extends string, StrEnum> =
-    StrEnum extends `${Prefix}${infer U}` ? U : never;
+type ExtractAfterStartingWith<
+    Prefix extends string,
+    StrEnum,
+> = StrEnum extends `${Prefix}${infer U}` ? U : never;
 
-/** Take theses type definition with a grain of salt. 
+/** Take theses type definition with a grain of salt.
  * Some values might be undefined on some pages.
  * (ex: url.loginAction is undefined on error.ftl)
  */
 export type KcContextBase =
-    KcContextBase.Login | KcContextBase.Register | KcContextBase.RegisterUserProfile | KcContextBase.Info |
-    KcContextBase.Error | KcContextBase.LoginResetPassword | KcContextBase.LoginVerifyEmail |
-    KcContextBase.Terms | KcContextBase.LoginOtp | KcContextBase.LoginUpdateProfile |
-    KcContextBase.LoginIdpLinkConfirm;
+    | KcContextBase.Login
+    | KcContextBase.Register
+    | KcContextBase.RegisterUserProfile
+    | KcContextBase.Info
+    | KcContextBase.Error
+    | KcContextBase.LoginResetPassword
+    | KcContextBase.LoginVerifyEmail
+    | KcContextBase.Terms
+    | KcContextBase.LoginOtp
+    | KcContextBase.LoginUpdateProfile
+    | KcContextBase.LoginIdpLinkConfirm;
 
 export declare namespace KcContextBase {
-
     export type Common = {
         url: {
             loginAction: string;
@@ -46,7 +53,7 @@ export declare namespace KcContextBase {
                 //label: LanguageLabel;
             }[];
             current: LanguageLabel;
-        },
+        };
         auth?: {
             showUsername: boolean;
             showResetCredentials: boolean;
@@ -61,7 +68,7 @@ export declare namespace KcContextBase {
         client: {
             clientId: string;
             name?: string;
-        }
+        };
         isAppInitiatedAction: boolean;
         messagesPerField: {
             printIfExists: <T>(fieldName: string, x: T) => T | undefined;
@@ -100,7 +107,7 @@ export declare namespace KcContextBase {
                 alias: string;
                 providerId: string;
                 displayName: string;
-            }[]
+            }[];
         };
     };
 
@@ -118,7 +125,7 @@ export declare namespace KcContextBase {
                 alias: string;
                 providerId: string;
                 displayName: string;
-            }[]
+            }[];
         };
     };
 
@@ -131,10 +138,9 @@ export declare namespace KcContextBase {
                 lastName?: string;
                 email?: string;
                 username?: string;
-            }
+            };
         };
     };
-
 
     export type RegisterUserProfile = RegisterCommon & {
         pageId: "register-user-profile.ftl";
@@ -142,27 +148,29 @@ export declare namespace KcContextBase {
             context: "REGISTRATION_PROFILE";
             attributes: Attribute[];
             attributesByName: Record<string, Attribute>;
-        }
+        };
     };
-
 
     export type Info = Common & {
         pageId: "info.ftl";
         messageHeader?: string;
-        requiredActions?: ExtractAfterStartingWith<"requiredAction.", MessageKey>[];
+        requiredActions?: ExtractAfterStartingWith<
+            "requiredAction.",
+            MessageKey
+        >[];
         skipLink: boolean;
         pageRedirectUri?: string;
         actionUri?: string;
         client: {
             baseUrl?: string;
-        }
+        };
     };
 
     export type Error = Common & {
         pageId: "error.ftl";
         client?: {
             baseUrl?: string;
-        },
+        };
         message: NonNullable<Common["message"]>;
     };
 
@@ -170,7 +178,7 @@ export declare namespace KcContextBase {
         pageId: "login-reset-password.ftl";
         realm: {
             loginWithEmailAllowed: boolean;
-        }
+        };
     };
 
     export type LoginVerifyEmail = Common & {
@@ -184,8 +192,8 @@ export declare namespace KcContextBase {
     export type LoginOtp = Common & {
         pageId: "login-otp.ftl";
         otpLogin: {
-            userOtpCredentials: { id: string; userLabel: string; }[];
-        }
+            userOtpCredentials: { id: string; userLabel: string }[];
+        };
     };
 
     export type LoginUpdateProfile = Common & {
@@ -203,7 +211,6 @@ export declare namespace KcContextBase {
         pageId: "login-idp-link-confirm.ftl";
         idpAlias: string;
     };
-
 }
 
 export type Attribute = {
@@ -218,7 +225,7 @@ export type Attribute = {
     autocomplete?: string;
     validators: Validators;
     annotations: Record<string, string>;
-    groupAnnotations: Record<string, string>
+    groupAnnotations: Record<string, string>;
 };
 
 export type Validators = Partial<{
@@ -226,42 +233,40 @@ export type Validators = Partial<{
     double: Validators.DoIgnoreEmpty & Validators.Range;
     integer: Validators.DoIgnoreEmpty & Validators.Range;
     email: Validators.DoIgnoreEmpty;
-    'up-immutable-attribute': {};
-    'up-attribute-required-by-metadata-value': {};
-    'up-username-has-value': {};
-    'up-duplicate-username': {};
-    'up-username-mutation': {};
-    'up-email-exists-as-username': {};
-    'up-blank-attribute-value': Validators.ErrorMessage & {
-        'fail-on-null': boolean;
+    "up-immutable-attribute": {};
+    "up-attribute-required-by-metadata-value": {};
+    "up-username-has-value": {};
+    "up-duplicate-username": {};
+    "up-username-mutation": {};
+    "up-email-exists-as-username": {};
+    "up-blank-attribute-value": Validators.ErrorMessage & {
+        "fail-on-null": boolean;
     };
-    'up-duplicate-email': {};
-    'local-date': Validators.DoIgnoreEmpty;
-    pattern: Validators.DoIgnoreEmpty & Validators.ErrorMessage & { pattern: string; };
-    'person-name-prohibited-characters': Validators.DoIgnoreEmpty & Validators.ErrorMessage;
+    "up-duplicate-email": {};
+    "local-date": Validators.DoIgnoreEmpty;
+    pattern: Validators.DoIgnoreEmpty &
+        Validators.ErrorMessage & { pattern: string };
+    "person-name-prohibited-characters": Validators.DoIgnoreEmpty &
+        Validators.ErrorMessage;
     uri: Validators.DoIgnoreEmpty;
-    'username-prohibited-characters': Validators.DoIgnoreEmpty & Validators.ErrorMessage;
+    "username-prohibited-characters": Validators.DoIgnoreEmpty &
+        Validators.ErrorMessage;
 }>;
 
 export declare namespace Validators {
-
     export type DoIgnoreEmpty = {
-        'ignore.empty.value'?: boolean;
+        "ignore.empty.value"?: boolean;
     };
 
     export type ErrorMessage = {
-        'error-message'?: string;
-    }
+        "error-message"?: string;
+    };
 
     export type Range = {
         /** "0", "1", "2"... yeah I know, don't tell me */
         min?: string;
         max?: string;
     };
-
 }
 
 assert<Equals<KcContextBase["pageId"], PageId>>();
-
-
-

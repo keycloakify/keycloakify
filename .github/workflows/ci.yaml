@@ -9,14 +9,13 @@ on:
 
 jobs:
 
-  test_lint:
+  test_formatting:
     runs-on: ubuntu-latest
-    if: ${{ !github.event.created && github.repository != 'garronej/ts_ci' }}
     steps:
     - uses: actions/checkout@v2.3.4
     - uses: actions/setup-node@v2.1.3
     - uses: bahmutov/npm-install@v1
-    - name: If this step fails run 'npm run lint' and 'npm run format' then commit again.
+    - name: If this step fails run 'yarn format' then commit again.
       run: |
         PACKAGE_MANAGER=npm
         if [ -f "./yarn.lock" ]; then
@@ -27,7 +26,7 @@ jobs:
 
   test:
     runs-on: macos-10.15
-    needs: test_lint
+    needs: test_formatting
     strategy:
       matrix:
         node: [ '15', '14', '13' ]

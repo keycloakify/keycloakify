@@ -1,39 +1,39 @@
-
 import { allPropertiesValuesToUndefined } from "../tools/allPropertiesValuesToUndefined";
-import { assert } from "tsafe/assert";
+import { assert } from "tsafe/assert";
 
 /** Class names can be provided as an array or separated by whitespace */
-export type KcPropsGeneric<CssClasses extends string> = { [key in CssClasses]: readonly string[] | string | undefined; };
+export type KcPropsGeneric<CssClasses extends string> = {
+    [key in CssClasses]: readonly string[] | string | undefined;
+};
 
 export type KcTemplateClassKey =
-    "stylesCommon" |
-    "styles" |
-    "scripts" |
-    "kcHtmlClass" |
-    "kcLoginClass" |
-    "kcHeaderClass" |
-    "kcHeaderWrapperClass" |
-    "kcFormCardClass" |
-    "kcFormCardAccountClass" |
-    "kcFormHeaderClass" |
-    "kcLocaleWrapperClass" |
-    "kcContentWrapperClass" |
-    "kcLabelWrapperClass" |
-    "kcContentWrapperClass" |
-    "kcLabelWrapperClass" |
-    "kcFormGroupClass" |
-    "kcResetFlowIcon" |
-    "kcResetFlowIcon" |
-    "kcFeedbackSuccessIcon" |
-    "kcFeedbackWarningIcon" |
-    "kcFeedbackErrorIcon" |
-    "kcFeedbackInfoIcon" |
-    "kcContentWrapperClass" |
-    "kcFormSocialAccountContentClass" |
-    "kcFormSocialAccountClass" |
-    "kcSignUpClass" |
-    "kcInfoAreaWrapperClass"
-    ;
+    | "stylesCommon"
+    | "styles"
+    | "scripts"
+    | "kcHtmlClass"
+    | "kcLoginClass"
+    | "kcHeaderClass"
+    | "kcHeaderWrapperClass"
+    | "kcFormCardClass"
+    | "kcFormCardAccountClass"
+    | "kcFormHeaderClass"
+    | "kcLocaleWrapperClass"
+    | "kcContentWrapperClass"
+    | "kcLabelWrapperClass"
+    | "kcContentWrapperClass"
+    | "kcLabelWrapperClass"
+    | "kcFormGroupClass"
+    | "kcResetFlowIcon"
+    | "kcResetFlowIcon"
+    | "kcFeedbackSuccessIcon"
+    | "kcFeedbackWarningIcon"
+    | "kcFeedbackErrorIcon"
+    | "kcFeedbackInfoIcon"
+    | "kcContentWrapperClass"
+    | "kcFormSocialAccountContentClass"
+    | "kcFormSocialAccountClass"
+    | "kcSignUpClass"
+    | "kcInfoAreaWrapperClass";
 
 export type KcTemplateProps = KcPropsGeneric<KcTemplateClassKey>;
 
@@ -41,7 +41,7 @@ export const defaultKcTemplateProps = {
     "stylesCommon": [
         "node_modules/patternfly/dist/css/patternfly.min.css",
         "node_modules/patternfly/dist/css/patternfly-additions.min.css",
-        "lib/zocial/zocial.css"
+        "lib/zocial/zocial.css",
     ],
     "styles": ["css/login.css"],
     "scripts": [],
@@ -64,69 +64,69 @@ export const defaultKcTemplateProps = {
     "kcFormGroupClass": ["form-group"],
     "kcLabelWrapperClass": ["col-xs-12", "col-sm-12", "col-md-12", "col-lg-12"],
     "kcSignUpClass": ["login-pf-signup"],
-    "kcInfoAreaWrapperClass": []
+    "kcInfoAreaWrapperClass": [],
 } as const;
 
 assert<typeof defaultKcTemplateProps extends KcTemplateProps ? true : false>();
 
-
 /** Tu use if you don't want any default */
-export const allClearKcTemplateProps =
-    allPropertiesValuesToUndefined(defaultKcTemplateProps);
+export const allClearKcTemplateProps = allPropertiesValuesToUndefined(
+    defaultKcTemplateProps,
+);
 
-assert<typeof allClearKcTemplateProps extends KcTemplateProps ? true: false>();
+assert<typeof allClearKcTemplateProps extends KcTemplateProps ? true : false>();
 
 export type KcProps = KcPropsGeneric<
-    KcTemplateClassKey |
-    "kcLogoLink" |
-    "kcLogoClass" |
-    "kcContainerClass" |
-    "kcContentClass" |
-    "kcFeedbackAreaClass" |
-    "kcLocaleClass" |
-    "kcAlertIconClasserror" |
-    "kcFormAreaClass" |
-    "kcFormSocialAccountListClass" |
-    "kcFormSocialAccountDoubleListClass" |
-    "kcFormSocialAccountListLinkClass" |
-    "kcWebAuthnKeyIcon" |
-    "kcFormClass" |
-    "kcFormGroupErrorClass" |
-    "kcLabelClass" |
-    "kcInputClass" |
-    "kcInputErrorMessageClass" |
-    "kcInputWrapperClass" |
-    "kcFormOptionsClass" |
-    "kcFormButtonsClass" |
-    "kcFormSettingClass" |
-    "kcTextareaClass" |
-    "kcInfoAreaClass" |
-    "kcFormGroupHeader" |
-    "kcButtonClass" |
-    "kcButtonPrimaryClass" |
-    "kcButtonDefaultClass" |
-    "kcButtonLargeClass" |
-    "kcButtonBlockClass" |
-    "kcInputLargeClass" |
-    "kcSrOnlyClass" |
-    "kcSelectAuthListClass" |
-    "kcSelectAuthListItemClass" |
-    "kcSelectAuthListItemInfoClass" |
-    "kcSelectAuthListItemLeftClass" |
-    "kcSelectAuthListItemBodyClass" |
-    "kcSelectAuthListItemDescriptionClass" |
-    "kcSelectAuthListItemHeadingClass" |
-    "kcSelectAuthListItemHelpTextClass" |
-    "kcAuthenticatorDefaultClass" |
-    "kcAuthenticatorPasswordClass" |
-    "kcAuthenticatorOTPClass" |
-    "kcAuthenticatorWebAuthnClass" |
-    "kcAuthenticatorWebAuthnPasswordlessClass" |
-    "kcSelectOTPListClass" |
-    "kcSelectOTPListItemClass" |
-    "kcAuthenticatorOtpCircleClass" |
-    "kcSelectOTPItemHeadingClass" |
-    "kcFormOptionsWrapperClass"
+    | KcTemplateClassKey
+    | "kcLogoLink"
+    | "kcLogoClass"
+    | "kcContainerClass"
+    | "kcContentClass"
+    | "kcFeedbackAreaClass"
+    | "kcLocaleClass"
+    | "kcAlertIconClasserror"
+    | "kcFormAreaClass"
+    | "kcFormSocialAccountListClass"
+    | "kcFormSocialAccountDoubleListClass"
+    | "kcFormSocialAccountListLinkClass"
+    | "kcWebAuthnKeyIcon"
+    | "kcFormClass"
+    | "kcFormGroupErrorClass"
+    | "kcLabelClass"
+    | "kcInputClass"
+    | "kcInputErrorMessageClass"
+    | "kcInputWrapperClass"
+    | "kcFormOptionsClass"
+    | "kcFormButtonsClass"
+    | "kcFormSettingClass"
+    | "kcTextareaClass"
+    | "kcInfoAreaClass"
+    | "kcFormGroupHeader"
+    | "kcButtonClass"
+    | "kcButtonPrimaryClass"
+    | "kcButtonDefaultClass"
+    | "kcButtonLargeClass"
+    | "kcButtonBlockClass"
+    | "kcInputLargeClass"
+    | "kcSrOnlyClass"
+    | "kcSelectAuthListClass"
+    | "kcSelectAuthListItemClass"
+    | "kcSelectAuthListItemInfoClass"
+    | "kcSelectAuthListItemLeftClass"
+    | "kcSelectAuthListItemBodyClass"
+    | "kcSelectAuthListItemDescriptionClass"
+    | "kcSelectAuthListItemHeadingClass"
+    | "kcSelectAuthListItemHelpTextClass"
+    | "kcAuthenticatorDefaultClass"
+    | "kcAuthenticatorPasswordClass"
+    | "kcAuthenticatorOTPClass"
+    | "kcAuthenticatorWebAuthnClass"
+    | "kcAuthenticatorWebAuthnPasswordlessClass"
+    | "kcSelectOTPListClass"
+    | "kcSelectOTPListItemClass"
+    | "kcAuthenticatorOtpCircleClass"
+    | "kcSelectOTPItemHeadingClass"
+    | "kcFormOptionsWrapperClass"
 >;
 
 export const defaultKcProps = {
@@ -134,13 +134,31 @@ export const defaultKcProps = {
     "kcLogoLink": "http://www.keycloak.org",
     "kcLogoClass": "login-pf-brand",
     "kcContainerClass": "container-fluid",
-    "kcContentClass": ["col-sm-8", "col-sm-offset-2", "col-md-6", "col-md-offset-3", "col-lg-6", "col-lg-offset-3"],
+    "kcContentClass": [
+        "col-sm-8",
+        "col-sm-offset-2",
+        "col-md-6",
+        "col-md-offset-3",
+        "col-lg-6",
+        "col-lg-offset-3",
+    ],
     "kcFeedbackAreaClass": ["col-md-12"],
     "kcLocaleClass": ["col-xs-12", "col-sm-1"],
     "kcAlertIconClasserror": ["pficon", "pficon-error-circle-o"],
 
-    "kcFormAreaClass": ["col-sm-10", "col-sm-offset-1", "col-md-8", "col-md-offset-2", "col-lg-8", "col-lg-offset-2"],
-    "kcFormSocialAccountListClass": ["login-pf-social", "list-unstyled", "login-pf-social-all"],
+    "kcFormAreaClass": [
+        "col-sm-10",
+        "col-sm-offset-1",
+        "col-md-8",
+        "col-md-offset-2",
+        "col-lg-8",
+        "col-lg-offset-2",
+    ],
+    "kcFormSocialAccountListClass": [
+        "login-pf-social",
+        "list-unstyled",
+        "login-pf-social-all",
+    ],
     "kcFormSocialAccountDoubleListClass": ["login-pf-social-double-col"],
     "kcFormSocialAccountListLinkClass": ["login-pf-social-link"],
     "kcWebAuthnKeyIcon": ["pficon", "pficon-key"],
@@ -149,14 +167,25 @@ export const defaultKcProps = {
     "kcFormGroupErrorClass": ["has-error"],
     "kcLabelClass": ["control-label"],
     "kcInputClass": ["form-control"],
-    "kcInputErrorMessageClass": ["pf-c-form__helper-text", "pf-m-error", "required", "kc-feedback-text"],
+    "kcInputErrorMessageClass": [
+        "pf-c-form__helper-text",
+        "pf-m-error",
+        "required",
+        "kc-feedback-text",
+    ],
     "kcInputWrapperClass": ["col-xs-12", "col-sm-12", "col-md-12", "col-lg-12"],
     "kcFormOptionsClass": ["col-xs-12", "col-sm-12", "col-md-12", "col-lg-12"],
     "kcFormButtonsClass": ["col-xs-12", "col-sm-12", "col-md-12", "col-lg-12"],
     "kcFormSettingClass": ["login-pf-settings"],
     "kcTextareaClass": ["form-control"],
 
-    "kcInfoAreaClass": ["col-xs-12", "col-sm-4", "col-md-4", "col-lg-5", "details"],
+    "kcInfoAreaClass": [
+        "col-xs-12",
+        "col-sm-4",
+        "col-md-4",
+        "col-lg-5",
+        "details",
+    ],
 
     // user-profile grouping
     "kcFormGroupHeader": ["pf-c-form__group"],
@@ -191,21 +220,28 @@ export const defaultKcProps = {
     "kcAuthenticatorPasswordClass": ["fa", "fa-unlock list-view-pf-icon-lg"],
     "kcAuthenticatorOTPClass": ["fa", "fa-mobile", "list-view-pf-icon-lg"],
     "kcAuthenticatorWebAuthnClass": ["fa", "fa-key", "list-view-pf-icon-lg"],
-    "kcAuthenticatorWebAuthnPasswordlessClass": ["fa", "fa-key", "list-view-pf-icon-lg"],
+    "kcAuthenticatorWebAuthnPasswordlessClass": [
+        "fa",
+        "fa-key",
+        "list-view-pf-icon-lg",
+    ],
 
     //css classes for the OTP Login Form
-    "kcSelectOTPListClass": ["card-pf", "card-pf-view", "card-pf-view-select", "card-pf-view-single-select"],
+    "kcSelectOTPListClass": [
+        "card-pf",
+        "card-pf-view",
+        "card-pf-view-select",
+        "card-pf-view-single-select",
+    ],
     "kcSelectOTPListItemClass": ["card-pf-body", "card-pf-top-element"],
     "kcAuthenticatorOtpCircleClass": ["fa", "fa-mobile", "card-pf-icon-circle"],
     "kcSelectOTPItemHeadingClass": ["card-pf-title", "text-center"],
-    "kcFormOptionsWrapperClass": []
+    "kcFormOptionsWrapperClass": [],
 } as const;
 
 assert<typeof defaultKcProps extends KcProps ? true : false>();
 
 /** Tu use if you don't want any default */
-export const allClearKcProps =
-    allPropertiesValuesToUndefined(defaultKcProps);
+export const allClearKcProps = allPropertiesValuesToUndefined(defaultKcProps);
 
 assert<typeof allClearKcProps extends KcProps ? true : false>();
-

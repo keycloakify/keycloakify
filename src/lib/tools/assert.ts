@@ -1,2 +1,1 @@
-
-export { assert } from "tsafe/assert";
+export { assert } from "tsafe/assert";

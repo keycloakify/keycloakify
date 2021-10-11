@@ -1,4 +1,3 @@
-
 import type { KcContextBase } from "./KcContextBase";
 import { kcContextMocks, kcContextCommonMock } from "./kcContextMocks";
 import { ftlValuesGlobalName } from "../../bin/build-keycloak-theme/ftlValuesGlobalName";
@@ -6,81 +5,71 @@ import type { AndByDiscriminatingKey } from "../tools/AndByDiscriminatingKey";
 import type { DeepPartial } from "../tools/DeepPartial";
 import { deepAssign } from "../tools/deepAssign";
 
+export type ExtendsKcContextBase<KcContextExtended extends { pageId: string }> =
+    [KcContextExtended] extends [never]
+        ? KcContextBase
+        : AndByDiscriminatingKey<
+              "pageId",
+              KcContextExtended & KcContextBase.Common,
+              KcContextBase
+          >;
 
-export type ExtendsKcContextBase<
-	KcContextExtended extends { pageId: string; }
-	> =
-	[KcContextExtended] extends [never] ?
-	KcContextBase :
-	AndByDiscriminatingKey<
-		"pageId",
-		KcContextExtended & KcContextBase.Common,
-		KcContextBase
-	>;
+export function getKcContext<
+    KcContextExtended extends { pageId: string } = never,
+>(params?: {
+    mockPageId?: ExtendsKcContextBase<KcContextExtended>["pageId"];
+    mockData?: readonly DeepPartial<ExtendsKcContextBase<KcContextExtended>>[];
+}): { kcContext: ExtendsKcContextBase<KcContextExtended> | undefined } {
+    const { mockPageId, mockData } = params ?? {};
 
-export function getKcContext<KcContextExtended extends { pageId: string; } = never>(
-	params?: {
-		mockPageId?: ExtendsKcContextBase<KcContextExtended>["pageId"];
-		mockData?: readonly DeepPartial<ExtendsKcContextBase<KcContextExtended>>[];
-	}
-): { kcContext: ExtendsKcContextBase<KcContextExtended> | undefined; } {
+    if (mockPageId !== undefined) {
+        //TODO maybe trow if no mock fo custom page
 
-	const {
-		mockPageId,
-		mockData
-	} = params ?? {};
+        const kcContextDefaultMock = kcContextMocks.find(
+            ({ pageId }) => pageId === mockPageId,
+        );
 
-	if (mockPageId !== undefined) {
+        const partialKcContextCustomMock = mockData?.find(
+            ({ pageId }) => pageId === mockPageId,
+        );
 
-		//TODO maybe trow if no mock fo custom page
+        if (
+            kcContextDefaultMock === undefined &&
+            partialKcContextCustomMock === undefined
+        ) {
+            console.warn(
+                [
+                    `WARNING: You declared the non build in page ${mockPageId} but you didn't `,
+                    `provide mock data needed to debug the page outside of Keycloak as you are trying to do now.`,
+                    `Please check the documentation of the getKcContext function`,
+                ].join("\n"),
+            );
+        }
 
-		const kcContextDefaultMock = kcContextMocks.find(({ pageId }) => pageId === mockPageId);
+        const kcContext: any = {};
 
-		const partialKcContextCustomMock = mockData?.find(({ pageId }) => pageId === mockPageId);
+        deepAssign({
+            "target": kcContext,
+            "source":
+                kcContextDefaultMock !== undefined
+                    ? kcContextDefaultMock
+                    : { "pageId": mockPageId, ...kcContextCommonMock },
+        });
 
-		if (
-			kcContextDefaultMock === undefined &&
-			partialKcContextCustomMock === undefined
-		) {
+        if (partialKcContextCustomMock !== undefined) {
+            deepAssign({
+                "target": kcContext,
+                "source": partialKcContextCustomMock,
+            });
+        }
 
-			console.warn([
-				`WARNING: You declared the non build in page ${mockPageId} but you didn't `,
-				`provide mock data needed to debug the page outside of Keycloak as you are trying to do now.`,
-				`Please check the documentation of the getKcContext function`
-			].join("\n"));
+        return { kcContext };
+    }
 
-		}
-
-		const kcContext: any = {};
-
-		deepAssign({
-			"target": kcContext,
-			"source": kcContextDefaultMock !== undefined ?
-				kcContextDefaultMock :
-				{ "pageId": mockPageId, ...kcContextCommonMock,  }
-		});
-
-		if (partialKcContextCustomMock !== undefined) {
-
-			deepAssign({
-				"target": kcContext,
-				"source": partialKcContextCustomMock
-			});
-
-		}
-
-		return { kcContext };
-
-	}
-
-	return {
-		"kcContext":
-			typeof window === "undefined" ?
-				undefined :
-				(window as any)[ftlValuesGlobalName]
-	};
-
+    return {
+        "kcContext":
+            typeof window === "undefined"
+                ? undefined
+                : (window as any)[ftlValuesGlobalName],
+    };
 }
-
-
-

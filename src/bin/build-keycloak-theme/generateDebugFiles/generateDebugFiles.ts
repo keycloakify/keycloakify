@@ -1,18 +1,15 @@
-
 import * as fs from "fs";
-import { join as pathJoin, dirname as pathDirname, } from "path";
+import { join as pathJoin, dirname as pathDirname } from "path";
 
-export const containerLaunchScriptBasename = "start_keycloak_testing_container.sh";
+export const containerLaunchScriptBasename =
+    "start_keycloak_testing_container.sh";
 
 /** Files for being able to run a hot reload keycloak container */
-export function generateDebugFiles(
-    params: {
-        keycloakVersion: "11.0.3" | "15.0.2";
-        themeName: string;
-        keycloakThemeBuildingDirPath: string;
-    }
-) {
-
+export function generateDebugFiles(params: {
+    keycloakVersion: "11.0.3" | "15.0.2";
+    themeName: string;
+    keycloakThemeBuildingDirPath: string;
+}) {
     const { themeName, keycloakThemeBuildingDirPath, keycloakVersion } = params;
 
     fs.writeFileSync(
@@ -29,8 +26,8 @@ export function generateDebugFiles(
                 "",
                 'ENTRYPOINT [ "/opt/jboss/tools/docker-entrypoint.sh" ]',
             ].join("\n"),
-            "utf8"
-        )
+            "utf8",
+        ),
     );
 
     const dockerImage = `${themeName}/keycloak-hot-reload`;
@@ -54,42 +51,53 @@ export function generateDebugFiles(
                 "   -e KEYCLOAK_USER=admin \\",
                 "   -e KEYCLOAK_PASSWORD=admin \\",
                 "   -e JAVA_OPTS=-Dkeycloak.profile=preview \\",
-                `   -v ${pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", themeName)
-                }:/opt/jboss/keycloak/themes/${themeName}:rw \\`,
+                `   -v ${pathJoin(
+                    keycloakThemeBuildingDirPath,
+                    "src",
+                    "main",
+                    "resources",
+                    "theme",
+                    themeName,
+                )}:/opt/jboss/keycloak/themes/${themeName}:rw \\`,
                 `   -it ${dockerImage}:latest`,
-                ""
+                "",
             ].join("\n"),
-            "utf8"
+            "utf8",
         ),
-        { "mode": 0o755 }
+        { "mode": 0o755 },
     );
 
-    const standaloneHaFilePath = pathJoin(keycloakThemeBuildingDirPath, "configuration", `standalone-ha.xml`);
+    const standaloneHaFilePath = pathJoin(
+        keycloakThemeBuildingDirPath,
+        "configuration",
+        `standalone-ha.xml`,
+    );
 
-    try { fs.mkdirSync(pathDirname(standaloneHaFilePath)); } catch { }
+    try {
+        fs.mkdirSync(pathDirname(standaloneHaFilePath));
+    } catch {}
 
     fs.writeFileSync(
         standaloneHaFilePath,
-        fs.readFileSync(
-            pathJoin(
-                __dirname,
-                `standalone-ha_${keycloakVersion}.xml`
+        fs
+            .readFileSync(
+                pathJoin(__dirname, `standalone-ha_${keycloakVersion}.xml`),
             )
-        )
             .toString("utf8")
             .replace(
-                new RegExp([
-                    "<staticMaxAge>2592000</staticMaxAge>",
-                    "<cacheThemes>true</cacheThemes>",
-                    "<cacheTemplates>true</cacheTemplates>"
-                ].join("\\s*"), "g"
+                new RegExp(
+                    [
+                        "<staticMaxAge>2592000</staticMaxAge>",
+                        "<cacheThemes>true</cacheThemes>",
+                        "<cacheTemplates>true</cacheTemplates>",
+                    ].join("\\s*"),
+                    "g",
                 ),
                 [
                     "<staticMaxAge>-1</staticMaxAge>",
                     "<cacheThemes>false</cacheThemes>",
-                    "<cacheTemplates>false</cacheTemplates>"
-                ].join("\n")
-            )
+                    "<cacheTemplates>false</cacheTemplates>",
+                ].join("\n"),
+            ),
     );
-
 }

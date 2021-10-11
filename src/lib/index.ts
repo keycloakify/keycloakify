@@ -16,4 +16,3 @@ export * from "./components/LoginVerifyEmail";
 export * from "./keycloakJsAdapter";
 
 export * from "./tools/assert";
-
