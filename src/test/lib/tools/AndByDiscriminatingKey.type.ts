@@ -1,6 +1,7 @@
 
 import { AndByDiscriminatingKey } from "../../../lib/tools/AndByDiscriminatingKey";
-import { doExtends } from "tsafe/doExtends";
+import { assert } from "tsafe/assert";
+import type { Equals } from "tsafe";
 
 type Base =
 	{ pageId: "a"; onlyA: string; } |
@@ -20,8 +21,7 @@ type Expected =
 	{ pageId: "only base"; onlyBase: string; } |
 	{ pageId: "only ext"; onlyExt: string; };
 
-doExtends<Got, Expected>();
-doExtends<Expected, Got>();
+assert<Equals<Got, Expected>>();
 
 const x: Got = null as any;
 

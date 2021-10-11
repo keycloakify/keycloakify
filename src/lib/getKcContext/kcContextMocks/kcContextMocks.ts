@@ -23,6 +23,12 @@ export const kcContextCommonMock: KcContextBase.Common = {
 		"internationalizationEnabled": true,
 		"registrationEmailAsUsername": true,
 	},
+	"messagesPerField": {
+			"printIfExists": (...[, x]) => x,
+			"existsError": ()=> true,
+			"get": key=> `Fake error for ${key}`,
+			"exists": ()=> true
+	},
 	"locale": {
 		"supported": [
 			{
@@ -164,11 +170,6 @@ export const kcContextMocks: KcContextBase[] = [
 			...loginUrl,
 			"registrationAction": "http://localhost:8080/auth/realms/myrealm/login-actions/registration?session_code=gwZdUeO7pbYpFTRxiIxRg_QtzMbtFTKrNu6XW_f8asM&execution=12146ce0-b139-4bbd-b25b-0eccfee6577e&client_id=account&tab_id=uS8lYfebLa0"
 		},
-		"messagesPerField": {
-			"printIfExists": (...[, x]) => x,
-			"existsError": ()=> true,
-			"get": key=> `Fake error for ${key}`
-		},
 		"scripts": [],
 		"isAppInitiatedAction": false,
 		"register": {
@@ -250,9 +251,6 @@ export const kcContextMocks: KcContextBase[] = [
 			"email": "foo@example.com",
 			"firstName": "aFirstName",
 			"lastName": "aLastName"
-		},
-		"messagesPerField": {
-			"printIfExists": () => undefined
 		}
 	}),
 	id<KcContextBase.LoginIdpLinkConfirm>({

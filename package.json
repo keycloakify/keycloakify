@@ -48,7 +48,6 @@
         "properties-parser": "^0.3.1",
         "react": "^17.0.1",
         "rimraf": "^3.0.2",
-        "ts-toolbelt": "^9.6.0",
         "typescript": "^4.2.3"
     },
     "dependencies": {
@@ -60,7 +59,7 @@
         "powerhooks": "^0.9.3",
         "react-markdown": "^5.0.3",
         "scripting-tools": "^0.19.13",
-        "tsafe": "^0.4.1",
-        "tss-react": "^0.9.1"
+        "tsafe": "^0.8.1",
+        "tss-react": "^1.0.0"
     }
 }

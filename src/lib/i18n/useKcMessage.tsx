@@ -6,8 +6,6 @@ import { useEvt } from "evt/hooks";
 //NOTE for later: https://github.com/remarkjs/react-markdown/blob/236182ecf30bd89c1e5a7652acaf8d0bf81e6170/src/renderers.js#L7-L35
 import ReactMarkdown from "react-markdown";
 import { id } from "tsafe/id";
-import { assert } from "tsafe/assert";
-import { is } from "tsafe/is";
 
 export type MessageKey = keyof typeof kcMessages["en"];
 

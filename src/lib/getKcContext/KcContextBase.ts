@@ -1,7 +1,8 @@
 
 import type { PageId } from "../../bin/build-keycloak-theme/generateFtl";
 import type { KcLanguageTag } from "../i18n/KcLanguageTag";
-import { doExtends } from "tsafe/doExtends";
+import { assert } from "tsafe/assert";
+import type { Equals } from "tsafe";
 import type { MessageKey } from "../i18n/useKcMessage";
 import type { LanguageLabel } from "../i18n/KcLanguageTag";
 
@@ -212,8 +213,7 @@ export declare namespace KcContextBase {
 
 }
 
-doExtends<KcContextBase["pageId"], PageId>();
-doExtends<PageId, KcContextBase["pageId"]>();
+assert<Equals<KcContextBase["pageId"], PageId>>();
 
 
 

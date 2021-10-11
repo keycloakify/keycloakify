@@ -1,6 +1,6 @@
 
 import { allPropertiesValuesToUndefined } from "../tools/allPropertiesValuesToUndefined";
-import { doExtends } from "tsafe/doExtends";
+import { assert } from "tsafe/assert";
 
 /** Class names can be provided as an array or separated by whitespace */
 export type KcPropsGeneric<CssClasses extends string> = { [key in CssClasses]: readonly string[] | string | undefined; };
@@ -67,14 +67,14 @@ export const defaultKcTemplateProps = {
     "kcInfoAreaWrapperClass": []
 } as const;
 
+assert<typeof defaultKcTemplateProps extends KcTemplateProps ? true : false>();
 
-doExtends<typeof defaultKcTemplateProps, KcTemplateProps>();
 
 /** Tu use if you don't want any default */
 export const allClearKcTemplateProps =
     allPropertiesValuesToUndefined(defaultKcTemplateProps);
 
-doExtends<typeof allClearKcTemplateProps, KcTemplateProps>();
+assert<typeof allClearKcTemplateProps extends KcTemplateProps ? true: false>();
 
 export type KcProps = KcPropsGeneric<
     KcTemplateClassKey |
@@ -201,11 +201,11 @@ export const defaultKcProps = {
     "kcFormOptionsWrapperClass": []
 } as const;
 
-doExtends<typeof defaultKcProps, KcProps>();
+assert<typeof defaultKcProps extends KcProps ? true : false>();
 
 /** Tu use if you don't want any default */
 export const allClearKcProps =
     allPropertiesValuesToUndefined(defaultKcProps);
 
-doExtends<typeof allClearKcProps, KcProps>();
+assert<typeof allClearKcProps extends KcProps ? true : false>();
 

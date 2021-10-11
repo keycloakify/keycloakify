@@ -990,15 +990,20 @@ tsafe@^0.4.1:
   resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-0.4.1.tgz#00af1be2db82abb4be531209b90232d7954e1a03"
   integrity sha512-+OZ0gdgmwcru+MOSheCx+ymAvQz+1/ui+KFJRuaq0t2m8RNrlf7eSzEieptoPQXPY67Mdkqgkdjknn8azoD5sw==
 
+tsafe@^0.8.1:
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-0.8.1.tgz#9af7e1540bc04313a82d60c98056a5017c8b086b"
+  integrity sha512-EfPjxQHzndQAV/uh0SMGP26Wg3dCuaw8dRv2VPEuGHen5qzg2oqsMvZw2wkQFkiMisZq2fm95m5lheimW2Fpvg==
+
 tslib@^2.2.0:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
   integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==
 
-tss-react@^0.9.1:
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/tss-react/-/tss-react-0.9.1.tgz#5d0b5d4bf608dd049032c3f179dba56b5716ff9f"
-  integrity sha512-FxHyTq5b3YcAE7QAd10CuDBQA2X//amAzWO+2QYO/5Hygv8jb80TQKXvKgpekzO5JR5Ry8jMpc0ZkHcjgfzs3Q==
+tss-react@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/tss-react/-/tss-react-1.0.0.tgz#8bb8b7e358dddf0bc0db8de2713245273dd62682"
+  integrity sha512-pDFr3afWtmAVNFO3G/PX5fmmE/KuJDf0V8XiYitau2VkbxUPU929Hsms6u7VHnxacoCrvOJKLC6HH1NEapfOfA==
   dependencies:
     "@emotion/cache" "^11.4.0"
     "@emotion/serialize" "^1.0.2"

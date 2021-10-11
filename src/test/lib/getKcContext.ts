@@ -3,11 +3,10 @@ import { getKcContext } from "../../lib/getKcContext";
 import type { KcContextBase } from "../../lib/getKcContext";
 import type { ExtendsKcContextBase } from "../../lib/getKcContext/getKcContext";
 import { same } from "evt/tools/inDepth";
-import { doExtends } from "tsafe/doExtends";
 import { assert } from "tsafe/assert";
+import type { Equals } from "tsafe";
 import { kcContextMocks, kcContextCommonMock } from "../../lib/getKcContext/kcContextMocks";
 import { deepClone } from "../../lib/tools/deepClone";
-import type { Any } from "ts-toolbelt";
 
 {
 
@@ -79,7 +78,7 @@ import type { Any } from "ts-toolbelt";
 
 		assert(kcContext?.pageId === pageId);
 
-		doExtends<Any.Equals<typeof kcContext, KcContextBase.Login>, 1>();
+		assert<Equals<typeof kcContext, KcContextBase.Login>>();
 
 		assert(same(
 			//NOTE: deepClone for printIfExists or other functions...
@@ -107,7 +106,7 @@ import type { Any } from "ts-toolbelt";
 		assert(kcContext?.pageId === pageId);
 
 		//NOTE: I don't understand the need to add: pageId: typeof pageId; ...
-		doExtends<Any.Equals<typeof kcContext, KcContextBase.Info & { pageId: typeof pageId; aNonStandardValue1: string; }>, 1>();
+		assert<Equals<typeof kcContext, KcContextBase.Info & { pageId: typeof pageId; aNonStandardValue1: string; }>>();
 
 		assert(same(
 			deepClone(kcContext),
@@ -134,7 +133,7 @@ import type { Any } from "ts-toolbelt";
 		assert(kcContext?.pageId === pageId);
 
 		//NOTE: I don't understand the need to add: pageId: typeof pageId; ...
-		doExtends<Any.Equals<typeof kcContext, KcContextBase.Register & { pageId: typeof pageId; authorizedMailDomains: string[]; }>, 1>();
+		assert<Equals<typeof kcContext, KcContextBase.Register & { pageId: typeof pageId; authorizedMailDomains: string[]; }>>();
 
 		assert(same(
 			deepClone(kcContext),
@@ -161,7 +160,7 @@ import type { Any } from "ts-toolbelt";
 
 		assert(kcContext?.pageId === pageId);
 
-		doExtends<Any.Equals<typeof kcContext, KcContextBase.Common & { pageId: typeof pageId; aNonStandardValue2: string; }>, 1>();
+		assert<Equals<typeof kcContext, KcContextBase.Common & { pageId: typeof pageId; aNonStandardValue2: string; }>>();
 
 		kcContext.aNonStandardValue2;
 
@@ -193,7 +192,7 @@ import type { Any } from "ts-toolbelt";
 
 		assert(kcContext?.pageId === pageId);
 
-		doExtends<Any.Equals<typeof kcContext, KcContextBase.Common & { pageId: typeof pageId;  }>, 1>();
+		assert<Equals<typeof kcContext, KcContextBase.Common & { pageId: typeof pageId;  }>>();
 
 		assert(same(
 			deepClone(kcContext),
@@ -222,7 +221,7 @@ import type { Any } from "ts-toolbelt";
 		"mockPageId": pageId
 	});
 
-	doExtends<Any.Equals<typeof kcContext, KcContextBase | undefined>, 1>();
+	assert<Equals<typeof kcContext, KcContextBase | undefined>>();
 
 	assert(same(
 		deepClone(kcContext),
@@ -238,7 +237,7 @@ import type { Any } from "ts-toolbelt";
 
 	const { kcContext } = getKcContext();
 
-	doExtends<Any.Equals<typeof kcContext, KcContextBase | undefined>, 1>();
+	assert<Equals<typeof kcContext, KcContextBase | undefined>>();
 
 	assert(kcContext === undefined);
 
