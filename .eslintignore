@@ -1,0 +1,7 @@
+node_modules/
+dist/
+CHANGELOG.md
+.yarn_home/
+src/test/apps/
+src/test/types/
+src/tools/types/
