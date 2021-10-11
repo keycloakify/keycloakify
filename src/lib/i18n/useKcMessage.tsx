@@ -6,6 +6,8 @@ import { useEvt } from "evt/hooks";
 import ReactMarkdown from "react-markdown";
 import { id } from "tsafe/id";
 
+export { kcMessages };
+
 export type MessageKey = keyof typeof kcMessages["en"];
 
 /**

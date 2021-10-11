@@ -3,77 +3,36 @@ import { kcMessages } from "./kcMessages/login";
 
 export type KcLanguageTag = keyof typeof kcMessages;
 
-export type LanguageLabel =
+const kcLanguageByTagLabel = {
     /* spell-checker: disable */
-    | "Deutsch"
-    | "Norsk"
-    | "Русский"
-    | "Svenska"
-    | "Português (Brasil)"
-    | "Lietuvių"
-    | "English"
-    | "Italiano"
-    | "Français"
-    | "中文简体"
-    | "Español"
-    | "Čeština"
-    | "日本語"
-    | "Slovenčina"
-    | "Polski"
-    | "Català"
-    | "Nederlands"
-    | "Türkçe"
-    | "Dansk"
-    | "Magyar";
-/* spell-checker: enable */
+    "es": "Español",
+    "it": "Italiano",
+    "fr": "Français",
+    "ca": "Català",
+    "en": "English",
+    "de": "Deutsch",
+    "no": "Norsk",
+    "pt-BR": "Português (Brasil)",
+    "ru": "Русский",
+    "sk": "Slovenčina",
+    "ja": "日本語",
+    "pl": "Polski",
+    "zh-CN": "中文简体",
+    "sv": "Svenska",
+    "lt": "Lietuvių",
+    "cs": "Čeština",
+    "nl": "Nederlands",
+    "tr": "Türkçe",
+    "da": "Dansk",
+    "hu": "Magyar",
+    /* spell-checker: enable */
+} as const;
+
+export type LanguageLabel =
+    typeof kcLanguageByTagLabel[keyof typeof kcLanguageByTagLabel];
 
 export function getKcLanguageTagLabel(language: KcLanguageTag): LanguageLabel {
-    switch (language) {
-        /* spell-checker: disable */
-        case "es":
-            return "Español";
-        case "it":
-            return "Italiano";
-        case "fr":
-            return "Français";
-        case "ca":
-            return "Català";
-        case "en":
-            return "English";
-        case "de":
-            return "Deutsch";
-        case "no":
-            return "Norsk";
-        case "pt-BR":
-            return "Português (Brasil)";
-        case "ru":
-            return "Русский";
-        case "sk":
-            return "Slovenčina";
-        case "ja":
-            return "日本語";
-        case "pl":
-            return "Polski";
-        case "zh-CN":
-            return "中文简体";
-        case "sv":
-            return "Svenska";
-        case "lt":
-            return "Lietuvių";
-        case "cs":
-            return "Čeština";
-        case "nl":
-            return "Nederlands";
-        case "tr":
-            return "Türkçe";
-        case "da":
-            return "Dansk";
-        case "hu":
-            return "Magyar";
-        /* spell-checker: enable */
-    }
-
-    return language;
+    return kcLanguageByTagLabel[language] ?? language;
 }
 
 const availableLanguages = objectKeys(kcMessages);
