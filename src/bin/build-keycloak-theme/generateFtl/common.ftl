@@ -126,80 +126,83 @@
 
 (()=>{
 
-    //Removing all the undefined
-    const obj = JSON.parse(JSON.stringify(<@objectToJson object=.data_model depth=0 />));
+    const nonAutomaticallyConvertible = { 
+        "messagesPerField": {
 
-    //Freemarker values that can't be automatically converted into a JavaScript object.
-    Object.deepAssign(
-        obj,
-        { 
-            "messagesPerField": {
+            <#assign fieldNames = ["global", "userLabel", "username", "email", "firstName", "lastName", "password", "password-confirm"]>
 
-                <#assign fieldNames = ["global", "userLabel", "username", "email", "firstName", "lastName", "password", "password-confirm"]>
+            <#attempt>
+                <#list profile.attributes as attribute>
+                    <#assign fieldNames += [attribute.name]>
+                </#list>
+            <#recover>
+            </#attempt>
 
-                <#attempt>
-                    <#list profile.attributes as attribute>
-                        <#assign fieldNames += [attribute.name]>
-                    </#list>
-                <#recover>
-                </#attempt>
-
-                "printIfExists": function (fieldName, x) {
-                    <#list fieldNames as fieldName>
-                        if(fieldName === "${fieldName}" ){
-                            <#attempt>
-                                return "${messagesPerField.printIfExists(fieldName,'1')}" ? x : undefined;
-                            <#recover>
-                            </#attempt>
-                        }
-                    </#list>
-                    throw new Error("There is no " + fieldName " field");
-                },
-                "existsError": function (fieldName) {
-                    <#list fieldNames as fieldName>
-                        if(fieldName === "${fieldName}" ){
-                            <#attempt>
-                                return <#if messagesPerField.existsError('${fieldName}')>true<#else>false</#if>;
-                            <#recover>
-                            </#attempt>
-                        }
-                    </#list>
-                    throw new Error("There is no " + fieldName " field");
-                },
-                "get": function (fieldName) {
-                    <#list fieldNames as fieldName>
-                        if(fieldName === "${fieldName}" ){
-                            <#attempt>
-                                <#if messagesPerField.existsError('${fieldName}')>
-                                    if(fieldName === "${fieldName}" ){
-                                        return "${messagesPerField.get('${fieldName}')?no_esc}";
-                                    }
-                                </#if>
-                            <#recover>
-                            </#attempt>
-                        }
-                    </#list>
-                    throw new Error("There is no " + fieldName " field");
-                },
-                "exists": function (fieldName) {
-                    <#list fieldNames as fieldName>
-                        if(fieldName === "${fieldName}" ){
-                            <#attempt>
-                                return <#if messagesPerField.exists('${fieldName}')>true<#else>false</#if>;
-                            <#recover>
-                            </#attempt>
-                        }
-                    </#list>
-                    throw new Error("There is no " + fieldName " field");
-                }
+            "printIfExists": function (fieldName, x) {
+                <#list fieldNames as fieldName>
+                    if(fieldName === "${fieldName}" ){
+                        <#attempt>
+                            return "${messagesPerField.printIfExists(fieldName,'1')}" ? x : undefined;
+                        <#recover>
+                        </#attempt>
+                    }
+                </#list>
+                throw new Error("There is no " + fieldName + " field");
             },
-            "msg": function(){ throw new Error("use import { useKcMessage } from 'keycloakify'"); },
-            "advancedMsg": function(){ throw new Error("use import { useKcMessage } from 'keycloakify'"); }
-        }
+            "existsError": function (fieldName) {
+                <#list fieldNames as fieldName>
+                    if(fieldName === "${fieldName}" ){
+                        <#attempt>
+                            return <#if messagesPerField.existsError('${fieldName}')>true<#else>false</#if>;
+                        <#recover>
+                        </#attempt>
+                    }
+                </#list>
+                throw new Error("There is no " + fieldName + " field");
+            },
+            "get": function (fieldName) {
+                <#list fieldNames as fieldName>
+                    if(fieldName === "${fieldName}" ){
+                        <#attempt>
+                            <#if messagesPerField.existsError('${fieldName}')>
+                                return "${messagesPerField.get('${fieldName}')?no_esc}";
+                            </#if>
+                        <#recover>
+                        </#attempt>
+                    }
+                </#list>
+                throw new Error("There is no " + fieldName + " field");
+            },
+            "exists": function (fieldName) {
+                <#list fieldNames as fieldName>
+                    if(fieldName === "${fieldName}" ){
+                        <#attempt>
+                            return <#if messagesPerField.exists('${fieldName}')>true<#else>false</#if>;
+                        <#recover>
+                        </#attempt>
+                    }
+                </#list>
+                throw new Error("There is no " + fieldName + " field");
+            }
+        },
+        "msg": function(){ throw new Error("use import { useKcMessage } from 'keycloakify'"); },
+        "advancedMsg": function(){ throw new Error("use import { useKcMessage } from 'keycloakify'"); }
+    };
+
+    const out = {};
+
+    Object.deepAssign(
+        out,
+        //Removing all the undefined
+        JSON.parse(JSON.stringify(<@objectToJson object=.data_model depth=0 />))
     );
 
-    return obj;
+    Object.deepAssign(
+        out,
+        nonAutomaticallyConvertible
+    );
+
+    return out;
 
 })()
-
 </script>
