@@ -64,16 +64,17 @@ export function useKcMessage() {
         (key: string): string | undefined => {
             const match = key.match(/^\$\{([^{]+)\}$/);
 
-            if (match === null) {
-                return key;
-            }
+            const resolvedKey = match === null ? key : match[1];
 
-            return (
+            const out =
                 id<Record<string, string | undefined>>(
                     kcMessages[kcLanguageTag],
-                )[key] ??
-                id<Record<string, string | undefined>>(kcMessages["en"])[key]
-            );
+                )[resolvedKey] ??
+                id<Record<string, string | undefined>>(kcMessages["en"])[
+                    resolvedKey
+                ];
+
+            return out !== undefined ? out : match === null ? key : undefined;
         },
         [msgStr],
     );
