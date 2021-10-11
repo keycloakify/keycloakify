@@ -18,8 +18,7 @@
         "link_in_test_app": "node dist/bin/link_in_test_app.js",
         "_format": "prettier '**/*.{ts,tsx,json,md}'",
         "format": "yarn _format --write",
-        "format:check": "yarn _format --list-different",
-        "yarn_link": "ts-node src/bin/yarn_link.ts"
+        "format:check": "yarn _format --list-different"
     },
     "bin": {
         "build-keycloak-theme": "dist/bin/build-keycloak-theme/index.js",
