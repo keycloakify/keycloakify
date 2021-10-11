@@ -94,12 +94,14 @@ export type KcProps = KcPropsGeneric<
     "kcFormGroupErrorClass" |
     "kcLabelClass" |
     "kcInputClass" |
+    "kcInputErrorMessageClass" |
     "kcInputWrapperClass" |
     "kcFormOptionsClass" |
     "kcFormButtonsClass" |
     "kcFormSettingClass" |
     "kcTextareaClass" |
     "kcInfoAreaClass" |
+    "kcFormGroupHeader" |
     "kcButtonClass" |
     "kcButtonPrimaryClass" |
     "kcButtonDefaultClass" |
@@ -147,6 +149,7 @@ export const defaultKcProps = {
     "kcFormGroupErrorClass": ["has-error"],
     "kcLabelClass": ["control-label"],
     "kcInputClass": ["form-control"],
+    "kcInputErrorMessageClass": ["pf-c-form__helper-text", "pf-m-error", "required", "kc-feedback-text"],
     "kcInputWrapperClass": ["col-xs-12", "col-sm-12", "col-md-12", "col-lg-12"],
     "kcFormOptionsClass": ["col-xs-12", "col-sm-12", "col-md-12", "col-lg-12"],
     "kcFormButtonsClass": ["col-xs-12", "col-sm-12", "col-md-12", "col-lg-12"],
@@ -154,6 +157,9 @@ export const defaultKcProps = {
     "kcTextareaClass": ["form-control"],
 
     "kcInfoAreaClass": ["col-xs-12", "col-sm-4", "col-md-4", "col-lg-5", "details"],
+
+    // user-profile grouping
+    "kcFormGroupHeader": ["pf-c-form__group"],
 
     // css classes for form buttons main class used for all buttons
     "kcButtonClass": ["btn"],

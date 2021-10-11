@@ -13,7 +13,7 @@ type ExtractAfterStartingWith<Prefix extends string, StrEnum> =
  * (ex: url.loginAction is undefined on error.ftl)
  */
 export type KcContextBase =
-    KcContextBase.Login | KcContextBase.Register | KcContextBase.Info |
+    KcContextBase.Login | KcContextBase.Register | KcContextBase.RegisterUserProfile | KcContextBase.Info |
     KcContextBase.Error | KcContextBase.LoginResetPassword | KcContextBase.LoginVerifyEmail |
     KcContextBase.Terms | KcContextBase.LoginOtp | KcContextBase.LoginUpdateProfile |
     KcContextBase.LoginIdpLinkConfirm;
@@ -62,6 +62,12 @@ export declare namespace KcContextBase {
             name?: string;
         }
         isAppInitiatedAction: boolean;
+        messagesPerField: {
+            printIfExists: <T>(fieldName: string, x: T) => T | undefined;
+            existsError: (fieldName: string) => boolean;
+            get: (fieldName: string) => string;
+            exists: (fieldName: string) => boolean;
+        };
     };
 
     export type Login = Common & {
@@ -97,34 +103,9 @@ export declare namespace KcContextBase {
         };
     };
 
-    export type Register = Common & {
-        pageId: "register.ftl";
+    export type RegisterCommon = Common & {
         url: {
             registrationAction: string;
-        };
-        messagesPerField: {
-            printIfExists: <T>(
-                key:
-                    "userLabel" |
-                    "username" |
-                    "email" |
-                    "firstName" |
-                    "lastName" |
-                    "password" |
-                    "password-confirm",
-                x: T
-            )=> T | undefined;
-            existsError: (key: string)=> boolean;
-            get: (key: string) => string;
-        };
-        register: {
-            formData: {
-                firstName?: string;
-                displayName?: string;
-                lastName?: string;
-                email?: string;
-                username?: string;
-            }
         };
         passwordRequired: boolean;
         recaptchaRequired: boolean;
@@ -139,6 +120,37 @@ export declare namespace KcContextBase {
             }[]
         };
     };
+
+    export type Register = RegisterCommon & {
+        pageId: "register.ftl";
+        register: {
+            formData: {
+                firstName?: string;
+                displayName?: string;
+                lastName?: string;
+                email?: string;
+                username?: string;
+            }
+        };
+    };
+
+    export type RegisterUserProfile = RegisterCommon & {
+        pageId: "register-user-profile.ftl";
+        profile: {
+            attributes: {
+                name: string;
+                displayName?: string;
+                required: boolean;
+                value?: string;
+                group?: string;
+                groupDisplayHeader?: string;
+                groupDisplayDescription?: string;
+                readOnly: boolean;
+                autocomplete?: string;
+            }[];
+        }
+    };
+
 
     export type Info = Common & {
         pageId: "info.ftl";
@@ -191,13 +203,6 @@ export declare namespace KcContextBase {
             firstName?: string;
             lastName?: string;
         };
-        messagesPerField: {
-            printIfExists<T>(
-                key: "username" | "email" | "firstName" | "lastName",
-                x: T
-            ): T | undefined;
-        };
-
     };
 
     export type LoginIdpLinkConfirm = Common & {

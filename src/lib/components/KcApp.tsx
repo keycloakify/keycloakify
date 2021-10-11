@@ -4,6 +4,7 @@ import type { KcContextBase } from "../getKcContext/KcContextBase";
 import type { KcProps } from "./KcProps";
 import { Login } from "./Login";
 import { Register } from "./Register";
+import { RegisterUserProfile } from "./RegisterUserProfile";
 import { Info } from "./Info";
 import { Error } from "./Error";
 import { LoginResetPassword } from "./LoginResetPassword";
@@ -17,6 +18,7 @@ export const KcApp = memo(({ kcContext, ...props }: { kcContext: KcContextBase; 
     switch (kcContext.pageId) {
         case "login.ftl": return <Login {...{ kcContext, ...props }} />;
         case "register.ftl": return <Register {...{ kcContext, ...props }} />;
+        case "register-user-profile.ftl": return <RegisterUserProfile {...{ kcContext, ...props }} />;
         case "info.ftl": return <Info {...{ kcContext, ...props }} />;
         case "error.ftl": return <Error {...{ kcContext, ...props }} />;
         case "login-reset-password.ftl": return <LoginResetPassword {...{ kcContext, ...props }} />;

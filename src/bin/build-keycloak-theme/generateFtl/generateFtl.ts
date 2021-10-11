@@ -1,5 +1,3 @@
-
-
 import cheerio from "cheerio";
 import {
     replaceImportsFromStaticInJsCode,
@@ -12,11 +10,10 @@ import { objectKeys } from "tsafe/objectKeys";
 import { ftlValuesGlobalName } from "../ftlValuesGlobalName";
 
 export const pageIds = [
-    "login.ftl", "register.ftl", "info.ftl",
-    "error.ftl", "login-reset-password.ftl",
-    "login-verify-email.ftl", "terms.ftl",
-    "login-otp.ftl", "login-update-profile.ftl",
-    "login-idp-link-confirm.ftl"
+    "login.ftl", "register.ftl", "register-user-profile.ftl",
+    "info.ftl", "error.ftl", "login-reset-password.ftl",
+    "login-verify-email.ftl", "terms.ftl", "login-otp.ftl",
+    "login-update-profile.ftl", "login-idp-link-confirm.ftl"
 ] as const;
 
 export type PageId = typeof pageIds[number];

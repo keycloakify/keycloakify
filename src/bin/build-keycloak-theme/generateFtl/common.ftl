@@ -134,97 +134,67 @@
         obj,
         { 
             "messagesPerField": {
-                "printIfExists": function (key, x) {
-                    switch(key){
-                        case "userLabel": return (function (){
+
+                <#assign fieldNames = ["global", "userLabel", "username", "email", "firstName", "lastName", "password", "password-confirm"]>
+
+                <#attempt>
+	                <#list profile.attributes as attribute>
+                        <#assign fieldNames += [attribute.name]>
+		            </#list>
+                <#recover>
+                </#attempt>
+
+                "printIfExists": function (fieldName, x) {
+	                <#list fieldNames as fieldName>
+				        if(fieldName === "${fieldName}" ){
                             <#attempt>
-                                return "${messagesPerField.printIfExists('userLabel','1')}" ? x : undefined;
+                                return "${messagesPerField.printIfExists(fieldName,'1')}" ? x : undefined;
                             <#recover>
                             </#attempt>
-                        })();
-                        case "username": return (function (){
-                            <#attempt>
-                                return "${messagesPerField.printIfExists('username','1')}" ? x : undefined;
-                            <#recover>
-                            </#attempt>
-                        })();
-                        case "email": return (function (){
-                            <#attempt>
-                                return "${messagesPerField.printIfExists('email','1')}" ? x : undefined;
-                            <#recover>
-                            </#attempt>
-                        })();
-                        case "firstName": return (function (){
-                            <#attempt>
-                                return "${messagesPerField.printIfExists('firstName','1')}" ? x : undefined;
-                            <#recover>
-                            </#attempt>
-                        })();
-                        case "lastName": return (function (){
-                            <#attempt>
-                                return "${messagesPerField.printIfExists('lastName','1')}" ? x : undefined;
-                            <#recover>
-                            </#attempt>
-                        })();
-                        case "password": return (function (){
-                            <#attempt>
-                                return "${messagesPerField.printIfExists('password','1')}" ? x : undefined;
-                            <#recover>
-                            </#attempt>
-                        })();
-                        case "password-confirm": return (function (){
-                            <#attempt>
-                                return "${messagesPerField.printIfExists('password-confirm','1')}" ? x : undefined;
-                            <#recover>
-                            </#attempt>
-                        })();
-                    }
+                        }
+		            </#list>
+				    throw new Error("There is no " + fieldName " field");
                 },
-                "existsError": function (key) {
-
-                    <#attempt>
-
-						<#list profile.attributes as attribute>
-
-							if(key === "${attribute.name}" ){
-
-								return <#if messagesPerField.existsError('${attribute.name}')>true<#else>false</#if>;
-
-							}
-
-						</#list>
-
-                    <#recover>
-                    </#attempt>
-
-					throw new Error(key + " is not an exsisting profile attribute name");
-
-				},
-				"get": function (key) {
-
-                    <#attempt>
-
-						<#list profile.attributes as attribute>
-
-		        				<#if messagesPerField.existsError('${attribute.name}')>
-
-									if(key === "${attribute.name}" ){
-										return "${messagesPerField.get('${attribute.name}')?no_esc}"
-									}
-
-								</#if>
-
-						</#list>
-
-                    <#recover>
-                    </#attempt>
-
-					throw new Error(" there is no message for " + key);
-
-				}
+                "existsError": function (fieldName) {
+	                <#list fieldNames as fieldName>
+				        if(fieldName === "${fieldName}" ){
+                            <#attempt>
+					            return <#if messagesPerField.existsError('${fieldName}')>true<#else>false</#if>;
+                            <#recover>
+                            </#attempt>
+                        }
+		            </#list>
+				    throw new Error("There is no " + fieldName " field");
+                },
+                "get": function (fieldName) {
+	                <#list fieldNames as fieldName>
+				        if(fieldName === "${fieldName}" ){
+                            <#attempt>
+		        	            <#if messagesPerField.existsError('${fieldName}')>
+						            if(fieldName === "${fieldName}" ){
+							            return "${messagesPerField.get('${fieldName}')?no_esc}";
+							        }
+						        </#if>
+                            <#recover>
+                            </#attempt>
+                        }
+		            </#list>
+				    throw new Error("There is no " + fieldName " field");
+			    },
+                "exists": function (fieldName) {
+	                <#list fieldNames as fieldName>
+				        if(fieldName === "${fieldName}" ){
+                            <#attempt>
+					            return <#if messagesPerField.exists('${fieldName}')>true<#else>false</#if>;
+                            <#recover>
+                            </#attempt>
+                        }
+		            </#list>
+				    throw new Error("There is no " + fieldName " field");
+                }
             },
             "msg": function(){ throw new Error("use import { useKcMessage } from 'keycloakify'"); },
-            "advancedMsg": function(){ throw new Error("use import { useKcMessage } from 'keycloakify'"); },
+            "advancedMsg": function(){ throw new Error("use import { useKcMessage } from 'keycloakify'"); }
         }
     );
 

@@ -5,6 +5,9 @@ import { kcMessages, evtTermsUpdated } from "./kcMessages/login";
 import { useEvt } from "evt/hooks";
 //NOTE for later: https://github.com/remarkjs/react-markdown/blob/236182ecf30bd89c1e5a7652acaf8d0bf81e6170/src/renderers.js#L7-L35
 import ReactMarkdown from "react-markdown";
+import { id } from "tsafe/id";
+import { assert } from "tsafe/assert";
+import { is } from "tsafe/is";
 
 export type MessageKey = keyof typeof kcMessages["en"];
 
@@ -53,7 +56,7 @@ export function useKcMessage() {
     );
 
     const advancedMsg = useCallback(
-        (key: string): string => {
+        (key: string): string | undefined => {
 
             const match = key.match(/^\$\{([^{]+)\}$/);
 
@@ -61,7 +64,10 @@ export function useKcMessage() {
                 return key;
             }
 
-            return msgStr(match[1] as MessageKey);
+            return (
+                id<Record<string, string | undefined>>(kcMessages[kcLanguageTag])[key] ??
+                id<Record<string, string | undefined>>(kcMessages["en"])[key]
+            );
 
         },
         [msgStr]
