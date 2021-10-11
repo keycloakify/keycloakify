@@ -1,5 +1,6 @@
 
-import type { KcContextBase } from "../KcContextBase";
+import "minimal-polyfills/Object.fromEntries";
+import type { KcContextBase, Attribute } from "../KcContextBase";
 import { getEvtKcLanguage } from "../../i18n/useKcLanguageTag";
 import { getKcLanguageTagLabel } from "../../i18n/KcLanguageTag";
 //NOTE: Aside because we want to be able to import them from node
@@ -24,10 +25,10 @@ export const kcContextCommonMock: KcContextBase.Common = {
 		"registrationEmailAsUsername": true,
 	},
 	"messagesPerField": {
-			"printIfExists": (...[, x]) => x,
-			"existsError": ()=> true,
-			"get": key=> `Fake error for ${key}`,
-			"exists": ()=> true
+		"printIfExists": (...[, x]) => x,
+		"existsError": () => true,
+		"get": key => `Fake error for ${key}`,
+		"exists": () => true
 	},
 	"locale": {
 		"supported": [
@@ -163,25 +164,200 @@ export const kcContextMocks: KcContextBase[] = [
 		"registrationDisabled": false,
 
 	}),
-	id<KcContextBase.Register>({
-		...kcContextCommonMock,
-		"pageId": "register.ftl",
-		"url": {
-			...loginUrl,
-			"registrationAction": "http://localhost:8080/auth/realms/myrealm/login-actions/registration?session_code=gwZdUeO7pbYpFTRxiIxRg_QtzMbtFTKrNu6XW_f8asM&execution=12146ce0-b139-4bbd-b25b-0eccfee6577e&client_id=account&tab_id=uS8lYfebLa0"
-		},
-		"scripts": [],
-		"isAppInitiatedAction": false,
-		"register": {
-			"formData": {}
-		},
-		"passwordRequired": true,
-		"recaptchaRequired": false,
-		"social": {
-			"displayInfo": true
-		},
+	...(() => {
 
-	}),
+		const registerCommon: KcContextBase.RegisterCommon = {
+			...kcContextCommonMock,
+			"url": {
+				...loginUrl,
+				"registrationAction": "http://localhost:8080/auth/realms/myrealm/login-actions/registration?session_code=gwZdUeO7pbYpFTRxiIxRg_QtzMbtFTKrNu6XW_f8asM&execution=12146ce0-b139-4bbd-b25b-0eccfee6577e&client_id=account&tab_id=uS8lYfebLa0"
+			},
+			"scripts": [],
+			"isAppInitiatedAction": false,
+			"passwordRequired": true,
+			"recaptchaRequired": false,
+			"social": {
+				"displayInfo": true
+			},
+		};
+
+		return [
+			id<KcContextBase.Register>({
+				"pageId": "register.ftl",
+				...registerCommon,
+				"register": {
+					"formData": {}
+				},
+			}),
+			id<KcContextBase.RegisterUserProfile>({
+				"pageId": "register-user-profile.ftl",
+				...registerCommon,
+
+
+				"profile": {
+					"context": "REGISTRATION_PROFILE" as const,
+					...(() => {
+
+						const attributes: Attribute[] = [
+							{
+								"validators": {
+									"username-prohibited-characters": {
+										"ignore.empty.value": true
+									},
+									"up-username-has-value": {
+
+									},
+									"length": {
+										"ignore.empty.value": true,
+										"min": "3",
+										"max": "255"
+									},
+									"up-duplicate-username": {
+
+									},
+									"up-username-mutation": {
+
+									}
+								},
+								"displayName": "${username}",
+								"annotations": {
+
+								},
+								"required": true,
+								"groupAnnotations": {
+
+								},
+								"autocomplete": "username",
+								"readOnly": false,
+								"name": "username"
+							},
+							{
+								"validators": {
+									"up-email-exists-as-username": {
+
+									},
+									"length": {
+										"max": "255",
+										"ignore.empty.value": true
+									},
+									"up-blank-attribute-value": {
+										"error-message": "missingEmailMessage",
+										"fail-on-null": false
+									},
+									"up-duplicate-email": {
+
+									},
+									"email": {
+										"ignore.empty.value": true
+									}
+								},
+								"displayName": "${email}",
+								"annotations": {
+
+								},
+								"required": true,
+								"groupAnnotations": {
+
+								},
+								"autocomplete": "email",
+								"readOnly": false,
+								"name": "email"
+							},
+							{
+								"validators": {
+									"length": {
+										"max": "255",
+										"ignore.empty.value": true
+									},
+									"person-name-prohibited-characters": {
+										"ignore.empty.value": true
+									},
+									"up-immutable-attribute": {
+
+									},
+									"up-attribute-required-by-metadata-value": {
+
+									}
+								},
+								"displayName": "${firstName}",
+								"annotations": {
+
+								},
+								"required": true,
+								"groupAnnotations": {
+
+								},
+								"readOnly": false,
+								"name": "firstName"
+							},
+							{
+								"validators": {
+									"length": {
+										"max": "255",
+										"ignore.empty.value": true
+									},
+									"person-name-prohibited-characters": {
+										"ignore.empty.value": true
+									},
+									"up-immutable-attribute": {},
+									"up-attribute-required-by-metadata-value": {}
+								},
+								"displayName": "${lastName}",
+								"annotations": {
+
+								},
+								"required": true,
+								"groupAnnotations": {
+
+								},
+								"readOnly": false,
+								"name": "lastName"
+							},
+							{
+								"validators": {
+									"length": {
+										"ignore.empty.value": true,
+										"min": "3",
+										"max": "9"
+									},
+									"up-immutable-attribute": {},
+									"up-attribute-required-by-metadata-value": {},
+									"email": {
+										"ignore.empty.value": true
+									}
+								},
+								"displayName": "${foo}",
+								"annotations": {
+									"this_is_second_key": "this_is_second_value",
+									"this_is_first_key": "this_is_first_value"
+								},
+								"required": true,
+								"groupAnnotations": {
+
+								},
+								"readOnly": false,
+								"name": "foo"
+							}
+						];
+
+						return {
+							attributes,
+							"attributesByName": Object.fromEntries(
+								attributes.map(attribute => [attribute.name, attribute])
+							) as any
+						} as any;
+
+
+					})()
+				}
+
+
+			})
+		];
+
+
+
+	})(),
 	id<KcContextBase.Info>({
 		...kcContextCommonMock,
 		"pageId": "info.ftl",

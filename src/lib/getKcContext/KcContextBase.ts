@@ -1,8 +1,8 @@
 
 import type { PageId } from "../../bin/build-keycloak-theme/generateFtl";
 import type { KcLanguageTag } from "../i18n/KcLanguageTag";
-import { assert } from "tsafe/assert";
-import type { Equals } from "tsafe";
+import { assert } from "tsafe/assert";
+import type { Equals } from "tsafe";
 import type { MessageKey } from "../i18n/useKcMessage";
 import type { LanguageLabel } from "../i18n/KcLanguageTag";
 
@@ -135,20 +135,13 @@ export declare namespace KcContextBase {
         };
     };
 
+
     export type RegisterUserProfile = RegisterCommon & {
         pageId: "register-user-profile.ftl";
         profile: {
-            attributes: {
-                name: string;
-                displayName?: string;
-                required: boolean;
-                value?: string;
-                group?: string;
-                groupDisplayHeader?: string;
-                groupDisplayDescription?: string;
-                readOnly: boolean;
-                autocomplete?: string;
-            }[];
+            context: "REGISTRATION_PROFILE";
+            attributes: Attribute[];
+            attributesByName: Record<string, Attribute>;
         }
     };
 
@@ -209,6 +202,61 @@ export declare namespace KcContextBase {
     export type LoginIdpLinkConfirm = Common & {
         pageId: "login-idp-link-confirm.ftl";
         idpAlias: string;
+    };
+
+}
+
+export type Attribute = {
+    name: string;
+    displayName?: string;
+    required: boolean;
+    value?: string;
+    group?: string;
+    groupDisplayHeader?: string;
+    groupDisplayDescription?: string;
+    readOnly: boolean;
+    autocomplete?: string;
+    validators: Validators;
+    annotations: Record<string, string>;
+    groupAnnotations: Record<string, string>
+};
+
+export type Validators = Partial<{
+    length: Validators.DoIgnoreEmpty & Validators.Range;
+    double: Validators.DoIgnoreEmpty & Validators.Range;
+    integer: Validators.DoIgnoreEmpty & Validators.Range;
+    email: Validators.DoIgnoreEmpty;
+    'up-immutable-attribute': {};
+    'up-attribute-required-by-metadata-value': {};
+    'up-username-has-value': {};
+    'up-duplicate-username': {};
+    'up-username-mutation': {};
+    'up-email-exists-as-username': {};
+    'up-blank-attribute-value': Validators.ErrorMessage & {
+        'fail-on-null': boolean;
+    };
+    'up-duplicate-email': {};
+    'local-date': Validators.DoIgnoreEmpty;
+    pattern: Validators.DoIgnoreEmpty & Validators.ErrorMessage & { pattern: string; };
+    'person-name-prohibited-characters': Validators.DoIgnoreEmpty & Validators.ErrorMessage;
+    uri: Validators.DoIgnoreEmpty;
+    'username-prohibited-characters': Validators.DoIgnoreEmpty & Validators.ErrorMessage;
+}>;
+
+export declare namespace Validators {
+
+    export type DoIgnoreEmpty = {
+        'ignore.empty.value'?: boolean;
+    };
+
+    export type ErrorMessage = {
+        'error-message'?: string;
+    }
+
+    export type Range = {
+        /** "0", "1", "2"... yeah I know, don't tell me */
+        min?: string;
+        max?: string;
     };
 
 }
