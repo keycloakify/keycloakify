@@ -10,8 +10,7 @@ export const evtTermsUpdated = Evt.asNonPostable(Evt.create<void>());
             kcMessages[kcLanguage],
             key,
             (() => {
-                let value =
-                    key === "termsText" ? "⏳" : kcMessages[kcLanguage][key];
+                let value = key === "termsText" ? "⏳" : kcMessages[kcLanguage][key];
 
                 return {
                     "enumerable": true,

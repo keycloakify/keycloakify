@@ -1,22 +1,15 @@
 export declare namespace keycloak_js {
     export type KeycloakPromiseCallback<T> = (result: T) => void;
     export class KeycloakPromise<TSuccess, TError> extends Promise<TSuccess> {
-        success(
-            callback: KeycloakPromiseCallback<TSuccess>,
-        ): KeycloakPromise<TSuccess, TError>;
-        error(
-            callback: KeycloakPromiseCallback<TError>,
-        ): KeycloakPromise<TSuccess, TError>;
+        success(callback: KeycloakPromiseCallback<TSuccess>): KeycloakPromise<TSuccess, TError>;
+        error(callback: KeycloakPromiseCallback<TError>): KeycloakPromise<TSuccess, TError>;
     }
     export interface KeycloakAdapter {
         login(options?: KeycloakLoginOptions): KeycloakPromise<void, void>;
         logout(options?: KeycloakLogoutOptions): KeycloakPromise<void, void>;
         register(options?: KeycloakLoginOptions): KeycloakPromise<void, void>;
         accountManagement(): KeycloakPromise<void, void>;
-        redirectUri(
-            options: { redirectUri: string },
-            encodeHash: boolean,
-        ): string;
+        redirectUri(options: { redirectUri: string }, encodeHash: boolean): string;
     }
     export interface KeycloakLogoutOptions {
         redirectUri?: string;
@@ -54,38 +47,27 @@ export function createKeycloakAdapter(params: {
 }): keycloak_js.KeycloakAdapter {
     const { keycloakInstance, transformUrlBeforeRedirect } = params;
 
-    const neverResolvingPromise: keycloak_js.KeycloakPromise<void, void> =
-        Object.defineProperties(new Promise(() => {}), {
-            "success": { "value": () => {} },
-            "error": { "value": () => {} },
-        }) as any;
+    const neverResolvingPromise: keycloak_js.KeycloakPromise<void, void> = Object.defineProperties(new Promise(() => {}), {
+        "success": { "value": () => {} },
+        "error": { "value": () => {} },
+    }) as any;
 
     return {
         "login": options => {
-            window.location.href = transformUrlBeforeRedirect(
-                keycloakInstance.createLoginUrl(options),
-            );
+            window.location.href = transformUrlBeforeRedirect(keycloakInstance.createLoginUrl(options));
             return neverResolvingPromise;
         },
         "logout": options => {
-            window.location.replace(
-                transformUrlBeforeRedirect(
-                    keycloakInstance.createLogoutUrl(options),
-                ),
-            );
+            window.location.replace(transformUrlBeforeRedirect(keycloakInstance.createLogoutUrl(options)));
             return neverResolvingPromise;
         },
         "register": options => {
-            window.location.href = transformUrlBeforeRedirect(
-                keycloakInstance.createRegisterUrl(options),
-            );
+            window.location.href = transformUrlBeforeRedirect(keycloakInstance.createRegisterUrl(options));
 
             return neverResolvingPromise;
         },
         "accountManagement": () => {
-            var accountUrl = transformUrlBeforeRedirect(
-                keycloakInstance.createAccountUrl(),
-            );
+            var accountUrl = transformUrlBeforeRedirect(keycloakInstance.createAccountUrl());
             if (typeof accountUrl !== "undefined") {
                 window.location.href = accountUrl;
             } else {

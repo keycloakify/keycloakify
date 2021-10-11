@@ -9,13 +9,7 @@ fs.writeFileSync(
     Buffer.from(
         JSON.stringify(
             (() => {
-                const packageJsonParsed = JSON.parse(
-                    fs
-                        .readFileSync(
-                            pathJoin(keycloakifyDirPath, "package.json"),
-                        )
-                        .toString("utf8"),
-                );
+                const packageJsonParsed = JSON.parse(fs.readFileSync(pathJoin(keycloakifyDirPath, "package.json")).toString("utf8"));
 
                 return {
                     ...packageJsonParsed,
@@ -32,29 +26,14 @@ fs.writeFileSync(
 
 const commonThirdPartyDeps = (() => {
     const namespaceModuleNames = ["@emotion"];
-    const standaloneModuleNames = [
-        "react",
-        "@types/react",
-        "powerhooks",
-        "tss-react",
-        "evt",
-    ];
+    const standaloneModuleNames = ["react", "@types/react", "powerhooks", "tss-react", "evt"];
 
     return [
         ...namespaceModuleNames
             .map(namespaceModuleName =>
                 fs
-                    .readdirSync(
-                        pathJoin(
-                            keycloakifyDirPath,
-                            "node_modules",
-                            namespaceModuleName,
-                        ),
-                    )
-                    .map(
-                        submoduleName =>
-                            `${namespaceModuleName}/${submoduleName}`,
-                    ),
+                    .readdirSync(pathJoin(keycloakifyDirPath, "node_modules", namespaceModuleName))
+                    .map(submoduleName => `${namespaceModuleName}/${submoduleName}`),
             )
             .reduce((prev, curr) => [...prev, ...curr], []),
         ...standaloneModuleNames,
@@ -63,22 +42,14 @@ const commonThirdPartyDeps = (() => {
 
 const yarnHomeDirPath = pathJoin(keycloakifyDirPath, ".yarn_home");
 
-execSync(
-    ["rm -rf", "mkdir"].map(cmd => `${cmd} ${yarnHomeDirPath}`).join(" && "),
-);
+execSync(["rm -rf", "mkdir"].map(cmd => `${cmd} ${yarnHomeDirPath}`).join(" && "));
 
 const execYarnLink = (params: { targetModuleName?: string; cwd: string }) => {
     const { targetModuleName, cwd } = params;
 
-    const cmd = [
-        "yarn",
-        "link",
-        ...(targetModuleName !== undefined ? [targetModuleName] : []),
-    ].join(" ");
+    const cmd = ["yarn", "link", ...(targetModuleName !== undefined ? [targetModuleName] : [])].join(" ");
 
-    console.log(
-        `$ cd ${pathRelative(keycloakifyDirPath, cwd) || "."} && ${cmd}`,
-    );
+    console.log(`$ cd ${pathRelative(keycloakifyDirPath, cwd) || "."} && ${cmd}`);
 
     execSync(cmd, {
         cwd,
@@ -91,12 +62,9 @@ const execYarnLink = (params: { targetModuleName?: string; cwd: string }) => {
 
 const testAppNames = ["keycloakify-demo-app"] as const;
 
-const getTestAppPath = (testAppName: typeof testAppNames[number]) =>
-    pathJoin(keycloakifyDirPath, "..", testAppName);
+const getTestAppPath = (testAppName: typeof testAppNames[number]) => pathJoin(keycloakifyDirPath, "..", testAppName);
 
-testAppNames.forEach(testAppName =>
-    execSync("yarn install", { "cwd": getTestAppPath(testAppName) }),
-);
+testAppNames.forEach(testAppName => execSync("yarn install", { "cwd": getTestAppPath(testAppName) }));
 
 console.log("=== Linking common dependencies ===");
 
@@ -109,13 +77,7 @@ commonThirdPartyDeps.forEach(commonThirdPartyDep => {
     console.log(`${current}/${total} ${commonThirdPartyDep}`);
 
     const localInstallPath = pathJoin(
-        ...[
-            keycloakifyDirPath,
-            "node_modules",
-            ...(commonThirdPartyDep.startsWith("@")
-                ? commonThirdPartyDep.split("/")
-                : [commonThirdPartyDep]),
-        ],
+        ...[keycloakifyDirPath, "node_modules", ...(commonThirdPartyDep.startsWith("@") ? commonThirdPartyDep.split("/") : [commonThirdPartyDep])],
     );
 
     execYarnLink({ "cwd": localInstallPath });

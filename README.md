@@ -387,8 +387,7 @@ const keycloakInstance = keycloak_js({
 
 keycloakInstance.init({
     "onLoad": "check-sso",
-    "silentCheckSsoRedirectUri":
-        window.location.origin + "/silent-check-sso.html",
+    "silentCheckSsoRedirectUri": window.location.origin + "/silent-check-sso.html",
     "adapter": createKeycloakAdapter({
         "transformUrlBeforeRedirect": injectGlobalStatesInSearchParams,
         keycloakInstance,

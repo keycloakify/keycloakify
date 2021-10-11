@@ -1,10 +1,7 @@
 import * as crypto from "crypto";
 import { ftlValuesGlobalName } from "./ftlValuesGlobalName";
 
-export function replaceImportsFromStaticInJsCode(params: {
-    jsCode: string;
-    urlOrigin: undefined | string;
-}): { fixedJsCode: string } {
+export function replaceImportsFromStaticInJsCode(params: { jsCode: string; urlOrigin: undefined | string }): { fixedJsCode: string } {
     /* 
     NOTE:
 
@@ -25,34 +22,23 @@ export function replaceImportsFromStaticInJsCode(params: {
                 ? `window.${ftlValuesGlobalName}.url.resourcesPath + "/build/static/`
                 : `("${ftlValuesGlobalName}" in window ? "${urlOrigin}" : "") + ${group} + "static/`,
         )
-        .replace(
-            /".chunk.css",([a-z])+=([a-z]+\.[a-z]+)\+([a-z]+),/,
-            (...[, group1, group2, group3]) =>
-                urlOrigin === undefined
-                    ? `".chunk.css",${group1} = window.${ftlValuesGlobalName}.url.resourcesPath + "/build/" + ${group3},`
-                    : `".chunk.css",${group1} = ("${ftlValuesGlobalName}" in window ? "${urlOrigin}" : "") + ${group2} + ${group3},`,
+        .replace(/".chunk.css",([a-z])+=([a-z]+\.[a-z]+)\+([a-z]+),/, (...[, group1, group2, group3]) =>
+            urlOrigin === undefined
+                ? `".chunk.css",${group1} = window.${ftlValuesGlobalName}.url.resourcesPath + "/build/" + ${group3},`
+                : `".chunk.css",${group1} = ("${ftlValuesGlobalName}" in window ? "${urlOrigin}" : "") + ${group2} + ${group3},`,
         );
 
     return { fixedJsCode };
 }
 
-export function replaceImportsInInlineCssCode(params: {
-    cssCode: string;
-    urlPathname: string;
-    urlOrigin: undefined | string;
-}): { fixedCssCode: string } {
+export function replaceImportsInInlineCssCode(params: { cssCode: string; urlPathname: string; urlOrigin: undefined | string }): {
+    fixedCssCode: string;
+} {
     const { cssCode, urlPathname, urlOrigin } = params;
 
     const fixedCssCode = cssCode.replace(
-        urlPathname === "/"
-            ? /url\(\/([^/][^)]+)\)/g
-            : new RegExp(`url\\(${urlPathname}([^)]+)\\)`, "g"),
-        (...[, group]) =>
-            `url(${
-                urlOrigin === undefined
-                    ? "${url.resourcesPath}/build/" + group
-                    : params.urlOrigin + urlPathname + group
-            })`,
+        urlPathname === "/" ? /url\(\/([^/][^)]+)\)/g : new RegExp(`url\\(${urlPathname}([^)]+)\\)`, "g"),
+        (...[, group]) => `url(${urlOrigin === undefined ? "${url.resourcesPath}/build/" + group : params.urlOrigin + urlPathname + group})`,
     );
 
     return { fixedCssCode };
@@ -67,15 +53,7 @@ export function replaceImportsInCssCode(params: { cssCode: string }): {
     const cssGlobalsToDefine: Record<string, string> = {};
 
     new Set(cssCode.match(/url\(\/[^/][^)]+\)[^;}]*/g) ?? []).forEach(
-        match =>
-            (cssGlobalsToDefine[
-                "url" +
-                    crypto
-                        .createHash("sha256")
-                        .update(match)
-                        .digest("hex")
-                        .substring(0, 15)
-            ] = match),
+        match => (cssGlobalsToDefine["url" + crypto.createHash("sha256").update(match).digest("hex").substring(0, 15)] = match),
     );
 
     let fixedCssCode = cssCode;
@@ -83,18 +61,13 @@ export function replaceImportsInCssCode(params: { cssCode: string }): {
     Object.keys(cssGlobalsToDefine).forEach(
         cssVariableName =>
             //NOTE: split/join pattern ~ replace all
-            (fixedCssCode = fixedCssCode
-                .split(cssGlobalsToDefine[cssVariableName])
-                .join(`var(--${cssVariableName})`)),
+            (fixedCssCode = fixedCssCode.split(cssGlobalsToDefine[cssVariableName]).join(`var(--${cssVariableName})`)),
     );
 
     return { fixedCssCode, cssGlobalsToDefine };
 }
 
-export function generateCssCodeToDefineGlobals(params: {
-    cssGlobalsToDefine: Record<string, string>;
-    urlPathname: string;
-}): {
+export function generateCssCodeToDefineGlobals(params: { cssGlobalsToDefine: Record<string, string>; urlPathname: string }): {
     cssCodeToPrependInHead: string;
 } {
     const { cssGlobalsToDefine, urlPathname } = params;
@@ -107,10 +80,7 @@ export function generateCssCodeToDefineGlobals(params: {
                     [
                         `--${cssVariableName}:`,
                         cssGlobalsToDefine[cssVariableName].replace(
-                            new RegExp(
-                                `url\\(${urlPathname.replace(/\//g, "\\/")}`,
-                                "g",
-                            ),
+                            new RegExp(`url\\(${urlPathname.replace(/\//g, "\\/")}`, "g"),
                             "url(${url.resourcesPath}/build/",
                         ),
                     ].join(" "),

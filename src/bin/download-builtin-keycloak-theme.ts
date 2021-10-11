@@ -5,10 +5,7 @@ import { join as pathJoin } from "path";
 import { downloadAndUnzip } from "./tools/downloadAndUnzip";
 import type { KeycloakVersion } from "./KeycloakVersion";
 
-export function downloadBuiltinKeycloakTheme(params: {
-    keycloakVersion: KeycloakVersion;
-    destDirPath: string;
-}) {
+export function downloadBuiltinKeycloakTheme(params: { keycloakVersion: KeycloakVersion; destDirPath: string }) {
     const { keycloakVersion, destDirPath } = params;
 
     for (const ext of ["", "-community"]) {
@@ -31,17 +28,9 @@ if (require.main === module) {
         return keycloakVersion;
     })();
 
-    const destDirPath = pathJoin(
-        keycloakThemeBuildingDirPath,
-        "src",
-        "main",
-        "resources",
-        "theme",
-    );
+    const destDirPath = pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme");
 
-    console.log(
-        `Downloading builtins theme of Keycloak ${keycloakVersion} here ${destDirPath}`,
-    );
+    console.log(`Downloading builtins theme of Keycloak ${keycloakVersion} here ${destDirPath}`);
 
     downloadBuiltinKeycloakTheme({
         keycloakVersion,

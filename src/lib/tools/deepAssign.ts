@@ -2,19 +2,13 @@ import { assert } from "tsafe/assert";
 import { is } from "tsafe/is";
 
 //Warning: Be mindful that because of array this is not idempotent.
-export function deepAssign(params: {
-    target: Record<string, unknown>;
-    source: Record<string, unknown>;
-}) {
+export function deepAssign(params: { target: Record<string, unknown>; source: Record<string, unknown> }) {
     const { target, source } = params;
 
     Object.keys(source).forEach(key => {
         var dereferencedSource = source[key];
 
-        if (
-            target[key] === undefined ||
-            !(dereferencedSource instanceof Object)
-        ) {
+        if (target[key] === undefined || !(dereferencedSource instanceof Object)) {
             Object.defineProperty(target, key, {
                 "enumerable": true,
                 "writable": true,

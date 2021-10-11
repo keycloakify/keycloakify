@@ -55,19 +55,11 @@ export const Template = memo((props: TemplateProps) => {
 
     const { kcLanguageTag, setKcLanguageTag } = useKcLanguageTag();
 
-    const onChangeLanguageClickFactory = useCallbackFactory(
-        ([languageTag]: [KcLanguageTag]) => setKcLanguageTag(languageTag),
-    );
+    const onChangeLanguageClickFactory = useCallbackFactory(([languageTag]: [KcLanguageTag]) => setKcLanguageTag(languageTag));
 
-    const onTryAnotherWayClick = useConstCallback(
-        () => (
-            document.forms["kc-select-try-another-way-form" as never].submit(),
-            false
-        ),
-    );
+    const onTryAnotherWayClick = useConstCallback(() => (document.forms["kc-select-try-another-way-form" as never].submit(), false));
 
-    const { realm, locale, auth, url, message, isAppInitiatedAction } =
-        kcContext;
+    const { realm, locale, auth, url, message, isAppInitiatedAction } = kcContext;
 
     useEffect(() => {
         if (!realm.internationalizationEnabled) {
@@ -80,9 +72,7 @@ export const Template = memo((props: TemplateProps) => {
             return;
         }
 
-        window.location.href = locale.supported.find(
-            ({ languageTag }) => languageTag === kcLanguageTag,
-        )!.url;
+        window.location.href = locale.supported.find(({ languageTag }) => languageTag === kcLanguageTag)!.url;
     }, [kcLanguageTag]);
 
     const [isExtraCssLoaded, setExtraCssLoaded] = useReducer(() => true, false);
@@ -96,17 +86,12 @@ export const Template = memo((props: TemplateProps) => {
         let isUnmounted = false;
         const cleanups: (() => void)[] = [];
 
-        const toArr = (x: string | readonly string[] | undefined) =>
-            typeof x === "string" ? x.split(" ") : x ?? [];
+        const toArr = (x: string | readonly string[] | undefined) => (typeof x === "string" ? x.split(" ") : x ?? []);
 
         Promise.all(
             [
-                ...toArr(props.stylesCommon).map(relativePath =>
-                    pathJoin(url.resourcesCommonPath, relativePath),
-                ),
-                ...toArr(props.styles).map(relativePath =>
-                    pathJoin(url.resourcesPath, relativePath),
-                ),
+                ...toArr(props.stylesCommon).map(relativePath => pathJoin(url.resourcesCommonPath, relativePath)),
+                ...toArr(props.styles).map(relativePath => pathJoin(url.resourcesPath, relativePath)),
             ].map(href =>
                 appendHead({
                     "type": "css",
@@ -129,8 +114,7 @@ export const Template = memo((props: TemplateProps) => {
         );
 
         if (props.kcHtmlClass !== undefined) {
-            const htmlClassList =
-                document.getElementsByTagName("html")[0].classList;
+            const htmlClassList = document.getElementsByTagName("html")[0].classList;
 
             const tokens = cx(props.kcHtmlClass).split(" ");
 
@@ -153,76 +137,37 @@ export const Template = memo((props: TemplateProps) => {
     return (
         <div className={cx(props.kcLoginClass)}>
             <div id="kc-header" className={cx(props.kcHeaderClass)}>
-                <div
-                    id="kc-header-wrapper"
-                    className={cx(props.kcHeaderWrapperClass)}
-                >
+                <div id="kc-header-wrapper" className={cx(props.kcHeaderWrapperClass)}>
                     {msg("loginTitleHtml", realm.displayNameHtml)}
                 </div>
             </div>
 
-            <div
-                className={cx(
-                    props.kcFormCardClass,
-                    displayWide && props.kcFormCardAccountClass,
-                )}
-            >
+            <div className={cx(props.kcFormCardClass, displayWide && props.kcFormCardAccountClass)}>
                 <header className={cx(props.kcFormHeaderClass)}>
-                    {realm.internationalizationEnabled &&
-                        (assert(locale !== undefined), true) &&
-                        locale.supported.length > 1 && (
-                            <div id="kc-locale">
-                                <div
-                                    id="kc-locale-wrapper"
-                                    className={cx(props.kcLocaleWrapperClass)}
-                                >
-                                    <div
-                                        className="kc-dropdown"
-                                        id="kc-locale-dropdown"
-                                    >
-                                        <a href="#" id="kc-current-locale-link">
-                                            {getKcLanguageTagLabel(
-                                                kcLanguageTag,
-                                            )}
-                                        </a>
-                                        <ul>
-                                            {locale.supported.map(
-                                                ({ languageTag }) => (
-                                                    <li
-                                                        key={languageTag}
-                                                        className="kc-dropdown-item"
-                                                    >
-                                                        <a
-                                                            href="#"
-                                                            onClick={onChangeLanguageClickFactory(
-                                                                languageTag,
-                                                            )}
-                                                        >
-                                                            {getKcLanguageTagLabel(
-                                                                languageTag,
-                                                            )}
-                                                        </a>
-                                                    </li>
-                                                ),
-                                            )}
-                                        </ul>
-                                    </div>
+                    {realm.internationalizationEnabled && (assert(locale !== undefined), true) && locale.supported.length > 1 && (
+                        <div id="kc-locale">
+                            <div id="kc-locale-wrapper" className={cx(props.kcLocaleWrapperClass)}>
+                                <div className="kc-dropdown" id="kc-locale-dropdown">
+                                    <a href="#" id="kc-current-locale-link">
+                                        {getKcLanguageTagLabel(kcLanguageTag)}
+                                    </a>
+                                    <ul>
+                                        {locale.supported.map(({ languageTag }) => (
+                                            <li key={languageTag} className="kc-dropdown-item">
+                                                <a href="#" onClick={onChangeLanguageClickFactory(languageTag)}>
+                                                    {getKcLanguageTagLabel(languageTag)}
+                                                </a>
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </div>
                             </div>
-                        )}
-                    {!(
-                        auth !== undefined &&
-                        auth.showUsername &&
-                        !auth.showResetCredentials
-                    ) ? (
+                        </div>
+                    )}
+                    {!(auth !== undefined && auth.showUsername && !auth.showResetCredentials) ? (
                         displayRequiredFields ? (
                             <div className={cx(props.kcContentWrapperClass)}>
-                                <div
-                                    className={cx(
-                                        props.kcLabelWrapperClass,
-                                        "subtitle",
-                                    )}
-                                >
+                                <div className={cx(props.kcLabelWrapperClass, "subtitle")}>
                                     <span className="subtitle">
                                         <span className="required">*</span>
                                         {msg("requiredFields")}
@@ -237,37 +182,20 @@ export const Template = memo((props: TemplateProps) => {
                         )
                     ) : displayRequiredFields ? (
                         <div className={cx(props.kcContentWrapperClass)}>
-                            <div
-                                className={cx(
-                                    props.kcLabelWrapperClass,
-                                    "subtitle",
-                                )}
-                            >
+                            <div className={cx(props.kcLabelWrapperClass, "subtitle")}>
                                 <span className="subtitle">
-                                    <span className="required">*</span>{" "}
-                                    {msg("requiredFields")}
+                                    <span className="required">*</span> {msg("requiredFields")}
                                 </span>
                             </div>
                             <div className="col-md-10">
                                 {showUsernameNode}
                                 <div className={cx(props.kcFormGroupClass)}>
                                     <div id="kc-username">
-                                        <label id="kc-attempted-username">
-                                            {auth?.attemptedUsername}
-                                        </label>
-                                        <a
-                                            id="reset-login"
-                                            href={url.loginRestartFlowUrl}
-                                        >
+                                        <label id="kc-attempted-username">{auth?.attemptedUsername}</label>
+                                        <a id="reset-login" href={url.loginRestartFlowUrl}>
                                             <div className="kc-login-tooltip">
-                                                <i
-                                                    className={cx(
-                                                        props.kcResetFlowIcon,
-                                                    )}
-                                                ></i>
-                                                <span className="kc-tooltip-text">
-                                                    {msg("restartLoginTooltip")}
-                                                </span>
+                                                <i className={cx(props.kcResetFlowIcon)}></i>
+                                                <span className="kc-tooltip-text">{msg("restartLoginTooltip")}</span>
                                             </div>
                                         </a>
                                     </div>
@@ -279,22 +207,11 @@ export const Template = memo((props: TemplateProps) => {
                             {showUsernameNode}
                             <div className={cx(props.kcFormGroupClass)}>
                                 <div id="kc-username">
-                                    <label id="kc-attempted-username">
-                                        {auth?.attemptedUsername}
-                                    </label>
-                                    <a
-                                        id="reset-login"
-                                        href={url.loginRestartFlowUrl}
-                                    >
+                                    <label id="kc-attempted-username">{auth?.attemptedUsername}</label>
+                                    <a id="reset-login" href={url.loginRestartFlowUrl}>
                                         <div className="kc-login-tooltip">
-                                            <i
-                                                className={cx(
-                                                    props.kcResetFlowIcon,
-                                                )}
-                                            ></i>
-                                            <span className="kc-tooltip-text">
-                                                {msg("restartLoginTooltip")}
-                                            </span>
+                                            <i className={cx(props.kcResetFlowIcon)}></i>
+                                            <span className="kc-tooltip-text">{msg("restartLoginTooltip")}</span>
                                         </div>
                                     </a>
                                 </div>
@@ -305,103 +222,41 @@ export const Template = memo((props: TemplateProps) => {
                 <div id="kc-content">
                     <div id="kc-content-wrapper">
                         {/* App-initiated actions should not see warning messages about the need to complete the action during login. */}
-                        {displayMessage &&
-                            message !== undefined &&
-                            (message.type !== "warning" ||
-                                !isAppInitiatedAction) && (
-                                <div
-                                    className={cx(
-                                        "alert",
-                                        `alert-${message.type}`,
-                                    )}
-                                >
-                                    {message.type === "success" && (
-                                        <span
-                                            className={cx(
-                                                props.kcFeedbackSuccessIcon,
-                                            )}
-                                        ></span>
-                                    )}
-                                    {message.type === "warning" && (
-                                        <span
-                                            className={cx(
-                                                props.kcFeedbackWarningIcon,
-                                            )}
-                                        ></span>
-                                    )}
-                                    {message.type === "error" && (
-                                        <span
-                                            className={cx(
-                                                props.kcFeedbackErrorIcon,
-                                            )}
-                                        ></span>
-                                    )}
-                                    {message.type === "info" && (
-                                        <span
-                                            className={cx(
-                                                props.kcFeedbackInfoIcon,
-                                            )}
-                                        ></span>
-                                    )}
-                                    <span
-                                        className="kc-feedback-text"
-                                        dangerouslySetInnerHTML={{
-                                            "__html": message.summary,
-                                        }}
-                                    />
-                                </div>
-                            )}
+                        {displayMessage && message !== undefined && (message.type !== "warning" || !isAppInitiatedAction) && (
+                            <div className={cx("alert", `alert-${message.type}`)}>
+                                {message.type === "success" && <span className={cx(props.kcFeedbackSuccessIcon)}></span>}
+                                {message.type === "warning" && <span className={cx(props.kcFeedbackWarningIcon)}></span>}
+                                {message.type === "error" && <span className={cx(props.kcFeedbackErrorIcon)}></span>}
+                                {message.type === "info" && <span className={cx(props.kcFeedbackInfoIcon)}></span>}
+                                <span
+                                    className="kc-feedback-text"
+                                    dangerouslySetInnerHTML={{
+                                        "__html": message.summary,
+                                    }}
+                                />
+                            </div>
+                        )}
                         {formNode}
-                        {auth !== undefined &&
-                            auth.showTryAnotherWayLink &&
-                            showAnotherWayIfPresent && (
-                                <form
-                                    id="kc-select-try-another-way-form"
-                                    action={url.loginAction}
-                                    method="post"
-                                    className={cx(
-                                        displayWide &&
-                                            props.kcContentWrapperClass,
-                                    )}
-                                >
-                                    <div
-                                        className={cx(
-                                            displayWide && [
-                                                props.kcFormSocialAccountContentClass,
-                                                props.kcFormSocialAccountClass,
-                                            ],
-                                        )}
-                                    >
-                                        <div
-                                            className={cx(
-                                                props.kcFormGroupClass,
-                                            )}
-                                        >
-                                            <input
-                                                type="hidden"
-                                                name="tryAnotherWay"
-                                                value="on"
-                                            />
-                                            <a
-                                                href="#"
-                                                id="try-another-way"
-                                                onClick={onTryAnotherWayClick}
-                                            >
-                                                {msg("doTryAnotherWay")}
-                                            </a>
-                                        </div>
-                                    </div>
-                                </form>
-                            )}
-                        {displayInfo && (
-                            <div
-                                id="kc-info"
-                                className={cx(props.kcSignUpClass)}
+                        {auth !== undefined && auth.showTryAnotherWayLink && showAnotherWayIfPresent && (
+                            <form
+                                id="kc-select-try-another-way-form"
+                                action={url.loginAction}
+                                method="post"
+                                className={cx(displayWide && props.kcContentWrapperClass)}
                             >
-                                <div
-                                    id="kc-info-wrapper"
-                                    className={cx(props.kcInfoAreaWrapperClass)}
-                                >
+                                <div className={cx(displayWide && [props.kcFormSocialAccountContentClass, props.kcFormSocialAccountClass])}>
+                                    <div className={cx(props.kcFormGroupClass)}>
+                                        <input type="hidden" name="tryAnotherWay" value="on" />
+                                        <a href="#" id="try-another-way" onClick={onTryAnotherWayClick}>
+                                            {msg("doTryAnotherWay")}
+                                        </a>
+                                    </div>
+                                </div>
+                            </form>
+                        )}
+                        {displayInfo && (
+                            <div id="kc-info" className={cx(props.kcSignUpClass)}>
+                                <div id="kc-info-wrapper" className={cx(props.kcInfoAreaWrapperClass)}>
                                     {infoNode}
                                 </div>
                             </div>

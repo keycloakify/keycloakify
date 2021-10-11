@@ -20,8 +20,7 @@ export const kcMessages = {
         "kerberosNotConfiguredTitle": "Kerberos no configurat",
         "bypassKerberosDetail":
             "O bé no estàs identificat mitjançant Kerberos o el teu navegador no està configurat per identificar-se mitjançant Kerberos. Si us plau fes clic per identificar-te per un altre mitjà.",
-        "kerberosNotSetUp":
-            "Kerberos no està configurat. No pots identificar-te.",
+        "kerberosNotSetUp": "Kerberos no està configurat. No pots identificar-te.",
         "registerWithTitle": "Registra't amb {0}",
         "registerWithTitleHtml": "{0}",
         "loginTitle": "Inicia sessió a {0}",
@@ -32,8 +31,7 @@ export const kcMessages = {
         "unknownUser": "Usuari desconegut",
         "loginTotpTitle": "Configura la teva aplicació d'identificació mòbil",
         "loginProfileTitle": "Actualitza la informació del teu compte",
-        "loginTimeout":
-            "Has trigat massa a identificar-te. Inicia de nou la identificació.",
+        "loginTimeout": "Has trigat massa a identificar-te. Inicia de nou la identificació.",
         "oauthGrantTitle": "Concessió OAuth",
         "oauthGrantTitleHtml": "{0}",
         "errorTitle": "Ho sentim...",
@@ -47,8 +45,7 @@ export const kcMessages = {
         "termsTitleHtml": "Termes i Condicions",
         "termsText": "<p>Termes i condicions a definir</p>",
         "recaptchaFailed": "Reconeixement de text invàlid",
-        "recaptchaNotConfigured":
-            "El reconeixement de text és obligatori però no està configurat",
+        "recaptchaNotConfigured": "El reconeixement de text és obligatori però no està configurat",
         "consentDenied": "Consentiment rebutjat.",
         "noAccount": "Usuari nou?",
         "username": "Usuari",
@@ -75,23 +72,17 @@ export const kcMessages = {
         "gssDelegationCredential": "GSS Delegation Credential",
         "loginTotpStep1":
             'Instal·la <a href="https://freeotp.github.io/" target="_blank">FreeOTP</a> o Google Authenticator al teu telèfon mòbil. Les dues aplicacions estan disponibles a <a href="https://play.google.com">Google Play</a> i en l\'App Store d\'Apple.',
-        "loginTotpStep2":
-            "Obre l'aplicació i escaneja el codi o introdueix la clau.",
-        "loginTotpStep3":
-            "Introdueix el codi únic que et mostra l'aplicació d'autenticació i fes clic a Envia per finalitzar la configuració",
+        "loginTotpStep2": "Obre l'aplicació i escaneja el codi o introdueix la clau.",
+        "loginTotpStep3": "Introdueix el codi únic que et mostra l'aplicació d'autenticació i fes clic a Envia per finalitzar la configuració",
         "loginOtpOneTime": "Codi d'un sol ús",
         "oauthGrantRequest": "Vols permetre aquests privilegis d'accés?",
         "inResource": "a",
-        "emailVerifyInstruction1":
-            "T'hem enviat un email amb instruccions per verificar el teu email.",
-        "emailVerifyInstruction2":
-            "No has rebut un codi de verificació al teu email?",
+        "emailVerifyInstruction1": "T'hem enviat un email amb instruccions per verificar el teu email.",
+        "emailVerifyInstruction2": "No has rebut un codi de verificació al teu email?",
         "emailVerifyInstruction3": "per reenviar l'email.",
         "backToLogin": "&laquo; Torna a la identificació",
-        "emailInstruction":
-            "Indica el teu usuari o email i t'enviarem instruccions indicant com generar una nova contrasenya.",
-        "copyCodeInstruction":
-            "Si us plau, copia i enganxa aquest codi a la teva aplicació:",
+        "emailInstruction": "Indica el teu usuari o email i t'enviarem instruccions indicant com generar una nova contrasenya.",
+        "copyCodeInstruction": "Si us plau, copia i enganxa aquest codi a la teva aplicació:",
         "personalInfo": "Informació personal:",
         "role_admin": "Admin",
         "role_realm-admin": "Administrador del domini",
@@ -119,12 +110,9 @@ export const kcMessages = {
         "client_broker": "Broker",
         "invalidUserMessage": "Usuari o contrasenya incorrectes.",
         "invalidEmailMessage": "Email no vàlid",
-        "accountDisabledMessage":
-            "El compte està desactivat, contacta amb l'administrador.",
-        "accountTemporarilyDisabledMessage":
-            "El compte està temporalment desactivat, contacta amb l'administrador o intenta-ho de nou més tard.",
-        "expiredCodeMessage":
-            "S'ha esgotat el temps màxim per a la identificació. Si us plau identifica't de nou.",
+        "accountDisabledMessage": "El compte està desactivat, contacta amb l'administrador.",
+        "accountTemporarilyDisabledMessage": "El compte està temporalment desactivat, contacta amb l'administrador o intenta-ho de nou més tard.",
+        "expiredCodeMessage": "S'ha esgotat el temps màxim per a la identificació. Si us plau identifica't de nou.",
         "missingFirstNameMessage": "Si us plau indica el teu nom.",
         "missingLastNameMessage": "Si us plau indica els teus cognoms.",
         "missingEmailMessage": "Si us plau indica el teu email.",
@@ -132,10 +120,8 @@ export const kcMessages = {
         "missingPasswordMessage": "Si us plau indica la teva contrasenya.",
         "missingTotpMessage": "Si us plau indica el teu codi d'autenticació",
         "notMatchPasswordMessage": "Les contrasenyes no coincideixen.",
-        "invalidPasswordExistingMessage":
-            "La contrasenya actual no és correcta.",
-        "invalidPasswordConfirmMessage":
-            "La confirmació de contrasenya no coincideix.",
+        "invalidPasswordExistingMessage": "La contrasenya actual no és correcta.",
+        "invalidPasswordConfirmMessage": "La confirmació de contrasenya no coincideix.",
         "invalidTotpMessage": "El codi d'autenticació no és vàlid.",
         "usernameExistsMessage": "El nom d'usuari ja existeix",
         "emailExistsMessage": "L'email ja existeix",
@@ -143,87 +129,54 @@ export const kcMessages = {
             "Ja existeix un usuari amb aquest email. Si us plau accedeix a la gestió del teu compte per enllaçar-lo.",
         "federatedIdentityUsernameExistsMessage":
             "Ja existeix un usuari amb aquest nom d'usuari. Si us plau accedeix a la gestió del teu compte per enllaçar-lo.",
-        "configureTotpMessage":
-            "Has de configurar l'aplicació mòbil 'd'identificació per activar el teu compte.",
-        "updateProfileMessage":
-            "Has d'actualitzar el teu perfil d'usuari per activar el teu compte.",
-        "updatePasswordMessage":
-            "Has de canviar la contrasenya per activar el teu compte.",
-        "verifyEmailMessage":
-            "Has de verificar el teu email per activar el teu compte.",
-        "emailSentMessage":
-            "En breu hauries de rebre un missatge amb més instruccions",
-        "emailSendErrorMessage":
-            "Ha fallat l'enviament de l'email, si us plau intenta-ho de nou més tard.",
+        "configureTotpMessage": "Has de configurar l'aplicació mòbil 'd'identificació per activar el teu compte.",
+        "updateProfileMessage": "Has d'actualitzar el teu perfil d'usuari per activar el teu compte.",
+        "updatePasswordMessage": "Has de canviar la contrasenya per activar el teu compte.",
+        "verifyEmailMessage": "Has de verificar el teu email per activar el teu compte.",
+        "emailSentMessage": "En breu hauries de rebre un missatge amb més instruccions",
+        "emailSendErrorMessage": "Ha fallat l'enviament de l'email, si us plau intenta-ho de nou més tard.",
         "accountUpdatedMessage": "El teu compte s'ha actualitzat.",
         "accountPasswordUpdatedMessage": "La contrasenya s'ha actualitzat.",
         "noAccessMessage": "Sense accés",
-        "invalidPasswordMinLengthMessage":
-            "Contrasenya incorrecta: longitud mínima {0}.",
-        "invalidPasswordMinDigitsMessage":
-            "Contrasenya incorrecta: ha de contenir almenys {0} caràcters numèrics.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Contrasenya incorrecta: ha de contenir almenys {0} lletres minúscules.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Contrasenya incorrecta: ha de contenir almenys {0} lletres majúscules.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Contrasenya incorrecta: ha de contenir almenys {0} caràcters especials.",
-        "invalidPasswordNotUsernameMessage":
-            "Contrasenya incorrecta: no pot ser igual al nom d'usuari.",
-        "invalidPasswordRegexPatternMessage":
-            "Contrasenya incorrecta: no compleix l'expressió regular.",
-        "invalidPasswordHistoryMessage":
-            "Contrasenya incorrecta: no pot ser igual a cap de les últimes {0} contrasenyes.",
+        "invalidPasswordMinLengthMessage": "Contrasenya incorrecta: longitud mínima {0}.",
+        "invalidPasswordMinDigitsMessage": "Contrasenya incorrecta: ha de contenir almenys {0} caràcters numèrics.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Contrasenya incorrecta: ha de contenir almenys {0} lletres minúscules.",
+        "invalidPasswordMinUpperCaseCharsMessage": "Contrasenya incorrecta: ha de contenir almenys {0} lletres majúscules.",
+        "invalidPasswordMinSpecialCharsMessage": "Contrasenya incorrecta: ha de contenir almenys {0} caràcters especials.",
+        "invalidPasswordNotUsernameMessage": "Contrasenya incorrecta: no pot ser igual al nom d'usuari.",
+        "invalidPasswordRegexPatternMessage": "Contrasenya incorrecta: no compleix l'expressió regular.",
+        "invalidPasswordHistoryMessage": "Contrasenya incorrecta: no pot ser igual a cap de les últimes {0} contrasenyes.",
         "failedToProcessResponseMessage": "Fallada en processar la resposta",
         "httpsRequiredMessage": "HTTPS obligatori",
         "realmNotEnabledMessage": "El domini no està activat",
         "invalidRequestMessage": "Petició incorrecta",
         "failedLogout": "Ha fallat la desconnexió.",
-        "unknownLoginRequesterMessage":
-            "Sol·licitant d'identificació desconegut",
-        "loginRequesterNotEnabledMessage":
-            "El sol·licitant d'inici de sessió està desactivat",
-        "bearerOnlyMessage":
-            "Les aplicacions Bearer-only no poden iniciar sessió des del navegador.",
-        "directGrantsOnlyMessage":
-            "Els clients de tipus Direct-grants-only no poden iniciar sessió des del navegador.",
+        "unknownLoginRequesterMessage": "Sol·licitant d'identificació desconegut",
+        "loginRequesterNotEnabledMessage": "El sol·licitant d'inici de sessió està desactivat",
+        "bearerOnlyMessage": "Les aplicacions Bearer-only no poden iniciar sessió des del navegador.",
+        "directGrantsOnlyMessage": "Els clients de tipus Direct-grants-only no poden iniciar sessió des del navegador.",
         "invalidRedirectUriMessage": "L'URI de redirecció no és correcta",
         "unsupportedNameIdFormatMessage": "NameIDFormat no suportat",
         "invalidRequesterMessage": "Sol·licitant no vàlid",
         "registrationNotAllowedMessage": "El registre no està permès",
-        "resetCredentialNotAllowedMessage":
-            "El reinici de les credencials no està permès",
+        "resetCredentialNotAllowedMessage": "El reinici de les credencials no està permès",
         "permissionNotApprovedMessage": "Permís no aprovat.",
-        "noRelayStateInResponseMessage":
-            "Sense estat de retransmissió en la resposta del proveïdor d'identitat.",
-        "identityProviderAlreadyLinkedMessage":
-            "La identitat retornada pel proveïdor d'identitat ja està associada a un altre usuari.",
-        "insufficientPermissionMessage":
-            "Permisos insuficients per enllaçar identitats.",
-        "couldNotProceedWithAuthenticationRequestMessage":
-            "No s'ha pogut continuar amb la petició d'autenticació al proveïdor d'identitat.",
-        "couldNotObtainTokenMessage":
-            "No s'ha pogut obtenir el codi del proveïdor d'identitat.",
-        "unexpectedErrorRetrievingTokenMessage":
-            "Error inesperat obtenint el token del proveïdor d'identitat",
-        "unexpectedErrorHandlingResponseMessage":
-            "Error inesperat processant la resposta del proveïdor d'identitat.",
-        "identityProviderAuthenticationFailedMessage":
-            "Ha fallat l'autenticació. No ha estat possible autenticar-se en el proveïdor d'identitat.",
-        "couldNotSendAuthenticationRequestMessage":
-            "No s'ha pogut enviar la petició d'identificació al proveïdor d'identitat.",
-        "unexpectedErrorHandlingRequestMessage":
-            "Error inesperat durant la petició d'identificació al proveïdor d'identitat.",
+        "noRelayStateInResponseMessage": "Sense estat de retransmissió en la resposta del proveïdor d'identitat.",
+        "identityProviderAlreadyLinkedMessage": "La identitat retornada pel proveïdor d'identitat ja està associada a un altre usuari.",
+        "insufficientPermissionMessage": "Permisos insuficients per enllaçar identitats.",
+        "couldNotProceedWithAuthenticationRequestMessage": "No s'ha pogut continuar amb la petició d'autenticació al proveïdor d'identitat.",
+        "couldNotObtainTokenMessage": "No s'ha pogut obtenir el codi del proveïdor d'identitat.",
+        "unexpectedErrorRetrievingTokenMessage": "Error inesperat obtenint el token del proveïdor d'identitat",
+        "unexpectedErrorHandlingResponseMessage": "Error inesperat processant la resposta del proveïdor d'identitat.",
+        "identityProviderAuthenticationFailedMessage": "Ha fallat l'autenticació. No ha estat possible autenticar-se en el proveïdor d'identitat.",
+        "couldNotSendAuthenticationRequestMessage": "No s'ha pogut enviar la petició d'identificació al proveïdor d'identitat.",
+        "unexpectedErrorHandlingRequestMessage": "Error inesperat durant la petició d'identificació al proveïdor d'identitat.",
         "invalidAccessCodeMessage": "Codi d'accés no vàlid.",
         "sessionNotActiveMessage": "La sessió no està activa",
-        "invalidCodeMessage":
-            "Hi ha hagut un error, si us plau identifica't de nou des de la teva aplicació.",
-        "identityProviderUnexpectedErrorMessage":
-            "Error no esperat intentant autenticar en el proveïdor d'identitat.",
-        "identityProviderNotFoundMessage":
-            "No s'ha trobat cap proveïdor d'identitat.",
-        "realmSupportsNoCredentialsMessage":
-            "El domini no suporta cap tipus de credencials.",
+        "invalidCodeMessage": "Hi ha hagut un error, si us plau identifica't de nou des de la teva aplicació.",
+        "identityProviderUnexpectedErrorMessage": "Error no esperat intentant autenticar en el proveïdor d'identitat.",
+        "identityProviderNotFoundMessage": "No s'ha trobat cap proveïdor d'identitat.",
+        "realmSupportsNoCredentialsMessage": "El domini no suporta cap tipus de credencials.",
         "identityProviderNotUniqueMessage":
             "El domini suporta múltiples proveïdors d'identitat. No s'ha pogut determinar el proveïdor d'identitat que hauria de ser utilitzat per identificar-se.",
         "emailVerifiedMessage": "El teu email ha estat verificat.",
@@ -252,8 +205,7 @@ export const kcMessages = {
         "doTryAnotherWay": "Zkusit jiným způsobem",
         "doConfirmDelete": "Potvrdit odstranění",
         "errorDeletingAccount": "Nastala chyba při odstraňování účtu",
-        "deletingAccountForbidden":
-            "Nemáte dostatečná oprávnění k odstranění vašeho vlastního účtu, kontaktujte administrátora.",
+        "deletingAccountForbidden": "Nemáte dostatečná oprávnění k odstranění vašeho vlastního účtu, kontaktujte administrátora.",
         "kerberosNotConfigured": "Kerberos není nakonfigurován",
         "kerberosNotConfiguredTitle": "Kerberos není nakonfigurován",
         "bypassKerberosDetail":
@@ -269,8 +221,7 @@ export const kcMessages = {
         "unknownUser": "Neznámý uživatel",
         "loginTotpTitle": "Nastavení autentikátoru OTP",
         "loginProfileTitle": "Aktualizovat informace o účtu",
-        "loginTimeout":
-            "Přihlašování trvalo příliš dlouho. Přihlašovací proces začíná od začátku.",
+        "loginTimeout": "Přihlašování trvalo příliš dlouho. Přihlašovací proces začíná od začátku.",
         "oauthGrantTitle": "Poskytnout přístup",
         "oauthGrantTitleHtml": "{0}",
         "errorTitle": "Je nám líto ...",
@@ -285,8 +236,7 @@ export const kcMessages = {
         "termsText": "<p>Smluvní podmínky k odsouhlasení</p>",
         "termsPlainText": "Smluvní podmínky k odsouhlasení.",
         "recaptchaFailed": "Neplatná Recaptcha",
-        "recaptchaNotConfigured":
-            "Recaptcha je vyžadována, ale není nakonfigurována",
+        "recaptchaNotConfigured": "Recaptcha je vyžadována, ale není nakonfigurována",
         "consentDenied": "Souhlas byl zamítnut.",
         "noAccount": "Nový uživatel?",
         "username": "Přihlašovací jméno",
@@ -326,18 +276,13 @@ export const kcMessages = {
         "samlRoleListScopeConsentText": "Moje role",
         "rolesScopeConsentText": "Uživatelské role",
         "restartLoginTooltip": "Restart login",
-        "loginTotpIntro":
-            "Musíte si nakonfigurovat generátor jednorázových kódů (OTP) pro přístup k účtu",
-        "loginTotpStep1":
-            "Nainstalujte do mobilu jednu z následujících aplikací",
+        "loginTotpIntro": "Musíte si nakonfigurovat generátor jednorázových kódů (OTP) pro přístup k účtu",
+        "loginTotpStep1": "Nainstalujte do mobilu jednu z následujících aplikací",
         "loginTotpStep2": "Otevřete aplikaci a naskenujte čárový kód",
-        "loginTotpStep3":
-            "Zadejte jednorázový kód poskytnutý aplikací a klepnutím na tlačítko Odeslat dokončete nastavení",
-        "loginTotpStep3DeviceName":
-            "Zadejte název zařízení pro jednodušší správu jednorázových kódů (OTP) zařízení.",
+        "loginTotpStep3": "Zadejte jednorázový kód poskytnutý aplikací a klepnutím na tlačítko Odeslat dokončete nastavení",
+        "loginTotpStep3DeviceName": "Zadejte název zařízení pro jednodušší správu jednorázových kódů (OTP) zařízení.",
         "loginTotpManualStep2": "Otevřete aplikaci a zadejte klíč",
-        "loginTotpManualStep3":
-            "Použijte následující hodnoty konfigurace, pokud aplikace umožňuje jejich nastavení",
+        "loginTotpManualStep3": "Použijte následující hodnoty konfigurace, pokud aplikace umožňuje jejich nastavení",
         "loginTotpUnableToScan": "Nelze skenovat?",
         "loginTotpScanBarcode": "Skenovat čárový kód?",
         "loginTotpOneTime": "Jednorázový kód",
@@ -352,38 +297,28 @@ export const kcMessages = {
         "loginChooseAuthenticator": "Vyberte metodu přihlášení",
         "oauthGrantRequest": "Poskytujete tyto přístupová oprávnění?",
         "inResource": "v",
-        "verifyOAuth2DeviceUserCode":
-            "Zadejte kód z vašeho zařízení a klikněte na Odeslat",
-        "oauth2DeviceInvalidUserCodeMessage":
-            "Nesprávný kód, zkuste to prosím znovu.",
-        "oauth2DeviceExpiredUserCodeMessage":
-            "Platnost kódu vypršela. Vraťte se prosím do vašeho zařízení a zkuste se připojit znovu.",
-        "oauth2DeviceVerificationCompleteHeader":
-            "Úspěšné přihlášení v zařízení",
-        "oauth2DeviceVerificationCompleteMessage":
-            "Můžete zavřít toto okno prohlížeče a vrátit se do vašeho zařízení.",
+        "verifyOAuth2DeviceUserCode": "Zadejte kód z vašeho zařízení a klikněte na Odeslat",
+        "oauth2DeviceInvalidUserCodeMessage": "Nesprávný kód, zkuste to prosím znovu.",
+        "oauth2DeviceExpiredUserCodeMessage": "Platnost kódu vypršela. Vraťte se prosím do vašeho zařízení a zkuste se připojit znovu.",
+        "oauth2DeviceVerificationCompleteHeader": "Úspěšné přihlášení v zařízení",
+        "oauth2DeviceVerificationCompleteMessage": "Můžete zavřít toto okno prohlížeče a vrátit se do vašeho zařízení.",
         "oauth2DeviceVerificationFailedHeader": "Selhalo přihlášení v zařízení",
-        "oauth2DeviceVerificationFailedMessage":
-            "Můžete zavřít toto okno prohlížeče a vrátit se do vašeho zařízení a zkusit se znovu připojit.",
+        "oauth2DeviceVerificationFailedMessage": "Můžete zavřít toto okno prohlížeče a vrátit se do vašeho zařízení a zkusit se znovu připojit.",
         "oauth2DeviceConsentDeniedMessage": "Připojení zařízení odmítnuto.",
         "oauth2DeviceAuthorizationGrantDisabledMessage":
             "Klient nemá povoleno iniciovat OAuth 2.0 Device Authorization Grant. Flow je pro klienta zakázáno.",
-        "emailVerifyInstruction1":
-            "Byl Vám zaslán e-mail s pokyny k ověření vaší e-mailové adresy.",
+        "emailVerifyInstruction1": "Byl Vám zaslán e-mail s pokyny k ověření vaší e-mailové adresy.",
         "emailVerifyInstruction2": "Nezískali jste v e-mailu ověřovací kód?",
         "emailVerifyInstruction3": "znovu odeslat e-mail.",
         "emailLinkIdpTitle": "Odkaz {0}",
-        "emailLinkIdp1":
-            "Byl vám zaslán e-mail s pokyny k propojení {0} účtu {1} s vaším účtem {2}.",
+        "emailLinkIdp1": "Byl vám zaslán e-mail s pokyny k propojení {0} účtu {1} s vaším účtem {2}.",
         "emailLinkIdp2": "Nezískali jste v e-mailu ověřovací kód?",
         "emailLinkIdp3": "znovu odeslat e-mail.",
         "emailLinkIdp4": "Pokud jste již ověřili e-mail v jiném prohlížeči",
         "emailLinkIdp5": "pokračovat.",
         "backToLogin": "&laquo; Zpět k přihlášení",
-        "emailInstruction":
-            "Zadejte své uživatelské jméno nebo e-mailovou adresu a my vám zašleme pokyny k vytvoření nového hesla.",
-        "copyCodeInstruction":
-            "Zkopírujte tento kód a vložte jej do své aplikace:",
+        "emailInstruction": "Zadejte své uživatelské jméno nebo e-mailovou adresu a my vám zašleme pokyny k vytvoření nového hesla.",
+        "copyCodeInstruction": "Zkopírujte tento kód a vložte jej do své aplikace:",
         "pageExpiredTitle": "Vypršela platnost stránky",
         "pageExpiredMsg1": "Pro restart procesu přihlášení",
         "pageExpiredMsg2": "Pokračovat v procesu přihlášení",
@@ -421,16 +356,12 @@ export const kcMessages = {
         "invalidUsernameOrEmailMessage": "Neplatné jméno nebo e-mail.",
         "invalidPasswordMessage": "Neplatné heslo.",
         "invalidEmailMessage": "Neplatný e-mail.",
-        "accountDisabledMessage":
-            "Účet je neplatný, kontaktujte administrátora.",
-        "accountTemporarilyDisabledMessage":
-            "Účet je dočasně deaktivován, kontaktujte administrátora nebo zkuste později.",
-        "expiredCodeMessage":
-            "Platnost přihlášení vypršela. Přihlaste se znovu.",
+        "accountDisabledMessage": "Účet je neplatný, kontaktujte administrátora.",
+        "accountTemporarilyDisabledMessage": "Účet je dočasně deaktivován, kontaktujte administrátora nebo zkuste později.",
+        "expiredCodeMessage": "Platnost přihlášení vypršela. Přihlaste se znovu.",
         "expiredActionMessage": "Akce vypršela. Pokračujte přihlášením.",
         "expiredActionTokenNoSessionMessage": "Akce vypršela.",
-        "expiredActionTokenSessionExistsMessage":
-            "Akce vypršela. Začněte znovu",
+        "expiredActionTokenSessionExistsMessage": "Akce vypršela. Začněte znovu",
         "missingFirstNameMessage": "Zadejte prosím jméno.",
         "missingLastNameMessage": "Zadejte prosím příjmení.",
         "missingEmailMessage": "Zadejte prosím e-mail.",
@@ -452,68 +383,44 @@ export const kcMessages = {
         "error-invalid-uri-fragment": "Nesprávný fragment URL.",
         "error-user-attribute-required": "Zadejte prosím tuto položku.",
         "invalidPasswordExistingMessage": "Neplatné existující heslo.",
-        "invalidPasswordBlacklistedMessage":
-            "Neplatné heslo: heslo je na černé listině.",
+        "invalidPasswordBlacklistedMessage": "Neplatné heslo: heslo je na černé listině.",
         "invalidPasswordConfirmMessage": "Potvrzení hesla se neshoduje.",
         "invalidTotpMessage": "Neplatný kód ověřování.",
         "usernameExistsMessage": "Uživatelské jméno již existuje.",
         "emailExistsMessage": "E-mail již existuje.",
-        "federatedIdentityExistsMessage":
-            "Uživatel s {0} {1} již existuje. Přihlaste se ke správě účtu a propojte účet.",
-        "federatedIdentityUnavailableMessage":
-            "Uživatel {0} přihlášený poskytovatelem identit {1} neexistuje. Kontaktujte prosím administrátora.",
+        "federatedIdentityExistsMessage": "Uživatel s {0} {1} již existuje. Přihlaste se ke správě účtu a propojte účet.",
+        "federatedIdentityUnavailableMessage": "Uživatel {0} přihlášený poskytovatelem identit {1} neexistuje. Kontaktujte prosím administrátora.",
         "confirmLinkIdpTitle": "Účet již existuje",
-        "federatedIdentityConfirmLinkMessage":
-            "Uživatel s {0} {1} již existuje. Jak chcete pokračovat?",
-        "federatedIdentityConfirmReauthenticateMessage":
-            "Ověřte jako {0} k propojení účtu {1}",
-        "nestedFirstBrokerFlowMessage":
-            "{0} uživatel {1} není propojen s žádným známým uživatelem.",
+        "federatedIdentityConfirmLinkMessage": "Uživatel s {0} {1} již existuje. Jak chcete pokračovat?",
+        "federatedIdentityConfirmReauthenticateMessage": "Ověřte jako {0} k propojení účtu {1}",
+        "nestedFirstBrokerFlowMessage": "{0} uživatel {1} není propojen s žádným známým uživatelem.",
         "confirmLinkIdpReviewProfile": "Zkontrolujte profil",
         "confirmLinkIdpContinue": "Přidat do existujícího účtu",
-        "configureTotpMessage":
-            "Chcete-li aktivovat účet, musíte nastavit službu Mobile Authenticator.",
-        "updateProfileMessage":
-            "Pro aktivaci účtu potřebujete aktualizovat svůj uživatelský profil.",
-        "updatePasswordMessage":
-            "Pro aktivaci účtu musíte provést aktualizaci hesla.",
+        "configureTotpMessage": "Chcete-li aktivovat účet, musíte nastavit službu Mobile Authenticator.",
+        "updateProfileMessage": "Pro aktivaci účtu potřebujete aktualizovat svůj uživatelský profil.",
+        "updatePasswordMessage": "Pro aktivaci účtu musíte provést aktualizaci hesla.",
         "resetPasswordMessage": "Je třeba změnit heslo.",
-        "verifyEmailMessage":
-            "Pro aktivaci účtu potřebujete ověřit vaši e-mailovou adresu.",
-        "linkIdpMessage":
-            "Potřebujete-li ověřit vaši e-mailovou adresu, propojte svůj účet s {0}.",
+        "verifyEmailMessage": "Pro aktivaci účtu potřebujete ověřit vaši e-mailovou adresu.",
+        "linkIdpMessage": "Potřebujete-li ověřit vaši e-mailovou adresu, propojte svůj účet s {0}.",
         "emailSentMessage": "Měli byste brzy obdržet e-mail s dalšími pokyny.",
-        "emailSendErrorMessage":
-            "Nepodařilo se odeslat e-mail, zkuste to prosím později.",
+        "emailSendErrorMessage": "Nepodařilo se odeslat e-mail, zkuste to prosím později.",
         "accountUpdatedMessage": "Váš účet byl aktualizován.",
         "accountPasswordUpdatedMessage": "Vaše heslo bylo aktualizováno.",
         "delegationCompleteHeader": "Přihlášení úspěšné",
-        "delegationCompleteMessage":
-            "Můžete zavřít toto okno prohlížeče a vrátit se do aplikace.",
+        "delegationCompleteMessage": "Můžete zavřít toto okno prohlížeče a vrátit se do aplikace.",
         "delegationFailedHeader": "Přihlášení selhalo",
-        "delegationFailedMessage":
-            "Můžete zavřít toto okno prohlížeče a vrátit se do aplikace a zkusit se znovu přihlásit.",
+        "delegationFailedMessage": "Můžete zavřít toto okno prohlížeče a vrátit se do aplikace a zkusit se znovu přihlásit.",
         "noAccessMessage": "Žádný přístup",
-        "invalidPasswordMinLengthMessage":
-            "Neplatné heslo: minimální délka {0}.",
-        "invalidPasswordMinDigitsMessage":
-            "Neplatné heslo: musí obsahovat nejméně {0} číslic.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Neplatné heslo: musí obsahovat minimálně {0} malé znaky.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Neplatné heslo: musí obsahovat nejméně {0} velká písmena.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Neplatné heslo: musí obsahovat nejméně {0} speciální znaky.",
-        "invalidPasswordNotUsernameMessage":
-            "Neplatné heslo: nesmí být totožné s uživatelským jménem.",
-        "invalidPasswordNotEmailMessage":
-            "Neplatné heslo: nesmí být totožné s e-mailovou adresou.",
-        "invalidPasswordRegexPatternMessage":
-            "Neplatné heslo: neshoduje se vzorem regulérního výrazu.",
-        "invalidPasswordHistoryMessage":
-            "Neplatné heslo: Nesmí se rovnat žádnému z posledních {0} hesel.",
-        "invalidPasswordGenericMessage":
-            "Neplatné heslo: nové heslo neodpovídá pravidlům hesla.",
+        "invalidPasswordMinLengthMessage": "Neplatné heslo: minimální délka {0}.",
+        "invalidPasswordMinDigitsMessage": "Neplatné heslo: musí obsahovat nejméně {0} číslic.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Neplatné heslo: musí obsahovat minimálně {0} malé znaky.",
+        "invalidPasswordMinUpperCaseCharsMessage": "Neplatné heslo: musí obsahovat nejméně {0} velká písmena.",
+        "invalidPasswordMinSpecialCharsMessage": "Neplatné heslo: musí obsahovat nejméně {0} speciální znaky.",
+        "invalidPasswordNotUsernameMessage": "Neplatné heslo: nesmí být totožné s uživatelským jménem.",
+        "invalidPasswordNotEmailMessage": "Neplatné heslo: nesmí být totožné s e-mailovou adresou.",
+        "invalidPasswordRegexPatternMessage": "Neplatné heslo: neshoduje se vzorem regulérního výrazu.",
+        "invalidPasswordHistoryMessage": "Neplatné heslo: Nesmí se rovnat žádnému z posledních {0} hesel.",
+        "invalidPasswordGenericMessage": "Neplatné heslo: nové heslo neodpovídá pravidlům hesla.",
         "failedToProcessResponseMessage": "Nepodařilo se zpracovat odpověď",
         "httpsRequiredMessage": "Požadováno HTTPS",
         "realmNotEnabledMessage": "Realm není povolen",
@@ -521,8 +428,7 @@ export const kcMessages = {
         "failedLogout": "Odhlášení se nezdařilo",
         "unknownLoginRequesterMessage": "Neznámý žadatel o přihlášení",
         "loginRequesterNotEnabledMessage": "Žadatel o přihlášení není povolen",
-        "bearerOnlyMessage":
-            "Aplikace bearer-only nemohou iniciovat přihlašování pomocí prohlížeče",
+        "bearerOnlyMessage": "Aplikace bearer-only nemohou iniciovat přihlašování pomocí prohlížeče",
         "standardFlowDisabledMessage":
             "Klient nesmí iniciovat přihlašování prohlížeče s daným typem odpovědi. Standardní tok je pro klienta zakázán.",
         "implicitFlowDisabledMessage":
@@ -533,51 +439,32 @@ export const kcMessages = {
         "registrationNotAllowedMessage": "Registrace není povolena",
         "resetCredentialNotAllowedMessage": "Reset Credential není povoleno",
         "permissionNotApprovedMessage": "Oprávnění nebylo schváleno.",
-        "noRelayStateInResponseMessage":
-            "Chybí relay state v odpovědi od poskytovatele identity.",
-        "insufficientPermissionMessage":
-            "Nedostatečná oprávnění k propojení identit.",
-        "couldNotProceedWithAuthenticationRequestMessage":
-            "Nemohu pokračovat s žádostí o ověření poskytovateli identity.",
-        "couldNotObtainTokenMessage":
-            "Nelze získat token od poskytovatele identity.",
-        "unexpectedErrorRetrievingTokenMessage":
-            "Neočekávaná chyba při načítání tokenu od poskytovatele identity.",
-        "unexpectedErrorHandlingResponseMessage":
-            "Neočekávaná chyba při zpracování odpovědi od poskytovatele identity.",
-        "identityProviderAuthenticationFailedMessage":
-            "Ověření selhalo. Nelze ověřit s poskytovatelem identity.",
-        "couldNotSendAuthenticationRequestMessage":
-            "Nelze odeslat žádost o ověření poskytovateli identity.",
-        "unexpectedErrorHandlingRequestMessage":
-            "Neočekávaná chyba při zpracování požadavku na ověření poskytovateli identity.",
+        "noRelayStateInResponseMessage": "Chybí relay state v odpovědi od poskytovatele identity.",
+        "insufficientPermissionMessage": "Nedostatečná oprávnění k propojení identit.",
+        "couldNotProceedWithAuthenticationRequestMessage": "Nemohu pokračovat s žádostí o ověření poskytovateli identity.",
+        "couldNotObtainTokenMessage": "Nelze získat token od poskytovatele identity.",
+        "unexpectedErrorRetrievingTokenMessage": "Neočekávaná chyba při načítání tokenu od poskytovatele identity.",
+        "unexpectedErrorHandlingResponseMessage": "Neočekávaná chyba při zpracování odpovědi od poskytovatele identity.",
+        "identityProviderAuthenticationFailedMessage": "Ověření selhalo. Nelze ověřit s poskytovatelem identity.",
+        "couldNotSendAuthenticationRequestMessage": "Nelze odeslat žádost o ověření poskytovateli identity.",
+        "unexpectedErrorHandlingRequestMessage": "Neočekávaná chyba při zpracování požadavku na ověření poskytovateli identity.",
         "invalidAccessCodeMessage": "Neplatný přístupový kód.",
         "sessionNotActiveMessage": "Session není aktivní.",
-        "invalidCodeMessage":
-            "Došlo k chybě, přihlaste se znovu prostřednictvím své aplikace.",
-        "identityProviderUnexpectedErrorMessage":
-            "Neočekávaná chyba při ověřování s poskytovatelem identity",
-        "identityProviderMissingStateMessage":
-            "V odpovědi od poskytovatele identit chybí parametr state.",
-        "identityProviderNotFoundMessage":
-            "Nelze najít poskytovatele identity s identifikátorem.",
+        "invalidCodeMessage": "Došlo k chybě, přihlaste se znovu prostřednictvím své aplikace.",
+        "identityProviderUnexpectedErrorMessage": "Neočekávaná chyba při ověřování s poskytovatelem identity",
+        "identityProviderMissingStateMessage": "V odpovědi od poskytovatele identit chybí parametr state.",
+        "identityProviderNotFoundMessage": "Nelze najít poskytovatele identity s identifikátorem.",
         "identityProviderLinkSuccess":
             "Úspěšně jste ověřili svůj e-mail. Vraťte se prosím zpět do původního prohlížeče a pokračujte tam s přihlašovacími údaji.",
-        "staleCodeMessage":
-            "Tato stránka již není platná. Vraťte se zpět do aplikace a přihlaste se znovu",
-        "realmSupportsNoCredentialsMessage":
-            "Realm nepodporuje žádný typ pověření.",
+        "staleCodeMessage": "Tato stránka již není platná. Vraťte se zpět do aplikace a přihlaste se znovu",
+        "realmSupportsNoCredentialsMessage": "Realm nepodporuje žádný typ pověření.",
         "identityProviderNotUniqueMessage":
             "Realm podporuje více poskytovatelů identity. Nelze určit, s jakým zprostředkovatelem identity se má ověřit.",
         "emailVerifiedMessage": "Vaše e-mailová adresa byla ověřena.",
-        "staleEmailVerificationLink":
-            "Odkaz, na který jste klikli, je starý odkaz a již není platný. Možná jste již ověřili svůj e-mail?",
-        "identityProviderAlreadyLinkedMessage":
-            "Federovaná identita vrácená {0} je již propojena s jiným uživatelem.",
-        "confirmAccountLinking":
-            "Potvrďte propojení účtu {0} poskytovatele identity {1} s vaším účtem.",
-        "confirmEmailAddressVerification":
-            "Potvrďte platnost e-mailové adresy {0}.",
+        "staleEmailVerificationLink": "Odkaz, na který jste klikli, je starý odkaz a již není platný. Možná jste již ověřili svůj e-mail?",
+        "identityProviderAlreadyLinkedMessage": "Federovaná identita vrácená {0} je již propojena s jiným uživatelem.",
+        "confirmAccountLinking": "Potvrďte propojení účtu {0} poskytovatele identity {1} s vaším účtem.",
+        "confirmEmailAddressVerification": "Potvrďte platnost e-mailové adresy {0}.",
         "confirmExecutionOfActions": "Proveďte následující akce",
         "backToApplication": "&laquo; Zpět na aplikaci",
         "missingParameterMessage": "Chybějící parametry : {0}",
@@ -585,10 +472,8 @@ export const kcMessages = {
         "clientDisabledMessage": "Klient byl zneplatněn.",
         "invalidParameterMessage": "Neplatný parametr : {0}",
         "alreadyLoggedIn": "Jste již přihlášeni.",
-        "differentUserAuthenticated":
-            "Jste již v této relaci ověřeni jako jiný uživatel ' {0} '. Nejdříve se odhlašte.",
-        "brokerLinkingSessionExpired":
-            "Požadované propojení účtu brokerů, ale aktuální relace již není platná.",
+        "differentUserAuthenticated": "Jste již v této relaci ověřeni jako jiný uživatel ' {0} '. Nejdříve se odhlašte.",
+        "brokerLinkingSessionExpired": "Požadované propojení účtu brokerů, ale aktuální relace již není platná.",
         "proceedWithAction": "&raquo; Klikněte zde pro pokračování",
         "requiredAction.CONFIGURE_TOTP": "Konfigurovat OTP",
         "requiredAction.terms_and_conditions": "Smluvní podmínky",
@@ -615,23 +500,19 @@ export const kcMessages = {
         "openshift.scope.list-projects": "Seznam projektů",
         "saml.post-form.title": "Přesměrování přihlášení",
         "saml.post-form.message": "Přesměrovávám, čekejte prosím.",
-        "saml.post-form.js-disabled":
-            "JavaScript není povolený. Důrazně doporučujeme jej povolit. Pro pokračování stiskněte tlačítko níže.",
+        "saml.post-form.js-disabled": "JavaScript není povolený. Důrazně doporučujeme jej povolit. Pro pokračování stiskněte tlačítko níže.",
         "otp-display-name": "Authenticator Application",
         "otp-help-text": "Zadejte ověřovací kód z aplikace.",
         "password-display-name": "Heslo",
         "password-help-text": "Přihlaste se pomocí hesla.",
         "auth-username-form-display-name": "Jméno",
-        "auth-username-form-help-text":
-            "Začněte přihlášení zadáním svého uživatelského jména",
+        "auth-username-form-help-text": "Začněte přihlášení zadáním svého uživatelského jména",
         "auth-username-password-form-display-name": "Jméno a heslo",
-        "auth-username-password-form-help-text":
-            "Přihlaste se pomocí jména a hesla.",
+        "auth-username-password-form-help-text": "Přihlaste se pomocí jména a hesla.",
         "webauthn-display-name": "Bezpečnostní klíč",
         "webauthn-help-text": "Použijte k přihlášení bezpečnostní klíč.",
         "webauthn-passwordless-display-name": "Bezpečnostní klíč",
-        "webauthn-passwordless-help-text":
-            "Použijte bezpečnostní klíč k přihlášení bez hesla.",
+        "webauthn-passwordless-help-text": "Použijte bezpečnostní klíč k přihlášení bez hesla.",
         "webauthn-login-title": "Přihlášení bezpečnostním klíčem",
         "webauthn-registration-title": "Registrace bezpečnostního klíče",
         "webauthn-available-authenticators": "Dostupné autentikátory",
@@ -639,23 +520,15 @@ export const kcMessages = {
             "WebAuthn není v tomto prohlížeči podporováno. Zkuste jiný prohlížeč nebo kontaktujte svého administrátora.",
         "webauthn-doAuthenticate": "Přihlášení bezpečnostním klíčem",
         "webauthn-error-title": "Chyba bezpečnostního klíče",
-        "webauthn-error-registration":
-            "Selhala registrace vašeho bezpečnostního klíče.<br/> {0}",
-        "webauthn-error-api-get":
-            "Selhalo přihlášení pomocí bezpečnostního klíče.<br/> {0}",
-        "webauthn-error-different-user":
-            "První přihlášený uživatel není totožný s uživatelem přihlášeným pomocí bezpečnostního klíče.",
-        "webauthn-error-auth-verification":
-            "Nevalidní výsledek přihlášení pomocí bezpečnostního klíče.<br/> {0}",
-        "webauthn-error-register-verification":
-            "Nevalidní výsledek registrace bezpečnostního klíče.<br/> {0}",
-        "webauthn-error-user-not-found":
-            "Neznámý uživatel přihlášen pomocí bezpečnostního klíče.",
-        "identity-provider-redirector":
-            "Propojit s jiným poskytovatelem identit",
+        "webauthn-error-registration": "Selhala registrace vašeho bezpečnostního klíče.<br/> {0}",
+        "webauthn-error-api-get": "Selhalo přihlášení pomocí bezpečnostního klíče.<br/> {0}",
+        "webauthn-error-different-user": "První přihlášený uživatel není totožný s uživatelem přihlášeným pomocí bezpečnostního klíče.",
+        "webauthn-error-auth-verification": "Nevalidní výsledek přihlášení pomocí bezpečnostního klíče.<br/> {0}",
+        "webauthn-error-register-verification": "Nevalidní výsledek registrace bezpečnostního klíče.<br/> {0}",
+        "webauthn-error-user-not-found": "Neznámý uživatel přihlášen pomocí bezpečnostního klíče.",
+        "identity-provider-redirector": "Propojit s jiným poskytovatelem identit",
         "identity-provider-login-label": "Nebo se přihlaste pomocí",
-        "finalDeletionConfirmation":
-            "Pokud svůj účet odstraníte, nemůže být obnoven. Pro zachování účtu klikněte na tlačítko Zrušit.",
+        "finalDeletionConfirmation": "Pokud svůj účet odstraníte, nemůže být obnoven. Pro zachování účtu klikněte na tlačítko Zrušit.",
         "irreversibleAction": "Tuto akci nelze vzít zpět",
         "deleteAccountConfirm": "Potvrzení odstranění účtu",
         "deletingImplies": "Odstranění vašeho účtu znamená:",
@@ -693,8 +566,7 @@ export const kcMessages = {
         "unknownUser": "Ukendt bruger",
         "loginTotpTitle": "Mobil Godkendelses Opsætning",
         "loginProfileTitle": "Opdater brugerinformationer",
-        "loginTimeout":
-            "Dit login tog for lang tid. Login processen vil nu begynde forfra.",
+        "loginTimeout": "Dit login tog for lang tid. Login processen vil nu begynde forfra.",
         "oauthGrantTitle": "Giv adgang til {0}",
         "oauthGrantTitleHtml": "{0}",
         "errorTitle": "Vi beklager...",
@@ -713,8 +585,7 @@ export const kcMessages = {
         "termsText": "<p>Vilkår og betingelser mangler at blive beskrevet</p>",
         "termsPlainText": "Vilkår og betingelser mangler at blive beskrevet.",
         "recaptchaFailed": "Ugyldig Recaptcha",
-        "recaptchaNotConfigured":
-            "Recaptcha er påkrævet, men ikke konfigureret",
+        "recaptchaNotConfigured": "Recaptcha er påkrævet, men ikke konfigureret",
         "consentDenied": "Samtykke afslået.",
         "noAccount": "Ny bruger?",
         "username": "Brugernavn",
@@ -745,15 +616,12 @@ export const kcMessages = {
         "phoneScopeConsentText": "Telefonnummer",
         "offlineAccessScopeConsentText": "Offline Adgang",
         "samlRoleListScopeConsentText": "Mine roller",
-        "loginTotpIntro":
-            "Du skal opsætte en Engangskodegenerator for at kunne tilgå denne konto.",
+        "loginTotpIntro": "Du skal opsætte en Engangskodegenerator for at kunne tilgå denne konto.",
         "loginTotpStep1": "Installer en af følgende applikationer på din mobil",
         "loginTotpStep2": "Åben applikationen og skan stregkoden",
-        "loginTotpStep3":
-            "Indtast engangskoden fra applikationen og tryk Indsend for at gennemføre opsætningen",
+        "loginTotpStep3": "Indtast engangskoden fra applikationen og tryk Indsend for at gennemføre opsætningen",
         "loginTotpManualStep2": "Åben applikationen og indtast nøglen",
-        "loginTotpManualStep3":
-            "Brug følgende konfigurations værdier hvis applikationen tillader det",
+        "loginTotpManualStep3": "Brug følgende konfigurations værdier hvis applikationen tillader det",
         "loginTotpUnableToScan": "Kan du ikke skanne?",
         "loginTotpScanBarcode": "Skan stregkode?",
         "loginOtpOneTime": "Engangskode",
@@ -766,25 +634,18 @@ export const kcMessages = {
         "loginTotp.hotp": "Tællerbaseret",
         "oauthGrantRequest": "Bevilger du disse adgangs privilegier?",
         "inResource": "ind",
-        "emailVerifyInstruction1":
-            "En email med instruktioner til, hvordan du verificerer din mail adresse er blevet sendt til dig.",
-        "emailVerifyInstruction2":
-            "Har du ikke modtaget en verificerings kode i din inbox?",
+        "emailVerifyInstruction1": "En email med instruktioner til, hvordan du verificerer din mail adresse er blevet sendt til dig.",
+        "emailVerifyInstruction2": "Har du ikke modtaget en verificerings kode i din inbox?",
         "emailVerifyInstruction3": "for at gensende emailen.",
         "emailLinkIdpTitle": "Link {0}",
-        "emailLinkIdp1":
-            "En email med instruktioner til hvordan du linker {0} konto {1} med din {2} konto er blevet sendt til dig.",
-        "emailLinkIdp2":
-            "Har du ikke modtaget en verificerings kode i din inbox?",
+        "emailLinkIdp1": "En email med instruktioner til hvordan du linker {0} konto {1} med din {2} konto er blevet sendt til dig.",
+        "emailLinkIdp2": "Har du ikke modtaget en verificerings kode i din inbox?",
         "emailLinkIdp3": "for at gensende emailen.",
-        "emailLinkIdp4":
-            "Hvis du allerede har verificeret din email i en anden browser",
+        "emailLinkIdp4": "Hvis du allerede har verificeret din email i en anden browser",
         "emailLinkIdp5": "for at fortsætte.",
         "backToLogin": "&laquo; Tilbage til log ind",
-        "emailInstruction":
-            "Indtast dit brugernavn eller email adresse, så sender vi instruktioner til dig om hvordan du angiver en ny adgangskode.",
-        "copyCodeInstruction":
-            "Kopier denne kode og indsæt den i din applikation:",
+        "emailInstruction": "Indtast dit brugernavn eller email adresse, så sender vi instruktioner til dig om hvordan du angiver en ny adgangskode.",
+        "copyCodeInstruction": "Kopier denne kode og indsæt den i din applikation:",
         "pageExpiredTitle": "Siden er udløbet",
         "pageExpiredMsg1": "For at genstarte login processen",
         "pageExpiredMsg2": "For at fortsætte login processen",
@@ -818,16 +679,12 @@ export const kcMessages = {
         "client_broker": "Broker",
         "invalidUserMessage": "Ugyldig brugernavn eller adgangskode.",
         "invalidEmailMessage": "Ugyldig email adresse.",
-        "accountDisabledMessage":
-            "Kontoen er deaktiveret, kontakt en administrator.",
-        "accountTemporarilyDisabledMessage":
-            "Kontoen er midlertidigt deaktiveret, kontakt en administrator eller prøv igen senere.",
+        "accountDisabledMessage": "Kontoen er deaktiveret, kontakt en administrator.",
+        "accountTemporarilyDisabledMessage": "Kontoen er midlertidigt deaktiveret, kontakt en administrator eller prøv igen senere.",
         "expiredCodeMessage": "Log ind tog for lang tid. Prøv igen.",
-        "expiredActionMessage":
-            "Handlingen er udløbet. Fortsæt med log ind nu.",
+        "expiredActionMessage": "Handlingen er udløbet. Fortsæt med log ind nu.",
         "expiredActionTokenNoSessionMessage": "Handling udløbet.",
-        "expiredActionTokenSessionExistsMessage":
-            "Handlingen er udløbet. Start venligst forfra.",
+        "expiredActionTokenSessionExistsMessage": "Handlingen er udløbet. Start venligst forfra.",
         "missingFirstNameMessage": "Angiv fornavn.",
         "missingLastNameMessage": "Angiv efternavn.",
         "missingEmailMessage": "Angiv email adressse.",
@@ -836,73 +693,49 @@ export const kcMessages = {
         "missingTotpMessage": "Angiv autentificerings kode.",
         "notMatchPasswordMessage": "Passwords er ikke ens.",
         "invalidPasswordExistingMessage": "Ugyldig eksisterende adgangskode.",
-        "invalidPasswordBlacklistedMessage":
-            "Ugyldig adgangskode: Adgangskoden er sortlisted.",
+        "invalidPasswordBlacklistedMessage": "Ugyldig adgangskode: Adgangskoden er sortlisted.",
         "invalidPasswordConfirmMessage": "Adgangskoderne er ikke ens",
         "invalidTotpMessage": "Ugyldig autentificerings kode.",
         "usernameExistsMessage": "Brugernavnet eksisterer allerede.",
         "emailExistsMessage": "Email adressen eksisterer allerede.",
-        "federatedIdentityExistsMessage":
-            "Bruger med {0} {1} eksisterer allerede. Log ind i konto administration for at linke kontoen.",
+        "federatedIdentityExistsMessage": "Bruger med {0} {1} eksisterer allerede. Log ind i konto administration for at linke kontoen.",
         "confirmLinkIdpTitle": "Kontoen eksisterer allerede",
-        "federatedIdentityConfirmLinkMessage":
-            "Bruger med {0} {1} eksisterer allerede. Hvordan vil du fortsætte?",
-        "federatedIdentityConfirmReauthenticateMessage":
-            "Log ind som {0} for at linke din konto med {1}",
+        "federatedIdentityConfirmLinkMessage": "Bruger med {0} {1} eksisterer allerede. Hvordan vil du fortsætte?",
+        "federatedIdentityConfirmReauthenticateMessage": "Log ind som {0} for at linke din konto med {1}",
         "confirmLinkIdpReviewProfile": "Se profil",
         "confirmLinkIdpContinue": "Tilføj til eksisterende konto",
-        "configureTotpMessage":
-            "Du skal opsætte en Mobile Authenticator for at kunne aktivere din konto.",
-        "updateProfileMessage":
-            "Du skal opdatere din brugerprofil for at kunne aktivere din konto.",
-        "updatePasswordMessage":
-            "Du skal ændre din adgangskode for at kunne aktivere din konto.",
+        "configureTotpMessage": "Du skal opsætte en Mobile Authenticator for at kunne aktivere din konto.",
+        "updateProfileMessage": "Du skal opdatere din brugerprofil for at kunne aktivere din konto.",
+        "updatePasswordMessage": "Du skal ændre din adgangskode for at kunne aktivere din konto.",
         "resetPasswordMessage": "Du skal ændre din adgangskode.",
-        "verifyEmailMessage":
-            "Du skal verificere din email adresse for at kunne aktivere din konto.",
-        "linkIdpMessage":
-            "Du skal verificere din email adresse for at kunne kontoen med {0}.",
-        "emailSentMessage":
-            "Du vil snarest modtage en email med yderligere instruktioner.",
+        "verifyEmailMessage": "Du skal verificere din email adresse for at kunne aktivere din konto.",
+        "linkIdpMessage": "Du skal verificere din email adresse for at kunne kontoen med {0}.",
+        "emailSentMessage": "Du vil snarest modtage en email med yderligere instruktioner.",
         "emailSendErrorMessage": "Kunne ikke sende email, prøv igen senere.",
         "accountUpdatedMessage": "Din konto er blevet opdateret.",
         "accountPasswordUpdatedMessage": "Din adgangskode er blevet opdateret.",
         "delegationCompleteHeader": "Login lykkedes",
-        "delegationCompleteMessage":
-            "Du kan nu lukke dette browser vindue og gå tilbage til din konsol applikation.",
+        "delegationCompleteMessage": "Du kan nu lukke dette browser vindue og gå tilbage til din konsol applikation.",
         "delegationFailedHeader": "Log ind fejlede",
-        "delegationFailedMessage":
-            "Du kan nu lukke dette browser vindue og gå tilbage til din konsol applikation for at forsøge at logge ind igen.",
+        "delegationFailedMessage": "Du kan nu lukke dette browser vindue og gå tilbage til din konsol applikation for at forsøge at logge ind igen.",
         "noAccessMessage": "Ingen adgang",
-        "invalidPasswordMinLengthMessage":
-            "Ugyldig adgangskode: minimum længde {0}.",
-        "invalidPasswordMinDigitsMessage":
-            "Ugyldig adgangskode: skal minimum indeholde {0} tal.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Ugyldig adgangskode: skal minimum indeholde {0} små bogstaver.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Ugyldig adgangskode: skal minimum indeholde {0} store bogstaver.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Ugyldig adgangskode: skal minimum indeholde {0} specialtegn.",
-        "invalidPasswordNotUsernameMessage":
-            "Ugyldig adgangskode: må ikke være identisk med brugernavnet.",
-        "invalidPasswordRegexPatternMessage":
-            "Ugyldig adgangskode: Ikke i stand til at matche regex mønstre.",
-        "invalidPasswordHistoryMessage":
-            "Ugyldig adgangskode: må ikke være identisk med nogle af de seneste {0} adgangskoder.",
-        "invalidPasswordGenericMessage":
-            "Ugyldig adgangskode: ny adgangskode matcher ikke vores adgangskode politikker.",
-        "failedToProcessResponseMessage":
-            "Ude af stand til at processere svaret",
+        "invalidPasswordMinLengthMessage": "Ugyldig adgangskode: minimum længde {0}.",
+        "invalidPasswordMinDigitsMessage": "Ugyldig adgangskode: skal minimum indeholde {0} tal.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Ugyldig adgangskode: skal minimum indeholde {0} små bogstaver.",
+        "invalidPasswordMinUpperCaseCharsMessage": "Ugyldig adgangskode: skal minimum indeholde {0} store bogstaver.",
+        "invalidPasswordMinSpecialCharsMessage": "Ugyldig adgangskode: skal minimum indeholde {0} specialtegn.",
+        "invalidPasswordNotUsernameMessage": "Ugyldig adgangskode: må ikke være identisk med brugernavnet.",
+        "invalidPasswordRegexPatternMessage": "Ugyldig adgangskode: Ikke i stand til at matche regex mønstre.",
+        "invalidPasswordHistoryMessage": "Ugyldig adgangskode: må ikke være identisk med nogle af de seneste {0} adgangskoder.",
+        "invalidPasswordGenericMessage": "Ugyldig adgangskode: ny adgangskode matcher ikke vores adgangskode politikker.",
+        "failedToProcessResponseMessage": "Ude af stand til at processere svaret",
         "httpsRequiredMessage": "HTTPS påkrævet",
         "realmNotEnabledMessage": "Riget er ikke aktiveret",
         "invalidRequestMessage": "Ugyldig Forespørgsel",
         "failedLogout": "Logud fejlede",
         "unknownLoginRequesterMessage": "Ukendt log ind forespørger",
-        "loginRequesterNotEnabledMessage":
-            "Log ind forespørgeren er ikke aktiveret",
-        "bearerOnlyMessage":
-            "Bearer-only applikationer må ikke foretage browser login",
+        "loginRequesterNotEnabledMessage": "Log ind forespørgeren er ikke aktiveret",
+        "bearerOnlyMessage": "Bearer-only applikationer må ikke foretage browser login",
         "standardFlowDisabledMessage":
             "Klienten må ikke foretage browser login med den givne response_type. Standard flowet er deaktiveret for klienten.",
         "implicitFlowDisabledMessage":
@@ -913,51 +746,31 @@ export const kcMessages = {
         "registrationNotAllowedMessage": "Registrering er ikke tilladt",
         "resetCredentialNotAllowedMessage": "Reset Credential er ikke tilladt",
         "permissionNotApprovedMessage": "Tilladelse ikke godkendt.",
-        "noRelayStateInResponseMessage":
-            "Ingen relæ tilstand i svaret fra identitetsudbyderen.",
-        "insufficientPermissionMessage":
-            "Utilstrækkelig tilladelse for at kunne linke identiter.",
-        "couldNotProceedWithAuthenticationRequestMessage":
-            "Kunne ikke fortsætte med godkendelsesanmodning til identitetsudbyderen.",
-        "couldNotObtainTokenMessage":
-            "Kunne ikke opnå token fra identitetsudbyder.",
-        "unexpectedErrorRetrievingTokenMessage":
-            "Uventet fejl i forsøget på at hente token fra identitetsudbyder.",
-        "unexpectedErrorHandlingResponseMessage":
-            "Uventet fejl i forsøget på at behandle svaret fra identitetsudbyder.",
-        "identityProviderAuthenticationFailedMessage":
-            "Log ind fejlede. Kunne ikke logge ind ved identitetsudbyder.",
-        "couldNotSendAuthenticationRequestMessage":
-            "Kunne ikke sende log ind forespørgsel til identitetsudbyder.",
-        "unexpectedErrorHandlingRequestMessage":
-            "Uventet fejl under håndteringen af forespørgsel til identitetsudbyder.",
+        "noRelayStateInResponseMessage": "Ingen relæ tilstand i svaret fra identitetsudbyderen.",
+        "insufficientPermissionMessage": "Utilstrækkelig tilladelse for at kunne linke identiter.",
+        "couldNotProceedWithAuthenticationRequestMessage": "Kunne ikke fortsætte med godkendelsesanmodning til identitetsudbyderen.",
+        "couldNotObtainTokenMessage": "Kunne ikke opnå token fra identitetsudbyder.",
+        "unexpectedErrorRetrievingTokenMessage": "Uventet fejl i forsøget på at hente token fra identitetsudbyder.",
+        "unexpectedErrorHandlingResponseMessage": "Uventet fejl i forsøget på at behandle svaret fra identitetsudbyder.",
+        "identityProviderAuthenticationFailedMessage": "Log ind fejlede. Kunne ikke logge ind ved identitetsudbyder.",
+        "couldNotSendAuthenticationRequestMessage": "Kunne ikke sende log ind forespørgsel til identitetsudbyder.",
+        "unexpectedErrorHandlingRequestMessage": "Uventet fejl under håndteringen af forespørgsel til identitetsudbyder.",
         "invalidAccessCodeMessage": "Ugyldig adgangskode.",
         "sessionNotActiveMessage": "Sessionen er ikke aktiv.",
-        "invalidCodeMessage":
-            "Der opstod en fejl, log ind igen via din applikation.",
-        "identityProviderUnexpectedErrorMessage":
-            "Uventet fejl under log ind ved identitetsudbyder",
-        "identityProviderNotFoundMessage":
-            "Kunne ikke finde en identitetsudbyder med det angivede id.",
-        "identityProviderLinkSuccess":
-            "Din email er nu verificeret. Gå tilbage til din oprindelige browser og fortsæt log ind derfra.",
-        "staleCodeMessage":
-            "Siden er ikke længere gyldig, gå tilbage til din applikation og login igen",
-        "realmSupportsNoCredentialsMessage":
-            "Riget understøtter ikke nogen legimatitionstype.",
-        "credentialSetupRequired":
-            "Kan ikke logge ind. Legimatitionstype skal konfigureres.",
+        "invalidCodeMessage": "Der opstod en fejl, log ind igen via din applikation.",
+        "identityProviderUnexpectedErrorMessage": "Uventet fejl under log ind ved identitetsudbyder",
+        "identityProviderNotFoundMessage": "Kunne ikke finde en identitetsudbyder med det angivede id.",
+        "identityProviderLinkSuccess": "Din email er nu verificeret. Gå tilbage til din oprindelige browser og fortsæt log ind derfra.",
+        "staleCodeMessage": "Siden er ikke længere gyldig, gå tilbage til din applikation og login igen",
+        "realmSupportsNoCredentialsMessage": "Riget understøtter ikke nogen legimatitionstype.",
+        "credentialSetupRequired": "Kan ikke logge ind. Legimatitionstype skal konfigureres.",
         "identityProviderNotUniqueMessage":
             "Riget understøtter flere forskellige identitetsudbydere. Kunne ikke beslutte hvilken identitetsudbyder der skulle bruges til at logge ind med.",
         "emailVerifiedMessage": "Din email adresse er verificeret.",
-        "staleEmailVerificationLink":
-            "Linket du har klikket på er et gammelt udløbet link. Måske har du allerede verificeret din mailadresse?",
-        "identityProviderAlreadyLinkedMessage":
-            "Forbundsidentitet returneret af {0} er allerede linket til en anden bruger.",
-        "confirmAccountLinking":
-            "Bekræft sammenkobling af konto {0} fra identitetsudbyder {1} med din konto.",
-        "confirmEmailAddressVerification":
-            "Bekræft gyldigheden af email adresse {0}.",
+        "staleEmailVerificationLink": "Linket du har klikket på er et gammelt udløbet link. Måske har du allerede verificeret din mailadresse?",
+        "identityProviderAlreadyLinkedMessage": "Forbundsidentitet returneret af {0} er allerede linket til en anden bruger.",
+        "confirmAccountLinking": "Bekræft sammenkobling af konto {0} fra identitetsudbyder {1} med din konto.",
+        "confirmEmailAddressVerification": "Bekræft gyldigheden af email adresse {0}.",
         "confirmExecutionOfActions": "Udfør følgende handling(er)",
         "locale_ca": "Català",
         "locale_da": "Dansk",
@@ -982,10 +795,8 @@ export const kcMessages = {
         "clientDisabledMessage": "Klienten er deaktiveret.",
         "invalidParameterMessage": "Ugyldig parameter: {0}",
         "alreadyLoggedIn": "Du er allerede logget ind.",
-        "differentUserAuthenticated":
-            "Du er allerede logget ind som en anden bruger '{0}' i denne session. Log venligst ud først.",
-        "brokerLinkingSessionExpired":
-            "Har forespørgt kobling mellem mæglerkonti, men den nuværende session er ikke længere gyldig.",
+        "differentUserAuthenticated": "Du er allerede logget ind som en anden bruger '{0}' i denne session. Log venligst ud først.",
+        "brokerLinkingSessionExpired": "Har forespørgt kobling mellem mæglerkonti, men den nuværende session er ikke længere gyldig.",
         "proceedWithAction": "&raquo; Tryk her for at fortsætte",
         "requiredAction.CONFIGURE_TOTP": "Konfigurer OTP",
         "requiredAction.terms_and_conditions": "Vilkår og betingelser",
@@ -1009,18 +820,15 @@ export const kcMessages = {
         "console-accept-terms": "Accepter Vilkår? [j/n]:",
         "console-accept": "j",
         "auth-username-form-display-name": "Brugernavn",
-        "auth-username-form-help-text":
-            "Start log ind ved at indtaste dit brugernavn",
+        "auth-username-form-help-text": "Start log ind ved at indtaste dit brugernavn",
         "auth-username-password-form-display-name": "Brugernavn og adgangskode",
-        "auth-username-password-form-help-text":
-            "Log ind ved at indtaste dit brugernavn og adgangskode",
+        "auth-username-password-form-help-text": "Log ind ved at indtaste dit brugernavn og adgangskode",
         "doBack": "Tilbage",
         "doTryAgain": "Prøv igen",
         "doTryAnotherWay": "Prøv på en anden måde",
         "rolesScopeConsentText": "Brugerroller",
         "restartLoginTooltip": "Start log ind forfra",
-        "loginTotpStep3DeviceName":
-            "Angiv et udstyrsnavn for at kunne holde rede på udstyr med engangskode.",
+        "loginTotpStep3DeviceName": "Angiv et udstyrsnavn for at kunne holde rede på udstyr med engangskode.",
         "loginCredential": "Credential",
         "loginTotpDeviceName": "Udstyrsnavn",
         "loginChooseAuthenticator": "Vælg metode til log ind",
@@ -1029,8 +837,7 @@ export const kcMessages = {
         "invalidUsernameOrEmailMessage": "Ugyldigt brugernavn eller email.",
         "invalidPasswordMessage": "Ugyldig adangskode.",
         "missingTotpDeviceNameMessage": "Angiv venligst et udstyrsnavn.",
-        "nestedFirstBrokerFlowMessage":
-            "{0} brugeren {1} er ikke forbundet til nogen kendt bruger.",
+        "nestedFirstBrokerFlowMessage": "{0} brugeren {1} er ikke forbundet til nogen kendt bruger.",
         "locale_cs": "Čeština",
         "locale_pl": "Polish",
         "openshift.scope.user_info": "Brugerinformation",
@@ -1039,36 +846,26 @@ export const kcMessages = {
         "openshift.scope.list-projects": "Vis liste af projekter",
         "saml.post-form.title": "Log ind Redirect",
         "saml.post-form.message": "Redirigerer, vent venligst.",
-        "saml.post-form.js-disabled":
-            "JavaScript er disabled. Vi anbefaler stærkt at enbable det. Klik på knappen nedenfor for at fortsætte.",
+        "saml.post-form.js-disabled": "JavaScript er disabled. Vi anbefaler stærkt at enbable det. Klik på knappen nedenfor for at fortsætte.",
         "otp-display-name": "Engangskodegenerator",
-        "otp-help-text":
-            "Indtast en godkendelseskode fra engangskodegeneratoren.",
+        "otp-help-text": "Indtast en godkendelseskode fra engangskodegeneratoren.",
         "password-display-name": "Adgangskode",
         "password-help-text": "Log ind ved at indtaste din adgangskode.",
         "webauthn-display-name": "Sikkerhedsnøgle",
         "webauthn-help-text": "Brug din sikkerhedsnøgle for at logge ind.",
         "webauthn-passwordless-display-name": "Sikkerhedsnøgle",
-        "webauthn-passwordless-help-text":
-            "Brug din sikkerhedsnøgle for at logge ind uden adgangskode.",
+        "webauthn-passwordless-help-text": "Brug din sikkerhedsnøgle for at logge ind uden adgangskode.",
         "webauthn-login-title": "Log ind med sikkerhedsnøgle",
         "webauthn-registration-title": "Registrering af Sikkerhedsnøgle",
         "webauthn-available-authenticators": "Tilgængelige log ind måder",
         "webauthn-error-title": "Sikkerhedsnøglefejl",
-        "webauthn-error-registration":
-            "Det lykkedes ikke at registrere din sikkerhedsnøgle.",
-        "webauthn-error-api-get":
-            "Det lykkedes ikke at logge ind med din sikkerhedsnøgle.",
-        "webauthn-error-different-user":
-            "Den første authenticatede bruger er ikke den der er authenticated med sikkerhedsnøglen.",
-        "webauthn-error-auth-verification":
-            "Resultatet fra log ind med sikkerhedsnøgle er ugyldigt.",
-        "webauthn-error-register-verification":
-            "Resultatet fra registrering med sikkerhedsnøglen er ugyldigt.",
-        "webauthn-error-user-not-found":
-            "Ukendt bruger authenticated med sikkerhedsnøglen.",
-        "identity-provider-redirector":
-            "Forbind med en anden Identitetsudbyder",
+        "webauthn-error-registration": "Det lykkedes ikke at registrere din sikkerhedsnøgle.",
+        "webauthn-error-api-get": "Det lykkedes ikke at logge ind med din sikkerhedsnøgle.",
+        "webauthn-error-different-user": "Den første authenticatede bruger er ikke den der er authenticated med sikkerhedsnøglen.",
+        "webauthn-error-auth-verification": "Resultatet fra log ind med sikkerhedsnøgle er ugyldigt.",
+        "webauthn-error-register-verification": "Resultatet fra registrering med sikkerhedsnøglen er ugyldigt.",
+        "webauthn-error-user-not-found": "Ukendt bruger authenticated med sikkerhedsnøglen.",
+        "identity-provider-redirector": "Forbind med en anden Identitetsudbyder",
     },
     "de": {
         "doLogIn": "Anmelden",
@@ -1088,16 +885,14 @@ export const kcMessages = {
         "doTryAgain": "Erneut versuchen",
         "doTryAnotherWay": "Einen anderen Weg versuchen",
         "doConfirmDelete": "Löschung bestätigen",
-        "errorDeletingAccount":
-            "Beim Löschen des Kontos ist ein Fehler aufgetreten",
+        "errorDeletingAccount": "Beim Löschen des Kontos ist ein Fehler aufgetreten",
         "deletingAccountForbidden":
             "Sie haben nicht genügend Berechtigungen, um Ihr eigenes Konto zu löschen, wenden Sie sich an einen Administrator.",
         "kerberosNotConfigured": "Kerberos ist nicht konfiguriert.",
         "kerberosNotConfiguredTitle": "Kerberos nicht konfiguriert",
         "bypassKerberosDetail":
             "Sie sind entweder nicht mit Kerberos angemeldet, oder Ihr Browser ist nicht für eine Anmeldung mit Kerberos konfiguriert. Bitte klicken Sie auf Weiter, damit Sie sich auf eine andere Art anmelden können",
-        "kerberosNotSetUp":
-            "Kerberos ist nicht konfiguriert. Sie können sich damit nicht anmelden.",
+        "kerberosNotSetUp": "Kerberos ist nicht konfiguriert. Sie können sich damit nicht anmelden.",
         "registerTitle": "Registrierung",
         "loginAccountTitle": "Bei Ihrem Konto anmelden",
         "loginTitle": "Anmeldung bei {0}",
@@ -1108,8 +903,7 @@ export const kcMessages = {
         "unknownUser": "Unbekannter Benutzer",
         "loginTotpTitle": "Mehrfachauthentifizierung konfigurieren",
         "loginProfileTitle": "Benutzerkonto Informationen aktualisieren",
-        "loginTimeout":
-            "Sie haben zu lange gebraucht, um sich anzumelden. Bitte versuchen Sie es erneut.",
+        "loginTimeout": "Sie haben zu lange gebraucht, um sich anzumelden. Bitte versuchen Sie es erneut.",
         "oauthGrantTitle": "OAuth gewähren",
         "oauthGrantTitleHtml": "{0}",
         "errorTitle": "Es ist ein Fehler aufgetreten.",
@@ -1121,17 +915,14 @@ export const kcMessages = {
         "codeErrorTitle": "Fehlercode: {0}",
         "displayUnsupported": "Angeforderter Anzeigetyp wird nicht unterstützt",
         "browserRequired": "Browser für die Anmeldung erforderlich",
-        "browserContinue":
-            "Browser erforderlich, um die Anmeldung abzuschließen",
-        "browserContinuePrompt":
-            "Browser öffnen und Anmeldung fortsetzen? [y/n]:",
+        "browserContinue": "Browser erforderlich, um die Anmeldung abzuschließen",
+        "browserContinuePrompt": "Browser öffnen und Anmeldung fortsetzen? [y/n]:",
         "browserContinueAnswer": "y",
         "termsTitle": "Bedingungen und Konditionen",
         "termsTitleHtml": "Bedingungen und Konditionen",
         "termsText": "<p>Zu definierende Bedingungen und Konditionen</p>",
         "recaptchaFailed": "Ungültiges Recaptcha",
-        "recaptchaNotConfigured":
-            "Recaptcha Eingabe ist erforderlich, jedoch noch nicht konfiguriert.",
+        "recaptchaNotConfigured": "Recaptcha Eingabe ist erforderlich, jedoch noch nicht konfiguriert.",
         "consentDenied": "Zustimmung verweigert.",
         "noAccount": "Neuer Benutzer?",
         "username": "Benutzername",
@@ -1171,20 +962,13 @@ export const kcMessages = {
         "samlRoleListScopeConsentText": "Meine Rollen",
         "rolesScopeConsentText": "Nutzerrollen",
         "restartLoginTooltip": "Login neustarten",
-        "loginTotpIntro":
-            "Sie müssen einen One Time Passwort-Generator einrichten, um auf dieses Konto zugreifen zu können.",
-        "loginTotpStep1":
-            "Installieren Sie eine der folgenden Applikationen auf Ihrem Smartphone:",
-        "loginTotpStep2":
-            "Öffnen Sie die Applikation und scannen Sie den Barcode.",
-        "loginTotpStep3":
-            "Geben Sie den von der Applikation generierten One-time Code ein und klicken Sie auf Speichern.",
-        "loginTotpStep3DeviceName":
-            "Geben Sie einen Gerätenamen an, um die Verwaltung Ihrer OTP-Geräte zu erleichtern.",
-        "loginTotpManualStep2":
-            "Öffnen Sie die Applikation und geben Sie den folgenden Schlüssel ein.",
-        "loginTotpManualStep3":
-            "Verwenden Sie die folgenden Konfigurationswerte, falls Sie diese für die Applikation anpassen können:",
+        "loginTotpIntro": "Sie müssen einen One Time Passwort-Generator einrichten, um auf dieses Konto zugreifen zu können.",
+        "loginTotpStep1": "Installieren Sie eine der folgenden Applikationen auf Ihrem Smartphone:",
+        "loginTotpStep2": "Öffnen Sie die Applikation und scannen Sie den Barcode.",
+        "loginTotpStep3": "Geben Sie den von der Applikation generierten One-time Code ein und klicken Sie auf Speichern.",
+        "loginTotpStep3DeviceName": "Geben Sie einen Gerätenamen an, um die Verwaltung Ihrer OTP-Geräte zu erleichtern.",
+        "loginTotpManualStep2": "Öffnen Sie die Applikation und geben Sie den folgenden Schlüssel ein.",
+        "loginTotpManualStep3": "Verwenden Sie die folgenden Konfigurationswerte, falls Sie diese für die Applikation anpassen können:",
         "loginTotpUnableToScan": "Sie können den Barcode nicht scannen?",
         "loginTotpScanBarcode": "Barcode scannen?",
         "loginCredential": "Anmeldeinformation",
@@ -1200,24 +984,19 @@ export const kcMessages = {
         "loginChooseAuthenticator": "Login Methode auswählen",
         "oauthGrantRequest": "Wollen Sie diese Zugriffsrechte gewähren?",
         "inResource": "in",
-        "emailVerifyInstruction1":
-            "Eine E-Mail mit weiteren Anweisungen wurde an Sie versendet.",
-        "emailVerifyInstruction2":
-            "Falls Sie keine E-Mail erhalten haben, dann können Sie",
+        "emailVerifyInstruction1": "Eine E-Mail mit weiteren Anweisungen wurde an Sie versendet.",
+        "emailVerifyInstruction2": "Falls Sie keine E-Mail erhalten haben, dann können Sie",
         "emailVerifyInstruction3": "um eine neue E-Mail versenden zu lassen.",
         "emailLinkIdpTitle": "{0} verknüpfen",
-        "emailLinkIdp1":
-            "Eine E-Mail mit weiteren Anweisungen um {0} Konto {1} mit Ihrem {2} Konto zu verknüpfen wurde an Sie versendet.",
+        "emailLinkIdp1": "Eine E-Mail mit weiteren Anweisungen um {0} Konto {1} mit Ihrem {2} Konto zu verknüpfen wurde an Sie versendet.",
         "emailLinkIdp2": "Sie haben keinen Code in Ihrer E-Mail erhalten?",
         "emailLinkIdp3": "um eine neue E-Mail versenden zu lassen.",
-        "emailLinkIdp4":
-            "Wenn Sie die E-Mail bereits in einem anderen Browser verifiziert haben",
+        "emailLinkIdp4": "Wenn Sie die E-Mail bereits in einem anderen Browser verifiziert haben",
         "emailLinkIdp5": "um fortzufahren.",
         "backToLogin": "&laquo; Zurück zur Anmeldung",
         "emailInstruction":
             "Geben Sie Ihren Benutzernamen oder Ihre E-Mail Adresse ein und klicken Sie auf Absenden. Danach werden wir Ihnen eine E-Mail mit weiteren Instruktionen zusenden.",
-        "copyCodeInstruction":
-            "Bitte kopieren Sie den folgenden Code und fügen ihn in die Applikation ein:",
+        "copyCodeInstruction": "Bitte kopieren Sie den folgenden Code und fügen ihn in die Applikation ein:",
         "pageExpiredTitle": "Diese Seite ist nicht mehr gültig.",
         "pageExpiredMsg1": "Um den Anmeldevorgang neu zu starten",
         "pageExpiredMsg2": "Um den Anmeldevorgang fortzusetzen",
@@ -1255,91 +1034,61 @@ export const kcMessages = {
         "invalidUsernameOrEmailMessage": "Ungültiger Benutzername oder E-Mail.",
         "invalidPasswordMessage": "Ungültiges Passwort.",
         "invalidEmailMessage": "Ungültige E-Mail-Adresse.",
-        "accountDisabledMessage":
-            "Ihr Benutzerkonto ist gesperrt, bitte kontaktieren Sie den Admin.",
+        "accountDisabledMessage": "Ihr Benutzerkonto ist gesperrt, bitte kontaktieren Sie den Admin.",
         "accountTemporarilyDisabledMessage":
             "Ihr Benutzerkonto ist temporär gesperrt. Bitte kontaktieren Sie den Admin oder versuchen Sie es später noch einmal.",
-        "expiredCodeMessage":
-            "Zeitüberschreitung bei der Anmeldung. Bitte melden Sie sich erneut an.",
-        "expiredActionMessage":
-            "Die Aktion ist nicht mehr gültig. Bitte fahren Sie nun mit der Anmeldung fort.",
-        "expiredActionTokenNoSessionMessage":
-            "Die Aktion ist nicht mehr gültig.",
-        "expiredActionTokenSessionExistsMessage":
-            "Die Aktion ist nicht mehr gültig. Bitte fangen Sie noch einmal an.",
+        "expiredCodeMessage": "Zeitüberschreitung bei der Anmeldung. Bitte melden Sie sich erneut an.",
+        "expiredActionMessage": "Die Aktion ist nicht mehr gültig. Bitte fahren Sie nun mit der Anmeldung fort.",
+        "expiredActionTokenNoSessionMessage": "Die Aktion ist nicht mehr gültig.",
+        "expiredActionTokenSessionExistsMessage": "Die Aktion ist nicht mehr gültig. Bitte fangen Sie noch einmal an.",
         "missingFirstNameMessage": "Bitte geben Sie einen Vornamen ein.",
         "missingLastNameMessage": "Bitte geben Sie einen Nachnamen ein.",
         "missingEmailMessage": "Bitte geben Sie eine E-Mail-Adresse ein.",
         "missingUsernameMessage": "Bitte geben Sie einen Benutzernamen ein.",
         "missingPasswordMessage": "Bitte geben Sie ein Passwort ein.",
         "missingTotpMessage": "Bitte geben Sie den One-time Code ein.",
-        "missingTotpDeviceNameMessage":
-            "Bitte geben Sie einen Gerätenamen ein.",
+        "missingTotpDeviceNameMessage": "Bitte geben Sie einen Gerätenamen ein.",
         "notMatchPasswordMessage": "Passwörter sind nicht identisch.",
         "invalidPasswordExistingMessage": "Das aktuelle Passwort ist ungültig.",
-        "invalidPasswordBlacklistedMessage":
-            "Ungültiges Passwort: Das Passwort steht auf der Blockliste (schwarzen Liste).",
-        "invalidPasswordConfirmMessage":
-            "Die Passwortbestätigung ist nicht identisch.",
+        "invalidPasswordBlacklistedMessage": "Ungültiges Passwort: Das Passwort steht auf der Blockliste (schwarzen Liste).",
+        "invalidPasswordConfirmMessage": "Die Passwortbestätigung ist nicht identisch.",
         "invalidTotpMessage": "Ungültiger One-time Code.",
         "usernameExistsMessage": "Benutzername existiert bereits.",
         "emailExistsMessage": "E-Mail existiert bereits.",
         "federatedIdentityExistsMessage":
             "Ein Benutzer mit {0} {1} existiert bereits. Bitte melden Sie sich an der Benutzerkontoverwaltung an um den Benutzer zu verknüpfen.",
         "confirmLinkIdpTitle": "Das Benutzerkonto existiert bereits.",
-        "federatedIdentityConfirmLinkMessage":
-            "Ein Benutzer mit {0} {1} existiert bereits. Wie möchten Sie fortfahren?",
-        "federatedIdentityConfirmReauthenticateMessage":
-            "Anmelden um das Benutzerkonto mit {0} zu verknüpfen",
-        "nestedFirstBrokerFlowMessage":
-            "Der {0} Benutzer {1} ist mit keinem bekannten Benutzer verknüpfen.",
+        "federatedIdentityConfirmLinkMessage": "Ein Benutzer mit {0} {1} existiert bereits. Wie möchten Sie fortfahren?",
+        "federatedIdentityConfirmReauthenticateMessage": "Anmelden um das Benutzerkonto mit {0} zu verknüpfen",
+        "nestedFirstBrokerFlowMessage": "Der {0} Benutzer {1} ist mit keinem bekannten Benutzer verknüpfen.",
         "confirmLinkIdpReviewProfile": "Benutzerkonto überprüfen",
-        "confirmLinkIdpContinue":
-            "Zu einem bestehenden Benutzerkonto hinzufügen",
-        "configureTotpMessage":
-            "Sie müssen eine Mehrfachauthentifizierung einrichten, um das Benutzerkonto zu aktivieren.",
-        "updateProfileMessage":
-            "Sie müssen Ihr Benutzerkonto aktualisieren, um das Benutzerkonto zu aktivieren.",
-        "updatePasswordMessage":
-            "Sie müssen Ihr Passwort ändern, um das Benutzerkonto zu aktivieren.",
+        "confirmLinkIdpContinue": "Zu einem bestehenden Benutzerkonto hinzufügen",
+        "configureTotpMessage": "Sie müssen eine Mehrfachauthentifizierung einrichten, um das Benutzerkonto zu aktivieren.",
+        "updateProfileMessage": "Sie müssen Ihr Benutzerkonto aktualisieren, um das Benutzerkonto zu aktivieren.",
+        "updatePasswordMessage": "Sie müssen Ihr Passwort ändern, um das Benutzerkonto zu aktivieren.",
         "resetPasswordMessage": "Sie müssen Ihr Passwort ändern.",
-        "verifyEmailMessage":
-            "Sie müssen Ihre E-Mail-Adresse verifizieren, um das Benutzerkonto zu aktivieren.",
-        "linkIdpMessage":
-            "Sie müssen Ihre E-Mail-Adresse verifizieren, um Ihr Benutzerkonto mit {0} zu verknüpfen.",
-        "emailSentMessage":
-            "Sie sollten in Kürze eine E-Mail mit weiteren Instruktionen erhalten.",
-        "emailSendErrorMessage":
-            "Die E-Mail konnte nicht versendet werden. Bitte versuchen Sie es später nochmal einmal.",
+        "verifyEmailMessage": "Sie müssen Ihre E-Mail-Adresse verifizieren, um das Benutzerkonto zu aktivieren.",
+        "linkIdpMessage": "Sie müssen Ihre E-Mail-Adresse verifizieren, um Ihr Benutzerkonto mit {0} zu verknüpfen.",
+        "emailSentMessage": "Sie sollten in Kürze eine E-Mail mit weiteren Instruktionen erhalten.",
+        "emailSendErrorMessage": "Die E-Mail konnte nicht versendet werden. Bitte versuchen Sie es später nochmal einmal.",
         "accountUpdatedMessage": "Ihr Benutzerkonto wurde aktualisiert.",
         "accountPasswordUpdatedMessage": "Ihr Passwort wurde aktualisiert.",
         "delegationCompleteHeader": "Login Erfolgreich",
-        "delegationCompleteMessage":
-            "Sie können dieses Browserfenster schließen und zu Ihrer Konsolenanwendung zurückkehren.",
+        "delegationCompleteMessage": "Sie können dieses Browserfenster schließen und zu Ihrer Konsolenanwendung zurückkehren.",
         "delegationFailedHeader": "Login Fehlgeschlagen",
         "delegationFailedMessage":
             "Sie können dieses Browserfenster schließen und zu Ihrer Konsolenanwendung zurückkehren und versuchen, sich erneut anzumelden.",
         "noAccessMessage": "Kein Zugriff",
-        "invalidPasswordMinLengthMessage":
-            "Ungültiges Passwort: Es muss mindestens {0} Zeichen lang sein.",
-        "invalidPasswordMinDigitsMessage":
-            "Ungültiges Passwort: Es muss mindestens {0} Zahl(en) beinhalten.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Ungültiges Passwort: Es muss mindestens {0} Kleinbuchstaben beinhalten.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Ungültiges Passwort: Es muss mindestens {0} Großbuchstaben beinhalten.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Ungültiges Passwort: Es muss mindestens {0} Sonderzeichen beinhalten.",
-        "invalidPasswordNotUsernameMessage":
-            "Ungültiges Passwort: Es darf nicht gleich sein wie der Benutzername.",
-        "invalidPasswordNotEmailMessage":
-            "Ungültiges Passwort: darf nicht identisch mit der E-Mail-Adresse sein.",
-        "invalidPasswordRegexPatternMessage":
-            "Ungültiges Passwort: Es entspricht nicht dem Regex-Muster.",
-        "invalidPasswordHistoryMessage":
-            "Ungültiges Passwort: Es darf nicht einem der letzten {0} Passwörter entsprechen.",
-        "invalidPasswordGenericMessage":
-            "Ungültiges Passwort: Es verletzt die Passwort-Richtlinien.",
+        "invalidPasswordMinLengthMessage": "Ungültiges Passwort: Es muss mindestens {0} Zeichen lang sein.",
+        "invalidPasswordMinDigitsMessage": "Ungültiges Passwort: Es muss mindestens {0} Zahl(en) beinhalten.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Ungültiges Passwort: Es muss mindestens {0} Kleinbuchstaben beinhalten.",
+        "invalidPasswordMinUpperCaseCharsMessage": "Ungültiges Passwort: Es muss mindestens {0} Großbuchstaben beinhalten.",
+        "invalidPasswordMinSpecialCharsMessage": "Ungültiges Passwort: Es muss mindestens {0} Sonderzeichen beinhalten.",
+        "invalidPasswordNotUsernameMessage": "Ungültiges Passwort: Es darf nicht gleich sein wie der Benutzername.",
+        "invalidPasswordNotEmailMessage": "Ungültiges Passwort: darf nicht identisch mit der E-Mail-Adresse sein.",
+        "invalidPasswordRegexPatternMessage": "Ungültiges Passwort: Es entspricht nicht dem Regex-Muster.",
+        "invalidPasswordHistoryMessage": "Ungültiges Passwort: Es darf nicht einem der letzten {0} Passwörter entsprechen.",
+        "invalidPasswordGenericMessage": "Ungültiges Passwort: Es verletzt die Passwort-Richtlinien.",
         "failedToProcessResponseMessage": "Konnte Antwort nicht verarbeiten.",
         "httpsRequiredMessage": "HTTPS erforderlich.",
         "realmNotEnabledMessage": "Realm nicht aktiviert.",
@@ -1347,8 +1096,7 @@ export const kcMessages = {
         "failedLogout": "Logout fehlgeschlagen.",
         "unknownLoginRequesterMessage": "Ungültiger Login Requester.",
         "loginRequesterNotEnabledMessage": "Login Requester nicht aktiviert.",
-        "bearerOnlyMessage":
-            "Bearer-only Clients können sich nicht via Browser anmelden.",
+        "bearerOnlyMessage": "Bearer-only Clients können sich nicht via Browser anmelden.",
         "standardFlowDisabledMessage":
             "Client darf sich mit diesem response_type nicht via Browser anmelden. Standard Flow ist für diesen Client deaktiviert.",
         "implicitFlowDisabledMessage":
@@ -1359,56 +1107,36 @@ export const kcMessages = {
         "registrationNotAllowedMessage": "Registrierung nicht erlaubt.",
         "resetCredentialNotAllowedMessage": "Reset Credential nicht erlaubt.",
         "permissionNotApprovedMessage": "Berechtigung nicht bestätigt.",
-        "noRelayStateInResponseMessage":
-            "Kein Relay State in der Antwort von Identity Provider.",
-        "insufficientPermissionMessage":
-            "Nicht genügend Rechte, um die Identität zu verknüpfen.",
-        "couldNotProceedWithAuthenticationRequestMessage":
-            "Konnte die Authentifizierungsanfrage nicht weiter verarbeiten.",
-        "couldNotObtainTokenMessage":
-            "Konnte kein Token vom Identity Provider erhalten.",
-        "unexpectedErrorRetrievingTokenMessage":
-            "Unerwarteter Fehler während dem Empfang des Tokens vom Identity Provider.",
-        "unexpectedErrorHandlingResponseMessage":
-            "Unerwarteter Fehler während der Bearbeitung der Antwort vom Identity Provider.",
-        "identityProviderAuthenticationFailedMessage":
-            "Authentifizierung fehlgeschlagen. Authentifizierung mit dem Identity Provider nicht möglich.",
-        "couldNotSendAuthenticationRequestMessage":
-            "Konnte Authentifizierungsanfrage nicht an den Identity Provider senden.",
-        "unexpectedErrorHandlingRequestMessage":
-            "Unerwarteter Fehler während der Bearbeitung der Anfrage an den Identity Provider.",
+        "noRelayStateInResponseMessage": "Kein Relay State in der Antwort von Identity Provider.",
+        "insufficientPermissionMessage": "Nicht genügend Rechte, um die Identität zu verknüpfen.",
+        "couldNotProceedWithAuthenticationRequestMessage": "Konnte die Authentifizierungsanfrage nicht weiter verarbeiten.",
+        "couldNotObtainTokenMessage": "Konnte kein Token vom Identity Provider erhalten.",
+        "unexpectedErrorRetrievingTokenMessage": "Unerwarteter Fehler während dem Empfang des Tokens vom Identity Provider.",
+        "unexpectedErrorHandlingResponseMessage": "Unerwarteter Fehler während der Bearbeitung der Antwort vom Identity Provider.",
+        "identityProviderAuthenticationFailedMessage": "Authentifizierung fehlgeschlagen. Authentifizierung mit dem Identity Provider nicht möglich.",
+        "couldNotSendAuthenticationRequestMessage": "Konnte Authentifizierungsanfrage nicht an den Identity Provider senden.",
+        "unexpectedErrorHandlingRequestMessage": "Unerwarteter Fehler während der Bearbeitung der Anfrage an den Identity Provider.",
         "invalidAccessCodeMessage": "Ungültiger Access-Code.",
         "sessionNotActiveMessage": "Session nicht aktiv.",
-        "invalidCodeMessage":
-            "Ungültiger Code, bitte melden Sie sich erneut über die Applikation an.",
-        "identityProviderUnexpectedErrorMessage":
-            "Unerwarteter Fehler während der Authentifizierung mit dem Identity Provider.",
-        "identityProviderMissingStateMessage":
-            "Fehlender state Parameter in der Antwort vom Identitätsanbieter.",
-        "identityProviderNotFoundMessage":
-            "Konnte keinen Identity Provider zu der Identität finden.",
+        "invalidCodeMessage": "Ungültiger Code, bitte melden Sie sich erneut über die Applikation an.",
+        "identityProviderUnexpectedErrorMessage": "Unerwarteter Fehler während der Authentifizierung mit dem Identity Provider.",
+        "identityProviderMissingStateMessage": "Fehlender state Parameter in der Antwort vom Identitätsanbieter.",
+        "identityProviderNotFoundMessage": "Konnte keinen Identity Provider zu der Identität finden.",
         "identityProviderLinkSuccess":
             "Sie haben Ihre E-Mail-Adresse erfolgreich verifiziert. Bitte kehren Sie zu Ihrem ursprünglichen Browser zurück und fahren Sie dort mit der Anmeldung fort. ",
-        "staleCodeMessage":
-            "Diese Seite ist nicht mehr gültig, bitte kehren Sie zu Ihrer Applikation zurük und melden Sie sich erneut an.",
-        "realmSupportsNoCredentialsMessage":
-            "Realm unterstützt keine Credential Typen.",
-        "credentialSetupRequired":
-            "Anmeldung nicht möglich, Einrichtung der Anmeldeinformationen erforderlich.",
+        "staleCodeMessage": "Diese Seite ist nicht mehr gültig, bitte kehren Sie zu Ihrer Applikation zurük und melden Sie sich erneut an.",
+        "realmSupportsNoCredentialsMessage": "Realm unterstützt keine Credential Typen.",
+        "credentialSetupRequired": "Anmeldung nicht möglich, Einrichtung der Anmeldeinformationen erforderlich.",
         "identityProviderNotUniqueMessage":
             "Der Realm unterstützt mehrere Identity Provider. Es konnte kein eindeutiger Identity Provider zum Authentifizieren gewählt werden.",
-        "emailVerifiedMessage":
-            "Ihre E-Mail-Adresse wurde erfolgreich verifiziert.",
+        "emailVerifiedMessage": "Ihre E-Mail-Adresse wurde erfolgreich verifiziert.",
         "staleEmailVerificationLink":
             "Der von Ihnen angeklickte Link ist nicht mehr gültig. Haben Sie Ihre E-Mail-Adresse eventuell bereits verifiziert?",
         "identityProviderAlreadyLinkedMessage":
             "Die Identität welche von dem Identity Provider zurückgegeben wurde ist bereits mit einem anderen Benutzer verknüpft.",
-        "confirmAccountLinking":
-            "Bestätigen Sie den Account {0} des Identity Provider {1} mit Ihrem Account zu verknüpfen.",
-        "confirmEmailAddressVerification":
-            "Bestätigen Sie, dass die E-Mail-Adresse {0} gültig ist.",
-        "confirmExecutionOfActions":
-            "Führen Sie die folgende(n) Aktion(en) aus",
+        "confirmAccountLinking": "Bestätigen Sie den Account {0} des Identity Provider {1} mit Ihrem Account zu verknüpfen.",
+        "confirmEmailAddressVerification": "Bestätigen Sie, dass die E-Mail-Adresse {0} gültig ist.",
+        "confirmExecutionOfActions": "Führen Sie die folgende(n) Aktion(en) aus",
         "backToApplication": "&laquo; Zurück zur Applikation",
         "missingParameterMessage": "Fehlender Parameter: {0}",
         "clientNotFoundMessage": "Client nicht gefunden.",
@@ -1417,11 +1145,9 @@ export const kcMessages = {
         "alreadyLoggedIn": "Sie sind bereits angemeldet.",
         "differentUserAuthenticated":
             "Sie sind in dieser Session bereits mit einem anderen Benutzer '{0}' angemeldet. Bitte melden Sie sich zuerst ab.",
-        "brokerLinkingSessionExpired":
-            "Broker Account Linking angefordert; Ihre Session ist allerdings nicht mehr gültig.",
+        "brokerLinkingSessionExpired": "Broker Account Linking angefordert; Ihre Session ist allerdings nicht mehr gültig.",
         "proceedWithAction": "&raquo; Klicken Sie hier um fortzufahren",
-        "requiredAction.CONFIGURE_TOTP":
-            "Mehrfachauthentifizierung konfigurieren",
+        "requiredAction.CONFIGURE_TOTP": "Mehrfachauthentifizierung konfigurieren",
         "requiredAction.terms_and_conditions": "Bedingungen und Konditionen",
         "requiredAction.UPDATE_PASSWORD": "Passwort aktualisieren",
         "requiredAction.UPDATE_PROFILE": "Profil aktualisieren",
@@ -1436,8 +1162,7 @@ export const kcMessages = {
         "console-otp": "One Time Passwort:",
         "console-new-password": "Neues Passwort:",
         "console-confirm-password": "Passwort bestätigen:",
-        "console-update-password":
-            "Eine Aktualisierung Ihres Passworts ist erforderlich.",
+        "console-update-password": "Eine Aktualisierung Ihres Passworts ist erforderlich.",
         "console-verify-email":
             "Sie müssen Ihre E-Mail-Adresse verifizieren.  Wir haben eine E-Mail an {0} gesendet, die einen Verifizierungscode enthält.  Bitte geben Sie diesen Code in das untenstehende Eingabefeld ein.",
         "console-email-code": "E-Mail Code:",
@@ -1452,42 +1177,31 @@ export const kcMessages = {
         "saml.post-form.js-disabled":
             "JavaScript ist deaktiviert. Wir empfehlen dringend, es zu aktivieren. Klicken Sie auf die Schaltfläche unten, um fortzufahren. ",
         "otp-display-name": "Authenticator-Anwendung",
-        "otp-help-text":
-            "Eingabe eines Verifizierungscodes aus der Authenticator-Anwendung.",
+        "otp-help-text": "Eingabe eines Verifizierungscodes aus der Authenticator-Anwendung.",
         "password-display-name": "Passwort",
-        "password-help-text":
-            "Melden Sie sich an, indem Sie Ihr Passwort eingeben.",
+        "password-help-text": "Melden Sie sich an, indem Sie Ihr Passwort eingeben.",
         "auth-username-form-display-name": "Benutzername",
-        "auth-username-form-help-text":
-            "Anmelden durch Eingabe des Benutzernamens",
+        "auth-username-form-help-text": "Anmelden durch Eingabe des Benutzernamens",
         "auth-username-password-form-display-name": "Benutzername und Passwort",
-        "auth-username-password-form-help-text":
-            "Anmelden, indem Sie Ihren Benutzernamen und Ihr Passwort eingeben.",
+        "auth-username-password-form-help-text": "Anmelden, indem Sie Ihren Benutzernamen und Ihr Passwort eingeben.",
         "webauthn-display-name": "Security-Token",
         "webauthn-help-text": "Verwenden Sie Ihr Security-Token zur Anmeldung.",
         "webauthn-passwordless-display-name": "Security-Token",
-        "webauthn-passwordless-help-text":
-            "Verwenden Sie Ihr Security-Token zur kennwortlosen Anmeldung.",
+        "webauthn-passwordless-help-text": "Verwenden Sie Ihr Security-Token zur kennwortlosen Anmeldung.",
         "webauthn-login-title": "Security-Token Anmeldung",
         "webauthn-registration-title": "Security-Token Registrierung",
         "webauthn-available-authenticators": "Verfügbare Authentifikatoren",
         "webauthn-unsupported-browser-text":
             "WebAuthn wird von diesem Browser nicht unterstützt. Versuchen Sie es mit einem anderen oder wenden Sie sich an Ihren Administrator.",
         "webauthn-error-title": "Security-Token Fehler",
-        "webauthn-error-registration":
-            "Fehler beim Registrieren Ihres Security-Tokens.<br/> {0}",
-        "webauthn-error-api-get":
-            "Fehler beim Authentifizieren mit dem Security-Token.<br/> {0}",
+        "webauthn-error-registration": "Fehler beim Registrieren Ihres Security-Tokens.<br/> {0}",
+        "webauthn-error-api-get": "Fehler beim Authentifizieren mit dem Security-Token.<br/> {0}",
         "webauthn-error-different-user":
             "Der erste authentifizierte Benutzer ist nicht derjenige, der durch das Security-Token authentifiziert wurde.",
-        "webauthn-error-auth-verification":
-            "Das Ergebnis der Security-Token Authentifizierung ist ungültig.<br/> {0}",
-        "webauthn-error-register-verification":
-            "Das Ergebnis der Security-Token Registrierung ist ungültig.<br/> {0}",
-        "webauthn-error-user-not-found":
-            "Unbekannter Benutzer, der mit dem Security-Token authentifiziert wurde.",
-        "identity-provider-redirector":
-            "Mit einem anderen Indentitätsprovider verbinden",
+        "webauthn-error-auth-verification": "Das Ergebnis der Security-Token Authentifizierung ist ungültig.<br/> {0}",
+        "webauthn-error-register-verification": "Das Ergebnis der Security-Token Registrierung ist ungültig.<br/> {0}",
+        "webauthn-error-user-not-found": "Unbekannter Benutzer, der mit dem Security-Token authentifiziert wurde.",
+        "identity-provider-redirector": "Mit einem anderen Indentitätsprovider verbinden",
         "identity-provider-login-label": "Oder anmelden mit",
         "finalDeletionConfirmation":
             "Wenn Sie Ihr Konto löschen, kann es nicht wiederhergestellt werden. Um Ihr Konto zu behalten, klicken Sie auf Abbrechen.",
@@ -1496,8 +1210,7 @@ export const kcMessages = {
         "deletingImplies": "Die Löschung Ihres Kontos bedeutet:",
         "errasingData": "Löschen aller Ihrer Daten",
         "loggingOutImmediately": "Sofortige Abmeldung",
-        "accountUnusable":
-            "Eine spätere Nutzung der Anwendung ist mit diesem Konto nicht mehr möglich",
+        "accountUnusable": "Eine spätere Nutzung der Anwendung ist mit diesem Konto nicht mehr möglich",
         "userDeletedSuccessfully": "Nutzer erfolgreich gelöscht",
     },
     "en": {
@@ -1519,8 +1232,7 @@ export const kcMessages = {
         "doTryAnotherWay": "Try Another Way",
         "doConfirmDelete": "Confirm deletion",
         "errorDeletingAccount": "Error happened while deleting account",
-        "deletingAccountForbidden":
-            "You do not have enough permissions to delete your own account, contact admin.",
+        "deletingAccountForbidden": "You do not have enough permissions to delete your own account, contact admin.",
         "kerberosNotConfigured": "Kerberos Not Configured",
         "kerberosNotConfiguredTitle": "Kerberos Not Configured",
         "bypassKerberosDetail":
@@ -1537,8 +1249,7 @@ export const kcMessages = {
         "loginTotpTitle": "Mobile Authenticator Setup",
         "loginProfileTitle": "Update Account Information",
         "loginIdpReviewProfileTitle": "Update Account Information",
-        "loginTimeout":
-            "Your login attempt timed out.  Login will start from the beginning.",
+        "loginTimeout": "Your login attempt timed out.  Login will start from the beginning.",
         "oauthGrantTitle": "Grant Access to {0}",
         "oauthGrantTitleHtml": "{0}",
         "errorTitle": "We are sorry...",
@@ -1597,18 +1308,13 @@ export const kcMessages = {
         "samlRoleListScopeConsentText": "My Roles",
         "rolesScopeConsentText": "User roles",
         "restartLoginTooltip": "Restart login",
-        "loginTotpIntro":
-            "You need to set up a One Time Password generator to access this account",
-        "loginTotpStep1":
-            "Install one of the following applications on your mobile:",
+        "loginTotpIntro": "You need to set up a One Time Password generator to access this account",
+        "loginTotpStep1": "Install one of the following applications on your mobile:",
         "loginTotpStep2": "Open the application and scan the barcode:",
-        "loginTotpStep3":
-            "Enter the one-time code provided by the application and click Submit to finish the setup.",
-        "loginTotpStep3DeviceName":
-            "Provide a Device Name to help you manage your OTP devices.",
+        "loginTotpStep3": "Enter the one-time code provided by the application and click Submit to finish the setup.",
+        "loginTotpStep3DeviceName": "Provide a Device Name to help you manage your OTP devices.",
         "loginTotpManualStep2": "Open the application and enter the key:",
-        "loginTotpManualStep3":
-            "Use the following configuration values if the application allows setting them:",
+        "loginTotpManualStep3": "Use the following configuration values if the application allows setting them:",
         "loginTotpUnableToScan": "Unable to scan?",
         "loginTotpScanBarcode": "Scan barcode?",
         "loginCredential": "Credential",
@@ -1625,39 +1331,28 @@ export const kcMessages = {
         "oauthGrantRequest": "Do you grant these access privileges?",
         "inResource": "in",
         "oauth2DeviceVerificationTitle": "Device Login",
-        "verifyOAuth2DeviceUserCode":
-            "Enter the code provided by your device and click Submit",
+        "verifyOAuth2DeviceUserCode": "Enter the code provided by your device and click Submit",
         "oauth2DeviceInvalidUserCodeMessage": "Invalid code, please try again.",
-        "oauth2DeviceExpiredUserCodeMessage":
-            "The code has expired. Please go back to your device and try connecting again.",
+        "oauth2DeviceExpiredUserCodeMessage": "The code has expired. Please go back to your device and try connecting again.",
         "oauth2DeviceVerificationCompleteHeader": "Device Login Successful",
-        "oauth2DeviceVerificationCompleteMessage":
-            "You may close this browser window and go back to your device.",
+        "oauth2DeviceVerificationCompleteMessage": "You may close this browser window and go back to your device.",
         "oauth2DeviceVerificationFailedHeader": "Device Login Failed",
-        "oauth2DeviceVerificationFailedMessage":
-            "You may close this browser window and go back to your device and try connecting again.",
-        "oauth2DeviceConsentDeniedMessage":
-            "Consent denied for connecting the device.",
+        "oauth2DeviceVerificationFailedMessage": "You may close this browser window and go back to your device and try connecting again.",
+        "oauth2DeviceConsentDeniedMessage": "Consent denied for connecting the device.",
         "oauth2DeviceAuthorizationGrantDisabledMessage":
             "Client is not allowed to initiate OAuth 2.0 Device Authorization Grant. The flow is disabled for the client.",
-        "emailVerifyInstruction1":
-            "An email with instructions to verify your email address has been sent to you.",
-        "emailVerifyInstruction2":
-            "Haven't received a verification code in your email?",
+        "emailVerifyInstruction1": "An email with instructions to verify your email address has been sent to you.",
+        "emailVerifyInstruction2": "Haven't received a verification code in your email?",
         "emailVerifyInstruction3": "to re-send the email.",
         "emailLinkIdpTitle": "Link {0}",
-        "emailLinkIdp1":
-            "An email with instructions to link {0} account {1} with your {2} account has been sent to you.",
+        "emailLinkIdp1": "An email with instructions to link {0} account {1} with your {2} account has been sent to you.",
         "emailLinkIdp2": "Haven't received a verification code in your email?",
         "emailLinkIdp3": "to re-send the email.",
-        "emailLinkIdp4":
-            "If you already verified the email in different browser",
+        "emailLinkIdp4": "If you already verified the email in different browser",
         "emailLinkIdp5": "to continue.",
         "backToLogin": "&laquo; Back to Login",
-        "emailInstruction":
-            "Enter your username or email address and we will send you instructions on how to create a new password.",
-        "copyCodeInstruction":
-            "Please copy this code and paste it into your application:",
+        "emailInstruction": "Enter your username or email address and we will send you instructions on how to create a new password.",
+        "copyCodeInstruction": "Please copy this code and paste it into your application:",
         "pageExpiredTitle": "Page has expired",
         "pageExpiredMsg1": "To restart the login process",
         "pageExpiredMsg2": "To continue the login process",
@@ -1695,16 +1390,12 @@ export const kcMessages = {
         "invalidUsernameOrEmailMessage": "Invalid username or email.",
         "invalidPasswordMessage": "Invalid password.",
         "invalidEmailMessage": "Invalid email address.",
-        "accountDisabledMessage":
-            "Account is disabled, contact your administrator.",
-        "accountTemporarilyDisabledMessage":
-            "Account is temporarily disabled; contact your administrator or retry later.",
+        "accountDisabledMessage": "Account is disabled, contact your administrator.",
+        "accountTemporarilyDisabledMessage": "Account is temporarily disabled; contact your administrator or retry later.",
         "expiredCodeMessage": "Login timeout. Please sign in again.",
-        "expiredActionMessage":
-            "Action expired. Please continue with login now.",
+        "expiredActionMessage": "Action expired. Please continue with login now.",
         "expiredActionTokenNoSessionMessage": "Action expired.",
-        "expiredActionTokenSessionExistsMessage":
-            "Action expired. Please start again.",
+        "expiredActionTokenSessionExistsMessage": "Action expired. Please start again.",
         "missingFirstNameMessage": "Please specify first name.",
         "missingLastNameMessage": "Please specify last name.",
         "missingEmailMessage": "Please specify email.",
@@ -1722,10 +1413,8 @@ export const kcMessages = {
         "error-invalid-email": "Invalid email address.",
         "error-invalid-number": "Invalid number.",
         "error-number-out-of-range": "Number must be between {1} and {2}.",
-        "error-number-out-of-range-too-small":
-            "Number must have minimal value of {1}.",
-        "error-number-out-of-range-too-big":
-            "Number must have maximal value of {2}.",
+        "error-number-out-of-range-too-small": "Number must have minimal value of {1}.",
+        "error-number-out-of-range-too-big": "Number must have maximal value of {2}.",
         "error-pattern-no-match": "Invalid value.",
         "error-invalid-uri": "Invalid URL.",
         "error-invalid-uri-scheme": "Invalid URL scheme.",
@@ -1734,74 +1423,48 @@ export const kcMessages = {
         "error-invalid-date": "Invalid date.",
         "error-user-attribute-read-only": "This field is read only.",
         "error-username-invalid-character": "Value contains invalid character.",
-        "error-person-name-invalid-character":
-            "Value contains invalid character.",
+        "error-person-name-invalid-character": "Value contains invalid character.",
         "invalidPasswordExistingMessage": "Invalid existing password.",
-        "invalidPasswordBlacklistedMessage":
-            "Invalid password: password is blacklisted.",
+        "invalidPasswordBlacklistedMessage": "Invalid password: password is blacklisted.",
         "invalidPasswordConfirmMessage": "Password confirmation doesn't match.",
         "invalidTotpMessage": "Invalid authenticator code.",
         "usernameExistsMessage": "Username already exists.",
         "emailExistsMessage": "Email already exists.",
-        "federatedIdentityExistsMessage":
-            "User with {0} {1} already exists. Please login to account management to link the account.",
+        "federatedIdentityExistsMessage": "User with {0} {1} already exists. Please login to account management to link the account.",
         "federatedIdentityUnavailableMessage":
             "User {0} authenticated with identity provider {1} does not exists. Please contact your administrator.",
         "confirmLinkIdpTitle": "Account already exists",
-        "federatedIdentityConfirmLinkMessage":
-            "User with {0} {1} already exists. How do you want to continue?",
-        "federatedIdentityConfirmReauthenticateMessage":
-            "Authenticate to link your account with {0}",
-        "nestedFirstBrokerFlowMessage":
-            "The {0} user {1} is not linked to any known user.",
+        "federatedIdentityConfirmLinkMessage": "User with {0} {1} already exists. How do you want to continue?",
+        "federatedIdentityConfirmReauthenticateMessage": "Authenticate to link your account with {0}",
+        "nestedFirstBrokerFlowMessage": "The {0} user {1} is not linked to any known user.",
         "confirmLinkIdpReviewProfile": "Review profile",
         "confirmLinkIdpContinue": "Add to existing account",
-        "configureTotpMessage":
-            "You need to set up Mobile Authenticator to activate your account.",
-        "updateProfileMessage":
-            "You need to update your user profile to activate your account.",
-        "updatePasswordMessage":
-            "You need to change your password to activate your account.",
+        "configureTotpMessage": "You need to set up Mobile Authenticator to activate your account.",
+        "updateProfileMessage": "You need to update your user profile to activate your account.",
+        "updatePasswordMessage": "You need to change your password to activate your account.",
         "resetPasswordMessage": "You need to change your password.",
-        "verifyEmailMessage":
-            "You need to verify your email address to activate your account.",
-        "linkIdpMessage":
-            "You need to verify your email address to link your account with {0}.",
-        "emailSentMessage":
-            "You should receive an email shortly with further instructions.",
-        "emailSendErrorMessage":
-            "Failed to send email, please try again later.",
+        "verifyEmailMessage": "You need to verify your email address to activate your account.",
+        "linkIdpMessage": "You need to verify your email address to link your account with {0}.",
+        "emailSentMessage": "You should receive an email shortly with further instructions.",
+        "emailSendErrorMessage": "Failed to send email, please try again later.",
         "accountUpdatedMessage": "Your account has been updated.",
         "accountPasswordUpdatedMessage": "Your password has been updated.",
         "delegationCompleteHeader": "Login Successful",
-        "delegationCompleteMessage":
-            "You may close this browser window and go back to your console application.",
+        "delegationCompleteMessage": "You may close this browser window and go back to your console application.",
         "delegationFailedHeader": "Login Failed",
-        "delegationFailedMessage":
-            "You may close this browser window and go back to your console application and try logging in again.",
+        "delegationFailedMessage": "You may close this browser window and go back to your console application and try logging in again.",
         "noAccessMessage": "No access",
-        "invalidPasswordMinLengthMessage":
-            "Invalid password: minimum length {0}.",
-        "invalidPasswordMaxLengthMessage":
-            "Invalid password: maximum length {0}.",
-        "invalidPasswordMinDigitsMessage":
-            "Invalid password: must contain at least {0} numerical digits.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Invalid password: must contain at least {0} lower case characters.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Invalid password: must contain at least {0} upper case characters.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Invalid password: must contain at least {0} special characters.",
-        "invalidPasswordNotUsernameMessage":
-            "Invalid password: must not be equal to the username.",
-        "invalidPasswordNotEmailMessage":
-            "Invalid password: must not be equal to the email.",
-        "invalidPasswordRegexPatternMessage":
-            "Invalid password: fails to match regex pattern(s).",
-        "invalidPasswordHistoryMessage":
-            "Invalid password: must not be equal to any of last {0} passwords.",
-        "invalidPasswordGenericMessage":
-            "Invalid password: new password doesn't match password policies.",
+        "invalidPasswordMinLengthMessage": "Invalid password: minimum length {0}.",
+        "invalidPasswordMaxLengthMessage": "Invalid password: maximum length {0}.",
+        "invalidPasswordMinDigitsMessage": "Invalid password: must contain at least {0} numerical digits.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Invalid password: must contain at least {0} lower case characters.",
+        "invalidPasswordMinUpperCaseCharsMessage": "Invalid password: must contain at least {0} upper case characters.",
+        "invalidPasswordMinSpecialCharsMessage": "Invalid password: must contain at least {0} special characters.",
+        "invalidPasswordNotUsernameMessage": "Invalid password: must not be equal to the username.",
+        "invalidPasswordNotEmailMessage": "Invalid password: must not be equal to the email.",
+        "invalidPasswordRegexPatternMessage": "Invalid password: fails to match regex pattern(s).",
+        "invalidPasswordHistoryMessage": "Invalid password: must not be equal to any of last {0} passwords.",
+        "invalidPasswordGenericMessage": "Invalid password: new password doesn't match password policies.",
         "failedToProcessResponseMessage": "Failed to process response",
         "httpsRequiredMessage": "HTTPS required",
         "realmNotEnabledMessage": "Realm not enabled",
@@ -1809,8 +1472,7 @@ export const kcMessages = {
         "failedLogout": "Logout failed",
         "unknownLoginRequesterMessage": "Unknown login requester",
         "loginRequesterNotEnabledMessage": "Login requester not enabled",
-        "bearerOnlyMessage":
-            "Bearer-only applications are not allowed to initiate browser login",
+        "bearerOnlyMessage": "Bearer-only applications are not allowed to initiate browser login",
         "standardFlowDisabledMessage":
             "Client is not allowed to initiate browser login with given response_type. Standard flow is disabled for the client.",
         "implicitFlowDisabledMessage":
@@ -1821,52 +1483,34 @@ export const kcMessages = {
         "registrationNotAllowedMessage": "Registration not allowed",
         "resetCredentialNotAllowedMessage": "Reset Credential not allowed",
         "permissionNotApprovedMessage": "Permission not approved.",
-        "noRelayStateInResponseMessage":
-            "No relay state in response from identity provider.",
-        "insufficientPermissionMessage":
-            "Insufficient permissions to link identities.",
-        "couldNotProceedWithAuthenticationRequestMessage":
-            "Could not proceed with authentication request to identity provider.",
-        "couldNotObtainTokenMessage":
-            "Could not obtain token from identity provider.",
-        "unexpectedErrorRetrievingTokenMessage":
-            "Unexpected error when retrieving token from identity provider.",
-        "unexpectedErrorHandlingResponseMessage":
-            "Unexpected error when handling response from identity provider.",
-        "identityProviderAuthenticationFailedMessage":
-            "Authentication failed. Could not authenticate with identity provider.",
-        "couldNotSendAuthenticationRequestMessage":
-            "Could not send authentication request to identity provider.",
-        "unexpectedErrorHandlingRequestMessage":
-            "Unexpected error when handling authentication request to identity provider.",
+        "noRelayStateInResponseMessage": "No relay state in response from identity provider.",
+        "insufficientPermissionMessage": "Insufficient permissions to link identities.",
+        "couldNotProceedWithAuthenticationRequestMessage": "Could not proceed with authentication request to identity provider.",
+        "couldNotObtainTokenMessage": "Could not obtain token from identity provider.",
+        "unexpectedErrorRetrievingTokenMessage": "Unexpected error when retrieving token from identity provider.",
+        "unexpectedErrorHandlingResponseMessage": "Unexpected error when handling response from identity provider.",
+        "identityProviderAuthenticationFailedMessage": "Authentication failed. Could not authenticate with identity provider.",
+        "couldNotSendAuthenticationRequestMessage": "Could not send authentication request to identity provider.",
+        "unexpectedErrorHandlingRequestMessage": "Unexpected error when handling authentication request to identity provider.",
         "invalidAccessCodeMessage": "Invalid access code.",
         "sessionNotActiveMessage": "Session not active.",
-        "invalidCodeMessage":
-            "An error occurred, please login again through your application.",
-        "identityProviderUnexpectedErrorMessage":
-            "Unexpected error when authenticating with identity provider",
-        "identityProviderMissingStateMessage":
-            "Missing state parameter in response from identity provider.",
-        "identityProviderNotFoundMessage":
-            "Could not find an identity provider with the identifier.",
+        "invalidCodeMessage": "An error occurred, please login again through your application.",
+        "identityProviderUnexpectedErrorMessage": "Unexpected error when authenticating with identity provider",
+        "identityProviderMissingStateMessage": "Missing state parameter in response from identity provider.",
+        "identityProviderNotFoundMessage": "Could not find an identity provider with the identifier.",
         "identityProviderLinkSuccess":
             "You successfully verified your email. Please go back to your original browser and continue there with the login.",
-        "staleCodeMessage":
-            "This page is no longer valid, please go back to your application and sign in again",
-        "realmSupportsNoCredentialsMessage":
-            "Realm does not support any credential type.",
+        "staleCodeMessage": "This page is no longer valid, please go back to your application and sign in again",
+        "realmSupportsNoCredentialsMessage": "Realm does not support any credential type.",
         "credentialSetupRequired": "Cannot login, credential setup required.",
         "identityProviderNotUniqueMessage":
             "Realm supports multiple identity providers. Could not determine which identity provider should be used to authenticate with.",
         "emailVerifiedMessage": "Your email address has been verified.",
         "staleEmailVerificationLink":
             "The link you clicked is an old stale link and is no longer valid.  Maybe you have already verified your email.",
-        "identityProviderAlreadyLinkedMessage":
-            "Federated identity returned by {0} is already linked to another user.",
-        "confirmAccountLinking":
-            "Confirm linking the account {0} of identity provider {1} with your account.",
-        "confirmEmailAddressVerification":
-            "Confirm validity of e-mail address {0}.",
+        "identityProviderAlreadyLinkedMessage": "Federated identity returned by {0} is already linked to another user.",
+        "confirmAccountLinking": "Confirm linking the account {0} of identity provider {1} with your account.",
+        "confirmEmailAddressVerification": "Confirm validity of e-mail address {0}.",
         "confirmExecutionOfActions": "Perform the following action(s)",
         "locale_ca": "Català",
         "locale_cs": "Čeština",
@@ -1895,10 +1539,8 @@ export const kcMessages = {
         "clientDisabledMessage": "Client disabled.",
         "invalidParameterMessage": "Invalid parameter: {0}",
         "alreadyLoggedIn": "You are already logged in.",
-        "differentUserAuthenticated":
-            "You are already authenticated as different user '{0}' in this session. Please sign out first.",
-        "brokerLinkingSessionExpired":
-            "Requested broker account linking, but current session is no longer valid.",
+        "differentUserAuthenticated": "You are already authenticated as different user '{0}' in this session. Please sign out first.",
+        "brokerLinkingSessionExpired": "Requested broker account linking, but current session is no longer valid.",
         "proceedWithAction": "&raquo; Click here to proceed",
         "requiredAction.CONFIGURE_TOTP": "Configure OTP",
         "requiredAction.terms_and_conditions": "Terms and Conditions",
@@ -1927,57 +1569,41 @@ export const kcMessages = {
         "openshift.scope.list-projects": "List projects",
         "saml.post-form.title": "Authentication Redirect",
         "saml.post-form.message": "Redirecting, please wait.",
-        "saml.post-form.js-disabled":
-            "JavaScript is disabled. We strongly recommend to enable it. Click the button below to continue. ",
-        "saml.artifactResolutionServiceInvalidResponse":
-            "Unable to resolve artifact.",
+        "saml.post-form.js-disabled": "JavaScript is disabled. We strongly recommend to enable it. Click the button below to continue. ",
+        "saml.artifactResolutionServiceInvalidResponse": "Unable to resolve artifact.",
         "otp-display-name": "Authenticator Application",
-        "otp-help-text":
-            "Enter a verification code from authenticator application.",
+        "otp-help-text": "Enter a verification code from authenticator application.",
         "password-display-name": "Password",
         "password-help-text": "Sign in by entering your password.",
         "auth-username-form-display-name": "Username",
-        "auth-username-form-help-text":
-            "Start sign in by entering your username",
+        "auth-username-form-help-text": "Start sign in by entering your username",
         "auth-username-password-form-display-name": "Username and password",
-        "auth-username-password-form-help-text":
-            "Sign in by entering your username and password.",
+        "auth-username-password-form-help-text": "Sign in by entering your username and password.",
         "webauthn-display-name": "Security Key",
         "webauthn-help-text": "Use your security key to sign in.",
         "webauthn-passwordless-display-name": "Security Key",
-        "webauthn-passwordless-help-text":
-            "Use your security key for passwordless sign in.",
+        "webauthn-passwordless-help-text": "Use your security key for passwordless sign in.",
         "webauthn-login-title": "Security Key login",
         "webauthn-registration-title": "Security Key Registration",
         "webauthn-available-authenticators": "Available authenticators",
-        "webauthn-unsupported-browser-text":
-            "WebAuthn is not supported by this browser. Try another one or contact your administrator.",
+        "webauthn-unsupported-browser-text": "WebAuthn is not supported by this browser. Try another one or contact your administrator.",
         "webauthn-doAuthenticate": "Sign in with Security Key",
         "webauthn-error-title": "Security Key Error",
-        "webauthn-error-registration":
-            "Failed to register your Security key.<br/> {0}",
-        "webauthn-error-api-get":
-            "Failed to authenticate by the Security key.<br/> {0}",
-        "webauthn-error-different-user":
-            "First authenticated user is not the one authenticated by the Security key.",
-        "webauthn-error-auth-verification":
-            "Security key authentication result is invalid.<br/> {0}",
-        "webauthn-error-register-verification":
-            "Security key registration result is invalid.<br/> {0}",
-        "webauthn-error-user-not-found":
-            "Unknown user authenticated by the Security key.",
-        "identity-provider-redirector":
-            "Connect with another Identity Provider",
+        "webauthn-error-registration": "Failed to register your Security key.<br/> {0}",
+        "webauthn-error-api-get": "Failed to authenticate by the Security key.<br/> {0}",
+        "webauthn-error-different-user": "First authenticated user is not the one authenticated by the Security key.",
+        "webauthn-error-auth-verification": "Security key authentication result is invalid.<br/> {0}",
+        "webauthn-error-register-verification": "Security key registration result is invalid.<br/> {0}",
+        "webauthn-error-user-not-found": "Unknown user authenticated by the Security key.",
+        "identity-provider-redirector": "Connect with another Identity Provider",
         "identity-provider-login-label": "Or sign in with",
-        "finalDeletionConfirmation":
-            "If you delete your account, it cannot be restored. To keep your account, click Cancel.",
+        "finalDeletionConfirmation": "If you delete your account, it cannot be restored. To keep your account, click Cancel.",
         "irreversibleAction": "This action is irreversible",
         "deleteAccountConfirm": "Delete account confirmation",
         "deletingImplies": "Deleting your account implies:",
         "errasingData": "Erasing all your data",
         "loggingOutImmediately": "Logging you out immediately",
-        "accountUnusable":
-            "Any subsequent use of the application will not be possible with this account",
+        "accountUnusable": "Any subsequent use of the application will not be possible with this account",
         "userDeletedSuccessfully": "User deleted successfully",
         "access-denied": "Access denied",
     },
@@ -1998,8 +1624,7 @@ export const kcMessages = {
         "kerberosNotConfiguredTitle": "Kerberos no configurado",
         "bypassKerberosDetail":
             "O bien no estás identificado mediante Kerberos o tu navegador no está configurado para identificarse mediante Kerberos. Por favor haz clic para identificarte por otro medio.",
-        "kerberosNotSetUp":
-            "Kerberos no está configurado. No puedes identificarte.",
+        "kerberosNotSetUp": "Kerberos no está configurado. No puedes identificarte.",
         "registerWithTitle": "Regístrate con {0}",
         "registerWithTitleHtml": "{0}",
         "loginTitle": "Inicia sesión en {0}",
@@ -2010,8 +1635,7 @@ export const kcMessages = {
         "unknownUser": "Usuario desconocido",
         "loginTotpTitle": "Configura tu aplicación de identificación móvil",
         "loginProfileTitle": "Actualiza la información de tu cuenta",
-        "loginTimeout":
-            "Has tardado demasiado en identificarte. Inicia de nuevo la identificación.",
+        "loginTimeout": "Has tardado demasiado en identificarte. Inicia de nuevo la identificación.",
         "oauthGrantTitle": "Concesión OAuth",
         "oauthGrantTitleHtml": "{0}",
         "errorTitle": "Lo sentimos...",
@@ -2025,8 +1649,7 @@ export const kcMessages = {
         "termsTitleHtml": "Términos y Condiciones",
         "termsText": "<p>Términes y condiciones a definir</p>",
         "recaptchaFailed": "Reconocimiento de texto inválido",
-        "recaptchaNotConfigured":
-            "El reconocimiento de texto es obligatorio pero no está configurado",
+        "recaptchaNotConfigured": "El reconocimiento de texto es obligatorio pero no está configurado",
         "consentDenied": "Consentimiento rechazado.",
         "noAccount": "¿Usuario nuevo?",
         "username": "Usuario",
@@ -2053,23 +1676,18 @@ export const kcMessages = {
         "gssDelegationCredential": "GSS Delegation Credential",
         "loginTotpStep1":
             'Instala <a href="https://freeotp.github.io/" target="_blank">FreeOTP</a> o Google Authenticator en tu teléfono móvil. Ambas aplicaciones están disponibles en <a href="https://play.google.com">Google Play</a> y en la App Store de Apple.',
-        "loginTotpStep2":
-            "Abre la aplicación y escanea el código o introduce la clave.",
+        "loginTotpStep2": "Abre la aplicación y escanea el código o introduce la clave.",
         "loginTotpStep3":
             "Introduce el código único que te muestra la aplicación de autenticación y haz clic en Enviar para finalizar la configuración",
         "loginOtpOneTime": "Código de un solo uso",
         "oauthGrantRequest": "¿Quieres permitir estos privilegios de acceso?",
         "inResource": "en",
-        "emailVerifyInstruction1":
-            "Te hemos enviado un email con instrucciones para verificar tu email.",
-        "emailVerifyInstruction2":
-            "¿No has recibido un código de verificación en tu email?",
+        "emailVerifyInstruction1": "Te hemos enviado un email con instrucciones para verificar tu email.",
+        "emailVerifyInstruction2": "¿No has recibido un código de verificación en tu email?",
         "emailVerifyInstruction3": "para reenviar el email.",
         "backToLogin": "&laquo; Volver a la identificación",
-        "emailInstruction":
-            "Indica tu usuario o email y te enviaremos instrucciones indicando cómo generar una nueva contraseña.",
-        "copyCodeInstruction":
-            "Por favor, copia y pega este código en tu aplicación:",
+        "emailInstruction": "Indica tu usuario o email y te enviaremos instrucciones indicando cómo generar una nueva contraseña.",
+        "copyCodeInstruction": "Por favor, copia y pega este código en tu aplicación:",
         "personalInfo": "Información personal:",
         "role_admin": "Admin",
         "role_realm-admin": "Administrador del dominio",
@@ -2092,18 +1710,15 @@ export const kcMessages = {
         "role_read-token": "Leer token",
         "role_offline-access": "Acceso sin conexión",
         "client_account": "Cuenta",
-        "client_security-admin-console":
-            "Consola de Administración de Seguridad",
+        "client_security-admin-console": "Consola de Administración de Seguridad",
         "client_realm-management": "Gestión del dominio",
         "client_broker": "Broker",
         "invalidUserMessage": "Usuario o contraseña incorrectos.",
         "invalidEmailMessage": "Email no válido",
-        "accountDisabledMessage":
-            "La cuenta está desactivada, contacta con el administrador.",
+        "accountDisabledMessage": "La cuenta está desactivada, contacta con el administrador.",
         "accountTemporarilyDisabledMessage":
             "La cuenta está temporalmente desactivada, contacta con el administrador o inténtalo de nuevo más tarde.",
-        "expiredCodeMessage":
-            "Se agotó el tiempo máximo para la identificación. Por favor identificate de nuevo.",
+        "expiredCodeMessage": "Se agotó el tiempo máximo para la identificación. Por favor identificate de nuevo.",
         "missingFirstNameMessage": "Por favor indica tu nombre.",
         "missingLastNameMessage": "Por favor indica tus apellidos.",
         "missingEmailMessage": "Por favor indica tu email.",
@@ -2111,98 +1726,62 @@ export const kcMessages = {
         "missingPasswordMessage": "Por favor indica tu contraseña.",
         "missingTotpMessage": "Por favor indica tu código de autenticación",
         "notMatchPasswordMessage": "Las contraseñas no coinciden.",
-        "invalidPasswordExistingMessage":
-            "La contraseña actual no es correcta.",
-        "invalidPasswordConfirmMessage":
-            "La confirmación de contraseña no coincide.",
+        "invalidPasswordExistingMessage": "La contraseña actual no es correcta.",
+        "invalidPasswordConfirmMessage": "La confirmación de contraseña no coincide.",
         "invalidTotpMessage": "El código de autenticación no es válido.",
         "usernameExistsMessage": "El nombre de usuario ya existe",
         "emailExistsMessage": "El email ya existe",
-        "federatedIdentityEmailExistsMessage":
-            "Ya existe un usuario con este email. Por favor accede a la gestión de tu cuenta para enlazarlo.",
+        "federatedIdentityEmailExistsMessage": "Ya existe un usuario con este email. Por favor accede a la gestión de tu cuenta para enlazarlo.",
         "federatedIdentityUsernameExistsMessage":
             "Ya existe un usuario con este nombre de usuario. Por favor accede a la gestión de tu cuenta para enlazarlo.",
-        "configureTotpMessage":
-            "Tienes que configurar la aplicación móvil de identificación para activar tu cuenta.",
-        "updateProfileMessage":
-            "Tienes que actualizar tu perfil de usuario para activar tu cuenta.",
-        "updatePasswordMessage":
-            "Tienes que cambiar tu contraseña para activar tu cuenta.",
-        "verifyEmailMessage":
-            "Tienes que verificar tu email para activar tu cuenta.",
-        "emailSentMessage":
-            "En breve deberías recibir un mensaje con más instrucciones",
-        "emailSendErrorMessage":
-            "Falló el envío del email, por favor inténtalo de nuevo más tarde.",
+        "configureTotpMessage": "Tienes que configurar la aplicación móvil de identificación para activar tu cuenta.",
+        "updateProfileMessage": "Tienes que actualizar tu perfil de usuario para activar tu cuenta.",
+        "updatePasswordMessage": "Tienes que cambiar tu contraseña para activar tu cuenta.",
+        "verifyEmailMessage": "Tienes que verificar tu email para activar tu cuenta.",
+        "emailSentMessage": "En breve deberías recibir un mensaje con más instrucciones",
+        "emailSendErrorMessage": "Falló el envío del email, por favor inténtalo de nuevo más tarde.",
         "accountUpdatedMessage": "Tu cuenta se ha actualizado.",
         "accountPasswordUpdatedMessage": "Tu contraseña se ha actualizado.",
         "noAccessMessage": "Sin acceso",
-        "invalidPasswordMinLengthMessage":
-            "Contraseña incorrecta: longitud mínima {0}.",
-        "invalidPasswordMinDigitsMessage":
-            "Contraseña incorrecta: debe contaner al menos {0} caracteres numéricos.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Contraseña incorrecta: debe contener al menos {0} letras minúsculas.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Contraseña incorrecta: debe contener al menos {0} letras mayúsculas.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Contraseña incorrecta: debe contener al menos {0} caracteres especiales.",
-        "invalidPasswordNotUsernameMessage":
-            "Contraseña incorrecta: no puede ser igual al nombre de usuario.",
-        "invalidPasswordRegexPatternMessage":
-            "Contraseña incorrecta: no cumple la expresión regular.",
-        "invalidPasswordHistoryMessage":
-            "Contraseña incorrecta: no puede ser igual a ninguna de las últimas {0} contraseñas.",
+        "invalidPasswordMinLengthMessage": "Contraseña incorrecta: longitud mínima {0}.",
+        "invalidPasswordMinDigitsMessage": "Contraseña incorrecta: debe contaner al menos {0} caracteres numéricos.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Contraseña incorrecta: debe contener al menos {0} letras minúsculas.",
+        "invalidPasswordMinUpperCaseCharsMessage": "Contraseña incorrecta: debe contener al menos {0} letras mayúsculas.",
+        "invalidPasswordMinSpecialCharsMessage": "Contraseña incorrecta: debe contener al menos {0} caracteres especiales.",
+        "invalidPasswordNotUsernameMessage": "Contraseña incorrecta: no puede ser igual al nombre de usuario.",
+        "invalidPasswordRegexPatternMessage": "Contraseña incorrecta: no cumple la expresión regular.",
+        "invalidPasswordHistoryMessage": "Contraseña incorrecta: no puede ser igual a ninguna de las últimas {0} contraseñas.",
         "failedToProcessResponseMessage": "Fallo al procesar la respuesta",
         "httpsRequiredMessage": "HTTPS obligatorio",
         "realmNotEnabledMessage": "El dominio no está activado",
         "invalidRequestMessage": "Petición incorrecta",
         "failedLogout": "Falló la desconexión.",
-        "unknownLoginRequesterMessage":
-            "Solicitante de identificación desconocido",
-        "loginRequesterNotEnabledMessage":
-            "El solicitante de inicio de sesión está desactivado",
-        "bearerOnlyMessage":
-            "Las aplicaciones Bearer-only no pueden iniciar sesión desde el navegador.",
-        "directGrantsOnlyMessage":
-            "Los clientes de tipo Direct-grants-only no pueden iniciar sesión desde el navegador.",
+        "unknownLoginRequesterMessage": "Solicitante de identificación desconocido",
+        "loginRequesterNotEnabledMessage": "El solicitante de inicio de sesión está desactivado",
+        "bearerOnlyMessage": "Las aplicaciones Bearer-only no pueden iniciar sesión desde el navegador.",
+        "directGrantsOnlyMessage": "Los clientes de tipo Direct-grants-only no pueden iniciar sesión desde el navegador.",
         "invalidRedirectUriMessage": "La URI de redirección no es correcta",
         "unsupportedNameIdFormatMessage": "NameIDFormat no soportado",
         "invalidRequesterMessage": "Solicitante no válido",
         "registrationNotAllowedMessage": "El registro no está permitido",
-        "resetCredentialNotAllowedMessage":
-            "El reinicio de las credenciales no está permitido",
+        "resetCredentialNotAllowedMessage": "El reinicio de las credenciales no está permitido",
         "permissionNotApprovedMessage": "Permiso no aprobado.",
-        "noRelayStateInResponseMessage":
-            "Sin estado de retransmisión en la respuesta del proveedor de identidad.",
-        "identityProviderAlreadyLinkedMessage":
-            "La identidad devuelta por el proveedor de identidad ya está asociada a otro usuario.",
-        "insufficientPermissionMessage":
-            "Permisos insuficientes para enlazar identidades.",
-        "couldNotProceedWithAuthenticationRequestMessage":
-            "No se pudo continuar con la petición de autenticación al proveedor de identidad.",
-        "couldNotObtainTokenMessage":
-            ".No se pudo obtener el código del proveedor de identidad",
-        "unexpectedErrorRetrievingTokenMessage":
-            "Error inesperado obteniendo el token del proveedor de identidad",
-        "unexpectedErrorHandlingResponseMessage":
-            "Error inesperado procesando la respuesta del proveedor de identidad.",
-        "identityProviderAuthenticationFailedMessage":
-            "Falló la autenticación. No fue posible autenticarse en el proveedor de identidad.",
-        "couldNotSendAuthenticationRequestMessage":
-            "No se pudo enviar la petición de identificación al proveedor de identidad.",
-        "unexpectedErrorHandlingRequestMessage":
-            "Error inesperado durante la petición de identificación al proveedor de identidad.",
+        "noRelayStateInResponseMessage": "Sin estado de retransmisión en la respuesta del proveedor de identidad.",
+        "identityProviderAlreadyLinkedMessage": "La identidad devuelta por el proveedor de identidad ya está asociada a otro usuario.",
+        "insufficientPermissionMessage": "Permisos insuficientes para enlazar identidades.",
+        "couldNotProceedWithAuthenticationRequestMessage": "No se pudo continuar con la petición de autenticación al proveedor de identidad.",
+        "couldNotObtainTokenMessage": ".No se pudo obtener el código del proveedor de identidad",
+        "unexpectedErrorRetrievingTokenMessage": "Error inesperado obteniendo el token del proveedor de identidad",
+        "unexpectedErrorHandlingResponseMessage": "Error inesperado procesando la respuesta del proveedor de identidad.",
+        "identityProviderAuthenticationFailedMessage": "Falló la autenticación. No fue posible autenticarse en el proveedor de identidad.",
+        "couldNotSendAuthenticationRequestMessage": "No se pudo enviar la petición de identificación al proveedor de identidad.",
+        "unexpectedErrorHandlingRequestMessage": "Error inesperado durante la petición de identificación al proveedor de identidad.",
         "invalidAccessCodeMessage": "Código de acceso no válido.",
         "sessionNotActiveMessage": "La sesión no está activa",
-        "invalidCodeMessage":
-            "Ha ocurrido un error, por favor identificate de nuevo desde tu aplicación.",
-        "identityProviderUnexpectedErrorMessage":
-            "Error no esperado intentado autenticar en el proveedor de identidad.",
-        "identityProviderNotFoundMessage":
-            "No se encontró un proveedor de identidad.",
-        "realmSupportsNoCredentialsMessage":
-            "El dominio no soporta ningún tipo de credenciales.",
+        "invalidCodeMessage": "Ha ocurrido un error, por favor identificate de nuevo desde tu aplicación.",
+        "identityProviderUnexpectedErrorMessage": "Error no esperado intentado autenticar en el proveedor de identidad.",
+        "identityProviderNotFoundMessage": "No se encontró un proveedor de identidad.",
+        "realmSupportsNoCredentialsMessage": "El dominio no soporta ningún tipo de credenciales.",
         "identityProviderNotUniqueMessage":
             "El dominio soporta múltiples proveedores de identidad. No se pudo determinar el proveedor de identidad que debería ser utilizado para identificarse.",
         "emailVerifiedMessage": "Tu email ha sido verificado.",
@@ -2230,8 +1809,7 @@ export const kcMessages = {
         "kerberosNotConfiguredTitle": "Kerberos non configuré",
         "bypassKerberosDetail":
             "Si vous n'êtes pas connecté via Kerberos ou bien que votre navigateur n'est pas configuré pour la connexion via Kerberos.  Veuillez cliquer pour vous connecter via un autre moyen.",
-        "kerberosNotSetUp":
-            "Kerberos n'est pas configuré. Connexion impossible.",
+        "kerberosNotSetUp": "Kerberos n'est pas configuré. Connexion impossible.",
         "registerTitle": "S'enregistrer",
         "loginAccountTitle": "Connectez-vous à votre compte",
         "registerWithTitle": "Enregistrement avec {0}",
@@ -2244,8 +1822,7 @@ export const kcMessages = {
         "unknownUser": "Utilisateur inconnu",
         "loginTotpTitle": "Configuration de l'authentification par mobile",
         "loginProfileTitle": "Mise à jour du compte",
-        "loginTimeout":
-            "Le temps imparti pour la connexion est écoulé. Le processus de connexion redémarre depuis le début.",
+        "loginTimeout": "Le temps imparti pour la connexion est écoulé. Le processus de connexion redémarre depuis le début.",
         "oauthGrantTitle": "OAuth Grant",
         "oauthGrantTitleHtml": "{0}",
         "errorTitle": "Nous sommes désolés...",
@@ -2258,16 +1835,14 @@ export const kcMessages = {
         "displayUnsupported": "Type d'affichage demandé non supporté",
         "browserRequired": "Navigateur requis pour se connecter",
         "browserContinue": "Navigateur requis pour continuer la connexion",
-        "browserContinuePrompt":
-            "Ouvrir le navigateur et continuer la connexion? [y/n]:",
+        "browserContinuePrompt": "Ouvrir le navigateur et continuer la connexion? [y/n]:",
         "browserContinueAnswer": "y",
         "termsTitle": "Termes et Conditions",
         "termsTitleHtml": "Termes et Conditions",
         "termsText": "<p>Termes et conditions à définir</p>",
         "termsPlainText": "Termes et conditions à définir",
         "recaptchaFailed": "Re-captcha invalide",
-        "recaptchaNotConfigured":
-            "Re-captcha est requis, mais il n'est pas configuré",
+        "recaptchaNotConfigured": "Re-captcha est requis, mais il n'est pas configuré",
         "consentDenied": "Consentement refusé.",
         "noAccount": "Nouvel utilisateur ?",
         "username": "Nom d'utilisateur",
@@ -2292,17 +1867,12 @@ export const kcMessages = {
         "country": "Pays",
         "emailVerified": "Courriel vérifié",
         "gssDelegationCredential": "Accréditation de délégation GSS",
-        "loginTotpIntro":
-            "Il est nécessaire de configurer un générateur One Time Password pour accéder à ce compte",
-        "loginTotpStep1":
-            "Installez une des applications suivantes sur votre mobile:",
-        "loginTotpStep2":
-            "Ouvrez l'application et scannez le code-barres ou entrez la clef.",
-        "loginTotpStep3":
-            "Entrez le code à usage unique fourni par l'application et cliquez sur Sauvegarder pour terminer.",
+        "loginTotpIntro": "Il est nécessaire de configurer un générateur One Time Password pour accéder à ce compte",
+        "loginTotpStep1": "Installez une des applications suivantes sur votre mobile:",
+        "loginTotpStep2": "Ouvrez l'application et scannez le code-barres ou entrez la clef.",
+        "loginTotpStep3": "Entrez le code à usage unique fourni par l'application et cliquez sur Sauvegarder pour terminer.",
         "loginTotpManualStep2": "Ouvrez l'application et saisissez la clé",
-        "loginTotpManualStep3":
-            "Utilisez la configuration de valeur suivante si l'application permet son édition",
+        "loginTotpManualStep3": "Utilisez la configuration de valeur suivante si l'application permet son édition",
         "loginTotpUnableToScan": "Impossible de scanner?",
         "loginTotpScanBarcode": "Scanner le code barre ?",
         "loginOtpOneTime": "Code à usage unique",
@@ -2315,24 +1885,19 @@ export const kcMessages = {
         "loginTotp.hotp": "Basé sur les compteurs",
         "oauthGrantRequest": "Voulez-vous accorder ces privilèges d'accès ?",
         "inResource": "dans",
-        "emailVerifyInstruction1":
-            "Un courriel avec des instructions à suivre vous a été envoyé.",
-        "emailVerifyInstruction2":
-            "Vous n'avez pas reçu de code dans le courriel ?",
+        "emailVerifyInstruction1": "Un courriel avec des instructions à suivre vous a été envoyé.",
+        "emailVerifyInstruction2": "Vous n'avez pas reçu de code dans le courriel ?",
         "emailVerifyInstruction3": "pour renvoyer le courriel.",
         "emailLinkIdpTitle": "Association avec {0}",
-        "emailLinkIdp1":
-            "Un courriel avec des instructions pour associer le compte {1} sur {0} avec votre compte {2} vous a été envoyé.",
+        "emailLinkIdp1": "Un courriel avec des instructions pour associer le compte {1} sur {0} avec votre compte {2} vous a été envoyé.",
         "emailLinkIdp2": "Vous n'avez pas reçu de code dans le courriel ?",
         "emailLinkIdp3": "pour renvoyer le courriel.",
-        "emailLinkIdp4":
-            "Si vous avez déjà vérifié votre courriel dans un autre navigateur",
+        "emailLinkIdp4": "Si vous avez déjà vérifié votre courriel dans un autre navigateur",
         "emailLinkIdp5": "pour continuer.",
         "backToLogin": "&laquo; Retour à la connexion",
         "emailInstruction":
             "Entrez votre nom d'utilisateur ou votre courriel ; un courriel va vous être envoyé vous permettant de créer un nouveau mot de passe.",
-        "copyCodeInstruction":
-            "Copiez le code et recopiez le dans votre application :",
+        "copyCodeInstruction": "Copiez le code et recopiez le dans votre application :",
         "pageExpiredTitle": "La page a expiré",
         "pageExpiredMsg1": "Pour recommencer le processus d'authentification",
         "pageExpiredMsg2": "Pour continuer le processus d'authentification",
@@ -2359,23 +1924,18 @@ export const kcMessages = {
         "role_read-token": "Lire le jeton d'authentification",
         "role_offline-access": "Accès hors-ligne",
         "client_account": "Compte",
-        "client_security-admin-console":
-            "Console d'administration de la sécurité",
+        "client_security-admin-console": "Console d'administration de la sécurité",
         "client_admin-cli": "Admin CLI",
         "client_realm-management": "Gestion du domaine",
         "client_broker": "Broker",
         "invalidUserMessage": "Nom d'utilisateur ou mot de passe invalide.",
         "invalidEmailMessage": "Courriel invalide.",
-        "accountDisabledMessage":
-            "Compte désactivé, contactez votre administrateur.",
-        "accountTemporarilyDisabledMessage":
-            "Ce compte est temporairement désactivé, contactez votre administrateur ou bien réessayez plus tard.",
+        "accountDisabledMessage": "Compte désactivé, contactez votre administrateur.",
+        "accountTemporarilyDisabledMessage": "Ce compte est temporairement désactivé, contactez votre administrateur ou bien réessayez plus tard.",
         "expiredCodeMessage": "Connexion expirée. Veuillez vous reconnecter.",
-        "expiredActionMessage":
-            "Action expirée. Merci de continuer la connexion.",
+        "expiredActionMessage": "Action expirée. Merci de continuer la connexion.",
         "expiredActionTokenNoSessionMessage": "Action expirée.",
-        "expiredActionTokenSessionExistsMessage":
-            "Action expirée. Merci de recommencer.",
+        "expiredActionTokenSessionExistsMessage": "Action expirée. Merci de recommencer.",
         "missingFirstNameMessage": "Veuillez entrer votre prénom.",
         "missingLastNameMessage": "Veuillez entrer votre nom.",
         "missingEmailMessage": "Veuillez entrer votre courriel.",
@@ -2384,72 +1944,47 @@ export const kcMessages = {
         "missingTotpMessage": "Veuillez entrer votre code d'authentification.",
         "notMatchPasswordMessage": "Les mots de passe ne sont pas identiques.",
         "invalidPasswordExistingMessage": "Mot de passe existant invalide.",
-        "invalidPasswordBlacklistedMessage":
-            "Mot de passe invalide : ce mot de passe est blacklisté.",
-        "invalidPasswordConfirmMessage":
-            "Le mot de passe de confirmation ne correspond pas.",
+        "invalidPasswordBlacklistedMessage": "Mot de passe invalide : ce mot de passe est blacklisté.",
+        "invalidPasswordConfirmMessage": "Le mot de passe de confirmation ne correspond pas.",
         "invalidTotpMessage": "Le code d'authentification est invalide.",
         "usernameExistsMessage": "Le nom d'utilisateur existe déjà.",
         "emailExistsMessage": "Le courriel existe déjà.",
-        "federatedIdentityExistsMessage":
-            "L'utilisateur avec {0} {1} existe déjà. Veuillez accéder à au gestionnaire de compte pour lier le compte.",
+        "federatedIdentityExistsMessage": "L'utilisateur avec {0} {1} existe déjà. Veuillez accéder à au gestionnaire de compte pour lier le compte.",
         "federatedIdentityEmailExistsMessage":
             "Cet utilisateur avec ce courriel existe déjà. Veuillez vous connecter au gestionnaire de compte pour lier le compte.",
         "confirmLinkIdpTitle": "Ce compte existe déjà",
-        "federatedIdentityConfirmLinkMessage":
-            "L'utilisateur {0} {1} existe déjà. Que souhaitez-vous faire ?",
-        "federatedIdentityConfirmReauthenticateMessage":
-            "Identifiez vous afin de lier votre compte avec {0}",
+        "federatedIdentityConfirmLinkMessage": "L'utilisateur {0} {1} existe déjà. Que souhaitez-vous faire ?",
+        "federatedIdentityConfirmReauthenticateMessage": "Identifiez vous afin de lier votre compte avec {0}",
         "confirmLinkIdpReviewProfile": "Vérifiez vos informations de profil",
-        "confirmLinkIdpContinue":
-            "Souhaitez-vous lier {0} à votre compte existant",
-        "configureTotpMessage":
-            "Vous devez configurer l'authentification par mobile pour activer votre compte.",
-        "updateProfileMessage":
-            "Vous devez mettre à jour votre profil pour activer votre compte.",
-        "updatePasswordMessage":
-            "Vous devez changer votre mot de passe pour activer votre compte.",
+        "confirmLinkIdpContinue": "Souhaitez-vous lier {0} à votre compte existant",
+        "configureTotpMessage": "Vous devez configurer l'authentification par mobile pour activer votre compte.",
+        "updateProfileMessage": "Vous devez mettre à jour votre profil pour activer votre compte.",
+        "updatePasswordMessage": "Vous devez changer votre mot de passe pour activer votre compte.",
         "resetPasswordMessage": "Vous devez changer votre mot de passe.",
-        "verifyEmailMessage":
-            "Vous devez vérifier votre courriel pour activer votre compte.",
-        "linkIdpMessage":
-            "Vous devez vérifier votre courriel pour lier votre compte avec {0}.",
-        "emailSentMessage":
-            "Vous devriez recevoir rapidement un courriel avec de plus amples instructions.",
-        "emailSendErrorMessage":
-            "Erreur lors de l'envoi du courriel, veuillez essayer plus tard.",
+        "verifyEmailMessage": "Vous devez vérifier votre courriel pour activer votre compte.",
+        "linkIdpMessage": "Vous devez vérifier votre courriel pour lier votre compte avec {0}.",
+        "emailSentMessage": "Vous devriez recevoir rapidement un courriel avec de plus amples instructions.",
+        "emailSendErrorMessage": "Erreur lors de l'envoi du courriel, veuillez essayer plus tard.",
         "accountUpdatedMessage": "Votre compte a été mis à jour.",
         "accountPasswordUpdatedMessage": "Votre mot de passe a été mis à jour.",
         "noAccessMessage": "Aucun accès",
-        "invalidPasswordMinLengthMessage":
-            "Mot de passe invalide : longueur minimale requise de {0}.",
-        "invalidPasswordMinDigitsMessage":
-            "Mot de passe invalide : doit contenir au moins {0} chiffre(s).",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Mot de passe invalide : doit contenir au moins {0} lettre(s) en minuscule.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Mot de passe invalide : doit contenir au moins {0} lettre(s) en majuscule.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Mot de passe invalide : doit contenir au moins {0} caractère(s) spéciaux.",
-        "invalidPasswordNotUsernameMessage":
-            "Mot de passe invalide : ne doit pas être identique au nom d'utilisateur.",
-        "invalidPasswordRegexPatternMessage":
-            "Mot de passe invalide : ne valide pas l'expression rationnelle.",
-        "invalidPasswordHistoryMessage":
-            "Mot de passe invalide : ne doit pas être égal aux {0} derniers mots de passe.",
-        "invalidPasswordGenericMessage":
-            "Mot de passe invalide : le nouveau mot de passe ne répond pas à la politique de mot de passe.",
-        "failedToProcessResponseMessage":
-            "Erreur lors du traitement de la réponse",
+        "invalidPasswordMinLengthMessage": "Mot de passe invalide : longueur minimale requise de {0}.",
+        "invalidPasswordMinDigitsMessage": "Mot de passe invalide : doit contenir au moins {0} chiffre(s).",
+        "invalidPasswordMinLowerCaseCharsMessage": "Mot de passe invalide : doit contenir au moins {0} lettre(s) en minuscule.",
+        "invalidPasswordMinUpperCaseCharsMessage": "Mot de passe invalide : doit contenir au moins {0} lettre(s) en majuscule.",
+        "invalidPasswordMinSpecialCharsMessage": "Mot de passe invalide : doit contenir au moins {0} caractère(s) spéciaux.",
+        "invalidPasswordNotUsernameMessage": "Mot de passe invalide : ne doit pas être identique au nom d'utilisateur.",
+        "invalidPasswordRegexPatternMessage": "Mot de passe invalide : ne valide pas l'expression rationnelle.",
+        "invalidPasswordHistoryMessage": "Mot de passe invalide : ne doit pas être égal aux {0} derniers mots de passe.",
+        "invalidPasswordGenericMessage": "Mot de passe invalide : le nouveau mot de passe ne répond pas à la politique de mot de passe.",
+        "failedToProcessResponseMessage": "Erreur lors du traitement de la réponse",
         "httpsRequiredMessage": "Le protocole HTTPS est requis",
         "realmNotEnabledMessage": "Le domaine n'est pas activé",
         "invalidRequestMessage": "Requête invalide",
         "failedLogout": "La déconnexion a échouée",
         "unknownLoginRequesterMessage": "Compte inconnu du demandeur",
-        "loginRequesterNotEnabledMessage":
-            "La connexion du demandeur n'est pas active",
-        "bearerOnlyMessage":
-            "Les applications Bearer-only ne sont pas autorisées à initier la connexion par navigateur.",
+        "loginRequesterNotEnabledMessage": "La connexion du demandeur n'est pas active",
+        "bearerOnlyMessage": "Les applications Bearer-only ne sont pas autorisées à initier la connexion par navigateur.",
         "standardFlowDisabledMessage":
             "Le client n'est pas autorisé à initier une connexion avec le navigateur avec ce response_type. Le flux standard est désactivé pour le client.",
         "implicitFlowDisabledMessage":
@@ -2458,52 +1993,34 @@ export const kcMessages = {
         "unsupportedNameIdFormatMessage": "NameIDFormat non supporté",
         "invalidRequesterMessage": "Demandeur invalide",
         "registrationNotAllowedMessage": "L'enregistrement n'est pas autorisé",
-        "resetCredentialNotAllowedMessage":
-            "La remise à zéro n'est pas autorisée",
+        "resetCredentialNotAllowedMessage": "La remise à zéro n'est pas autorisée",
         "permissionNotApprovedMessage": "La permission n'est pas approuvée.",
-        "noRelayStateInResponseMessage":
-            "Aucun état de relais dans la réponse du fournisseur d'identité.",
-        "insufficientPermissionMessage":
-            "Permissions insuffisantes pour lier les identités.",
+        "noRelayStateInResponseMessage": "Aucun état de relais dans la réponse du fournisseur d'identité.",
+        "insufficientPermissionMessage": "Permissions insuffisantes pour lier les identités.",
         "couldNotProceedWithAuthenticationRequestMessage":
             "Impossible de continuer avec la requête d'authentification vers le fournisseur d'identité.",
-        "couldNotObtainTokenMessage":
-            "Impossible de récupérer le jeton du fournisseur d'identité.",
-        "unexpectedErrorRetrievingTokenMessage":
-            "Erreur inattendue lors de la récupération du jeton provenant du fournisseur d'identité.",
-        "unexpectedErrorHandlingResponseMessage":
-            "Erreur inattendue lors du traitement de la réponse provenant du fournisseur d'identité.",
-        "identityProviderAuthenticationFailedMessage":
-            "L'authentification a échouée. Impossible de s'authentifier avec le fournisseur d'identité.",
-        "couldNotSendAuthenticationRequestMessage":
-            "Impossible d'envoyer la requête d'authentification vers le fournisseur d'identité.",
-        "unexpectedErrorHandlingRequestMessage":
-            "Erreur inattendue lors du traitement de la requête vers le fournisseur d'identité.",
+        "couldNotObtainTokenMessage": "Impossible de récupérer le jeton du fournisseur d'identité.",
+        "unexpectedErrorRetrievingTokenMessage": "Erreur inattendue lors de la récupération du jeton provenant du fournisseur d'identité.",
+        "unexpectedErrorHandlingResponseMessage": "Erreur inattendue lors du traitement de la réponse provenant du fournisseur d'identité.",
+        "identityProviderAuthenticationFailedMessage": "L'authentification a échouée. Impossible de s'authentifier avec le fournisseur d'identité.",
+        "couldNotSendAuthenticationRequestMessage": "Impossible d'envoyer la requête d'authentification vers le fournisseur d'identité.",
+        "unexpectedErrorHandlingRequestMessage": "Erreur inattendue lors du traitement de la requête vers le fournisseur d'identité.",
         "invalidAccessCodeMessage": "Code d'accès invalide.",
         "sessionNotActiveMessage": "La session n'est pas active.",
-        "invalidCodeMessage":
-            "Une erreur est survenue, veuillez vous reconnecter à votre application.",
-        "identityProviderUnexpectedErrorMessage":
-            "Erreur inattendue lors de l'authentification avec fournisseur d'identité.",
-        "identityProviderNotFoundMessage":
-            "Impossible de trouver le fournisseur d'identité avec cet identifiant.",
-        "identityProviderLinkSuccess":
-            "Votre compte a été correctement lié avec {0} compte {1} .",
-        "staleCodeMessage":
-            "Cette page n'est plus valide, merci de retourner à votre application et de vous connecter à nouveau.",
-        "realmSupportsNoCredentialsMessage":
-            "Ce domaine ne supporte aucun type d'accréditation.",
+        "invalidCodeMessage": "Une erreur est survenue, veuillez vous reconnecter à votre application.",
+        "identityProviderUnexpectedErrorMessage": "Erreur inattendue lors de l'authentification avec fournisseur d'identité.",
+        "identityProviderNotFoundMessage": "Impossible de trouver le fournisseur d'identité avec cet identifiant.",
+        "identityProviderLinkSuccess": "Votre compte a été correctement lié avec {0} compte {1} .",
+        "staleCodeMessage": "Cette page n'est plus valide, merci de retourner à votre application et de vous connecter à nouveau.",
+        "realmSupportsNoCredentialsMessage": "Ce domaine ne supporte aucun type d'accréditation.",
         "identityProviderNotUniqueMessage":
             "Ce domaine autorise plusieurs fournisseurs d'identité. Impossible de déterminer le fournisseur d'identité avec lequel s'authentifier.",
         "emailVerifiedMessage": "Votre courriel a été vérifié.",
         "staleEmailVerificationLink":
             "Le lien que vous avez cliqué est périmé et n'est plus valide. Peut-être avez vous déjà vérifié votre mot de passe ?",
-        "identityProviderAlreadyLinkedMessage":
-            "L'identité fédérée retournée par {0} est déjà liée à un autre utilisateur.",
-        "confirmAccountLinking":
-            "Confirmez la liaison du compte {0} du fournisseur d'entité {1} avec votre compte.",
-        "confirmEmailAddressVerification":
-            "Confirmez la validité de l'adresse courriel {0}.",
+        "identityProviderAlreadyLinkedMessage": "L'identité fédérée retournée par {0} est déjà liée à un autre utilisateur.",
+        "confirmAccountLinking": "Confirmez la liaison du compte {0} du fournisseur d'entité {1} avec votre compte.",
+        "confirmEmailAddressVerification": "Confirmez la validité de l'adresse courriel {0}.",
         "confirmExecutionOfActions": "Suivez les instructions suivantes",
         "backToApplication": "&laquo; Revenir à l'application",
         "missingParameterMessage": "Paramètres manquants : {0}",
@@ -2511,8 +2028,7 @@ export const kcMessages = {
         "clientDisabledMessage": "Client désactivé.",
         "invalidParameterMessage": "Paramètre invalide : {0}",
         "alreadyLoggedIn": "Vous êtes déjà connecté.",
-        "differentUserAuthenticated":
-            "Vous êtes déjà authentifié avec un autre utilisateur '{0}' dans cette session. Merci de vous déconnecter.",
+        "differentUserAuthenticated": "Vous êtes déjà authentifié avec un autre utilisateur '{0}' dans cette session. Merci de vous déconnecter.",
         "proceedWithAction": "&raquo; Cliquez ici",
         "requiredAction.CONFIGURE_TOTP": "Configurer OTP",
         "requiredAction.terms_and_conditions": "Termes et conditions",
@@ -2551,14 +2067,12 @@ export const kcMessages = {
         "loginTitle": "Belépés ide: {0}",
         "loginTitleHtml": "{0}",
         "impersonateTitle": "{0} megszemélyesített felhasználó",
-        "impersonateTitleHtml":
-            "<strong>{0}</strong> megszemélyesített felhasználó",
+        "impersonateTitleHtml": "<strong>{0}</strong> megszemélyesített felhasználó",
         "realmChoice": "Tartomány",
         "unknownUser": "Ismeretlen felhasználó",
         "loginTotpTitle": "Mobil hitelesítő eszköz beállítása",
         "loginProfileTitle": "Felhasználói fiók adatok módosítása",
-        "loginTimeout":
-            "Belépési kísérlete időtúllépés miatt meghiúsult, a belépési eljárás újraindul.",
+        "loginTimeout": "Belépési kísérlete időtúllépés miatt meghiúsult, a belépési eljárás újraindul.",
         "oauthGrantTitle": "Hozzáférés engedélyezése {0}-nak/nek",
         "oauthGrantTitleHtml": "{0}",
         "errorTitle": "Nagyon sajnáljuk...",
@@ -2571,8 +2085,7 @@ export const kcMessages = {
         "displayUnsupported": "A kért megjelenítési mód nem támogatott",
         "browserRequired": "A belépéshez böngésző szükséges",
         "browserContinue": "A belépés befejezéséhez böngésző szükséges",
-        "browserContinuePrompt":
-            "Megnyitja a böngészőt és folytatja a belépést? [i/n]:",
+        "browserContinuePrompt": "Megnyitja a böngészőt és folytatja a belépést? [i/n]:",
         "browserContinueAnswer": "i",
         "termsTitle": "Felhasználási feltételek",
         "termsText": "<p>Felhasználási feltételek helye</p>",
@@ -2611,20 +2124,14 @@ export const kcMessages = {
         "samlRoleListScopeConsentText": "Szerepköreim",
         "rolesScopeConsentText": "Felhasználói szerepkörök",
         "restartLoginTooltip": "Belépés újrakezdése",
-        "loginTotpIntro":
-            "A felhasználói fiók hozzáféréshez be kell állítania egy egyszer használatos jelszót (OTP) generáló alkalmazást.",
-        "loginTotpStep1":
-            "Kérem telepítse az itt felsorolt alkalmazások egyikét a mobil eszközére:",
-        "loginTotpStep2":
-            "Indítsa el az alkalmazást a mobil eszközén és olvassa be ezt a (QR) kódot:",
+        "loginTotpIntro": "A felhasználói fiók hozzáféréshez be kell állítania egy egyszer használatos jelszót (OTP) generáló alkalmazást.",
+        "loginTotpStep1": "Kérem telepítse az itt felsorolt alkalmazások egyikét a mobil eszközére:",
+        "loginTotpStep2": "Indítsa el az alkalmazást a mobil eszközén és olvassa be ezt a (QR) kódot:",
         "loginTotpStep3":
             "Adja meg az alkalmazás által generált egyszer használatos kódot majd kattintson az Elküld gombra a beállítás befejezéséhez.",
-        "loginTotpStep3DeviceName":
-            "Adja meg a mobil eszköz nevét. Ez a későbbiekben segíthet az eszköz azonosításában.",
-        "loginTotpManualStep2":
-            "Indítsa el az alkalmazást és adja meg a következő kulcsot:",
-        "loginTotpManualStep3":
-            "Használja a következő beállításokat, ha az alkalmazása támogatja ezeket:",
+        "loginTotpStep3DeviceName": "Adja meg a mobil eszköz nevét. Ez a későbbiekben segíthet az eszköz azonosításában.",
+        "loginTotpManualStep2": "Indítsa el az alkalmazást és adja meg a következő kulcsot:",
+        "loginTotpManualStep3": "Használja a következő beállításokat, ha az alkalmazása támogatja ezeket:",
         "loginTotpUnableToScan": "Nem tud (QR) kódot beolvasni?",
         "loginTotpScanBarcode": "Inkább (QR) kódot olvasna be?",
         "loginCredential": "Jelszó",
@@ -2638,28 +2145,21 @@ export const kcMessages = {
         "loginTotp.totp": "Idő alapú",
         "loginTotp.hotp": "Számláló alapú",
         "loginChooseAuthenticator": "Válasszon egy belépési módszert",
-        "oauthGrantRequest":
-            "Engedélyezi a következő hozzáférés jogosultságokat?",
+        "oauthGrantRequest": "Engedélyezi a következő hozzáférés jogosultságokat?",
         "inResource": "Itt:",
-        "emailVerifyInstruction1":
-            "A megadott email címre elküldtük az email cím megerősítéséhez szükséges lépéseket tartalmazó üzenetet.",
-        "emailVerifyInstruction2":
-            "Nem kapott megerősítő kódot tartalmazó email üzenetet?",
+        "emailVerifyInstruction1": "A megadott email címre elküldtük az email cím megerősítéséhez szükséges lépéseket tartalmazó üzenetet.",
+        "emailVerifyInstruction2": "Nem kapott megerősítő kódot tartalmazó email üzenetet?",
         "emailVerifyInstruction3": "az ellenőrző kód ismételt kiküldéséhez.",
         "emailLinkIdpTitle": "{0} összekötés",
-        "emailLinkIdp1":
-            "A(z) {1} {0} fiók és a(z) {2} fiókjának összekötéséhez szükséges tudnivalókat email üzenetben elküldtük Önnek.",
-        "emailLinkIdp2":
-            "Nem kapott megerősítő kódot tartalmazó email üzenetet?",
+        "emailLinkIdp1": "A(z) {1} {0} fiók és a(z) {2} fiókjának összekötéséhez szükséges tudnivalókat email üzenetben elküldtük Önnek.",
+        "emailLinkIdp2": "Nem kapott megerősítő kódot tartalmazó email üzenetet?",
         "emailLinkIdp3": "az ellenőrző kód ismételt kiküldéséhez.",
-        "emailLinkIdp4":
-            "Ha egy másik böngészőben már jóváhagyta az email címét",
+        "emailLinkIdp4": "Ha egy másik böngészőben már jóváhagyta az email címét",
         "emailLinkIdp5": "a folytatáshoz.",
         "backToLogin": "&laquo; Vissza a belépéshez",
         "emailInstruction":
             "Adja meg a felhasználó nevét vagy email címét, hogy az új jelszó beállításához szükséges tudnivalókat elküldhessük Önnek.",
-        "copyCodeInstruction":
-            "Kérem másolja ki ezt a kódot és illessze be az alkalmazásába:",
+        "copyCodeInstruction": "Kérem másolja ki ezt a kódot és illessze be az alkalmazásába:",
         "pageExpiredTitle": "A lap érvényessége lejárt",
         "pageExpiredMsg1": "Ahhoz, hogy újrakezdje a belépési eljárást",
         "pageExpiredMsg2": "Ahhoz, hogy folytassa a belépési eljárást",
@@ -2678,8 +2178,7 @@ export const kcMessages = {
         "role_manage-realm": "Tartományok kezelése",
         "role_manage-users": "Felhasználók kezelése",
         "role_manage-applications": "Alkalmazások kezelése",
-        "role_manage-identity-providers":
-            "Személyazonosság-kezelők karbantartása",
+        "role_manage-identity-providers": "Személyazonosság-kezelők karbantartása",
         "role_manage-clients": "Kliensek kezelése",
         "role_manage-events": "Események kezelése",
         "role_view-profile": "Fiók megtekintése",
@@ -2691,29 +2190,23 @@ export const kcMessages = {
         "role_uma_authorization": "Hozzáférés jogosultságokhoz (UMA)",
         "client_account": "Fiók",
         "client_account-console": "Fiók kezelés",
-        "client_security-admin-console":
-            "Biztonsági, adminisztrátor fiók kezelés",
+        "client_security-admin-console": "Biztonsági, adminisztrátor fiók kezelés",
         "client_admin-cli": "Admin CLI",
         "client_realm-management": "Tartomány kezelés",
         "client_broker": "Ügynök",
         "requiredFields": "Kötelezően kitöltendő mezők",
         "invalidUserMessage": "Érvénytelen felhasználó név vagy jelszó.",
         "invalidUsernameMessage": "Érvénytelen felhasználó név.",
-        "invalidUsernameOrEmailMessage":
-            "Érvénytelen felhasználó név vagy email cím.",
+        "invalidUsernameOrEmailMessage": "Érvénytelen felhasználó név vagy email cím.",
         "invalidPasswordMessage": "Érvénytelen jelszó.",
         "invalidEmailMessage": "Érvénytelen email cím.",
-        "accountDisabledMessage":
-            "Felhasználói fiókja inaktív, kérem vegye fel a kapcsolatot az alkalmazás adminisztrátorral.",
+        "accountDisabledMessage": "Felhasználói fiókja inaktív, kérem vegye fel a kapcsolatot az alkalmazás adminisztrátorral.",
         "accountTemporarilyDisabledMessage":
             "Felhasználói fiókja átmenetileg inaktív, kérem vegye fel a kapcsolatot az alkalmazás adminisztrátorral, vagy próbálkozzon később.",
         "expiredCodeMessage": "Belépési időtúllépés, kérem lépjen be újra.",
-        "expiredActionMessage":
-            "A művelet érvényességi ideje lejárt. Kérem lépjen be újra.",
-        "expiredActionTokenNoSessionMessage":
-            "A művelet érvényességi ideje lejárt.",
-        "expiredActionTokenSessionExistsMessage":
-            "A művelet érvényességi ideje lejárt. Kérem ismételje meg a műveletet.",
+        "expiredActionMessage": "A művelet érvényességi ideje lejárt. Kérem lépjen be újra.",
+        "expiredActionTokenNoSessionMessage": "A művelet érvényességi ideje lejárt.",
+        "expiredActionTokenSessionExistsMessage": "A művelet érvényességi ideje lejárt. Kérem ismételje meg a műveletet.",
         "missingUsernameMessage": "Kérem adja meg a felhasználó nevét.",
         "missingFirstNameMessage": "Kérem adja meg a keresztnevet.",
         "missingLastNameMessage": "Kérem adja meg a vezetéknevet.",
@@ -2723,8 +2216,7 @@ export const kcMessages = {
         "missingTotpDeviceNameMessage": "Kérem adja meg az eszköz nevét.",
         "notMatchPasswordMessage": "A jelszavak nem egyeznek meg.",
         "invalidPasswordExistingMessage": "Érvénytelen jelenlegi jelszó.",
-        "invalidPasswordBlacklistedMessage":
-            "Érvénytelen jelszó: a jelszó tiltó listán szerepel.",
+        "invalidPasswordBlacklistedMessage": "Érvénytelen jelszó: a jelszó tiltó listán szerepel.",
         "invalidPasswordConfirmMessage": "A jelszavak nem egyeznek meg.",
         "invalidTotpMessage": "Érvénytelen hitelesítő kód.",
         "usernameExistsMessage": "Ez a felhasználó név már foglalt.",
@@ -2732,66 +2224,43 @@ export const kcMessages = {
         "federatedIdentityExistsMessage":
             "A megadott {0} {1} felhasználó már létezik. Kérem lépjen be a Keycloak Fiók Kezelőbe, hogy összeköthesse a fiókokat.",
         "confirmLinkIdpTitle": "A felhasználói fiók már létezik",
-        "federatedIdentityConfirmLinkMessage":
-            "A megadott {0} {1} felhasználó már létezik. Hogyan tovább?",
-        "federatedIdentityConfirmReauthenticateMessage":
-            "Azonosítsa magát, hogy összeköthesse a felhasználói fiókját a(z) {0}-val/vel.",
-        "nestedFirstBrokerFlowMessage":
-            "A {0} {1} felhasználó nincs összekötve egyetlen ismert felhasználóval sem.",
+        "federatedIdentityConfirmLinkMessage": "A megadott {0} {1} felhasználó már létezik. Hogyan tovább?",
+        "federatedIdentityConfirmReauthenticateMessage": "Azonosítsa magát, hogy összeköthesse a felhasználói fiókját a(z) {0}-val/vel.",
+        "nestedFirstBrokerFlowMessage": "A {0} {1} felhasználó nincs összekötve egyetlen ismert felhasználóval sem.",
         "confirmLinkIdpReviewProfile": "Fiók áttekintése",
         "confirmLinkIdpContinue": "Hozzáadás meglévő fiókhoz",
-        "configureTotpMessage":
-            "Fiókja aktiválásához előbb be kell állítania egy mobil hitelesítő eszközt.",
-        "updateProfileMessage":
-            "Fiókja aktiválásához előbb módosítania kell a felhasználói adatait.",
-        "updatePasswordMessage":
-            "Fiókja aktiválásához előbb le kell cserélnie a jelszavát.",
+        "configureTotpMessage": "Fiókja aktiválásához előbb be kell állítania egy mobil hitelesítő eszközt.",
+        "updateProfileMessage": "Fiókja aktiválásához előbb módosítania kell a felhasználói adatait.",
+        "updatePasswordMessage": "Fiókja aktiválásához előbb le kell cserélnie a jelszavát.",
         "resetPasswordMessage": "Cserélje le jelszavát!",
-        "verifyEmailMessage":
-            "Fiókja aktiválásához előbb erősítse meg email címét.",
-        "linkIdpMessage":
-            "Fiókja összekötéséhez előbb erősítse meg email címét a(z) {0}-val/vel.",
-        "emailSentMessage":
-            "Hamarosan email üzenetet küldünk a további tudnivalókról.",
-        "emailSendErrorMessage":
-            "Az email üzenetet nem tudtuk elküldeni, kérem próbálja meg később.",
+        "verifyEmailMessage": "Fiókja aktiválásához előbb erősítse meg email címét.",
+        "linkIdpMessage": "Fiókja összekötéséhez előbb erősítse meg email címét a(z) {0}-val/vel.",
+        "emailSentMessage": "Hamarosan email üzenetet küldünk a további tudnivalókról.",
+        "emailSendErrorMessage": "Az email üzenetet nem tudtuk elküldeni, kérem próbálja meg később.",
         "accountUpdatedMessage": "A felhasználói fiók adatai megváltoztak.",
         "accountPasswordUpdatedMessage": "A jelszava megváltozott.",
         "delegationCompleteHeader": "Sikeres belépés",
-        "delegationCompleteMessage":
-            "Becsukhatja a böngésző ablakot és visszatérhet a konzolos alkalmazásához.",
+        "delegationCompleteMessage": "Becsukhatja a böngésző ablakot és visszatérhet a konzolos alkalmazásához.",
         "delegationFailedHeader": "Sikertelen belépés",
-        "delegationFailedMessage":
-            "Becsukhatja a böngésző ablakot és visszatérhet a konzolos alkalmazásához, ahol újból megpróbálhat a belépni.",
+        "delegationFailedMessage": "Becsukhatja a böngésző ablakot és visszatérhet a konzolos alkalmazásához, ahol újból megpróbálhat a belépni.",
         "noAccessMessage": "Nincs hozzáférés",
-        "invalidPasswordMinLengthMessage":
-            "Érvénytelen jelszó: minimum hossz {0}.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Érvénytelen jelszó: legalább {0} darab kisbetűt kell tartalmaznia.",
-        "invalidPasswordMinDigitsMessage":
-            "Érvénytelen jelszó: legalább {0} darab számjegyet kell tartalmaznia.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Érvénytelen jelszó: legalább {0} darab nagybetűt kell tartalmaznia.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Érvénytelen jelszó: legalább {0} darab speciális karaktert (pl. #!$@ stb.) kell tartalmaznia.",
-        "invalidPasswordNotUsernameMessage":
-            "Érvénytelen jelszó: nem lehet azonos a felhasználó névvel.",
-        "invalidPasswordRegexPatternMessage":
-            "Érvénytelen jelszó: a jelszó nem illeszkedik a megadott reguláris kifejezés mintára.",
-        "invalidPasswordHistoryMessage":
-            "Érvénytelen jelszó: nem lehet azonos az utolsó {0} darab, korábban alkalmazott jelszóval.",
-        "invalidPasswordGenericMessage":
-            "Érvénytelen jelszó: az új jelszó nem felel meg a jelszó házirendnek.",
-        "failedToProcessResponseMessage":
-            "A válasz üzenet feldolgozása nem sikerült.",
+        "invalidPasswordMinLengthMessage": "Érvénytelen jelszó: minimum hossz {0}.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Érvénytelen jelszó: legalább {0} darab kisbetűt kell tartalmaznia.",
+        "invalidPasswordMinDigitsMessage": "Érvénytelen jelszó: legalább {0} darab számjegyet kell tartalmaznia.",
+        "invalidPasswordMinUpperCaseCharsMessage": "Érvénytelen jelszó: legalább {0} darab nagybetűt kell tartalmaznia.",
+        "invalidPasswordMinSpecialCharsMessage": "Érvénytelen jelszó: legalább {0} darab speciális karaktert (pl. #!$@ stb.) kell tartalmaznia.",
+        "invalidPasswordNotUsernameMessage": "Érvénytelen jelszó: nem lehet azonos a felhasználó névvel.",
+        "invalidPasswordRegexPatternMessage": "Érvénytelen jelszó: a jelszó nem illeszkedik a megadott reguláris kifejezés mintára.",
+        "invalidPasswordHistoryMessage": "Érvénytelen jelszó: nem lehet azonos az utolsó {0} darab, korábban alkalmazott jelszóval.",
+        "invalidPasswordGenericMessage": "Érvénytelen jelszó: az új jelszó nem felel meg a jelszó házirendnek.",
+        "failedToProcessResponseMessage": "A válasz üzenet feldolgozása nem sikerült.",
         "httpsRequiredMessage": "HTTPS protokoll használata kötelező.",
         "realmNotEnabledMessage": "A tartomány inaktív.",
         "invalidRequestMessage": "Érvénytelen kérés.",
         "failedLogout": "A kilépés sikertelen.",
         "unknownLoginRequesterMessage": "A belépést kérelmező ismeretlen.",
         "loginRequesterNotEnabledMessage": "A belépést kérelmező inaktív.",
-        "bearerOnlyMessage":
-            "Bearer-only alkalmazások nem kezdeményezhetnek böngésző alapú beléptetést.",
+        "bearerOnlyMessage": "Bearer-only alkalmazások nem kezdeményezhetnek böngésző alapú beléptetést.",
         "standardFlowDisabledMessage":
             "Ez a kliens nem kezdeményezhet böngésző alapú beléptetést a megadott válasz típussal. A standard belépési eljárás (flow) tiltott a kliensen.",
         "implicitFlowDisabledMessage":
@@ -2802,40 +2271,25 @@ export const kcMessages = {
         "registrationNotAllowedMessage": "A felhasználó regisztráció tiltott.",
         "resetCredentialNotAllowedMessage": "A jelszó visszaállítás tiltott.",
         "permissionNotApprovedMessage": "A jogosultság nincsen jóváhagyva.",
-        "noRelayStateInResponseMessage":
-            'Nincsen "relay state" a személyazonosság-kezelő válaszüzenetében.',
-        "insufficientPermissionMessage":
-            "Nincs elég jogosultság a fiókok összekötéséhez.",
-        "couldNotProceedWithAuthenticationRequestMessage":
-            "A személyazonosság-kezelő felé indított hitelesítési kérés sikertelen.",
-        "couldNotObtainTokenMessage":
-            "Nem sikerült tokent igényelni a személyazonosság-kezelőtől.",
-        "unexpectedErrorRetrievingTokenMessage":
-            "Váratlan hiba történt a személyazonosság-kezelő token igénylése közben.",
-        "unexpectedErrorHandlingResponseMessage":
-            "Váratlan hiba történt a személyazonosság-kezelő válaszüzenetének feldolgozása közben.",
-        "identityProviderAuthenticationFailedMessage":
-            "Nem sikerült a személyazonosság-kezelőn keresztül intézett hitelesítés.",
-        "couldNotSendAuthenticationRequestMessage":
-            "Nem sikerült a személyazonosság-kezelőhöz intézett hitelesítés kérés elküldése.",
-        "unexpectedErrorHandlingRequestMessage":
-            "Váratlan hiba történt a személyazonosság-kezelő hitelesítés kérés feldolgozása közben.",
+        "noRelayStateInResponseMessage": 'Nincsen "relay state" a személyazonosság-kezelő válaszüzenetében.',
+        "insufficientPermissionMessage": "Nincs elég jogosultság a fiókok összekötéséhez.",
+        "couldNotProceedWithAuthenticationRequestMessage": "A személyazonosság-kezelő felé indított hitelesítési kérés sikertelen.",
+        "couldNotObtainTokenMessage": "Nem sikerült tokent igényelni a személyazonosság-kezelőtől.",
+        "unexpectedErrorRetrievingTokenMessage": "Váratlan hiba történt a személyazonosság-kezelő token igénylése közben.",
+        "unexpectedErrorHandlingResponseMessage": "Váratlan hiba történt a személyazonosság-kezelő válaszüzenetének feldolgozása közben.",
+        "identityProviderAuthenticationFailedMessage": "Nem sikerült a személyazonosság-kezelőn keresztül intézett hitelesítés.",
+        "couldNotSendAuthenticationRequestMessage": "Nem sikerült a személyazonosság-kezelőhöz intézett hitelesítés kérés elküldése.",
+        "unexpectedErrorHandlingRequestMessage": "Váratlan hiba történt a személyazonosság-kezelő hitelesítés kérés feldolgozása közben.",
         "invalidAccessCodeMessage": "Érvénytelen hozzáférési kód.",
         "sessionNotActiveMessage": "A munkamenet inaktív.",
-        "invalidCodeMessage":
-            "Hiba történt, kérem lépjen be újra az alkalmazásán keresztül.",
-        "identityProviderUnexpectedErrorMessage":
-            "Váratlan hiba történt a személyazonosság-kezelőn keresztül intézett hitelesítés során.",
-        "identityProviderNotFoundMessage":
-            "A megadott azonosítóval személyazonosság-kezelő nem található.",
+        "invalidCodeMessage": "Hiba történt, kérem lépjen be újra az alkalmazásán keresztül.",
+        "identityProviderUnexpectedErrorMessage": "Váratlan hiba történt a személyazonosság-kezelőn keresztül intézett hitelesítés során.",
+        "identityProviderNotFoundMessage": "A megadott azonosítóval személyazonosság-kezelő nem található.",
         "identityProviderLinkSuccess":
             "Sikeresen megerősítette email címét. Kérem térjen vissza az eredeti böngészőjébe, és onnan folytassa a belépési eljárást.",
-        "staleCodeMessage":
-            "Ez a lap már nem érvényes, kérem térjen vissza az alkalmazásába és lépjen be ismét.",
-        "realmSupportsNoCredentialsMessage":
-            "Ez a tartomány nem támogat jelszó alapú azonosítást.",
-        "credentialSetupRequired":
-            "Belépés sikertelen, jelszó beállítás szükséges.",
+        "staleCodeMessage": "Ez a lap már nem érvényes, kérem térjen vissza az alkalmazásába és lépjen be ismét.",
+        "realmSupportsNoCredentialsMessage": "Ez a tartomány nem támogat jelszó alapú azonosítást.",
+        "credentialSetupRequired": "Belépés sikertelen, jelszó beállítás szükséges.",
         "identityProviderNotUniqueMessage":
             "Ez a tartomány több személyazonosság-kezelőt támogat. Nem sikerült meghatározni, hogy melyik személyazonosság-kezelőt kellene a hitelesítéshez alkalmazni.",
         "emailVerifiedMessage": "Az email címét megerősítettük.",
@@ -2843,10 +2297,8 @@ export const kcMessages = {
             "Az a hivatkozás, amelyikre rákattintott elévült és érvényét vesztette. Talán már korábban megerősítette az email címét?",
         "identityProviderAlreadyLinkedMessage":
             "A(z) {0}-tól/től visszakapott összekapcsolt személyazonosság már össze van kötve egy másik felhasználói fiókkal.",
-        "confirmAccountLinking":
-            "Erősítse meg a(z) {0} személyazonosság-kezelő {1} fiókjának összekötését a felhasználói fiókjával.",
-        "confirmEmailAddressVerification":
-            "Erősítse meg a(z) {0} email cím érvényességét.",
+        "confirmAccountLinking": "Erősítse meg a(z) {0} személyazonosság-kezelő {1} fiókjának összekötését a felhasználói fiókjával.",
+        "confirmEmailAddressVerification": "Erősítse meg a(z) {0} email cím érvényességét.",
         "confirmExecutionOfActions": "Hajtsa végre a következő művelet(ek)et",
         "backToApplication": "&laquo; Vissza az alkalmazásba",
         "missingParameterMessage": "Hiányzó paraméterek: {0}",
@@ -2854,13 +2306,10 @@ export const kcMessages = {
         "clientDisabledMessage": "A kliens inaktív.",
         "invalidParameterMessage": "Érvénytelen paraméter: {0}",
         "alreadyLoggedIn": "Már korábban belépett.",
-        "differentUserAuthenticated":
-            "Ebben a munkamenetben már korábban belépett '{0}' felhasználó névvel. Kérem előbb lépjen ki a munkamenetből.",
-        "brokerLinkingSessionExpired":
-            "Ügynök fiók összekötést kezdeményezett, de az aktuális munkamenete már érvénytelen.",
+        "differentUserAuthenticated": "Ebben a munkamenetben már korábban belépett '{0}' felhasználó névvel. Kérem előbb lépjen ki a munkamenetből.",
+        "brokerLinkingSessionExpired": "Ügynök fiók összekötést kezdeményezett, de az aktuális munkamenete már érvénytelen.",
         "proceedWithAction": "&raquo; Kattintson ide a folytatáshoz",
-        "requiredAction.CONFIGURE_TOTP":
-            "Egyszer használatos jelszó (OTP) beállítása",
+        "requiredAction.CONFIGURE_TOTP": "Egyszer használatos jelszó (OTP) beállítása",
         "requiredAction.terms_and_conditions": "Felhasználási feltételek",
         "requiredAction.UPDATE_PASSWORD": "Jelszó csere",
         "requiredAction.UPDATE_PROFILE": "Fiók adatok módosítása",
@@ -2879,8 +2328,7 @@ export const kcMessages = {
         "console-verify-email":
             "Meg kell erősítenie az email címét.  Email üzenetet küldtünk a(z) {0} email címre amely egy ellenőrző, megerősítő, kódot tartalmaz. Kérem írja be a kapott kódot a lenti beviteli mezőbe.",
         "console-email-code": "Email üzenetben kapott ellenőrző kód:",
-        "console-accept-terms":
-            "Elfogadja a felhasználási feltételeket? [i/n]:",
+        "console-accept-terms": "Elfogadja a felhasználási feltételeket? [i/n]:",
         "console-accept": "i",
         "openshift.scope.user_info": "Felhasználó adatok",
         "openshift.scope.user_check-access": "Felhasználó hozzáférés adatok",
@@ -2891,39 +2339,28 @@ export const kcMessages = {
         "saml.post-form.js-disabled":
             "A JavaScript nincs engedélyezve. A folytatás előtt ajánlott bekapcsolni a JavaScript támogatást. Kattintson a lenti gombra a folytatáshoz. ",
         "otp-display-name": "Hitelesítő alkalmazás",
-        "otp-help-text":
-            "Adja meg az ellenőrző kódot a hitelesítő alkalmazásból",
+        "otp-help-text": "Adja meg az ellenőrző kódot a hitelesítő alkalmazásból",
         "password-display-name": "Jelszó",
         "password-help-text": "Lépjen be a jelszava megadásával",
         "auth-username-form-display-name": "Felhasználó név",
-        "auth-username-form-help-text":
-            "Kezdje meg a belépést a felhasználó nevének megadásával",
+        "auth-username-form-help-text": "Kezdje meg a belépést a felhasználó nevének megadásával",
         "auth-username-password-form-display-name": "Felhasználó név és jelszó",
-        "auth-username-password-form-help-text":
-            "Lépjen be a felhasználó neve és jelszava megadásával.",
+        "auth-username-password-form-help-text": "Lépjen be a felhasználó neve és jelszava megadásával.",
         "webauthn-display-name": "Biztonsági kulcs",
         "webauthn-help-text": "Használja a biztonsági kulcsát a belépéshez.",
         "webauthn-passwordless-display-name": "Biztonsági kulcs",
-        "webauthn-passwordless-help-text":
-            "Használja a biztonsági kulcsát a jelszómentes belépéshez.",
+        "webauthn-passwordless-help-text": "Használja a biztonsági kulcsát a jelszómentes belépéshez.",
         "webauthn-login-title": "Biztonsági kulcs alapú belépés",
         "webauthn-registration-title": "Biztonsági kulcs regisztráció",
         "webauthn-available-authenticators": "Elérhető hitelesítő alkalmazások",
         "webauthn-error-title": "Biztonsági kulcs hiba",
-        "webauthn-error-registration":
-            "Nem sikerült regisztrálni a biztonsági kulcsot.",
-        "webauthn-error-api-get":
-            "Nem sikerült a hitelesítés a biztonsági kulccsal.",
-        "webauthn-error-different-user":
-            "Az először hitelesített felhasználó nem az, akit a biztonsági kulccsal azonosítottunk.",
-        "webauthn-error-auth-verification":
-            "A biztonsági kulcs alapú hitelesítés eredménye érvénytelen.",
-        "webauthn-error-register-verification":
-            "A biztonsági kulcs alapú regisztráció eredménye érvénytelen.",
-        "webauthn-error-user-not-found":
-            "Ismeretlen felhasználót hitelesítettünk a biztonsági kulcs alapján.",
-        "identity-provider-redirector":
-            "Összekötés másik személyazonosság-kezelővel",
+        "webauthn-error-registration": "Nem sikerült regisztrálni a biztonsági kulcsot.",
+        "webauthn-error-api-get": "Nem sikerült a hitelesítés a biztonsági kulccsal.",
+        "webauthn-error-different-user": "Az először hitelesített felhasználó nem az, akit a biztonsági kulccsal azonosítottunk.",
+        "webauthn-error-auth-verification": "A biztonsági kulcs alapú hitelesítés eredménye érvénytelen.",
+        "webauthn-error-register-verification": "A biztonsági kulcs alapú regisztráció eredménye érvénytelen.",
+        "webauthn-error-user-not-found": "Ismeretlen felhasználót hitelesítettünk a biztonsági kulcs alapján.",
+        "identity-provider-redirector": "Összekötés másik személyazonosság-kezelővel",
     },
     "it": {
         "doLogIn": "Accedi",
@@ -2946,8 +2383,7 @@ export const kcMessages = {
         "kerberosNotConfiguredTitle": "Kerberos non configurato",
         "bypassKerberosDetail":
             "Non sei connesso via Kerberos o il tuo browser non supporta l'autenticazione a Kerberos. Fai clic su Continua per accedere in modo alternativo.",
-        "kerberosNotSetUp":
-            "Kerberos non è configurato. Non puoi effettuare l'accesso.",
+        "kerberosNotSetUp": "Kerberos non è configurato. Non puoi effettuare l'accesso.",
         "registerTitle": "Registrati",
         "loginTitle": "Accedi a {0}",
         "loginTitleHtml": "{0}",
@@ -2957,8 +2393,7 @@ export const kcMessages = {
         "unknownUser": "Utente sconosciuto",
         "loginTotpTitle": "Configura autenticazione mobile",
         "loginProfileTitle": "Aggiorna profilo",
-        "loginTimeout":
-            "Stai impiegando troppo tempo per accedere. Il processo di autenticazione verrà riavviato.",
+        "loginTimeout": "Stai impiegando troppo tempo per accedere. Il processo di autenticazione verrà riavviato.",
         "oauthGrantTitle": "Autenticazione concessa",
         "oauthGrantTitleHtml": "{0}",
         "errorTitle": "Siamo spiacenti…",
@@ -2971,15 +2406,13 @@ export const kcMessages = {
         "displayUnsupported": "Tipo display richiesto non supportato",
         "browserRequired": "È richiesto il browser per il login",
         "browserContinue": "È richiesto il browser per continuare il login",
-        "browserContinuePrompt":
-            "Aprire il browser per continuare il login? [y/n]:",
+        "browserContinuePrompt": "Aprire il browser per continuare il login? [y/n]:",
         "browserContinueAnswer": "y",
         "termsTitle": "Termini e condizioni",
         "termsText": "<p>Termini e condizioni da definire</p>",
         "termsPlainText": "Termini e condizioni da definire.",
         "recaptchaFailed": "Recaptcha non valido",
-        "recaptchaNotConfigured":
-            "Il Recaptcha è obbligatorio, ma non configurato",
+        "recaptchaNotConfigured": "Il Recaptcha è obbligatorio, ma non configurato",
         "consentDenied": "Permesso negato.",
         "noAccount": "Nuovo utente?",
         "username": "Username",
@@ -3012,18 +2445,13 @@ export const kcMessages = {
         "samlRoleListScopeConsentText": "I miei ruoli",
         "rolesScopeConsentText": "Ruoli utente",
         "restartLoginTooltip": "Riavvia login",
-        "loginTotpIntro":
-            "Devi impostare un generatore di OTP (password temporanea valida una volta sola) per accedere a questo account",
-        "loginTotpStep1":
-            "Installa una delle seguenti applicazioni sul tuo dispositivo mobile",
+        "loginTotpIntro": "Devi impostare un generatore di OTP (password temporanea valida una volta sola) per accedere a questo account",
+        "loginTotpStep1": "Installa una delle seguenti applicazioni sul tuo dispositivo mobile",
         "loginTotpStep2": "Apri l'applicazione e scansiona il codice QR",
-        "loginTotpStep3":
-            "Scrivi il codice monouso fornito dall'applicazione e premi Invia per completare il setup",
-        "loginTotpStep3DeviceName":
-            "Fornisci il nome del dispositivo per aiutarti a gestire i dispositivi di autenticazione.",
+        "loginTotpStep3": "Scrivi il codice monouso fornito dall'applicazione e premi Invia per completare il setup",
+        "loginTotpStep3DeviceName": "Fornisci il nome del dispositivo per aiutarti a gestire i dispositivi di autenticazione.",
         "loginTotpManualStep2": "Apri l'applicazione e scrivi la chiave",
-        "loginTotpManualStep3":
-            "Usa le seguenti impostazioni se l'applicazione lo consente",
+        "loginTotpManualStep3": "Usa le seguenti impostazioni se l'applicazione lo consente",
         "loginTotpUnableToScan": "Non riesci a scansionare il codice QR?",
         "loginTotpScanBarcode": "Vuoi scansionare il codice QR?",
         "loginCredential": "Credenziali",
@@ -3039,25 +2467,18 @@ export const kcMessages = {
         "loginChooseAuthenticator": "Seleziona il tuo metodo di autenticazione",
         "oauthGrantRequest": "Vuoi assegnare questi privilegi di accesso?",
         "inResource": "per",
-        "emailVerifyInstruction1":
-            "Ti è stata inviata una email con le istruzioni per la verifica della tua email.",
-        "emailVerifyInstruction2":
-            "Non hai ricevuto un codice di verifica nella tua email?",
+        "emailVerifyInstruction1": "Ti è stata inviata una email con le istruzioni per la verifica della tua email.",
+        "emailVerifyInstruction2": "Non hai ricevuto un codice di verifica nella tua email?",
         "emailVerifyInstruction3": "per rinviare la email.",
         "emailLinkIdpTitle": "Collega {0}",
-        "emailLinkIdp1":
-            "Ti è stata inviata una email con le istruzioni per collegare l'account {0} {1} con il tuo account {2}.",
-        "emailLinkIdp2":
-            "Non hai ricevuto un codice di verifica nella tua email?",
+        "emailLinkIdp1": "Ti è stata inviata una email con le istruzioni per collegare l'account {0} {1} con il tuo account {2}.",
+        "emailLinkIdp2": "Non hai ricevuto un codice di verifica nella tua email?",
         "emailLinkIdp3": "Per rinviare la email.",
-        "emailLinkIdp4":
-            "Se hai già verificato l'indirizzo email in un altro browser",
+        "emailLinkIdp4": "Se hai già verificato l'indirizzo email in un altro browser",
         "emailLinkIdp5": "per continuare.",
         "backToLogin": "&laquo; Torna al Login",
-        "emailInstruction":
-            "Inserisci la tua username o l'indirizzo email e ti manderemo le istruzioni per creare una nuova password.",
-        "copyCodeInstruction":
-            "Copia questo codice e incollalo nella tua applicazione:",
+        "emailInstruction": "Inserisci la tua username o l'indirizzo email e ti manderemo le istruzioni per creare una nuova password.",
+        "copyCodeInstruction": "Copia questo codice e incollalo nella tua applicazione:",
         "pageExpiredTitle": "La pagina è scaduta",
         "pageExpiredMsg1": "Per ripetere il login",
         "pageExpiredMsg2": "Per continuare con il login",
@@ -3085,8 +2506,7 @@ export const kcMessages = {
         "role_offline-access": "Accesso offline",
         "client_account": "Account",
         "client_account-console": "Console account",
-        "client_security-admin-console":
-            "Console di amministrazione di sicurezza",
+        "client_security-admin-console": "Console di amministrazione di sicurezza",
         "client_admin-cli": "Admin CLI",
         "client_realm-management": "Gestione realm",
         "client_broker": "Broker",
@@ -3096,93 +2516,64 @@ export const kcMessages = {
         "invalidUsernameOrEmailMessage": "Username o email non validi.",
         "invalidPasswordMessage": "Password non valida.",
         "invalidEmailMessage": "Indirizzo email non valido.",
-        "accountDisabledMessage":
-            "L'account è disabilitato, contatta il tuo amministratore.",
-        "accountTemporarilyDisabledMessage":
-            "L'account è temporaneamente disabilitato; contatta il tuo amministratore o prova più tardi.",
+        "accountDisabledMessage": "L'account è disabilitato, contatta il tuo amministratore.",
+        "accountTemporarilyDisabledMessage": "L'account è temporaneamente disabilitato; contatta il tuo amministratore o prova più tardi.",
         "expiredCodeMessage": "Login scaduto. Riprovare.",
-        "expiredActionMessage":
-            "Azione scaduta. Continuare adesso con in login.",
+        "expiredActionMessage": "Azione scaduta. Continuare adesso con in login.",
         "expiredActionTokenNoSessionMessage": "Azione scaduta.",
-        "expiredActionTokenSessionExistsMessage":
-            "Azione scaduta. Ricominciare.",
+        "expiredActionTokenSessionExistsMessage": "Azione scaduta. Ricominciare.",
         "missingFirstNameMessage": "Inserisci il nome.",
         "missingLastNameMessage": "Inserisci il cognome.",
         "missingEmailMessage": "Inserisci l'email.",
         "missingUsernameMessage": "Inserisci l'username.",
         "missingPasswordMessage": "Inserisci la password.",
         "missingTotpMessage": "Inserisci il codice di autenticazione.",
-        "missingTotpDeviceNameMessage":
-            "Inserisci il nome del dispositivo di autenticazione.",
+        "missingTotpDeviceNameMessage": "Inserisci il nome del dispositivo di autenticazione.",
         "notMatchPasswordMessage": "Le password non coincidono.",
         "invalidPasswordExistingMessage": "Password esistente non valida.",
-        "invalidPasswordBlacklistedMessage":
-            "Password non valida: la password non è consentita.",
-        "invalidPasswordConfirmMessage":
-            "La password di conferma non coincide.",
+        "invalidPasswordBlacklistedMessage": "Password non valida: la password non è consentita.",
+        "invalidPasswordConfirmMessage": "La password di conferma non coincide.",
         "invalidTotpMessage": "Codice di autenticazione non valido.",
         "usernameExistsMessage": "Username già esistente.",
         "emailExistsMessage": "Email già esistente.",
-        "federatedIdentityExistsMessage":
-            "L'utente con {0} {1} esiste già. Effettua il login nella gestione account per associare l'account.",
+        "federatedIdentityExistsMessage": "L'utente con {0} {1} esiste già. Effettua il login nella gestione account per associare l'account.",
         "confirmLinkIdpTitle": "Account già esistente",
-        "federatedIdentityConfirmLinkMessage":
-            "L'utente con {0} {1} esiste già. Come vuoi procedere?",
-        "federatedIdentityConfirmReauthenticateMessage":
-            "Autenticati per associare il tuo account con {0}",
+        "federatedIdentityConfirmLinkMessage": "L'utente con {0} {1} esiste già. Come vuoi procedere?",
+        "federatedIdentityConfirmReauthenticateMessage": "Autenticati per associare il tuo account con {0}",
         "confirmLinkIdpReviewProfile": "Rivedi profilo",
         "confirmLinkIdpContinue": "Aggiungi all'account esistente",
-        "configureTotpMessage":
-            "Devi impostare un autenticatore per attivare il tuo account.",
-        "updateProfileMessage":
-            "Devi aggiornare il tuo profilo utente per attivare il tuo account.",
-        "updatePasswordMessage":
-            "Devi cambiare la password per attivare il tuo account.",
+        "configureTotpMessage": "Devi impostare un autenticatore per attivare il tuo account.",
+        "updateProfileMessage": "Devi aggiornare il tuo profilo utente per attivare il tuo account.",
+        "updatePasswordMessage": "Devi cambiare la password per attivare il tuo account.",
         "resetPasswordMessage": "Devi cambiare la password.",
-        "verifyEmailMessage":
-            "Devi verificare il tuo indirizzo email per attivare il tuo account.",
-        "linkIdpMessage":
-            "Devi verificare il tuo indirizzo email per associare il tuo account con {0}.",
-        "emailSentMessage":
-            "Riceverai a breve una email con maggiori istruzioni.",
+        "verifyEmailMessage": "Devi verificare il tuo indirizzo email per attivare il tuo account.",
+        "linkIdpMessage": "Devi verificare il tuo indirizzo email per associare il tuo account con {0}.",
+        "emailSentMessage": "Riceverai a breve una email con maggiori istruzioni.",
         "emailSendErrorMessage": "Invio email fallito, riprova più tardi.",
         "accountUpdatedMessage": "Il tuo account è stato aggiornato.",
         "accountPasswordUpdatedMessage": "La tua password è stata aggiornata.",
         "delegationCompleteHeader": "Login completato",
-        "delegationCompleteMessage":
-            "Puoi chiudere questa finestra del browser e tornare alla tua applicazione.",
+        "delegationCompleteMessage": "Puoi chiudere questa finestra del browser e tornare alla tua applicazione.",
         "delegationFailedHeader": "Login fallito",
-        "delegationFailedMessage":
-            "Puoi chiudere questa finestra del browser e tornare alla tua applicazione per provare ad accedere nuovamente.",
+        "delegationFailedMessage": "Puoi chiudere questa finestra del browser e tornare alla tua applicazione per provare ad accedere nuovamente.",
         "noAccessMessage": "Nessun accesso",
-        "invalidPasswordMinLengthMessage":
-            "Password non valida: lunghezza minima {0}.",
-        "invalidPasswordMinDigitsMessage":
-            "Password non valida: deve contenere almeno {0} numeri.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Password non valida: deve contenere almeno {0} caratteri minuscoli.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Password non valida: deve contenere almeno {0} caratteri maiuscoli.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Password non valida: deve contenere almeno {0} caratteri speciali.",
-        "invalidPasswordNotUsernameMessage":
-            "Password non valida: non deve essere uguale alla username.",
-        "invalidPasswordRegexPatternMessage":
-            "Password non valida: fallito il match con una o più espressioni regolari.",
-        "invalidPasswordHistoryMessage":
-            "Password non valida: non deve essere uguale ad una delle ultime {0} password.",
-        "invalidPasswordGenericMessage":
-            "Password non valida: la nuova password non rispetta le indicazioni previste.",
-        "failedToProcessResponseMessage":
-            "Fallimento nell'elaborazione della risposta",
+        "invalidPasswordMinLengthMessage": "Password non valida: lunghezza minima {0}.",
+        "invalidPasswordMinDigitsMessage": "Password non valida: deve contenere almeno {0} numeri.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Password non valida: deve contenere almeno {0} caratteri minuscoli.",
+        "invalidPasswordMinUpperCaseCharsMessage": "Password non valida: deve contenere almeno {0} caratteri maiuscoli.",
+        "invalidPasswordMinSpecialCharsMessage": "Password non valida: deve contenere almeno {0} caratteri speciali.",
+        "invalidPasswordNotUsernameMessage": "Password non valida: non deve essere uguale alla username.",
+        "invalidPasswordRegexPatternMessage": "Password non valida: fallito il match con una o più espressioni regolari.",
+        "invalidPasswordHistoryMessage": "Password non valida: non deve essere uguale ad una delle ultime {0} password.",
+        "invalidPasswordGenericMessage": "Password non valida: la nuova password non rispetta le indicazioni previste.",
+        "failedToProcessResponseMessage": "Fallimento nell'elaborazione della risposta",
         "httpsRequiredMessage": "HTTPS richiesto",
         "realmNotEnabledMessage": "Realm non abilitato",
         "invalidRequestMessage": "Richiesta non valida",
         "failedLogout": "Logout fallito",
         "unknownLoginRequesterMessage": "Richiedente di Login non riconosciuto",
         "loginRequesterNotEnabledMessage": "Richiedente di Login non abilitato",
-        "bearerOnlyMessage":
-            "Alle applicazioni di tipo Bearer-only non è consentito di effettuare il login tramite browser",
+        "bearerOnlyMessage": "Alle applicazioni di tipo Bearer-only non è consentito di effettuare il login tramite browser",
         "standardFlowDisabledMessage":
             "Al client non è consentito di effettuare il login tramite browser con questo response_type. Standard flow è stato disabilitato per il client.",
         "implicitFlowDisabledMessage":
@@ -3191,54 +2582,33 @@ export const kcMessages = {
         "unsupportedNameIdFormatMessage": "NameIDFormat non supportato",
         "invalidRequesterMessage": "Richiedente non valido",
         "registrationNotAllowedMessage": "Registrazione non permessa",
-        "resetCredentialNotAllowedMessage":
-            "Reimpostazione della credenziale non permessa",
+        "resetCredentialNotAllowedMessage": "Reimpostazione della credenziale non permessa",
         "permissionNotApprovedMessage": "Permesso non approvato.",
-        "noRelayStateInResponseMessage":
-            "Nessun relay state in risposta dall'identity provider.",
-        "insufficientPermissionMessage":
-            "Permessi insufficienti per associare le identità.",
-        "couldNotProceedWithAuthenticationRequestMessage":
-            "Impossibile procedere con la richiesta di autenticazione all'identity provider",
-        "couldNotObtainTokenMessage":
-            "Non posso ottenere un token dall'identity provider.",
-        "unexpectedErrorRetrievingTokenMessage":
-            "Errore inaspettato nel recupero del token dall'identity provider.",
-        "unexpectedErrorHandlingResponseMessage":
-            "Errore inaspettato nella gestione della risposta dall'identity provider.",
-        "identityProviderAuthenticationFailedMessage":
-            "Autenticazione fallita. Non posso effettuare l'autenticazione con l'identity provider.",
-        "couldNotSendAuthenticationRequestMessage":
-            "Impossibile inviare la richiesta di autenticazione all'identity provider.",
-        "unexpectedErrorHandlingRequestMessage":
-            "Errore inaspettato nella gestione della richiesta di autenticazione all'identity provider.",
+        "noRelayStateInResponseMessage": "Nessun relay state in risposta dall'identity provider.",
+        "insufficientPermissionMessage": "Permessi insufficienti per associare le identità.",
+        "couldNotProceedWithAuthenticationRequestMessage": "Impossibile procedere con la richiesta di autenticazione all'identity provider",
+        "couldNotObtainTokenMessage": "Non posso ottenere un token dall'identity provider.",
+        "unexpectedErrorRetrievingTokenMessage": "Errore inaspettato nel recupero del token dall'identity provider.",
+        "unexpectedErrorHandlingResponseMessage": "Errore inaspettato nella gestione della risposta dall'identity provider.",
+        "identityProviderAuthenticationFailedMessage": "Autenticazione fallita. Non posso effettuare l'autenticazione con l'identity provider.",
+        "couldNotSendAuthenticationRequestMessage": "Impossibile inviare la richiesta di autenticazione all'identity provider.",
+        "unexpectedErrorHandlingRequestMessage": "Errore inaspettato nella gestione della richiesta di autenticazione all'identity provider.",
         "invalidAccessCodeMessage": "Codice di accesso non valido.",
         "sessionNotActiveMessage": "Sessione non attiva.",
-        "invalidCodeMessage":
-            "Si è verificato un errore, effettua di nuovo il login nella tua applicazione.",
-        "identityProviderUnexpectedErrorMessage":
-            "Errore imprevisto durante l'autenticazione con identity provider",
-        "identityProviderNotFoundMessage":
-            "Non posso trovare un identity provider con l'identificativo.",
-        "identityProviderLinkSuccess":
-            "Hai verificato con successo la tua email. Torna al tuo browser iniziale e continua da lì con il login.",
-        "staleCodeMessage":
-            "Questa pagina non è più valida, torna alla tua applicazione ed effettua nuovamente l'accesso",
-        "realmSupportsNoCredentialsMessage":
-            "Il realm non supporta nessun tipo di credenziali.",
-        "credentialSetupRequired":
-            "Impossibile effettuare il login, è richiesto il setup delle credenziali.",
+        "invalidCodeMessage": "Si è verificato un errore, effettua di nuovo il login nella tua applicazione.",
+        "identityProviderUnexpectedErrorMessage": "Errore imprevisto durante l'autenticazione con identity provider",
+        "identityProviderNotFoundMessage": "Non posso trovare un identity provider con l'identificativo.",
+        "identityProviderLinkSuccess": "Hai verificato con successo la tua email. Torna al tuo browser iniziale e continua da lì con il login.",
+        "staleCodeMessage": "Questa pagina non è più valida, torna alla tua applicazione ed effettua nuovamente l'accesso",
+        "realmSupportsNoCredentialsMessage": "Il realm non supporta nessun tipo di credenziali.",
+        "credentialSetupRequired": "Impossibile effettuare il login, è richiesto il setup delle credenziali.",
         "identityProviderNotUniqueMessage":
             "Il realm supporta più di un identity provider. Impossibile determinare quale identity provider deve essere utilizzato per autenticarti.",
         "emailVerifiedMessage": "Il tuo indirizzo email è stato verificato.",
-        "staleEmailVerificationLink":
-            "Il link che hai cliccato è un link scaduto e non è più valido. Forse hai già verificato la tua email?",
-        "identityProviderAlreadyLinkedMessage":
-            "L'identità federata restituita dall'identity provider {0} è già associata ad un altro utente.",
-        "confirmAccountLinking":
-            "Conferma il collegamento per l'account {0} dell'identity provider {1} con il tuo account.",
-        "confirmEmailAddressVerification":
-            "Conferma la validità dell'indirizzo email {0}.",
+        "staleEmailVerificationLink": "Il link che hai cliccato è un link scaduto e non è più valido. Forse hai già verificato la tua email?",
+        "identityProviderAlreadyLinkedMessage": "L'identità federata restituita dall'identity provider {0} è già associata ad un altro utente.",
+        "confirmAccountLinking": "Conferma il collegamento per l'account {0} dell'identity provider {1} con il tuo account.",
+        "confirmEmailAddressVerification": "Conferma la validità dell'indirizzo email {0}.",
         "confirmExecutionOfActions": "Esegui la/le seguenti azione/i",
         "locale_it": "Italiano",
         "backToApplication": "&laquo; Torna all'applicazione",
@@ -3247,10 +2617,8 @@ export const kcMessages = {
         "clientDisabledMessage": "Client disabilitato.",
         "invalidParameterMessage": "Parametro non valido: {0}",
         "alreadyLoggedIn": "Sei già connesso.",
-        "differentUserAuthenticated":
-            "Se già autenticato con l'utente '{0}' in questa sessione. Per favore, fai prima il logout.",
-        "brokerLinkingSessionExpired":
-            "È stato richiesta un'associazione a un account broker, ma la sessione corrente non è più valida.",
+        "differentUserAuthenticated": "Se già autenticato con l'utente '{0}' in questa sessione. Per favore, fai prima il logout.",
+        "brokerLinkingSessionExpired": "È stato richiesta un'associazione a un account broker, ma la sessione corrente non è più valida.",
         "proceedWithAction": "&raquo; Clicca qui per continuare",
         "requiredAction.CONFIGURE_TOTP": "Configura OTP",
         "requiredAction.terms_and_conditions": "Termini e condizioni",
@@ -3267,57 +2635,42 @@ export const kcMessages = {
         "console-otp": "One-time password:",
         "console-new-password": "Nuova password:",
         "console-confirm-password": "Conferma password:",
-        "console-update-password":
-            "È richiesto l'aggiornamento della tua password.",
+        "console-update-password": "È richiesto l'aggiornamento della tua password.",
         "console-verify-email":
             "Devi verificare il tuo indirizzo email. È stata inviata una email a {0} che contiene un codice di verifica. Per favore inserisci il codice nella casella di testo seguente.",
         "console-email-code": "Codice email:",
         "console-accept-terms": "Accetti i termini? [y/n]:",
         "console-accept": "y",
         "openshift.scope.user_info": "Informazioni utente",
-        "openshift.scope.user_check-access":
-            "Informazioni di accesso per l'utente",
+        "openshift.scope.user_check-access": "Informazioni di accesso per l'utente",
         "openshift.scope.user_full": "Accesso completo",
         "openshift.scope.list-projects": "Elenca i progetti",
         "saml.post-form.title": "Reindirizzamento per l'autenticazione",
         "saml.post-form.message": "Reindirizzamento, attendere per favore.",
-        "saml.post-form.js-disabled":
-            "JavaScript è disabilitato. È fortemente consigliato abilitarlo. Clicca sul bottone seguente per continuare.",
+        "saml.post-form.js-disabled": "JavaScript è disabilitato. È fortemente consigliato abilitarlo. Clicca sul bottone seguente per continuare.",
         "otp-display-name": "Applicazione di autenticazione",
-        "otp-help-text":
-            "Inserire un codice di verifica fornito dall'applicazione di autenticazione.",
+        "otp-help-text": "Inserire un codice di verifica fornito dall'applicazione di autenticazione.",
         "password-display-name": "Password",
         "password-help-text": "Accedi inserendo la tua password.",
         "auth-username-form-display-name": "Username",
-        "auth-username-form-help-text":
-            "Inizia il login inserendo la tua username",
+        "auth-username-form-help-text": "Inizia il login inserendo la tua username",
         "auth-username-password-form-display-name": "Username e password",
-        "auth-username-password-form-help-text":
-            "Accedi inserendo la tua username e la password.",
+        "auth-username-password-form-help-text": "Accedi inserendo la tua username e la password.",
         "webauthn-display-name": "Chiave di sicurezza",
-        "webauthn-help-text":
-            "Utilizza la tua chiave di sicurezza per accedere.",
+        "webauthn-help-text": "Utilizza la tua chiave di sicurezza per accedere.",
         "webauthn-passwordless-display-name": "Chiave di sicurezza",
-        "webauthn-passwordless-help-text":
-            "Utilizza la tua chiave di sicurezza per l'accesso senza password.",
+        "webauthn-passwordless-help-text": "Utilizza la tua chiave di sicurezza per l'accesso senza password.",
         "webauthn-login-title": "Login con chiave di sicurezza",
         "webauthn-registration-title": "Registrazione chiave di sicurezza",
         "webauthn-available-authenticators": "Autenticatori disponibili",
         "webauthn-error-title": "Errore della chiave di sicurezza",
-        "webauthn-error-registration":
-            "Impossibile registrare la tua chiave di sicurezza.",
-        "webauthn-error-api-get":
-            "Autenticazione con la chiave di sicurezza fallita.",
-        "webauthn-error-different-user":
-            "Il primo utente autenticato non è quello autenticato tramite la chiave di sicurezza.",
-        "webauthn-error-auth-verification":
-            "Il risultato dell'autenticazione con la chiave di sicurezza non è valido.",
-        "webauthn-error-register-verification":
-            "Il risultato della registrazione della chiave di sicurezza non è valido.",
-        "webauthn-error-user-not-found":
-            "Utente sconosciuto autenticato con la chiave di sicurezza.",
-        "identity-provider-redirector":
-            "Connettiti con un altro identity provider.",
+        "webauthn-error-registration": "Impossibile registrare la tua chiave di sicurezza.",
+        "webauthn-error-api-get": "Autenticazione con la chiave di sicurezza fallita.",
+        "webauthn-error-different-user": "Il primo utente autenticato non è quello autenticato tramite la chiave di sicurezza.",
+        "webauthn-error-auth-verification": "Il risultato dell'autenticazione con la chiave di sicurezza non è valido.",
+        "webauthn-error-register-verification": "Il risultato della registrazione della chiave di sicurezza non è valido.",
+        "webauthn-error-user-not-found": "Utente sconosciuto autenticato con la chiave di sicurezza.",
+        "identity-provider-redirector": "Connettiti con un altro identity provider.",
     },
     "ja": {
         "doLogIn": "ログイン",
@@ -3340,8 +2693,7 @@ export const kcMessages = {
         "kerberosNotConfiguredTitle": "Kerberosは設定されていません",
         "bypassKerberosDetail":
             "Kerberosでログインしていないか、ブラウザーでKerberosログインの設定がされていません。他の手段でログインするには「続ける」をクリックしてください。",
-        "kerberosNotSetUp":
-            "Kerberosが設定されていません。ログインできません。",
+        "kerberosNotSetUp": "Kerberosが設定されていません。ログインできません。",
         "registerTitle": "登録",
         "loginTitle": "{0}にログイン",
         "loginTitleHtml": "{0}",
@@ -3351,8 +2703,7 @@ export const kcMessages = {
         "unknownUser": "不明なユーザー",
         "loginTotpTitle": "モバイル・オーセンティケーターのセットアップ",
         "loginProfileTitle": "アカウント情報の更新",
-        "loginTimeout":
-            "ログイン試行がタイムアウトしました。ログインは最初から開始されます。",
+        "loginTimeout": "ログイン試行がタイムアウトしました。ログインは最初から開始されます。",
         "oauthGrantTitle": "{0}へのアクセスを許可",
         "oauthGrantTitleHtml": "{0}",
         "errorTitle": "申し訳ございません",
@@ -3365,8 +2716,7 @@ export const kcMessages = {
         "displayUnsupported": "要求された表示タイプがサポートされていません",
         "browserRequired": "ログインに必要なブラウザー",
         "browserContinue": "ログインを完了するために必要なブラウザー",
-        "browserContinuePrompt":
-            "ブラウザーを開いてログインを続行しますか？ [y/n]:",
+        "browserContinuePrompt": "ブラウザーを開いてログインを続行しますか？ [y/n]:",
         "browserContinueAnswer": "y",
         "termsTitle": "利用規約",
         "termsText": "<p>利用規約はここで設定する必要があります</p>",
@@ -3405,19 +2755,13 @@ export const kcMessages = {
         "samlRoleListScopeConsentText": "ロール",
         "rolesScopeConsentText": "ユーザーロール",
         "restartLoginTooltip": "ログインを再開",
-        "loginTotpIntro":
-            "このアカウントにアクセスするには、ワンタイム・パスワード・ジェネレーターを設定する必要があります",
-        "loginTotpStep1":
-            "次のいずれかのアプリケーションをモバイルにインストールします。",
-        "loginTotpStep2":
-            "アプリケーションを開き、バーコードをスキャンします。",
-        "loginTotpStep3":
-            "アプリケーションから提供されたワンタイムコードを入力し、送信をクリックしてセットアップを終了します。",
-        "loginTotpStep3DeviceName":
-            "OTPデバイスの管理に役立つデバイス名を指定します。",
+        "loginTotpIntro": "このアカウントにアクセスするには、ワンタイム・パスワード・ジェネレーターを設定する必要があります",
+        "loginTotpStep1": "次のいずれかのアプリケーションをモバイルにインストールします。",
+        "loginTotpStep2": "アプリケーションを開き、バーコードをスキャンします。",
+        "loginTotpStep3": "アプリケーションから提供されたワンタイムコードを入力し、送信をクリックしてセットアップを終了します。",
+        "loginTotpStep3DeviceName": "OTPデバイスの管理に役立つデバイス名を指定します。",
         "loginTotpManualStep2": "アプリケーションを開き、キーを入力します：",
-        "loginTotpManualStep3":
-            "アプリケーションで設定できる場合は、次の設定値を使用します。",
+        "loginTotpManualStep3": "アプリケーションで設定できる場合は、次の設定値を使用します。",
         "loginTotpUnableToScan": "スキャンできませんか？",
         "loginTotpScanBarcode": "バーコードをスキャンしますか？",
         "loginCredential": "クレデンシャル",
@@ -3433,22 +2777,18 @@ export const kcMessages = {
         "loginChooseAuthenticator": "ログイン方法を選択してください",
         "oauthGrantRequest": "これらのアクセス権限を付与しますか？",
         "inResource": "in",
-        "emailVerifyInstruction1":
-            "メールアドレスを確認する手順を記載したEメールを送信しました。",
+        "emailVerifyInstruction1": "メールアドレスを確認する手順を記載したEメールを送信しました。",
         "emailVerifyInstruction2": "Eメールで確認コードを受け取っていませんか?",
         "emailVerifyInstruction3": "Eメールを再送信します。",
         "emailLinkIdpTitle": "リンク {0}",
-        "emailLinkIdp1":
-            "{0}の{1}アカウントをあなたの{2}アカウントとリンクするための手順を記載したEメールを送信しました。",
+        "emailLinkIdp1": "{0}の{1}アカウントをあなたの{2}アカウントとリンクするための手順を記載したEメールを送信しました。",
         "emailLinkIdp2": "Eメールで確認コードを受け取っていませんか?",
         "emailLinkIdp3": "Eメールを再送信します。",
         "emailLinkIdp4": "別のブラウザーでメールを確認済みの場合",
         "emailLinkIdp5": "続けるには",
         "backToLogin": "&laquo; ログインに戻る",
-        "emailInstruction":
-            "ユーザー名またメールアドレスを入力してください。新しいパスワードの設定方法をご案内いたします。",
-        "copyCodeInstruction":
-            "このコードをコピーし、あなたのアプリケーションにペーストしてください：",
+        "emailInstruction": "ユーザー名またメールアドレスを入力してください。新しいパスワードの設定方法をご案内いたします。",
+        "copyCodeInstruction": "このコードをコピーし、あなたのアプリケーションにペーストしてください：",
         "pageExpiredTitle": "ページの有効期限が切れています",
         "pageExpiredMsg1": "ログインプロセスを再開するには",
         "pageExpiredMsg2": "ログイン処理を続行するには",
@@ -3462,13 +2802,11 @@ export const kcMessages = {
         "role_view-applications": "アプリケーションの参照",
         "role_view-clients": "クライアントの参照",
         "role_view-events": "イベントの参照",
-        "role_view-identity-providers":
-            "アイデンティティー・プロバイダーの参照",
+        "role_view-identity-providers": "アイデンティティー・プロバイダーの参照",
         "role_manage-realm": "レルムの管理",
         "role_manage-users": "ユーザーの管理",
         "role_manage-applications": "アプリケーションの管理",
-        "role_manage-identity-providers":
-            "アイデンティティー・プロバイダーの管理",
+        "role_manage-identity-providers": "アイデンティティー・プロバイダーの管理",
         "role_manage-clients": "クライアントの管理",
         "role_manage-events": "イベントの管理",
         "role_view-profile": "プロファイルの参照",
@@ -3485,90 +2823,60 @@ export const kcMessages = {
         "requiredFields": "必須フィールド",
         "invalidUserMessage": "無効なユーザー名またはパスワードです。",
         "invalidUsernameMessage": "ユーザー名が無効です。",
-        "invalidUsernameOrEmailMessage":
-            "ユーザー名またはメールアドレスが無効です。",
+        "invalidUsernameOrEmailMessage": "ユーザー名またはメールアドレスが無効です。",
         "invalidPasswordMessage": "パスワードが無効です。",
         "invalidEmailMessage": "無効なメールアドレスです。",
-        "accountDisabledMessage":
-            "アカウントが無効です。管理者に連絡してください。",
-        "accountTemporarilyDisabledMessage":
-            "アカウントが一時的に無効です。管理者に連絡するか、しばらく時間をおいてから再度お試しください。",
-        "expiredCodeMessage":
-            "ログイン・タイムアウトが発生しました。再度ログインしてください。",
-        "expiredActionMessage":
-            "アクションは期限切れです。今すぐログインしてください。",
+        "accountDisabledMessage": "アカウントが無効です。管理者に連絡してください。",
+        "accountTemporarilyDisabledMessage": "アカウントが一時的に無効です。管理者に連絡するか、しばらく時間をおいてから再度お試しください。",
+        "expiredCodeMessage": "ログイン・タイムアウトが発生しました。再度ログインしてください。",
+        "expiredActionMessage": "アクションは期限切れです。今すぐログインしてください。",
         "expiredActionTokenNoSessionMessage": "アクションは期限切れです。",
-        "expiredActionTokenSessionExistsMessage":
-            "アクションは期限切れです。もう一度やり直してください。",
+        "expiredActionTokenSessionExistsMessage": "アクションは期限切れです。もう一度やり直してください。",
         "missingFirstNameMessage": "名を指定してください。",
         "missingLastNameMessage": "姓を指定してください。",
         "missingEmailMessage": "Eメールを指定してください。",
         "missingUsernameMessage": "ユーザー名を指定してください。",
         "missingPasswordMessage": "パスワードを指定してください。",
-        "missingTotpMessage":
-            "オーセンティケーター・コードを指定してください。",
+        "missingTotpMessage": "オーセンティケーター・コードを指定してください。",
         "missingTotpDeviceNameMessage": "デバイス名を指定してください。",
         "notMatchPasswordMessage": "パスワードが一致していません。",
         "invalidPasswordExistingMessage": "既存のパスワードが不正です。",
-        "invalidPasswordBlacklistedMessage":
-            "無効なパスワード: パスワードがブラックリストに含まれています。",
+        "invalidPasswordBlacklistedMessage": "無効なパスワード: パスワードがブラックリストに含まれています。",
         "invalidPasswordConfirmMessage": "パスワード確認が一致していません。",
         "invalidTotpMessage": "無効なオーセンティケーター・コードです。",
         "usernameExistsMessage": "既に存在するユーザー名です。",
         "emailExistsMessage": "既に存在するEメールです。",
-        "federatedIdentityExistsMessage":
-            "{0}{1}のユーザーは既に存在します。そのアカウントをリンクするにはアカウント管理にログインしてください。",
+        "federatedIdentityExistsMessage": "{0}{1}のユーザーは既に存在します。そのアカウントをリンクするにはアカウント管理にログインしてください。",
         "confirmLinkIdpTitle": "既に存在するアカウントです。",
-        "federatedIdentityConfirmLinkMessage":
-            "{0}{1}のユーザーは既に存在します。継続しますか?",
-        "federatedIdentityConfirmReauthenticateMessage":
-            "{1}でアカウントをリンクするために{0}として認証します",
-        "nestedFirstBrokerFlowMessage":
-            "{0}ユーザー{1}は既知のユーザーにリンクされていません。",
+        "federatedIdentityConfirmLinkMessage": "{0}{1}のユーザーは既に存在します。継続しますか?",
+        "federatedIdentityConfirmReauthenticateMessage": "{1}でアカウントをリンクするために{0}として認証します",
+        "nestedFirstBrokerFlowMessage": "{0}ユーザー{1}は既知のユーザーにリンクされていません。",
         "confirmLinkIdpReviewProfile": "プロファイルの確認",
         "confirmLinkIdpContinue": "既存のアカウントに追加する",
-        "configureTotpMessage":
-            "アカウントを有効にするにはモバイル・オーセンティケーターのセットアップが必要です。",
-        "updateProfileMessage":
-            "アカウントを有効にするにはユーザー・プロファイルの更新が必要です。",
-        "updatePasswordMessage":
-            "アカウントを有効にするにはパスワードの更新が必要です。",
+        "configureTotpMessage": "アカウントを有効にするにはモバイル・オーセンティケーターのセットアップが必要です。",
+        "updateProfileMessage": "アカウントを有効にするにはユーザー・プロファイルの更新が必要です。",
+        "updatePasswordMessage": "アカウントを有効にするにはパスワードの更新が必要です。",
         "resetPasswordMessage": "パスワードを変更する必要があります。",
-        "verifyEmailMessage":
-            "アカウントを有効にするにはメールアドレスの確認が必要です。",
-        "linkIdpMessage":
-            "アカウントを{0}とリンクするにはメールアドレスの確認が必要です。",
-        "emailSentMessage":
-            "詳細な手順を記載したEメールをすぐに受信してください。",
-        "emailSendErrorMessage":
-            "Eメールの送信に失敗しました。しばらく時間をおいてから再度お試しください。",
+        "verifyEmailMessage": "アカウントを有効にするにはメールアドレスの確認が必要です。",
+        "linkIdpMessage": "アカウントを{0}とリンクするにはメールアドレスの確認が必要です。",
+        "emailSentMessage": "詳細な手順を記載したEメールをすぐに受信してください。",
+        "emailSendErrorMessage": "Eメールの送信に失敗しました。しばらく時間をおいてから再度お試しください。",
         "accountUpdatedMessage": "アカウントが更新されました。",
         "accountPasswordUpdatedMessage": "パスワードが更新されました。",
         "delegationCompleteHeader": "ログインに成功しました",
-        "delegationCompleteMessage":
-            "このブラウザーのウィンドウを閉じて、コンソール・アプリケーションに戻ることができます。",
+        "delegationCompleteMessage": "このブラウザーのウィンドウを閉じて、コンソール・アプリケーションに戻ることができます。",
         "delegationFailedHeader": "ログインに失敗しました",
-        "delegationFailedMessage":
-            "このブラウザー・ウィンドウを閉じてコンソール・アプリケーションに戻り、再度ログインを試みることができます。",
+        "delegationFailedMessage": "このブラウザー・ウィンドウを閉じてコンソール・アプリケーションに戻り、再度ログインを試みることができます。",
         "noAccessMessage": "アクセスがありません",
-        "invalidPasswordMinLengthMessage":
-            "無効なパスワード: 最小{0}の長さが必要です。",
-        "invalidPasswordMinDigitsMessage":
-            "無効なパスワード: 少なくとも{0}文字の数字を含む必要があります。",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "無効なパスワード: 少なくとも{0}文字の小文字を含む必要があります。",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "無効なパスワード: 少なくとも{0}文字の大文字を含む必要があります。",
-        "invalidPasswordMinSpecialCharsMessage":
-            "無効なパスワード: 少なくとも{0}文字の特殊文字を含む必要があります。",
-        "invalidPasswordNotUsernameMessage":
-            "無効なパスワード: ユーザー名と同じパスワードは禁止されています。",
-        "invalidPasswordRegexPatternMessage":
-            "無効なパスワード: 正規表現パターンと一致しません。",
-        "invalidPasswordHistoryMessage":
-            "無効なパスワード: 最近の{0}パスワードのいずれかと同じパスワードは禁止されています。",
-        "invalidPasswordGenericMessage":
-            "無効なパスワード: 新しいパスワードはパスワード・ポリシーと一致しません。",
+        "invalidPasswordMinLengthMessage": "無効なパスワード: 最小{0}の長さが必要です。",
+        "invalidPasswordMinDigitsMessage": "無効なパスワード: 少なくとも{0}文字の数字を含む必要があります。",
+        "invalidPasswordMinLowerCaseCharsMessage": "無効なパスワード: 少なくとも{0}文字の小文字を含む必要があります。",
+        "invalidPasswordMinUpperCaseCharsMessage": "無効なパスワード: 少なくとも{0}文字の大文字を含む必要があります。",
+        "invalidPasswordMinSpecialCharsMessage": "無効なパスワード: 少なくとも{0}文字の特殊文字を含む必要があります。",
+        "invalidPasswordNotUsernameMessage": "無効なパスワード: ユーザー名と同じパスワードは禁止されています。",
+        "invalidPasswordRegexPatternMessage": "無効なパスワード: 正規表現パターンと一致しません。",
+        "invalidPasswordHistoryMessage": "無効なパスワード: 最近の{0}パスワードのいずれかと同じパスワードは禁止されています。",
+        "invalidPasswordGenericMessage": "無効なパスワード: 新しいパスワードはパスワード・ポリシーと一致しません。",
         "failedToProcessResponseMessage": "応答を処理できませんでした",
         "httpsRequiredMessage": "HTTPSが必須です",
         "realmNotEnabledMessage": "レルムが有効ではありません",
@@ -3576,65 +2884,42 @@ export const kcMessages = {
         "failedLogout": "ログアウトに失敗しました",
         "unknownLoginRequesterMessage": "不明なログイン要求元です",
         "loginRequesterNotEnabledMessage": "ログイン要求元は有効ではありません",
-        "bearerOnlyMessage":
-            "bearer-onlyのアプリケーションはブラウザー・ログインを開始することが許可されていません",
+        "bearerOnlyMessage": "bearer-onlyのアプリケーションはブラウザー・ログインを開始することが許可されていません",
         "standardFlowDisabledMessage":
             "与えられたresponse_typeでクライアントはブラウザー・ログインを開始することが許可されていません。標準フローは無効です。",
         "implicitFlowDisabledMessage":
             "与えられたresponse_typeでクライアントはブラウザー・ログインを開始することが許可されていません。インプリシット・フローは無効です。",
         "invalidRedirectUriMessage": "無効なリダイレクトURIです",
-        "unsupportedNameIdFormatMessage":
-            "サポートされていないNameID Formatです",
+        "unsupportedNameIdFormatMessage": "サポートされていないNameID Formatです",
         "invalidRequesterMessage": "無効な要求元です",
         "registrationNotAllowedMessage": "登録は許可されていません",
-        "resetCredentialNotAllowedMessage":
-            "クレデンシャルのリセットは許可されていません",
+        "resetCredentialNotAllowedMessage": "クレデンシャルのリセットは許可されていません",
         "permissionNotApprovedMessage": "パーミッションは承認されていません。",
-        "noRelayStateInResponseMessage":
-            "アイデンティティー・プロバイダーからの応答にRelayStateがありません。",
-        "insufficientPermissionMessage":
-            "アイデンティティーにリンクするには不十分なパーミッションです。",
-        "couldNotProceedWithAuthenticationRequestMessage":
-            "アイデンティティー・プロバイダーへの認証リクエストを続行できませんでした。",
-        "couldNotObtainTokenMessage":
-            "アイデンティティー・プロバイダーからトークンを取得できませんでした。",
-        "unexpectedErrorRetrievingTokenMessage":
-            "アイデンティティー・プロバイダーからのトークン取得で予期せぬエラーが発生しました。",
-        "unexpectedErrorHandlingResponseMessage":
-            "アイデンティティー・プロバイダーからの応答を処理する際に予期せぬエラーが発生しました。",
-        "identityProviderAuthenticationFailedMessage":
-            "認証に失敗しました。アイデンティティー・プロバイダーを使用して認証できませんでした。",
-        "couldNotSendAuthenticationRequestMessage":
-            "アイデンティティー・プロバイダーに認証リクエストを送信することができませんでした。",
-        "unexpectedErrorHandlingRequestMessage":
-            "アイデンティティー・プロバイダーへの認証リクエストを処理する際に予期せぬエラーが発生しました。",
+        "noRelayStateInResponseMessage": "アイデンティティー・プロバイダーからの応答にRelayStateがありません。",
+        "insufficientPermissionMessage": "アイデンティティーにリンクするには不十分なパーミッションです。",
+        "couldNotProceedWithAuthenticationRequestMessage": "アイデンティティー・プロバイダーへの認証リクエストを続行できませんでした。",
+        "couldNotObtainTokenMessage": "アイデンティティー・プロバイダーからトークンを取得できませんでした。",
+        "unexpectedErrorRetrievingTokenMessage": "アイデンティティー・プロバイダーからのトークン取得で予期せぬエラーが発生しました。",
+        "unexpectedErrorHandlingResponseMessage": "アイデンティティー・プロバイダーからの応答を処理する際に予期せぬエラーが発生しました。",
+        "identityProviderAuthenticationFailedMessage": "認証に失敗しました。アイデンティティー・プロバイダーを使用して認証できませんでした。",
+        "couldNotSendAuthenticationRequestMessage": "アイデンティティー・プロバイダーに認証リクエストを送信することができませんでした。",
+        "unexpectedErrorHandlingRequestMessage": "アイデンティティー・プロバイダーへの認証リクエストを処理する際に予期せぬエラーが発生しました。",
         "invalidAccessCodeMessage": "無効なアクセスコードです。",
         "sessionNotActiveMessage": "セッションが有効ではありません。",
-        "invalidCodeMessage":
-            "エラーが発生しました。アプリケーションを介して再度ログインしてください。",
-        "identityProviderUnexpectedErrorMessage":
-            "アイデンティティー・プロバイダーによる認証の際に予期せぬエラーが発生しました",
-        "identityProviderNotFoundMessage":
-            "該当の識別子を持つアイデンティティー・プロバイダーが見つかりませんでした。",
-        "identityProviderLinkSuccess":
-            "Eメールを正常に確認しました。元のブラウザーに戻ってログインしてください。",
-        "staleCodeMessage":
-            "このページはもはや有効ではありませんので、アプリケーションに戻り再度ログインしてください",
-        "realmSupportsNoCredentialsMessage":
-            "レルムはクレデンシャル・タイプをサポートしていません。",
-        "credentialSetupRequired":
-            "ログインできません。クレデンシャルのセットアップが必要です。",
+        "invalidCodeMessage": "エラーが発生しました。アプリケーションを介して再度ログインしてください。",
+        "identityProviderUnexpectedErrorMessage": "アイデンティティー・プロバイダーによる認証の際に予期せぬエラーが発生しました",
+        "identityProviderNotFoundMessage": "該当の識別子を持つアイデンティティー・プロバイダーが見つかりませんでした。",
+        "identityProviderLinkSuccess": "Eメールを正常に確認しました。元のブラウザーに戻ってログインしてください。",
+        "staleCodeMessage": "このページはもはや有効ではありませんので、アプリケーションに戻り再度ログインしてください",
+        "realmSupportsNoCredentialsMessage": "レルムはクレデンシャル・タイプをサポートしていません。",
+        "credentialSetupRequired": "ログインできません。クレデンシャルのセットアップが必要です。",
         "identityProviderNotUniqueMessage":
             "レルムは複数のアイデンティティー・プロバイダーをサポートしています。どのアイデンティティー・プロバイダーが認証に使用されるべきか判断できませんでした。",
         "emailVerifiedMessage": "メールアドレスが確認できました。",
-        "staleEmailVerificationLink":
-            "クリックしたリンクは古いリンクであり、有効ではありません。おそらく、すでにメールを確認しています。",
-        "identityProviderAlreadyLinkedMessage":
-            "{0}によって返された連携済みアイデンティティーは、すでに別のユーザーにリンクされています。",
-        "confirmAccountLinking":
-            "アイデンティティー・プロバイダー{1}のアカウント{0}とあなたのアカウントとのリンクを確認してください。",
-        "confirmEmailAddressVerification":
-            "Eメールアドレス{0}の有効性を確認してください。",
+        "staleEmailVerificationLink": "クリックしたリンクは古いリンクであり、有効ではありません。おそらく、すでにメールを確認しています。",
+        "identityProviderAlreadyLinkedMessage": "{0}によって返された連携済みアイデンティティーは、すでに別のユーザーにリンクされています。",
+        "confirmAccountLinking": "アイデンティティー・プロバイダー{1}のアカウント{0}とあなたのアカウントとのリンクを確認してください。",
+        "confirmEmailAddressVerification": "Eメールアドレス{0}の有効性を確認してください。",
         "confirmExecutionOfActions": "次の操作を実行します。",
         "backToApplication": "&laquo; アプリケーションに戻る",
         "missingParameterMessage": "不足パラメーター: {0}",
@@ -3642,10 +2927,8 @@ export const kcMessages = {
         "clientDisabledMessage": "クライアントが無効になっています。",
         "invalidParameterMessage": "無効なパラメーター: {0}",
         "alreadyLoggedIn": "既にログインしています。",
-        "differentUserAuthenticated":
-            "すでにこのセッションで異なるユーザー'{0}'として認証されています。まずログアウトしてください。",
-        "brokerLinkingSessionExpired":
-            "要求されたブローカー・アカウントのリンクは、現在のセッションでは有効ではありません。",
+        "differentUserAuthenticated": "すでにこのセッションで異なるユーザー'{0}'として認証されています。まずログアウトしてください。",
+        "brokerLinkingSessionExpired": "要求されたブローカー・アカウントのリンクは、現在のセッションでは有効ではありません。",
         "proceedWithAction": "&raquo; 続行するにはここをクリックしてください",
         "requiredAction.CONFIGURE_TOTP": "OTPの設定",
         "requiredAction.terms_and_conditions": "利用規約",
@@ -3677,40 +2960,28 @@ export const kcMessages = {
         "saml.post-form.js-disabled":
             "JavaScriptが無効になっています。有効にすることを強くお勧めします。継続するには、下のボタンをクリックしてください。",
         "otp-display-name": "オーセンティケーター・アプリケーション",
-        "otp-help-text":
-            "オーセンティケーター・アプリケーションから取得した確認コードを入力してください。",
+        "otp-help-text": "オーセンティケーター・アプリケーションから取得した確認コードを入力してください。",
         "password-display-name": "パスワード",
         "password-help-text": "パスワードを入力してログインします。",
         "auth-username-form-display-name": "ユーザー名",
-        "auth-username-form-help-text":
-            "ユーザー名を入力してログインを開始します",
+        "auth-username-form-help-text": "ユーザー名を入力してログインを開始します",
         "auth-username-password-form-display-name": "ユーザー名とパスワード",
-        "auth-username-password-form-help-text":
-            "ユーザー名とパスワードを入力してログインしてください。",
+        "auth-username-password-form-help-text": "ユーザー名とパスワードを入力してログインしてください。",
         "webauthn-display-name": "セキュリティーキー",
-        "webauthn-help-text":
-            "セキュリティーキーを使用してログインしてください。",
+        "webauthn-help-text": "セキュリティーキーを使用してログインしてください。",
         "webauthn-passwordless-display-name": "セキュリティーキー",
-        "webauthn-passwordless-help-text":
-            "パスワードレス・ログインにセキュリティーキーを使用します。",
+        "webauthn-passwordless-help-text": "パスワードレス・ログインにセキュリティーキーを使用します。",
         "webauthn-login-title": "セキュリティーキー・ログイン",
         "webauthn-registration-title": "セキュリティーキーの登録",
         "webauthn-available-authenticators": "利用可能なオーセンティケーター",
         "webauthn-error-title": "セキュリティーキー・エラー",
-        "webauthn-error-registration":
-            "セキュリティーキーを登録できませんでした。",
-        "webauthn-error-api-get":
-            "セキュリティーキーによる認証に失敗しました。",
-        "webauthn-error-different-user":
-            "最初に認証されたユーザーは、セキュリティーキーによって認証されたユーザーではありません。",
-        "webauthn-error-auth-verification":
-            "セキュリティーキーの認証結果が無効です。",
-        "webauthn-error-register-verification":
-            "セキュリティーキーの登録結果が無効です。",
-        "webauthn-error-user-not-found":
-            "セキュリティーキーで認証された不明なユーザー。",
-        "identity-provider-redirector":
-            "別のアイデンティティー・プロバイダーと接続する",
+        "webauthn-error-registration": "セキュリティーキーを登録できませんでした。",
+        "webauthn-error-api-get": "セキュリティーキーによる認証に失敗しました。",
+        "webauthn-error-different-user": "最初に認証されたユーザーは、セキュリティーキーによって認証されたユーザーではありません。",
+        "webauthn-error-auth-verification": "セキュリティーキーの認証結果が無効です。",
+        "webauthn-error-register-verification": "セキュリティーキーの登録結果が無効です。",
+        "webauthn-error-user-not-found": "セキュリティーキーで認証された不明なユーザー。",
+        "identity-provider-redirector": "別のアイデンティティー・プロバイダーと接続する",
     },
     "lt": {
         "doLogIn": "Prisijungti",
@@ -3729,8 +3000,7 @@ export const kcMessages = {
         "kerberosNotConfiguredTitle": "Kerberos nesukonfigūruotas",
         "bypassKerberosDetail":
             "Jūs neprisijungęs per Kerberos arba Jūsų naršyklė nesukonfigūruota Kerberos prisijungimui.  Tęskite ir pasirinkite kitą prisijungimo būdą",
-        "kerberosNotSetUp":
-            "Kerberos nesukonfigūruotas.  Jūs negalite prisijungti.",
+        "kerberosNotSetUp": "Kerberos nesukonfigūruotas.  Jūs negalite prisijungti.",
         "registerWithTitle": "Registruotis su {0}",
         "registerWithTitleHtml": "{0}",
         "loginTitle": "Prisijungti su {0}",
@@ -3741,8 +3011,7 @@ export const kcMessages = {
         "unknownUser": "Nežinomas naudotojas",
         "loginTotpTitle": "Mobilaus autentifikatoriaus nustatymas",
         "loginProfileTitle": "Atnaujinti paskyros informaciją",
-        "loginTimeout":
-            "Užtrukote per ilgai. Prisijungimo procesas pradedamas iš naujo.",
+        "loginTimeout": "Užtrukote per ilgai. Prisijungimo procesas pradedamas iš naujo.",
         "oauthGrantTitle": "Suteitikti prieigą",
         "oauthGrantTitleHtml": "{0}",
         "errorTitle": "Atsiprašome ...",
@@ -3783,25 +3052,20 @@ export const kcMessages = {
         "gssDelegationCredential": "GSS prisijungimo duomenų delegavimas",
         "loginTotpStep1":
             'Įdiekite <a href="https://freeotp.github.io/" target="_blank">FreeOTP</a> arba Google Authenticator savo įrenginyje. Programėlės prieinamos <a href="https://play.google.com">Google Play</a> ir Apple App Store.',
-        "loginTotpStep2":
-            "Atidarykite programėlę ir nuskenuokite barkodą arba įveskite kodą.",
-        "loginTotpStep3":
-            "Įveskite programėlėje sugeneruotą vieną kartą galiojantį kodą ir paspauskite Saugoti norėdami prisijungti.",
+        "loginTotpStep2": "Atidarykite programėlę ir nuskenuokite barkodą arba įveskite kodą.",
+        "loginTotpStep3": "Įveskite programėlėje sugeneruotą vieną kartą galiojantį kodą ir paspauskite Saugoti norėdami prisijungti.",
         "loginOtpOneTime": "Vienkartinis kodas",
         "oauthGrantRequest": "Ar Jūs suteikiate šias prieigos teises?",
         "inResource": "į",
-        "emailVerifyInstruction1":
-            "El. paštas su instrukcijomis ir patvirtinimo nuoroda nusiųsti į Jūsų el. paštą.",
+        "emailVerifyInstruction1": "El. paštas su instrukcijomis ir patvirtinimo nuoroda nusiųsti į Jūsų el. paštą.",
         "emailVerifyInstruction2": "El. paštu negavote patvirtinimo kodo?",
         "emailVerifyInstruction3": "pakartotoinai siųsti el. laišką.",
         "emailLinkIdpTitle": "Susieti {0}",
-        "emailLinkIdp1":
-            "El. pašto laiškas su instrukcijomis susieti {0} paskyrą {1} su {2} buvo nusiųstas.",
+        "emailLinkIdp1": "El. pašto laiškas su instrukcijomis susieti {0} paskyrą {1} su {2} buvo nusiųstas.",
         "emailLinkIdp2": "Negavote patvirtinimo kodo el. paštu?",
         "emailLinkIdp3": "pakartotoinai siųsti el. laišką.",
         "backToLogin": "&laquo; Grįžti į prisijungimo langą",
-        "emailInstruction":
-            "Įveskite naudotojo vardą arba slaptažodį ir slaptažodžio pakeitimo instrukcijos bus atsiųstos Jums el. paštu ",
+        "emailInstruction": "Įveskite naudotojo vardą arba slaptažodį ir slaptažodžio pakeitimo instrukcijos bus atsiųstos Jums el. paštu ",
         "copyCodeInstruction": "Nukopijuokite šį kodą į Jūsų programą:",
         "personalInfo": "Asmeninė informacija:",
         "role_admin": "Administratorius",
@@ -3831,12 +3095,9 @@ export const kcMessages = {
         "client_broker": "Tarpininkas",
         "invalidUserMessage": "Neteisingas naudotojo vardas arba slaptažodis.",
         "invalidEmailMessage": "Neteisingas el. pašto adresas.",
-        "accountDisabledMessage":
-            "Paskyros galiojimas sustabdytas, kreipkitės į administratorių.",
-        "accountTemporarilyDisabledMessage":
-            "Paskyros galiojimas laikinai sustabdytas. Kreipkitės į administratorių arba pabandykite vėliau.",
-        "expiredCodeMessage":
-            "Prisijungimo laikas baigėsi. Bandykite dar kartą.",
+        "accountDisabledMessage": "Paskyros galiojimas sustabdytas, kreipkitės į administratorių.",
+        "accountTemporarilyDisabledMessage": "Paskyros galiojimas laikinai sustabdytas. Kreipkitės į administratorių arba pabandykite vėliau.",
+        "expiredCodeMessage": "Prisijungimo laikas baigėsi. Bandykite dar kartą.",
         "missingFirstNameMessage": "Prašome įvesti vardą.",
         "missingLastNameMessage": "Prašome įvesti pavardę.",
         "missingEmailMessage": "Prašome įvesti el. pašto adresą.",
@@ -3852,56 +3113,36 @@ export const kcMessages = {
         "federatedIdentityExistsMessage":
             "Naudotojas {0} {1} jau egzistuoja. Prašome prsijungti prie naudotojų valdymo posistemės paskyrų susiejimui.",
         "confirmLinkIdpTitle": "Paskyra jau egzistuoja",
-        "federatedIdentityConfirmLinkMessage":
-            "Naudotojas {0} {1} jau egzistuoja. Ar tęsti?",
-        "federatedIdentityConfirmReauthenticateMessage":
-            "Prisijunkite norėdami susieti paskyrą su  {0}",
-        "confirmLinkIdpReviewProfile":
-            "Peržiūrėti naudotojo profilio informaciją",
+        "federatedIdentityConfirmLinkMessage": "Naudotojas {0} {1} jau egzistuoja. Ar tęsti?",
+        "federatedIdentityConfirmReauthenticateMessage": "Prisijunkite norėdami susieti paskyrą su  {0}",
+        "confirmLinkIdpReviewProfile": "Peržiūrėti naudotojo profilio informaciją",
         "confirmLinkIdpContinue": "Susieti su egzistuojančia paskyra",
-        "configureTotpMessage":
-            "Paskyros aktyvavimui Jums reikalingas Mobilus autentifikatorius.",
-        "updateProfileMessage":
-            "Paskyros aktyvavimui Jums reikia atnaujinti profilio informaciją.",
-        "updatePasswordMessage":
-            "Paskyros aktyvavimui Jums reikia pakeisti slaptažodį.",
-        "verifyEmailMessage":
-            "Paskyros aktyvavimui Jums reikia patvirtinti el. pašto adresą.",
-        "linkIdpMessage":
-            "El. pašto adreso susiejimui su Jūsu paskyra {0} reikalingas patvirtinimas.",
-        "emailSentMessage":
-            "Netrukus turėtumėte gauti el. pašto adresą su instrukcijomis.",
-        "emailSendErrorMessage":
-            "Klaida siunčiant el. paštą, bandykite vėliau.",
+        "configureTotpMessage": "Paskyros aktyvavimui Jums reikalingas Mobilus autentifikatorius.",
+        "updateProfileMessage": "Paskyros aktyvavimui Jums reikia atnaujinti profilio informaciją.",
+        "updatePasswordMessage": "Paskyros aktyvavimui Jums reikia pakeisti slaptažodį.",
+        "verifyEmailMessage": "Paskyros aktyvavimui Jums reikia patvirtinti el. pašto adresą.",
+        "linkIdpMessage": "El. pašto adreso susiejimui su Jūsu paskyra {0} reikalingas patvirtinimas.",
+        "emailSentMessage": "Netrukus turėtumėte gauti el. pašto adresą su instrukcijomis.",
+        "emailSendErrorMessage": "Klaida siunčiant el. paštą, bandykite vėliau.",
         "accountUpdatedMessage": "Jųsų paskyros informacija atnaujinta.",
         "accountPasswordUpdatedMessage": "Jūsų slaptažodis pakeistas.",
         "noAccessMessage": "Prieiga negalima",
-        "invalidPasswordMinLengthMessage":
-            "Neteisingas slaptažodis: privalomi bent {0} simboliai.",
-        "invalidPasswordMinDigitsMessage":
-            "Neteisingas slaptažodis: privalomi bent {0} skaitmenys.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Neteisingas slaptažodis: privalomos bent {0} mažosios raidės.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Neteisingas slaptažodis: privalomos bent {0} didžiosios raidės.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Neteisingas slaptažodis: privalomi bent {0} specialūs simboliai.",
-        "invalidPasswordNotUsernameMessage":
-            "Neteisingas slaptažodis: negali sutapti su naudotojo vardu.",
-        "invalidPasswordRegexPatternMessage":
-            "Neteisingas slaptažodis: neatitinka regexp taisyklės.",
-        "invalidPasswordHistoryMessage":
-            "Neteisingas slaptažodis: negali sutapti su prieš tai naudotais {0} slaptažodžiais.",
+        "invalidPasswordMinLengthMessage": "Neteisingas slaptažodis: privalomi bent {0} simboliai.",
+        "invalidPasswordMinDigitsMessage": "Neteisingas slaptažodis: privalomi bent {0} skaitmenys.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Neteisingas slaptažodis: privalomos bent {0} mažosios raidės.",
+        "invalidPasswordMinUpperCaseCharsMessage": "Neteisingas slaptažodis: privalomos bent {0} didžiosios raidės.",
+        "invalidPasswordMinSpecialCharsMessage": "Neteisingas slaptažodis: privalomi bent {0} specialūs simboliai.",
+        "invalidPasswordNotUsernameMessage": "Neteisingas slaptažodis: negali sutapti su naudotojo vardu.",
+        "invalidPasswordRegexPatternMessage": "Neteisingas slaptažodis: neatitinka regexp taisyklės.",
+        "invalidPasswordHistoryMessage": "Neteisingas slaptažodis: negali sutapti su prieš tai naudotais {0} slaptažodžiais.",
         "failedToProcessResponseMessage": "Klaida apdorojant atsakymą",
         "httpsRequiredMessage": "Privalomas HTTPS",
         "realmNotEnabledMessage": "Srities galiojimas išjungtas",
         "invalidRequestMessage": "Neteisinga užklausa",
         "failedLogout": "Nepavyko užbaigti sesijos",
         "unknownLoginRequesterMessage": "Nežinomas prisijungimo prašytojas",
-        "loginRequesterNotEnabledMessage":
-            "Prisijungimo prašytojo galiojimas išjungtas",
-        "bearerOnlyMessage":
-            "Programos, sukonfigūruotos tik kaip perdavėjai, negali inicijuoti prisijungimą per naršyklę.",
+        "loginRequesterNotEnabledMessage": "Prisijungimo prašytojo galiojimas išjungtas",
+        "bearerOnlyMessage": "Programos, sukonfigūruotos tik kaip perdavėjai, negali inicijuoti prisijungimą per naršyklę.",
         "standardFlowDisabledMessage":
             "Su pateiktu atsakymo tipu prisijungimas per naršyklę šiam klientui negalimas. Šiam klientui neįgalinta standartinė seka.",
         "implicitFlowDisabledMessage":
@@ -3910,45 +3151,29 @@ export const kcMessages = {
         "unsupportedNameIdFormatMessage": "Nepalaikomas NameIDFormat",
         "invalidRequesterMessage": "Neteisingas prašytojas",
         "registrationNotAllowedMessage": "Registracija negalima",
-        "resetCredentialNotAllowedMessage":
-            "Prisijungimo duomenų atkūrimas negalimas",
+        "resetCredentialNotAllowedMessage": "Prisijungimo duomenų atkūrimas negalimas",
         "permissionNotApprovedMessage": "Teisį nepatvirtinta.",
-        "noRelayStateInResponseMessage":
-            "Tapatybės teikėjo atsakyme trūksta perdavimo būsenos.",
+        "noRelayStateInResponseMessage": "Tapatybės teikėjo atsakyme trūksta perdavimo būsenos.",
         "insufficientPermissionMessage": "Trūksta teisių tapatybių susiejimui.",
-        "couldNotProceedWithAuthenticationRequestMessage":
-            "Nepavyksta pradėti tapatybės teikėjo autentifikacijos užklausos.",
-        "couldNotObtainTokenMessage":
-            "Negaunamas prieigos raktas iš tapatybės teikėjo.",
-        "unexpectedErrorRetrievingTokenMessage":
-            "Prieigos rakšo gavimo iš tapatybės teikėjo metu įvyko netikėta klaida.",
-        "unexpectedErrorHandlingResponseMessage":
-            "Tapatybės teikėjo atsakymo apdorojimo metu įvyko netikėta klaida.",
-        "identityProviderAuthenticationFailedMessage":
-            "Autentifikacijos klaida. Nepavyksta autentifikacija su tapatybės teikėju.",
-        "couldNotSendAuthenticationRequestMessage":
-            "Tapatybės teikėjui nepavyksta nusiųsti autentifikacijos užklausos.",
-        "unexpectedErrorHandlingRequestMessage":
-            "Užklausos tapatybės teikėjui formavimo metu įvyko netikėta klaida.",
+        "couldNotProceedWithAuthenticationRequestMessage": "Nepavyksta pradėti tapatybės teikėjo autentifikacijos užklausos.",
+        "couldNotObtainTokenMessage": "Negaunamas prieigos raktas iš tapatybės teikėjo.",
+        "unexpectedErrorRetrievingTokenMessage": "Prieigos rakšo gavimo iš tapatybės teikėjo metu įvyko netikėta klaida.",
+        "unexpectedErrorHandlingResponseMessage": "Tapatybės teikėjo atsakymo apdorojimo metu įvyko netikėta klaida.",
+        "identityProviderAuthenticationFailedMessage": "Autentifikacijos klaida. Nepavyksta autentifikacija su tapatybės teikėju.",
+        "couldNotSendAuthenticationRequestMessage": "Tapatybės teikėjui nepavyksta nusiųsti autentifikacijos užklausos.",
+        "unexpectedErrorHandlingRequestMessage": "Užklausos tapatybės teikėjui formavimo metu įvyko netikėta klaida.",
         "invalidAccessCodeMessage": "Neteisingas prieigos kodas.",
         "sessionNotActiveMessage": "Sesija neaktyvi.",
-        "invalidCodeMessage":
-            "Įvyko klaida. Prašome bandyti prisijungti dar kartą.",
-        "identityProviderUnexpectedErrorMessage":
-            "Autentifikavimo su išoriniu tapatybės teikėju metu įvyko netikėta klaida.",
-        "identityProviderNotFoundMessage":
-            "Su nurodytu identifikatoriumi nerastas tapatybės teikėjas.",
-        "identityProviderLinkSuccess":
-            "Jūsų naudotojo paskyra buvo sėkmingai susieta su {0} paskyra {1} .",
-        "staleCodeMessage":
-            "Šis puslapis nebegalioja. Prašome grįžti į programą ir bandyti prisijungti iš naujo.",
-        "realmSupportsNoCredentialsMessage":
-            "Sritis nepalaiko prisijungimų naudojant prisijungimo duomenis.",
+        "invalidCodeMessage": "Įvyko klaida. Prašome bandyti prisijungti dar kartą.",
+        "identityProviderUnexpectedErrorMessage": "Autentifikavimo su išoriniu tapatybės teikėju metu įvyko netikėta klaida.",
+        "identityProviderNotFoundMessage": "Su nurodytu identifikatoriumi nerastas tapatybės teikėjas.",
+        "identityProviderLinkSuccess": "Jūsų naudotojo paskyra buvo sėkmingai susieta su {0} paskyra {1} .",
+        "staleCodeMessage": "Šis puslapis nebegalioja. Prašome grįžti į programą ir bandyti prisijungti iš naujo.",
+        "realmSupportsNoCredentialsMessage": "Sritis nepalaiko prisijungimų naudojant prisijungimo duomenis.",
         "identityProviderNotUniqueMessage":
             "Sritis palaiko daugiau nei vieną tapatybės teikėją. Negalima nustatyti kuris tapatybės teikėjas turi būti naudojamas autentifikacijai.",
         "emailVerifiedMessage": "Jūsų el. pašto adresas patvirtintas.",
-        "staleEmailVerificationLink":
-            "Nuoroda, kurią paspaudėte nebegalioja? Galbūt Jūs jau patvirtinote el. pašto adresą?",
+        "staleEmailVerificationLink": "Nuoroda, kurią paspaudėte nebegalioja? Galbūt Jūs jau patvirtinote el. pašto adresą?",
         "backToApplication": "&laquo; Grįžti į programą",
         "missingParameterMessage": "Nenurodytas parametras: {0}",
         "clientNotFoundMessage": "Nenurodytas klientas.",
@@ -3974,8 +3199,7 @@ export const kcMessages = {
         "kerberosNotConfiguredTitle": "Kerberos is niet geconfigureerd",
         "bypassKerberosDetail":
             "U bent niet ingelogd via Kerberos of uw browser kan niet met Kerberos inloggen. Klik op 'doorgaan' om via een andere manier in te loggen",
-        "kerberosNotSetUp":
-            "Kerberos is onjuist geconfigureerd. U kunt niet inloggen.",
+        "kerberosNotSetUp": "Kerberos is onjuist geconfigureerd. U kunt niet inloggen.",
         "registerTitle": "Registreer",
         "loginTitle": "Log in met {0}",
         "loginTitleHtml": "{0}",
@@ -3985,8 +3209,7 @@ export const kcMessages = {
         "unknownUser": "Onbekende gebruiker",
         "loginTotpTitle": "Mobile Authenticator Setup",
         "loginProfileTitle": "Update accountinformatie",
-        "loginTimeout":
-            "U bent te lang bezig geweest met inloggen. Het inlogproces begint opnieuw.",
+        "loginTimeout": "U bent te lang bezig geweest met inloggen. Het inlogproces begint opnieuw.",
         "oauthGrantTitle": "Verleen Toegang",
         "oauthGrantTitleHtml": "{0}",
         "errorTitle": "Er is een fout opgetreden...",
@@ -3998,17 +3221,14 @@ export const kcMessages = {
         "codeErrorTitle": "Foutcode: {0}",
         "displayUnsupported": "Opgevraagde weergave type is niet ondersteund",
         "browserRequired": "Om in te loggen is een browser vereist",
-        "browserContinue":
-            "Om het loginproces af te ronden is een browser vereist",
-        "browserContinuePrompt":
-            "Open een browser en ga door met inloggen? [y/n]:",
+        "browserContinue": "Om het loginproces af te ronden is een browser vereist",
+        "browserContinuePrompt": "Open een browser en ga door met inloggen? [y/n]:",
         "browserContinueAnswer": "y",
         "termsTitle": "Voorwaarden",
         "termsText": "<p>Gedefinieerde voorwaarden</p>",
         "termsPlainText": "Voorwaarden",
         "recaptchaFailed": "Ongeldige Recaptcha",
-        "recaptchaNotConfigured":
-            "Recaptcha is verplicht, maar niet geconfigureerd",
+        "recaptchaNotConfigured": "Recaptcha is verplicht, maar niet geconfigureerd",
         "consentDenied": "Toestemming geweigerd.",
         "noAccount": "Nieuwe gebruiker?",
         "username": "Gebruikersnaam",
@@ -4040,16 +3260,12 @@ export const kcMessages = {
         "offlineAccessScopeConsentText": "Offline toegang",
         "samlRoleListScopeConsentText": "Mijn rollen",
         "rolesScopeConsentText": "Gebruikersrollen",
-        "loginTotpIntro":
-            "U bent verplicht om tweefactor-authenticatie in te stellen om dit account te kunnen gebruiken",
-        "loginTotpStep1":
-            "Installeer een van de volgende applicaties op uw mobile telefoon",
+        "loginTotpIntro": "U bent verplicht om tweefactor-authenticatie in te stellen om dit account te kunnen gebruiken",
+        "loginTotpStep1": "Installeer een van de volgende applicaties op uw mobile telefoon",
         "loginTotpStep2": "Open de applicatie en scan de barcode",
-        "loginTotpStep3":
-            "Voer de eenmalige code die door de applicatie is aangeleverd in en klik op 'Verzenden' om de setup te voltooien",
+        "loginTotpStep3": "Voer de eenmalige code die door de applicatie is aangeleverd in en klik op 'Verzenden' om de setup te voltooien",
         "loginTotpManualStep2": "Open de applicatie en voer de sleutel in",
-        "loginTotpManualStep3":
-            "Gebruik de volgende configuratiewaarden (als de applicatie dit ondersteund)",
+        "loginTotpManualStep3": "Gebruik de volgende configuratiewaarden (als de applicatie dit ondersteund)",
         "loginTotpUnableToScan": "Lukt het scannen niet?",
         "loginTotpScanBarcode": "Scan barcode?",
         "loginOtpOneTime": "Eenmalige code",
@@ -4062,24 +3278,19 @@ export const kcMessages = {
         "loginTotp.hotp": "Counter-based",
         "oauthGrantRequest": "Wilt u deze toegangsrechten verlenen?",
         "inResource": "in",
-        "emailVerifyInstruction1":
-            "Een e-mail met instructies om uw e-mailadres te verifiëren is zojuist verzonden.",
-        "emailVerifyInstruction2":
-            "Heeft u geen verificatiecode ontvangen in uw e-mail?",
+        "emailVerifyInstruction1": "Een e-mail met instructies om uw e-mailadres te verifiëren is zojuist verzonden.",
+        "emailVerifyInstruction2": "Heeft u geen verificatiecode ontvangen in uw e-mail?",
         "emailVerifyInstruction3": "om opnieuw een e-mail te versturen.",
         "emailLinkIdpTitle": "Link {0}",
-        "emailLinkIdp1":
-            "Er is een e-mail met instructies verzonden om {0} account {1} te koppelen met uw {2} account.",
+        "emailLinkIdp1": "Er is een e-mail met instructies verzonden om {0} account {1} te koppelen met uw {2} account.",
         "emailLinkIdp2": "Heeft u geen verificatiecode in uw e-mail ontvangen?",
         "emailLinkIdp3": "om opnieuw een e-mail te versturen.",
-        "emailLinkIdp4":
-            "Als u deze mail al geverifieerd hebt in een andere browser",
+        "emailLinkIdp4": "Als u deze mail al geverifieerd hebt in een andere browser",
         "emailLinkIdp5": "om door te gaan.",
         "backToLogin": "&laquo; Terug naar Inloggen",
         "emailInstruction":
             "Voer uw gebruikersnaam of e-mailadres in en wij sturen u een e-mailbericht met instructies voor het aanmaken van een nieuw wachtwoord.",
-        "copyCodeInstruction":
-            "Kopieer deze code en plak deze in uw applicatie:",
+        "copyCodeInstruction": "Kopieer deze code en plak deze in uw applicatie:",
         "pageExpiredTitle": "Sessie is verlopen",
         "pageExpiredMsg1": "Om het loginproces opnieuw te doen",
         "pageExpiredMsg2": "Om door te gaan met het loginproces",
@@ -4112,16 +3323,12 @@ export const kcMessages = {
         "client_broker": "Broker",
         "invalidUserMessage": "Ongeldige gebruikersnaam of wachtwoord.",
         "invalidEmailMessage": "Ongeldig e-mailadres.",
-        "accountDisabledMessage":
-            "Account is uitgeschakeld, neem contact op met beheer.",
-        "accountTemporarilyDisabledMessage":
-            "Account is tijdelijk uitgeschakeld, neem contact op met beheer of probeer het later opnieuw.",
-        "expiredCodeMessage":
-            "Logintijd verlopen. Gelieve opnieuw in te loggen.",
+        "accountDisabledMessage": "Account is uitgeschakeld, neem contact op met beheer.",
+        "accountTemporarilyDisabledMessage": "Account is tijdelijk uitgeschakeld, neem contact op met beheer of probeer het later opnieuw.",
+        "expiredCodeMessage": "Logintijd verlopen. Gelieve opnieuw in te loggen.",
         "expiredActionMessage": "Actietijd verlopen. Log daarom opnieuw in.",
         "expiredActionTokenNoSessionMessage": "Actietijd verlopen.",
-        "expiredActionTokenSessionExistsMessage":
-            "Actietijd verlopen. Gelieve de actie opnieuw doen.",
+        "expiredActionTokenSessionExistsMessage": "Actietijd verlopen. Gelieve de actie opnieuw doen.",
         "missingFirstNameMessage": "Voer uw voornaam in.",
         "missingLastNameMessage": "Voer uw achternaam in.",
         "missingEmailMessage": "Voer uw e-mailadres in.",
@@ -4130,75 +3337,49 @@ export const kcMessages = {
         "missingTotpMessage": "Voer uw authenticatiecode in.",
         "notMatchPasswordMessage": "Wachtwoorden komen niet overeen.",
         "invalidPasswordExistingMessage": "Ongeldig bestaand wachtwoord.",
-        "invalidPasswordBlacklistedMessage":
-            "Ongeldig wachtwoord: wachtwoord is geblacklist.",
-        "invalidPasswordConfirmMessage":
-            "Wachtwoord komt niet overeen met wachtwoordbevestiging.",
+        "invalidPasswordBlacklistedMessage": "Ongeldig wachtwoord: wachtwoord is geblacklist.",
+        "invalidPasswordConfirmMessage": "Wachtwoord komt niet overeen met wachtwoordbevestiging.",
         "invalidTotpMessage": "Ongeldige authenticatiecode.",
         "usernameExistsMessage": "Gebruikersnaam bestaat al.",
         "emailExistsMessage": "E-mailadres bestaat al.",
-        "federatedIdentityExistsMessage":
-            "Gebruiker met {0} {1} bestaat al. Log in met het beheerdersaccount om het account te koppelen.",
+        "federatedIdentityExistsMessage": "Gebruiker met {0} {1} bestaat al. Log in met het beheerdersaccount om het account te koppelen.",
         "confirmLinkIdpTitle": "Account bestaat al",
-        "federatedIdentityConfirmLinkMessage":
-            "Gebruiker met {0} {1} bestaat al. Hoe wilt u doorgaan?",
-        "federatedIdentityConfirmReauthenticateMessage":
-            "Authenticeer om uw account te koppelen {0}",
+        "federatedIdentityConfirmLinkMessage": "Gebruiker met {0} {1} bestaat al. Hoe wilt u doorgaan?",
+        "federatedIdentityConfirmReauthenticateMessage": "Authenticeer om uw account te koppelen {0}",
         "confirmLinkIdpReviewProfile": "Nalopen profiel",
         "confirmLinkIdpContinue": "Voeg toe aan bestaande account",
-        "configureTotpMessage":
-            "U moet de Mobile Authenticator configuren om uw account te activeren.",
-        "updateProfileMessage":
-            "U moet uw gebruikersprofiel bijwerken om uw account te activeren.",
-        "updatePasswordMessage":
-            "U moet uw wachtwoord wijzigen om uw account te activeren.",
+        "configureTotpMessage": "U moet de Mobile Authenticator configuren om uw account te activeren.",
+        "updateProfileMessage": "U moet uw gebruikersprofiel bijwerken om uw account te activeren.",
+        "updatePasswordMessage": "U moet uw wachtwoord wijzigen om uw account te activeren.",
         "resetPasswordMessage": "U moet uw wachtwoord wijzigen.",
-        "verifyEmailMessage":
-            "U moet uw e-mailadres verifiëren om uw account te activeren.",
-        "linkIdpMessage":
-            "U moet uw e-mailadres verifiëren om uw account te koppelen aan {0}.",
-        "emailSentMessage":
-            "U ontvangt binnenkort een e-mail met verdere instructies.",
-        "emailSendErrorMessage":
-            "Het versturen van de e-mail is mislukt, probeer het later opnieuw.",
+        "verifyEmailMessage": "U moet uw e-mailadres verifiëren om uw account te activeren.",
+        "linkIdpMessage": "U moet uw e-mailadres verifiëren om uw account te koppelen aan {0}.",
+        "emailSentMessage": "U ontvangt binnenkort een e-mail met verdere instructies.",
+        "emailSendErrorMessage": "Het versturen van de e-mail is mislukt, probeer het later opnieuw.",
         "accountUpdatedMessage": "Uw account is gewijzigd.",
         "accountPasswordUpdatedMessage": "Uw wachtwoord is gewijzigd.",
         "delegationCompleteHeader": "Login gelukt",
-        "delegationCompleteMessage":
-            "U mag uw browser sluiten en terug gaan naar uw console applicatie",
+        "delegationCompleteMessage": "U mag uw browser sluiten en terug gaan naar uw console applicatie",
         "delegationFailedHeader": "Login mislukt",
-        "delegationFailedMessage":
-            "U mag uw browser sluiten en terug gaan naar uw console applicatie om daar het loginproces nogmaalt te proberen.",
+        "delegationFailedMessage": "U mag uw browser sluiten en terug gaan naar uw console applicatie om daar het loginproces nogmaalt te proberen.",
         "noAccessMessage": "Geen toegang",
-        "invalidPasswordMinLengthMessage":
-            "Ongeldig wachtwoord, de minimumlengte is {0} karakters.",
-        "invalidPasswordMinDigitsMessage":
-            "Ongeldig wachtwoord, deze moet minstens {0} cijfers bevatten.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Ongeldig wachtwoord, deze moet minstens {0} kleine letters bevatten.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Ongeldig wachtwoord, deze moet minstens {0} hoofdletters bevatten.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Ongeldig wachtwoord, deze moet minstens {0} speciale tekens bevatten.",
-        "invalidPasswordNotUsernameMessage":
-            "Ongeldig wachtwoord, deze mag niet overeen komen met de gebruikersnaam.",
-        "invalidPasswordRegexPatternMessage":
-            "Ongeldig wachtwoord, deze komt niet overeen met opgegeven reguliere expressie(s).",
-        "invalidPasswordHistoryMessage":
-            "Ongeldig wachtwoord, deze mag niet overeen komen met een van de laatste {0} wachtwoorden.",
-        "invalidPasswordGenericMessage":
-            "Ongeldig wachtwoord: het nieuwe wachtwoord voldoet niet aan de opgestelde eisen.",
-        "failedToProcessResponseMessage":
-            "Het verwerken van de respons is mislukt",
+        "invalidPasswordMinLengthMessage": "Ongeldig wachtwoord, de minimumlengte is {0} karakters.",
+        "invalidPasswordMinDigitsMessage": "Ongeldig wachtwoord, deze moet minstens {0} cijfers bevatten.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Ongeldig wachtwoord, deze moet minstens {0} kleine letters bevatten.",
+        "invalidPasswordMinUpperCaseCharsMessage": "Ongeldig wachtwoord, deze moet minstens {0} hoofdletters bevatten.",
+        "invalidPasswordMinSpecialCharsMessage": "Ongeldig wachtwoord, deze moet minstens {0} speciale tekens bevatten.",
+        "invalidPasswordNotUsernameMessage": "Ongeldig wachtwoord, deze mag niet overeen komen met de gebruikersnaam.",
+        "invalidPasswordRegexPatternMessage": "Ongeldig wachtwoord, deze komt niet overeen met opgegeven reguliere expressie(s).",
+        "invalidPasswordHistoryMessage": "Ongeldig wachtwoord, deze mag niet overeen komen met een van de laatste {0} wachtwoorden.",
+        "invalidPasswordGenericMessage": "Ongeldig wachtwoord: het nieuwe wachtwoord voldoet niet aan de opgestelde eisen.",
+        "failedToProcessResponseMessage": "Het verwerken van de respons is mislukt",
         "httpsRequiredMessage": "HTTPS vereist",
         "realmNotEnabledMessage": "Realm niet geactiveerd",
         "invalidRequestMessage": "Ongeldige request",
         "failedLogout": "Afmelden is mislukt",
         "unknownLoginRequesterMessage": "De login requester is onbekend",
-        "loginRequesterNotEnabledMessage":
-            "De login requester is niet geactiveerd",
-        "bearerOnlyMessage":
-            "Bearer-only applicaties mogen geen browserlogin initiëren",
+        "loginRequesterNotEnabledMessage": "De login requester is niet geactiveerd",
+        "bearerOnlyMessage": "Bearer-only applicaties mogen geen browserlogin initiëren",
         "standardFlowDisabledMessage":
             "Client mag geen browserlogin starten met het opgegeven response_type. Standard flow is uitgeschakeld voor de client.",
         "implicitFlowDisabledMessage":
@@ -4207,52 +3388,32 @@ export const kcMessages = {
         "unsupportedNameIdFormatMessage": "Niet-ondersteunde NameIDFormat",
         "invalidRequesterMessage": "Ongeldige requester",
         "registrationNotAllowedMessage": "Registratie is niet toegestaan",
-        "resetCredentialNotAllowedMessage":
-            "Het opnieuw instellen van de aanmeldgegevens is niet toegestaan",
+        "resetCredentialNotAllowedMessage": "Het opnieuw instellen van de aanmeldgegevens is niet toegestaan",
         "permissionNotApprovedMessage": "Recht verworpen.",
-        "noRelayStateInResponseMessage":
-            "Geen relay state in antwoord van de identity provider.",
-        "insufficientPermissionMessage":
-            "Onvoldoende rechten om identiteiten te koppelen.",
-        "couldNotProceedWithAuthenticationRequestMessage":
-            "Het authenticatieverzoek naar de identity provider wordt afgebroken.",
-        "couldNotObtainTokenMessage":
-            "Kon geen token bemachtigen van de identity provider.",
-        "unexpectedErrorRetrievingTokenMessage":
-            "Onverwachte fout bij het ophalen van de token van de identity provider.",
-        "unexpectedErrorHandlingResponseMessage":
-            "Onverwachte fout bij het verwerken van de respons van de identity provider.",
-        "identityProviderAuthenticationFailedMessage":
-            "Verificatie mislukt. Er kon niet worden geauthenticeerd met de identity provider.",
-        "couldNotSendAuthenticationRequestMessage":
-            "Kan het authenticatieverzoek niet verzenden naar de identity provider.",
-        "unexpectedErrorHandlingRequestMessage":
-            "Onverwachte fout bij het verwerken van het authenticatieverzoek naar de identity provider.",
+        "noRelayStateInResponseMessage": "Geen relay state in antwoord van de identity provider.",
+        "insufficientPermissionMessage": "Onvoldoende rechten om identiteiten te koppelen.",
+        "couldNotProceedWithAuthenticationRequestMessage": "Het authenticatieverzoek naar de identity provider wordt afgebroken.",
+        "couldNotObtainTokenMessage": "Kon geen token bemachtigen van de identity provider.",
+        "unexpectedErrorRetrievingTokenMessage": "Onverwachte fout bij het ophalen van de token van de identity provider.",
+        "unexpectedErrorHandlingResponseMessage": "Onverwachte fout bij het verwerken van de respons van de identity provider.",
+        "identityProviderAuthenticationFailedMessage": "Verificatie mislukt. Er kon niet worden geauthenticeerd met de identity provider.",
+        "couldNotSendAuthenticationRequestMessage": "Kan het authenticatieverzoek niet verzenden naar de identity provider.",
+        "unexpectedErrorHandlingRequestMessage": "Onverwachte fout bij het verwerken van het authenticatieverzoek naar de identity provider.",
         "invalidAccessCodeMessage": "Ongeldige toegangscode.",
         "sessionNotActiveMessage": "Sessie inactief.",
-        "invalidCodeMessage":
-            "Er is een fout opgetreden, probeer nogmaals in te loggen.",
-        "identityProviderUnexpectedErrorMessage":
-            "Onverwachte fout tijdens de authenticatie met de identity provider",
-        "identityProviderNotFoundMessage":
-            "Geen identity provider gevonden met deze naam.",
-        "identityProviderLinkSuccess":
-            "Uw account is met succes gekoppeld aan {0} account {1}.",
-        "staleCodeMessage":
-            "Deze pagina is verlopen. Keer terug naar uw applicatie om opnieuw in te loggen.",
-        "realmSupportsNoCredentialsMessage":
-            "Realm ondersteunt geen enkel soort aanmeldgegeven.",
+        "invalidCodeMessage": "Er is een fout opgetreden, probeer nogmaals in te loggen.",
+        "identityProviderUnexpectedErrorMessage": "Onverwachte fout tijdens de authenticatie met de identity provider",
+        "identityProviderNotFoundMessage": "Geen identity provider gevonden met deze naam.",
+        "identityProviderLinkSuccess": "Uw account is met succes gekoppeld aan {0} account {1}.",
+        "staleCodeMessage": "Deze pagina is verlopen. Keer terug naar uw applicatie om opnieuw in te loggen.",
+        "realmSupportsNoCredentialsMessage": "Realm ondersteunt geen enkel soort aanmeldgegeven.",
         "identityProviderNotUniqueMessage":
             "Realm ondersteunt meerdere identity providers. Er kon niet bepaald worden welke identity provider er gebruikt zou moeten worden tijdens de authenticatie.",
         "emailVerifiedMessage": "Uw e-mailadres is geverifieerd.",
-        "staleEmailVerificationLink":
-            "De link die u gebruikt is verlopen, wellicht omdat u uw e-mailadres al eerder geverifieerd heeft.",
-        "identityProviderAlreadyLinkedMessage":
-            "De door {0} teruggegeven gefedereerde identiteit is al aan een andere gebruiker gekoppeld.",
-        "confirmAccountLinking":
-            "Bevestig dat het account {0} van identity provider {1} overeenkomt met uw account.",
-        "confirmEmailAddressVerification":
-            "Bevestig dat e-mailadres {0} valide is.",
+        "staleEmailVerificationLink": "De link die u gebruikt is verlopen, wellicht omdat u uw e-mailadres al eerder geverifieerd heeft.",
+        "identityProviderAlreadyLinkedMessage": "De door {0} teruggegeven gefedereerde identiteit is al aan een andere gebruiker gekoppeld.",
+        "confirmAccountLinking": "Bevestig dat het account {0} van identity provider {1} overeenkomt met uw account.",
+        "confirmEmailAddressVerification": "Bevestig dat e-mailadres {0} valide is.",
         "confirmExecutionOfActions": "Voer de volgende actie(s) uit",
         "backToApplication": "&laquo; Terug naar de applicatie",
         "missingParameterMessage": "Missende parameters: {0}",
@@ -4260,10 +3421,8 @@ export const kcMessages = {
         "clientDisabledMessage": "Client is inactief.",
         "invalidParameterMessage": "Ongeldige parameter: {0}",
         "alreadyLoggedIn": "U bent al ingelogd.",
-        "differentUserAuthenticated":
-            'U bent in deze sessie al als de gebruiker "{0}" aangemeld. Log eerst uit.',
-        "brokerLinkingSessionExpired":
-            "Broker account linking aangevraagd, maar de huidige sessie in verlopen.",
+        "differentUserAuthenticated": 'U bent in deze sessie al als de gebruiker "{0}" aangemeld. Log eerst uit.',
+        "brokerLinkingSessionExpired": "Broker account linking aangevraagd, maar de huidige sessie in verlopen.",
         "proceedWithAction": "&raquo; Klik hier om verder te gaan",
         "requiredAction.CONFIGURE_TOTP": "Configureer OTP",
         "requiredAction.terms_and_conditions": "Voorwaarden",
@@ -4304,21 +3463,18 @@ export const kcMessages = {
         "kerberosNotConfiguredTitle": "Kerberos er ikke konfigurert",
         "bypassKerberosDetail":
             "Enten er du ikke logget inn via Kerberos eller så støtter ikke nettleseren innlogging med Kerberos. Vennligst klikk Fortsett for å logge inn på andre måter",
-        "kerberosNotSetUp":
-            "Kerberos er ikke konfigurert. Du kan ikke logge inn.",
+        "kerberosNotSetUp": "Kerberos er ikke konfigurert. Du kan ikke logge inn.",
         "registerWithTitle": "Registrer deg med {0}",
         "registerWithTitleHtml": "{0}",
         "loginTitle": "Logg inn på {0}",
         "loginTitleHtml": "{0}",
         "impersonateTitle": "{0} Gi deg ut for å være en annen bruker",
-        "impersonateTitleHtml":
-            "<strong>{0}</strong> Gi deg ut for å være en annen bruker",
+        "impersonateTitleHtml": "<strong>{0}</strong> Gi deg ut for å være en annen bruker",
         "realmChoice": "Sikkerhetsdomene",
         "unknownUser": "Ukjent bruker",
         "loginTotpTitle": "Konfigurer autentifikator for mobil",
         "loginProfileTitle": "Oppdater konto",
-        "loginTimeout":
-            "Du brukte for lang tid på å logge inn. Vennligst prøv igjen.",
+        "loginTimeout": "Du brukte for lang tid på å logge inn. Vennligst prøv igjen.",
         "oauthGrantTitle": "Gi tilgang",
         "oauthGrantTitleHtml": "{0}",
         "errorTitle": "Vi beklager...",
@@ -4332,8 +3488,7 @@ export const kcMessages = {
         "termsTitleHtml": "Vilkår og betingelser",
         "termsText": "<p>Vilkår og betingelser kommer</p>",
         "recaptchaFailed": "Ugyldig Bildebekreftelse",
-        "recaptchaNotConfigured":
-            "Bildebekreftelse er påkrevet, men er ikke konfigurert",
+        "recaptchaNotConfigured": "Bildebekreftelse er påkrevet, men er ikke konfigurert",
         "consentDenied": "Samtykke avslått.",
         "noAccount": "Ny bruker?",
         "username": "Brukernavn",
@@ -4360,29 +3515,21 @@ export const kcMessages = {
         "gssDelegationCredential": "GSS legitimasjons-delegering",
         "loginTotpStep1":
             'Installer <a href="https://freeotp.github.io/" target="_blank">FreeOTP</a> eller Google Authenticator på din mobiltelefon. Begge applikasjoner er tilgjengelige på <a href="https://play.google.com">Google Play</a> og Apple App Store.',
-        "loginTotpStep2":
-            "Åpne applikasjonen og skann strekkoden eller skriv inn koden",
-        "loginTotpStep3":
-            "Skriv inn engangskoden fra applikasjonen og klikk send inn for å fullføre",
+        "loginTotpStep2": "Åpne applikasjonen og skann strekkoden eller skriv inn koden",
+        "loginTotpStep3": "Skriv inn engangskoden fra applikasjonen og klikk send inn for å fullføre",
         "loginOtpOneTime": "Engangskode",
         "oauthGrantRequest": "Vil du gi disse tilgangsrettighetene?",
         "inResource": "i",
-        "emailVerifyInstruction1":
-            "En e-post med instruksjoner for å bekrefte din e-postadresse har blitt sendt til deg.",
-        "emailVerifyInstruction2":
-            "Ikke mottatt en bekreftelseskode i e-posten vi sendte til deg?",
+        "emailVerifyInstruction1": "En e-post med instruksjoner for å bekrefte din e-postadresse har blitt sendt til deg.",
+        "emailVerifyInstruction2": "Ikke mottatt en bekreftelseskode i e-posten vi sendte til deg?",
         "emailVerifyInstruction3": "for å sende e-post på nytt.",
         "emailLinkIdpTitle": "Lenke {0}",
-        "emailLinkIdp1":
-            "En e-post med instruksjoner for å koble {0} konto med din {2} konto har blitt sendt til deg.",
-        "emailLinkIdp2":
-            "Ikke mottatt en bekreftelseskode i e-posten vi sendte til deg?",
+        "emailLinkIdp1": "En e-post med instruksjoner for å koble {0} konto med din {2} konto har blitt sendt til deg.",
+        "emailLinkIdp2": "Ikke mottatt en bekreftelseskode i e-posten vi sendte til deg?",
         "emailLinkIdp3": "for å sende e-post på nytt.",
         "backToLogin": "&laquo; Tilbake til innlogging",
-        "emailInstruction":
-            "Skriv inn e-postadressen din og vi vil sende deg instruksjoner for hvordan du oppretter et nytt passord.",
-        "copyCodeInstruction":
-            "Vennligst kopier denne koden og lim den inn i applikasjonen din:",
+        "emailInstruction": "Skriv inn e-postadressen din og vi vil sende deg instruksjoner for hvordan du oppretter et nytt passord.",
+        "copyCodeInstruction": "Vennligst kopier denne koden og lim den inn i applikasjonen din:",
         "personalInfo": "Personlig informasjon:",
         "role_admin": "Administrator",
         "role_realm-admin": "Administrator for sikkerhetsdomene",
@@ -4412,10 +3559,8 @@ export const kcMessages = {
         "invalidUserMessage": "Ugyldig brukernavn eller passord.",
         "invalidEmailMessage": "Ugyldig e-postadresse.",
         "accountDisabledMessage": "Konto er deaktivert, kontakt administrator.",
-        "accountTemporarilyDisabledMessage":
-            "Konto er midlertidig deaktivert, kontakt administrator eller prøv på nytt senere.",
-        "expiredCodeMessage":
-            "Login ble tidsavbrutt. Vennligst logg inn på nytt.",
+        "accountTemporarilyDisabledMessage": "Konto er midlertidig deaktivert, kontakt administrator eller prøv på nytt senere.",
+        "expiredCodeMessage": "Login ble tidsavbrutt. Vennligst logg inn på nytt.",
         "missingFirstNameMessage": "Vennligst oppgi fornavn.",
         "missingLastNameMessage": "Vennligst oppgi etternavn.",
         "missingEmailMessage": "Vennligst oppgi e-postadresse.",
@@ -4431,53 +3576,35 @@ export const kcMessages = {
         "federatedIdentityExistsMessage":
             "Bruker med {0} {1} finnes allerede. Vennligst logg inn på kontoadministratsjon for å koble sammen kontoene.",
         "confirmLinkIdpTitle": "Kontoen finnes allerede",
-        "federatedIdentityConfirmLinkMessage":
-            "Bruker med {0} {1} finnes allerede. Hvordan vil du fortsette?",
+        "federatedIdentityConfirmLinkMessage": "Bruker med {0} {1} finnes allerede. Hvordan vil du fortsette?",
         "confirmLinkIdpReviewProfile": "Se over og bekreft profil",
         "confirmLinkIdpContinue": "Legg til eksisterende konto",
-        "configureTotpMessage":
-            "Du må sette opp en engangskode-generator for å aktivere konto.",
-        "updateProfileMessage":
-            "Du må oppdatere brukerprofilen din for å aktivere konto.",
-        "updatePasswordMessage":
-            "Du må skifte passord for å aktivere kontoen din.",
-        "verifyEmailMessage":
-            "Du må bekrefte e-postadressen din for å aktivere konto.",
-        "linkIdpMessage":
-            "You need to verify your email address to link your account with {0}.",
-        "emailSentMessage":
-            "Du vil straks motta en e-post med ytterlige instruksjoner.",
-        "emailSendErrorMessage":
-            "Mislyktes å sende e-post, vennligst prøv igjen senere.",
+        "configureTotpMessage": "Du må sette opp en engangskode-generator for å aktivere konto.",
+        "updateProfileMessage": "Du må oppdatere brukerprofilen din for å aktivere konto.",
+        "updatePasswordMessage": "Du må skifte passord for å aktivere kontoen din.",
+        "verifyEmailMessage": "Du må bekrefte e-postadressen din for å aktivere konto.",
+        "linkIdpMessage": "You need to verify your email address to link your account with {0}.",
+        "emailSentMessage": "Du vil straks motta en e-post med ytterlige instruksjoner.",
+        "emailSendErrorMessage": "Mislyktes å sende e-post, vennligst prøv igjen senere.",
         "accountUpdatedMessage": "Din konto har blitt oppdatert.",
         "accountPasswordUpdatedMessage": "Ditt passord har blitt oppdatert.",
         "noAccessMessage": "Ingen tilgang",
-        "invalidPasswordMinLengthMessage":
-            "Ugyldig passord: minimum lengde {0}.",
-        "invalidPasswordMinDigitsMessage":
-            "Ugyldig passord: må inneholde minimum {0} sifre.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Ugyldig passord: må inneholde minimum {0} små bokstaver.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Ugyldig passord: må inneholde minimum {0} store bokstaver.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Ugyldig passord: må inneholde minimum {0} spesialtegn.",
-        "invalidPasswordNotUsernameMessage":
-            "Ugyldig passord: kan ikke være likt brukernavn.",
-        "invalidPasswordRegexPatternMessage":
-            "Ugyldig passord: tilfredsstiller ikke kravene for passord-mønster.",
-        "invalidPasswordHistoryMessage":
-            "Ugyldig passord: kan ikke være likt noen av de {0} foregående passordene.",
+        "invalidPasswordMinLengthMessage": "Ugyldig passord: minimum lengde {0}.",
+        "invalidPasswordMinDigitsMessage": "Ugyldig passord: må inneholde minimum {0} sifre.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Ugyldig passord: må inneholde minimum {0} små bokstaver.",
+        "invalidPasswordMinUpperCaseCharsMessage": "Ugyldig passord: må inneholde minimum {0} store bokstaver.",
+        "invalidPasswordMinSpecialCharsMessage": "Ugyldig passord: må inneholde minimum {0} spesialtegn.",
+        "invalidPasswordNotUsernameMessage": "Ugyldig passord: kan ikke være likt brukernavn.",
+        "invalidPasswordRegexPatternMessage": "Ugyldig passord: tilfredsstiller ikke kravene for passord-mønster.",
+        "invalidPasswordHistoryMessage": "Ugyldig passord: kan ikke være likt noen av de {0} foregående passordene.",
         "failedToProcessResponseMessage": "Kunne ikke behandle svar",
         "httpsRequiredMessage": "HTTPS påkrevd",
         "realmNotEnabledMessage": "Sikkerhetsdomene er ikke aktivert",
         "invalidRequestMessage": "Ugyldig forespørsel",
         "failedLogout": "Utlogging feilet",
         "unknownLoginRequesterMessage": "Ukjent anmoder for innlogging",
-        "loginRequesterNotEnabledMessage":
-            "Anmoder for innlogging er ikke aktivert",
-        "bearerOnlyMessage":
-            "Bearer-only applikasjoner har ikke lov til å initiere innlogging via nettleser",
+        "loginRequesterNotEnabledMessage": "Anmoder for innlogging er ikke aktivert",
+        "bearerOnlyMessage": "Bearer-only applikasjoner har ikke lov til å initiere innlogging via nettleser",
         "standardFlowDisabledMessage":
             "Klienten har ikke lov til å initiere innlogging via nettleser med gitt response_type. Standard flow er deaktivert for denne klienten.",
         "implicitFlowDisabledMessage":
@@ -4486,46 +3613,29 @@ export const kcMessages = {
         "unsupportedNameIdFormatMessage": "NameIDFormat er ikke støttet",
         "invalidRequesterMessage": "Ugyldig sender av forespørsel",
         "registrationNotAllowedMessage": "Registrering er ikke lov",
-        "resetCredentialNotAllowedMessage":
-            "Tilbakestilling av innloggingsdata er ikke lov",
+        "resetCredentialNotAllowedMessage": "Tilbakestilling av innloggingsdata er ikke lov",
         "permissionNotApprovedMessage": "Tillatelse ikke godkjent.",
-        "noRelayStateInResponseMessage":
-            "Ingen relay state i svar fra identitetsleverandør.",
-        "insufficientPermissionMessage":
-            "Utilstrekkelige rettigheter for å koble identiteter.",
-        "couldNotProceedWithAuthenticationRequestMessage":
-            "Kunne ikke gå videre med autentiseringsforespørsel til identitetsleverandør.",
-        "couldNotObtainTokenMessage":
-            "Klarte ikke å innhente token fra identitetsleverandør.",
-        "unexpectedErrorRetrievingTokenMessage":
-            "Uventet feil ved henting av token fra identitetsleverandør.",
-        "unexpectedErrorHandlingResponseMessage":
-            "Uventet feil ved håndtering av svar fra identitetsleverandør.",
-        "identityProviderAuthenticationFailedMessage":
-            "Autentisering feilet. Kunne ikke autentisere med identitetsleverandør.",
-        "couldNotSendAuthenticationRequestMessage":
-            "Kunne ikke sende autentiseringsforespørsel til identitetsleverandør.",
-        "unexpectedErrorHandlingRequestMessage":
-            "Uventet feil ved håndtering av autentiseringsforespørsel til identitetsleverandør.",
+        "noRelayStateInResponseMessage": "Ingen relay state i svar fra identitetsleverandør.",
+        "insufficientPermissionMessage": "Utilstrekkelige rettigheter for å koble identiteter.",
+        "couldNotProceedWithAuthenticationRequestMessage": "Kunne ikke gå videre med autentiseringsforespørsel til identitetsleverandør.",
+        "couldNotObtainTokenMessage": "Klarte ikke å innhente token fra identitetsleverandør.",
+        "unexpectedErrorRetrievingTokenMessage": "Uventet feil ved henting av token fra identitetsleverandør.",
+        "unexpectedErrorHandlingResponseMessage": "Uventet feil ved håndtering av svar fra identitetsleverandør.",
+        "identityProviderAuthenticationFailedMessage": "Autentisering feilet. Kunne ikke autentisere med identitetsleverandør.",
+        "couldNotSendAuthenticationRequestMessage": "Kunne ikke sende autentiseringsforespørsel til identitetsleverandør.",
+        "unexpectedErrorHandlingRequestMessage": "Uventet feil ved håndtering av autentiseringsforespørsel til identitetsleverandør.",
         "invalidAccessCodeMessage": "Ugyldig tilgangskode.",
         "sessionNotActiveMessage": "Sesjonen er ikke aktiv.",
-        "invalidCodeMessage":
-            "En feil oppstod, vennligst logg inn på nytt i din applikasjon.",
-        "identityProviderUnexpectedErrorMessage":
-            "Uventet feil ved autentisering med identitetsleverandør",
-        "identityProviderNotFoundMessage":
-            "Kunne ikke finne en identitetsleverandør med identifikatoren.",
-        "identityProviderLinkSuccess":
-            "Din konto ble suksessfullt koblet med {0} konto {1}.",
-        "staleCodeMessage":
-            "Denne siden er ikke lenger gyldig. Vennligst gå tilbake til applikasjonen din og logg inn på nytt.",
-        "realmSupportsNoCredentialsMessage":
-            "Sikkerhetsdomene støtter ingen legitimasjonstyper.",
+        "invalidCodeMessage": "En feil oppstod, vennligst logg inn på nytt i din applikasjon.",
+        "identityProviderUnexpectedErrorMessage": "Uventet feil ved autentisering med identitetsleverandør",
+        "identityProviderNotFoundMessage": "Kunne ikke finne en identitetsleverandør med identifikatoren.",
+        "identityProviderLinkSuccess": "Din konto ble suksessfullt koblet med {0} konto {1}.",
+        "staleCodeMessage": "Denne siden er ikke lenger gyldig. Vennligst gå tilbake til applikasjonen din og logg inn på nytt.",
+        "realmSupportsNoCredentialsMessage": "Sikkerhetsdomene støtter ingen legitimasjonstyper.",
         "identityProviderNotUniqueMessage":
             "Sikkerhetsdomene støtter flere identitetsleverandører. Kunne ikke avgjøre hvilken identitetsleverandør som burde brukes for autentisering.",
         "emailVerifiedMessage": "Din e-postadresse har blitt verifisert.",
-        "staleEmailVerificationLink":
-            "Lenken du klikket er utgått og er ikke lenger gyldig. Har du kanskje allerede bekreftet e-postadressen din?",
+        "staleEmailVerificationLink": "Lenken du klikket er utgått og er ikke lenger gyldig. Har du kanskje allerede bekreftet e-postadressen din?",
         "backToApplication": "&laquo; Tilbake til applikasjonen",
         "missingParameterMessage": "Manglende parameter: {0}",
         "clientNotFoundMessage": "Klient ikke funnet.",
@@ -4554,8 +3664,7 @@ export const kcMessages = {
         "kerberosNotConfiguredTitle": "Kerberos nie jest skonfigurowany",
         "bypassKerberosDetail":
             "Albo nie jesteś zalogowany przez Kerberos albo twoja przeglądarka nie jest skonfigurowana do logowania Kerberos. Kliknij kontynuuj by zalogować się w inny sposób.",
-        "kerberosNotSetUp":
-            "Kerberos nie jest skonfigurowany. Nie można się zalogować.",
+        "kerberosNotSetUp": "Kerberos nie jest skonfigurowany. Nie można się zalogować.",
         "registerTitle": "Rejestracja",
         "loginTitle": "Zaloguj się do {0}",
         "loginTitleHtml": "{0}",
@@ -4565,8 +3674,7 @@ export const kcMessages = {
         "unknownUser": "Nieznany użytkownik",
         "loginTotpTitle": "Konfiguracja dla Mobile Authenticator",
         "loginProfileTitle": "Zaktualizuj informacje konta",
-        "loginTimeout":
-            "Zbyt dużo czasu zajęło logowanie. Proces logowania rozpocznie się od nowa.",
+        "loginTimeout": "Zbyt dużo czasu zajęło logowanie. Proces logowania rozpocznie się od nowa.",
         "oauthGrantTitle": "Przydziel dostęp dla {0}",
         "oauthGrantTitleHtml": "{0}",
         "errorTitle": "Przykro nam...",
@@ -4579,15 +3687,13 @@ export const kcMessages = {
         "displayUnsupported": "Żądany typ wyświetlania jest nieobsługiwany",
         "browserRequired": "Do zalogowania wymagana jest przeglądarka",
         "browserContinue": "Przeglądarka jest wymagana by dokończyć logowanie",
-        "browserContinuePrompt":
-            "Otworzyć przeglądarkę i kontynuować logowanie? [t/n]:",
+        "browserContinuePrompt": "Otworzyć przeglądarkę i kontynuować logowanie? [t/n]:",
         "browserContinueAnswer": "t",
         "termsTitle": "Regulamin",
         "termsText": "<p>Regulamin, który należy zdefiniować</p>",
         "termsPlainText": "Regulamin, który należy zdefiniować.",
         "recaptchaFailed": "Błędna Recaptcha",
-        "recaptchaNotConfigured":
-            "Recaptcha jest wymagana, ale nie skonfigurowana",
+        "recaptchaNotConfigured": "Recaptcha jest wymagana, ale nie skonfigurowana",
         "consentDenied": "Zgoda odrzucona.",
         "noAccount": "Nie masz konta?",
         "username": "Nazwa użytkownika (login)",
@@ -4626,16 +3732,12 @@ export const kcMessages = {
         "samlRoleListScopeConsentText": "Moje role",
         "rolesScopeConsentText": "Role użytkownika",
         "restartLoginTooltip": "Restart logowania",
-        "loginTotpIntro":
-            "Aby uzyskać dostęp do tego konta, musisz skonfigurować generator haseł jednorazowych",
-        "loginTotpStep1":
-            "Zainstaluj jedną z następujących aplikacji na telefonie komórkowym",
+        "loginTotpIntro": "Aby uzyskać dostęp do tego konta, musisz skonfigurować generator haseł jednorazowych",
+        "loginTotpStep1": "Zainstaluj jedną z następujących aplikacji na telefonie komórkowym",
         "loginTotpStep2": "Otwórz aplikację i zeskanuj kod kreskowy",
-        "loginTotpStep3":
-            "Wprowadź jednorazowy kod podany przez aplikację i kliknij Prześlij aby zakończyć konfigurację",
+        "loginTotpStep3": "Wprowadź jednorazowy kod podany przez aplikację i kliknij Prześlij aby zakończyć konfigurację",
         "loginTotpManualStep2": "Otwórz aplikację i wprowadź klucz",
-        "loginTotpManualStep3":
-            "Użyj poniższych wartości konfiguracji, jeśli aplikacja pozwala na ich ustawienie",
+        "loginTotpManualStep3": "Użyj poniższych wartości konfiguracji, jeśli aplikacja pozwala na ich ustawienie",
         "loginTotpUnableToScan": "Nie można skanować?",
         "loginTotpScanBarcode": "Zeskanować kod paskowy?",
         "loginCredential": "Poświadczenia",
@@ -4651,24 +3753,18 @@ export const kcMessages = {
         "loginChooseAuthenticator": "Wybierz metodę logowania",
         "oauthGrantRequest": "Czy przyznajesz te uprawnienia dostępu?",
         "inResource": "w",
-        "emailVerifyInstruction1":
-            "Została wysłana do Ciebie wiadomość e-mail z instrukcjami jak zweryfikować swój adres e-mail.",
-        "emailVerifyInstruction2":
-            "Nie otrzymałem kodu weryfikacyjnego w wiadomości e-mail?",
+        "emailVerifyInstruction1": "Została wysłana do Ciebie wiadomość e-mail z instrukcjami jak zweryfikować swój adres e-mail.",
+        "emailVerifyInstruction2": "Nie otrzymałem kodu weryfikacyjnego w wiadomości e-mail?",
         "emailVerifyInstruction3": "aby ponownie wysłać wiadomość e-mail.",
         "emailLinkIdpTitle": "Link {0}",
-        "emailLinkIdp1":
-            "Wiadomość e-mail z instrukcjami, aby powiązać konto {0} {1} z kontem {2} została wysłana do Ciebie.",
-        "emailLinkIdp2":
-            "Nie otrzymałem kodu weryfikacyjnego w wiadomości e-mail?",
+        "emailLinkIdp1": "Wiadomość e-mail z instrukcjami, aby powiązać konto {0} {1} z kontem {2} została wysłana do Ciebie.",
+        "emailLinkIdp2": "Nie otrzymałem kodu weryfikacyjnego w wiadomości e-mail?",
         "emailLinkIdp3": "aby ponownie wysłać wiadomość e-mail.",
         "emailLinkIdp4": "Jeśli już zweryfikowana e-mail w innej przeglądarce",
         "emailLinkIdp5": "aby kontynuować.",
         "backToLogin": "&laquo; Powrót do logowania",
-        "emailInstruction":
-            "Wpisz swój adres e-mail lub nazwę użytkownika a wyślemy do Ciebie instrukcje, jak utworzyć nowe hasło.",
-        "copyCodeInstruction":
-            "Proszę skopiować ten kod i wklej go do aplikacji:",
+        "emailInstruction": "Wpisz swój adres e-mail lub nazwę użytkownika a wyślemy do Ciebie instrukcje, jak utworzyć nowe hasło.",
+        "copyCodeInstruction": "Proszę skopiować ten kod i wklej go do aplikacji:",
         "pageExpiredTitle": "Strona wygasła",
         "pageExpiredMsg1": "Aby ponownie uruchomić proces logowania",
         "pageExpiredMsg2": "Aby kontynuować proces logowania",
@@ -4696,28 +3792,22 @@ export const kcMessages = {
         "role_offline-access": "Dostęp offline",
         "client_account": "Konto",
         "client_account-console": "Konsola konta",
-        "client_security-admin-console":
-            "Konsola administratora bezpieczeństwa",
+        "client_security-admin-console": "Konsola administratora bezpieczeństwa",
         "client_admin-cli": "Admin CLI",
         "client_realm-management": "Zarządzanie strefą",
         "client_broker": "Broker",
         "requiredFields": "Wymagane pola",
         "invalidUserMessage": "Nieprawidłowa nazwa użytkownika lub hasło.",
         "invalidUsernameMessage": "Nieprawidłowa nazwa użytkownika.",
-        "invalidUsernameOrEmailMessage":
-            "Nieprawidłowa nazwa użytkownika lub hasło.",
+        "invalidUsernameOrEmailMessage": "Nieprawidłowa nazwa użytkownika lub hasło.",
         "invalidPasswordMessage": "Nieprawidłowe hasło.",
         "invalidEmailMessage": "Nieprawidłowy adres e-mail.",
-        "accountDisabledMessage":
-            "Konto jest wyłączone, skontaktuj się z administratorem.",
-        "accountTemporarilyDisabledMessage":
-            "Konto jest tymczasowo wyłączone, skontaktuj się z administratorem lub spróbuj ponownie później.",
-        "expiredCodeMessage":
-            "Przekroczono limit czasu logowania. Proszę Zaloguj się ponownie.",
+        "accountDisabledMessage": "Konto jest wyłączone, skontaktuj się z administratorem.",
+        "accountTemporarilyDisabledMessage": "Konto jest tymczasowo wyłączone, skontaktuj się z administratorem lub spróbuj ponownie później.",
+        "expiredCodeMessage": "Przekroczono limit czasu logowania. Proszę Zaloguj się ponownie.",
         "expiredActionMessage": "Akcja wygasła. Proszę kontynuować logowanie.",
         "expiredActionTokenNoSessionMessage": "Akcja wygasła.",
-        "expiredActionTokenSessionExistsMessage":
-            "Akcja wygasła. Proszę uruchomić ponownie.",
+        "expiredActionTokenSessionExistsMessage": "Akcja wygasła. Proszę uruchomić ponownie.",
         "missingFirstNameMessage": "Proszę podać imię.",
         "missingLastNameMessage": "Proszę podać nazwisko.",
         "missingEmailMessage": "Proszę podać e-mail.",
@@ -4727,75 +3817,50 @@ export const kcMessages = {
         "missingTotpDeviceNameMessage": "Proszę podać nazwę urządzenia.",
         "notMatchPasswordMessage": "Hasła nie są zgodne.",
         "invalidPasswordExistingMessage": "Nieprawidłowe istniejące hasło.",
-        "invalidPasswordBlacklistedMessage":
-            "Nieprawidłowe hasło: hasło jest na czarnej liście.",
+        "invalidPasswordBlacklistedMessage": "Nieprawidłowe hasło: hasło jest na czarnej liście.",
         "invalidPasswordConfirmMessage": "Potwierdzenie hasła nie pasuje.",
         "invalidTotpMessage": "Nieprawidłowy kod uwierzytelnienia.",
         "usernameExistsMessage": "Nazwa użytkownika już istnieje.",
         "emailExistsMessage": "Email już istnieje.",
-        "federatedIdentityExistsMessage":
-            "Użytkownik z {0} {1} już istnieje. Zaloguj się do zarządzania kontem aby połączyć konto.",
+        "federatedIdentityExistsMessage": "Użytkownik z {0} {1} już istnieje. Zaloguj się do zarządzania kontem aby połączyć konto.",
         "confirmLinkIdpTitle": "Konto już istnieje",
-        "federatedIdentityConfirmLinkMessage":
-            "Użytkownik z {0} {1} już istnieje. Co chcesz zrobić?",
-        "federatedIdentityConfirmReauthenticateMessage":
-            "Uwierzytelnij się aby połączyć swoje konto z {0}",
-        "nestedFirstBrokerFlowMessage":
-            "Użytkownik {0} {1} nie jest powiązany z żadnym znanym użytkownikiem.",
+        "federatedIdentityConfirmLinkMessage": "Użytkownik z {0} {1} już istnieje. Co chcesz zrobić?",
+        "federatedIdentityConfirmReauthenticateMessage": "Uwierzytelnij się aby połączyć swoje konto z {0}",
+        "nestedFirstBrokerFlowMessage": "Użytkownik {0} {1} nie jest powiązany z żadnym znanym użytkownikiem.",
         "confirmLinkIdpReviewProfile": "Przejrzyj profil",
         "confirmLinkIdpContinue": "Dodaj do istniejącego konta",
-        "configureTotpMessage":
-            "Musisz skonfigurować Mobile Authenticator aby aktywować swoje konto.",
-        "updateProfileMessage":
-            "Musisz zaktualizować profilu użytkownika aby aktywować swoje konto.",
-        "updatePasswordMessage":
-            "Musisz zmienić swoje hasło aby aktywować swoje konto.",
+        "configureTotpMessage": "Musisz skonfigurować Mobile Authenticator aby aktywować swoje konto.",
+        "updateProfileMessage": "Musisz zaktualizować profilu użytkownika aby aktywować swoje konto.",
+        "updatePasswordMessage": "Musisz zmienić swoje hasło aby aktywować swoje konto.",
         "resetPasswordMessage": "Musisz zmienić swoje hasło.",
-        "verifyEmailMessage":
-            "Musisz zweryfikować swój adres e-mail aby aktywować swoje konto.",
-        "linkIdpMessage":
-            "Musisz zweryfikować swój adres e-mail, aby połączyć swoje konto z {0}.",
-        "emailSentMessage":
-            "Powinieneś otrzymywać wkrótce pocztę z dalszymi instrukcjami.",
-        "emailSendErrorMessage":
-            "Nie można wysłać wiadomości e-mail, proszę spróbować ponownie później.",
+        "verifyEmailMessage": "Musisz zweryfikować swój adres e-mail aby aktywować swoje konto.",
+        "linkIdpMessage": "Musisz zweryfikować swój adres e-mail, aby połączyć swoje konto z {0}.",
+        "emailSentMessage": "Powinieneś otrzymywać wkrótce pocztę z dalszymi instrukcjami.",
+        "emailSendErrorMessage": "Nie można wysłać wiadomości e-mail, proszę spróbować ponownie później.",
         "accountUpdatedMessage": "Twoje konto zostało zaktualizowane.",
         "accountPasswordUpdatedMessage": "Twoje hasło zostało zaktualizowane.",
         "delegationCompleteHeader": "Logowanie udane",
-        "delegationCompleteMessage":
-            "Możesz zamknąć okno przeglądarki i przejść wstecz do aplikacji konsoli.",
+        "delegationCompleteMessage": "Możesz zamknąć okno przeglądarki i przejść wstecz do aplikacji konsoli.",
         "delegationFailedHeader": "Logowanie nie powiodło się",
-        "delegationFailedMessage":
-            "Możesz zamknąć okno przeglądarki, wrócić do aplikacji konsoli i spróbować zalogować się ponownie.",
+        "delegationFailedMessage": "Możesz zamknąć okno przeglądarki, wrócić do aplikacji konsoli i spróbować zalogować się ponownie.",
         "noAccessMessage": "Brak dostępu",
-        "invalidPasswordMinLengthMessage":
-            "Nieprawidłowe hasło: minimalna długość {0}.",
-        "invalidPasswordMinDigitsMessage":
-            "Nieprawidłowe hasło: musi zawierać przynajmniej {0} cyfr.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Nieprawidłowe hasło: musi zawierać co najmniej {0} małych liter.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Nieprawidłowe hasło: musi zawierać co najmniej {0} wielkich liter.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Nieprawidłowe hasło: musi zawierać przynajmniej {0} znaków specjalnych.",
-        "invalidPasswordNotUsernameMessage":
-            "Nieprawidłowe hasło: nie może być nazwą użytkownika.",
-        "invalidPasswordRegexPatternMessage":
-            "Nieprawidłowe hasło: brak zgodności z wyrażeniem regularnym.",
-        "invalidPasswordHistoryMessage":
-            "Nieprawidłowe hasło: nie może być takie jak {0} ostatnich haseł.",
-        "invalidPasswordGenericMessage":
-            "Nieprawidłowe hasło: nowe hasło nie jest zgodne z zasadami haseł.",
+        "invalidPasswordMinLengthMessage": "Nieprawidłowe hasło: minimalna długość {0}.",
+        "invalidPasswordMinDigitsMessage": "Nieprawidłowe hasło: musi zawierać przynajmniej {0} cyfr.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Nieprawidłowe hasło: musi zawierać co najmniej {0} małych liter.",
+        "invalidPasswordMinUpperCaseCharsMessage": "Nieprawidłowe hasło: musi zawierać co najmniej {0} wielkich liter.",
+        "invalidPasswordMinSpecialCharsMessage": "Nieprawidłowe hasło: musi zawierać przynajmniej {0} znaków specjalnych.",
+        "invalidPasswordNotUsernameMessage": "Nieprawidłowe hasło: nie może być nazwą użytkownika.",
+        "invalidPasswordRegexPatternMessage": "Nieprawidłowe hasło: brak zgodności z wyrażeniem regularnym.",
+        "invalidPasswordHistoryMessage": "Nieprawidłowe hasło: nie może być takie jak {0} ostatnich haseł.",
+        "invalidPasswordGenericMessage": "Nieprawidłowe hasło: nowe hasło nie jest zgodne z zasadami haseł.",
         "failedToProcessResponseMessage": "Nie można przetworzyć odpowiedzi",
         "httpsRequiredMessage": "Wymagany HTTPS",
         "realmNotEnabledMessage": "Strefa nie jest aktywna",
         "invalidRequestMessage": "Nieprawidłowe żądanie",
         "failedLogout": "Wylogowanie nie powiodło się",
         "unknownLoginRequesterMessage": "Nieznany żądający logowania",
-        "loginRequesterNotEnabledMessage":
-            "Żądający logowania nie jest aktywny",
-        "bearerOnlyMessage":
-            "Klienci bearer-only nie mogą inicjować logowania przez przeglądarkę",
+        "loginRequesterNotEnabledMessage": "Żądający logowania nie jest aktywny",
+        "bearerOnlyMessage": "Klienci bearer-only nie mogą inicjować logowania przez przeglądarkę",
         "standardFlowDisabledMessage":
             "Klient nie może zainicjować logowania przez przeglądarkę z podanym response_type. Standardowy przepływ jest wyłączony dla klienta.",
         "implicitFlowDisabledMessage":
@@ -4804,52 +3869,32 @@ export const kcMessages = {
         "unsupportedNameIdFormatMessage": "Nieobsługiwany NameIDFormat",
         "invalidRequesterMessage": "Nieprawidłowy żądający",
         "registrationNotAllowedMessage": "Rejestracja nie jest dozwolona",
-        "resetCredentialNotAllowedMessage":
-            "Zresetowanie poświadczeń nie jest dozwolone",
+        "resetCredentialNotAllowedMessage": "Zresetowanie poświadczeń nie jest dozwolone",
         "permissionNotApprovedMessage": "Uprawnienie nie zatwierdzone.",
-        "noRelayStateInResponseMessage":
-            "Brak przekazanego stanu w odpowiedzi dostawcy tożsamości.",
-        "insufficientPermissionMessage":
-            "Niewystarczające uprawnienia do łączenia tożsamości.",
-        "couldNotProceedWithAuthenticationRequestMessage":
-            "Nie można kontynuować żądania uwierzytelnienia do dostawcy tożsamości.",
-        "couldNotObtainTokenMessage":
-            "Nie można uzyskać tokenu od dostawcy tożsamości.",
-        "unexpectedErrorRetrievingTokenMessage":
-            "Nieoczekiwany błąd podczas pobierania tokenu od dostawcy tożsamości.",
-        "unexpectedErrorHandlingResponseMessage":
-            "Nieoczekiwany błąd podczas obsługi odpowiedzi od dostawcy tożsamości.",
-        "identityProviderAuthenticationFailedMessage":
-            "Uwierzytelnianie nie powiodło się. Nie można uwierzytelnić za pomocą dostawcy tożsamości.",
-        "couldNotSendAuthenticationRequestMessage":
-            "Nie może wysyłać żądania uwierzytelniania do dostawcy tożsamości.",
-        "unexpectedErrorHandlingRequestMessage":
-            "Nieoczekiwany błąd podczas obsługi żądania uwierzytelnienia do dostawcy tożsamości.",
+        "noRelayStateInResponseMessage": "Brak przekazanego stanu w odpowiedzi dostawcy tożsamości.",
+        "insufficientPermissionMessage": "Niewystarczające uprawnienia do łączenia tożsamości.",
+        "couldNotProceedWithAuthenticationRequestMessage": "Nie można kontynuować żądania uwierzytelnienia do dostawcy tożsamości.",
+        "couldNotObtainTokenMessage": "Nie można uzyskać tokenu od dostawcy tożsamości.",
+        "unexpectedErrorRetrievingTokenMessage": "Nieoczekiwany błąd podczas pobierania tokenu od dostawcy tożsamości.",
+        "unexpectedErrorHandlingResponseMessage": "Nieoczekiwany błąd podczas obsługi odpowiedzi od dostawcy tożsamości.",
+        "identityProviderAuthenticationFailedMessage": "Uwierzytelnianie nie powiodło się. Nie można uwierzytelnić za pomocą dostawcy tożsamości.",
+        "couldNotSendAuthenticationRequestMessage": "Nie może wysyłać żądania uwierzytelniania do dostawcy tożsamości.",
+        "unexpectedErrorHandlingRequestMessage": "Nieoczekiwany błąd podczas obsługi żądania uwierzytelnienia do dostawcy tożsamości.",
         "invalidAccessCodeMessage": "Nieprawidłowy kod dostępu.",
         "sessionNotActiveMessage": "Sesja nie jest aktywna.",
-        "invalidCodeMessage":
-            "Wystąpił błąd, zaloguj się ponownie za pośrednictwem aplikacji.",
-        "identityProviderUnexpectedErrorMessage":
-            "Nieoczekiwany błąd podczas uwierzytelniania u dostawcy tożsamości",
-        "identityProviderNotFoundMessage":
-            "Nie można odnaleźć dostawcy tożsamości z tym identyfikatorem.",
-        "identityProviderLinkSuccess":
-            "Pomyślnie zweryfikowano e-mail. Wróć do oryginalnej przeglądarki i tam kontynuuj logowanie.",
-        "staleCodeMessage":
-            "Ta strona nie jest już ważna, proszę wrócić do aplikacji i zalogować się ponownie",
-        "realmSupportsNoCredentialsMessage":
-            "Strefa nie obsługuje dowolnego typu poświadczeń.",
+        "invalidCodeMessage": "Wystąpił błąd, zaloguj się ponownie za pośrednictwem aplikacji.",
+        "identityProviderUnexpectedErrorMessage": "Nieoczekiwany błąd podczas uwierzytelniania u dostawcy tożsamości",
+        "identityProviderNotFoundMessage": "Nie można odnaleźć dostawcy tożsamości z tym identyfikatorem.",
+        "identityProviderLinkSuccess": "Pomyślnie zweryfikowano e-mail. Wróć do oryginalnej przeglądarki i tam kontynuuj logowanie.",
+        "staleCodeMessage": "Ta strona nie jest już ważna, proszę wrócić do aplikacji i zalogować się ponownie",
+        "realmSupportsNoCredentialsMessage": "Strefa nie obsługuje dowolnego typu poświadczeń.",
         "identityProviderNotUniqueMessage":
             "Strefa obsługuje wielu dostawców tożsamości. Nie można określić dostawcy tożsamości, który powinien być używany do uwierzytelniania.",
         "emailVerifiedMessage": "Twój adres e-mail został zweryfikowany.",
-        "staleEmailVerificationLink":
-            "Użyto nieaktualny link stanu, który stracił ważność.  Może e-mail został już zweryfikowany?",
-        "identityProviderAlreadyLinkedMessage":
-            "Stowarzyszona tożsamość, zwrócona przez {0} jest już połączona z innym użytkownikiem.",
-        "confirmAccountLinking":
-            "Potwierdź powiązanie konta {0} dostawcy tożsamości {1} z twoim kontem.",
-        "confirmEmailAddressVerification":
-            "Potwierdź ważność adresu e-mail {0}.",
+        "staleEmailVerificationLink": "Użyto nieaktualny link stanu, który stracił ważność.  Może e-mail został już zweryfikowany?",
+        "identityProviderAlreadyLinkedMessage": "Stowarzyszona tożsamość, zwrócona przez {0} jest już połączona z innym użytkownikiem.",
+        "confirmAccountLinking": "Potwierdź powiązanie konta {0} dostawcy tożsamości {1} z twoim kontem.",
+        "confirmEmailAddressVerification": "Potwierdź ważność adresu e-mail {0}.",
         "confirmExecutionOfActions": "Wykonaj następujące akcje",
         "backToApplication": "&laquo; Powrót do aplikacji",
         "missingParameterMessage": "Brakujące parametry: {0}",
@@ -4857,10 +3902,8 @@ export const kcMessages = {
         "clientDisabledMessage": "Klient nieaktywny.",
         "invalidParameterMessage": "Nieprawidłowy parametr: {0}",
         "alreadyLoggedIn": "Jesteś już zalogowany.",
-        "differentUserAuthenticated":
-            "Jesteś już uwierzytelniona/y jako inny użytkownik '{0}' w tej sesji. Najpierw się wyloguj.",
-        "brokerLinkingSessionExpired":
-            "Żądano łączenia kont brokera, ale bieżąca sesja już jest nieważna.",
+        "differentUserAuthenticated": "Jesteś już uwierzytelniona/y jako inny użytkownik '{0}' w tej sesji. Najpierw się wyloguj.",
+        "brokerLinkingSessionExpired": "Żądano łączenia kont brokera, ale bieżąca sesja już jest nieważna.",
         "proceedWithAction": "&raquo; kliknij tutaj, aby przejść",
         "requiredAction.CONFIGURE_TOTP": "Skonfiguruj OTP",
         "requiredAction.terms_and_conditions": "Regulamin",
@@ -4903,14 +3946,12 @@ export const kcMessages = {
         "doTryAnotherWay": "Tente outra forma",
         "doConfirmDelete": "Confirmar descadastramento",
         "errorDeletingAccount": "Falha ao apagar conta",
-        "deletingAccountForbidden":
-            "Você não tem permissões para apagar a sua própria conta, entre em contato com um administrador.",
+        "deletingAccountForbidden": "Você não tem permissões para apagar a sua própria conta, entre em contato com um administrador.",
         "kerberosNotConfigured": "Kerberos Não Configurado",
         "kerberosNotConfiguredTitle": "Kerberos Não Configurado",
         "bypassKerberosDetail":
             "Ou você não possui uma sessão Kerberos ou o seu navegador não está configurado para usar o acesso do Kerberos. Por favor, clique em continuar para fazer o login no através de outros meios",
-        "kerberosNotSetUp":
-            "Kerberos não está configurado. Você não pode acessar a aplicação.",
+        "kerberosNotSetUp": "Kerberos não está configurado. Você não pode acessar a aplicação.",
         "registerTitle": "Registre-se",
         "loginAccountTitle": "Entrar na sua conta",
         "loginTitle": "Entrar em {0}",
@@ -4921,8 +3962,7 @@ export const kcMessages = {
         "unknownUser": "Usuário desconhecido",
         "loginTotpTitle": "Configuração do autenticador móvel",
         "loginProfileTitle": "Atualizar Informações da Conta",
-        "loginTimeout":
-            "Você demorou muito para entrar. Por favor, recomeçe o processo de login.",
+        "loginTimeout": "Você demorou muito para entrar. Por favor, recomeçe o processo de login.",
         "oauthGrantTitle": "Conceder acesso a {0}",
         "oauthGrantTitleHtml": "{0}",
         "errorTitle": "Sentimos muito...",
@@ -4941,8 +3981,7 @@ export const kcMessages = {
         "termsText": "<p>Termos e condições a serem definidos</p>",
         "termsPlainText": "Termos e condições a serem definidos.",
         "recaptchaFailed": "Recaptcha Inválido",
-        "recaptchaNotConfigured":
-            "O recaptcha é necessário, mas não foi configurado",
+        "recaptchaNotConfigured": "O recaptcha é necessário, mas não foi configurado",
         "consentDenied": "Consentimento negado.",
         "noAccount": "Novo usuário?",
         "username": "Nome de usuário",
@@ -4982,18 +4021,13 @@ export const kcMessages = {
         "samlRoleListScopeConsentText": "Meus Perfis de Acesso",
         "rolesScopeConsentText": "Perfis de acesso do usuário",
         "restartLoginTooltip": "Reiniciar o login",
-        "loginTotpIntro":
-            "Você precisa configurar um gerador de código de uso único para acessar esta conta",
-        "loginTotpStep1":
-            "Instale um dos seguintes aplicativos no seu celular:",
+        "loginTotpIntro": "Você precisa configurar um gerador de código de uso único para acessar esta conta",
+        "loginTotpStep1": "Instale um dos seguintes aplicativos no seu celular:",
         "loginTotpStep2": "Abra o aplicativo e escaneie o código QR:",
-        "loginTotpStep3":
-            "Digite o código de uso único fornecido pelo aplicativo e clique em Ok para concluir a configuração.",
-        "loginTotpStep3DeviceName":
-            "Forneça um nome de dispositivo para ajudá-lo a gerenciar seus dispositivos de autenticação de dois fatores.",
+        "loginTotpStep3": "Digite o código de uso único fornecido pelo aplicativo e clique em Ok para concluir a configuração.",
+        "loginTotpStep3DeviceName": "Forneça um nome de dispositivo para ajudá-lo a gerenciar seus dispositivos de autenticação de dois fatores.",
         "loginTotpManualStep2": "Abra o aplicativo e digite a chave:",
-        "loginTotpManualStep3":
-            "Use os seguintes valores de configuração se o aplicativo permitir defini-los:",
+        "loginTotpManualStep3": "Use os seguintes valores de configuração se o aplicativo permitir defini-los:",
         "loginTotpUnableToScan": "Não foi possível ler o código QR?",
         "loginTotpScanBarcode": "Escanear código QR?",
         "loginCredential": "Credencial",
@@ -5009,23 +4043,18 @@ export const kcMessages = {
         "loginChooseAuthenticator": "Selecione o método de login",
         "oauthGrantRequest": "Você concede esses privilégios de acesso?",
         "inResource": "em",
-        "emailVerifyInstruction1":
-            "Um e-mail com instruções para verificar o seu endereço de e-mail foi enviado para você.",
-        "emailVerifyInstruction2":
-            "Não recebeu um código de verificação em seu e-mail?",
+        "emailVerifyInstruction1": "Um e-mail com instruções para verificar o seu endereço de e-mail foi enviado para você.",
+        "emailVerifyInstruction2": "Não recebeu um código de verificação em seu e-mail?",
         "emailVerifyInstruction3": "para reenviar o e-mail.",
         "emailLinkIdpTitle": "Vincular {0}",
-        "emailLinkIdp1":
-            "Um e-mail com instruções para vincular a conta {0} {1} com sua conta {2} foi enviado para você.",
+        "emailLinkIdp1": "Um e-mail com instruções para vincular a conta {0} {1} com sua conta {2} foi enviado para você.",
         "emailLinkIdp2": "Não recebeu um código de verificação no e-mail?",
         "emailLinkIdp3": "para reenviar o e-mail.",
         "emailLinkIdp4": "Se você já verificou o email em outro navegador",
         "emailLinkIdp5": "para continuar.",
         "backToLogin": "&laquo; Voltar ao Login",
-        "emailInstruction":
-            "Digite seu nome de usuário ou endereço de e-mail e nós lhe enviaremos instruções sobre como criar uma nova senha.",
-        "copyCodeInstruction":
-            "Por favor, copie o código e cole-o em seu aplicativo:",
+        "emailInstruction": "Digite seu nome de usuário ou endereço de e-mail e nós lhe enviaremos instruções sobre como criar uma nova senha.",
+        "copyCodeInstruction": "Por favor, copie o código e cole-o em seu aplicativo:",
         "pageExpiredTitle": "A página expirou",
         "pageExpiredMsg1": "Para reiniciar o processo de login",
         "pageExpiredMsg2": "Para continuar o processo de login",
@@ -5053,102 +4082,70 @@ export const kcMessages = {
         "role_offline-access": "Acesso offline",
         "client_account": "Conta",
         "client_account-console": "Console da Conta",
-        "client_security-admin-console":
-            "Console de Administração de Segurança",
+        "client_security-admin-console": "Console de Administração de Segurança",
         "client_admin-cli": "CLI de Administração",
         "client_realm-management": "Gerenciamento de Domínio",
         "client_broker": "Provedor de Identidade",
         "requiredFields": "Campos obrigatórios",
         "invalidUserMessage": "Nome de usuário ou senha inválida.",
         "invalidUsernameMessage": "Nome de usuário inválido.",
-        "invalidUsernameOrEmailMessage":
-            "Nome de usuário ou endereço de e-mail inválido.",
+        "invalidUsernameOrEmailMessage": "Nome de usuário ou endereço de e-mail inválido.",
         "invalidPasswordMessage": "Senha inválida.",
         "invalidEmailMessage": "Endereço de e-mail inválido.",
-        "accountDisabledMessage":
-            "Conta desativada, por favor, contate um administrador.",
-        "accountTemporarilyDisabledMessage":
-            "Conta temporariamente indisponível, por favor, contate um administrador ou tente novamente mais tarde.",
-        "expiredCodeMessage":
-            "Tempo de login expirado. Por favor, faça login novamente.",
-        "expiredActionMessage":
-            "Ação expirada. Por favor, continue com o login agora.",
+        "accountDisabledMessage": "Conta desativada, por favor, contate um administrador.",
+        "accountTemporarilyDisabledMessage": "Conta temporariamente indisponível, por favor, contate um administrador ou tente novamente mais tarde.",
+        "expiredCodeMessage": "Tempo de login expirado. Por favor, faça login novamente.",
+        "expiredActionMessage": "Ação expirada. Por favor, continue com o login agora.",
         "expiredActionTokenNoSessionMessage": "Ação expirada.",
-        "expiredActionTokenSessionExistsMessage":
-            "Ação expirada. Por favor, comece novamente.",
+        "expiredActionTokenSessionExistsMessage": "Ação expirada. Por favor, comece novamente.",
         "missingFirstNameMessage": "Por favor, informe o primeiro nome.",
         "missingLastNameMessage": "Por favor, informe o sobrenome.",
         "missingEmailMessage": "Por favor, informe o endereço de e-mail.",
         "missingUsernameMessage": "Por favor, informe o nome de usuário.",
         "missingPasswordMessage": "Por favor, informe a senha.",
         "missingTotpMessage": "Por favor, informe o código de uso único.",
-        "missingTotpDeviceNameMessage":
-            "Por favor, informe o nome do dispositivo.",
+        "missingTotpDeviceNameMessage": "Por favor, informe o nome do dispositivo.",
         "notMatchPasswordMessage": "As senhas não coincidem.",
         "invalidPasswordExistingMessage": "Senha atual inválida.",
-        "invalidPasswordBlacklistedMessage":
-            "Senha inválida, devido a lista de exclusão.",
+        "invalidPasswordBlacklistedMessage": "Senha inválida, devido a lista de exclusão.",
         "invalidPasswordConfirmMessage": "Senha de confirmação não coincide.",
         "invalidTotpMessage": "Código de uso único inválido.",
         "usernameExistsMessage": "Nome de usuário já existe.",
         "emailExistsMessage": "Endereço de e-mail já existe.",
-        "federatedIdentityExistsMessage":
-            "Usuário com {0} {1} já existe. Por favor, entre no gerenciamento de conta para vincular a conta.",
+        "federatedIdentityExistsMessage": "Usuário com {0} {1} já existe. Por favor, entre no gerenciamento de conta para vincular a conta.",
         "federatedIdentityUnavailableMessage":
             "Usuário {0} autenticado com o provedor de identidade {1} não existe. Por favor, entre em contato com um administrador.",
         "confirmLinkIdpTitle": "Conta já existente",
-        "federatedIdentityConfirmLinkMessage":
-            "Usuário com {0} {1} já existe. Como você quer continuar?",
-        "federatedIdentityConfirmReauthenticateMessage":
-            "Autenticar para vincular sua conta com {0}",
-        "nestedFirstBrokerFlowMessage":
-            "O usuário {0} {1} não está vinculado a nenhum usuário conhecido.",
+        "federatedIdentityConfirmLinkMessage": "Usuário com {0} {1} já existe. Como você quer continuar?",
+        "federatedIdentityConfirmReauthenticateMessage": "Autenticar para vincular sua conta com {0}",
+        "nestedFirstBrokerFlowMessage": "O usuário {0} {1} não está vinculado a nenhum usuário conhecido.",
         "confirmLinkIdpReviewProfile": "Revisar informações do perfil",
         "confirmLinkIdpContinue": "Vincular à conta existente",
-        "configureTotpMessage":
-            "Você precisa configurar seu celular com o autenticador Mobile para ativar sua conta.",
-        "updateProfileMessage":
-            "Você precisa atualizar o seu perfil de usuário para ativar sua conta.",
-        "updatePasswordMessage":
-            "Você precisa mudar sua senha para ativar sua conta.",
+        "configureTotpMessage": "Você precisa configurar seu celular com o autenticador Mobile para ativar sua conta.",
+        "updateProfileMessage": "Você precisa atualizar o seu perfil de usuário para ativar sua conta.",
+        "updatePasswordMessage": "Você precisa mudar sua senha para ativar sua conta.",
         "resetPasswordMessage": "Você precisa mudar sua senha.",
-        "verifyEmailMessage":
-            "Você precisa verificar o seu endereço de e-mail para ativar sua conta.",
-        "linkIdpMessage":
-            "Você precisa confirmar o seu endereço de e-mail para vincular sua conta com {0}.",
-        "emailSentMessage":
-            "Você deverá receber um e-mail em breve com mais instruções.",
-        "emailSendErrorMessage":
-            "Falha ao enviar e-mail, por favor, tente novamente mais tarde.",
+        "verifyEmailMessage": "Você precisa verificar o seu endereço de e-mail para ativar sua conta.",
+        "linkIdpMessage": "Você precisa confirmar o seu endereço de e-mail para vincular sua conta com {0}.",
+        "emailSentMessage": "Você deverá receber um e-mail em breve com mais instruções.",
+        "emailSendErrorMessage": "Falha ao enviar e-mail, por favor, tente novamente mais tarde.",
         "accountUpdatedMessage": "Sua conta foi atualizada.",
         "accountPasswordUpdatedMessage": "Sua senha foi atualizada.",
         "delegationCompleteHeader": "Autenticação Bem Sucedida",
-        "delegationCompleteMessage":
-            "Você pode fechar esta janela do navegador e voltar ao seu aplicativo.",
+        "delegationCompleteMessage": "Você pode fechar esta janela do navegador e voltar ao seu aplicativo.",
         "delegationFailedHeader": "Falha na Autenticação",
-        "delegationFailedMessage":
-            "Você pode fechar esta janela do navegador e voltar ao aplicativo e tentar fazer login novamente.",
+        "delegationFailedMessage": "Você pode fechar esta janela do navegador e voltar ao aplicativo e tentar fazer login novamente.",
         "noAccessMessage": "Sem acesso",
-        "invalidPasswordMinLengthMessage":
-            "Senha inválida: deve ter pelo menos {0} caracteres.",
-        "invalidPasswordMinDigitsMessage":
-            "Senha inválida: deve conter pelo menos {0} número(s).",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Senha inválida: deve conter pelo menos {0} letra(s) minúscula(s).",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Senha inválida: deve conter pelo menos {0} letra(s) maiúscula(s).",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Senha inválida: deve conter pelo menos {0} caractere(s) especial(is).",
-        "invalidPasswordNotUsernameMessage":
-            "Senha inválida: não pode ser igual ao nome de usuário",
-        "invalidPasswordNotEmailMessage":
-            "Senha inválida: não pode ser igual ao endereço de e-mail.",
-        "invalidPasswordRegexPatternMessage":
-            "Senha inválida: não corresponde ao(s) padrão(ões) de expressão regular.",
-        "invalidPasswordHistoryMessage":
-            "Senha inválida: não pode ser igual a qualquer uma da(s) última(s) {0} senha(s).",
-        "invalidPasswordGenericMessage":
-            "Senha inválida: a nova senha não cumpre as políticas de senha.",
+        "invalidPasswordMinLengthMessage": "Senha inválida: deve ter pelo menos {0} caracteres.",
+        "invalidPasswordMinDigitsMessage": "Senha inválida: deve conter pelo menos {0} número(s).",
+        "invalidPasswordMinLowerCaseCharsMessage": "Senha inválida: deve conter pelo menos {0} letra(s) minúscula(s).",
+        "invalidPasswordMinUpperCaseCharsMessage": "Senha inválida: deve conter pelo menos {0} letra(s) maiúscula(s).",
+        "invalidPasswordMinSpecialCharsMessage": "Senha inválida: deve conter pelo menos {0} caractere(s) especial(is).",
+        "invalidPasswordNotUsernameMessage": "Senha inválida: não pode ser igual ao nome de usuário",
+        "invalidPasswordNotEmailMessage": "Senha inválida: não pode ser igual ao endereço de e-mail.",
+        "invalidPasswordRegexPatternMessage": "Senha inválida: não corresponde ao(s) padrão(ões) de expressão regular.",
+        "invalidPasswordHistoryMessage": "Senha inválida: não pode ser igual a qualquer uma da(s) última(s) {0} senha(s).",
+        "invalidPasswordGenericMessage": "Senha inválida: a nova senha não cumpre as políticas de senha.",
         "failedToProcessResponseMessage": "Falha ao processar a resposta",
         "httpsRequiredMessage": "HTTPS necessário",
         "realmNotEnabledMessage": "Domínio desativado",
@@ -5156,8 +4153,7 @@ export const kcMessages = {
         "failedLogout": "Falha ao sair",
         "unknownLoginRequesterMessage": "Solicitante de login desconhecido",
         "loginRequesterNotEnabledMessage": "Solicitante de login desativado",
-        "bearerOnlyMessage":
-            "Aplicativos configurados como Bearer-Only não têm permissão para iniciar o login pelo navegador",
+        "bearerOnlyMessage": "Aplicativos configurados como Bearer-Only não têm permissão para iniciar o login pelo navegador",
         "standardFlowDisabledMessage":
             "O cliente não tem permissão para iniciar o login com o response_type informado. O fluxo padrão está desabilitado para o cliente.",
         "implicitFlowDisabledMessage":
@@ -5166,56 +4162,36 @@ export const kcMessages = {
         "unsupportedNameIdFormatMessage": "NameIDFormat não suportado",
         "invalidRequesterMessage": "Solicitante inválido",
         "registrationNotAllowedMessage": "Cadastro não é permitido",
-        "resetCredentialNotAllowedMessage":
-            "Sem permissão de redefinição de credenciais",
+        "resetCredentialNotAllowedMessage": "Sem permissão de redefinição de credenciais",
         "permissionNotApprovedMessage": "Permissão não aprovada.",
-        "noRelayStateInResponseMessage":
-            "Sem estado de retransmissão na resposta do provedor de identidade.",
-        "insufficientPermissionMessage":
-            "Permissões insuficientes para vincular identidades.",
-        "couldNotProceedWithAuthenticationRequestMessage":
-            "Não foi possível proceder com a solicitação de autenticação ao provedor de identidade.",
-        "couldNotObtainTokenMessage":
-            "Não foi possível obter token do provedor de identidade.",
-        "unexpectedErrorRetrievingTokenMessage":
-            "Erro inesperado ao recuperar token do provedor de identidade.",
-        "unexpectedErrorHandlingResponseMessage":
-            "Erro inesperado ao tratar a resposta do provedor de identidade.",
-        "identityProviderAuthenticationFailedMessage":
-            "Falha na autenticação. Não foi possível autenticar com o provedor de identidade.",
-        "couldNotSendAuthenticationRequestMessage":
-            "Não foi possível enviar a solicitação de autenticação ao provedor de identidade.",
-        "unexpectedErrorHandlingRequestMessage":
-            "Erro inesperado ao tratar o pedido de autenticação ao provedor de identidade.",
+        "noRelayStateInResponseMessage": "Sem estado de retransmissão na resposta do provedor de identidade.",
+        "insufficientPermissionMessage": "Permissões insuficientes para vincular identidades.",
+        "couldNotProceedWithAuthenticationRequestMessage": "Não foi possível proceder com a solicitação de autenticação ao provedor de identidade.",
+        "couldNotObtainTokenMessage": "Não foi possível obter token do provedor de identidade.",
+        "unexpectedErrorRetrievingTokenMessage": "Erro inesperado ao recuperar token do provedor de identidade.",
+        "unexpectedErrorHandlingResponseMessage": "Erro inesperado ao tratar a resposta do provedor de identidade.",
+        "identityProviderAuthenticationFailedMessage": "Falha na autenticação. Não foi possível autenticar com o provedor de identidade.",
+        "couldNotSendAuthenticationRequestMessage": "Não foi possível enviar a solicitação de autenticação ao provedor de identidade.",
+        "unexpectedErrorHandlingRequestMessage": "Erro inesperado ao tratar o pedido de autenticação ao provedor de identidade.",
         "invalidAccessCodeMessage": "Código de acesso inválido.",
         "sessionNotActiveMessage": "Sessão inativa.",
-        "invalidCodeMessage":
-            "Um erro correu, por favor, faça login novamente através da aplicação.",
-        "identityProviderUnexpectedErrorMessage":
-            "Erro inesperado durante a autenticação com o provedor de identidade",
-        "identityProviderMissingStateMessage":
-            "Parâmetro de estado ausente da resposta do provedor de identidades.",
-        "identityProviderNotFoundMessage":
-            "Não foi possível encontrar um provedor de identidade com o identificador.",
+        "invalidCodeMessage": "Um erro correu, por favor, faça login novamente através da aplicação.",
+        "identityProviderUnexpectedErrorMessage": "Erro inesperado durante a autenticação com o provedor de identidade",
+        "identityProviderMissingStateMessage": "Parâmetro de estado ausente da resposta do provedor de identidades.",
+        "identityProviderNotFoundMessage": "Não foi possível encontrar um provedor de identidade com o identificador.",
         "identityProviderLinkSuccess":
             "O seu endereço de e-mail foi confirmado com sucesso. Por favor, retorne à aba original e continue com o login.",
-        "staleCodeMessage":
-            "Esta página não é mais válida. Por favor, volte à aplicação e faça login novamente",
-        "realmSupportsNoCredentialsMessage":
-            "O domínio não suporta qualquer tipo de credencial.",
-        "credentialSetupRequired":
-            "Não é possível fazer o login, a configuração de credencial é necessária.",
+        "staleCodeMessage": "Esta página não é mais válida. Por favor, volte à aplicação e faça login novamente",
+        "realmSupportsNoCredentialsMessage": "O domínio não suporta qualquer tipo de credencial.",
+        "credentialSetupRequired": "Não é possível fazer o login, a configuração de credencial é necessária.",
         "identityProviderNotUniqueMessage":
             "O domínio suporta múltiplos provedores de identidade. Não foi possível determinar qual o provedor de identidade deve ser usado para autenticação.",
         "emailVerifiedMessage": "O seu endereço de e-mail foi confirmado.",
         "staleEmailVerificationLink":
             "O link em que você clicou é um link antigo e não é mais válido. Talvez você já tenha confirmado o seu endereço de e-mail.",
-        "identityProviderAlreadyLinkedMessage":
-            "A conta retornada do {0} já está vinculada a outro usuário.",
-        "confirmAccountLinking":
-            "Confirme o vinculação da conta {0} do provedor de identidade {1} à sua conta.",
-        "confirmEmailAddressVerification":
-            "Confirme a validade do endereço de e-mail {0}.",
+        "identityProviderAlreadyLinkedMessage": "A conta retornada do {0} já está vinculada a outro usuário.",
+        "confirmAccountLinking": "Confirme o vinculação da conta {0} do provedor de identidade {1} à sua conta.",
+        "confirmEmailAddressVerification": "Confirme a validade do endereço de e-mail {0}.",
         "confirmExecutionOfActions": "Execute a(s) seguinte(s) ação(ões)",
         "backToApplication": "&laquo; Voltar para o aplicativo",
         "missingParameterMessage": "Parâmetros ausentes: {0}",
@@ -5223,13 +4199,10 @@ export const kcMessages = {
         "clientDisabledMessage": "Cliente desativado.",
         "invalidParameterMessage": "Parâmentro inválido: {0}",
         "alreadyLoggedIn": "Você já está logado.",
-        "differentUserAuthenticated":
-            "Você já está autenticado como outro usuário '{0}' nesta sessão. Por favor, finalize a sessão primeiro.",
-        "brokerLinkingSessionExpired":
-            "A vinculção de conta do provedor de identidade foi solicitado, mas a sessão atual não é mais válida.",
+        "differentUserAuthenticated": "Você já está autenticado como outro usuário '{0}' nesta sessão. Por favor, finalize a sessão primeiro.",
+        "brokerLinkingSessionExpired": "A vinculção de conta do provedor de identidade foi solicitado, mas a sessão atual não é mais válida.",
         "proceedWithAction": "&raquo; Clique aqui para continuar",
-        "requiredAction.CONFIGURE_TOTP":
-            "Configurar Autenticação de Dois Fatores",
+        "requiredAction.CONFIGURE_TOTP": "Configurar Autenticação de Dois Fatores",
         "requiredAction.terms_and_conditions": "Termos e Condições",
         "requiredAction.UPDATE_PASSWORD": "Atualizar Senha",
         "requiredAction.UPDATE_PROFILE": "Atualizar Perfil",
@@ -5256,54 +4229,40 @@ export const kcMessages = {
         "openshift.scope.list-projects": "Listar projetos",
         "saml.post-form.title": "Redirecionamento de Autenticação",
         "saml.post-form.message": "Redirecionando... Por favor, aguarde.",
-        "saml.post-form.js-disabled":
-            "O JavaScript está desabilitado. É altamente recomendável habilitá-lo. Clique no botão abaixo para continuar. ",
+        "saml.post-form.js-disabled": "O JavaScript está desabilitado. É altamente recomendável habilitá-lo. Clique no botão abaixo para continuar. ",
         "otp-display-name": "Aplicativo Autenticador",
-        "otp-help-text":
-            "Insira o código de verificação do aplicativo autenticador.",
+        "otp-help-text": "Insira o código de verificação do aplicativo autenticador.",
         "password-display-name": "Senha",
         "password-help-text": "Faça o login digitando sua senha.",
         "auth-username-form-display-name": "Nome de usuário",
-        "auth-username-form-help-text":
-            "Faça o login digitando seu nome de usuário.",
+        "auth-username-form-help-text": "Faça o login digitando seu nome de usuário.",
         "auth-username-password-form-display-name": "Nome de usuário e senha",
-        "auth-username-password-form-help-text":
-            "Faça o login digitando seu nome de usuário e senha.",
+        "auth-username-password-form-help-text": "Faça o login digitando seu nome de usuário e senha.",
         "webauthn-display-name": "Chave de Segurança",
         "webauthn-help-text": "Use sua chave de segurança para fazer login.",
         "webauthn-passwordless-display-name": "Chave de Segurança",
-        "webauthn-passwordless-help-text":
-            "Use sua chave de segurança para fazer login sem senha.",
+        "webauthn-passwordless-help-text": "Use sua chave de segurança para fazer login sem senha.",
         "webauthn-login-title": "Login com Chave de Segurança",
         "webauthn-registration-title": "Registrar Chave de Segurança",
         "webauthn-available-authenticators": "Autenticadores disponíveis",
         "webauthn-unsupported-browser-text":
             "WebAuthn não é suportada pelo seu navegador. Tente outro navegador ou entre em contato com um administrador.",
         "webauthn-error-title": "Erro de Chave de Segurança",
-        "webauthn-error-registration":
-            "Falha ao registrar sua Chave de Segurança.",
-        "webauthn-error-api-get":
-            "Falha ao autenticar usando a Chave de Segurança.",
-        "webauthn-error-different-user":
-            "O primeiro usuário autenticado não corresponde àquele autenticado pela Chave de Segurança.",
-        "webauthn-error-auth-verification":
-            "O resultado da autenticação da Chave de Segurança é inválido.<br /> {0}",
-        "webauthn-error-register-verification":
-            "O resultado do registro da Chave de Segurança é inválido.<br /> {0}",
-        "webauthn-error-user-not-found":
-            "Usuário desconhecido autenticado pela Chave de Segurança.",
-        "identity-provider-redirector":
-            "Conecte-se com outro Provedor de Identidade",
+        "webauthn-error-registration": "Falha ao registrar sua Chave de Segurança.",
+        "webauthn-error-api-get": "Falha ao autenticar usando a Chave de Segurança.",
+        "webauthn-error-different-user": "O primeiro usuário autenticado não corresponde àquele autenticado pela Chave de Segurança.",
+        "webauthn-error-auth-verification": "O resultado da autenticação da Chave de Segurança é inválido.<br /> {0}",
+        "webauthn-error-register-verification": "O resultado do registro da Chave de Segurança é inválido.<br /> {0}",
+        "webauthn-error-user-not-found": "Usuário desconhecido autenticado pela Chave de Segurança.",
+        "identity-provider-redirector": "Conecte-se com outro Provedor de Identidade",
         "identity-provider-login-label": "Ou entre com",
-        "finalDeletionConfirmation":
-            "Se você apagar a sua conta, ela não poderá ser recuperada. Para manter a sua conta, clique em Cancelar.",
+        "finalDeletionConfirmation": "Se você apagar a sua conta, ela não poderá ser recuperada. Para manter a sua conta, clique em Cancelar.",
         "irreversibleAction": "Esta ação é irreversível",
         "deleteAccountConfirm": "Confirmação de descadastramento",
         "deletingImplies": "Apagar a sua conta implica em:",
         "errasingData": "Remover todos os seus dados",
         "loggingOutImmediately": "Sair da aplicação imediatamente",
-        "accountUnusable":
-            "Qualquer uso subsequente da aplicação não será possível com esta conta",
+        "accountUnusable": "Qualquer uso subsequente da aplicação não será possível com esta conta",
         "userDeletedSuccessfully": "Usuário excluído com sucesso",
     },
     "ru": {
@@ -5329,14 +4288,12 @@ export const kcMessages = {
         "loginTitle": "Log in to {0}",
         "loginTitleHtml": "{0}",
         "impersonateTitle": "{0} Имперсонализация пользователя",
-        "impersonateTitleHtml":
-            "<strong>{0}</strong> Имперсонализация пользователя",
+        "impersonateTitleHtml": "<strong>{0}</strong> Имперсонализация пользователя",
         "realmChoice": "Realm",
         "unknownUser": "Неизвестный пользователь",
         "loginTotpTitle": "Настройка мобильного аутентификатора",
         "loginProfileTitle": "Обновление информации учетной записи",
-        "loginTimeout":
-            "Вы слишком долго бездействовали. Процесс аутентификации начнется с начала.",
+        "loginTimeout": "Вы слишком долго бездействовали. Процесс аутентификации начнется с начала.",
         "oauthGrantTitle": "Согласовать доступ",
         "oauthGrantTitleHtml": "{0}",
         "errorTitle": "Мы сожалеем...",
@@ -5377,25 +4334,20 @@ export const kcMessages = {
         "gssDelegationCredential": "Делегирование учетных данных GSS",
         "loginTotpStep1":
             'Установите <a href="https://freeotp.github.io/" target="_blank">FreeOTP</a> или Google Authenticator. Оба приложения доступны в <a href="https://play.google.com">Google Play</a> и Apple App Store.',
-        "loginTotpStep2":
-            "Откройте приложение и просканируйте баркод, либо введите ключ",
-        "loginTotpStep3":
-            "Введите одноразовый пароль, выданный приложением, и нажмите сохранить для завершения установки",
+        "loginTotpStep2": "Откройте приложение и просканируйте баркод, либо введите ключ",
+        "loginTotpStep3": "Введите одноразовый пароль, выданный приложением, и нажмите сохранить для завершения установки",
         "loginOtpOneTime": "Одноразовый пароль",
         "oauthGrantRequest": "Вы согласуете доступ к этим привилегиям?",
         "inResource": "в",
-        "emailVerifyInstruction1":
-            "Вам было отправлено письмо с инструкциями для подтверждения адреса E-mail.",
+        "emailVerifyInstruction1": "Вам было отправлено письмо с инструкциями для подтверждения адреса E-mail.",
         "emailVerifyInstruction2": "Не получили письмо с кодом подтверждения?",
         "emailVerifyInstruction3": "для повторной отправки письма.",
         "emailLinkIdpTitle": "Связать {0}",
-        "emailLinkIdp1":
-            "Вам было отправлено письмо с инструкциями по объединению {0} учетной записи {1} с вашей учетной записью {2}.",
+        "emailLinkIdp1": "Вам было отправлено письмо с инструкциями по объединению {0} учетной записи {1} с вашей учетной записью {2}.",
         "emailLinkIdp2": "Не получили код подтверждения на ваш E-mail?",
         "emailLinkIdp3": "для повторной отправки письма.",
         "backToLogin": "&laquo; Назад ко входу",
-        "emailInstruction":
-            "Введите Ваше имя пользователя или E-mail и мы вышлем Вам инструкции по получению нового пароля.",
+        "emailInstruction": "Введите Ваше имя пользователя или E-mail и мы вышлем Вам инструкции по получению нового пароля.",
         "copyCodeInstruction": "Пожалуйста, скопируйте этот код в приложение:",
         "personalInfo": "Персональная информация:",
         "role_admin": "Администратор",
@@ -5411,8 +4363,7 @@ export const kcMessages = {
         "role_manage-realm": "Управление realm",
         "role_manage-users": "Управление пользователями",
         "role_manage-applications": "Управление приложениями",
-        "role_manage-identity-providers":
-            "Управление провайдерами учетных записей",
+        "role_manage-identity-providers": "Управление провайдерами учетных записей",
         "role_manage-clients": "Управление клиентами",
         "role_manage-events": "Управление событиями",
         "role_view-profile": "Просмотр профиля",
@@ -5426,12 +4377,9 @@ export const kcMessages = {
         "client_broker": "Брокер",
         "invalidUserMessage": "Неправильное имя пользователя или пароль.",
         "invalidEmailMessage": "Неправильный E-mail.",
-        "accountDisabledMessage":
-            "Учетная запись заблокирована, свяжитесь с администратором.",
-        "accountTemporarilyDisabledMessage":
-            "Учетная запись временно заблокирована, свяжитесь с администратором или попробуйте позже.",
-        "expiredCodeMessage":
-            "Вход просрочен по таймауту. Пожалуйста, войдите снова.",
+        "accountDisabledMessage": "Учетная запись заблокирована, свяжитесь с администратором.",
+        "accountTemporarilyDisabledMessage": "Учетная запись временно заблокирована, свяжитесь с администратором или попробуйте позже.",
+        "expiredCodeMessage": "Вход просрочен по таймауту. Пожалуйста, войдите снова.",
         "missingFirstNameMessage": "Пожалуйста введите имя.",
         "missingLastNameMessage": "Пожалуйста введите фамилию.",
         "missingEmailMessage": "Пожалуйста введите E-mail.",
@@ -5447,47 +4395,29 @@ export const kcMessages = {
         "federatedIdentityExistsMessage":
             "Пользователь с {0} {1} уже существует. Пожалуйста войдите в управление учетными записями, чтобы связать эту учетную запись.",
         "confirmLinkIdpTitle": "Учетная запись уже существует",
-        "federatedIdentityConfirmLinkMessage":
-            "Пользователь с {0} {1} уже сущестует. Хотите продолжить?",
-        "federatedIdentityConfirmReauthenticateMessage":
-            "Аутентифицируйтесь, чтобы связать Вашу учетную запись с {0}",
+        "federatedIdentityConfirmLinkMessage": "Пользователь с {0} {1} уже сущестует. Хотите продолжить?",
+        "federatedIdentityConfirmReauthenticateMessage": "Аутентифицируйтесь, чтобы связать Вашу учетную запись с {0}",
         "confirmLinkIdpReviewProfile": "Обзор профиля",
         "confirmLinkIdpContinue": "Добавить в существующую учетную запись",
-        "configureTotpMessage":
-            "Вам необходимо настроить аутентификатор в мобильном устройстве, чтобы активировать учетную запись.",
-        "updateProfileMessage":
-            "Вам необходимо обновить свой профиль, чтобы активировать Вашу учетную запись.",
-        "updatePasswordMessage":
-            "Вам необходимо изменить пароль, чтобы активировать Вашу учетную запись.",
-        "verifyEmailMessage":
-            "Вам необходимо подтвердить Ваш E-mail, чтобы активировать Вашу учетную запись.",
-        "linkIdpMessage":
-            "Вам необходимо подтвердить Ваш E-mail, чтобы связать Вашу учетную запись с {0}.",
-        "emailSentMessage":
-            "В ближайшее время Вы должны получить письмо с дальнейшими инструкциями.",
-        "emailSendErrorMessage":
-            "Не получается отправить письмо. Пожалуйста, повторите позже.",
+        "configureTotpMessage": "Вам необходимо настроить аутентификатор в мобильном устройстве, чтобы активировать учетную запись.",
+        "updateProfileMessage": "Вам необходимо обновить свой профиль, чтобы активировать Вашу учетную запись.",
+        "updatePasswordMessage": "Вам необходимо изменить пароль, чтобы активировать Вашу учетную запись.",
+        "verifyEmailMessage": "Вам необходимо подтвердить Ваш E-mail, чтобы активировать Вашу учетную запись.",
+        "linkIdpMessage": "Вам необходимо подтвердить Ваш E-mail, чтобы связать Вашу учетную запись с {0}.",
+        "emailSentMessage": "В ближайшее время Вы должны получить письмо с дальнейшими инструкциями.",
+        "emailSendErrorMessage": "Не получается отправить письмо. Пожалуйста, повторите позже.",
         "accountUpdatedMessage": "Ваша учетная запись успешно обновлена.",
         "accountPasswordUpdatedMessage": "Ваш пароль успешно обновлен.",
         "noAccessMessage": "Нет доступа",
-        "invalidPasswordMinLengthMessage":
-            "Некорректный пароль: длина пароля должна быть не менее {0} символов(а).",
-        "invalidPasswordMinDigitsMessage":
-            "Некорректный пароль: пароль должен содержать не менее {0} цифр(ы).",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Некорректный пароль: пароль должен содержать не менее {0} символов(а) в нижнем регистре.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Некорректный пароль: пароль должен содержать не менее {0} символов(а) в верхнем регистре.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Некорректный пароль: пароль должен содержать не менее {0} спецсимволов(а).",
-        "invalidPasswordNotUsernameMessage":
-            "Некорректный пароль: пароль не должен совпадать с именем пользователя.",
-        "invalidPasswordRegexPatternMessage":
-            "Некорректный пароль: пароль не прошел проверку по регулярному выражению.",
-        "invalidPasswordHistoryMessage":
-            "Некорректный пароль: пароль не должен совпадать с последним(и) {0} паролем(ями).",
-        "invalidPasswordGenericMessage":
-            "Некорректный пароль: новый пароль не соответствует правилам пароля.",
+        "invalidPasswordMinLengthMessage": "Некорректный пароль: длина пароля должна быть не менее {0} символов(а).",
+        "invalidPasswordMinDigitsMessage": "Некорректный пароль: пароль должен содержать не менее {0} цифр(ы).",
+        "invalidPasswordMinLowerCaseCharsMessage": "Некорректный пароль: пароль должен содержать не менее {0} символов(а) в нижнем регистре.",
+        "invalidPasswordMinUpperCaseCharsMessage": "Некорректный пароль: пароль должен содержать не менее {0} символов(а) в верхнем регистре.",
+        "invalidPasswordMinSpecialCharsMessage": "Некорректный пароль: пароль должен содержать не менее {0} спецсимволов(а).",
+        "invalidPasswordNotUsernameMessage": "Некорректный пароль: пароль не должен совпадать с именем пользователя.",
+        "invalidPasswordRegexPatternMessage": "Некорректный пароль: пароль не прошел проверку по регулярному выражению.",
+        "invalidPasswordHistoryMessage": "Некорректный пароль: пароль не должен совпадать с последним(и) {0} паролем(ями).",
+        "invalidPasswordGenericMessage": "Некорректный пароль: новый пароль не соответствует правилам пароля.",
         "failedToProcessResponseMessage": "Не удалось обработать ответ",
         "httpsRequiredMessage": "Требуется HTTPS",
         "realmNotEnabledMessage": "Realm не включен",
@@ -5495,8 +4425,7 @@ export const kcMessages = {
         "failedLogout": "Выйти не удалось",
         "unknownLoginRequesterMessage": "Неизвестный клиент",
         "loginRequesterNotEnabledMessage": "Клиент отключен",
-        "bearerOnlyMessage":
-            "Bearer-only приложениям не разрешается инициализация входа через браузер",
+        "bearerOnlyMessage": "Bearer-only приложениям не разрешается инициализация входа через браузер",
         "standardFlowDisabledMessage":
             "Клиенту не разрешается инициировать вход через браузер с данным response_type. Standard flow отключен для этого клиента.",
         "implicitFlowDisabledMessage":
@@ -5505,46 +4434,29 @@ export const kcMessages = {
         "unsupportedNameIdFormatMessage": "Неподдерживаемый NameIDFormat",
         "invalidRequesterMessage": "Неверный запрашивающий",
         "registrationNotAllowedMessage": "Регистрация не разрешена",
-        "resetCredentialNotAllowedMessage":
-            "Сброс идентификационных данных не разрешен",
+        "resetCredentialNotAllowedMessage": "Сброс идентификационных данных не разрешен",
         "permissionNotApprovedMessage": "Разрешение не подтверждено.",
-        "noRelayStateInResponseMessage":
-            "Нет изменения состояния в ответе от провайдера учетных записей.",
-        "insufficientPermissionMessage":
-            "Недостаточно полномочий для связывания идентификаторов.",
-        "couldNotProceedWithAuthenticationRequestMessage":
-            "Невозможно обработать аутентификационный запрос в провайдере учетных записей.",
-        "couldNotObtainTokenMessage":
-            "Не удалось получить токен от провайдера учетных записей.",
-        "unexpectedErrorRetrievingTokenMessage":
-            "Непредвиденная ошибка при получении токена от провайдера учетных записей.",
-        "unexpectedErrorHandlingResponseMessage":
-            "Непредвиденная ошибка при обработке ответа от провайдера учетных записей.",
-        "identityProviderAuthenticationFailedMessage":
-            "Аутентификация провалена. Невозможно аутентифицировать с поставщиком учетных записей.",
-        "couldNotSendAuthenticationRequestMessage":
-            "Не получается выполнить запрос аутентификации к поставщику учетных записей.",
-        "unexpectedErrorHandlingRequestMessage":
-            "Непредвиденная ошибка при обработке запроса аутентификации поставщика учетных записей.",
+        "noRelayStateInResponseMessage": "Нет изменения состояния в ответе от провайдера учетных записей.",
+        "insufficientPermissionMessage": "Недостаточно полномочий для связывания идентификаторов.",
+        "couldNotProceedWithAuthenticationRequestMessage": "Невозможно обработать аутентификационный запрос в провайдере учетных записей.",
+        "couldNotObtainTokenMessage": "Не удалось получить токен от провайдера учетных записей.",
+        "unexpectedErrorRetrievingTokenMessage": "Непредвиденная ошибка при получении токена от провайдера учетных записей.",
+        "unexpectedErrorHandlingResponseMessage": "Непредвиденная ошибка при обработке ответа от провайдера учетных записей.",
+        "identityProviderAuthenticationFailedMessage": "Аутентификация провалена. Невозможно аутентифицировать с поставщиком учетных записей.",
+        "couldNotSendAuthenticationRequestMessage": "Не получается выполнить запрос аутентификации к поставщику учетных записей.",
+        "unexpectedErrorHandlingRequestMessage": "Непредвиденная ошибка при обработке запроса аутентификации поставщика учетных записей.",
         "invalidAccessCodeMessage": "Неверный код доступа.",
         "sessionNotActiveMessage": "Сессия не активна.",
-        "invalidCodeMessage":
-            "Произошла ошибка. Пожалуйста, войдите в систему снова через ваше приложение.",
-        "identityProviderUnexpectedErrorMessage":
-            "Непредвиденная ошибка при проверке подлинности поставщика учетных записей.",
-        "identityProviderNotFoundMessage":
-            "Не удалось найти поставщика учетных записей с данным идентификатором.",
-        "identityProviderLinkSuccess":
-            "Ваша учетная запись была успешно соединена с {0} учетной записью {1} .",
-        "staleCodeMessage":
-            "Эта страница больше не действительна, пожалуйста, вернитесь в приложение и снова войдите в систему.",
-        "realmSupportsNoCredentialsMessage":
-            "Realm не поддерживает никакой тип учетных данных.",
+        "invalidCodeMessage": "Произошла ошибка. Пожалуйста, войдите в систему снова через ваше приложение.",
+        "identityProviderUnexpectedErrorMessage": "Непредвиденная ошибка при проверке подлинности поставщика учетных записей.",
+        "identityProviderNotFoundMessage": "Не удалось найти поставщика учетных записей с данным идентификатором.",
+        "identityProviderLinkSuccess": "Ваша учетная запись была успешно соединена с {0} учетной записью {1} .",
+        "staleCodeMessage": "Эта страница больше не действительна, пожалуйста, вернитесь в приложение и снова войдите в систему.",
+        "realmSupportsNoCredentialsMessage": "Realm не поддерживает никакой тип учетных данных.",
         "identityProviderNotUniqueMessage":
             "Realm поддерживает несколько поставщиков учетных записей. Не удалось определить, какой именно поставщик должен использоваться для аутентификации.",
         "emailVerifiedMessage": "Ваш E-mail был подтвержден.",
-        "staleEmailVerificationLink":
-            "Ссылка, по которой Вы перешли, устарела и больше не действует. Может быть, вы уже подтвердили свой E-mail?",
+        "staleEmailVerificationLink": "Ссылка, по которой Вы перешли, устарела и больше не действует. Может быть, вы уже подтвердили свой E-mail?",
         "backToApplication": "&laquo; Назад в приложение",
         "missingParameterMessage": "Пропущенные параметры: {0}",
         "clientNotFoundMessage": "Клиент не найден.",
@@ -5580,8 +4492,7 @@ export const kcMessages = {
         "unknownUser": "Neznámy používateľ",
         "loginTotpTitle": "Nastavenie mobilného autentifikátora",
         "loginProfileTitle": "Aktualizácia informácií o účte",
-        "loginTimeout":
-            "Prihlasovanie trvalo príliš dlho. Prihlasovací proces začína od začiatku.",
+        "loginTimeout": "Prihlasovanie trvalo príliš dlho. Prihlasovací proces začína od začiatku.",
         "oauthGrantTitle": "Poskytnúť prístup",
         "oauthGrantTitleHtml": "{0}",
         "errorTitle": "Je nám ľúto ...",
@@ -5595,8 +4506,7 @@ export const kcMessages = {
         "termsTitleHtml": "Zmluvné podmienky",
         "termsText": "<p>Zmluvné podmienky, ktoré sa majú definovať</p>",
         "recaptchaFailed": "Neplatné Recaptcha",
-        "recaptchaNotConfigured":
-            "Recaptcha sa vyžaduje, ale nie je nakonfigurovaná",
+        "recaptchaNotConfigured": "Recaptcha sa vyžaduje, ale nie je nakonfigurovaná",
         "consentDenied": "Súhlas bol zamietnutý.",
         "noAccount": "Nový používateľ?",
         "username": "Prihlasovacie meno",
@@ -5623,13 +4533,10 @@ export const kcMessages = {
         "gssDelegationCredential": "GSS delegované oprávnenie",
         "loginTotpStep1":
             'Nainštalujte <a href="https://freeotp.github.io/" target="_blank">FreeOTP</a> alebo Google Authenticator na mobil. Obidve aplikácie sú k dispozícii v <a href="https://play.google.com">Google Play</a> a Apple App Store.',
-        "loginTotpStep2":
-            "Otvorte aplikáciu a skenujte čiarový kód alebo zadajte kľúč",
-        "loginTotpStep3":
-            "Zadajte jednorazový kód poskytnutý aplikáciou a kliknutím na tlačidlo Odoslať dokončite nastavenie",
+        "loginTotpStep2": "Otvorte aplikáciu a skenujte čiarový kód alebo zadajte kľúč",
+        "loginTotpStep3": "Zadajte jednorazový kód poskytnutý aplikáciou a kliknutím na tlačidlo Odoslať dokončite nastavenie",
         "loginTotpManualStep2": "Otvorte aplikáciu a zadajte kľúč",
-        "loginTotpManualStep3":
-            "Používajte nasledujúce hodnoty konfigurácie, ak aplikácia umožňuje ich nastavenie",
+        "loginTotpManualStep3": "Používajte nasledujúce hodnoty konfigurácie, ak aplikácia umožňuje ich nastavenie",
         "loginTotpUnableToScan": "Nemožno skenovať?",
         "loginTotpScanBarcode": "Skenovať čiarový kód?",
         "loginOtpOneTime": "Jednorázový kód",
@@ -5642,22 +4549,18 @@ export const kcMessages = {
         "loginTotp.hotp": "Založené na počítadle",
         "oauthGrantRequest": "Udeľujete tieto prístupové oprávnenia?",
         "inResource": "v",
-        "emailVerifyInstruction1":
-            "Bol Vám odoslaný e-mail s pokynmi na overenie vašej e-mailovej adresy.",
+        "emailVerifyInstruction1": "Bol Vám odoslaný e-mail s pokynmi na overenie vašej e-mailovej adresy.",
         "emailVerifyInstruction2": "Nezískali ste v e-maili overovací kód?",
         "emailVerifyInstruction3": "opätovne odoslať e-mail.",
         "emailLinkIdpTitle": "Odkaz {0}",
-        "emailLinkIdp1":
-            "Bol vám odoslaný e-mail s pokynmi na prepojenie účtu {0} {1} s vaším účtom {2}.",
+        "emailLinkIdp1": "Bol vám odoslaný e-mail s pokynmi na prepojenie účtu {0} {1} s vaším účtom {2}.",
         "emailLinkIdp2": "Nezískali ste v e-maili verifikačný kód?",
         "emailLinkIdp3": "opätovne poslať e-mail.",
         "emailLinkIdp4": "Ak ste už overili e-mail v inom prehliadači",
         "emailLinkIdp5": "pokračovať.",
         "backToLogin": "&laquo; Späť na prihlásenie",
-        "emailInstruction":
-            "Zadajte svoje používateľské meno alebo e-mailovú adresu a my vám zašleme pokyny na vytvorenie nového hesla.",
-        "copyCodeInstruction":
-            "Prosím skopírujte tento kód a vložte ho do vašej aplikácie:",
+        "emailInstruction": "Zadajte svoje používateľské meno alebo e-mailovú adresu a my vám zašleme pokyny na vytvorenie nového hesla.",
+        "copyCodeInstruction": "Prosím skopírujte tento kód a vložte ho do vašej aplikácie:",
         "pageExpiredTitle": "Platnosť stránky vypršala",
         "pageExpiredMsg1": "Pre reštartovanie prihlasovacieho procesu",
         "pageExpiredMsg2": "Pokračovanie prihlasovacieho procesu",
@@ -5684,23 +4587,18 @@ export const kcMessages = {
         "role_read-token": "Čítať token",
         "role_offline-access": "Offline prístup",
         "client_account": "Účet klienta",
-        "client_security-admin-console":
-            "Administrátorská bezpečnostná konzola klienta",
+        "client_security-admin-console": "Administrátorská bezpečnostná konzola klienta",
         "client_admin-cli": "Správca CLI",
         "client_realm-management": "Správa realmov klienta",
         "client_broker": "Broker",
         "invalidUserMessage": "Neplatné používateľské meno alebo heslo.",
         "invalidEmailMessage": "Neplatná e-mailová adresa.",
-        "accountDisabledMessage":
-            "Účet je zakázaný, kontaktujte administrátora.",
-        "accountTemporarilyDisabledMessage":
-            "Účet je dočasne zakázaný, kontaktujte administrátora alebo skúste neskôr.",
-        "expiredCodeMessage":
-            "Platnosť prihlásenia vypršala. Prihláste sa znova.",
+        "accountDisabledMessage": "Účet je zakázaný, kontaktujte administrátora.",
+        "accountTemporarilyDisabledMessage": "Účet je dočasne zakázaný, kontaktujte administrátora alebo skúste neskôr.",
+        "expiredCodeMessage": "Platnosť prihlásenia vypršala. Prihláste sa znova.",
         "expiredActionMessage": "Akcia vypršala. Pokračujte prihlásením.",
         "expiredActionTokenNoSessionMessage": "Akcia vypršala.",
-        "expiredActionTokenSessionExistsMessage":
-            "Platnosť vypršala. Začnite znova.",
+        "expiredActionTokenSessionExistsMessage": "Platnosť vypršala. Začnite znova.",
         "missingFirstNameMessage": "Zadajte krstné meno.",
         "missingLastNameMessage": "Zadajte priezvisko.",
         "missingEmailMessage": "Zadajte e-mail.",
@@ -5709,67 +4607,45 @@ export const kcMessages = {
         "missingTotpMessage": "Prosím, zadajte kód autentifikátora.",
         "notMatchPasswordMessage": "Heslá sa nezhodujú.",
         "invalidPasswordExistingMessage": "Neplatné existujúce heslo.",
-        "invalidPasswordBlacklistedMessage":
-            "Neplatné heslo: heslo je na čiernej listine.",
+        "invalidPasswordBlacklistedMessage": "Neplatné heslo: heslo je na čiernej listine.",
         "invalidPasswordConfirmMessage": "Potvrdenie hesla sa nezhoduje.",
         "invalidTotpMessage": "Neplatný kód autentifikátora.",
         "usernameExistsMessage": "Užívateľské meno už existuje.",
         "emailExistsMessage": "E-mail už existuje.",
-        "federatedIdentityExistsMessage":
-            "Používateľ s {0} {1} už existuje. Ak chcete prepojiť účet, prihláste sa na správu účtov.",
+        "federatedIdentityExistsMessage": "Používateľ s {0} {1} už existuje. Ak chcete prepojiť účet, prihláste sa na správu účtov.",
         "confirmLinkIdpTitle": "Účet už existuje",
-        "federatedIdentityConfirmLinkMessage":
-            "Používateľ s {0} {1} už existuje. Ako chcete pokračovať?",
-        "federatedIdentityConfirmReauthenticateMessage":
-            "Overiť prepojiť váš účet s {0}",
+        "federatedIdentityConfirmLinkMessage": "Používateľ s {0} {1} už existuje. Ako chcete pokračovať?",
+        "federatedIdentityConfirmReauthenticateMessage": "Overiť prepojiť váš účet s {0}",
         "confirmLinkIdpReviewProfile": "Skontrolujte profil",
         "confirmLinkIdpContinue": "Pridať do existujúceho účtu",
-        "configureTotpMessage":
-            "Na aktiváciu vášho účtu musíte nastaviť aplikáciu Mobile Authenticator.",
-        "updateProfileMessage":
-            "Ak chcete aktivovať svoj účet, musíte aktualizovať svoj užívateľský profil.",
-        "updatePasswordMessage":
-            "Ak chcete aktivovať svoj účet, musíte zmeniť heslo.",
+        "configureTotpMessage": "Na aktiváciu vášho účtu musíte nastaviť aplikáciu Mobile Authenticator.",
+        "updateProfileMessage": "Ak chcete aktivovať svoj účet, musíte aktualizovať svoj užívateľský profil.",
+        "updatePasswordMessage": "Ak chcete aktivovať svoj účet, musíte zmeniť heslo.",
         "resetPasswordMessage": "Potrebujete zmeniť svoje heslo.",
-        "verifyEmailMessage":
-            "Ak chcete aktivovať svoj účet, musíte overiť svoju e-mailovú adresu.",
-        "linkIdpMessage":
-            "Potrebujete si overiť svoju e-mailovú adresu a prepojiť svoj účet s {0}.",
-        "emailSentMessage":
-            "Zakrátko by ste mali dostať e-mail s ďalšími pokynmi.",
-        "emailSendErrorMessage":
-            "Nepodarilo sa odoslať e-mail, skúste to znova neskôr.",
+        "verifyEmailMessage": "Ak chcete aktivovať svoj účet, musíte overiť svoju e-mailovú adresu.",
+        "linkIdpMessage": "Potrebujete si overiť svoju e-mailovú adresu a prepojiť svoj účet s {0}.",
+        "emailSentMessage": "Zakrátko by ste mali dostať e-mail s ďalšími pokynmi.",
+        "emailSendErrorMessage": "Nepodarilo sa odoslať e-mail, skúste to znova neskôr.",
         "accountUpdatedMessage": "Váš účet bol aktualizovaný.",
         "accountPasswordUpdatedMessage": "Vaše heslo bolo aktualizované.",
         "noAccessMessage": "Žiadny prístup",
-        "invalidPasswordMinLengthMessage":
-            "Neplatné heslo: minimálna dĺžka {0}.",
-        "invalidPasswordMinDigitsMessage":
-            "Neplatné heslo: musí obsahovať aspoň {0} číslic.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Neplatné heslo: musí obsahovať minimálne {0} malé písmená.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Neplatné heslo: musí obsahovať aspoň {0} veľké písmená.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Neplatné heslo: musí obsahovať aspoň {0} špeciálne znaky.",
-        "invalidPasswordNotUsernameMessage":
-            "Neplatné heslo: nesmie byť rovnaké ako používateľské meno.",
-        "invalidPasswordRegexPatternMessage":
-            "Neplatné heslo: nezhoduje sa vzormi regulérneho výrazu.",
-        "invalidPasswordHistoryMessage":
-            "Neplatné heslo: nesmie sa rovnať žiadnemu z posledných {0} hesiel.",
-        "invalidPasswordGenericMessage":
-            "Neplatné heslo: nové heslo nezodpovedá pravidlám hesiel.",
+        "invalidPasswordMinLengthMessage": "Neplatné heslo: minimálna dĺžka {0}.",
+        "invalidPasswordMinDigitsMessage": "Neplatné heslo: musí obsahovať aspoň {0} číslic.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Neplatné heslo: musí obsahovať minimálne {0} malé písmená.",
+        "invalidPasswordMinUpperCaseCharsMessage": "Neplatné heslo: musí obsahovať aspoň {0} veľké písmená.",
+        "invalidPasswordMinSpecialCharsMessage": "Neplatné heslo: musí obsahovať aspoň {0} špeciálne znaky.",
+        "invalidPasswordNotUsernameMessage": "Neplatné heslo: nesmie byť rovnaké ako používateľské meno.",
+        "invalidPasswordRegexPatternMessage": "Neplatné heslo: nezhoduje sa vzormi regulérneho výrazu.",
+        "invalidPasswordHistoryMessage": "Neplatné heslo: nesmie sa rovnať žiadnemu z posledných {0} hesiel.",
+        "invalidPasswordGenericMessage": "Neplatné heslo: nové heslo nezodpovedá pravidlám hesiel.",
         "failedToProcessResponseMessage": "Nepodarilo sa spracovať odpoveď",
         "httpsRequiredMessage": "Vyžaduje sa HTTPS",
         "realmNotEnabledMessage": "Realm nie je povolený",
         "invalidRequestMessage": "Neplatná požiadavka",
         "failedLogout": "Odhlásenie zlyhalo",
         "unknownLoginRequesterMessage": "Neznámy žiadateľ o prihlásenie",
-        "loginRequesterNotEnabledMessage":
-            "Žiadateľ o prihlásenie nie je povolený",
-        "bearerOnlyMessage":
-            "Aplikácie bearer-only nesmú inicializovať prihlásenie pomocou prehliadača",
+        "loginRequesterNotEnabledMessage": "Žiadateľ o prihlásenie nie je povolený",
+        "bearerOnlyMessage": "Aplikácie bearer-only nesmú inicializovať prihlásenie pomocou prehliadača",
         "standardFlowDisabledMessage":
             "Klient nesmie iniciovať prihlásenie do prehliadača s daným typom odpovede. Štandardný tok je pre klienta zakázaný.",
         "implicitFlowDisabledMessage":
@@ -5778,52 +4654,33 @@ export const kcMessages = {
         "unsupportedNameIdFormatMessage": "Nepodporovaný NameIDFormat",
         "invalidRequesterMessage": "Neplatný žiadateľ",
         "registrationNotAllowedMessage": "Registrácia nie je povolená",
-        "resetCredentialNotAllowedMessage":
-            "Obnovenie poverenia nie je povolené",
+        "resetCredentialNotAllowedMessage": "Obnovenie poverenia nie je povolené",
         "permissionNotApprovedMessage": "Povolenie nie je schválené.",
-        "noRelayStateInResponseMessage":
-            "Neexistuje relay state v odpovedi od poskytovateľa identity.",
-        "insufficientPermissionMessage":
-            "Nedostatočné povolenia na prepojenie identít.",
-        "couldNotProceedWithAuthenticationRequestMessage":
-            "Nemožno pokračovať s požiadavkou na autentifikáciu poskytovateľa identity.",
-        "couldNotObtainTokenMessage":
-            "Nemožno získať token od poskytovateľa identity.",
-        "unexpectedErrorRetrievingTokenMessage":
-            "Neočakávaná chyba pri získavaní tokenu od poskytovateľa identity.",
-        "unexpectedErrorHandlingResponseMessage":
-            "Neočakávaná chyba pri spracovaní odpovede od poskytovateľa identity.",
-        "identityProviderAuthenticationFailedMessage":
-            "Overenie zlyhalo. Nepodarilo sa autentizovať s poskytovateľom identity.",
-        "couldNotSendAuthenticationRequestMessage":
-            "Nemožno odoslať žiadosť o autentifikáciu poskytovateľovi identity.",
-        "unexpectedErrorHandlingRequestMessage":
-            "Neočakávaná chyba pri spracovaní žiadosti o autentifikáciu poskytovateľovi identity.",
+        "noRelayStateInResponseMessage": "Neexistuje relay state v odpovedi od poskytovateľa identity.",
+        "insufficientPermissionMessage": "Nedostatočné povolenia na prepojenie identít.",
+        "couldNotProceedWithAuthenticationRequestMessage": "Nemožno pokračovať s požiadavkou na autentifikáciu poskytovateľa identity.",
+        "couldNotObtainTokenMessage": "Nemožno získať token od poskytovateľa identity.",
+        "unexpectedErrorRetrievingTokenMessage": "Neočakávaná chyba pri získavaní tokenu od poskytovateľa identity.",
+        "unexpectedErrorHandlingResponseMessage": "Neočakávaná chyba pri spracovaní odpovede od poskytovateľa identity.",
+        "identityProviderAuthenticationFailedMessage": "Overenie zlyhalo. Nepodarilo sa autentizovať s poskytovateľom identity.",
+        "couldNotSendAuthenticationRequestMessage": "Nemožno odoslať žiadosť o autentifikáciu poskytovateľovi identity.",
+        "unexpectedErrorHandlingRequestMessage": "Neočakávaná chyba pri spracovaní žiadosti o autentifikáciu poskytovateľovi identity.",
         "invalidAccessCodeMessage": "Neplatný prístupový kód.",
         "sessionNotActiveMessage": "Session nie je aktívna.",
-        "invalidCodeMessage":
-            "Vyskytla sa chyba, prihláste sa znova prostredníctvom svojej aplikácie.",
-        "identityProviderUnexpectedErrorMessage":
-            "Neočakávaná chyba pri autentifikácii s poskytovateľom identity",
-        "identityProviderNotFoundMessage":
-            "Nepodarilo sa nájsť poskytovateľa identity s identifikátorom.",
+        "invalidCodeMessage": "Vyskytla sa chyba, prihláste sa znova prostredníctvom svojej aplikácie.",
+        "identityProviderUnexpectedErrorMessage": "Neočakávaná chyba pri autentifikácii s poskytovateľom identity",
+        "identityProviderNotFoundMessage": "Nepodarilo sa nájsť poskytovateľa identity s identifikátorom.",
         "identityProviderLinkSuccess":
             "Svoj e-mail ste úspešne overili. Vráťte sa späť do pôvodného prehliadača a pokračujte tam s prihlasovacími údajmi.",
-        "staleCodeMessage":
-            "Táto stránka už nie je platná, vráťte sa späť do aplikácie a znova sa prihláste",
-        "realmSupportsNoCredentialsMessage":
-            "Realm nepodporuje žiadny typ poverenia.",
+        "staleCodeMessage": "Táto stránka už nie je platná, vráťte sa späť do aplikácie a znova sa prihláste",
+        "realmSupportsNoCredentialsMessage": "Realm nepodporuje žiadny typ poverenia.",
         "identityProviderNotUniqueMessage":
             "Realm podporuje viacerých poskytovateľov identity. Nepodarilo sa určiť, ktorý poskytovateľ totožnosti sa má používať na autentifikáciu.",
         "emailVerifiedMessage": "Vaša e-mailová adresa bola overená.",
-        "staleEmailVerificationLink":
-            "Odkaz, na ktorý ste klikli, je starý starý odkaz a už nie je platný. Možno ste už overili svoj e-mail?",
-        "identityProviderAlreadyLinkedMessage":
-            "Federatívna identita vrátená {0} je už prepojená s iným používateľom.",
-        "confirmAccountLinking":
-            "Potvrďte prepojenie účtu {0} poskytovateľa totožnosti {1} s vaším účtom.",
-        "confirmEmailAddressVerification":
-            "Potvrďte platnosť e-mailovej adresy {0}.",
+        "staleEmailVerificationLink": "Odkaz, na ktorý ste klikli, je starý starý odkaz a už nie je platný. Možno ste už overili svoj e-mail?",
+        "identityProviderAlreadyLinkedMessage": "Federatívna identita vrátená {0} je už prepojená s iným používateľom.",
+        "confirmAccountLinking": "Potvrďte prepojenie účtu {0} poskytovateľa totožnosti {1} s vaším účtom.",
+        "confirmEmailAddressVerification": "Potvrďte platnosť e-mailovej adresy {0}.",
         "confirmExecutionOfActions": "Vykonajte nasledujúce akcie",
         "backToApplication": "&laquo; Späť na aplikáciu",
         "missingParameterMessage": "Chýbajúce parametre : {0}",
@@ -5831,10 +4688,8 @@ export const kcMessages = {
         "clientDisabledMessage": "Klient bol zneplatnený.",
         "invalidParameterMessage": "Neplatný parameter : {0}",
         "alreadyLoggedIn": "Už ste prihlásený.",
-        "differentUserAuthenticated":
-            "V tejto relácii ste už boli overení ako iný používateľ ' {0} '. Najskôr sa odhláste.",
-        "brokerLinkingSessionExpired":
-            "Požadované prepojenie s účtom brokera, ale aktuálna relácia už nie je platná.",
+        "differentUserAuthenticated": "V tejto relácii ste už boli overení ako iný používateľ ' {0} '. Najskôr sa odhláste.",
+        "brokerLinkingSessionExpired": "Požadované prepojenie s účtom brokera, ale aktuálna relácia už nie je platná.",
         "proceedWithAction": "&raquo; Ak chcete pokračovať, kliknite sem",
         "requiredAction.CONFIGURE_TOTP": "Konfigurácia OTP",
         "requiredAction.terms_and_conditions": "Zmluvné podmienky",
@@ -5875,8 +4730,7 @@ export const kcMessages = {
         "unknownUser": "Okänd användare",
         "loginTotpTitle": "Inställning av mobilautentiserare",
         "loginProfileTitle": "Uppdatera kontoinformation",
-        "loginTimeout":
-            "Det tog för lång tid att logga in. Inloggningsprocessen börjar om.",
+        "loginTimeout": "Det tog för lång tid att logga in. Inloggningsprocessen börjar om.",
         "oauthGrantTitle": "Bevilja åtkomst",
         "oauthGrantTitleHtml": "{0}",
         "errorTitle": "Vi ber om ursäkt...",
@@ -5914,28 +4768,22 @@ export const kcMessages = {
         "gssDelegationCredential": "GSS Delegation Credential",
         "loginTotpStep1":
             'Installera <a href="https://freeotp.github.io/" target="_blank">FreeOTP</a> eller Google Authenticator på din mobil. Båda applikationerna finns tillgängliga hos <a href="https://play.google.com">Google Play</a> och Apple App Store.',
-        "loginTotpStep2":
-            "Öppna applikationen och skanna streckkoden eller skriv i nyckeln",
-        "loginTotpStep3":
-            "Fyll i engångskoden som tillhandahålls av applikationen och klicka på Spara för att avsluta inställningarna",
+        "loginTotpStep2": "Öppna applikationen och skanna streckkoden eller skriv i nyckeln",
+        "loginTotpStep3": "Fyll i engångskoden som tillhandahålls av applikationen och klicka på Spara för att avsluta inställningarna",
         "loginOtpOneTime": "Engångskod",
         "oauthGrantRequest": "Godkänner du tillgång till de här rättigheterna?",
         "inResource": "i",
-        "emailVerifyInstruction1":
-            "Ett e-postmeddelande med instruktioner om hur du verifierar din e-postadress har skickats till dig.",
-        "emailVerifyInstruction2":
-            "Har du inte fått en verifikationskod i din e-post?",
+        "emailVerifyInstruction1": "Ett e-postmeddelande med instruktioner om hur du verifierar din e-postadress har skickats till dig.",
+        "emailVerifyInstruction2": "Har du inte fått en verifikationskod i din e-post?",
         "emailVerifyInstruction3": "för att skicka e-postmeddelandet igen.",
         "emailLinkIdpTitle": "Länkning {0}",
-        "emailLinkIdp1":
-            "Ett e-postmeddelande med instruktioner om hur du länkar {0} kontot {1} med ditt {2} konto har skickats till dig.",
+        "emailLinkIdp1": "Ett e-postmeddelande med instruktioner om hur du länkar {0} kontot {1} med ditt {2} konto har skickats till dig.",
         "emailLinkIdp2": "Har du inte fått en verifikationskod i din e-post?",
         "emailLinkIdp3": "för att skicka e-postmeddelandet igen.",
         "backToLogin": "&laquo; Tillbaka till inloggningen",
         "emailInstruction":
             "Fyll i ditt användarnamn eller din e-postadress, så kommer vi att skicka instruktioner för hur du skapar ett nytt lösenord.",
-        "copyCodeInstruction":
-            "Vänligen kopiera den här koden och klistra in den i din applikation:",
+        "copyCodeInstruction": "Vänligen kopiera den här koden och klistra in den i din applikation:",
         "personalInfo": "Personlig information:",
         "role_admin": "Administratör",
         "role_realm-admin": "Realm-administratör",
@@ -5963,12 +4811,9 @@ export const kcMessages = {
         "client_realm-management": "Realmhantering",
         "invalidUserMessage": "Ogiltigt användarnamn eller lösenord.",
         "invalidEmailMessage": "Ogiltig e-postadress.",
-        "accountDisabledMessage":
-            "Kontot är inaktiverat, kontakta administratör.",
-        "accountTemporarilyDisabledMessage":
-            "Kontot är tillfälligt inaktiverat, kontakta administratör eller försök igen senare.",
-        "expiredCodeMessage":
-            "Inloggningen nådde en maxtidsgräns. Vänligen försök igen.",
+        "accountDisabledMessage": "Kontot är inaktiverat, kontakta administratör.",
+        "accountTemporarilyDisabledMessage": "Kontot är tillfälligt inaktiverat, kontakta administratör eller försök igen senare.",
+        "expiredCodeMessage": "Inloggningen nådde en maxtidsgräns. Vänligen försök igen.",
         "missingFirstNameMessage": "Vänligen ange förnamn.",
         "missingLastNameMessage": "Vänligen ange efternamn.",
         "missingEmailMessage": "Vänligen ange e-post.",
@@ -5976,67 +4821,44 @@ export const kcMessages = {
         "missingPasswordMessage": "Vänligen ange lösenord.",
         "missingTotpMessage": "Vänligen ange autentiseringskod.",
         "notMatchPasswordMessage": "Lösenorden matchar inte.",
-        "invalidPasswordExistingMessage":
-            "Det nuvarande lösenordet är ogiltigt.",
+        "invalidPasswordExistingMessage": "Det nuvarande lösenordet är ogiltigt.",
         "invalidPasswordConfirmMessage": "Lösenordsbekräftelsen matchar inte.",
         "invalidTotpMessage": "Autentiseringskoden är ogiltig.",
         "usernameExistsMessage": "Användarnamnet finns redan.",
         "emailExistsMessage": "E-postadressen finns redan.",
-        "federatedIdentityExistsMessage":
-            "Användare med {0} {1} finns redan. Vänligen logga in till kontohanteringen för att länka kontot.",
+        "federatedIdentityExistsMessage": "Användare med {0} {1} finns redan. Vänligen logga in till kontohanteringen för att länka kontot.",
         "confirmLinkIdpTitle": "Kontot finns redan",
-        "federatedIdentityConfirmLinkMessage":
-            "Användare med {0} {1} finns redan, Hur vill du forsätta?",
-        "federatedIdentityConfirmReauthenticateMessage":
-            "Autentisera för att länka ditt konto med {0}",
+        "federatedIdentityConfirmLinkMessage": "Användare med {0} {1} finns redan, Hur vill du forsätta?",
+        "federatedIdentityConfirmReauthenticateMessage": "Autentisera för att länka ditt konto med {0}",
         "confirmLinkIdpReviewProfile": "Granska profil",
         "confirmLinkIdpContinue": "Lägg till i existerande konto",
-        "configureTotpMessage":
-            "Du behöver konfigurera mobilautentiseraren för att aktivera ditt konto.",
-        "updateProfileMessage":
-            "Du behöver uppdatera din användarprofil för att aktivera ditt konto.",
-        "updatePasswordMessage":
-            "Du behöver byta ditt lösenord för att aktivera ditt konto.",
-        "verifyEmailMessage":
-            "Du behöver verifiera din e-postadress för att aktivera ditt konto.",
-        "linkIdpMessage":
-            "Du behöver verifiera din e-postadress för att länka ditt konto med {0}.",
-        "emailSentMessage":
-            "Du bör inom kort motta ett epost-meddelande med ytterligare instruktioner inom kort.",
-        "emailSendErrorMessage":
-            "E-postmeddelandet kunde inte skickas, försök igen senare.",
+        "configureTotpMessage": "Du behöver konfigurera mobilautentiseraren för att aktivera ditt konto.",
+        "updateProfileMessage": "Du behöver uppdatera din användarprofil för att aktivera ditt konto.",
+        "updatePasswordMessage": "Du behöver byta ditt lösenord för att aktivera ditt konto.",
+        "verifyEmailMessage": "Du behöver verifiera din e-postadress för att aktivera ditt konto.",
+        "linkIdpMessage": "Du behöver verifiera din e-postadress för att länka ditt konto med {0}.",
+        "emailSentMessage": "Du bör inom kort motta ett epost-meddelande med ytterligare instruktioner inom kort.",
+        "emailSendErrorMessage": "E-postmeddelandet kunde inte skickas, försök igen senare.",
         "accountUpdatedMessage": "Ditt konto har uppdaterats.",
         "accountPasswordUpdatedMessage": "Ditt lösenord har uppdaterats.",
         "noAccessMessage": "Ingen åtkomst",
-        "invalidPasswordMinLengthMessage":
-            "Ogiltigt lösenord. Minsta längd är {0}.",
-        "invalidPasswordMinDigitsMessage":
-            "Ogiltigt lösenord: måste innehålla minst {0} siffror.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Ogiltigt lösenord: måste innehålla minst {0} små bokstäver.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Ogiltigt lösenord: måste innehålla minst {0} stora bokstäver.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Ogiltigt lösenord: måste innehålla minst {0} specialtecken.",
-        "invalidPasswordNotUsernameMessage":
-            "Ogiltigt lösenord: Får inte vara samma som användarnamnet.",
-        "invalidPasswordRegexPatternMessage":
-            "Ogiltigt lösenord: matchar inte regex mönstret(en).",
-        "invalidPasswordHistoryMessage":
-            "Ogiltigt lösenord: Får inte vara samma som de senaste {0} lösenorden.",
-        "invalidPasswordGenericMessage":
-            "Ogiltigt lösenord: Det nya lösenordet stämmer inte med lösenordspolicyn.",
-        "failedToProcessResponseMessage":
-            "Misslyckades med att behandla svaret",
+        "invalidPasswordMinLengthMessage": "Ogiltigt lösenord. Minsta längd är {0}.",
+        "invalidPasswordMinDigitsMessage": "Ogiltigt lösenord: måste innehålla minst {0} siffror.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Ogiltigt lösenord: måste innehålla minst {0} små bokstäver.",
+        "invalidPasswordMinUpperCaseCharsMessage": "Ogiltigt lösenord: måste innehålla minst {0} stora bokstäver.",
+        "invalidPasswordMinSpecialCharsMessage": "Ogiltigt lösenord: måste innehålla minst {0} specialtecken.",
+        "invalidPasswordNotUsernameMessage": "Ogiltigt lösenord: Får inte vara samma som användarnamnet.",
+        "invalidPasswordRegexPatternMessage": "Ogiltigt lösenord: matchar inte regex mönstret(en).",
+        "invalidPasswordHistoryMessage": "Ogiltigt lösenord: Får inte vara samma som de senaste {0} lösenorden.",
+        "invalidPasswordGenericMessage": "Ogiltigt lösenord: Det nya lösenordet stämmer inte med lösenordspolicyn.",
+        "failedToProcessResponseMessage": "Misslyckades med att behandla svaret",
         "httpsRequiredMessage": "HTTPS krävs",
         "realmNotEnabledMessage": "Realm är inte aktiverad",
         "invalidRequestMessage": "Ogiltig förfrågan",
         "failedLogout": "Utloggning misslyckades",
         "unknownLoginRequesterMessage": "Okänd inloggningsförfrågan",
-        "loginRequesterNotEnabledMessage":
-            "Inloggningsförfrågaren är inte aktiverad",
-        "bearerOnlyMessage":
-            "Bearer-only-applikationer tillåts inte att initiera inloggning genom webbläsare",
+        "loginRequesterNotEnabledMessage": "Inloggningsförfrågaren är inte aktiverad",
+        "bearerOnlyMessage": "Bearer-only-applikationer tillåts inte att initiera inloggning genom webbläsare",
         "standardFlowDisabledMessage":
             "Klienten tillåts inte att initiera inloggning genom webbläsare med det givna response_type. Standardflödet är inaktiverat för klienten.",
         "implicitFlowDisabledMessage":
@@ -6045,41 +4867,25 @@ export const kcMessages = {
         "unsupportedNameIdFormatMessage": "NameIDFormat stöds ej",
         "invalidRequesterMessage": "Ogiltig förfrågare",
         "registrationNotAllowedMessage": "Registrering tillåts ej",
-        "resetCredentialNotAllowedMessage":
-            "Återställning av uppgifter tillåts ej",
+        "resetCredentialNotAllowedMessage": "Återställning av uppgifter tillåts ej",
         "permissionNotApprovedMessage": "Rättigheten ej godkänd.",
-        "noRelayStateInResponseMessage":
-            "Inget vidarebefordrat tillstånd i svaret från identitetsleverantör.",
-        "insufficientPermissionMessage":
-            "Otillräckliga tillstånd för att länka identiteter.",
-        "couldNotProceedWithAuthenticationRequestMessage":
-            "Kunde inte fortsätta med autentiseringsförfrågan till identitetsleverantör.",
-        "couldNotObtainTokenMessage":
-            "Kunde inte motta element från identitetsleverantör.",
-        "unexpectedErrorRetrievingTokenMessage":
-            "Oväntat fel när element hämtas från identitetsleverantör.",
-        "unexpectedErrorHandlingResponseMessage":
-            "Oväntat fel under hantering av svar från från identitetsleverantör.",
-        "identityProviderAuthenticationFailedMessage":
-            "Autentiseringen misslyckades. Kunde inte autentisera med identitetsleverantör.",
-        "couldNotSendAuthenticationRequestMessage":
-            "Kunde inte skicka autentiseringsförfrågan till identitetsleverantör.",
-        "unexpectedErrorHandlingRequestMessage":
-            "Oväntat fel under hantering av autentiseringsförfrågan till identitetsleverantör.",
+        "noRelayStateInResponseMessage": "Inget vidarebefordrat tillstånd i svaret från identitetsleverantör.",
+        "insufficientPermissionMessage": "Otillräckliga tillstånd för att länka identiteter.",
+        "couldNotProceedWithAuthenticationRequestMessage": "Kunde inte fortsätta med autentiseringsförfrågan till identitetsleverantör.",
+        "couldNotObtainTokenMessage": "Kunde inte motta element från identitetsleverantör.",
+        "unexpectedErrorRetrievingTokenMessage": "Oväntat fel när element hämtas från identitetsleverantör.",
+        "unexpectedErrorHandlingResponseMessage": "Oväntat fel under hantering av svar från från identitetsleverantör.",
+        "identityProviderAuthenticationFailedMessage": "Autentiseringen misslyckades. Kunde inte autentisera med identitetsleverantör.",
+        "couldNotSendAuthenticationRequestMessage": "Kunde inte skicka autentiseringsförfrågan till identitetsleverantör.",
+        "unexpectedErrorHandlingRequestMessage": "Oväntat fel under hantering av autentiseringsförfrågan till identitetsleverantör.",
         "invalidAccessCodeMessage": "Ogiltig tillträdeskod.",
         "sessionNotActiveMessage": "Sessionen ej aktiv.",
-        "invalidCodeMessage":
-            "Ett fel uppstod, vänligen logga in igen genom din applikation.",
-        "identityProviderUnexpectedErrorMessage":
-            "Oväntat fel under autentiseringen med identitetsleverantör",
-        "identityProviderNotFoundMessage":
-            "Kunde inte hitta en identitetsleverantör med identifikatorn.",
-        "identityProviderLinkSuccess":
-            "Ditt konto lyckades med att länka {0} med kontot {1}.",
-        "staleCodeMessage":
-            "Den här sidan är inte längre giltig, vänligen gå tillbaka till din applikation och logga in igen",
-        "realmSupportsNoCredentialsMessage":
-            "Realmen stödjer inga inloggningstyper.",
+        "invalidCodeMessage": "Ett fel uppstod, vänligen logga in igen genom din applikation.",
+        "identityProviderUnexpectedErrorMessage": "Oväntat fel under autentiseringen med identitetsleverantör",
+        "identityProviderNotFoundMessage": "Kunde inte hitta en identitetsleverantör med identifikatorn.",
+        "identityProviderLinkSuccess": "Ditt konto lyckades med att länka {0} med kontot {1}.",
+        "staleCodeMessage": "Den här sidan är inte längre giltig, vänligen gå tillbaka till din applikation och logga in igen",
+        "realmSupportsNoCredentialsMessage": "Realmen stödjer inga inloggningstyper.",
         "identityProviderNotUniqueMessage":
             "Realmen stödjer flera identitetsleverantör. Kunde inte avgöra vilken identitetsleverantör som skall användas för autentisering.",
         "emailVerifiedMessage": "Din e-postadress har blivit verifierad.",
@@ -6115,14 +4921,12 @@ export const kcMessages = {
         "loginTitle": "{0} adresinde oturum açın",
         "loginTitleHtml": "{0}",
         "impersonateTitle": "{0} Kullanıcı kimliğine bürün",
-        "impersonateTitleHtml":
-            "<strong>{0}</strong> Kullanıcı kimliğine bürün",
+        "impersonateTitleHtml": "<strong>{0}</strong> Kullanıcı kimliğine bürün",
         "realmChoice": "Realm",
         "unknownUser": "Bilinmeyen kullanıcı",
         "loginTotpTitle": "Mobil Kimlik Doğrulama Kurulumu",
         "loginProfileTitle": "Hesap bilgilerini Güncelle",
-        "loginTimeout":
-            "Giriş yapmak  çok uzun sürdü. Giriş süreci baştan başlayacak.",
+        "loginTimeout": "Giriş yapmak  çok uzun sürdü. Giriş süreci baştan başlayacak.",
         "oauthGrantTitle": "{0} adresine Erişim Ver",
         "oauthGrantTitleHtml": "{0}",
         "errorTitle": "Üzgünüz...",
@@ -6173,16 +4977,12 @@ export const kcMessages = {
         "offlineAccessScopeConsentText": "Çevrimdışı Erişim",
         "samlRoleListScopeConsentText": "Rollerim",
         "rolesScopeConsentText": "Kullanıcı rolleri",
-        "loginTotpIntro":
-            "Bu hesaba erişmek için bir Tek Kullanımlık Şifre oluşturmalısınız.",
-        "loginTotpStep1":
-            "Cep telefonunuzda aşağıdaki uygulamalardan birini yükleyin",
+        "loginTotpIntro": "Bu hesaba erişmek için bir Tek Kullanımlık Şifre oluşturmalısınız.",
+        "loginTotpStep1": "Cep telefonunuzda aşağıdaki uygulamalardan birini yükleyin",
         "loginTotpStep2": "Uygulamayı açın ve barkodu tarayın",
-        "loginTotpStep3":
-            "Uygulama tarafından sağlanan tek seferlik kodu girin ve kurulumu tamamlamak için Gönder'i tıklayın.",
+        "loginTotpStep3": "Uygulama tarafından sağlanan tek seferlik kodu girin ve kurulumu tamamlamak için Gönder'i tıklayın.",
         "loginTotpManualStep2": "Uygulamayı açın ve anahtarı girin",
-        "loginTotpManualStep3":
-            "Uygulama bunları ayarlamaya izin veriyorsa aşağıdaki yapılandırma değerlerini kullanın.",
+        "loginTotpManualStep3": "Uygulama bunları ayarlamaya izin veriyorsa aşağıdaki yapılandırma değerlerini kullanın.",
         "loginTotpUnableToScan": "Taranamıyor?",
         "loginTotpScanBarcode": "Barkod tara?",
         "loginOtpOneTime": "Tek seferlik kod",
@@ -6195,22 +4995,18 @@ export const kcMessages = {
         "loginTotp.hotp": "Sayaç Tabanlı",
         "oauthGrantRequest": "Bu erişim ayrıcalıkları veriyor musunuz?",
         "inResource": "içinde",
-        "emailVerifyInstruction1":
-            "E-posta adresinizi doğrulamak için talimatları içeren bir e-posta size gönderildi.",
+        "emailVerifyInstruction1": "E-posta adresinizi doğrulamak için talimatları içeren bir e-posta size gönderildi.",
         "emailVerifyInstruction2": "E-postanızda doğrulama kodu almadınız mı?",
         "emailVerifyInstruction3": "e-postayı yeniden göndermek için.",
         "emailLinkIdpTitle": "Bağlantı {0}",
-        "emailLinkIdp1":
-            "{1} hesabını {2} hesabınıza bağlayan talimatları içeren bir e-posta size gönderildi.",
+        "emailLinkIdp1": "{1} hesabını {2} hesabınıza bağlayan talimatları içeren bir e-posta size gönderildi.",
         "emailLinkIdp2": "E-postanızda doğrulama kodu almadınız mı?",
         "emailLinkIdp3": "e-postayı yeniden göndermek için.",
         "emailLinkIdp4": "E-postayı farklı tarayıcıda zaten doğruladıysanız",
         "emailLinkIdp5": "devam etmek.",
         "backToLogin": "&laquo; Giriş'e geri dön",
-        "emailInstruction":
-            "Kullanıcı adınızı veya e-posta adresinizi girin ve yeni bir şifre oluşturmaya ilişkin talimatları size göndereceğiz.",
-        "copyCodeInstruction":
-            "Lütfen bu kodu kopyalayın ve uygulamanıza yapıştırın:",
+        "emailInstruction": "Kullanıcı adınızı veya e-posta adresinizi girin ve yeni bir şifre oluşturmaya ilişkin talimatları size göndereceğiz.",
+        "copyCodeInstruction": "Lütfen bu kodu kopyalayın ve uygulamanıza yapıştırın:",
         "pageExpiredTitle": "Sayfanın Süresi Doldu",
         "pageExpiredMsg1": "Giriş işlemini yeniden başlatmak için",
         "pageExpiredMsg2": "Giriş işlemine devam etmek için",
@@ -6243,17 +5039,12 @@ export const kcMessages = {
         "client_broker": "Broker",
         "invalidUserMessage": "Geçersiz kullanıcı adı veya şifre.",
         "invalidEmailMessage": "Geçersiz e-posta adresi.",
-        "accountDisabledMessage":
-            "Hesap devre dışı, yönetici ile iletişime geçin.",
-        "accountTemporarilyDisabledMessage":
-            "Hesabınız geçici olarak kilitlendi, lütfen yöneticiyle iletişime geçin veya daha sonra tekrar deneyin.",
-        "expiredCodeMessage":
-            "Oturum zaman aşımına uğradı. Lütfen tekrar giriş yapın.",
-        "expiredActionMessage":
-            "Eylem süresi doldu. Lütfen şimdi giriş yapmaya devam edin.",
+        "accountDisabledMessage": "Hesap devre dışı, yönetici ile iletişime geçin.",
+        "accountTemporarilyDisabledMessage": "Hesabınız geçici olarak kilitlendi, lütfen yöneticiyle iletişime geçin veya daha sonra tekrar deneyin.",
+        "expiredCodeMessage": "Oturum zaman aşımına uğradı. Lütfen tekrar giriş yapın.",
+        "expiredActionMessage": "Eylem süresi doldu. Lütfen şimdi giriş yapmaya devam edin.",
         "expiredActionTokenNoSessionMessage": "Eylemin süresi doldu.",
-        "expiredActionTokenSessionExistsMessage":
-            "Eylem süresi doldu. Lütfen tekrar başlayın.",
+        "expiredActionTokenSessionExistsMessage": "Eylem süresi doldu. Lütfen tekrar başlayın.",
         "missingFirstNameMessage": "Lütfen ilk adı belirtin.",
         "missingLastNameMessage": "Lütfen soyadı belirtin.",
         "missingEmailMessage": "Lütfen email belirtin.",
@@ -6262,61 +5053,40 @@ export const kcMessages = {
         "missingTotpMessage": "Lütfen kimlik doğrulama kodunu belirtin.",
         "notMatchPasswordMessage": "Şifreler eşleşmiyor.",
         "invalidPasswordExistingMessage": "Mevcut şifre geçersiz.",
-        "invalidPasswordBlacklistedMessage":
-            "Geçersiz şifre: şifre kara listeye alındı.",
+        "invalidPasswordBlacklistedMessage": "Geçersiz şifre: şifre kara listeye alındı.",
         "invalidPasswordConfirmMessage": "Şifre onayı eşleşmiyor.",
         "invalidTotpMessage": "Geçersiz kimlik doğrulama kodu.",
         "usernameExistsMessage": "Kullanıcı adı zaten var.",
         "emailExistsMessage": "Bu e-posta zaten var.",
-        "federatedIdentityExistsMessage":
-            "{0} {1} kullanıcı zaten var. Hesabı bağlamak için lütfen hesap yönetimine giriş yapın.",
+        "federatedIdentityExistsMessage": "{0} {1} kullanıcı zaten var. Hesabı bağlamak için lütfen hesap yönetimine giriş yapın.",
         "confirmLinkIdpTitle": "Bu Hesap Zaten Mevcut",
-        "federatedIdentityConfirmLinkMessage":
-            "{0} {1} kullanıcı zaten var. Nasıl devam etmek istersin?",
+        "federatedIdentityConfirmLinkMessage": "{0} {1} kullanıcı zaten var. Nasıl devam etmek istersin?",
         "confirmLinkIdpReviewProfile": "Profili gözden geçir",
         "confirmLinkIdpContinue": "Mevcut hesaba ekle",
-        "configureTotpMessage":
-            "Hesabınızı etkinleştirmek için Mobil Kimlik Doğrulama'yı ayarlamanız gerekiyor.",
-        "updateProfileMessage":
-            "Hesabınızı etkinleştirmek için kullanıcı profilinizi güncellemeniz gerekiyor.",
-        "updatePasswordMessage":
-            "Hesabınızı etkinleştirmek için şifrenizi değiştirmeniz gerekiyor.",
+        "configureTotpMessage": "Hesabınızı etkinleştirmek için Mobil Kimlik Doğrulama'yı ayarlamanız gerekiyor.",
+        "updateProfileMessage": "Hesabınızı etkinleştirmek için kullanıcı profilinizi güncellemeniz gerekiyor.",
+        "updatePasswordMessage": "Hesabınızı etkinleştirmek için şifrenizi değiştirmeniz gerekiyor.",
         "resetPasswordMessage": "Şifreni değiştirmelisin.",
-        "verifyEmailMessage":
-            "Hesabınızı etkinleştirmek için e-posta adresinizi doğrulamanız gerekiyor.",
-        "linkIdpMessage":
-            "Hesabınızı {0} ile bağlamak için e-posta adresinizi doğrulamanız gerekiyor.",
-        "emailSentMessage":
-            "Daha fazla talimatla kısa sürede bir e-posta almalısınız.",
-        "emailSendErrorMessage":
-            "E-posta gönderilemedi, lütfen daha sonra tekrar deneyin.",
+        "verifyEmailMessage": "Hesabınızı etkinleştirmek için e-posta adresinizi doğrulamanız gerekiyor.",
+        "linkIdpMessage": "Hesabınızı {0} ile bağlamak için e-posta adresinizi doğrulamanız gerekiyor.",
+        "emailSentMessage": "Daha fazla talimatla kısa sürede bir e-posta almalısınız.",
+        "emailSendErrorMessage": "E-posta gönderilemedi, lütfen daha sonra tekrar deneyin.",
         "accountUpdatedMessage": "Hesabın güncellendi.",
         "accountPasswordUpdatedMessage": "Şifreniz güncellenmiştir.",
         "delegationCompleteHeader": "Giriş başarılı",
-        "delegationCompleteMessage":
-            "Bu tarayıcı penceresini kapatabilir ve konsol uygulamanıza geri dönebilirsiniz.",
+        "delegationCompleteMessage": "Bu tarayıcı penceresini kapatabilir ve konsol uygulamanıza geri dönebilirsiniz.",
         "delegationFailedHeader": "Giriş başarısız",
-        "delegationFailedMessage":
-            "Bu tarayıcı penceresini kapatabilir ve konsol uygulamanıza geri dönüp tekrar giriş yapmayı deneyebilirsiniz..",
+        "delegationFailedMessage": "Bu tarayıcı penceresini kapatabilir ve konsol uygulamanıza geri dönüp tekrar giriş yapmayı deneyebilirsiniz..",
         "noAccessMessage": "Erişim yok",
-        "invalidPasswordMinLengthMessage":
-            "Geçersiz Şifre: En az {0} karakter uzunluğunda olmalı.",
-        "invalidPasswordMinDigitsMessage":
-            "Geçersiz Şifre: En az {0} sayı(lar) içermelidir.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Geçersiz Şifre : En az {0} küçük harf içermelidir.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Geçersiz Şifre: En az {0} büyük harf içermelidir.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Geçersiz Şifre: En az {0} özel karakter içermelidir.",
-        "invalidPasswordNotUsernameMessage":
-            "Geçersiz Şifre: Kullanıcı adıyla aynı olamaz.",
-        "invalidPasswordRegexPatternMessage":
-            "Geçersiz Şifre: Regex Patternine uygun değil.",
-        "invalidPasswordHistoryMessage":
-            "Geçersiz Şifre: Son {0} şifreden biri olamaz.",
-        "invalidPasswordGenericMessage":
-            "Geçersiz Şifre: yeni şifre şifre politikalarıyla eşleşmiyor.",
+        "invalidPasswordMinLengthMessage": "Geçersiz Şifre: En az {0} karakter uzunluğunda olmalı.",
+        "invalidPasswordMinDigitsMessage": "Geçersiz Şifre: En az {0} sayı(lar) içermelidir.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Geçersiz Şifre : En az {0} küçük harf içermelidir.",
+        "invalidPasswordMinUpperCaseCharsMessage": "Geçersiz Şifre: En az {0} büyük harf içermelidir.",
+        "invalidPasswordMinSpecialCharsMessage": "Geçersiz Şifre: En az {0} özel karakter içermelidir.",
+        "invalidPasswordNotUsernameMessage": "Geçersiz Şifre: Kullanıcı adıyla aynı olamaz.",
+        "invalidPasswordRegexPatternMessage": "Geçersiz Şifre: Regex Patternine uygun değil.",
+        "invalidPasswordHistoryMessage": "Geçersiz Şifre: Son {0} şifreden biri olamaz.",
+        "invalidPasswordGenericMessage": "Geçersiz Şifre: yeni şifre şifre politikalarıyla eşleşmiyor.",
         "failedToProcessResponseMessage": "Yanıt işlenemedi",
         "httpsRequiredMessage": "HTTPS zorunlu",
         "realmNotEnabledMessage": "Realm aktif değil",
@@ -6324,8 +5094,7 @@ export const kcMessages = {
         "failedLogout": "Çıkış başarısız",
         "unknownLoginRequesterMessage": "Bilinmeyen giriş isteği",
         "loginRequesterNotEnabledMessage": "Giriş istemi etkin değil",
-        "bearerOnlyMessage":
-            "Yalnızca taşıyıcı uygulamaları tarayıcı girişini başlatmaya izinli değil",
+        "bearerOnlyMessage": "Yalnızca taşıyıcı uygulamaları tarayıcı girişini başlatmaya izinli değil",
         "standardFlowDisabledMessage":
             "Client is not allowed to initiate browser login with given response_type. Standard flow is disabled for the client.",
         "implicitFlowDisabledMessage":
@@ -6336,48 +5105,30 @@ export const kcMessages = {
         "registrationNotAllowedMessage": "Kayıt yapılamaz",
         "resetCredentialNotAllowedMessage": "Sıfırlamasına izin verilmiyor",
         "permissionNotApprovedMessage": "İzin onaylanmadı.",
-        "noRelayStateInResponseMessage":
-            "Kimlik sağlayıcıdan yanıt olarak geçiş durumu yok.",
-        "insufficientPermissionMessage":
-            "Kimliklerin bağlanması için yetersiz izinler.",
-        "couldNotProceedWithAuthenticationRequestMessage":
-            "Kimlik sağlayıcıya kimlik doğrulama isteği ile devam edilemedi.",
+        "noRelayStateInResponseMessage": "Kimlik sağlayıcıdan yanıt olarak geçiş durumu yok.",
+        "insufficientPermissionMessage": "Kimliklerin bağlanması için yetersiz izinler.",
+        "couldNotProceedWithAuthenticationRequestMessage": "Kimlik sağlayıcıya kimlik doğrulama isteği ile devam edilemedi.",
         "couldNotObtainTokenMessage": "Kimlik sağlayıcıdan token alınamadı.",
-        "unexpectedErrorRetrievingTokenMessage":
-            "Kimlik sağlayıcıdan token alırken beklenmeyen bir hata oluştu.",
-        "unexpectedErrorHandlingResponseMessage":
-            "Kimlik sağlayıcıdan yanıt alınırken beklenmeyen bir hata oluştu.",
-        "identityProviderAuthenticationFailedMessage":
-            "Kimlik doğrulama başarısız oldu. Kimlik sağlayıcıyla kimlik doğrulaması yapılamadı.",
-        "couldNotSendAuthenticationRequestMessage":
-            "Kimlik sağlayıcıya kimlik doğrulama isteği gönderilemedi.",
-        "unexpectedErrorHandlingRequestMessage":
-            "Kimlik sağlayıcıya kimlik doğrulama isteği işlenirken beklenmeyen bir hata oluştu.",
+        "unexpectedErrorRetrievingTokenMessage": "Kimlik sağlayıcıdan token alırken beklenmeyen bir hata oluştu.",
+        "unexpectedErrorHandlingResponseMessage": "Kimlik sağlayıcıdan yanıt alınırken beklenmeyen bir hata oluştu.",
+        "identityProviderAuthenticationFailedMessage": "Kimlik doğrulama başarısız oldu. Kimlik sağlayıcıyla kimlik doğrulaması yapılamadı.",
+        "couldNotSendAuthenticationRequestMessage": "Kimlik sağlayıcıya kimlik doğrulama isteği gönderilemedi.",
+        "unexpectedErrorHandlingRequestMessage": "Kimlik sağlayıcıya kimlik doğrulama isteği işlenirken beklenmeyen bir hata oluştu.",
         "invalidAccessCodeMessage": "Geçersiz giriş kodu.",
         "sessionNotActiveMessage": "Oturum etkin değil.",
-        "invalidCodeMessage":
-            "Bir hata oluştu, lütfen başvurunuz aracılığıyla tekrar giriş yapın.",
-        "identityProviderUnexpectedErrorMessage":
-            "Kimlik sağlayıcıyla kimlik doğrulaması yapılırken beklenmeyen bir hata oluştu",
-        "identityProviderNotFoundMessage":
-            "Tanımlayıcı ile kimlik sağlayıcı bulunamadı.",
-        "identityProviderLinkSuccess":
-            "E-postanızı başarıyla doğruladınız. Lütfen orijinal tarayıcınıza geri dönün ve giriş yapın.",
-        "staleCodeMessage":
-            "Bu sayfa artık geçerli değil, lütfen uygulamanıza geri dönün ve tekrar giriş yapın",
-        "realmSupportsNoCredentialsMessage":
-            "Realm herhangi bir kimlik bilgisi türünü desteklemiyor.",
+        "invalidCodeMessage": "Bir hata oluştu, lütfen başvurunuz aracılığıyla tekrar giriş yapın.",
+        "identityProviderUnexpectedErrorMessage": "Kimlik sağlayıcıyla kimlik doğrulaması yapılırken beklenmeyen bir hata oluştu",
+        "identityProviderNotFoundMessage": "Tanımlayıcı ile kimlik sağlayıcı bulunamadı.",
+        "identityProviderLinkSuccess": "E-postanızı başarıyla doğruladınız. Lütfen orijinal tarayıcınıza geri dönün ve giriş yapın.",
+        "staleCodeMessage": "Bu sayfa artık geçerli değil, lütfen uygulamanıza geri dönün ve tekrar giriş yapın",
+        "realmSupportsNoCredentialsMessage": "Realm herhangi bir kimlik bilgisi türünü desteklemiyor.",
         "identityProviderNotUniqueMessage":
             "Realm çoklu kimlik sağlayıcılarını destekler. Kimlik doğrulamak için hangi kimlik sağlayıcısının kullanılması gerektiğini belirleyemedi.",
         "emailVerifiedMessage": "E-posta adresiniz doğrulandı.",
-        "staleEmailVerificationLink":
-            "Tıkladığınız bağlantı eski bir bağlantıdır ve artık geçerli değil. Belki de e-postanızı zaten doğruladınız.",
-        "identityProviderAlreadyLinkedMessage":
-            "{0} tarafından döndürülen birleşik kimlik, başka bir kullanıcıyla zaten bağlantılı.",
-        "confirmAccountLinking":
-            "{1} kimlik sağlayıcısının hesabını {0} hesabınızla ilişkilendirmeyi onaylayın.",
-        "confirmEmailAddressVerification":
-            "{0} e-posta adresinin geçerliliğini onaylayın.",
+        "staleEmailVerificationLink": "Tıkladığınız bağlantı eski bir bağlantıdır ve artık geçerli değil. Belki de e-postanızı zaten doğruladınız.",
+        "identityProviderAlreadyLinkedMessage": "{0} tarafından döndürülen birleşik kimlik, başka bir kullanıcıyla zaten bağlantılı.",
+        "confirmAccountLinking": "{1} kimlik sağlayıcısının hesabını {0} hesabınızla ilişkilendirmeyi onaylayın.",
+        "confirmEmailAddressVerification": "{0} e-posta adresinin geçerliliğini onaylayın.",
         "confirmExecutionOfActions": "Aşağıdaki eylemleri gerçekleştirin",
         "backToApplication": "&laquo; Uygulamaya Dön",
         "missingParameterMessage": "Eksik parametreler: {0}",
@@ -6385,10 +5136,8 @@ export const kcMessages = {
         "clientDisabledMessage": "İstemci engelli.",
         "invalidParameterMessage": "Geçersiz Paremetreler: {0}",
         "alreadyLoggedIn": "Zaten giriş yaptınız.",
-        "differentUserAuthenticated":
-            "Bu oturumda zaten farklı kullanıcı ' {0} ' olarak doğrulanmışsınız. Lütfen önce çıkış yapınız.",
-        "brokerLinkingSessionExpired":
-            "İstenen broker hesabı bağlanıyor, ancak mevcut oturum artık geçerli değil.",
+        "differentUserAuthenticated": "Bu oturumda zaten farklı kullanıcı ' {0} ' olarak doğrulanmışsınız. Lütfen önce çıkış yapınız.",
+        "brokerLinkingSessionExpired": "İstenen broker hesabı bağlanıyor, ancak mevcut oturum artık geçerli değil.",
         "proceedWithAction": "&raquo; Devam etmek için buraya tıklayın",
         "requiredAction.CONFIGURE_TOTP": "OTP Ayarla",
         "requiredAction.terms_and_conditions": "Şartlar ve Koşullar",
@@ -6427,8 +5176,7 @@ export const kcMessages = {
         "doImpersonate": "模拟",
         "kerberosNotConfigured": "Kerberos 没有配置",
         "kerberosNotConfiguredTitle": "Kerberos 没有配置",
-        "bypassKerberosDetail":
-            "您没有通过Kerberos登录 或者您的浏览器没有设置Kerberos登录. 请点击继续通过其他途径登录。",
+        "bypassKerberosDetail": "您没有通过Kerberos登录 或者您的浏览器没有设置Kerberos登录. 请点击继续通过其他途径登录。",
         "kerberosNotSetUp": "Kerberos没有配置，您不可以登录",
         "registerWithTitle": "用 {0} 注册",
         "registerWithTitleHtml": "{0}",
@@ -6486,18 +5234,15 @@ export const kcMessages = {
         "loginOtpOneTime": "一次性验证码",
         "oauthGrantRequest": "您是否想要授予下列权限?",
         "inResource": "in",
-        "emailVerifyInstruction1":
-            "一封包含验证邮箱具体步骤的邮件已经发送到您的邮箱。",
+        "emailVerifyInstruction1": "一封包含验证邮箱具体步骤的邮件已经发送到您的邮箱。",
         "emailVerifyInstruction2": "邮箱没有收到验证码?",
         "emailVerifyInstruction3": "重新发送电子邮件",
         "emailLinkIdpTitle": "链接 {0}",
-        "emailLinkIdp1":
-            "一封包含链接账户 {0} 和账户 {1} 到账户 {2} 的邮件已经发送到您的邮箱。",
+        "emailLinkIdp1": "一封包含链接账户 {0} 和账户 {1} 到账户 {2} 的邮件已经发送到您的邮箱。",
         "emailLinkIdp2": "邮箱没有收到验证码邮件?",
         "emailLinkIdp3": "重新发送电子邮件",
         "backToLogin": "&laquo; 回到登录",
-        "emailInstruction":
-            "输入您的用户名和邮箱，我们会发送一封带有设置新密码步骤的邮件到您的邮箱。",
+        "emailInstruction": "输入您的用户名和邮箱，我们会发送一封带有设置新密码步骤的邮件到您的邮箱。",
         "copyCodeInstruction": "请复制这段验证码并粘贴到应用：",
         "personalInfo": "个人信息:",
         "role_admin": "管理员",
@@ -6528,8 +5273,7 @@ export const kcMessages = {
         "invalidUserMessage": "无效的用户名或密码。",
         "invalidEmailMessage": "无效的电子邮件地址",
         "accountDisabledMessage": "账户被禁用，请联系管理员。",
-        "accountTemporarilyDisabledMessage":
-            "账户被暂时禁用，请稍后再试或联系管理员。",
+        "accountTemporarilyDisabledMessage": "账户被暂时禁用，请稍后再试或联系管理员。",
         "expiredCodeMessage": "登录超时，请重新登录。",
         "missingFirstNameMessage": "请输入名",
         "missingLastNameMessage": "请输入姓",
@@ -6543,8 +5287,7 @@ export const kcMessages = {
         "invalidTotpMessage": "无效的验证码",
         "usernameExistsMessage": "用户名已被占用",
         "emailExistsMessage": "电子邮件已存在。",
-        "federatedIdentityExistsMessage":
-            "用户 {0} {1} 已存在. 请登录账户管理界面链接账户.",
+        "federatedIdentityExistsMessage": "用户 {0} {1} 已存在. 请登录账户管理界面链接账户.",
         "confirmLinkIdpTitle": "账户已存在",
         "federatedIdentityConfirmLinkMessage": "用户{0} {1} 已存在. 怎么继续?",
         "confirmLinkIdpReviewProfile": "审查您的信息",
@@ -6561,17 +5304,12 @@ export const kcMessages = {
         "noAccessMessage": "无权限",
         "invalidPasswordMinLengthMessage": "无效的密码：最短长度 {0}.",
         "invalidPasswordMinDigitsMessage": "无效的密码： 至少包含{0} 个数字",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "无效的密码：至少包含 {0} 小写字母.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "无效的密码：至少包含 {0} 大写字母.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "无效的密码：至少包含 {0} 特殊字符.",
+        "invalidPasswordMinLowerCaseCharsMessage": "无效的密码：至少包含 {0} 小写字母.",
+        "invalidPasswordMinUpperCaseCharsMessage": "无效的密码：至少包含 {0} 大写字母.",
+        "invalidPasswordMinSpecialCharsMessage": "无效的密码：至少包含 {0} 特殊字符.",
         "invalidPasswordNotUsernameMessage": "无效的密码： 不能与用户名相同.",
-        "invalidPasswordRegexPatternMessage":
-            "无效的密码： 无法与正则表达式匹配.",
-        "invalidPasswordHistoryMessage":
-            "无效的密码： 不能与前 {0} 个旧密码相同.",
+        "invalidPasswordRegexPatternMessage": "无效的密码： 无法与正则表达式匹配.",
+        "invalidPasswordHistoryMessage": "无效的密码： 不能与前 {0} 个旧密码相同.",
         "failedToProcessResponseMessage": "无法处理回复",
         "httpsRequiredMessage": "需要HTTPS",
         "realmNotEnabledMessage": "域未启用",
@@ -6580,10 +5318,8 @@ export const kcMessages = {
         "unknownLoginRequesterMessage": "未知的登录请求发起方",
         "loginRequesterNotEnabledMessage": "登录请求发起方为启用",
         "bearerOnlyMessage": "Bearer-only 的应用不允许通过浏览器登录",
-        "standardFlowDisabledMessage":
-            "客户程序不允许发起指定返回类型的浏览器登录. 标准的登录流程已禁用。",
-        "implicitFlowDisabledMessage":
-            "客户程序不允许发起指定返回类型的浏览器登录. 隐式的登录流程已禁用。",
+        "standardFlowDisabledMessage": "客户程序不允许发起指定返回类型的浏览器登录. 标准的登录流程已禁用。",
+        "implicitFlowDisabledMessage": "客户程序不允许发起指定返回类型的浏览器登录. 隐式的登录流程已禁用。",
         "invalidRedirectUriMessage": "无效的跳转链接",
         "unsupportedNameIdFormatMessage": "不支持的 nameID格式",
         "invalidRequesterMessage": "无效的发起者",
@@ -6592,33 +5328,24 @@ export const kcMessages = {
         "permissionNotApprovedMessage": "许可没有批准",
         "noRelayStateInResponseMessage": "身份提供者没有返回中继状态信息",
         "insufficientPermissionMessage": "权限不足以链接新的身份",
-        "couldNotProceedWithAuthenticationRequestMessage":
-            "无法与身份提供者处理认证请求",
+        "couldNotProceedWithAuthenticationRequestMessage": "无法与身份提供者处理认证请求",
         "couldNotObtainTokenMessage": "未从身份提供者获得token",
-        "unexpectedErrorRetrievingTokenMessage":
-            "从身份提供者获得Token时遇到未知错误",
-        "unexpectedErrorHandlingResponseMessage":
-            "从身份提供者获得回复时遇到未知错误",
-        "identityProviderAuthenticationFailedMessage":
-            "认证失败，无法通过身份提供者认证",
-        "couldNotSendAuthenticationRequestMessage":
-            "无法向身份提供方发送认证请求",
-        "unexpectedErrorHandlingRequestMessage":
-            "在处理发向认证提供方的请求时，出现未知错误。",
+        "unexpectedErrorRetrievingTokenMessage": "从身份提供者获得Token时遇到未知错误",
+        "unexpectedErrorHandlingResponseMessage": "从身份提供者获得回复时遇到未知错误",
+        "identityProviderAuthenticationFailedMessage": "认证失败，无法通过身份提供者认证",
+        "couldNotSendAuthenticationRequestMessage": "无法向身份提供方发送认证请求",
+        "unexpectedErrorHandlingRequestMessage": "在处理发向认证提供方的请求时，出现未知错误。",
         "invalidAccessCodeMessage": "无效的验证码",
         "sessionNotActiveMessage": "会话不在活动状态",
         "invalidCodeMessage": "发生错误，请重新通过应用登录",
-        "identityProviderUnexpectedErrorMessage":
-            "在与认证提供者认证过程中发生未知错误",
+        "identityProviderUnexpectedErrorMessage": "在与认证提供者认证过程中发生未知错误",
         "identityProviderNotFoundMessage": "无法找到认证提供方",
         "identityProviderLinkSuccess": "您的账户已经将账户{0} 与账户 {1} 链接.",
         "staleCodeMessage": "当前页面已无效，请到登录界面重新登录",
         "realmSupportsNoCredentialsMessage": "域不支持特定类型密码",
-        "identityProviderNotUniqueMessage":
-            "域支持通过多个身份提供者登录，不知道应用哪一种方式登录",
+        "identityProviderNotUniqueMessage": "域支持通过多个身份提供者登录，不知道应用哪一种方式登录",
         "emailVerifiedMessage": "您的电子邮箱已经验证。",
-        "staleEmailVerificationLink":
-            "您点击的链接已无效。可能您已经验证过您的电子邮箱?",
+        "staleEmailVerificationLink": "您点击的链接已无效。可能您已经验证过您的电子邮箱?",
         "backToApplication": "&laquo; 回到应用",
         "missingParameterMessage": "缺少参数 : {0}",
         "clientNotFoundMessage": "客户端未找到",

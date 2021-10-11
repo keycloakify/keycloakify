@@ -28,8 +28,7 @@ const kcLanguageByTagLabel = {
     /* spell-checker: enable */
 } as const;
 
-export type LanguageLabel =
-    typeof kcLanguageByTagLabel[keyof typeof kcLanguageByTagLabel];
+export type LanguageLabel = typeof kcLanguageByTagLabel[keyof typeof kcLanguageByTagLabel];
 
 export function getKcLanguageTagLabel(language: KcLanguageTag): LanguageLabel {
     return kcLanguageByTagLabel[language] ?? language;
@@ -43,16 +42,13 @@ const availableLanguages = objectKeys(kcMessages);
  * If there is no reasonable match it's guessed from navigator.language.
  * If still no matches "en" is returned.
  */
-export function getBestMatchAmongKcLanguageTag(
-    languageLike: string,
-): KcLanguageTag {
+export function getBestMatchAmongKcLanguageTag(languageLike: string): KcLanguageTag {
     const iso2LanguageLike = languageLike.split("-")[0].toLowerCase();
 
     const kcLanguageTag = availableLanguages.find(
         language =>
             language.toLowerCase().includes(iso2LanguageLike) ||
-            getKcLanguageTagLabel(language).toLocaleLowerCase() ===
-                languageLike.toLocaleLowerCase(),
+            getKcLanguageTagLabel(language).toLocaleLowerCase() === languageLike.toLocaleLowerCase(),
     );
 
     if (kcLanguageTag !== undefined) {

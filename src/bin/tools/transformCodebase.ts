@@ -3,10 +3,7 @@ import * as path from "path";
 import { crawl } from "./crawl";
 import { id } from "tsafe/id";
 
-type TransformSourceCode = (params: {
-    sourceCode: Buffer;
-    filePath: string;
-}) =>
+type TransformSourceCode = (params: { sourceCode: Buffer; filePath: string }) =>
     | {
           modifiedSourceCode: Buffer;
           newFileName?: string;
@@ -14,11 +11,7 @@ type TransformSourceCode = (params: {
     | undefined;
 
 /** Apply a transformation function to every file of directory */
-export function transformCodebase(params: {
-    srcDirPath: string;
-    destDirPath: string;
-    transformSourceCode?: TransformSourceCode;
-}) {
+export function transformCodebase(params: { srcDirPath: string; destDirPath: string; transformSourceCode?: TransformSourceCode }) {
     const {
         srcDirPath,
         destDirPath,
@@ -46,10 +39,7 @@ export function transformCodebase(params: {
         const { newFileName, modifiedSourceCode } = transformSourceCodeResult;
 
         fs.writeFileSync(
-            path.join(
-                path.dirname(path.join(destDirPath, file_relative_path)),
-                newFileName ?? path.basename(file_relative_path),
-            ),
+            path.join(path.dirname(path.join(destDirPath, file_relative_path)), newFileName ?? path.basename(file_relative_path)),
             modifiedSourceCode,
         );
     }

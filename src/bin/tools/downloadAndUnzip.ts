@@ -5,11 +5,7 @@ import { transformCodebase } from "../tools/transformCodebase";
 import { rm_rf, rm, rm_r } from "./rm";
 
 /** assert url ends with .zip */
-export function downloadAndUnzip(params: {
-    url: string;
-    destDirPath: string;
-    pathOfDirToExtractInArchive?: string;
-}) {
+export function downloadAndUnzip(params: { url: string; destDirPath: string; pathOfDirToExtractInArchive?: string }) {
     const { url, destDirPath, pathOfDirToExtractInArchive } = params;
 
     const tmpDirPath = pathJoin(destDirPath, "..", "tmp_xxKdOxnEdx");
@@ -20,22 +16,14 @@ export function downloadAndUnzip(params: {
 
     execSync(`wget ${url}`, { "cwd": tmpDirPath });
 
-    execSync(
-        `unzip ${pathBasename(url)}${
-            pathOfDirToExtractInArchive === undefined
-                ? ""
-                : ` "${pathOfDirToExtractInArchive}/*"`
-        }`,
-        { "cwd": tmpDirPath },
-    );
+    execSync(`unzip ${pathBasename(url)}${pathOfDirToExtractInArchive === undefined ? "" : ` "${pathOfDirToExtractInArchive}/*"`}`, {
+        "cwd": tmpDirPath,
+    });
 
     rm(pathBasename(url), { "cwd": tmpDirPath });
 
     transformCodebase({
-        "srcDirPath":
-            pathOfDirToExtractInArchive === undefined
-                ? tmpDirPath
-                : pathJoin(tmpDirPath, pathOfDirToExtractInArchive),
+        "srcDirPath": pathOfDirToExtractInArchive === undefined ? tmpDirPath : pathJoin(tmpDirPath, pathOfDirToExtractInArchive),
         destDirPath,
     });
 

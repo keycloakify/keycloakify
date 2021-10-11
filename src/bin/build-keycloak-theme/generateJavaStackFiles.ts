@@ -2,14 +2,10 @@ import * as url from "url";
 import * as fs from "fs";
 import { join as pathJoin, dirname as pathDirname } from "path";
 
-export function generateJavaStackFiles(params: {
-    version: string;
-    themeName: string;
-    homepage?: string;
-    keycloakThemeBuildingDirPath: string;
-}): { jarFilePath: string } {
-    const { themeName, version, homepage, keycloakThemeBuildingDirPath } =
-        params;
+export function generateJavaStackFiles(params: { version: string; themeName: string; homepage?: string; keycloakThemeBuildingDirPath: string }): {
+    jarFilePath: string;
+} {
+    const { themeName, version, homepage, keycloakThemeBuildingDirPath } = params;
 
     {
         const { pomFileCode } = (function generatePomFileCode(): {
@@ -49,21 +45,11 @@ export function generateJavaStackFiles(params: {
             return { pomFileCode };
         })();
 
-        fs.writeFileSync(
-            pathJoin(keycloakThemeBuildingDirPath, "pom.xml"),
-            Buffer.from(pomFileCode, "utf8"),
-        );
+        fs.writeFileSync(pathJoin(keycloakThemeBuildingDirPath, "pom.xml"), Buffer.from(pomFileCode, "utf8"));
     }
 
     {
-        const themeManifestFilePath = pathJoin(
-            keycloakThemeBuildingDirPath,
-            "src",
-            "main",
-            "resources",
-            "META-INF",
-            "keycloak-themes.json",
-        );
+        const themeManifestFilePath = pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "META-INF", "keycloak-themes.json");
 
         try {
             fs.mkdirSync(pathDirname(themeManifestFilePath));
@@ -90,10 +76,6 @@ export function generateJavaStackFiles(params: {
     }
 
     return {
-        "jarFilePath": pathJoin(
-            keycloakThemeBuildingDirPath,
-            "target",
-            `${themeName}-${version}.jar`,
-        ),
+        "jarFilePath": pathJoin(keycloakThemeBuildingDirPath, "target", `${themeName}-${version}.jar`),
     };
 }

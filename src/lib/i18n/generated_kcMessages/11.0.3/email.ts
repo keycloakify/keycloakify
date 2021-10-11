@@ -25,8 +25,7 @@ export const kcMessages = {
         "eventLoginErrorBodyHtml":
             "<p>S'ha detectat un intent d'accés fallit al teu compte el {0} des de {1}. Si no has estat tu, si us plau contacta amb l'administrador.</p>",
         "eventRemoveTotpSubject": "Esborrat OTP",
-        "eventRemoveTotpBody":
-            "OTP s'ha eliminat del teu compte el {0} des de {1}. Si no has estat tu, per favor contacta amb l'administrador.",
+        "eventRemoveTotpBody": "OTP s'ha eliminat del teu compte el {0} des de {1}. Si no has estat tu, per favor contacta amb l'administrador.",
         "eventRemoveTotpBodyHtml":
             "<p>OTP s'ha eliminat del teu compte el {0} des de {1}. Si no has estat tu, si us plau contacta amb l'administrador. </ P>",
         "eventUpdatePasswordSubject": "Actualització de contrasenya",
@@ -35,8 +34,7 @@ export const kcMessages = {
         "eventUpdatePasswordBodyHtml":
             "<p>La teva contrasenya s'ha actualitzat el {0} des de {1}. Si no has estat tu, si us plau contacta amb l'administrador.</p>",
         "eventUpdateTotpSubject": "Actualització de OTP",
-        "eventUpdateTotpBody":
-            "OTP s'ha actualitzat al teu compte el {0} des de {1}. Si no has estat tu, si us plau contacta amb l'administrador.",
+        "eventUpdateTotpBody": "OTP s'ha actualitzat al teu compte el {0} des de {1}. Si no has estat tu, si us plau contacta amb l'administrador.",
         "eventUpdateTotpBodyHtml":
             "<p>OTP s'ha actualitzat al teu compte el {0} des de {1}. Si no has estat tu, si us plau contacta amb l'administrador.</p>",
     },
@@ -65,25 +63,18 @@ export const kcMessages = {
         "executeActionsBodyHtml":
             '<p>Váš administrátor vás požádal o provedení následujících akcí u účtu {2}: {3}. Začněte kliknutím na níže uvedený odkaz.</p><p><a href="{0}">Odkaz na aktualizaci účtu.</a></p><p>Platnost tohoto odkazu je {4}.</p><p>Pokud si nejste jisti, zda je tento požadavek v pořádku, ignorujte tuto zprávu.</p>',
         "eventLoginErrorSubject": "Chyba přihlášení",
-        "eventLoginErrorBody":
-            "Někdo se neúspěšně pokusil přihlásit k účtu {0} z {1}. Pokud jste to nebyli vy, kontaktujte administrátora.",
+        "eventLoginErrorBody": "Někdo se neúspěšně pokusil přihlásit k účtu {0} z {1}. Pokud jste to nebyli vy, kontaktujte administrátora.",
         "eventLoginErrorBodyHtml":
             "<p>Někdo se neúspěšně pokusil přihlásit k účtu {0} z {1}. Pokud jste to nebyli vy, kontaktujte administrátora.</p>",
         "eventRemoveTotpSubject": "Odebrat TOTP",
-        "eventRemoveTotpBody":
-            "V účtu {0} bylo odebráno nastavení OTP z {1}. Pokud jste to nebyli vy, kontaktujte administrátora.",
-        "eventRemoveTotpBodyHtml":
-            "<p>V účtu {0} bylo odebráno nastavení OTP z {1}. Pokud jste to nebyli vy, kontaktujte administrátora.</p>",
+        "eventRemoveTotpBody": "V účtu {0} bylo odebráno nastavení OTP z {1}. Pokud jste to nebyli vy, kontaktujte administrátora.",
+        "eventRemoveTotpBodyHtml": "<p>V účtu {0} bylo odebráno nastavení OTP z {1}. Pokud jste to nebyli vy, kontaktujte administrátora.</p>",
         "eventUpdatePasswordSubject": "Aktualizace hesla",
-        "eventUpdatePasswordBody":
-            "V účtu {0} bylo změněno heslo z {1}. Pokud jste to nebyli vy, kontaktujte administrátora.",
-        "eventUpdatePasswordBodyHtml":
-            "<p>V účtu {0} bylo změněno heslo z {1}. Pokud jste to nebyli vy, kontaktujte administrátora.</p>",
+        "eventUpdatePasswordBody": "V účtu {0} bylo změněno heslo z {1}. Pokud jste to nebyli vy, kontaktujte administrátora.",
+        "eventUpdatePasswordBodyHtml": "<p>V účtu {0} bylo změněno heslo z {1}. Pokud jste to nebyli vy, kontaktujte administrátora.</p>",
         "eventUpdateTotpSubject": "Aktualizace OTP",
-        "eventUpdateTotpBody":
-            "V účtu {0} bylo změněno nastavení OTP z {1}. Pokud jste to nebyli vy, kontaktujte administrátora.",
-        "eventUpdateTotpBodyHtml":
-            "<p>V účtu {0} bylo změněno nastavení OTP z {1}. Pokud jste to nebyli vy, kontaktujte administrátora.</p>",
+        "eventUpdateTotpBody": "V účtu {0} bylo změněno nastavení OTP z {1}. Pokud jste to nebyli vy, kontaktujte administrátora.",
+        "eventUpdateTotpBodyHtml": "<p>V účtu {0} bylo změněno nastavení OTP z {1}. Pokud jste to nebyli vy, kontaktujte administrátora.</p>",
         "requiredAction.CONFIGURE_TOTP": "Konfigurace OTP",
         "requiredAction.terms_and_conditions": "Smluvní podmínky",
         "requiredAction.UPDATE_PASSWORD": "Aktualizace hesla",
@@ -142,15 +133,12 @@ export const kcMessages = {
         "eventRemoveTotpBodyHtml":
             "<p>OTP wurde von Ihrem Konto am {0} von {1} entfernt. Falls das nicht Sie waren, dann kontaktieren Sie bitte Ihren Admin.</p>",
         "eventUpdatePasswordSubject": "Passwort Aktualisiert",
-        "eventUpdatePasswordBody":
-            "Ihr Passwort wurde am {0} von {1} geändert. Falls das nicht Sie waren, dann kontaktieren Sie bitte Ihren Admin.",
+        "eventUpdatePasswordBody": "Ihr Passwort wurde am {0} von {1} geändert. Falls das nicht Sie waren, dann kontaktieren Sie bitte Ihren Admin.",
         "eventUpdatePasswordBodyHtml":
             "<p>Ihr Passwort wurde am {0} von {1} geändert. Falls das nicht Sie waren, dann kontaktieren Sie bitte Ihren Admin.</p>",
         "eventUpdateTotpSubject": "OTP Aktualisiert",
-        "eventUpdateTotpBody":
-            "OTP wurde am {0} von {1} geändert. Falls das nicht Sie waren, dann kontaktieren Sie bitte Ihren Admin.",
-        "eventUpdateTotpBodyHtml":
-            "<p>OTP wurde am {0} von {1} geändert. Falls das nicht Sie waren, dann kontaktieren Sie bitte Ihren Admin.</p>",
+        "eventUpdateTotpBody": "OTP wurde am {0} von {1} geändert. Falls das nicht Sie waren, dann kontaktieren Sie bitte Ihren Admin.",
+        "eventUpdateTotpBodyHtml": "<p>OTP wurde am {0} von {1} geändert. Falls das nicht Sie waren, dann kontaktieren Sie bitte Ihren Admin.</p>",
     },
     "en": {
         "emailVerificationSubject": "Verify email",
@@ -182,20 +170,14 @@ export const kcMessages = {
         "eventLoginErrorBodyHtml":
             "<p>A failed login attempt was detected to your account on {0} from {1}. If this was not you, please contact an administrator.</p>",
         "eventRemoveTotpSubject": "Remove OTP",
-        "eventRemoveTotpBody":
-            "OTP was removed from your account on {0} from {1}. If this was not you, please contact an administrator.",
-        "eventRemoveTotpBodyHtml":
-            "<p>OTP was removed from your account on {0} from {1}. If this was not you, please contact an administrator.</p>",
+        "eventRemoveTotpBody": "OTP was removed from your account on {0} from {1}. If this was not you, please contact an administrator.",
+        "eventRemoveTotpBodyHtml": "<p>OTP was removed from your account on {0} from {1}. If this was not you, please contact an administrator.</p>",
         "eventUpdatePasswordSubject": "Update password",
-        "eventUpdatePasswordBody":
-            "Your password was changed on {0} from {1}. If this was not you, please contact an administrator.",
-        "eventUpdatePasswordBodyHtml":
-            "<p>Your password was changed on {0} from {1}. If this was not you, please contact an administrator.</p>",
+        "eventUpdatePasswordBody": "Your password was changed on {0} from {1}. If this was not you, please contact an administrator.",
+        "eventUpdatePasswordBodyHtml": "<p>Your password was changed on {0} from {1}. If this was not you, please contact an administrator.</p>",
         "eventUpdateTotpSubject": "Update OTP",
-        "eventUpdateTotpBody":
-            "OTP was updated for your account on {0} from {1}. If this was not you, please contact an administrator.",
-        "eventUpdateTotpBodyHtml":
-            "<p>OTP was updated for your account on {0} from {1}. If this was not you, please contact an administrator.</p>",
+        "eventUpdateTotpBody": "OTP was updated for your account on {0} from {1}. If this was not you, please contact an administrator.",
+        "eventUpdateTotpBodyHtml": "<p>OTP was updated for your account on {0} from {1}. If this was not you, please contact an administrator.</p>",
         "requiredAction.CONFIGURE_TOTP": "Configure OTP",
         "requiredAction.terms_and_conditions": "Terms and Conditions",
         "requiredAction.UPDATE_PASSWORD": "Update Password",
@@ -209,10 +191,8 @@ export const kcMessages = {
         "linkExpirationFormatter.timePeriodUnit.hours.1": "hour",
         "linkExpirationFormatter.timePeriodUnit.days": "days",
         "linkExpirationFormatter.timePeriodUnit.days.1": "day",
-        "emailVerificationBodyCode":
-            "Please verify your email address by entering in the following code.\n\n{0}\n\n.",
-        "emailVerificationBodyCodeHtml":
-            "<p>Please verify your email address by entering in the following code.</p><p><b>{0}</b></p>",
+        "emailVerificationBodyCode": "Please verify your email address by entering in the following code.\n\n{0}\n\n.",
+        "emailVerificationBodyCodeHtml": "<p>Please verify your email address by entering in the following code.</p><p><b>{0}</b></p>",
     },
     "es": {
         "emailVerificationSubject": "Verificación de email",
@@ -236,18 +216,15 @@ export const kcMessages = {
         "eventLoginErrorBodyHtml":
             "<p>Se ha detectado un intento de acceso fallido a tu cuenta el {0} desde {1}. Si no has sido tú, por favor contacta con el administrador.</p>",
         "eventRemoveTotpSubject": "Borrado OTP",
-        "eventRemoveTotpBody":
-            "OTP fue eliminado de tu cuenta el {0} desde {1}. Si no has sido tú, por favor contacta con el administrador.",
+        "eventRemoveTotpBody": "OTP fue eliminado de tu cuenta el {0} desde {1}. Si no has sido tú, por favor contacta con el administrador.",
         "eventRemoveTotpBodyHtml":
             "<p>OTP fue eliminado de tu cuenta el {0} desde {1}. Si no has sido tú, por favor contacta con el administrador.</p>",
         "eventUpdatePasswordSubject": "Actualización de contraseña",
-        "eventUpdatePasswordBody":
-            "Tu contraseña se ha actualizado el {0} desde {1}. Si no has sido tú, por favor contacta con el administrador.",
+        "eventUpdatePasswordBody": "Tu contraseña se ha actualizado el {0} desde {1}. Si no has sido tú, por favor contacta con el administrador.",
         "eventUpdatePasswordBodyHtml":
             "<p>Tu contraseña se ha actualizado el {0} desde {1}. Si no has sido tú, por favor contacta con el administrador.</p>",
         "eventUpdateTotpSubject": "Actualización de OTP",
-        "eventUpdateTotpBody":
-            "OTP se ha actualizado en tu cuenta el {0} desde {1}. Si no has sido tú, por favor contacta con el administrador.",
+        "eventUpdateTotpBody": "OTP se ha actualizado en tu cuenta el {0} desde {1}. Si no has sido tú, por favor contacta con el administrador.",
         "eventUpdateTotpBodyHtml":
             "<p>OTP se ha actualizado en tu cuenta el {0} desde {1}. Si no has sido tú, por favor contacta con el administrador.</p>",
     },
@@ -317,19 +294,16 @@ export const kcMessages = {
             "È stato rilevato un tentativo fallito di accesso al tuo account il {0} da {1}. Se non sei stato tu, per favore contatta l'amministratore.",
         "eventLoginErrorBodyHtml":
             "<p>È stato rilevato un tentativo fallito di accesso al tuo account il {0} da {1}. Se non sei stato tu, per favore contatta l'amministratore.</p>",
-        "eventRemoveTotpSubject":
-            "Rimozione OTP (password temporanea valida una volta sola)",
+        "eventRemoveTotpSubject": "Rimozione OTP (password temporanea valida una volta sola)",
         "eventRemoveTotpBody":
             "La OTP (password temporanea valida una volta sola) è stata rimossa dal tuo account il {0} da {1}. Se non sei stato tu, per favore contatta l'amministratore.",
         "eventRemoveTotpBodyHtml":
             "<p>La OTP (password temporanea valida una volta sola) è stata rimossa dal tuo account il {0} da {1}. Se non sei stato tu, per favore contatta l'amministratore.</p>",
         "eventUpdatePasswordSubject": "Aggiornamento password",
-        "eventUpdatePasswordBody":
-            "La tua password è stata cambiata il {0} da {1}. Se non sei stato tu, per favore contatta l'amministratore.",
+        "eventUpdatePasswordBody": "La tua password è stata cambiata il {0} da {1}. Se non sei stato tu, per favore contatta l'amministratore.",
         "eventUpdatePasswordBodyHtml":
             "<p>La tua password è stata cambiata il {0} da {1}. Se non sei stato tu, per favore contatta l'amministratore.</p>",
-        "eventUpdateTotpSubject":
-            "Aggiornamento OTP (password temporanea valida una volta sola)",
+        "eventUpdateTotpSubject": "Aggiornamento OTP (password temporanea valida una volta sola)",
         "eventUpdateTotpBody":
             "La OTP (password temporanea valida una volta sola) è stata aggiornata per il tuo account il {0} da {1}. Se non sei stato tu, per favore contatta l'amministratore.",
         "eventUpdateTotpBodyHtml":
@@ -347,10 +321,8 @@ export const kcMessages = {
         "linkExpirationFormatter.timePeriodUnit.hours.1": "ora",
         "linkExpirationFormatter.timePeriodUnit.days": "giorni",
         "linkExpirationFormatter.timePeriodUnit.days.1": "giorno",
-        "emailVerificationBodyCode":
-            "Per favore verifica il tuo indirizzo email inserendo il codice seguente.\n\n{0}\n\n.",
-        "emailVerificationBodyCodeHtml":
-            "<p>Per favore verifica il tuo indirizzo email inserendo il codice seguente.</p><p><b>{0}</b></p>",
+        "emailVerificationBodyCode": "Per favore verifica il tuo indirizzo email inserendo il codice seguente.\n\n{0}\n\n.",
+        "emailVerificationBodyCodeHtml": "<p>Per favore verifica il tuo indirizzo email inserendo il codice seguente.</p><p><b>{0}</b></p>",
     },
     "ja": {
         "emailVerificationSubject": "Eメールの確認",
@@ -377,25 +349,19 @@ export const kcMessages = {
         "executeActionsBodyHtml":
             '<p>次のアクションを実行することにより、管理者よりあなたの{2}アカウントの更新が要求されています: {3}。以下のリンクをクリックしてこのプロセスを開始してください。</p><p><a href="{0}">アカウントの更新</a></p><p>このリンクは{4}だけ有効です。</p><p>管理者からのこの変更要求についてご存知ない場合は、このメッセージを無視してください。何も変更されません。</p>',
         "eventLoginErrorSubject": "ログインエラー",
-        "eventLoginErrorBody":
-            "{0}に{1}からのログイン失敗があなたのアカウントで検出されました。心当たりがない場合は、管理者に連絡してください。",
+        "eventLoginErrorBody": "{0}に{1}からのログイン失敗があなたのアカウントで検出されました。心当たりがない場合は、管理者に連絡してください。",
         "eventLoginErrorBodyHtml":
             "<p>{0}に{1}からのログイン失敗があなたのアカウントで検出されました。心当たりがない場合は管理者に連絡してください。</p>",
         "eventRemoveTotpSubject": "OTPの削除",
-        "eventRemoveTotpBody":
-            "{0}に{1}からの操作でOTPが削除されました。心当たりがない場合は、管理者に連絡してください。",
-        "eventRemoveTotpBodyHtml":
-            "<p>{0}に{1}からの操作でOTPが削除されました。心当たりがない場合は、管理者に連絡してください。</p>",
+        "eventRemoveTotpBody": "{0}に{1}からの操作でOTPが削除されました。心当たりがない場合は、管理者に連絡してください。",
+        "eventRemoveTotpBodyHtml": "<p>{0}に{1}からの操作でOTPが削除されました。心当たりがない場合は、管理者に連絡してください。</p>",
         "eventUpdatePasswordSubject": "パスワードの更新",
-        "eventUpdatePasswordBody":
-            "{0}に{1}からの操作であなたのパスワードが変更されました。心当たりがない場合は、管理者に連絡してください。",
+        "eventUpdatePasswordBody": "{0}に{1}からの操作であなたのパスワードが変更されました。心当たりがない場合は、管理者に連絡してください。",
         "eventUpdatePasswordBodyHtml":
             "<p>{0}に{1}からの操作であなたのパスワードが変更されました。心当たりがない場合は、管理者に連絡してください。</p>",
         "eventUpdateTotpSubject": "OTPの更新",
-        "eventUpdateTotpBody":
-            "{0}に{1}からの操作でOTPが更新されました。心当たりがない場合は、管理者に連絡してください。",
-        "eventUpdateTotpBodyHtml":
-            "<p>{0}に{1}からの操作でOTPが更新されました。心当たりがない場合は、管理者に連絡してください。</p>",
+        "eventUpdateTotpBody": "{0}に{1}からの操作でOTPが更新されました。心当たりがない場合は、管理者に連絡してください。",
+        "eventUpdateTotpBodyHtml": "<p>{0}に{1}からの操作でOTPが更新されました。心当たりがない場合は、管理者に連絡してください。</p>",
         "requiredAction.CONFIGURE_TOTP": "OTPの設定",
         "requiredAction.terms_and_conditions": "利用規約",
         "requiredAction.UPDATE_PASSWORD": "パスワードの更新",
@@ -409,10 +375,8 @@ export const kcMessages = {
         "linkExpirationFormatter.timePeriodUnit.hours.1": "時間",
         "linkExpirationFormatter.timePeriodUnit.days": "日",
         "linkExpirationFormatter.timePeriodUnit.days.1": "日",
-        "emailVerificationBodyCode":
-            "次のコードを入力してメールアドレスを確認してください。\n\n{0}\n\n.",
-        "emailVerificationBodyCodeHtml":
-            "<p>次のコードを入力してメールアドレスを確認してください。</p><p><b>{0}</b></p>",
+        "emailVerificationBodyCode": "次のコードを入力してメールアドレスを確認してください。\n\n{0}\n\n.",
+        "emailVerificationBodyCodeHtml": "<p>次のコードを入力してメールアドレスを確認してください。</p><p><b>{0}</b></p>",
     },
     "lt": {
         "emailVerificationSubject": "El. pašto patvirtinimas",
@@ -435,8 +399,7 @@ export const kcMessages = {
             "Sistemos administratorius pageidauja, kad Jūs atnaujintumėte savo {2} paskyrą. Paspauskite žemiau esančią nuorodą paskyros duomenų atnaujinimui.\n\n{0}\n\nŠi nuoroda galioja {1} min.\n\nJei Jūs neasate tikri, kad tai administratoriaus pageidavimas, tuomet ignoruokite šį laišką ir niekas nebus pakeista.",
         "executeActionsBodyHtml":
             '<p>Sistemos administratorius pageidauja, kad Jūs atnaujintumėte savo {2} paskyrą. Paspauskite žemiau esančią nuorodą paskyros duomenų atnaujinimui.</p><p><a href=LT"{0}">{0}</a></p><p>Ši nuoroda galioja {1} min.</p><p>Jei Jūs neasate tikri, kad tai administratoriaus pageidavimas, tuomet ignoruokite šį laišką ir niekas nebus pakeista.</p>',
-        "eventLoginErrorSubject":
-            "Nesėkmingas bandymas prisijungti prie jūsų paskyros",
+        "eventLoginErrorSubject": "Nesėkmingas bandymas prisijungti prie jūsų paskyros",
         "eventLoginErrorBody":
             "Bandymas prisijungti prie jūsų paskyros {0} iš {1} nesėkmingas. Jei tai nebuvote jūs, tuomet susisiekite su administratoriumi",
         "eventLoginErrorBodyHtml":
@@ -447,13 +410,11 @@ export const kcMessages = {
         "eventRemoveTotpBodyHtml":
             "<p>Kažkas pageidauja atsieti TOPT Jūsų <b>{1}</b> paskyroje su <b>{0}</b>. Jei tai nebuvote Jūs, tuomet susisiekite su administratoriumi</p>",
         "eventUpdatePasswordSubject": "Slaptažodžio atnaujinimas",
-        "eventUpdatePasswordBody":
-            "{1} paskyroje {0} pakeisas jūsų slaptažodis. Jei Jūs nekeitėte, tuomet susisiekite su administratoriumi",
+        "eventUpdatePasswordBody": "{1} paskyroje {0} pakeisas jūsų slaptažodis. Jei Jūs nekeitėte, tuomet susisiekite su administratoriumi",
         "eventUpdatePasswordBodyHtml":
             "<p>{1} paskyroje {0} pakeisas jūsų slaptažodis. Jei Jūs nekeitėte, tuomet susisiekite su administratoriumi</p>",
         "eventUpdateTotpSubject": "OTP atnaujinimas",
-        "eventUpdateTotpBody":
-            "OTP Jūsų {1} paskyroje su {0} buvo atnaujintas. Jei tai nebuvote Jūs, tuomet susisiekite su administratoriumi",
+        "eventUpdateTotpBody": "OTP Jūsų {1} paskyroje su {0} buvo atnaujintas. Jei tai nebuvote Jūs, tuomet susisiekite su administratoriumi",
         "eventUpdateTotpBodyHtml":
             "<p>OTP Jūsų {1} paskyroje su {0} buvo atnaujintas. Jei tai nebuvote Jūs, tuomet susisiekite su administratoriumi</p>",
     },
@@ -487,18 +448,14 @@ export const kcMessages = {
         "eventLoginErrorBodyHtml":
             "<p>Er is een foutieve inlogpoging gedetecteerd op uw account om {0} vanuit {1}. Als u dit niet was, neem dan contact op met de beheerder.</p>",
         "eventRemoveTotpSubject": "OTP verwijderd",
-        "eventRemoveTotpBody":
-            "OTP is verwijderd van uw account om {0} vanuit {1}. Als u dit niet was, neem dan contact op met uw beheerder.",
+        "eventRemoveTotpBody": "OTP is verwijderd van uw account om {0} vanuit {1}. Als u dit niet was, neem dan contact op met uw beheerder.",
         "eventRemoveTotpBodyHtml":
             "<p>OTP is verwijderd van uw account om {0} vanuit {1}. Als u dit niet was, neem dan contact op met uw beheerder.</p>",
         "eventUpdatePasswordSubject": "Wachtwoord gewijzigd",
-        "eventUpdatePasswordBody":
-            "Uw wachtwoord is gewijzigd om {0} door {1}. Als u dit niet was, neem dan contact op met uw beheerder.",
-        "eventUpdatePasswordBodyHtml":
-            "<p>Uw wachtwoord is gewijzigd om {0} door {1}. Als u dit niet was, neem dan contact op met uw beheerder.</p>",
+        "eventUpdatePasswordBody": "Uw wachtwoord is gewijzigd om {0} door {1}. Als u dit niet was, neem dan contact op met uw beheerder.",
+        "eventUpdatePasswordBodyHtml": "<p>Uw wachtwoord is gewijzigd om {0} door {1}. Als u dit niet was, neem dan contact op met uw beheerder.</p>",
         "eventUpdateTotpSubject": "OTP gewijzigd",
-        "eventUpdateTotpBody":
-            "OTP is gewijzigd voor uw account om {0} door {1}. Als u dit niet was, neem dan contact op met uw beheerder.",
+        "eventUpdateTotpBody": "OTP is gewijzigd voor uw account om {0} door {1}. Als u dit niet was, neem dan contact op met uw beheerder.",
         "eventUpdateTotpBodyHtml":
             "<p>OTP is gewijzigd voor uw account om {0} door {1}. Als u dit niet was, neem dan contact op met uw beheerder.</p>",
         "linkExpirationFormatter.timePeriodUnit.seconds": "seconden",
@@ -537,18 +494,14 @@ export const kcMessages = {
         "eventLoginErrorBodyHtml":
             "<p>Et mislykket innloggingsforsøk ble oppdaget på din konto på {0} fra {1}. Hvis dette ikke var deg, vennligst kontakt administrator.</p>",
         "eventRemoveTotpSubject": "Fjern engangskode",
-        "eventRemoveTotpBody":
-            "Engangskode ble fjernet fra kontoen din på {0} fra {1}. Hvis dette ikke var deg, vennligst kontakt administrator.",
+        "eventRemoveTotpBody": "Engangskode ble fjernet fra kontoen din på {0} fra {1}. Hvis dette ikke var deg, vennligst kontakt administrator.",
         "eventRemoveTotpBodyHtml":
             "<p>Engangskode ble fjernet fra kontoen din på {0} fra {1}. Hvis dette ikke var deg, vennligst kontakt administrator.</p>",
         "eventUpdatePasswordSubject": "Oppdater passord",
-        "eventUpdatePasswordBody":
-            "Ditt passord ble endret i {0} fra {1}. Hvis dette ikke var deg, vennligst kontakt administrator.",
-        "eventUpdatePasswordBodyHtml":
-            "<p>Ditt passord ble endret i {0} fra {1}. Hvis dette ikke var deg, vennligst kontakt administrator. </p>",
+        "eventUpdatePasswordBody": "Ditt passord ble endret i {0} fra {1}. Hvis dette ikke var deg, vennligst kontakt administrator.",
+        "eventUpdatePasswordBodyHtml": "<p>Ditt passord ble endret i {0} fra {1}. Hvis dette ikke var deg, vennligst kontakt administrator. </p>",
         "eventUpdateTotpSubject": "Oppdater engangskode",
-        "eventUpdateTotpBody":
-            "Engangskode ble oppdatert for kontoen din på {0} fra {1}. Hvis dette ikke var deg, vennligst kontakt administrator.",
+        "eventUpdateTotpBody": "Engangskode ble oppdatert for kontoen din på {0} fra {1}. Hvis dette ikke var deg, vennligst kontakt administrator.",
         "eventUpdateTotpBodyHtml":
             "<p>Engangskode ble oppdatert for kontoen din på {0} fra {1}. Hvis dette ikke var deg, vennligst kontakt administrator. </p>",
     },
@@ -587,17 +540,14 @@ export const kcMessages = {
         "eventRemoveTotpBodyHtml":
             "<p>Hasło jednorazowe (OTP) zostało usunięte z Twojego konta w {0} z {1}. Jeśli to nie Ty, skontaktuj się z administratorem.</p>",
         "eventUpdatePasswordSubject": "Aktualizuj hasło",
-        "eventUpdatePasswordBody":
-            "Twoje hasło zostało zmienione {0} z {1}. Jeśli to nie Ty, skontaktuj się z administratorem.",
-        "eventUpdatePasswordBodyHtml":
-            "<p>Twoje hasło zostało zmienione {0} z {1}. Jeśli to nie Ty, skontaktuj się z administratorem.</p>",
+        "eventUpdatePasswordBody": "Twoje hasło zostało zmienione {0} z {1}. Jeśli to nie Ty, skontaktuj się z administratorem.",
+        "eventUpdatePasswordBodyHtml": "<p>Twoje hasło zostało zmienione {0} z {1}. Jeśli to nie Ty, skontaktuj się z administratorem.</p>",
         "eventUpdateTotpSubject": "Aktualizuj hasło jednorazowe (OTP)",
         "eventUpdateTotpBody":
             "Hasło jednorazowe (OTP) zostało zaktualizowane na Twoim koncie {0} z {1}. Jeśli to nie Ty, skontaktuj się z administratorem.",
         "eventUpdateTotpBodyHtml":
             "<p>Hasło jednorazowe (OTP) zostało zaktualizowane na Twoim koncie {0} z {1}. Jeśli to nie Ty, skontaktuj się z administratorem.</p>",
-        "requiredAction.CONFIGURE_TOTP":
-            "Konfiguracja hasła jednorazowego (OTP)",
+        "requiredAction.CONFIGURE_TOTP": "Konfiguracja hasła jednorazowego (OTP)",
         "requiredAction.terms_and_conditions": "Regulamin",
         "requiredAction.UPDATE_PASSWORD": "Aktualizacja hasła",
         "requiredAction.UPDATE_PROFILE": "Aktualizacja profilu",
@@ -619,10 +569,8 @@ export const kcMessages = {
         "linkExpirationFormatter.timePeriodUnit.hours.4": "godziny",
         "linkExpirationFormatter.timePeriodUnit.days": "dni",
         "linkExpirationFormatter.timePeriodUnit.days.1": "dzień",
-        "emailVerificationBodyCode":
-            "Potwierdź swój adres e-mail wprowadzając następujący kod.\n\n{0}\n\n.",
-        "emailVerificationBodyCodeHtml":
-            "<p>Potwierdź swój adres e-mail, wprowadzając następujący kod.</p><p><b>{0}</b></p>",
+        "emailVerificationBodyCode": "Potwierdź swój adres e-mail wprowadzając następujący kod.\n\n{0}\n\n.",
+        "emailVerificationBodyCodeHtml": "<p>Potwierdź swój adres e-mail, wprowadzając następujący kod.</p><p><b>{0}</b></p>",
     },
     "pt-BR": {
         "emailVerificationSubject": "Verificação de e-mail",
@@ -654,13 +602,11 @@ export const kcMessages = {
         "eventLoginErrorBodyHtml":
             "<p>Uma tentativa de login mal sucedida para a sua conta foi detectada em {0} de {1}. Se não foi você, por favor, entre em contato com um administrador.</p>",
         "eventRemoveTotpSubject": "Remover OTP",
-        "eventRemoveTotpBody":
-            "OTP foi removido da sua conta em {0} de {1}. Se não foi você, por favor, entre em contato com um administrador.",
+        "eventRemoveTotpBody": "OTP foi removido da sua conta em {0} de {1}. Se não foi você, por favor, entre em contato com um administrador.",
         "eventRemoveTotpBodyHtml":
             "<p>OTP foi removido da sua conta em {0} de {1}. Se não foi você, por favor, entre em contato com um administrador.</p>",
         "eventUpdatePasswordSubject": "Atualização de senha",
-        "eventUpdatePasswordBody":
-            "Sua senha foi alterada em {0} de {1}. Se não foi você, por favor, entre em contato com um administrador.",
+        "eventUpdatePasswordBody": "Sua senha foi alterada em {0} de {1}. Se não foi você, por favor, entre em contato com um administrador.",
         "eventUpdatePasswordBodyHtml":
             "<p>Sua senha foi alterada em {0} de {1}. Se não foi você, por favor, entre em contato com um administrador.</p>",
         "eventUpdateTotpSubject": "Atualização OTP",
@@ -681,10 +627,8 @@ export const kcMessages = {
         "linkExpirationFormatter.timePeriodUnit.hours.1": "hora",
         "linkExpirationFormatter.timePeriodUnit.days": "dias",
         "linkExpirationFormatter.timePeriodUnit.days.1": "dia",
-        "emailVerificationBodyCode":
-            "Verifique seu endereço de e-mail digitando o seguinte código.\n\n{0}\n\n.",
-        "emailVerificationBodyCodeHtml":
-            "<p>Verifique seu endereço de e-mail digitando o seguinte código.</p><p><b>{0}</b></p>",
+        "emailVerificationBodyCode": "Verifique seu endereço de e-mail digitando o seguinte código.\n\n{0}\n\n.",
+        "emailVerificationBodyCodeHtml": "<p>Verifique seu endereço de e-mail digitando o seguinte código.</p><p><b>{0}</b></p>",
     },
     "ru": {
         "emailVerificationSubject": "Подтверждение E-mail",
@@ -713,18 +657,14 @@ export const kcMessages = {
         "eventLoginErrorBodyHtml":
             "<p>Была зафиксирована неудачная попытка входа в Вашу учетную запись {0} с {1}. Если это были не Вы, пожалуйста, свяжитесь с администратором.</p>",
         "eventRemoveTotpSubject": "Удалить OTP",
-        "eventRemoveTotpBody":
-            "OTP был удален из вашей учетной записи {0} c {1}. Если это были не Вы, пожалуйста, свяжитесь с администратором.",
+        "eventRemoveTotpBody": "OTP был удален из вашей учетной записи {0} c {1}. Если это были не Вы, пожалуйста, свяжитесь с администратором.",
         "eventRemoveTotpBodyHtml":
             "<p>OTP был удален из вашей учетной записи {0} c {1}. Если это были не Вы, пожалуйста, свяжитесь с администратором.</p>",
         "eventUpdatePasswordSubject": "Обновление пароля",
-        "eventUpdatePasswordBody":
-            "Ваш пароль был изменен в {0} с {1}. Если это были не Вы, пожалуйста, свяжитесь с администратором.",
-        "eventUpdatePasswordBodyHtml":
-            "<p>Ваш пароль был изменен в {0} с {1}. Если это были не Вы, пожалуйста, свяжитесь с администратором.</p>",
+        "eventUpdatePasswordBody": "Ваш пароль был изменен в {0} с {1}. Если это были не Вы, пожалуйста, свяжитесь с администратором.",
+        "eventUpdatePasswordBodyHtml": "<p>Ваш пароль был изменен в {0} с {1}. Если это были не Вы, пожалуйста, свяжитесь с администратором.</p>",
         "eventUpdateTotpSubject": "Обновление OTP",
-        "eventUpdateTotpBody":
-            "OTP был обновлен в вашей учетной записи {0} с {1}. Если это были не Вы, пожалуйста, свяжитесь с администратором.",
+        "eventUpdateTotpBody": "OTP был обновлен в вашей учетной записи {0} с {1}. Если это были не Вы, пожалуйста, свяжитесь с администратором.",
         "eventUpdateTotpBodyHtml":
             "<p>OTP был обновлен в вашей учетной записи {0} с {1}. Если это были не Вы, пожалуйста, свяжитесь с администратором.</p>",
     },
@@ -758,20 +698,14 @@ export const kcMessages = {
         "eventLoginErrorBodyHtml":
             "<p>Bol zistený neúspešný pokus o prihlásenie vášho účtu na {0} z {1}. Ak ste to neboli vy, kontaktujte administrátora.</p>",
         "eventRemoveTotpSubject": "Odstrániť TOTP",
-        "eventRemoveTotpBody":
-            "OTP bol odstránený z vášho účtu dňa {0} z {1}. Ak ste to neboli vy, obráťte sa na administrátora.",
-        "eventRemoveTotpBodyHtml":
-            "<p>OTP bol odstránený z vášho účtu dňa {0} z {1}. Ak ste to neboli vy, kontaktujte administrátora.</p>",
+        "eventRemoveTotpBody": "OTP bol odstránený z vášho účtu dňa {0} z {1}. Ak ste to neboli vy, obráťte sa na administrátora.",
+        "eventRemoveTotpBodyHtml": "<p>OTP bol odstránený z vášho účtu dňa {0} z {1}. Ak ste to neboli vy, kontaktujte administrátora.</p>",
         "eventUpdatePasswordSubject": "Aktualizovať heslo",
-        "eventUpdatePasswordBody":
-            "Vaše heslo bolo zmenené na {0} z {1}. Ak ste to neboli vy, obráťte sa na administrátora.",
-        "eventUpdatePasswordBodyHtml":
-            "<p>Vaše heslo bolo zmenené na {0} z {1}. Ak ste to neboli vy, kontaktujte administrátora.</p>",
+        "eventUpdatePasswordBody": "Vaše heslo bolo zmenené na {0} z {1}. Ak ste to neboli vy, obráťte sa na administrátora.",
+        "eventUpdatePasswordBodyHtml": "<p>Vaše heslo bolo zmenené na {0} z {1}. Ak ste to neboli vy, kontaktujte administrátora.</p>",
         "eventUpdateTotpSubject": "Aktualizácia TOTP",
-        "eventUpdateTotpBody":
-            "TOTP bol aktualizovaný pre váš účet na {0} z {1}. Ak ste to neboli vy, obráťte sa na administrátora.",
-        "eventUpdateTotpBodyHtml":
-            "<p>TOTP bol aktualizovaný pre váš účet dňa {0} z {1}. Ak ste to neboli vy, kontaktujte administrátora.</p>",
+        "eventUpdateTotpBody": "TOTP bol aktualizovaný pre váš účet na {0} z {1}. Ak ste to neboli vy, obráťte sa na administrátora.",
+        "eventUpdateTotpBodyHtml": "<p>TOTP bol aktualizovaný pre váš účet dňa {0} z {1}. Ak ste to neboli vy, kontaktujte administrátora.</p>",
         "requiredAction.CONFIGURE_TOTP": "Konfigurácia OTP",
         "requiredAction.terms_and_conditions": "Zmluvné podmienky",
         "requiredAction.UPDATE_PASSWORD": "Aktualizovať heslo",
@@ -813,18 +747,15 @@ export const kcMessages = {
         "eventLoginErrorBodyHtml":
             "<p>Ett misslyckat inloggningsförsök har upptäckts på ditt konto den {0} från {1}. Om det inte var du, vänligen kontakta i så fall en administratör.</p>",
         "eventRemoveTotpSubject": "Ta bort OTP",
-        "eventRemoveTotpBody":
-            "OTP togs bort från ditt konto den {0} från {1}. Om det inte var du, vänligen kontakta i så fall en administratör.",
+        "eventRemoveTotpBody": "OTP togs bort från ditt konto den {0} från {1}. Om det inte var du, vänligen kontakta i så fall en administratör.",
         "eventRemoveTotpBodyHtml":
             "<p>OTP togs bort från ditt konto den {0} från {1}. Om det inte var du, vänligen kontakta i så fall en administratör.</p>",
         "eventUpdatePasswordSubject": "Uppdatera lösenord",
-        "eventUpdatePasswordBody":
-            "Ditt lösenord ändrades den {0} från {1}. Om det inte var du, vänligen kontakta i så fall en administratör.",
+        "eventUpdatePasswordBody": "Ditt lösenord ändrades den {0} från {1}. Om det inte var du, vänligen kontakta i så fall en administratör.",
         "eventUpdatePasswordBodyHtml":
             "<p>Ditt lösenord ändrades den {0} från {1}. Om det inte var du, vänligen kontakta i så fall en administratör.</p>",
         "eventUpdateTotpSubject": "Uppdatera OTP",
-        "eventUpdateTotpBody":
-            "OTP uppdaterades för ditt konto den {0} från {1}. Om det inte var du, vänligen kontakta i så fall en administratör.",
+        "eventUpdateTotpBody": "OTP uppdaterades för ditt konto den {0} från {1}. Om det inte var du, vänligen kontakta i så fall en administratör.",
         "eventUpdateTotpBodyHtml":
             "<p>OTP uppdaterades för ditt konto den {0} från {1}. Om det inte var du, vänligen kontakta i så fall en administratör.</p>",
     },
@@ -853,23 +784,19 @@ export const kcMessages = {
         "executeActionsBodyHtml":
             '<p>Yöneticiniz aşağıdaki işlemleri gerçekleştirerek {2} hesabınızı güncelledi: {3}. Bu işlemi başlatmak için aşağıdaki linke tıklayın.</p><p><a href="{0}">Hesap güncelleme bağlantısı</a></p><p>Bu bağlantının süresi {4} içerisinde sona erecek.</p><p>Yöneticinizin bunu istediğinden habersizseniz, bu mesajı göz ardı edin ve hiçbir şey değişmez.</p>',
         "eventLoginErrorSubject": "Giriş hatası",
-        "eventLoginErrorBody":
-            "{1} 'den {0} tarihinde başarısız bir giriş denemesi yapıldı. Bu siz değilseniz, lütfen yöneticiyle iletişime geçin.",
+        "eventLoginErrorBody": "{1} 'den {0} tarihinde başarısız bir giriş denemesi yapıldı. Bu siz değilseniz, lütfen yöneticiyle iletişime geçin.",
         "eventLoginErrorBodyHtml":
             "<p>{1} 'den {0} tarihinde başarısız bir giriş denemesi yapıldı. Bu siz değilseniz, lütfen yöneticiyle iletişime geçin.</p>",
         "eventRemoveTotpSubject": "OTP'yi kaldır",
-        "eventRemoveTotpBody":
-            "OTP, {0} tarihinden {1} tarihinde hesabınızdan kaldırıldı. Bu siz değilseniz, lütfen yöneticiyle iletişime geçin.",
+        "eventRemoveTotpBody": "OTP, {0} tarihinden {1} tarihinde hesabınızdan kaldırıldı. Bu siz değilseniz, lütfen yöneticiyle iletişime geçin.",
         "eventRemoveTotpBodyHtml":
             "<p>OTP, {0} tarihinden {1} tarihinde hesabınızdan kaldırıldı. Bu siz değilseniz, lütfen yöneticiyle iletişime geçin.</p>",
         "eventUpdatePasswordSubject": "Şifreyi güncelle",
-        "eventUpdatePasswordBody":
-            "Şifreniz {0} tarihinde {0} tarihinde değiştirildi. Bu siz değilseniz, lütfen yöneticiyle iletişime geçin.",
+        "eventUpdatePasswordBody": "Şifreniz {0} tarihinde {0} tarihinde değiştirildi. Bu siz değilseniz, lütfen yöneticiyle iletişime geçin.",
         "eventUpdatePasswordBodyHtml":
             "<p>Şifreniz {0} tarihinde {0} tarihinde değiştirildi. Bu siz değilseniz, lütfen yöneticiyle iletişime geçin.</p>",
         "eventUpdateTotpSubject": "OTP'yi Güncelle",
-        "eventUpdateTotpBody":
-            "OTP, {0} tarihinden {1} tarihinde hesabınız için güncellendi. Bu siz değilseniz, lütfen yöneticiyle iletişime geçin.",
+        "eventUpdateTotpBody": "OTP, {0} tarihinden {1} tarihinde hesabınız için güncellendi. Bu siz değilseniz, lütfen yöneticiyle iletişime geçin.",
         "eventUpdateTotpBodyHtml":
             "<p>OTP, {0} tarihinden {1} tarihinde hesabınız için güncellendi. Bu siz değilseniz, lütfen yöneticiyle iletişime geçin.</p>",
         "requiredAction.CONFIGURE_TOTP": "OTP'yi yapılandır",
@@ -885,10 +812,8 @@ export const kcMessages = {
         "linkExpirationFormatter.timePeriodUnit.hours.1": "saat",
         "linkExpirationFormatter.timePeriodUnit.days": "gün",
         "linkExpirationFormatter.timePeriodUnit.days.1": "gün",
-        "emailVerificationBodyCode":
-            "Lütfen aşağıdaki kodu girerek e-posta adresinizi doğrulayın.\n\n{0}\n\n.",
-        "emailVerificationBodyCodeHtml":
-            "<p>Lütfen aşağıdaki kodu girerek e-posta adresinizi doğrulayın.</p><p><b>{0}</b></p>",
+        "emailVerificationBodyCode": "Lütfen aşağıdaki kodu girerek e-posta adresinizi doğrulayın.\n\n{0}\n\n.",
+        "emailVerificationBodyCodeHtml": "<p>Lütfen aşağıdaki kodu girerek e-posta adresinizi doğrulayın.</p><p><b>{0}</b></p>",
     },
     "zh-CN": {
         "emailVerificationSubject": "验证电子邮件",
@@ -912,25 +837,17 @@ export const kcMessages = {
         "executeActionsBodyHtml":
             '<p>您的管理员要求您更新账户{2}.  点击以下链接开始更新.</p><p><a href="{0}">{0}</a></p><p>这个链接会在 {1} 分钟后失效.</p><p>如果您不知道管理员要求更新账户信息，请忽略这条消息。账户信息不会修改。</p>',
         "eventLoginErrorSubject": "登录错误",
-        "eventLoginErrorBody":
-            "在{0} 由 {1}使用您的账户登录失败. 如果这不是您本人操作，请联系管理员.",
-        "eventLoginErrorBodyHtml":
-            "<p>在{0} 由 {1}使用您的账户登录失败. 如果这不是您本人操作，请联系管理员.</p>",
+        "eventLoginErrorBody": "在{0} 由 {1}使用您的账户登录失败. 如果这不是您本人操作，请联系管理员.",
+        "eventLoginErrorBodyHtml": "<p>在{0} 由 {1}使用您的账户登录失败. 如果这不是您本人操作，请联系管理员.</p>",
         "eventRemoveTotpSubject": "删除 OTP",
-        "eventRemoveTotpBody":
-            "OTP在 {0} 由{1} 从您的账户中删除.如果这不是您本人操作，请联系管理员",
-        "eventRemoveTotpBodyHtml":
-            "<p>OTP在 {0} 由{1} 从您的账户中删除.如果这不是您本人操作，请联系管理员。</p>",
+        "eventRemoveTotpBody": "OTP在 {0} 由{1} 从您的账户中删除.如果这不是您本人操作，请联系管理员",
+        "eventRemoveTotpBodyHtml": "<p>OTP在 {0} 由{1} 从您的账户中删除.如果这不是您本人操作，请联系管理员。</p>",
         "eventUpdatePasswordSubject": "更新密码",
-        "eventUpdatePasswordBody":
-            "您的密码在{0} 由 {1}更改. 如非本人操作，请联系管理员",
-        "eventUpdatePasswordBodyHtml":
-            "<p>您的密码在{0} 由 {1}更改. 如非本人操作，请联系管理员</p>",
+        "eventUpdatePasswordBody": "您的密码在{0} 由 {1}更改. 如非本人操作，请联系管理员",
+        "eventUpdatePasswordBodyHtml": "<p>您的密码在{0} 由 {1}更改. 如非本人操作，请联系管理员</p>",
         "eventUpdateTotpSubject": "更新 OTP",
-        "eventUpdateTotpBody":
-            "您账户的OTP 配置在{0} 由 {1}更改. 如非本人操作，请联系管理员。",
-        "eventUpdateTotpBodyHtml":
-            "<p>您账户的OTP 配置在{0} 由 {1}更改. 如非本人操作，请联系管理员。</p>",
+        "eventUpdateTotpBody": "您账户的OTP 配置在{0} 由 {1}更改. 如非本人操作，请联系管理员。",
+        "eventUpdateTotpBodyHtml": "<p>您账户的OTP 配置在{0} 由 {1}更改. 如非本人操作，请联系管理员。</p>",
     },
 };
 /* spell-checker: enable */

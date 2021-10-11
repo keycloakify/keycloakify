@@ -20,18 +20,13 @@ export type MessageKey = keyof typeof kcMessages["en"];
 export function useKcMessage() {
     const { kcLanguageTag } = useKcLanguageTag();
 
-    const [trigger, forceUpdate] = useReducer(
-        (counter: number) => counter + 1,
-        0,
-    );
+    const [trigger, forceUpdate] = useReducer((counter: number) => counter + 1, 0);
 
     useEvt(ctx => evtTermsUpdated.attach(ctx, forceUpdate), []);
 
     const msgStr = useCallback(
         (key: MessageKey, ...args: (string | undefined)[]): string => {
-            let str: string =
-                kcMessages[kcLanguageTag as any as "en"][key] ??
-                kcMessages["en"][key];
+            let str: string = kcMessages[kcLanguageTag as any as "en"][key] ?? kcMessages["en"][key];
 
             args.forEach((arg, i) => {
                 if (arg === undefined) {
@@ -46,16 +41,9 @@ export function useKcMessage() {
         [kcLanguageTag, trigger],
     );
 
-    const msg = useCallback<
-        (...args: Parameters<typeof msgStr>) => JSX.Element
-    >(
+    const msg = useCallback<(...args: Parameters<typeof msgStr>) => JSX.Element>(
         (key, ...args) => (
-            <ReactMarkdown
-                allowDangerousHtml
-                renderers={
-                    key === "termsText" ? undefined : { "paragraph": "span" }
-                }
-            >
+            <ReactMarkdown allowDangerousHtml renderers={key === "termsText" ? undefined : { "paragraph": "span" }}>
                 {msgStr(key, ...args)}
             </ReactMarkdown>
         ),
@@ -69,12 +57,8 @@ export function useKcMessage() {
             const resolvedKey = match === null ? key : match[1];
 
             const out =
-                id<Record<string, string | undefined>>(
-                    kcMessages[kcLanguageTag],
-                )[resolvedKey] ??
-                id<Record<string, string | undefined>>(kcMessages["en"])[
-                    resolvedKey
-                ];
+                id<Record<string, string | undefined>>(kcMessages[kcLanguageTag])[resolvedKey] ??
+                id<Record<string, string | undefined>>(kcMessages["en"])[resolvedKey];
 
             return out !== undefined ? out : match === null ? key : undefined;
         },

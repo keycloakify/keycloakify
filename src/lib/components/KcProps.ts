@@ -70,9 +70,7 @@ export const defaultKcTemplateProps = {
 assert<typeof defaultKcTemplateProps extends KcTemplateProps ? true : false>();
 
 /** Tu use if you don't want any default */
-export const allClearKcTemplateProps = allPropertiesValuesToUndefined(
-    defaultKcTemplateProps,
-);
+export const allClearKcTemplateProps = allPropertiesValuesToUndefined(defaultKcTemplateProps);
 
 assert<typeof allClearKcTemplateProps extends KcTemplateProps ? true : false>();
 
@@ -134,31 +132,13 @@ export const defaultKcProps = {
     "kcLogoLink": "http://www.keycloak.org",
     "kcLogoClass": "login-pf-brand",
     "kcContainerClass": "container-fluid",
-    "kcContentClass": [
-        "col-sm-8",
-        "col-sm-offset-2",
-        "col-md-6",
-        "col-md-offset-3",
-        "col-lg-6",
-        "col-lg-offset-3",
-    ],
+    "kcContentClass": ["col-sm-8", "col-sm-offset-2", "col-md-6", "col-md-offset-3", "col-lg-6", "col-lg-offset-3"],
     "kcFeedbackAreaClass": ["col-md-12"],
     "kcLocaleClass": ["col-xs-12", "col-sm-1"],
     "kcAlertIconClasserror": ["pficon", "pficon-error-circle-o"],
 
-    "kcFormAreaClass": [
-        "col-sm-10",
-        "col-sm-offset-1",
-        "col-md-8",
-        "col-md-offset-2",
-        "col-lg-8",
-        "col-lg-offset-2",
-    ],
-    "kcFormSocialAccountListClass": [
-        "login-pf-social",
-        "list-unstyled",
-        "login-pf-social-all",
-    ],
+    "kcFormAreaClass": ["col-sm-10", "col-sm-offset-1", "col-md-8", "col-md-offset-2", "col-lg-8", "col-lg-offset-2"],
+    "kcFormSocialAccountListClass": ["login-pf-social", "list-unstyled", "login-pf-social-all"],
     "kcFormSocialAccountDoubleListClass": ["login-pf-social-double-col"],
     "kcFormSocialAccountListLinkClass": ["login-pf-social-link"],
     "kcWebAuthnKeyIcon": ["pficon", "pficon-key"],
@@ -167,25 +147,14 @@ export const defaultKcProps = {
     "kcFormGroupErrorClass": ["has-error"],
     "kcLabelClass": ["control-label"],
     "kcInputClass": ["form-control"],
-    "kcInputErrorMessageClass": [
-        "pf-c-form__helper-text",
-        "pf-m-error",
-        "required",
-        "kc-feedback-text",
-    ],
+    "kcInputErrorMessageClass": ["pf-c-form__helper-text", "pf-m-error", "required", "kc-feedback-text"],
     "kcInputWrapperClass": ["col-xs-12", "col-sm-12", "col-md-12", "col-lg-12"],
     "kcFormOptionsClass": ["col-xs-12", "col-sm-12", "col-md-12", "col-lg-12"],
     "kcFormButtonsClass": ["col-xs-12", "col-sm-12", "col-md-12", "col-lg-12"],
     "kcFormSettingClass": ["login-pf-settings"],
     "kcTextareaClass": ["form-control"],
 
-    "kcInfoAreaClass": [
-        "col-xs-12",
-        "col-sm-4",
-        "col-md-4",
-        "col-lg-5",
-        "details",
-    ],
+    "kcInfoAreaClass": ["col-xs-12", "col-sm-4", "col-md-4", "col-lg-5", "details"],
 
     // user-profile grouping
     "kcFormGroupHeader": ["pf-c-form__group"],
@@ -220,19 +189,10 @@ export const defaultKcProps = {
     "kcAuthenticatorPasswordClass": ["fa", "fa-unlock list-view-pf-icon-lg"],
     "kcAuthenticatorOTPClass": ["fa", "fa-mobile", "list-view-pf-icon-lg"],
     "kcAuthenticatorWebAuthnClass": ["fa", "fa-key", "list-view-pf-icon-lg"],
-    "kcAuthenticatorWebAuthnPasswordlessClass": [
-        "fa",
-        "fa-key",
-        "list-view-pf-icon-lg",
-    ],
+    "kcAuthenticatorWebAuthnPasswordlessClass": ["fa", "fa-key", "list-view-pf-icon-lg"],
 
     //css classes for the OTP Login Form
-    "kcSelectOTPListClass": [
-        "card-pf",
-        "card-pf-view",
-        "card-pf-view-select",
-        "card-pf-view-single-select",
-    ],
+    "kcSelectOTPListClass": ["card-pf", "card-pf-view", "card-pf-view-select", "card-pf-view-single-select"],
     "kcSelectOTPListItemClass": ["card-pf-body", "card-pf-top-element"],
     "kcAuthenticatorOtpCircleClass": ["fa", "fa-mobile", "card-pf-icon-circle"],
     "kcSelectOTPItemHeadingClass": ["card-pf-title", "text-center"],

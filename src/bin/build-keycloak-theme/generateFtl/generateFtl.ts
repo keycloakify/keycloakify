@@ -1,9 +1,5 @@
 import cheerio from "cheerio";
-import {
-    replaceImportsFromStaticInJsCode,
-    replaceImportsInInlineCssCode,
-    generateCssCodeToDefineGlobals,
-} from "../replaceImportFromStatic";
+import { replaceImportsFromStaticInJsCode, replaceImportsInInlineCssCode, generateCssCodeToDefineGlobals } from "../replaceImportFromStatic";
 import fs from "fs";
 import { join as pathJoin } from "path";
 import { objectKeys } from "tsafe/objectKeys";
@@ -35,8 +31,7 @@ export function generateFtlFilesCodeFactory(params: {
     urlPathname: string;
     urlOrigin: undefined | string;
 }) {
-    const { cssGlobalsToDefine, indexHtmlCode, urlPathname, urlOrigin } =
-        params;
+    const { cssGlobalsToDefine, indexHtmlCode, urlPathname, urlOrigin } = params;
 
     const $ = cheerio.load(indexHtmlCode);
 
@@ -76,19 +71,14 @@ export function generateFtlFilesCodeFactory(params: {
                 attrName,
                 urlOrigin !== undefined
                     ? href.replace(/^\//, `${urlOrigin}/`)
-                    : href.replace(
-                          new RegExp(`^${urlPathname.replace(/\//g, "\\/")}`),
-                          "${url.resourcesPath}/build/",
-                      ),
+                    : href.replace(new RegExp(`^${urlPathname.replace(/\//g, "\\/")}`), "${url.resourcesPath}/build/"),
             );
         }),
     );
 
     //FTL is no valid html, we can't insert with cheerio, we put placeholder for injecting later.
     const ftlPlaceholders = {
-        '{ "x": "vIdLqMeOed9sdLdIdOxdK0d" }': loadAdjacentFile(
-            "common.ftl",
-        ).match(/^<script>const _=((?:.|\n)+)<\/script>[\n]?$/)![1],
+        '{ "x": "vIdLqMeOed9sdLdIdOxdK0d" }': loadAdjacentFile("common.ftl").match(/^<script>const _=((?:.|\n)+)<\/script>[\n]?$/)![1],
         "<!-- xIdLqMeOedErIdLsPdNdI9dSlxI -->": [
             "<#if scripts??>",
             "    <#list scripts as script>",
@@ -98,8 +88,7 @@ export function generateFtlFilesCodeFactory(params: {
         ].join("\n"),
     };
 
-    const pageSpecificCodePlaceholder =
-        "<!-- dIddLqMeOedErIdLsPdNdI9dSl42sw -->";
+    const pageSpecificCodePlaceholder = "<!-- dIddLqMeOedErIdLsPdNdI9dSl42sw -->";
 
     $("head").prepend(
         [
@@ -152,9 +141,7 @@ export function generateFtlFilesCodeFactory(params: {
             ].join("\n"),
         );
 
-        objectKeys(ftlPlaceholders).forEach(
-            id => (ftlCode = ftlCode.replace(id, ftlPlaceholders[id])),
-        );
+        objectKeys(ftlPlaceholders).forEach(id => (ftlCode = ftlCode.replace(id, ftlPlaceholders[id])));
 
         return { ftlCode };
     }

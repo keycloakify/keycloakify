@@ -5,18 +5,11 @@ import type { AndByDiscriminatingKey } from "../tools/AndByDiscriminatingKey";
 import type { DeepPartial } from "../tools/DeepPartial";
 import { deepAssign } from "../tools/deepAssign";
 
-export type ExtendsKcContextBase<KcContextExtended extends { pageId: string }> =
-    [KcContextExtended] extends [never]
-        ? KcContextBase
-        : AndByDiscriminatingKey<
-              "pageId",
-              KcContextExtended & KcContextBase.Common,
-              KcContextBase
-          >;
+export type ExtendsKcContextBase<KcContextExtended extends { pageId: string }> = [KcContextExtended] extends [never]
+    ? KcContextBase
+    : AndByDiscriminatingKey<"pageId", KcContextExtended & KcContextBase.Common, KcContextBase>;
 
-export function getKcContext<
-    KcContextExtended extends { pageId: string } = never,
->(params?: {
+export function getKcContext<KcContextExtended extends { pageId: string } = never>(params?: {
     mockPageId?: ExtendsKcContextBase<KcContextExtended>["pageId"];
     mockData?: readonly DeepPartial<ExtendsKcContextBase<KcContextExtended>>[];
 }): { kcContext: ExtendsKcContextBase<KcContextExtended> | undefined } {
@@ -25,18 +18,11 @@ export function getKcContext<
     if (mockPageId !== undefined) {
         //TODO maybe trow if no mock fo custom page
 
-        const kcContextDefaultMock = kcContextMocks.find(
-            ({ pageId }) => pageId === mockPageId,
-        );
+        const kcContextDefaultMock = kcContextMocks.find(({ pageId }) => pageId === mockPageId);
 
-        const partialKcContextCustomMock = mockData?.find(
-            ({ pageId }) => pageId === mockPageId,
-        );
+        const partialKcContextCustomMock = mockData?.find(({ pageId }) => pageId === mockPageId);
 
-        if (
-            kcContextDefaultMock === undefined &&
-            partialKcContextCustomMock === undefined
-        ) {
+        if (kcContextDefaultMock === undefined && partialKcContextCustomMock === undefined) {
             console.warn(
                 [
                     `WARNING: You declared the non build in page ${mockPageId} but you didn't `,
@@ -50,10 +36,7 @@ export function getKcContext<
 
         deepAssign({
             "target": kcContext,
-            "source":
-                kcContextDefaultMock !== undefined
-                    ? kcContextDefaultMock
-                    : { "pageId": mockPageId, ...kcContextCommonMock },
+            "source": kcContextDefaultMock !== undefined ? kcContextDefaultMock : { "pageId": mockPageId, ...kcContextCommonMock },
         });
 
         if (partialKcContextCustomMock !== undefined) {
@@ -67,9 +50,6 @@ export function getKcContext<
     }
 
     return {
-        "kcContext":
-            typeof window === "undefined"
-                ? undefined
-                : (window as any)[ftlValuesGlobalName],
+        "kcContext": typeof window === "undefined" ? undefined : (window as any)[ftlValuesGlobalName],
     };
 }

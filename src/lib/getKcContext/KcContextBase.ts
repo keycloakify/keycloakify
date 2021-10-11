@@ -5,10 +5,7 @@ import type { Equals } from "tsafe";
 import type { MessageKey } from "../i18n/useKcMessage";
 import type { LanguageLabel } from "../i18n/KcLanguageTag";
 
-type ExtractAfterStartingWith<
-    Prefix extends string,
-    StrEnum,
-> = StrEnum extends `${Prefix}${infer U}` ? U : never;
+type ExtractAfterStartingWith<Prefix extends string, StrEnum> = StrEnum extends `${Prefix}${infer U}` ? U : never;
 
 /** Take theses type definition with a grain of salt.
  * Some values might be undefined on some pages.
@@ -154,10 +151,7 @@ export declare namespace KcContextBase {
     export type Info = Common & {
         pageId: "info.ftl";
         messageHeader?: string;
-        requiredActions?: ExtractAfterStartingWith<
-            "requiredAction.",
-            MessageKey
-        >[];
+        requiredActions?: ExtractAfterStartingWith<"requiredAction.", MessageKey>[];
         skipLink: boolean;
         pageRedirectUri?: string;
         actionUri?: string;
@@ -244,13 +238,10 @@ export type Validators = Partial<{
     };
     "up-duplicate-email": {};
     "local-date": Validators.DoIgnoreEmpty;
-    pattern: Validators.DoIgnoreEmpty &
-        Validators.ErrorMessage & { pattern: string };
-    "person-name-prohibited-characters": Validators.DoIgnoreEmpty &
-        Validators.ErrorMessage;
+    pattern: Validators.DoIgnoreEmpty & Validators.ErrorMessage & { pattern: string };
+    "person-name-prohibited-characters": Validators.DoIgnoreEmpty & Validators.ErrorMessage;
     uri: Validators.DoIgnoreEmpty;
-    "username-prohibited-characters": Validators.DoIgnoreEmpty &
-        Validators.ErrorMessage;
+    "username-prohibited-characters": Validators.DoIgnoreEmpty & Validators.ErrorMessage;
 }>;
 
 export declare namespace Validators {

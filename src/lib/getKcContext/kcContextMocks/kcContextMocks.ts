@@ -14,10 +14,8 @@ export const kcContextCommonMock: KcContextBase.Common = {
         "loginAction": "#",
         "resourcesPath": pathJoin(PUBLIC_URL, resourcesPath),
         "resourcesCommonPath": pathJoin(PUBLIC_URL, resourcesCommonPath),
-        "loginRestartFlowUrl":
-            "/auth/realms/myrealm/login-actions/restart?client_id=account&tab_id=HoAx28ja4xg",
-        "loginUrl":
-            "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg",
+        "loginRestartFlowUrl": "/auth/realms/myrealm/login-actions/restart?client_id=account&tab_id=HoAx28ja4xg",
+        "loginUrl": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg",
     },
     "realm": {
         "displayName": "myrealm",
@@ -132,10 +130,8 @@ Object.defineProperty(kcContextCommonMock.locale!, "current", {
 
 const loginUrl = {
     ...kcContextCommonMock.url,
-    "loginResetCredentialsUrl":
-        "/auth/realms/myrealm/login-actions/reset-credentials?client_id=account&tab_id=HoAx28ja4xg",
-    "registrationUrl":
-        "/auth/realms/myrealm/login-actions/registration?client_id=account&tab_id=HoAx28ja4xg",
+    "loginResetCredentialsUrl": "/auth/realms/myrealm/login-actions/reset-credentials?client_id=account&tab_id=HoAx28ja4xg",
+    "registrationUrl": "/auth/realms/myrealm/login-actions/registration?client_id=account&tab_id=HoAx28ja4xg",
 };
 
 export const kcContextMocks: KcContextBase[] = [
@@ -250,8 +246,7 @@ export const kcContextMocks: KcContextBase[] = [
                                         "ignore.empty.value": true,
                                     },
                                     "up-immutable-attribute": {},
-                                    "up-attribute-required-by-metadata-value":
-                                        {},
+                                    "up-attribute-required-by-metadata-value": {},
                                 },
                                 "displayName": "${firstName}",
                                 "annotations": {},
@@ -270,8 +265,7 @@ export const kcContextMocks: KcContextBase[] = [
                                         "ignore.empty.value": true,
                                     },
                                     "up-immutable-attribute": {},
-                                    "up-attribute-required-by-metadata-value":
-                                        {},
+                                    "up-attribute-required-by-metadata-value": {},
                                 },
                                 "displayName": "${lastName}",
                                 "annotations": {},
@@ -288,16 +282,14 @@ export const kcContextMocks: KcContextBase[] = [
                                         "max": "9",
                                     },
                                     "up-immutable-attribute": {},
-                                    "up-attribute-required-by-metadata-value":
-                                        {},
+                                    "up-attribute-required-by-metadata-value": {},
                                     "email": {
                                         "ignore.empty.value": true,
                                     },
                                 },
                                 "displayName": "${foo}",
                                 "annotations": {
-                                    "this_is_second_key":
-                                        "this_is_second_value",
+                                    "this_is_second_key": "this_is_second_value",
                                     "this_is_first_key": "this_is_first_value",
                                 },
                                 "required": true,
@@ -309,12 +301,7 @@ export const kcContextMocks: KcContextBase[] = [
 
                         return {
                             attributes,
-                            "attributesByName": Object.fromEntries(
-                                attributes.map(attribute => [
-                                    attribute.name,
-                                    attribute,
-                                ]),
-                            ) as any,
+                            "attributesByName": Object.fromEntries(attributes.map(attribute => [attribute.name, attribute])) as any,
                         } as any;
                     })(),
                 },

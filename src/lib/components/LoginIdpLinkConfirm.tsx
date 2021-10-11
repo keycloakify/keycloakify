@@ -5,61 +5,42 @@ import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { useKcMessage } from "../i18n/useKcMessage";
 import { useCssAndCx } from "tss-react";
 
-export const LoginIdpLinkConfirm = memo(
-    ({
-        kcContext,
-        ...props
-    }: { kcContext: KcContextBase.LoginIdpLinkConfirm } & KcProps) => {
-        const { url, idpAlias } = kcContext;
+export const LoginIdpLinkConfirm = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LoginIdpLinkConfirm } & KcProps) => {
+    const { url, idpAlias } = kcContext;
 
-        const { msg } = useKcMessage();
+    const { msg } = useKcMessage();
 
-        const { cx } = useCssAndCx();
+    const { cx } = useCssAndCx();
 
-        return (
-            <Template
-                {...{ kcContext, ...props }}
-                doFetchDefaultThemeResources={true}
-                headerNode={msg("confirmLinkIdpTitle")}
-                formNode={
-                    <form
-                        id="kc-register-form"
-                        action={url.loginAction}
-                        method="post"
-                    >
-                        <div className={cx(props.kcFormGroupClass)}>
-                            <button
-                                type="submit"
-                                className={cx(
-                                    props.kcButtonClass,
-                                    props.kcButtonDefaultClass,
-                                    props.kcButtonBlockClass,
-                                    props.kcButtonLargeClass,
-                                )}
-                                name="submitAction"
-                                id="updateProfile"
-                                value="updateProfile"
-                            >
-                                {msg("confirmLinkIdpReviewProfile")}
-                            </button>
-                            <button
-                                type="submit"
-                                className={cx(
-                                    props.kcButtonClass,
-                                    props.kcButtonDefaultClass,
-                                    props.kcButtonBlockClass,
-                                    props.kcButtonLargeClass,
-                                )}
-                                name="submitAction"
-                                id="linkAccount"
-                                value="linkAccount"
-                            >
-                                {msg("confirmLinkIdpContinue", idpAlias)}
-                            </button>
-                        </div>
-                    </form>
-                }
-            />
-        );
-    },
-);
+    return (
+        <Template
+            {...{ kcContext, ...props }}
+            doFetchDefaultThemeResources={true}
+            headerNode={msg("confirmLinkIdpTitle")}
+            formNode={
+                <form id="kc-register-form" action={url.loginAction} method="post">
+                    <div className={cx(props.kcFormGroupClass)}>
+                        <button
+                            type="submit"
+                            className={cx(props.kcButtonClass, props.kcButtonDefaultClass, props.kcButtonBlockClass, props.kcButtonLargeClass)}
+                            name="submitAction"
+                            id="updateProfile"
+                            value="updateProfile"
+                        >
+                            {msg("confirmLinkIdpReviewProfile")}
+                        </button>
+                        <button
+                            type="submit"
+                            className={cx(props.kcButtonClass, props.kcButtonDefaultClass, props.kcButtonBlockClass, props.kcButtonLargeClass)}
+                            name="submitAction"
+                            id="linkAccount"
+                            value="linkAccount"
+                        >
+                            {msg("confirmLinkIdpContinue", idpAlias)}
+                        </button>
+                    </div>
+                </form>
+            }
+        />
+    );
+});

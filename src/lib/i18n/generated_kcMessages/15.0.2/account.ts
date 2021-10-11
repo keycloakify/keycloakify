@@ -93,10 +93,8 @@ export const kcMessages = {
         "mobile": "Mòbil",
         "totpStep1":
             'Instal·la <a href="https://freeotp.github.io/" target="_blank">FreeOTP</a> o Google Authenticator al teu telèfon mòbil. Les dues aplicacions estan disponibles a <a href="https://play.google.com">Google Play</a> i en l\'App Store d\'Apple.',
-        "totpStep2":
-            "Obre l'aplicació i escaneja el codi o introdueix la clau.",
-        "totpStep3":
-            "Introdueix el codi únic que et mostra l'aplicació d'autenticació i fes clic a Envia per finalitzar la configuració",
+        "totpStep2": "Obre l'aplicació i escaneja el codi o introdueix la clau.",
+        "totpStep3": "Introdueix el codi únic que et mostra l'aplicació d'autenticació i fes clic a Envia per finalitzar la configuració",
         "missingUsernameMessage": "Si us plau indica el teu usuari.",
         "missingFirstNameMessage": "Si us plau indica el nom.",
         "invalidEmailMessage": "Email no vàlid",
@@ -105,56 +103,35 @@ export const kcMessages = {
         "missingPasswordMessage": "Si us plau indica la contrasenya.",
         "notMatchPasswordMessage": "Les contrasenyes no coincideixen.",
         "missingTotpMessage": "Si us plau indica el teu codi d'autenticació",
-        "invalidPasswordExistingMessage":
-            "La contrasenya actual no és correcta.",
-        "invalidPasswordConfirmMessage":
-            "La confirmació de contrasenya no coincideix.",
+        "invalidPasswordExistingMessage": "La contrasenya actual no és correcta.",
+        "invalidPasswordConfirmMessage": "La confirmació de contrasenya no coincideix.",
         "invalidTotpMessage": "El código de autenticación no es válido.",
         "usernameExistsMessage": "L'usuari ja existeix",
         "emailExistsMessage": "L'email ja existeix",
-        "readOnlyUserMessage":
-            "No pots actualitzar el teu usuari perquè el teu compte és de només lectura.",
-        "readOnlyPasswordMessage":
-            "No pots actualitzar la contrasenya perquè el teu compte és de només lectura.",
+        "readOnlyUserMessage": "No pots actualitzar el teu usuari perquè el teu compte és de només lectura.",
+        "readOnlyPasswordMessage": "No pots actualitzar la contrasenya perquè el teu compte és de només lectura.",
         "successTotpMessage": "Aplicació d'autenticació mòbil configurada.",
-        "successTotpRemovedMessage":
-            "Aplicació d'autenticació mòbil eliminada.",
+        "successTotpRemovedMessage": "Aplicació d'autenticació mòbil eliminada.",
         "successGrantRevokedMessage": "Permís revocat correctament",
         "accountUpdatedMessage": "El teu compte s'ha actualitzat.",
         "accountPasswordUpdatedMessage": "La contrasenya s'ha actualitzat.",
         "missingIdentityProviderMessage": "Proveïdor d'identitat no indicat.",
-        "invalidFederatedIdentityActionMessage":
-            "Acció no vàlida o no indicada.",
-        "identityProviderNotFoundMessage":
-            "No s'ha trobat un proveïdor d'identitat.",
-        "federatedIdentityLinkNotActiveMessage":
-            "Aquesta identitat ja no està activa",
-        "federatedIdentityRemovingLastProviderMessage":
-            "No pots eliminar l'última identitat federada perquè no tens fixada una contrasenya.",
-        "identityProviderRedirectErrorMessage":
-            "Error en la redirecció al proveïdor d'identitat",
-        "identityProviderRemovedMessage":
-            "Proveïdor d'identitat esborrat correctament.",
-        "accountDisabledMessage":
-            "El compte està desactivada, contacteu amb l'administrador.",
-        "accountTemporarilyDisabledMessage":
-            "El compte està temporalment desactivat, contacta amb l'administrador o intenta-ho de nou més tard.",
-        "invalidPasswordMinLengthMessage":
-            "Contrasenya incorrecta: longitud mínima {0}.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Contrasenya incorrecta: ha de contenir almenys {0} lletres minúscules.",
-        "invalidPasswordMinDigitsMessage":
-            "Contraseña incorrecta: debe contener al menos {0} caracteres numéricos.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Contrasenya incorrecta: ha de contenir almenys {0} lletres majúscules.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Contrasenya incorrecta: ha de contenir almenys {0} caràcters especials.",
-        "invalidPasswordNotUsernameMessage":
-            "Contrasenya incorrecta: no pot ser igual al nom d'usuari.",
-        "invalidPasswordRegexPatternMessage":
-            "Contrasenya incorrecta: no compleix l'expressió regular.",
-        "invalidPasswordHistoryMessage":
-            "Contrasenya incorrecta: no pot ser igual a cap de les últimes {0} contrasenyes.",
+        "invalidFederatedIdentityActionMessage": "Acció no vàlida o no indicada.",
+        "identityProviderNotFoundMessage": "No s'ha trobat un proveïdor d'identitat.",
+        "federatedIdentityLinkNotActiveMessage": "Aquesta identitat ja no està activa",
+        "federatedIdentityRemovingLastProviderMessage": "No pots eliminar l'última identitat federada perquè no tens fixada una contrasenya.",
+        "identityProviderRedirectErrorMessage": "Error en la redirecció al proveïdor d'identitat",
+        "identityProviderRemovedMessage": "Proveïdor d'identitat esborrat correctament.",
+        "accountDisabledMessage": "El compte està desactivada, contacteu amb l'administrador.",
+        "accountTemporarilyDisabledMessage": "El compte està temporalment desactivat, contacta amb l'administrador o intenta-ho de nou més tard.",
+        "invalidPasswordMinLengthMessage": "Contrasenya incorrecta: longitud mínima {0}.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Contrasenya incorrecta: ha de contenir almenys {0} lletres minúscules.",
+        "invalidPasswordMinDigitsMessage": "Contraseña incorrecta: debe contener al menos {0} caracteres numéricos.",
+        "invalidPasswordMinUpperCaseCharsMessage": "Contrasenya incorrecta: ha de contenir almenys {0} lletres majúscules.",
+        "invalidPasswordMinSpecialCharsMessage": "Contrasenya incorrecta: ha de contenir almenys {0} caràcters especials.",
+        "invalidPasswordNotUsernameMessage": "Contrasenya incorrecta: no pot ser igual al nom d'usuari.",
+        "invalidPasswordRegexPatternMessage": "Contrasenya incorrecta: no compleix l'expressió regular.",
+        "invalidPasswordHistoryMessage": "Contrasenya incorrecta: no pot ser igual a cap de les últimes {0} contrasenyes.",
     },
     "cs": {
         "doSave": "Uložit",
@@ -212,8 +189,7 @@ export const kcMessages = {
         "role_offline-access": "Přístup offline",
         "role_uma_authorization": "Získání oprávnění",
         "client_account": "Účet",
-        "client_security-admin-console":
-            "Administrátorská bezpečnostní konzole",
+        "client_security-admin-console": "Administrátorská bezpečnostní konzole",
         "client_admin-cli": "Administrátorské CLI",
         "client_realm-management": "Správa realmů",
         "client_broker": "Broker",
@@ -250,11 +226,9 @@ export const kcMessages = {
         "mobile": "Mobilní",
         "totpStep1": "Nainstalujte jednu z následujících aplikací",
         "totpStep2": "Otevřete aplikaci a naskenujte čárový kód",
-        "totpStep3":
-            "Zadejte jednorázový kód poskytnutý aplikací a klepnutím na tlačítko Uložit dokončete nastavení.",
+        "totpStep3": "Zadejte jednorázový kód poskytnutý aplikací a klepnutím na tlačítko Uložit dokončete nastavení.",
         "totpManualStep2": "Otevřete aplikaci a zadejte klíč",
-        "totpManualStep3":
-            "Použijte následující hodnoty konfigurace, pokud aplikace umožňuje jejich nastavení",
+        "totpManualStep3": "Použijte následující hodnoty konfigurace, pokud aplikace umožňuje jejich nastavení",
         "totpUnableToScan": "Nelze skenovat?",
         "totpScanBarcode": "Skenovat čárový kód?",
         "totp.totp": "Založeno na čase",
@@ -277,56 +251,36 @@ export const kcMessages = {
         "invalidTotpMessage": "Neplatný kód autentizátoru.",
         "usernameExistsMessage": "Uživatelské jméno již existuje.",
         "emailExistsMessage": "E-mail již existuje.",
-        "readOnlyUserMessage":
-            "Nemůžete svůj účet aktualizovat, protože je pouze pro čtení.",
-        "readOnlyUsernameMessage":
-            "Nemůžete aktualizovat své uživatelské jméno, protože je pouze pro čtení.",
-        "readOnlyPasswordMessage":
-            "Nemůžete aktualizovat své heslo, protože váš účet je jen pro čtení.",
+        "readOnlyUserMessage": "Nemůžete svůj účet aktualizovat, protože je pouze pro čtení.",
+        "readOnlyUsernameMessage": "Nemůžete aktualizovat své uživatelské jméno, protože je pouze pro čtení.",
+        "readOnlyPasswordMessage": "Nemůžete aktualizovat své heslo, protože váš účet je jen pro čtení.",
         "successTotpMessage": "Ověření pomocí OTP úspěšně konfigurováno.",
         "successTotpRemovedMessage": "Ověření pomocí OTP úspěšně odstraněno.",
         "successGrantRevokedMessage": "Oprávnění bylo úspěšně zrušeno.",
         "accountUpdatedMessage": "Váš účet byl aktualizován.",
         "accountPasswordUpdatedMessage": "Vaše heslo bylo aktualizováno.",
         "missingIdentityProviderMessage": "Chybějící poskytovatel identity.",
-        "invalidFederatedIdentityActionMessage":
-            "Neplatná nebo chybějící akce.",
+        "invalidFederatedIdentityActionMessage": "Neplatná nebo chybějící akce.",
         "identityProviderNotFoundMessage": "Poskytovatel identity nenalezen.",
-        "federatedIdentityLinkNotActiveMessage":
-            "Tato identita již není aktivní.",
-        "federatedIdentityRemovingLastProviderMessage":
-            "Nemůžete odstranit poslední propojenou identitu, protože nemáte heslo.",
-        "identityProviderRedirectErrorMessage":
-            "Nepodařilo se přesměrovat na poskytovatele identity.",
-        "identityProviderRemovedMessage":
-            "Poskytovatel identity byl úspěšně odstraněn.",
-        "identityProviderAlreadyLinkedMessage":
-            "Propojená identita vrácená uživatelem {0} je již propojena s jiným uživatelem.",
+        "federatedIdentityLinkNotActiveMessage": "Tato identita již není aktivní.",
+        "federatedIdentityRemovingLastProviderMessage": "Nemůžete odstranit poslední propojenou identitu, protože nemáte heslo.",
+        "identityProviderRedirectErrorMessage": "Nepodařilo se přesměrovat na poskytovatele identity.",
+        "identityProviderRemovedMessage": "Poskytovatel identity byl úspěšně odstraněn.",
+        "identityProviderAlreadyLinkedMessage": "Propojená identita vrácená uživatelem {0} je již propojena s jiným uživatelem.",
         "staleCodeAccountMessage": "Platnost vypršela. Zkuste to ještě jednou.",
         "consentDenied": "Souhlas byl zamítnut.",
         "accountDisabledMessage": "Účet je zakázán, kontaktujte správce.",
-        "accountTemporarilyDisabledMessage":
-            "Účet je dočasně zakázán, kontaktujte správce nebo zkuste to později.",
-        "invalidPasswordMinLengthMessage":
-            "Neplatné heslo: musí obsahovat minimálně {0} malých znaků.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Neplatné heslo: musí obsahovat minimálně {0} malé znaky.",
-        "invalidPasswordMinDigitsMessage":
-            "Neplatné heslo: musí obsahovat nejméně {0} číslic.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Neplatné heslo: musí obsahovat nejméně {0} velkých písmenen.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Neplatné heslo: musí obsahovat nejméně {0} speciálních znaků.",
-        "invalidPasswordNotUsernameMessage":
-            "Neplatné heslo: nesmí být totožné s uživatelským jménem.",
-        "invalidPasswordRegexPatternMessage":
-            "Neplatné heslo: neshoduje se zadaným regulárním výrazem.",
-        "invalidPasswordHistoryMessage":
-            "Neplatné heslo: Nesmí se opakovat žádné z posledních {0} hesel.",
-        "invalidPasswordBlacklistedMessage":
-            "Neplatné heslo: heslo je na černé listině.",
-        "invalidPasswordGenericMessage":
-            "Neplatné heslo: nové heslo neodpovídá pravidlům hesla.",
+        "accountTemporarilyDisabledMessage": "Účet je dočasně zakázán, kontaktujte správce nebo zkuste to později.",
+        "invalidPasswordMinLengthMessage": "Neplatné heslo: musí obsahovat minimálně {0} malých znaků.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Neplatné heslo: musí obsahovat minimálně {0} malé znaky.",
+        "invalidPasswordMinDigitsMessage": "Neplatné heslo: musí obsahovat nejméně {0} číslic.",
+        "invalidPasswordMinUpperCaseCharsMessage": "Neplatné heslo: musí obsahovat nejméně {0} velkých písmenen.",
+        "invalidPasswordMinSpecialCharsMessage": "Neplatné heslo: musí obsahovat nejméně {0} speciálních znaků.",
+        "invalidPasswordNotUsernameMessage": "Neplatné heslo: nesmí být totožné s uživatelským jménem.",
+        "invalidPasswordRegexPatternMessage": "Neplatné heslo: neshoduje se zadaným regulárním výrazem.",
+        "invalidPasswordHistoryMessage": "Neplatné heslo: Nesmí se opakovat žádné z posledních {0} hesel.",
+        "invalidPasswordBlacklistedMessage": "Neplatné heslo: heslo je na černé listině.",
+        "invalidPasswordGenericMessage": "Neplatné heslo: nové heslo neodpovídá pravidlům hesla.",
     },
     "da": {
         "doSave": "Gem",
@@ -348,14 +302,11 @@ export const kcMessages = {
         "authenticatorTitle": "Authenticator",
         "applicationsHtmlTitle": "Applikationer",
         "linkedAccountsHtmlTitle": "Linkede konti",
-        "accountManagementWelcomeMessage":
-            "Velkommen til Keycloak Account Management",
+        "accountManagementWelcomeMessage": "Velkommen til Keycloak Account Management",
         "personalInfoIntroMessage": "Administrer dine informationer",
         "accountSecurityTitle": "Kontosikkerhed",
-        "accountSecurityIntroMessage":
-            "Kontroller din adgangskode og kontoadgang.",
-        "applicationsIntroMessage":
-            "Spor og administrer dine app tilladelser for at tilgå din konto",
+        "accountSecurityIntroMessage": "Kontroller din adgangskode og kontoadgang.",
+        "applicationsIntroMessage": "Spor og administrer dine app tilladelser for at tilgå din konto",
         "resourceIntroMessage": "Del dine ressourcer med team medlemmer",
         "passwordLastUpdateMessage": "Din adgangskode blev opdateret",
         "updatePasswordTitle": "Opdater Adgangskode",
@@ -363,8 +314,7 @@ export const kcMessages = {
         "updatePasswordMessage":
             "En stærk adgangskode indeholder en blanding af tal, bogstaver og symboler. Det er svært at gætte, ligner ikke et rigtigt ord og bør kun bruges til denne konto.",
         "personalSubTitle": "Dine Personlige Informationer",
-        "personalSubMessage":
-            "Administrer disse grundinformationer; dit fornavn, efternavn og email adresse",
+        "personalSubMessage": "Administrer disse grundinformationer; dit fornavn, efternavn og email adresse",
         "authenticatorCode": "Engangskode",
         "email": "Email",
         "firstName": "Fornavn",
@@ -451,11 +401,9 @@ export const kcMessages = {
         "mobile": "Mobil",
         "totpStep1": "Installer en af følgende applikationer på din mobil",
         "totpStep2": "Åben applikationen og skan stregkoden",
-        "totpStep3":
-            "Indtast engangskoden fra applikationen og tryk Indsend for at gennemføre opsætningen",
+        "totpStep3": "Indtast engangskoden fra applikationen og tryk Indsend for at gennemføre opsætningen",
         "totpManualStep2": "Åben applikationen og indtast nøglen",
-        "totpManualStep3":
-            "Brug følgende konfigurations værdier hvis applikationen tillader det",
+        "totpManualStep3": "Brug følgende konfigurations værdier hvis applikationen tillader det",
         "totpUnableToScan": "Kan du ikke skanne?",
         "totpScanBarcode": "Skan stregkode?",
         "totp.totp": "Tidsbaseret",
@@ -479,56 +427,35 @@ export const kcMessages = {
         "invalidTotpMessage": "Ugyldig autentificerings kode.",
         "usernameExistsMessage": "Brugernavnet eksisterer allerede.",
         "emailExistsMessage": "Email adressen eksisterer allerede.",
-        "readOnlyUserMessage":
-            "Du kan ikke opdatere din konto da den er read-only.",
-        "readOnlyUsernameMessage":
-            "Du kan ikke opdatere dit brugernavn da det er read-only.",
-        "readOnlyPasswordMessage":
-            "Du kan ikke opdatere din adgangskode da den er read-only.",
+        "readOnlyUserMessage": "Du kan ikke opdatere din konto da den er read-only.",
+        "readOnlyUsernameMessage": "Du kan ikke opdatere dit brugernavn da det er read-only.",
+        "readOnlyPasswordMessage": "Du kan ikke opdatere din adgangskode da den er read-only.",
         "successTotpMessage": "Mobil authenticator konfigureret.",
         "successTotpRemovedMessage": "Mobil authenticator fjernet.",
         "successGrantRevokedMessage": "Tildeling tilbagekaldt.",
         "accountUpdatedMessage": "Din konto er blevet opdateret.",
         "accountPasswordUpdatedMessage": "Din adgangskode er blevet opdateret.",
-        "missingIdentityProviderMessage":
-            "Identitetsudbyder ikke specificeret.",
-        "invalidFederatedIdentityActionMessage":
-            "Ugyldig eller manglende handling.",
-        "identityProviderNotFoundMessage":
-            "Den angivede identitetsudbyder kunne ikke findes.",
-        "federatedIdentityLinkNotActiveMessage":
-            "Denne identiet er ikke aktiv længere.",
-        "identityProviderRedirectErrorMessage":
-            "Kunne ikke redirecte til identitetsudbyder.",
+        "missingIdentityProviderMessage": "Identitetsudbyder ikke specificeret.",
+        "invalidFederatedIdentityActionMessage": "Ugyldig eller manglende handling.",
+        "identityProviderNotFoundMessage": "Den angivede identitetsudbyder kunne ikke findes.",
+        "federatedIdentityLinkNotActiveMessage": "Denne identiet er ikke aktiv længere.",
+        "identityProviderRedirectErrorMessage": "Kunne ikke redirecte til identitetsudbyder.",
         "identityProviderRemovedMessage": "Identitetsudbyder fjernet.",
-        "identityProviderAlreadyLinkedMessage":
-            "Forbundsidentitet returneret af {} er allerede forbundet til en anden bruger.",
+        "identityProviderAlreadyLinkedMessage": "Forbundsidentitet returneret af {} er allerede forbundet til en anden bruger.",
         "staleCodeAccountMessage": "Siden er udløbet. Prøv igen.",
         "consentDenied": "Samtykke afslået.",
-        "accountDisabledMessage":
-            "Kontoen er deaktiveret, kontakt en administrator.",
-        "accountTemporarilyDisabledMessage":
-            "Kontoen er midlertidigt deaktiveret, kontakt en administrator eller prøv igen senere.",
-        "invalidPasswordMinLengthMessage":
-            "Ugyldig adgangskode: minimum længde {0}.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Ugyldig adgangskode: skal minimum indeholde {0} små bogstaver.",
-        "invalidPasswordMinDigitsMessage":
-            "Ugyldig adgangskode: skal minimum indeholde {0} tal.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Ugyldig adgangskode: skal minimum indeholde {0} store bogstaver.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Ugyldig adgangskode: skal minimum indeholde {0} specialtegn.",
-        "invalidPasswordNotUsernameMessage":
-            "Ugyldig adgangskode: må ikke være identisk med brugernavnet.",
-        "invalidPasswordRegexPatternMessage":
-            "Ugyldig adgangskode: Ikke i stand til at matche regex mønstre.",
-        "invalidPasswordHistoryMessage":
-            "Ugyldig adgangskode: må ikke være identisk med nogle af de seneste {0} adgangskoder.",
-        "invalidPasswordBlacklistedMessage":
-            "Ugyldig adgangskode: adgangskoden er sortlisted.",
-        "invalidPasswordGenericMessage":
-            "Ugyldig adgangskode: ny adgangskode matcher ikke vores adgangskode politikker.",
+        "accountDisabledMessage": "Kontoen er deaktiveret, kontakt en administrator.",
+        "accountTemporarilyDisabledMessage": "Kontoen er midlertidigt deaktiveret, kontakt en administrator eller prøv igen senere.",
+        "invalidPasswordMinLengthMessage": "Ugyldig adgangskode: minimum længde {0}.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Ugyldig adgangskode: skal minimum indeholde {0} små bogstaver.",
+        "invalidPasswordMinDigitsMessage": "Ugyldig adgangskode: skal minimum indeholde {0} tal.",
+        "invalidPasswordMinUpperCaseCharsMessage": "Ugyldig adgangskode: skal minimum indeholde {0} store bogstaver.",
+        "invalidPasswordMinSpecialCharsMessage": "Ugyldig adgangskode: skal minimum indeholde {0} specialtegn.",
+        "invalidPasswordNotUsernameMessage": "Ugyldig adgangskode: må ikke være identisk med brugernavnet.",
+        "invalidPasswordRegexPatternMessage": "Ugyldig adgangskode: Ikke i stand til at matche regex mønstre.",
+        "invalidPasswordHistoryMessage": "Ugyldig adgangskode: må ikke være identisk med nogle af de seneste {0} adgangskoder.",
+        "invalidPasswordBlacklistedMessage": "Ugyldig adgangskode: adgangskoden er sortlisted.",
+        "invalidPasswordGenericMessage": "Ugyldig adgangskode: ny adgangskode matcher ikke vores adgangskode politikker.",
         "myResources": "Mine Ressourcer",
         "myResourcesSub": "Mine ressourcer",
         "doDeny": "Afslå",
@@ -537,10 +464,8 @@ export const kcMessages = {
         "doRemoveSharing": "Fjern Deling",
         "doRemoveRequest": "Fjern Forespørgsel",
         "peopleAccessResource": "Folk med adgang til denne ressource",
-        "resourceManagedPolicies":
-            "Tilladelsen som giver adgang til denne ressource",
-        "resourceNoPermissionsGrantingAccess":
-            "Ingen tilladelser giver adgang til denne ressource",
+        "resourceManagedPolicies": "Tilladelsen som giver adgang til denne ressource",
+        "resourceNoPermissionsGrantingAccess": "Ingen tilladelser giver adgang til denne ressource",
         "anyAction": "Enhver handling",
         "description": "Beskrivelse",
         "name": "Navn",
@@ -584,47 +509,36 @@ export const kcMessages = {
         "thirdpartyApps": "Tredje-parts applikationer",
         "appResults": "Resultater",
         "authorizedProvider": "Autoriseret Udbyder",
-        "authorizedProviderMessage":
-            "Autoriserede udbydere forbundet med din konto",
+        "authorizedProviderMessage": "Autoriserede udbydere forbundet med din konto",
         "identityProvider": "Identitetsudbyder",
-        "identityProviderMessage":
-            "For at forbinde din konto med de identitetsudbydere du har konfigureret",
+        "identityProviderMessage": "For at forbinde din konto med de identitetsudbydere du har konfigureret",
         "socialLogin": "Social Log ind",
         "userDefined": "Brugerdefineret",
         "removeAccess": "Fjern Adgang",
-        "removeAccessMessage":
-            "Du skal give adgang igen, hvis du vil bruge denne app konto.",
+        "removeAccessMessage": "Du skal give adgang igen, hvis du vil bruge denne app konto.",
         "authenticatorStatusMessage": "To-faktor godkendelse er",
         "authenticatorFinishSetUpTitle": "Din to-faktor godkendelse",
         "authenticatorFinishSetUpMessage":
             "Hver gang du logger ind på din Keycloak konto, vil du blive bedt om at give din to-faktor godkendelses kode.",
         "authenticatorSubTitle": "Opsæt to-faktor godkendelse",
-        "authenticatorSubMessage":
-            "For at forbedre sikkerheden på din konto, aktiver mindst en af de tilgængelige to-faktor godkendelses metoder.",
+        "authenticatorSubMessage": "For at forbedre sikkerheden på din konto, aktiver mindst en af de tilgængelige to-faktor godkendelses metoder.",
         "authenticatorMobileTitle": "Mobile Authenticator",
-        "authenticatorMobileMessage":
-            "Brug Mobile Authenticator for at få godkendelses koder som to-faktor godkendelse.",
-        "authenticatorMobileFinishSetUpMessage":
-            "Authenticatoren er blevet bundet til din telefon.",
+        "authenticatorMobileMessage": "Brug Mobile Authenticator for at få godkendelses koder som to-faktor godkendelse.",
+        "authenticatorMobileFinishSetUpMessage": "Authenticatoren er blevet bundet til din telefon.",
         "authenticatorActionSetup": "Opsæt",
         "authenticatorSMSTitle": "SMS Kode",
-        "authenticatorSMSMessage":
-            "Keycloak vil sende godkendelses koden til din telefon som to-faktor godkendelse.",
+        "authenticatorSMSMessage": "Keycloak vil sende godkendelses koden til din telefon som to-faktor godkendelse.",
         "authenticatorSMSFinishSetUpMessage": "Tekst beskeder er sendt til",
         "authenticatorDefaultStatus": "Standard",
         "authenticatorChangePhone": "Ændre Telefonnummer",
         "authenticatorBackupCodesTitle": "Backup Koder",
         "authenticatorBackupCodesMessage": "Få dine 8-cifre backup koder",
-        "authenticatorBackupCodesFinishSetUpMessage":
-            "12 backup koder blev genereret denne gang. Alle kan bruges.",
+        "authenticatorBackupCodesFinishSetUpMessage": "12 backup koder blev genereret denne gang. Alle kan bruges.",
         "authenticatorMobileSetupTitle": "Mobile Authenticator Opsætning",
-        "smscodeIntroMessage":
-            "Indtast dit mobil nummer og en verifikationskode vil blive sendt til din telefon.",
-        "mobileSetupStep1":
-            "Installer en authenticator applikation på din telefon. De understøttede applikationer er listed her.",
+        "smscodeIntroMessage": "Indtast dit mobil nummer og en verifikationskode vil blive sendt til din telefon.",
+        "mobileSetupStep1": "Installer en authenticator applikation på din telefon. De understøttede applikationer er listed her.",
         "mobileSetupStep2": "Åben applikationen og skan stregkoden.",
-        "mobileSetupStep3":
-            "Indtast engangskoden fra authenticator applikationen og tryk Gem for at færdiggøre opsætningen.",
+        "mobileSetupStep3": "Indtast engangskoden fra authenticator applikationen og tryk Gem for at færdiggøre opsætningen.",
         "scanBarCode": "Vil du skanne stregkoden?",
         "enterBarCode": "Indtast engangskoden",
         "doCopy": "Kopier",
@@ -643,8 +557,7 @@ export const kcMessages = {
         "backupCodesTips-1": "Hver backup kode kan kun bruges en gang.",
         "backupCodesTips-2": "Disse koder blev generet d.",
         "generateNewBackupCodes": "Generer Nye Backup Koder",
-        "backupCodesTips-3":
-            "Når du genererer nye backup koder, vil de gamle ikke længere virke.",
+        "backupCodesTips-3": "Når du genererer nye backup koder, vil de gamle ikke længere virke.",
         "backtoAuthenticatorPage": "Tilbage til Authenticator siden",
         "resources": "Ressourcer",
         "sharedwithMe": "Delt med mig",
@@ -686,13 +599,11 @@ export const kcMessages = {
         "authenticatorTitle": "Mehrfachauthentifizierung",
         "applicationsHtmlTitle": "Applikationen",
         "linkedAccountsHtmlTitle": "Verknüpfte Konten",
-        "accountManagementWelcomeMessage":
-            "Willkommen bei der Keycloak Kontoverwaltung",
+        "accountManagementWelcomeMessage": "Willkommen bei der Keycloak Kontoverwaltung",
         "personalInfoIntroMessage": "Grundlegende Informationen verwalten",
         "accountSecurityTitle": "Kontosicherheit",
         "accountSecurityIntroMessage": "Passwort und Kontozugriff verwalten",
-        "applicationsIntroMessage":
-            "App-Berechtigung für den Zugriff auf ihr Konto verwalten",
+        "applicationsIntroMessage": "App-Berechtigung für den Zugriff auf ihr Konto verwalten",
         "resourceIntroMessage": "Ressourcen mit Teammitgliedern teilen",
         "passwordLastUpdateMessage": "Ihr Passwort wurde aktualisiert am",
         "updatePasswordTitle": "Passwort aktualisieren",
@@ -700,8 +611,7 @@ export const kcMessages = {
         "updatePasswordMessage":
             "Ein sicheres Passwort besteht aus einer Kombination aus Zahlen, Buchstaben und Sonderzeichen. Es ist schwer zu erraten, hat keine Ähnlichkeit mit einem echten Wort, und wird nur für dieses Konto verwendet.",
         "personalSubTitle": "Ihre persönlichen Informationen",
-        "personalSubMessage":
-            "Verwalten Sie folgende Informationen: Vorname, Nachname und E-Mail-Adresse",
+        "personalSubMessage": "Verwalten Sie folgende Informationen: Vorname, Nachname und E-Mail-Adresse",
         "authenticatorCode": "One-time Code",
         "email": "E-Mail",
         "firstName": "Vorname",
@@ -796,17 +706,12 @@ export const kcMessages = {
         "revoke": "Berechtigung widerrufen",
         "configureAuthenticators": "Mehrfachauthentifizierung konfigurieren",
         "mobile": "Mobil",
-        "totpStep1":
-            "Installieren Sie eine der folgenden Applikationen auf Ihrem Smartphone:",
+        "totpStep1": "Installieren Sie eine der folgenden Applikationen auf Ihrem Smartphone:",
         "totpStep2": "Öffnen Sie die Applikation und scannen Sie den Barcode.",
-        "totpStep3":
-            "Geben Sie den von der Applikation generierten One-time Code ein und klicken Sie auf Speichern.",
-        "totpStep3DeviceName":
-            "Geben Sie einen Gerätenamen an, um die Verwaltung Ihrer OTP-Geräte zu erleichtern.",
-        "totpManualStep2":
-            "Öffnen Sie die Applikation und geben Sie den folgenden Schlüssel ein.",
-        "totpManualStep3":
-            "Verwenden Sie die folgenden Konfigurationswerte, falls Sie diese für die Applikation anpassen können:",
+        "totpStep3": "Geben Sie den von der Applikation generierten One-time Code ein und klicken Sie auf Speichern.",
+        "totpStep3DeviceName": "Geben Sie einen Gerätenamen an, um die Verwaltung Ihrer OTP-Geräte zu erleichtern.",
+        "totpManualStep2": "Öffnen Sie die Applikation und geben Sie den folgenden Schlüssel ein.",
+        "totpManualStep3": "Verwenden Sie die folgenden Konfigurationswerte, falls Sie diese für die Applikation anpassen können:",
         "totpUnableToScan": "Sie können den Barcode nicht scannen?",
         "totpScanBarcode": "Barcode scannen?",
         "totp.totp": "zeitbasiert (time-based)",
@@ -821,8 +726,7 @@ export const kcMessages = {
         "deletingImplies": "Die Löschung Ihres Kontos bedeutet:",
         "errasingData": "Löschen aller Ihrer Daten",
         "loggingOutImmediately": "Sofortige Abmeldung",
-        "accountUnusable":
-            "Eine spätere Nutzung der Anwendung ist mit diesem Konto nicht mehr möglich",
+        "accountUnusable": "Eine spätere Nutzung der Anwendung ist mit diesem Konto nicht mehr möglich",
         "missingUsernameMessage": "Bitte geben Sie einen Benutzernamen ein.",
         "missingFirstNameMessage": "Bitte geben Sie einen Vornamen ein.",
         "invalidEmailMessage": "Ungültige E-Mail Adresse.",
@@ -834,68 +738,42 @@ export const kcMessages = {
         "missingTotpMessage": "Bitte geben Sie den One-time Code ein.",
         "missingTotpDeviceNameMessage": "Bitte geben Sie einen Gerätenamen an.",
         "invalidPasswordExistingMessage": "Das aktuelle Passwort ist ungültig.",
-        "invalidPasswordConfirmMessage":
-            "Die Passwortbestätigung ist nicht identisch.",
+        "invalidPasswordConfirmMessage": "Die Passwortbestätigung ist nicht identisch.",
         "invalidTotpMessage": "Ungültiger One-time Code.",
         "usernameExistsMessage": "Der Benutzername existiert bereits.",
         "emailExistsMessage": "Die E-Mail-Adresse existiert bereits.",
-        "readOnlyUserMessage":
-            "Sie können Ihr Benutzerkonto nicht ändern, da es schreibgeschützt ist.",
-        "readOnlyUsernameMessage":
-            "Sie können Ihren Benutzernamen nicht ändern, da er schreibgeschützt ist.",
-        "readOnlyPasswordMessage":
-            "Sie können Ihr Passwort nicht ändern, da es schreibgeschützt ist.",
-        "successTotpMessage":
-            "Mehrfachauthentifizierung erfolgreich konfiguriert.",
-        "successTotpRemovedMessage":
-            "Mehrfachauthentifizierung erfolgreich entfernt.",
+        "readOnlyUserMessage": "Sie können Ihr Benutzerkonto nicht ändern, da es schreibgeschützt ist.",
+        "readOnlyUsernameMessage": "Sie können Ihren Benutzernamen nicht ändern, da er schreibgeschützt ist.",
+        "readOnlyPasswordMessage": "Sie können Ihr Passwort nicht ändern, da es schreibgeschützt ist.",
+        "successTotpMessage": "Mehrfachauthentifizierung erfolgreich konfiguriert.",
+        "successTotpRemovedMessage": "Mehrfachauthentifizierung erfolgreich entfernt.",
         "successGrantRevokedMessage": "Berechtigung erfolgreich widerrufen.",
         "accountUpdatedMessage": "Ihr Benutzerkonto wurde aktualisiert.",
         "accountPasswordUpdatedMessage": "Ihr Passwort wurde aktualisiert.",
         "missingIdentityProviderMessage": "Identity Provider nicht angegeben.",
-        "invalidFederatedIdentityActionMessage":
-            "Ungültige oder fehlende Aktion.",
-        "identityProviderNotFoundMessage":
-            "Angegebener Identity Provider nicht gefunden.",
-        "federatedIdentityLinkNotActiveMessage":
-            "Diese Identität ist nicht mehr aktiv.",
-        "federatedIdentityRemovingLastProviderMessage":
-            "Sie können den letzten Eintrag nicht entfernen, da Sie kein Passwort haben.",
-        "identityProviderRedirectErrorMessage":
-            "Fehler bei der Weiterleitung zum Identity Provider.",
-        "identityProviderRemovedMessage":
-            "Identity Provider erfolgreich entfernt.",
-        "identityProviderAlreadyLinkedMessage":
-            "Die föderierte Identität von {0} ist bereits einem anderen Benutzer zugewiesen.",
-        "staleCodeAccountMessage":
-            "Diese Seite ist nicht mehr gültig, bitte versuchen Sie es noch einmal.",
+        "invalidFederatedIdentityActionMessage": "Ungültige oder fehlende Aktion.",
+        "identityProviderNotFoundMessage": "Angegebener Identity Provider nicht gefunden.",
+        "federatedIdentityLinkNotActiveMessage": "Diese Identität ist nicht mehr aktiv.",
+        "federatedIdentityRemovingLastProviderMessage": "Sie können den letzten Eintrag nicht entfernen, da Sie kein Passwort haben.",
+        "identityProviderRedirectErrorMessage": "Fehler bei der Weiterleitung zum Identity Provider.",
+        "identityProviderRemovedMessage": "Identity Provider erfolgreich entfernt.",
+        "identityProviderAlreadyLinkedMessage": "Die föderierte Identität von {0} ist bereits einem anderen Benutzer zugewiesen.",
+        "staleCodeAccountMessage": "Diese Seite ist nicht mehr gültig, bitte versuchen Sie es noch einmal.",
         "consentDenied": "Einverständnis verweigert.",
-        "accountDisabledMessage":
-            "Ihr Benutzerkonto ist gesperrt, bitte kontaktieren Sie den Admin.",
+        "accountDisabledMessage": "Ihr Benutzerkonto ist gesperrt, bitte kontaktieren Sie den Admin.",
         "accountTemporarilyDisabledMessage":
             "Ihr Benutzerkonto ist temporär gesperrt, bitte kontaktieren Sie den Admin oder versuchen Sie es später noch einmal.",
-        "invalidPasswordMinLengthMessage":
-            "Ungültiges Passwort: Es muss mindestens {0} Zeichen lang sein.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Ungültiges Passwort: Es muss mindestens {0} Kleinbuchstaben beinhalten.",
-        "invalidPasswordMinDigitsMessage":
-            "Ungültiges Passwort: Es muss mindestens {0} Zahl(en) beinhalten.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Ungültiges Passwort: Es muss mindestens {0} Großbuchstaben beinhalten.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Ungültiges Passwort: Es muss mindestens {0} Sonderzeichen beinhalten.",
-        "invalidPasswordNotUsernameMessage":
-            "Ungültiges Passwort: Es darf nicht gleich sein wie der Benutzername.",
-        "invalidPasswordNotEmailMessage":
-            "Ungültiges Passwort: darf nicht identisch mit der E-Mail-Adresse sein.",
-        "invalidPasswordRegexPatternMessage":
-            "Ungültiges Passwort: Es entspricht nicht dem Regex-Muster.",
-        "invalidPasswordHistoryMessage":
-            "Ungültiges Passwort: Es darf nicht einem der letzten {0} Passwörter entsprechen.",
-        "invalidPasswordBlacklistedMessage":
-            "Ungültiges Passwort: Das Passwort steht auf der Blocklist (schwarzen Liste).",
-        "invalidPasswordGenericMessge":
-            "Ungültiges Passwort: Das neue Passwort verletzt die Passwort-Richtlinien.",
+        "invalidPasswordMinLengthMessage": "Ungültiges Passwort: Es muss mindestens {0} Zeichen lang sein.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Ungültiges Passwort: Es muss mindestens {0} Kleinbuchstaben beinhalten.",
+        "invalidPasswordMinDigitsMessage": "Ungültiges Passwort: Es muss mindestens {0} Zahl(en) beinhalten.",
+        "invalidPasswordMinUpperCaseCharsMessage": "Ungültiges Passwort: Es muss mindestens {0} Großbuchstaben beinhalten.",
+        "invalidPasswordMinSpecialCharsMessage": "Ungültiges Passwort: Es muss mindestens {0} Sonderzeichen beinhalten.",
+        "invalidPasswordNotUsernameMessage": "Ungültiges Passwort: Es darf nicht gleich sein wie der Benutzername.",
+        "invalidPasswordNotEmailMessage": "Ungültiges Passwort: darf nicht identisch mit der E-Mail-Adresse sein.",
+        "invalidPasswordRegexPatternMessage": "Ungültiges Passwort: Es entspricht nicht dem Regex-Muster.",
+        "invalidPasswordHistoryMessage": "Ungültiges Passwort: Es darf nicht einem der letzten {0} Passwörter entsprechen.",
+        "invalidPasswordBlacklistedMessage": "Ungültiges Passwort: Das Passwort steht auf der Blocklist (schwarzen Liste).",
+        "invalidPasswordGenericMessge": "Ungültiges Passwort: Das neue Passwort verletzt die Passwort-Richtlinien.",
         "myResources": "Meine Ressourcen",
         "myResourcesSub": "Meine Ressourcen",
         "doDeny": "Ablehnen",
@@ -904,10 +782,8 @@ export const kcMessages = {
         "doRemoveSharing": "Freigabe entfernen",
         "doRemoveRequest": "Anfrage entfernen",
         "peopleAccessResource": "Personen mit Zugriff auf diese Ressource",
-        "resourceManagedPolicies":
-            "Berechtigungen, die Zugriff auf diese Ressource gewähren",
-        "resourceNoPermissionsGrantingAccess":
-            "Keine Berechtigungen, die Zugriff auf diese Ressource gewähren",
+        "resourceManagedPolicies": "Berechtigungen, die Zugriff auf diese Ressource gewähren",
+        "resourceNoPermissionsGrantingAccess": "Keine Berechtigungen, die Zugriff auf diese Ressource gewähren",
         "anyAction": "Jede Aktion",
         "description": "Beschreibung",
         "name": "Name",
@@ -927,10 +803,8 @@ export const kcMessages = {
         "shares": "teilt(en)",
         "notBeingShared": "Diese Ressource wird nicht freigegeben.",
         "notHaveAnyResource": "Sie haben keine Ressourcen",
-        "noResourcesSharedWithYou":
-            "Es werden keine Ressourcen mit Ihnen geteilt",
-        "havePermissionRequestsWaitingForApproval":
-            "Sie haben {0} Genehmigungsanfrage(n), die auf die Genehmigung warten.",
+        "noResourcesSharedWithYou": "Es werden keine Ressourcen mit Ihnen geteilt",
+        "havePermissionRequestsWaitingForApproval": "Sie haben {0} Genehmigungsanfrage(n), die auf die Genehmigung warten.",
         "clickHereForDetails": "Klicken Sie hier für Details.",
         "resourceIsNotBeingShared": "Die Ressource wird nicht freigegeben",
         "applicationName": "Anwendungsname",
@@ -945,18 +819,14 @@ export const kcMessages = {
         "appResults": "Ergebnisse",
         "clientNotFoundMessage": "Client nicht gefunden.",
         "authorizedProvider": "Autorisierter Provider",
-        "authorizedProviderMessage":
-            "Autorisierte Provider, die mit Ihrem Konto verknüpft sind",
+        "authorizedProviderMessage": "Autorisierte Provider, die mit Ihrem Konto verknüpft sind",
         "identityProvider": "Identitätsprovider",
-        "identityProviderMessage":
-            "Verknüpfen Sie Ihr Konto mit Identitätsprovidern, die Sie konfiguriert haben",
+        "identityProviderMessage": "Verknüpfen Sie Ihr Konto mit Identitätsprovidern, die Sie konfiguriert haben",
         "socialLogin": "Social Login",
         "userDefined": "Benutzerdefiniert",
         "removeAccess": "Zugriff entfernen",
-        "removeAccessMessage":
-            "Sie müssen den Zugriff erneut gewähren, wenn Sie diese Anwendung verwenden möchten.",
-        "authenticatorStatusMessage":
-            "Zwei-Faktor-Authentifizierung ist zurzeit",
+        "removeAccessMessage": "Sie müssen den Zugriff erneut gewähren, wenn Sie diese Anwendung verwenden möchten.",
+        "authenticatorStatusMessage": "Zwei-Faktor-Authentifizierung ist zurzeit",
         "authenticatorFinishSetUpTitle": "Ihre Zwei-Faktor-Authentifizierung",
         "authenticatorFinishSetUpMessage":
             "Jedes Mal, wenn Sie sich bei Ihrem Keycloak-Konto anmelden, werden Sie aufgefordert, einen Zwei-Faktor-Authentifizierungscode einzugeben.",
@@ -966,28 +836,20 @@ export const kcMessages = {
         "authenticatorMobileTitle": "Handy-Authentifikator",
         "authenticatorMobileMessage":
             "Verwenden Sie Authenticator-Anwendungen auf Ihrem Telefon, um Verifizierungscodes als Zwei-Faktor-Authentifizierung zu erhalten.",
-        "authenticatorMobileFinishSetUpMessage":
-            "Die Authenticator-Anwendung wurde an Ihr Telefon gebunden.",
+        "authenticatorMobileFinishSetUpMessage": "Die Authenticator-Anwendung wurde an Ihr Telefon gebunden.",
         "authenticatorActionSetup": "Einrichten",
         "authenticatorSMSTitle": "SMS-Code",
-        "authenticatorSMSMessage":
-            "Keycloak sendet den Verifizierungscode an Ihr Telefon als Zwei-Faktor-Authentifizierung.",
-        "authenticatorSMSFinishSetUpMessage":
-            "Textnachrichten werden gesendet an",
+        "authenticatorSMSMessage": "Keycloak sendet den Verifizierungscode an Ihr Telefon als Zwei-Faktor-Authentifizierung.",
+        "authenticatorSMSFinishSetUpMessage": "Textnachrichten werden gesendet an",
         "authenticatorDefaultStatus": "Standard",
         "authenticatorChangePhone": "Telefonnummer ändern",
         "authenticatorBackupCodesTitle": "Backup-Codes",
-        "authenticatorBackupCodesMessage":
-            "Abfrage der 8-stelligen Backup-Codes",
-        "authenticatorBackupCodesFinishSetUpMessage":
-            "Zu diesem Zeitpunkt wurden 12 Backup-Codes erzeugt. Jeder davon kann einmal verwendet werden.",
+        "authenticatorBackupCodesMessage": "Abfrage der 8-stelligen Backup-Codes",
+        "authenticatorBackupCodesFinishSetUpMessage": "Zu diesem Zeitpunkt wurden 12 Backup-Codes erzeugt. Jeder davon kann einmal verwendet werden.",
         "authenticatorMobileSetupTitle": "Handy-Authenticator-Setup",
-        "smscodeIntroMessage":
-            "Geben Sie Ihre Rufnummer ein und ein Verifizierungscode wird an Ihr Telefon gesendet.",
-        "mobileSetupStep1":
-            "Installieren Sie eine Authenticator-Anwendung auf Ihrem Telefon. Die hier aufgeführten Anwendungen werden unterstützt.",
-        "mobileSetupStep2":
-            "Öffnen Sie die Anwendung und scannen Sie den Barcode:",
+        "smscodeIntroMessage": "Geben Sie Ihre Rufnummer ein und ein Verifizierungscode wird an Ihr Telefon gesendet.",
+        "mobileSetupStep1": "Installieren Sie eine Authenticator-Anwendung auf Ihrem Telefon. Die hier aufgeführten Anwendungen werden unterstützt.",
+        "mobileSetupStep2": "Öffnen Sie die Anwendung und scannen Sie den Barcode:",
         "mobileSetupStep3":
             "Geben Sie den von der Anwendung bereitgestellten Einmalcode ein und klicken Sie auf Speichern, um die Einrichtung abzuschließen.",
         "scanBarCode": "Wollen Sie den Barcode scannen?",
@@ -1005,12 +867,10 @@ export const kcMessages = {
         "realmName": "Realm",
         "doDownload": "Herunterladen",
         "doPrint": "Drucken",
-        "backupCodesTips-1":
-            "Jeder Backup-Code kann nur einmal verwendet werden.",
+        "backupCodesTips-1": "Jeder Backup-Code kann nur einmal verwendet werden.",
         "backupCodesTips-2": "Diese Codes wurden generiert am",
         "generateNewBackupCodes": "Neue Backup-Codes generieren",
-        "backupCodesTips-3":
-            "Wenn Sie neue Backup-Codes generieren, werden die aktuellen Codes nicht mehr funktionieren.",
+        "backupCodesTips-3": "Wenn Sie neue Backup-Codes generieren, werden die aktuellen Codes nicht mehr funktionieren.",
         "backtoAuthenticatorPage": "Zurück zur Authenticator-Seite",
         "resources": "Ressourcen",
         "sharedwithMe": "Mit mir geteilt",
@@ -1026,8 +886,7 @@ export const kcMessages = {
         "sharetheResource": "Die Ressource teilen",
         "group": "Gruppe",
         "selectPermission": "Berechtigung auswählen",
-        "addPeople":
-            "Personen hinzufügen, mit denen die Ressource geteilt werden soll",
+        "addPeople": "Personen hinzufügen, mit denen die Ressource geteilt werden soll",
         "addTeam": "Team hinzufügen, mit dem die Ressource geteilt werden soll",
         "myPermissions": "Meine Berechtigungen",
         "waitingforApproval": "Warten auf Genehmigung",
@@ -1058,14 +917,11 @@ export const kcMessages = {
         "authenticatorTitle": "Authenticator",
         "applicationsHtmlTitle": "Applications",
         "linkedAccountsHtmlTitle": "Linked Accounts",
-        "accountManagementWelcomeMessage":
-            "Welcome to Keycloak Account Management",
+        "accountManagementWelcomeMessage": "Welcome to Keycloak Account Management",
         "personalInfoIntroMessage": "Manage your basic information",
         "accountSecurityTitle": "Account Security",
-        "accountSecurityIntroMessage":
-            "Control your password and account access",
-        "applicationsIntroMessage":
-            "Track and manage your app permission to access your account",
+        "accountSecurityIntroMessage": "Control your password and account access",
+        "applicationsIntroMessage": "Track and manage your app permission to access your account",
         "resourceIntroMessage": "Share your resources among team members",
         "passwordLastUpdateMessage": "Your password was updated at",
         "updatePasswordTitle": "Update Password",
@@ -1073,8 +929,7 @@ export const kcMessages = {
         "updatePasswordMessage":
             "A strong password contains a mix of numbers, letters, and symbols. It is hard to guess, does not resemble a real word, and is only used for this account.",
         "personalSubTitle": "Your Personal Info",
-        "personalSubMessage":
-            "Manage this basic information: your first name, last name and email",
+        "personalSubMessage": "Manage this basic information: your first name, last name and email",
         "authenticatorCode": "One-time code",
         "email": "Email",
         "firstName": "First name",
@@ -1169,16 +1024,12 @@ export const kcMessages = {
         "revoke": "Revoke Grant",
         "configureAuthenticators": "Configured Authenticators",
         "mobile": "Mobile",
-        "totpStep1":
-            "Install one of the following applications on your mobile:",
+        "totpStep1": "Install one of the following applications on your mobile:",
         "totpStep2": "Open the application and scan the barcode:",
-        "totpStep3":
-            "Enter the one-time code provided by the application and click Save to finish the setup.",
-        "totpStep3DeviceName":
-            "Provide a Device Name to help you manage your OTP devices.",
+        "totpStep3": "Enter the one-time code provided by the application and click Save to finish the setup.",
+        "totpStep3DeviceName": "Provide a Device Name to help you manage your OTP devices.",
         "totpManualStep2": "Open the application and enter the key:",
-        "totpManualStep3":
-            "Use the following configuration values if the application allows setting them:",
+        "totpManualStep3": "Use the following configuration values if the application allows setting them:",
         "totpUnableToScan": "Unable to scan?",
         "totpScanBarcode": "Scan barcode?",
         "totp.totp": "Time-based",
@@ -1193,8 +1044,7 @@ export const kcMessages = {
         "deletingImplies": "Deleting your account implies:",
         "errasingData": "Erasing all your data",
         "loggingOutImmediately": "Logging you out immediately",
-        "accountUnusable":
-            "Any subsequent use of the application will not be possible with this account",
+        "accountUnusable": "Any subsequent use of the application will not be possible with this account",
         "missingUsernameMessage": "Please specify username.",
         "missingFirstNameMessage": "Please specify first name.",
         "invalidEmailMessage": "Invalid email address.",
@@ -1203,8 +1053,7 @@ export const kcMessages = {
         "missingPasswordMessage": "Please specify password.",
         "notMatchPasswordMessage": "Passwords don't match.",
         "invalidUserMessage": "Invalid user",
-        "updateReadOnlyAttributesRejectedMessage":
-            "Update of read-only attribute rejected",
+        "updateReadOnlyAttributesRejectedMessage": "Update of read-only attribute rejected",
         "missingTotpMessage": "Please specify authenticator code.",
         "missingTotpDeviceNameMessage": "Please specify device name.",
         "invalidPasswordExistingMessage": "Invalid existing password.",
@@ -1212,12 +1061,9 @@ export const kcMessages = {
         "invalidTotpMessage": "Invalid authenticator code.",
         "usernameExistsMessage": "Username already exists.",
         "emailExistsMessage": "Email already exists.",
-        "readOnlyUserMessage":
-            "You can't update your account as it is read-only.",
-        "readOnlyUsernameMessage":
-            "You can't update your username as it is read-only.",
-        "readOnlyPasswordMessage":
-            "You can't update your password as your account is read-only.",
+        "readOnlyUserMessage": "You can't update your account as it is read-only.",
+        "readOnlyUsernameMessage": "You can't update your username as it is read-only.",
+        "readOnlyPasswordMessage": "You can't update your password as your account is read-only.",
         "successTotpMessage": "Mobile authenticator configured.",
         "successTotpRemovedMessage": "Mobile authenticator removed.",
         "successGrantRevokedMessage": "Grant revoked successfully.",
@@ -1225,49 +1071,28 @@ export const kcMessages = {
         "accountPasswordUpdatedMessage": "Your password has been updated.",
         "missingIdentityProviderMessage": "Identity provider not specified.",
         "invalidFederatedIdentityActionMessage": "Invalid or missing action.",
-        "identityProviderNotFoundMessage":
-            "Specified identity provider not found.",
-        "federatedIdentityLinkNotActiveMessage":
-            "This identity is not active anymore.",
-        "federatedIdentityRemovingLastProviderMessage":
-            "You can't remove last federated identity as you don't have a password.",
-        "identityProviderRedirectErrorMessage":
-            "Failed to redirect to identity provider.",
-        "identityProviderRemovedMessage":
-            "Identity provider removed successfully.",
-        "identityProviderAlreadyLinkedMessage":
-            "Federated identity returned by {0} is already linked to another user.",
-        "staleCodeAccountMessage":
-            "The page expired. Please try one more time.",
+        "identityProviderNotFoundMessage": "Specified identity provider not found.",
+        "federatedIdentityLinkNotActiveMessage": "This identity is not active anymore.",
+        "federatedIdentityRemovingLastProviderMessage": "You can't remove last federated identity as you don't have a password.",
+        "identityProviderRedirectErrorMessage": "Failed to redirect to identity provider.",
+        "identityProviderRemovedMessage": "Identity provider removed successfully.",
+        "identityProviderAlreadyLinkedMessage": "Federated identity returned by {0} is already linked to another user.",
+        "staleCodeAccountMessage": "The page expired. Please try one more time.",
         "consentDenied": "Consent denied.",
-        "accountDisabledMessage":
-            "Account is disabled, contact your administrator.",
-        "accountTemporarilyDisabledMessage":
-            "Account is temporarily disabled, contact your administrator or try again later.",
-        "invalidPasswordMinLengthMessage":
-            "Invalid password: minimum length {0}.",
-        "invalidPasswordMaxLengthMessage":
-            "Invalid password: maximum length {0}.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Invalid password: must contain at least {0} lower case characters.",
-        "invalidPasswordMinDigitsMessage":
-            "Invalid password: must contain at least {0} numerical digits.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Invalid password: must contain at least {0} upper case characters.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Invalid password: must contain at least {0} special characters.",
-        "invalidPasswordNotUsernameMessage":
-            "Invalid password: must not be equal to the username.",
-        "invalidPasswordNotEmailMessage":
-            "Invalid password: must not be equal to the email.",
-        "invalidPasswordRegexPatternMessage":
-            "Invalid password: fails to match regex pattern(s).",
-        "invalidPasswordHistoryMessage":
-            "Invalid password: must not be equal to any of last {0} passwords.",
-        "invalidPasswordBlacklistedMessage":
-            "Invalid password: password is blacklisted.",
-        "invalidPasswordGenericMessage":
-            "Invalid password: new password doesn't match password policies.",
+        "accountDisabledMessage": "Account is disabled, contact your administrator.",
+        "accountTemporarilyDisabledMessage": "Account is temporarily disabled, contact your administrator or try again later.",
+        "invalidPasswordMinLengthMessage": "Invalid password: minimum length {0}.",
+        "invalidPasswordMaxLengthMessage": "Invalid password: maximum length {0}.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Invalid password: must contain at least {0} lower case characters.",
+        "invalidPasswordMinDigitsMessage": "Invalid password: must contain at least {0} numerical digits.",
+        "invalidPasswordMinUpperCaseCharsMessage": "Invalid password: must contain at least {0} upper case characters.",
+        "invalidPasswordMinSpecialCharsMessage": "Invalid password: must contain at least {0} special characters.",
+        "invalidPasswordNotUsernameMessage": "Invalid password: must not be equal to the username.",
+        "invalidPasswordNotEmailMessage": "Invalid password: must not be equal to the email.",
+        "invalidPasswordRegexPatternMessage": "Invalid password: fails to match regex pattern(s).",
+        "invalidPasswordHistoryMessage": "Invalid password: must not be equal to any of last {0} passwords.",
+        "invalidPasswordBlacklistedMessage": "Invalid password: password is blacklisted.",
+        "invalidPasswordGenericMessage": "Invalid password: new password doesn't match password policies.",
         "myResources": "My Resources",
         "myResourcesSub": "My resources",
         "doDeny": "Deny",
@@ -1276,10 +1101,8 @@ export const kcMessages = {
         "doRemoveSharing": "Remove Sharing",
         "doRemoveRequest": "Remove Request",
         "peopleAccessResource": "People with access to this resource",
-        "resourceManagedPolicies":
-            "Permissions granting access to this resource",
-        "resourceNoPermissionsGrantingAccess":
-            "No permissions granting access to this resource",
+        "resourceManagedPolicies": "Permissions granting access to this resource",
+        "resourceNoPermissionsGrantingAccess": "No permissions granting access to this resource",
         "anyAction": "Any action",
         "description": "Description",
         "name": "Name",
@@ -1300,8 +1123,7 @@ export const kcMessages = {
         "notBeingShared": "This resource is not being shared.",
         "notHaveAnyResource": "You don't have any resources",
         "noResourcesSharedWithYou": "There are no resources shared with you",
-        "havePermissionRequestsWaitingForApproval":
-            "You have {0} permission request(s) waiting for approval.",
+        "havePermissionRequestsWaitingForApproval": "You have {0} permission request(s) waiting for approval.",
         "clickHereForDetails": "Click here for details.",
         "resourceIsNotBeingShared": "The resource is not being shared",
         "locale_ca": "Català",
@@ -1335,47 +1157,36 @@ export const kcMessages = {
         "appResults": "Results",
         "clientNotFoundMessage": "Client not found.",
         "authorizedProvider": "Authorized Provider",
-        "authorizedProviderMessage":
-            "Authorized Providers linked with your account",
+        "authorizedProviderMessage": "Authorized Providers linked with your account",
         "identityProvider": "Identity Provider",
-        "identityProviderMessage":
-            "To link your account with identity providers you have configured",
+        "identityProviderMessage": "To link your account with identity providers you have configured",
         "socialLogin": "Social Login",
         "userDefined": "User Defined",
         "removeAccess": "Remove Access",
-        "removeAccessMessage":
-            "You will need to grant access again, if you want to use this app account.",
+        "removeAccessMessage": "You will need to grant access again, if you want to use this app account.",
         "authenticatorStatusMessage": "Two-factor authentication is currently",
         "authenticatorFinishSetUpTitle": "Your Two-Factor Authentication",
         "authenticatorFinishSetUpMessage":
             "Each time you sign in to your Keycloak account, you will be asked to provide a two-factor authentication code.",
         "authenticatorSubTitle": "Set Up Two-Factor Authentication",
-        "authenticatorSubMessage":
-            "To enhance the security of your account, enable at least one of the available two-factor authentication methods.",
+        "authenticatorSubMessage": "To enhance the security of your account, enable at least one of the available two-factor authentication methods.",
         "authenticatorMobileTitle": "Mobile Authenticator",
-        "authenticatorMobileMessage":
-            "Use mobile Authenticator to get Verification codes as the two-factor authentication.",
-        "authenticatorMobileFinishSetUpMessage":
-            "The authenticator has been bound to your phone.",
+        "authenticatorMobileMessage": "Use mobile Authenticator to get Verification codes as the two-factor authentication.",
+        "authenticatorMobileFinishSetUpMessage": "The authenticator has been bound to your phone.",
         "authenticatorActionSetup": "Set up",
         "authenticatorSMSTitle": "SMS Code",
-        "authenticatorSMSMessage":
-            "Keycloak will send the Verification code to your phone as the two-factor authentication.",
+        "authenticatorSMSMessage": "Keycloak will send the Verification code to your phone as the two-factor authentication.",
         "authenticatorSMSFinishSetUpMessage": "Text messages are sent to",
         "authenticatorDefaultStatus": "Default",
         "authenticatorChangePhone": "Change Phone Number",
         "authenticatorBackupCodesTitle": "Backup Codes",
         "authenticatorBackupCodesMessage": "Get your 8-digit backup codes",
-        "authenticatorBackupCodesFinishSetUpMessage":
-            "12 backup codes were generated at this time. Each one can be used once.",
+        "authenticatorBackupCodesFinishSetUpMessage": "12 backup codes were generated at this time. Each one can be used once.",
         "authenticatorMobileSetupTitle": "Mobile Authenticator Setup",
-        "smscodeIntroMessage":
-            "Enter your phone number and a verification code will be sent to your phone.",
-        "mobileSetupStep1":
-            "Install an authenticator application on your phone. The applications listed here are supported.",
+        "smscodeIntroMessage": "Enter your phone number and a verification code will be sent to your phone.",
+        "mobileSetupStep1": "Install an authenticator application on your phone. The applications listed here are supported.",
         "mobileSetupStep2": "Open the application and scan the barcode:",
-        "mobileSetupStep3":
-            "Enter the one-time code provided by the application and click Save to finish the setup.",
+        "mobileSetupStep3": "Enter the one-time code provided by the application and click Save to finish the setup.",
         "scanBarCode": "Want to scan the barcode?",
         "enterBarCode": "Enter the one-time code",
         "doCopy": "Copy",
@@ -1394,8 +1205,7 @@ export const kcMessages = {
         "backupCodesTips-1": "Each backup code can be used once.",
         "backupCodesTips-2": "These codes were generated on",
         "generateNewBackupCodes": "Generate New Backup Codes",
-        "backupCodesTips-3":
-            "When you generate new backup codes, the current codes will not work anymore.",
+        "backupCodesTips-3": "When you generate new backup codes, the current codes will not work anymore.",
         "backtoAuthenticatorPage": "Back to Authenticator Page",
         "resources": "Resources",
         "sharedwithMe": "Shared with Me",
@@ -1423,20 +1233,14 @@ export const kcMessages = {
         "error-invalid-value": "Invalid value.",
         "error-invalid-blank": "Please specify value.",
         "error-empty": "Please specify value.",
-        "error-invalid-length":
-            "Attribute {0} must have a length between {1} and {2}.",
-        "error-invalid-length-too-short":
-            "Attribute {0} must have minimal length of {1}.",
-        "error-invalid-length-too-long":
-            "Attribute {0} must have maximal length of {2}.",
+        "error-invalid-length": "Attribute {0} must have a length between {1} and {2}.",
+        "error-invalid-length-too-short": "Attribute {0} must have minimal length of {1}.",
+        "error-invalid-length-too-long": "Attribute {0} must have maximal length of {2}.",
         "error-invalid-email": "Invalid email address.",
         "error-invalid-number": "Invalid number.",
-        "error-number-out-of-range":
-            "Attribute {0} must be a number between {1} and {2}.",
-        "error-number-out-of-range-too-small":
-            "Attribute {0} must have minimal value of {1}.",
-        "error-number-out-of-range-too-big":
-            "Attribute {0} must have maximal value of {2}.",
+        "error-number-out-of-range": "Attribute {0} must be a number between {1} and {2}.",
+        "error-number-out-of-range-too-small": "Attribute {0} must have minimal value of {1}.",
+        "error-number-out-of-range-too-big": "Attribute {0} must have maximal value of {2}.",
         "error-pattern-no-match": "Invalid value.",
         "error-invalid-uri": "Invalid URL.",
         "error-invalid-uri-scheme": "Invalid URL scheme.",
@@ -1444,10 +1248,8 @@ export const kcMessages = {
         "error-user-attribute-required": "Please specify attribute {0}.",
         "error-invalid-date": "Invalid date.",
         "error-user-attribute-read-only": "The field {0} is read only.",
-        "error-username-invalid-character":
-            "Username contains invalid character.",
-        "error-person-name-invalid-character":
-            "Name contains invalid character.",
+        "error-username-invalid-character": "Username contains invalid character.",
+        "error-person-name-invalid-character": "Name contains invalid character.",
     },
     "es": {
         "doSave": "Guardar",
@@ -1503,8 +1305,7 @@ export const kcMessages = {
         "role_read-token": "Leer token",
         "role_offline-access": "Acceso sin conexión",
         "client_account": "Cuenta",
-        "client_security-admin-console":
-            "Consola de Administración de Seguridad",
+        "client_security-admin-console": "Consola de Administración de Seguridad",
         "client_realm-management": "Gestión de dominio",
         "client_broker": "Broker",
         "requiredFields": "Campos obligatorios",
@@ -1540,10 +1341,8 @@ export const kcMessages = {
         "mobile": "Móvil",
         "totpStep1":
             'Instala <a href="https://freeotp.github.io/" target="_blank">FreeOTP</a> o Google Authenticator en tu teléfono móvil. Ambas aplicaciones están disponibles en <a href="https://play.google.com">Google Play</a> y en la App Store de Apple.',
-        "totpStep2":
-            "Abre la aplicación y escanea el código o introduce la clave.",
-        "totpStep3":
-            "Introduce el código único que te muestra la aplicación de autenticación y haz clic en Enviar para finalizar la configuración",
+        "totpStep2": "Abre la aplicación y escanea el código o introduce la clave.",
+        "totpStep3": "Introduce el código único que te muestra la aplicación de autenticación y haz clic en Enviar para finalizar la configuración",
         "missingUsernameMessage": "Por favor indica tu usuario.",
         "missingFirstNameMessage": "Por favor indica el nombre.",
         "invalidEmailMessage": "Email no válido",
@@ -1552,56 +1351,36 @@ export const kcMessages = {
         "missingPasswordMessage": "Por favor indica tu contraseña.",
         "notMatchPasswordMessage": "Las contraseñas no coinciden.",
         "missingTotpMessage": "Por favor indica tu código de autenticación",
-        "invalidPasswordExistingMessage":
-            "La contraseña actual no es correcta.",
-        "invalidPasswordConfirmMessage":
-            "La confirmación de contraseña no coincide.",
+        "invalidPasswordExistingMessage": "La contraseña actual no es correcta.",
+        "invalidPasswordConfirmMessage": "La confirmación de contraseña no coincide.",
         "invalidTotpMessage": "El código de autenticación no es válido.",
         "usernameExistsMessage": "El usuario ya existe",
         "emailExistsMessage": "El email ya existe",
-        "readOnlyUserMessage":
-            "No puedes actualizar tu usuario porque tu cuenta es de solo lectura.",
-        "readOnlyPasswordMessage":
-            "No puedes actualizar tu contraseña porque tu cuenta es de solo lectura.",
+        "readOnlyUserMessage": "No puedes actualizar tu usuario porque tu cuenta es de solo lectura.",
+        "readOnlyPasswordMessage": "No puedes actualizar tu contraseña porque tu cuenta es de solo lectura.",
         "successTotpMessage": "Aplicación de autenticación móvil configurada.",
-        "successTotpRemovedMessage":
-            "Aplicación de autenticación móvil eliminada.",
+        "successTotpRemovedMessage": "Aplicación de autenticación móvil eliminada.",
         "successGrantRevokedMessage": "Permiso revocado correctamente",
         "accountUpdatedMessage": "Tu cuenta se ha actualizado.",
         "accountPasswordUpdatedMessage": "Tu contraseña se ha actualizado.",
         "missingIdentityProviderMessage": "Proveedor de identidad no indicado.",
-        "invalidFederatedIdentityActionMessage":
-            "Acción no válida o no indicada.",
-        "identityProviderNotFoundMessage":
-            "No se encontró un proveedor de identidad.",
-        "federatedIdentityLinkNotActiveMessage":
-            "Esta identidad ya no está activa",
-        "federatedIdentityRemovingLastProviderMessage":
-            "No puedes eliminar la última identidad federada porque no tienes fijada una contraseña.",
-        "identityProviderRedirectErrorMessage":
-            "Error en la redirección al proveedor de identidad",
-        "identityProviderRemovedMessage":
-            "Proveedor de identidad borrado correctamente.",
-        "accountDisabledMessage":
-            "La cuenta está desactivada, contacta con el administrador.",
+        "invalidFederatedIdentityActionMessage": "Acción no válida o no indicada.",
+        "identityProviderNotFoundMessage": "No se encontró un proveedor de identidad.",
+        "federatedIdentityLinkNotActiveMessage": "Esta identidad ya no está activa",
+        "federatedIdentityRemovingLastProviderMessage": "No puedes eliminar la última identidad federada porque no tienes fijada una contraseña.",
+        "identityProviderRedirectErrorMessage": "Error en la redirección al proveedor de identidad",
+        "identityProviderRemovedMessage": "Proveedor de identidad borrado correctamente.",
+        "accountDisabledMessage": "La cuenta está desactivada, contacta con el administrador.",
         "accountTemporarilyDisabledMessage":
             "La cuenta está temporalmente desactivada, contacta con el administrador o inténtalo de nuevo más tarde.",
-        "invalidPasswordMinLengthMessage":
-            "Contraseña incorrecta: longitud mínima {0}.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Contraseña incorrecta: debe contener al menos {0} letras minúsculas.",
-        "invalidPasswordMinDigitsMessage":
-            "Contraseña incorrecta: debe contener al menos {0} caracteres numéricos.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Contraseña incorrecta: debe contener al menos {0} letras mayúsculas.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Contraseña incorrecta: debe contener al menos {0} caracteres especiales.",
-        "invalidPasswordNotUsernameMessage":
-            "Contraseña incorrecta: no puede ser igual al nombre de usuario.",
-        "invalidPasswordRegexPatternMessage":
-            "Contraseña incorrecta: no cumple la expresión regular.",
-        "invalidPasswordHistoryMessage":
-            "Contraseña incorrecta: no puede ser igual a ninguna de las últimas {0} contraseñas.",
+        "invalidPasswordMinLengthMessage": "Contraseña incorrecta: longitud mínima {0}.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Contraseña incorrecta: debe contener al menos {0} letras minúsculas.",
+        "invalidPasswordMinDigitsMessage": "Contraseña incorrecta: debe contener al menos {0} caracteres numéricos.",
+        "invalidPasswordMinUpperCaseCharsMessage": "Contraseña incorrecta: debe contener al menos {0} letras mayúsculas.",
+        "invalidPasswordMinSpecialCharsMessage": "Contraseña incorrecta: debe contener al menos {0} caracteres especiales.",
+        "invalidPasswordNotUsernameMessage": "Contraseña incorrecta: no puede ser igual al nombre de usuario.",
+        "invalidPasswordRegexPatternMessage": "Contraseña incorrecta: no cumple la expresión regular.",
+        "invalidPasswordHistoryMessage": "Contraseña incorrecta: no puede ser igual a ninguna de las últimas {0} contraseñas.",
     },
     "fr": {
         "doSave": "Sauvegarder",
@@ -1657,8 +1436,7 @@ export const kcMessages = {
         "role_read-token": "Lire le jeton d'authentification",
         "role_offline-access": "Accès hors-ligne",
         "client_account": "Compte",
-        "client_security-admin-console":
-            "Console d'administration de la sécurité",
+        "client_security-admin-console": "Console d'administration de la sécurité",
         "client_admin-cli": "Admin CLI",
         "client_realm-management": "Gestion du domaine",
         "client_broker": "Broker",
@@ -1693,15 +1471,11 @@ export const kcMessages = {
         "revoke": "Révoquer un droit",
         "configureAuthenticators": "Authentifications configurées.",
         "mobile": "Téléphone mobile",
-        "totpStep1":
-            "Installez une des applications suivantes sur votre mobile",
-        "totpStep2":
-            "Ouvrez l'application et scannez le code-barres ou entrez la clef.",
-        "totpStep3":
-            "Entrez le code à usage unique fourni par l'application et cliquez sur Sauvegarder pour terminer.",
+        "totpStep1": "Installez une des applications suivantes sur votre mobile",
+        "totpStep2": "Ouvrez l'application et scannez le code-barres ou entrez la clef.",
+        "totpStep3": "Entrez le code à usage unique fourni par l'application et cliquez sur Sauvegarder pour terminer.",
         "totpManualStep2": "Ouvrez l'application et entrez la clef",
-        "totpManualStep3":
-            "Utilisez les valeurs de configuration suivante si l'application les autorise",
+        "totpManualStep3": "Utilisez les valeurs de configuration suivante si l'application les autorise",
         "totpUnableToScan": "Impossible de scanner ?",
         "totpScanBarcode": "Scanner le code-barres ?",
         "totp.totp": "Basé sur le temps",
@@ -1720,74 +1494,49 @@ export const kcMessages = {
         "notMatchPasswordMessage": "Les mots de passe ne sont pas identiques",
         "missingTotpMessage": "Veuillez entrer le code d'authentification.",
         "invalidPasswordExistingMessage": "Mot de passe existant invalide.",
-        "invalidPasswordConfirmMessage":
-            "Le mot de passe de confirmation ne correspond pas.",
+        "invalidPasswordConfirmMessage": "Le mot de passe de confirmation ne correspond pas.",
         "invalidTotpMessage": "Le code d'authentification est invalide.",
         "usernameExistsMessage": "Le nom d'utilisateur existe déjà.",
         "emailExistsMessage": "Le courriel existe déjà.",
-        "readOnlyUserMessage":
-            "Vous ne pouvez pas mettre à jour votre compte car il est en lecture seule.",
-        "readOnlyPasswordMessage":
-            "Vous ne pouvez pas mettre à jour votre mot de passe car votre compte est en lecture seule.",
-        "successTotpMessage":
-            "L'authentification via téléphone mobile est configurée.",
-        "successTotpRemovedMessage":
-            "L'authentification via téléphone mobile est supprimée.",
+        "readOnlyUserMessage": "Vous ne pouvez pas mettre à jour votre compte car il est en lecture seule.",
+        "readOnlyPasswordMessage": "Vous ne pouvez pas mettre à jour votre mot de passe car votre compte est en lecture seule.",
+        "successTotpMessage": "L'authentification via téléphone mobile est configurée.",
+        "successTotpRemovedMessage": "L'authentification via téléphone mobile est supprimée.",
         "successGrantRevokedMessage": "Droit révoqué avec succès.",
         "accountUpdatedMessage": "Votre compte a été mis à jour.",
         "accountPasswordUpdatedMessage": "Votre mot de passe a été mis à jour.",
-        "missingIdentityProviderMessage":
-            "Le fournisseur d'identité n'est pas spécifié.",
-        "invalidFederatedIdentityActionMessage":
-            "Action manquante ou invalide.",
-        "identityProviderNotFoundMessage":
-            "Le fournisseur d'identité spécifié n'est pas trouvé.",
-        "federatedIdentityLinkNotActiveMessage":
-            "Cette identité n'est plus active dorénavant.",
+        "missingIdentityProviderMessage": "Le fournisseur d'identité n'est pas spécifié.",
+        "invalidFederatedIdentityActionMessage": "Action manquante ou invalide.",
+        "identityProviderNotFoundMessage": "Le fournisseur d'identité spécifié n'est pas trouvé.",
+        "federatedIdentityLinkNotActiveMessage": "Cette identité n'est plus active dorénavant.",
         "federatedIdentityRemovingLastProviderMessage":
             "Vous ne pouvez pas supprimer votre dernière fédération d'identité sans avoir de mot de passe spécifié.",
-        "identityProviderRedirectErrorMessage":
-            "Erreur de redirection vers le fournisseur d'identité.",
-        "identityProviderRemovedMessage":
-            "Le fournisseur d'identité a été supprimé correctement.",
-        "identityProviderAlreadyLinkedMessage":
-            "Le fournisseur d'identité retourné par {0} est déjà lié à un autre utilisateur.",
-        "accountDisabledMessage":
-            "Ce compte est désactivé, veuillez contacter votre administrateur.",
+        "identityProviderRedirectErrorMessage": "Erreur de redirection vers le fournisseur d'identité.",
+        "identityProviderRemovedMessage": "Le fournisseur d'identité a été supprimé correctement.",
+        "identityProviderAlreadyLinkedMessage": "Le fournisseur d'identité retourné par {0} est déjà lié à un autre utilisateur.",
+        "accountDisabledMessage": "Ce compte est désactivé, veuillez contacter votre administrateur.",
         "accountTemporarilyDisabledMessage":
             "Ce compte est temporairement désactivé, veuillez contacter votre administrateur ou réessayez plus tard.",
-        "invalidPasswordMinLengthMessage":
-            "Mot de passe invalide: longueur minimale {0}.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Mot de passe invalide: doit contenir au moins {0} lettre(s) en minuscule.",
-        "invalidPasswordMinDigitsMessage":
-            "Mot de passe invalide: doit contenir au moins {0} chiffre(s).",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Mot de passe invalide: doit contenir au moins {0} lettre(s) en majuscule.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Mot de passe invalide: doit contenir au moins {0} caractère(s) spéciaux.",
-        "invalidPasswordNotUsernameMessage":
-            "Mot de passe invalide: ne doit pas être identique au nom d'utilisateur.",
-        "invalidPasswordRegexPatternMessage":
-            "Mot de passe invalide: ne valide pas l'expression rationnelle.",
-        "invalidPasswordHistoryMessage":
-            "Mot de passe invalide: ne doit pas être égal aux {0} derniers mots de passe.",
+        "invalidPasswordMinLengthMessage": "Mot de passe invalide: longueur minimale {0}.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Mot de passe invalide: doit contenir au moins {0} lettre(s) en minuscule.",
+        "invalidPasswordMinDigitsMessage": "Mot de passe invalide: doit contenir au moins {0} chiffre(s).",
+        "invalidPasswordMinUpperCaseCharsMessage": "Mot de passe invalide: doit contenir au moins {0} lettre(s) en majuscule.",
+        "invalidPasswordMinSpecialCharsMessage": "Mot de passe invalide: doit contenir au moins {0} caractère(s) spéciaux.",
+        "invalidPasswordNotUsernameMessage": "Mot de passe invalide: ne doit pas être identique au nom d'utilisateur.",
+        "invalidPasswordRegexPatternMessage": "Mot de passe invalide: ne valide pas l'expression rationnelle.",
+        "invalidPasswordHistoryMessage": "Mot de passe invalide: ne doit pas être égal aux {0} derniers mots de passe.",
         "applicationName": "Nom de l'application",
         "update": "Mettre à jour",
         "status": "Statut",
         "authenticatorActionSetup": "Configurer",
         "device-activity": "Activité des Appareils",
         "accountSecurityTitle": "Sécurité du Compte",
-        "accountManagementWelcomeMessage":
-            "Bienvenue dans la Gestion de Compte Keycloak",
+        "accountManagementWelcomeMessage": "Bienvenue dans la Gestion de Compte Keycloak",
         "personalInfoHtmlTitle": "Informations Personnelles",
         "personalInfoIntroMessage": "Gérez vos informations de base",
-        "personalSubMessage":
-            "Gérez ces informations de base: votre prénom, nom de famille et email",
-        "accountSecurityIntroMessage":
-            "Gérez votre mot de passe et l'accès à votre compte",
-        "applicationsIntroMessage":
-            "Auditez et gérez les permissions d'accès des applications aux données de votre compte",
+        "personalSubMessage": "Gérez ces informations de base: votre prénom, nom de famille et email",
+        "accountSecurityIntroMessage": "Gérez votre mot de passe et l'accès à votre compte",
+        "applicationsIntroMessage": "Auditez et gérez les permissions d'accès des applications aux données de votre compte",
         "applicationType": "Type d'application",
     },
     "hu": {
@@ -1810,14 +1559,11 @@ export const kcMessages = {
         "authenticatorTitle": "Hitelesítő",
         "applicationsHtmlTitle": "Alkalmazások",
         "linkedAccountsHtmlTitle": "Összekötött fiókok",
-        "accountManagementWelcomeMessage":
-            "Üdvözöljük a Keycloak Fiók Kezelőben",
+        "accountManagementWelcomeMessage": "Üdvözöljük a Keycloak Fiók Kezelőben",
         "personalInfoIntroMessage": "Kezelje az alap személyes adatait",
         "accountSecurityTitle": "Fiók biztonság",
-        "accountSecurityIntroMessage":
-            "Szabályozza jelszó és fiók hozzáféréseit",
-        "applicationsIntroMessage":
-            "Kezelje alkalmazás jogosultságait, hogy hozzáférjen a fiókjához",
+        "accountSecurityIntroMessage": "Szabályozza jelszó és fiók hozzáféréseit",
+        "applicationsIntroMessage": "Kezelje alkalmazás jogosultságait, hogy hozzáférjen a fiókjához",
         "resourceIntroMessage": "Ossza meg az erőforrásait csapattagjai között",
         "passwordLastUpdateMessage": "A jelszava ekkor módosult",
         "updatePasswordTitle": "Módosítsa jelszavát",
@@ -1825,8 +1571,7 @@ export const kcMessages = {
         "updatePasswordMessage":
             "Egy erős jelszó számok, betűk és speciális karakterek keveréke, nehéz kitalálni, nem hasonlít valódi (szótári) szóra és csak ehhez a fiókhoz tartozik.",
         "personalSubTitle": "Személyes adatai",
-        "personalSubMessage":
-            "Kezelje alapvető személyes adatait: vezetéknév, keresztnév, email cím",
+        "personalSubMessage": "Kezelje alapvető személyes adatait: vezetéknév, keresztnév, email cím",
         "authenticatorCode": "Egyszer használatos kód",
         "email": "Email cím",
         "firstName": "Keresztnév",
@@ -1867,8 +1612,7 @@ export const kcMessages = {
         "role_manage-realm": "Tartományok kezelése",
         "role_manage-users": "Felhasználók kezelése",
         "role_manage-applications": "Alkalmazások kezelése",
-        "role_manage-identity-providers":
-            "Személyazonosság-kezelők karbantartása",
+        "role_manage-identity-providers": "Személyazonosság-kezelők karbantartása",
         "role_manage-clients": "Kliensek kezelése",
         "role_manage-events": "Események kezelése",
         "role_view-profile": "Fiók megtekintése",
@@ -1880,8 +1624,7 @@ export const kcMessages = {
         "role_uma_authorization": "Hozzáférés jogosultságokhoz (UMA)",
         "client_account": "Fiók",
         "client_account-console": "Fiók kezelés",
-        "client_security-admin-console":
-            "Biztonsági, adminisztrátor fiók kezelés",
+        "client_security-admin-console": "Biztonsági, adminisztrátor fiók kezelés",
         "client_admin-cli": "Admin CLI",
         "client_realm-management": "Tartomány kezelés",
         "client_broker": "Ügynök",
@@ -1917,18 +1660,12 @@ export const kcMessages = {
         "revoke": "Engedély visszavonása",
         "configureAuthenticators": "Beállított Hitelesítők",
         "mobile": "Mobil eszköz",
-        "totpStep1":
-            "Kérem telepítse az itt felsorolt alkalmazások egyikét a mobil eszközére:",
-        "totpStep2":
-            "Indítsa el az alkalmazást a mobil eszközén és olvassa be ezt a (QR) kódot:",
-        "totpStep3":
-            "Adja meg az alkalmazás által generált egyszer használatos kódot majd kattintson a Mentés gombra a beállítás befejezéséhez.",
-        "totpStep3DeviceName":
-            "Adja meg a mobil eszköz nevét. Ez a későbbiekben segíthet az eszköz azonosításában.",
-        "totpManualStep2":
-            "Indítsa el az alkalmazás és adja meg a következő kulcsot:",
-        "totpManualStep3":
-            "Használja a következő beállításokat, ha az alkalmazása támogatja ezeket:",
+        "totpStep1": "Kérem telepítse az itt felsorolt alkalmazások egyikét a mobil eszközére:",
+        "totpStep2": "Indítsa el az alkalmazást a mobil eszközén és olvassa be ezt a (QR) kódot:",
+        "totpStep3": "Adja meg az alkalmazás által generált egyszer használatos kódot majd kattintson a Mentés gombra a beállítás befejezéséhez.",
+        "totpStep3DeviceName": "Adja meg a mobil eszköz nevét. Ez a későbbiekben segíthet az eszköz azonosításában.",
+        "totpManualStep2": "Indítsa el az alkalmazás és adja meg a következő kulcsot:",
+        "totpManualStep3": "Használja a következő beállításokat, ha az alkalmazása támogatja ezeket:",
         "totpUnableToScan": "Nem tud (QR) kódot beolvasni?",
         "totpScanBarcode": "Inkább (QR) kódot olvasna be?",
         "totp.totp": "Idő alapú",
@@ -1954,59 +1691,39 @@ export const kcMessages = {
         "invalidTotpMessage": "Érvénytelen hitelesítő kód.",
         "usernameExistsMessage": "Ez a felhasználó név már foglalt.",
         "emailExistsMessage": "Ez az email cím már foglalt.",
-        "readOnlyUserMessage":
-            "A felhasználói fiókja csak olvasható, módosítás nem lehetséges.",
+        "readOnlyUserMessage": "A felhasználói fiókja csak olvasható, módosítás nem lehetséges.",
         "readOnlyUsernameMessage": "A felhasználó név nem módosítható.",
-        "readOnlyPasswordMessage":
-            "A felhasználói fiókja csak olvasható, így jelszó módosítás nem lehetséges.",
+        "readOnlyPasswordMessage": "A felhasználói fiókja csak olvasható, így jelszó módosítás nem lehetséges.",
         "successTotpMessage": "A mobil hitelesítőt beállítottuk.",
         "successTotpRemovedMessage": "A mobil hitelesítőt eltávolítottuk.",
         "successGrantRevokedMessage": "Az engedélyt visszavontuk.",
         "accountUpdatedMessage": "Felhasználói fiókját módosítottuk.",
         "accountPasswordUpdatedMessage": "Jelszavát módosítottuk.",
-        "missingIdentityProviderMessage":
-            "Nincs megadva személyazonosság-kezelő.",
-        "invalidFederatedIdentityActionMessage":
-            "Érvénytelen, vagy nem létező művelet.",
-        "identityProviderNotFoundMessage":
-            "A megadott személyazonosság-kezelő nem található.",
-        "federatedIdentityLinkNotActiveMessage":
-            "Ez a személyazonosság összekötés már nem érvényes.",
+        "missingIdentityProviderMessage": "Nincs megadva személyazonosság-kezelő.",
+        "invalidFederatedIdentityActionMessage": "Érvénytelen, vagy nem létező művelet.",
+        "identityProviderNotFoundMessage": "A megadott személyazonosság-kezelő nem található.",
+        "federatedIdentityLinkNotActiveMessage": "Ez a személyazonosság összekötés már nem érvényes.",
         "federatedIdentityRemovingLastProviderMessage":
             "Az utolsó összekapcsolt személyazonosság nem törölhető, mert Ön nem rendelkezik érvényes jelszóval.",
-        "identityProviderRedirectErrorMessage":
-            "Nem sikerült az átirányítás a személyazonosság-kezelőre.",
-        "identityProviderRemovedMessage":
-            "A személyazonosság-kezelő összekötést töröltük.",
+        "identityProviderRedirectErrorMessage": "Nem sikerült az átirányítás a személyazonosság-kezelőre.",
+        "identityProviderRemovedMessage": "A személyazonosság-kezelő összekötést töröltük.",
         "identityProviderAlreadyLinkedMessage":
             "Az összekapcsolt személyazonosság-kezelő által bizotsított személyazonosság már össze van kötve egy másik felhasználói fiókkal.",
-        "staleCodeAccountMessage":
-            "Az oldal érvényességi ideje lejárt. Kérem próbálja meg újra a kérést.",
+        "staleCodeAccountMessage": "Az oldal érvényességi ideje lejárt. Kérem próbálja meg újra a kérést.",
         "consentDenied": "Jóváhagyó nyilatkozat elutasítva.",
-        "accountDisabledMessage":
-            "Felhasználói fiókja inaktív, kérem vegye fel a kapcsolatot az alkalmazás adminisztrátorral.",
+        "accountDisabledMessage": "Felhasználói fiókja inaktív, kérem vegye fel a kapcsolatot az alkalmazás adminisztrátorral.",
         "accountTemporarilyDisabledMessage":
             "Felhasználói fiókja átmenetileg inaktív, kérem vegye fel a kapcsolatot az alkalmazás adminisztrátorral, vagy próbálkozzon később.",
-        "invalidPasswordMinLengthMessage":
-            "Érvénytelen jelszó: minimum hossz {0}.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Érvénytelen jelszó: legalább {0} darab kisbetűt kell tartalmaznia.",
-        "invalidPasswordMinDigitsMessage":
-            "Érvénytelen jelszó: legalább {0} darab számjegyet kell tartalmaznia.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Érvénytelen jelszó: legalább {0} darab nagybetűt kell tartalmaznia.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Érvénytelen jelszó: legalább {0} darab speciális karaktert (pl. #!$@ stb.) kell tartalmaznia.",
-        "invalidPasswordNotUsernameMessage":
-            "Érvénytelen jelszó: nem lehet azonos a felhasználó névvel.",
-        "invalidPasswordRegexPatternMessage":
-            "Érvénytelen jelszó: a jelszó nem illeszkedik a megadott reguláris kifejezés mintára.",
-        "invalidPasswordHistoryMessage":
-            "Érvénytelen jelszó: nem lehet azonos az utolsó {0} darab, korábban alkalmazott jelszóval.",
-        "invalidPasswordBlacklistedMessage":
-            "Érvénytelen jelszó: a jelszó tiltó listán szerepel.",
-        "invalidPasswordGenericMessage":
-            "Érvénytelen jelszó: az új jelszó nem felel meg a jelszó házirendnek.",
+        "invalidPasswordMinLengthMessage": "Érvénytelen jelszó: minimum hossz {0}.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Érvénytelen jelszó: legalább {0} darab kisbetűt kell tartalmaznia.",
+        "invalidPasswordMinDigitsMessage": "Érvénytelen jelszó: legalább {0} darab számjegyet kell tartalmaznia.",
+        "invalidPasswordMinUpperCaseCharsMessage": "Érvénytelen jelszó: legalább {0} darab nagybetűt kell tartalmaznia.",
+        "invalidPasswordMinSpecialCharsMessage": "Érvénytelen jelszó: legalább {0} darab speciális karaktert (pl. #!$@ stb.) kell tartalmaznia.",
+        "invalidPasswordNotUsernameMessage": "Érvénytelen jelszó: nem lehet azonos a felhasználó névvel.",
+        "invalidPasswordRegexPatternMessage": "Érvénytelen jelszó: a jelszó nem illeszkedik a megadott reguláris kifejezés mintára.",
+        "invalidPasswordHistoryMessage": "Érvénytelen jelszó: nem lehet azonos az utolsó {0} darab, korábban alkalmazott jelszóval.",
+        "invalidPasswordBlacklistedMessage": "Érvénytelen jelszó: a jelszó tiltó listán szerepel.",
+        "invalidPasswordGenericMessage": "Érvénytelen jelszó: az új jelszó nem felel meg a jelszó házirendnek.",
         "myResources": "Erőforrásaim",
         "myResourcesSub": "Erőforrásaim",
         "doDeny": "Tiltás",
@@ -2015,10 +1732,8 @@ export const kcMessages = {
         "doRemoveSharing": "Megosztás törlése",
         "doRemoveRequest": "Kérelem törlése",
         "peopleAccessResource": "Az erőforráshoz hozzáférő felhasználók",
-        "resourceManagedPolicies":
-            "Az erőforrás hozzáféréshez szükséges jogosultságok",
-        "resourceNoPermissionsGrantingAccess":
-            "Az erőforrás hozzáféréshez nem szükségesek jogosultságok",
+        "resourceManagedPolicies": "Az erőforrás hozzáféréshez szükséges jogosultságok",
+        "resourceNoPermissionsGrantingAccess": "Az erőforrás hozzáféréshez nem szükségesek jogosultságok",
         "anyAction": "Bármelyik művelet",
         "description": "Leírás",
         "name": "Név",
@@ -2039,8 +1754,7 @@ export const kcMessages = {
         "notBeingShared": "Az erőforrás nincs megosztva",
         "notHaveAnyResource": "Nincsen erőforrása",
         "noResourcesSharedWithYou": "Nincsenek Önnel megosztott erőforrásai",
-        "havePermissionRequestsWaitingForApproval":
-            "Önnek {0} darab várakozó, jóváhagyandó jogosultság kérése van.",
+        "havePermissionRequestsWaitingForApproval": "Önnek {0} darab várakozó, jóváhagyandó jogosultság kérése van.",
         "clickHereForDetails": "Kattintson ide a részletekért.",
         "resourceIsNotBeingShared": "Az erőforrás nincs megosztva",
         "applicationName": "Név",
@@ -2054,49 +1768,35 @@ export const kcMessages = {
         "appResults": "Eredmény",
         "clientNotFoundMessage": "A kliens nem található.",
         "authorizedProvider": "Meghatalmazott szolgáltató",
-        "authorizedProviderMessage":
-            "A felhasználói fiókjához kötött meghatalmazott szolgáltatók",
+        "authorizedProviderMessage": "A felhasználói fiókjához kötött meghatalmazott szolgáltatók",
         "identityProvider": "Személyazonosság-kezelő",
-        "identityProviderMessage":
-            "Fiókja személyazonosság-kezelőkhöz kötéséhez eddig ezeket a beállításokat adta meg",
+        "identityProviderMessage": "Fiókja személyazonosság-kezelőkhöz kötéséhez eddig ezeket a beállításokat adta meg",
         "userDefined": "Felhasználó által meghatározott",
         "removeAccess": "Hozzáférés törlése",
-        "removeAccessMessage":
-            "Újra engedélyeznie kell a hozzáférést az alkalmazás ismételt használatához.",
+        "removeAccessMessage": "Újra engedélyeznie kell a hozzáférést az alkalmazás ismételt használatához.",
         "authenticatorStatusMessage": "A kétszintű hitelesítés jelenleg",
         "authenticatorFinishSetUpTitle": "Kétszintű hitelesítés",
-        "authenticatorFinishSetUpMessage":
-            "Minden Keycloak fiók bejelentkezéskor kérni fogunk Öntől egy második szintű hitelesítő kódot.",
+        "authenticatorFinishSetUpMessage": "Minden Keycloak fiók bejelentkezéskor kérni fogunk Öntől egy második szintű hitelesítő kódot.",
         "authenticatorSubTitle": "Állítsa be a második szintű hitelesítést",
         "authenticatorSubMessage":
             "Felhasználói fiókjának biztonsági szintjét növelheti, ha legalább egy második szintű hitelesítést is bekapcsol az elérhető eljárások közül.",
         "authenticatorMobileTitle": "Mobil eszköz alapú hitelesítés",
-        "authenticatorMobileMessage":
-            "Mobil eszközön generált ellenőrző kód, mint második szintű hitelesítés.",
-        "authenticatorMobileFinishSetUpMessage":
-            "A hitelesítés a mobil eszközéhez kötődik.",
+        "authenticatorMobileMessage": "Mobil eszközön generált ellenőrző kód, mint második szintű hitelesítés.",
+        "authenticatorMobileFinishSetUpMessage": "A hitelesítés a mobil eszközéhez kötődik.",
         "authenticatorActionSetup": "Beállítás",
         "authenticatorSMSTitle": "SMS kód",
-        "authenticatorSMSMessage":
-            "A Keycloak SMS ellenőrző kódot küld a telefonjára (második szintű hitelesítő kód).",
-        "authenticatorSMSFinishSetUpMessage":
-            "A következő telefonszámokra SMS-t küldünk",
+        "authenticatorSMSMessage": "A Keycloak SMS ellenőrző kódot küld a telefonjára (második szintű hitelesítő kód).",
+        "authenticatorSMSFinishSetUpMessage": "A következő telefonszámokra SMS-t küldünk",
         "authenticatorDefaultStatus": "Alapértelmezett",
         "authenticatorChangePhone": "Módosítsa telefonszámát",
         "authenticatorBackupCodesTitle": "Tartalék kódok",
-        "authenticatorBackupCodesMessage":
-            "8 számjegyű tartalék kódok igénylése",
-        "authenticatorBackupCodesFinishSetUpMessage":
-            "12 darab tartalék kódot generáltunk, mindegyiket csak egyszer használhatja fel.",
+        "authenticatorBackupCodesMessage": "8 számjegyű tartalék kódok igénylése",
+        "authenticatorBackupCodesFinishSetUpMessage": "12 darab tartalék kódot generáltunk, mindegyiket csak egyszer használhatja fel.",
         "authenticatorMobileSetupTitle": "Mobil hitelesítő eszköz beállítása",
-        "smscodeIntroMessage":
-            "Adja meg a telefonszámát, melyre egy ellenőrző kódot küldünk.",
-        "mobileSetupStep1":
-            "Telepítsen egy hitelesítő alkalmazást mobil eszközére az itt felsorolt, támogatott, alkalmazások közül.",
-        "mobileSetupStep2":
-            "Indítsa el az alkalmazást és olvassa be a következő (QR) kódot:",
-        "mobileSetupStep3":
-            "Adja meg a mobil alkalmazás által generált egyszer használatos kódot, majd kattintson a Mentés gombra a beállításhoz.",
+        "smscodeIntroMessage": "Adja meg a telefonszámát, melyre egy ellenőrző kódot küldünk.",
+        "mobileSetupStep1": "Telepítsen egy hitelesítő alkalmazást mobil eszközére az itt felsorolt, támogatott, alkalmazások közül.",
+        "mobileSetupStep2": "Indítsa el az alkalmazást és olvassa be a következő (QR) kódot:",
+        "mobileSetupStep3": "Adja meg a mobil alkalmazás által generált egyszer használatos kódot, majd kattintson a Mentés gombra a beállításhoz.",
         "scanBarCode": "Inkább (QR) kódot olvasna be?",
         "enterBarCode": "Adja meg az egyszer használatos kódot",
         "doCopy": "Másolás",
@@ -2112,12 +1812,10 @@ export const kcMessages = {
         "realmName": "Tartomány",
         "doDownload": "Letöltés",
         "doPrint": "Nyomtatás",
-        "backupCodesTips-1":
-            "Minden tartalék kód csak egyszer használható fel.",
+        "backupCodesTips-1": "Minden tartalék kód csak egyszer használható fel.",
         "backupCodesTips-2": "Ezeket a kódokat ekkor generálta",
         "generateNewBackupCodes": "Új tartalék kódok generálása",
-        "backupCodesTips-3":
-            "Új tartalék kódok generálásakor a korábban generált kódok érvénytelenné válnak.",
+        "backupCodesTips-3": "Új tartalék kódok generálásakor a korábban generált kódok érvénytelenné válnak.",
         "backtoAuthenticatorPage": "Vissza a hitelesítő lapra",
         "resources": "Erőforrások",
         "sharedwithMe": "Velem megosztott erőforrások",
@@ -2163,25 +1861,19 @@ export const kcMessages = {
         "authenticatorTitle": "Autenticatore",
         "applicationsHtmlTitle": "Applicazioni",
         "linkedAccountsHtmlTitle": "Account collegati",
-        "accountManagementWelcomeMessage":
-            "Benvenuto nella gestione degli account di Keycloak",
+        "accountManagementWelcomeMessage": "Benvenuto nella gestione degli account di Keycloak",
         "personalInfoIntroMessage": "Gestisci le tue informazioni di base",
         "accountSecurityTitle": "Sicurezza dell'account",
-        "accountSecurityIntroMessage":
-            "Controlla la tua password e gli accessi dell'account",
-        "applicationsIntroMessage":
-            "Traccia e gestisci i permessi delle applicazioni nell'accesso al tuo account",
-        "resourceIntroMessage":
-            "Condividi le tue risorse tra i membri del team",
+        "accountSecurityIntroMessage": "Controlla la tua password e gli accessi dell'account",
+        "applicationsIntroMessage": "Traccia e gestisci i permessi delle applicazioni nell'accesso al tuo account",
+        "resourceIntroMessage": "Condividi le tue risorse tra i membri del team",
         "passwordLastUpdateMessage": "La tua password è stata aggiornata il",
         "updatePasswordTitle": "Aggiornamento password",
-        "updatePasswordMessageTitle":
-            "Assicurati di scegliere una password robusta",
+        "updatePasswordMessageTitle": "Assicurati di scegliere una password robusta",
         "updatePasswordMessage":
             "Una password robusta contiene un misto di numeri, lettere, e simboli. È difficile da indovinare, non assomiglia a una parola reale, ed è utilizzata solo per questo account.",
         "personalSubTitle": "Le tue informazioni personali",
-        "personalSubMessage":
-            "Gestisce queste informazioni di base: il tuo nome, cognome, e indirizzo email",
+        "personalSubMessage": "Gestisce queste informazioni di base: il tuo nome, cognome, e indirizzo email",
         "authenticatorCode": "Codice monouso",
         "email": "Email",
         "firstName": "Nome",
@@ -2234,8 +1926,7 @@ export const kcMessages = {
         "role_uma_authorization": "Ottieni permessi",
         "client_account": "Account",
         "client_account-console": "Console account",
-        "client_security-admin-console":
-            "Console di amministrazione di sicurezza",
+        "client_security-admin-console": "Console di amministrazione di sicurezza",
         "client_admin-cli": "Admin CLI",
         "client_realm-management": "Gestione realm",
         "client_broker": "Broker",
@@ -2271,16 +1962,12 @@ export const kcMessages = {
         "revoke": "Revoca concessione",
         "configureAuthenticators": "Autenticatori configurati",
         "mobile": "Dispositivo mobile",
-        "totpStep1":
-            "Installa una delle seguenti applicazioni sul tuo dispositivo mobile",
+        "totpStep1": "Installa una delle seguenti applicazioni sul tuo dispositivo mobile",
         "totpStep2": "Apri l'applicazione e scansiona il codice QR",
-        "totpStep3":
-            "Scrivi il codice monouso fornito dall'applicazione e clicca Salva per completare il setup.",
-        "totpStep3DeviceName":
-            "Fornisci il nome del dispositivo per aiutarti a gestire i dispositivi di autenticazione.",
+        "totpStep3": "Scrivi il codice monouso fornito dall'applicazione e clicca Salva per completare il setup.",
+        "totpStep3DeviceName": "Fornisci il nome del dispositivo per aiutarti a gestire i dispositivi di autenticazione.",
         "totpManualStep2": "Apri l'applicazione e scrivi la chiave",
-        "totpManualStep3":
-            "Usa le seguenti impostazioni se l'applicazione lo consente",
+        "totpManualStep3": "Usa le seguenti impostazioni se l'applicazione lo consente",
         "totpUnableToScan": "Non riesci a scansionare il codice QR?",
         "totpScanBarcode": "Vuoi scansionare il codice QR?",
         "totp.totp": "Basato sull'ora",
@@ -2300,66 +1987,42 @@ export const kcMessages = {
         "notMatchPasswordMessage": "Le password non coincidono.",
         "invalidUserMessage": "Utente non valido",
         "missingTotpMessage": "Inserisci il codice di autenticazione.",
-        "missingTotpDeviceNameMessage":
-            "Inserisci il nome del dispositivo di autenticazione.",
+        "missingTotpDeviceNameMessage": "Inserisci il nome del dispositivo di autenticazione.",
         "invalidPasswordExistingMessage": "Password esistente non valida.",
-        "invalidPasswordConfirmMessage":
-            "La password di conferma non coincide.",
+        "invalidPasswordConfirmMessage": "La password di conferma non coincide.",
         "invalidTotpMessage": "Codice di autenticazione non valido.",
         "usernameExistsMessage": "Username già esistente.",
         "emailExistsMessage": "Email già esistente.",
-        "readOnlyUserMessage":
-            "Non puoi aggiornare il tuo account poiché è in modalità sola lettura.",
-        "readOnlyUsernameMessage":
-            "Non puoi aggiornare il tuo nome utente poiché è in modalità sola lettura.",
-        "readOnlyPasswordMessage":
-            "Non puoi aggiornare il tuo account poiché è in modalità sola lettura.",
+        "readOnlyUserMessage": "Non puoi aggiornare il tuo account poiché è in modalità sola lettura.",
+        "readOnlyUsernameMessage": "Non puoi aggiornare il tuo nome utente poiché è in modalità sola lettura.",
+        "readOnlyPasswordMessage": "Non puoi aggiornare il tuo account poiché è in modalità sola lettura.",
         "successTotpMessage": "Autenticatore mobile configurato.",
         "successTotpRemovedMessage": "Autenticatore mobile eliminato.",
         "successGrantRevokedMessage": "Concessione revocata con successo.",
         "accountUpdatedMessage": "Il tuo account è stato aggiornato.",
         "accountPasswordUpdatedMessage": "La tua password è stata aggiornata.",
         "missingIdentityProviderMessage": "Identity provider non specificato.",
-        "invalidFederatedIdentityActionMessage":
-            "Azione non valida o mancante.",
-        "identityProviderNotFoundMessage":
-            "L'identity provider specificato non è stato trovato.",
-        "federatedIdentityLinkNotActiveMessage":
-            "Questo identity non è più attivo.",
-        "federatedIdentityRemovingLastProviderMessage":
-            "Non puoi rimuovere l'ultima identità federata poiché non hai più la password.",
-        "identityProviderRedirectErrorMessage":
-            "Il reindirizzamento all'identity provider è fallito.",
-        "identityProviderRemovedMessage":
-            "Identity provider eliminato correttamente.",
-        "identityProviderAlreadyLinkedMessage":
-            "L'identità federata restituita da {0} è già collegata ad un altro utente.",
+        "invalidFederatedIdentityActionMessage": "Azione non valida o mancante.",
+        "identityProviderNotFoundMessage": "L'identity provider specificato non è stato trovato.",
+        "federatedIdentityLinkNotActiveMessage": "Questo identity non è più attivo.",
+        "federatedIdentityRemovingLastProviderMessage": "Non puoi rimuovere l'ultima identità federata poiché non hai più la password.",
+        "identityProviderRedirectErrorMessage": "Il reindirizzamento all'identity provider è fallito.",
+        "identityProviderRemovedMessage": "Identity provider eliminato correttamente.",
+        "identityProviderAlreadyLinkedMessage": "L'identità federata restituita da {0} è già collegata ad un altro utente.",
         "staleCodeAccountMessage": "La pagina è scaduta. Prova di nuovo.",
         "consentDenied": "Consenso negato.",
-        "accountDisabledMessage":
-            "Account disabilitato, contatta l'amministratore.",
-        "accountTemporarilyDisabledMessage":
-            "L'account è temporaneamente disabilitato, contatta l'amministratore o riprova più tardi.",
-        "invalidPasswordMinLengthMessage":
-            "Password non valida: lunghezza minima {0}.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Password non valida: deve contenere almeno {0} caratteri minuscoli.",
-        "invalidPasswordMinDigitsMessage":
-            "Password non valida: deve contenere almeno {0} numeri.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Password non valida: deve contenere almeno {0} caratteri maiuscoli.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Password non valida: deve contenere almeno {0} caratteri speciali.",
-        "invalidPasswordNotUsernameMessage":
-            "Password non valida: non deve essere uguale allo username.",
-        "invalidPasswordRegexPatternMessage":
-            "Password non valida: fallito il match con una o più espressioni regolari.",
-        "invalidPasswordHistoryMessage":
-            "Password non valida: non deve essere uguale a una delle ultime {0} password.",
-        "invalidPasswordBlacklistedMessage":
-            "Password non valida: la password non è consentita.",
-        "invalidPasswordGenericMessage":
-            "Password non valida: la nuova password non rispetta le indicazioni previste.",
+        "accountDisabledMessage": "Account disabilitato, contatta l'amministratore.",
+        "accountTemporarilyDisabledMessage": "L'account è temporaneamente disabilitato, contatta l'amministratore o riprova più tardi.",
+        "invalidPasswordMinLengthMessage": "Password non valida: lunghezza minima {0}.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Password non valida: deve contenere almeno {0} caratteri minuscoli.",
+        "invalidPasswordMinDigitsMessage": "Password non valida: deve contenere almeno {0} numeri.",
+        "invalidPasswordMinUpperCaseCharsMessage": "Password non valida: deve contenere almeno {0} caratteri maiuscoli.",
+        "invalidPasswordMinSpecialCharsMessage": "Password non valida: deve contenere almeno {0} caratteri speciali.",
+        "invalidPasswordNotUsernameMessage": "Password non valida: non deve essere uguale allo username.",
+        "invalidPasswordRegexPatternMessage": "Password non valida: fallito il match con una o più espressioni regolari.",
+        "invalidPasswordHistoryMessage": "Password non valida: non deve essere uguale a una delle ultime {0} password.",
+        "invalidPasswordBlacklistedMessage": "Password non valida: la password non è consentita.",
+        "invalidPasswordGenericMessage": "Password non valida: la nuova password non rispetta le indicazioni previste.",
         "myResources": "Le mie risorse",
         "myResourcesSub": "Le mie risorse",
         "doDeny": "Nega",
@@ -2368,10 +2031,8 @@ export const kcMessages = {
         "doRemoveSharing": "Rimuovi condivisione",
         "doRemoveRequest": "Rimuovi richiesta",
         "peopleAccessResource": "Persone che hanno accesso a questa risorsa",
-        "resourceManagedPolicies":
-            "Permessi che danno accesso a questa risorsa",
-        "resourceNoPermissionsGrantingAccess":
-            "Nessun permesso dà accesso a questa risorsa",
+        "resourceManagedPolicies": "Permessi che danno accesso a questa risorsa",
+        "resourceNoPermissionsGrantingAccess": "Nessun permesso dà accesso a questa risorsa",
         "anyAction": "Qualsiasi azione",
         "description": "Descrizione",
         "name": "Nome",
@@ -2381,8 +2042,7 @@ export const kcMessages = {
         "peopleSharingThisResource": "Persone che condividono questa risorsa",
         "shareWithOthers": "Condividi con altri",
         "needMyApproval": "Richiede la mia approvazione",
-        "requestsWaitingApproval":
-            "La tua richiesta è in attesa di approvazione",
+        "requestsWaitingApproval": "La tua richiesta è in attesa di approvazione",
         "icon": "Icona",
         "requestor": "Richiedente",
         "owner": "Proprietario",
@@ -2393,8 +2053,7 @@ export const kcMessages = {
         "notBeingShared": "Questa risorsa non è in condivisione.",
         "notHaveAnyResource": "Non hai nessuna risorsa",
         "noResourcesSharedWithYou": "Non ci sono risorse condivise con te",
-        "havePermissionRequestsWaitingForApproval":
-            "Hai {0} richiesta(e) di permesso in attesa di approvazione.",
+        "havePermissionRequestsWaitingForApproval": "Hai {0} richiesta(e) di permesso in attesa di approvazione.",
         "clickHereForDetails": "Clicca qui per i dettagli.",
         "resourceIsNotBeingShared": "La risorsa non è in condivisione",
         "locale_it": "Italiano",
@@ -2410,18 +2069,14 @@ export const kcMessages = {
         "appResults": "Risultati",
         "clientNotFoundMessage": "Client non trovato.",
         "authorizedProvider": "Provider autorizzato",
-        "authorizedProviderMessage":
-            "Provider autorizzati collegati al tuo account",
+        "authorizedProviderMessage": "Provider autorizzati collegati al tuo account",
         "identityProvider": "Identity provider",
-        "identityProviderMessage":
-            "Collegare il tuo account con gli identity provider che hai configurato",
+        "identityProviderMessage": "Collegare il tuo account con gli identity provider che hai configurato",
         "socialLogin": "Social Login",
         "userDefined": "Definito dall'utente",
         "removeAccess": "Rimuovi accesso",
-        "removeAccessMessage":
-            "Devi concedere di nuovo l'accesso, se vuoi utilizzare l'account di questa applicazione.",
-        "authenticatorStatusMessage":
-            "L'autenticazione a due fattori è attualmente",
+        "removeAccessMessage": "Devi concedere di nuovo l'accesso, se vuoi utilizzare l'account di questa applicazione.",
+        "authenticatorStatusMessage": "L'autenticazione a due fattori è attualmente",
         "authenticatorFinishSetUpTitle": "La tua autenticazione a due fattori",
         "authenticatorFinishSetUpMessage":
             "Ogni volta che effettui l'accesso al tuo account Keycloak, ti verrà richiesto di fornire il tuo codice di autenticazione a due fattori.",
@@ -2429,31 +2084,22 @@ export const kcMessages = {
         "authenticatorSubMessage":
             "Per incrementare la sicurezza del tuo account, attiva almeno uno dei metodi disponibili per l'autenticazione a due fattori.",
         "authenticatorMobileTitle": "Autenticatore mobile",
-        "authenticatorMobileMessage":
-            "Utilizza l'autenticatore mobile per ottenere i codici di verifica per l'autenticazione a due fattori.",
-        "authenticatorMobileFinishSetUpMessage":
-            "L'autenticatore è stato collegato al tuo telefono.",
+        "authenticatorMobileMessage": "Utilizza l'autenticatore mobile per ottenere i codici di verifica per l'autenticazione a due fattori.",
+        "authenticatorMobileFinishSetUpMessage": "L'autenticatore è stato collegato al tuo telefono.",
         "authenticatorActionSetup": "Set up",
         "authenticatorSMSTitle": "Codice SMS",
-        "authenticatorSMSMessage":
-            "Keycloak invierà il codice di verifica al tuo telefono per l'autenticazione a due fattori.",
-        "authenticatorSMSFinishSetUpMessage":
-            "I messaggi di testo vengono inviati a",
+        "authenticatorSMSMessage": "Keycloak invierà il codice di verifica al tuo telefono per l'autenticazione a due fattori.",
+        "authenticatorSMSFinishSetUpMessage": "I messaggi di testo vengono inviati a",
         "authenticatorDefaultStatus": "Default",
         "authenticatorChangePhone": "Cambia numero di telefono",
         "authenticatorBackupCodesTitle": "Codici di backup",
-        "authenticatorBackupCodesMessage":
-            "Ottieni i tuoi codici di backup a otto cifre",
-        "authenticatorBackupCodesFinishSetUpMessage":
-            "Sono stati generati dodici codici di backup. Ognuno può essere usato una sola volta.",
+        "authenticatorBackupCodesMessage": "Ottieni i tuoi codici di backup a otto cifre",
+        "authenticatorBackupCodesFinishSetUpMessage": "Sono stati generati dodici codici di backup. Ognuno può essere usato una sola volta.",
         "authenticatorMobileSetupTitle": "Setup autenticatore mobile",
-        "smscodeIntroMessage":
-            "Inserisci il tuo numero di telefono e ti verrà inviato un codice di verifica.",
-        "mobileSetupStep1":
-            "Installa un'applicazione di autenticazione sul tuo telefono. Sono supportate le applicazioni qui elencate.",
+        "smscodeIntroMessage": "Inserisci il tuo numero di telefono e ti verrà inviato un codice di verifica.",
+        "mobileSetupStep1": "Installa un'applicazione di autenticazione sul tuo telefono. Sono supportate le applicazioni qui elencate.",
         "mobileSetupStep2": "Apri l'applicazione e scansiona il codice QR:",
-        "mobileSetupStep3":
-            "Inserisci il codice monouso fornito dall'applicazione e clicca Salva per completare il setup.",
+        "mobileSetupStep3": "Inserisci il codice monouso fornito dall'applicazione e clicca Salva per completare il setup.",
         "scanBarCode": "Vuoi scansionare il codice QR?",
         "enterBarCode": "Inserisci il codice monouso",
         "doCopy": "Copia",
@@ -2469,12 +2115,10 @@ export const kcMessages = {
         "realmName": "Realm",
         "doDownload": "Download",
         "doPrint": "Stampa",
-        "backupCodesTips-1":
-            "Ogni codice di backup può essere usato una sola volta.",
+        "backupCodesTips-1": "Ogni codice di backup può essere usato una sola volta.",
         "backupCodesTips-2": "Questi codici sono stati generati il",
         "generateNewBackupCodes": "Genera dei nuovi codici di backup",
-        "backupCodesTips-3":
-            "Quando generi dei nuovi codici di backup, quelli attuali non funzioneranno più.",
+        "backupCodesTips-3": "Quando generi dei nuovi codici di backup, quelli attuali non funzioneranno più.",
         "backtoAuthenticatorPage": "Torna alla pagina dell'autenticatore",
         "resources": "Risorse",
         "sharedwithMe": "Condiviso con me",
@@ -2496,8 +2140,7 @@ export const kcMessages = {
         "waitingforApproval": "Attesa dell'approvazione",
         "anyPermission": "Qualsiasi permesso",
         "openshift.scope.user_info": "Informazioni utente",
-        "openshift.scope.user_check-access":
-            "Informazioni per l'accesso dell'utente",
+        "openshift.scope.user_check-access": "Informazioni per l'accesso dell'utente",
         "openshift.scope.user_full": "Accesso completo",
         "openshift.scope.list-projects": "Elenca progetti",
     },
@@ -2524,10 +2167,8 @@ export const kcMessages = {
         "accountManagementWelcomeMessage": "Keycloakアカウント管理へようこそ",
         "personalInfoIntroMessage": "基本情報を管理する",
         "accountSecurityTitle": "アカウント・セキュリティー",
-        "accountSecurityIntroMessage":
-            "パスワードとアカウント・アクセスを制御する",
-        "applicationsIntroMessage":
-            "アカウントへアクセスするためにアプリのパーミッションを追跡して管理する",
+        "accountSecurityIntroMessage": "パスワードとアカウント・アクセスを制御する",
+        "applicationsIntroMessage": "アカウントへアクセスするためにアプリのパーミッションを追跡して管理する",
         "resourceIntroMessage": "チームメンバー間でリソースを共有する",
         "passwordLastUpdateMessage": "パスワードは更新されました",
         "updatePasswordTitle": "パスワードの更新",
@@ -2571,14 +2212,12 @@ export const kcMessages = {
         "role_view-applications": "アプリケーションの参照",
         "role_view-clients": "クライアントの参照",
         "role_view-events": "イベントの参照",
-        "role_view-identity-providers":
-            "アイデンティティー・プロバイダーの参照",
+        "role_view-identity-providers": "アイデンティティー・プロバイダーの参照",
         "role_view-consent": "同意の参照",
         "role_manage-realm": "レルムの管理",
         "role_manage-users": "ユーザーの管理",
         "role_manage-applications": "アプリケーションの管理",
-        "role_manage-identity-providers":
-            "アイデンティティー・プロバイダーの管理",
+        "role_manage-identity-providers": "アイデンティティー・プロバイダーの管理",
         "role_manage-clients": "クライアントの管理",
         "role_manage-events": "イベントの管理",
         "role_view-profile": "プロファイルの参照",
@@ -2626,17 +2265,12 @@ export const kcMessages = {
         "revoke": "許可の取り消し",
         "configureAuthenticators": "設定済みのオーセンティケーター",
         "mobile": "モバイル",
-        "totpStep1":
-            "モバイルに以下のアプリケーションのいずれかをインストールしてください。",
-        "totpStep2":
-            "アプリケーションを開き、バーコードをスキャンしてください。",
-        "totpStep3":
-            "アプリケーションで提供されたワンタイムコードを入力して保存をクリックし、セットアップを完了してください。",
-        "totpStep3DeviceName":
-            "OTPデバイスの管理に役立つようなデバイス名を指定してください。",
+        "totpStep1": "モバイルに以下のアプリケーションのいずれかをインストールしてください。",
+        "totpStep2": "アプリケーションを開き、バーコードをスキャンしてください。",
+        "totpStep3": "アプリケーションで提供されたワンタイムコードを入力して保存をクリックし、セットアップを完了してください。",
+        "totpStep3DeviceName": "OTPデバイスの管理に役立つようなデバイス名を指定してください。",
         "totpManualStep2": "アプリケーションを開き、キーを入力してください。",
-        "totpManualStep3":
-            "アプリケーションが設定できる場合は、次の設定値を使用してください。",
+        "totpManualStep3": "アプリケーションが設定できる場合は、次の設定値を使用してください。",
         "totpUnableToScan": "スキャンできませんか？",
         "totpScanBarcode": "バーコードをスキャンしますか？",
         "totp.totp": "時間ベース",
@@ -2655,70 +2289,43 @@ export const kcMessages = {
         "missingPasswordMessage": "パスワードを入力してください。",
         "notMatchPasswordMessage": "パスワードが一致していません。",
         "invalidUserMessage": "無効なユーザーです。",
-        "missingTotpMessage":
-            "オーセンティケーター・コードを入力してください。",
+        "missingTotpMessage": "オーセンティケーター・コードを入力してください。",
         "missingTotpDeviceNameMessage": "デバイス名を指定してください。",
         "invalidPasswordExistingMessage": "既存のパスワードが不正です。",
-        "invalidPasswordConfirmMessage":
-            "新しいパスワード（確認）と一致していません。",
+        "invalidPasswordConfirmMessage": "新しいパスワード（確認）と一致していません。",
         "invalidTotpMessage": "無効なオーセンティケーター・コードです。",
         "usernameExistsMessage": "既に存在するユーザー名です。",
         "emailExistsMessage": "既に存在するEメールです。",
-        "readOnlyUserMessage":
-            "読み取り専用のため、アカウントを更新することはできません。",
-        "readOnlyUsernameMessage":
-            "読み取り専用のため、ユーザー名を更新することはできません。",
-        "readOnlyPasswordMessage":
-            "読み取り専用のため、パスワードを更新することはできません。",
-        "successTotpMessage":
-            "モバイル・オーセンティケーターが設定されました。",
-        "successTotpRemovedMessage":
-            "モバイル・オーセンティケーターが削除されました。",
+        "readOnlyUserMessage": "読み取り専用のため、アカウントを更新することはできません。",
+        "readOnlyUsernameMessage": "読み取り専用のため、ユーザー名を更新することはできません。",
+        "readOnlyPasswordMessage": "読み取り専用のため、パスワードを更新することはできません。",
+        "successTotpMessage": "モバイル・オーセンティケーターが設定されました。",
+        "successTotpRemovedMessage": "モバイル・オーセンティケーターが削除されました。",
         "successGrantRevokedMessage": "許可が正常に取り消しされました。",
         "accountUpdatedMessage": "アカウントが更新されました。",
         "accountPasswordUpdatedMessage": "パスワードが更新されました。",
-        "missingIdentityProviderMessage":
-            "アイデンティティー・プロバイダーが指定されていません。",
-        "invalidFederatedIdentityActionMessage":
-            "無効または存在しないアクションです。",
-        "identityProviderNotFoundMessage":
-            "指定されたアイデンティティー・プロバイダーが見つかりません。",
-        "federatedIdentityLinkNotActiveMessage":
-            "このアイデンティティーは有効ではありません。",
-        "federatedIdentityRemovingLastProviderMessage":
-            "パスワードがないため、最後の連携済みアイデンティティーが削除できません。",
-        "identityProviderRedirectErrorMessage":
-            "アイデンティティー・プロバイダーへのリダイレクトに失敗しました。",
-        "identityProviderRemovedMessage":
-            "アイデンティティー・プロバイダーが正常に削除されました。",
-        "identityProviderAlreadyLinkedMessage":
-            "{0}から返された連携済みアイデンティティーは既に他のユーザーに関連付けされています。",
+        "missingIdentityProviderMessage": "アイデンティティー・プロバイダーが指定されていません。",
+        "invalidFederatedIdentityActionMessage": "無効または存在しないアクションです。",
+        "identityProviderNotFoundMessage": "指定されたアイデンティティー・プロバイダーが見つかりません。",
+        "federatedIdentityLinkNotActiveMessage": "このアイデンティティーは有効ではありません。",
+        "federatedIdentityRemovingLastProviderMessage": "パスワードがないため、最後の連携済みアイデンティティーが削除できません。",
+        "identityProviderRedirectErrorMessage": "アイデンティティー・プロバイダーへのリダイレクトに失敗しました。",
+        "identityProviderRemovedMessage": "アイデンティティー・プロバイダーが正常に削除されました。",
+        "identityProviderAlreadyLinkedMessage": "{0}から返された連携済みアイデンティティーは既に他のユーザーに関連付けされています。",
         "staleCodeAccountMessage": "有効期限切れです。再度お試しください。",
         "consentDenied": "同意が拒否されました。",
-        "accountDisabledMessage":
-            "アカウントが無効です。管理者に連絡してください。",
-        "accountTemporarilyDisabledMessage":
-            "アカウントが一時的に無効です。管理者に連絡するか、しばらく時間をおいてから再度お試しください。",
-        "invalidPasswordMinLengthMessage":
-            "無効なパスワード: 最小{0}の長さが必要です。",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "無効なパスワード: 少なくとも{0}文字の小文字を含む必要があります。",
-        "invalidPasswordMinDigitsMessage":
-            "無効なパスワード: 少なくとも{0}文字の数字を含む必要があります。",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "無効なパスワード:少なくとも{0}文字の大文字を含む必要があります。",
-        "invalidPasswordMinSpecialCharsMessage":
-            "無効なパスワード: 少なくとも{0}文字の特殊文字を含む必要があります。",
-        "invalidPasswordNotUsernameMessage":
-            "無効なパスワード: ユーザー名と同じパスワードは禁止されています。",
-        "invalidPasswordRegexPatternMessage":
-            "無効なパスワード: 正規表現パターンと一致しません。",
-        "invalidPasswordHistoryMessage":
-            "無効なパスワード: 最近の{0}パスワードのいずれかと同じパスワードは禁止されています。",
-        "invalidPasswordBlacklistedMessage":
-            "無効なパスワード: パスワードがブラックリストに含まれています。",
-        "invalidPasswordGenericMessage":
-            "無効なパスワード: 新しいパスワードはパスワード・ポリシーと一致しません。",
+        "accountDisabledMessage": "アカウントが無効です。管理者に連絡してください。",
+        "accountTemporarilyDisabledMessage": "アカウントが一時的に無効です。管理者に連絡するか、しばらく時間をおいてから再度お試しください。",
+        "invalidPasswordMinLengthMessage": "無効なパスワード: 最小{0}の長さが必要です。",
+        "invalidPasswordMinLowerCaseCharsMessage": "無効なパスワード: 少なくとも{0}文字の小文字を含む必要があります。",
+        "invalidPasswordMinDigitsMessage": "無効なパスワード: 少なくとも{0}文字の数字を含む必要があります。",
+        "invalidPasswordMinUpperCaseCharsMessage": "無効なパスワード:少なくとも{0}文字の大文字を含む必要があります。",
+        "invalidPasswordMinSpecialCharsMessage": "無効なパスワード: 少なくとも{0}文字の特殊文字を含む必要があります。",
+        "invalidPasswordNotUsernameMessage": "無効なパスワード: ユーザー名と同じパスワードは禁止されています。",
+        "invalidPasswordRegexPatternMessage": "無効なパスワード: 正規表現パターンと一致しません。",
+        "invalidPasswordHistoryMessage": "無効なパスワード: 最近の{0}パスワードのいずれかと同じパスワードは禁止されています。",
+        "invalidPasswordBlacklistedMessage": "無効なパスワード: パスワードがブラックリストに含まれています。",
+        "invalidPasswordGenericMessage": "無効なパスワード: 新しいパスワードはパスワード・ポリシーと一致しません。",
         "myResources": "マイリソース",
         "myResourcesSub": "マイリソース",
         "doDeny": "拒否",
@@ -2727,10 +2334,8 @@ export const kcMessages = {
         "doRemoveSharing": "共有の削除",
         "doRemoveRequest": "要求の削除",
         "peopleAccessResource": "このリソースにアクセスできる人",
-        "resourceManagedPolicies":
-            "このリソースへのアクセスを許可するパーミッション",
-        "resourceNoPermissionsGrantingAccess":
-            "このリソースへのアクセスを許可する権限はありません",
+        "resourceManagedPolicies": "このリソースへのアクセスを許可するパーミッション",
+        "resourceNoPermissionsGrantingAccess": "このリソースへのアクセスを許可する権限はありません",
         "anyAction": "任意のアクション",
         "description": "説明",
         "name": "名前",
@@ -2751,8 +2356,7 @@ export const kcMessages = {
         "notBeingShared": "このリソースは共有されていません。",
         "notHaveAnyResource": "リソースがありません。",
         "noResourcesSharedWithYou": "共有しているリソースはありません",
-        "havePermissionRequestsWaitingForApproval":
-            "承認を待っている{0}個のパーミッションの要求があります。",
+        "havePermissionRequestsWaitingForApproval": "承認を待っている{0}個のパーミッションの要求があります。",
         "clickHereForDetails": "詳細はこちらをクリックしてください。",
         "resourceIsNotBeingShared": "リソースは共有されていません。",
         "applicationName": "名前",
@@ -2767,50 +2371,36 @@ export const kcMessages = {
         "appResults": "結果",
         "clientNotFoundMessage": "クライアントが見つかりません。",
         "authorizedProvider": "認可済みプロバイダー",
-        "authorizedProviderMessage":
-            "アカウントにリンクされた認可済みプロバイダー",
+        "authorizedProviderMessage": "アカウントにリンクされた認可済みプロバイダー",
         "identityProvider": "アイデンティティー・プロバイダー",
-        "identityProviderMessage":
-            "アカウントと設定したアイデンティティー・プロバイダーをリンクするには",
+        "identityProviderMessage": "アカウントと設定したアイデンティティー・プロバイダーをリンクするには",
         "socialLogin": "ソーシャル・ログイン",
         "userDefined": "ユーザー定義",
         "removeAccess": "アクセス権の削除",
-        "removeAccessMessage":
-            "このアプリ・アカウントを使用する場合は、アクセス権を再度付与する必要があります。",
+        "removeAccessMessage": "このアプリ・アカウントを使用する場合は、アクセス権を再度付与する必要があります。",
         "authenticatorStatusMessage": "2要素認証は現在",
         "authenticatorFinishSetUpTitle": "あなたの2要素認証",
-        "authenticatorFinishSetUpMessage":
-            "Keycloakアカウントにサインインするたびに、2要素認証コードを入力するように求められます。",
+        "authenticatorFinishSetUpMessage": "Keycloakアカウントにサインインするたびに、2要素認証コードを入力するように求められます。",
         "authenticatorSubTitle": "2要素認証を設定する",
-        "authenticatorSubMessage":
-            "アカウントのセキュリティーを強化するには、利用可能な2要素認証の方式のうち少なくとも1つを有効にします。",
+        "authenticatorSubMessage": "アカウントのセキュリティーを強化するには、利用可能な2要素認証の方式のうち少なくとも1つを有効にします。",
         "authenticatorMobileTitle": "モバイル・オーセンティケーター",
-        "authenticatorMobileMessage":
-            "モバイル・オーセンティケーターを使用して、2要素認証として確認コードを取得します。",
-        "authenticatorMobileFinishSetUpMessage":
-            "オーセンティケーターはあなたの携帯電話にバインドされています。",
+        "authenticatorMobileMessage": "モバイル・オーセンティケーターを使用して、2要素認証として確認コードを取得します。",
+        "authenticatorMobileFinishSetUpMessage": "オーセンティケーターはあなたの携帯電話にバインドされています。",
         "authenticatorActionSetup": "セットアップ",
         "authenticatorSMSTitle": "SMSコード",
-        "authenticatorSMSMessage":
-            "Keycloakは、2要素認証として確認コードを携帯電話に送信します。",
-        "authenticatorSMSFinishSetUpMessage":
-            "テキスト・メッセージが次の電話番号宛に送信されます：",
+        "authenticatorSMSMessage": "Keycloakは、2要素認証として確認コードを携帯電話に送信します。",
+        "authenticatorSMSFinishSetUpMessage": "テキスト・メッセージが次の電話番号宛に送信されます：",
         "authenticatorDefaultStatus": "デフォルト",
         "authenticatorChangePhone": "電話番号の変更",
         "authenticatorBackupCodesTitle": "バックアップ・コード",
         "authenticatorBackupCodesMessage": "8桁のバックアップ・コードの入手",
-        "authenticatorBackupCodesFinishSetUpMessage":
-            "この時点で12個のバックアップ・コードが生成されました。それぞれ一度だけ使用できます。",
-        "authenticatorMobileSetupTitle":
-            "モバイル・オーセンティケーターのセットアップ",
-        "smscodeIntroMessage":
-            "電話番号を入力すると、確認コードがあなたの電話に送信されます。",
+        "authenticatorBackupCodesFinishSetUpMessage": "この時点で12個のバックアップ・コードが生成されました。それぞれ一度だけ使用できます。",
+        "authenticatorMobileSetupTitle": "モバイル・オーセンティケーターのセットアップ",
+        "smscodeIntroMessage": "電話番号を入力すると、確認コードがあなたの電話に送信されます。",
         "mobileSetupStep1":
             "携帯電話にオーセンティケーター・アプリケーションをインストールします。ここにリストされているアプリケーションがサポートされています。",
-        "mobileSetupStep2":
-            "アプリケーションを開き、バーコードをスキャンしてください。",
-        "mobileSetupStep3":
-            "アプリケーションから提供されたワンタイムコードを入力し、保存をクリックしてセットアップを終了します。",
+        "mobileSetupStep2": "アプリケーションを開き、バーコードをスキャンしてください。",
+        "mobileSetupStep3": "アプリケーションから提供されたワンタイムコードを入力し、保存をクリックしてセットアップを終了します。",
         "scanBarCode": "バーコードをスキャンしますか？",
         "enterBarCode": "ワンタイムコードを入力してください",
         "doCopy": "コピー",
@@ -2820,8 +2410,7 @@ export const kcMessages = {
         "enterYourPhoneNumber": "電話番号を入力してください",
         "sendVerficationCode": "確認コードの送信",
         "enterYourVerficationCode": "確認コードを入力してください",
-        "authenticatorBackupCodesSetupTitle":
-            "バックアップ・コードのセットアップ",
+        "authenticatorBackupCodesSetupTitle": "バックアップ・コードのセットアップ",
         "backupcodesIntroMessage":
             "携帯電話にアクセスできない場合でも、バックアップ・コードを使用してアカウントにログインできます。どこか安全でアクセス可能な場所に保管してください。",
         "realmName": "レルム",
@@ -2830,8 +2419,7 @@ export const kcMessages = {
         "backupCodesTips-1": "各バックアップ・コードは1回使用できます。",
         "backupCodesTips-2": "これらのコードはこの日に生成されました：",
         "generateNewBackupCodes": "新しいバックアップ・コードを生成する",
-        "backupCodesTips-3":
-            "新しいバックアップ・コードを生成すると、現在のコードは機能しなくなります。",
+        "backupCodesTips-3": "新しいバックアップ・コードを生成すると、現在のコードは機能しなくなります。",
         "backtoAuthenticatorPage": "オーセンティケーター・ページに戻る",
         "resources": "リソース",
         "sharedwithMe": "私と共有",
@@ -2949,10 +2537,8 @@ export const kcMessages = {
         "mobile": "Mobilus",
         "totpStep1":
             'Įdiekite <a href="https://freeotp.github.io/" target="_blank">FreeOTP</a> arba Google Authenticator savo įrenginyje. Programėlės prieinamos <a href="https://play.google.com">Google Play</a> ir Apple App Store.',
-        "totpStep2":
-            "Atidarykite programėlę ir nuskenuokite barkodą arba įveskite kodą.",
-        "totpStep3":
-            "Įveskite programėlėje sugeneruotą vieną kartą galiojantį kodą ir paspauskite Saugoti norėdami prisijungti.",
+        "totpStep2": "Atidarykite programėlę ir nuskenuokite barkodą arba įveskite kodą.",
+        "totpStep3": "Įveskite programėlėje sugeneruotą vieną kartą galiojantį kodą ir paspauskite Saugoti norėdami prisijungti.",
         "missingUsernameMessage": "Prašome įvesti naudotojo vardą.",
         "missingFirstNameMessage": "Prašome įvesti vardą.",
         "invalidEmailMessage": "Neteisingas el. pašto adresas.",
@@ -2966,53 +2552,34 @@ export const kcMessages = {
         "invalidTotpMessage": "Neteisingas autentifikacijos kodas.",
         "usernameExistsMessage": "Toks naudotojas jau egzistuoja.",
         "emailExistsMessage": "El. pašto adresas jau egzistuoja.",
-        "readOnlyUserMessage":
-            "Tik skaitymui sukonfigūruotos paskyros duomenų atnaujinti neleidžiama.",
-        "readOnlyPasswordMessage":
-            "Tik skaitymui sukonfigūruotos paskyros slaptažodžio atnaujinti neleidžiama.",
+        "readOnlyUserMessage": "Tik skaitymui sukonfigūruotos paskyros duomenų atnaujinti neleidžiama.",
+        "readOnlyPasswordMessage": "Tik skaitymui sukonfigūruotos paskyros slaptažodžio atnaujinti neleidžiama.",
         "successTotpMessage": "Mobilus autentifikatorius sukonfigūruotas.",
         "successTotpRemovedMessage": "Mobilus autentifikatorius pašalintas.",
         "successGrantRevokedMessage": "Įgalinimas pašalintas sėkmingai.",
         "accountUpdatedMessage": "Jūsų paskyros duomenys sėkmingai atnaujinti.",
         "accountPasswordUpdatedMessage": "Jūsų paskyros slaptažodis pakeistas.",
         "missingIdentityProviderMessage": "Nenurodytas tapatybės teikėjas.",
-        "invalidFederatedIdentityActionMessage":
-            "Neteisingas arba nežinomas veiksmas.",
-        "identityProviderNotFoundMessage":
-            "Nurodytas tapatybės teikėjas nerastas.",
-        "federatedIdentityLinkNotActiveMessage":
-            "Nurodyta susieta tapatybė neaktyvi.",
+        "invalidFederatedIdentityActionMessage": "Neteisingas arba nežinomas veiksmas.",
+        "identityProviderNotFoundMessage": "Nurodytas tapatybės teikėjas nerastas.",
+        "federatedIdentityLinkNotActiveMessage": "Nurodyta susieta tapatybė neaktyvi.",
         "federatedIdentityRemovingLastProviderMessage":
             "Jūs negalite pašalinti paskutinio tapatybės teikėjo sąsajos, nes Jūs neturite nusistatę paskyros slaptažodžio.",
-        "identityProviderRedirectErrorMessage":
-            "Klaida nukreipiant į tapatybės teikėjo puslapį.",
-        "identityProviderRemovedMessage":
-            "Tapatybės teikėjas sėkmingai pašalintas.",
-        "identityProviderAlreadyLinkedMessage":
-            "Susieta tapatybė iš {0} jau susieta su kita paskyra.",
-        "staleCodeAccountMessage":
-            "Puslapio galiojimas baigėsi. Bandykite dar kartą.",
+        "identityProviderRedirectErrorMessage": "Klaida nukreipiant į tapatybės teikėjo puslapį.",
+        "identityProviderRemovedMessage": "Tapatybės teikėjas sėkmingai pašalintas.",
+        "identityProviderAlreadyLinkedMessage": "Susieta tapatybė iš {0} jau susieta su kita paskyra.",
+        "staleCodeAccountMessage": "Puslapio galiojimas baigėsi. Bandykite dar kartą.",
         "consentDenied": "Prieiga draudžiama.",
-        "accountDisabledMessage":
-            "Paskyros galiojimas sustabdytas, kreipkitės į administratorių.",
-        "accountTemporarilyDisabledMessage":
-            "Paskyros galiojimas laikinai sustabdytas. Kreipkitės į administratorių arba pabandykite vėliau.",
-        "invalidPasswordMinLengthMessage":
-            "Per trumpas slaptažodis: mažiausias ilgis {0}.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Neteisingas slaptažodis: privaloma įvesti {0} mažąją raidę.",
-        "invalidPasswordMinDigitsMessage":
-            "Neteisingas slaptažodis: privaloma įvesti {0} skaitmenį.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Neteisingas slaptažodis: privaloma įvesti {0} didžiąją raidę.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Neteisingas slaptažodis: privaloma įvesti {0} specialų simbolį.",
-        "invalidPasswordNotUsernameMessage":
-            "Neteisingas slaptažodis: slaptažodis negali sutapti su naudotojo vardu.",
-        "invalidPasswordRegexPatternMessage":
-            "Neteisingas slaptažodis: slaptažodis netenkina regex taisyklės(ių).",
-        "invalidPasswordHistoryMessage":
-            "Neteisingas slaptažodis: slaptažodis negali sutapti su prieš tai buvusiais {0} slaptažodžiais.",
+        "accountDisabledMessage": "Paskyros galiojimas sustabdytas, kreipkitės į administratorių.",
+        "accountTemporarilyDisabledMessage": "Paskyros galiojimas laikinai sustabdytas. Kreipkitės į administratorių arba pabandykite vėliau.",
+        "invalidPasswordMinLengthMessage": "Per trumpas slaptažodis: mažiausias ilgis {0}.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Neteisingas slaptažodis: privaloma įvesti {0} mažąją raidę.",
+        "invalidPasswordMinDigitsMessage": "Neteisingas slaptažodis: privaloma įvesti {0} skaitmenį.",
+        "invalidPasswordMinUpperCaseCharsMessage": "Neteisingas slaptažodis: privaloma įvesti {0} didžiąją raidę.",
+        "invalidPasswordMinSpecialCharsMessage": "Neteisingas slaptažodis: privaloma įvesti {0} specialų simbolį.",
+        "invalidPasswordNotUsernameMessage": "Neteisingas slaptažodis: slaptažodis negali sutapti su naudotojo vardu.",
+        "invalidPasswordRegexPatternMessage": "Neteisingas slaptažodis: slaptažodis netenkina regex taisyklės(ių).",
+        "invalidPasswordHistoryMessage": "Neteisingas slaptažodis: slaptažodis negali sutapti su prieš tai buvusiais {0} slaptažodžiais.",
     },
     "nl": {
         "doSave": "Opslaan",
@@ -3105,12 +2672,9 @@ export const kcMessages = {
         "revoke": "Vergunning intrekken",
         "configureAuthenticators": "Ingestelde authenticators",
         "mobile": "Mobiel nummer",
-        "totpStep1":
-            "Installeer een van de onderstaande applicaties op uw mobiele apparaat:",
-        "totpStep2":
-            "Open de toepassing en scan de QR-code of voer de sleutel in.",
-        "totpStep3":
-            "Voer de door de toepassing gegeven eenmalige code in en klik op Opslaan om de configuratie af te ronden.",
+        "totpStep1": "Installeer een van de onderstaande applicaties op uw mobiele apparaat:",
+        "totpStep2": "Open de toepassing en scan de QR-code of voer de sleutel in.",
+        "totpStep3": "Voer de door de toepassing gegeven eenmalige code in en klik op Opslaan om de configuratie af te ronden.",
         "missingUsernameMessage": "Gebruikersnaam ontbreekt.",
         "missingFirstNameMessage": "Voornaam onbreekt.",
         "invalidEmailMessage": "Ongeldig e-mailadres.",
@@ -3120,59 +2684,38 @@ export const kcMessages = {
         "notMatchPasswordMessage": "Wachtwoorden komen niet overeen.",
         "missingTotpMessage": "Authenticatiecode ontbreekt.",
         "invalidPasswordExistingMessage": "Ongeldig bestaand wachtwoord.",
-        "invalidPasswordConfirmMessage":
-            "Wachtwoordbevestiging komt niet overeen.",
+        "invalidPasswordConfirmMessage": "Wachtwoordbevestiging komt niet overeen.",
         "invalidTotpMessage": "Ongeldige authenticatiecode.",
         "emailExistsMessage": "E-mailadres bestaat reeds.",
-        "readOnlyUserMessage":
-            "U kunt uw account niet bijwerken aangezien het account alleen-lezen is.",
-        "readOnlyPasswordMessage":
-            "U kunt uw wachtwoord niet wijzigen omdat uw account alleen-lezen is.",
+        "readOnlyUserMessage": "U kunt uw account niet bijwerken aangezien het account alleen-lezen is.",
+        "readOnlyPasswordMessage": "U kunt uw wachtwoord niet wijzigen omdat uw account alleen-lezen is.",
         "successTotpMessage": "Mobiele authenticator geconfigureerd.",
         "successTotpRemovedMessage": "Mobiele authenticator verwijderd.",
         "successGrantRevokedMessage": "Vergunning succesvol ingetrokken",
         "accountUpdatedMessage": "Uw account is gewijzigd.",
         "accountPasswordUpdatedMessage": "Uw wachtwoord is gewijzigd.",
         "missingIdentityProviderMessage": "Geen identity provider aangegeven.",
-        "invalidFederatedIdentityActionMessage":
-            "Ongeldige of ontbrekende actie op federated identity.",
-        "identityProviderNotFoundMessage":
-            "Gespecificeerde identity provider niet gevonden.",
-        "federatedIdentityLinkNotActiveMessage":
-            "Deze federated identity is niet langer geldig.",
+        "invalidFederatedIdentityActionMessage": "Ongeldige of ontbrekende actie op federated identity.",
+        "identityProviderNotFoundMessage": "Gespecificeerde identity provider niet gevonden.",
+        "federatedIdentityLinkNotActiveMessage": "Deze federated identity is niet langer geldig.",
         "federatedIdentityRemovingLastProviderMessage":
             "U kunt de laatste federated identity provider niet verwijderen aangezien u dan niet langer zou kunnen inloggen.",
-        "identityProviderRedirectErrorMessage":
-            "Kon niet herverwijzen naar identity provider.",
-        "identityProviderRemovedMessage":
-            "Identity provider met succes verwijderd.",
-        "identityProviderAlreadyLinkedMessage":
-            "Door {0} teruggegeven federated identity is al gekoppeld aan een andere gebruiker.",
-        "staleCodeAccountMessage":
-            "De pagina is verlopen. Probeer het nogmaals.",
+        "identityProviderRedirectErrorMessage": "Kon niet herverwijzen naar identity provider.",
+        "identityProviderRemovedMessage": "Identity provider met succes verwijderd.",
+        "identityProviderAlreadyLinkedMessage": "Door {0} teruggegeven federated identity is al gekoppeld aan een andere gebruiker.",
+        "staleCodeAccountMessage": "De pagina is verlopen. Probeer het nogmaals.",
         "consentDenied": "Toestemming geweigerd",
-        "accountDisabledMessage":
-            "Account is gedeactiveerd. Contacteer de beheerder.",
-        "accountTemporarilyDisabledMessage":
-            "Account is tijdelijk deactiveerd, neem contact op met de beheerder of probeer het later opnieuw.",
-        "invalidPasswordMinLengthMessage":
-            "Ongeldig wachtwoord: de minimale lengte is {0} karakters.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Ongeldig wachtwoord: het moet minstens {0} kleine letters bevatten.",
-        "invalidPasswordMinDigitsMessage":
-            "Ongeldig wachtwoord: het moet minstens {0} getallen bevatten.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Ongeldig wachtwoord: het moet minstens {0} hoofdletters bevatten.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Ongeldig wachtwoord: het moet minstens {0} speciale karakters bevatten.",
-        "invalidPasswordNotUsernameMessage":
-            "Ongeldig wachtwoord: het mag niet overeenkomen met de gebruikersnaam.",
-        "invalidPasswordRegexPatternMessage":
-            "Ongeldig wachtwoord: het voldoet niet aan het door de beheerder ingestelde patroon.",
-        "invalidPasswordHistoryMessage":
-            "Ongeldig wachtwoord: het mag niet overeen komen met een van de laatste {0} wachtwoorden.",
-        "invalidPasswordGenericMessage":
-            "Ongeldig wachtwoord: het nieuwe wachtwoord voldoet niet aan het wachtwoordbeleid.",
+        "accountDisabledMessage": "Account is gedeactiveerd. Contacteer de beheerder.",
+        "accountTemporarilyDisabledMessage": "Account is tijdelijk deactiveerd, neem contact op met de beheerder of probeer het later opnieuw.",
+        "invalidPasswordMinLengthMessage": "Ongeldig wachtwoord: de minimale lengte is {0} karakters.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Ongeldig wachtwoord: het moet minstens {0} kleine letters bevatten.",
+        "invalidPasswordMinDigitsMessage": "Ongeldig wachtwoord: het moet minstens {0} getallen bevatten.",
+        "invalidPasswordMinUpperCaseCharsMessage": "Ongeldig wachtwoord: het moet minstens {0} hoofdletters bevatten.",
+        "invalidPasswordMinSpecialCharsMessage": "Ongeldig wachtwoord: het moet minstens {0} speciale karakters bevatten.",
+        "invalidPasswordNotUsernameMessage": "Ongeldig wachtwoord: het mag niet overeenkomen met de gebruikersnaam.",
+        "invalidPasswordRegexPatternMessage": "Ongeldig wachtwoord: het voldoet niet aan het door de beheerder ingestelde patroon.",
+        "invalidPasswordHistoryMessage": "Ongeldig wachtwoord: het mag niet overeen komen met een van de laatste {0} wachtwoorden.",
+        "invalidPasswordGenericMessage": "Ongeldig wachtwoord: het nieuwe wachtwoord voldoet niet aan het wachtwoordbeleid.",
     },
     "no": {
         "doSave": "Lagre",
@@ -3265,10 +2808,8 @@ export const kcMessages = {
         "configureAuthenticators": "Konfigurerte autentikatorer",
         "mobile": "Mobiltelefon",
         "totpStep1": "Installer ett av følgende programmer på  mobilen din.",
-        "totpStep2":
-            "Åpne applikasjonen og skann strekkoden eller skriv inn koden.",
-        "totpStep3":
-            "Skriv inn engangskoden gitt av applikasjonen og klikk Lagre for å fullføre.",
+        "totpStep2": "Åpne applikasjonen og skann strekkoden eller skriv inn koden.",
+        "totpStep3": "Skriv inn engangskoden gitt av applikasjonen og klikk Lagre for å fullføre.",
         "missingUsernameMessage": "Vennligst oppgi brukernavn.",
         "missingFirstNameMessage": "Vennligst oppgi fornavn.",
         "invalidEmailMessage": "Ugyldig e-postadresse.",
@@ -3282,54 +2823,33 @@ export const kcMessages = {
         "invalidTotpMessage": "Ugyldig engangskode.",
         "usernameExistsMessage": "Brukernavnet finnes allerede.",
         "emailExistsMessage": "E-postadressen finnes allerede.",
-        "readOnlyUserMessage":
-            "Du kan ikke oppdatere kontoen din ettersom den er skrivebeskyttet.",
-        "readOnlyPasswordMessage":
-            "Du kan ikke oppdatere passordet ditt ettersom kontoen din er skrivebeskyttet.",
+        "readOnlyUserMessage": "Du kan ikke oppdatere kontoen din ettersom den er skrivebeskyttet.",
+        "readOnlyPasswordMessage": "Du kan ikke oppdatere passordet ditt ettersom kontoen din er skrivebeskyttet.",
         "successTotpMessage": "Autentikator for mobiltelefon er konfigurert.",
-        "successTotpRemovedMessage":
-            "Autentikator for mobiltelefon er fjernet.",
+        "successTotpRemovedMessage": "Autentikator for mobiltelefon er fjernet.",
         "successGrantRevokedMessage": "Vellykket oppheving av rettighet.",
         "accountUpdatedMessage": "Kontoen din har blitt oppdatert.",
         "accountPasswordUpdatedMessage": "Ditt passord har blitt oppdatert.",
-        "missingIdentityProviderMessage":
-            "Identitetsleverandør er ikke spesifisert.",
-        "invalidFederatedIdentityActionMessage":
-            "Ugyldig eller manglende handling.",
-        "identityProviderNotFoundMessage":
-            "Spesifisert identitetsleverandør ikke funnet.",
-        "federatedIdentityLinkNotActiveMessage":
-            "Denne identiteten er ikke lenger aktiv.",
-        "federatedIdentityRemovingLastProviderMessage":
-            "Du kan ikke fjerne siste federerte identitet ettersom du ikke har et passord.",
-        "identityProviderRedirectErrorMessage":
-            "Redirect til identitetsleverandør feilet.",
-        "identityProviderRemovedMessage":
-            "Fjerning av identitetsleverandør var vellykket.",
-        "identityProviderAlreadyLinkedMessage":
-            "Federert identitet returnert av {0} er allerede koblet til en annen bruker.",
-        "staleCodeAccountMessage":
-            "Siden har utløpt. Vennligst prøv en gang til.",
+        "missingIdentityProviderMessage": "Identitetsleverandør er ikke spesifisert.",
+        "invalidFederatedIdentityActionMessage": "Ugyldig eller manglende handling.",
+        "identityProviderNotFoundMessage": "Spesifisert identitetsleverandør ikke funnet.",
+        "federatedIdentityLinkNotActiveMessage": "Denne identiteten er ikke lenger aktiv.",
+        "federatedIdentityRemovingLastProviderMessage": "Du kan ikke fjerne siste federerte identitet ettersom du ikke har et passord.",
+        "identityProviderRedirectErrorMessage": "Redirect til identitetsleverandør feilet.",
+        "identityProviderRemovedMessage": "Fjerning av identitetsleverandør var vellykket.",
+        "identityProviderAlreadyLinkedMessage": "Federert identitet returnert av {0} er allerede koblet til en annen bruker.",
+        "staleCodeAccountMessage": "Siden har utløpt. Vennligst prøv en gang til.",
         "consentDenied": "Samtykke avslått.",
         "accountDisabledMessage": "Konto er deaktivert, kontakt administrator.",
-        "accountTemporarilyDisabledMessage":
-            "Konto er midlertidig deaktivert, kontakt administrator eller prøv igjen senere.",
-        "invalidPasswordMinLengthMessage":
-            "Ugyldig passord: minimum lengde {0}.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Ugyldig passord: må inneholde minimum {0} små bokstaver.",
-        "invalidPasswordMinDigitsMessage":
-            "Ugyldig passord: må inneholde minimum {0} sifre.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Ugyldig passord: må inneholde minimum {0} store bokstaver.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Ugyldig passord: må inneholde minimum {0} spesialtegn.",
-        "invalidPasswordNotUsernameMessage":
-            "Ugyldig passord: kan ikke være likt brukernavn.",
-        "invalidPasswordRegexPatternMessage":
-            "Ugyldig passord: tilfredsstiller ikke kravene for passord-mønster.",
-        "invalidPasswordHistoryMessage":
-            "Ugyldig passord: kan ikke være likt noen av de {0} foregående passordene.",
+        "accountTemporarilyDisabledMessage": "Konto er midlertidig deaktivert, kontakt administrator eller prøv igjen senere.",
+        "invalidPasswordMinLengthMessage": "Ugyldig passord: minimum lengde {0}.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Ugyldig passord: må inneholde minimum {0} små bokstaver.",
+        "invalidPasswordMinDigitsMessage": "Ugyldig passord: må inneholde minimum {0} sifre.",
+        "invalidPasswordMinUpperCaseCharsMessage": "Ugyldig passord: må inneholde minimum {0} store bokstaver.",
+        "invalidPasswordMinSpecialCharsMessage": "Ugyldig passord: må inneholde minimum {0} spesialtegn.",
+        "invalidPasswordNotUsernameMessage": "Ugyldig passord: kan ikke være likt brukernavn.",
+        "invalidPasswordRegexPatternMessage": "Ugyldig passord: tilfredsstiller ikke kravene for passord-mønster.",
+        "invalidPasswordHistoryMessage": "Ugyldig passord: kan ikke være likt noen av de {0} foregående passordene.",
     },
     "pl": {
         "doSave": "Zapisz",
@@ -3352,12 +2872,10 @@ export const kcMessages = {
         "applicationsHtmlTitle": "Aplikacje",
         "linkedAccountsHtmlTitle": "Połączone konta",
         "accountManagementWelcomeMessage": "Witamy w zarządzaniu kontem",
-        "personalInfoIntroMessage":
-            "Zarządzaj informacjami podstawowymi o sobie",
+        "personalInfoIntroMessage": "Zarządzaj informacjami podstawowymi o sobie",
         "accountSecurityTitle": "Bezpieczeństwo Konta",
         "accountSecurityIntroMessage": "Kontroluj swoje hasło i dostęp",
-        "applicationsIntroMessage":
-            "Śledź i zarządzaj uprawnieniami aplikacji do twojego konta",
+        "applicationsIntroMessage": "Śledź i zarządzaj uprawnieniami aplikacji do twojego konta",
         "resourceIntroMessage": "Udostępnij swoje zasoby członkom zespołu",
         "passwordLastUpdateMessage": "Twoje hasło zostało zaktualizowane",
         "updatePasswordTitle": "Aktualizuj hasło",
@@ -3365,8 +2883,7 @@ export const kcMessages = {
         "updatePasswordMessage":
             "Silne hasło zawiera mieszaninę cyfr, liter i symboli. Nie używaj zwykłych słów oraz haseł używanych na innych kontach.",
         "personalSubTitle": "Twoje dane osobiste",
-        "personalSubMessage":
-            "Zarządzaj informacjami podstawowymi: twoim imieniem, nazwiskiem oraz emailem",
+        "personalSubMessage": "Zarządzaj informacjami podstawowymi: twoim imieniem, nazwiskiem oraz emailem",
         "authenticatorCode": "Kod jednorazowy",
         "email": "Email",
         "firstName": "Imię",
@@ -3425,8 +2942,7 @@ export const kcMessages = {
         "role_uma_authorization": "Uzyskaj uprawnienia",
         "client_account": "Konto",
         "client_account-console": "Konsola konta",
-        "client_security-admin-console":
-            "Konsola administratora bezpieczeństwa",
+        "client_security-admin-console": "Konsola administratora bezpieczeństwa",
         "client_admin-cli": "Admin CLI",
         "client_realm-management": "Zarządzanie strefą",
         "client_broker": "Broker",
@@ -3462,16 +2978,12 @@ export const kcMessages = {
         "revoke": "Odbierz uprawnienia",
         "configureAuthenticators": "Skonfigurowane autentykatory",
         "mobile": "Mobilne",
-        "totpStep1":
-            "Zainstaluj jedną z następujących aplikacji na telefonie komórkowym:",
+        "totpStep1": "Zainstaluj jedną z następujących aplikacji na telefonie komórkowym:",
         "totpStep2": "Otwórz aplikację i zeskanuj kod kreskowy:",
-        "totpStep3":
-            "Wprowadź jednorazowy kod podany przez aplikację i kliknij Zapisz aby zakończyć konfigurację.",
-        "totpStep3DeviceName":
-            "Podaj nazwę urządzenia aby lepiej zarządzać swoimi urządzeniami haseł jednorazowych.",
+        "totpStep3": "Wprowadź jednorazowy kod podany przez aplikację i kliknij Zapisz aby zakończyć konfigurację.",
+        "totpStep3DeviceName": "Podaj nazwę urządzenia aby lepiej zarządzać swoimi urządzeniami haseł jednorazowych.",
         "totpManualStep2": "Otwórz aplikację i wprowadź klucz:",
-        "totpManualStep3":
-            "Użyj poniższych wartości konfiguracji, jeśli aplikacja pozwala na ich ustawienie:",
+        "totpManualStep3": "Użyj poniższych wartości konfiguracji, jeśli aplikacja pozwala na ich ustawienie:",
         "totpUnableToScan": "Nie można skanować?",
         "totpScanBarcode": "Zeskanować kod paskowy?",
         "totp.totp": "Oparte o czas",
@@ -3497,59 +3009,36 @@ export const kcMessages = {
         "invalidTotpMessage": "Nieprawidłowy kod uwierzytelniający.",
         "usernameExistsMessage": "Nazwa użytkownika już jest wykorzystana.",
         "emailExistsMessage": "Email już istnieje.",
-        "readOnlyUserMessage":
-            "Zmiana nie jest możliwa, ponieważ edycja konta jest zablokowana.",
-        "readOnlyUsernameMessage":
-            "Zmiana nazwy użytkownika nie jest możliwa, ponieważ edycja konta jest zablokowana.",
-        "readOnlyPasswordMessage":
-            "Zmiana hasła nie jest możliwa, ponieważ edycja konta jest zablokowana.",
+        "readOnlyUserMessage": "Zmiana nie jest możliwa, ponieważ edycja konta jest zablokowana.",
+        "readOnlyUsernameMessage": "Zmiana nazwy użytkownika nie jest możliwa, ponieważ edycja konta jest zablokowana.",
+        "readOnlyPasswordMessage": "Zmiana hasła nie jest możliwa, ponieważ edycja konta jest zablokowana.",
         "successTotpMessage": "Mobilny autentykator skonfigurowany.",
         "successTotpRemovedMessage": "Mobilny autentykator usunięty.",
         "successGrantRevokedMessage": "Cofnięto uprawnienia.",
         "accountUpdatedMessage": "Twoje konto zostało zaktualizowane.",
         "accountPasswordUpdatedMessage": "Twoje hasło zostało zmienione.",
-        "missingIdentityProviderMessage":
-            "Dostawca tożsamości nie został wybrany.",
+        "missingIdentityProviderMessage": "Dostawca tożsamości nie został wybrany.",
         "invalidFederatedIdentityActionMessage": "Nieprawidłowa akcja.",
-        "identityProviderNotFoundMessage":
-            "Podany dostawca tożsamości nie istnieje.",
-        "federatedIdentityLinkNotActiveMessage":
-            "Podana tożsamość nie jest już aktywna.",
-        "federatedIdentityRemovingLastProviderMessage":
-            "Nie można usunąć ostatniej połączonej tożsamości, jeżeli nie ustawiłeś hasła.",
-        "identityProviderRedirectErrorMessage":
-            "Nieudane przekierowanie do zewnętrznego dostawcy tożsamości.",
-        "identityProviderRemovedMessage":
-            "Dostawca tożsamości został usunięty.",
-        "identityProviderAlreadyLinkedMessage":
-            "Połączona tożsamość {0} jest już przypisana do innego użytkownika.",
-        "staleCodeAccountMessage":
-            "Strona wygasła. Prosimy spróbować ponownie.",
+        "identityProviderNotFoundMessage": "Podany dostawca tożsamości nie istnieje.",
+        "federatedIdentityLinkNotActiveMessage": "Podana tożsamość nie jest już aktywna.",
+        "federatedIdentityRemovingLastProviderMessage": "Nie można usunąć ostatniej połączonej tożsamości, jeżeli nie ustawiłeś hasła.",
+        "identityProviderRedirectErrorMessage": "Nieudane przekierowanie do zewnętrznego dostawcy tożsamości.",
+        "identityProviderRemovedMessage": "Dostawca tożsamości został usunięty.",
+        "identityProviderAlreadyLinkedMessage": "Połączona tożsamość {0} jest już przypisana do innego użytkownika.",
+        "staleCodeAccountMessage": "Strona wygasła. Prosimy spróbować ponownie.",
         "consentDenied": "Zgoda wycofana.",
-        "accountDisabledMessage":
-            "Konto jest zablokowane, skontaktuj się z administratorem.",
-        "accountTemporarilyDisabledMessage":
-            "Konto jest tymczasowo zablokowane, skontaktuj się z administratorem lub spróbuj później.",
-        "invalidPasswordMinLengthMessage":
-            "Nieprawidłowe hasło: minimalna długość {0}.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Nieprawidłowe hasło: brak małych liter (co najmniej {0}).",
-        "invalidPasswordMinDigitsMessage":
-            "Nieprawidłowe hasło: brak cyfr (co najmniej {0}).",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Nieprawidłowe hasło: brak dużych liter (co najmniej {0}).",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Nieprawidłowe hasło: brak znaków specjalnych (co najmniej {0}).",
-        "invalidPasswordNotUsernameMessage":
-            "Nieprawidłowe hasło: nie może być zgodne z nazwą użytkownika.",
-        "invalidPasswordRegexPatternMessage":
-            "Nieprawidłowe hasło: nie spełnia przyjętych reguł.",
-        "invalidPasswordHistoryMessage":
-            "Nieprawidłowe hasło: jest identyczne jak jedno z ostatnich ({0}) haseł.",
-        "invalidPasswordBlacklistedMessage":
-            "Nieprawidłowe hasło: jest na liście haseł zabronionych.",
-        "invalidPasswordGenericMessage":
-            "Nieprawidłowe hasło: nowe hasło nie spełnia polityki haseł.",
+        "accountDisabledMessage": "Konto jest zablokowane, skontaktuj się z administratorem.",
+        "accountTemporarilyDisabledMessage": "Konto jest tymczasowo zablokowane, skontaktuj się z administratorem lub spróbuj później.",
+        "invalidPasswordMinLengthMessage": "Nieprawidłowe hasło: minimalna długość {0}.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Nieprawidłowe hasło: brak małych liter (co najmniej {0}).",
+        "invalidPasswordMinDigitsMessage": "Nieprawidłowe hasło: brak cyfr (co najmniej {0}).",
+        "invalidPasswordMinUpperCaseCharsMessage": "Nieprawidłowe hasło: brak dużych liter (co najmniej {0}).",
+        "invalidPasswordMinSpecialCharsMessage": "Nieprawidłowe hasło: brak znaków specjalnych (co najmniej {0}).",
+        "invalidPasswordNotUsernameMessage": "Nieprawidłowe hasło: nie może być zgodne z nazwą użytkownika.",
+        "invalidPasswordRegexPatternMessage": "Nieprawidłowe hasło: nie spełnia przyjętych reguł.",
+        "invalidPasswordHistoryMessage": "Nieprawidłowe hasło: jest identyczne jak jedno z ostatnich ({0}) haseł.",
+        "invalidPasswordBlacklistedMessage": "Nieprawidłowe hasło: jest na liście haseł zabronionych.",
+        "invalidPasswordGenericMessage": "Nieprawidłowe hasło: nowe hasło nie spełnia polityki haseł.",
         "myResources": "Moje zasoby",
         "myResourcesSub": "Moje zasoby",
         "doDeny": "Zabroń",
@@ -3559,8 +3048,7 @@ export const kcMessages = {
         "doRemoveRequest": "Usuń żądanie",
         "peopleAccessResource": "Osoby z dostępem do tego zasobu",
         "resourceManagedPolicies": "Uprawnienia dające dostęp do tego zasobu",
-        "resourceNoPermissionsGrantingAccess":
-            "Brak uprawnień dających dostęp do tego zasobu",
+        "resourceNoPermissionsGrantingAccess": "Brak uprawnień dających dostęp do tego zasobu",
         "anyAction": "Dowolna akcja",
         "description": "Opis",
         "name": "Nazwa",
@@ -3581,8 +3069,7 @@ export const kcMessages = {
         "notBeingShared": "Ten zasób nie jest współdzielony.",
         "notHaveAnyResource": "Nie masz żadnych zasobów",
         "noResourcesSharedWithYou": "Brak zasobów udostępnionych dla Ciebie",
-        "havePermissionRequestsWaitingForApproval":
-            "Masz {0} żądań uprawnień oczekujących na akceptację.",
+        "havePermissionRequestsWaitingForApproval": "Masz {0} żądań uprawnień oczekujących na akceptację.",
         "clickHereForDetails": "Więcej szczegółów...",
         "resourceIsNotBeingShared": "Zasób nie jest współdzielony",
     },
@@ -3607,24 +3094,19 @@ export const kcMessages = {
         "authenticatorTitle": "Autenticator",
         "applicationsHtmlTitle": "Aplicativos",
         "linkedAccountsHtmlTitle": "Contas Vinculadas",
-        "accountManagementWelcomeMessage":
-            "Bem-vindo ao Gerenciamento de Conta",
+        "accountManagementWelcomeMessage": "Bem-vindo ao Gerenciamento de Conta",
         "personalInfoIntroMessage": "Gerenciar informações básicas",
         "accountSecurityTitle": "Segurança da Conta",
         "accountSecurityIntroMessage": "Gerencie sua senha e acesso da conta",
-        "applicationsIntroMessage":
-            "Acompanhe e gerencie as permissões de app para acesso à sua conta",
-        "resourceIntroMessage":
-            "Compartilhe seus recursos com membros de equipe",
+        "applicationsIntroMessage": "Acompanhe e gerencie as permissões de app para acesso à sua conta",
+        "resourceIntroMessage": "Compartilhe seus recursos com membros de equipe",
         "passwordLastUpdateMessage": "Sua senha foi atualizada em",
         "updatePasswordTitle": "Atualizar Senha",
-        "updatePasswordMessageTitle":
-            "Certifique-se de que a nova senha é segura",
+        "updatePasswordMessageTitle": "Certifique-se de que a nova senha é segura",
         "updatePasswordMessage":
             "Uma senha segura contém uma combinação de número, letras e caracteres especiais. Ela deve ser difícil de adivinhar, não pode se assemelhar a uma palavra real e não é utilizada em outros lugares.",
         "personalSubTitle": "Suas Informações Pessoais",
-        "personalSubMessage":
-            "Gerencie as informações básicas: seu primeiro nome, seu sobrenome e seu endereço de e-mail",
+        "personalSubMessage": "Gerencie as informações básicas: seu primeiro nome, seu sobrenome e seu endereço de e-mail",
         "authenticatorCode": "Código autenticador",
         "email": "E-mail",
         "firstName": "Primeiro nome",
@@ -3683,8 +3165,7 @@ export const kcMessages = {
         "role_uma_authorization": "Obter permissões",
         "client_account": "Conta",
         "client_account-console": "Console de Conta",
-        "client_security-admin-console":
-            "Console de Administração de Segurança",
+        "client_security-admin-console": "Console de Administração de Segurança",
         "client_admin-cli": "CLI de Administração",
         "client_realm-management": "Gerenciamento de Domínio",
         "client_broker": "Provedor de Identidade",
@@ -3722,13 +3203,10 @@ export const kcMessages = {
         "mobile": "Móvel",
         "totpStep1": "Instale uma das seguintes aplicações no seu celular:",
         "totpStep2": "Abra a aplicação e escaneie o código QR:",
-        "totpStep3":
-            "Insira o código de uso único exibido pela aplicação e clique em Salvar para finalizar a configuração.",
-        "totpStep3DeviceName":
-            "Forneça um nome de dispositivo para ajudá-lo a gerenciar seus dipositivos de autenticação de dois fatores.",
+        "totpStep3": "Insira o código de uso único exibido pela aplicação e clique em Salvar para finalizar a configuração.",
+        "totpStep3DeviceName": "Forneça um nome de dispositivo para ajudá-lo a gerenciar seus dipositivos de autenticação de dois fatores.",
         "totpManualStep2": "Abra a aplicação e insira a chave:",
-        "totpManualStep3":
-            "Use as seguintes configurações se a aplicação permitir:",
+        "totpManualStep3": "Use as seguintes configurações se a aplicação permitir:",
         "totpUnableToScan": "Não consegue escanear?",
         "totpScanBarcode": "Escanear código QR?",
         "totp.totp": "Baseada em tempo",
@@ -3743,8 +3221,7 @@ export const kcMessages = {
         "deletingImplies": "Apagar a sua conta implica em:",
         "errasingData": "Remover todos os dados",
         "loggingOutImmediately": "Finalizar a sessão imediatamente",
-        "accountUnusable":
-            "Qualquer uso subsquente da aplicação não será mais possível com esta conta",
+        "accountUnusable": "Qualquer uso subsquente da aplicação não será mais possível com esta conta",
         "missingUsernameMessage": "Por favor, especifique o nome de usuário.",
         "missingFirstNameMessage": "Por favor, informe o primeiro nome.",
         "invalidEmailMessage": "E-mail inválido.",
@@ -3753,71 +3230,45 @@ export const kcMessages = {
         "missingPasswordMessage": "Por favor, informe a senha.",
         "notMatchPasswordMessage": "As senhas não coincidem.",
         "invalidUserMessage": "Usuário inválido",
-        "updateReadOnlyAttributesRejectedMessage":
-            "Atualização de atributo de apenas leitura não permitida",
+        "updateReadOnlyAttributesRejectedMessage": "Atualização de atributo de apenas leitura não permitida",
         "missingTotpMessage": "Por favor, informe o código de uso único.",
-        "missingTotpDeviceNameMessage":
-            "Por favor, informe o nome do dispositivo.",
+        "missingTotpDeviceNameMessage": "Por favor, informe o nome do dispositivo.",
         "invalidPasswordExistingMessage": "A senha atual é inválida.",
         "invalidPasswordConfirmMessage": "A senha de confirmação não coincide.",
         "invalidTotpMessage": "Código de uso único inválido.",
         "usernameExistsMessage": "Este nome de usuário já existe.",
         "emailExistsMessage": "Este endereço de e-mail já existe.",
-        "readOnlyUserMessage":
-            "Você não pode atualizar sua conta, uma vez que é apenas de leitura.",
-        "readOnlyUsernameMessage":
-            "Você^não pode atualizar o seu nome de usuário, uma vez que é apenas de leitura.",
-        "readOnlyPasswordMessage":
-            "Você não pode atualizar sua senha, uma vez que sua conta é apenas de leitura.",
+        "readOnlyUserMessage": "Você não pode atualizar sua conta, uma vez que é apenas de leitura.",
+        "readOnlyUsernameMessage": "Você^não pode atualizar o seu nome de usuário, uma vez que é apenas de leitura.",
+        "readOnlyPasswordMessage": "Você não pode atualizar sua senha, uma vez que sua conta é apenas de leitura.",
         "successTotpMessage": "Autenticador móvel configurado.",
         "successTotpRemovedMessage": "Autenticador móvel removido.",
         "successGrantRevokedMessage": "Concessão revogada com sucesso.",
         "accountUpdatedMessage": "Sua conta foi atualizada.",
         "accountPasswordUpdatedMessage": "Sua senha foi atualizada.",
-        "missingIdentityProviderMessage":
-            "Provedor de identidade não especificado.",
+        "missingIdentityProviderMessage": "Provedor de identidade não especificado.",
         "invalidFederatedIdentityActionMessage": "Ação inválida ou ausente.",
-        "identityProviderNotFoundMessage":
-            "O provedor de identidade especificado não foi encontrado.",
-        "federatedIdentityLinkNotActiveMessage":
-            "Esta identidade não está mais em atividade.",
-        "federatedIdentityRemovingLastProviderMessage":
-            "Você não pode remover a última identidade federada, porque você não tem uma senha.",
-        "identityProviderRedirectErrorMessage":
-            "Falha ao redirecionar para o provedor de identidade.",
-        "identityProviderRemovedMessage":
-            "Provedor de identidade removido com sucesso.",
-        "identityProviderAlreadyLinkedMessage":
-            "Identidade federada retornada por {0} já está ligada a outro usuário.",
-        "staleCodeAccountMessage":
-            "A página expirou. Por favor, tente novamente.",
+        "identityProviderNotFoundMessage": "O provedor de identidade especificado não foi encontrado.",
+        "federatedIdentityLinkNotActiveMessage": "Esta identidade não está mais em atividade.",
+        "federatedIdentityRemovingLastProviderMessage": "Você não pode remover a última identidade federada, porque você não tem uma senha.",
+        "identityProviderRedirectErrorMessage": "Falha ao redirecionar para o provedor de identidade.",
+        "identityProviderRemovedMessage": "Provedor de identidade removido com sucesso.",
+        "identityProviderAlreadyLinkedMessage": "Identidade federada retornada por {0} já está ligada a outro usuário.",
+        "staleCodeAccountMessage": "A página expirou. Por favor, tente novamente.",
         "consentDenied": "Consentimento negado.",
-        "accountDisabledMessage":
-            "Conta desativada, por favor, contate um administrador.",
-        "accountTemporarilyDisabledMessage":
-            "A conta está temporariamente indisponível, contate um administrador ou tente novamente mais tarde.",
-        "invalidPasswordMinLengthMessage":
-            "Senha inválida: deve ter pelo menos {0} caracteres.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Senha inválida: deve conter pelo menos {0} letra(s) minúscula(s).",
-        "invalidPasswordMinDigitsMessage":
-            "Senha inválida: deve conter pelo menos {0} número(s).",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Senha inválida: deve conter pelo menos {0} letra(s) maiúscula(s).",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Senha inválida: deve conter pelo menos {0} caractere(s) especial(is).",
-        "invalidPasswordNotUsernameMessage":
-            "Senha inválida: não pode ser igual ao nome de usuário.",
-        "invalidPasswordNotEmailMessage":
-            "Senha inválida: não pode ser igual ao endereço de e-mail.",
-        "invalidPasswordRegexPatternMessage":
-            "Senha inválida: não corresponde ao(s) padrão(ões) da expressão regular.",
-        "invalidPasswordHistoryMessage":
-            "Senha inválida: não pode ser igual a qualquer uma da(s) última(s) {0} senha(s).",
-        "invalidPasswordBlacklistedMessage":
-            "Senha inválida: esta senha está na lista de exclusão.",
-        "invalidPasswordGenericMessage":
-            "Senha inválida: a nova senha não cumpre as políticas de senha.",
+        "accountDisabledMessage": "Conta desativada, por favor, contate um administrador.",
+        "accountTemporarilyDisabledMessage": "A conta está temporariamente indisponível, contate um administrador ou tente novamente mais tarde.",
+        "invalidPasswordMinLengthMessage": "Senha inválida: deve ter pelo menos {0} caracteres.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Senha inválida: deve conter pelo menos {0} letra(s) minúscula(s).",
+        "invalidPasswordMinDigitsMessage": "Senha inválida: deve conter pelo menos {0} número(s).",
+        "invalidPasswordMinUpperCaseCharsMessage": "Senha inválida: deve conter pelo menos {0} letra(s) maiúscula(s).",
+        "invalidPasswordMinSpecialCharsMessage": "Senha inválida: deve conter pelo menos {0} caractere(s) especial(is).",
+        "invalidPasswordNotUsernameMessage": "Senha inválida: não pode ser igual ao nome de usuário.",
+        "invalidPasswordNotEmailMessage": "Senha inválida: não pode ser igual ao endereço de e-mail.",
+        "invalidPasswordRegexPatternMessage": "Senha inválida: não corresponde ao(s) padrão(ões) da expressão regular.",
+        "invalidPasswordHistoryMessage": "Senha inválida: não pode ser igual a qualquer uma da(s) última(s) {0} senha(s).",
+        "invalidPasswordBlacklistedMessage": "Senha inválida: esta senha está na lista de exclusão.",
+        "invalidPasswordGenericMessage": "Senha inválida: a nova senha não cumpre as políticas de senha.",
         "myResources": "Meus Recursos",
         "myResourcesSub": "Meus recursos",
         "doDeny": "Negar",
@@ -3827,8 +3278,7 @@ export const kcMessages = {
         "doRemoveRequest": "Remover Solicitação",
         "peopleAccessResource": "Pessoas com acesso a este recurso",
         "resourceManagedPolicies": "Permissões dando acesso a este recurso",
-        "resourceNoPermissionsGrantingAccess":
-            "Sem permissões dando acesso a este recurso",
+        "resourceNoPermissionsGrantingAccess": "Sem permissões dando acesso a este recurso",
         "anyAction": "Qualquer ação",
         "description": "Descrição",
         "name": "Nome",
@@ -3849,8 +3299,7 @@ export const kcMessages = {
         "notBeingShared": "Este recurso não está sendo compartilhado.",
         "notHaveAnyResource": "Você não possui recursos",
         "noResourcesSharedWithYou": "Não há recursos compartilhados com você",
-        "havePermissionRequestsWaitingForApproval":
-            "Você tem {0} solicitação(ões) de permissão aguardando aprovação.",
+        "havePermissionRequestsWaitingForApproval": "Você tem {0} solicitação(ões) de permissão aguardando aprovação.",
         "clickHereForDetails": "Clique aqui para mais detalhes.",
         "resourceIsNotBeingShared": "O recurso não é compartilhado",
         "applicationName": "Nome",
@@ -3865,49 +3314,36 @@ export const kcMessages = {
         "appResults": "Resultados",
         "clientNotFoundMessage": "Cliente não encontrado.",
         "authorizedProvider": "Provedor Autorizado",
-        "authorizedProviderMessage":
-            "Provedores Autorizados vinculados à sua conta",
+        "authorizedProviderMessage": "Provedores Autorizados vinculados à sua conta",
         "identityProvider": "Provedor de Identidade",
-        "identityProviderMessage":
-            "Para vincular a sua conta aos provedores de identidade configurados",
+        "identityProviderMessage": "Para vincular a sua conta aos provedores de identidade configurados",
         "socialLogin": "Login Social",
         "userDefined": "Definido por Usuário",
         "removeAccess": "Remover Acesso",
-        "removeAccessMessage":
-            "Você deverá conceder acesso novamente se quiser usar esta conta de app.",
+        "removeAccessMessage": "Você deverá conceder acesso novamente se quiser usar esta conta de app.",
         "authenticatorStatusMessage": "A autenticação de dois fatores está",
         "authenticatorFinishSetUpTitle": "Sua Autenticação de Dois Fatores",
-        "authenticatorFinishSetUpMessage":
-            "Sempre que entrar na sua conta, você deverá fornecer um código de autenticação de dois fatores.",
+        "authenticatorFinishSetUpMessage": "Sempre que entrar na sua conta, você deverá fornecer um código de autenticação de dois fatores.",
         "authenticatorSubTitle": "Configurar Autenticação de Dois Fatores",
         "authenticatorSubMessage":
             "Para aumentar a segurança da sua conta, habilite pelo menos um método de autenticação de dois fatores disponível.",
         "authenticatorMobileTitle": "Autenticador Móvel",
-        "authenticatorMobileMessage":
-            "Use um autenticador móvel para obter códigos de verificação para autenticação de dois fatores.",
-        "authenticatorMobileFinishSetUpMessage":
-            "O autenticador foi vinculado ao seu celular.",
+        "authenticatorMobileMessage": "Use um autenticador móvel para obter códigos de verificação para autenticação de dois fatores.",
+        "authenticatorMobileFinishSetUpMessage": "O autenticador foi vinculado ao seu celular.",
         "authenticatorActionSetup": "Configurar",
         "authenticatorSMSTitle": "Código SMS",
-        "authenticatorSMSMessage":
-            "A aplicação irá enviar o código de verificação para o seu celular como autenticação de dois fatores.",
-        "authenticatorSMSFinishSetUpMessage":
-            "As mensagens de texto serão enviadas para",
+        "authenticatorSMSMessage": "A aplicação irá enviar o código de verificação para o seu celular como autenticação de dois fatores.",
+        "authenticatorSMSFinishSetUpMessage": "As mensagens de texto serão enviadas para",
         "authenticatorDefaultStatus": "Padrão",
         "authenticatorChangePhone": "Mudar Número de Celular",
         "authenticatorBackupCodesTitle": "Códigos de Emergência",
-        "authenticatorBackupCodesMessage":
-            "Veja seus códigos de emergência de 8 dígitos",
-        "authenticatorBackupCodesFinishSetUpMessage":
-            "12 códigos de emergência foram gerados. Cada um pode ser utilizado apenas uma vez.",
+        "authenticatorBackupCodesMessage": "Veja seus códigos de emergência de 8 dígitos",
+        "authenticatorBackupCodesFinishSetUpMessage": "12 códigos de emergência foram gerados. Cada um pode ser utilizado apenas uma vez.",
         "authenticatorMobileSetupTitle": "Configuração do Autenticador Móvel",
-        "smscodeIntroMessage":
-            "Insira seu número de celular e o código de verificação será enviado para o seu dispositivo.",
-        "mobileSetupStep1":
-            "Instale um app autenticador no seu celular. As seguintes aplicações são suportadas.",
+        "smscodeIntroMessage": "Insira seu número de celular e o código de verificação será enviado para o seu dispositivo.",
+        "mobileSetupStep1": "Instale um app autenticador no seu celular. As seguintes aplicações são suportadas.",
         "mobileSetupStep2": "Abra a aplicação e escaneie o código QR:",
-        "mobileSetupStep3":
-            "Insira o código autenticador exibido pela aplicação e clique em Salvar para finalizar a configuração.",
+        "mobileSetupStep3": "Insira o código autenticador exibido pela aplicação e clique em Salvar para finalizar a configuração.",
         "scanBarCode": "Escanear código QR?",
         "enterBarCode": "Insira o código autenticador",
         "doCopy": "Copiar",
@@ -3917,19 +3353,16 @@ export const kcMessages = {
         "enterYourPhoneNumber": "Insira seu número de telefone",
         "sendVerficationCode": "Enviar Código de Verificação",
         "enterYourVerficationCode": "Insira o seu código de verificação",
-        "authenticatorBackupCodesSetupTitle":
-            "Configuração de Códigos de Emergência",
+        "authenticatorBackupCodesSetupTitle": "Configuração de Códigos de Emergência",
         "backupcodesIntroMessage":
             "Se perder o acesso ao seu telefone, você ainda poderá acessar a sua conta com códigos de emergência. Guarde-os em um lugar seguro e acessível.",
         "realmName": "Domínio",
         "doDownload": "Baixar",
         "doPrint": "Imprimir",
-        "backupCodesTips-1":
-            "Cada código de emergência só pode ser usado uma vez.",
+        "backupCodesTips-1": "Cada código de emergência só pode ser usado uma vez.",
         "backupCodesTips-2": "Estes códigos foram gerados em",
         "generateNewBackupCodes": "Gerar Novos Códigos de Emergência",
-        "backupCodesTips-3":
-            "Ao gerar novos códigos de emergência, quaisquer códigos antigos deixarão de funcionar.",
+        "backupCodesTips-3": "Ao gerar novos códigos de emergência, quaisquer códigos antigos deixarão de funcionar.",
         "backtoAuthenticatorPage": "Voltar à Página de Autenticador",
         "resources": "Recursos",
         "sharedwithMe": "Compartilhados Comigo",
@@ -4001,8 +3434,7 @@ export const kcMessages = {
         "role_manage-realm": "Управление realm",
         "role_manage-users": "Управление пользователями",
         "role_manage-applications": "Управление приложениями",
-        "role_manage-identity-providers":
-            "Управление провайдерами учетных записей",
+        "role_manage-identity-providers": "Управление провайдерами учетных записей",
         "role_manage-clients": "Управление клиентами",
         "role_manage-events": "Управление событиями",
         "role_view-profile": "Просмотр профиля",
@@ -4048,10 +3480,8 @@ export const kcMessages = {
         "mobile": "Мобильное приложение",
         "totpStep1":
             'Установите <a href="https://freeotp.github.io/" target="_blank">FreeOTP</a> или Google Authenticator. Оба приложения доступны на <a href="https://play.google.com">Google Play</a> и в Apple App Store.',
-        "totpStep2":
-            "Откройте приложение и просканируйте баркод, либо введите ключ.",
-        "totpStep3":
-            "Введите одноразовый код, выданный приложением, и нажмите сохранить для завершения установки.",
+        "totpStep2": "Откройте приложение и просканируйте баркод, либо введите ключ.",
+        "totpStep3": "Введите одноразовый код, выданный приложением, и нажмите сохранить для завершения установки.",
         "missingUsernameMessage": "Введите имя пользователя.",
         "missingFirstNameMessage": "Введите имя.",
         "invalidEmailMessage": "Введите корректный E-mail.",
@@ -4065,56 +3495,34 @@ export const kcMessages = {
         "invalidTotpMessage": "Неверный код аутентификатора.",
         "usernameExistsMessage": "Имя пользователя уже существует.",
         "emailExistsMessage": "E-mail уже существует.",
-        "readOnlyUserMessage":
-            "Вы не можете обновить информацию вашей учетной записи, т.к. она доступна только для чтения.",
-        "readOnlyPasswordMessage":
-            "Вы не можете обновить пароль вашей учетной записи, т.к. он доступен только для чтения.",
-        "successTotpMessage":
-            "Аутентификатор в мобильном приложении сконфигурирован.",
-        "successTotpRemovedMessage":
-            "Аутентификатор в мобильном приложении удален.",
+        "readOnlyUserMessage": "Вы не можете обновить информацию вашей учетной записи, т.к. она доступна только для чтения.",
+        "readOnlyPasswordMessage": "Вы не можете обновить пароль вашей учетной записи, т.к. он доступен только для чтения.",
+        "successTotpMessage": "Аутентификатор в мобильном приложении сконфигурирован.",
+        "successTotpRemovedMessage": "Аутентификатор в мобильном приложении удален.",
         "successGrantRevokedMessage": "Согласование отозвано успешно.",
         "accountUpdatedMessage": "Ваша учетная запись обновлена.",
         "accountPasswordUpdatedMessage": "Ваш пароль обновлен.",
         "missingIdentityProviderMessage": "Провайдер учетных записей не задан.",
-        "invalidFederatedIdentityActionMessage":
-            "Некорректное или недопустимое действие.",
-        "identityProviderNotFoundMessage":
-            "Заданный провайдер учетных записей не найден.",
-        "federatedIdentityLinkNotActiveMessage":
-            "Идентификатор больше не активен.",
-        "federatedIdentityRemovingLastProviderMessage":
-            "Вы не можете удалить последний федеративный идентификатор, т.к. Вы не имеете пароля.",
-        "identityProviderRedirectErrorMessage":
-            "Ошибка перенаправления в провайдер учетных записей.",
-        "identityProviderRemovedMessage":
-            "Провайдер учетных записей успешно удален.",
-        "identityProviderAlreadyLinkedMessage":
-            "Федеративный идентификатор, возвращенный {0} уже используется другим пользователем.",
+        "invalidFederatedIdentityActionMessage": "Некорректное или недопустимое действие.",
+        "identityProviderNotFoundMessage": "Заданный провайдер учетных записей не найден.",
+        "federatedIdentityLinkNotActiveMessage": "Идентификатор больше не активен.",
+        "federatedIdentityRemovingLastProviderMessage": "Вы не можете удалить последний федеративный идентификатор, т.к. Вы не имеете пароля.",
+        "identityProviderRedirectErrorMessage": "Ошибка перенаправления в провайдер учетных записей.",
+        "identityProviderRemovedMessage": "Провайдер учетных записей успешно удален.",
+        "identityProviderAlreadyLinkedMessage": "Федеративный идентификатор, возвращенный {0} уже используется другим пользователем.",
         "staleCodeAccountMessage": "Страница устарела. Попробуйте еще раз.",
         "consentDenied": "В согласовании отказано.",
-        "accountDisabledMessage":
-            "Учетная запись заблокирована, обратитесь к администратору.",
-        "accountTemporarilyDisabledMessage":
-            "Учетная запись временно заблокирована, обратитесь к администратору или попробуйте позже.",
-        "invalidPasswordMinLengthMessage":
-            "Некорректный пароль: длина пароля должна быть не менее {0} символа(ов).",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Некорректный пароль: пароль должен содержать не менее {0} символа(ов) в нижнем регистре.",
-        "invalidPasswordMinDigitsMessage":
-            "Некорректный пароль: пароль должен содержать не менее {0} цифр(ы).",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Некорректный пароль: пароль должен содержать не менее {0} символа(ов) в верхнем регистре.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Некорректный пароль: пароль должен содержать не менее {0} спецсимвола(ов).",
-        "invalidPasswordNotUsernameMessage":
-            "Некорректный пароль: пароль не должен совпадать с именем пользователя.",
-        "invalidPasswordRegexPatternMessage":
-            "Некорректный пароль: пароль не удовлетворяет регулярному выражению.",
-        "invalidPasswordHistoryMessage":
-            "Некорректный пароль: пароль не должен совпадать с последним(и) {0} паролями.",
-        "invalidPasswordGenericMessage":
-            "Некорректный пароль: новый пароль не соответствует правилам пароля.",
+        "accountDisabledMessage": "Учетная запись заблокирована, обратитесь к администратору.",
+        "accountTemporarilyDisabledMessage": "Учетная запись временно заблокирована, обратитесь к администратору или попробуйте позже.",
+        "invalidPasswordMinLengthMessage": "Некорректный пароль: длина пароля должна быть не менее {0} символа(ов).",
+        "invalidPasswordMinLowerCaseCharsMessage": "Некорректный пароль: пароль должен содержать не менее {0} символа(ов) в нижнем регистре.",
+        "invalidPasswordMinDigitsMessage": "Некорректный пароль: пароль должен содержать не менее {0} цифр(ы).",
+        "invalidPasswordMinUpperCaseCharsMessage": "Некорректный пароль: пароль должен содержать не менее {0} символа(ов) в верхнем регистре.",
+        "invalidPasswordMinSpecialCharsMessage": "Некорректный пароль: пароль должен содержать не менее {0} спецсимвола(ов).",
+        "invalidPasswordNotUsernameMessage": "Некорректный пароль: пароль не должен совпадать с именем пользователя.",
+        "invalidPasswordRegexPatternMessage": "Некорректный пароль: пароль не удовлетворяет регулярному выражению.",
+        "invalidPasswordHistoryMessage": "Некорректный пароль: пароль не должен совпадать с последним(и) {0} паролями.",
+        "invalidPasswordGenericMessage": "Некорректный пароль: новый пароль не соответствует правилам пароля.",
     },
     "sk": {
         "doSave": "Uložiť",
@@ -4158,8 +3566,7 @@ export const kcMessages = {
         "role_view-applications": "Zobraziť aplikácie",
         "role_view-clients": "Zobraziť klientov",
         "role_view-events": "Zobraziť udalosti",
-        "role_view-identity-providers":
-            "Zobraziť klientov poskytovateľov identity",
+        "role_view-identity-providers": "Zobraziť klientov poskytovateľov identity",
         "role_manage-realm": "Spravovať realm",
         "role_manage-users": "Spravovať používateľov",
         "role_manage-applications": "Spravovať aplikácie",
@@ -4173,8 +3580,7 @@ export const kcMessages = {
         "role_offline-access": "Offline prístup",
         "role_uma_authorization": "Autorizácia používateľom riadeného prístupu",
         "client_account": "Účet klienta",
-        "client_security-admin-console":
-            "Bezpečnostná administrátorská konzola",
+        "client_security-admin-console": "Bezpečnostná administrátorská konzola",
         "client_admin-cli": "Spravovať CLI klienta",
         "client_realm-management": "Spravovať realmy klienta",
         "client_broker": "Broker",
@@ -4211,13 +3617,10 @@ export const kcMessages = {
         "mobile": "Mobilný",
         "totpStep1":
             'Nainštalujte vo svojom zariadení <a href="https://freeotp.github.io/" target="_blank"> FreeOTP </a> alebo Google Authenticator. Obidve aplikácie sú k dispozícii v <a href="https://play.google.com"> Google Play </a> a Apple App Store.',
-        "totpStep2":
-            "Otvorte aplikáciu a naskenujte čiarový kód alebo zadajte kľúč.",
-        "totpStep3":
-            "Zadajte jednorazový kód poskytnutý aplikáciou a kliknutím na tlačidlo Uložiť dokončíte nastavenie.",
+        "totpStep2": "Otvorte aplikáciu a naskenujte čiarový kód alebo zadajte kľúč.",
+        "totpStep3": "Zadajte jednorazový kód poskytnutý aplikáciou a kliknutím na tlačidlo Uložiť dokončíte nastavenie.",
         "totpManualStep2": "Otvorte aplikáciu a zadajte kľúč",
-        "totpManualStep3":
-            "Použite nasledujúce hodnoty konfigurácie, ak aplikácia umožňuje ich nastavenie",
+        "totpManualStep3": "Použite nasledujúce hodnoty konfigurácie, ak aplikácia umožňuje ich nastavenie",
         "totpUnableToScan": "Nemožno skenovať?",
         "totpScanBarcode": "Skenovanie čiarového kódu?",
         "totp.totp": "Založené na čase",
@@ -4240,57 +3643,36 @@ export const kcMessages = {
         "invalidTotpMessage": "Neplatný jednorazový kód.",
         "usernameExistsMessage": "Užívateľské meno už existuje.",
         "emailExistsMessage": "E-mail už existuje.",
-        "readOnlyUserMessage":
-            "Váš účet nemôžete aktualizovať, pretože je iba na čítanie.",
-        "readOnlyUsernameMessage":
-            "Nemôžete aktualizovať svoje používateľské meno, pretože je iba na čítanie.",
-        "readOnlyPasswordMessage":
-            "Heslo nemôžete aktualizovať, pretože váš účet je iba na čítanie.",
+        "readOnlyUserMessage": "Váš účet nemôžete aktualizovať, pretože je iba na čítanie.",
+        "readOnlyUsernameMessage": "Nemôžete aktualizovať svoje používateľské meno, pretože je iba na čítanie.",
+        "readOnlyPasswordMessage": "Heslo nemôžete aktualizovať, pretože váš účet je iba na čítanie.",
         "successTotpMessage": "Konfigurácia mobilného autentifikátora.",
         "successTotpRemovedMessage": "Mobilný autentifikátor bol odstránený.",
         "successGrantRevokedMessage": "Oprávnenie bolo úspešne zrušené.",
         "accountUpdatedMessage": "Váš účet bol aktualizovaný.",
         "accountPasswordUpdatedMessage": "Vaše heslo bolo aktualizované.",
-        "missingIdentityProviderMessage":
-            "Poskytovateľ identity nie je zadaný.",
-        "invalidFederatedIdentityActionMessage":
-            "Neplatná alebo chýbajúca akcia.",
-        "identityProviderNotFoundMessage":
-            "Zadaný poskytovateľ identity nenájdený.",
+        "missingIdentityProviderMessage": "Poskytovateľ identity nie je zadaný.",
+        "invalidFederatedIdentityActionMessage": "Neplatná alebo chýbajúca akcia.",
+        "identityProviderNotFoundMessage": "Zadaný poskytovateľ identity nenájdený.",
         "federatedIdentityLinkNotActiveMessage": "Identita už nie je aktívna.",
-        "federatedIdentityRemovingLastProviderMessage":
-            "Nemôžete odstrániť poslednú spojenú identitu, pretože nemáte heslo.",
-        "identityProviderRedirectErrorMessage":
-            "Nepodarilo sa presmerovať na poskytovateľa identity.",
-        "identityProviderRemovedMessage":
-            "Poskytovateľ identity bol úspešne odstránený.",
-        "identityProviderAlreadyLinkedMessage":
-            "Spojená identita vrátená {0} je už prepojená s iným používateľom.",
+        "federatedIdentityRemovingLastProviderMessage": "Nemôžete odstrániť poslednú spojenú identitu, pretože nemáte heslo.",
+        "identityProviderRedirectErrorMessage": "Nepodarilo sa presmerovať na poskytovateľa identity.",
+        "identityProviderRemovedMessage": "Poskytovateľ identity bol úspešne odstránený.",
+        "identityProviderAlreadyLinkedMessage": "Spojená identita vrátená {0} je už prepojená s iným používateľom.",
         "staleCodeAccountMessage": "Platnosť vypršala. Skúste ešte raz.",
         "consentDenied": "Súhlas bol zamietnutý.",
         "accountDisabledMessage": "Účet je zakázaný, kontaktujte správcu.",
-        "accountTemporarilyDisabledMessage":
-            "Účet je dočasne zakázaný, kontaktujte administrátora alebo skúste neskôr.",
-        "invalidPasswordMinLengthMessage":
-            "Neplatné heslo: minimálna dĺžka {0}.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Neplatné heslo: musí obsahovať minimálne {0} malé písmená.",
-        "invalidPasswordMinDigitsMessage":
-            "Neplatné heslo: musí obsahovať aspoň {0} číslic.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Neplatné heslo: musí obsahovať aspoň {0} veľké písmená.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Neplatné heslo: musí obsahovať aspoň {0} špeciálne znaky.",
-        "invalidPasswordNotUsernameMessage":
-            "Neplatné heslo: nesmie byť rovnaké ako používateľské meno.",
-        "invalidPasswordRegexPatternMessage":
-            "Neplatné heslo: nezodpovedá regulárnemu výrazu.",
-        "invalidPasswordHistoryMessage":
-            "Neplatné heslo: nesmie sa rovnať žiadnemu z posledných {0} hesiel.",
-        "invalidPasswordBlacklistedMessage":
-            "Neplatné heslo: heslo je na čiernej listine.",
-        "invalidPasswordGenericMessage":
-            "Neplatné heslo: nové heslo nezodpovedá pravidlám hesiel.",
+        "accountTemporarilyDisabledMessage": "Účet je dočasne zakázaný, kontaktujte administrátora alebo skúste neskôr.",
+        "invalidPasswordMinLengthMessage": "Neplatné heslo: minimálna dĺžka {0}.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Neplatné heslo: musí obsahovať minimálne {0} malé písmená.",
+        "invalidPasswordMinDigitsMessage": "Neplatné heslo: musí obsahovať aspoň {0} číslic.",
+        "invalidPasswordMinUpperCaseCharsMessage": "Neplatné heslo: musí obsahovať aspoň {0} veľké písmená.",
+        "invalidPasswordMinSpecialCharsMessage": "Neplatné heslo: musí obsahovať aspoň {0} špeciálne znaky.",
+        "invalidPasswordNotUsernameMessage": "Neplatné heslo: nesmie byť rovnaké ako používateľské meno.",
+        "invalidPasswordRegexPatternMessage": "Neplatné heslo: nezodpovedá regulárnemu výrazu.",
+        "invalidPasswordHistoryMessage": "Neplatné heslo: nesmie sa rovnať žiadnemu z posledných {0} hesiel.",
+        "invalidPasswordBlacklistedMessage": "Neplatné heslo: heslo je na čiernej listine.",
+        "invalidPasswordGenericMessage": "Neplatné heslo: nové heslo nezodpovedá pravidlám hesiel.",
         "myResources": "Moje Zdroje",
         "myResourcesSub": "Moje zdroje",
         "doDeny": "Zakázať",
@@ -4403,10 +3785,8 @@ export const kcMessages = {
         "mobile": "Mobil",
         "totpStep1":
             'Installera <a href="https://freeotp.github.io/" target="_blank">FreeOTP</a> eller Google Authenticator på din enhet. Båda applikationerna finns tillgängliga på <a href="https://play.google.com">Google Play</a> och Apple App Store.',
-        "totpStep2":
-            "Öppna applikationen och skanna streckkoden eller skriv i nyckeln.",
-        "totpStep3":
-            "Fyll i engångskoden som tillhandahålls av applikationen och klicka på Spara för att avsluta inställningarna.",
+        "totpStep2": "Öppna applikationen och skanna streckkoden eller skriv i nyckeln.",
+        "totpStep3": "Fyll i engångskoden som tillhandahålls av applikationen och klicka på Spara för att avsluta inställningarna.",
         "missingUsernameMessage": "Vänligen ange användarnamn.",
         "missingFirstNameMessage": "Vänligen ange förnamn.",
         "invalidEmailMessage": "Ogiltig e-postadress.",
@@ -4415,62 +3795,39 @@ export const kcMessages = {
         "missingPasswordMessage": "Vänligen ange lösenord.",
         "notMatchPasswordMessage": "Lösenorden matchar inte.",
         "missingTotpMessage": "Vänligen ange autentiseringskoden.",
-        "invalidPasswordExistingMessage":
-            "Det nuvarande lösenordet är ogiltigt.",
+        "invalidPasswordExistingMessage": "Det nuvarande lösenordet är ogiltigt.",
         "invalidPasswordConfirmMessage": "Lösenordsbekräftelsen matchar inte.",
         "invalidTotpMessage": "Autentiseringskoden är ogiltig.",
         "usernameExistsMessage": "Användarnamnet finns redan.",
         "emailExistsMessage": "E-posten finns redan.",
-        "readOnlyUserMessage":
-            "Du kan inte uppdatera ditt konto eftersom det är skrivskyddat.",
-        "readOnlyPasswordMessage":
-            "Du kan inte uppdatera ditt lösenord eftersom ditt konto är skrivskyddat.",
+        "readOnlyUserMessage": "Du kan inte uppdatera ditt konto eftersom det är skrivskyddat.",
+        "readOnlyPasswordMessage": "Du kan inte uppdatera ditt lösenord eftersom ditt konto är skrivskyddat.",
         "successTotpMessage": "Mobilautentiseraren är inställd.",
         "successTotpRemovedMessage": "Mobilautentiseraren är borttagen.",
         "successGrantRevokedMessage": "Upphävandet av rättigheten lyckades.",
         "accountUpdatedMessage": "Ditt konto har uppdaterats.",
         "accountPasswordUpdatedMessage": "Ditt lösenord har uppdaterats.",
-        "missingIdentityProviderMessage":
-            "Identitetsleverantör är inte angiven.",
-        "invalidFederatedIdentityActionMessage":
-            "Åtgärden är ogiltig eller saknas.",
-        "identityProviderNotFoundMessage":
-            "Angiven identitetsleverantör hittas inte.",
-        "federatedIdentityLinkNotActiveMessage":
-            "Den här identiteten är inte längre aktiv.",
-        "federatedIdentityRemovingLastProviderMessage":
-            "Du kan inte ta bort senaste federerade identiteten eftersom du inte har ett lösenord.",
-        "identityProviderRedirectErrorMessage":
-            "Misslyckades med att omdirigera till identitetsleverantör.",
-        "identityProviderRemovedMessage":
-            "Borttagningen av identitetsleverantören lyckades.",
-        "identityProviderAlreadyLinkedMessage":
-            "Den federerade identiteten  som returnerades av {0} är redan länkad till en annan användare.",
-        "staleCodeAccountMessage":
-            "Sidan har upphört att gälla. Vänligen försök igen.",
+        "missingIdentityProviderMessage": "Identitetsleverantör är inte angiven.",
+        "invalidFederatedIdentityActionMessage": "Åtgärden är ogiltig eller saknas.",
+        "identityProviderNotFoundMessage": "Angiven identitetsleverantör hittas inte.",
+        "federatedIdentityLinkNotActiveMessage": "Den här identiteten är inte längre aktiv.",
+        "federatedIdentityRemovingLastProviderMessage": "Du kan inte ta bort senaste federerade identiteten eftersom du inte har ett lösenord.",
+        "identityProviderRedirectErrorMessage": "Misslyckades med att omdirigera till identitetsleverantör.",
+        "identityProviderRemovedMessage": "Borttagningen av identitetsleverantören lyckades.",
+        "identityProviderAlreadyLinkedMessage": "Den federerade identiteten  som returnerades av {0} är redan länkad till en annan användare.",
+        "staleCodeAccountMessage": "Sidan har upphört att gälla. Vänligen försök igen.",
         "consentDenied": "Samtycket förnekades.",
-        "accountDisabledMessage":
-            "Kontot är inaktiverat, kontakta administratör.",
-        "accountTemporarilyDisabledMessage":
-            "Kontot är tillfälligt inaktiverat, kontakta administratör eller försök igen senare.",
-        "invalidPasswordMinLengthMessage":
-            "Ogiltigt lösenord. Minsta längd är {0}.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Ogiltigt lösenord: måste innehålla minst {0} små bokstäver.",
-        "invalidPasswordMinDigitsMessage":
-            "Ogiltigt lösenord: måste innehålla minst {0} siffror.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Ogiltigt lösenord: måste innehålla minst {0} stora bokstäver.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Ogiltigt lösenord: måste innehålla minst {0} specialtecken.",
-        "invalidPasswordNotUsernameMessage":
-            "Ogiltigt lösenord: Får inte vara samma som användarnamnet.",
-        "invalidPasswordRegexPatternMessage":
-            "Ogiltigt lösenord: matchar inte kravet för lösenordsmönster.",
-        "invalidPasswordHistoryMessage":
-            "Ogiltigt lösenord: Får inte vara samma som de senaste {0} lösenorden.",
-        "invalidPasswordGenericMessage":
-            "Ogiltigt lösenord: Det nya lösenordet stämmer inte med lösenordspolicyn.",
+        "accountDisabledMessage": "Kontot är inaktiverat, kontakta administratör.",
+        "accountTemporarilyDisabledMessage": "Kontot är tillfälligt inaktiverat, kontakta administratör eller försök igen senare.",
+        "invalidPasswordMinLengthMessage": "Ogiltigt lösenord. Minsta längd är {0}.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Ogiltigt lösenord: måste innehålla minst {0} små bokstäver.",
+        "invalidPasswordMinDigitsMessage": "Ogiltigt lösenord: måste innehålla minst {0} siffror.",
+        "invalidPasswordMinUpperCaseCharsMessage": "Ogiltigt lösenord: måste innehålla minst {0} stora bokstäver.",
+        "invalidPasswordMinSpecialCharsMessage": "Ogiltigt lösenord: måste innehålla minst {0} specialtecken.",
+        "invalidPasswordNotUsernameMessage": "Ogiltigt lösenord: Får inte vara samma som användarnamnet.",
+        "invalidPasswordRegexPatternMessage": "Ogiltigt lösenord: matchar inte kravet för lösenordsmönster.",
+        "invalidPasswordHistoryMessage": "Ogiltigt lösenord: Får inte vara samma som de senaste {0} lösenorden.",
+        "invalidPasswordGenericMessage": "Ogiltigt lösenord: Det nya lösenordet stämmer inte med lösenordspolicyn.",
     },
     "tr": {
         "doSave": "Kaydet",
@@ -4492,14 +3849,11 @@ export const kcMessages = {
         "authenticatorTitle": "Kimlik Doğrulama",
         "applicationsHtmlTitle": "Uygulama",
         "linkedAccountsHtmlTitle": "Bağlantılı Hesaplar",
-        "accountManagementWelcomeMessage":
-            "Keycloak Hesap Yönetimine Hoş Geldiniz",
+        "accountManagementWelcomeMessage": "Keycloak Hesap Yönetimine Hoş Geldiniz",
         "personalInfoIntroMessage": "Temel bilgilerinizi yönetin",
         "accountSecurityTitle": "Hesap Güvenliği",
-        "accountSecurityIntroMessage":
-            "Şifrenizi ve hesap erişiminizi kontrol edin",
-        "applicationsIntroMessage":
-            "Hesabınıza erişmek için uygulama izninizi takip edin ve yönetin",
+        "accountSecurityIntroMessage": "Şifrenizi ve hesap erişiminizi kontrol edin",
+        "applicationsIntroMessage": "Hesabınıza erişmek için uygulama izninizi takip edin ve yönetin",
         "resourceIntroMessage": "Kaynaklarınızı ekip üyeleri arasında paylaşın",
         "passwordLastUpdateMessage": "Şifreniz güncellendi",
         "updatePasswordTitle": "Şifre güncelle",
@@ -4507,8 +3861,7 @@ export const kcMessages = {
         "updatePasswordMessage":
             "Güçlü bir şifre, sayılar, harfler ve sembollerin karışımından oluşmalıdır. Tahmin etmesi zor ve gerçek bir kelimeye benzemeyen şifre sadece bu hesap için kullanılır.",
         "personalSubTitle": "Kişisel Bilgileriniz",
-        "personalSubMessage":
-            "Bu temel bilgileri yönetin: adınız, soyadınız ve e-posta adresiniz",
+        "personalSubMessage": "Bu temel bilgileri yönetin: adınız, soyadınız ve e-posta adresiniz",
         "authenticatorCode": "Kimlik Doğrulama Kodu",
         "email": "E-Mail",
         "firstName": "Ad",
@@ -4595,14 +3948,11 @@ export const kcMessages = {
         "revoke": "İzni İptal et",
         "configureAuthenticators": "Çoklu Kimlik Doğrulama",
         "mobile": "Mobil",
-        "totpStep1":
-            "Akıllı Telefonunuza aşağıdaki uygulamalardan birini yükleyin:",
+        "totpStep1": "Akıllı Telefonunuza aşağıdaki uygulamalardan birini yükleyin:",
         "totpStep2": "Uygulamayı açın ve barkodu okutun.",
-        "totpStep3":
-            "Uygulama tarafından oluşturulan tek seferlik kodu girin ve Kaydet'i tıklayın.",
+        "totpStep3": "Uygulama tarafından oluşturulan tek seferlik kodu girin ve Kaydet'i tıklayın.",
         "totpManualStep2": "Uygulamayı açın ve aşağıdaki anahtarı girin.",
-        "totpManualStep3":
-            "Bunları uygulama için özelleştirebilirseniz aşağıdaki yapılandırma değerlerini kullanın:",
+        "totpManualStep3": "Bunları uygulama için özelleştirebilirseniz aşağıdaki yapılandırma değerlerini kullanın:",
         "totpUnableToScan": "Barkodu tarayamıyor musunuz?",
         "totpScanBarcode": "Barkod Tara?",
         "totp.totp": "Zaman bazlı (time-based)",
@@ -4625,59 +3975,36 @@ export const kcMessages = {
         "invalidTotpMessage": "Geçersiz tek seferlik kod.",
         "usernameExistsMessage": "Kullanıcı adı zaten mevcut.",
         "emailExistsMessage": "E-posta adresi zaten mevcut.",
-        "readOnlyUserMessage":
-            "Yazma korumalı olduğundan kullanıcı hesabınızı değiştiremezsiniz.",
-        "readOnlyUsernameMessage":
-            "Yazma korumalı olduğundan kullanıcı adınızı değiştiremezsiniz.",
-        "readOnlyPasswordMessage":
-            "Yazma korumalı olduğundan şifrenizi değiştiremezsiniz.",
-        "successTotpMessage":
-            "Çoklu kimlik doğrulaması başarıyla yapılandırıldı.",
-        "successTotpRemovedMessage":
-            "Çoklu kimlik doğrulama başarıyla kaldırıldı.",
+        "readOnlyUserMessage": "Yazma korumalı olduğundan kullanıcı hesabınızı değiştiremezsiniz.",
+        "readOnlyUsernameMessage": "Yazma korumalı olduğundan kullanıcı adınızı değiştiremezsiniz.",
+        "readOnlyPasswordMessage": "Yazma korumalı olduğundan şifrenizi değiştiremezsiniz.",
+        "successTotpMessage": "Çoklu kimlik doğrulaması başarıyla yapılandırıldı.",
+        "successTotpRemovedMessage": "Çoklu kimlik doğrulama başarıyla kaldırıldı.",
         "successGrantRevokedMessage": "İzin başarıyla iptal edildi.",
         "accountUpdatedMessage": "Kullanıcı hesabınız güncellendi.",
         "accountPasswordUpdatedMessage": "Şifreniz güncellendi.",
         "missingIdentityProviderMessage": "Kimlik Sağlayıcısı belirtilmemiş.",
         "invalidFederatedIdentityActionMessage": "Geçersiz veya eksik eylem.",
-        "identityProviderNotFoundMessage":
-            "Belirtilen Kimlik Sağlayıcı bulunamadı.",
+        "identityProviderNotFoundMessage": "Belirtilen Kimlik Sağlayıcı bulunamadı.",
         "federatedIdentityLinkNotActiveMessage": "Bu kimlik artık aktif değil.",
-        "federatedIdentityRemovingLastProviderMessage":
-            "Şifreniz olmadığı için son girişi kaldıramazsınız.",
-        "identityProviderRedirectErrorMessage":
-            "Kimlik sağlayıcıya iletilirken hata oluştu.",
-        "identityProviderRemovedMessage":
-            "Kimlik Sağlayıcısı başarıyla kaldırıldı.",
-        "identityProviderAlreadyLinkedMessage":
-            "Değiştirilmiş {0} kimliği başka bir kullanıcıya atanmış.",
-        "staleCodeAccountMessage":
-            "Bu sayfa artık geçerli değil, lütfen tekrar deneyin.",
+        "federatedIdentityRemovingLastProviderMessage": "Şifreniz olmadığı için son girişi kaldıramazsınız.",
+        "identityProviderRedirectErrorMessage": "Kimlik sağlayıcıya iletilirken hata oluştu.",
+        "identityProviderRemovedMessage": "Kimlik Sağlayıcısı başarıyla kaldırıldı.",
+        "identityProviderAlreadyLinkedMessage": "Değiştirilmiş {0} kimliği başka bir kullanıcıya atanmış.",
+        "staleCodeAccountMessage": "Bu sayfa artık geçerli değil, lütfen tekrar deneyin.",
         "consentDenied": "Onay reddedildi.",
-        "accountDisabledMessage":
-            "Hesabınız kilitlendi, lütfen yöneticiyle iletişime geçin.",
-        "accountTemporarilyDisabledMessage":
-            "Hesabınız geçici olarak kilitlendi, lütfen yöneticiyle iletişime geçin veya daha sonra tekrar deneyin.",
-        "invalidPasswordMinLengthMessage":
-            "Geçersiz Şifre: En az {0} karakter uzunluğunda olmalı.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "Geçersiz Şifre : En az {0} küçük harf içermelidir.",
-        "invalidPasswordMinDigitsMessage":
-            "Geçersiz Şifre: En az {0} sayı(lar) içermelidir.",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "Geçersiz Şifre: En az {0} büyük harf içermelidir.",
-        "invalidPasswordMinSpecialCharsMessage":
-            "Geçersiz Şifre: En az {0} özel karakter içermelidir.",
-        "invalidPasswordNotUsernameMessage":
-            "Geçersiz Şifre: Kullanıcı adıyla aynı olamaz.",
-        "invalidPasswordRegexPatternMessage":
-            "Geçersiz Şifre: Regex Patternine uygun değil.",
-        "invalidPasswordHistoryMessage":
-            "Geçersiz Şifre: Son {0} şifreden biri olamaz.",
-        "invalidPasswordBlacklistedMessage":
-            "Geçersiz Şifre: Şifre bloklanmış şifreler listesindedir (kara liste).",
-        "invalidPasswordGenericMessge":
-            "Geçersiz Şifre: Yeni şifre, şifre kurallarını ihlal ediyor.",
+        "accountDisabledMessage": "Hesabınız kilitlendi, lütfen yöneticiyle iletişime geçin.",
+        "accountTemporarilyDisabledMessage": "Hesabınız geçici olarak kilitlendi, lütfen yöneticiyle iletişime geçin veya daha sonra tekrar deneyin.",
+        "invalidPasswordMinLengthMessage": "Geçersiz Şifre: En az {0} karakter uzunluğunda olmalı.",
+        "invalidPasswordMinLowerCaseCharsMessage": "Geçersiz Şifre : En az {0} küçük harf içermelidir.",
+        "invalidPasswordMinDigitsMessage": "Geçersiz Şifre: En az {0} sayı(lar) içermelidir.",
+        "invalidPasswordMinUpperCaseCharsMessage": "Geçersiz Şifre: En az {0} büyük harf içermelidir.",
+        "invalidPasswordMinSpecialCharsMessage": "Geçersiz Şifre: En az {0} özel karakter içermelidir.",
+        "invalidPasswordNotUsernameMessage": "Geçersiz Şifre: Kullanıcı adıyla aynı olamaz.",
+        "invalidPasswordRegexPatternMessage": "Geçersiz Şifre: Regex Patternine uygun değil.",
+        "invalidPasswordHistoryMessage": "Geçersiz Şifre: Son {0} şifreden biri olamaz.",
+        "invalidPasswordBlacklistedMessage": "Geçersiz Şifre: Şifre bloklanmış şifreler listesindedir (kara liste).",
+        "invalidPasswordGenericMessge": "Geçersiz Şifre: Yeni şifre, şifre kurallarını ihlal ediyor.",
         "myResources": "Kaynaklarım",
         "myResourcesSub": "Kaynaklarım",
         "doDeny": "Reddet",
@@ -4687,8 +4014,7 @@ export const kcMessages = {
         "doRemoveRequest": "İsteği Kaldır",
         "peopleAccessResource": "Bu kaynağa erişimi olan kişiler",
         "resourceManagedPolicies": "Bu kaynağa erişim izni veren izinler",
-        "resourceNoPermissionsGrantingAccess":
-            "Bu kaynağa erişim izni verilmeyen izin yok",
+        "resourceNoPermissionsGrantingAccess": "Bu kaynağa erişim izni verilmeyen izin yok",
         "anyAction": "Herhangi bir eylem",
         "description": "Açıklama",
         "name": "İsim",
@@ -4717,47 +4043,36 @@ export const kcMessages = {
         "thirdpartyApps": "Üçüncü parti uygulamalar",
         "appResults": "Sonuçlar",
         "authorizedProvider": "Yetkili Tedarikçi",
-        "authorizedProviderMessage":
-            "Yetkili Sağlayıcılar hesabınızla bağlantılı",
+        "authorizedProviderMessage": "Yetkili Sağlayıcılar hesabınızla bağlantılı",
         "identityProvider": "Kimlik Sağlayıcısı",
-        "identityProviderMessage":
-            "Hesabınızı yapılandırdığınız kimlik sağlayıcılarıyla bağlamak için",
+        "identityProviderMessage": "Hesabınızı yapılandırdığınız kimlik sağlayıcılarıyla bağlamak için",
         "socialLogin": "Sosyal Giriş",
         "userDefined": "Kullanıcı tanımlı",
         "removeAccess": "Erişimi Kaldır",
-        "removeAccessMessage":
-            "Bu uygulama hesabını kullanmak istiyorsanız tekrar erişim vermeniz gerekir.",
+        "removeAccessMessage": "Bu uygulama hesabını kullanmak istiyorsanız tekrar erişim vermeniz gerekir.",
         "authenticatorStatusMessage": "İki faktörlü kimlik doğrulama aktif",
         "authenticatorFinishSetUpTitle": "İki Faktörlü Doğrulama",
-        "authenticatorFinishSetUpMessage":
-            "Keycloak hesabınızda her oturum açtığınızda, iki faktörlü bir doğrulama kodu girmeniz istenecektir.",
+        "authenticatorFinishSetUpMessage": "Keycloak hesabınızda her oturum açtığınızda, iki faktörlü bir doğrulama kodu girmeniz istenecektir.",
         "authenticatorSubTitle": "İki Faktörlü Kimlik Doğrulamayı Ayarlama",
         "authenticatorSubMessage":
             "Hesabınızın güvenliğini artırmak için mevcut iki faktörlü kimlik doğrulama yöntemlerinden en az birini etkinleştirin.",
         "authenticatorMobileTitle": "Mobil Kimlik Doğrulayıcı",
-        "authenticatorMobileMessage":
-            "Doğrulama kodlarını iki faktörlü kimlik doğrulama olarak almak için mobil Doğrulayıcı'yı kullanın.",
-        "authenticatorMobileFinishSetUpMessage":
-            "Doğrulayıcı, telefonunuza bağlı.",
+        "authenticatorMobileMessage": "Doğrulama kodlarını iki faktörlü kimlik doğrulama olarak almak için mobil Doğrulayıcı'yı kullanın.",
+        "authenticatorMobileFinishSetUpMessage": "Doğrulayıcı, telefonunuza bağlı.",
         "authenticatorActionSetup": "Kur",
         "authenticatorSMSTitle": "SMS Kodu",
-        "authenticatorSMSMessage":
-            "Keycloak, doğrulama kodunu telefonunuza iki faktörlü kimlik doğrulaması olarak gönderecektir.",
+        "authenticatorSMSMessage": "Keycloak, doğrulama kodunu telefonunuza iki faktörlü kimlik doğrulaması olarak gönderecektir.",
         "authenticatorSMSFinishSetUpMessage": "Kısa mesajlar gönderilir",
         "authenticatorDefaultStatus": "Varsayılan",
         "authenticatorChangePhone": "Telefon Numarasını Değiştir",
         "authenticatorBackupCodesTitle": "Yedekleme Kodları",
         "authenticatorBackupCodesMessage": "8 haneli yedek kodlarınızı alın",
-        "authenticatorBackupCodesFinishSetUpMessage":
-            "Şu anda 12 haneli yedek kod oluşturuldu. Her biri bir kez kullanılabilir.",
+        "authenticatorBackupCodesFinishSetUpMessage": "Şu anda 12 haneli yedek kod oluşturuldu. Her biri bir kez kullanılabilir.",
         "authenticatorMobileSetupTitle": "Mobil Kimlik Doğrulama Kurulumu",
-        "smscodeIntroMessage":
-            "Telefon numaranızı girin ve telefonunuza bir doğrulama kodu gönderilecektir.",
-        "mobileSetupStep1":
-            "Telefonunuza bir kimlik doğrulama uygulaması yükleyin. Burada listelenen uygulamalar desteklenmektedir.",
+        "smscodeIntroMessage": "Telefon numaranızı girin ve telefonunuza bir doğrulama kodu gönderilecektir.",
+        "mobileSetupStep1": "Telefonunuza bir kimlik doğrulama uygulaması yükleyin. Burada listelenen uygulamalar desteklenmektedir.",
         "mobileSetupStep2": "Uygulamayı açın ve barkodu tarayın.",
-        "mobileSetupStep3":
-            "Uygulama tarafından sağlanan tek seferlik kodu girin ve kurulumu tamamlamak için Kaydet'e tıklayın.",
+        "mobileSetupStep3": "Uygulama tarafından sağlanan tek seferlik kodu girin ve kurulumu tamamlamak için Kaydet'e tıklayın.",
         "scanBarCode": "Barkodu taramak ister misiniz?",
         "enterBarCode": "Tek seferlik kodu girin",
         "doCopy": "Kopyala",
@@ -4776,8 +4091,7 @@ export const kcMessages = {
         "backupCodesTips-1": "Her yedek kod bir kez kullanılabilir.",
         "backupCodesTips-2": "Bu kodlar üzerinde oluşturuldu",
         "generateNewBackupCodes": "Yeni Yedekleme Kodları Oluştur",
-        "backupCodesTips-3":
-            "Yeni yedek kodlar oluşturduğunuzda, mevcut kodlar artık çalışmayacaktır.",
+        "backupCodesTips-3": "Yeni yedek kodlar oluşturduğunuzda, mevcut kodlar artık çalışmayacaktır.",
         "backtoAuthenticatorPage": "Kimlik Doğrulayıcı Sayfasına Geri Dön",
         "resources": "Kaynaklar",
         "sharedwithMe": "Benimle paylaştı",
@@ -4917,30 +4231,22 @@ export const kcMessages = {
         "invalidFederatedIdentityActionMessage": "无效或者缺少操作",
         "identityProviderNotFoundMessage": "指定的身份提供者未找到",
         "federatedIdentityLinkNotActiveMessage": "这个身份不再使用了。",
-        "federatedIdentityRemovingLastProviderMessage":
-            "你不可以移除最后一个身份提供者因为你没有设置密码",
+        "federatedIdentityRemovingLastProviderMessage": "你不可以移除最后一个身份提供者因为你没有设置密码",
         "identityProviderRedirectErrorMessage": "尝试重定向到身份提供商失败",
         "identityProviderRemovedMessage": "身份提供商成功删除",
-        "identityProviderAlreadyLinkedMessage":
-            "链接的身份 {0} 已经连接到已有用户。",
+        "identityProviderAlreadyLinkedMessage": "链接的身份 {0} 已经连接到已有用户。",
         "staleCodeAccountMessage": "页面过期。请再试一次。",
         "consentDenied": "不同意",
         "accountDisabledMessage": "账户已经关闭，请联系管理员",
-        "accountTemporarilyDisabledMessage":
-            "账户暂时关闭，请联系管理员或稍后再试。",
+        "accountTemporarilyDisabledMessage": "账户暂时关闭，请联系管理员或稍后再试。",
         "invalidPasswordMinLengthMessage": "无效的密码:最短长度 {0}.",
-        "invalidPasswordMinLowerCaseCharsMessage":
-            "无效的密码: 至少包含 {0} 小写字母。",
+        "invalidPasswordMinLowerCaseCharsMessage": "无效的密码: 至少包含 {0} 小写字母。",
         "invalidPasswordMinDigitsMessage": "无效的密码:  至少包含 {0} 数字。",
-        "invalidPasswordMinUpperCaseCharsMessage":
-            "无效的密码: 至少包含 {0} 大写字母",
-        "invalidPasswordMinSpecialCharsMessage":
-            "无效的密码: 至少包含 {0} 个特殊字符",
+        "invalidPasswordMinUpperCaseCharsMessage": "无效的密码: 至少包含 {0} 大写字母",
+        "invalidPasswordMinSpecialCharsMessage": "无效的密码: 至少包含 {0} 个特殊字符",
         "invalidPasswordNotUsernameMessage": "无效的密码: 不能与用户名相同",
-        "invalidPasswordRegexPatternMessage":
-            "无效的密码:  无法与正则表达式匹配",
-        "invalidPasswordHistoryMessage":
-            "无效的密码: 不能与之前的{0} 个旧密码相同",
+        "invalidPasswordRegexPatternMessage": "无效的密码:  无法与正则表达式匹配",
+        "invalidPasswordHistoryMessage": "无效的密码: 不能与之前的{0} 个旧密码相同",
     },
 };
 /* spell-checker: enable */

@@ -1,18 +1,11 @@
 import { transformCodebase } from "../tools/transformCodebase";
 import * as fs from "fs";
 import { join as pathJoin } from "path";
-import {
-    replaceImportsInCssCode,
-    replaceImportsFromStaticInJsCode,
-} from "./replaceImportFromStatic";
+import { replaceImportsInCssCode, replaceImportsFromStaticInJsCode } from "./replaceImportFromStatic";
 import { generateFtlFilesCodeFactory, pageIds } from "./generateFtl";
 import { downloadBuiltinKeycloakTheme } from "../download-builtin-keycloak-theme";
 import * as child_process from "child_process";
-import {
-    resourcesCommonPath,
-    resourcesPath,
-    subDirOfPublicDirBasename,
-} from "../../lib/getKcContext/kcContextMocks/urlResourcesPath";
+import { resourcesCommonPath, resourcesPath, subDirOfPublicDirBasename } from "../../lib/getKcContext/kcContextMocks/urlResourcesPath";
 import { isInside } from "../tools/isInside";
 
 export function generateKeycloakThemeResources(params: {
@@ -37,33 +30,19 @@ export function generateKeycloakThemeResources(params: {
         keycloakVersion,
     } = params;
 
-    const themeDirPath = pathJoin(
-        keycloakThemeBuildingDirPath,
-        "src",
-        "main",
-        "resources",
-        "theme",
-        themeName,
-        "login",
-    );
+    const themeDirPath = pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", themeName, "login");
 
     let allCssGlobalsToDefine: Record<string, string> = {};
 
     transformCodebase({
-        "destDirPath":
-            urlOrigin === undefined
-                ? pathJoin(themeDirPath, "resources", "build")
-                : reactAppBuildDirPath,
+        "destDirPath": urlOrigin === undefined ? pathJoin(themeDirPath, "resources", "build") : reactAppBuildDirPath,
         "srcDirPath": reactAppBuildDirPath,
         "transformSourceCode": ({ filePath, sourceCode }) => {
             //NOTE: Prevent cycles, excludes the folder we generated for debug in public/
             if (
                 urlOrigin === undefined &&
                 isInside({
-                    "dirPath": pathJoin(
-                        reactAppBuildDirPath,
-                        subDirOfPublicDirBasename,
-                    ),
+                    "dirPath": pathJoin(reactAppBuildDirPath, subDirOfPublicDirBasename),
                     filePath,
                 })
             ) {
@@ -71,10 +50,9 @@ export function generateKeycloakThemeResources(params: {
             }
 
             if (urlOrigin === undefined && /\.css?$/i.test(filePath)) {
-                const { cssGlobalsToDefine, fixedCssCode } =
-                    replaceImportsInCssCode({
-                        "cssCode": sourceCode.toString("utf8"),
-                    });
+                const { cssGlobalsToDefine, fixedCssCode } = replaceImportsInCssCode({
+                    "cssCode": sourceCode.toString("utf8"),
+                });
 
                 allCssGlobalsToDefine = {
                     ...allCssGlobalsToDefine,
@@ -97,17 +75,13 @@ export function generateKeycloakThemeResources(params: {
                 };
             }
 
-            return urlOrigin === undefined
-                ? { "modifiedSourceCode": sourceCode }
-                : undefined;
+            return urlOrigin === undefined ? { "modifiedSourceCode": sourceCode } : undefined;
         },
     });
 
     const { generateFtlFilesCode } = generateFtlFilesCodeFactory({
         "cssGlobalsToDefine": allCssGlobalsToDefine,
-        "indexHtmlCode": fs
-            .readFileSync(pathJoin(reactAppBuildDirPath, "index.html"))
-            .toString("utf8"),
+        "indexHtmlCode": fs.readFileSync(pathJoin(reactAppBuildDirPath, "index.html")).toString("utf8"),
         urlPathname,
         urlOrigin,
     });
@@ -117,10 +91,7 @@ export function generateKeycloakThemeResources(params: {
 
         fs.mkdirSync(themeDirPath, { "recursive": true });
 
-        fs.writeFileSync(
-            pathJoin(themeDirPath, pageId),
-            Buffer.from(ftlCode, "utf8"),
-        );
+        fs.writeFileSync(pathJoin(themeDirPath, pageId), Buffer.from(ftlCode, "utf8"));
     });
 
     {
@@ -134,20 +105,11 @@ export function generateKeycloakThemeResources(params: {
         const themeResourcesDirPath = pathJoin(themeDirPath, "resources");
 
         transformCodebase({
-            "srcDirPath": pathJoin(
-                tmpDirPath,
-                "keycloak",
-                "login",
-                "resources",
-            ),
+            "srcDirPath": pathJoin(tmpDirPath, "keycloak", "login", "resources"),
             "destDirPath": themeResourcesDirPath,
         });
 
-        const reactAppPublicDirPath = pathJoin(
-            reactAppBuildDirPath,
-            "..",
-            "public",
-        );
+        const reactAppPublicDirPath = pathJoin(reactAppBuildDirPath, "..", "public");
 
         transformCodebase({
             "srcDirPath": themeResourcesDirPath,
@@ -155,43 +117,24 @@ export function generateKeycloakThemeResources(params: {
         });
 
         transformCodebase({
-            "srcDirPath": pathJoin(
-                tmpDirPath,
-                "keycloak",
-                "common",
-                "resources",
-            ),
+            "srcDirPath": pathJoin(tmpDirPath, "keycloak", "common", "resources"),
             "destDirPath": pathJoin(reactAppPublicDirPath, resourcesCommonPath),
         });
 
-        const keycloakResourcesWithinPublicDirPath = pathJoin(
-            reactAppPublicDirPath,
-            subDirOfPublicDirBasename,
-        );
+        const keycloakResourcesWithinPublicDirPath = pathJoin(reactAppPublicDirPath, subDirOfPublicDirBasename);
 
         fs.writeFileSync(
             pathJoin(keycloakResourcesWithinPublicDirPath, "README.txt"),
-            Buffer.from(
-                [
-                    "This is just a test folder that helps develop",
-                    "the login and register page without having to yarn build",
-                ].join(" "),
-            ),
+            Buffer.from(["This is just a test folder that helps develop", "the login and register page without having to yarn build"].join(" ")),
         );
 
-        fs.writeFileSync(
-            pathJoin(keycloakResourcesWithinPublicDirPath, ".gitignore"),
-            Buffer.from("*", "utf8"),
-        );
+        fs.writeFileSync(pathJoin(keycloakResourcesWithinPublicDirPath, ".gitignore"), Buffer.from("*", "utf8"));
 
         child_process.execSync(`rm -r ${tmpDirPath}`);
     }
 
     fs.writeFileSync(
         pathJoin(themeDirPath, "theme.properties"),
-        Buffer.from(
-            "parent=keycloak".concat("\n\n", extraThemeProperties.join("\n\n")),
-            "utf8",
-        ),
+        Buffer.from("parent=keycloak".concat("\n\n", extraThemeProperties.join("\n\n")), "utf8"),
     );
 }

@@ -10,9 +10,7 @@ const wrap = createUseGlobalState(
     () => {
         const { kcContext } = getKcContext();
 
-        const languageLike =
-            kcContext?.locale?.current ??
-            (typeof navigator === "undefined" ? undefined : navigator.language);
+        const languageLike = kcContext?.locale?.current ?? (typeof navigator === "undefined" ? undefined : navigator.language);
 
         if (languageLike === undefined) {
             return "en";
