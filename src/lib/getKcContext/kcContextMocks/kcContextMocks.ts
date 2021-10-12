@@ -21,7 +21,7 @@ export const kcContextCommonMock: KcContextBase.Common = {
         "displayName": "myrealm",
         "displayNameHtml": "myrealm",
         "internationalizationEnabled": true,
-        "registrationEmailAsUsername": true,
+        "registrationEmailAsUsername": false,
     },
     "messagesPerField": {
         "printIfExists": (...[, x]) => x,
@@ -185,7 +185,6 @@ export const kcContextMocks: KcContextBase[] = [
             id<KcContextBase.RegisterUserProfile>({
                 "pageId": "register-user-profile.ftl",
                 ...registerCommon,
-
                 "profile": {
                     "context": "REGISTRATION_PROFILE" as const,
                     ...(() => {

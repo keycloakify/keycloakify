@@ -68,6 +68,7 @@ export const RegisterUserProfile = memo(({ kcContext, ...props }: { kcContext: K
                                                     id="password-confirm"
                                                     className={cx(props.kcInputClass)}
                                                     name="password-confirm"
+                                                    autoComplete="new-password"
                                                     aria-invalid={messagesPerField.existsError("password-confirm")}
                                                 />
                                                 {messagesPerField.existsError("password-confirm") && (
@@ -141,18 +142,11 @@ const UserProfileFormFields = memo(
 
         return (
             <>
-                {kcContext.profile.attributes.map((attribute, i) => {
-                    const { group = "", groupDisplayHeader = "", groupDisplayDescription = "" } = attribute;
-
-                    console.log(JSON.stringify(attribute, null, 2));
-
-                    //if (group === currentGroup) return null;
-
-                    currentGroup = group;
-
-                    return (
+                {kcContext.profile.attributes
+                    .map(attribute => [attribute, attribute])
+                    .map(([attribute, { group = "", groupDisplayHeader = "", groupDisplayDescription = "" }], i) => (
                         <Fragment key={i}>
-                            {group !== "" && (
+                            {group !== currentGroup && (currentGroup = group) !== "" && (
                                 <div className={cx(props.kcFormGroupClass)}>
                                     <div className={cx(props.kcContentWrapperClass)}>
                                         <label id={`header-${group}`} className={cx(props.kcFormGroupHeader)}>
@@ -200,8 +194,7 @@ const UserProfileFormFields = memo(
                             </div>
                             <AfterField attribute={attribute} />
                         </Fragment>
-                    );
-                })}
+                    ))}
             </>
         );
     },
