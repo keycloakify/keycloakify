@@ -1,3 +1,12 @@
+## **2.5.0** (2021-10-12)  
+  
+- register-user-profile.ftl tested working  
+- Make kcMessage more easily hackable  
+- fix useKcMessage  
+- Implement and type validators  
+- Remove syntax error in ftl and make it more directly debugable  
+- Support register-user-profile.ftl    
+  
 ## **2.4.0** (2021-10-08)  
   
 -  #38: Implement messagesPerField existsError and get    
