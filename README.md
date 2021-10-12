@@ -20,6 +20,19 @@
     <img src="https://user-images.githubusercontent.com/6702424/110260457-a1c3d380-7fac-11eb-853a-80459b65626b.png">
 </p>
 
+**NEW in v2.5**
+
+-   User Profile ([`register-user-profile.ftl`](https://github.com/InseeFrLab/keycloakify/blob/main/src/lib/components/RegisterUserProfile.tsx))
+    is now supported! 🎉  
+    It enables to [define, from the admin console](https://user-images.githubusercontent.com/6702424/136872461-1f5b64ef-d2ef-4c6b-bb8d-07d4729552b3.png),
+    what information you want to collect on your users in the register page and to validate inputs
+    [**on the frontend**, in realtime](https://github.com/InseeFrLab/keycloakify/blob/59f106bf9e210b63b190826da2bf5f75fc8b7644/src/lib/getKcContext/KcContextBase.ts#L210-L245)!  
+    NOTE: User profile is only available in Keycloak 15 and it's a beta feature that
+    [needs to be enabled when launching keycloak](https://github.com/InseeFrLab/keycloakify/blob/59f106bf9e210b63b190826da2bf5f75fc8b7644/src/bin/build-keycloak-theme/build-keycloak-theme.ts#L116-L117) and [enabled in the console](https://user-images.githubusercontent.com/6702424/136874428-b071d614-c7f7-440d-9b2e-670faadc0871.png).
+-   Feature [Use advanced message](https://github.com/InseeFrLab/keycloakify/blob/59f106bf9e210b63b190826da2bf5f75fc8b7644/src/lib/i18n/useKcMessage.tsx#L53-L66)
+    and [`messagesPerFields`](https://github.com/InseeFrLab/keycloakify/blob/59f106bf9e210b63b190826da2bf5f75fc8b7644/src/lib/getKcContext/KcContextBase.ts#L70-L75) (implementation [here](https://github.com/InseeFrLab/keycloakify/blob/59f106bf9e210b63b190826da2bf5f75fc8b7644/src/bin/build-keycloak-theme/generateFtl/common.ftl#L130-L189))
+-   Test container now uses Keycloak version `15.0.2`.
+
 **NEW in v2**
 
 -   It's now possible to implement custom `.ftl` pages.
@@ -77,6 +90,7 @@ If you already have a Keycloak custom theme, it can be easily ported to Keycloak
 -   [Implement context persistence (optional)](#implement-context-persistence-optional)
 -   [Kickstart video](#kickstart-video)
 -   [About the errors related to `objectToJson` in Keycloak logs.](#about-the-errors-related-to-objecttojson-in-keycloak-logs)
+-   [Adding custom message (to `i18n/useKcMessage.tsx`)](#adding-custom-message-to-i18nusekcmessagetsx)
 -   [Email domain whitelist](#email-domain-whitelist)
 
 # Requirements
@@ -85,7 +99,7 @@ Tested with the following Keycloak versions:
 
 -   [11.0.3](https://hub.docker.com/layers/jboss/keycloak/11.0.3/images/sha256-4438f1e51c1369371cb807dffa526e1208086b3ebb9cab009830a178de949782?context=explore)
 -   [12.0.4](https://hub.docker.com/layers/jboss/keycloak/12.0.4/images/sha256-67e0c88e69bd0c7aef972c40bdeb558a974013a28b3668ca790ed63a04d70584?context=explore)
--   Tests ongoing with [14.0.0](https://hub.docker.com/layers/jboss/keycloak/14.0.0/images/sha256-ca713e87ad163da71ab329010de2464a41ff030a25ae0aef15c1c290252f3d7f?context=explore)
+-   [15.0.2](https://hub.docker.com/layers/jboss/keycloak/15.0.2/images/sha256-d8ed1ee5df42a178c341f924377da75db49eab08ea9f058ff39a8ed7ee05ec93?context=explore)
 
 This tool will be maintained to stay compatible with Keycloak v11 and up, however, the default pages you will get
 (before you customize it) will always be the ones of Keycloak v11.
@@ -424,6 +438,12 @@ Theses are expected and can be safely ignored.
 To [converts the `.ftl` values into a JavaScript object](https://github.com/InseeFrLab/keycloakify/blob/main/src/bin/build-keycloak-theme/generateFtl/common.ftl)
 without making assumptions on the `.data_model` we have to do things that throws.  
 It's all-right though because every statement that can fail is inside an `<#attempt><#recorver>` block but it results in errors being printed to the logs.
+
+# Adding custom message (to `i18n/useKcMessage.tsx`)
+
+You can reproduce [this approach](https://github.com/garronej/keycloakify-demo-app/blob/main/src/kcMessagesExtension.ts)
+( don't forget to [evaluate the code](https://github.com/garronej/keycloakify-demo-app/blob/0a6d349dba89a5702f98ba48bca6c76ac7265e1f/src/index.tsx#L15) ).  
+This approach is a bit hacky as it doesn't provide type safety but it works.
 
 # Email domain whitelist
 
