@@ -1,3 +1,7 @@
+### **2.5.1** (2021-10-13)  
+  
+- Update tss-react    
+  
 ## **2.5.0** (2021-10-12)  
   
 - register-user-profile.ftl tested working  
