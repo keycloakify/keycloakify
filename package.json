@@ -54,7 +54,16 @@
         "register"
     ],
     "homepage": "https://github.com/garronej/keycloakify",
+    "peerDependencies": {
+        "react": "^16.8.0 || ^17.0.0",
+        "tss-react": "^1.1.0",
+        "powerhooks": "^0.9.6",
+        "@emotion/react": "^11.4.1"
+    },
     "devDependencies": {
+        "tss-react": "^1.1.0",
+        "@emotion/react": "^11.4.1",
+        "powerhooks": "^0.9.6",
         "@types/node": "^10.0.0",
         "@types/react": "^17.0.0",
         "copyfiles": "^2.4.1",
@@ -67,15 +76,12 @@
         "prettier": "^2.3.0"
     },
     "dependencies": {
-        "@emotion/react": "^11.4.1",
         "cheerio": "^1.0.0-rc.5",
         "evt": "2.0.0-beta.38",
         "minimal-polyfills": "^2.2.1",
         "path": "^0.12.7",
-        "powerhooks": "^0.9.4",
         "react-markdown": "^5.0.3",
         "scripting-tools": "^0.19.13",
-        "tsafe": "^0.8.1",
-        "tss-react": "^1.1.0"
+        "tsafe": "^0.8.1"
     }
 }
