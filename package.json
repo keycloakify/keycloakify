@@ -76,6 +76,6 @@
         "react-markdown": "^5.0.3",
         "scripting-tools": "^0.19.13",
         "tsafe": "^0.8.1",
-        "tss-react": "^1.0.3"
+        "tss-react": "^1.1.0"
     }
 }

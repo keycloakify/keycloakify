@@ -1593,10 +1593,10 @@ tslib@^2.2.0:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
   integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==
 
-tss-react@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/tss-react/-/tss-react-1.0.3.tgz#c341f2a06f180aec630f784a6ffcdff5971976fd"
-  integrity sha512-f46npO8LCxg9jZCC/kZltT/CXODIFCU2rClsp8bROOh4+aEMP7z/didjf6ifcQAcHuACOZODEpuqi3+t8uBOYw==
+tss-react@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/tss-react/-/tss-react-1.1.0.tgz#bbbf12b3d30eb02e1a39ac6dba4ca05a9c6bb674"
+  integrity sha512-0UUQaMCbefyXsHesnScLwmoo6lD5sdAVR1h5dgIvCOFTk0i5A5a68K2B9gm89hQFfIKPl7fzolCsJ+G9RE/vpw==
   dependencies:
     "@emotion/server" "^11.4.0"
     html-react-parser "^1.2.7"
