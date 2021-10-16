@@ -20,6 +20,12 @@
     <img src="https://user-images.githubusercontent.com/6702424/110260457-a1c3d380-7fac-11eb-853a-80459b65626b.png">
 </p>
 
+**NEW in v3**
+
+No breaking changes except that `@emotion/react`, [`tss-react`](https://www.npmjs.com/package/tss-react) and [`powerhooks`](https://www.npmjs.com/package/powerhooks) are now `peerDependencies` instead of being just dependencies.  
+It's important to avoid problem when using `keycloakify` alongside [`mui`](https://mui.com) and
+[when passing params from the app to the login page](https://github.com/InseeFrLab/keycloakify#implement-context-persistence-optional).
+
 **NEW in v2.5**
 
 -   User Profile ([`register-user-profile.ftl`](https://github.com/InseeFrLab/keycloakify/blob/main/src/lib/components/RegisterUserProfile.tsx))
@@ -131,7 +137,7 @@ separate module. Checkout [ts_ci](https://github.com/garronej/ts_ci), it can hel
 ## Setting up the build tool
 
 ```bash
-yarn add keycloakify
+yarn add keycloakify @emotion/react tss-react powerhooks
 ```
 
 [`package.json`](https://github.com/garronej/keycloakify-demo-app/blob/main/package.json)
