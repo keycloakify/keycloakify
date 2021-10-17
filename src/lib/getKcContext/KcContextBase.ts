@@ -65,6 +65,7 @@ export declare namespace KcContextBase {
         client: {
             clientId: string;
             name?: string;
+            description?: string;
         };
         isAppInitiatedAction: boolean;
         messagesPerField: {
