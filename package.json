@@ -1,6 +1,6 @@
 {
     "name": "keycloakify",
-    "version": "3.0.0",
+    "version": "3.0.1",
     "description": "Keycloak theme generator for Reacts app",
     "repository": {
         "type": "git",
