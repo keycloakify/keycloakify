@@ -1,3 +1,7 @@
+### **3.0.1** (2021-10-17)  
+  
+- Add client.description in type kcContext type def    
+  
 # **3.0.0** (2021-10-16)  
   
   
