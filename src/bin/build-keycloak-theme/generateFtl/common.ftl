@@ -40,7 +40,7 @@
                     <#continue>
                 </#attempt>
 
-                <#if depth gt 4>
+                <#if depth gt 7>
                     /* Avoid calling recustively too many times depth: ${depth}, key: ${key} */
                     <#continue>
                 </#if>
