@@ -1,3 +1,7 @@
+### **3.0.2** (2021-10-18)  
+  
+- Scan deeper to retreive user attribute    
+  
 ### **3.0.1** (2021-10-17)  
   
 - Add client.description in type kcContext type def    
