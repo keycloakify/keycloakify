@@ -117,7 +117,7 @@ For more information see [this issue](https://github.com/InseeFrLab/keycloakify/
 
 **All this is defaults with [`create-react-app`](https://create-react-app.dev)** (tested with 4.0.3)
 
--   `mvn` ([Maven](https://maven.apache.org/)), `rm`, `mkdir`, `wget`, `unzip` are assumed to be available.
+-   `mvn` ([Maven](https://maven.apache.org/)), `rm`, `mkdir`, `curl`, `unzip` are assumed to be available.
 -   `docker` must be up and running when running `yarn keycloak`.
 
 On Windows you'll have to use [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
