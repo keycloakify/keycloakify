@@ -1,4 +1,4 @@
-<script>const _= 
+<script>const _=
 <#macro objectToJson object depth>
     <@compress>
 
@@ -10,6 +10,7 @@
             undefined
             <#return>
         </#attempt>
+
         <#if isHash>
 
             <#local keys = "">
@@ -24,7 +25,7 @@
 
             {${'\n'}
 
-            <#list keys as key>
+            <#list keys?filter(x -> x??) as key>
 
                 <#if key == "class">
                     /* skipping "class" property of object */
@@ -41,7 +42,7 @@
                 </#attempt>
 
                 <#if depth gt 7>
-                    /* Avoid calling recustively too many times depth: ${depth}, key: ${key} */
+                    /* Avoid calling recursively too many times. depth: ${depth}, key: ${key} */
                     <#continue>
                 </#if>
 
@@ -126,7 +127,7 @@
 
 (()=>{
 
-    const nonAutomaticallyConvertible = { 
+    const nonAutomaticallyConvertible = {
         "messagesPerField": {
 
             <#assign fieldNames = ["global", "userLabel", "username", "email", "firstName", "lastName", "password", "password-confirm"]>
@@ -185,8 +186,8 @@
                 throw new Error("There is no " + fieldName + " field");
             }
         },
-        "msg": function(){ throw new Error("use import { useKcMessage } from 'keycloakify'"); },
-        "advancedMsg": function(){ throw new Error("use import { useKcMessage } from 'keycloakify'"); }
+        "msg": function(){ throw new Error("use import { useKcMessage } from 'keycloakify'"); },
+        "advancedMsg": function(){ throw new Error("use import { useKcMessage } from 'keycloakify'"); }
     };
 
     const out = {};
