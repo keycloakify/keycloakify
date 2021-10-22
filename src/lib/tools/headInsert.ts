@@ -1,10 +1,12 @@
+import "./HTMLElement.prototype.prepend";
 import { Deferred } from "evt/tools/Deferred";
 
-export function appendHead(
+export function headInsert(
     params:
         | {
               type: "css";
               href: string;
+              position: "append" | "prepend";
           }
         | {
               type: "javascript";
@@ -46,7 +48,23 @@ export function appendHead(
         })(),
     );
 
-    document.getElementsByTagName("head")[0].appendChild(htmlElement);
+    document.getElementsByTagName("head")[0][
+        (() => {
+            switch (params.type) {
+                case "javascript":
+                    return "appendChild";
+                case "css":
+                    return (() => {
+                        switch (params.position) {
+                            case "append":
+                                return "appendChild";
+                            case "prepend":
+                                return "prepend";
+                        }
+                    })();
+            }
+        })()
+    ](htmlElement);
 
     return dLoaded.pr;
 }

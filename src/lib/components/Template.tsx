@@ -8,7 +8,7 @@ import type { KcLanguageTag } from "../i18n/KcLanguageTag";
 import { getBestMatchAmongKcLanguageTag } from "../i18n/KcLanguageTag";
 import { getKcLanguageTagLabel } from "../i18n/KcLanguageTag";
 import { useCallbackFactory } from "powerhooks/useCallbackFactory";
-import { appendHead } from "../tools/appendHead";
+import { headInsert } from "../tools/headInsert";
 import { join as pathJoin } from "path";
 import { useConstCallback } from "powerhooks/useConstCallback";
 import type { KcTemplateProps } from "./KcProps";
@@ -92,12 +92,15 @@ export const Template = memo((props: TemplateProps) => {
             [
                 ...toArr(props.stylesCommon).map(relativePath => pathJoin(url.resourcesCommonPath, relativePath)),
                 ...toArr(props.styles).map(relativePath => pathJoin(url.resourcesPath, relativePath)),
-            ].map(href =>
-                appendHead({
-                    "type": "css",
-                    href,
-                }),
-            ),
+            ]
+                .reverse()
+                .map(href =>
+                    headInsert({
+                        "type": "css",
+                        href,
+                        "position": "prepend",
+                    }),
+                ),
         ).then(() => {
             if (isUnmounted) {
                 return;
@@ -107,7 +110,7 @@ export const Template = memo((props: TemplateProps) => {
         });
 
         toArr(props.scripts).forEach(relativePath =>
-            appendHead({
+            headInsert({
                 "type": "javascript",
                 "src": pathJoin(url.resourcesPath, relativePath),
             }),
