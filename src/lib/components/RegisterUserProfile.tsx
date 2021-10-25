@@ -161,7 +161,6 @@ const UserProfileFormFields = memo(({ kcContext, onIsFormSubmittableValueChange,
                                     type={(() => {
                                         switch (attribute.name) {
                                             case "password-confirm":
-                                                return "password-confirm";
                                             case "password":
                                                 return "password";
                                             default:
