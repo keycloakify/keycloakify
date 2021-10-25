@@ -3,7 +3,7 @@ import { Template } from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { useKcMessage } from "../i18n/useKcMessage";
-import { appendHead } from "../tools/appendHead";
+import { headInsert } from "../tools/headInsert";
 import { join as pathJoin } from "path";
 import { useCssAndCx } from "tss-react";
 
@@ -17,7 +17,7 @@ export const LoginOtp = memo(({ kcContext, ...props }: { kcContext: KcContextBas
     useEffect(() => {
         let isCleanedUp = false;
 
-        appendHead({
+        headInsert({
             "type": "javascript",
             "src": pathJoin(kcContext.url.resourcesCommonPath, "node_modules/jquery/dist/jquery.min.js"),
         }).then(() => {

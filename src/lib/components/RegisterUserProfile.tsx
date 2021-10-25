@@ -1,17 +1,29 @@
-import { memo, Fragment } from "react";
+import { useMemo, memo, useEffect, useState, Fragment } from "react";
 import { Template } from "./Template";
 import type { KcProps } from "./KcProps";
-import type { KcContextBase } from "../getKcContext/KcContextBase";
+import type { KcContextBase, Attribute } from "../getKcContext/KcContextBase";
 import { useKcMessage } from "../i18n/useKcMessage";
 import { useCssAndCx } from "tss-react";
 import type { ReactComponent } from "../tools/ReactComponent";
+import { useCallbackFactory } from "powerhooks/useCallbackFactory";
+import { useFormValidationSlice } from "../useFormValidationSlice";
 
-export const RegisterUserProfile = memo(({ kcContext, ...props }: { kcContext: KcContextBase.RegisterUserProfile } & KcProps) => {
-    const { url, messagesPerField, realm, passwordRequired, recaptchaRequired, recaptchaSiteKey } = kcContext;
+export const RegisterUserProfile = memo(({ kcContext, ...props_ }: { kcContext: KcContextBase.RegisterUserProfile } & KcProps) => {
+    const { url, messagesPerField, recaptchaRequired, recaptchaSiteKey } = kcContext;
 
     const { msg, msgStr } = useKcMessage();
 
-    const { cx } = useCssAndCx();
+    const { cx, css } = useCssAndCx();
+
+    const props = useMemo(
+        () => ({
+            ...props_,
+            "kcFormGroupClass": cx(props_.kcFormGroupClass, css({ "marginBottom": 20 })),
+        }),
+        [cx, css],
+    );
+
+    const [isFomSubmittable, setIsFomSubmittable] = useState(false);
 
     return (
         <Template
@@ -22,71 +34,7 @@ export const RegisterUserProfile = memo(({ kcContext, ...props }: { kcContext: K
             headerNode={msg("registerTitle")}
             formNode={
                 <form id="kc-register-form" className={cx(props.kcFormClass)} action={url.registrationAction} method="post">
-                    <UserProfileFormFields
-                        kcContext={kcContext}
-                        {...props}
-                        AfterField={({ attribute }) =>
-                            /*render password fields just under the username or email (if used as username)*/
-                            (passwordRequired &&
-                                (attribute.name == "username" || (attribute.name == "email" && realm.registrationEmailAsUsername)) && (
-                                    <>
-                                        <div className={cx(props.kcFormGroupClass)}>
-                                            <div className={cx(props.kcLabelWrapperClass)}>
-                                                <label htmlFor="password" className={cx(props.kcLabelClass)}>
-                                                    {msg("password")}
-                                                </label>{" "}
-                                                *
-                                            </div>
-                                            <div className={cx(props.kcInputWrapperClass)}>
-                                                <input
-                                                    type="password"
-                                                    id="password"
-                                                    className={cx(props.kcInputClass)}
-                                                    name="password"
-                                                    autoComplete="new-password"
-                                                    aria-invalid={
-                                                        messagesPerField.existsError("password") || messagesPerField.existsError("password-confirm")
-                                                    }
-                                                />
-                                                {messagesPerField.existsError("password") && (
-                                                    <span id="input-error-password" className={cx(props.kcInputErrorMessageClass)} aria-live="polite">
-                                                        {messagesPerField.get("password")}
-                                                    </span>
-                                                )}
-                                            </div>
-                                        </div>
-                                        <div className={cx(props.kcFormGroupClass)}>
-                                            <div className={cx(props.kcLabelWrapperClass)}>
-                                                <label htmlFor="password-confirm" className={cx(props.kcLabelClass)}>
-                                                    {msg("passwordConfirm")}
-                                                </label>{" "}
-                                                *
-                                            </div>
-                                            <div className={cx(props.kcInputWrapperClass)}>
-                                                <input
-                                                    type="password"
-                                                    id="password-confirm"
-                                                    className={cx(props.kcInputClass)}
-                                                    name="password-confirm"
-                                                    autoComplete="new-password"
-                                                    aria-invalid={messagesPerField.existsError("password-confirm")}
-                                                />
-                                                {messagesPerField.existsError("password-confirm") && (
-                                                    <span
-                                                        id="input-error-password-confirm"
-                                                        className={cx(props.kcInputErrorMessageClass)}
-                                                        aria-live="polite"
-                                                    >
-                                                        {messagesPerField.get("password-confirm")}
-                                                    </span>
-                                                )}
-                                            </div>
-                                        </div>
-                                    </>
-                                )) ||
-                            null
-                        }
-                    />
+                    <UserProfileFormFields kcContext={kcContext} onIsFormSubmittableValueChange={setIsFomSubmittable} {...props} />
                     {recaptchaRequired && (
                         <div className="form-group">
                             <div className={cx(props.kcInputWrapperClass)}>
@@ -108,6 +56,7 @@ export const RegisterUserProfile = memo(({ kcContext, ...props }: { kcContext: K
                                 className={cx(props.kcButtonClass, props.kcButtonPrimaryClass, props.kcButtonBlockClass, props.kcButtonLargeClass)}
                                 type="submit"
                                 value={msgStr("doRegister")}
+                                disabled={!isFomSubmittable}
                             />
                         </div>
                     </div>
@@ -117,85 +66,142 @@ export const RegisterUserProfile = memo(({ kcContext, ...props }: { kcContext: K
     );
 });
 
-const UserProfileFormFields = memo(
-    ({
+type UserProfileFormFieldsProps = { kcContext: KcContextBase.RegisterUserProfile } & KcProps &
+    Partial<Record<"BeforeField" | "AfterField", ReactComponent<{ attribute: Attribute }>>> & {
+        onIsFormSubmittableValueChange: (isFormSubmittable: boolean) => void;
+    };
+
+const UserProfileFormFields = memo(({ kcContext, onIsFormSubmittableValueChange, ...props }: UserProfileFormFieldsProps) => {
+    const { cx, css } = useCssAndCx();
+
+    const { advancedMsg } = useKcMessage();
+
+    const {
+        formValidationState: { fieldStateByAttributeName, isFormSubmittable },
+        formValidationReducer,
+        attributesWithPassword,
+    } = useFormValidationSlice({
         kcContext,
-        BeforeField = () => null,
-        AfterField = () => null,
-        ...props
-    }: { kcContext: KcContextBase.RegisterUserProfile } & KcProps &
-        Partial<
-            Record<
-                "BeforeField" | "AfterField",
-                ReactComponent<{
-                    attribute: KcContextBase.RegisterUserProfile["profile"]["attributes"][number];
-                }>
-            >
-        >) => {
-        const { messagesPerField } = kcContext;
+    });
 
-        const { cx } = useCssAndCx();
+    useEffect(() => {
+        onIsFormSubmittableValueChange(isFormSubmittable);
+    }, [isFormSubmittable]);
 
-        const { advancedMsg } = useKcMessage();
+    const onChangeFactory = useCallbackFactory(
+        (
+            [name]: [string],
+            [
+                {
+                    target: { value },
+                },
+            ]: [React.ChangeEvent<HTMLInputElement>],
+        ) =>
+            formValidationReducer({
+                "action": "update value",
+                name,
+                "newValue": value,
+            }),
+    );
 
-        let currentGroup = "";
+    const onBlurFactory = useCallbackFactory(([name]: [string]) =>
+        formValidationReducer({
+            "action": "focus lost",
+            name,
+        }),
+    );
 
-        return (
-            <>
-                {kcContext.profile.attributes
-                    .map(attribute => [attribute, attribute])
-                    .map(([attribute, { group = "", groupDisplayHeader = "", groupDisplayDescription = "" }], i) => (
-                        <Fragment key={i}>
-                            {group !== currentGroup && (currentGroup = group) !== "" && (
-                                <div className={cx(props.kcFormGroupClass)}>
-                                    <div className={cx(props.kcContentWrapperClass)}>
-                                        <label id={`header-${group}`} className={cx(props.kcFormGroupHeader)}>
-                                            {(groupDisplayHeader !== "" && advancedMsg(groupDisplayHeader)) || currentGroup}
+    let currentGroup = "";
+
+    return (
+        <>
+            {attributesWithPassword.map((attribute, i) => {
+                const { group = "", groupDisplayHeader = "", groupDisplayDescription = "" } = attribute;
+
+                const { value, displayableErrors } = fieldStateByAttributeName[attribute.name];
+
+                const formGroupClassName = cx(props.kcFormGroupClass, displayableErrors.length !== 0 && props.kcFormGroupErrorClass);
+
+                return (
+                    <Fragment key={i}>
+                        {group !== currentGroup && (currentGroup = group) !== "" && (
+                            <div className={formGroupClassName}>
+                                <div className={cx(props.kcContentWrapperClass)}>
+                                    <label id={`header-${group}`} className={cx(props.kcFormGroupHeader)}>
+                                        {advancedMsg(groupDisplayHeader) || currentGroup}
+                                    </label>
+                                </div>
+                                {groupDisplayDescription !== "" && (
+                                    <div className={cx(props.kcLabelWrapperClass)}>
+                                        <label id={`description-${group}`} className={`${cx(props.kcLabelClass)}`}>
+                                            {advancedMsg(groupDisplayDescription)}
                                         </label>
                                     </div>
-                                    {groupDisplayDescription !== "" && (
-                                        <div className={cx(props.kcLabelWrapperClass)}>
-                                            <label id={`description-${group}`} className={`${cx(props.kcLabelClass)}`}>
-                                                {advancedMsg(groupDisplayDescription) ?? ""}
-                                            </label>
-                                        </div>
-                                    )}
-                                </div>
-                            )}
-                            <BeforeField attribute={attribute} />
-                            <div className={cx(props.kcFormGroupClass)}>
-                                <div className={cx(props.kcLabelWrapperClass)}>
-                                    <label htmlFor={attribute.name} className={cx(props.kcLabelClass)}>
-                                        {advancedMsg(attribute.displayName ?? "")}
-                                    </label>
-                                    {attribute.required && <>*</>}
-                                </div>
-                                <div className={cx(props.kcInputWrapperClass)}>
-                                    <input
-                                        type="text"
-                                        id={attribute.name}
-                                        name={attribute.name}
-                                        defaultValue={attribute.value ?? ""}
-                                        className={cx(props.kcInputClass)}
-                                        aria-invalid={messagesPerField.existsError(attribute.name)}
-                                        disabled={attribute.readOnly}
-                                        {...(attribute.autocomplete === undefined
-                                            ? {}
-                                            : {
-                                                  "autoComplete": attribute.autocomplete,
-                                              })}
-                                    />
-                                    {kcContext.messagesPerField.existsError(attribute.name) && (
-                                        <span id={`input-error-${attribute.name}`} className={cx(props.kcInputErrorMessageClass)} aria-live="polite">
-                                            {messagesPerField.get(attribute.name)}
-                                        </span>
-                                    )}
-                                </div>
+                                )}
                             </div>
-                            <AfterField attribute={attribute} />
-                        </Fragment>
-                    ))}
-            </>
-        );
-    },
-);
+                        )}
+                        <div className={formGroupClassName}>
+                            <div className={cx(props.kcLabelWrapperClass)}>
+                                <label htmlFor={attribute.name} className={cx(props.kcLabelClass)}>
+                                    {advancedMsg(attribute.displayName ?? "")}
+                                </label>
+                                {attribute.required && <>*</>}
+                            </div>
+                            <div className={cx(props.kcInputWrapperClass)}>
+                                <input
+                                    autoComplete={(() => {
+                                        switch (attribute.name) {
+                                            case "password-confirm":
+                                            case "password":
+                                                return "new-password";
+                                            default:
+                                                return undefined;
+                                        }
+                                    })()}
+                                    type={(() => {
+                                        switch (attribute.name) {
+                                            case "password-confirm":
+                                                return "password-confirm";
+                                            case "password":
+                                                return "password";
+                                            default:
+                                                return "text";
+                                        }
+                                    })()}
+                                    id={attribute.name}
+                                    name={attribute.name}
+                                    value={value}
+                                    onChange={onChangeFactory(attribute.name)}
+                                    className={cx(props.kcInputClass)}
+                                    aria-invalid={displayableErrors.length !== 0}
+                                    disabled={attribute.readOnly}
+                                    {...(attribute.autocomplete === undefined
+                                        ? {}
+                                        : {
+                                              "autoComplete": attribute.autocomplete,
+                                          })}
+                                    onBlur={onBlurFactory(attribute.name)}
+                                />
+                                {displayableErrors.length !== 0 && (
+                                    <span
+                                        id={`input-error-${attribute.name}`}
+                                        className={cx(
+                                            props.kcInputErrorMessageClass,
+                                            css({
+                                                "position": displayableErrors.length === 1 ? "absolute" : undefined,
+                                                "& > span": { "display": "block" },
+                                            }),
+                                        )}
+                                        aria-live="polite"
+                                    >
+                                        {displayableErrors.map(({ errorMessage }) => errorMessage)}
+                                    </span>
+                                )}
+                            </div>
+                        </div>
+                    </Fragment>
+                );
+            })}
+        </>
+    );
+});

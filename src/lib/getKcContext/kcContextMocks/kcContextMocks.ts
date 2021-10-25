@@ -210,6 +210,7 @@ export const kcContextMocks: KcContextBase[] = [
                                 "autocomplete": "username",
                                 "readOnly": false,
                                 "name": "username",
+                                "value": "xxxx",
                             },
                             {
                                 "validators": {
@@ -225,6 +226,10 @@ export const kcContextMocks: KcContextBase[] = [
                                     "up-duplicate-email": {},
                                     "email": {
                                         "ignore.empty.value": true,
+                                    },
+                                    "pattern": {
+                                        "ignore.empty.value": true,
+                                        "pattern": "gmail\\.com$",
                                     },
                                 },
                                 "displayName": "${email}",
