@@ -1,3 +1,7 @@
+## **4.2.0** (2021-10-26)  
+  
+- Export types definitions for Attribue and Validator    
+  
 ## **4.1.0** (2021-10-26)  
   
 - Document what's new in v4    
