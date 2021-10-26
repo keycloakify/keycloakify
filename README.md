@@ -322,6 +322,9 @@ provides frontend validation out of the box.
 For implementing your own `register-user-profile.ftl` page, you can use [`import { useFormValidationSlice } from "keycloakify";`](https://github.com/InseeFrLab/keycloakify/blob/main/src/lib/useFormValidationSlice.tsx).  
 Find usage example [`here`](https://github.com/InseeFrLab/keycloakify/blob/d3a07edfcb3739e30032dc96fc2a55944dfc3387/src/lib/components/RegisterUserProfile.tsx#L79-L112).
 
+As for right now [it's not possible to define a pattern for the password](https://keycloak.discourse.group/t/make-password-policies-available-to-freemarker/11632)
+from the admin console. You can however pass validators for it to the `useFormValidationSlice` function.
+
 # Support for Terms and conditions
 
 [Many organizations have a requirement that when a new user logs in for the first time, they need to agree to the terms and conditions of the website.](https://www.keycloak.org/docs/4.8/server_admin/#terms-and-conditions).
