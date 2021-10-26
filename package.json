@@ -56,7 +56,7 @@
     "homepage": "https://github.com/garronej/keycloakify",
     "peerDependencies": {
         "@emotion/react": "^11.4.1",
-        "powerhooks": "^0.11.0",
+        "powerhooks": "^0.10.0",
         "react": "^16.8.0 || ^17.0.0",
         "tss-react": "^1.1.0"
     },
