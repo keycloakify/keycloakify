@@ -14,5 +14,6 @@ export * from "./components/Error";
 export * from "./components/LoginResetPassword";
 export * from "./components/LoginVerifyEmail";
 export * from "./keycloakJsAdapter";
+export * from "./useFormValidationSlice";
 
 export * from "./tools/assert";

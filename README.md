@@ -20,6 +20,11 @@
     <img src="https://user-images.githubusercontent.com/6702424/110260457-a1c3d380-7fac-11eb-853a-80459b65626b.png">
 </p>
 
+**NEW in v4**
+
+-   Out of the box [frontend form validation](#user-profile-and-frontend-form-validation) 🥳
+-   Improvements (and breaking changes in `import { useKcMessage } from "keycloakify"`.
+
 **NEW in v3**
 
 No breaking changes except that `@emotion/react`, [`tss-react`](https://www.npmjs.com/package/tss-react) and [`powerhooks`](https://www.npmjs.com/package/powerhooks) are now `peerDependencies` instead of being just dependencies.  
@@ -28,13 +33,6 @@ It's important to avoid problem when using `keycloakify` alongside [`mui`](https
 
 **NEW in v2.5**
 
--   User Profile ([`register-user-profile.ftl`](https://github.com/InseeFrLab/keycloakify/blob/main/src/lib/components/RegisterUserProfile.tsx))
-    is now supported! 🎉  
-    It enables to [define, from the admin console](https://user-images.githubusercontent.com/6702424/136872461-1f5b64ef-d2ef-4c6b-bb8d-07d4729552b3.png),
-    what information you want to collect on your users in the register page and to validate inputs
-    [**on the frontend**, in realtime](https://github.com/InseeFrLab/keycloakify/blob/6dca6a93d8cfe634ee4d8574ad0c091641220092/src/lib/getKcContext/KcContextBase.ts#L225-L261)!  
-    NOTE: User profile is only available in Keycloak 15 and it's a beta feature that
-    [needs to be enabled when launching keycloak](https://github.com/InseeFrLab/keycloakify/blob/59f106bf9e210b63b190826da2bf5f75fc8b7644/src/bin/build-keycloak-theme/build-keycloak-theme.ts#L116-L117) and [enabled in the console](https://user-images.githubusercontent.com/6702424/136874428-b071d614-c7f7-440d-9b2e-670faadc0871.png).
 -   Feature [Use advanced message](https://github.com/InseeFrLab/keycloakify/blob/59f106bf9e210b63b190826da2bf5f75fc8b7644/src/lib/i18n/useKcMessage.tsx#L53-L66)
     and [`messagesPerFields`](https://github.com/InseeFrLab/keycloakify/blob/59f106bf9e210b63b190826da2bf5f75fc8b7644/src/lib/getKcContext/KcContextBase.ts#L70-L75) (implementation [here](https://github.com/InseeFrLab/keycloakify/blob/59f106bf9e210b63b190826da2bf5f75fc8b7644/src/bin/build-keycloak-theme/generateFtl/common.ftl#L130-L189))
 -   Test container now uses Keycloak version `15.0.2`.
@@ -85,6 +83,7 @@ If you already have a Keycloak custom theme, it can be easily ported to Keycloak
         -   [Advanced pages configuration](#advanced-pages-configuration)
         -   [Hot reload](#hot-reload)
     -   [Enable loading in a blink of an eye of login pages ⚡ (--external-assets)](#enable-loading-in-a-blink-of-an-eye-of-login-pages----external-assets)
+-   [User profile and frontend form validation](#user-profile-and-frontend-form-validation)
 -   [Support for Terms and conditions](#support-for-terms-and-conditions)
 -   [Some pages still have the default theme. Why?](#some-pages-still-have-the-default-theme-why)
 -   [GitHub Actions](#github-actions)
@@ -312,6 +311,29 @@ performance boost if you jump through those hoops:
 -   Be mindful that if your app is down your login pages are down as well.
 
 Checkout a complete setup [here](https://github.com/garronej/keycloakify-demo-app#about-keycloakify)
+
+# User profile and frontend form validation
+
+<p align="center">
+    <a href="https://github.com/InseeFrLab/keycloakify/releases/download/v0.0.1/keycloakify_fontend_validation.mp4">
+        <img src="https://user-images.githubusercontent.com/6702424/138880146-6fef3280-c4a5-46d2-bbb3-8b9598c057a5.gif">
+    </a>
+</p>
+
+User Profile is a Keycloak feature that enables to
+[define, from the admin console](https://user-images.githubusercontent.com/6702424/136872461-1f5b64ef-d2ef-4c6b-bb8d-07d4729552b3.png),
+what information you want to collect on your users in the register page and to validate inputs
+[**on the frontend**, in realtime](https://github.com/InseeFrLab/keycloakify/blob/6dca6a93d8cfe634ee4d8574ad0c091641220092/src/lib/getKcContext/KcContextBase.ts#L225-L261)!
+
+NOTE: User profile is only available in Keycloak 15 and it's a beta feature that
+[needs to be enabled when launching keycloak](https://github.com/InseeFrLab/keycloakify/blob/59f106bf9e210b63b190826da2bf5f75fc8b7644/src/bin/build-keycloak-theme/build-keycloak-theme.ts#L116-L117)
+and [enabled in the console](https://user-images.githubusercontent.com/6702424/136874428-b071d614-c7f7-440d-9b2e-670faadc0871.png).
+
+Keycloakify, in [`register-user-profile.ftl`](https://github.com/InseeFrLab/keycloakify/blob/main/src/lib/components/RegisterUserProfile.tsx),
+provides frontend validation out of the box.
+
+For implementing your own `register-user-profile.ftl` page, you can use [`import { useFormValidationSlice } from "keycloakify";`](https://github.com/InseeFrLab/keycloakify/blob/main/src/lib/useFormValidationSlice.tsx).  
+Find usage example [`here`](https://github.com/InseeFrLab/keycloakify/blob/d3a07edfcb3739e30032dc96fc2a55944dfc3387/src/lib/components/RegisterUserProfile.tsx#L79-L112).
 
 # Support for Terms and conditions
 
