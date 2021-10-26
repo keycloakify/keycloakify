@@ -1,3 +1,7 @@
+## **4.1.0** (2021-10-26)  
+  
+- Document what's new in v4    
+  
 # **4.0.0** (2021-10-26)  
   
 - fix RegisterUserProfile password confirmation field  
