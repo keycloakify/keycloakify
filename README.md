@@ -25,6 +25,8 @@
 -   Out of the box [frontend form validation](#user-profile-and-frontend-form-validation) 🥳
 -   Improvements (and breaking changes in `import { useKcMessage } from "keycloakify"`.
 
+**NOTICE**: [`powerhooks`](https://www.npmjs.com/package/powerhooks) have to be updated ([it's a peerDependency since v3](#v3))
+
 # Motivations
 
 Keycloak provides [theme support](https://www.keycloak.org/docs/latest/server_development/#_themes) for web pages. This allows customizing the look and feel of end-user facing pages so they can be integrated with your applications.
