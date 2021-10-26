@@ -1,3 +1,12 @@
+# **4.0.0** (2021-10-26)  
+  
+- fix RegisterUserProfile password confirmation field  
+- Much better support for frontend field validation  
+- Fix css injection order  
+- Makes the download output predictable. This fixes the case where GitHub redirects and wget was trying to download a filename called "15.0.2", and then unzip wouldn't pick it up.
+Changes wget to curl because curl is awesome. -L is to follow the GitHub redirects.  
+- Remove duplicates    
+  
 ### **3.0.2** (2021-10-18)  
   
 - Scan deeper to retreive user attribute    
