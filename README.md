@@ -25,24 +25,6 @@
 -   Out of the box [frontend form validation](#user-profile-and-frontend-form-validation) 🥳
 -   Improvements (and breaking changes in `import { useKcMessage } from "keycloakify"`.
 
-**NEW in v3**
-
-No breaking changes except that `@emotion/react`, [`tss-react`](https://www.npmjs.com/package/tss-react) and [`powerhooks`](https://www.npmjs.com/package/powerhooks) are now `peerDependencies` instead of being just dependencies.  
-It's important to avoid problem when using `keycloakify` alongside [`mui`](https://mui.com) and
-[when passing params from the app to the login page](https://github.com/InseeFrLab/keycloakify#implement-context-persistence-optional).
-
-**NEW in v2.5**
-
--   Feature [Use advanced message](https://github.com/InseeFrLab/keycloakify/blob/59f106bf9e210b63b190826da2bf5f75fc8b7644/src/lib/i18n/useKcMessage.tsx#L53-L66)
-    and [`messagesPerFields`](https://github.com/InseeFrLab/keycloakify/blob/59f106bf9e210b63b190826da2bf5f75fc8b7644/src/lib/getKcContext/KcContextBase.ts#L70-L75) (implementation [here](https://github.com/InseeFrLab/keycloakify/blob/59f106bf9e210b63b190826da2bf5f75fc8b7644/src/bin/build-keycloak-theme/generateFtl/common.ftl#L130-L189))
--   Test container now uses Keycloak version `15.0.2`.
-
-**NEW in v2**
-
--   It's now possible to implement custom `.ftl` pages.
--   Support for Keycloak plugins that introduce non standard ftl values.
-    (Like for example [this plugin](https://github.com/micedre/keycloak-mail-whitelisting) that define `authorizedMailDomains` in `register.ftl`).
-
 # Motivations
 
 Keycloak provides [theme support](https://www.keycloak.org/docs/latest/server_development/#_themes) for web pages. This allows customizing the look and feel of end-user facing pages so they can be integrated with your applications.
@@ -97,6 +79,11 @@ If you already have a Keycloak custom theme, it can be easily ported to Keycloak
 -   [About the errors related to `objectToJson` in Keycloak logs.](#about-the-errors-related-to-objecttojson-in-keycloak-logs)
 -   [Adding custom message (to `i18n/useKcMessage.tsx`)](#adding-custom-message-to-i18nusekcmessagetsx)
 -   [Email domain whitelist](#email-domain-whitelist)
+-   [Changelog highlights](#changelog-highlights)
+    -   [v4](#v4)
+    -   [v3](#v3)
+    -   [v2.5](#v25)
+    -   [v2](#v2)
 
 # Requirements
 
@@ -477,3 +464,28 @@ This approach is a bit hacky as it doesn't provide type safety but it works.
 
 If you want to restrict the emails domain that can register, you can use [this plugin](https://github.com/micedre/keycloak-mail-whitelisting)
 and `kcRegisterContext["authorizedMailDomains"]` to validate on.
+
+# Changelog highlights
+
+## v4
+
+-   Out of the box [frontend form validation](#user-profile-and-frontend-form-validation) 🥳
+-   Improvements (and breaking changes in `import { useKcMessage } from "keycloakify"`.
+
+## v3
+
+No breaking changes except that `@emotion/react`, [`tss-react`](https://www.npmjs.com/package/tss-react) and [`powerhooks`](https://www.npmjs.com/package/powerhooks) are now `peerDependencies` instead of being just dependencies.  
+It's important to avoid problem when using `keycloakify` alongside [`mui`](https://mui.com) and
+[when passing params from the app to the login page](https://github.com/InseeFrLab/keycloakify#implement-context-persistence-optional).
+
+## v2.5
+
+-   Feature [Use advanced message](https://github.com/InseeFrLab/keycloakify/blob/59f106bf9e210b63b190826da2bf5f75fc8b7644/src/lib/i18n/useKcMessage.tsx#L53-L66)
+    and [`messagesPerFields`](https://github.com/InseeFrLab/keycloakify/blob/59f106bf9e210b63b190826da2bf5f75fc8b7644/src/lib/getKcContext/KcContextBase.ts#L70-L75) (implementation [here](https://github.com/InseeFrLab/keycloakify/blob/59f106bf9e210b63b190826da2bf5f75fc8b7644/src/bin/build-keycloak-theme/generateFtl/common.ftl#L130-L189))
+-   Test container now uses Keycloak version `15.0.2`.
+
+## v2
+
+-   It's now possible to implement custom `.ftl` pages.
+-   Support for Keycloak plugins that introduce non standard ftl values.
+    (Like for example [this plugin](https://github.com/micedre/keycloak-mail-whitelisting) that define `authorizedMailDomains` in `register.ftl`).
