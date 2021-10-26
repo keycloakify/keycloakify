@@ -1,3 +1,8 @@
+### **4.2.1** (2021-10-26)  
+  
+- useFormValidationSlice: update when params have changed  
+- Explains that the password can't be validated    
+  
 ## **4.2.0** (2021-10-26)  
   
 - Export types definitions for Attribue and Validator    
