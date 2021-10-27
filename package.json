@@ -79,7 +79,7 @@
         "cheerio": "^1.0.0-rc.5",
         "evt": "2.0.0-beta.38",
         "minimal-polyfills": "^2.2.1",
-        "path": "^0.12.7",
+        "path-browserify": "^1.0.1",
         "react-markdown": "^5.0.3",
         "scripting-tools": "^0.19.13",
         "tsafe": "^0.8.1"
