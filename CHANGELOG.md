@@ -1,3 +1,7 @@
+### **4.2.2** (2021-10-27)  
+  
+- Replace 'path' by 'browserify-path' #47    
+  
 ### **4.2.1** (2021-10-26)  
   
 - useFormValidationSlice: update when params have changed  
