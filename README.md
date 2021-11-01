@@ -444,18 +444,20 @@ The logs of your keycloak server will always show this kind of errors every time
 
 ```log
 FTL stack trace ("~" means nesting-related):
-        - Failed at: #local value = object[key]  [in template "login.ftl" in macro "objectToJson" at line 70, column 21]
-        - Reached through: @compress  [in template "login.ftl" in macro "objectToJson" at line 36, column 5]
-        - Reached through: @objectToJson object=value depth=(dep...  [in template "login.ftl" in macro "objectToJson" at line 81, column 27]
-        - Reached through: @compress  [in template "login.ftl" in macro "objectToJson" at line 36, column 5]
-        - Reached through: @objectToJson object=(.data_model) de...  [in template "login.ftl" at line 163, column 43]
+        - Failed at: #local value = object[key]  [in template "login.ftl" in macro "objectToJson_please_ignore_errors" at line 70, column 21]
+        - Reached through: @compress  [in template "login.ftl" in macro "objectToJson_please_ignore_errors" at line 36, column 5]
+        - Reached through: @objectToJson_please_ignore_errors object=value depth=(dep...  [in template "login.ftl" in macro "objectToJson_please_ignore_errors" at line 81, column 27]
+        - Reached through: @compress  [in template "login.ftl" in macro "objectToJson_please_ignore_errors" at line 36, column 5]
+        - Reached through: @objectToJson_please_ignore_errors object=(.data_model) de...  [in template "login.ftl" at line 163, column 43]
 ```
 
-Theses are expected and can be safely ignored.
+Theses are expected to show up in the log.
+Unfortunately, there is nothing I know of that can be done to avoid them or even mute them.
+They can be, however, safely ignored.
 
 To [converts the `.ftl` values into a JavaScript object](https://github.com/InseeFrLab/keycloakify/blob/main/src/bin/build-keycloak-theme/generateFtl/common.ftl)
 without making assumptions on the `.data_model` we have to do things that throws.  
-It's all-right though because every statement that can fail is inside an `<#attempt><#recorver>` block but it results in errors being printed to the logs.
+It's all-right because every statement that can fail is inside an `<#attempt><#recorver>` block but it results in errors being printed to the logs.
 
 # Adding custom message (to `i18n/useKcMessage.tsx`)
 

@@ -1,5 +1,5 @@
 <script>const _= 
-<#macro objectToJson object depth>
+<#macro objectToJson_please_ignore_errors object depth>
     <@compress>
 
         <#local isHash = false>
@@ -45,7 +45,7 @@
                     <#continue>
                 </#if>
 
-                "${key}": <@objectToJson object=value depth=depth+1/>,
+                "${key}": <@objectToJson_please_ignore_errors object=value depth=depth+1/>,
 
             </#list>
 
@@ -102,7 +102,7 @@
 
             <#list object as item>
 
-                <@objectToJson object=item depth=depth+1/>,
+                <@objectToJson_please_ignore_errors object=item depth=depth+1/>,
 
             </#list>
 
@@ -194,7 +194,7 @@
     Object.deepAssign(
         out,
         //Removing all the undefined
-        JSON.parse(JSON.stringify(<@objectToJson object=.data_model depth=0 />))
+        JSON.parse(JSON.stringify(<@objectToJson_please_ignore_errors object=.data_model depth=0 />))
     );
 
     Object.deepAssign(
