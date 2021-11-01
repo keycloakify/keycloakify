@@ -1,3 +1,7 @@
+### **4.2.4** (2021-11-01)  
+  
+- Better autoComplete typings    
+  
 ### **4.2.3** (2021-11-01)  
   
 - Make it more easy to understand that error in the log are expected    
