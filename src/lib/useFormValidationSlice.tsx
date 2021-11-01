@@ -312,6 +312,7 @@ export function useFormValidationSlice(params: {
                                             "validators": passwordValidators,
                                             "annotations": {},
                                             "groupAnnotations": {},
+                                            "autocomplete": "new-password",
                                         }),
                                         id<Attribute>({
                                             "name": "password-confirm",
@@ -328,6 +329,7 @@ export function useFormValidationSlice(params: {
                                             },
                                             "annotations": {},
                                             "groupAnnotations": {},
+                                            "autocomplete": "new-password",
                                         }),
                                     ]),
                           ],

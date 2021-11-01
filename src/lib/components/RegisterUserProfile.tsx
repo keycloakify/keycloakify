@@ -149,15 +149,6 @@ const UserProfileFormFields = memo(({ kcContext, onIsFormSubmittableValueChange,
                             </div>
                             <div className={cx(props.kcInputWrapperClass)}>
                                 <input
-                                    autoComplete={(() => {
-                                        switch (attribute.name) {
-                                            case "password-confirm":
-                                            case "password":
-                                                return "new-password";
-                                            default:
-                                                return undefined;
-                                        }
-                                    })()}
                                     type={(() => {
                                         switch (attribute.name) {
                                             case "password-confirm":
@@ -174,11 +165,7 @@ const UserProfileFormFields = memo(({ kcContext, onIsFormSubmittableValueChange,
                                     className={cx(props.kcInputClass)}
                                     aria-invalid={displayableErrors.length !== 0}
                                     disabled={attribute.readOnly}
-                                    {...(attribute.autocomplete === undefined
-                                        ? {}
-                                        : {
-                                              "autoComplete": attribute.autocomplete,
-                                          })}
+                                    autoComplete={attribute.autocomplete}
                                     onBlur={onBlurFactory(attribute.name)}
                                 />
                                 {displayableErrors.length !== 0 && (
