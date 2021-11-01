@@ -1,3 +1,7 @@
+### **4.2.3** (2021-11-01)  
+  
+- Make it more easy to understand that error in the log are expected    
+  
 ### **4.2.2** (2021-10-27)  
   
 - Replace 'path' by 'browserify-path' #47    
