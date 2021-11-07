@@ -1,6 +1,6 @@
 import { getKcContext } from "../../lib/getKcContext";
 import type { KcContextBase } from "../../lib/getKcContext";
-import type { ExtendsKcContextBase } from "../../lib/getKcContext/getKcContext";
+import type { ExtendsKcContextBase } from "../../lib/getKcContext";
 import { same } from "evt/tools/inDepth";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";

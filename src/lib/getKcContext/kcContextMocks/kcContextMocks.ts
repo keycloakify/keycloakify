@@ -278,29 +278,6 @@ export const kcContextMocks: KcContextBase[] = [
                                 "readOnly": false,
                                 "name": "lastName",
                             },
-                            {
-                                "validators": {
-                                    "length": {
-                                        "ignore.empty.value": true,
-                                        "min": "3",
-                                        "max": "9",
-                                    },
-                                    "up-immutable-attribute": {},
-                                    "up-attribute-required-by-metadata-value": {},
-                                    "email": {
-                                        "ignore.empty.value": true,
-                                    },
-                                },
-                                "displayName": "${foo}",
-                                "annotations": {
-                                    "this_is_second_key": "this_is_second_value",
-                                    "this_is_first_key": "this_is_first_value",
-                                },
-                                "required": true,
-                                "groupAnnotations": {},
-                                "readOnly": false,
-                                "name": "foo",
-                            },
                         ];
 
                         return {

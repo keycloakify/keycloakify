@@ -1,13 +1,12 @@
-import type { KcContextBase } from "./KcContextBase";
+import type { KcContextBase, Attribute } from "./KcContextBase";
 import { kcContextMocks, kcContextCommonMock } from "./kcContextMocks";
-import { ftlValuesGlobalName } from "../../bin/build-keycloak-theme/ftlValuesGlobalName";
-import type { AndByDiscriminatingKey } from "../tools/AndByDiscriminatingKey";
 import type { DeepPartial } from "../tools/DeepPartial";
 import { deepAssign } from "../tools/deepAssign";
-
-export type ExtendsKcContextBase<KcContextExtended extends { pageId: string }> = [KcContextExtended] extends [never]
-    ? KcContextBase
-    : AndByDiscriminatingKey<"pageId", KcContextExtended & KcContextBase.Common, KcContextBase>;
+import { id } from "tsafe/id";
+import { exclude } from "tsafe/exclude";
+import { assert } from "tsafe/assert";
+import type { ExtendsKcContextBase } from "./getKcContextFromWindow";
+import { getKcContextFromWindow } from "./getKcContextFromWindow";
 
 export function getKcContext<KcContextExtended extends { pageId: string } = never>(params?: {
     mockPageId?: ExtendsKcContextBase<KcContextExtended>["pageId"];
@@ -44,12 +43,55 @@ export function getKcContext<KcContextExtended extends { pageId: string } = neve
                 "target": kcContext,
                 "source": partialKcContextCustomMock,
             });
+
+            if (partialKcContextCustomMock.pageId === "register-user-profile.ftl") {
+                assert(kcContextDefaultMock?.pageId === "register-user-profile.ftl");
+
+                const { attributes } = kcContextDefaultMock.profile;
+
+                id<KcContextBase.RegisterUserProfile>(kcContext).profile.attributes = [];
+                id<KcContextBase.RegisterUserProfile>(kcContext).profile.attributesByName = {};
+
+                const partialAttributes = [
+                    ...((partialKcContextCustomMock as DeepPartial<KcContextBase.RegisterUserProfile>).profile?.attributes ?? []),
+                ].filter(exclude(undefined));
+
+                attributes.forEach(attribute => {
+                    const partialAttribute = partialAttributes.find(({ name }) => name === attribute.name);
+
+                    const augmentedAttribute: Attribute = {} as any;
+
+                    deepAssign({
+                        "target": augmentedAttribute,
+                        "source": attribute,
+                    });
+
+                    if (partialAttribute !== undefined) {
+                        partialAttributes.splice(partialAttributes.indexOf(partialAttribute), 1);
+
+                        deepAssign({
+                            "target": augmentedAttribute,
+                            "source": partialAttribute,
+                        });
+                    }
+
+                    id<KcContextBase.RegisterUserProfile>(kcContext).profile.attributes.push(augmentedAttribute);
+                    id<KcContextBase.RegisterUserProfile>(kcContext).profile.attributesByName[augmentedAttribute.name] = augmentedAttribute;
+                });
+
+                partialAttributes.forEach(partialAttribute => {
+                    const { name } = partialAttribute;
+
+                    assert(name !== undefined, "If you define a mock attribute it must have at least a name");
+
+                    id<KcContextBase.RegisterUserProfile>(kcContext).profile.attributes.push(partialAttribute as any);
+                    id<KcContextBase.RegisterUserProfile>(kcContext).profile.attributesByName[name] = partialAttribute as any;
+                });
+            }
         }
 
         return { kcContext };
     }
 
-    return {
-        "kcContext": typeof window === "undefined" ? undefined : (window as any)[ftlValuesGlobalName],
-    };
+    return { "kcContext": getKcContextFromWindow<KcContextExtended>() };
 }

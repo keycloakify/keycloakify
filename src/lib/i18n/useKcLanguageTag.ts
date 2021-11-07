@@ -1,5 +1,5 @@
 import { createUseGlobalState } from "powerhooks/useGlobalState";
-import { getKcContext } from "../getKcContext";
+import { getKcContextFromWindow } from "../getKcContext/getKcContextFromWindow";
 import { getBestMatchAmongKcLanguageTag } from "./KcLanguageTag";
 import type { StatefulEvt } from "powerhooks";
 import { KcLanguageTag } from "./KcLanguageTag";
@@ -8,7 +8,7 @@ import { KcLanguageTag } from "./KcLanguageTag";
 const wrap = createUseGlobalState(
     "kcLanguageTag",
     () => {
-        const { kcContext } = getKcContext();
+        const kcContext = getKcContextFromWindow();
 
         const languageLike = kcContext?.locale?.current ?? (typeof navigator === "undefined" ? undefined : navigator.language);
 
