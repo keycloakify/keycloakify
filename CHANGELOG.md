@@ -1,3 +1,7 @@
+### **4.2.5** (2021-11-07)  
+  
+- Better debugging experience with user profile    
+  
 ### **4.2.4** (2021-11-01)  
   
 - Better autoComplete typings    
