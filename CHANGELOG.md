@@ -1,3 +1,7 @@
+### **4.2.6** (2021-11-08)  
+  
+- Fix deepClone so we can overwrite with undefined in when we mock kcContext    
+  
 ### **4.2.5** (2021-11-07)  
   
 - Better debugging experience with user profile    
