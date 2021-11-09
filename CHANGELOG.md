@@ -1,3 +1,7 @@
+### **4.2.7** (2021-11-09)  
+  
+- Fix useFormValidationSlice    
+  
 ### **4.2.6** (2021-11-08)  
   
 - Fix deepClone so we can overwrite with undefined in when we mock kcContext    
