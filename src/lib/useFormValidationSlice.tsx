@@ -38,8 +38,8 @@ export function useGetErrors(params: {
 
         const { value: defaultValue, validators } = attributes.find(attribute => attribute.name === name)!;
 
-        if (defaultValue === value && messagesPerField.existsError(value)) {
-            const errorMessageStr = messagesPerField.get(value);
+        if (defaultValue === value && messagesPerField.existsError(name)) {
+            const errorMessageStr = messagesPerField.get(name);
 
             return [
                 {
