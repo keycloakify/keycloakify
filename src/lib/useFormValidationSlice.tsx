@@ -38,7 +38,23 @@ export function useGetErrors(params: {
 
         const { value: defaultValue, validators } = attributes.find(attribute => attribute.name === name)!;
 
-        if (defaultValue === value && messagesPerField.existsError(name)) {
+        block: {
+            if (defaultValue !== value) {
+                break block;
+            }
+
+            let doesErrorExist: boolean;
+
+            try {
+                doesErrorExist = messagesPerField.existsError(name);
+            } catch {
+                break block;
+            }
+
+            if (!doesErrorExist) {
+                break block;
+            }
+
             const errorMessageStr = messagesPerField.get(name);
 
             return [
