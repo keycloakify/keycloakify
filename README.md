@@ -307,6 +307,8 @@ Checkout a complete setup [here](https://github.com/garronej/keycloakify-demo-ap
     </a>
 </p>
 
+NOTE: In reality the regexp used in this gif doesn't work server side, the regexp pattern should be `^[^@]@gmail\.com$` 😬.
+
 User Profile is a Keycloak feature that enables to
 [define, from the admin console](https://user-images.githubusercontent.com/6702424/136872461-1f5b64ef-d2ef-4c6b-bb8d-07d4729552b3.png),
 what information you want to collect on your users in the register page and to validate inputs
@@ -466,6 +468,9 @@ You can reproduce [this approach](https://github.com/garronej/keycloakify-demo-a
 This approach is a bit hacky as it doesn't provide type safety but it works.
 
 # Email domain whitelist
+
+NOTE: This have been kind of deprecated by [user attribute](#user-profile-and-frontend-form-validation) you could
+use a pattern [like this one](https://github.com/InseeFrLab/onyxia-web/blob/f1206e0329b3b8d401ca7bffa95ca9c213cb190a/src/app/components/KcApp/kcContext.ts#L106) to whitelist email domains.
 
 If you want to restrict the emails domain that can register, you can use [this plugin](https://github.com/micedre/keycloak-mail-whitelisting)
 and `kcRegisterContext["authorizedMailDomains"]` to validate on.
