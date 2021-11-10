@@ -27,8 +27,9 @@ function resolveMsg<Key extends string, DoRenderMarkdown extends boolean>(props:
 
     str = (() => {
         const startIndex = str
-            .match(/(?<={)[0-9]+(?=})/g)
-            ?.map(g => parseInt(g))
+            .match(/{[0-9]+}/g)
+            ?.map(g => g.match(/{([0-9]+)}/)![1])
+            .map(indexStr => parseInt(indexStr))
             .sort((a, b) => a - b)[0];
 
         if (startIndex === undefined) {
