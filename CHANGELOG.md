@@ -1,3 +1,8 @@
+### **4.2.8** (2021-11-10)  
+  
+- Update doc about pattern that can be used for user attributes #50  
+- Bring back Safari compat    
+  
 ### **4.2.7** (2021-11-09)  
   
 - Fix useFormValidationSlice    
