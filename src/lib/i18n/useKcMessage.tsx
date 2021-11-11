@@ -68,16 +68,16 @@ function resolveMsgAdvanced<Key extends string, DoRenderMarkdown extends boolean
 
     const match = key.match(/^\$\{([^{]+)\}$/);
 
-    const resolvedKey = match === null ? key : match[1];
+    const keyUnwrappedFromCurlyBraces = match === null ? key : match[1];
 
     const out = resolveMsg({
-        "key": resolvedKey,
+        "key": keyUnwrappedFromCurlyBraces,
         args,
         kcLanguageTag,
         doRenderMarkdown,
     });
 
-    return (out !== undefined ? out : match === null ? doRenderMarkdown ? <span>{key}</span> : key : undefined) as any;
+    return (out !== undefined ? out : doRenderMarkdown ? <span>{keyUnwrappedFromCurlyBraces}</span> : keyUnwrappedFromCurlyBraces) as any;
 }
 
 /**
