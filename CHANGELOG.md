@@ -1,3 +1,7 @@
+### **4.2.9** (2021-11-11)  
+  
+- Fix useAdvancedMsg    
+  
 ### **4.2.8** (2021-11-10)  
   
 - Update doc about pattern that can be used for user attributes #50  
