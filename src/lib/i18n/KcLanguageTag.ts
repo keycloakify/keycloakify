@@ -34,7 +34,7 @@ export function getKcLanguageTagLabel(language: KcLanguageTag): LanguageLabel {
     return kcLanguageByTagLabel[language] ?? language;
 }
 
-const availableLanguages = objectKeys(kcMessages);
+export const kcLanguageTags = objectKeys(kcMessages);
 
 /**
  * Pass in "fr-FR" or "français" for example, it will return the AvailableLanguage
@@ -45,7 +45,7 @@ const availableLanguages = objectKeys(kcMessages);
 export function getBestMatchAmongKcLanguageTag(languageLike: string): KcLanguageTag {
     const iso2LanguageLike = languageLike.split("-")[0].toLowerCase();
 
-    const kcLanguageTag = availableLanguages.find(
+    const kcLanguageTag = kcLanguageTags.find(
         language =>
             language.toLowerCase().includes(iso2LanguageLike) ||
             getKcLanguageTagLabel(language).toLocaleLowerCase() === languageLike.toLocaleLowerCase(),
