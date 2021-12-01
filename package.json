@@ -10,7 +10,7 @@
     "types": "dist/lib/index.d.ts",
     "scripts": {
         "clean": "rimraf dist/",
-        "build": "yarn clean && tsc && yarn grant-exec-perms && yarn copy-files",
+        "build": "yarn clean && tsc && yarn grant-exec-perms && yarn copy-files && yarn copy-dirs",
         "grant-exec-perms": "node dist/bin/tools/grant-exec-perms.js",
         "test": "node dist/test/bin/main && node dist/test/lib",
         "copy-files": "copyfiles -u 1 src/**/*.ftl src/**/*.xml src/**/*.js dist/",
@@ -18,7 +18,8 @@
         "link_in_test_app": "node dist/bin/link_in_test_app.js",
         "_format": "prettier '**/*.{ts,tsx,json,md}'",
         "format": "yarn _format --write",
-        "format:check": "yarn _format --list-different"
+        "format:check": "yarn _format --list-different",
+        "copy-dirs": "copyfiles dist/bin/* bin/ && copyfiles dist/lib/* lib/"
     },
     "bin": {
         "build-keycloak-theme": "dist/bin/build-keycloak-theme/index.js",

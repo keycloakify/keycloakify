@@ -44,3 +44,5 @@ jspm_packages
 
 /sample_react_project/
 /.yarn_home/
+
+.idea
