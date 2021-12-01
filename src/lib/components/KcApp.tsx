@@ -37,5 +37,45 @@ export const KcApp = memo(({ kcContext, ...props }: { kcContext: KcContextBase }
             return <LoginUpdateProfile {...{ kcContext, ...props }} />;
         case "login-idp-link-confirm.ftl":
             return <LoginIdpLinkConfirm {...{ kcContext, ...props }} />;
+        case "login-config-totp.ftl":
+            return null;
+        case "saml-post-form.ftl":
+            return null;
+        // case "code.ftl":
+        //     return null;
+        // case "delete-account-confirm.ftl":
+        //     return null;
+        // case "idp-review-user-profile.ftl":
+        //     return null;
+        // case "login-config-totp-text.ftl":
+        //     return null;
+        // case "login-idp-link-email.ftl":
+        //     return null;
+        // case "login-oauth2-device-verify-user-code.ftl":
+        //     return null;
+        // case "login-oauth-grant.ftl":
+        //     return null;
+        // case "login-page-expired.ftl":
+        //     return null;
+        // case "login-password.ftl":
+        //     return null;
+        // case "login-update-password.ftl":
+        //     return null;
+        // case "login-username.ftl":
+        //     return null;
+        // case "login-verify-email-code-text.ftl":
+        //     return null;
+        // case "login-x509-info.ftl":
+        //     return null;
+        // case "select-authenticator.ftl":
+        //     return null;
+        // case "update-user-profile.ftl":
+        //     return null;
+        // case "webauthn-authenticate.ftl":
+        //     return null;
+        // case "webauthn-error.ftl":
+        //     return null;
+        // case "webauthn-register.ftl":
+        //     return null;
     }
 });

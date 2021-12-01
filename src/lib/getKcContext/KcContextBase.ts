@@ -22,8 +22,30 @@ export type KcContextBase =
     | KcContextBase.Terms
     | KcContextBase.LoginOtp
     | KcContextBase.LoginUpdateProfile
-    | KcContextBase.LoginIdpLinkConfirm;
+    | KcContextBase.LoginIdpLinkConfirm
+    | KcContextBase.LoginConfigTotp
+    | KcContextBase.SamlPostForm;
+// | KcContextBase.Code
+// | KcContextBase.DeleteAccountConfirm
+// | KcContextBase.IdpReviewUserProfile
+// | KcContextBase.LoginConfigTotpText
+// | KcContextBase.LoginIdpLinkEmail
+// | KcContextBase.LoginOauth2DeviceVerifyUserCode
+// | KcContextBase.LoginOauthGrant
+// | KcContextBase.LoginPageExpired
+// | KcContextBase.LoginPassword
+// | KcContextBase.LoginUpdatePassword
+// | KcContextBase.LoginUsername
+// | KcContextBase.LoginVerifyEmailCodeText
+// | KcContextBase.LoginX509Info
+// | KcContextBase.SelectAuthenticator
+// | KcContextBase.UpdateUserProfile
+// | KcContextBase.WebauthnAuthenticate
+// | KcContextBase.WebauthnError
+// | KcContextBase.WebauthnRegister;
 
+type PolicyTotp = { type: "totp"; period: number };
+type PolicyHotp = { type: "hotp"; initialCounter: number };
 export declare namespace KcContextBase {
     export type Common = {
         url: {
@@ -205,6 +227,107 @@ export declare namespace KcContextBase {
     export type LoginIdpLinkConfirm = Common & {
         pageId: "login-idp-link-confirm.ftl";
         idpAlias: string;
+    };
+
+    export type LoginConfigTotp = Common & {
+        pageId: "login-config-totp.ftl";
+        totp: {
+            policy: {
+                supportedApplications: string[];
+                getAlgorithmKey(): string;
+                digits: number;
+            } & (PolicyTotp | PolicyHotp);
+            totpSecretEncoded: string;
+            qrUrl: string;
+            manualUrl: string;
+            totpSecretQrCode?: string;
+            otpCredentials: Record<string, unknown>[];
+            totpSecret: string;
+        };
+        mode?: "manual";
+        isAppInitiatedAction: boolean;
+    };
+
+    export type SamlPostForm = Common & {
+        pageId: "saml-post-form.ftl";
+        samlPost: {
+            url: string;
+            SAMLRequest?: string;
+            SAMLResponse?: string;
+            relayState?: string;
+        };
+    };
+
+    export type Code = Common & {
+        pageId: "code.ftl";
+    };
+
+    export type DeleteAccountConfirm = Common & {
+        pageId: "delete-account-confirm.ftl";
+    };
+
+    export type IdpReviewUserProfile = Common & {
+        pageId: "idp-review-user-profile.ftl";
+    };
+
+    export type LoginConfigTotpText = Common & {
+        pageId: "login-config-totp-text.ftl";
+    };
+
+    export type LoginIdpLinkEmail = Common & {
+        pageId: "login-idp-link-email.ftl";
+    };
+
+    export type LoginOauth2DeviceVerifyUserCode = Common & {
+        pageId: "login-oauth2-device-verify-user-code.ftl";
+    };
+
+    export type LoginOauthGrant = Common & {
+        pageId: "login-oauth-grant.ftl";
+    };
+
+    export type LoginPageExpired = Common & {
+        pageId: "login-page-expired.ftl";
+    };
+
+    export type LoginPassword = Common & {
+        pageId: "login-password.ftl";
+    };
+
+    export type LoginUpdatePassword = Common & {
+        pageId: "login-update-password.ftl";
+    };
+
+    export type LoginUsername = Common & {
+        pageId: "login-username.ftl";
+    };
+
+    export type LoginVerifyEmailCodeText = Common & {
+        pageId: "login-verify-email-code-text.ftl";
+    };
+
+    export type LoginX509Info = Common & {
+        pageId: "login-x509-info.ftl";
+    };
+
+    export type SelectAuthenticator = Common & {
+        pageId: "select-authenticator.ftl";
+    };
+
+    export type UpdateUserProfile = Common & {
+        pageId: "update-user-profile.ftl";
+    };
+
+    export type WebauthnAuthenticate = Common & {
+        pageId: "webauthn-authenticate.ftl";
+    };
+
+    export type WebauthnError = Common & {
+        pageId: "webauthn-error.ftl";
+    };
+
+    export type WebauthnRegister = Common & {
+        pageId: "webauthn-register.ftl";
     };
 }
 

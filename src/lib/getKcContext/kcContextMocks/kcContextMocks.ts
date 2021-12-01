@@ -361,4 +361,37 @@ export const kcContextMocks: KcContextBase[] = [
         "pageId": "login-idp-link-confirm.ftl",
         "idpAlias": "FranceConnect",
     }),
+    id<KcContextBase.LoginConfigTotp>({
+        ...kcContextCommonMock,
+        pageId: "login-config-totp.ftl",
+        totp: {
+            policy: {
+                supportedApplications: ["FreeOTP", "Google Authenticator"],
+                type: "totp",
+                getAlgorithmKey: () => "SHA1",
+                digits: 6,
+                period: 30,
+            },
+            totpSecretEncoded: "IVQW U5TV KZ3H CULV J5TF I4TM N5FE USKC",
+            qrUrl: "qrUrl",
+            manualUrl: "manualUrl",
+            totpSecretQrCode:
+                "iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2AQAAAADNaUdlAAACl0lEQVR4Xu2YO46DQBBE2yIg5AjcxFwMCSQuZt+EIxASIPdW1fBfaZMNegJ3YMO8CXr6z5j/KYvdV67y5feVq3z5feUq5JOZPaZitAZPM17M3wCQLg/eub/xM3OTnsyqpRbIgrdWchUIOj+tG+dmamucKSdueqr9U/V1+bLcuA9O/9fzs1psfviSEZdpW6Le5P/y9Ts+Arnyp61Lbtp/7vkVx3ehkWfGp5AkBz4VbnC40b5QHavIHyTRfr5gDq21CVbF6rNyVErvcYZqPV88h/6OqmhW07TidbnFZzin0MgN6jf83zJcUcSfm/7hfEyhyf63IhVxz4PD6+XHmNXc+6qGEX+9oYgn+4ZzlMYHVWdA+sdgZJQjYxLlwZk1oP4iUv7gFZ3wOF8sR9Y8kDB0OIcw+b9w7syC+wCFK3LOX/L/W/3Z8+DwtUyLINX8gO1KoiM+grkZ84ebZGl0mob6H/YP5h2zukfpppGpupr0KX5jOYQFUV2ZLwM64bn+RHPadx0IYV/1l4b73if/h3JN/dJ64ElS/2OTXv0fzNn6bCuNPImxUysIsuDMb3QVGXTkSTAabpNiDhz6I7U5sCKh00kazv9b/YnmrNrUHwum0mMwra4bMuEKSKLUCdP8j79cOGYF50Ct+YtVEU9LunPIgUNQutWkB04NvXH+usz/0dw5sKr/pasFfp8c+R/MJ46GUJ0Bme63kER2yp9gLuGQLc75S6qjUnoWHPpzfk1FUv0F+p/8H8671IuRMAU/klvGJ+dDX/WP5rofREFkaKaPAMk+H+bA2aSbNEn0HHLYro/+nAsvWB/RbiBsgpnwjv7n/RGCNMUnTsImmAm31P+MH8npkouW3r8/o/lf8uX3lat8+X3lKv/mP4J1WzUXYydCAAAAAElFTkSuQmCC",
+            otpCredentials: [{}],
+            totpSecret: "CgST5CI4i2d9VdDUmv4H",
+        },
+        message: {
+            summary: "Вам необходимо настроить аутентификатор в мобильном устройстве, чтобы активировать учетную запись.",
+            type: "warning",
+        },
+        isAppInitiatedAction: true,
+    }),
+    id<KcContextBase.SamlPostForm>({
+        ...kcContextCommonMock,
+        pageId: "saml-post-form.ftl",
+        samlPost: {
+            url: "http://test",
+            SAMLRequest: "123",
+        },
+    }),
 ];
