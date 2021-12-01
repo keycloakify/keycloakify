@@ -6,10 +6,10 @@
         "type": "git",
         "url": "git://github.com/garronej/keycloakify.git"
     },
-    "main": "dist/lib/index.js",
-    "types": "dist/lib/index.d.ts",
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts",
     "scripts": {
-        "clean": "rimraf dist/",
+        "clean": "rimraf dist/ && rimraf bin/ && rimraf lib/",
         "build": "yarn clean && tsc && yarn grant-exec-perms && yarn copy-files && yarn copy-dirs",
         "grant-exec-perms": "node dist/bin/tools/grant-exec-perms.js",
         "test": "node dist/test/bin/main && node dist/test/lib",
@@ -22,8 +22,8 @@
         "copy-dirs": "copyfiles -f dist/bin/* bin/ && copyfiles -f dist/lib/* lib/"
     },
     "bin": {
-        "build-keycloak-theme": "dist/bin/build-keycloak-theme/index.js",
-        "download-builtin-keycloak-theme": "dist/bin/download-builtin-keycloak-theme.js"
+        "build-keycloak-theme": "bin/build-keycloak-theme/index.js",
+        "download-builtin-keycloak-theme": "bin/download-builtin-keycloak-theme.js"
     },
     "lint-staged": {
         "*.{ts,tsx,json,md}": [
