@@ -19,7 +19,8 @@
         "_format": "prettier '**/*.{ts,tsx,json,md}'",
         "format": "yarn _format --write",
         "format:check": "yarn _format --list-different",
-        "copy-dirs": "copyfiles -f dist/bin/* bin/ && copyfiles -f dist/lib/* lib/"
+        "copy-dirs": "cp -R dist/bin/**/**/* bin/",
+        "copy-dirs2": "tsc && cp -R dist/bin/**/**/* bin/ && copyfiles -f dist/lib/**/* lib/"
     },
     "bin": {
         "build-keycloak-theme": "bin/build-keycloak-theme/index.js",
