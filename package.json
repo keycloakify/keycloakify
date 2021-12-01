@@ -22,10 +22,6 @@
         "copy-dirs": "cp -R dist/bin/**/**/* bin/",
         "copy-dirs2": "tsc && cp -R dist/bin/**/**/* bin/ && copyfiles -f dist/lib/**/* lib/"
     },
-    "bin": {
-        "build-keycloak-theme": "bin/build-keycloak-theme/index.js",
-        "download-builtin-keycloak-theme": "bin/download-builtin-keycloak-theme.js"
-    },
     "lint-staged": {
         "*.{ts,tsx,json,md}": [
             "prettier --write"
