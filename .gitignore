@@ -40,8 +40,6 @@ jspm_packages
 
 .DS_Store
 
-/dist
-
 /sample_react_project/
 /.yarn_home/
 
