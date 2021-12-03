@@ -34,6 +34,9 @@
                 <#local value = "">
 
                 <#attempt>
+                    <#if !object[key]??>
+                        <#continue>
+                    </#if>
                     <#local value = object[key]>
                 <#recover>
                     /* couldn't dereference ${key} of object */
