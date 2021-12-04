@@ -1,5 +1,5 @@
 <script>const _= 
-<#macro objectToJson_please_ignore_errors object depth>
+<#macro objectToJson_please_ignore_errors object depth arr>
     <@compress>
 
         <#local isHash = false>
@@ -22,6 +22,10 @@
                 <#return>
             </#attempt>
 
+            <#if arr?sequence?size gte 1>
+                <#local keys = arr>
+            </#if>
+
             {${'\n'}
 
             <#list keys as key>
@@ -43,7 +47,12 @@
                     <#continue>
                 </#if>
 
-                "${key}": <@objectToJson_please_ignore_errors object=value depth=depth+1/>,
+                <#local arr_keys = []>
+                <#if depth==0 && key=="url" >
+                    <#local arr_keys = ["loginAction", "resourcesPath", "resourcesCommonPath", "loginRestartFlowUrl", "loginUrl", "loginResetCredentialsUrl", "registrationUrl", "registrationAction", "oauth2DeviceVerificationAction", "oauthAction", "loginResetCredentialsUrl"]>
+                </#if>
+
+                "${key}": <@objectToJson_please_ignore_errors object=value depth=depth+1 arr=arr_keys />,
 
             </#list>
 
@@ -100,7 +109,7 @@
 
             <#list object as item>
 
-                <@objectToJson_please_ignore_errors object=item depth=depth+1/>,
+                <@objectToJson_please_ignore_errors object=item depth=depth+1 arr=[]/>,
 
             </#list>
 
@@ -111,7 +120,7 @@
 
 
         <#attempt>
-            "${object?replace('"', '\\"')?no_esc}"
+            "${object?replace('"', '\\"')}"
         <#recover>
             /* couldn't convert into string non hash, non method, non boolean, non enumerable object */
             undefined;
@@ -192,7 +201,7 @@
     Object.deepAssign(
         out,
         //Removing all the undefined
-        JSON.parse(JSON.stringify(<@objectToJson_please_ignore_errors object=.data_model depth=0 />), (key, value) => value === "error_object_is_undefined" ? undefined : value)
+        JSON.parse(JSON.stringify(<@objectToJson_please_ignore_errors object=.data_model depth=0 arr=[] />), (key, value) => value === "error_object_is_undefined" ? undefined : value)
     );
 
     Object.deepAssign(
