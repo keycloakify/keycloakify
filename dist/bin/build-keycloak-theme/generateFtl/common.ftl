@@ -204,7 +204,7 @@
     Object.deepAssign(
         out,
         //Removing all the undefined
-        JSON.parse(JSON.stringify(<@objectToJson_please_ignore_errors object=.data_model depth=0 arr=[] />), (key, value) => value === "error_data_is_undefined" ? undefined : value.replaceAll('&amp;', '&'))
+        JSON.parse(JSON.stringify(<@objectToJson_please_ignore_errors object=.data_model depth=0 arr=[] />), (key, value) => value === "error_data_is_undefined" ? undefined : typeof value === "string" ? value.replaceAll('&amp;', '&') : value)
     );
 
     Object.deepAssign(
