@@ -51,6 +51,11 @@
                 <#if depth==0 && key=="url" >
                     <#local arr_keys = ["loginAction", "resourcesPath", "resourcesCommonPath", "loginRestartFlowUrl", "loginUrl", "loginResetCredentialsUrl", "registrationUrl", "registrationAction", "oauth2DeviceVerificationAction", "oauthAction", "loginResetCredentialsUrl"]>
                 </#if>
+                <#if depth==0 && key=="auth" && ftl=="login-reset-password.ftl" >
+                    <#local arr_keys = ["showUsername", "showResetCredentials", "showTryAnotherWayLink", "attemptedUsername"]>
+                <#elseif depth==0 && key=="auth">
+                    <#local arr_keys = ["showUsername", "showResetCredentials", "showTryAnotherWayLink"]>
+                </#if>
 
                 "${key}": <@objectToJson_please_ignore_errors object=value depth=depth+1 arr=arr_keys ftl=ftl />,
 
