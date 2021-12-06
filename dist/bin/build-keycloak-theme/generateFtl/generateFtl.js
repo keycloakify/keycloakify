@@ -169,7 +169,7 @@ function generateFtlFilesCodeFactory(params) {
             "    );",
             "</script>",
         ].join("\n"));
-        (0, objectKeys_1.objectKeys)(ftlPlaceholders).forEach(function (id) { return (ftlCode = ftlCode.replace(id, ftlPlaceholders[id]).replace('ftl_template_for_replacement', pageId)); });
+        (0, objectKeys_1.objectKeys)(ftlPlaceholders).forEach(function (id) { return (ftlCode = ftlCode.replace(id, ftlPlaceholders[id]).replace("ftl_template_for_replacement", pageId)); });
         return { ftlCode: ftlCode };
     }
     return { generateFtlFilesCode: generateFtlFilesCode };
