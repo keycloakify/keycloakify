@@ -1,6 +1,5 @@
 <script>const _=
-<#assign ftl = "ftl_template_for_replacement" />
-<#macro objectToJson_please_ignore_errors object depth arr>
+<#macro objectToJson_please_ignore_errors object depth arr ftl>
     <@compress>
 
         <#local isHash = false>
@@ -53,7 +52,7 @@
                     <#local arr_keys = ["loginAction", "resourcesPath", "resourcesCommonPath", "loginRestartFlowUrl", "loginUrl", "loginResetCredentialsUrl", "registrationUrl", "registrationAction", "oauth2DeviceVerificationAction", "oauthAction", "loginResetCredentialsUrl"]>
                 </#if>
 
-                "${key}": <@objectToJson_please_ignore_errors object=value depth=depth+1 arr=arr_keys />,
+                "${key}": <@objectToJson_please_ignore_errors object=value depth=depth+1 arr=arr_keys ftl=ftl />,
 
             </#list>
 
@@ -110,7 +109,7 @@
 
             <#list object as item>
 
-                <@objectToJson_please_ignore_errors object=item depth=depth+1 arr=[]/>,
+                <@objectToJson_please_ignore_errors object=item depth=depth+1 arr=[] ftl=ftl/>,
 
             </#list>
 
@@ -205,7 +204,7 @@
     Object.deepAssign(
         out,
         //Removing all the undefined
-        JSON.parse(JSON.stringify(<@objectToJson_please_ignore_errors object=.data_model depth=0 arr=[] />), (key, value) => value === "error_data_is_undefined" ? undefined : typeof value === "string" ? value.replaceAll('&amp;', '&') : value)
+        JSON.parse(JSON.stringify(<@objectToJson_please_ignore_errors object=.data_model depth=0 arr=[] ftl="ftl_template_for_replacement" />), (key, value) => value === "error_data_is_undefined" ? undefined : typeof value === "string" ? value.replaceAll('&amp;', '&') : value)
     );
 
     Object.deepAssign(
