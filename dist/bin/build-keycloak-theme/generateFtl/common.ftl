@@ -36,7 +36,7 @@
                 </#if>
 
                 <#attempt>
-                    <#local value = object[key]!"error_object_is_undefined">
+                    <#local value = object[key]!"error_data_is_undefined">
                 <#recover>
                     /* couldn't dereference ${key} of object */
                     <#continue>
@@ -204,7 +204,7 @@
     Object.deepAssign(
         out,
         //Removing all the undefined
-        JSON.parse(JSON.stringify(<@objectToJson_please_ignore_errors object=.data_model depth=0 arr=[] />), (key, value) => value === "error_object_is_undefined" ? undefined : value)
+        JSON.parse(JSON.stringify(<@objectToJson_please_ignore_errors object=.data_model depth=0 arr=[] />), (key, value) => value === "error_data_is_undefined" ? undefined : value.replaceAll('&amp;', '&'))
     );
 
     Object.deepAssign(
