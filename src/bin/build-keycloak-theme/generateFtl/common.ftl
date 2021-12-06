@@ -1,4 +1,5 @@
-<script>const _= 
+<script>const _=
+<#assign ftl = "ftl_template_for_replacement" />
 <#macro objectToJson_please_ignore_errors object depth arr>
     <@compress>
 
@@ -120,7 +121,7 @@
 
 
         <#attempt>
-            "${object?replace('"', '\\"')}"
+            "${object?replace('"', '\\"')?no_esc}"
         <#recover>
             /* couldn't convert into string non hash, non method, non boolean, non enumerable object */
             undefined;
