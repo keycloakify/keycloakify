@@ -138,9 +138,12 @@
 
             <#assign fieldNames = ["global", "userLabel", "username", "email", "firstName", "lastName", "password", "password-confirm", "totp", "totpSecret", "SAMLRequest", "SAMLResponse", "relayState", "device_user_code", "code", "password-new", "rememberMe", "login", "authenticationExecution", "cancel-aia", "clientDataJSON", "authenticatorData", "signature", "credentialId", "userHandle", "error", "authn_use_chk", "authenticationExecution", "isSetRetry", "try-again", "attestationObject", "publicKeyCredentialId", "authenticatorLabel"]>
 
+            <#assign attributes = (profile.attributes)![]>
             <#attempt>
-                <#list profile.attributes as attribute>
-                    <#assign fieldNames += [attribute.name]>
+                <#list attributes as attribute>
+                    <#if (attribute.name)??>
+                        <#assign fieldNames += [attribute.name]>
+                    </#if>
                 </#list>
             <#recover>
             </#attempt>
