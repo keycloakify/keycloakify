@@ -48,9 +48,7 @@
                 </#if>
 
                 <#local arr_keys = []>
-                <#if depth==0 && key=="url" && ftl=="login-update-profile.ftl" >
-                    <#local arr_keys = ["loginUpdateProfileUrl", "loginAction", "resourcesPath", "resourcesCommonPath", "loginRestartFlowUrl", "loginUrl", "loginResetCredentialsUrl", "registrationUrl", "registrationAction", "oauth2DeviceVerificationAction", "oauthAction", "loginResetCredentialsUrl"]>
-                <#elseif depth==0 && key=="url" >
+                <#if depth==0 && key=="url" >
                     <#local arr_keys = ["loginAction", "resourcesPath", "resourcesCommonPath", "loginRestartFlowUrl", "loginUrl", "loginResetCredentialsUrl", "registrationUrl", "registrationAction", "oauth2DeviceVerificationAction", "oauthAction", "loginResetCredentialsUrl"]>
                 </#if>
                 <#if depth==0 && key=="auth" && ftl=="login-reset-password.ftl" >
@@ -58,6 +56,7 @@
                 <#elseif depth==0 && key=="auth">
                     <#local arr_keys = ["showUsername", "showResetCredentials", "showTryAnotherWayLink"]>
                 </#if>
+                <#if depth==0 && key=="updateProfileCtx" ><#continue></#if>
 
                 "${key}": <@objectToJson_please_ignore_errors object=value depth=depth+1 arr=arr_keys ftl=ftl />,
 
