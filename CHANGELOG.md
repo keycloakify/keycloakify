@@ -1,3 +1,7 @@
+### **4.2.10** (2021-11-12)  
+  
+- Export an exaustive list of KcLanguageTag    
+  
 ### **4.2.9** (2021-11-11)  
   
 - Fix useAdvancedMsg    
