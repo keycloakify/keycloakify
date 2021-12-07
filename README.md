@@ -77,6 +77,7 @@ If you already have a Keycloak custom theme, it can be easily ported to Keycloak
 -   [Implement context persistence (optional)](#implement-context-persistence-optional)
 -   [Kickstart video](#kickstart-video)
 -   [About the errors related to `objectToJson` in Keycloak logs.](#about-the-errors-related-to-objecttojson-in-keycloak-logs)
+-   [The pages take too long to load ?](#the-pages-take-too-long-to-load-)
 -   [Adding custom message (to `i18n/useKcMessage.tsx`)](#adding-custom-message-to-i18nusekcmessagetsx)
 -   [Email domain whitelist](#email-domain-whitelist)
 -   [Changelog highlights](#changelog-highlights)
@@ -460,6 +461,10 @@ They can be, however, safely ignored.
 To [converts the `.ftl` values into a JavaScript object](https://github.com/InseeFrLab/keycloakify/blob/main/src/bin/build-keycloak-theme/generateFtl/common.ftl)
 without making assumptions on the `.data_model` we have to do things that throws.  
 It's all-right because every statement that can fail is inside an `<#attempt><#recorver>` block but it results in errors being printed to the logs.
+
+# The pages take too long to load ?
+
+The problem of templates taking a long time to load only happens in the test environment, when you have a console logging all the above-mentioned `.ftl` warnings in real time. Logging all those warnings is what takes time. Once in production page load is way faster.
 
 # Adding custom message (to `i18n/useKcMessage.tsx`)
 
