@@ -28,7 +28,7 @@ export const pageIds = [
     // "login-oauth-grant.ftl",
     // "login-page-expired.ftl",
     // "login-password.ftl",
-    // "login-update-password.ftl",
+    "login-update-password.ftl",
     // "login-username.ftl",
     // "login-verify-email-code-text.ftl",
     // "login-x509-info.ftl",
