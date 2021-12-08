@@ -6,7 +6,7 @@ declare type ExtractAfterStartingWith<Prefix extends string, StrEnum> = StrEnum 
  * Some values might be undefined on some pages.
  * (ex: url.loginAction is undefined on error.ftl)
  */
-export declare type KcContextBase = KcContextBase.Login | KcContextBase.Register | KcContextBase.RegisterUserProfile | KcContextBase.Info | KcContextBase.Error | KcContextBase.LoginResetPassword | KcContextBase.LoginVerifyEmail | KcContextBase.Terms | KcContextBase.LoginOtp | KcContextBase.LoginUpdateProfile | KcContextBase.LoginIdpLinkConfirm | KcContextBase.LoginConfigTotp | KcContextBase.SamlPostForm;
+export declare type KcContextBase = KcContextBase.Login | KcContextBase.Register | KcContextBase.RegisterUserProfile | KcContextBase.Info | KcContextBase.Error | KcContextBase.LoginResetPassword | KcContextBase.LoginVerifyEmail | KcContextBase.Terms | KcContextBase.LoginOtp | KcContextBase.LoginUpdateProfile | KcContextBase.LoginIdpLinkConfirm | KcContextBase.LoginConfigTotp | KcContextBase.SamlPostForm | KcContextBase.LoginUpdatePassword;
 declare type PolicyTotp = {
     type: "totp";
     period: number;
