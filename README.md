@@ -88,6 +88,8 @@ If you already have a Keycloak custom theme, it can be easily ported to Keycloak
 
 # Requirements
 
+On Windows OS you'll have to use [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10). More info [here](https://github.com/InseeFrLab/keycloakify/issues/54%23issuecomment-984834217)
+
 Tested with the following Keycloak versions:
 
 -   [11.0.3](https://hub.docker.com/layers/jboss/keycloak/11.0.3/images/sha256-4438f1e51c1369371cb807dffa526e1208086b3ebb9cab009830a178de949782?context=explore)
@@ -106,8 +108,6 @@ For more information see [this issue](https://github.com/InseeFrLab/keycloakify/
 
 -   `mvn` ([Maven](https://maven.apache.org/)), `rm`, `mkdir`, `curl`, `unzip` are assumed to be available.
 -   `docker` must be up and running when running `yarn keycloak`.
-
-On Windows you'll have to use [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 
 ## My framework doesn’t seem to be supported, what can I do?
 
