@@ -340,5 +340,6 @@ exports.kcContextMocks = __spreadArray(__spreadArray([
             url: "http://test",
             SAMLRequest: "123",
         } })),
+    (0, id_1.id)(__assign(__assign({}, exports.kcContextCommonMock), { pageId: "login-update-password.ftl" })),
 ], false);
 //# sourceMappingURL=kcContextMocks.js.map

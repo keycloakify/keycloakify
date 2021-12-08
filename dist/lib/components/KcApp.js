@@ -83,8 +83,8 @@ exports.KcApp = (0, react_1.memo)(function (_a) {
         //     return null;
         // case "login-password.ftl":
         //     return null;
-        // case "login-update-password.ftl":
-        //     return null;
+        case "login-update-password.ftl":
+            return null;
         // case "login-username.ftl":
         //     return null;
         // case "login-verify-email-code-text.ftl":
