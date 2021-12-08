@@ -1,3 +1,8 @@
+### **4.2.13** (2021-12-08)  
+  
+- Fix broken link about how to import fonts #62  
+- Add a video to show how to test the theme in a local container    
+  
 ### **4.2.12** (2021-12-08)  
   
 - Update post build instructions    
