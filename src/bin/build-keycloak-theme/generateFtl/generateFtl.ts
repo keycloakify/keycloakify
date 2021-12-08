@@ -21,10 +21,6 @@ export const pageIds = [
 
 export type PageId = typeof pageIds[number];
 
-function loadAdjacentFile(fileBasename: string) {
-    return fs.readFileSync(pathJoin(__dirname, fileBasename)).toString("utf8");
-}
-
 export function generateFtlFilesCodeFactory(params: {
     cssGlobalsToDefine: Record<string, string>;
     indexHtmlCode: string;
@@ -77,8 +73,11 @@ export function generateFtlFilesCodeFactory(params: {
     );
 
     //FTL is no valid html, we can't insert with cheerio, we put placeholder for injecting later.
-    const ftlPlaceholders = {
-        '{ "x": "vIdLqMeOed9sdLdIdOxdK0d" }': loadAdjacentFile("common.ftl").match(/^<script>const _=((?:.|\n)+)<\/script>[\n]?$/)![1],
+    const replaceValueBySearchValue = {
+        '{ "x": "vIdLqMeOed9sdLdIdOxdK0d" }': fs
+            .readFileSync(pathJoin(__dirname, "ftl_object_to_js_code_declaring_an_object.ftl"))
+            .toString("utf8")
+            .match(/^<script>const _=((?:.|\n)+)<\/script>[\n]?$/)![1],
         "<!-- xIdLqMeOedErIdLsPdNdI9dSlxI -->": [
             "<#if scripts??>",
             "    <#list scripts as script>",
@@ -88,7 +87,7 @@ export function generateFtlFilesCodeFactory(params: {
         ].join("\n"),
     };
 
-    const pageSpecificCodePlaceholder = "<!-- dIddLqMeOedErIdLsPdNdI9dSl42sw -->";
+    const pageIdSearchValue = "PAGE_ID_xIgLsPgGId9D8e";
 
     $("head").prepend(
         [
@@ -105,18 +104,11 @@ export function generateFtlFilesCodeFactory(params: {
                       "",
                   ]),
             "<script>",
-            loadAdjacentFile("Object.deepAssign.js"),
-            "</script>",
-            "<script>",
-            `    window.${ftlValuesGlobalName}= Object.assign(`,
-            `        {},`,
-            `        ${objectKeys(ftlPlaceholders)[0]}`,
-            "    );",
+            `    window.${ftlValuesGlobalName}= ${objectKeys(replaceValueBySearchValue)[0]};`,
+            `    window.${ftlValuesGlobalName}["pageId"]= "${pageIdSearchValue}";`,
             "</script>",
             "",
-            pageSpecificCodePlaceholder,
-            "",
-            objectKeys(ftlPlaceholders)[1],
+            objectKeys(replaceValueBySearchValue)[1],
         ].join("\n"),
     );
 
@@ -129,19 +121,12 @@ export function generateFtlFilesCodeFactory(params: {
 
         const $ = cheerio.load(partiallyFixedIndexHtmlCode);
 
-        let ftlCode = $.html().replace(
-            pageSpecificCodePlaceholder,
-            [
-                "<script>",
-                `    Object.deepAssign(`,
-                `        window.${ftlValuesGlobalName},`,
-                `        { "pageId": "${pageId}" }`,
-                "    );",
-                "</script>",
-            ].join("\n"),
-        );
+        let ftlCode = $.html();
 
-        objectKeys(ftlPlaceholders).forEach(id => (ftlCode = ftlCode.replace(id, ftlPlaceholders[id])));
+        Object.entries({
+            ...replaceValueBySearchValue,
+            [pageIdSearchValue]: pageId,
+        }).map(([searchValue, replaceValue]) => (ftlCode = ftlCode.replace(searchValue, replaceValue)));
 
         return { ftlCode };
     }
