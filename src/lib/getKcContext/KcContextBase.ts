@@ -24,7 +24,8 @@ export type KcContextBase =
     | KcContextBase.LoginUpdateProfile
     | KcContextBase.LoginIdpLinkConfirm
     | KcContextBase.LoginConfigTotp
-    | KcContextBase.SamlPostForm;
+    | KcContextBase.SamlPostForm
+    | KcContextBase.LoginUpdatePassword;
 // | KcContextBase.Code
 // | KcContextBase.DeleteAccountConfirm
 // | KcContextBase.IdpReviewUserProfile
@@ -34,7 +35,6 @@ export type KcContextBase =
 // | KcContextBase.LoginOauthGrant
 // | KcContextBase.LoginPageExpired
 // | KcContextBase.LoginPassword
-// | KcContextBase.LoginUpdatePassword
 // | KcContextBase.LoginUsername
 // | KcContextBase.LoginVerifyEmailCodeText
 // | KcContextBase.LoginX509Info

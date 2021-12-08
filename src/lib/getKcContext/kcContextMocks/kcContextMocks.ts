@@ -394,4 +394,8 @@ export const kcContextMocks: KcContextBase[] = [
             SAMLRequest: "123",
         },
     }),
+    id<KcContextBase.LoginUpdatePassword>({
+        ...kcContextCommonMock,
+        pageId: "login-update-password.ftl",
+    }),
 ];
