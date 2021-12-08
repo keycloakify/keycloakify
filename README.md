@@ -466,10 +466,10 @@ It's all-right because every statement that can fail is inside an `<#attempt><#r
 
 The problem of templates taking a long time to load only happens in the test environment, when you have a console logging all the above-mentioned `.ftl` warnings in real time. Logging all those warnings is what takes time. Once in production page load is way faster.
 
-If you run the docker container locally we aknowelage that the loading time is getting out of hand.
+If you run the docker container locally we acknowledge that the loading time is getting out of hand.
 We are [in the process](https://github.com/InseeFrLab/keycloakify/pull/63) of resolving this issue.
 
-In the meantime we recommend to run the docker container as a background task.
+In the meantime we recommend [to run the docker container as a background task](https://youtu.be/F29Z1GaH-jk).
 
 # Adding custom message (to `i18n/useKcMessage.tsx`)
 
