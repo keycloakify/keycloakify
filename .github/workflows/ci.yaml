@@ -22,18 +22,18 @@ jobs:
             PACKAGE_MANAGER=yarn
         fi
         $PACKAGE_MANAGER run format:check
-
   test:
     runs-on: macos-10.15
     needs: test_formatting
     strategy:
       matrix:
         node: [ '15', '14', '13' ]
+        os: [ windows-latest, ubuntu-latest ]
     name: Test with Node v${{ matrix.node }}
     steps:
     - name: Tell if project is using npm or yarn
       id: step1
-      uses: garronej/github_actions_toolkit@v2.2
+      uses: garronej/ts-ci@v1.1.3
       with: 
         action_name: tell_if_project_uses_npm_or_yarn
     - uses: actions/checkout@v2.3.4
@@ -51,28 +51,35 @@ jobs:
         npm test
   check_if_version_upgraded:
     name: Check if version upgrade
-    if: github.event_name == 'push'
+    # We run this only if it's a push on the default branch or if it's a PR from a 
+    # branch (meaning not a PR from a fork). It would be more straightforward to test if secrets.NPM_TOKEN is 
+    # defined but GitHub Action don't allow it yet.
+    if: |
+      github.event_name == 'push' || 
+      github.event.pull_request.head.repo.owner.login == github.event.pull_request.base.repo.owner.login 
     runs-on: ubuntu-latest
     needs: test
     outputs:
       from_version: ${{ steps.step1.outputs.from_version }}
       to_version: ${{ steps.step1.outputs.to_version }}
-      is_upgraded_version: ${{steps.step1.outputs.is_upgraded_version }}
+      is_upgraded_version: ${{ steps.step1.outputs.is_upgraded_version }}
+      is_release_beta: ${{steps.step1.outputs.is_release_beta }}
     steps:
-    - uses: garronej/github_actions_toolkit@v2.2
+    - uses: garronej/ts-ci@v1.1.3
       id: step1
       with: 
         action_name: is_package_json_version_upgraded
+        branch: ${{ github.head_ref || github.ref }}
 
   update_changelog:
     runs-on: ubuntu-latest
     needs: check_if_version_upgraded
     if: needs.check_if_version_upgraded.outputs.is_upgraded_version == 'true'
     steps:
-    - uses: garronej/github_actions_toolkit@v2.4
+    - uses: garronej/ts-ci@v1.1.3
       with:
         action_name: update_changelog
-        branch: ${{ github.ref }}
+        branch: ${{ github.head_ref || github.ref }}
 
   create_github_release:
     runs-on: ubuntu-latest
@@ -80,9 +87,6 @@ jobs:
       - update_changelog
       - check_if_version_upgraded
     steps:
-    - uses: actions/checkout@v2
-      with:
-        ref: ${{ github.ref }}
     - name: Build GitHub release body
       id: step1
       run: |
@@ -98,10 +102,10 @@ jobs:
       with:
         name: Release v${{ needs.check_if_version_upgraded.outputs.to_version }}
         tag_name: v${{ needs.check_if_version_upgraded.outputs.to_version }}
-        target_commitish: ${{ github.ref }}
+        target_commitish: ${{ github.head_ref || github.ref }}
         body: ${{ steps.step1.outputs.body }}
         draft: false
-        prerelease: false
+        prerelease: ${{ needs.check_if_version_upgraded.outputs.is_release_beta == 'true' }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
 
@@ -138,7 +142,12 @@ jobs:
           echo "Can't publish on NPM, You must first create a secret called NPM_TOKEN that contains your NPM auth token. https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets"
           false
         fi
-        npm publish
+        EXTRA_ARGS=""
+        if [ "$IS_BETA" = "true" ]; then
+            EXTRA_ARGS="--tag beta"
+        fi
+        npm publish $EXTRA_ARGS
       env:
         NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
         VERSION: ${{ needs.check_if_version_upgraded.outputs.to_version }}
+        IS_BETA: ${{ needs.check_if_version_upgraded.outputs.is_release_beta }}
