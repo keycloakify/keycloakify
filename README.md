@@ -171,7 +171,7 @@ reactDom.render(
                 ...defaultKcProps,
                 "kcHeaderWrapperClass": myClassName
             }}
-        />
+        />,
     document.getElementById("root")
 );
 ```
