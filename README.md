@@ -152,27 +152,23 @@ your index should look something like:
 `src/index.tsx`
 
 ```tsx
-import { App } from "./<wherever>/App";
-import {
-  KcApp,
-  defaultKcProps,
-  getKcContext
-} from "keycloakify";
-import { css } from "tss-react/@emotion/css";
+import { App } from "./<wherever>/App";
+import { KcApp, defaultKcProps, getKcContext } from "keycloakify";
+import { css } from "tss-react/@emotion/css";
 
 const { kcContext } = getKcContext();
 
 const myClassName = css({ "color": "red" });
 
 reactDom.render(
-        <KcApp
-            kcContext={kcContext}
-            {...{
-                ...defaultKcProps,
-                "kcHeaderWrapperClass": myClassName
-            }}
-        />
-    document.getElementById("root")
+    <KcApp
+        kcContext={kcContext}
+        {...{
+            ...defaultKcProps,
+            "kcHeaderWrapperClass": myClassName,
+        }}
+    />,
+    document.getElementById("root"),
 );
 ```
 
