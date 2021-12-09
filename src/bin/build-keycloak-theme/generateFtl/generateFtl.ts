@@ -141,7 +141,9 @@ export function generateFtlFilesCodeFactory(params: {
             ].join("\n"),
         );
 
-        objectKeys(ftlPlaceholders).forEach(id => (ftlCode = ftlCode.replace(id, ftlPlaceholders[id])));
+        objectKeys(ftlPlaceholders).forEach(
+            id => (ftlCode = ftlCode.replace(id, ftlPlaceholders[id]).replace("ftl_template_for_replacement", pageId)),
+        );
 
         return { ftlCode };
     }
