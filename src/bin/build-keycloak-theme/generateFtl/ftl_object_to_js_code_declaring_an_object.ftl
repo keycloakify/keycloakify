@@ -115,7 +115,7 @@ ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
                     ["loginUpdatePasswordUrl", "loginUpdateProfileUrl", "loginUsernameReminderUrl", "loginUpdateTotpUrl"]?seq_contains(key) && 
                     are_same_path(path, ["url"])
                 >
-                    <#local out_seq += ["/*If you need" + key + " please submit an issue to the Keycloakify repo*/"]>
+                    <#local out_seq += ["/*If you need '" + key + "' please submit an issue to the Keycloakify repo*/"]>
                     <#continue>
                 </#if>
 
