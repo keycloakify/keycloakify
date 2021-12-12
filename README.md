@@ -76,6 +76,7 @@ If you already have a Keycloak custom theme, it can be easily ported to Keycloak
         -   [Possible workarounds](#possible-workarounds)
 -   [Implement context persistence (optional)](#implement-context-persistence-optional)
 -   [Kickstart video](#kickstart-video)
+-   [FTL errors related to `ftl_object_to_js_code_declaring_an_object` in Keycloak logs.](#ftl-errors-related-to-ftl_object_to_js_code_declaring_an_object-in-keycloak-logs)
 -   [Adding custom message (to `i18n/useKcMessage.tsx`)](#adding-custom-message-to-i18nusekcmessagetsx)
 -   [Email domain whitelist](#email-domain-whitelist)
 -   [Changelog highlights](#changelog-highlights)
@@ -435,6 +436,23 @@ flash of the blank html before the js bundle have been evaluated
 
 _NOTE: keycloak-react-theming was renamed keycloakify since this video was recorded_
 [![kickstart_video](https://user-images.githubusercontent.com/6702424/108877866-f146ee80-75ff-11eb-8120-003b3c5f6dd8.png)](https://youtu.be/xTz0Rj7i2v8)
+
+# FTL errors related to `ftl_object_to_js_code_declaring_an_object` in Keycloak logs.
+
+If you ever encounter one of these errors:
+
+```log
+FTL stack trace ("~" means nesting-related):
+        - Failed at: #local value = object[key]  [in template "login.ftl" in macro "ftl_object_to_js_code_declaring_an_object" at line 70, column 21]
+        - Reached through: @compress  [in template "login.ftl" in macro "ftl_object_to_js_code_declaring_an_object" at line 36, column 5]
+        - Reached through: @ftl_object_to_js_code_declaring_an_object object=value depth=(dep...  [in template "login.ftl" in macro "ftl_object_to_js_code_declaring_an_object" at line 81, column 27]
+        - Reached through: @compress  [in template "login.ftl" in macro "ftl_object_to_js_code_declaring_an_object" at line 36, column 5]
+        - Reached through: @ftl_object_to_js_code_declaring_an_object object=(.data_model) de...  [in template "login.ftl" at line 163, column 43]
+```
+
+It's just noise, they can be safely ignored.  
+You can, however, and are encouraged to, report any that you would spot.  
+Just open an issue about it and I will release a patched version of Keycloakify in the better delays.
 
 # Adding custom message (to `i18n/useKcMessage.tsx`)
 
