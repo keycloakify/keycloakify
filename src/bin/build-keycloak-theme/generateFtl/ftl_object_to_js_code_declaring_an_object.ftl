@@ -119,6 +119,18 @@ ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
                     <#continue>
                 </#if>
 
+                <#if key == "attemptedUsername" && are_same_path(path, ["auth"])>
+
+                    <#attempt>
+                        <#-- https://github.com/keycloak/keycloak/blob/3a2bf0c04bcde185e497aaa32d0bb7ab7520cf4a/themes/src/main/resources/theme/base/login/template.ftl#L63 -->
+                        <#if !(auth?has_content && auth.showUsername() && !auth.showResetCredentials())>
+                            <#continue>
+                        </#if>
+                    <#recover>
+                    </#attempt>
+
+                </#if>
+
                 <#attempt>
                     <#if !object[key]??>
                         <#continue>
