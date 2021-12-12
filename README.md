@@ -71,7 +71,7 @@ If you already have a Keycloak custom theme, it can be easily ported to Keycloak
 -   [GitHub Actions](#github-actions)
 -   [Limitations](#limitations)
     -   [`process.env.PUBLIC_URL` not supported.](#processenvpublic_url-not-supported)
-    -   [`@font-face` importing fonts from the `src/` dir](#font-face-importing-fonts-from-thesrc-dir)
+    -   [`@font-face` importing fonts from the `src/` dir](#font-face-importing-fonts-from-the-src-dir)
         -   [Example of setup that **won't** work](#example-of-setup-that-wont-work)
         -   [Possible workarounds](#possible-workarounds)
 -   [Implement context persistence (optional)](#implement-context-persistence-optional)
@@ -150,27 +150,23 @@ your index should look something like:
 `src/index.tsx`
 
 ```tsx
-import { App } from "./<wherever>/App";
-import {
-  KcApp,
-  defaultKcProps,
-  getKcContext
-} from "keycloakify";
-import { css } from "tss-react/@emotion/css";
+import { App } from "./<wherever>/App";
+import { KcApp, defaultKcProps, getKcContext } from "keycloakify";
+import { css } from "tss-react/@emotion/css";
 
 const { kcContext } = getKcContext();
 
 const myClassName = css({ "color": "red" });
 
 reactDom.render(
-        <KcApp
-            kcContext={kcContext}
-            {...{
-                ...defaultKcProps,
-                "kcHeaderWrapperClass": myClassName
-            }}
-        />
-    document.getElementById("root")
+    <KcApp
+        kcContext={kcContext}
+        {...{
+            ...defaultKcProps,
+            "kcHeaderWrapperClass": myClassName,
+        }}
+    />,
+    document.getElementById("root"),
 );
 ```
 
@@ -356,7 +352,7 @@ the building and publishing of the theme (the .jar file).
 You won't be able to [import things from your public directory **in your JavaScript code**](https://create-react-app.dev/docs/using-the-public-folder/#adding-assets-outside-of-the-module-system).
 (This isn't recommended anyway).
 
-## `@font-face` importing fonts from the `src/` dir
+## `@font-face` importing fonts from the `src/` dir
 
 If you are building the theme with [--external-assets](#enable-loading-in-a-blink-of-a-eye-of-login-pages-)
 this limitation doesn't apply, you can import fonts however you see fit.
