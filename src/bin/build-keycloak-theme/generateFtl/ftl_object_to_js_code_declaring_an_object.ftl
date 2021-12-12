@@ -113,7 +113,7 @@ ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
 
                 <#if 
                     ["loginUpdatePasswordUrl", "loginUpdateProfileUrl", "loginUsernameReminderUrl", "loginUpdateTotpUrl"]?seq_contains(key) && 
-                    path?map(x -> x?is_number?string("_index_",x))?join("°") == ["url"]?join("°")
+                    are_same_path(path, ["url"])
                 >
                     <#local out_seq += ["/*If you need" + key + " please submit an issue to the Keycloakify repo*/"]>
                     <#continue>
@@ -225,6 +225,41 @@ ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
         </#attempt>
 
         <#return "ABORT: Couldn't convert into string non hash, non method, non boolean, non enumerable object">
+
+</#function>
+<#function are_same_path path searchedPath>
+
+    <#if path?size != path?size>
+        <#return false>
+    </#if>
+
+    <#local i=0>
+
+    <#list path as property>
+
+        <#local searchedProperty=searchedPath[i]>
+
+        <#if searchedProperty?is_string && searchedProperty == "*">
+            <#continue>
+        </#if>
+
+        <#if searchedProperty?is_string && !property?is_string>
+            <#return false>
+        </#if>
+
+        <#if searchedProperty?is_number && !property?is_number>
+            <#return false>
+        </#if>
+
+        <#if searchedProperty?string != property?string>
+            <#return false>
+        </#if>
+
+        <#local i+= 1>
+
+    </#list>
+
+    <#return true>
 
 </#function>
 </script>
