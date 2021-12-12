@@ -87,8 +87,6 @@ export function generateFtlFilesCodeFactory(params: {
         ].join("\n"),
     };
 
-    const pageIdSearchValue = "PAGE_ID_xIgLsPgGId9D8e";
-
     $("head").prepend(
         [
             ...(Object.keys(cssGlobalsToDefine).length === 0
@@ -105,7 +103,6 @@ export function generateFtlFilesCodeFactory(params: {
                   ]),
             "<script>",
             `    window.${ftlValuesGlobalName}= ${objectKeys(replaceValueBySearchValue)[0]};`,
-            `    window.${ftlValuesGlobalName}["pageId"]= "${pageIdSearchValue}";`,
             "</script>",
             "",
             objectKeys(replaceValueBySearchValue)[1],
@@ -125,7 +122,8 @@ export function generateFtlFilesCodeFactory(params: {
 
         Object.entries({
             ...replaceValueBySearchValue,
-            [pageIdSearchValue]: pageId,
+            //If updated, don't forget to change in the ftl script as well.
+            "PAGE_ID_xIgLsPgGId9D8e": pageId,
         }).map(([searchValue, replaceValue]) => (ftlCode = ftlCode.replace(searchValue, replaceValue)));
 
         return { ftlCode };

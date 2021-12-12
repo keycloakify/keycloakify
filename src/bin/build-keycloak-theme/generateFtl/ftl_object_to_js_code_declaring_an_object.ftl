@@ -1,4 +1,5 @@
 <script>const _= 
+<#assign pageId="PAGE_ID_xIgLsPgGId9D8e">
 (()=>{
 
     const out = 
@@ -76,6 +77,8 @@ ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
         }
     };
 
+    out["pageId"] = "${pageId}";
+
     return out;
 
 })()
@@ -111,7 +114,6 @@ ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
                     <#continue>
                 </#if>
 
-                <#-- Skip values that are known to throw sometime and that are used nowhere in the base Keycloak template -->
                 <#if 
                     (
                         ["loginUpdatePasswordUrl", "loginUpdateProfileUrl", "loginUsernameReminderUrl", "loginUpdateTotpUrl"]?seq_contains(key) && 
@@ -119,9 +121,14 @@ ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
                     ) || (
                         key == "updateProfileCtx" && 
                         are_same_path(path, [])
+                    ) || (
+                        <#-- https://github.com/InseeFrLab/keycloakify/pull/65#issuecomment-991896344 -->
+                        key == "loginAction" && 
+                        are_same_path(path, ["url"]) && 
+                        pageId == "saml-post-form.ftl"
                     )
                 >
-                    <#local out_seq += ["/*If you need '" + key + "' please submit an issue to the Keycloakify repo*/"]>
+                    <#local out_seq += ["/*If you need '" + key + "' on " + pageId + ", please submit an issue to the Keycloakify repo*/"]>
                     <#continue>
                 </#if>
 
