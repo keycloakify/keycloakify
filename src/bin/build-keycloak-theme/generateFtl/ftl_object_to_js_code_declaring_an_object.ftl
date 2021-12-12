@@ -111,9 +111,15 @@ ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
                     <#continue>
                 </#if>
 
+                <#-- Skip values that are known to throw sometime and that are used nowhere in the base Keycloak template -->
                 <#if 
-                    ["loginUpdatePasswordUrl", "loginUpdateProfileUrl", "loginUsernameReminderUrl", "loginUpdateTotpUrl"]?seq_contains(key) && 
-                    are_same_path(path, ["url"])
+                    (
+                        ["loginUpdatePasswordUrl", "loginUpdateProfileUrl", "loginUsernameReminderUrl", "loginUpdateTotpUrl"]?seq_contains(key) && 
+                        are_same_path(path, ["url"])
+                    ) || (
+                        key == "updateProfileCtx" && 
+                        are_same_path(path, [])
+                    )
                 >
                     <#local out_seq += ["/*If you need '" + key + "' please submit an issue to the Keycloakify repo*/"]>
                     <#continue>
