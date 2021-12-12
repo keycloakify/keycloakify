@@ -1,3 +1,20 @@
+### **4.2.14** (2021-12-12)  
+  
+- Merge pull request #65 from InseeFrLab/doge_ftl_errors
+
+Prevent ftl errors in Keycloak log  
+- Encourage users to report errors in logs  
+- Fix ftl error related to url.loginAction in saml-post-form.ftl  
+- Ftl prevent error with updateProfileCtx  
+- Ftl prevent error with auth.attemptedUsername  
+- Fix ftl error as comment formatting  
+- Merge remote-tracking branch 'origin/main' into doge_ftl_errors  
+- Update README, remove all instruction about errors in logs  
+- Avoid error in Keycloak logs, fix long template loading time  
+- Add missing collon in README sample code
+
+Add miss ','    
+  
 ### **4.2.13** (2021-12-08)  
   
 - Fix broken link about how to import fonts #62  
