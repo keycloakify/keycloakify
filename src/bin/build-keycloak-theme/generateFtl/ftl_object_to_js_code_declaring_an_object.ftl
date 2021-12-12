@@ -78,7 +78,7 @@ ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
 
     return out;
 
-})();
+})()
 <#function ftl_object_to_js_code_declaring_an_object object path>
 
         <#local isHash = "">
