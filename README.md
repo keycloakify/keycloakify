@@ -106,7 +106,7 @@ For more information see [this issue](https://github.com/InseeFrLab/keycloakify/
 **All this is defaults with [`create-react-app`](https://create-react-app.dev)** (tested with 4.0.3)
 
 -   `mvn` ([Maven](https://maven.apache.org/)), `rm`, `mkdir`, `curl`, `unzip` are assumed to be available.
--   `docker` must be up and running when running `yarn keycloak`.
+-   `docker` must be up and running when running `start_keycloak_testing_container.sh` (Instructions provided after running `yarn keycloak`).
 
 ## My framework doesn’t seem to be supported, what can I do?
 
