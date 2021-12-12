@@ -20,10 +20,10 @@
     <img src="https://user-images.githubusercontent.com/6702424/110260457-a1c3d380-7fac-11eb-853a-80459b65626b.png">
 </p>
 
-**NEW in v4**
+**NEW in 4.2.14**
 
--   Out of the box [frontend form validation](#user-profile-and-frontend-form-validation) 🥳
--   Improvements (and breaking changes in `import { useKcMessage } from "keycloakify"`.
+-   No more error in Keycloak logs 🍾
+-   Templates now load in fraction of a second 🏎
 
 # Motivations
 
@@ -76,8 +76,6 @@ If you already have a Keycloak custom theme, it can be easily ported to Keycloak
         -   [Possible workarounds](#possible-workarounds)
 -   [Implement context persistence (optional)](#implement-context-persistence-optional)
 -   [Kickstart video](#kickstart-video)
--   [About the errors related to `objectToJson` in Keycloak logs.](#about-the-errors-related-to-objecttojson-in-keycloak-logs)
--   [The pages take too long to load ?](#the-pages-take-too-long-to-load-)
 -   [Adding custom message (to `i18n/useKcMessage.tsx`)](#adding-custom-message-to-i18nusekcmessagetsx)
 -   [Email domain whitelist](#email-domain-whitelist)
 -   [Changelog highlights](#changelog-highlights)
@@ -441,36 +439,6 @@ flash of the blank html before the js bundle have been evaluated
 
 _NOTE: keycloak-react-theming was renamed keycloakify since this video was recorded_
 [![kickstart_video](https://user-images.githubusercontent.com/6702424/108877866-f146ee80-75ff-11eb-8120-003b3c5f6dd8.png)](https://youtu.be/xTz0Rj7i2v8)
-
-# About the errors related to `objectToJson` in Keycloak logs.
-
-The logs of your keycloak server will always show this kind of errors every time a client request a page:
-
-```log
-FTL stack trace ("~" means nesting-related):
-        - Failed at: #local value = object[key]  [in template "login.ftl" in macro "objectToJson_please_ignore_errors" at line 70, column 21]
-        - Reached through: @compress  [in template "login.ftl" in macro "objectToJson_please_ignore_errors" at line 36, column 5]
-        - Reached through: @objectToJson_please_ignore_errors object=value depth=(dep...  [in template "login.ftl" in macro "objectToJson_please_ignore_errors" at line 81, column 27]
-        - Reached through: @compress  [in template "login.ftl" in macro "objectToJson_please_ignore_errors" at line 36, column 5]
-        - Reached through: @objectToJson_please_ignore_errors object=(.data_model) de...  [in template "login.ftl" at line 163, column 43]
-```
-
-Theses are expected to show up in the log.
-Unfortunately, there is nothing I know of that can be done to avoid them or even mute them.
-They can be, however, safely ignored.
-
-To [converts the `.ftl` values into a JavaScript object](https://github.com/InseeFrLab/keycloakify/blob/main/src/bin/build-keycloak-theme/generateFtl/common.ftl)
-without making assumptions on the `.data_model` we have to do things that throws.  
-It's all-right because every statement that can fail is inside an `<#attempt><#recorver>` block but it results in errors being printed to the logs.
-
-# The pages take too long to load ?
-
-The problem of templates taking a long time to load only happens in the test environment, when you have a console logging all the above-mentioned `.ftl` warnings in real time. Logging all those warnings is what takes time. Once in production page load is way faster.
-
-If you run the docker container locally we acknowledge that the loading time is getting out of hand.
-We are [in the process](https://github.com/InseeFrLab/keycloakify/pull/63) of resolving this issue.
-
-In the meantime we recommend [to run the docker container as a background task](https://youtu.be/F29Z1GaH-jk).
 
 # Adding custom message (to `i18n/useKcMessage.tsx`)
 
