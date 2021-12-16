@@ -9,7 +9,7 @@ import { getBestMatchAmongKcLanguageTag } from "../i18n/KcLanguageTag";
 import { getKcLanguageTagLabel } from "../i18n/KcLanguageTag";
 import { useCallbackFactory } from "powerhooks/useCallbackFactory";
 import { headInsert } from "../tools/headInsert";
-import { join as pathJoin } from "path";
+import { pathJoin } from "../tools/pathJoin";
 import { useConstCallback } from "powerhooks/useConstCallback";
 import type { KcTemplateProps } from "./KcProps";
 import { useCssAndCx } from "tss-react";
