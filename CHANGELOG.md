@@ -1,3 +1,7 @@
+### **4.2.15** (2021-12-16)  
+  
+- use custom polyfill for path.join (fix webpack 5 build)    
+  
 ### **4.2.14** (2021-12-12)  
   
 - Merge pull request #65 from InseeFrLab/doge_ftl_errors
