@@ -5,7 +5,7 @@ import { getKcLanguageTagLabel } from "../../i18n/KcLanguageTag";
 //NOTE: Aside because we want to be able to import them from node
 import { resourcesCommonPath, resourcesPath } from "./urlResourcesPath";
 import { id } from "tsafe/id";
-import { join as pathJoin } from "path";
+import { pathJoin } from "../../tools/pathJoin";
 
 const PUBLIC_URL = process.env["PUBLIC_URL"] ?? "/";
 
