@@ -20,6 +20,9 @@
     <img src="https://user-images.githubusercontent.com/6702424/110260457-a1c3d380-7fac-11eb-853a-80459b65626b.png">
 </p>
 
+**NOTICE:** Fonts are not loaded properly in Webpack 5. Used in the very last version of `create-react-app`.
+It will be fixed soon.
+
 **NEW in 4.2.14**
 
 -   No more error in Keycloak logs 🍾
