@@ -1,3 +1,7 @@
+### **4.2.18** (2021-12-17)  
+  
+- Improve css url() import (fix CRA 5)    
+  
 ### **4.2.17** (2021-12-16)  
   
 - Fix path.join polyfill    
