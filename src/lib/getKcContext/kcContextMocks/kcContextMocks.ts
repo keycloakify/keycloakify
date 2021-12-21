@@ -18,6 +18,7 @@ export const kcContextCommonMock: KcContextBase.Common = {
         "loginUrl": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg",
     },
     "realm": {
+        "name": "myrealm",
         "displayName": "myrealm",
         "displayNameHtml": "myrealm",
         "internationalizationEnabled": true,
