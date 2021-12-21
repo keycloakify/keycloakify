@@ -34,6 +34,7 @@ export declare namespace KcContextBase {
             loginUrl: string;
         };
         realm: {
+            name: string;
             displayName?: string;
             displayNameHtml?: string;
             internationalizationEnabled: boolean;
