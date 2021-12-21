@@ -1,3 +1,12 @@
+### **4.2.19** (2021-12-21)  
+  
+- Merge pull request #70 from VBustamante/patch-1  
+- Added realm name field to KcContext mocks object  
+- Merge pull request #69 from VBustamante/patch-1
+
+Adding name field to realm in KcContext type  
+- Adding name field to realm in KcContext type    
+  
 ### **4.2.18** (2021-12-17)  
   
 - Improve css url() import (fix CRA 5)    
