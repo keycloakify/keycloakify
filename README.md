@@ -203,8 +203,8 @@ reactDom.render(
     <img src="https://user-images.githubusercontent.com/6702424/114326299-6892fc00-9b34-11eb-8d75-85696e55458f.png">
 </p>
 
-Example of a customization using only CSS: [here](https://github.com/InseeFrLab/onyxia-ui/blob/012639d62327a9a56be80c46e32c32c9497b82db/src/app/components/KcApp.tsx)
-(the [index.tsx](https://github.com/InseeFrLab/onyxia-ui/blob/012639d62327a9a56be80c46e32c32c9497b82db/src/app/index.tsx#L89-L94) )
+Example of a customization using only CSS: [here](https://github.com/InseeFrLab/onyxia-web/blob/012639d62327a9a56be80c46e32c32c9497b82db/src/app/components/KcApp.tsx)
+(the [index.tsx](https://github.com/InseeFrLab/onyxia-web/blob/012639d62327a9a56be80c46e32c32c9497b82db/src/app/index.tsx#L89-L94) )
 and the result you can expect:
 
 <p align="center">
@@ -219,7 +219,7 @@ If you want to go beyond only customizing the CSS you can re-implement some of t
 pages or even add new ones.
 
 If you want to go this way checkout the demo setup provided [here](https://github.com/garronej/keycloakify-demo-app/tree/look_and_feel).
-If you prefer a real life example you can checkout [onyxia-web's source](https://github.com/InseeFrLab/onyxia-web/tree/main/src/app/components/KcApp).
+If you prefer a real life example you can checkout [onyxia-web's source](https://github.com/InseeFrLab/onyxia-web/tree/main/src/ui/components/KcApp).
 The web app is in production [here](https://datalab.sspcloud.fr).
 
 Main takeaways are:
@@ -425,7 +425,7 @@ keycloakInstance.init({
 
 If you really want to go the extra miles and avoid having the white
 flash of the blank html before the js bundle have been evaluated
-[here is a snippet](https://github.com/InseeFrLab/onyxia-ui/blob/a77eb502870cfe6878edd0d956c646d28746d053/public/index.html#L5-L54) that you can place in your `public/index.html` if you are using `powerhooks/useGlobalState`.
+[here is a snippet](https://github.com/InseeFrLab/onyxia-web/blob/e1c1f309aaa3d5f860df39ba0b75cce89c88a9de/public/index.html#L117-L166) that you can place in your `public/index.html` if you are using `powerhooks/useGlobalState`.
 
 # Kickstart video
 
