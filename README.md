@@ -30,6 +30,8 @@
     <img src="https://user-images.githubusercontent.com/6702424/110260457-a1c3d380-7fac-11eb-853a-80459b65626b.png">
 </p>
 
+> **New in v4.3.0**: Feature [`login-update-password.ftl`](https://github.com/InseeFrLab/keycloakify/pull/72)
+
 # Motivations
 
 Keycloak provides [theme support](https://www.keycloak.org/docs/latest/server_development/#_themes) for web pages. This allows customizing the look and feel of end-user facing pages so they can be integrated with your applications.
@@ -85,6 +87,7 @@ If you already have a Keycloak custom theme, it can be easily ported to Keycloak
 -   [Adding custom message (to `i18n/useKcMessage.tsx`)](#adding-custom-message-to-i18nusekcmessagetsx)
 -   [Email domain whitelist](#email-domain-whitelist)
 -   [Changelog highlights](#changelog-highlights)
+    -   [v4.3](#v43)
     -   [v4](#v4)
     -   [v3](#v3)
     -   [v2.5](#v25)
@@ -474,6 +477,10 @@ If you want to restrict the emails domain that can register, you can use [this p
 and `kcRegisterContext["authorizedMailDomains"]` to validate on.
 
 # Changelog highlights
+
+## v4.3
+
+Feature [`login-update-password.ftl`](https://github.com/InseeFrLab/keycloakify/pull/72)
 
 ## v4
 
