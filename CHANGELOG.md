@@ -1,3 +1,10 @@
+## **4.3.0** (2021-12-27)  
+  
+- Merge pull request #72 from praiz/main
+
+feat(*): added login-update-password  
+- feat(*): added login-update-password    
+  
 ### **4.2.21** (2021-12-27)  
   
 - update dependencies    
