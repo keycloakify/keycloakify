@@ -16,6 +16,7 @@ export const pageIds = [
     "terms.ftl",
     "login-otp.ftl",
     "login-update-profile.ftl",
+    "login-update-password.ftl",
     "login-idp-link-confirm.ftl",
 ] as const;
 
