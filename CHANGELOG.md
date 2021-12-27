@@ -1,3 +1,7 @@
+### **4.2.21** (2021-12-27)  
+  
+- update dependencies    
+  
 ### **4.2.19** (2021-12-21)  
   
 - Merge pull request #70 from VBustamante/patch-1  
