@@ -346,6 +346,11 @@ export const kcContextMocks: KcContextBase[] = [
             ],
         },
     }),
+    id<KcContextBase.LoginUpdatePassword>({
+        ...kcContextCommonMock,
+        "pageId": "login-update-password.ftl",
+        "username": "anUsername",
+    }),
     id<KcContextBase.LoginUpdateProfile>({
         ...kcContextCommonMock,
         "pageId": "login-update-profile.ftl",

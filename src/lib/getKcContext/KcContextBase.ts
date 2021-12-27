@@ -21,6 +21,7 @@ export type KcContextBase =
     | KcContextBase.LoginVerifyEmail
     | KcContextBase.Terms
     | KcContextBase.LoginOtp
+    | KcContextBase.LoginUpdatePassword
     | KcContextBase.LoginUpdateProfile
     | KcContextBase.LoginIdpLinkConfirm;
 
@@ -190,6 +191,11 @@ export declare namespace KcContextBase {
         otpLogin: {
             userOtpCredentials: { id: string; userLabel: string }[];
         };
+    };
+
+    export type LoginUpdatePassword = Common & {
+        pageId: "login-update-password.ftl";
+        username: string;
     };
 
     export type LoginUpdateProfile = Common & {
