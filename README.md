@@ -30,7 +30,9 @@
     <img src="https://user-images.githubusercontent.com/6702424/110260457-a1c3d380-7fac-11eb-853a-80459b65626b.png">
 </p>
 
-> **New in v4.3.0**: Feature [`login-update-password.ftl`](https://github.com/InseeFrLab/keycloakify/pull/72)
+> **New in v4.3.0**: Feature [`login-update-password.ftl`](https://user-images.githubusercontent.com/6702424/147517600-6191cf72-93dd-437b-a35c-47180142063e.png).  
+> Every time a page is added it's a breaking change for non CSS-only theme.  
+> Change [this](https://github.com/garronej/keycloakify-demo-app/blob/df664c13c77ce3c53ac7df0622d94d04e76d3f9f/src/KcApp/KcApp.tsx#L17) and [this](https://github.com/garronej/keycloakify-demo-app/blob/df664c13c77ce3c53ac7df0622d94d04e76d3f9f/src/KcApp/KcApp.tsx#L37) to update.
 
 # Motivations
 
@@ -87,7 +89,6 @@ If you already have a Keycloak custom theme, it can be easily ported to Keycloak
 -   [Adding custom message (to `i18n/useKcMessage.tsx`)](#adding-custom-message-to-i18nusekcmessagetsx)
 -   [Email domain whitelist](#email-domain-whitelist)
 -   [Changelog highlights](#changelog-highlights)
-    -   [v4.3](#v43)
     -   [v4](#v4)
     -   [v3](#v3)
     -   [v2.5](#v25)
@@ -477,10 +478,6 @@ If you want to restrict the emails domain that can register, you can use [this p
 and `kcRegisterContext["authorizedMailDomains"]` to validate on.
 
 # Changelog highlights
-
-## v4.3
-
-Feature [`login-update-password.ftl`](https://github.com/InseeFrLab/keycloakify/pull/72)
 
 ## v4
 
