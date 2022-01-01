@@ -1,3 +1,11 @@
+## **4.4.0** (2022-01-01)  
+  
+- Merge pull request #73 from lazToum/main
+
+(feature) added login-page-expired.ftl  
+- added login-page-expired.ftl  
+- Add update instruction for 4.3.0    
+  
 ## **4.3.0** (2021-12-27)  
   
 - Merge pull request #72 from praiz/main
