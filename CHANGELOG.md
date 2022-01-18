@@ -1,3 +1,7 @@
+## **4.5.0** (2022-01-18)  
+  
+- Read public/CNAME for domain name in --externel-assets mode    
+  
 ## **4.4.0** (2022-01-01)  
   
 - Merge pull request #73 from lazToum/main
