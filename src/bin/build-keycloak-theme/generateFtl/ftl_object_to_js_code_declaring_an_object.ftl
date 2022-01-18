@@ -1,8 +1,8 @@
-<script>const _= 
+<script>const _=
 <#assign pageId="PAGE_ID_xIgLsPgGId9D8e">
 (()=>{
 
-    const out = 
+    const out =
 ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
 
     out["msg"]= function(){ throw new Error("use import { useKcMessage } from 'keycloakify'"); };
@@ -11,12 +11,12 @@ ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
     out["messagesPerField"]= {
         <#assign fieldNames = [
             "global", "userLabel", "username", "email", "firstName", "lastName", "password", "password-confirm",
-            "totp", "totpSecret", "SAMLRequest", "SAMLResponse", "relayState", "device_user_code", "code", 
-            "password-new", "rememberMe", "login", "authenticationExecution", "cancel-aia", "clientDataJSON", 
-            "authenticatorData", "signature", "credentialId", "userHandle", "error", "authn_use_chk", "authenticationExecution", 
+            "totp", "totpSecret", "SAMLRequest", "SAMLResponse", "relayState", "device_user_code", "code",
+            "password-new", "rememberMe", "login", "authenticationExecution", "cancel-aia", "clientDataJSON",
+            "authenticatorData", "signature", "credentialId", "userHandle", "error", "authn_use_chk", "authenticationExecution",
             "isSetRetry", "try-again", "attestationObject", "publicKeyCredentialId", "authenticatorLabel"
         ]>
-    
+
         <#attempt>
             <#if profile?? && profile.attributes?? && profile.attributes?is_enumerable>
                 <#list profile.attributes as attribute>
@@ -28,7 +28,7 @@ ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
             </#if>
         <#recover>
         </#attempt>
-    
+
         "printIfExists": function (fieldName, x) {
             <#list fieldNames as fieldName>
                 if(fieldName === "${fieldName}" ){
@@ -114,17 +114,17 @@ ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
                     <#continue>
                 </#if>
 
-                <#if 
+                <#if
                     (
-                        ["loginUpdatePasswordUrl", "loginUpdateProfileUrl", "loginUsernameReminderUrl", "loginUpdateTotpUrl"]?seq_contains(key) && 
+                        ["loginUpdatePasswordUrl", "loginUpdateProfileUrl", "loginUsernameReminderUrl", "loginUpdateTotpUrl"]?seq_contains(key) &&
                         are_same_path(path, ["url"])
                     ) || (
-                        key == "updateProfileCtx" && 
+                        key == "updateProfileCtx" &&
                         are_same_path(path, [])
                     ) || (
                         <#-- https://github.com/InseeFrLab/keycloakify/pull/65#issuecomment-991896344 -->
-                        key == "loginAction" && 
-                        are_same_path(path, ["url"]) && 
+                        key == "loginAction" &&
+                        are_same_path(path, ["url"]) &&
                         pageId == "saml-post-form.ftl"
                     )
                 >
