@@ -1,3 +1,7 @@
+### **4.5.1** (2022-01-18)  
+  
+- fix previous version    
+  
 ## **4.5.0** (2022-01-18)  
   
 - Read public/CNAME for domain name in --externel-assets mode    
