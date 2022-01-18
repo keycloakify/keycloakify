@@ -49,7 +49,7 @@ export function main() {
                 const cnameFilePath = pathJoin(reactProjectDirPath, "public", "CNAME");
 
                 if (fs.existsSync(cnameFilePath)) {
-                    return new URL(fs.readFileSync(cnameFilePath).toString("utf8").replace(/\s+$/, ""));
+                    return new URL(`https://${fs.readFileSync(cnameFilePath).toString("utf8").replace(/\s+$/, "")}`);
                 }
 
                 return undefined;
