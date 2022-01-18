@@ -4,6 +4,7 @@ import { join as pathJoin, relative as pathRelative, basename as pathBasename } 
 import * as child_process from "child_process";
 import { generateDebugFiles, containerLaunchScriptBasename } from "./generateDebugFiles";
 import { URL } from "url";
+import * as fs from "fs";
 
 type ParsedPackageJson = {
     name: string;
@@ -41,7 +42,17 @@ export function main() {
             const url = (() => {
                 const { homepage } = parsedPackageJson;
 
-                return homepage === undefined ? undefined : new URL(homepage);
+                if (homepage !== undefined) {
+                    return new URL(homepage);
+                }
+
+                const cnameFilePath = pathJoin(reactProjectDirPath, "public", "CNAME");
+
+                if (fs.existsSync(cnameFilePath)) {
+                    return new URL(fs.readFileSync(cnameFilePath).toString("utf8").replace(/\s+$/, ""));
+                }
+
+                return undefined;
             })();
 
             return {

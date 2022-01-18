@@ -295,7 +295,7 @@ If you are specifically building a theme to integrate with an app or a website t
 to first browse unauthenticated before logging in, you will get a significant
 performance boost if you jump through those hoops:
 
--   Provide the url of your app in the `homepage` field of package.json. [ex](https://github.com/garronej/keycloakify-demo-app/blob/7847cc70ef374ab26a6cc7953461cf25603e9a6d/package.json#L2)
+-   Provide the url of your app in the `homepage` field of package.json. [ex](https://github.com/garronej/keycloakify-demo-app/blob/7847cc70ef374ab26a6cc7953461cf25603e9a6d/package.json#L2) or in a `public/CNAME` file. [ex](https://github.com/garronej/keycloakify-demo-app/blob/main/public/CNAME).
 -   Build the theme using `npx build-keycloak-theme --external-assets` [ex](https://github.com/garronej/keycloakify-demo-app/blob/7847cc70ef374ab26a6cc7953461cf25603e9a6d/.github/workflows/ci.yaml#L21)
 -   Enable [long-term assets caching](https://create-react-app.dev/docs/production-build/#static-file-caching) on the server hosting your app.
 -   Make sure not to build your app and the keycloak theme separately
