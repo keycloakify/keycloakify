@@ -5,11 +5,21 @@
     <i>🔏  Create Keycloak themes using React 🔏</i>
     <br>
     <br>
-    <img src="https://github.com/garronej/keycloakify/workflows/ci/badge.svg?branch=develop">
-    <img src="https://img.shields.io/bundlephobia/minzip/keycloakify">
-    <img src="https://img.shields.io/npm/dw/keycloakify">
-    <img src="https://img.shields.io/npm/l/keycloakify">
-    <img src="https://camo.githubusercontent.com/0f9fcc0ac1b8617ad4989364f60f78b2d6b32985ad6a508f215f14d8f897b8d3/68747470733a2f2f62616467656e2e6e65742f62616467652f547970655363726970742f7374726963742532302546302539462539322541412f626c7565">
+    <a href="https://github.com/garronej/keycloakify/actions">
+      <img src="https://github.com/garronej/keycloakify/workflows/ci/badge.svg?branch=main">
+    </a>
+    <a href="https://bundlephobia.com/package/keycloakify">
+      <img src="https://img.shields.io/bundlephobia/minzip/keycloakify">
+    </a>
+    <a href="https://www.npmjs.com/package/keycloakify">
+      <img src="https://img.shields.io/npm/dw/keycloakify">
+    </a>
+    <a href="https://github.com/garronej/keycloakify/blob/main/LICENSE">
+      <img src="https://img.shields.io/npm/l/keycloakify">
+    </a>
+    <a href="https://github.com/InseeFrLab/keycloakify/blob/729503fe31a155a823f46dd66ad4ff34ca274e0a/tsconfig.json#L14">
+        <img src="https://camo.githubusercontent.com/0f9fcc0ac1b8617ad4989364f60f78b2d6b32985ad6a508f215f14d8f897b8d3/68747470733a2f2f62616467656e2e6e65742f62616467652f547970655363726970742f7374726963742532302546302539462539322541412f626c7565">
+    </a>
     <a href="https://github.com/thomasdarimont/awesome-keycloak">
         <img src="https://awesome.re/mentioned-badge.svg"/>
     </a>
@@ -20,10 +30,9 @@
     <img src="https://user-images.githubusercontent.com/6702424/110260457-a1c3d380-7fac-11eb-853a-80459b65626b.png">
 </p>
 
-**NEW in v4**
-
--   Out of the box [frontend form validation](#user-profile-and-frontend-form-validation) 🥳
--   Improvements (and breaking changes in `import { useKcMessage } from "keycloakify"`.
+> **New in v4.4.0**: Feature [`login-page-expired.ftl`](https://user-images.githubusercontent.com/6702424/147856832-38c042a7-9fc8-473f-9595-e00123095ca6.png).  
+> Every time a page is added it's a breaking change for non CSS-only theme.  
+> Change [this](https://github.com/garronej/keycloakify-demo-app/blob/812754109c61157741f4a0b222026deb1538a02d/src/KcApp/KcApp.tsx#L18) and [this](https://github.com/garronej/keycloakify-demo-app/blob/812754109c61157741f4a0b222026deb1538a02d/src/KcApp/KcApp.tsx#L39) to update.
 
 # Motivations
 
@@ -71,12 +80,12 @@ If you already have a Keycloak custom theme, it can be easily ported to Keycloak
 -   [GitHub Actions](#github-actions)
 -   [Limitations](#limitations)
     -   [`process.env.PUBLIC_URL` not supported.](#processenvpublic_url-not-supported)
-    -   [`@font-face` importing fonts from the `src/` dir](#font-face-importing-fonts-from-thesrc-dir)
+    -   [`@font-face` importing fonts from the `src/` dir](#font-face-importing-fonts-from-the-src-dir)
         -   [Example of setup that **won't** work](#example-of-setup-that-wont-work)
         -   [Possible workarounds](#possible-workarounds)
 -   [Implement context persistence (optional)](#implement-context-persistence-optional)
 -   [Kickstart video](#kickstart-video)
--   [About the errors related to `objectToJson` in Keycloak logs.](#about-the-errors-related-to-objecttojson-in-keycloak-logs)
+-   [FTL errors related to `ftl_object_to_js_code_declaring_an_object` in Keycloak logs.](#ftl-errors-related-to-ftl_object_to_js_code_declaring_an_object-in-keycloak-logs)
 -   [Adding custom message (to `i18n/useKcMessage.tsx`)](#adding-custom-message-to-i18nusekcmessagetsx)
 -   [Email domain whitelist](#email-domain-whitelist)
 -   [Changelog highlights](#changelog-highlights)
@@ -87,6 +96,8 @@ If you already have a Keycloak custom theme, it can be easily ported to Keycloak
 
 # Requirements
 
+On Windows OS you'll have to use [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10). More info [here](https://github.com/InseeFrLab/keycloakify/issues/54%23issuecomment-984834217)
+
 Tested with the following Keycloak versions:
 
 -   [11.0.3](https://hub.docker.com/layers/jboss/keycloak/11.0.3/images/sha256-4438f1e51c1369371cb807dffa526e1208086b3ebb9cab009830a178de949782?context=explore)
@@ -96,7 +107,7 @@ Tested with the following Keycloak versions:
 This tool will be maintained to stay compatible with Keycloak v11 and up, however, the default pages you will get
 (before you customize it) will always be the ones of Keycloak v11.
 
-This tool assumes you are bundling your app with Webpack (tested with 4.44.2) .
+This tool assumes you are bundling your app with Webpack (tested with the versions that ships with CRA v4.44.2 and v5.0.0) .
 It assumes there is a `build/` directory at the root of your react project directory containing a `index.html` file
 and a `build/static/` directory generated by webpack.
 For more information see [this issue](https://github.com/InseeFrLab/keycloakify/issues/5#issuecomment-832296432)
@@ -104,9 +115,7 @@ For more information see [this issue](https://github.com/InseeFrLab/keycloakify/
 **All this is defaults with [`create-react-app`](https://create-react-app.dev)** (tested with 4.0.3)
 
 -   `mvn` ([Maven](https://maven.apache.org/)), `rm`, `mkdir`, `curl`, `unzip` are assumed to be available.
--   `docker` must be up and running when running `yarn keycloak`.
-
-On Windows you'll have to use [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
+-   `docker` must be up and running when running `start_keycloak_testing_container.sh` (Instructions provided after running `yarn keycloak`).
 
 ## My framework doesn’t seem to be supported, what can I do?
 
@@ -151,27 +160,23 @@ your index should look something like:
 `src/index.tsx`
 
 ```tsx
-import { App } from "./<wherever>/App";
-import {
-  KcApp,
-  defaultKcProps,
-  getKcContext
-} from "keycloakify";
-import { css } from "tss-react/@emotion/css";
+import { App } from "./<wherever>/App";
+import { KcApp, defaultKcProps, getKcContext } from "keycloakify";
+import { css } from "tss-react/@emotion/css";
 
 const { kcContext } = getKcContext();
 
 const myClassName = css({ "color": "red" });
 
 reactDom.render(
-        <KcApp
-            kcContext={kcContext}
-            {...{
-                ...defaultKcProps,
-                "kcHeaderWrapperClass": myClassName
-            }}
-        />
-    document.getElementById("root")
+    <KcApp
+        kcContext={kcContext}
+        {...{
+            ...defaultKcProps,
+            "kcHeaderWrapperClass": myClassName,
+        }}
+    />,
+    document.getElementById("root"),
 );
 ```
 
@@ -212,8 +217,8 @@ reactDom.render(
     <img src="https://user-images.githubusercontent.com/6702424/114326299-6892fc00-9b34-11eb-8d75-85696e55458f.png">
 </p>
 
-Example of a customization using only CSS: [here](https://github.com/InseeFrLab/onyxia-ui/blob/012639d62327a9a56be80c46e32c32c9497b82db/src/app/components/KcApp.tsx)
-(the [index.tsx](https://github.com/InseeFrLab/onyxia-ui/blob/012639d62327a9a56be80c46e32c32c9497b82db/src/app/index.tsx#L89-L94) )
+Example of a customization using only CSS: [here](https://github.com/InseeFrLab/onyxia-web/blob/012639d62327a9a56be80c46e32c32c9497b82db/src/app/components/KcApp.tsx)
+(the [index.tsx](https://github.com/InseeFrLab/onyxia-web/blob/012639d62327a9a56be80c46e32c32c9497b82db/src/app/index.tsx#L89-L94) )
 and the result you can expect:
 
 <p align="center">
@@ -228,7 +233,7 @@ If you want to go beyond only customizing the CSS you can re-implement some of t
 pages or even add new ones.
 
 If you want to go this way checkout the demo setup provided [here](https://github.com/garronej/keycloakify-demo-app/tree/look_and_feel).
-If you prefer a real life example you can checkout [onyxia-web's source](https://github.com/InseeFrLab/onyxia-web/tree/main/src/app/components/KcApp).
+If you prefer a real life example you can checkout [onyxia-web's source](https://github.com/InseeFrLab/onyxia-web/tree/main/src/ui/components/KcApp).
 The web app is in production [here](https://datalab.sspcloud.fr).
 
 Main takeaways are:
@@ -290,7 +295,7 @@ If you are specifically building a theme to integrate with an app or a website t
 to first browse unauthenticated before logging in, you will get a significant
 performance boost if you jump through those hoops:
 
--   Provide the url of your app in the `homepage` field of package.json. [ex](https://github.com/garronej/keycloakify-demo-app/blob/7847cc70ef374ab26a6cc7953461cf25603e9a6d/package.json#L2)
+-   Provide the url of your app in the `homepage` field of package.json. [ex](https://github.com/garronej/keycloakify-demo-app/blob/7847cc70ef374ab26a6cc7953461cf25603e9a6d/package.json#L2) or in a `public/CNAME` file. [ex](https://github.com/garronej/keycloakify-demo-app/blob/main/public/CNAME).
 -   Build the theme using `npx build-keycloak-theme --external-assets` [ex](https://github.com/garronej/keycloakify-demo-app/blob/7847cc70ef374ab26a6cc7953461cf25603e9a6d/.github/workflows/ci.yaml#L21)
 -   Enable [long-term assets caching](https://create-react-app.dev/docs/production-build/#static-file-caching) on the server hosting your app.
 -   Make sure not to build your app and the keycloak theme separately
@@ -357,7 +362,7 @@ the building and publishing of the theme (the .jar file).
 You won't be able to [import things from your public directory **in your JavaScript code**](https://create-react-app.dev/docs/using-the-public-folder/#adding-assets-outside-of-the-module-system).
 (This isn't recommended anyway).
 
-## `@font-face` importing fonts from the `src/` dir
+## `@font-face` importing fonts from the `src/` dir
 
 If you are building the theme with [--external-assets](#enable-loading-in-a-blink-of-a-eye-of-login-pages-)
 this limitation doesn't apply, you can import fonts however you see fit.
@@ -373,7 +378,8 @@ this limitation doesn't apply, you can import fonts however you see fit.
 -   If it is possible, use Google Fonts or any other font provider.
 -   If you want to host your font recommended approach is to move your fonts into the `public`
     directory and to place your `@font-face` statements in the `public/index.html`.  
-    Example [here](https://github.com/InseeFrLab/onyxia-ui/blob/0e3a04610cfe872ca71dad59e05ced8f785dee4b/public/index.html#L6-L51).
+    Example [here](https://github.com/garronej/keycloakify-demo-app/blob/9aa2dbaec28a7786d6b2983c9a59d393dec1b2d6/public/index.html#L27-L73)
+    (and the font are [here](https://github.com/garronej/keycloakify-demo-app/tree/main/public/fonts/WorkSans)).
 -   You can also [use non relative url](https://github.com/garronej/keycloakify-demo-app/blob/2de8a9eb6f5de9c94f9cd3991faad0377e63268c/src/fonts.scss#L16) but don't forget [`Access-Control-Allow-Origin`](https://github.com/garronej/keycloakify-demo-app/blob/2de8a9eb6f5de9c94f9cd3991faad0377e63268c/nginx.conf#L17-L19).
 
 # Implement context persistence (optional)
@@ -433,33 +439,29 @@ keycloakInstance.init({
 
 If you really want to go the extra miles and avoid having the white
 flash of the blank html before the js bundle have been evaluated
-[here is a snippet](https://github.com/InseeFrLab/onyxia-ui/blob/a77eb502870cfe6878edd0d956c646d28746d053/public/index.html#L5-L54) that you can place in your `public/index.html` if you are using `powerhooks/useGlobalState`.
+[here is a snippet](https://github.com/InseeFrLab/onyxia-web/blob/e1c1f309aaa3d5f860df39ba0b75cce89c88a9de/public/index.html#L117-L166) that you can place in your `public/index.html` if you are using `powerhooks/useGlobalState`.
 
 # Kickstart video
 
 _NOTE: keycloak-react-theming was renamed keycloakify since this video was recorded_
 [![kickstart_video](https://user-images.githubusercontent.com/6702424/108877866-f146ee80-75ff-11eb-8120-003b3c5f6dd8.png)](https://youtu.be/xTz0Rj7i2v8)
 
-# About the errors related to `objectToJson` in Keycloak logs.
+# FTL errors related to `ftl_object_to_js_code_declaring_an_object` in Keycloak logs.
 
-The logs of your keycloak server will always show this kind of errors every time a client request a page:
+If you ever encounter one of these errors:
 
 ```log
 FTL stack trace ("~" means nesting-related):
-        - Failed at: #local value = object[key]  [in template "login.ftl" in macro "objectToJson_please_ignore_errors" at line 70, column 21]
-        - Reached through: @compress  [in template "login.ftl" in macro "objectToJson_please_ignore_errors" at line 36, column 5]
-        - Reached through: @objectToJson_please_ignore_errors object=value depth=(dep...  [in template "login.ftl" in macro "objectToJson_please_ignore_errors" at line 81, column 27]
-        - Reached through: @compress  [in template "login.ftl" in macro "objectToJson_please_ignore_errors" at line 36, column 5]
-        - Reached through: @objectToJson_please_ignore_errors object=(.data_model) de...  [in template "login.ftl" at line 163, column 43]
+        - Failed at: #local value = object[key]  [in template "login.ftl" in macro "ftl_object_to_js_code_declaring_an_object" at line 70, column 21]
+        - Reached through: @compress  [in template "login.ftl" in macro "ftl_object_to_js_code_declaring_an_object" at line 36, column 5]
+        - Reached through: @ftl_object_to_js_code_declaring_an_object object=value depth=(dep...  [in template "login.ftl" in macro "ftl_object_to_js_code_declaring_an_object" at line 81, column 27]
+        - Reached through: @compress  [in template "login.ftl" in macro "ftl_object_to_js_code_declaring_an_object" at line 36, column 5]
+        - Reached through: @ftl_object_to_js_code_declaring_an_object object=(.data_model) de...  [in template "login.ftl" at line 163, column 43]
 ```
 
-Theses are expected to show up in the log.
-Unfortunately, there is nothing I know of that can be done to avoid them or even mute them.
-They can be, however, safely ignored.
-
-To [converts the `.ftl` values into a JavaScript object](https://github.com/InseeFrLab/keycloakify/blob/main/src/bin/build-keycloak-theme/generateFtl/common.ftl)
-without making assumptions on the `.data_model` we have to do things that throws.  
-It's all-right because every statement that can fail is inside an `<#attempt><#recorver>` block but it results in errors being printed to the logs.
+It's just noise, they can be safely ignored.  
+You can, however, and are encouraged to, report any that you would spot.  
+Just open an issue about it and I will release a patched version of Keycloakify in the better delays.
 
 # Adding custom message (to `i18n/useKcMessage.tsx`)
 
@@ -476,6 +478,10 @@ If you want to restrict the emails domain that can register, you can use [this p
 and `kcRegisterContext["authorizedMailDomains"]` to validate on.
 
 # Changelog highlights
+
+> **New in v4.3.0**: Feature [`login-update-password.ftl`](https://user-images.githubusercontent.com/6702424/147517600-6191cf72-93dd-437b-a35c-47180142063e.png).  
+> Every time a page is added it's a breaking change for non CSS-only theme.  
+> Change [this](https://github.com/garronej/keycloakify-demo-app/blob/df664c13c77ce3c53ac7df0622d94d04e76d3f9f/src/KcApp/KcApp.tsx#L17) and [this](https://github.com/garronej/keycloakify-demo-app/blob/df664c13c77ce3c53ac7df0622d94d04e76d3f9f/src/KcApp/KcApp.tsx#L37) to update.
 
 ## v4
 

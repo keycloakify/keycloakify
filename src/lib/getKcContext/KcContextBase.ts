@@ -21,8 +21,10 @@ export type KcContextBase =
     | KcContextBase.LoginVerifyEmail
     | KcContextBase.Terms
     | KcContextBase.LoginOtp
+    | KcContextBase.LoginUpdatePassword
     | KcContextBase.LoginUpdateProfile
-    | KcContextBase.LoginIdpLinkConfirm;
+    | KcContextBase.LoginIdpLinkConfirm
+    | KcContextBase.LoginPageExpired;
 
 export declare namespace KcContextBase {
     export type Common = {
@@ -34,6 +36,7 @@ export declare namespace KcContextBase {
             loginUrl: string;
         };
         realm: {
+            name: string;
             displayName?: string;
             displayNameHtml?: string;
             internationalizationEnabled: boolean;
@@ -191,6 +194,11 @@ export declare namespace KcContextBase {
         };
     };
 
+    export type LoginUpdatePassword = Common & {
+        pageId: "login-update-password.ftl";
+        username: string;
+    };
+
     export type LoginUpdateProfile = Common & {
         pageId: "login-update-profile.ftl";
         user: {
@@ -205,6 +213,10 @@ export declare namespace KcContextBase {
     export type LoginIdpLinkConfirm = Common & {
         pageId: "login-idp-link-confirm.ftl";
         idpAlias: string;
+    };
+
+    export type LoginPageExpired = Common & {
+        pageId: "login-page-expired.ftl";
     };
 }
 

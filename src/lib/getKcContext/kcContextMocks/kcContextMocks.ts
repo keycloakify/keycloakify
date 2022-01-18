@@ -5,7 +5,7 @@ import { getKcLanguageTagLabel } from "../../i18n/KcLanguageTag";
 //NOTE: Aside because we want to be able to import them from node
 import { resourcesCommonPath, resourcesPath } from "./urlResourcesPath";
 import { id } from "tsafe/id";
-import { join as pathJoin } from "path";
+import { pathJoin } from "../../tools/pathJoin";
 
 const PUBLIC_URL = process.env["PUBLIC_URL"] ?? "/";
 
@@ -18,6 +18,7 @@ export const kcContextCommonMock: KcContextBase.Common = {
         "loginUrl": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg",
     },
     "realm": {
+        "name": "myrealm",
         "displayName": "myrealm",
         "displayNameHtml": "myrealm",
         "internationalizationEnabled": true,
@@ -344,6 +345,11 @@ export const kcContextMocks: KcContextBase[] = [
                 },
             ],
         },
+    }),
+    id<KcContextBase.LoginUpdatePassword>({
+        ...kcContextCommonMock,
+        "pageId": "login-update-password.ftl",
+        "username": "anUsername",
     }),
     id<KcContextBase.LoginUpdateProfile>({
         ...kcContextCommonMock,
