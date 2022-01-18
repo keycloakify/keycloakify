@@ -37,7 +37,7 @@ export function replaceImportsInInlineCssCode(params: { cssCode: string; urlPath
     const { cssCode, urlPathname, urlOrigin } = params;
 
     const fixedCssCode = cssCode.replace(
-        urlPathname === "/" ? /url\(\/([^/][^)]+)\)/g : new RegExp(`url\\(${urlPathname}([^)]+)\\)`, "g"),
+        urlPathname === "/" ? /url\(["']?\/([^/][^)"']+)["']?\)/g : new RegExp(`url\\(["']?${urlPathname}([^)"']+)["']?\\)`, "g"),
         (...[, group]) => `url(${urlOrigin === undefined ? "${url.resourcesPath}/build/" + group : params.urlOrigin + urlPathname + group})`,
     );
 
@@ -52,7 +52,7 @@ export function replaceImportsInCssCode(params: { cssCode: string }): {
 
     const cssGlobalsToDefine: Record<string, string> = {};
 
-    new Set(cssCode.match(/url\(\/[^/][^)]+\)[^;}]*/g) ?? []).forEach(
+    new Set(cssCode.match(/url\(["']?\/[^/][^)"']+["']?\)[^;}]*/g) ?? []).forEach(
         match => (cssGlobalsToDefine["url" + crypto.createHash("sha256").update(match).digest("hex").substring(0, 15)] = match),
     );
 

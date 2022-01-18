@@ -1,3 +1,85 @@
+### **4.5.1** (2022-01-18)  
+  
+- fix previous version    
+  
+## **4.5.0** (2022-01-18)  
+  
+- Read public/CNAME for domain name in --externel-assets mode    
+  
+## **4.4.0** (2022-01-01)  
+  
+- Merge pull request #73 from lazToum/main
+
+(feature) added login-page-expired.ftl  
+- added login-page-expired.ftl  
+- Add update instruction for 4.3.0    
+  
+## **4.3.0** (2021-12-27)  
+  
+- Merge pull request #72 from praiz/main
+
+feat(*): added login-update-password  
+- feat(*): added login-update-password    
+  
+### **4.2.21** (2021-12-27)  
+  
+- update dependencies    
+  
+### **4.2.19** (2021-12-21)  
+  
+- Merge pull request #70 from VBustamante/patch-1  
+- Added realm name field to KcContext mocks object  
+- Merge pull request #69 from VBustamante/patch-1
+
+Adding name field to realm in KcContext type  
+- Adding name field to realm in KcContext type    
+  
+### **4.2.18** (2021-12-17)  
+  
+- Improve css url() import (fix CRA 5)    
+  
+### **4.2.17** (2021-12-16)  
+  
+- Fix path.join polyfill    
+  
+### **4.2.16** (2021-12-16)  
+  
+  
+  
+### **4.2.15** (2021-12-16)  
+  
+- use custom polyfill for path.join (fix webpack 5 build)    
+  
+### **4.2.14** (2021-12-12)  
+  
+- Merge pull request #65 from InseeFrLab/doge_ftl_errors
+
+Prevent ftl errors in Keycloak log  
+- Encourage users to report errors in logs  
+- Fix ftl error related to url.loginAction in saml-post-form.ftl  
+- Ftl prevent error with updateProfileCtx  
+- Ftl prevent error with auth.attemptedUsername  
+- Fix ftl error as comment formatting  
+- Merge remote-tracking branch 'origin/main' into doge_ftl_errors  
+- Update README, remove all instruction about errors in logs  
+- Avoid error in Keycloak logs, fix long template loading time  
+- Add missing collon in README sample code
+
+Add miss ','    
+  
+### **4.2.13** (2021-12-08)  
+  
+- Fix broken link about how to import fonts #62  
+- Add a video to show how to test the theme in a local container    
+  
+### **4.2.12** (2021-12-08)  
+  
+- Update post build instructions    
+  
+### **4.2.11** (2021-12-07)  
+  
+  
+  
 ### **4.2.10** (2021-11-12)  
   
 - Export an exaustive list of KcLanguageTag    

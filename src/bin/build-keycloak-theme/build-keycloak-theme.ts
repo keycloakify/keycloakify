@@ -4,6 +4,7 @@ import { join as pathJoin, relative as pathRelative, basename as pathBasename } 
 import * as child_process from "child_process";
 import { generateDebugFiles, containerLaunchScriptBasename } from "./generateDebugFiles";
 import { URL } from "url";
+import * as fs from "fs";
 
 type ParsedPackageJson = {
     name: string;
@@ -41,7 +42,17 @@ export function main() {
             const url = (() => {
                 const { homepage } = parsedPackageJson;
 
-                return homepage === undefined ? undefined : new URL(homepage);
+                if (homepage !== undefined) {
+                    return new URL(homepage);
+                }
+
+                const cnameFilePath = pathJoin(reactProjectDirPath, "public", "CNAME");
+
+                if (fs.existsSync(cnameFilePath)) {
+                    return new URL(`https://${fs.readFileSync(cnameFilePath).toString("utf8").replace(/\s+$/, "")}`);
+                }
+
+                return undefined;
             })();
 
             return {
@@ -121,11 +132,14 @@ export function main() {
             "",
             `👉 $ ./${pathRelative(reactProjectDirPath, pathJoin(keycloakThemeBuildingDirPath, containerLaunchScriptBasename))} 👈`,
             "",
-            'To enable the theme within keycloak log into the admin console ( 👉 http://localhost:8080 username: admin, password: admin 👈), create a realm (called "myrealm" for example),',
-            `go to your realm settings, click on the theme tab then select ${themeName}.`,
-            `More details: https://www.keycloak.org/getting-started/getting-started-docker`,
+            "Once your container is up and running: ",
+            "- Log into the admin console 👉 http://localhost:8080 username: admin, password: admin 👈",
+            '- Create a realm named "myrealm"',
+            '- Create a client with id "myclient" and root url: "https://www.keycloak.org/app/"',
+            `- Select Login Theme: ${themeName} (don't forget to save at the bottom of the page)`,
+            `- Go to 👉 https://www.keycloak.org/app/ 👈 Click "Save" then "Sign in". You should see your login page`,
             "",
-            "Once your container is up and configured 👉 http://localhost:8080/auth/realms/myrealm/account 👈",
+            "Video demoing this process: https://youtu.be/N3wlBoH4hKg",
             "",
         ].join("\n"),
     );
