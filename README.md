@@ -30,6 +30,8 @@
     <img src="https://user-images.githubusercontent.com/6702424/110260457-a1c3d380-7fac-11eb-853a-80459b65626b.png">
 </p>
 
+> WARNING: There are [compat issues with Keyclaok v16](https://github.com/InseeFrLab/keycloakify/issues/79) curently being adressed. 
+
 > **New in v4.4.0**: Feature [`login-page-expired.ftl`](https://user-images.githubusercontent.com/6702424/147856832-38c042a7-9fc8-473f-9595-e00123095ca6.png).  
 > Every time a page is added it's a breaking change for non CSS-only theme.  
 > Change [this](https://github.com/garronej/keycloakify-demo-app/blob/812754109c61157741f4a0b222026deb1538a02d/src/KcApp/KcApp.tsx#L18) and [this](https://github.com/garronej/keycloakify-demo-app/blob/812754109c61157741f4a0b222026deb1538a02d/src/KcApp/KcApp.tsx#L39) to update.
