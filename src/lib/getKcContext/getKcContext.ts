@@ -7,6 +7,9 @@ import { exclude } from "tsafe/exclude";
 import { assert } from "tsafe/assert";
 import type { ExtendsKcContextBase } from "./getKcContextFromWindow";
 import { getKcContextFromWindow } from "./getKcContextFromWindow";
+import { pathJoin } from "../tools/pathJoin";
+import { pathBasename } from "../tools/pathBasename";
+import { resourcesCommonPath } from "./kcContextMocks/urlResourcesPath";
 
 export function getKcContext<KcContextExtended extends { pageId: string } = never>(params?: {
     mockPageId?: ExtendsKcContextBase<KcContextExtended>["pageId"];
@@ -93,5 +96,13 @@ export function getKcContext<KcContextExtended extends { pageId: string } = neve
         return { kcContext };
     }
 
-    return { "kcContext": getKcContextFromWindow<KcContextExtended>() };
+    const kcContext = getKcContextFromWindow<KcContextExtended>();
+
+    if (kcContext !== undefined) {
+        const { url } = kcContext;
+
+        url.resourcesCommonPath = pathJoin(url.resourcesPath, pathBasename(resourcesCommonPath));
+    }
+
+    return { kcContext };
 }
