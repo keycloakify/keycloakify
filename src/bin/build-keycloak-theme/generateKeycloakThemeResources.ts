@@ -1,6 +1,6 @@
 import { transformCodebase } from "../tools/transformCodebase";
 import * as fs from "fs";
-import { join as pathJoin } from "path";
+import { join as pathJoin, basename as pathBasename } from "path";
 import { replaceImportsInCssCode, replaceImportsFromStaticInJsCode } from "./replaceImportFromStatic";
 import { generateFtlFilesCodeFactory, pageIds } from "./generateFtl";
 import { downloadBuiltinKeycloakTheme } from "../download-builtin-keycloak-theme";
@@ -112,20 +112,22 @@ export function generateKeycloakThemeResources(params: {
         const reactAppPublicDirPath = pathJoin(reactAppBuildDirPath, "..", "public");
 
         transformCodebase({
-            "srcDirPath": themeResourcesDirPath,
-            "destDirPath": pathJoin(reactAppPublicDirPath, resourcesPath),
+            "srcDirPath": pathJoin(tmpDirPath, "keycloak", "common", "resources"),
+            "destDirPath": pathJoin(themeResourcesDirPath, pathBasename(resourcesCommonPath)),
         });
 
         transformCodebase({
-            "srcDirPath": pathJoin(tmpDirPath, "keycloak", "common", "resources"),
-            "destDirPath": pathJoin(reactAppPublicDirPath, resourcesCommonPath),
+            "srcDirPath": themeResourcesDirPath,
+            "destDirPath": pathJoin(reactAppPublicDirPath, resourcesPath),
         });
 
         const keycloakResourcesWithinPublicDirPath = pathJoin(reactAppPublicDirPath, subDirOfPublicDirBasename);
 
         fs.writeFileSync(
             pathJoin(keycloakResourcesWithinPublicDirPath, "README.txt"),
-            Buffer.from(["This is just a test folder that helps develop", "the login and register page without having to yarn build"].join(" ")),
+            Buffer.from(
+                ["This is just a test folder that helps develop", "the login and register page without having to run a Keycloak container"].join(" "),
+            ),
         );
 
         fs.writeFileSync(pathJoin(keycloakResourcesWithinPublicDirPath, ".gitignore"), Buffer.from("*", "utf8"));

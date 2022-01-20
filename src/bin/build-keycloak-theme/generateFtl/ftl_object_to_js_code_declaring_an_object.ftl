@@ -126,6 +126,14 @@ ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
                         key == "loginAction" && 
                         are_same_path(path, ["url"]) && 
                         pageId == "saml-post-form.ftl"
+                    ) || (
+                        ["contextData", "idpConfig", "idp", "authenticationSession"]?seq_contains(key) &&
+                        are_same_path(path, ["brokerContext"]) &&
+                        ["login-idp-link-confirm.ftl", "login-idp-link-email.ftl" ]?seq_contains(pageId)
+                    ) || (
+                        key == "identityProviderBrokerCtx" && 
+                        are_same_path(path, []) &&
+                        ["login-idp-link-confirm.ftl", "login-idp-link-email.ftl" ]?seq_contains(pageId)
                     )
                 >
                     <#local out_seq += ["/*If you need '" + key + "' on " + pageId + ", please submit an issue to the Keycloakify repo*/"]>
