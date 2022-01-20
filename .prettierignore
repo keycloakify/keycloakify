@@ -4,3 +4,4 @@ node_modules/
 /.yarn_home/
 /src/test/apps/
 /src/tools/types/
+/sample_react_project
