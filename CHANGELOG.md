@@ -1,3 +1,17 @@
+### **4.5.2** (2022-01-20)  
+  
+- Test container uses Keycloak 16.1.0  
+- Merge pull request #78 from InseeFrLab/Ann2827/pull
+
+Ann2827/pull  
+- Refactor #78  
+- Compat with Keycloak 16 (and probably 17, 18) #79  
+- Warning about compat issues with Keycloak 16  
+- fix: changes  
+- fix: Errors on pages login-idp-link-confirm and login-idp-link-email
+
+ref: https://github.com/InseeFrLab/keycloakify/issues/75    
+  
 ### **4.5.1** (2022-01-18)  
   
 - fix previous version    
