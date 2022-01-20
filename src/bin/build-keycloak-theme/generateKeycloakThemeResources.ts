@@ -7,6 +7,7 @@ import { downloadBuiltinKeycloakTheme } from "../download-builtin-keycloak-theme
 import * as child_process from "child_process";
 import { resourcesCommonPath, resourcesPath, subDirOfPublicDirBasename } from "../../lib/getKcContext/kcContextMocks/urlResourcesPath";
 import { isInside } from "../tools/isInside";
+import type { KeycloakVersion } from "../KeycloakVersion";
 
 export function generateKeycloakThemeResources(params: {
     themeName: string;
@@ -17,7 +18,7 @@ export function generateKeycloakThemeResources(params: {
     urlOrigin: undefined | string;
     extraPagesId: string[];
     extraThemeProperties: string[];
-    keycloakVersion: "11.0.3" | "15.0.2";
+    keycloakVersion: KeycloakVersion;
 }) {
     const {
         themeName,
