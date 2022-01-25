@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://user-images.githubusercontent.com/6702424/109387840-eba11f80-7903-11eb-9050-db1dad883f78.png">  
+    <img src="https://user-images.githubusercontent.com/6702424/151069267-375c612b-3302-435c-8632-13695f39f5ef.png">  
 </p>
 <p align="center">
     <i>🔏  Create Keycloak themes using React 🔏</i>
