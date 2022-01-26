@@ -1,3 +1,7 @@
+### **4.5.3** (2022-01-26)  
+  
+- Themes no longer have to break on minor Keycloakify update    
+  
 ### **4.5.2** (2022-01-20)  
   
 - Test container uses Keycloak 16.1.0  
