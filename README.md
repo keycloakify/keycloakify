@@ -31,7 +31,8 @@
 </p>
 
 > There is a new recommended way to setup highly customized theme. See [here](https://github.com/garronej/keycloakify-demo-app/blob/look_and_feel/src/KcApp/KcApp.tsx).  
-> Unlike with [the previous recommended method](https://github.com/garronej/keycloakify-demo-app/blob/a51660578bea15fb3e506b8a2b78e1056c6d68bb/src/KcApp/KcApp.tsx), your theme wont break on minor Keycloakify update.
+> Unlike with [the previous recommended method](https://github.com/garronej/keycloakify-demo-app/blob/a51660578bea15fb3e506b8a2b78e1056c6d68bb/src/KcApp/KcApp.tsx),
+> with this new method your theme wont break on minor Keycloakify update.
 
 # Motivations
 
