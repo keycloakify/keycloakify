@@ -133,7 +133,7 @@ separate module. Checkout [ts_ci](https://github.com/garronej/ts_ci), it can hel
 ## Setting up the build tool
 
 ```bash
-yarn add keycloakify @emotion/react tss-react powerhooks
+yarn add keycloakify @emotion/react powerhooks
 ```
 
 [`package.json`](https://github.com/garronej/keycloakify-demo-app/blob/main/package.json)

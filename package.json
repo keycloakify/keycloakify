@@ -57,8 +57,7 @@
     "peerDependencies": {
         "@emotion/react": "^11.4.1",
         "powerhooks": "^0.10.0",
-        "react": "^16.8.0 || ^17.0.0",
-        "tss-react": "^1.1.0 || ^3.0.0"
+        "react": "^16.8.0 || ^17.0.0"
     },
     "devDependencies": {
         "@emotion/react": "^11.4.1",
@@ -72,7 +71,6 @@
         "properties-parser": "^0.3.1",
         "react": "^17.0.1",
         "rimraf": "^3.0.2",
-        "tss-react": "^3.0.0",
         "typescript": "^4.2.3"
     },
     "dependencies": {
@@ -82,6 +80,7 @@
         "path-browserify": "^1.0.1",
         "react-markdown": "^5.0.3",
         "scripting-tools": "^0.19.13",
-        "tsafe": "^0.9.0"
+        "tsafe": "^0.9.0",
+        "tss-react": "^3.5.1"
     }
 }
