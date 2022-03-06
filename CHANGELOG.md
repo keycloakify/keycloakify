@@ -1,3 +1,8 @@
+### **4.5.4** (2022-03-06)  
+  
+- Remove tss-react from peerDependencies (it becomes a dependency)  
+- (dev script) Use tsconfig.json to tell we are at the root of the project    
+  
 ### **4.5.3** (2022-01-26)  
   
 - Themes no longer have to break on minor Keycloakify update    
