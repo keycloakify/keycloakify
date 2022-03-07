@@ -1,3 +1,7 @@
+## **4.6.0** (2022-03-07)  
+  
+- Remove powerhooks as dev dependency    
+  
 ### **4.5.5** (2022-03-07)  
   
 - Update tss-react    
