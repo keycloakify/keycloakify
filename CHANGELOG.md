@@ -1,3 +1,7 @@
+### **4.5.5** (2022-03-07)  
+  
+- Update tss-react    
+  
 ### **4.5.4** (2022-03-06)  
   
 - Remove tss-react from peerDependencies (it becomes a dependency)  
