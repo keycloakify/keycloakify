@@ -552,15 +552,6 @@ event-emitter@^0.3.5:
     d "1"
     es5-ext "~0.10.14"
 
-evt@2.0.0-beta.38:
-  version "2.0.0-beta.38"
-  resolved "https://registry.yarnpkg.com/evt/-/evt-2.0.0-beta.38.tgz#9886a08889cddba1984a236efd6d352f9d6a6539"
-  integrity sha512-b35iBAVlDHVHOqgWzjSBJZu3C0GRZ/2cIHfNFuMSWwLT/WJO2n/4x7hg6BpaNJlSRywBAtf8KcU1GUyVfEhVIA==
-  dependencies:
-    minimal-polyfills "^2.2.1"
-    run-exclusive "^2.2.14"
-    tsafe "^0.4.1"
-
 evt@2.0.0-beta.39:
   version "2.0.0-beta.39"
   resolved "https://registry.yarnpkg.com/evt/-/evt-2.0.0-beta.39.tgz#3c859a83b35940f7eecfb5f148f03b7cbf3fee51"
@@ -1164,12 +1155,12 @@ please-upgrade-node@^3.2.0:
   dependencies:
     semver-compare "^1.0.0"
 
-powerhooks@^0.11.0:
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/powerhooks/-/powerhooks-0.11.0.tgz#923749ed405a1189759cd3f16d36bd5efacfd40c"
-  integrity sha512-I48J5vJqlTRiR3eH6svxiIYLutdedu2YEd3uhCmK+pRg2jcuourVwp1UYORI/EzbKC9vv0X/0Vd/SZ6e07rYtA==
+powerhooks@^0.14.0:
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/powerhooks/-/powerhooks-0.14.0.tgz#44dd201f470761362a139ae2cb51eaa658ed5e3e"
+  integrity sha512-jWrRHyqev7Lh3MId7h1mNxs+fgegr8liHN17AaHxMgrXI6KxJ14B3Pe1It4FIRWJ4Z1dxsA734FerFGZ3Vgdkg==
   dependencies:
-    evt "2.0.0-beta.38"
+    evt "2.0.0-beta.39"
     memoizee "^0.4.15"
     resize-observer-polyfill "^1.5.1"
     tsafe "^0.8.1"
