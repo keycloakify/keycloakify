@@ -65,7 +65,6 @@
         "copyfiles": "^2.4.1",
         "husky": "^4.3.8",
         "lint-staged": "^11.0.0",
-        "powerhooks": "^0.11.0",
         "prettier": "^2.3.0",
         "properties-parser": "^0.3.1",
         "react": "^17.0.1",
