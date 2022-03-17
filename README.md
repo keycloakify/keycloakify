@@ -30,6 +30,10 @@
     <img src="https://user-images.githubusercontent.com/6702424/110260457-a1c3d380-7fac-11eb-853a-80459b65626b.png">
 </p>
 
+> New in v4.7:  
+> Register with user profile enabled: Out of the box `options` validator support.
+> [Example](https://user-images.githubusercontent.com/6702424/158911163-81e6bbe8-feb0-4dc8-abff-de199d7a678e.mov)
+
 # Motivations
 
 Keycloak provides [theme support](https://www.keycloak.org/docs/latest/server_development/#_themes) for web pages. This allows customizing the look and feel of end-user facing pages so they can be integrated with your applications.
@@ -473,6 +477,11 @@ If you want to restrict the emails domain that can register, you can use [this p
 and `kcRegisterContext["authorizedMailDomains"]` to validate on.
 
 # Changelog highlights
+
+# v4.7.0
+
+Register with user profile enabled: Out of the box `options` validator support.  
+[Example](https://user-images.githubusercontent.com/6702424/158911163-81e6bbe8-feb0-4dc8-abff-de199d7a678e.mov)
 
 # v4.6.0
 
