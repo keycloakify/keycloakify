@@ -1,3 +1,8 @@
+## **4.7.0** (2022-03-17)  
+  
+- Add support for options validator  
+- remove duplicate dependency    
+  
 ## **4.6.0** (2022-03-07)  
   
 - Remove powerhooks as dev dependency    
