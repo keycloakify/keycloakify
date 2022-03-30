@@ -1,3 +1,8 @@
+### **4.7.1** (2022-03-30)  
+  
+- Improve browser autofill  
+- factorization    
+  
 ## **4.7.0** (2022-03-17)  
   
 - Add support for options validator  
