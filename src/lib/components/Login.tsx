@@ -34,11 +34,13 @@ export const Login = memo(({ kcContext, ...props }: { kcContext: KcContextBase.L
                             <form id="kc-form-login" onSubmit={onSubmit} action={url.loginAction} method="post">
                                 <div className={cx(props.kcFormGroupClass)}>
                                     <label htmlFor="username" className={cx(props.kcLabelClass)}>
-                                        {!realm.loginWithEmailAllowed
-                                            ? msg("username")
-                                            : !realm.registrationEmailAsUsername
-                                            ? msg("usernameOrEmail")
-                                            : msg("email")}
+                                        {msg(
+                                            !realm.loginWithEmailAllowed
+                                                ? "username"
+                                                : !realm.registrationEmailAsUsername
+                                                ? "usernameOrEmail"
+                                                : "email",
+                                        )}
                                     </label>
                                     <input
                                         tabIndex={1}
