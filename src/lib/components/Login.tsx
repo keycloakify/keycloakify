@@ -5,6 +5,7 @@ import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { useKcMessage } from "../i18n/useKcMessage";
 import { useCssAndCx } from "tss-react";
 import { useConstCallback } from "powerhooks/useConstCallback";
+import type { FormEventHandler } from "react";
 
 export const Login = memo(({ kcContext, ...props }: { kcContext: KcContextBase.Login } & KcProps) => {
     const { social, realm, url, usernameEditDisabled, login, auth, registrationDisabled } = kcContext;
@@ -15,7 +16,19 @@ export const Login = memo(({ kcContext, ...props }: { kcContext: KcContextBase.L
 
     const [isLoginButtonDisabled, setIsLoginButtonDisabled] = useState(false);
 
-    const onSubmit = useConstCallback(() => (setIsLoginButtonDisabled(true), true));
+    const onSubmit = useConstCallback<FormEventHandler<HTMLFormElement>>(e => {
+        e.preventDefault();
+
+        setIsLoginButtonDisabled(true);
+
+        const formElement = e.target as HTMLFormElement;
+
+        //NOTE: Even if we login with email Keycloak expect username and password in
+        //the POST request.
+        formElement.querySelector("input[name='email']")?.setAttribute("name", "username");
+
+        formElement.submit();
+    });
 
     return (
         <Template
@@ -33,29 +46,40 @@ export const Login = memo(({ kcContext, ...props }: { kcContext: KcContextBase.L
                         {realm.password && (
                             <form id="kc-form-login" onSubmit={onSubmit} action={url.loginAction} method="post">
                                 <div className={cx(props.kcFormGroupClass)}>
-                                    <label htmlFor="username" className={cx(props.kcLabelClass)}>
-                                        {msg(
-                                            !realm.loginWithEmailAllowed
-                                                ? "username"
-                                                : !realm.registrationEmailAsUsername
-                                                ? "usernameOrEmail"
-                                                : "email",
-                                        )}
-                                    </label>
-                                    <input
-                                        tabIndex={1}
-                                        id="username"
-                                        className={cx(props.kcInputClass)}
-                                        name="username"
-                                        defaultValue={login.username ?? ""}
-                                        type="text"
-                                        {...(usernameEditDisabled
-                                            ? { "disabled": true }
-                                            : {
-                                                  "autoFocus": true,
-                                                  "autoComplete": "off",
-                                              })}
-                                    />
+                                    {(() => {
+                                        const label = !realm.loginWithEmailAllowed
+                                            ? "username"
+                                            : realm.registrationEmailAsUsername
+                                            ? "email"
+                                            : "usernameOrEmail";
+
+                                        const autoCompleteHelper: typeof label = label === "usernameOrEmail" ? "username" : label;
+
+                                        return (
+                                            <>
+                                                <label htmlFor={autoCompleteHelper} className={cx(props.kcLabelClass)}>
+                                                    {msg(label)}
+                                                </label>
+                                                <input
+                                                    tabIndex={1}
+                                                    id={autoCompleteHelper}
+                                                    className={cx(props.kcInputClass)}
+                                                    //NOTE: This is used by Google Chrome auto fill so we use it to tell
+                                                    //the browser how to pre fill the form but before submit we put it back
+                                                    //to username because it is what keycloak expects.
+                                                    name={autoCompleteHelper}
+                                                    defaultValue={login.username ?? ""}
+                                                    type="text"
+                                                    {...(usernameEditDisabled
+                                                        ? { "disabled": true }
+                                                        : {
+                                                              "autoFocus": true,
+                                                              "autoComplete": "off",
+                                                          })}
+                                                />
+                                            </>
+                                        );
+                                    })()}
                                 </div>
                                 <div className={cx(props.kcFormGroupClass)}>
                                     <label htmlFor="password" className={cx(props.kcLabelClass)}>
