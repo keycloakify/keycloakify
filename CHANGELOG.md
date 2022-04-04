@@ -1,3 +1,44 @@
+### **4.7.1** (2022-03-30)  
+  
+- Improve browser autofill  
+- factorization    
+  
+## **4.7.0** (2022-03-17)  
+  
+- Add support for options validator  
+- remove duplicate dependency    
+  
+## **4.6.0** (2022-03-07)  
+  
+- Remove powerhooks as dev dependency    
+  
+### **4.5.5** (2022-03-07)  
+  
+- Update tss-react    
+  
+### **4.5.4** (2022-03-06)  
+  
+- Remove tss-react from peerDependencies (it becomes a dependency)  
+- (dev script) Use tsconfig.json to tell we are at the root of the project    
+  
+### **4.5.3** (2022-01-26)  
+  
+- Themes no longer have to break on minor Keycloakify update    
+  
+### **4.5.2** (2022-01-20)  
+  
+- Test container uses Keycloak 16.1.0  
+- Merge pull request #78 from InseeFrLab/Ann2827/pull
+
+Ann2827/pull  
+- Refactor #78  
+- Compat with Keycloak 16 (and probably 17, 18) #79  
+- Warning about compat issues with Keycloak 16  
+- fix: changes  
+- fix: Errors on pages login-idp-link-confirm and login-idp-link-email
+
+ref: https://github.com/InseeFrLab/keycloakify/issues/75    
+  
 ### **4.5.1** (2022-01-18)  
   
 - fix previous version    

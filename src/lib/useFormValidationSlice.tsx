@@ -213,7 +213,7 @@ export function useGetErrors(params: {
                 break scope;
             }
 
-            const msgArgs = ["invalidEmailMessage"] as const;
+            const msgArgs = [id<MessageKey>("invalidEmailMessage")] as const;
 
             errors.push({
                 validatorName,
@@ -274,6 +274,32 @@ export function useGetErrors(params: {
 
                 break scope;
             }
+        }
+
+        scope: {
+            const validatorName = "options";
+
+            const validator = validators[validatorName];
+
+            if (validator === undefined) {
+                break scope;
+            }
+
+            if (value === "") {
+                break scope;
+            }
+
+            if (validator.options.indexOf(value) >= 0) {
+                break scope;
+            }
+
+            const msgArgs = [id<MessageKey>("notAValidOption")] as const;
+
+            errors.push({
+                validatorName,
+                "errorMessage": <Fragment key={errors.length}>{advancedMsg(...msgArgs)}</Fragment>,
+                "errorMessageStr": advancedMsgStr(...msgArgs),
+            });
         }
 
         //TODO: Implement missing validators.

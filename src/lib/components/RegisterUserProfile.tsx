@@ -95,7 +95,7 @@ const UserProfileFormFields = memo(({ kcContext, onIsFormSubmittableValueChange,
                 {
                     target: { value },
                 },
-            ]: [React.ChangeEvent<HTMLInputElement>],
+            ]: [React.ChangeEvent<HTMLInputElement | HTMLSelectElement>],
         ) =>
             formValidationReducer({
                 "action": "update value",
@@ -148,26 +148,50 @@ const UserProfileFormFields = memo(({ kcContext, onIsFormSubmittableValueChange,
                                 {attribute.required && <>*</>}
                             </div>
                             <div className={cx(props.kcInputWrapperClass)}>
-                                <input
-                                    type={(() => {
-                                        switch (attribute.name) {
-                                            case "password-confirm":
-                                            case "password":
-                                                return "password";
-                                            default:
-                                                return "text";
-                                        }
-                                    })()}
-                                    id={attribute.name}
-                                    name={attribute.name}
-                                    value={value}
-                                    onChange={onChangeFactory(attribute.name)}
-                                    className={cx(props.kcInputClass)}
-                                    aria-invalid={displayableErrors.length !== 0}
-                                    disabled={attribute.readOnly}
-                                    autoComplete={attribute.autocomplete}
-                                    onBlur={onBlurFactory(attribute.name)}
-                                />
+                                {(() => {
+                                    const { options } = attribute.validators;
+
+                                    if (options !== undefined) {
+                                        return (
+                                            <select
+                                                id={attribute.name}
+                                                name={attribute.name}
+                                                onChange={onChangeFactory(attribute.name)}
+                                                onBlur={onBlurFactory(attribute.name)}
+                                                value={value}
+                                            >
+                                                {options.options.map(option => (
+                                                    <option key={option} value={option}>
+                                                        {option}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        );
+                                    }
+
+                                    return (
+                                        <input
+                                            type={(() => {
+                                                switch (attribute.name) {
+                                                    case "password-confirm":
+                                                    case "password":
+                                                        return "password";
+                                                    default:
+                                                        return "text";
+                                                }
+                                            })()}
+                                            id={attribute.name}
+                                            name={attribute.name}
+                                            value={value}
+                                            onChange={onChangeFactory(attribute.name)}
+                                            className={cx(props.kcInputClass)}
+                                            aria-invalid={displayableErrors.length !== 0}
+                                            disabled={attribute.readOnly}
+                                            autoComplete={attribute.autocomplete}
+                                            onBlur={onBlurFactory(attribute.name)}
+                                        />
+                                    );
+                                })()}
                                 {displayableErrors.length !== 0 && (
                                     <span
                                         id={`input-error-${attribute.name}`}

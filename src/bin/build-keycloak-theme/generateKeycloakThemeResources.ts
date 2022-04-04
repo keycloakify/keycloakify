@@ -1,12 +1,13 @@
 import { transformCodebase } from "../tools/transformCodebase";
 import * as fs from "fs";
-import { join as pathJoin } from "path";
+import { join as pathJoin, basename as pathBasename } from "path";
 import { replaceImportsInCssCode, replaceImportsFromStaticInJsCode } from "./replaceImportFromStatic";
 import { generateFtlFilesCodeFactory, pageIds } from "./generateFtl";
 import { downloadBuiltinKeycloakTheme } from "../download-builtin-keycloak-theme";
 import * as child_process from "child_process";
 import { resourcesCommonPath, resourcesPath, subDirOfPublicDirBasename } from "../../lib/getKcContext/kcContextMocks/urlResourcesPath";
 import { isInside } from "../tools/isInside";
+import type { KeycloakVersion } from "../KeycloakVersion";
 
 export function generateKeycloakThemeResources(params: {
     themeName: string;
@@ -17,7 +18,7 @@ export function generateKeycloakThemeResources(params: {
     urlOrigin: undefined | string;
     extraPagesId: string[];
     extraThemeProperties: string[];
-    keycloakVersion: "11.0.3" | "15.0.2";
+    keycloakVersion: KeycloakVersion;
 }) {
     const {
         themeName,
@@ -112,20 +113,22 @@ export function generateKeycloakThemeResources(params: {
         const reactAppPublicDirPath = pathJoin(reactAppBuildDirPath, "..", "public");
 
         transformCodebase({
-            "srcDirPath": themeResourcesDirPath,
-            "destDirPath": pathJoin(reactAppPublicDirPath, resourcesPath),
+            "srcDirPath": pathJoin(tmpDirPath, "keycloak", "common", "resources"),
+            "destDirPath": pathJoin(themeResourcesDirPath, pathBasename(resourcesCommonPath)),
         });
 
         transformCodebase({
-            "srcDirPath": pathJoin(tmpDirPath, "keycloak", "common", "resources"),
-            "destDirPath": pathJoin(reactAppPublicDirPath, resourcesCommonPath),
+            "srcDirPath": themeResourcesDirPath,
+            "destDirPath": pathJoin(reactAppPublicDirPath, resourcesPath),
         });
 
         const keycloakResourcesWithinPublicDirPath = pathJoin(reactAppPublicDirPath, subDirOfPublicDirBasename);
 
         fs.writeFileSync(
             pathJoin(keycloakResourcesWithinPublicDirPath, "README.txt"),
-            Buffer.from(["This is just a test folder that helps develop", "the login and register page without having to yarn build"].join(" ")),
+            Buffer.from(
+                ["This is just a test folder that helps develop", "the login and register page without having to run a Keycloak container"].join(" "),
+            ),
         );
 
         fs.writeFileSync(pathJoin(keycloakResourcesWithinPublicDirPath, ".gitignore"), Buffer.from("*", "utf8"));

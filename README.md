@@ -30,9 +30,9 @@
     <img src="https://user-images.githubusercontent.com/6702424/110260457-a1c3d380-7fac-11eb-853a-80459b65626b.png">
 </p>
 
-> **New in v4.4.0**: Feature [`login-page-expired.ftl`](https://user-images.githubusercontent.com/6702424/147856832-38c042a7-9fc8-473f-9595-e00123095ca6.png).  
-> Every time a page is added it's a breaking change for non CSS-only theme.  
-> Change [this](https://github.com/garronej/keycloakify-demo-app/blob/812754109c61157741f4a0b222026deb1538a02d/src/KcApp/KcApp.tsx#L18) and [this](https://github.com/garronej/keycloakify-demo-app/blob/812754109c61157741f4a0b222026deb1538a02d/src/KcApp/KcApp.tsx#L39) to update.
+> New in v4.7:  
+> Register with user profile enabled: Out of the box `options` validator support.
+> [Example](https://user-images.githubusercontent.com/6702424/158911163-81e6bbe8-feb0-4dc8-abff-de199d7a678e.mov)
 
 # Motivations
 
@@ -103,6 +103,7 @@ Tested with the following Keycloak versions:
 -   [11.0.3](https://hub.docker.com/layers/jboss/keycloak/11.0.3/images/sha256-4438f1e51c1369371cb807dffa526e1208086b3ebb9cab009830a178de949782?context=explore)
 -   [12.0.4](https://hub.docker.com/layers/jboss/keycloak/12.0.4/images/sha256-67e0c88e69bd0c7aef972c40bdeb558a974013a28b3668ca790ed63a04d70584?context=explore)
 -   [15.0.2](https://hub.docker.com/layers/jboss/keycloak/15.0.2/images/sha256-d8ed1ee5df42a178c341f924377da75db49eab08ea9f058ff39a8ed7ee05ec93?context=explore)
+-   [16.1.0](https://hub.docker.com/layers/jboss/keycloak/16.1.0/images/sha256-6ecb9492224c6cfbb55d43f64a5ab634145d8cc1eba14eae8c37e3afde89546e?context=explore)
 
 This tool will be maintained to stay compatible with Keycloak v11 and up, however, the default pages you will get
 (before you customize it) will always be the ones of Keycloak v11.
@@ -132,7 +133,7 @@ separate module. Checkout [ts_ci](https://github.com/garronej/ts_ci), it can hel
 ## Setting up the build tool
 
 ```bash
-yarn add keycloakify @emotion/react tss-react powerhooks
+yarn add keycloakify @emotion/react
 ```
 
 [`package.json`](https://github.com/garronej/keycloakify-demo-app/blob/main/package.json)
@@ -255,8 +256,6 @@ WARNING: If you chose to go this way use:
     "keycloakify": "~X.Y.Z"
 }
 ```
-
-in your `package.json` instead of `^X.Y.Z`. A minor update of Keycloakify might break your app.
 
 ### Hot reload
 
@@ -479,9 +478,27 @@ and `kcRegisterContext["authorizedMailDomains"]` to validate on.
 
 # Changelog highlights
 
-> **New in v4.3.0**: Feature [`login-update-password.ftl`](https://user-images.githubusercontent.com/6702424/147517600-6191cf72-93dd-437b-a35c-47180142063e.png).  
-> Every time a page is added it's a breaking change for non CSS-only theme.  
-> Change [this](https://github.com/garronej/keycloakify-demo-app/blob/df664c13c77ce3c53ac7df0622d94d04e76d3f9f/src/KcApp/KcApp.tsx#L17) and [this](https://github.com/garronej/keycloakify-demo-app/blob/df664c13c77ce3c53ac7df0622d94d04e76d3f9f/src/KcApp/KcApp.tsx#L37) to update.
+# v4.7.0
+
+Register with user profile enabled: Out of the box `options` validator support.  
+[Example](https://user-images.githubusercontent.com/6702424/158911163-81e6bbe8-feb0-4dc8-abff-de199d7a678e.mov)
+
+# v4.6.0
+
+`tss-react` and `powerhooks` are no longer peer dependencies of `keycloakify`.
+After updating Keycloakify you can remove `tss-react` and `powerhooks` from your dependencies if you don't use them explicitly.
+
+## v4.5.3
+
+There is a new recommended way to setup highly customized theme. See [here](https://github.com/garronej/keycloakify-demo-app/blob/look_and_feel/src/KcApp/KcApp.tsx).  
+Unlike with [the previous recommended method](https://github.com/garronej/keycloakify-demo-app/blob/a51660578bea15fb3e506b8a2b78e1056c6d68bb/src/KcApp/KcApp.tsx),
+with this new method your theme wont break on minor Keycloakify update.
+
+## v4.3.0
+
+Feature [`login-update-password.ftl`](https://user-images.githubusercontent.com/6702424/147517600-6191cf72-93dd-437b-a35c-47180142063e.png).  
+Every time a page is added it's a breaking change for non CSS-only theme.  
+Change [this](https://github.com/garronej/keycloakify-demo-app/blob/df664c13c77ce3c53ac7df0622d94d04e76d3f9f/src/KcApp/KcApp.tsx#L17) and [this](https://github.com/garronej/keycloakify-demo-app/blob/df664c13c77ce3c53ac7df0622d94d04e76d3f9f/src/KcApp/KcApp.tsx#L37) to update.
 
 ## v4
 

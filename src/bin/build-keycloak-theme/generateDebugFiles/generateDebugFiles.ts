@@ -1,10 +1,11 @@
 import * as fs from "fs";
 import { join as pathJoin, dirname as pathDirname } from "path";
+import type { KeycloakVersion } from "../../KeycloakVersion";
 
 export const containerLaunchScriptBasename = "start_keycloak_testing_container.sh";
 
 /** Files for being able to run a hot reload keycloak container */
-export function generateDebugFiles(params: { keycloakVersion: "11.0.3" | "15.0.2"; themeName: string; keycloakThemeBuildingDirPath: string }) {
+export function generateDebugFiles(params: { keycloakVersion: KeycloakVersion; themeName: string; keycloakThemeBuildingDirPath: string }) {
     const { themeName, keycloakThemeBuildingDirPath, keycloakVersion } = params;
 
     fs.writeFileSync(

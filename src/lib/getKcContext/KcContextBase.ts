@@ -315,6 +315,7 @@ export type Validators = Partial<{
             name: string;
             shouldBe: "equal" | "different";
         };
+    options: Validators.Options;
 }>;
 
 export declare namespace Validators {
@@ -330,6 +331,9 @@ export declare namespace Validators {
         /** "0", "1", "2"... yeah I know, don't tell me */
         min?: `${number}`;
         max?: `${number}`;
+    };
+    export type Options = {
+        options: string[];
     };
 }
 

@@ -22,7 +22,7 @@ if (require.main === module) {
         const keycloakVersion = process.argv[2] as KeycloakVersion | undefined;
 
         if (keycloakVersion === undefined) {
-            return "15.0.2";
+            return "11.0.3";
         }
 
         return keycloakVersion;

@@ -10,6 +10,7 @@ const kcMessages = {
         "shouldBeDifferent": "{0} should be different to {1}",
         "shouldMatchPattern": "Pattern should match: `/{0}/`",
         "mustBeAnInteger": "Must be an integer",
+        "notAValidOption": "Not a valid option",
     },
     "fr": {
         ...kcMessagesBase["fr"],
@@ -18,6 +19,7 @@ const kcMessages = {
         "shouldBeDifferent": "{0} doit être différent de {1}",
         "shouldMatchPattern": "Dois respecter le schéma: `/{0}/`",
         "mustBeAnInteger": "Doit être un nombre entiers",
+        "notAValidOption": "N'est pas une option valide",
         /* spell-checker: enable */
     },
 };

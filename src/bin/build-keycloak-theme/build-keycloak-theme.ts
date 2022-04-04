@@ -72,7 +72,7 @@ export function main() {
         extraPagesId,
         extraThemeProperties,
         //We have to leave it at that otherwise we break our default theme.
-        //Problem is that we can't guarantee that the the old resources common
+        //Problem is that we can't guarantee that the the old resources
         //will still be available on the newer keycloak version.
         "keycloakVersion": "11.0.3",
     });
@@ -91,7 +91,8 @@ export function main() {
     generateDebugFiles({
         keycloakThemeBuildingDirPath,
         themeName,
-        "keycloakVersion": "15.0.2",
+        //We want, however to test in a container running the latest Keycloak version
+        "keycloakVersion": "16.1.0",
     });
 
     console.log(
