@@ -30,9 +30,9 @@
     <img src="https://user-images.githubusercontent.com/6702424/110260457-a1c3d380-7fac-11eb-853a-80459b65626b.png">
 </p>
 
-> New in v4.7:  
-> Register with user profile enabled: Out of the box `options` validator support.
-> [Example](https://user-images.githubusercontent.com/6702424/158911163-81e6bbe8-feb0-4dc8-abff-de199d7a678e.mov)
+> New with v4.7.2: **M1 Mac** support (for testing locally with a dockerized Keycloak).  
+> Thanks goes to [@eduardosanzb](https://github.com/InseeFrLab/keycloakify/issues/43#issuecomment-975699658).  
+> Be aware: When running M1s you are testing with Keycloak v15 else the local container spun will be a Keycloak v16.1.0.
 
 # Motivations
 
@@ -477,6 +477,11 @@ If you want to restrict the emails domain that can register, you can use [this p
 and `kcRegisterContext["authorizedMailDomains"]` to validate on.
 
 # Changelog highlights
+
+# v4.7.2
+
+Testing with local Keycloak container working with M1 Mac. Thanks to [@eduardosanzb](https://github.com/InseeFrLab/keycloakify/issues/43#issuecomment-975699658).  
+Be aware: When running M1s you are testing with Keycloak v15 else the local container spun will be a Keycloak v16.1.0.
 
 # v4.7.0
 

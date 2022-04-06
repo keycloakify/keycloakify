@@ -1,6 +1,7 @@
 import * as fs from "fs";
 import { join as pathJoin, dirname as pathDirname } from "path";
 import type { KeycloakVersion } from "../../KeycloakVersion";
+import { getIsM1 } from "../../tools/isM1";
 
 export const containerLaunchScriptBasename = "start_keycloak_testing_container.sh";
 
@@ -12,7 +13,11 @@ export function generateDebugFiles(params: { keycloakVersion: KeycloakVersion; t
         pathJoin(keycloakThemeBuildingDirPath, "Dockerfile"),
         Buffer.from(
             [
-                `FROM jboss/keycloak:${keycloakVersion}`,
+                `FROM ${
+                    getIsM1()
+                        ? "eduardosanzb/keycloak@sha256:b1f5bc674eaff6f4e7b37808b9863440310ff93c282fc9bff812377be48bf519"
+                        : `jboss/keycloak:${keycloakVersion}`
+                }`,
                 "",
                 "USER root",
                 "",

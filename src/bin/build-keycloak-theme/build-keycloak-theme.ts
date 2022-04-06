@@ -5,6 +5,7 @@ import * as child_process from "child_process";
 import { generateDebugFiles, containerLaunchScriptBasename } from "./generateDebugFiles";
 import { URL } from "url";
 import * as fs from "fs";
+import { getIsM1 } from "../tools/isM1";
 
 type ParsedPackageJson = {
     name: string;
@@ -92,7 +93,9 @@ export function main() {
         keycloakThemeBuildingDirPath,
         themeName,
         //We want, however to test in a container running the latest Keycloak version
-        "keycloakVersion": "16.1.0",
+        //Except on M1 where we can't use the default image and we only have
+        //https://github.com/InseeFrLab/keycloakify/issues/43#issuecomment-975699658
+        "keycloakVersion": getIsM1() ? "15.0.2" : "16.1.0",
     });
 
     console.log(
