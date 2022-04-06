@@ -1,3 +1,7 @@
+### **4.7.2** (2022-04-06)  
+  
+-  #43: M1 Mac support    
+  
 ### **4.7.1** (2022-03-30)  
   
 - Improve browser autofill  
