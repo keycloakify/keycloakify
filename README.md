@@ -30,10 +30,6 @@
     <img src="https://user-images.githubusercontent.com/6702424/110260457-a1c3d380-7fac-11eb-853a-80459b65626b.png">
 </p>
 
-> New with v4.7.2: **M1 Mac** support (for testing locally with a dockerized Keycloak).  
-> Thanks goes to [@eduardosanzb](https://github.com/InseeFrLab/keycloakify/issues/43#issuecomment-975699658).  
-> Be aware: When running M1s you are testing with Keycloak v15 else the local container spun will be a Keycloak v16.1.0.
-
 # Motivations
 
 Keycloak provides [theme support](https://www.keycloak.org/docs/latest/server_development/#_themes) for web pages. This allows customizing the look and feel of end-user facing pages so they can be integrated with your applications.
@@ -480,8 +476,9 @@ and `kcRegisterContext["authorizedMailDomains"]` to validate on.
 
 # v4.7.2
 
-Testing with local Keycloak container working with M1 Mac. Thanks to [@eduardosanzb](https://github.com/InseeFrLab/keycloakify/issues/43#issuecomment-975699658).  
-Be aware: When running M1s you are testing with Keycloak v15 else the local container spun will be a Keycloak v16.1.0.
+> WARNING: This is broken.  
+> Testing with local Keycloak container working with M1 Mac. Thanks to [@eduardosanzb](https://github.com/InseeFrLab/keycloakify/issues/43#issuecomment-975699658).  
+> Be aware: When running M1s you are testing with Keycloak v15 else the local container spun will be a Keycloak v16.1.0.
 
 # v4.7.0
 
