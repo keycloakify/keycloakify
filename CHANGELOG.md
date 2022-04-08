@@ -1,3 +1,7 @@
+### **4.7.3** (2022-04-08)  
+  
+- Mention that there is still problems with M1 Mac    
+  
 ### **4.7.2** (2022-04-06)  
   
 -  #43: M1 Mac support    
