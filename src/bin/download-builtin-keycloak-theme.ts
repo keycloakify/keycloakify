@@ -3,9 +3,8 @@
 import { keycloakThemeBuildingDirPath } from "./build-keycloak-theme";
 import { join as pathJoin } from "path";
 import { downloadAndUnzip } from "./tools/downloadAndUnzip";
-import type { KeycloakVersion } from "./KeycloakVersion";
 
-export function downloadBuiltinKeycloakTheme(params: { keycloakVersion: KeycloakVersion; destDirPath: string }) {
+export function downloadBuiltinKeycloakTheme(params: { keycloakVersion: string; destDirPath: string }) {
     const { keycloakVersion, destDirPath } = params;
 
     for (const ext of ["", "-community"]) {
@@ -19,7 +18,7 @@ export function downloadBuiltinKeycloakTheme(params: { keycloakVersion: Keycloak
 
 if (require.main === module) {
     const keycloakVersion = (() => {
-        const keycloakVersion = process.argv[2] as KeycloakVersion | undefined;
+        const keycloakVersion = process.argv[2] as string | undefined;
 
         if (keycloakVersion === undefined) {
             return "11.0.3";

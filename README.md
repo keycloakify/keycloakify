@@ -25,6 +25,8 @@
     </a>
 </p>
 
+> New with v4.7.4: **M1 Mac** support (for testing locally with a dockerized Keycloak).
+
 <p align="center">
     <i>Ultimately this build tool generates a Keycloak theme</i>
     <img src="https://user-images.githubusercontent.com/6702424/110260457-a1c3d380-7fac-11eb-853a-80459b65626b.png">
@@ -473,6 +475,10 @@ If you want to restrict the emails domain that can register, you can use [this p
 and `kcRegisterContext["authorizedMailDomains"]` to validate on.
 
 # Changelog highlights
+
+# v4.7.4
+
+**M1 Mac** support (for testing locally with a dockerized Keycloak).
 
 # v4.7.2
 

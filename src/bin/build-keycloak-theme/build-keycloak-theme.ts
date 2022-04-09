@@ -2,10 +2,9 @@ import { generateKeycloakThemeResources } from "./generateKeycloakThemeResources
 import { generateJavaStackFiles } from "./generateJavaStackFiles";
 import { join as pathJoin, relative as pathRelative, basename as pathBasename } from "path";
 import * as child_process from "child_process";
-import { generateDebugFiles, containerLaunchScriptBasename } from "./generateDebugFiles";
+import { generateStartKeycloakTestingContainer } from "./generateStartKeycloakTestingContainer";
 import { URL } from "url";
 import * as fs from "fs";
-import { getIsM1 } from "../tools/isM1";
 
 type ParsedPackageJson = {
     name: string;
@@ -89,13 +88,11 @@ export function main() {
         "cwd": keycloakThemeBuildingDirPath,
     });
 
-    generateDebugFiles({
+    generateStartKeycloakTestingContainer({
         keycloakThemeBuildingDirPath,
         themeName,
         //We want, however to test in a container running the latest Keycloak version
-        //Except on M1 where we can't use the default image and we only have
-        //https://github.com/InseeFrLab/keycloakify/issues/43#issuecomment-975699658
-        "keycloakVersion": getIsM1() ? "15.0.2" : "16.1.0",
+        "keycloakVersion": "17.0.1",
     });
 
     console.log(
@@ -134,10 +131,10 @@ export function main() {
             "",
             "To test your theme locally, with hot reloading, you can spin up a Keycloak container image with the theme loaded by running:",
             "",
-            `👉 $ ./${pathRelative(reactProjectDirPath, pathJoin(keycloakThemeBuildingDirPath, containerLaunchScriptBasename))} 👈`,
+            `👉 $ ./${pathRelative(reactProjectDirPath, pathJoin(keycloakThemeBuildingDirPath, generateStartKeycloakTestingContainer.basename))} 👈`,
             "",
             "Once your container is up and running: ",
-            "- Log into the admin console 👉 http://localhost:8080 username: admin, password: admin 👈",
+            "- Log into the admin console 👉 http://localhost:8080/admin username: admin, password: admin 👈",
             '- Create a realm named "myrealm"',
             '- Create a client with id "myclient" and root url: "https://www.keycloak.org/app/"',
             `- Select Login Theme: ${themeName} (don't forget to save at the bottom of the page)`,

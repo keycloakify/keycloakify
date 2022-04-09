@@ -5,12 +5,11 @@ import { crawl } from "./tools/crawl";
 import { downloadBuiltinKeycloakTheme } from "./download-builtin-keycloak-theme";
 import { getProjectRoot } from "./tools/getProjectRoot";
 import { rm_rf, rm_r } from "./tools/rm";
-import { keycloakVersions } from "./KeycloakVersion";
 
 //@ts-ignore
 const propertiesParser = require("properties-parser");
 
-for (const keycloakVersion of keycloakVersions) {
+for (const keycloakVersion of ["11.0.3", "15.0.2", "16.1.0"]) {
     console.log({ keycloakVersion });
 
     const tmpDirPath = pathJoin(getProjectRoot(), "tmp_xImOef9dOd44");
