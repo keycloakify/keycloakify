@@ -1,3 +1,7 @@
+### **4.7.4** (2022-04-09)  
+  
+- M1 Mac compat (for real this time)    
+  
 ### **4.7.3** (2022-04-08)  
   
 - Mention that there is still problems with M1 Mac    
