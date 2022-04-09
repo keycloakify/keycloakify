@@ -62,7 +62,7 @@ export const Template = memo((props: TemplateProps) => {
     const { realm, locale, auth, url, message, isAppInitiatedAction } = kcContext;
 
     useEffect(() => {
-        if (!realm.internationalizationEnabled) {
+        if (!realm.internationalizationEnabled || kcContext.pageId === "error.ftl") {
             return;
         }
 
