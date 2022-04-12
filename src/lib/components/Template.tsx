@@ -62,17 +62,23 @@ export const Template = memo((props: TemplateProps) => {
     const { realm, locale, auth, url, message, isAppInitiatedAction } = kcContext;
 
     useEffect(() => {
-        if (!realm.internationalizationEnabled || kcContext.pageId === "error.ftl") {
+        if (!realm.internationalizationEnabled) {
             return;
         }
 
         assert(locale !== undefined);
 
-        if (kcLanguageTag === getBestMatchAmongKcLanguageTag(locale.current)) {
+        const kcContext_kcLanguageTag = getBestMatchAmongKcLanguageTag(locale.current);
+
+        if (["error.ftl", "info.ftl", "login-page-expired.ftl"].indexOf(kcContext.pageId) >= 0) {
+            setKcLanguageTag(kcContext_kcLanguageTag);
+
             return;
         }
 
-        window.location.href = locale.supported.find(({ languageTag }) => languageTag === kcLanguageTag)!.url;
+        if (kcLanguageTag !== kcContext_kcLanguageTag) {
+            window.location.href = locale.supported.find(({ languageTag }) => languageTag === kcLanguageTag)!.url;
+        }
     }, [kcLanguageTag]);
 
     const [isExtraCssLoaded, setExtraCssLoaded] = useReducer(() => true, false);
