@@ -76,10 +76,10 @@
         "evt": "2.0.0-beta.39",
         "minimal-polyfills": "^2.2.1",
         "path-browserify": "^1.0.1",
+        "powerhooks": "^0.14.0",
         "react-markdown": "^5.0.3",
         "scripting-tools": "^0.19.13",
         "tsafe": "^0.9.0",
-        "tss-react": "^3.5.2",
-        "powerhooks": "^0.14.0"
+        "tss-react": "^3.5.2"
     }
 }

@@ -5,6 +5,7 @@ import * as child_process from "child_process";
 import { generateStartKeycloakTestingContainer } from "./generateStartKeycloakTestingContainer";
 import { URL } from "url";
 import * as fs from "fs";
+import { argv } from "./argv";
 
 type ParsedPackageJson = {
     name: string;
@@ -14,11 +15,15 @@ type ParsedPackageJson = {
 
 const reactProjectDirPath = process.cwd();
 
-const doUseExternalAssets = process.argv[2]?.toLowerCase() === "--external-assets";
+const doUseExternalAssets = argv("external-assets");
 
 const parsedPackageJson: ParsedPackageJson = require(pathJoin(reactProjectDirPath, "package.json"));
 
-export const keycloakThemeBuildingDirPath = pathJoin(reactProjectDirPath, "build_keycloak");
+const buildPath = argv("buildPath") ? String(argv("buildPath")) : "build";
+
+const buildKeycloakPath = `${buildPath}_keycloak`;
+
+export const keycloakThemeBuildingDirPath = pathJoin(reactProjectDirPath, buildKeycloakPath);
 
 function sanitizeThemeName(name: string) {
     return name
@@ -36,7 +41,7 @@ export function main() {
 
     generateKeycloakThemeResources({
         keycloakThemeBuildingDirPath,
-        "reactAppBuildDirPath": pathJoin(reactProjectDirPath, "build"),
+        reactAppBuildDirPath: pathJoin(reactProjectDirPath, buildPath),
         themeName,
         ...(() => {
             const url = (() => {

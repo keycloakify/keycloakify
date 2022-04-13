@@ -109,6 +109,7 @@ export function generateKeycloakThemeResources(params: {
             "destDirPath": themeResourcesDirPath,
         });
 
+        // TODO:
         const reactAppPublicDirPath = pathJoin(reactAppBuildDirPath, "..", "public");
 
         transformCodebase({
