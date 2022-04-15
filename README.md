@@ -357,7 +357,7 @@ the building and publishing of the theme (the .jar file).
 
 ## `process.env.PUBLIC_URL` not supported.
 
-You won't be able to [import things from your public directory **in your JavaScript code**](https://create-react-app.dev/docs/using-the-public-folder/#adding-assets-outside-of-the-module-system).
+You won't be able to [import things from your public directory **in your JavaScript code** (it's supported in `public/index.html`)](https://create-react-app.dev/docs/using-the-public-folder/#adding-assets-outside-of-the-module-system).
 (This isn't recommended anyway).
 
 ## `@font-face` importing fonts from the `src/` dir
