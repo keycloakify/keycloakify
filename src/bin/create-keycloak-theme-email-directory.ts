@@ -15,7 +15,7 @@ if (require.main === module) {
 
         const { keycloakVersion } = await promptKeycloakVersion();
 
-        const builtinKeycloakThemeTmpDirPath = pathJoin(keycloakThemeEmailDirPath, "..", "xIdP3_builtin_keycloak_theme");
+        const builtinKeycloakThemeTmpDirPath = pathJoin(keycloakThemeEmailDirPath, "..", "tmp_xIdP3_builtin_keycloak_theme");
 
         downloadBuiltinKeycloakTheme({
             keycloakVersion,
