@@ -19,6 +19,7 @@ const doUseExternalAssets = process.argv[2]?.toLowerCase() === "--external-asset
 const parsedPackageJson: ParsedPackageJson = require(pathJoin(reactProjectDirPath, "package.json"));
 
 export const keycloakThemeBuildingDirPath = pathJoin(reactProjectDirPath, "build_keycloak");
+export const keycloakThemeEmailDirPath = pathJoin(keycloakThemeBuildingDirPath, "..", "keycloak_theme_email");
 
 function sanitizeThemeName(name: string) {
     return name
@@ -34,8 +35,9 @@ export function main() {
     const extraThemeProperties: string[] = (parsedPackageJson as any)["keycloakify"]?.["extraThemeProperties"] ?? [];
     const themeName = sanitizeThemeName(parsedPackageJson.name);
 
-    generateKeycloakThemeResources({
+    const { doBundleEmailTemplate } = generateKeycloakThemeResources({
         keycloakThemeBuildingDirPath,
+        keycloakThemeEmailDirPath,
         "reactAppBuildDirPath": pathJoin(reactProjectDirPath, "build"),
         themeName,
         ...(() => {
@@ -78,10 +80,11 @@ export function main() {
     });
 
     const { jarFilePath } = generateJavaStackFiles({
-        version: parsedPackageJson.version,
+        "version": parsedPackageJson.version,
         themeName,
-        homepage: parsedPackageJson.homepage,
+        "homepage": parsedPackageJson.homepage,
         keycloakThemeBuildingDirPath,
+        doBundleEmailTemplate,
     });
 
     child_process.execSync("mvn package", {

@@ -3,6 +3,7 @@
 import { keycloakThemeBuildingDirPath } from "./build-keycloak-theme";
 import { join as pathJoin } from "path";
 import { downloadAndUnzip } from "./tools/downloadAndUnzip";
+import { promptKeycloakVersion } from "./promptKeycloakVersion";
 
 export function downloadBuiltinKeycloakTheme(params: { keycloakVersion: string; destDirPath: string }) {
     const { keycloakVersion, destDirPath } = params;
@@ -17,22 +18,16 @@ export function downloadBuiltinKeycloakTheme(params: { keycloakVersion: string; 
 }
 
 if (require.main === module) {
-    const keycloakVersion = (() => {
-        const keycloakVersion = process.argv[2] as string | undefined;
+    (async () => {
+        const { keycloakVersion } = await promptKeycloakVersion();
 
-        if (keycloakVersion === undefined) {
-            return "11.0.3";
-        }
+        const destDirPath = pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme");
 
-        return keycloakVersion;
+        console.log(`Downloading builtins theme of Keycloak ${keycloakVersion} here ${destDirPath}`);
+
+        downloadBuiltinKeycloakTheme({
+            keycloakVersion,
+            destDirPath,
+        });
     })();
-
-    const destDirPath = pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme");
-
-    console.log(`Downloading builtins theme of Keycloak ${keycloakVersion} here ${destDirPath}`);
-
-    downloadBuiltinKeycloakTheme({
-        keycloakVersion,
-        destDirPath,
-    });
 }

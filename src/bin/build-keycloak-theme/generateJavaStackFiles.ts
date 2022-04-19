@@ -2,10 +2,16 @@ import * as url from "url";
 import * as fs from "fs";
 import { join as pathJoin, dirname as pathDirname } from "path";
 
-export function generateJavaStackFiles(params: { version: string; themeName: string; homepage?: string; keycloakThemeBuildingDirPath: string }): {
+export function generateJavaStackFiles(params: {
+    version: string;
+    themeName: string;
+    homepage?: string;
+    keycloakThemeBuildingDirPath: string;
+    doBundleEmailTemplate: boolean;
+}): {
     jarFilePath: string;
 } {
-    const { themeName, version, homepage, keycloakThemeBuildingDirPath } = params;
+    const { themeName, version, homepage, keycloakThemeBuildingDirPath, doBundleEmailTemplate } = params;
 
     {
         const { pomFileCode } = (function generatePomFileCode(): {
@@ -63,7 +69,7 @@ export function generateJavaStackFiles(params: { version: string; themeName: str
                         "themes": [
                             {
                                 "name": themeName,
-                                "types": ["login"],
+                                "types": ["login", ...(doBundleEmailTemplate ? ["email"] : [])],
                             },
                         ],
                     },

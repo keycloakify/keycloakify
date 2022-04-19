@@ -12,17 +12,19 @@ export function generateKeycloakThemeResources(params: {
     themeName: string;
     reactAppBuildDirPath: string;
     keycloakThemeBuildingDirPath: string;
+    keycloakThemeEmailDirPath: string;
     urlPathname: string;
     //If urlOrigin is not undefined then it means --externals-assets
     urlOrigin: undefined | string;
     extraPagesId: string[];
     extraThemeProperties: string[];
     keycloakVersion: string;
-}) {
+}): { doBundleEmailTemplate: boolean } {
     const {
         themeName,
         reactAppBuildDirPath,
         keycloakThemeBuildingDirPath,
+        keycloakThemeEmailDirPath,
         urlPathname,
         urlOrigin,
         extraPagesId,
@@ -78,6 +80,28 @@ export function generateKeycloakThemeResources(params: {
             return urlOrigin === undefined ? { "modifiedSourceCode": sourceCode } : undefined;
         },
     });
+
+    let doBundleEmailTemplate: boolean;
+
+    email: {
+        if (!fs.existsSync(keycloakThemeEmailDirPath)) {
+            console.log(
+                [
+                    `Not bundling email template because ${pathBasename(keycloakThemeEmailDirPath)} does not exist`,
+                    `To start customizing the email template, run: 👉 npx create-keycloak-theme-email-directory 👈`,
+                ].join("\n"),
+            );
+            doBundleEmailTemplate = false;
+            break email;
+        }
+
+        doBundleEmailTemplate = true;
+
+        transformCodebase({
+            "srcDirPath": keycloakThemeEmailDirPath,
+            "destDirPath": pathJoin(themeDirPath, "..", "email"),
+        });
+    }
 
     const { generateFtlFilesCode } = generateFtlFilesCodeFactory({
         "cssGlobalsToDefine": allCssGlobalsToDefine,
@@ -139,4 +163,6 @@ export function generateKeycloakThemeResources(params: {
         pathJoin(themeDirPath, "theme.properties"),
         Buffer.from("parent=keycloak".concat("\n\n", extraThemeProperties.join("\n\n")), "utf8"),
     );
+
+    return { doBundleEmailTemplate };
 }

@@ -46,3 +46,5 @@ jspm_packages
 /.yarn_home/
 
 .idea
+
+/keycloak_theme_email
