@@ -63,41 +63,42 @@ If you already have a Keycloak custom theme, it can be easily ported to Keycloak
 
 ---
 
--   [Motivations](#motivations)
--   [Requirements](#requirements)
-    -   [My framework doesn’t seem to be supported, what can I do?](#my-framework-doesnt-seem-to-be-supported-what-can-i-do)
--   [How to use](#how-to-use)
-    -   [Setting up the build tool](#setting-up-the-build-tool)
-        -   [Changing just the look of the default Keycloak theme](#changing-just-the-look-of-the-default-keycloak-theme)
-        -   [Advanced pages configuration](#advanced-pages-configuration)
-        -   [Hot reload](#hot-reload)
-    -   [Enable loading in a blink of an eye of login pages ⚡ (--external-assets)](#enable-loading-in-a-blink-of-an-eye-of-login-pages----external-assets)
--   [User profile and frontend form validation](#user-profile-and-frontend-form-validation)
--   [Support for Terms and conditions](#support-for-terms-and-conditions)
--   [Some pages still have the default theme. Why?](#some-pages-still-have-the-default-theme-why)
--   [GitHub Actions](#github-actions)
--   [Limitations](#limitations)
-    -   [`process.env.PUBLIC_URL` not supported.](#processenvpublic_url-not-supported)
-    -   [`@font-face` importing fonts from the `src/` dir](#font-face-importing-fonts-from-the-src-dir)
-        -   [Example of setup that **won't** work](#example-of-setup-that-wont-work)
-        -   [Possible workarounds](#possible-workarounds)
--   [Implement context persistence (optional)](#implement-context-persistence-optional)
--   [Kickstart video](#kickstart-video)
--   [FTL errors related to `ftl_object_to_js_code_declaring_an_object` in Keycloak logs.](#ftl-errors-related-to-ftl_object_to_js_code_declaring_an_object-in-keycloak-logs)
--   [Adding custom message (to `i18n/useKcMessage.tsx`)](#adding-custom-message-to-i18nusekcmessagetsx)
--   [Downloading builtin theme resource files](#downloading-builtin-theme-resource-files)
--   [Email domain whitelist](#email-domain-whitelist)
--   [Changelog highlights](#changelog-highlights)
-    -   [v4.7.4](#v474)
-    -   [v4.7.2](#v472)
-    -   [v4.7.0](#v470)
-    -   [v4.6.0](#v460)
-    -   [v4.5.3](#v453)
-    -   [v4.3.0](#v430)
-    -   [v4](#v4)
-    -   [v3](#v3)
-    -   [v2.5](#v25)
-    -   [v2](#v2)
+- [Motivations](#motivations)
+- [Requirements](#requirements)
+  - [My framework doesn’t seem to be supported, what can I do?](#my-framework-doesnt-seem-to-be-supported-what-can-i-do)
+- [How to use](#how-to-use)
+  - [Setting up the build tool](#setting-up-the-build-tool)
+    - [Changing just the look of the default Keycloak theme](#changing-just-the-look-of-the-default-keycloak-theme)
+    - [Advanced pages configuration](#advanced-pages-configuration)
+    - [Hot reload](#hot-reload)
+  - [Enable loading in a blink of an eye of login pages ⚡ (--external-assets)](#enable-loading-in-a-blink-of-an-eye-of-login-pages----external-assets)
+- [Email template customization.](#email-template-customization)
+- [User profile and frontend form validation](#user-profile-and-frontend-form-validation)
+- [Support for Terms and conditions](#support-for-terms-and-conditions)
+- [Some pages still have the default theme. Why?](#some-pages-still-have-the-default-theme-why)
+- [GitHub Actions](#github-actions)
+- [Limitations](#limitations)
+  - [`process.env.PUBLIC_URL` not supported.](#processenvpublic_url-not-supported)
+  - [`@font-face` importing fonts from the `src/` dir](#font-face-importing-fonts-from-the-src-dir)
+    - [Example of setup that **won't** work](#example-of-setup-that-wont-work)
+    - [Possible workarounds](#possible-workarounds)
+- [Implement context persistence (optional)](#implement-context-persistence-optional)
+- [Kickstart video](#kickstart-video)
+- [FTL errors related to `ftl_object_to_js_code_declaring_an_object` in Keycloak logs.](#ftl-errors-related-to-ftl_object_to_js_code_declaring_an_object-in-keycloak-logs)
+- [Adding custom message (to `i18n/useKcMessage.tsx`)](#adding-custom-message-to-i18nusekcmessagetsx)
+- [Downloading builtin theme resource files](#downloading-builtin-theme-resource-files)
+- [Email domain whitelist](#email-domain-whitelist)
+- [Changelog highlights](#changelog-highlights)
+  - [v4.7.4](#v474)
+  - [v4.7.2](#v472)
+  - [v4.7.0](#v470)
+  - [v4.6.0](#v460)
+  - [v4.5.3](#v453)
+  - [v4.3.0](#v430)
+  - [v4](#v4)
+  - [v3](#v3)
+  - [v2.5](#v25)
+  - [v2](#v2)
 
 # Requirements
 
@@ -308,6 +309,19 @@ performance boost if you jump through those hoops:
 -   Be mindful that if your app is down your login pages are down as well.
 
 Checkout a complete setup [here](https://github.com/garronej/keycloakify-demo-app#about-keycloakify)
+
+# Email template customization.
+
+_Introduced in [v4.8.0](https://github.com/InseeFrLab/keycloakify/releases/tag/v4.8.0)_
+
+It is now possible to customize the emails sent to your users to confirm their email address ect.  
+Just run `npx create-keycloak-theme-email-directory`, it will create a `keycloak_theme_email` directory
+at the root of your project.  
+This directory should be tracked by Git (`yarn add -A`)
+You can start hacking the default template.  
+When `npx build-keycloak-theme` (`yarn keycloak`) is run. If the directory `keycloak_theme_email` exists
+at the root of your project, it will be bundled into your `.jar` file and you will be able to select
+it [in the Keycloak administration pages](https://user-images.githubusercontent.com/6702424/164299589-75f8008b-b24e-4836-ad6b-72149bb55621.png).
 
 # User profile and frontend form validation
 
