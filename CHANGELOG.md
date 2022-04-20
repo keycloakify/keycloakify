@@ -1,3 +1,8 @@
+### **4.8.1** (2022-04-20)  
+  
+- Add missing shebang  
+- Add video demo for npx download-builtin-keycloak-theme    
+  
 ## **4.8.0** (2022-04-20)  
   
 - Document email template customization feature #9  
