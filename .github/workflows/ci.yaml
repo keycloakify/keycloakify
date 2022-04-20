@@ -27,7 +27,7 @@ jobs:
     needs: test_formatting
     strategy:
       matrix:
-        node: [ '15', '14', '13' ]
+        node: [ '15', '14' ]
     name: Test with Node v${{ matrix.node }}
     steps:
     - name: Tell if project is using npm or yarn
