@@ -14,7 +14,7 @@ jobs:
         node-version: '16'
     - uses: bahmutov/npm-install@v1
     - run: yarn build
-    - run: echo $(node -e 'console.log(require("./package.json").homepage.match(/^https?:\/\/(.*)$/)[1])') > build/CNAME
+    - run: echo $(node -e 'console.log(require("./package.json").homepage.match(/^https?:\/\/([^/]*)\/?$/)[1])') > build/CNAME
     - run: git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${{github.repository}}.git
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
