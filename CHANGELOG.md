@@ -1,3 +1,7 @@
+### **4.8.2** (2022-04-20)  
+  
+- Tell pepoles they can test with different keycloak version    
+  
 ### **4.8.1** (2022-04-20)  
   
 - Add missing shebang  
