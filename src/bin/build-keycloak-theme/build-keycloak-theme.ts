@@ -92,7 +92,7 @@ export function main() {
     });
 
     //We want, however to test in a container running the latest Keycloak version
-    const containerKeycloakVersion = "18.0.0";
+    const containerKeycloakVersion = "17.0.1";
 
     generateStartKeycloakTestingContainer({
         keycloakThemeBuildingDirPath,
