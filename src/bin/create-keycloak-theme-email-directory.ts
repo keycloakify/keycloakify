@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { downloadBuiltinKeycloakTheme } from "./download-builtin-keycloak-theme";
 import { keycloakThemeEmailDirPath } from "./build-keycloak-theme";
 import { join as pathJoin, basename as pathBasename } from "path";
