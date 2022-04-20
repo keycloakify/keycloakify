@@ -85,8 +85,15 @@ If you already have a Keycloak custom theme, it can be easily ported to Keycloak
 -   [Kickstart video](#kickstart-video)
 -   [FTL errors related to `ftl_object_to_js_code_declaring_an_object` in Keycloak logs.](#ftl-errors-related-to-ftl_object_to_js_code_declaring_an_object-in-keycloak-logs)
 -   [Adding custom message (to `i18n/useKcMessage.tsx`)](#adding-custom-message-to-i18nusekcmessagetsx)
+-   [Downloading builtin theme resource files](#downloading-builtin-theme-resource-files)
 -   [Email domain whitelist](#email-domain-whitelist)
 -   [Changelog highlights](#changelog-highlights)
+    -   [v4.7.4](#v474)
+    -   [v4.7.2](#v472)
+    -   [v4.7.0](#v470)
+    -   [v4.6.0](#v460)
+    -   [v4.5.3](#v453)
+    -   [v4.3.0](#v430)
     -   [v4](#v4)
     -   [v3](#v3)
     -   [v2.5](#v25)
@@ -467,6 +474,11 @@ You can reproduce [this approach](https://github.com/garronej/keycloakify-demo-a
 ( don't forget to [evaluate the code](https://github.com/garronej/keycloakify-demo-app/blob/0a6d349dba89a5702f98ba48bca6c76ac7265e1f/src/index.tsx#L15) ).  
 This approach is a bit hacky as it doesn't provide type safety but it works.
 
+# Downloading builtin theme resource files
+
+Running `npx download-builtin-keycloak-theme` will let you download the themes that comes by default with
+a Keycloak version of your choosing.
+
 # Email domain whitelist
 
 NOTE: This have been kind of deprecated by [user attribute](#user-profile-and-frontend-form-validation) you could
@@ -477,22 +489,22 @@ and `kcRegisterContext["authorizedMailDomains"]` to validate on.
 
 # Changelog highlights
 
-# v4.7.4
+## v4.7.4
 
 **M1 Mac** support (for testing locally with a dockerized Keycloak).
 
-# v4.7.2
+## v4.7.2
 
 > WARNING: This is broken.  
 > Testing with local Keycloak container working with M1 Mac. Thanks to [@eduardosanzb](https://github.com/InseeFrLab/keycloakify/issues/43#issuecomment-975699658).  
 > Be aware: When running M1s you are testing with Keycloak v15 else the local container spun will be a Keycloak v16.1.0.
 
-# v4.7.0
+## v4.7.0
 
 Register with user profile enabled: Out of the box `options` validator support.  
 [Example](https://user-images.githubusercontent.com/6702424/158911163-81e6bbe8-feb0-4dc8-abff-de199d7a678e.mov)
 
-# v4.6.0
+## v4.6.0
 
 `tss-react` and `powerhooks` are no longer peer dependencies of `keycloakify`.
 After updating Keycloakify you can remove `tss-react` and `powerhooks` from your dependencies if you don't use them explicitly.
