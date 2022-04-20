@@ -1,3 +1,11 @@
+## **4.8.0** (2022-04-20)  
+  
+- Document email template customization feature #9  
+- Add mention of download-builtin-keycloak-theme  
+- Let the choice of kc version be auto in GH Action  
+- Only test on node v15 and v14 (bellow is no longer supported (rmSync)  
+- Feature email customization #9    
+  
 ### **4.7.6** (2022-04-12)  
   
 - Fix bugs with language switch #85    
