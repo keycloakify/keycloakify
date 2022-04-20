@@ -91,11 +91,13 @@ export function main() {
         "cwd": keycloakThemeBuildingDirPath,
     });
 
+    //We want, however to test in a container running the latest Keycloak version
+    const containerKeycloakVersion = "18.0.0";
+
     generateStartKeycloakTestingContainer({
         keycloakThemeBuildingDirPath,
         themeName,
-        //We want, however to test in a container running the latest Keycloak version
-        "keycloakVersion": "17.0.1",
+        "keycloakVersion": containerKeycloakVersion,
     });
 
     console.log(
@@ -132,9 +134,11 @@ export function main() {
             "      value: -Dkeycloak.profile=preview",
             "",
             "",
-            "To test your theme locally, with hot reloading, you can spin up a Keycloak container image with the theme loaded by running:",
+            `To test your theme locally you can spin up a Keycloak ${containerKeycloakVersion} container image with the theme pre loaded by running:`,
             "",
             `👉 $ ./${pathRelative(reactProjectDirPath, pathJoin(keycloakThemeBuildingDirPath, generateStartKeycloakTestingContainer.basename))} 👈`,
+            "",
+            "Test with different Keycloak versions by editing the .sh file. see available versions here: https://quay.io/repository/keycloak/keycloak?tab=tags",
             "",
             "Once your container is up and running: ",
             "- Log into the admin console 👉 http://localhost:8080/admin username: admin, password: admin 👈",
