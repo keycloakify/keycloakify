@@ -493,6 +493,8 @@ This approach is a bit hacky as it doesn't provide type safety but it works.
 Running `npx download-builtin-keycloak-theme` will let you download the themes that comes by default with
 a Keycloak version of your choosing.
 
+[Video demo](https://user-images.githubusercontent.com/6702424/164304458-934b0e1d-9de7-4bb4-8a1c-e06a70b1636a.mov)
+
 # Email domain whitelist
 
 NOTE: This have been kind of deprecated by [user attribute](#user-profile-and-frontend-form-validation) you could
