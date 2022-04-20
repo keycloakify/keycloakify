@@ -119,13 +119,13 @@ For more information see [this issue](https://github.com/InseeFrLab/keycloakify/
 
 ## My framework doesn’t seem to be supported, what can I do?
 
-Currently Keycloakify is only compatible with `create-react-app` apps.
+Currently Keycloakify is only compatible with SPA React apps.
 It doesn’t mean that you can't use Keycloakify if you are using Next.js, Express or any other
-framework that involves SSR but your Keycloak theme will need to be a standalone project.  
+framework that involves a server but your Keycloak theme will need to be a standalone project.  
 Find specific instructions about how to get started [**here**](https://github.com/garronej/keycloakify-demo-app#keycloak-theme-only).
 
 To share your styles between your main app and your login pages you will need to externalize your design system by making it a
-separate module. Checkout [ts_ci](https://github.com/garronej/ts_ci), it can help with that.
+separate module. Checkout [ts_ci](https://github.com/garronej/ts_ci), it can help with that (example with [our design system](https://github.com/InseeFrLab/onyxia-ui)).
 
 # How to use
 
