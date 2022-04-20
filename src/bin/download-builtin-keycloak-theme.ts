@@ -19,8 +19,6 @@ export function downloadBuiltinKeycloakTheme(params: { keycloakVersion: string; 
 
 if (require.main === module) {
     (async () => {
-        console.log(process.env);
-
         const { keycloakVersion } = await promptKeycloakVersion();
 
         const destDirPath = pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme");
