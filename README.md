@@ -94,7 +94,7 @@ If you already have a Keycloak custom theme, it can be easily ported to Keycloak
 
 # Requirements
 
-On Windows OS you'll have to use [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10). More info [here](https://github.com/InseeFrLab/keycloakify/issues/54%23issuecomment-984834217)
+On Windows OS you'll have to use [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10). More info [here](https://github.com/InseeFrLab/keycloakify/issues/54#issuecomment-984834217)
 
 Tested with the following Keycloak versions:
 
