@@ -25,7 +25,7 @@
     </a>
 </p>
 
-> New with v4.7.4: **M1 Mac** support (for testing locally with a dockerized Keycloak).
+> New with v4.8.0: [Email template customization.](#email-template-customization)
 
 <p align="center">
     <i>Ultimately this build tool generates a Keycloak theme</i>
@@ -89,6 +89,7 @@ If you already have a Keycloak custom theme, it can be easily ported to Keycloak
 -   [Downloading builtin theme resource files](#downloading-builtin-theme-resource-files)
 -   [Email domain whitelist](#email-domain-whitelist)
 -   [Changelog highlights](#changelog-highlights)
+    -   [v4.8.0](#v480)
     -   [v4.7.4](#v474)
     -   [v4.7.2](#v472)
     -   [v4.7.0](#v470)
@@ -504,6 +505,10 @@ If you want to restrict the emails domain that can register, you can use [this p
 and `kcRegisterContext["authorizedMailDomains"]` to validate on.
 
 # Changelog highlights
+
+## v4.8.0
+
+[Email template customization.](#email-template-customization)
 
 ## v4.7.4
 
