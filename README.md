@@ -231,8 +231,6 @@ Example of a customization using only CSS: [here](https://github.com/InseeFrLab/
 and the result you can expect:
 
 <p align="center">
-    <i> <a href="https://datalab.sspcloud.fr">Customization using only CSS:</a> </i> 
-    <br>
     <img src="https://github.com/InseeFrLab/keycloakify/releases/download/v0.3.8/keycloakify_after.gif">
 </p>
 
