@@ -257,14 +257,6 @@ Main takeaways are:
 -   You should provide sample data for all the non standard value if you want to be able
     to debug the page outside of keycloak. [example](https://github.com/garronej/keycloakify-demo-app/blob/4eb2a9f63e9823e653b2d439495bda55e5ecc134/src/KcApp/kcContext.ts#L28-L43)
 
-WARNING: If you chose to go this way use:
-
-```json
-"dependencies": {
-    "keycloakify": "~X.Y.Z"
-}
-```
-
 ### Hot reload
 
 Rebuild the theme each time you make a change to see the result is not practical.
