@@ -1,3 +1,5 @@
 # Table of contents
 
-* [Page 1](README.md)
+* [🏁 Requirements](README.md)
+* [How to use](how-to-use.md)
+* [Page 1](page-1.md)
