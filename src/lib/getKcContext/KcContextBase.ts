@@ -24,6 +24,7 @@ export type KcContextBase =
     | KcContextBase.LoginUpdatePassword
     | KcContextBase.LoginUpdateProfile
     | KcContextBase.LoginIdpLinkConfirm
+    | KcContextBase.LoginIdpLinkEmail
     | KcContextBase.LoginPageExpired;
 
 export declare namespace KcContextBase {
@@ -212,6 +213,11 @@ export declare namespace KcContextBase {
 
     export type LoginIdpLinkConfirm = Common & {
         pageId: "login-idp-link-confirm.ftl";
+        idpAlias: string;
+    };
+
+    export type LoginIdpLinkEmail = Common & {
+        pageId: "login-idp-link-email.ftl";
         idpAlias: string;
     };
 
