@@ -19,12 +19,15 @@ export async function promptKeycloakVersion() {
 
     console.log("Initialize the directory with email template from which keycloak version?");
 
-    const tags = await getLatestsSemVersionedTag({
-        "count": 15,
-        "doIgnoreBeta": true,
-        "owner": "keycloak",
-        "repo": "keycloak",
-    }).then(arr => arr.map(({ tag }) => tag));
+    const tags = [
+        ...(await getLatestsSemVersionedTag({
+            "count": 10,
+            "doIgnoreBeta": true,
+            "owner": "keycloak",
+            "repo": "keycloak",
+        }).then(arr => arr.map(({ tag }) => tag))),
+        "11.0.3",
+    ];
 
     if (process.env["GITHUB_ACTIONS"] === "true") {
         return { "keycloakVersion": tags[0] };

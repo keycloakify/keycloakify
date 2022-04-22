@@ -48,3 +48,4 @@ jspm_packages
 .idea
 
 /keycloak_theme_email
+/build_keycloak
