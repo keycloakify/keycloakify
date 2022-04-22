@@ -53,9 +53,8 @@ Here is `keycloakify` for you 🍸
 
 <p align="center">
     <i> <a href="https://datalab.sspcloud.fr">With keycloakify:</a> </i> 
-    <br>
-    <img src="https://user-images.githubusercontent.com/6702424/114332075-c5e37900-9b45-11eb-910b-48a05b3d90d9.gif">
 </p>
+https://user-images.githubusercontent.com/6702424/164769234-fe0c977b-1edc-4bb5-815f-8445b29b2db5.mp4
 
 **TL;DR**: [Here](https://github.com/garronej/keycloakify-demo-app) is a Hello World React project with Keycloakify set up.
 
