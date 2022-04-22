@@ -122,10 +122,11 @@ ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
                         key == "updateProfileCtx" && 
                         are_same_path(path, [])
                     ) || (
-                        <#-- https://github.com/InseeFrLab/keycloakify/pull/65#issuecomment-991896344 -->
+                        <#-- https://github.com/InseeFrLab/keycloakify/pull/65#issuecomment-991896344 (reports with saml-post-form.ftl) -->
+                        <#-- https://github.com/InseeFrLab/keycloakify/issues/91#issue-1212319466 (reports with error.ftl and Kc18) -->
                         key == "loginAction" && 
                         are_same_path(path, ["url"]) && 
-                        pageId == "saml-post-form.ftl"
+                        ["saml-post-form.ftl", "error.ftl"]?seq_contains(pageId)
                     ) || (
                         ["contextData", "idpConfig", "idp", "authenticationSession"]?seq_contains(key) &&
                         are_same_path(path, ["brokerContext"]) &&
