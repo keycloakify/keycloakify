@@ -1,4 +1,11 @@
-# How to use
+# 👨💻 Quick start
+
+{% hint style="success" %}
+If you want to make your life easy use [create-react-app](https://create-react-app.dev) and start from one of the template repos:
+
+* [keycloakify-demo-app with CSS only configuration](https://github.com/garronej/keycloakify-demo-app).
+* [keycloakify-demo-app with component level configuration](https://github.com/garronej/keycloakify-demo-app/tree/look\_and\_feel).
+{% endhint %}
 
 ### Setting up the build tool
 
@@ -35,6 +42,10 @@ import { css } from "tss-react/@emotion/css";
 
 const { kcContext } = getKcContext();
 
+//Here we user tss-react to generate the style 
+//but we could 'import "index.css"' and set
+//"kcHeaderWrapperClass": "my-class"
+//With 'my-class' defined in index.css
 const myClassName = css({ "color": "red" });
 
 reactDom.render(
@@ -89,8 +100,6 @@ Example of a customization using only CSS: [here](https://github.com/InseeFrLab/
 {% endtab %}
 
 {% tab title="Component level customization" %}
-
-
 If you want to go beyond only customizing the CSS you can re-implement some of the pages or even add new ones.
 
 If you want to go this way checkout the demo setup provided [here](https://github.com/garronej/keycloakify-demo-app/tree/look\_and\_feel). If you prefer a real life example you can checkout [onyxia-web's source](https://github.com/InseeFrLab/onyxia-web/tree/main/src/ui/components/KcApp). The web app is in production [here](https://datalab.sspcloud.fr).
