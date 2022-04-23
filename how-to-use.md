@@ -29,9 +29,13 @@ On the console will be printed all the instructions about how to load the genera
 
 {% tabs %}
 {% tab title="CSS Only customization" %}
-The first approach is to only customize the style of the default Keycloak login by providing your own class names.
+The first approach is to only customize the style of the default Keycloak login theme by providing your own class names.
 
-If you have created a new React project specifically to create a Keycloak theme and nothing else then your index should look something like:
+{% hint style="info" %}
+The keycloakify components are a plain React translation of the default theme that comes with Keycloak v11.0.3. &#x20;
+
+You can download the FTL/CSS source files the components are based on with the following command `npx -p keycloakify download-builtin-keycloak-theme` and selecting version 11.0.3.
+{% endhint %}
 
 `src/index.tsx`
 
@@ -61,49 +65,47 @@ reactDom.render(
 );
 ```
 
-{% hint style="info" %}
-The above snippet of code assumes you are&#x20;
-{% endhint %}
+The above snippet of code assumes you are in a react project wich only purpose is to be a Keycloak theme.
 
-If you share a unique project for your app and the Keycloak theme, your index should look more like this:
+But if you want to make your keycloak theme an integral part of a preexisting React app you would apply the following modification to the above snipet:
 
-`src/index.tsx`
+```diff
++import { App } from "<you know where";
+ import { KcApp, defaultKcProps, getKcContext } from "keycloakify";
+ import "./index.css";
 
-```tsx
-import { App } from "./<wherever>/App";
-import { KcApp, defaultKcProps, getKcContext } from "keycloakify";
-import { css } from "tss-react/@emotion/css";
+ const { kcContext } = getKcContext();
 
-const { kcContext } = getKcContext();
+-if( kcContex === undefined ){
+-    throw new Error(
+-        "This app is a Keycloak theme" +
+-        "It isn't meant to be deployed outside of Keycloak"
+-    );
+-}
 
-const myClassName = css({ "color": "red" });
-
-reactDom.render(
-    // Unless the app is currently being served by Keycloak
-    // kcContext is undefined.
-    kcContext !== undefined ? (
-        <KcApp
-            kcContext={kcContext}
-            {...{
-                ...defaultKcProps,
-                "kcHeaderWrapperClass": myClassName,
-            }}
-        />
-    ) : (
-        <App />
-    ), // Your actual app
-    document.getElementById("root"),
+ reactDom.render(
++    kcContext === undefined ?
++        <App /> :
+         <KcApp
+             kcContext={kcContext}
+             {...{
+                 ...defaultKcProps,
+                 "kcHeaderWrapperClass": myClassName,
+             }}
+         />,
+     document.getElementById("root"),
 );
 ```
 
-_result:_\
+![Result: MYREALM is red](https://user-images.githubusercontent.com/6702424/114326299-6892fc00-9b34-11eb-8d75-85696e55458f.png)
 
+#### Real world example
 
-![](https://user-images.githubusercontent.com/6702424/114326299-6892fc00-9b34-11eb-8d75-85696e55458f.png)
+To give you an idea of what you can already achieve by only customizing the style the style,
 
-Example of a customization using only CSS: [here](https://github.com/InseeFrLab/onyxia-web/blob/012639d62327a9a56be80c46e32c32c9497b82db/src/app/components/KcApp.tsx) (the [index.tsx](https://github.com/InseeFrLab/onyxia-web/blob/012639d62327a9a56be80c46e32c32c9497b82db/src/app/index.tsx#L89-L94) ) and the kind of result you can expect:
+Here is [**the code**](https://github.com/InseeFrLab/onyxia-web/blob/012639d62327a9a56be80c46e32c32c9497b82db/src/app/components/KcApp.tsx) that produces:&#x20;
 
-![](https://github.com/InseeFrLab/keycloakify/releases/download/v0.3.8/keycloakify\_after.gif)
+![Results obtained with CSS only customization of the default theme](https://github.com/InseeFrLab/keycloakify/releases/download/v0.3.8/keycloakify\_after.gif)
 {% endtab %}
 
 {% tab title="Component level customization" %}
