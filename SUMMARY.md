@@ -6,3 +6,4 @@
 * [⚡ Performance optimization](page-1.md)
 * [📧 Email customization](email-customization.md)
 * [✅ Realtime input validation](realtime-input-validation.md)
+* [✒ Terms and conditions](terms-and-conditions.md)
