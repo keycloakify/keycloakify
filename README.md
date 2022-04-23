@@ -14,12 +14,6 @@ Windows users will haver to use it via [WSL](https://docs.microsoft.com/en-us/wi
 This tool will be maintained to stay compatible with every Keycloak version starting from [Keycloak Version 11](https://github.com/keycloak/keycloak/releases/tag/11.0.3).
 
 However, the default pages you will get (before you customize them) will always be the ones of Keycloak [v11.0.3](https://github.com/keycloak/keycloak/releases/tag/11.0.3).
-
-You can download the version of the builtin theme the Keycloakify's components are based on with the following command:
-
-```bash
-npx -p keycloakify download-builtin-keycloak-theme
-```
 {% endhint %}
 
 ### Supported Keycloak version
