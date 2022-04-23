@@ -27,7 +27,7 @@ export const resources = id<Record<Language, Translations>>({
     "en": {
         "App": {
             "documentation": "Documentation",
-            "paid for by French taxpayers": "Onyxia is free and open source software payed for by the french tax payers 🇫🇷",
+            "paid for by French taxpayers": "Onyxia is free and open source software payed for by the french tax payers.",
             "pricing": "Pricing",
             "it is libre software": "It is libre software",
             "ok": "Ok"
@@ -37,7 +37,7 @@ export const resources = id<Record<Language, Translations>>({
         /* spell-checker: disable */
         "App": {
             "documentation": "Documentation",
-            "paid for by French taxpayers": "Onyxia est un logiciel libre et gratuit firancer par le contribuable francais. 🇫🇷",
+            "paid for by French taxpayers": "Onyxia est un logiciel libre et gratuit firancer par le contribuable francais.",
             "pricing": "Prix",
             "it is libre software": "C'est un logiciel libre",
             "ok": "D'accord"

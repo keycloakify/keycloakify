@@ -28,6 +28,7 @@ import frontendValidationWebmUrl from "assets/video/keycloakify_frontend_validat
 import { GlSectionDivider } from "gitlanding/GlSectionDivider";
 import { GlCheckList } from "gitlanding/GlCheckList";
 import { GlFooter } from "gitlanding/GlFooter";
+import { GlGithubStarCount } from "gitlanding/utils/GlGithubStarCount";
 
 const githubRepoUrl = "https://github.com/InseeFrLab/keycloakify";
 const documentationUrl = "https://docs.keycloakify.dev";
@@ -44,7 +45,7 @@ export function App() {
     }, []);
   }
 
-  const { classes } = useStyles();
+  const { classes, css } = useStyles();
 
   const evtOpenPricingDialog = useConst(() => Evt.create());
 
@@ -384,11 +385,20 @@ const { PricingDialog } = (() => {
         [evtOpen]
       );
 
+      const { css } = useStyles();
+
       return (
         <Dialog
           isOpen={isOpen}
           title={t("it is libre software")}
-          body={t("paid for by French taxpayers")}
+          body={<>
+            {t("paid for by French taxpayers")}
+            <br/>
+            <br/>
+            <div style={{ "display": "flex" }}>
+            You can support the project by awarding a GitHub &nbsp; <GlGithubStarCount  repoUrl={githubRepoUrl}/>
+            </div>
+          </>}
           buttons={<Button onClick={onClose}>{t("ok")}</Button>}
           onClose={onClose}
         />
