@@ -3,7 +3,7 @@
 {% embed url="https://www.keycloakify.dev/static/media/keycloakify_frontend_validation-vp9-chrome.af3a6e8e67ab60f2c866.webm" %}
 
 {% hint style="warning" %}
-In reality the regexp used in this gif doesn't work server side, the regexp pattern should be `^[^@]@gmail\.com$` 😬.
+In reality the regexp used in this gif doesn't work server side, the regexp pattern should be `^[^@]@gmail\.com$` (the RegExp should match the whole string) 😬.
 {% endhint %}
 
 User Profile is a Keycloak feature that enables to [define, from the admin console](https://user-images.githubusercontent.com/6702424/136872461-1f5b64ef-d2ef-4c6b-bb8d-07d4729552b3.png), what information you want to collect on your users in the register page and to validate inputs [**on the frontend**, in realtime](https://github.com/InseeFrLab/keycloakify/blob/6dca6a93d8cfe634ee4d8574ad0c091641220092/src/lib/getKcContext/KcContextBase.ts#L225-L261)!
