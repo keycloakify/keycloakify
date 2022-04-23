@@ -1,15 +1,10 @@
 # 👨💻 Quick start
 
 {% hint style="success" %}
-If you want to make your life easy use [create-react-app](https://create-react-app.dev) and start from one of the template repos:
-
-* [keycloakify-demo-app with CSS only configuration](https://github.com/garronej/keycloakify-demo-app).
-* [keycloakify-demo-app with component level configuration](https://github.com/garronej/keycloakify-demo-app/tree/look\_and\_feel).
+It's a good idea to first read this quick start section to get the idea of how Keycloakify works however we recommend you start hacking from [**the demo setup**](https://github.com/garronej/keycloakify-demo-app) instead of setting up Keycloakify from scratch.
 {% endhint %}
 
-### Setting up the build tool
-
-```bash
+```
 yarn add keycloakify @emotion/react
 ```
 
@@ -122,45 +117,4 @@ Main takeaways are:
 {% endtab %}
 {% endtabs %}
 
-####
-
-#### Hot reload
-
-Rebuild the theme each time you make a change to see the result is not practical. If you want to test your login screens outside of Keycloak you can mock a given `kcContext`:
-
-```tsx
-import {
-    KcApp,
-    defaultKcProps,
-    getKcContext
-} from "keycloakify";
-
-const { kcContext } = getKcContext({
-    "mockPageId": "login.ftl"
-});
-
-reactDom.render(
-        <KcApp
-            kcContext={kcContextMocks.kcLoginContext}
-            {...defaultKcProps}
-        />
-    document.getElementById("root")
-);
-```
-
-Then `yarn start`, you will see your login page.
-
-Checkout [this concrete example](https://github.com/garronej/keycloakify-demo-app/blob/main/src/index.tsx)
-
-### Enable loading in a blink of an eye of login pages ⚡ (--external-assets)
-
-By default the theme generated is standalone. Meaning that when your users reach the login pages all scripts, images and stylesheet are downloaded from the Keycloak server.\
-If you are specifically building a theme to integrate with an app or a website that allows users to first browse unauthenticated before logging in, you will get a significant performance boost if you jump through those hoops:
-
-* Provide the url of your app in the `homepage` field of package.json. [ex](https://github.com/garronej/keycloakify-demo-app/blob/7847cc70ef374ab26a6cc7953461cf25603e9a6d/package.json#L2) or in a `public/CNAME` file. [ex](https://github.com/garronej/keycloakify-demo-app/blob/main/public/CNAME).
-* Build the theme using `npx build-keycloak-theme --external-assets` [ex](https://github.com/garronej/keycloakify-demo-app/blob/7847cc70ef374ab26a6cc7953461cf25603e9a6d/.github/workflows/ci.yaml#L21)
-* Enable [long-term assets caching](https://create-react-app.dev/docs/production-build/#static-file-caching) on the server hosting your app.
-* Make sure not to build your app and the keycloak theme separately and remember to update the Keycloak theme every time you update your app.
-* Be mindful that if your app is down your login pages are down as well.
-
-Checkout a complete setup [here](https://github.com/garronej/keycloakify-demo-app#about-keycloakify)
+###
