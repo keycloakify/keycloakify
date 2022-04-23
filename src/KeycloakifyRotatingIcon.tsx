@@ -2,7 +2,6 @@
 import { makeStyles } from "theme";
 import { keyframes } from "tss-react";
 import { useEffect } from "react";
-import { useDomRect } from "powerhooks/useDomRect";
 
 export type Props = {
   className?: string;
@@ -21,9 +20,6 @@ export function KeycloakifyRotatingIcon(props: Props) {
   );
 
   const { classes, cx } = useStyles();
-
-  //const { ref, domRect: { height, width } } = useDomRect();
-
 
   return (
     <div className={cx(classes.root, className)}>
