@@ -16,7 +16,7 @@ export function KeycloakifyRotatingIcon(props: Props) {
     ()=> {
       onLoad?.();
     },
-    []
+  
   );
 
   const { classes, cx } = useStyles();
@@ -67,6 +67,7 @@ export function KeycloakifyRotatingIcon(props: Props) {
 const useStyles = makeStyles({ "name": { KeycloakifyRotatingIcon } })({
   "root": {
     "position": "relative",
+    "backgroundColor": "pink"
   },
   "firstSvg": {
       "animation": `${keyframes({
