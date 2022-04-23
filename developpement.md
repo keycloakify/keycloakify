@@ -16,24 +16,11 @@ To acheave that with Keycloakify simply eddit: &#x20;
 
 then if you run yarn start you will see your login page display (Dont forget to remove mockPageId before releasing 😉). &#x20;
 
-The page is loaded with a default mock context. To customize the mock kcContext please refer&#x20;
+The page is loaded with a default mock context. To customize the mock kcContext please refer to [this example](https://github.com/garronej/keycloakify-demo-app/blob/a316ea0046976e6d435a33e896cb9e3d1873c124/src/KcApp/kcContext.ts#L28-L78).
 
-```tsx
-import {
-    KcApp,
-    defaultKcProps,
-    getKcContext
-} from "keycloakify";
+### Testing in a real Keycloak instance
 
-const { kcContext } = getKcContext({
-    "mockPageId": "login.ftl"
-});
+Once you are done developping you want to test in an actual Keycloak instance to see if everything is working as expected. &#x20;
 
-reactDom.render(
-        <KcApp
-            kcContext={kcContextMocks.kcLoginContext}
-            {...defaultKcProps}
-        />
-    document.getElementById("root")
-);
-```
+Please refer to the related instruction printed on the console when running `yarn keycloak` in your project.
+

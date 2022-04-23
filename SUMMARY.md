@@ -4,3 +4,5 @@
 * [👨💻 Quick start](how-to-use.md)
 * [🧪 Developpement](developpement.md)
 * [⚡ Performance optimization](page-1.md)
+* [📧 Email customization](email-customization.md)
+* [✅ Realtime input validation](realtime-input-validation.md)
