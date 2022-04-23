@@ -27,8 +27,10 @@ import frontendValidationMp4Url from "assets/video/keycloakify_frontend_validati
 import frontendValidationWebmUrl from "assets/video/keycloakify_frontend_validation-vp9-chrome.webm";
 import { GlSectionDivider } from "gitlanding/GlSectionDivider";
 import { GlCheckList } from "gitlanding/GlCheckList";
+import { GlFooter } from "gitlanding/GlFooter";
 
 const githubRepoUrl = "https://github.com/InseeFrLab/keycloakify";
+const documentationUrl = "https://docs.keycloakify.dev";
 
 export function App() {
 
@@ -81,7 +83,7 @@ export function App() {
               },
               {
                 "label": t("documentation"),
-                "href": "https://docs.keycloakify.dev",
+                "href": documentationUrl,
               },
               {
                 "label": t("pricing"),
@@ -107,6 +109,21 @@ export function App() {
           "position": "sticky",
           "isRetracted": "smart",
         }}
+        footer={
+          <GlFooter
+            bottomDivContent={`[GitHub](${githubRepoUrl}) - [Documentation](${documentationUrl})`}
+            links={[
+              {
+                "href": "https://www.npmjs.com/package/keycloakify",
+                "label": <img src="https://img.shields.io/npm/dw/keycloakify" alt="" />
+              },
+              {
+                "href": "https://github.com/garronej/keycloakify/blob/main/LICENSE",
+                "label": <img src="https://img.shields.io/npm/l/keycloakify" alt="" />
+              }
+            ]}
+          />
+        }
       >
         <GlHero
           title={
@@ -145,7 +162,7 @@ Wouldn't it be great if we could just design the login and register pages as if 
 
                 `}
           buttonLabel={`Get started`}
-          buttonLink={{ "href": "https://docs.keycloakify.dev" }}
+          buttonLink={{ "href": documentationUrl }}
           illustration={
             <GlIllustration
               hasShadow={true}
@@ -172,7 +189,7 @@ Wouldn't it be great if we could just design the login and register pages as if 
           body={`Keycloakify bundles your theme into a single \`.jar\` file to be that you'll be able to import
           into your keycloak instance.`}
           buttonLabel={`Get started`}
-          buttonLink={{ "href": "https://docs.keycloakify.dev" }}
+          buttonLink={{ "href": documentationUrl }}
           illustration={
             <GlIllustration
               hasShadow={true}
@@ -223,57 +240,57 @@ Wouldn't it be great if we could just design the login and register pages as if 
           illustrationPosition="right"
         />
 
-<GlSectionDivider />
+        <GlSectionDivider />
 
-<GlCheckList
-    heading="Check List Heading"
-    hasAnimation={true}
-    elements={[
-        {
-            "title": "Therms of service support",
-            "description": `Need your users to accept your therms and services when registering?
+        <GlCheckList
+          heading="Check List Heading"
+          hasAnimation={true}
+          elements={[
+            {
+              "title": "Therms of service support",
+              "description": `Need your users to accept your therms and services when registering?
             Just provide a Markdown file, optionally in different languages. That's it.`,
-        },
-        {
-            "title": "Context persistence",
-            "description": `Easily carry the theme (dark/light) and the language from your main app over to the login pages.`,
-        },
-        {
-            "title": "Email customization support",
-            "description": `Customize the email sent to validates users addresses and other emails of sorts.`,
-        },
-        {
-            "title": "Easily testable",
-            "description": `Test your login page with a mock context without having to deploy to a real Keycloak instance.
+            },
+            {
+              "title": "Context persistence",
+              "description": `Easily carry the theme (dark/light) and the language from your main app over to the login pages.`,
+            },
+            {
+              "title": "Email customization support",
+              "description": `Customize the email sent to validates users addresses and other emails of sorts.`,
+            },
+            {
+              "title": "Easily testable",
+              "description": `Test your login page with a mock context without having to deploy to a real Keycloak instance.
             When you are ready spin up a Keycloak container with a simple command and check that everything is working.
 `,
-        },
-        {
-            "title": "Recommended by official Keycloak support",
-            "description": `This tool [has been recommended](https://keycloak.discourse.group/t/keycloak-nodejs-admin-api-for-custom-login/12220/2?u=garronej) to users by the Keycloak team. On the Keycloak support forum`,
-        },
-        {
-            "title": "Light or deep customization, it's up to you",
-            "description": `You can opt to just inject some CSS of branding into the pages but you can also opt for modifying the pages 
+            },
+            {
+              "title": "Recommended by official Keycloak support",
+              "description": `This tool [has been recommended](https://keycloak.discourse.group/t/keycloak-nodejs-admin-api-for-custom-login/12220/2?u=garronej) to users by the Keycloak team. On the Keycloak support forum`,
+            },
+            {
+              "title": "Light or deep customization, it's up to you",
+              "description": `You can opt to just inject some CSS of branding into the pages but you can also opt for modifying the pages 
             at the component level.`,
-        },
-        {
-            "title": "Demo setups",
-            "description": `If you are not big on reading documentation there are working demo repo you can start hacking from.
+            },
+            {
+              "title": "Demo setups",
+              "description": `If you are not big on reading documentation there are working demo repo you can start hacking from.
             `,
-        },
-        {
-            "title": "Actively maintained",
-            "description": `This tool will stay up to date with Keycloak for the forseeable future and you are welcome to open
+            },
+            {
+              "title": "Actively maintained",
+              "description": `This tool will stay up to date with Keycloak for the forseeable future and you are welcome to open
             issues if you are experiencing any issues.
             `,
-        },
-        {
-            "title": "Great typescript support",
-            "description": `Everything in Keycloakify is strictly typed. It'll be a good developer experience.`,
-        },
-    ]}
-/>
+            },
+            {
+              "title": "Great typescript support",
+              "description": `Everything in Keycloakify is strictly typed. It'll be a good developer experience.`,
+            },
+          ]}
+        />
       </GlTemplate>
 
       <PricingDialog evtOpen={evtOpenPricingDialog} />
