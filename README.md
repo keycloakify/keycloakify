@@ -53,7 +53,7 @@ Here is `keycloakify` for you 🍸
 
 <p align="center">
     <i> <a href="https://datalab.sspcloud.fr">With keycloakify:</a> </i> 
-</p>  
+</p>
 
 https://user-images.githubusercontent.com/6702424/164769234-fe0c977b-1edc-4bb5-815f-8445b29b2db5.mp4
 
