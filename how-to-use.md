@@ -36,29 +36,34 @@ If you have created a new React project specifically to create a Keycloak theme 
 `src/index.tsx`
 
 ```tsx
-import { App } from "./<wherever>/App";
 import { KcApp, defaultKcProps, getKcContext } from "keycloakify";
-import { css } from "tss-react/@emotion/css";
+//We assume the file contains: ".my-class { color: red; }"
+import "./index.css";
 
 const { kcContext } = getKcContext();
 
-//Here we user tss-react to generate the style 
-//but we could 'import "index.css"' and set
-//"kcHeaderWrapperClass": "my-class"
-//With 'my-class' defined in index.css
-const myClassName = css({ "color": "red" });
+if( kcContex === undefined ){
+    throw new Error(
+        "This app is a Keycloak theme" +
+        "It isn't meant to be deployed outside of Keycloak"
+    );
+}
 
 reactDom.render(
     <KcApp
         kcContext={kcContext}
         {...{
             ...defaultKcProps,
-            "kcHeaderWrapperClass": myClassName,
+            "kcHeaderWrapperClass": "my-class",
         }}
     />,
     document.getElementById("root"),
 );
 ```
+
+{% hint style="info" %}
+The above snippet of code assumes you are&#x20;
+{% endhint %}
 
 If you share a unique project for your app and the Keycloak theme, your index should look more like this:
 
@@ -92,9 +97,11 @@ reactDom.render(
 ```
 
 _result:_\
+
+
 ![](https://user-images.githubusercontent.com/6702424/114326299-6892fc00-9b34-11eb-8d75-85696e55458f.png)
 
-Example of a customization using only CSS: [here](https://github.com/InseeFrLab/onyxia-web/blob/012639d62327a9a56be80c46e32c32c9497b82db/src/app/components/KcApp.tsx) (the [index.tsx](https://github.com/InseeFrLab/onyxia-web/blob/012639d62327a9a56be80c46e32c32c9497b82db/src/app/index.tsx#L89-L94) ) and the result you can expect:
+Example of a customization using only CSS: [here](https://github.com/InseeFrLab/onyxia-web/blob/012639d62327a9a56be80c46e32c32c9497b82db/src/app/components/KcApp.tsx) (the [index.tsx](https://github.com/InseeFrLab/onyxia-web/blob/012639d62327a9a56be80c46e32c32c9497b82db/src/app/index.tsx#L89-L94) ) and the kind of result you can expect:
 
 ![](https://github.com/InseeFrLab/keycloakify/releases/download/v0.3.8/keycloakify\_after.gif)
 {% endtab %}
