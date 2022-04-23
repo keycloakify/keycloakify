@@ -1,6 +1,6 @@
 # ✒ Terms and conditions
 
-{% embed url="https://user-images.githubusercontent.com/6702424/164940742-4887e29a-a7d7-43ae-b61b-05140c9c96ed.mov" %}
+{% embed url="https://user-images.githubusercontent.com/6702424/164942769-0d5420e3-c62f-4187-977e-316a113fb037.mp4" %}
 
 [Many organizations have a requirement that when a new user logs in for the first time, they need to agree to the terms and conditions of the website.](https://www.keycloak.org/docs/4.8/server\_admin/#terms-and-conditions).
 
