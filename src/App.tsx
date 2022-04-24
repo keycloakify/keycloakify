@@ -254,7 +254,7 @@ Wouldn't it be great if we could just design the login and register pages as if 
         <GlSectionDivider />
 
         <GlCheckList
-          heading="Check List Heading"
+          heading="Everything you expect and more"
           hasAnimation={true}
           elements={[
             {
