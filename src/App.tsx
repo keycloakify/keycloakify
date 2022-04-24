@@ -1,17 +1,11 @@
-import { useEffect, useState, memo } from "react";
+import { useEffect } from "react";
 import { GlTemplate } from "gitlanding/GlTemplate";
 import { useSplashScreen } from "onyxia-ui";
 import { GlHeader } from "gitlanding/GlHeader";
 import { useTranslation } from "i18n/useTranslations";
 import { makeStyles, Text } from "theme";
-import { useConstCallback } from "powerhooks/useConstCallback";
 //import { useLng } from "i18n/useLng";
-import { Dialog } from "onyxia-ui/Dialog";
-import { Button/*, LanguageSelect*/ } from "theme";
-import type { NonPostableEvt } from "evt";
-import { useEvt } from "evt/hooks/useEvt";
-import { useConst } from "powerhooks/useConst";
-import { Evt } from "evt";
+//import { LanguageSelect } from "theme";
 import { breakpointsValues } from "onyxia-ui";
 import { GlHero } from "gitlanding/GlHero";
 import { GlHeroText } from "gitlanding/GlHero/GlHeroText";
@@ -28,7 +22,6 @@ import frontendValidationWebmUrl from "assets/video/keycloakify_frontend_validat
 import { GlSectionDivider } from "gitlanding/GlSectionDivider";
 import { GlCheckList } from "gitlanding/GlCheckList";
 import { GlFooter } from "gitlanding/GlFooter";
-import { GlGithubStarCount } from "gitlanding/utils/GlGithubStarCount";
 
 const githubRepoUrl = "https://github.com/InseeFrLab/keycloakify";
 const documentationUrl = "https://docs.keycloakify.dev";
@@ -47,12 +40,9 @@ export function App() {
 
   const { classes } = useStyles();
 
-  const evtOpenPricingDialog = useConst(() => Evt.create());
-
   const { t } = useTranslation({ App });
 
   return (
-    <>
       <GlTemplate
         header={
           <GlHeader
@@ -85,11 +75,6 @@ export function App() {
               {
                 "label": t("documentation"),
                 "href": documentationUrl,
-              },
-              {
-                "label": t("pricing"),
-                "onClick": () => evtOpenPricingDialog.post(),
-                "href": "#",
               }
             ]}
             enableDarkModeSwitch={true}
@@ -303,9 +288,6 @@ Wouldn't it be great if we could just design the login and register pages as if 
           ]}
         />
       </GlTemplate>
-
-      <PricingDialog evtOpen={evtOpenPricingDialog} />
-    </>
   );
 
 }
@@ -373,47 +355,3 @@ const useStyles = makeStyles({ "name": { App } })(theme => ({
 
 }));
 
-const { PricingDialog } = (() => {
-
-  type Props = {
-    evtOpen: NonPostableEvt<void>;
-  };
-
-  const PricingDialog = memo(
-    (props: Props) => {
-
-      const { evtOpen } = props;
-
-      const { t } = useTranslation({ App });
-
-      const [isOpen, setIsOpen] = useState(false);
-
-      const onClose = useConstCallback(() => setIsOpen(false));
-
-      useEvt(
-        ctx => evtOpen.attach(ctx, () => setIsOpen(true)),
-        [evtOpen]
-      );
-
-      return (
-        <Dialog
-          isOpen={isOpen}
-          title={t("it is libre software")}
-          body={<>
-            {t("paid for by French taxpayers")}
-            <br/>
-            <br/>
-            <div style={{ "display": "flex" }}>
-            You can support the project by awarding a GitHub &nbsp; <GlGithubStarCount  repoUrl={githubRepoUrl}/>
-            </div>
-          </>}
-          buttons={<Button onClick={onClose}>{t("ok")}</Button>}
-          onClose={onClose}
-        />
-      );
-    }
-  );
-
-  return { PricingDialog }
-
-})();
