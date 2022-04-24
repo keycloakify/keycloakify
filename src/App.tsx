@@ -140,7 +140,7 @@ export function App() {
           title={
             <>
               <GlHeroText>Keycloak theming</GlHeroText>
-              <Text typo="display heading" className={classes.title2}>Made easy. With React</Text>
+              <Text typo="display heading" className={classes.title2}>Made easy. With React.</Text>
             </>
           }
           subTitle={`
