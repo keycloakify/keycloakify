@@ -5,7 +5,7 @@ import { GlHeader } from "gitlanding/GlHeader";
 import { useTranslation } from "i18n/useTranslations";
 import { makeStyles, Text } from "theme";
 import { useConstCallback } from "powerhooks/useConstCallback";
-import { useLng } from "i18n/useLng";
+//import { useLng } from "i18n/useLng";
 import { Dialog } from "onyxia-ui/Dialog";
 import { Button/*, LanguageSelect*/ } from "theme";
 import type { NonPostableEvt } from "evt";
@@ -207,11 +207,11 @@ Wouldn't it be great if we could just design the login and register pages as if 
               type="video"
               sources={[
                 {
-                  "src": themeSelectWebmUrl,
+                  "src": themeSelectMp4Url,
                   "type": 'video/mp4; codecs="hvc1"',
                 },
                 {
-                  "src": themeSelectMp4Url,
+                  "src": themeSelectWebmUrl,
                   "type": "video/webm",
                 },
               ]}
