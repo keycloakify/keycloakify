@@ -114,7 +114,7 @@ export function App() {
         }}
         footer={
           <GlFooter
-            bottomDivContent={`[Page created with GitLanding]("https://www.gitlanding.dev")`}
+            bottomDivContent={`[Page created with GitLanding](https://www.gitlanding.dev)`}
             links={[
               {
                 "href": "https://www.npmjs.com/package/keycloakify",
