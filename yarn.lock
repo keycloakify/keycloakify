@@ -4705,10 +4705,10 @@ github-buttons@^2.21.1:
   resolved "https://registry.yarnpkg.com/github-buttons/-/github-buttons-2.21.1.tgz#9e55eb83b70c9149a21c235db2e971c53d4d98a2"
   integrity sha512-n9bCQ8sj+5oX1YH5NeyWGbAclRDtHEhMBzqw2ctsWpdEHOwVgfruRu0VIVy01Ah10dd/iFajMHYU71L7IBWBOw==
 
-gitlanding@^0.15.3:
-  version "0.15.3"
-  resolved "https://registry.yarnpkg.com/gitlanding/-/gitlanding-0.15.3.tgz#c293910d7c962ca3bafc4dfaf0a25981d99a884a"
-  integrity sha512-6rT5lWZLyu8K32ady59tYp36yJMMtZ6dbYelXPVclAqw3ni/YqUoVL9xxfyfMH/flHMuqvdRz5PWz7/19S3zXQ==
+gitlanding@^0.16.0:
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/gitlanding/-/gitlanding-0.16.0.tgz#5f577982a7afdac398805c7f8f52fa805bf9a26f"
+  integrity sha512-nwX5VWpmJNbW5GQhcxk8MCr5gyLBUQDQWmU9QPxqQRNGm0yplSlLGCzvNgb/aD44cXWHaFRfKjQ3b2ezX7cDqg==
   dependencies:
     "@mui/icons-material" "^5.5.0"
     embla-carousel "^4.1.5"

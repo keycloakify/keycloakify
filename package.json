@@ -1,5 +1,5 @@
 {
-  "name": "keycloakfiy_landingpage",
+  "name": "keycloakify_landingpage",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -10,7 +10,7 @@
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "evt": "2.0.0-beta.39",
-    "gitlanding": "^0.15.3",
+    "gitlanding": "^0.16.0",
     "i18next": "^19.8.4",
     "i18next-browser-languagedetector": "^6.0.1",
     "onyxia-ui": "^0.32.1",

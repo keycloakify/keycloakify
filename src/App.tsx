@@ -16,8 +16,7 @@ import { breakpointsValues } from "onyxia-ui";
 import { GlHero } from "gitlanding/GlHero";
 import { GlHeroText } from "gitlanding/GlHero/GlHeroText";
 import keycloakifyLogoPngUrl from "assets/img/keycloakify-logo.png";
-import keycloakifyLogoHeroPngUrl from "assets/img/keycloakify-logo-hero.png";
-import { KeycloakifyRotatingIcon } from "./KeycloakifyRotatingIcon";
+import { KeycloakifyRotatingLogo } from "./KeycloakifyRotatingLogo";
 import { GlArticle } from "gitlanding/GlArticle";
 import { GlIllustration } from "gitlanding/GlIllustration";
 import keycloakifyDemoWebmUrl from "assets/video/Keycloakify_demo_full-vp9-chrome.webm";
@@ -143,18 +142,11 @@ export function App() {
             </>
           }
           subTitle={`
-          Customize the look and feel of your login and registration pages without having to mess with FTL.
+          Customize the look and feel of your login and registration pages without having to mess with FreeMarker.
           `}
-          /*
           illustration={{
             "type": "custom component",
-            "Component": KeycloakifyRotatingIcon
-          }}
-          */
-
-          illustration={{
-            "type": "image",
-            "imageSrc": keycloakifyLogoHeroPngUrl,
+            "Component": KeycloakifyRotatingLogo
           }}
           hasLinkToSectionBellow={true}
           hasIllustrationShadow={false}
