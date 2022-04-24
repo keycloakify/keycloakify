@@ -258,20 +258,20 @@ Wouldn't it be great if we could just design the login and register pages as if 
           hasAnimation={true}
           elements={[
             {
-              "title": "Therms of service support",
-              "description": `Need your users to accept your therms and services when registering?
+              "title": "[Therms and conditions](https://docs.keycloakify.dev/terms-and-conditions)",
+              "description": `Need your users to accept your therms and conditions when registering?
             Just provide a Markdown file, optionally in different languages. That's it.`,
             },
             {
-              "title": "Context persistence",
+              "title": "[Context persistence](https://docs.keycloakify.dev/context-persistence)",
               "description": `Easily carry the theme (dark/light) and the language from your main app over to the login pages.`,
             },
             {
-              "title": "Email customization support",
+              "title": "[Email customization support](https://docs.keycloakify.dev/email-customization)",
               "description": `Customize the email sent to validates users addresses and other emails of sorts.`,
             },
             {
-              "title": "Easily testable",
+              "title": "[Easily testable](https://docs.keycloakify.dev/developpement)",
               "description": `Test your login page with a mock context without having to deploy to a real Keycloak instance.
             When you are ready spin up a Keycloak container with a simple command and check that everything is working.
 `,
@@ -281,24 +281,24 @@ Wouldn't it be great if we could just design the login and register pages as if 
               "description": `This tool [has been recommended](https://keycloak.discourse.group/t/keycloak-nodejs-admin-api-for-custom-login/12220/2?u=garronej) to users by the Keycloak team. On the Keycloak support forum`,
             },
             {
-              "title": "Light or deep customization, it's up to you",
+              "title": "[Light or deep customization, it's up to you](https://docs.keycloakify.dev/how-to-use)",
               "description": `You can opt to just inject some CSS of branding into the pages but you can also opt for modifying the pages 
             at the component level.`,
             },
             {
-              "title": "Demo setups",
+              "title": "[Demo setups](https://github.com/garronej/keycloakify-demo-app)",
               "description": `If you are not big on reading documentation there are working demo repo you can start hacking from.
             `,
             },
             {
               "title": "Actively maintained",
-              "description": `This tool will stay up to date with Keycloak for the forseeable future and you are welcome to open
-            issues if you are experiencing any issues.
+              "description": `This tool [will stay up to date with Keycloak](https://docs.keycloakify.dev/#supported-keycloak-version) for the forseeable future and you 
+              are welcome to [open issues](https://github.com/InseeFrLab/keycloakify/issues/new) if you are experiencing any issues.
             `,
             },
             {
-              "title": "Great typescript support",
-              "description": `Everything in Keycloakify is strictly typed. It'll be a good developer experience.`,
+              "title": "Great TypeScript support",
+              "description": `Everything in Keycloakify is strictly typed. It will be a good developer experience.`,
             },
           ]}
         />
