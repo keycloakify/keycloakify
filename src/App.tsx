@@ -258,8 +258,8 @@ Wouldn't it be great if we could just design the login and register pages as if 
           hasAnimation={true}
           elements={[
             {
-              "title": "[Therms and conditions](https://docs.keycloakify.dev/terms-and-conditions)",
-              "description": `Need your users to accept your therms and conditions when registering?
+              "title": "[Terms and conditions](https://docs.keycloakify.dev/terms-and-conditions)",
+              "description": `Need your users to accept your terms and conditions when registering?
             Just provide a Markdown file, optionally in different languages. That's it.`,
             },
             {
