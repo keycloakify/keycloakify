@@ -13,7 +13,7 @@
     "gitlanding": "^0.16.0",
     "i18next": "^19.8.4",
     "i18next-browser-languagedetector": "^6.0.1",
-    "onyxia-ui": "^0.32.1",
+    "onyxia-ui": "^0.32.2",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-i18next": "^11.8.3",
