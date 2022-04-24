@@ -7,7 +7,7 @@ import { makeStyles, Text } from "theme";
 import { useConstCallback } from "powerhooks/useConstCallback";
 import { useLng } from "i18n/useLng";
 import { Dialog } from "onyxia-ui/Dialog";
-import { Button, LanguageSelect } from "theme";
+import { Button/*, LanguageSelect*/ } from "theme";
 import type { NonPostableEvt } from "evt";
 import { useEvt } from "evt/hooks/useEvt";
 import { useConst } from "powerhooks/useConst";
@@ -96,6 +96,7 @@ export function App() {
             githubRepoUrl={githubRepoUrl}
             githubButtonSize="large"
             showGithubStarCount={true}
+            /* TODO: Re enable when translation on point
             customItemEnd={
               <LanguageSelect
                 className={classes.languageSelect}
@@ -104,6 +105,7 @@ export function App() {
                 variant="big"
               />
             }
+            */
           />
         }
         headerOptions={{
