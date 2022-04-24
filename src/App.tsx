@@ -35,7 +35,7 @@ const documentationUrl = "https://docs.keycloakify.dev";
 
 export function App() {
 
-  const { lng, setLng } = useLng();
+  //const { lng, setLng } = useLng();
 
   {
     const { hideRootSplashScreen } = useSplashScreen();
