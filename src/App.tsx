@@ -277,8 +277,8 @@ Wouldn't it be great if we could just design the login and register pages as if 
 `,
             },
             {
-              "title": "Recommended by official Keycloak support",
-              "description": `This tool [has been recommended](https://keycloak.discourse.group/t/keycloak-nodejs-admin-api-for-custom-login/12220/2?u=garronej) to users by the Keycloak team. On the Keycloak support forum`,
+              "title": "Recommended on the support forum",
+              "description": `This tool [has been recommended](https://keycloak.discourse.group/t/keycloak-nodejs-admin-api-for-custom-login/12220/2?u=garronej) to users by a member of the Keycloak team.`,
             },
             {
               "title": "[Light or deep customization, it's up to you](https://docs.keycloakify.dev/how-to-use)",
