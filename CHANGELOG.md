@@ -1,3 +1,7 @@
+## **4.9.0** (2022-04-25)  
+  
+- Test by default with kc 18. Update instructions to use quay.io/keycloak/keycloak instead of jboss/keycloak #93    
+  
 ### **4.8.7** (2022-04-25)  
   
 - Update instructions to test on Keycloak 18 https://github.com/keycloak/keycloak-web/issues/306 #93  
