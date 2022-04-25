@@ -367,4 +367,12 @@ export const kcContextMocks: KcContextBase[] = [
         "pageId": "login-idp-link-confirm.ftl",
         "idpAlias": "FranceConnect",
     }),
+    id<KcContextBase.LoginIdpLinkEmail>({
+        ...kcContextCommonMock,
+        "pageId": "login-idp-link-email.ftl",
+        "idpAlias": "FranceConnect",
+        "brokerContext": {
+            "username": "anUsername",
+        },
+    }),
 ];
