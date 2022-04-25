@@ -92,7 +92,7 @@ export function main() {
     });
 
     //We want, however to test in a container running the latest Keycloak version
-    const containerKeycloakVersion = "17.0.1";
+    const containerKeycloakVersion = "18.0.0";
 
     generateStartKeycloakTestingContainer({
         keycloakThemeBuildingDirPath,
@@ -104,7 +104,7 @@ export function main() {
         [
             "",
             `✅ Your keycloak theme has been generated and bundled into ./${pathRelative(reactProjectDirPath, jarFilePath)} 🚀`,
-            `It is to be placed in "/opt/jboss/keycloak/standalone/deployments" in the container running a jboss/keycloak Docker image.`,
+            `It is to be placed in "/opt/keycloak/providers" in the container running a quay.io/keycloak/keycloak Docker image.`,
             "",
             "Using Helm (https://github.com/codecentric/helm-charts), edit to reflect:",
             "",
@@ -124,7 +124,7 @@ export function main() {
             "        ",
             "        extraVolumeMounts: |",
             "            - name: extensions",
-            "              mountPath: /opt/jboss/keycloak/standalone/deployments",
+            "              mountPath: /opt/keycloak/providers",
             "    extraEnv: |",
             "    - name: KEYCLOAK_USER",
             "      value: admin",
