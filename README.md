@@ -38,6 +38,10 @@
 
 # Changelog highlights
 
+## v4.10.0
+
+Add `login-idp-link-email.ftl` page [See PR](https://github.com/InseeFrLab/keycloakify/pull/92).
+
 ## v4.8.0
 
 [Email template customization.](#email-template-customization)
