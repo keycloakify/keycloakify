@@ -1,3 +1,10 @@
+### **4.8.7** (2022-04-25)  
+  
+- Update instructions to test on Keycloak 18 https://github.com/keycloak/keycloak-web/issues/306 #93  
+- Move the documentation form the readme to docs.keycloakify.dev  
+- Update README.md  
+- Update demo video    
+  
 ### **4.8.6** (2022-04-22)  
   
 - always offer to download v11.0.3    
