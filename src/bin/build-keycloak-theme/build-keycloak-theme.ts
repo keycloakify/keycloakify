@@ -143,7 +143,7 @@ export function main() {
             "Once your container is up and running: ",
             "- Log into the admin console 👉 http://localhost:8080/admin username: admin, password: admin 👈",
             '- Create a realm named "myrealm"',
-            '- Create a client with id "myclient" and root url: "https://www.keycloak.org/app/"',
+            '- Create a client with ID: "myclient", "Root URL": "https://www.keycloak.org/app/" and "Valid redirect URIs": "https://www.keycloak.org/app/*"',
             `- Select Login Theme: ${themeName} (don't forget to save at the bottom of the page)`,
             `- Go to 👉 https://www.keycloak.org/app/ 👈 Click "Save" then "Sign in". You should see your login page`,
             "",
