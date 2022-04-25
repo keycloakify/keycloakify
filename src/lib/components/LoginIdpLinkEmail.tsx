@@ -5,7 +5,7 @@ import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { useKcMessage } from "../i18n/useKcMessage";
 
 export const LoginIdpLinkEmail = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LoginIdpLinkEmail } & KcProps) => {
-    const { url, realm, idpAlias } = kcContext;
+    const { url, realm, brokerContext, idpAlias } = kcContext;
 
     const { msg } = useKcMessage();
 
@@ -17,7 +17,7 @@ export const LoginIdpLinkEmail = memo(({ kcContext, ...props }: { kcContext: KcC
             formNode={
                 <>
                     <p id="instruction1" className="instruction">
-                        {msg("emailLinkIdp1", idpAlias, realm.displayName)}
+                        {msg("emailLinkIdp1", idpAlias, brokerContext.username, realm.displayName)}
                     </p>
                     <p id="instruction2" className="instruction">
                         {msg("emailLinkIdp2")} <a href={url.loginAction}>{msg("doClickHere")}</a> {msg("emailLinkIdp3")}

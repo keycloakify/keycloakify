@@ -218,6 +218,9 @@ export declare namespace KcContextBase {
 
     export type LoginIdpLinkEmail = Common & {
         pageId: "login-idp-link-email.ftl";
+        brokerContext: {
+            username: string;
+        };
         idpAlias: string;
     };
 
