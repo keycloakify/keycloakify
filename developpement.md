@@ -16,11 +16,7 @@ To acheave that with Keycloakify simply eddit: &#x20;
 
 then if you run yarn start you will see your login page display (Dont forget to remove mockPageId before releasing 😉). &#x20;
 
-{% hint style="success" %}
-The page is loaded with a default mock context.&#x20;
-
-To customize the mock kcContext please refer to [this example](https://github.com/garronej/keycloakify-demo-app/blob/a316ea0046976e6d435a33e896cb9e3d1873c124/src/KcApp/kcContext.ts#L28-L78).
-{% endhint %}
+The page is loaded with a default mock context. To customize the mock kcContext please refer to [this example](https://github.com/garronej/keycloakify-demo-app/blob/a316ea0046976e6d435a33e896cb9e3d1873c124/src/KcApp/kcContext.ts#L28-L78).
 
 ### Testing in a real Keycloak instance
 

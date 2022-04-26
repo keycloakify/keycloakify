@@ -6,6 +6,10 @@ It's a good idea to first read this quick start section to understand the basic 
 However, we recommend you start hacking from [**the demo setup**](https://github.com/garronej/keycloakify-demo-app) instead of setting up Keycloakify from scratch.
 {% endhint %}
 
+{% hint style="warning" %}
+Save yourself some time, have quick look at the [requirements page](./).
+{% endhint %}
+
 ```
 yarn add keycloakify @emotion/react
 ```
@@ -31,7 +35,11 @@ The first approach is to only customize the style of the default Keycloak login 
 {% hint style="info" %}
 The keycloakify components are a plain React translation of the default theme that comes with Keycloak v11.0.3. &#x20;
 
-You can download the FTL/CSS source files the components are based on with the following command [`npx -p keycloakify download-builtin-keycloak-theme` and selecting version 11.0.3](https://user-images.githubusercontent.com/6702424/164304458-934b0e1d-9de7-4bb4-8a1c-e06a70b1636a.mov).
+You can download the FTL/CSS source files the components are based on with the following command:
+
+`npx -p keycloakify download-builtin-keycloak-theme`&#x20;
+
+then select version 11.0.3 ([Video demo](https://user-images.githubusercontent.com/6702424/164304458-934b0e1d-9de7-4bb4-8a1c-e06a70b1636a.mov)).
 {% endhint %}
 
 `src/index.tsx`
