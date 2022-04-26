@@ -1,3 +1,11 @@
+## **4.10.0** (2022-04-26)  
+  
+- Merge pull request #92 from Tasyp/add-login-idp-link-email
+
+feat: add login-idp-link-email page  
+- feat: add mock data for login-idp-link-email page  
+- feat: supply broker context with context    
+  
 ## **4.9.0** (2022-04-25)  
   
 - Test by default with kc 18. Update instructions to use quay.io/keycloak/keycloak instead of jboss/keycloak #93    
