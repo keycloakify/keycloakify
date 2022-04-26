@@ -1,9 +1,9 @@
 # 🏁 Requirements
 
 {% hint style="warning" %}
-This tool will only run natively on **Linux** and **Mac OS**.
+This tool will only run natively on Linux and Mac OS.
 
-**Windows** users will haver to use it via [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10). More info [here](https://github.com/InseeFrLab/keycloakify/issues/54#issuecomment-984834217).
+Windows users will haver to use it via [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10). More info [here](https://github.com/InseeFrLab/keycloakify/issues/54#issuecomment-984834217).
 {% endhint %}
 
 {% hint style="success" %}
