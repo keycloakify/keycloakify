@@ -20,3 +20,11 @@ If you are building the theme with [--external-assets](page-1.md) this limitatio
 * If you want to host your font recommended approach is to move your fonts into the `public` directory and to place your `@font-face` statements in the `public/index.html`.\
   Example [here](https://github.com/garronej/keycloakify-demo-app/blob/9aa2dbaec28a7786d6b2983c9a59d393dec1b2d6/public/index.html#L27-L73) (and the font are [here](https://github.com/garronej/keycloakify-demo-app/tree/main/public/fonts/WorkSans)).
 * If you can't or wont move your `@font-face` statements in the `public/index.html`, you can still [use non relative url](https://github.com/garronej/keycloakify-demo-app/blob/2de8a9eb6f5de9c94f9cd3991faad0377e63268c/src/fonts.scss#L16), you will need to enable [`Access-Control-Allow-Origin`](https://github.com/garronej/keycloakify-demo-app/blob/2de8a9eb6f5de9c94f9cd3991faad0377e63268c/nginx.conf#L17-L19) for your font files, even on the same domain.&#x20;
+
+### login and email only
+
+![](<.gitbook/assets/image (1).png>)
+
+As of now Keycloakify only enable you to create a theme that covers the Login pages and the emails. `Acount` and `Admin Console` aren't supported yet. &#x20;
+
+If you are missing this feature [open an issue about it](https://github.com/InseeFrLab/keycloakify/issues/new).&#x20;
