@@ -4,6 +4,7 @@ export * from "./i18n";
 
 export { useDownloadTerms } from "./components/Terms";
 
+export * from "./components/KcApp";
 export * from "./components/KcProps";
 export * from "./keycloakJsAdapter";
 export * from "./useFormValidationSlice";
