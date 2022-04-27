@@ -1,3 +1,7 @@
+# **5.0.0** (2022-04-27)  
+  
+- i18n rebuild from the ground up    
+  
 ## **4.10.0** (2022-04-26)  
   
 - Merge pull request #92 from Tasyp/add-login-idp-link-email
