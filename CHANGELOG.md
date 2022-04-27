@@ -1,3 +1,7 @@
+## **5.1.0** (2022-04-27)  
+  
+- Export kcLanguageTags    
+  
 # **5.0.0** (2022-04-27)  
   
 - i18n rebuild from the ground up    
