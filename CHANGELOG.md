@@ -1,3 +1,7 @@
+## **5.2.0** (2022-04-27)  
+  
+- Export KcApp    
+  
 ## **5.1.0** (2022-04-27)  
   
 - Export kcLanguageTags    
