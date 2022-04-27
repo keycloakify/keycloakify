@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 import memoize from "memoizee";
 import { kcMessages as kcMessagesBase } from "./generated_kcMessages/15.0.2/login";
 import { assert } from "tsafe/assert";
+import type { Equals } from "tsafe";
 
 export const kcMessages = {
     ...kcMessagesBase,
@@ -29,6 +30,31 @@ export const kcMessages = {
 };
 
 export type KcLanguageTag = keyof typeof kcMessages;
+
+export const kcLanguageTags = [
+    "en",
+    "fr",
+    "ca",
+    "cs",
+    "da",
+    "de",
+    "es",
+    "hu",
+    "it",
+    "ja",
+    "lt",
+    "nl",
+    "no",
+    "pl",
+    "pt-BR",
+    "ru",
+    "sk",
+    "sv",
+    "tr",
+    "zh-CN",
+] as const;
+
+assert<Equals<KcLanguageTag, typeof kcLanguageTags[number]>>();
 
 type KcContextLike = { locale?: { currentLanguageTag: KcLanguageTag } };
 
