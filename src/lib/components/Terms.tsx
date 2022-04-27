@@ -1,12 +1,33 @@
-import { memo } from "react";
+import { useReducer, useEffect, memo } from "react";
 import { Template } from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { useKcMessage } from "../i18n/useKcMessage";
+import { getMsg } from "../i18n";
 import { useCssAndCx } from "tss-react";
+import { kcMessages, getCurrentKcLanguageTag } from "../i18n";
+import type { KcLanguageTag } from "../i18n";
+
+/** Allow to avoid bundling the terms and download it on demand*/
+export function useDownloadTerms(params: {
+    kcContext: KcContextBase;
+    downloadTermMarkdown: (params: { currentKcLanguageTag: KcLanguageTag }) => Promise<string>;
+}) {
+    const { kcContext, downloadTermMarkdown } = params;
+
+    const [, forceUpdate] = useReducer(x => x + 1, 0);
+
+    useEffect(() => {
+        const currentKcLanguageTag = getCurrentKcLanguageTag(kcContext);
+
+        downloadTermMarkdown({ currentKcLanguageTag }).then(thermMarkdown => {
+            kcMessages[currentKcLanguageTag].termsText = thermMarkdown;
+            forceUpdate();
+        });
+    }, []);
+}
 
 export const Terms = memo(({ kcContext, ...props }: { kcContext: KcContextBase.Terms } & KcProps) => {
-    const { msg, msgStr } = useKcMessage();
+    const { msg, msgStr } = getMsg(kcContext);
 
     const { cx } = useCssAndCx();
 

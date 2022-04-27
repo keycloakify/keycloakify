@@ -1,18 +1,12 @@
 import "./tools/Array.prototype.every";
 import { useMemo, useReducer, Fragment } from "react";
 import type { KcContextBase, Validators, Attribute } from "./getKcContext/KcContextBase";
-import { useKcMessage } from "./i18n/useKcMessage";
+import { getMsg } from "./i18n";
+import type { KcLanguageTag } from "./i18n";
 import { useConstCallback } from "powerhooks/useConstCallback";
 import { id } from "tsafe/id";
-import type { MessageKey } from "./i18n/useKcMessage";
+import type { MessageKey } from "./i18n";
 import { emailRegexp } from "./tools/emailRegExp";
-
-export type KcContextLike = {
-    messagesPerField: Pick<KcContextBase.Common["messagesPerField"], "existsError" | "get">;
-    attributes: { name: string; value?: string; validators: Validators }[];
-    passwordRequired: boolean;
-    realm: { registrationEmailAsUsername: boolean };
-};
 
 export function useGetErrors(params: {
     kcContext: {
@@ -20,16 +14,17 @@ export function useGetErrors(params: {
         profile: {
             attributes: { name: string; value?: string; validators: Validators }[];
         };
+        locale?: { currentLanguageTag: KcLanguageTag };
     };
 }) {
-    const {
-        kcContext: {
-            messagesPerField,
-            profile: { attributes },
-        },
-    } = params;
+    const { kcContext } = params;
 
-    const { msg, msgStr, advancedMsg, advancedMsgStr } = useKcMessage();
+    const {
+        messagesPerField,
+        profile: { attributes },
+    } = kcContext;
+
+    const { msg, msgStr, advancedMsg, advancedMsgStr } = getMsg(kcContext);
 
     const getErrors = useConstCallback((params: { name: string; fieldValueByAttributeName: Record<string, { value: string }> }) => {
         const { name, fieldValueByAttributeName } = params;
