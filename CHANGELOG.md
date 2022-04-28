@@ -1,3 +1,7 @@
+## **5.3.0** (2022-04-28)  
+  
+- Rename keycloak_theme_email to keycloak_email (it's shorter)    
+  
 ## **5.2.0** (2022-04-27)  
   
 - Export KcApp    
