@@ -1,4 +1,4 @@
-# 👨💻 Quick start
+# 😄 👨💻 Quick start
 
 {% hint style="success" %}
 It's a good idea to first read this quick start section to understand the basic of how Keycloakify works.
@@ -7,7 +7,7 @@ However, we recommend you start hacking from [**the demo setup**](https://github
 {% endhint %}
 
 {% hint style="warning" %}
-Save yourself some time, have quick look at the [requirements page](./).
+Save yourself some time, have quick look at the [requirements page](./). (Windows users in particular)
 {% endhint %}
 
 ```

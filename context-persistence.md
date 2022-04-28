@@ -10,7 +10,7 @@ The only reliable solution is to inject parameters into the URL before redirecti
 
 The method also works with [`@react-keycloak/web`](https://www.npmjs.com/package/@react-keycloak/web) (use the `initOptions`).
 
-You can implement your own mechanism to pass the states in the URL and restore it on the other side but we recommend using `powerhooks/useGlobalState` from the library [`powerhooks`](https://www.powerhooks.dev) that provide an elegant way to handle states such as `isDarkModeEnabled` or `selectedLanguage`.
+You can implement your own mechanism to pass the states in the URL and restore it on the other side but we recommend using [`powerhooks/useGlobalState`](https://github.com/garronej/powerhooks%23useglobalstate) from the library [`powerhooks`](https://www.powerhooks.dev) that provide an elegant way to handle states such as `isDarkModeEnabled` or `selectedLanguage`.
 
 Let's modify [the example](https://github.com/keycloak/keycloak-documentation/blob/master/securing\_apps/topics/oidc/javascript-adapter.adoc) from the official `keycloak-js` documentation to enables the states of `useGlobalStates` to be injected in the URL before redirecting.\
 Note that the states are automatically restored on the other side by `powerhooks`
@@ -19,6 +19,7 @@ Note that the states are automatically restored on the other side by `powerhooks
 import keycloak_js from "keycloak-js";
 import { injectGlobalStatesInSearchParams } from "powerhooks/useGlobalState";
 import { createKeycloakAdapter } from "keycloakify";
+import { addParamToUrl } from "powerhooks/tools/urlSearchParams";
 
 //...
 
@@ -32,7 +33,17 @@ keycloakInstance.init({
     "onLoad": "check-sso",
     "silentCheckSsoRedirectUri": window.location.origin + "/silent-check-sso.html",
     "adapter": createKeycloakAdapter({
-        "transformUrlBeforeRedirect": injectGlobalStatesInSearchParams,
+        "transformUrlBeforeRedirect": url=>
+            [url]
+                //This will append &ui_locales=fr at on the login page url we are about to 
+                //redirect to. 
+                //This will tell keycloak that the login should be in french. 
+                //Replace "fr" by any KcLanguageTag you have enabled on your Keycloak server.
+                .map(url => addParamToUrl({ url, "name": "ui_locales", "value": "fr" }).newUrl)
+                //If you are using https://github.com/garronej/powerhooks#useglobalstate
+                //for controlling if the dark mode is enabled this will persiste the state.
+                .map(injectGlobalStatesInSearchParams)
+                [0],
         keycloakInstance,
     }),
 });
