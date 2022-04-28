@@ -1,4 +1,4 @@
-# 😄 👨💻 Quick start
+# 👨💻 Quick start
 
 {% hint style="success" %}
 It's a good idea to first read this quick start section to understand the basic of how Keycloakify works.
