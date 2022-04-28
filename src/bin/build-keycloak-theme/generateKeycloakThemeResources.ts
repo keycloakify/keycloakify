@@ -88,7 +88,7 @@ export function generateKeycloakThemeResources(params: {
             console.log(
                 [
                     `Not bundling email template because ${pathBasename(keycloakThemeEmailDirPath)} does not exist`,
-                    `To start customizing the email template, run: 👉 npx create-keycloak-theme-email-directory 👈`,
+                    `To start customizing the email template, run: 👉 npx create-keycloak-email-directory 👈`,
                 ].join("\n"),
             );
             doBundleEmailTemplate = false;
