@@ -43,6 +43,10 @@
 Rename `keycloak_theme_email` to `keycloak_email`.  
 If you already had a `keycloak_theme_email` you should rename it `keycloak_email`.
 
+## v5.0.0
+
+New i18n system. Import of terms and services have changed. [See example](https://github.com/garronej/keycloakify-demo-app/blob/a5b6a50f24bc25e082931f5ad9ebf47492acd12a/src/index.tsx#L46-L63).
+
 ## v4.10.0
 
 Add `login-idp-link-email.ftl` page [See PR](https://github.com/InseeFrLab/keycloakify/pull/92).
