@@ -19,7 +19,7 @@ const doUseExternalAssets = process.argv[2]?.toLowerCase() === "--external-asset
 const parsedPackageJson: ParsedPackageJson = require(pathJoin(reactProjectDirPath, "package.json"));
 
 export const keycloakThemeBuildingDirPath = pathJoin(reactProjectDirPath, "build_keycloak");
-export const keycloakThemeEmailDirPath = pathJoin(keycloakThemeBuildingDirPath, "..", "keycloak_theme_email");
+export const keycloakThemeEmailDirPath = pathJoin(keycloakThemeBuildingDirPath, "..", "keycloak_email");
 
 function sanitizeThemeName(name: string) {
     return name

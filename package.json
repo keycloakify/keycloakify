@@ -22,7 +22,7 @@
     },
     "bin": {
         "build-keycloak-theme": "dist/bin/build-keycloak-theme/index.js",
-        "create-keycloak-theme-email-directory": "dist/bin/create-keycloak-theme-email-directory.js",
+        "create-keycloak-email-directory": "dist/bin/create-keycloak-email-directory.js",
         "download-builtin-keycloak-theme": "dist/bin/download-builtin-keycloak-theme.js"
     },
     "lint-staged": {
