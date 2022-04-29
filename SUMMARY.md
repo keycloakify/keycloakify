@@ -2,7 +2,7 @@
 
 * [🏁 Requirements](README.md)
 * [👨💻 Quick start](how-to-use.md)
-* [🧪 Developpement](developpement.md)
+* [🧪 Development](development.md)
 * [📧 Email customization](email-customization.md)
 * [✒ Terms and conditions](terms-and-conditions.md)
 * [✅ Realtime input validation](realtime-input-validation.md)
