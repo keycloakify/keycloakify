@@ -129,6 +129,5 @@ Main takeaways are:
 
 ### How to import the theme in Keycloak
 
-Specific instruction on how to proceed will be printed in the console after you run \`yarn keycloak\`.&#x20;
+Specific instruction on how to proceed will be printed in the console with `yarn keycloak`.&#x20;
 
-###

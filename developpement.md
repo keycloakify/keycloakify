@@ -1,4 +1,4 @@
-# 🧪 Developpement
+# 🧪 Development
 
 ### Seeing the result live
 
