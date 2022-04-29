@@ -106,7 +106,8 @@ export function main() {
             `✅ Your keycloak theme has been generated and bundled into ./${pathRelative(reactProjectDirPath, jarFilePath)} 🚀`,
             `It is to be placed in "/opt/keycloak/providers" in the container running a quay.io/keycloak/keycloak Docker image.`,
             "",
-            "Using Helm (https://github.com/codecentric/helm-charts), edit to reflect:",
+            //TODO: Restore when we find a good Helm chart for Keycloak.
+            //"Using Helm (https://github.com/codecentric/helm-charts), edit to reflect:",
             "",
             "value.yaml: ",
             "    extraInitContainers: |",
