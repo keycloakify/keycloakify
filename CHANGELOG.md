@@ -1,3 +1,7 @@
+### **5.3.1** (2022-04-29)  
+  
+- Comment out missleading informations    
+  
 ## **5.3.0** (2022-04-28)  
   
 - Rename keycloak_theme_email to keycloak_email (it's shorter)    
