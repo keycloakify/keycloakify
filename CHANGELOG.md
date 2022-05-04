@@ -1,3 +1,10 @@
+### **5.3.2** (2022-05-04)  
+  
+- Merge pull request #101 from Romcol/bugfix/99
+
+Issue #99 - Make replace less greedy in remplaceImportFromStatic  
+- [IMP] Issue #99 - Make replace less greedy in remplaceImportFromStatic    
+  
 ### **5.3.1** (2022-04-29)  
   
 - Comment out missleading informations    
