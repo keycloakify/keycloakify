@@ -17,12 +17,12 @@ export function replaceImportsFromStaticInJsCode(params: { jsCode: string; urlOr
     const { jsCode, urlOrigin } = params;
 
     const fixedJsCode = jsCode
-        .replace(/(\w+\.\w+)\+"static\//g, (...[, group]) =>
+        .replace(/([a-zA-Z]+\.[a-zA-Z]+)\+"static\//g, (...[, group]) =>
             urlOrigin === undefined
                 ? `window.${ftlValuesGlobalName}.url.resourcesPath + "/build/static/`
                 : `("${ftlValuesGlobalName}" in window ? "${urlOrigin}" : "") + ${group} + "static/`,
         )
-        .replace(/".chunk.css",(\w)+=(\w+\.\w+)\+(\w+),/, (...[, group1, group2, group3]) =>
+        .replace(/".chunk.css",([a-zA-Z])+=([a-zA-Z]+\.[a-zA-Z]+)\+([a-zA-Z]+),/, (...[, group1, group2, group3]) =>
             urlOrigin === undefined
                 ? `".chunk.css",${group1} = window.${ftlValuesGlobalName}.url.resourcesPath + "/build/" + ${group3},`
                 : `".chunk.css",${group1} = ("${ftlValuesGlobalName}" in window ? "${urlOrigin}" : "") + ${group2} + ${group3},`,
