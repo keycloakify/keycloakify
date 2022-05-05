@@ -1,5 +1,16 @@
 # ⚠ Limitations
 
+### Some pages still have the default theme. Why?  
+
+This project only support out of the box the most common user facing pages of Keycloak login.  
+
+[Here](https://user-images.githubusercontent.com/6702424/116787906-227fe700-aaa7-11eb-92ee-22e7673717c2.png) is the complete list of pages (you get them after running `yarn test`)
+
+and [here](https://github.com/InseeFrLab/keycloakify/tree/main/src/lib/components) are the pages currently implemented by this module.  
+
+If you need to customize pages that are not supported yet or if you need to implement some non standard `.ftl` pages please refer to [Advanced pages configuration](#advanced-pages-configuration).
+
+
 ### `process.env.PUBLIC_URL` not supported.
 
 You won't be able to [import things from your public directory **in your JavaScript code** (it's supported in `public/index.html`)](https://create-react-app.dev/docs/using-the-public-folder/#adding-assets-outside-of-the-module-system). (This isn't recommended anyway).
