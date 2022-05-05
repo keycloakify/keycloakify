@@ -14,7 +14,7 @@ To acheave that with Keycloakify simply eddit: &#x20;
  });
 ```
 
-then if you run yarn start you will see your login page display (Dont forget to remove mockPageId before releasing 😉). &#x20;
+then if you run `yarn start` you will see your login page display. **Dont forget to remove mockPageId before releasing** 😉. &#x20;
 
 {% hint style="success" %}
 The page is loaded with a default mock context.&#x20;
