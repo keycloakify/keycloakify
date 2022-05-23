@@ -52,9 +52,9 @@ export declare namespace KcContextBase {
             currentLanguageTag: KcLanguageTag;
         };
         auth?: {
-            showUsername: boolean;
-            showResetCredentials: boolean;
-            showTryAnotherWayLink: boolean;
+            showUsername?: boolean;
+            showResetCredentials?: boolean;
+            showTryAnotherWayLink?: boolean;
             attemptedUsername?: string;
         };
         scripts: string[];
