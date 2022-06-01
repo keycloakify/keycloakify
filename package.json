@@ -77,7 +77,7 @@
         "@octokit/rest": "^18.12.0",
         "cheerio": "^1.0.0-rc.5",
         "cli-select": "^1.1.2",
-        "evt": "2.0.0-beta.42",
+        "evt": "2.0.0-beta.43",
         "memoizee": "^0.4.15",
         "minimal-polyfills": "^2.2.1",
         "path-browserify": "^1.0.1",
