@@ -10,7 +10,7 @@ The only reliable solution is to inject parameters into the URL before redirecti
 
 The method also works with [`@react-keycloak/web`](https://www.npmjs.com/package/@react-keycloak/web) (use the `initOptions`).
 
-You can implement your own mechanism to pass the states in the URL and restore it on the other side but we recommend using [`powerhooks/useGlobalState`](https://github.com/garronej/powerhooks%23useglobalstate) from the library [`powerhooks`](https://www.powerhooks.dev) that provide an elegant way to handle states such as `isDarkModeEnabled` or `selectedLanguage`.
+You can implement your own mechanism to pass the states in the URL and restore it on the other side but we recommend using [`powerhooks/useGlobalState`](https://github.com/garronej/powerhooks#useglobalstate) from the library [`powerhooks`](https://www.powerhooks.dev) that provide an elegant way to handle states such as `isDarkModeEnabled`.
 
 Let's modify [the example](https://github.com/keycloak/keycloak-documentation/blob/master/securing\_apps/topics/oidc/javascript-adapter.adoc) from the official `keycloak-js` documentation to enables the states of `useGlobalStates` to be injected in the URL before redirecting.\
 Note that the states are automatically restored on the other side by `powerhooks`
