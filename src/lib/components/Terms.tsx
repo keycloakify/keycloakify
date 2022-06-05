@@ -2,32 +2,38 @@ import { useReducer, useEffect, memo } from "react";
 import { Template } from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { getMsg } from "../i18n";
 import { useCssAndCx } from "tss-react";
-import { kcMessages, getCurrentKcLanguageTag } from "../i18n";
-import type { KcLanguageTag } from "../i18n";
+import { getCurrentKcLanguageTag } from "../i18n";
+import type { KcLanguageTag, I18n } from "../i18n";
 
 /** Allow to avoid bundling the terms and download it on demand*/
 export function useDownloadTerms(params: {
     kcContext: KcContextBase;
     downloadTermMarkdown: (params: { currentKcLanguageTag: KcLanguageTag }) => Promise<string>;
+    useI18n: () => I18n;
 }) {
-    const { kcContext, downloadTermMarkdown } = params;
+    const { kcContext, downloadTermMarkdown, useI18n } = params;
 
     const [, forceUpdate] = useReducer(x => x + 1, 0);
+
+    const { evtKcMessages } = useI18n();
 
     useEffect(() => {
         const currentKcLanguageTag = getCurrentKcLanguageTag(kcContext);
 
         downloadTermMarkdown({ currentKcLanguageTag }).then(thermMarkdown => {
-            kcMessages[currentKcLanguageTag].termsText = thermMarkdown;
+            evtKcMessages.$attachOnce(
+                kcMessages => (kcMessages !== undefined ? [kcMessages] : null),
+                kcMessages => (kcMessages[currentKcLanguageTag].termsText = thermMarkdown),
+            );
+
             forceUpdate();
         });
     }, []);
 }
 
-export const Terms = memo(({ kcContext, ...props }: { kcContext: KcContextBase.Terms } & KcProps) => {
-    const { msg, msgStr } = getMsg(kcContext);
+export const Terms = memo(({ kcContext, useI18n, ...props }: { kcContext: KcContextBase.Terms; useI18n: () => I18n } & KcProps) => {
+    const { msg, msgStr } = useI18n();
 
     const { cx } = useCssAndCx();
 
@@ -35,7 +41,7 @@ export const Terms = memo(({ kcContext, ...props }: { kcContext: KcContextBase.T
 
     return (
         <Template
-            {...{ kcContext, ...props }}
+            {...{ kcContext, useI18n, ...props }}
             doFetchDefaultThemeResources={true}
             displayMessage={false}
             headerNode={msg("termsTitle")}

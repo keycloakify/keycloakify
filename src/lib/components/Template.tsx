@@ -1,6 +1,7 @@
 import { useReducer, useEffect, memo } from "react";
 import type { ReactNode } from "react";
-import { getMsg, getCurrentKcLanguageTag, changeLocale, getTagLabel } from "../i18n";
+import { getCurrentKcLanguageTag, changeLocale, getTagLabel } from "../i18n";
+import type { I18n } from "../i18n";
 import type { KcLanguageTag } from "../i18n";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { assert } from "../tools/assert";
@@ -25,7 +26,7 @@ export type TemplateProps = {
      * to avoid pulling the default theme assets.
      */
     doFetchDefaultThemeResources: boolean;
-} & { kcContext: KcContextBase } & KcTemplateProps;
+} & { kcContext: KcContextBase; useI18n: () => I18n } & KcTemplateProps;
 
 export const Template = memo((props: TemplateProps) => {
     const {
@@ -40,6 +41,7 @@ export const Template = memo((props: TemplateProps) => {
         infoNode = null,
         kcContext,
         doFetchDefaultThemeResources,
+        useI18n,
     } = props;
 
     const { cx } = useCssAndCx();
@@ -48,7 +50,7 @@ export const Template = memo((props: TemplateProps) => {
         console.log("Rendering this page with react using keycloakify");
     }, []);
 
-    const { msg } = getMsg(kcContext);
+    const { msg } = useI18n();
 
     const onChangeLanguageClickFactory = useCallbackFactory(([kcLanguageTag]: [KcLanguageTag]) =>
         changeLocale({

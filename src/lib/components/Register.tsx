@@ -2,19 +2,19 @@ import { memo } from "react";
 import { Template } from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { getMsg } from "../i18n";
+import type { I18n } from "../i18n";
 import { useCssAndCx } from "tss-react";
 
-export const Register = memo(({ kcContext, ...props }: { kcContext: KcContextBase.Register } & KcProps) => {
+export const Register = memo(({ kcContext, useI18n, ...props }: { kcContext: KcContextBase.Register; useI18n: () => I18n } & KcProps) => {
     const { url, messagesPerField, register, realm, passwordRequired, recaptchaRequired, recaptchaSiteKey } = kcContext;
 
-    const { msg, msgStr } = getMsg(kcContext);
+    const { msg, msgStr } = useI18n();
 
     const { cx } = useCssAndCx();
 
     return (
         <Template
-            {...{ kcContext, ...props }}
+            {...{ kcContext, useI18n, ...props }}
             doFetchDefaultThemeResources={true}
             headerNode={msg("registerTitle")}
             formNode={

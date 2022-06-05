@@ -2,15 +2,15 @@ import { useState, memo } from "react";
 import { Template } from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { getMsg } from "../i18n";
+import type { I18n } from "../i18n";
 import { useCssAndCx } from "tss-react";
 import { useConstCallback } from "powerhooks/useConstCallback";
 import type { FormEventHandler } from "react";
 
-export const Login = memo(({ kcContext, ...props }: { kcContext: KcContextBase.Login } & KcProps) => {
+export const Login = memo(({ kcContext, useI18n, ...props }: { kcContext: KcContextBase.Login; useI18n: () => I18n } & KcProps) => {
     const { social, realm, url, usernameEditDisabled, login, auth, registrationDisabled } = kcContext;
 
-    const { msg, msgStr } = getMsg(kcContext);
+    const { msg, msgStr } = useI18n();
 
     const { cx } = useCssAndCx();
 
@@ -32,7 +32,7 @@ export const Login = memo(({ kcContext, ...props }: { kcContext: KcContextBase.L
 
     return (
         <Template
-            {...{ kcContext, ...props }}
+            {...{ kcContext, useI18n, ...props }}
             doFetchDefaultThemeResources={true}
             displayInfo={social.displayInfo}
             displayWide={realm.password && social.providers !== undefined}

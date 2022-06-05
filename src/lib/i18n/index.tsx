@@ -1,35 +1,18 @@
 import "minimal-polyfills/Object.fromEntries";
 //NOTE for later: https://github.com/remarkjs/react-markdown/blob/236182ecf30bd89c1e5a7652acaf8d0bf81e6170/src/renderers.js#L7-L35
 import ReactMarkdown from "react-markdown";
-import memoize from "memoizee";
-import { kcMessages as kcMessagesBase } from "./generated_kcMessages/15.0.2/login";
+import type { kcMessages as t_kcMessages } from "./kcMessages";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
+import { createObjectThatThrowsIfAccessed } from "../tools/createObjectThatThrowsIfAccessed";
+import { Evt } from "evt";
+import { useRerenderOnStateChange } from "evt/hooks";
+import { useMemo } from "react";
+import type { StatefulReadonlyEvt } from "evt";
 
-export const kcMessages = {
-    ...kcMessagesBase,
-    "en": {
-        ...kcMessagesBase["en"],
-        "termsText": "⏳",
-        "shouldBeEqual": "{0} should be equal to {1}",
-        "shouldBeDifferent": "{0} should be different to {1}",
-        "shouldMatchPattern": "Pattern should match: `/{0}/`",
-        "mustBeAnInteger": "Must be an integer",
-        "notAValidOption": "Not a valid option",
-    },
-    "fr": {
-        ...kcMessagesBase["fr"],
-        /* spell-checker: disable */
-        "shouldBeEqual": "{0} doit être egale à {1}",
-        "shouldBeDifferent": "{0} doit être différent de {1}",
-        "shouldMatchPattern": "Dois respecter le schéma: `/{0}/`",
-        "mustBeAnInteger": "Doit être un nombre entiers",
-        "notAValidOption": "N'est pas une option valide",
-        /* spell-checker: enable */
-    },
-};
+export type KcMessages = typeof t_kcMessages;
 
-export type KcLanguageTag = keyof typeof kcMessages;
+export type KcLanguageTag = keyof KcMessages;
 
 export const kcLanguageTags = [
     "en",
@@ -106,15 +89,16 @@ export function changeLocale(params: {
     assert(false, "never");
 }
 
-export type MessageKey = keyof typeof kcMessages["en"];
+export type MessageKey = keyof KcMessages["en"];
 
 function resolveMsg<Key extends string, DoRenderMarkdown extends boolean>(props: {
     key: Key;
     args: (string | undefined)[];
     kcLanguageTag: string;
     doRenderMarkdown: DoRenderMarkdown;
+    kcMessages: KcMessages;
 }): Key extends MessageKey ? (DoRenderMarkdown extends true ? JSX.Element : string) : undefined {
-    const { key, args, kcLanguageTag, doRenderMarkdown } = props;
+    const { key, args, kcLanguageTag, doRenderMarkdown, kcMessages } = props;
 
     let str = kcMessages[kcLanguageTag as any as "en"][key as MessageKey] ?? kcMessages["en"][key as MessageKey];
 
@@ -160,8 +144,9 @@ function resolveMsgAdvanced<Key extends string, DoRenderMarkdown extends boolean
     args: (string | undefined)[];
     kcLanguageTag: string;
     doRenderMarkdown: DoRenderMarkdown;
+    kcMessages: KcMessages;
 }): DoRenderMarkdown extends true ? JSX.Element : string {
-    const { key, args, kcLanguageTag, doRenderMarkdown } = props;
+    const { key, args, kcLanguageTag, doRenderMarkdown, kcMessages } = props;
 
     const match = key.match(/^\$\{([^{]+)\}$/);
 
@@ -172,35 +157,77 @@ function resolveMsgAdvanced<Key extends string, DoRenderMarkdown extends boolean
         args,
         kcLanguageTag,
         doRenderMarkdown,
+        kcMessages,
     });
 
     return (out !== undefined ? out : doRenderMarkdown ? <span>{keyUnwrappedFromCurlyBraces}</span> : keyUnwrappedFromCurlyBraces) as any;
 }
 
+export type I18n = {
+    msg: (key: MessageKey, ...args: (string | undefined)[]) => JSX.Element;
+    msgStr: (key: MessageKey, ...args: (string | undefined)[]) => string;
+    advancedMsgStr: (key: string, ...args: (string | undefined)[]) => string;
+    advancedMsg: (key: string, ...args: (string | undefined)[]) => JSX.Element;
+    evtKcMessages: StatefulReadonlyEvt<KcMessages | undefined>;
+};
+
 /**
- * When the language is switched the page is reloaded, this may appear
- * as a bug as you might notice that the language successfully switch before
- * reload.
- * However we need to tell Keycloak that the user have changed the language
- * during login so we can retrieve the "local" field of the JWT encoded accessToken.
- * https://user-images.githubusercontent.com/6702424/138096682-351bb61f-f24e-4caf-91b7-cca8cfa2cb58.mov
- *
  * advancedMsg("${access-denied}") === advancedMsg("access-denied") === msg("access-denied")
  * advancedMsg("${not-a-message-key}") === advancedMsg(not-a-message-key") === "not-a-message-key"
- *
- *
- * NOTE: This function is memoized, it always returns the same object for a given kcContext)
- *
  */
-export const getMsg = memoize((kcContext: KcContextLike) => {
+export function createUseI18n(props: { kcMessages: KcMessages | (() => Promise<KcMessages>); kcContext: KcContextLike | undefined }) {
+    const { kcContext, kcMessages: kcMessagesOrFetchKcMessages } = props;
+
+    if (kcContext === undefined) {
+        return createObjectThatThrowsIfAccessed({ "debugMessage": "Can't use Keycloakify i18n outside of keycloak" });
+    }
+
+    const { evtKcMessages } = (() => {
+        const evtKcMessages = Evt.create<KcMessages | undefined>(undefined);
+
+        if (typeof kcMessagesOrFetchKcMessages === "function") {
+            kcMessagesOrFetchKcMessages().then(kcMessages => (evtKcMessages.state = kcMessages));
+        } else {
+            evtKcMessages.state = kcMessagesOrFetchKcMessages;
+        }
+
+        return { evtKcMessages };
+    })();
+    Evt.factorize(
+        typeof kcMessagesOrFetchKcMessages === "function"
+            ? Evt.from(kcMessagesOrFetchKcMessages()).toStateful()
+            : Evt.create(kcMessagesOrFetchKcMessages),
+    );
+
     const kcLanguageTag = getCurrentKcLanguageTag(kcContext);
 
-    return {
-        "msgStr": (key: MessageKey, ...args: (string | undefined)[]): string => resolveMsg({ key, args, kcLanguageTag, "doRenderMarkdown": false }),
-        "msg": (key: MessageKey, ...args: (string | undefined)[]): JSX.Element => resolveMsg({ key, args, kcLanguageTag, "doRenderMarkdown": true }),
-        "advancedMsg": <Key extends string>(key: Key, ...args: (string | undefined)[]): JSX.Element =>
-            resolveMsgAdvanced({ key, args, kcLanguageTag, "doRenderMarkdown": true }),
-        "advancedMsgStr": <Key extends string>(key: Key, ...args: (string | undefined)[]): string =>
-            resolveMsgAdvanced({ key, args, kcLanguageTag, "doRenderMarkdown": false }),
-    };
-});
+    function useI18n() {
+        useRerenderOnStateChange(evtKcMessages);
+
+        const i18n = useMemo((): I18n => {
+            const kcMessages = evtKcMessages.state;
+
+            if (kcMessages === undefined) {
+                return {
+                    "msgStr": () => "",
+                    "msg": () => <></>,
+                    "advancedMsg": () => <></>,
+                    "advancedMsgStr": () => "",
+                    evtKcMessages,
+                };
+            }
+
+            return {
+                "msgStr": (key, ...args) => resolveMsg({ key, args, kcLanguageTag, "doRenderMarkdown": false, kcMessages }),
+                "msg": (key, ...args): JSX.Element => resolveMsg({ key, args, kcLanguageTag, "doRenderMarkdown": true, kcMessages }),
+                "advancedMsg": (key, ...args) => resolveMsgAdvanced({ key, args, kcLanguageTag, "doRenderMarkdown": true, kcMessages }),
+                "advancedMsgStr": (key, ...args) => resolveMsgAdvanced({ key, args, kcLanguageTag, "doRenderMarkdown": false, kcMessages }),
+                evtKcMessages,
+            };
+        }, [evtKcMessages.state]);
+
+        return i18n;
+    }
+
+    return { useI18n };
+}

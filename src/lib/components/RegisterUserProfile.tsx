@@ -2,79 +2,91 @@ import { useMemo, memo, useEffect, useState, Fragment } from "react";
 import { Template } from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase, Attribute } from "../getKcContext/KcContextBase";
-import { getMsg } from "../i18n";
+import type { I18n } from "../i18n";
 import { useCssAndCx } from "tss-react";
 import type { ReactComponent } from "../tools/ReactComponent";
 import { useCallbackFactory } from "powerhooks/useCallbackFactory";
 import { useFormValidationSlice } from "../useFormValidationSlice";
 
-export const RegisterUserProfile = memo(({ kcContext, ...props_ }: { kcContext: KcContextBase.RegisterUserProfile } & KcProps) => {
-    const { url, messagesPerField, recaptchaRequired, recaptchaSiteKey } = kcContext;
+export const RegisterUserProfile = memo(
+    ({ kcContext, useI18n, ...props_ }: { kcContext: KcContextBase.RegisterUserProfile; useI18n: () => I18n } & KcProps) => {
+        const { url, messagesPerField, recaptchaRequired, recaptchaSiteKey } = kcContext;
 
-    const { msg, msgStr } = getMsg(kcContext);
+        const { msg, msgStr } = useI18n();
 
-    const { cx, css } = useCssAndCx();
+        const { cx, css } = useCssAndCx();
 
-    const props = useMemo(
-        () => ({
-            ...props_,
-            "kcFormGroupClass": cx(props_.kcFormGroupClass, css({ "marginBottom": 20 })),
-        }),
-        [cx, css],
-    );
+        const props = useMemo(
+            () => ({
+                ...props_,
+                "kcFormGroupClass": cx(props_.kcFormGroupClass, css({ "marginBottom": 20 })),
+            }),
+            [cx, css],
+        );
 
-    const [isFomSubmittable, setIsFomSubmittable] = useState(false);
+        const [isFomSubmittable, setIsFomSubmittable] = useState(false);
 
-    return (
-        <Template
-            {...{ kcContext, ...props }}
-            displayMessage={messagesPerField.exists("global")}
-            displayRequiredFields={true}
-            doFetchDefaultThemeResources={true}
-            headerNode={msg("registerTitle")}
-            formNode={
-                <form id="kc-register-form" className={cx(props.kcFormClass)} action={url.registrationAction} method="post">
-                    <UserProfileFormFields kcContext={kcContext} onIsFormSubmittableValueChange={setIsFomSubmittable} {...props} />
-                    {recaptchaRequired && (
-                        <div className="form-group">
-                            <div className={cx(props.kcInputWrapperClass)}>
-                                <div className="g-recaptcha" data-size="compact" data-sitekey={recaptchaSiteKey} />
+        return (
+            <Template
+                {...{ kcContext, useI18n, ...props }}
+                displayMessage={messagesPerField.exists("global")}
+                displayRequiredFields={true}
+                doFetchDefaultThemeResources={true}
+                headerNode={msg("registerTitle")}
+                formNode={
+                    <form id="kc-register-form" className={cx(props.kcFormClass)} action={url.registrationAction} method="post">
+                        <UserProfileFormFields
+                            kcContext={kcContext}
+                            onIsFormSubmittableValueChange={setIsFomSubmittable}
+                            useI18n={useI18n}
+                            {...props}
+                        />
+                        {recaptchaRequired && (
+                            <div className="form-group">
+                                <div className={cx(props.kcInputWrapperClass)}>
+                                    <div className="g-recaptcha" data-size="compact" data-sitekey={recaptchaSiteKey} />
+                                </div>
+                            </div>
+                        )}
+                        <div className={cx(props.kcFormGroupClass)}>
+                            <div id="kc-form-options" className={cx(props.kcFormOptionsClass)}>
+                                <div className={cx(props.kcFormOptionsWrapperClass)}>
+                                    <span>
+                                        <a href={url.loginUrl}>{msg("backToLogin")}</a>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div id="kc-form-buttons" className={cx(props.kcFormButtonsClass)}>
+                                <input
+                                    className={cx(
+                                        props.kcButtonClass,
+                                        props.kcButtonPrimaryClass,
+                                        props.kcButtonBlockClass,
+                                        props.kcButtonLargeClass,
+                                    )}
+                                    type="submit"
+                                    value={msgStr("doRegister")}
+                                    disabled={!isFomSubmittable}
+                                />
                             </div>
                         </div>
-                    )}
-                    <div className={cx(props.kcFormGroupClass)}>
-                        <div id="kc-form-options" className={cx(props.kcFormOptionsClass)}>
-                            <div className={cx(props.kcFormOptionsWrapperClass)}>
-                                <span>
-                                    <a href={url.loginUrl}>{msg("backToLogin")}</a>
-                                </span>
-                            </div>
-                        </div>
+                    </form>
+                }
+            />
+        );
+    },
+);
 
-                        <div id="kc-form-buttons" className={cx(props.kcFormButtonsClass)}>
-                            <input
-                                className={cx(props.kcButtonClass, props.kcButtonPrimaryClass, props.kcButtonBlockClass, props.kcButtonLargeClass)}
-                                type="submit"
-                                value={msgStr("doRegister")}
-                                disabled={!isFomSubmittable}
-                            />
-                        </div>
-                    </div>
-                </form>
-            }
-        />
-    );
-});
-
-type UserProfileFormFieldsProps = { kcContext: KcContextBase.RegisterUserProfile } & KcProps &
+type UserProfileFormFieldsProps = { kcContext: KcContextBase.RegisterUserProfile; useI18n: () => I18n } & KcProps &
     Partial<Record<"BeforeField" | "AfterField", ReactComponent<{ attribute: Attribute }>>> & {
         onIsFormSubmittableValueChange: (isFormSubmittable: boolean) => void;
     };
 
-const UserProfileFormFields = memo(({ kcContext, onIsFormSubmittableValueChange, ...props }: UserProfileFormFieldsProps) => {
+const UserProfileFormFields = memo(({ kcContext, useI18n, onIsFormSubmittableValueChange, ...props }: UserProfileFormFieldsProps) => {
     const { cx, css } = useCssAndCx();
 
-    const { advancedMsg } = getMsg(kcContext);
+    const { advancedMsg } = useI18n();
 
     const {
         formValidationState: { fieldStateByAttributeName, isFormSubmittable },
@@ -82,6 +94,7 @@ const UserProfileFormFields = memo(({ kcContext, onIsFormSubmittableValueChange,
         attributesWithPassword,
     } = useFormValidationSlice({
         kcContext,
+        useI18n,
     });
 
     useEffect(() => {

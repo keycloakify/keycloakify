@@ -15,36 +15,37 @@ import { LoginUpdateProfile } from "./LoginUpdateProfile";
 import { LoginIdpLinkConfirm } from "./LoginIdpLinkConfirm";
 import { LoginPageExpired } from "./LoginPageExpired";
 import { LoginIdpLinkEmail } from "./LoginIdpLinkEmail";
+import type { I18n } from "../i18n";
 
-export const KcApp = memo(({ kcContext, ...props }: { kcContext: KcContextBase } & KcProps) => {
+export const KcApp = memo(({ kcContext, useI18n, ...props }: { kcContext: KcContextBase; useI18n: () => I18n } & KcProps) => {
     switch (kcContext.pageId) {
         case "login.ftl":
-            return <Login {...{ kcContext, ...props }} />;
+            return <Login {...{ kcContext, useI18n, ...props }} />;
         case "register.ftl":
-            return <Register {...{ kcContext, ...props }} />;
+            return <Register {...{ kcContext, useI18n, ...props }} />;
         case "register-user-profile.ftl":
-            return <RegisterUserProfile {...{ kcContext, ...props }} />;
+            return <RegisterUserProfile {...{ kcContext, useI18n, ...props }} />;
         case "info.ftl":
-            return <Info {...{ kcContext, ...props }} />;
+            return <Info {...{ kcContext, useI18n, ...props }} />;
         case "error.ftl":
-            return <Error {...{ kcContext, ...props }} />;
+            return <Error {...{ kcContext, useI18n, ...props }} />;
         case "login-reset-password.ftl":
-            return <LoginResetPassword {...{ kcContext, ...props }} />;
+            return <LoginResetPassword {...{ kcContext, useI18n, ...props }} />;
         case "login-verify-email.ftl":
-            return <LoginVerifyEmail {...{ kcContext, ...props }} />;
+            return <LoginVerifyEmail {...{ kcContext, useI18n, ...props }} />;
         case "terms.ftl":
-            return <Terms {...{ kcContext, ...props }} />;
+            return <Terms {...{ kcContext, useI18n, ...props }} />;
         case "login-otp.ftl":
-            return <LoginOtp {...{ kcContext, ...props }} />;
+            return <LoginOtp {...{ kcContext, useI18n, ...props }} />;
         case "login-update-password.ftl":
-            return <LoginUpdatePassword {...{ kcContext, ...props }} />;
+            return <LoginUpdatePassword {...{ kcContext, useI18n, ...props }} />;
         case "login-update-profile.ftl":
-            return <LoginUpdateProfile {...{ kcContext, ...props }} />;
+            return <LoginUpdateProfile {...{ kcContext, useI18n, ...props }} />;
         case "login-idp-link-confirm.ftl":
-            return <LoginIdpLinkConfirm {...{ kcContext, ...props }} />;
+            return <LoginIdpLinkConfirm {...{ kcContext, useI18n, ...props }} />;
         case "login-idp-link-email.ftl":
-            return <LoginIdpLinkEmail {...{ kcContext, ...props }} />;
+            return <LoginIdpLinkEmail {...{ kcContext, useI18n, ...props }} />;
         case "login-page-expired.ftl":
-            return <LoginPageExpired {...{ kcContext, ...props }} />;
+            return <LoginPageExpired {...{ kcContext, useI18n, ...props }} />;
     }
 });

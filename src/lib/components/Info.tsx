@@ -3,18 +3,18 @@ import { Template } from "./Template";
 import type { KcProps } from "./KcProps";
 import { assert } from "../tools/assert";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { getMsg } from "../i18n";
+import type { I18n } from "../i18n";
 
-export const Info = memo(({ kcContext, ...props }: { kcContext: KcContextBase.Info } & KcProps) => {
-    const { msg } = getMsg(kcContext);
-
+export const Info = memo(({ kcContext, useI18n, ...props }: { kcContext: KcContextBase.Info; useI18n: () => I18n } & KcProps) => {
     assert(kcContext.message !== undefined);
 
     const { messageHeader, message, requiredActions, skipLink, pageRedirectUri, actionUri, client } = kcContext;
 
+    const { msg } = useI18n();
+
     return (
         <Template
-            {...{ kcContext, ...props }}
+            {...{ kcContext, useI18n, ...props }}
             doFetchDefaultThemeResources={true}
             displayMessage={false}
             headerNode={messageHeader !== undefined ? <>{messageHeader}</> : <>{message.summary}</>}

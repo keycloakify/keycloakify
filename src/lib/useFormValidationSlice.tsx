@@ -1,11 +1,10 @@
 import "./tools/Array.prototype.every";
 import { useMemo, useReducer, Fragment } from "react";
 import type { KcContextBase, Validators, Attribute } from "./getKcContext/KcContextBase";
-import { getMsg } from "./i18n";
 import type { KcLanguageTag } from "./i18n";
 import { useConstCallback } from "powerhooks/useConstCallback";
 import { id } from "tsafe/id";
-import type { MessageKey } from "./i18n";
+import type { I18n, MessageKey } from "./i18n";
 import { emailRegexp } from "./tools/emailRegExp";
 
 export function useGetErrors(params: {
@@ -16,15 +15,16 @@ export function useGetErrors(params: {
         };
         locale?: { currentLanguageTag: KcLanguageTag };
     };
+    useI18n: () => I18n;
 }) {
-    const { kcContext } = params;
+    const { kcContext, useI18n } = params;
 
     const {
         messagesPerField,
         profile: { attributes },
     } = kcContext;
 
-    const { msg, msgStr, advancedMsg, advancedMsgStr } = getMsg(kcContext);
+    const { msg, msgStr, advancedMsg, advancedMsgStr } = useI18n();
 
     const getErrors = useConstCallback((params: { name: string; fieldValueByAttributeName: Record<string, { value: string }> }) => {
         const { name, fieldValueByAttributeName } = params;
@@ -314,11 +314,13 @@ export function useFormValidationSlice(params: {
         passwordRequired: boolean;
         realm: { registrationEmailAsUsername: boolean };
     };
+    useI18n: () => I18n;
     /** NOTE: Try to avoid passing a new ref every render for better performances. */
     passwordValidators?: Validators;
 }) {
     const {
         kcContext,
+        useI18n,
         passwordValidators = {
             "length": {
                 "ignore.empty.value": true,
@@ -383,6 +385,7 @@ export function useFormValidationSlice(params: {
                 "attributes": attributesWithPassword,
             },
         },
+        useI18n,
     });
 
     const initialInternalState = useMemo(
