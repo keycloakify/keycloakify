@@ -171,6 +171,8 @@ export type I18n = {
     evtKcMessages: StatefulReadonlyEvt<KcMessages | undefined>;
 };
 
+export { StatefulReadonlyEvt };
+
 /**
  * advancedMsg("${access-denied}") === advancedMsg("access-denied") === msg("access-denied")
  * advancedMsg("${not-a-message-key}") === advancedMsg(not-a-message-key") === "not-a-message-key"
