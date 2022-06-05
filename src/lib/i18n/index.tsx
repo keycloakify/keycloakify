@@ -4,7 +4,6 @@ import ReactMarkdown from "react-markdown";
 import type { kcMessages as t_kcMessages } from "./kcMessages";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
-import { createObjectThatThrowsIfAccessed } from "../tools/createObjectThatThrowsIfAccessed";
 import { Evt } from "evt";
 import { useRerenderOnStateChange } from "evt/hooks";
 import { useMemo } from "react";
@@ -181,7 +180,11 @@ export function createUseI18n(props: { kcMessages: KcMessages | (() => Promise<K
     const { kcContext, kcMessages: kcMessagesOrFetchKcMessages } = props;
 
     if (kcContext === undefined) {
-        return createObjectThatThrowsIfAccessed<{ useI18n: () => I18n }>({ "debugMessage": "Can't use Keycloakify i18n outside of keycloak" });
+        return {
+            "useI18n": (): I18n => {
+                throw new Error("Can't use Keycloakify i18n outside of keycloak");
+            },
+        };
     }
 
     const { evtKcMessages } = (() => {
