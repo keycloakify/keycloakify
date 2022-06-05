@@ -4,12 +4,15 @@ import { useSplashScreen } from "onyxia-ui";
 import { GlHeader } from "gitlanding/GlHeader";
 import { useTranslation } from "i18n";
 import { makeStyles, Text } from "theme";
+//import { useLng } from "i18n/useLng";
+//import { LanguageSelect } from "theme";
 //import { breakpointsValues } from "onyxia-ui";
 import { GlHero } from "gitlanding/GlHero";
 import { GlHeroText } from "gitlanding/GlHero/GlHeroText";
 import keycloakifyLogoPngUrl from "assets/img/keycloakify-logo.png";
 import { KeycloakifyRotatingLogo } from "./KeycloakifyRotatingLogo";
 import { GlArticle } from "gitlanding/GlArticle";
+import { GlIllustration } from "gitlanding/GlIllustration";
 import keycloakifyDemoWebmUrl from "assets/video/Keycloakify_demo_full-vp9-chrome.webm";
 import keycloakifyDemoMp4Url from "assets/video/Keycloakify_demo.mp4";
 import themeSelectWebmUrl from "assets/video/theme_select-vp9-chrome.webm"
@@ -36,7 +39,7 @@ export function App() {
     }, []);
   }
 
-  const { classes, css } = useStyles();
+  const { classes } = useStyles();
 
   const { t } = useTranslation({ App });
 
@@ -131,11 +134,12 @@ export function App() {
           `}
           illustration={{
             "type": "custom component",
-            "Component": KeycloakifyRotatingLogo,
+            "Component": KeycloakifyRotatingLogo
           }}
           hasLinkToSectionBellow={true}
+          hasIllustrationShadow={false}
           classes={{
-            "subtitle": classes.subtitle
+            "subtitle": classes.subtitle,
           }}
         />
         <GlArticle
@@ -155,12 +159,11 @@ Wouldn't it be great if we could just design the login and register pages as if 
                 `}
           buttonLabel={`Get started`}
           buttonLink={{ "href": documentationUrl }}
-          classes={{
-              "video": css({ "borderRadius": 10 })
-          }}
-          illustration={{
-              "type": "video",
-              "sources": [
+          illustration={
+            <GlIllustration
+              hasShadow={true}
+              type="video"
+              sources={[
                 {
                   "src": keycloakifyDemoMp4Url,
                   "type": 'video/mp4; codecs="hvc1"',
@@ -169,27 +172,25 @@ Wouldn't it be great if we could just design the login and register pages as if 
                   "src": keycloakifyDemoWebmUrl,
                   "type": "video/webm",
                 },
-              ],
-              "hasShadow": true,
+              ]}
 
-          }}
+            />
+          }
           hasAnimation={true}
           illustrationPosition="right"
         />
 
         <GlArticle
-          classes={{
-              "video": css({ "borderRadius": 10 })
-          }}
           title="Batteries included"
           body={`Keycloakify bundles your theme into a single \`.jar\` file to be that you'll be able to import
           into your keycloak instance.`}
           buttonLabel={`Get started`}
           buttonLink={{ "href": documentationUrl }}
-          illustration={{
-              "hasShadow":true,
-              "type": "video",
-              "sources":[
+          illustration={
+            <GlIllustration
+              hasShadow={true}
+              type="video"
+              sources={[
                 {
                   "src": themeSelectMp4Url,
                   "type": 'video/mp4; codecs="hvc1"',
@@ -198,16 +199,15 @@ Wouldn't it be great if we could just design the login and register pages as if 
                   "src": themeSelectWebmUrl,
                   "type": "video/webm",
                 },
-              ]
-            }}
+              ]}
+
+            />
+          }
           hasAnimation={true}
           illustrationPosition="left"
         />
 
         <GlArticle
-          classes={{
-              "video": css({ "borderRadius": 10 })
-          }}
           title="It's not just cosmetics"
           body={`Keycloakify enables you to greatly improve the UX of your login and registration pages
           by enabling realtime input validation.
@@ -215,10 +215,11 @@ Wouldn't it be great if we could just design the login and register pages as if 
           Best yet, it work **out of the box** with any theme generated with Keycloakify.`}
           buttonLabel={`Get started`}
           buttonLink={{ "href": "https://docs.keycloakify.dev" }}
-          illustration={{
-              "hasShadow": true,
-              "type":"video",
-              "sources": [
+          illustration={
+            <GlIllustration
+              hasShadow={true}
+              type="video"
+              sources={[
                 {
                   "src": frontendValidationMp4Url,
                   "type": 'video/mp4; codecs="hvc1"',
@@ -227,8 +228,10 @@ Wouldn't it be great if we could just design the login and register pages as if 
                   "src": frontendValidationWebmUrl,
                   "type": "video/webm",
                 },
-              ]
-          }}
+              ]}
+
+            />
+          }
           hasAnimation={true}
           illustrationPosition="right"
         />
@@ -289,14 +292,23 @@ Wouldn't it be great if we could just design the login and register pages as if 
 
 }
 
+export declare namespace App {
+  export type I18n = {
+    documentation: undefined;
+    pricing: undefined;
+    "paid for by French taxpayers": undefined;
+    "it is libre software": undefined;
+    "ok": undefined;
+  };
+}
+
 export const { i18n } = declareComponentKeys<
     | "documentation"
     | "pricing"
     | "paid for by French taxpayers"
     | "it is libre software"
     | "ok"
->()({ App });
-
+>()({ App })
 
 const useStyles = makeStyles({ "name": { App } })(theme => ({
   "headerTitleWrapper": {
@@ -345,4 +357,3 @@ const useStyles = makeStyles({ "name": { App } })(theme => ({
     "color": theme.colors.useCases.typography.textPrimary
   }
 }));
-

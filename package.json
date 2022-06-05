@@ -9,7 +9,7 @@
     "@mui/material": "^5.8.2",
     "@mui/icons-material": "^5.8.2",
     "evt": "2.0.0-beta.44",
-    "gitlanding": "^0.17.5",
+    "gitlanding": "0.16.0",
     "memoizee": "^0.4.15",
     "onyxia-ui": "^0.41.2",
     "powerhooks": "^0.19.0",
