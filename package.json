@@ -81,7 +81,7 @@
         "memoizee": "^0.4.15",
         "minimal-polyfills": "^2.2.1",
         "path-browserify": "^1.0.1",
-        "powerhooks": "^0.17.2",
+        "powerhooks": "^0.19.0",
         "react-markdown": "^5.0.3",
         "scripting-tools": "^0.19.13",
         "tsafe": "^0.10.0",
