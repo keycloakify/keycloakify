@@ -8429,10 +8429,10 @@ human-signals@^2.1.0:
   resolved "https://registry.yarnpkg.com/human-signals/-/human-signals-2.1.0.tgz#dc91fcba42e4d06e4abaed33b3e7a3c02f514ea0"
   integrity sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw==
 
-i18nifty@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/i18nifty/-/i18nifty-1.0.1.tgz#ff36e97e7e03d43ff92890b6db820321d04cfcc2"
-  integrity sha512-6uJlFRMN7g6aqNqcCNh9/qeEhxziLI43E0k6m6gbL/bapzgn/NBY4/eEnuu5Q+5V+fp0SXjKNTgat5KYdIipcQ==
+i18nifty@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/i18nifty/-/i18nifty-1.0.2.tgz#4a88e83491b62cd5116791a44aaca17042ce969b"
+  integrity sha512-D58CPj4qjzGoPFhd9PBvVIWD+A4fc3iNFYCyI6rrQvIQxfxCUoYqR9rS9teF9unO4VP2WvNXU8jn8GOxkyg0vA==
   dependencies:
     evt "2.0.0-beta.44"
     powerhooks "^0.19.0"
