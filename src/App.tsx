@@ -2,17 +2,14 @@ import { useEffect } from "react";
 import { GlTemplate } from "gitlanding/GlTemplate";
 import { useSplashScreen } from "onyxia-ui";
 import { GlHeader } from "gitlanding/GlHeader";
-import { useTranslation } from "i18n/useTranslations";
+import { useTranslation } from "i18n";
 import { makeStyles, Text } from "theme";
-//import { useLng } from "i18n/useLng";
-//import { LanguageSelect } from "theme";
-import { breakpointsValues } from "onyxia-ui";
+//import { breakpointsValues } from "onyxia-ui";
 import { GlHero } from "gitlanding/GlHero";
 import { GlHeroText } from "gitlanding/GlHero/GlHeroText";
 import keycloakifyLogoPngUrl from "assets/img/keycloakify-logo.png";
 import { KeycloakifyRotatingLogo } from "./KeycloakifyRotatingLogo";
 import { GlArticle } from "gitlanding/GlArticle";
-import { GlIllustration } from "gitlanding/GlIllustration";
 import keycloakifyDemoWebmUrl from "assets/video/Keycloakify_demo_full-vp9-chrome.webm";
 import keycloakifyDemoMp4Url from "assets/video/Keycloakify_demo.mp4";
 import themeSelectWebmUrl from "assets/video/theme_select-vp9-chrome.webm"
@@ -22,6 +19,7 @@ import frontendValidationWebmUrl from "assets/video/keycloakify_frontend_validat
 import { GlSectionDivider } from "gitlanding/GlSectionDivider";
 import { GlCheckList } from "gitlanding/GlCheckList";
 import { GlFooter } from "gitlanding/GlFooter";
+import { declareComponentKeys } from "i18nifty";
 
 const githubRepoUrl = "https://github.com/InseeFrLab/keycloakify";
 const documentationUrl = "https://docs.keycloakify.dev";
@@ -38,7 +36,7 @@ export function App() {
     }, []);
   }
 
-  const { classes } = useStyles();
+  const { classes, css } = useStyles();
 
   const { t } = useTranslation({ App });
 
@@ -133,13 +131,11 @@ export function App() {
           `}
           illustration={{
             "type": "custom component",
-            "Component": KeycloakifyRotatingLogo
+            "Component": KeycloakifyRotatingLogo,
           }}
           hasLinkToSectionBellow={true}
-          hasIllustrationShadow={false}
           classes={{
-            "subtitle": classes.subtitle,
-            "image": classes.heroImage
+            "subtitle": classes.subtitle
           }}
         />
         <GlArticle
@@ -159,11 +155,12 @@ Wouldn't it be great if we could just design the login and register pages as if 
                 `}
           buttonLabel={`Get started`}
           buttonLink={{ "href": documentationUrl }}
-          illustration={
-            <GlIllustration
-              hasShadow={true}
-              type="video"
-              sources={[
+          classes={{
+              "video": css({ "borderRadius": 10 })
+          }}
+          illustration={{
+              "type": "video",
+              "sources": [
                 {
                   "src": keycloakifyDemoMp4Url,
                   "type": 'video/mp4; codecs="hvc1"',
@@ -172,25 +169,27 @@ Wouldn't it be great if we could just design the login and register pages as if 
                   "src": keycloakifyDemoWebmUrl,
                   "type": "video/webm",
                 },
-              ]}
+              ],
+              "hasShadow": true,
 
-            />
-          }
+          }}
           hasAnimation={true}
           illustrationPosition="right"
         />
 
         <GlArticle
+          classes={{
+              "video": css({ "borderRadius": 10 })
+          }}
           title="Batteries included"
           body={`Keycloakify bundles your theme into a single \`.jar\` file to be that you'll be able to import
           into your keycloak instance.`}
           buttonLabel={`Get started`}
           buttonLink={{ "href": documentationUrl }}
-          illustration={
-            <GlIllustration
-              hasShadow={true}
-              type="video"
-              sources={[
+          illustration={{
+              "hasShadow":true,
+              "type": "video",
+              "sources":[
                 {
                   "src": themeSelectMp4Url,
                   "type": 'video/mp4; codecs="hvc1"',
@@ -199,15 +198,16 @@ Wouldn't it be great if we could just design the login and register pages as if 
                   "src": themeSelectWebmUrl,
                   "type": "video/webm",
                 },
-              ]}
-
-            />
-          }
+              ]
+            }}
           hasAnimation={true}
           illustrationPosition="left"
         />
 
         <GlArticle
+          classes={{
+              "video": css({ "borderRadius": 10 })
+          }}
           title="It's not just cosmetics"
           body={`Keycloakify enables you to greatly improve the UX of your login and registration pages
           by enabling realtime input validation.
@@ -215,11 +215,10 @@ Wouldn't it be great if we could just design the login and register pages as if 
           Best yet, it work **out of the box** with any theme generated with Keycloakify.`}
           buttonLabel={`Get started`}
           buttonLink={{ "href": "https://docs.keycloakify.dev" }}
-          illustration={
-            <GlIllustration
-              hasShadow={true}
-              type="video"
-              sources={[
+          illustration={{
+              "hasShadow": true,
+              "type":"video",
+              "sources": [
                 {
                   "src": frontendValidationMp4Url,
                   "type": 'video/mp4; codecs="hvc1"',
@@ -228,10 +227,8 @@ Wouldn't it be great if we could just design the login and register pages as if 
                   "src": frontendValidationWebmUrl,
                   "type": "video/webm",
                 },
-              ]}
-
-            />
-          }
+              ]
+          }}
           hasAnimation={true}
           illustrationPosition="right"
         />
@@ -292,24 +289,20 @@ Wouldn't it be great if we could just design the login and register pages as if 
 
 }
 
-export declare namespace App {
-  export type I18n = {
-    documentation: undefined;
-    pricing: undefined;
-    "paid for by French taxpayers": undefined;
-    "it is libre software": undefined;
-    "ok": undefined;
-  };
-}
+export const { i18n } = declareComponentKeys<
+    | "documentation"
+    | "pricing"
+    | "paid for by French taxpayers"
+    | "it is libre software"
+    | "ok"
+>()({ App });
+
 
 const useStyles = makeStyles({ "name": { App } })(theme => ({
   "headerTitleWrapper": {
     "display": "flex",
     "cursor": "pointer",
     "alignItems": "center"
-  },
-  "logoContainer": {
-    "cursor": "pointer",
   },
   "logo": {
     "fill": theme.colors.useCases.typography.textFocus,
@@ -330,6 +323,7 @@ const useStyles = makeStyles({ "name": { App } })(theme => ({
     "fontWeight": 600,
     "color": theme.colors.useCases.typography.textFocus,
   },
+  /*
   "languageSelect": {
     "marginLeft": theme.spacing(3),
     "display": (() => {
@@ -342,16 +336,13 @@ const useStyles = makeStyles({ "name": { App } })(theme => ({
 
     })()
   },
+  */
   "title2": {
     "color": theme.colors.useCases.typography.textFocus,
     "fontStyle": "italic"
   },
   "subtitle": {
     "color": theme.colors.useCases.typography.textPrimary
-  },
-  "heroImage": {
-    //"width": "50%"
   }
-
 }));
 

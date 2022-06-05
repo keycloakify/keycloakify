@@ -1,29 +1,16 @@
-import { symToStr } from "tsafe/symToStr";
-import { Reflect } from "tsafe/Reflect";
-import { id } from "tsafe/id";
-import type { Language } from "./useLng";
-import { App } from "App";
+import { createI18nApi } from "i18nifty";
 
-export type Scheme = {
-    [key: string]: undefined | Record<string, string>;
-};
+export const languages= [ "en", "fr", "zh-CN" ] as const;
 
-type ToTranslations<S extends Scheme> = {
-    [key in keyof S]: string;
-};
+export type Language = typeof languages[number];
 
-// prettier-ignore
-const reflectedI18nSchemes = {
-    [symToStr({ App })]: Reflect<App.I18n>(),
-};
+export const fallbackLanguage= "en";
 
-export type I18nSchemes = typeof reflectedI18nSchemes;
-
-export type Translations = {
-    [K in keyof I18nSchemes]: ToTranslations<I18nSchemes[K]>;
-};
-
-export const resources = id<Record<Language, Translations>>({
+export const { useTranslation } = createI18nApi<
+    | typeof import("./App").i18n
+>()({
+    languages, fallbackLanguage
+},{
     "en": {
         "App": {
             "documentation": "Documentation",
@@ -55,4 +42,5 @@ export const resources = id<Record<Language, Translations>>({
         },
         /* spell-checker: enable */
     },
+
 });

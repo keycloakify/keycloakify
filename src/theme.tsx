@@ -4,7 +4,7 @@ import {
 } from "onyxia-ui";
 import { createMakeStyles } from "tss-react";
 import { createLanguageSelect } from "onyxia-ui/LanguageSelect";
-import type { Language } from "./i18n/useLng";
+import type { Language } from "i18n";
 import { createText } from "onyxia-ui/Text";
 import { createButton } from "onyxia-ui/Button";
 import { createIcon } from "onyxia-ui/Icon";
@@ -17,7 +17,6 @@ export const { ThemeProvider, useTheme } = createThemeProvider({
         "fontFamily": 'Marianne, sans-serif',
     }),
     "palette": francePalette
-    //"palette": ultravioletPalette
 });
 
 export const { makeStyles } = createMakeStyles({ useTheme });
