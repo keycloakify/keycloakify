@@ -181,7 +181,7 @@ export function createUseI18n(props: { kcMessages: KcMessages | (() => Promise<K
     const { kcContext, kcMessages: kcMessagesOrFetchKcMessages } = props;
 
     if (kcContext === undefined) {
-        return createObjectThatThrowsIfAccessed({ "debugMessage": "Can't use Keycloakify i18n outside of keycloak" });
+        return createObjectThatThrowsIfAccessed<{ useI18n: () => I18n }>({ "debugMessage": "Can't use Keycloakify i18n outside of keycloak" });
     }
 
     const { evtKcMessages } = (() => {
