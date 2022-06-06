@@ -12,8 +12,79 @@ The method also works with [`@react-keycloak/web`](https://www.npmjs.com/package
 
 You can implement your own mechanism to pass the states in the URL and restore it on the other side but we recommend using [`powerhooks/useGlobalState`](https://github.com/garronej/powerhooks#useglobalstate) from the library [`powerhooks`](https://www.powerhooks.dev) that provide an elegant way to handle states such as `isDarkModeEnabled`.
 
-Let's modify [the example](https://github.com/keycloak/keycloak-documentation/blob/master/securing\_apps/topics/oidc/javascript-adapter.adoc) from the official `keycloak-js` documentation to enables the states of `useGlobalStates` to be injected in the URL before redirecting.\
-Note that the states are automatically restored on the other side by `powerhooks`
+Let's modify [the example](https://github.com/keycloak/keycloak-documentation/blob/master/securing\_apps/topics/oidc/javascript-adapter.adoc) from the official `keycloak-js` documentation to enables the relevant states of our app to be injected in the URL before redirecting.
+
+Let's say we have a boolean state `isDarkModeEnabled` that define if the dark theme should be enabled.   &#x20;
+
+`useIsDarkModeEnabled.ts`
+
+```tsx
+import { createUseGlobalState } from "powerhooks/useGlobalState";
+
+export const { useIsDarkModeEnabled, evtIsDarkModeEnabled } = createUseGlobalState({
+	"name": "isDarkModeEnabled",
+  //If we don't have a previous state stored in local storage nor an URL query param
+  //that explicitly set the state, we initialize using the browser preferred color scheme.
+	"initialState": ()=> (
+		window.matchMedia &&
+		window.matchMedia("(prefers-color-scheme: dark)").matches
+	),
+  //Do use localStorage to persist across reloads.
+	"doPersistAcrossReloads": true
+});
+```
+
+Now let's see how we would use this state in our react app.
+
+`MyComponent.tsx`
+
+```tsx
+import { useIsDarkModeEnabled } from "./useIsDarkModeEnabled";
+
+export function MyComponent(){
+
+  const { isDarkModeEnabled, setIsDarkModeEnabled }= useIsDarkModeEnabled();
+
+  return (
+    <div>
+      <p>The dark mode is currently: {isDarkModeEnabled?"enabled":"disabled"}</p>
+      <button onClick={()=> setIsDarkModeEnabled(!isDarkModeEnabled)}>
+        Click to toggle dark mode
+      <button>
+    </dvi>
+  );
+
+}
+```
+
+We can also update the state and track it's updates outside of react: &#x20;
+
+```tsx
+import { evtIsDarkModeEnabled } from "./useIsDarkModeEnabled";
+
+//After 4 seconds, enable dark mode
+setTimeout(
+  ()=>{
+      //This triggers re-renders of all the components that uses the state.
+      //(the assignation has side effect)
+      evtIsDarkModeEnabled.state = true;
+
+  },
+  4000
+);
+
+//Print something in the console anytime the state changes:  
+
+evtIsDarkModeEnabled.attach(isDarkModeEnabled=> {
+  console.log(`idDarkModeEnabled changed, new value: ${isDarkModeEnabled}`);
+});
+```
+
+{% hint style="info" %}
+A more production ready implementation of `useIsDarkModeEnabled` is available [here](https://github.com/garronej/powerhooks/blob/master/src/test/spa/src/TestUseGlobalState/useIsDarkModeEnabled.tsx).
+{% endhint %}
+
+Now let's see how we would carry our isDarkModeEnabled to our login theme. &#x20;
 
 ```typescript
 import keycloak_js from "keycloak-js";
@@ -40,8 +111,8 @@ keycloakInstance.init({
                 //This will tell keycloak that the login should be in french. 
                 //Replace "fr" by any KcLanguageTag you have enabled on your Keycloak server.
                 .map(url => addParamToUrl({ url, "name": "ui_locales", "value": "fr" }).newUrl)
-                //If you are using https://github.com/garronej/powerhooks#useglobalstate
-                //for controlling if the dark mode is enabled this will persiste the state.
+                //This will make sure our isDarkModeEnabled and other global states
+                //created with powerhooks/useGlobalState are restored on the other side. 
                 .map(injectGlobalStatesInSearchParams)
                 [0],
         keycloakInstance,
