@@ -1,5 +1,5 @@
 ---
-description: What to do if you want to add entries in messages_xx.properties
+description: What to do if you need to edit messages_xx.properties
 ---
 
 # 🌐 Adding i18n messages keys
