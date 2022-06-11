@@ -12,7 +12,7 @@
       <img src="https://img.shields.io/bundlephobia/minzip/keycloakify">
     </a>
     <a href="https://www.npmjs.com/package/keycloakify">
-      <img src="https://img.shields.io/npm/dw/keycloakify">
+      <img src="https://img.shields.io/npm/dm/keycloakify">
     </a>
     <a href="https://github.com/garronej/keycloakify/blob/main/LICENSE">
       <img src="https://img.shields.io/npm/l/keycloakify">
