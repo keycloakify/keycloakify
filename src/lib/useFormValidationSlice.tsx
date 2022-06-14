@@ -313,6 +313,9 @@ export function useFormValidationSlice(params: {
         };
         passwordRequired: boolean;
         realm: { registrationEmailAsUsername: boolean };
+        locale?: {
+            currentLanguageTag: KcLanguageTag;
+        };
     };
     /** NOTE: Try to avoid passing a new ref every render for better performances. */
     passwordValidators?: Validators;
@@ -382,6 +385,7 @@ export function useFormValidationSlice(params: {
             "profile": {
                 "attributes": attributesWithPassword,
             },
+            "locale": kcContext.locale,
         },
     });
 
