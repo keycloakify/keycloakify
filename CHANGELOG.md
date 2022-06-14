@@ -1,3 +1,10 @@
+### **5.4.5** (2022-06-14)  
+  
+- Merge pull request #119 from dro-sh/fix-locale-on-useFormValidationSlice
+
+pass locale to getGetErrors to get correct messages  
+- pass locale to getGetErrors to get correct messages    
+  
 ### **5.4.4** (2022-06-05)  
   
   
