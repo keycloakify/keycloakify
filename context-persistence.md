@@ -21,7 +21,7 @@ Let's say we have a boolean state `isDarkModeEnabled` that define if the dark th
 ```tsx
 import { createUseGlobalState } from "powerhooks/useGlobalState";
 
-export const { useIsDarkModeEnabled, evtIsDarkModeEnabled } = createUseGlobalState({
+export const { useIsDarkModeEnabled, $isDarkModeEnabled } = createUseGlobalState({
 	"name": "isDarkModeEnabled",
   //If we don't have a previous state stored in local storage nor an URL query param
   //that explicitly set the state, we initialize using the browser preferred color scheme.
@@ -60,14 +60,14 @@ export function MyComponent(){
 We can also update the state and track it's updates outside of react: &#x20;
 
 ```tsx
-import { evtIsDarkModeEnabled } from "./useIsDarkModeEnabled";
+import { $isDarkModeEnabled } from "./useIsDarkModeEnabled";
 
 //After 4 seconds, enable dark mode
 setTimeout(
   ()=>{
       //This triggers re-renders of all the components that uses the state.
       //(the assignation has side effect)
-      evtIsDarkModeEnabled.state = true;
+      $isDarkModeEnabled.current = true;
 
   },
   4000
@@ -75,7 +75,7 @@ setTimeout(
 
 //Print something in the console anytime the state changes:  
 
-evtIsDarkModeEnabled.attach(isDarkModeEnabled=> {
+$isDarkModeEnabled.subscribe(isDarkModeEnabled=> {
   console.log(`idDarkModeEnabled changed, new value: ${isDarkModeEnabled}`);
 });
 ```
