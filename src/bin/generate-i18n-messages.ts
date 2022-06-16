@@ -9,7 +9,7 @@ import { rm_rf, rm_r } from "./tools/rm";
 //@ts-ignore
 const propertiesParser = require("properties-parser");
 
-for (const keycloakVersion of ["11.0.3", "15.0.2", "16.1.0"]) {
+for (const keycloakVersion of ["11.0.3", "15.0.2", "18.0.1"]) {
     console.log({ keycloakVersion });
 
     const tmpDirPath = pathJoin(getProjectRoot(), "tmp_xImOef9dOd44");

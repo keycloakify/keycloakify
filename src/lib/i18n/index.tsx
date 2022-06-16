@@ -2,7 +2,7 @@ import "minimal-polyfills/Object.fromEntries";
 //NOTE for later: https://github.com/remarkjs/react-markdown/blob/236182ecf30bd89c1e5a7652acaf8d0bf81e6170/src/renderers.js#L7-L35
 import ReactMarkdown from "react-markdown";
 import memoize from "memoizee";
-import { kcMessages as kcMessagesBase } from "./generated_kcMessages/15.0.2/login";
+import { kcMessages as kcMessagesBase } from "./generated_kcMessages/18.0.1/login";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
 
@@ -52,6 +52,8 @@ export const kcLanguageTags = [
     "sv",
     "tr",
     "zh-CN",
+    "fi",
+    "lv",
 ] as const;
 
 assert<Equals<KcLanguageTag, typeof kcLanguageTags[number]>>();
