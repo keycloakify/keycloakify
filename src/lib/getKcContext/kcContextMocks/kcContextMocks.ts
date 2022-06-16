@@ -411,4 +411,17 @@ export const kcContextMocks: KcContextBase[] = [
             },
         },
     }),
+    id<KcContextBase.LogoutConfirm>({
+        ...kcContextCommonMock,
+        "pageId": "logout-confirm.ftl",
+        "url": {
+            ...kcContextCommonMock.url,
+            "logoutConfirmAction": "Continuer?",
+        },
+        "client": {
+            "clientId": "myApp",
+            "baseUrl": "#",
+        },
+        "logoutConfirm": { "code": "123", skipLink: false },
+    }),
 ];

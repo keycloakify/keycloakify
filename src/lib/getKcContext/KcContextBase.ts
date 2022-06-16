@@ -25,7 +25,8 @@ export type KcContextBase =
     | KcContextBase.LoginIdpLinkConfirm
     | KcContextBase.LoginIdpLinkEmail
     | KcContextBase.LoginPageExpired
-    | KcContextBase.LoginConfigTotp;
+    | KcContextBase.LoginConfigTotp
+    | KcContextBase.LogoutConfirm;
 
 export declare namespace KcContextBase {
     export type Common = {
@@ -254,6 +255,20 @@ export declare namespace KcContextBase {
             manualUrl: string;
             totpSecret: string;
             otpCredentials: { id: string; userLabel: string }[];
+        };
+    };
+
+    export type LogoutConfirm = Common & {
+        pageId: "logout-confirm.ftl";
+        url: {
+            logoutConfirmAction: string;
+        };
+        client: {
+            baseUrl?: string;
+        };
+        logoutConfirm: {
+            code: string;
+            skipLink?: boolean;
         };
     };
 }
