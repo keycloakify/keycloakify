@@ -1,3 +1,7 @@
+### **5.4.6** (2022-06-16)  
+  
+- Use keycloak 18.0.1 i18n resources #120    
+  
 ### **5.4.5** (2022-06-14)  
   
 - Merge pull request #119 from dro-sh/fix-locale-on-useFormValidationSlice
