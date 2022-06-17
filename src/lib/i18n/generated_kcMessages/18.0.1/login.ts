@@ -2513,9 +2513,6 @@ export const kcMessages = {
         "noCertificate": "[Pas de certificat]",
         "pageNotFound": "Page non trouvée",
         "internalServerError": "Une erreur interne du serveur s'est produite",
-        "logoutConfirmTitle": "Déconnexion",
-        "logoutConfirmHeader": "Êtes-vous sûr(e) de vouloir vous déconnecter ?",
-        "doLogout": "Se déconnecter",
     },
     "hu": {
         "doLogIn": "Belépés",
