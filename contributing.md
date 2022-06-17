@@ -17,7 +17,7 @@ Let's assume you have made some change to the `keycloakify` codebase and you wan
 Assuming you have cloned keycloakify in `~/github/keycloakify` this is how you would proceed. &#x20;
 
 ```bash
-cd ~/github # Navigate to the dir where you have the keycloakify project
+cd ~/github
 git clone https://github.com/garronej/keycloakify-demo-app
 cd keycloakify
 yarn 
