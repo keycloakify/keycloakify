@@ -12,5 +12,5 @@ FTL stack trace ("~" means nesting-related):
 ```
 
 **It's just noise**, they can be safely ignored.\
-You can, however, and are encouraged to report any that you would spot.\
+You can, however, and are encouraged to, report any that you would spot.\
 Just [open an issue about it](https://github.com/InseeFrLab/keycloakify/issues/new) and I will release a patched version of Keycloakify in the better delays.
