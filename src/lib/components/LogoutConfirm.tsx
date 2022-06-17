@@ -18,12 +18,10 @@ export const LogoutConfirm = memo(({ kcContext, ...props }: { kcContext: KcConte
             {...{ kcContext, ...props }}
             doFetchDefaultThemeResources={true}
             displayMessage={false}
-            /*@ts-ignore*/
             headerNode={msg("logoutConfirmTitle")}
             formNode={
                 <>
                     <div id="kc-logout-confirm" className="content-area">
-                        {/* @ts-ignore */}
                         <p className="instruction">{msg("logoutConfirmHeader")}</p>
                         <form className="form-actions" action={url.logoutConfirmAction} method="POST">
                             <input type="hidden" name="session_code" value={logoutConfirm.code} />
@@ -43,7 +41,6 @@ export const LogoutConfirm = memo(({ kcContext, ...props }: { kcContext: KcConte
                                         name="confirmLogout"
                                         id="kc-logout"
                                         type="submit"
-                                        /*@ts-ignore*/
                                         value={msgStr("doLogout")}
                                     />
                                 </div>
