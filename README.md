@@ -9,7 +9,7 @@ This tool will only run natively on **Linux** and **Mac OS**.
 {% hint style="success" %}
 This tool will be maintained to stay compatible with every Keycloak version starting from [Keycloak Version 11](https://github.com/keycloak/keycloak/releases/tag/11.0.3).
 
-However, the default pages you will get (before you customize them) will always be the ones of Keycloak [v11.0.3](https://github.com/keycloak/keycloak/releases/tag/11.0.3).
+However, the default pages you will get (before you customize them) will always be the ones of Keycloak [v11.0.3](https://github.com/keycloak/keycloak/releases/tag/11.0.3) and some extra pages that didn't existed back then like `register-user-profile.ftl.` &#x20;
 {% endhint %}
 
 ### Supported Keycloak version
@@ -39,7 +39,7 @@ If you aren't trying to integrate the theme with a preexisting react app, save y
 
 <summary>See more</summary>
 
-This tool assumes you are bundling your app with [Webpack](https://webpack.js.org).&#x20;
+This tool assumes you are bundling your app with [Webpack](https://webpack.js.org/).&#x20;
 
 It assumes there is a `build/` directory at the root of your react project directory, it's usually generated after running `yarn build`.
 
