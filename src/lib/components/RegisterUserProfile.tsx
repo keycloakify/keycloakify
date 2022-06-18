@@ -2,7 +2,7 @@ import { useMemo, memo, useEffect, useState, Fragment } from "react";
 import { Template } from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase, Attribute } from "../getKcContext/KcContextBase";
-import { useKcMessage } from "../i18n/useKcMessage";
+import { getMsg } from "../i18n";
 import { useCssAndCx } from "tss-react";
 import type { ReactComponent } from "../tools/ReactComponent";
 import { useCallbackFactory } from "powerhooks/useCallbackFactory";
@@ -11,7 +11,7 @@ import { useFormValidationSlice } from "../useFormValidationSlice";
 export const RegisterUserProfile = memo(({ kcContext, ...props_ }: { kcContext: KcContextBase.RegisterUserProfile } & KcProps) => {
     const { url, messagesPerField, recaptchaRequired, recaptchaSiteKey } = kcContext;
 
-    const { msg, msgStr } = useKcMessage();
+    const { msg, msgStr } = getMsg(kcContext);
 
     const { cx, css } = useCssAndCx();
 
@@ -74,7 +74,7 @@ type UserProfileFormFieldsProps = { kcContext: KcContextBase.RegisterUserProfile
 const UserProfileFormFields = memo(({ kcContext, onIsFormSubmittableValueChange, ...props }: UserProfileFormFieldsProps) => {
     const { cx, css } = useCssAndCx();
 
-    const { advancedMsg } = useKcMessage();
+    const { advancedMsg } = getMsg(kcContext);
 
     const {
         formValidationState: { fieldStateByAttributeName, isFormSubmittable },

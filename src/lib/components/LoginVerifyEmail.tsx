@@ -2,10 +2,10 @@ import { memo } from "react";
 import { Template } from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { useKcMessage } from "../i18n/useKcMessage";
+import { getMsg } from "../i18n";
 
 export const LoginVerifyEmail = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LoginVerifyEmail } & KcProps) => {
-    const { msg } = useKcMessage();
+    const { msg } = getMsg(kcContext);
 
     const { url } = kcContext;
 

@@ -8,6 +8,7 @@ generateKeycloakThemeResources({
     "themeName": "keycloakify-demo-app",
     "reactAppBuildDirPath": pathJoin(sampleReactProjectDirPath, "build"),
     "keycloakThemeBuildingDirPath": pathJoin(sampleReactProjectDirPath, "build_keycloak_theme"),
+    "keycloakThemeEmailDirPath": pathJoin(sampleReactProjectDirPath, "keycloak_email"),
     "urlPathname": "/keycloakify-demo-app/",
     "urlOrigin": undefined,
     "extraPagesId": ["my-custom-page.ftl"],

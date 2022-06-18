@@ -2,13 +2,13 @@ import { memo } from "react";
 import { Template } from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { useKcMessage } from "../i18n/useKcMessage";
+import { getMsg } from "../i18n";
 import { useCssAndCx } from "tss-react";
 
 export const LoginUpdateProfile = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LoginUpdateProfile } & KcProps) => {
     const { cx } = useCssAndCx();
 
-    const { msg, msgStr } = useKcMessage();
+    const { msg, msgStr } = getMsg(kcContext);
 
     const { url, user, messagesPerField, isAppInitiatedAction } = kcContext;
 

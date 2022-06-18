@@ -1,9 +1,8 @@
 import type { PageId } from "../../bin/build-keycloak-theme/generateFtl";
-import type { KcLanguageTag } from "../i18n/KcLanguageTag";
+import type { KcLanguageTag } from "../i18n";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
-import type { MessageKey } from "../i18n/useKcMessage";
-import type { LanguageLabel } from "../i18n/KcLanguageTag";
+import type { MessageKey } from "../i18n";
 
 type ExtractAfterStartingWith<Prefix extends string, StrEnum> = StrEnum extends `${Prefix}${infer U}` ? U : never;
 
@@ -24,6 +23,7 @@ export type KcContextBase =
     | KcContextBase.LoginUpdatePassword
     | KcContextBase.LoginUpdateProfile
     | KcContextBase.LoginIdpLinkConfirm
+    | KcContextBase.LoginIdpLinkEmail
     | KcContextBase.LoginPageExpired;
 
 export declare namespace KcContextBase {
@@ -46,18 +46,15 @@ export declare namespace KcContextBase {
         locale?: {
             supported: {
                 url: string;
+                label: string;
                 languageTag: KcLanguageTag;
-                /** Is determined by languageTag. Ex: languageTag === "en" => label === "English"
-                 * or getLanguageLabel(languageTag) === label
-                 */
-                //label: LanguageLabel;
             }[];
-            current: LanguageLabel;
+            currentLanguageTag: KcLanguageTag;
         };
         auth?: {
-            showUsername: boolean;
-            showResetCredentials: boolean;
-            showTryAnotherWayLink: boolean;
+            showUsername?: boolean;
+            showResetCredentials?: boolean;
+            showTryAnotherWayLink?: boolean;
             attemptedUsername?: string;
         };
         scripts: string[];
@@ -212,6 +209,14 @@ export declare namespace KcContextBase {
 
     export type LoginIdpLinkConfirm = Common & {
         pageId: "login-idp-link-confirm.ftl";
+        idpAlias: string;
+    };
+
+    export type LoginIdpLinkEmail = Common & {
+        pageId: "login-idp-link-email.ftl";
+        brokerContext: {
+            username: string;
+        };
         idpAlias: string;
     };
 

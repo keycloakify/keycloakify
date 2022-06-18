@@ -122,10 +122,13 @@ ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
                         key == "updateProfileCtx" && 
                         are_same_path(path, [])
                     ) || (
-                        <#-- https://github.com/InseeFrLab/keycloakify/pull/65#issuecomment-991896344 -->
+                        <#-- https://github.com/InseeFrLab/keycloakify/pull/65#issuecomment-991896344 (reports with saml-post-form.ftl) -->
+                        <#-- https://github.com/InseeFrLab/keycloakify/issues/91#issue-1212319466 (reports with error.ftl and Kc18) -->
+                        <#-- https://github.com/InseeFrLab/keycloakify/issues/109#issuecomment-1134610163 -->
                         key == "loginAction" && 
                         are_same_path(path, ["url"]) && 
-                        pageId == "saml-post-form.ftl"
+                        ["saml-post-form.ftl", "error.ftl", "info.ftl"]?seq_contains(pageId) &&
+                        !(auth?has_content && auth.showTryAnotherWayLink())
                     ) || (
                         ["contextData", "idpConfig", "idp", "authenticationSession"]?seq_contains(key) &&
                         are_same_path(path, ["brokerContext"]) &&
@@ -150,6 +153,33 @@ ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
                     <#recover>
                     </#attempt>
 
+                </#if>
+                
+                <#if key == "showUsername" && are_same_path(path, ["auth"])>
+                    <#attempt>
+                        <#return auth.showUsername()?c>
+                    <#recover>
+                        <#local out_seq += ["/*Couldn't evaluate auth.showUsername()*/"]>
+                        <#continue>
+                    </#attempt>
+                </#if>
+
+                <#if key == "showResetCredentials" && are_same_path(path, ["auth"])>
+                    <#attempt>
+                        <#return auth.showResetCredentials()?c>
+                    <#recover>
+                        <#local out_seq += ["/*Couldn't evaluate auth.showResetCredentials()*/"]>
+                        <#continue>
+                    </#attempt>
+                </#if>
+
+                <#if key == "showTryAnotherWayLink" && are_same_path(path, ["auth"])>
+                    <#attempt>
+                        <#return auth.showTryAnotherWayLink()?c>
+                    <#recover>
+                        <#local out_seq += ["/*Couldn't evaluate auth.showTryAnotherWayLink()*/"]>
+                        <#continue>
+                    </#attempt>
                 </#if>
 
                 <#attempt>

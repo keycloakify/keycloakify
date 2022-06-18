@@ -1,12 +1,9 @@
 import { useReducer, useEffect, memo } from "react";
 import type { ReactNode } from "react";
-import { useKcMessage } from "../i18n/useKcMessage";
-import { useKcLanguageTag } from "../i18n/useKcLanguageTag";
+import { getMsg, getCurrentKcLanguageTag, changeLocale, getTagLabel } from "../i18n";
+import type { KcLanguageTag } from "../i18n";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { assert } from "../tools/assert";
-import type { KcLanguageTag } from "../i18n/KcLanguageTag";
-import { getBestMatchAmongKcLanguageTag } from "../i18n/KcLanguageTag";
-import { getKcLanguageTagLabel } from "../i18n/KcLanguageTag";
 import { useCallbackFactory } from "powerhooks/useCallbackFactory";
 import { headInsert } from "../tools/headInsert";
 import { pathJoin } from "../tools/pathJoin";
@@ -51,29 +48,18 @@ export const Template = memo((props: TemplateProps) => {
         console.log("Rendering this page with react using keycloakify");
     }, []);
 
-    const { msg } = useKcMessage();
+    const { msg } = getMsg(kcContext);
 
-    const { kcLanguageTag, setKcLanguageTag } = useKcLanguageTag();
-
-    const onChangeLanguageClickFactory = useCallbackFactory(([languageTag]: [KcLanguageTag]) => setKcLanguageTag(languageTag));
+    const onChangeLanguageClickFactory = useCallbackFactory(([kcLanguageTag]: [KcLanguageTag]) =>
+        changeLocale({
+            kcContext,
+            kcLanguageTag,
+        }),
+    );
 
     const onTryAnotherWayClick = useConstCallback(() => (document.forms["kc-select-try-another-way-form" as never].submit(), false));
 
     const { realm, locale, auth, url, message, isAppInitiatedAction } = kcContext;
-
-    useEffect(() => {
-        if (!realm.internationalizationEnabled) {
-            return;
-        }
-
-        assert(locale !== undefined);
-
-        if (kcLanguageTag === getBestMatchAmongKcLanguageTag(locale.current)) {
-            return;
-        }
-
-        window.location.href = locale.supported.find(({ languageTag }) => languageTag === kcLanguageTag)!.url;
-    }, [kcLanguageTag]);
 
     const [isExtraCssLoaded, setExtraCssLoaded] = useReducer(() => true, false);
 
@@ -152,13 +138,13 @@ export const Template = memo((props: TemplateProps) => {
                             <div id="kc-locale-wrapper" className={cx(props.kcLocaleWrapperClass)}>
                                 <div className="kc-dropdown" id="kc-locale-dropdown">
                                     <a href="#" id="kc-current-locale-link">
-                                        {getKcLanguageTagLabel(kcLanguageTag)}
+                                        {getTagLabel({ "kcLanguageTag": getCurrentKcLanguageTag(kcContext), kcContext })}
                                     </a>
                                     <ul>
                                         {locale.supported.map(({ languageTag }) => (
                                             <li key={languageTag} className="kc-dropdown-item">
                                                 <a href="#" onClick={onChangeLanguageClickFactory(languageTag)}>
-                                                    {getKcLanguageTagLabel(languageTag)}
+                                                    {getTagLabel({ "kcLanguageTag": languageTag, kcContext })}
                                                 </a>
                                             </li>
                                         ))}

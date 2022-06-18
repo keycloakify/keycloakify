@@ -1,7 +1,5 @@
 import "minimal-polyfills/Object.fromEntries";
 import type { KcContextBase, Attribute } from "../KcContextBase";
-import { getEvtKcLanguage } from "../../i18n/useKcLanguageTag";
-import { getKcLanguageTagLabel } from "../../i18n/KcLanguageTag";
 //NOTE: Aside because we want to be able to import them from node
 import { resourcesCommonPath, resourcesPath } from "./urlResourcesPath";
 import { id } from "tsafe/id";
@@ -32,81 +30,100 @@ export const kcContextCommonMock: KcContextBase.Common = {
     },
     "locale": {
         "supported": [
+            /* spell-checker: disable */
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=de",
+                "label": "Deutsch",
                 "languageTag": "de",
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=no",
+                "label": "Norsk",
                 "languageTag": "no",
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=ru",
+                "label": "Русский",
                 "languageTag": "ru",
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=sv",
+                "label": "Svenska",
                 "languageTag": "sv",
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=pt-BR",
+                "label": "Português (Brasil)",
                 "languageTag": "pt-BR",
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=lt",
+                "label": "Lietuvių",
                 "languageTag": "lt",
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=en",
+                "label": "English",
                 "languageTag": "en",
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=it",
+                "label": "Italiano",
                 "languageTag": "it",
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=fr",
+                "label": "Français",
                 "languageTag": "fr",
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=zh-CN",
+                "label": "中文简体",
                 "languageTag": "zh-CN",
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=es",
+                "label": "Español",
                 "languageTag": "es",
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=cs",
+                "label": "Čeština",
                 "languageTag": "cs",
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=ja",
+                "label": "日本語",
                 "languageTag": "ja",
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=sk",
+                "label": "Slovenčina",
                 "languageTag": "sk",
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=pl",
+                "label": "Polski",
                 "languageTag": "pl",
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=ca",
+                "label": "Català",
                 "languageTag": "ca",
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=nl",
+                "label": "Nederlands",
                 "languageTag": "nl",
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=tr",
+                "label": "Türkçe",
                 "languageTag": "tr",
             },
+            /* spell-checker: enable */
         ],
-        //"current": null as any
-        "current": "English",
+        "currentLanguageTag": "en",
     },
     "auth": {
         "showUsername": false,
@@ -123,11 +140,6 @@ export const kcContextCommonMock: KcContextBase.Common = {
     },
     "isAppInitiatedAction": false,
 };
-
-Object.defineProperty(kcContextCommonMock.locale!, "current", {
-    "get": () => getKcLanguageTagLabel(getEvtKcLanguage().state),
-    "enumerable": true,
-});
 
 const loginUrl = {
     ...kcContextCommonMock.url,
@@ -366,5 +378,13 @@ export const kcContextMocks: KcContextBase[] = [
         ...kcContextCommonMock,
         "pageId": "login-idp-link-confirm.ftl",
         "idpAlias": "FranceConnect",
+    }),
+    id<KcContextBase.LoginIdpLinkEmail>({
+        ...kcContextCommonMock,
+        "pageId": "login-idp-link-email.ftl",
+        "idpAlias": "FranceConnect",
+        "brokerContext": {
+            "username": "anUsername",
+        },
     }),
 ];

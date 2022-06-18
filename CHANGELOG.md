@@ -1,3 +1,133 @@
+### **5.4.6** (2022-06-16)  
+  
+- Use keycloak 18.0.1 i18n resources #120    
+  
+### **5.4.5** (2022-06-14)  
+  
+- Merge pull request #119 from dro-sh/fix-locale-on-useFormValidationSlice
+
+pass locale to getGetErrors to get correct messages  
+- pass locale to getGetErrors to get correct messages    
+  
+### **5.4.4** (2022-06-05)  
+  
+  
+  
+### **5.4.3** (2022-06-01)  
+  
+  
+  
+### **5.4.2** (2022-06-01)  
+  
+- Prevent rate limite in CI by authenticating    
+  
+### **5.4.1** (2022-06-01)  
+  
+  
+  
+## **5.4.0** (2022-05-23)  
+  
+- #109    
+  
+### **5.3.2** (2022-05-04)  
+  
+- Merge pull request #101 from Romcol/bugfix/99
+
+Issue #99 - Make replace less greedy in remplaceImportFromStatic  
+- [IMP] Issue #99 - Make replace less greedy in remplaceImportFromStatic    
+  
+### **5.3.1** (2022-04-29)  
+  
+- Comment out missleading informations    
+  
+## **5.3.0** (2022-04-28)  
+  
+- Rename keycloak_theme_email to keycloak_email (it's shorter)    
+  
+## **5.2.0** (2022-04-27)  
+  
+- Export KcApp    
+  
+## **5.1.0** (2022-04-27)  
+  
+- Export kcLanguageTags    
+  
+# **5.0.0** (2022-04-27)  
+  
+- i18n rebuild from the ground up    
+  
+## **4.10.0** (2022-04-26)  
+  
+- Merge pull request #92 from Tasyp/add-login-idp-link-email
+
+feat: add login-idp-link-email page  
+- feat: add mock data for login-idp-link-email page  
+- feat: supply broker context with context    
+  
+## **4.9.0** (2022-04-25)  
+  
+- Test by default with kc 18. Update instructions to use quay.io/keycloak/keycloak instead of jboss/keycloak #93    
+  
+### **4.8.7** (2022-04-25)  
+  
+- Update instructions to test on Keycloak 18 https://github.com/keycloak/keycloak-web/issues/306 #93  
+- Move the documentation form the readme to docs.keycloakify.dev  
+- Update README.md  
+- Update demo video    
+  
+### **4.8.6** (2022-04-22)  
+  
+- always offer to download v11.0.3    
+  
+### **4.8.5** (2022-04-22)  
+  
+- #91    
+  
+### **4.8.4** (2022-04-22)  
+  
+- #90    
+  
+### **4.8.3** (2022-04-20)  
+  
+  
+  
+### **4.8.2** (2022-04-20)  
+  
+- Tell pepoles they can test with different keycloak version    
+  
+### **4.8.1** (2022-04-20)  
+  
+- Add missing shebang  
+- Add video demo for npx download-builtin-keycloak-theme    
+  
+## **4.8.0** (2022-04-20)  
+  
+- Document email template customization feature #9  
+- Add mention of download-builtin-keycloak-theme  
+- Let the choice of kc version be auto in GH Action  
+- Only test on node v15 and v14 (bellow is no longer supported (rmSync)  
+- Feature email customization #9    
+  
+### **4.7.6** (2022-04-12)  
+  
+- Fix bugs with language switch #85    
+  
+### **4.7.5** (2022-04-09)  
+  
+- Fix #85    
+  
+### **4.7.4** (2022-04-09)  
+  
+- M1 Mac compat (for real this time)    
+  
+### **4.7.3** (2022-04-08)  
+  
+- Mention that there is still problems with M1 Mac    
+  
+### **4.7.2** (2022-04-06)  
+  
+-  #43: M1 Mac support    
+  
 ### **4.7.1** (2022-03-30)  
   
 - Improve browser autofill  

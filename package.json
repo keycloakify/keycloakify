@@ -1,6 +1,6 @@
 {
     "name": "keycloakify",
-    "version": "4.7.1",
+    "version": "5.4.6",
     "description": "Keycloak theme generator for Reacts app",
     "repository": {
         "type": "git",
@@ -22,6 +22,7 @@
     },
     "bin": {
         "build-keycloak-theme": "dist/bin/build-keycloak-theme/index.js",
+        "create-keycloak-email-directory": "dist/bin/create-keycloak-email-directory.js",
         "download-builtin-keycloak-theme": "dist/bin/download-builtin-keycloak-theme.js"
     },
     "lint-staged": {
@@ -56,11 +57,12 @@
     "homepage": "https://github.com/garronej/keycloakify",
     "peerDependencies": {
         "@emotion/react": "^11.4.1",
-        "react": "^16.8.0 || ^17.0.0"
+        "react": "^16.8.0 || ^17.0.0 || ^18.0.0"
     },
     "devDependencies": {
         "@emotion/react": "^11.4.1",
-        "@types/node": "^10.0.0",
+        "@types/memoizee": "^0.4.7",
+        "@types/node": "^17.0.25",
         "@types/react": "^17.0.0",
         "copyfiles": "^2.4.1",
         "husky": "^4.3.8",
@@ -72,14 +74,17 @@
         "typescript": "^4.2.3"
     },
     "dependencies": {
+        "@octokit/rest": "^18.12.0",
         "cheerio": "^1.0.0-rc.5",
-        "evt": "2.0.0-beta.39",
+        "cli-select": "^1.1.2",
+        "evt": "2.0.0-beta.44",
+        "memoizee": "^0.4.15",
         "minimal-polyfills": "^2.2.1",
         "path-browserify": "^1.0.1",
+        "powerhooks": "^0.20.1",
         "react-markdown": "^5.0.3",
         "scripting-tools": "^0.19.13",
-        "tsafe": "^0.9.0",
-        "tss-react": "^3.5.2",
-        "powerhooks": "^0.14.0"
+        "tsafe": "^0.10.0",
+        "tss-react": "^3.7.0"
     }
 }

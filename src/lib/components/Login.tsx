@@ -2,7 +2,7 @@ import { useState, memo } from "react";
 import { Template } from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { useKcMessage } from "../i18n/useKcMessage";
+import { getMsg } from "../i18n";
 import { useCssAndCx } from "tss-react";
 import { useConstCallback } from "powerhooks/useConstCallback";
 import type { FormEventHandler } from "react";
@@ -10,7 +10,7 @@ import type { FormEventHandler } from "react";
 export const Login = memo(({ kcContext, ...props }: { kcContext: KcContextBase.Login } & KcProps) => {
     const { social, realm, url, usernameEditDisabled, login, auth, registrationDisabled } = kcContext;
 
-    const { msg, msgStr } = useKcMessage();
+    const { msg, msgStr } = getMsg(kcContext);
 
     const { cx } = useCssAndCx();
 
