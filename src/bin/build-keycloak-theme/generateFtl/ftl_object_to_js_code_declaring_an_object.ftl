@@ -155,33 +155,6 @@ ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
 
                 </#if>
                 
-                <#if key == "showUsername" && are_same_path(path, ["auth"])>
-                    <#attempt>
-                        <#return auth.showUsername()?c>
-                    <#recover>
-                        <#local out_seq += ["/*Couldn't evaluate auth.showUsername()*/"]>
-                        <#continue>
-                    </#attempt>
-                </#if>
-
-                <#if key == "showResetCredentials" && are_same_path(path, ["auth"])>
-                    <#attempt>
-                        <#return auth.showResetCredentials()?c>
-                    <#recover>
-                        <#local out_seq += ["/*Couldn't evaluate auth.showResetCredentials()*/"]>
-                        <#continue>
-                    </#attempt>
-                </#if>
-
-                <#if key == "showTryAnotherWayLink" && are_same_path(path, ["auth"])>
-                    <#attempt>
-                        <#return auth.showTryAnotherWayLink()?c>
-                    <#recover>
-                        <#local out_seq += ["/*Couldn't evaluate auth.showTryAnotherWayLink()*/"]>
-                        <#continue>
-                    </#attempt>
-                </#if>
-
                 <#attempt>
                     <#if !object[key]??>
                         <#continue>
@@ -229,6 +202,31 @@ ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
         </#attempt>
 
         <#if isMethod>
+
+            <#if are_same_path(path, ["auth", "showUsername"])>
+                <#attempt>
+                    <#return auth.showUsername()?c>
+                <#recover>
+                    <#return "ABORT: Couldn't evaluate auth.showUsername()">
+                </#attempt>
+            </#if>
+
+            <#if are_same_path(path, ["auth", "showResetCredentials"])>
+                <#attempt>
+                    <#return auth.showResetCredentials()?c>
+                <#recover>
+                    <#return "ABORT: Couldn't evaluate auth.showResetCredentials()">
+                </#attempt>
+            </#if>
+
+            <#if are_same_path(path, ["auth", "showTryAnotherWayLink"])>
+                <#attempt>
+                    <#return auth.showTryAnotherWayLink()?c>
+                <#recover>
+                    <#return "ABORT: Couldn't evaluate auth.showTryAnotherWayLink()">
+                </#attempt>
+            </#if>
+
             <#return "ABORT: It's a method">
         </#if>
 
