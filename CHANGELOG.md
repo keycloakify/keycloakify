@@ -1,3 +1,10 @@
+### **5.4.7** (2022-06-19)  
+  
+- #121  
+- fmt  
+- Create CONTRIBUTING.md  
+- Enable users to link keycloak in their own app    
+  
 ### **5.4.6** (2022-06-16)  
   
 - Use keycloak 18.0.1 i18n resources #120    
