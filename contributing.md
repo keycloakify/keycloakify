@@ -24,7 +24,7 @@ yarn
 yarn build
 yarn link_in_test_app
 npx tsc -w #This will start the compilation of Keycloakify in watch mode
-           #You will be able to perfrom change on the keycloakify code
+           #You will be able to perform changes on the keycloakify code
            #and see them apply live in the keycloakify-demo-app
 ```
 
