@@ -1,7 +1,7 @@
 # Table of contents
 
 * [🏁 Requirements](README.md)
-* [👨💻 Quick start](how-to-use.md)
+* [👨💻 👨💻 Quick start](how-to-use.md)
 * [🧪 Development](developpement.md)
 * [📧 Email customization](email-customization.md)
 * [✒ Terms and conditions](terms-and-conditions.md)

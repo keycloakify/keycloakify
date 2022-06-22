@@ -1,6 +1,6 @@
 # ✅ Realtime input validation
 
-{% embed url="https://www.keycloakify.dev/static/media/keycloakify_frontend_validation-vp9-chrome.af3a6e8e67ab60f2c866.webm" %}
+{% embed url="https://user-images.githubusercontent.com/6702424/175101958-c2fe36a1-1d78-43ed-999e-92e4b482a0cb.mp4" %}
 
 {% hint style="warning" %}
 In reality the regexp used in this gif doesn't work server side, the regexp pattern should be `^[^@]@gmail\.com$` (the RegExp should match the whole string) 😬.
