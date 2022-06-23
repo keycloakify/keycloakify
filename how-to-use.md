@@ -32,16 +32,6 @@ On the console will be printed all the instructions about how to load the genera
 {% tab title="CSS Only customization" %}
 The first approach is to only customize the style of the default Keycloak login theme by providing your own class names.
 
-{% hint style="info" %}
-The keycloakify components are a plain React translation of the default theme that comes with Keycloak v11.0.3. &#x20;
-
-You can download the FTL/CSS source files the components are based on with the following command:
-
-`npx -p keycloakify download-builtin-keycloak-theme`&#x20;
-
-then select version 11.0.3 ([Video demo](https://user-images.githubusercontent.com/6702424/164304458-934b0e1d-9de7-4bb4-8a1c-e06a70b1636a.mov)).
-{% endhint %}
-
 `src/index.tsx`
 
 ```tsx
@@ -111,6 +101,16 @@ To give you an idea of what you can already achieve by only customizing the styl
 Here is [**the code**](https://github.com/InseeFrLab/onyxia-web/blob/012639d62327a9a56be80c46e32c32c9497b82db/src/app/components/KcApp.tsx) that produces:&#x20;
 
 ![Results obtained with CSS only customization of the default theme](https://github.com/InseeFrLab/keycloakify/releases/download/v0.3.8/keycloakify\_after.gif)
+
+{% hint style="info" %}
+The keycloakify components are a plain React translation of the default theme that comes with Keycloak v11.0.3. &#x20;
+
+You can download the FTL/CSS source files the components are based on with the following command:
+
+`npx -p keycloakify download-builtin-keycloak-theme`&#x20;
+
+then select version 11.0.3 ([Video demo](https://user-images.githubusercontent.com/6702424/164304458-934b0e1d-9de7-4bb4-8a1c-e06a70b1636a.mov)).
+{% endhint %}
 {% endtab %}
 
 {% tab title="Component level customization" %}
