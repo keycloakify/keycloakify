@@ -43,7 +43,11 @@ This tool assumes you are bundling your app with [Webpack](https://webpack.js.or
 
 It assumes there is a `build/` directory at the root of your react project directory, it's usually generated after running `yarn build`.
 
-The `build/` directory is expected to contain an `index.html` file and a `build/static/` directory.
+The `build/` directory is expected to contain an `index.html` file and a `build/static/` directory. &#x20;
+
+Keycloakify also assumes there is a public/ directory at the root of your react project that is used to make static files available. &#x20;
+
+Concretely Keycloakify assumes that if there is a `public/a/b.c/foo.txt` file. This file should be available at `https://localhost:<some_port>/a/b/c.foo.txt` when running your app in test mode (usually by firing yarn start).&#x20;
 
 For more detailed information see [this issue](https://github.com/InseeFrLab/keycloakify/issues/5#issuecomment-832296432).
 
