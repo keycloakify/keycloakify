@@ -36,6 +36,6 @@ Once you are done developping you want to test in an actual Keycloak instance to
 
 Please refer to the related instruction printed on the console when running `yarn keycloak` in your project. &#x20;
 
-{% embed url="https://user-images.githubusercontent.com/6702424/176263999-c3f9edb6-5cb3-437d-a446-ead2b804282d.mp4" %}
+{% embed url="https://user-images.githubusercontent.com/6702424/176266833-61b9c734-b16f-4822-9409-374bf9a387e0.mp4" %}
 The instruction for starting a test container are displayed when you build the theme.
 {% endembed %}
