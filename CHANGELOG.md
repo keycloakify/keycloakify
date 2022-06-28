@@ -1,3 +1,7 @@
+## **5.5.0** (2022-06-28)  
+  
+- Make it possible to redirect to login by repacing the url (should be default in most case)    
+  
 ### **5.4.7** (2022-06-19)  
   
 - #121  
