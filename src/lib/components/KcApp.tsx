@@ -15,6 +15,7 @@ import { LoginUpdateProfile } from "./LoginUpdateProfile";
 import { LoginIdpLinkConfirm } from "./LoginIdpLinkConfirm";
 import { LoginPageExpired } from "./LoginPageExpired";
 import { LoginIdpLinkEmail } from "./LoginIdpLinkEmail";
+import { LoginConfigTotp } from "./LoginConfigTotp";
 
 export const KcApp = memo(({ kcContext, ...props }: { kcContext: KcContextBase } & KcProps) => {
     switch (kcContext.pageId) {
@@ -46,5 +47,7 @@ export const KcApp = memo(({ kcContext, ...props }: { kcContext: KcContextBase }
             return <LoginIdpLinkEmail {...{ kcContext, ...props }} />;
         case "login-page-expired.ftl":
             return <LoginPageExpired {...{ kcContext, ...props }} />;
+        case "login-config-totp.ftl":
+            return <LoginConfigTotp {...{ kcContext, ...props }} />;
     }
 });
