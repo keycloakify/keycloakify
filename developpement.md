@@ -18,6 +18,10 @@ To acheave that with Keycloakify simply eddit:
  });
 ```
 
+[See the `getKcContext()` call in the `keycloakify-demo-app` project](https://github.com/garronej/keycloakify-demo-app/blob/6a78e1b6513cffa44b1f0e6f8a36d263a39b972b/src/index.tsx#L18-L19).
+
+[See the getKcContext() call in the `keycloakify-demo-app#look_and_feel` project](https://github.com/garronej/keycloakify-demo-app/blob/f8b2ac1734c826646fc0c97e1c4633ae392e72c6/src/KcApp/kcContext.ts#L22-L23).
+
 then if you run `yarn start` you will see your login page display. **Dont forget to remove mockPageId before releasing** 😉.
 
 {% hint style="success" %}
@@ -30,4 +34,8 @@ To customize the mock kcContext please refer to [this example](https://github.co
 
 Once you are done developping you want to test in an actual Keycloak instance to see if everything is working as expected.
 
-Please refer to the related instruction printed on the console when running `yarn keycloak` in your project.
+Please refer to the related instruction printed on the console when running `yarn keycloak` in your project. &#x20;
+
+{% embed url="https://user-images.githubusercontent.com/6702424/176263999-c3f9edb6-5cb3-437d-a446-ead2b804282d.mp4" %}
+The instruction for starting a test container are displayed when you build the theme.
+{% endembed %}
