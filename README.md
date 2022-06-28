@@ -38,6 +38,10 @@
 
 # Changelog highlights
 
+## v5.6.0
+
+Add support for `login-config-totp.ftl` page [#127](https://github.com/InseeFrLab/keycloakify/pull/127).
+
 ## v5.3.0
 
 Rename `keycloak_theme_email` to `keycloak_email`.  
