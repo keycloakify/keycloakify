@@ -56,7 +56,7 @@ export const LoginConfigTotp = memo(({ kcContext, ...props }: { kcContext: KcCon
                                                 {msg("loginTotpType")}: {msg(`loginTotp.${totp.policy.type}`)}
                                             </li>
                                             <li id="kc-totp-algorithm">
-                                                {msg("loginTotpAlgorithm")}: {algToKeyUriAlg[totp.policy.algorithm]}
+                                                {msg("loginTotpAlgorithm")}: {algToKeyUriAlg?.[totp.policy.algorithm] ?? totp.policy.algorithm}
                                             </li>
                                             <li id="kc-totp-digits">
                                                 {msg("loginTotpDigits")}: {totp.policy.digits}
