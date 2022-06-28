@@ -20,6 +20,7 @@ export const pageIds = [
     "login-idp-link-confirm.ftl",
     "login-idp-link-email.ftl",
     "login-page-expired.ftl",
+    "login-config-totp.ftl",
 ] as const;
 
 export type PageId = typeof pageIds[number];
