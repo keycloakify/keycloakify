@@ -1,3 +1,11 @@
+## **5.6.0** (2022-06-28)  
+  
+- Merge pull request #127 from aidangilmore/add-totp-support
+
+feat: add login-config-totp.ftl page  
+- Fix unknown algorithm name lookup in LoginConfigTotp  
+- Add totp config support    
+  
 ## **5.5.0** (2022-06-28)  
   
 - Make it possible to redirect to login by repacing the url (should be default in most case)    
