@@ -44,8 +44,9 @@ export declare namespace keycloak_js {
 export function createKeycloakAdapter(params: {
     keycloakInstance: keycloak_js.KeycloakInstance;
     transformUrlBeforeRedirect(url: string): string;
+    getRedirectMethod?: () => "overwrite location.href" | "location.replace";
 }): keycloak_js.KeycloakAdapter {
-    const { keycloakInstance, transformUrlBeforeRedirect } = params;
+    const { keycloakInstance, transformUrlBeforeRedirect, getRedirectMethod = () => "overwrite location.href" } = params;
 
     const neverResolvingPromise: keycloak_js.KeycloakPromise<void, void> = Object.defineProperties(new Promise(() => {}), {
         "success": { "value": () => {} },
@@ -54,25 +55,50 @@ export function createKeycloakAdapter(params: {
 
     return {
         "login": options => {
-            window.location.href = transformUrlBeforeRedirect(keycloakInstance.createLoginUrl(options));
+            const newHref = transformUrlBeforeRedirect(keycloakInstance.createLoginUrl(options));
+            switch (getRedirectMethod()) {
+                case "location.replace":
+                    window.location.replace(newHref);
+                    break;
+                case "overwrite location.href":
+                    window.location.href = newHref;
+                    break;
+            }
+            return neverResolvingPromise;
+        },
+        "register": options => {
+            const newHref = transformUrlBeforeRedirect(keycloakInstance.createRegisterUrl(options));
+            switch (getRedirectMethod()) {
+                case "location.replace":
+                    window.location.replace(newHref);
+                    break;
+                case "overwrite location.href":
+                    window.location.href = newHref;
+                    break;
+            }
+
             return neverResolvingPromise;
         },
         "logout": options => {
             window.location.replace(transformUrlBeforeRedirect(keycloakInstance.createLogoutUrl(options)));
             return neverResolvingPromise;
         },
-        "register": options => {
-            window.location.href = transformUrlBeforeRedirect(keycloakInstance.createRegisterUrl(options));
-
-            return neverResolvingPromise;
-        },
         "accountManagement": () => {
-            var accountUrl = transformUrlBeforeRedirect(keycloakInstance.createAccountUrl());
-            if (typeof accountUrl !== "undefined") {
-                window.location.href = accountUrl;
-            } else {
+            const accountUrl = transformUrlBeforeRedirect(keycloakInstance.createAccountUrl());
+
+            if (accountUrl === "undefined") {
                 throw new Error("Not supported by the OIDC server");
             }
+
+            switch (getRedirectMethod()) {
+                case "location.replace":
+                    window.location.replace(accountUrl);
+                    break;
+                case "overwrite location.href":
+                    window.location.href = accountUrl;
+                    break;
+            }
+
             return neverResolvingPromise;
         },
         "redirectUri": options => {

@@ -24,7 +24,8 @@ export type KcContextBase =
     | KcContextBase.LoginUpdateProfile
     | KcContextBase.LoginIdpLinkConfirm
     | KcContextBase.LoginIdpLinkEmail
-    | KcContextBase.LoginPageExpired;
+    | KcContextBase.LoginPageExpired
+    | KcContextBase.LoginConfigTotp;
 
 export declare namespace KcContextBase {
     export type Common = {
@@ -222,6 +223,34 @@ export declare namespace KcContextBase {
 
     export type LoginPageExpired = Common & {
         pageId: "login-page-expired.ftl";
+    };
+
+    export type LoginConfigTotp = Common & {
+        pageId: "login-config-totp.ftl";
+        mode?: "qr" | "manual" | undefined | null;
+        totp: {
+            totpSecretEncoded: string;
+            qrUrl: string;
+            policy: {
+                supportedApplications: string[];
+                algorithm: "HmacSHA1" | "HmacSHA256" | "HmacSHA512";
+                digits: number;
+                lookAheadWindow: number;
+            } & (
+                | {
+                      type: "totp";
+                      period: number;
+                  }
+                | {
+                      type: "hotp";
+                      initialCounter: number;
+                  }
+            );
+            totpSecretQrCode: string;
+            manualUrl: string;
+            totpSecret: string;
+            otpCredentials: { id: string; userLabel: string }[];
+        };
     };
 }
 

@@ -1,3 +1,22 @@
+## **5.6.0** (2022-06-28)  
+  
+- Merge pull request #127 from aidangilmore/add-totp-support
+
+feat: add login-config-totp.ftl page  
+- Fix unknown algorithm name lookup in LoginConfigTotp  
+- Add totp config support    
+  
+## **5.5.0** (2022-06-28)  
+  
+- Make it possible to redirect to login by repacing the url (should be default in most case)    
+  
+### **5.4.7** (2022-06-19)  
+  
+- #121  
+- fmt  
+- Create CONTRIBUTING.md  
+- Enable users to link keycloak in their own app    
+  
 ### **5.4.6** (2022-06-16)  
   
 - Use keycloak 18.0.1 i18n resources #120    
