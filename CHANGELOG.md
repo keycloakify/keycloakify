@@ -1,3 +1,13 @@
+### **5.6.1** (2022-07-03)  
+  
+- Merge pull request #128 from Ann2827/pull
+
+Fix bugs on error.ftl template  
+- fix: bugs on error.ftl template  
+- Merge pull request #52 from InseeFrLab/main
+
+Update fork    
+  
 ## **5.6.0** (2022-06-28)  
   
 - Merge pull request #127 from aidangilmore/add-totp-support
