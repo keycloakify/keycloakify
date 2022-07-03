@@ -1,3 +1,7 @@
+### **5.6.2** (2022-07-03)  
+  
+- Update powerhooks and EVT    
+  
 ### **5.6.1** (2022-07-03)  
   
 - Merge pull request #128 from Ann2827/pull
