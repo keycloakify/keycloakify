@@ -7,7 +7,7 @@ description: Enable loading in a blink of an eye of login pages with --external-
 {% hint style="warning" %}
 This only apply if your theme is integrated to to a React app. &#x20;
 
-If your theme Keycloak theme is a standalone react project you can ignore this section.&#x20;
+If your Keycloak theme is a standalone react project you can ignore this section.&#x20;
 {% endhint %}
 
 By default the theme generated is standalone. Meaning that when your users reach the login pages all scripts, images and stylesheet are downloaded from the Keycloak server.\
