@@ -10,7 +10,7 @@ This only apply if your theme is integrated to to a React app. &#x20;
 If your Keycloak theme is a standalone react project you can ignore this section.&#x20;
 {% endhint %}
 
-By default the theme generated is standalone. Meaning that when your users reach the login pages all scripts, images and stylesheet are downloaded from the Keycloak server.\
+By default when your users reach the login pages all scripts, images and stylesheet are downloaded from the Keycloak server.\
 If you are specifically building a theme to integrate with an app or a website that allows users to first browse unauthenticated before logging in, you will get a significant performance boost if you jump through those hoops:
 
 * Provide the url of your app in the `homepage` field of package.json. [ex](https://github.com/garronej/keycloakify-demo-app/blob/7847cc70ef374ab26a6cc7953461cf25603e9a6d/package.json#L2) or in a `public/CNAME` file. [ex](https://github.com/garronej/keycloakify-demo-app/blob/main/public/CNAME).
