@@ -91,8 +91,8 @@ export function main() {
         "cwd": keycloakThemeBuildingDirPath,
     });
 
-    //We want, however to test in a container running the latest Keycloak version
-    const containerKeycloakVersion = "18.0.0";
+    //We want, however, to test in a container running the latest Keycloak version
+    const containerKeycloakVersion = "18.0.2";
 
     generateStartKeycloakTestingContainer({
         keycloakThemeBuildingDirPath,
