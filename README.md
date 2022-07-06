@@ -38,6 +38,10 @@
 
 # Changelog highlights
 
+## 5.6.4
+
+Fix `login-verify-email.ftl` page. [Before](https://user-images.githubusercontent.com/6702424/177436014-0bad22c4-5bfb-45bb-8fc9-dad65143cd0c.png) - [After](https://user-images.githubusercontent.com/6702424/177435797-ec5d7db3-84cf-49cb-8efc-3427a81f744e.png)
+
 ## v5.6.0
 
 Add support for `login-config-totp.ftl` page [#127](https://github.com/InseeFrLab/keycloakify/pull/127).
