@@ -1,3 +1,8 @@
+### **5.6.4** (2022-07-06)  
+  
+- Fix login-register-email.ftl  
+- Update to Keycloak 18.0.2 for the test container    
+  
 ### **5.6.3** (2022-07-03)  
   
 - update powerhooks    
