@@ -305,7 +305,7 @@ ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
 </#function>
 <#function are_same_path path searchedPath>
 
-    <#if path?size != path?size>
+    <#if path?size != searchedPath?size>
         <#return false>
     </#if>
 
