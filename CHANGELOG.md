@@ -1,3 +1,14 @@
+### **5.6.5** (2022-07-06)  
+  
+- Merge pull request #133 from bardius/fix/Issue-131-include-all-nested-folders-in-artifact-unzip
+
+fix: Issue-131: include all nested folders in artifact unzip  
+- Merge pull request #132 from bardius/fix/Issue-130-fix-equality-detection-of-nested-ftl-object-properties
+
+fix: Issue-130: fix equality detection of nested ftl object property …  
+- fix: Issue-131: include all nested folders in artifact unzip  
+- fix: Issue-130: fix equality detection of nested ftl object property paths    
+  
 ### **5.6.4** (2022-07-06)  
   
 - Fix login-register-email.ftl  
