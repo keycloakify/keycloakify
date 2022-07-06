@@ -337,6 +337,9 @@ export const kcContextMocks: KcContextBase[] = [
     id<KcContextBase.LoginVerifyEmail>({
         ...kcContextCommonMock,
         "pageId": "login-verify-email.ftl",
+        "user": {
+            "email": "john.doe@gmail.com",
+        },
     }),
     id<KcContextBase.Terms>({
         ...kcContextCommonMock,

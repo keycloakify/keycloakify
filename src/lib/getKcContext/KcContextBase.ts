@@ -179,6 +179,10 @@ export declare namespace KcContextBase {
 
     export type LoginVerifyEmail = Common & {
         pageId: "login-verify-email.ftl";
+        //NOTE: Optional because maybe it wasn't defined in older keycloak versions.
+        user?: {
+            email: string;
+        };
     };
 
     export type Terms = Common & {

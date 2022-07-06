@@ -7,7 +7,7 @@ import { getMsg } from "../i18n";
 export const LoginVerifyEmail = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LoginVerifyEmail } & KcProps) => {
     const { msg } = getMsg(kcContext);
 
-    const { url } = kcContext;
+    const { url, user } = kcContext;
 
     return (
         <Template
@@ -17,10 +17,12 @@ export const LoginVerifyEmail = memo(({ kcContext, ...props }: { kcContext: KcCo
             headerNode={msg("emailVerifyTitle")}
             formNode={
                 <>
-                    <p className="instruction">{msg("emailVerifyInstruction1")}</p>
+                    <p className="instruction">{msg("emailVerifyInstruction1", user?.email)}</p>
                     <p className="instruction">
                         {msg("emailVerifyInstruction2")}
+                        <br />
                         <a href={url.loginAction}>{msg("doClickHere")}</a>
+                        &nbsp;
                         {msg("emailVerifyInstruction3")}
                     </p>
                 </>
