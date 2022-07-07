@@ -20,11 +20,14 @@ export const kcMessages = {
     "fr": {
         ...kcMessagesBase["fr"],
         /* spell-checker: disable */
-        "shouldBeEqual": "{0} doit être egale à {1}",
+        "shouldBeEqual": "{0} doit être égal à {1}",
         "shouldBeDifferent": "{0} doit être différent de {1}",
         "shouldMatchPattern": "Dois respecter le schéma: `/{0}/`",
-        "mustBeAnInteger": "Doit être un nombre entiers",
+        "mustBeAnInteger": "Doit être un nombre entier",
         "notAValidOption": "N'est pas une option valide",
+        "logoutConfirmTitle": "Déconnexion",
+        "logoutConfirmHeader": "Êtes-vous sûr(e) de vouloir vous déconnecter ?",
+        "doLogout": "Se déconnecter",
         /* spell-checker: enable */
     },
 };

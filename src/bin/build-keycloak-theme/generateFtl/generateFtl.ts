@@ -5,6 +5,7 @@ import { join as pathJoin } from "path";
 import { objectKeys } from "tsafe/objectKeys";
 import { ftlValuesGlobalName } from "../ftlValuesGlobalName";
 
+// https://github.com/keycloak/keycloak/blob/main/services/src/main/java/org/keycloak/forms/login/freemarker/Templates.java
 export const pageIds = [
     "login.ftl",
     "register.ftl",
@@ -21,6 +22,7 @@ export const pageIds = [
     "login-idp-link-email.ftl",
     "login-page-expired.ftl",
     "login-config-totp.ftl",
+    "logout-confirm.ftl",
 ] as const;
 
 export type PageId = typeof pageIds[number];
