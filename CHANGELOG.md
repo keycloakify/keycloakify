@@ -1,3 +1,12 @@
+## **5.7.0** (2022-07-07)  
+  
+- Merge pull request #120 from revolunet/logout
+
+feat: add logout-confirm  
+- fix: use kcMessages  
+- fix: add translations FR  
+- feat: add logout-confirm    
+  
 ### **5.6.5** (2022-07-06)  
   
 - Merge pull request #133 from bardius/fix/Issue-131-include-all-nested-folders-in-artifact-unzip
