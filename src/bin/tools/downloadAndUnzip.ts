@@ -17,7 +17,7 @@ export function downloadAndUnzip(params: { url: string; destDirPath: string; pat
 
     execSync(`curl -L ${url} -o ${zipFilePath}`, { "cwd": tmpDirPath });
 
-    execSync(`unzip ${zipFilePath}${pathOfDirToExtractInArchive === undefined ? "" : ` "${pathOfDirToExtractInArchive}/**/*"`}`, {
+    execSync(`unzip -o ${zipFilePath}${pathOfDirToExtractInArchive === undefined ? "" : ` "${pathOfDirToExtractInArchive}/**/*"`}`, {
         "cwd": tmpDirPath,
     });
 
