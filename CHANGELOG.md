@@ -1,3 +1,7 @@
+### **5.7.1** (2022-07-11)  
+  
+- #134    
+  
 ## **5.7.0** (2022-07-07)  
   
 - Merge pull request #120 from revolunet/logout
