@@ -6,7 +6,7 @@ import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { getMsg } from "../i18n";
 
 export const Info = memo(({ kcContext, ...props }: { kcContext: KcContextBase.Info } & KcProps) => {
-    const { msg } = getMsg(kcContext);
+    const { msg, msgStr } = getMsg(kcContext);
 
     assert(kcContext.message !== undefined);
 
@@ -24,7 +24,7 @@ export const Info = memo(({ kcContext, ...props }: { kcContext: KcContextBase.In
                         {message.summary}
 
                         {requiredActions !== undefined && (
-                            <b>{requiredActions.map(requiredAction => msg(`requiredAction.${requiredAction}` as const)).join(",")}</b>
+                            <b>{requiredActions.map(requiredAction => msgStr(`requiredAction.${requiredAction}` as const)).join(",")}</b>
                         )}
                     </p>
                     {!skipLink && pageRedirectUri !== undefined ? (
