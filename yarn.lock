@@ -777,14 +777,14 @@ event-emitter@^0.3.5:
     d "1"
     es5-ext "~0.10.14"
 
-evt@2.0.0-beta.45:
-  version "2.0.0-beta.45"
-  resolved "https://registry.yarnpkg.com/evt/-/evt-2.0.0-beta.45.tgz#8b1a81e1376f6eba254f4ec9865531b2ed118a3e"
-  integrity sha512-Me2/YMCjxLgz4y0aWKIxykyJth2LHKqxc91XnsIN39IRksknObBR9Pjmxwpnhmd1lNCR6mPFv/vBt46iQWtI9g==
+evt@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/evt/-/evt-2.2.0.tgz#3f4cd36042ae951d4de4b11391cc9a1983a63f7d"
+  integrity sha512-osz8IYRfeNVva7KRdHx/ruJJo3e4OowMzL+E1Dw8xBjGNrJsK74hDvWErH9hGhnYQxu9rBDPTq8JXydvgu17kg==
   dependencies:
     minimal-polyfills "^2.2.1"
     run-exclusive "^2.2.14"
-    tsafe "^0.4.1"
+    tsafe "^0.10.0"
 
 execa@^5.1.1:
   version "5.1.1"
@@ -1420,12 +1420,12 @@ please-upgrade-node@^3.2.0:
   dependencies:
     semver-compare "^1.0.0"
 
-powerhooks@^0.20.3:
-  version "0.20.3"
-  resolved "https://registry.yarnpkg.com/powerhooks/-/powerhooks-0.20.3.tgz#0a2bb6ac3d6bae527df5889e107f76c7ccca8104"
-  integrity sha512-SrcDdt+Lo+TGtJHRLyrWS6glN3bfjBZETU+LIWWD5ohvwR8ofBcMiPML/sqecPhF+9sRzAdOrimHcQSQxetvSg==
+powerhooks@^0.20.4:
+  version "0.20.4"
+  resolved "https://registry.yarnpkg.com/powerhooks/-/powerhooks-0.20.4.tgz#be199c8c90aede5efaa7f61d5b63d3b8e2eac73b"
+  integrity sha512-X4qaMGUUk7yTpZW7rn/kD8fNaW9Cm0WoEKURWp0fbWjyIst0ZyEvVbgEcz2Dus6XadwDWp3/IAtmb7zPk0ekug==
   dependencies:
-    evt "2.0.0-beta.45"
+    evt "^2.2.0"
     memoizee "^0.4.15"
     resize-observer-polyfill "^1.5.1"
     tsafe "^0.10.0"
@@ -1777,11 +1777,6 @@ tsafe@^0.10.0:
   version "0.10.0"
   resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-0.10.0.tgz#c4fba365a49467ea6167e8c9482ddb94ee51b795"
   integrity sha512-CFfa1uJKfU0DDRbuB8bf2mfXjkOqiTsrltexzMMLxq5gjd1LttFECNGsO8dYUALJDbShb6+f3CwAppW/wf9BrA==
-
-tsafe@^0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-0.4.1.tgz#00af1be2db82abb4be531209b90232d7954e1a03"
-  integrity sha512-+OZ0gdgmwcru+MOSheCx+ymAvQz+1/ui+KFJRuaq0t2m8RNrlf7eSzEieptoPQXPY67Mdkqgkdjknn8azoD5sw==
 
 tslib@^2.1.0:
   version "2.4.0"
