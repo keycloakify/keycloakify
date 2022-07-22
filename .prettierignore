@@ -5,3 +5,4 @@ node_modules/
 /src/test/apps/
 /src/tools/types/
 /sample_react_project
+/build_keycloak/
