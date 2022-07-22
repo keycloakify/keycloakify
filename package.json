@@ -12,7 +12,7 @@
         "clean": "rimraf dist/",
         "build": "yarn clean && tsc && yarn grant-exec-perms && yarn copy-files",
         "grant-exec-perms": "node dist/bin/tools/grant-exec-perms.js",
-        "test": "node dist/test/bin/main && node dist/test/lib",
+        "test": "node dist/test/bin && node dist/test/lib",
         "copy-files": "copyfiles -u 1 src/**/*.ftl src/**/*.xml src/**/*.js dist/",
         "generate-messages": "node dist/bin/generate-i18n-messages.js",
         "link_in_test_app": "node dist/bin/link_in_test_app.js",
