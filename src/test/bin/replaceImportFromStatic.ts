@@ -133,6 +133,61 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
 }
 
 {
+    const { fixedCssCode, cssGlobalsToDefine } = replaceImportsInCssCode({
+        "cssCode": `
+            .my-div {
+                background: url(/x/y/z/logo192.png) no-repeat center center;
+            }
+
+            .my-div2 {
+                background: url(/x/y/z/logo192.png) no-repeat center center;
+            }
+
+            .my-div {
+                background-image: url(/x/y/z/static/media/something.svg);
+            }
+        `,
+    });
+
+    const fixedCssCodeExpected = `
+        .my-div {
+            background: var(--urlf8277cddaa2be78);
+        }
+
+        .my-div2 {
+            background: var(--urlf8277cddaa2be78);
+        }
+
+        .my-div {
+            background-image: var(--url8bdc0887b97ac9a);
+        }
+    `;
+
+    assetIsSameCode(fixedCssCode, fixedCssCodeExpected);
+
+    const cssGlobalsToDefineExpected = {
+        "urlf8277cddaa2be78": "url(/x/y/z/logo192.png) no-repeat center center",
+        "url8bdc0887b97ac9a": "url(/x/y/z/static/media/something.svg)",
+    };
+
+    assert(same(cssGlobalsToDefine, cssGlobalsToDefineExpected));
+
+    const { cssCodeToPrependInHead } = generateCssCodeToDefineGlobals({
+        cssGlobalsToDefine,
+        "urlPathname": "/x/y/z/",
+    });
+
+    const cssCodeToPrependInHeadExpected = `
+        :root {
+            --urlf8277cddaa2be78: url(\${url.resourcesPath}/build/logo192.png) no-repeat center center;
+            --url8bdc0887b97ac9a: url(\${url.resourcesPath}/build/static/media/something.svg);
+        }
+    `;
+
+    assetIsSameCode(cssCodeToPrependInHead, cssCodeToPrependInHeadExpected);
+}
+
+{
     const cssCode = `
         @font-face {
           font-family: "Work Sans";
