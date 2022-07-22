@@ -1,11 +1,19 @@
 import {
     replaceImportsFromStaticInJsCode,
+    replaceImportsInInlineCssCode,
     replaceImportsInCssCode,
     generateCssCodeToDefineGlobals,
 } from "../../bin/build-keycloak-theme/replaceImportFromStatic";
 import { assert } from "tsafe/assert";
 import { same } from "evt/tools/inDepth/same";
 import { assetIsSameCode } from "../tools/assertIsSameCode";
+
+/*
+ NOTES: 
+ When not compiled with --external-assets urlOrigin will always be undefined regardless of the "homepage" field.
+ When compiled with --external-assets and we have a home page filed like "https://example.com" or "https://example.com/x/y/z" urlOrigin will be "https://example.com"
+ Regardless of if it's compiled with --external-assets or not, if "homepage" is like "https://example.com/x/y/z" urlPathname will be "/x/y/z/"
+*/
 
 {
     const jsCodeUntransformed = `
@@ -46,22 +54,20 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
     }
 
     {
-        const urlOrigin = "https://example.com";
-
         const { fixedJsCode } = replaceImportsFromStaticInJsCode({
             "jsCode": jsCodeUntransformed,
-            urlOrigin,
+            "urlOrigin": "https://demo-app.keycloakify.dev",
         });
 
         const fixedJsCodeExpected = `
             function f() {
-                return ("kcContext" in window ? "${urlOrigin}" : "") + a.p + "static/js/" + ({}[e] || e) + "." + {
+                return ("kcContext" in window ? "https://demo-app.keycloakify.dev" : "") + a.p + "static/js/" + ({}[e] || e) + "." + {
                     3: "0664cdc0"
                 }[e] + ".chunk.js"
             }
 
             function f2() {
-                return ("kcContext" in window ? "${urlOrigin}" : "") + a.p + "static/js/" + ({}[e] || e) + "." + {
+                return ("kcContext" in window ? "https://demo-app.keycloakify.dev" : "") + a.p + "static/js/" + ({}[e] || e) + "." + {
                     3: "0664cdc0"
                 }[e] + ".chunk.js"
             }
@@ -124,6 +130,129 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
     `;
 
     assetIsSameCode(cssCodeToPrependInHead, cssCodeToPrependInHeadExpected);
+}
+
+{
+    const cssCode = `
+        @font-face {
+          font-family: "Work Sans";
+          font-style: normal;
+          font-weight: 400;
+          font-display: swap;
+          src: url("/fonts/WorkSans/worksans-regular-webfont.woff2") format("woff2");
+        }
+        @font-face {
+          font-family: "Work Sans";
+          font-style: normal;
+          font-weight: 500;
+          font-display: swap;
+          src: url("/fonts/WorkSans/worksans-medium-webfont.woff2") format("woff2");
+        }
+        @font-face {
+          font-family: "Work Sans";
+          font-style: normal;
+          font-weight: 600;
+          font-display: swap;
+          src: url("/fonts/WorkSans/worksans-semibold-webfont.woff2") format("woff2");
+        }
+        @font-face {
+          font-family: "Work Sans";
+          font-style: normal;
+          font-weight: 700;
+          font-display: swap;
+          src: url("/fonts/WorkSans/worksans-bold-webfont.woff2") format("woff2");
+        }
+    `;
+
+    {
+        const { fixedCssCode } = replaceImportsInInlineCssCode({
+            cssCode,
+            "urlOrigin": undefined,
+            "urlPathname": "/",
+        });
+
+        const fixedCssCodeExpected = `
+            @font-face {
+              font-family: "Work Sans";
+              font-style: normal;
+              font-weight: 400;
+              font-display: swap;
+              src: url(\${url.resourcesPath}/build/fonts/WorkSans/worksans-regular-webfont.woff2)
+                format("woff2");
+            }
+            @font-face {
+              font-family: "Work Sans";
+              font-style: normal;
+              font-weight: 500;
+              font-display: swap;
+              src: url(\${url.resourcesPath}/build/fonts/WorkSans/worksans-medium-webfont.woff2)
+                format("woff2");
+            }
+            @font-face {
+              font-family: "Work Sans";
+              font-style: normal;
+              font-weight: 600;
+              font-display: swap;
+              src: url(\${url.resourcesPath}/build/fonts/WorkSans/worksans-semibold-webfont.woff2)
+                format("woff2");
+            }
+            @font-face {
+              font-family: "Work Sans";
+              font-style: normal;
+              font-weight: 700;
+              font-display: swap;
+              src: url(\${url.resourcesPath}/build/fonts/WorkSans/worksans-bold-webfont.woff2)
+                format("woff2");
+            }
+        `;
+
+        assetIsSameCode(fixedCssCode, fixedCssCodeExpected);
+    }
+
+    {
+        const { fixedCssCode } = replaceImportsInInlineCssCode({
+            cssCode,
+            "urlOrigin": "https://demo-app.keycloakify.dev",
+            "urlPathname": "/",
+        });
+
+        const fixedCssCodeExpected = `
+            @font-face {
+              font-family: "Work Sans";
+              font-style: normal;
+              font-weight: 400;
+              font-display: swap;
+              src: url(https://demo-app.keycloakify.dev/fonts/WorkSans/worksans-regular-webfont.woff2)
+                format("woff2");
+            }
+            @font-face {
+              font-family: "Work Sans";
+              font-style: normal;
+              font-weight: 500;
+              font-display: swap;
+              src: url(https://demo-app.keycloakify.dev/fonts/WorkSans/worksans-medium-webfont.woff2)
+                format("woff2");
+            }
+            @font-face {
+              font-family: "Work Sans";
+              font-style: normal;
+              font-weight: 600;
+              font-display: swap;
+              src: url(https://demo-app.keycloakify.dev/fonts/WorkSans/worksans-semibold-webfont.woff2)
+                format("woff2");
+            }
+            @font-face {
+              font-family: "Work Sans";
+              font-style: normal;
+              font-weight: 700;
+              font-display: swap;
+              src: url(https://demo-app.keycloakify.dev/fonts/WorkSans/worksans-bold-webfont.woff2)
+                format("woff2");
+            }
+        `;
+
+        assetIsSameCode(fixedCssCode, fixedCssCodeExpected);
+    }
 }
 
 console.log("PASS replace import from static");
