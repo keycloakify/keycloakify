@@ -1,3 +1,4 @@
+import "./replaceImportFromStatic";
 import { setupSampleReactProject, sampleReactProjectDirPath } from "./setupSampleReactProject";
 import * as st from "scripting-tools";
 import { join as pathJoin } from "path";
