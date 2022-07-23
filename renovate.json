@@ -1,7 +1,9 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-	"baseBranches": [ "main", "landingpage" ],
+    "baseBranches": [ "main", "landingpage" ],
     "extends": ["config:base"],
+    "bumpVersion": null,
+    "rangeStrategy": "bump",
     "dependencyDashboard": false,
     "ignorePaths": [".github/**"],
     "branchPrefix": "renovate_landingpage_",
