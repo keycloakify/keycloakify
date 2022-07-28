@@ -23,20 +23,18 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
             }[e] + ".chunk.js"
         }
         
-        function f2() {
+        function sameAsF() {
             return a.p+"static/js/" + ({}[e] || e) + "." + {
                 3: "0664cdc0"
             }[e] + ".chunk.js"
         }
 
-        n.u = function(e) {
-            return "static/js/" + e + "." + {
+        n.u=function(e){return"static/js/" + e + "." + {
                 147: "6c5cee76",
                 787: "8da10fcf",
                 922: "be170a73"
             } [e] + ".chunk.js"
         }
-
     `;
 
     {
@@ -52,17 +50,19 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
                 }[e] + ".chunk.js"
             }
 
-            function f2() {
+            function sameAsF() {
                 return window.kcContext.url.resourcesPath + "/build/static/js/" + ({}[e] || e) + "." + {
                     3: "0664cdc0"
                 }[e] + ".chunk.js"
             }
 
-            n.u = function(e) {
+            n[(function (){
                 Object.defineProperty(n, "p", {
                     get: function() { return window.kcContext.url.resourcesPath; },
                     set: function (){}
                 });
+                return "u";
+            })()] = function(e) {
                 return "/build/static/js/" + e + "." + {
                     147: "6c5cee76",
                     787: "8da10fcf",
@@ -87,20 +87,20 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
                 }[e] + ".chunk.js"
             }
 
-            function f2() {
+            function sameAsF() {
                 return ("kcContext" in window ? "https://demo-app.keycloakify.dev" : "") + a.p + "static/js/" + ({}[e] || e) + "." + {
                     3: "0664cdc0"
                 }[e] + ".chunk.js"
             }
 
-            n.u = function(e) {
-                {
-                    var p= "";
-                    Object.defineProperty(n, "p", {
-                        get: function() { return ("kcContext" in window ? "https://demo-app.keycloakify.dev" : "") + p; },
-                        set: function (value){ p = value;}
-                    });
-                }
+            n[(function (){
+                var p= "";
+                Object.defineProperty(n, "p", {
+                    get: function() { return ("kcContext" in window ? "https://demo-app.keycloakify.dev" : "") + p; },
+                    set: function (value){ p = value; }
+                });
+                return "u";
+            })()] = function(e) {
                 return "static/js/" + e + "." + {
                     147: "6c5cee76",
                     787: "8da10fcf",
