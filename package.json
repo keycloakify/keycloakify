@@ -1,6 +1,6 @@
 {
     "name": "keycloakify",
-    "version": "5.8.0",
+    "version": "5.8.1",
     "description": "Keycloak theme generator for Reacts app",
     "repository": {
         "type": "git",
@@ -77,14 +77,14 @@
         "@octokit/rest": "^18.12.0",
         "cheerio": "^1.0.0-rc.5",
         "cli-select": "^1.1.2",
-        "evt": "^2.2.0",
+        "evt": "^2.3.1",
         "memoizee": "^0.4.15",
         "minimal-polyfills": "^2.2.1",
         "path-browserify": "^1.0.1",
-        "powerhooks": "^0.20.4",
+        "powerhooks": "^0.20.10",
         "react-markdown": "^5.0.3",
         "scripting-tools": "^0.19.13",
-        "tsafe": "^0.10.0",
-        "tss-react": "^3.7.0"
+        "tsafe": "^0.10.1",
+        "tss-react": "^3.7.1"
     }
 }
