@@ -1,11 +1,11 @@
 import { memo } from "react";
-import { Template } from "./Template";
+import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { getMsg } from "../i18n";
 import { useCssAndCx } from "tss-react";
 
-export const Register = memo(({ kcContext, ...props }: { kcContext: KcContextBase.Register } & KcProps) => {
+const Register = memo(({ kcContext, ...props }: { kcContext: KcContextBase.Register } & KcProps) => {
     const { url, messagesPerField, register, realm, passwordRequired, recaptchaRequired, recaptchaSiteKey } = kcContext;
 
     const { msg, msgStr } = getMsg(kcContext);
@@ -154,3 +154,5 @@ export const Register = memo(({ kcContext, ...props }: { kcContext: KcContextBas
         />
     );
 });
+
+export default Register;

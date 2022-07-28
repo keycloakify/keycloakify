@@ -1,11 +1,11 @@
 import { memo } from "react";
-import { Template } from "./Template";
+import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { getMsg } from "../i18n";
 import { useCssAndCx } from "tss-react";
 
-export const LoginUpdateProfile = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LoginUpdateProfile } & KcProps) => {
+const LoginUpdateProfile = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LoginUpdateProfile } & KcProps) => {
     const { cx } = useCssAndCx();
 
     const { msg, msgStr } = getMsg(kcContext);
@@ -118,3 +118,5 @@ export const LoginUpdateProfile = memo(({ kcContext, ...props }: { kcContext: Kc
         />
     );
 });
+
+export default LoginUpdateProfile;

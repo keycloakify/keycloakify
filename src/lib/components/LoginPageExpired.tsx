@@ -1,10 +1,10 @@
 import { memo } from "react";
-import { Template } from "./Template";
+import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { getMsg } from "../i18n";
 
-export const LoginPageExpired = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LoginPageExpired } & KcProps) => {
+const LoginPageExpired = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LoginPageExpired } & KcProps) => {
     const { url } = kcContext;
 
     const { msg } = getMsg(kcContext);
@@ -34,3 +34,5 @@ export const LoginPageExpired = memo(({ kcContext, ...props }: { kcContext: KcCo
         />
     );
 });
+
+export default LoginPageExpired;

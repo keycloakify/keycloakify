@@ -1,5 +1,5 @@
 import { useReducer, useEffect, memo } from "react";
-import { Template } from "./Template";
+import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { getMsg } from "../i18n";
@@ -26,7 +26,7 @@ export function useDownloadTerms(params: {
     }, []);
 }
 
-export const Terms = memo(({ kcContext, ...props }: { kcContext: KcContextBase.Terms } & KcProps) => {
+const Terms = memo(({ kcContext, ...props }: { kcContext: KcContextBase.Terms } & KcProps) => {
     const { msg, msgStr } = getMsg(kcContext);
 
     const { cx } = useCssAndCx();
@@ -70,3 +70,5 @@ export const Terms = memo(({ kcContext, ...props }: { kcContext: KcContextBase.T
         />
     );
 });
+
+export default Terms;

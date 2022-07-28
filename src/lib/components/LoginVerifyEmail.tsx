@@ -1,10 +1,10 @@
 import { memo } from "react";
-import { Template } from "./Template";
+import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { getMsg } from "../i18n";
 
-export const LoginVerifyEmail = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LoginVerifyEmail } & KcProps) => {
+const LoginVerifyEmail = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LoginVerifyEmail } & KcProps) => {
     const { msg } = getMsg(kcContext);
 
     const { url, user } = kcContext;
@@ -30,3 +30,5 @@ export const LoginVerifyEmail = memo(({ kcContext, ...props }: { kcContext: KcCo
         />
     );
 });
+
+export default LoginVerifyEmail;

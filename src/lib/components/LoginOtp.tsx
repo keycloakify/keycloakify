@@ -1,5 +1,5 @@
 import { useEffect, memo } from "react";
-import { Template } from "./Template";
+import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { getMsg } from "../i18n";
@@ -7,7 +7,7 @@ import { headInsert } from "../tools/headInsert";
 import { pathJoin } from "../tools/pathJoin";
 import { useCssAndCx } from "tss-react";
 
-export const LoginOtp = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LoginOtp } & KcProps) => {
+const LoginOtp = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LoginOtp } & KcProps) => {
     const { otpLogin, url } = kcContext;
 
     const { cx } = useCssAndCx();
@@ -109,3 +109,5 @@ function evaluateInlineScript() {
         }
     });
 }
+
+export default LoginOtp;

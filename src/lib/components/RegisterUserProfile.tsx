@@ -1,5 +1,5 @@
 import { useMemo, memo, useEffect, useState, Fragment } from "react";
-import { Template } from "./Template";
+import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase, Attribute } from "../getKcContext/KcContextBase";
 import { getMsg } from "../i18n";
@@ -8,7 +8,7 @@ import type { ReactComponent } from "../tools/ReactComponent";
 import { useCallbackFactory } from "powerhooks/useCallbackFactory";
 import { useFormValidationSlice } from "../useFormValidationSlice";
 
-export const RegisterUserProfile = memo(({ kcContext, ...props_ }: { kcContext: KcContextBase.RegisterUserProfile } & KcProps) => {
+const RegisterUserProfile = memo(({ kcContext, ...props_ }: { kcContext: KcContextBase.RegisterUserProfile } & KcProps) => {
     const { url, messagesPerField, recaptchaRequired, recaptchaSiteKey } = kcContext;
 
     const { msg, msgStr } = getMsg(kcContext);
@@ -215,3 +215,5 @@ const UserProfileFormFields = memo(({ kcContext, onIsFormSubmittableValueChange,
         </>
     );
 });
+
+export default RegisterUserProfile;

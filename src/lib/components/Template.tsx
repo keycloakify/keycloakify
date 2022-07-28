@@ -27,7 +27,7 @@ export type TemplateProps = {
     doFetchDefaultThemeResources: boolean;
 } & { kcContext: KcContextBase } & KcTemplateProps;
 
-export const Template = memo((props: TemplateProps) => {
+const Template = memo((props: TemplateProps) => {
     const {
         displayInfo = false,
         displayMessage = true,
@@ -256,3 +256,5 @@ export const Template = memo((props: TemplateProps) => {
         </div>
     );
 });
+
+export default Template;

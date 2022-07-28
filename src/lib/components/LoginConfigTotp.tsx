@@ -1,11 +1,11 @@
 import { memo } from "react";
-import { Template } from "./Template";
+import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { getMsg } from "../i18n";
 import { useCssAndCx } from "tss-react";
 
-export const LoginConfigTotp = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LoginConfigTotp } & KcProps) => {
+const LoginConfigTotp = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LoginConfigTotp } & KcProps) => {
     const { url, isAppInitiatedAction, totp, mode, messagesPerField } = kcContext;
 
     const { cx } = useCssAndCx();
@@ -181,3 +181,5 @@ export const LoginConfigTotp = memo(({ kcContext, ...props }: { kcContext: KcCon
         />
     );
 });
+
+export default LoginConfigTotp;

@@ -1,12 +1,12 @@
 import { memo } from "react";
 import { useCssAndCx } from "tss-react";
 
-import { Template } from "./Template";
+import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { getMsg } from "../i18n";
 
-export const LogoutConfirm = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LogoutConfirm } & KcProps) => {
+const LogoutConfirm = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LogoutConfirm } & KcProps) => {
     const { url, client, logoutConfirm } = kcContext;
 
     const { cx } = useCssAndCx();
@@ -59,3 +59,5 @@ export const LogoutConfirm = memo(({ kcContext, ...props }: { kcContext: KcConte
         />
     );
 });
+
+export default LogoutConfirm;

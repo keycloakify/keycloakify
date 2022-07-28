@@ -1,10 +1,10 @@
 import { memo } from "react";
-import { Template } from "./Template";
+import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { getMsg } from "../i18n";
 
-export const Error = memo(({ kcContext, ...props }: { kcContext: KcContextBase.Error } & KcProps) => {
+const Error = memo(({ kcContext, ...props }: { kcContext: KcContextBase.Error } & KcProps) => {
     const { msg } = getMsg(kcContext);
 
     const { message, client } = kcContext;
@@ -30,3 +30,5 @@ export const Error = memo(({ kcContext, ...props }: { kcContext: KcContextBase.E
         />
     );
 });
+
+export default Error;

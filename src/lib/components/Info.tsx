@@ -1,11 +1,11 @@
 import { memo } from "react";
-import { Template } from "./Template";
+import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import { assert } from "../tools/assert";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { getMsg } from "../i18n";
 
-export const Info = memo(({ kcContext, ...props }: { kcContext: KcContextBase.Info } & KcProps) => {
+const Info = memo(({ kcContext, ...props }: { kcContext: KcContextBase.Info } & KcProps) => {
     const { msg, msgStr } = getMsg(kcContext);
 
     assert(kcContext.message !== undefined);
@@ -47,3 +47,5 @@ export const Info = memo(({ kcContext, ...props }: { kcContext: KcContextBase.In
         />
     );
 });
+
+export default Info;

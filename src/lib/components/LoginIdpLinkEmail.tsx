@@ -1,10 +1,10 @@
 import { memo } from "react";
-import { Template } from "./Template";
+import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { getMsg } from "../i18n";
 
-export const LoginIdpLinkEmail = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LoginIdpLinkEmail } & KcProps) => {
+const LoginIdpLinkEmail = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LoginIdpLinkEmail } & KcProps) => {
     const { url, realm, brokerContext, idpAlias } = kcContext;
 
     const { msg } = getMsg(kcContext);
@@ -30,3 +30,5 @@ export const LoginIdpLinkEmail = memo(({ kcContext, ...props }: { kcContext: KcC
         />
     );
 });
+
+export default LoginIdpLinkEmail;

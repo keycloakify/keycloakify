@@ -1,4 +1,4 @@
-import { getProjectRoot } from "../../bin/tools/getProjectRoot";
+import { getProjectRoot } from "../../bin/tools/getProjectRoot.js";
 import { join as pathJoin } from "path";
 import { downloadAndUnzip } from "../../bin/tools/downloadAndUnzip";
 
