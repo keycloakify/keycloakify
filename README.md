@@ -40,6 +40,10 @@
 
 ## 5.7.0
 
+-   [React.lazy()](https://reactjs.org/docs/code-splitting.html#reactlazy) support 🎉. [#141](https://github.com/InseeFrLab/keycloakify/issues/141)
+
+## 5.7.0
+
 -   Feat `logout-confirm.ftl`. [PR](https://github.com/InseeFrLab/keycloakify/pull/120)
 
 ## 5.6.4
