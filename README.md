@@ -38,7 +38,7 @@
 
 # Changelog highlights
 
-## 5.7.0
+## 5.8.0
 
 -   [React.lazy()](https://reactjs.org/docs/code-splitting.html#reactlazy) support 🎉. [#141](https://github.com/InseeFrLab/keycloakify/issues/141)
 
