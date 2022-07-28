@@ -17,11 +17,35 @@ export function replaceImportsFromStaticInJsCode(params: { jsCode: string; urlOr
     const { jsCode, urlOrigin } = params;
 
     const fixedJsCode = jsCode
+        .replace(
+            /([a-zA-Z]+)\.([a-zA-Z]+)=function\(([a-zA-Z]+)\){return"static\/js\/"/g,
+            (...[, n, u, e]) => `
+			${n}[(function(){
+                ${
+                    urlOrigin === undefined
+                        ? `
+                        Object.defineProperty(${n}, "p", {
+                            get: function() { return window.${ftlValuesGlobalName}.url.resourcesPath; },
+                            set: function (){}
+                        });
+                    `
+                        : `
+                    var p= "";
+                    Object.defineProperty(${n}, "p", {
+                        get: function() { return ("${ftlValuesGlobalName}" in window ? "${urlOrigin}" : "") + p; },
+                        set: function (value){ p = value;}
+                    });
+                    `
+                }
+				return "${u}";
+			})()] = function(${e}) { return "${urlOrigin === undefined ? "/build/" : ""}static/js/"`,
+        )
         .replace(/([a-zA-Z]+\.[a-zA-Z]+)\+"static\//g, (...[, group]) =>
             urlOrigin === undefined
                 ? `window.${ftlValuesGlobalName}.url.resourcesPath + "/build/static/`
                 : `("${ftlValuesGlobalName}" in window ? "${urlOrigin}" : "") + ${group} + "static/`,
         )
+        //TODO: Write a test case for this
         .replace(/".chunk.css",([a-zA-Z])+=([a-zA-Z]+\.[a-zA-Z]+)\+([a-zA-Z]+),/, (...[, group1, group2, group3]) =>
             urlOrigin === undefined
                 ? `".chunk.css",${group1} = window.${ftlValuesGlobalName}.url.resourcesPath + "/build/" + ${group3},`
