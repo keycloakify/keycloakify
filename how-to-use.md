@@ -3,7 +3,7 @@
 {% hint style="success" %}
 It's a good idea to first read this quick start section to understand the basic of how Keycloakify works.
 
-However, we recommend you start hacking from [**the demo setup**](https://github.com/garronej/keycloakify-demo-app) instead of setting up Keycloakify from scratch.
+However, we recommend you start hacking from [**the demo setup**](https://github.com/garronej/keycloakify-demo-app) (still on v5!) instead of setting up Keycloakify from scratch.
 {% endhint %}
 
 {% hint style="warning" %}
@@ -35,7 +35,10 @@ The first approach is to only customize the style of the default Keycloak login 
 `src/index.tsx`
 
 ```tsx
-import { KcApp, defaultKcProps, getKcContext } from "keycloakify";
+import { createRoot } from "react-dom/client";
+import KcApp from "keycloakify/components/KcApp";
+import { defaultKcProps, getKcContext } from "keycloakify";
+
 //We assume the file contains: ".my-class { color: red; }"
 import "./index.css";
 
@@ -48,25 +51,27 @@ if( kcContex === undefined ){
     );
 }
 
-reactDom.render(
+createRoot(document.getElementById("root")!).render(
     <KcApp
         kcContext={kcContext}
         {...{
             ...defaultKcProps,
             "kcHeaderWrapperClass": "my-class",
         }}
-    />,
-    document.getElementById("root"),
+    />
 );
 ```
 
-The above snippet of code assumes you are in a react project wich only purpose is to be a Keycloak theme.
+The above snippet of code assumes you are in a react project which only purpose is to be a Keycloak theme.
 
-But if you want to make your keycloak theme an integral part of a preexisting React app you would apply the following modification to the above snipet:
+If you want to make your Keycloak theme an integral part of a preexisting React app you would apply the following modification to the above snippet:
 
 ```diff
-+import { App } from "<you know where";
- import { KcApp, defaultKcProps, getKcContext } from "keycloakify";
+import { createRoot } from "react-dom/client";
++import { lazy, Suspense } from "react";
+-import KcApp from "keycloakify/components/KcApp";
+ import { defaultKcProps, getKcContext } from "keycloakify";
+ 
  import "./index.css";
 
  const { kcContext } = getKcContext();
@@ -78,18 +83,22 @@ But if you want to make your keycloak theme an integral part of a preexisting Re
 -    );
 -}
 
- reactDom.render(
-+    kcContext === undefined ?
-+        <App /> :
-         <KcApp
-             kcContext={kcContext}
-             {...{
-                 ...defaultKcProps,
-                 "kcHeaderWrapperClass": myClassName,
-             }}
-         />,
-     document.getElementById("root"),
-);
++const App = lazy(() => import("<path of the root component of your app>"));
++const KcApp= lazy(()=> import("keycloakify/components/KcApp"));
+
+ createRoot(document.getElementById("root")!).render(
++    <Suspence fallback={null}>
++        kcContext === undefined ?
++            <App /> :
+             <KcApp
+                 kcContext={kcContext}
+                 {...{
+                     ...defaultKcProps,
+                     "kcHeaderWrapperClass": myClassName
+                 }}
+             />
++    </Suspence>
+ );
 ```
 
 ![Result: MYREALM is red](https://user-images.githubusercontent.com/6702424/114326299-6892fc00-9b34-11eb-8d75-85696e55458f.png)
@@ -124,5 +133,8 @@ See also [this documentation section](limitations.md#i-have-established-that-a-p
 
 ### How to import the theme in Keycloak
 
-Specific instruction on how to proceed will be printed in the console with `yarn keycloak`.&#x20;
+Before uploading you theme to Keycloak you probably want to give it a spin locally. Read up the following section:&#x20;
 
+{% content-ref url="developpement.md" %}
+[developpement.md](developpement.md)
+{% endcontent-ref %}

@@ -1,6 +1,7 @@
 # Table of contents
 
-* [🏁 Requirements](README.md)
+* [⬆ v5 -> v6](README.md)
+* [🏁 Requirements](readme.md)
 * [👨💻 Quick start](how-to-use.md)
 * [🧪 Development](developpement.md)
 * [📧 Email customization](email-customization.md)

@@ -58,7 +58,7 @@ If you are building the theme with [--external-assets](page-1.md) this limitatio
 
 ### login and email only
 
-![](<.gitbook/assets/image (1).png>)
+![](.gitbook/assets/image.png)
 
 As of now Keycloakify only enable you to create a theme that covers the Login pages and the emails. `Acount` and `Admin Console` aren't supported yet.
 
