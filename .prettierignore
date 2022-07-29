@@ -1,5 +1,6 @@
 node_modules/
 /dist/
+/dist_test/
 /CHANGELOG.md
 /.yarn_home/
 /src/test/apps/
