@@ -5,7 +5,7 @@ import { replaceImportsInCssCode, replaceImportsFromStaticInJsCode } from "./rep
 import { generateFtlFilesCodeFactory, pageIds } from "./generateFtl";
 import { downloadBuiltinKeycloakTheme } from "../download-builtin-keycloak-theme";
 import * as child_process from "child_process";
-import { resourcesCommonPath, resourcesPath, subDirOfPublicDirBasename } from "../urlResourcesPath";
+import { mockTestingResourcesCommonPath, mockTestingResourcesPath, mockTestingSubDirOfPublicDirBasename } from "../mockTestingResourcesPath";
 import { isInside } from "../tools/isInside";
 
 export function generateKeycloakThemeResources(params: {
@@ -44,7 +44,7 @@ export function generateKeycloakThemeResources(params: {
             if (
                 urlOrigin === undefined &&
                 isInside({
-                    "dirPath": pathJoin(reactAppBuildDirPath, subDirOfPublicDirBasename),
+                    "dirPath": pathJoin(reactAppBuildDirPath, mockTestingSubDirOfPublicDirBasename),
                     filePath,
                 })
             ) {
@@ -137,15 +137,15 @@ export function generateKeycloakThemeResources(params: {
 
         transformCodebase({
             "srcDirPath": pathJoin(tmpDirPath, "keycloak", "common", "resources"),
-            "destDirPath": pathJoin(themeResourcesDirPath, pathBasename(resourcesCommonPath)),
+            "destDirPath": pathJoin(themeResourcesDirPath, pathBasename(mockTestingResourcesCommonPath)),
         });
 
         transformCodebase({
             "srcDirPath": themeResourcesDirPath,
-            "destDirPath": pathJoin(reactAppPublicDirPath, resourcesPath),
+            "destDirPath": pathJoin(reactAppPublicDirPath, mockTestingResourcesPath),
         });
 
-        const keycloakResourcesWithinPublicDirPath = pathJoin(reactAppPublicDirPath, subDirOfPublicDirBasename);
+        const keycloakResourcesWithinPublicDirPath = pathJoin(reactAppPublicDirPath, mockTestingSubDirOfPublicDirBasename);
 
         fs.writeFileSync(
             pathJoin(keycloakResourcesWithinPublicDirPath, "README.txt"),

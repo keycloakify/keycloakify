@@ -1,7 +1,7 @@
 import "minimal-polyfills/Object.fromEntries";
 import type { KcContextBase, Attribute } from "../KcContextBase";
 //NOTE: Aside because we want to be able to import them from node
-import { resourcesCommonPath, resourcesPath } from "../../../bin/urlResourcesPath";
+import { mockTestingResourcesCommonPath, mockTestingResourcesPath } from "../../../bin/mockTestingResourcesPath";
 import { id } from "tsafe/id";
 import { pathJoin } from "../../../bin/tools/pathJoin";
 
@@ -10,8 +10,8 @@ const PUBLIC_URL = process.env["PUBLIC_URL"] ?? "/";
 export const kcContextCommonMock: KcContextBase.Common = {
     "url": {
         "loginAction": "#",
-        "resourcesPath": pathJoin(PUBLIC_URL, resourcesPath),
-        "resourcesCommonPath": pathJoin(PUBLIC_URL, resourcesCommonPath),
+        "resourcesPath": pathJoin(PUBLIC_URL, mockTestingResourcesPath),
+        "resourcesCommonPath": pathJoin(PUBLIC_URL, mockTestingResourcesCommonPath),
         "loginRestartFlowUrl": "/auth/realms/myrealm/login-actions/restart?client_id=account&tab_id=HoAx28ja4xg",
         "loginUrl": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg",
     },

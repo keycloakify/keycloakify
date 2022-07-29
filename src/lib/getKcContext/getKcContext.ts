@@ -9,7 +9,7 @@ import type { ExtendsKcContextBase } from "./getKcContextFromWindow";
 import { getKcContextFromWindow } from "./getKcContextFromWindow";
 import { pathJoin } from "../../bin/tools/pathJoin";
 import { pathBasename } from "../tools/pathBasename";
-import { resourcesCommonPath } from "../../bin/urlResourcesPath";
+import { mockTestingResourcesCommonPath } from "../../bin/mockTestingResourcesPath";
 
 export function getKcContext<KcContextExtended extends { pageId: string } = never>(params?: {
     mockPageId?: ExtendsKcContextBase<KcContextExtended>["pageId"];
@@ -101,7 +101,7 @@ export function getKcContext<KcContextExtended extends { pageId: string } = neve
     if (kcContext !== undefined) {
         const { url } = kcContext;
 
-        url.resourcesCommonPath = pathJoin(url.resourcesPath, pathBasename(resourcesCommonPath));
+        url.resourcesCommonPath = pathJoin(url.resourcesPath, pathBasename(mockTestingResourcesCommonPath));
     }
 
     return { kcContext };
