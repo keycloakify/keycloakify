@@ -1,4 +1,4 @@
-import { useReducer, useEffect, memo } from "react";
+import React, { useReducer, useEffect, memo } from "react";
 import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";

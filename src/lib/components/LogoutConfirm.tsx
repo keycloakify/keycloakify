@@ -1,4 +1,4 @@
-import { memo } from "react";
+import React, { memo } from "react";
 import { useCssAndCx } from "tss-react";
 
 import Template from "./Template";

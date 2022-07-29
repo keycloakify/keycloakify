@@ -1,4 +1,4 @@
-import { useMemo, memo, useEffect, useState, Fragment } from "react";
+import React, { useMemo, memo, useEffect, useState, Fragment } from "react";
 import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase, Attribute } from "../getKcContext/KcContextBase";

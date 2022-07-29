@@ -1,4 +1,4 @@
-import { useReducer, useEffect, memo } from "react";
+import React, { useReducer, useEffect, memo } from "react";
 import type { ReactNode } from "react";
 import { getMsg, getCurrentKcLanguageTag, changeLocale, getTagLabel } from "../i18n";
 import type { KcLanguageTag } from "../i18n";

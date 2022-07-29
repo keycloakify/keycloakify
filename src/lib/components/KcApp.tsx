@@ -1,4 +1,4 @@
-import { lazy, memo, Suspense } from "react";
+import React, { lazy, memo, Suspense } from "react";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 import type { KcProps } from "./KcProps";
 

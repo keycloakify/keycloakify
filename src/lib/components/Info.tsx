@@ -1,4 +1,4 @@
-import { memo } from "react";
+import React, { memo } from "react";
 import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import { assert } from "../tools/assert";

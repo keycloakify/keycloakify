@@ -1,5 +1,5 @@
 import "./tools/Array.prototype.every";
-import { useMemo, useReducer, Fragment } from "react";
+import React, { useMemo, useReducer, Fragment } from "react";
 import type { KcContextBase, Validators, Attribute } from "./getKcContext/KcContextBase";
 import { getMsg } from "./i18n";
 import type { KcLanguageTag } from "./i18n";
