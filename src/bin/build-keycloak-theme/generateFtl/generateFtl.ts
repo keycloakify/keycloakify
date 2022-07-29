@@ -1,6 +1,6 @@
 import cheerio from "cheerio";
 import { replaceImportsFromStaticInJsCode, replaceImportsInInlineCssCode, generateCssCodeToDefineGlobals } from "../replaceImportFromStatic";
-import fs from "fs";
+import * as fs from "fs";
 import { join as pathJoin } from "path";
 import { objectKeys } from "tsafe/objectKeys";
 import { ftlValuesGlobalName } from "../ftlValuesGlobalName";

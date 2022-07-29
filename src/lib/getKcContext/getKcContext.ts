@@ -7,9 +7,9 @@ import { exclude } from "tsafe/exclude";
 import { assert } from "tsafe/assert";
 import type { ExtendsKcContextBase } from "./getKcContextFromWindow";
 import { getKcContextFromWindow } from "./getKcContextFromWindow";
-import { pathJoin } from "../tools/pathJoin";
+import { pathJoin } from "../../bin/tools/pathJoin";
 import { pathBasename } from "../tools/pathBasename";
-import { resourcesCommonPath } from "./kcContextMocks/urlResourcesPath";
+import { resourcesCommonPath } from "../../bin/urlResourcesPath";
 
 export function getKcContext<KcContextExtended extends { pageId: string } = never>(params?: {
     mockPageId?: ExtendsKcContextBase<KcContextExtended>["pageId"];

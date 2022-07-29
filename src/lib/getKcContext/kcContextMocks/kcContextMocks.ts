@@ -1,9 +1,9 @@
 import "minimal-polyfills/Object.fromEntries";
 import type { KcContextBase, Attribute } from "../KcContextBase";
 //NOTE: Aside because we want to be able to import them from node
-import { resourcesCommonPath, resourcesPath } from "./urlResourcesPath";
+import { resourcesCommonPath, resourcesPath } from "../../../bin/urlResourcesPath";
 import { id } from "tsafe/id";
-import { pathJoin } from "../../tools/pathJoin";
+import { pathJoin } from "../../../bin/tools/pathJoin";
 
 const PUBLIC_URL = process.env["PUBLIC_URL"] ?? "/";
 

@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "declaration": true,
+        "sourceMap": true,
+        "newLine": "LF",
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "incremental": true,
+        "strict": true,
+        "downlevelIteration": true,
+        "noFallthroughCasesInSwitch": true,
+        "composite": true
+    }
+}

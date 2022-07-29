@@ -6,7 +6,7 @@ import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { assert } from "../tools/assert";
 import { useCallbackFactory } from "powerhooks/useCallbackFactory";
 import { headInsert } from "../tools/headInsert";
-import { pathJoin } from "../tools/pathJoin";
+import { pathJoin } from "../../bin/tools/pathJoin";
 import { useConstCallback } from "powerhooks/useConstCallback";
 import type { KcTemplateProps } from "./KcProps";
 import { useCssAndCx } from "tss-react";

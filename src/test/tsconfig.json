@@ -1,12 +1,11 @@
 {
     "compilerOptions": {
-        "module": "ES2020",
-        "target": "ES2020",
+        "module": "CommonJS",
+        "target": "es5",
         "lib": ["es2015", "DOM", "ES2019.Object"],
-        "moduleResolution": "node",
         "esModuleInterop": true,
         "declaration": true,
-        "outDir": "./dist",
+        "outDir": "../../dist_test",
         "sourceMap": true,
         "newLine": "LF",
         "noUnusedLocals": true,
@@ -17,5 +16,5 @@
         "jsx": "react-jsx",
         "noFallthroughCasesInSwitch": true
     },
-    "include": ["src"]
+    "include": [".."]
 }

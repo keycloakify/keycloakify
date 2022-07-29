@@ -4,7 +4,7 @@ import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { getMsg } from "../i18n";
 import { headInsert } from "../tools/headInsert";
-import { pathJoin } from "../tools/pathJoin";
+import { pathJoin } from "../../bin/tools/pathJoin";
 import { useCssAndCx } from "tss-react";
 
 const LoginOtp = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LoginOtp } & KcProps) => {

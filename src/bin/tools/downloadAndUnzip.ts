@@ -1,6 +1,6 @@
 import { basename as pathBasename, join as pathJoin } from "path";
 import { execSync } from "child_process";
-import fs from "fs";
+import * as fs from "fs";
 import { transformCodebase } from "./transformCodebase";
 import { rm_rf, rm, rm_r } from "./rm";
 

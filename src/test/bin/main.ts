@@ -6,7 +6,7 @@ import { getProjectRoot } from "../../bin/tools/getProjectRoot.js";
 
 setupSampleReactProject();
 
-const binDirPath = pathJoin(getProjectRoot(), "dist", "bin");
+const binDirPath = pathJoin(getProjectRoot(), "dist_test", "bin");
 
 st.execSyncTrace(
     //`node ${pathJoin(binDirPath, "build-keycloak-theme")} --external-assets`,

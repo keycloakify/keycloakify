@@ -1,0 +1,10 @@
+{
+    "extends": "../../tsproject.json",
+    "compilerOptions": {
+        "module": "CommonJS",
+        "target": "ES5",
+        "lib": ["es2015", "DOM", "ES2019.Object"],
+        "outDir": "../../dist/bin",
+        "rootDir": "."
+    }
+}

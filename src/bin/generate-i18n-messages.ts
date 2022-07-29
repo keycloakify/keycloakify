@@ -6,6 +6,9 @@ import { downloadBuiltinKeycloakTheme } from "./download-builtin-keycloak-theme"
 import { getProjectRoot } from "./tools/getProjectRoot";
 import { rm_rf, rm_r } from "./tools/rm";
 
+//NOTE: To run without argument when we want to generate src/i18n/generated_kcMessages files,
+// update the version array for generating for newer version.
+
 //@ts-ignore
 const propertiesParser = require("properties-parser");
 

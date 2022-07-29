@@ -1,0 +1,18 @@
+{
+    "extends": "../../tsproject.json",
+    "compilerOptions": {
+        "outDir": "../../dist/lib",
+        "rootDir": ".",
+        "module": "ES2020",
+        "target": "ES2020",
+        "lib": ["es2015", "DOM", "ES2019.Object"],
+        "moduleResolution": "node",
+        "jsx": "react-jsx",
+        "allowSyntheticDefaultImports": true
+    },
+    "references": [
+        {
+            "path": "../bin"
+        }
+    ]
+}
