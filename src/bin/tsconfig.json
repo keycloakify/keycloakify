@@ -3,6 +3,7 @@
     "compilerOptions": {
         "module": "CommonJS",
         "target": "ES5",
+        "esModuleInterop": true,
         "lib": ["es2015", "DOM", "ES2019.Object"],
         "outDir": "../../dist/bin",
         "rootDir": "."
