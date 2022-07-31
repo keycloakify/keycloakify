@@ -87,7 +87,7 @@ import { createRoot } from "react-dom/client";
 +const KcApp= lazy(()=> import("keycloakify/components/KcApp"));
 
  createRoot(document.getElementById("root")!).render(
-+    <Suspence fallback={null}>
++    <Suspence>
 +        kcContext === undefined ?
 +            <App /> :
              <KcApp
