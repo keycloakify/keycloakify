@@ -4,14 +4,14 @@ import { useCssAndCx } from "tss-react";
 import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { getMsg } from "../i18n";
+import { useI18n } from "../i18n";
 
 const LogoutConfirm = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LogoutConfirm } & KcProps) => {
     const { url, client, logoutConfirm } = kcContext;
 
     const { cx } = useCssAndCx();
 
-    const { msg, msgStr } = getMsg(kcContext);
+    const { msg, msgStr } = useI18n();
 
     return (
         <Template

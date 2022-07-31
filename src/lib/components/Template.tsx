@@ -1,7 +1,5 @@
 import React, { useReducer, useEffect, memo } from "react";
 import type { ReactNode } from "react";
-import { getMsg, getCurrentKcLanguageTag, changeLocale, getTagLabel } from "../i18n";
-import type { KcLanguageTag } from "../i18n";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { assert } from "../tools/assert";
 import { useCallbackFactory } from "powerhooks/useCallbackFactory";
@@ -10,6 +8,7 @@ import { pathJoin } from "../../bin/tools/pathJoin";
 import { useConstCallback } from "powerhooks/useConstCallback";
 import type { KcTemplateProps } from "./KcProps";
 import { useCssAndCx } from "tss-react";
+import { useI18n } from "../i18n";
 
 export type TemplateProps = {
     displayInfo?: boolean;
@@ -48,14 +47,9 @@ const Template = memo((props: TemplateProps) => {
         console.log("Rendering this page with react using keycloakify");
     }, []);
 
-    const { msg } = getMsg(kcContext);
+    const { msg, changeLocale, labelBySupportedLanguageTag, currentLanguageTag } = useI18n();
 
-    const onChangeLanguageClickFactory = useCallbackFactory(([kcLanguageTag]: [KcLanguageTag]) =>
-        changeLocale({
-            kcContext,
-            kcLanguageTag,
-        }),
-    );
+    const onChangeLanguageClickFactory = useCallbackFactory(([kcLanguageTag]: [string]) => changeLocale(kcLanguageTag));
 
     const onTryAnotherWayClick = useConstCallback(() => (document.forms["kc-select-try-another-way-form" as never].submit(), false));
 
@@ -138,13 +132,13 @@ const Template = memo((props: TemplateProps) => {
                             <div id="kc-locale-wrapper" className={cx(props.kcLocaleWrapperClass)}>
                                 <div className="kc-dropdown" id="kc-locale-dropdown">
                                     <a href="#" id="kc-current-locale-link">
-                                        {getTagLabel({ "kcLanguageTag": getCurrentKcLanguageTag(kcContext), kcContext })}
+                                        {labelBySupportedLanguageTag[currentLanguageTag]}
                                     </a>
                                     <ul>
                                         {locale.supported.map(({ languageTag }) => (
                                             <li key={languageTag} className="kc-dropdown-item">
                                                 <a href="#" onClick={onChangeLanguageClickFactory(languageTag)}>
-                                                    {getTagLabel({ "kcLanguageTag": languageTag, kcContext })}
+                                                    {labelBySupportedLanguageTag[languageTag]}
                                                 </a>
                                             </li>
                                         ))}

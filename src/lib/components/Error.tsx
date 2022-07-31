@@ -2,10 +2,10 @@ import React, { memo } from "react";
 import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { getMsg } from "../i18n";
+import { useI18n } from "../i18n";
 
 const Error = memo(({ kcContext, ...props }: { kcContext: KcContextBase.Error } & KcProps) => {
-    const { msg } = getMsg(kcContext);
+    const { msg } = useI18n();
 
     const { message, client } = kcContext;
 

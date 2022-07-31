@@ -1,8 +1,7 @@
 import type { PageId } from "../../bin/build-keycloak-theme/generateFtl";
-import type { KcLanguageTag } from "../i18n";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
-import type { MessageKey } from "../i18n";
+import type { BaseMessageKey } from "../i18n/createI18nApi";
 
 type ExtractAfterStartingWith<Prefix extends string, StrEnum> = StrEnum extends `${Prefix}${infer U}` ? U : never;
 
@@ -49,9 +48,9 @@ export declare namespace KcContextBase {
             supported: {
                 url: string;
                 label: string;
-                languageTag: KcLanguageTag;
+                languageTag: string;
             }[];
-            currentLanguageTag: KcLanguageTag;
+            currentLanguageTag: string;
         };
         auth?: {
             showUsername?: boolean;
@@ -154,7 +153,7 @@ export declare namespace KcContextBase {
     export type Info = Common & {
         pageId: "info.ftl";
         messageHeader?: string;
-        requiredActions?: ExtractAfterStartingWith<"requiredAction.", MessageKey>[];
+        requiredActions?: ExtractAfterStartingWith<"requiredAction.", BaseMessageKey>[];
         skipLink: boolean;
         pageRedirectUri?: string;
         actionUri?: string;

@@ -1,7 +1,7 @@
 import "./tools/Array.prototype.every";
 import React, { useMemo, useReducer, Fragment } from "react";
 import type { KcContextBase, Validators, Attribute } from "./getKcContext/KcContextBase";
-import { getMsg } from "./i18n";
+import { useI18n } from "./i18n";
 import type { KcLanguageTag } from "./i18n";
 import { useConstCallback } from "powerhooks/useConstCallback";
 import { id } from "tsafe/id";

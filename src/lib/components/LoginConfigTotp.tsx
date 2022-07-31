@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { getMsg } from "../i18n";
+import { useI18n } from "../i18n";
 import { useCssAndCx } from "tss-react";
 
 const LoginConfigTotp = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LoginConfigTotp } & KcProps) => {
@@ -10,7 +10,7 @@ const LoginConfigTotp = memo(({ kcContext, ...props }: { kcContext: KcContextBas
 
     const { cx } = useCssAndCx();
 
-    const { msg, msgStr } = getMsg(kcContext);
+    const { msg, msgStr } = useI18n();
     const algToKeyUriAlg: Record<KcContextBase.LoginConfigTotp["totp"]["policy"]["algorithm"], string> = {
         HmacSHA1: "SHA1",
         HmacSHA256: "SHA256",

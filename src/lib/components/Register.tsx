@@ -2,13 +2,13 @@ import React, { memo } from "react";
 import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { getMsg } from "../i18n";
+import { useI18n } from "../i18n";
 import { useCssAndCx } from "tss-react";
 
 const Register = memo(({ kcContext, ...props }: { kcContext: KcContextBase.Register } & KcProps) => {
     const { url, messagesPerField, register, realm, passwordRequired, recaptchaRequired, recaptchaSiteKey } = kcContext;
 
-    const { msg, msgStr } = getMsg(kcContext);
+    const { msg, msgStr } = useI18n();
 
     const { cx } = useCssAndCx();
 

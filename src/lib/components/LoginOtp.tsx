@@ -2,7 +2,7 @@ import React, { useEffect, memo } from "react";
 import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { getMsg } from "../i18n";
+import { useI18n } from "../i18n";
 import { headInsert } from "../tools/headInsert";
 import { pathJoin } from "../../bin/tools/pathJoin";
 import { useCssAndCx } from "tss-react";
@@ -12,7 +12,7 @@ const LoginOtp = memo(({ kcContext, ...props }: { kcContext: KcContextBase.Login
 
     const { cx } = useCssAndCx();
 
-    const { msg, msgStr } = getMsg(kcContext);
+    const { msg, msgStr } = useI18n();
 
     useEffect(() => {
         let isCleanedUp = false;

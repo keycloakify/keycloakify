@@ -1,37 +1,49 @@
-import React, { useReducer, useEffect, memo } from "react";
+import React, { useEffect, memo } from "react";
 import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { getMsg } from "../i18n";
+import { useI18n } from "../i18n";
 import { useCssAndCx } from "tss-react";
-import { kcMessages, getCurrentKcLanguageTag } from "../i18n";
-import type { KcLanguageTag } from "../i18n";
+import { Evt } from "evt";
+import { useRerenderOnStateChange } from "evt/hooks";
+
+export const evtTermMarkdown = Evt.create<string | undefined>(undefined);
 
 /** Allow to avoid bundling the terms and download it on demand*/
-export function useDownloadTerms(params: {
-    kcContext: KcContextBase;
-    downloadTermMarkdown: (params: { currentKcLanguageTag: KcLanguageTag }) => Promise<string>;
-}) {
-    const { kcContext, downloadTermMarkdown } = params;
+export function useDownloadTerms(params: { downloadTermMarkdown: (params: { currentLanguageTag: string }) => Promise<string> }) {
+    const { downloadTermMarkdown } = params;
 
-    const [, forceUpdate] = useReducer(x => x + 1, 0);
+    const { currentLanguageTag } = useI18n();
 
     useEffect(() => {
-        const currentKcLanguageTag = getCurrentKcLanguageTag(kcContext);
+        let isMounted = true;
 
-        downloadTermMarkdown({ currentKcLanguageTag }).then(thermMarkdown => {
-            kcMessages[currentKcLanguageTag].termsText = thermMarkdown;
-            forceUpdate();
+        downloadTermMarkdown({ currentLanguageTag }).then(thermMarkdown => {
+            if (!isMounted) {
+                return;
+            }
+
+            evtTermMarkdown.state = thermMarkdown;
         });
+
+        return () => {
+            isMounted = false;
+        };
     }, []);
 }
 
 const Terms = memo(({ kcContext, ...props }: { kcContext: KcContextBase.Terms } & KcProps) => {
-    const { msg, msgStr } = getMsg(kcContext);
+    const { msg, msgStr } = useI18n();
+
+    useRerenderOnStateChange(evtTermMarkdown);
 
     const { cx } = useCssAndCx();
 
     const { url } = kcContext;
+
+    if (evtTermMarkdown.state === undefined) {
+        return null;
+    }
 
     return (
         <Template
@@ -41,7 +53,7 @@ const Terms = memo(({ kcContext, ...props }: { kcContext: KcContextBase.Terms } 
             headerNode={msg("termsTitle")}
             formNode={
                 <>
-                    <div id="kc-terms-text">{msg("termsText")}</div>
+                    <div id="kc-terms-text">{evtTermMarkdown.state}</div>
                     <form className="form-actions" action={url.loginAction} method="POST">
                         <input
                             className={cx(

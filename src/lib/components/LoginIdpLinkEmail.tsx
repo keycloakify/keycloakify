@@ -2,12 +2,12 @@ import React, { memo } from "react";
 import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { getMsg } from "../i18n";
+import { useI18n } from "../i18n";
 
 const LoginIdpLinkEmail = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LoginIdpLinkEmail } & KcProps) => {
     const { url, realm, brokerContext, idpAlias } = kcContext;
 
-    const { msg } = getMsg(kcContext);
+    const { msg } = useI18n();
 
     return (
         <Template
