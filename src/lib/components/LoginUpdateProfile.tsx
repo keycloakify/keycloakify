@@ -2,19 +2,19 @@ import React, { memo } from "react";
 import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { useI18n } from "../i18n";
 import { useCssAndCx } from "tss-react";
+import type { I18n } from "../i18n";
 
-const LoginUpdateProfile = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LoginUpdateProfile } & KcProps) => {
+const LoginUpdateProfile = memo(({ kcContext, i18n, ...props }: { kcContext: KcContextBase.LoginUpdateProfile; i18n: I18n } & KcProps) => {
     const { cx } = useCssAndCx();
 
-    const { msg, msgStr } = useI18n();
+    const { msg, msgStr } = i18n;
 
     const { url, user, messagesPerField, isAppInitiatedAction } = kcContext;
 
     return (
         <Template
-            {...{ kcContext, ...props }}
+            {...{ kcContext, i18n, ...props }}
             doFetchDefaultThemeResources={true}
             headerNode={msg("loginProfileTitle")}
             formNode={

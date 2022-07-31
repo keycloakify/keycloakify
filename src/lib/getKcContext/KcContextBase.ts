@@ -1,7 +1,7 @@
 import type { PageId } from "../../bin/build-keycloak-theme/generateFtl";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
-import type { BaseMessageKey } from "../i18n/createI18nApi";
+import type { MessageKeyBase } from "../i18n";
 
 type ExtractAfterStartingWith<Prefix extends string, StrEnum> = StrEnum extends `${Prefix}${infer U}` ? U : never;
 
@@ -153,7 +153,7 @@ export declare namespace KcContextBase {
     export type Info = Common & {
         pageId: "info.ftl";
         messageHeader?: string;
-        requiredActions?: ExtractAfterStartingWith<"requiredAction.", BaseMessageKey>[];
+        requiredActions?: ExtractAfterStartingWith<"requiredAction.", MessageKeyBase>[];
         skipLink: boolean;
         pageRedirectUri?: string;
         actionUri?: string;

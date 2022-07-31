@@ -2,19 +2,19 @@ import React, { memo } from "react";
 import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { useI18n } from "../i18n";
 import { useCssAndCx } from "tss-react";
+import type { I18n } from "../i18n";
 
-const LoginIdpLinkConfirm = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LoginIdpLinkConfirm } & KcProps) => {
+const LoginIdpLinkConfirm = memo(({ kcContext, i18n, ...props }: { kcContext: KcContextBase.LoginIdpLinkConfirm; i18n: I18n } & KcProps) => {
     const { url, idpAlias } = kcContext;
 
-    const { msg } = useI18n();
+    const { msg } = i18n;
 
     const { cx } = useCssAndCx();
 
     return (
         <Template
-            {...{ kcContext, ...props }}
+            {...{ kcContext, i18n, ...props }}
             doFetchDefaultThemeResources={true}
             headerNode={msg("confirmLinkIdpTitle")}
             formNode={

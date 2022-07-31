@@ -2,19 +2,19 @@ import React, { memo } from "react";
 import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { useI18n } from "../i18n";
 import { useCssAndCx } from "tss-react";
+import type { I18n } from "../i18n";
 
-const LoginResetPassword = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LoginResetPassword } & KcProps) => {
+const LoginResetPassword = memo(({ kcContext, i18n, ...props }: { kcContext: KcContextBase.LoginResetPassword; i18n: I18n } & KcProps) => {
     const { url, realm, auth } = kcContext;
 
-    const { msg, msgStr } = useI18n();
+    const { msg, msgStr } = i18n;
 
     const { cx } = useCssAndCx();
 
     return (
         <Template
-            {...{ kcContext, ...props }}
+            {...{ kcContext, i18n, ...props }}
             doFetchDefaultThemeResources={true}
             displayMessage={false}
             headerNode={msg("emailForgotTitle")}

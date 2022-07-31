@@ -2,17 +2,17 @@ import React, { useEffect, memo } from "react";
 import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { useI18n } from "../i18n";
 import { headInsert } from "../tools/headInsert";
 import { pathJoin } from "../../bin/tools/pathJoin";
 import { useCssAndCx } from "tss-react";
+import type { I18n } from "../i18n";
 
-const LoginOtp = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LoginOtp } & KcProps) => {
+const LoginOtp = memo(({ kcContext, i18n, ...props }: { kcContext: KcContextBase.LoginOtp; i18n: I18n } & KcProps) => {
     const { otpLogin, url } = kcContext;
 
     const { cx } = useCssAndCx();
 
-    const { msg, msgStr } = useI18n();
+    const { msg, msgStr } = i18n;
 
     useEffect(() => {
         let isCleanedUp = false;
@@ -33,7 +33,7 @@ const LoginOtp = memo(({ kcContext, ...props }: { kcContext: KcContextBase.Login
 
     return (
         <Template
-            {...{ kcContext, ...props }}
+            {...{ kcContext, i18n, ...props }}
             doFetchDefaultThemeResources={true}
             headerNode={msg("doLogIn")}
             formNode={

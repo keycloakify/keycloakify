@@ -1,8 +1,7 @@
 import "./tools/Array.prototype.every";
 import React, { useMemo, useReducer, Fragment } from "react";
 import type { KcContextBase, Validators, Attribute } from "./getKcContext/KcContextBase";
-import { useI18n } from "./i18n";
-import type { MessageKey } from "./i18n";
+import type { I18n, MessageKeyBase } from "./i18n";
 import { useConstCallback } from "powerhooks/useConstCallback";
 import { id } from "tsafe/id";
 import { emailRegexp } from "./tools/emailRegExp";
@@ -15,15 +14,16 @@ export function useGetErrors(params: {
             attributes: { name: string; value?: string; validators: Validators }[];
         };
     };
+    i18n: I18n;
 }) {
-    const { kcContext } = params;
+    const { kcContext, i18n } = params;
 
     const {
         messagesPerField,
         profile: { attributes },
     } = kcContext;
 
-    const { msg, msgStr, advancedMsg, advancedMsgStr } = useI18n();
+    const { msg, msgStr, advancedMsg, advancedMsgStr } = i18n;
 
     const getErrors = useConstCallback((params: { name: string; fieldValueByAttributeName: Record<string, { value: string }> }) => {
         const { name, fieldValueByAttributeName } = params;
@@ -134,7 +134,7 @@ export function useGetErrors(params: {
 
             const msgArg = [
                 errorMessageKey ??
-                    id<MessageKey>(
+                    id<MessageKeyBase>(
                         (() => {
                             switch (shouldBe) {
                                 case "equal":
@@ -175,7 +175,7 @@ export function useGetErrors(params: {
                 break scope;
             }
 
-            const msgArgs = [errorMessageKey ?? id<MessageKey>("shouldMatchPattern"), pattern] as const;
+            const msgArgs = [errorMessageKey ?? id<MessageKeyBase>("shouldMatchPattern"), pattern] as const;
 
             errors.push({
                 validatorName,
@@ -207,7 +207,7 @@ export function useGetErrors(params: {
                 break scope;
             }
 
-            const msgArgs = [id<MessageKey>("invalidEmailMessage")] as const;
+            const msgArgs = [id<MessageKeyBase>("invalidEmailMessage")] as const;
 
             errors.push({
                 validatorName,
@@ -287,7 +287,7 @@ export function useGetErrors(params: {
                 break scope;
             }
 
-            const msgArgs = [id<MessageKey>("notAValidOption")] as const;
+            const msgArgs = [id<MessageKeyBase>("notAValidOption")] as const;
 
             errors.push({
                 validatorName,
@@ -315,6 +315,7 @@ export function useFormValidationSlice(params: {
     };
     /** NOTE: Try to avoid passing a new ref every render for better performances. */
     passwordValidators?: Validators;
+    i18n: I18n;
 }) {
     const {
         kcContext,
@@ -324,6 +325,7 @@ export function useFormValidationSlice(params: {
                 "min": "4",
             },
         },
+        i18n,
     } = params;
 
     const attributesWithPassword = useMemo(
@@ -342,7 +344,7 @@ export function useFormValidationSlice(params: {
                                         curr,
                                         id<Attribute>({
                                             "name": "password",
-                                            "displayName": id<`\${${MessageKey}}`>("${password}"),
+                                            "displayName": id<`\${${MessageKeyBase}}`>("${password}"),
                                             "required": true,
                                             "readOnly": false,
                                             "validators": passwordValidators,
@@ -352,7 +354,7 @@ export function useFormValidationSlice(params: {
                                         }),
                                         id<Attribute>({
                                             "name": "password-confirm",
-                                            "displayName": id<`\${${MessageKey}}`>("${passwordConfirm}"),
+                                            "displayName": id<`\${${MessageKeyBase}}`>("${passwordConfirm}"),
                                             "required": true,
                                             "readOnly": false,
                                             "validators": {
@@ -360,7 +362,7 @@ export function useFormValidationSlice(params: {
                                                     "name": "password",
                                                     "ignore.empty.value": true,
                                                     "shouldBe": "equal",
-                                                    "error-message": id<`\${${MessageKey}}`>("${invalidPasswordConfirmMessage}"),
+                                                    "error-message": id<`\${${MessageKeyBase}}`>("${invalidPasswordConfirmMessage}"),
                                                 },
                                             },
                                             "annotations": {},
@@ -382,6 +384,7 @@ export function useFormValidationSlice(params: {
                 "attributes": attributesWithPassword,
             },
         },
+        i18n,
     });
 
     const initialInternalState = useMemo(

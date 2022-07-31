@@ -2,16 +2,16 @@ import React, { useMemo, memo, useEffect, useState, Fragment } from "react";
 import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase, Attribute } from "../getKcContext/KcContextBase";
-import { useI18n } from "../i18n";
 import { useCssAndCx } from "tss-react";
 import type { ReactComponent } from "../tools/ReactComponent";
 import { useCallbackFactory } from "powerhooks/useCallbackFactory";
 import { useFormValidationSlice } from "../useFormValidationSlice";
+import type { I18n } from "../i18n";
 
-const RegisterUserProfile = memo(({ kcContext, ...props_ }: { kcContext: KcContextBase.RegisterUserProfile } & KcProps) => {
+const RegisterUserProfile = memo(({ kcContext, i18n, ...props_ }: { kcContext: KcContextBase.RegisterUserProfile; i18n: I18n } & KcProps) => {
     const { url, messagesPerField, recaptchaRequired, recaptchaSiteKey } = kcContext;
 
-    const { msg, msgStr } = useI18n();
+    const { msg, msgStr } = i18n;
 
     const { cx, css } = useCssAndCx();
 
@@ -27,14 +27,14 @@ const RegisterUserProfile = memo(({ kcContext, ...props_ }: { kcContext: KcConte
 
     return (
         <Template
-            {...{ kcContext, ...props }}
+            {...{ kcContext, i18n, ...props }}
             displayMessage={messagesPerField.exists("global")}
             displayRequiredFields={true}
             doFetchDefaultThemeResources={true}
             headerNode={msg("registerTitle")}
             formNode={
                 <form id="kc-register-form" className={cx(props.kcFormClass)} action={url.registrationAction} method="post">
-                    <UserProfileFormFields kcContext={kcContext} onIsFormSubmittableValueChange={setIsFomSubmittable} {...props} />
+                    <UserProfileFormFields kcContext={kcContext} onIsFormSubmittableValueChange={setIsFomSubmittable} i18n={i18n} {...props} />
                     {recaptchaRequired && (
                         <div className="form-group">
                             <div className={cx(props.kcInputWrapperClass)}>
@@ -66,15 +66,15 @@ const RegisterUserProfile = memo(({ kcContext, ...props_ }: { kcContext: KcConte
     );
 });
 
-type UserProfileFormFieldsProps = { kcContext: KcContextBase.RegisterUserProfile } & KcProps &
+type UserProfileFormFieldsProps = { kcContext: KcContextBase.RegisterUserProfile; i18n: I18n } & KcProps &
     Partial<Record<"BeforeField" | "AfterField", ReactComponent<{ attribute: Attribute }>>> & {
         onIsFormSubmittableValueChange: (isFormSubmittable: boolean) => void;
     };
 
-const UserProfileFormFields = memo(({ kcContext, onIsFormSubmittableValueChange, ...props }: UserProfileFormFieldsProps) => {
+const UserProfileFormFields = memo(({ kcContext, onIsFormSubmittableValueChange, i18n, ...props }: UserProfileFormFieldsProps) => {
     const { cx, css } = useCssAndCx();
 
-    const { advancedMsg } = useI18n();
+    const { advancedMsg } = i18n;
 
     const {
         formValidationState: { fieldStateByAttributeName, isFormSubmittable },
@@ -82,6 +82,7 @@ const UserProfileFormFields = memo(({ kcContext, onIsFormSubmittableValueChange,
         attributesWithPassword,
     } = useFormValidationSlice({
         kcContext,
+        i18n,
     });
 
     useEffect(() => {

@@ -2,23 +2,36 @@ import React, { useEffect, memo } from "react";
 import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { useI18n } from "../i18n";
 import { useCssAndCx } from "tss-react";
 import { Evt } from "evt";
 import { useRerenderOnStateChange } from "evt/hooks";
+import { assert } from "tsafe/assert";
+import { fallbackLanguageTag } from "../i18n";
+import type { I18n } from "../i18n";
 
 export const evtTermMarkdown = Evt.create<string | undefined>(undefined);
 
-/** Allow to avoid bundling the terms and download it on demand*/
-export function useDownloadTerms(params: { downloadTermMarkdown: (params: { currentLanguageTag: string }) => Promise<string> }) {
-    const { downloadTermMarkdown } = params;
+export type KcContextLike = {
+    locale?: {
+        currentLanguageTag: string;
+    };
+};
 
-    const { currentLanguageTag } = useI18n();
+assert<KcContextBase extends KcContextLike ? true : false>();
+
+/** Allow to avoid bundling the terms and download it on demand*/
+export function useDownloadTerms(params: {
+    kcContext: KcContextLike;
+    downloadTermMarkdown: (params: { currentLanguageTag: string }) => Promise<string>;
+}) {
+    const { kcContext, downloadTermMarkdown } = params;
 
     useEffect(() => {
         let isMounted = true;
 
-        downloadTermMarkdown({ currentLanguageTag }).then(thermMarkdown => {
+        downloadTermMarkdown({
+            "currentLanguageTag": kcContext.locale?.currentLanguageTag ?? fallbackLanguageTag,
+        }).then(thermMarkdown => {
             if (!isMounted) {
                 return;
             }
@@ -32,8 +45,8 @@ export function useDownloadTerms(params: { downloadTermMarkdown: (params: { curr
     }, []);
 }
 
-const Terms = memo(({ kcContext, ...props }: { kcContext: KcContextBase.Terms } & KcProps) => {
-    const { msg, msgStr } = useI18n();
+const Terms = memo(({ kcContext, i18n, ...props }: { kcContext: KcContextBase.Terms; i18n: I18n } & KcProps) => {
+    const { msg, msgStr } = i18n;
 
     useRerenderOnStateChange(evtTermMarkdown);
 
@@ -47,7 +60,7 @@ const Terms = memo(({ kcContext, ...props }: { kcContext: KcContextBase.Terms } 
 
     return (
         <Template
-            {...{ kcContext, ...props }}
+            {...{ kcContext, i18n, ...props }}
             doFetchDefaultThemeResources={true}
             displayMessage={false}
             headerNode={msg("termsTitle")}

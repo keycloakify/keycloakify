@@ -2,16 +2,16 @@ import React, { memo } from "react";
 import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { useI18n } from "../i18n";
+import type { I18n } from "../i18n";
 
-const LoginIdpLinkEmail = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LoginIdpLinkEmail } & KcProps) => {
+const LoginIdpLinkEmail = memo(({ kcContext, i18n, ...props }: { kcContext: KcContextBase.LoginIdpLinkEmail; i18n: I18n } & KcProps) => {
     const { url, realm, brokerContext, idpAlias } = kcContext;
 
-    const { msg } = useI18n();
+    const { msg } = i18n;
 
     return (
         <Template
-            {...{ kcContext, ...props }}
+            {...{ kcContext, i18n, ...props }}
             doFetchDefaultThemeResources={true}
             headerNode={msg("emailLinkIdpTitle", idpAlias)}
             formNode={

@@ -8,7 +8,7 @@ import { pathJoin } from "../../bin/tools/pathJoin";
 import { useConstCallback } from "powerhooks/useConstCallback";
 import type { KcTemplateProps } from "./KcProps";
 import { useCssAndCx } from "tss-react";
-import { useI18n } from "../i18n";
+import type { I18n } from "../i18n";
 
 export type TemplateProps = {
     displayInfo?: boolean;
@@ -24,7 +24,7 @@ export type TemplateProps = {
      * to avoid pulling the default theme assets.
      */
     doFetchDefaultThemeResources: boolean;
-} & { kcContext: KcContextBase } & KcTemplateProps;
+} & { kcContext: KcContextBase; i18n: I18n } & KcTemplateProps;
 
 const Template = memo((props: TemplateProps) => {
     const {
@@ -38,6 +38,7 @@ const Template = memo((props: TemplateProps) => {
         formNode,
         infoNode = null,
         kcContext,
+        i18n,
         doFetchDefaultThemeResources,
     } = props;
 
@@ -47,7 +48,7 @@ const Template = memo((props: TemplateProps) => {
         console.log("Rendering this page with react using keycloakify");
     }, []);
 
-    const { msg, changeLocale, labelBySupportedLanguageTag, currentLanguageTag } = useI18n();
+    const { msg, changeLocale, labelBySupportedLanguageTag, currentLanguageTag } = i18n;
 
     const onChangeLanguageClickFactory = useCallbackFactory(([kcLanguageTag]: [string]) => changeLocale(kcLanguageTag));
 

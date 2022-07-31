@@ -2,16 +2,16 @@ import React, { memo } from "react";
 import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { useI18n } from "../i18n";
+import type { I18n } from "../i18n";
 
-const Error = memo(({ kcContext, ...props }: { kcContext: KcContextBase.Error } & KcProps) => {
-    const { msg } = useI18n();
-
+const Error = memo(({ kcContext, i18n, ...props }: { kcContext: KcContextBase.Error; i18n: I18n } & KcProps) => {
     const { message, client } = kcContext;
+
+    const { msg } = i18n;
 
     return (
         <Template
-            {...{ kcContext, ...props }}
+            {...{ kcContext, i18n, ...props }}
             doFetchDefaultThemeResources={true}
             displayMessage={false}
             headerNode={msg("errorTitle")}

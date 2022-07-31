@@ -1,15 +1,25 @@
 import "minimal-polyfills/Object.fromEntries";
 //NOTE for later: https://github.com/remarkjs/react-markdown/blob/236182ecf30bd89c1e5a7652acaf8d0bf81e6170/src/renderers.js#L7-L35
-import React, { createContext, useContext, useEffect, useState, memo } from "react";
-import type { ReactNode } from "react";
+import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import type baseMessages from "./generated_messages/18.0.1/login/en";
 import { assert } from "tsafe/assert";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 
-const fallbackLanguageTag = "en";
+export const fallbackLanguageTag = "en";
 
-export type I18n<MessageKey extends string> = {
+export type KcContextLike = {
+    locale?: {
+        currentLanguageTag: string;
+        supported: { languageTag: string; url: string; label: string }[];
+    };
+};
+
+assert<KcContextBase extends KcContextLike ? true : false>();
+
+export type MessageKeyBase = keyof typeof baseMessages | keyof typeof keycloakifyExtraMessages[typeof fallbackLanguageTag];
+
+export type I18n<MessageKey extends string = MessageKeyBase> = {
     msgStr: (key: MessageKey, ...args: (string | undefined)[]) => string;
     msg: (key: MessageKey, ...args: (string | undefined)[]) => JSX.Element;
     /** advancedMsg("${access-denied}") === advancedMsg("access-denied") === msg("access-denied") */
@@ -22,102 +32,85 @@ export type I18n<MessageKey extends string> = {
     labelBySupportedLanguageTag: Record<string, string>;
 };
 
-export type KcContextLike = {
-    locale?: {
-        currentLanguageTag: string;
-        supported: { languageTag: string; url: string; label: string }[];
-    };
-};
-
-assert<KcContextBase extends KcContextLike ? true : false>();
-
-export type I18nProviderProps = {
-    children: ReactNode;
-    fallback?: ReactNode;
+export function __unsafe_useI18n<ExtraMessageKey extends string = never>(params: {
     kcContext: KcContextLike;
-};
-
-const allExtraMessages: { [languageTag: string]: { [key: string]: string } } = {};
-
-export function createI18nApi<ExtraMessageKey extends string = never>(params: {
     extraMessages: { [languageTag: string]: { [key in ExtraMessageKey]: string } };
-}) {
-    Object.assign(allExtraMessages, params.extraMessages);
+    doSkip: boolean;
+}): I18n<MessageKeyBase | ExtraMessageKey> | undefined {
+    const { kcContext, extraMessages, doSkip } = params;
 
-    type MessageKey = ExtraMessageKey | keyof typeof baseMessages | keyof typeof keycloakifyExtraMessages[typeof fallbackLanguageTag];
+    const [i18n, setI18n] = useState<I18n<ExtraMessageKey | MessageKeyBase> | undefined>(undefined);
 
-    const context = createContext<I18n<MessageKey> | undefined>(undefined);
+    useEffect(() => {
+        if (doSkip) {
+            return;
+        }
 
-    function useI18n(): I18n<MessageKey> {
-        const i18n = useContext(context);
+        let isMounted = true;
 
-        assert(i18n !== undefined, "Now Wrapped in <I18nProvider>");
+        (async () => {
+            const { currentLanguageTag = fallbackLanguageTag } = kcContext.locale ?? {};
 
-        return i18n;
-    }
+            const [fallbackMessages, messages] = await Promise.all([
+                import("./generated_messages/18.0.1/login/en"),
+                import(`./generated_kcMessages/18.0.1/login/${currentLanguageTag}`),
+            ]);
 
-    const I18nProvider = memo((props: I18nProviderProps) => {
-        const { children, fallback, kcContext } = props;
+            if (!isMounted) {
+                return;
+            }
 
-        const [i18n, setI18n] = useState<I18n<MessageKey> | undefined>(undefined);
+            setI18n({
+                ...createI18nTranslationFunctions({
+                    "fallbackMessages": {
+                        ...fallbackMessages,
+                        ...(keycloakifyExtraMessages[fallbackLanguageTag] ?? {}),
+                        ...(extraMessages[fallbackLanguageTag] ?? {}),
+                    } as any,
+                    "messages": {
+                        ...messages,
+                        ...((keycloakifyExtraMessages as any)[currentLanguageTag] ?? {}),
+                        ...(extraMessages[currentLanguageTag] ?? {}),
+                    } as any,
+                }),
+                currentLanguageTag,
+                "changeLocale": newLanguageTag => {
+                    const { locale } = kcContext;
 
-        useEffect(() => {
-            let isMounted = true;
+                    assert(locale !== undefined, "Internationalization not enabled");
 
-            (async () => {
-                const { currentLanguageTag = fallbackLanguageTag } = kcContext.locale ?? {};
+                    const targetSupportedLocale = locale.supported.find(({ languageTag }) => languageTag === newLanguageTag);
 
-                const [fallbackMessages, messages] = await Promise.all([
-                    import("./generated_messages/18.0.1/login/en"),
-                    import(`./generated_kcMessages/18.0.1/login/${currentLanguageTag}`),
-                ]);
+                    assert(targetSupportedLocale !== undefined, `${newLanguageTag} need to be enabled in Keycloak admin`);
 
-                if (!isMounted) {
-                    return;
-                }
+                    window.location.href = targetSupportedLocale.url;
 
-                setI18n({
-                    ...createI18nTranslationFunctions({
-                        "fallbackMessages": {
-                            ...fallbackMessages,
-                            ...(keycloakifyExtraMessages[fallbackLanguageTag] ?? {}),
-                            ...(allExtraMessages[fallbackLanguageTag] ?? {}),
-                        } as any,
-                        "messages": {
-                            ...messages,
-                            ...((keycloakifyExtraMessages as any)[currentLanguageTag] ?? {}),
-                            ...(allExtraMessages[currentLanguageTag] ?? {}),
-                        } as any,
-                    }),
-                    currentLanguageTag,
-                    "changeLocale": newLanguageTag => {
-                        const { locale } = kcContext;
+                    assert(false, "never");
+                },
+                "labelBySupportedLanguageTag": Object.fromEntries(
+                    (kcContext.locale?.supported ?? []).map(({ languageTag, label }) => [languageTag, label]),
+                ),
+            });
+        })();
 
-                        assert(locale !== undefined, "Internationalization not enabled");
+        return () => {
+            isMounted = false;
+        };
+    }, []);
 
-                        const targetSupportedLocale = locale.supported.find(({ languageTag }) => languageTag === newLanguageTag);
+    return i18n;
+}
 
-                        assert(targetSupportedLocale !== undefined, `${newLanguageTag} need to be enabled in Keycloak admin`);
+const useI18n_private = __unsafe_useI18n;
 
-                        window.location.href = targetSupportedLocale.url;
-
-                        assert(false, "never");
-                    },
-                    "labelBySupportedLanguageTag": Object.fromEntries(
-                        (kcContext.locale?.supported ?? []).map(({ languageTag, label }) => [languageTag, label]),
-                    ),
-                });
-            })();
-
-            return () => {
-                isMounted = false;
-            };
-        }, []);
-
-        return <context.Provider value={i18n}>{i18n === undefined ? fallback ?? null : children}</context.Provider>;
+export function useI18n<ExtraMessageKey extends string = never>(params: {
+    kcContext: KcContextLike;
+    extraMessages: { [languageTag: string]: { [key in ExtraMessageKey]: string } };
+}): I18n<MessageKeyBase | ExtraMessageKey> | undefined {
+    return useI18n_private({
+        ...params,
+        "doSkip": false,
     });
-
-    return { useI18n, I18nProvider };
 }
 
 function createI18nTranslationFunctions<MessageKey extends string>(params: {

@@ -2,15 +2,16 @@ import React, { memo } from "react";
 import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { useI18n } from "../i18n";
 import { useCssAndCx } from "tss-react";
+import type { I18n } from "../i18n";
 
-const LoginConfigTotp = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LoginConfigTotp } & KcProps) => {
+const LoginConfigTotp = memo(({ kcContext, i18n, ...props }: { kcContext: KcContextBase.LoginConfigTotp; i18n: I18n } & KcProps) => {
     const { url, isAppInitiatedAction, totp, mode, messagesPerField } = kcContext;
 
     const { cx } = useCssAndCx();
 
-    const { msg, msgStr } = useI18n();
+    const { msg, msgStr } = i18n;
+
     const algToKeyUriAlg: Record<KcContextBase.LoginConfigTotp["totp"]["policy"]["algorithm"], string> = {
         HmacSHA1: "SHA1",
         HmacSHA256: "SHA256",
@@ -19,7 +20,7 @@ const LoginConfigTotp = memo(({ kcContext, ...props }: { kcContext: KcContextBas
 
     return (
         <Template
-            {...{ kcContext, ...props }}
+            {...{ kcContext, i18n, ...props }}
             doFetchDefaultThemeResources={true}
             headerNode={msg("loginTotpTitle")}
             formNode={

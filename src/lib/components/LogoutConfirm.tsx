@@ -1,21 +1,20 @@
 import React, { memo } from "react";
 import { useCssAndCx } from "tss-react";
-
 import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { useI18n } from "../i18n";
+import type { I18n } from "../i18n";
 
-const LogoutConfirm = memo(({ kcContext, ...props }: { kcContext: KcContextBase.LogoutConfirm } & KcProps) => {
+const LogoutConfirm = memo(({ kcContext, i18n, ...props }: { kcContext: KcContextBase.LogoutConfirm; i18n: I18n } & KcProps) => {
     const { url, client, logoutConfirm } = kcContext;
 
     const { cx } = useCssAndCx();
 
-    const { msg, msgStr } = useI18n();
+    const { msg, msgStr } = i18n;
 
     return (
         <Template
-            {...{ kcContext, ...props }}
+            {...{ kcContext, i18n, ...props }}
             doFetchDefaultThemeResources={true}
             displayMessage={false}
             headerNode={msg("logoutConfirmTitle")}
