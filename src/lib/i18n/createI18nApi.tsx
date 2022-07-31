@@ -9,9 +9,7 @@ import type { KcContextBase } from "../getKcContext/KcContextBase";
 
 const fallbackLanguageTag = "en";
 
-export type BaseMessageKey = keyof typeof baseMessages | keyof typeof keycloakifyExtraMessages[typeof fallbackLanguageTag];
-
-type I18n<MessageKey extends string> = {
+export type I18n<MessageKey extends string> = {
     msgStr: (key: MessageKey, ...args: (string | undefined)[]) => string;
     msg: (key: MessageKey, ...args: (string | undefined)[]) => JSX.Element;
     /** advancedMsg("${access-denied}") === advancedMsg("access-denied") === msg("access-denied") */
@@ -24,7 +22,7 @@ type I18n<MessageKey extends string> = {
     labelBySupportedLanguageTag: Record<string, string>;
 };
 
-type KcContextLike = {
+export type KcContextLike = {
     locale?: {
         currentLanguageTag: string;
         supported: { languageTag: string; url: string; label: string }[];
@@ -39,12 +37,14 @@ export type I18nProviderProps = {
     kcContext: KcContextLike;
 };
 
+const allExtraMessages: { [languageTag: string]: { [key: string]: string } } = {};
+
 export function createI18nApi<ExtraMessageKey extends string = never>(params: {
     extraMessages: { [languageTag: string]: { [key in ExtraMessageKey]: string } };
 }) {
-    const { extraMessages } = params ?? {};
+    Object.assign(allExtraMessages, params.extraMessages);
 
-    type MessageKey = ExtraMessageKey | BaseMessageKey;
+    type MessageKey = ExtraMessageKey | keyof typeof baseMessages | keyof typeof keycloakifyExtraMessages[typeof fallbackLanguageTag];
 
     const context = createContext<I18n<MessageKey> | undefined>(undefined);
 
@@ -81,12 +81,12 @@ export function createI18nApi<ExtraMessageKey extends string = never>(params: {
                         "fallbackMessages": {
                             ...fallbackMessages,
                             ...(keycloakifyExtraMessages[fallbackLanguageTag] ?? {}),
-                            ...(extraMessages?.[fallbackLanguageTag] ?? {}),
+                            ...(allExtraMessages[fallbackLanguageTag] ?? {}),
                         } as any,
                         "messages": {
                             ...messages,
                             ...((keycloakifyExtraMessages as any)[currentLanguageTag] ?? {}),
-                            ...(extraMessages?.[currentLanguageTag] ?? {}),
+                            ...(allExtraMessages[currentLanguageTag] ?? {}),
                         } as any,
                     }),
                     currentLanguageTag,

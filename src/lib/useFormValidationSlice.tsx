@@ -2,19 +2,18 @@ import "./tools/Array.prototype.every";
 import React, { useMemo, useReducer, Fragment } from "react";
 import type { KcContextBase, Validators, Attribute } from "./getKcContext/KcContextBase";
 import { useI18n } from "./i18n";
-import type { KcLanguageTag } from "./i18n";
+import type { MessageKey } from "./i18n";
 import { useConstCallback } from "powerhooks/useConstCallback";
 import { id } from "tsafe/id";
-import type { MessageKey } from "./i18n";
 import { emailRegexp } from "./tools/emailRegExp";
 
+/** Expect to be used in a component wrapped within a <I18nProvider> */
 export function useGetErrors(params: {
     kcContext: {
         messagesPerField: Pick<KcContextBase.Common["messagesPerField"], "existsError" | "get">;
         profile: {
             attributes: { name: string; value?: string; validators: Validators }[];
         };
-        locale?: { currentLanguageTag: KcLanguageTag };
     };
 }) {
     const { kcContext } = params;
@@ -24,7 +23,7 @@ export function useGetErrors(params: {
         profile: { attributes },
     } = kcContext;
 
-    const { msg, msgStr, advancedMsg, advancedMsgStr } = getMsg(kcContext);
+    const { msg, msgStr, advancedMsg, advancedMsgStr } = useI18n();
 
     const getErrors = useConstCallback((params: { name: string; fieldValueByAttributeName: Record<string, { value: string }> }) => {
         const { name, fieldValueByAttributeName } = params;
@@ -313,9 +312,6 @@ export function useFormValidationSlice(params: {
         };
         passwordRequired: boolean;
         realm: { registrationEmailAsUsername: boolean };
-        locale?: {
-            currentLanguageTag: KcLanguageTag;
-        };
     };
     /** NOTE: Try to avoid passing a new ref every render for better performances. */
     passwordValidators?: Validators;
@@ -385,7 +381,6 @@ export function useFormValidationSlice(params: {
             "profile": {
                 "attributes": attributesWithPassword,
             },
-            "locale": kcContext.locale,
         },
     });
 
