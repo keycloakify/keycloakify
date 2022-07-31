@@ -24,6 +24,7 @@ However, the default pages you will get (before you customize them) will always 
 * [16.1.0](https://hub.docker.com/layers/jboss/keycloak/16.1.0/images/sha256-6ecb9492224c6cfbb55d43f64a5ab634145d8cc1eba14eae8c37e3afde89546e?context=explore)
 * [17.0.1](https://github.com/keycloak/keycloak/releases/tag/17.0.1)
 * [18.0.0](https://quay.io/repository/keycloak/keycloak?tab=tags\&tag=18.0.0)
+* [18.0.2](https://quay.io/repository/keycloak/keycloak?tab=tags\&tag=18.0.2)
 
 Latest release isn't in the list yet? It probably works fine, we just can't confirm it yet. &#x20;
 
