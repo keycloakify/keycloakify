@@ -3,7 +3,7 @@ import "minimal-polyfills/Object.fromEntries";
 import React, { createContext, useContext, useEffect, useState, memo } from "react";
 import type { ReactNode } from "react";
 import ReactMarkdown from "react-markdown";
-import type baseMessages from "./generated_kcMessages/18.0.1/login/en";
+import type baseMessages from "./generated_messages/18.0.1/login/en";
 import { assert } from "tsafe/assert";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 
@@ -68,7 +68,7 @@ export function createI18nApi<ExtraMessageKey extends string = never>(params: {
                 const { currentLanguageTag = fallbackLanguageTag } = kcContext.locale ?? {};
 
                 const [fallbackMessages, messages] = await Promise.all([
-                    import("./generated_kcMessages/18.0.1/login/en"),
+                    import("./generated_messages/18.0.1/login/en"),
                     import(`./generated_kcMessages/18.0.1/login/${currentLanguageTag}`),
                 ]);
 
