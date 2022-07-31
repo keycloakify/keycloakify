@@ -8,6 +8,9 @@ import { useRerenderOnStateChange } from "evt/hooks";
 import { assert } from "tsafe/assert";
 import { fallbackLanguageTag } from "../i18n";
 import type { I18n } from "../i18n";
+import memoize from "memoizee";
+import { useConst } from "powerhooks/useConst";
+import { useConstCallback } from "powerhooks/useConstCallback";
 
 export const evtTermMarkdown = Evt.create<string | undefined>(undefined);
 
@@ -24,24 +27,24 @@ export function useDownloadTerms(params: {
     kcContext: KcContextLike;
     downloadTermMarkdown: (params: { currentLanguageTag: string }) => Promise<string>;
 }) {
-    const { kcContext, downloadTermMarkdown } = params;
+    const { kcContext } = params;
+
+    const { downloadTermMarkdownMemoized } = (function useClosure() {
+        const { downloadTermMarkdown } = params;
+
+        const downloadTermMarkdownConst = useConstCallback(downloadTermMarkdown);
+
+        const downloadTermMarkdownMemoized = useConst(() =>
+            memoize((currentLanguageTag: string) => downloadTermMarkdownConst({ currentLanguageTag }), { "promise": true }),
+        );
+
+        return { downloadTermMarkdownMemoized };
+    })();
 
     useEffect(() => {
-        let isMounted = true;
-
-        downloadTermMarkdown({
-            "currentLanguageTag": kcContext.locale?.currentLanguageTag ?? fallbackLanguageTag,
-        }).then(thermMarkdown => {
-            if (!isMounted) {
-                return;
-            }
-
-            evtTermMarkdown.state = thermMarkdown;
-        });
-
-        return () => {
-            isMounted = false;
-        };
+        downloadTermMarkdownMemoized(kcContext.locale?.currentLanguageTag ?? fallbackLanguageTag).then(
+            thermMarkdown => (evtTermMarkdown.state = thermMarkdown),
+        );
     }, []);
 }
 
