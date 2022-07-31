@@ -56,7 +56,7 @@ createRoot(document.getElementById("root")!).render(
         kcContext={kcContext}
         {...{
             ...defaultKcProps,
-            "kcHeaderWrapperClass": "my-class",
+            kcHeaderWrapperClass: "my-class",
         }}
     />
 );
@@ -88,15 +88,17 @@ import { createRoot } from "react-dom/client";
 
  createRoot(document.getElementById("root")!).render(
 +    <Suspence>
-+        kcContext === undefined ?
-+            <App /> :
-             <KcApp
-                 kcContext={kcContext}
-                 {...{
-                     ...defaultKcProps,
-                     "kcHeaderWrapperClass": myClassName
-                 }}
-             />
++        {
++            kcContext === undefined ?
++                <App /> :
+                 <KcApp
+                     kcContext={kcContext}
+                     {...{
+                         ...defaultKcProps,
+                         kcHeaderWrapperClass: myClassName
+                     }}
+                 />
++        }
 +    </Suspence>
  );
 ```
