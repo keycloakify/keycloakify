@@ -44,10 +44,6 @@ const Template = memo((props: TemplateProps) => {
 
     const { cx } = useCssAndCx();
 
-    useEffect(() => {
-        console.log("Rendering this page with react using keycloakify");
-    }, []);
-
     const { msg, changeLocale, labelBySupportedLanguageTag, currentLanguageTag } = i18n;
 
     const onChangeLanguageClickFactory = useCallbackFactory(([kcLanguageTag]: [string]) => changeLocale(kcLanguageTag));
