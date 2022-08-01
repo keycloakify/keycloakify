@@ -100,10 +100,10 @@ export function __unsafe_useI18n<ExtraMessageKey extends string = never>(params:
                         case "zh-CN":
                             return import("./generated_messages/18.0.1/login/zh-CN");
                         default:
-                            return {};
+                            return { "default": {} };
                     }
                 })(),
-            ]);
+            ]).then(modules => modules.map(module => module.default));
 
             if (!isMounted) {
                 return;
