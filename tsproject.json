@@ -9,6 +9,7 @@
         "strict": true,
         "downlevelIteration": true,
         "noFallthroughCasesInSwitch": true,
-        "composite": true
+        "composite": true,
+        "outDir": "../dist"
     }
 }
