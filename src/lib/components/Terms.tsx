@@ -15,6 +15,7 @@ import { useConstCallback } from "powerhooks/useConstCallback";
 export const evtTermMarkdown = Evt.create<string | undefined>(undefined);
 
 export type KcContextLike = {
+    pageId: KcContextBase["pageId"];
     locale?: {
         currentLanguageTag: string;
     };
@@ -42,6 +43,10 @@ export function useDownloadTerms(params: {
     })();
 
     useEffect(() => {
+        if (kcContext.pageId !== "terms.ftl") {
+            return;
+        }
+
         downloadTermMarkdownMemoized(kcContext.locale?.currentLanguageTag ?? fallbackLanguageTag).then(
             thermMarkdown => (evtTermMarkdown.state = thermMarkdown),
         );
