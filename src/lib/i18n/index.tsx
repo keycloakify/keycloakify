@@ -36,7 +36,7 @@ export function __unsafe_useI18n<ExtraMessageKey extends string = never>(params:
     kcContext: KcContextLike;
     extraMessages: { [languageTag: string]: { [key in ExtraMessageKey]: string } };
     doSkip: boolean;
-}): I18n<MessageKeyBase | ExtraMessageKey> | undefined {
+}): I18n<MessageKeyBase | ExtraMessageKey> | null {
     const { kcContext, extraMessages, doSkip } = params;
 
     const [i18n, setI18n] = useState<I18n<ExtraMessageKey | MessageKeyBase> | undefined>(undefined);
@@ -53,7 +53,7 @@ export function __unsafe_useI18n<ExtraMessageKey extends string = never>(params:
 
             const [fallbackMessages, messages] = await Promise.all([
                 import("./generated_messages/18.0.1/login/en"),
-                import(`./generated_kcMessages/18.0.1/login/${currentLanguageTag}`),
+                import(`./generated_messages/18.0.1/login/${currentLanguageTag}`),
             ]);
 
             if (!isMounted) {
@@ -98,7 +98,7 @@ export function __unsafe_useI18n<ExtraMessageKey extends string = never>(params:
         };
     }, []);
 
-    return i18n;
+    return i18n ?? null;
 }
 
 const useI18n_private = __unsafe_useI18n;
@@ -106,7 +106,7 @@ const useI18n_private = __unsafe_useI18n;
 export function useI18n<ExtraMessageKey extends string = never>(params: {
     kcContext: KcContextLike;
     extraMessages: { [languageTag: string]: { [key in ExtraMessageKey]: string } };
-}): I18n<MessageKeyBase | ExtraMessageKey> | undefined {
+}): I18n<MessageKeyBase | ExtraMessageKey> | null {
     return useI18n_private({
         ...params,
         "doSkip": false,

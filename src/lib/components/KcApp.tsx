@@ -32,7 +32,7 @@ const KcApp = memo(({ kcContext, i18n: userProvidedI18n, ...props }: { kcContext
         return userProvidedI18n ?? i18n;
     })();
 
-    if (i18n === undefined) {
+    if (i18n === null) {
         return null;
     }
 

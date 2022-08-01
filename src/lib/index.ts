@@ -8,4 +8,6 @@ export * from "./components/KcProps";
 export * from "./keycloakJsAdapter";
 export * from "./useFormValidationSlice";
 
-export * from "./tools/assert";
+import KcApp from "./components/KcApp";
+
+export default KcApp;
