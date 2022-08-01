@@ -53,7 +53,56 @@ export function __unsafe_useI18n<ExtraMessageKey extends string = never>(params:
 
             const [fallbackMessages, messages] = await Promise.all([
                 import("./generated_messages/18.0.1/login/en"),
-                import(`./generated_messages/18.0.1/login/${currentLanguageTag}`),
+                (() => {
+                    switch (currentLanguageTag) {
+                        case "ca":
+                            return import("./generated_messages/18.0.1/login/ca");
+                        case "cs":
+                            return import("./generated_messages/18.0.1/login/cs");
+                        case "da":
+                            return import("./generated_messages/18.0.1/login/da");
+                        case "de":
+                            return import("./generated_messages/18.0.1/login/de");
+                        case "en":
+                            return import("./generated_messages/18.0.1/login/en");
+                        case "es":
+                            return import("./generated_messages/18.0.1/login/es");
+                        case "fi":
+                            return import("./generated_messages/18.0.1/login/fi");
+                        case "fr":
+                            return import("./generated_messages/18.0.1/login/fr");
+                        case "hu":
+                            return import("./generated_messages/18.0.1/login/hu");
+                        case "it":
+                            return import("./generated_messages/18.0.1/login/it");
+                        case "ja":
+                            return import("./generated_messages/18.0.1/login/ja");
+                        case "lt":
+                            return import("./generated_messages/18.0.1/login/lt");
+                        case "lv":
+                            return import("./generated_messages/18.0.1/login/lv");
+                        case "nl":
+                            return import("./generated_messages/18.0.1/login/nl");
+                        case "no":
+                            return import("./generated_messages/18.0.1/login/no");
+                        case "pl":
+                            return import("./generated_messages/18.0.1/login/pl");
+                        case "pt-BR":
+                            return import("./generated_messages/18.0.1/login/pt-BR");
+                        case "ru":
+                            return import("./generated_messages/18.0.1/login/ru");
+                        case "sk":
+                            return import("./generated_messages/18.0.1/login/sk");
+                        case "sv":
+                            return import("./generated_messages/18.0.1/login/sv");
+                        case "tr":
+                            return import("./generated_messages/18.0.1/login/tr");
+                        case "zh-CN":
+                            return import("./generated_messages/18.0.1/login/zh-CN");
+                        default:
+                            return {};
+                    }
+                })(),
             ]);
 
             if (!isMounted) {
