@@ -14,7 +14,8 @@ ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
             "totp", "totpSecret", "SAMLRequest", "SAMLResponse", "relayState", "device_user_code", "code", 
             "password-new", "rememberMe", "login", "authenticationExecution", "cancel-aia", "clientDataJSON", 
             "authenticatorData", "signature", "credentialId", "userHandle", "error", "authn_use_chk", "authenticationExecution", 
-            "isSetRetry", "try-again", "attestationObject", "publicKeyCredentialId", "authenticatorLabel"
+            "isSetRetry", "try-again", "attestationObject", "publicKeyCredentialId", "authenticatorLabel",
+            "user.attributes.dateOfBirth", "user.attributes.country", "user.attributes.acceptedTermsAndConditions"
         ]>
     
         <#attempt>
