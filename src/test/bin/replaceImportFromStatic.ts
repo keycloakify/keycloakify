@@ -35,6 +35,12 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
                 922: "be170a73"
             } [e] + ".chunk.js"
         }
+
+        t.miniCssF=function(e){return"static/css/"+e+"."+{
+                164:"dcfd7749",
+                908:"67c9ed2c"
+            }[e]+".chunk.css"
+        }
     `;
 
     {
@@ -69,6 +75,20 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
                     922: "be170a73"
                 } [e] + ".chunk.js"
             }
+
+            t[(function (){
+                Object.defineProperty(t, "p", {
+                    get: function() { return window.kcContext.url.resourcesPath; },
+                    set: function (){}
+                });
+                return "miniCssF";
+            })()] = function(e) {
+                return "/build/static/css/" + e + "." + {
+                    164:"dcfd7749",
+                    908:"67c9ed2c"
+                } [e] + ".chunk.css"
+            }
+
         `;
 
         assetIsSameCode(fixedJsCode, fixedJsCodeExpected);
@@ -106,6 +126,20 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
                     787: "8da10fcf",
                     922: "be170a73"
                 } [e] + ".chunk.js"
+            }
+
+            t[(function (){
+                var p= "";
+                Object.defineProperty(t, "p", {
+                    get: function() { return ("kcContext" in window ? "https://demo-app.keycloakify.dev" : "") + p; },
+                    set: function (value){ p = value; }
+                });
+                return "miniCssF";
+            })()] = function(e) {
+                return "static/css/" + e + "." + {
+                    164:"dcfd7749",
+                    908:"67c9ed2c"
+                } [e] + ".chunk.css"
             }
         `;
 

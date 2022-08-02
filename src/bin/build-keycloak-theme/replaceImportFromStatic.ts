@@ -16,10 +16,9 @@ export function replaceImportsFromStaticInJsCode(params: { jsCode: string; urlOr
 
     const { jsCode, urlOrigin } = params;
 
-    const fixedJsCode = jsCode
-        .replace(
-            /([a-zA-Z]+)\.([a-zA-Z]+)=function\(([a-zA-Z]+)\){return"static\/js\/"/g,
-            (...[, n, u, e]) => `
+    const getReplaceArgs = (language: "js" | "css"): Parameters<typeof String.prototype.replace> => [
+        new RegExp(`([a-zA-Z]+)\\.([a-zA-Z]+)=function\\(([a-zA-Z]+)\\){return"static\\/${language}\\/"`, "g"),
+        (...[, n, u, e]) => `
 			${n}[(function(){
                 ${
                     urlOrigin === undefined
@@ -38,8 +37,12 @@ export function replaceImportsFromStaticInJsCode(params: { jsCode: string; urlOr
                     `
                 }
 				return "${u}";
-			})()] = function(${e}) { return "${urlOrigin === undefined ? "/build/" : ""}static/js/"`,
-        )
+			})()] = function(${e}) { return "${urlOrigin === undefined ? "/build/" : ""}static/${language}/"`,
+    ];
+
+    const fixedJsCode = jsCode
+        .replace(...getReplaceArgs("js"))
+        .replace(...getReplaceArgs("css"))
         .replace(/([a-zA-Z]+\.[a-zA-Z]+)\+"static\//g, (...[, group]) =>
             urlOrigin === undefined
                 ? `window.${ftlValuesGlobalName}.url.resourcesPath + "/build/static/`
