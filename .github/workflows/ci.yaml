@@ -67,7 +67,7 @@ jobs:
       is_upgraded_version: ${{ steps.step1.outputs.is_upgraded_version }}
       is_release_beta: ${{steps.step1.outputs.is_release_beta }}
     steps:
-    - uses: garronej/ts-ci@v1.1.4
+    - uses: garronej/ts-ci@v1.1.7
       id: step1
       with: 
         action_name: is_package_json_version_upgraded
