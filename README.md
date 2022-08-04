@@ -34,7 +34,10 @@
 <p align="center">
     <i>Ultimately this build tool generates a Keycloak theme <a href="https://www.keycloakify.dev">Learn more</a></i>
     <img src="https://user-images.githubusercontent.com/6702424/110260457-a1c3d380-7fac-11eb-853a-80459b65626b.png">
-</p>
+</p>  
+
+> The official websites of the project are temporarily down. While it is being addressed, you can access the doc [here](https://github.com/InseeFrLab/keycloakify/tree/v5_docs).  
+
 
 # Changelog highlights
 
