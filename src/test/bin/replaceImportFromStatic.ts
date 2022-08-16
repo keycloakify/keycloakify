@@ -1,19 +1,9 @@
-import {
-    replaceImportsFromStaticInJsCode,
-    replaceImportsInInlineCssCode,
-    replaceImportsInCssCode,
-    generateCssCodeToDefineGlobals,
-} from "../../bin/build-keycloak-theme/replaceImportFromStatic";
+import { replaceImportsFromStaticInJsCode } from "../../bin/build-keycloak-theme/replacers/replaceImportsFromStaticInJsCode";
+import { generateCssCodeToDefineGlobals, replaceImportsInCssCode } from "../../bin/build-keycloak-theme/replacers/replaceImportsInCssCode";
+import { replaceImportsInInlineCssCode } from "../../bin/build-keycloak-theme/replacers/replaceImportsInInlineCssCode";
 import { assert } from "tsafe/assert";
 import { same } from "evt/tools/inDepth/same";
 import { assetIsSameCode } from "../tools/assertIsSameCode";
-
-/*
- NOTES: 
- When not compiled with --external-assets urlOrigin will always be undefined regardless of the "homepage" field.
- When compiled with --external-assets and we have a home page filed like "https://example.com" or "https://example.com/x/y/z" urlOrigin will be "https://example.com"
- Regardless of if it's compiled with --external-assets or not, if "homepage" is like "https://example.com/x/y/z" urlPathname will be "/x/y/z/"
-*/
 
 {
     const jsCodeUntransformed = `
@@ -46,7 +36,9 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
     {
         const { fixedJsCode } = replaceImportsFromStaticInJsCode({
             "jsCode": jsCodeUntransformed,
-            "urlOrigin": undefined,
+            "buildOptions": {
+                "isStandalone": true,
+            },
         });
 
         const fixedJsCodeExpected = `
@@ -97,7 +89,10 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
     {
         const { fixedJsCode } = replaceImportsFromStaticInJsCode({
             "jsCode": jsCodeUntransformed,
-            "urlOrigin": "https://demo-app.keycloakify.dev",
+            "buildOptions": {
+                "isStandalone": false,
+                "urlOrigin": "https://demo-app.keycloakify.dev",
+            },
         });
 
         const fixedJsCodeExpected = `
@@ -189,7 +184,9 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
 
     const { cssCodeToPrependInHead } = generateCssCodeToDefineGlobals({
         cssGlobalsToDefine,
-        "urlPathname": "/",
+        "buildOptions": {
+            "urlPathname": undefined,
+        },
     });
 
     const cssCodeToPrependInHeadExpected = `
@@ -244,7 +241,9 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
 
     const { cssCodeToPrependInHead } = generateCssCodeToDefineGlobals({
         cssGlobalsToDefine,
-        "urlPathname": "/x/y/z/",
+        "buildOptions": {
+            "urlPathname": "/x/y/z/",
+        },
     });
 
     const cssCodeToPrependInHeadExpected = `
@@ -292,8 +291,10 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
     {
         const { fixedCssCode } = replaceImportsInInlineCssCode({
             cssCode,
-            "urlOrigin": undefined,
-            "urlPathname": "/",
+            "buildOptions": {
+                "isStandalone": true,
+                "urlPathname": undefined,
+            },
         });
 
         const fixedCssCodeExpected = `
@@ -337,8 +338,11 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
     {
         const { fixedCssCode } = replaceImportsInInlineCssCode({
             cssCode,
-            "urlOrigin": "https://demo-app.keycloakify.dev",
-            "urlPathname": "/",
+            "buildOptions": {
+                "isStandalone": false,
+                "urlOrigin": "https://demo-app.keycloakify.dev",
+                "urlPathname": undefined,
+            },
         });
 
         const fixedCssCodeExpected = `
@@ -415,8 +419,10 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
     {
         const { fixedCssCode } = replaceImportsInInlineCssCode({
             cssCode,
-            "urlOrigin": undefined,
-            "urlPathname": "/x/y/z/",
+            "buildOptions": {
+                "isStandalone": true,
+                "urlPathname": "/x/y/z/",
+            },
         });
 
         const fixedCssCodeExpected = `
@@ -460,8 +466,11 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
     {
         const { fixedCssCode } = replaceImportsInInlineCssCode({
             cssCode,
-            "urlOrigin": "https://demo-app.keycloakify.dev",
-            "urlPathname": "/x/y/z/",
+            "buildOptions": {
+                "isStandalone": false,
+                "urlOrigin": "https://demo-app.keycloakify.dev",
+                "urlPathname": "/x/y/z/",
+            },
         });
 
         const fixedCssCodeExpected = `

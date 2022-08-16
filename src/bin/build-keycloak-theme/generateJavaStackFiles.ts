@@ -1,37 +1,39 @@
-import * as url from "url";
 import * as fs from "fs";
 import { join as pathJoin, dirname as pathDirname } from "path";
+import { assert } from "tsafe/assert";
+import { Reflect } from "tsafe/Reflect";
+import type { BuildOptions } from "./BuildOptions";
+
+export type BuildOptionsLike = {
+    themeName: string;
+    groupId: string;
+};
+
+{
+    const buildOptions = Reflect<BuildOptions>();
+
+    assert<typeof buildOptions extends BuildOptionsLike ? true : false>();
+}
 
 export function generateJavaStackFiles(params: {
     version: string;
-    themeName: string;
-    homepage?: string;
     keycloakThemeBuildingDirPath: string;
-    doBundleEmailTemplate: boolean;
+    doBundlesEmailTemplate: boolean;
+    buildOptions: BuildOptionsLike;
 }): {
     jarFilePath: string;
 } {
-    const { themeName, version, homepage, keycloakThemeBuildingDirPath, doBundleEmailTemplate } = params;
+    const {
+        version,
+        buildOptions: { groupId, themeName },
+        keycloakThemeBuildingDirPath,
+        doBundlesEmailTemplate,
+    } = params;
 
     {
         const { pomFileCode } = (function generatePomFileCode(): {
             pomFileCode: string;
         } {
-            const groupId = (() => {
-                const fallbackGroupId = `there.was.no.homepage.field.in.the.package.json.${themeName}`;
-
-                return (
-                    (!homepage
-                        ? fallbackGroupId
-                        : url
-                              .parse(homepage)
-                              .host?.replace(/:[0-9]+$/, "")
-                              ?.split(".")
-                              .reverse()
-                              .join(".") ?? fallbackGroupId) + ".keycloak"
-                );
-            })();
-
             const artefactId = `${themeName}-keycloak-theme`;
 
             const pomFileCode = [
@@ -69,7 +71,7 @@ export function generateJavaStackFiles(params: {
                         "themes": [
                             {
                                 "name": themeName,
-                                "types": ["login", ...(doBundleEmailTemplate ? ["email"] : [])],
+                                "types": ["login", ...(doBundlesEmailTemplate ? ["email"] : [])],
                             },
                         ],
                     },

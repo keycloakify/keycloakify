@@ -3,76 +3,28 @@ import { generateJavaStackFiles } from "./generateJavaStackFiles";
 import { join as pathJoin, relative as pathRelative, basename as pathBasename } from "path";
 import * as child_process from "child_process";
 import { generateStartKeycloakTestingContainer } from "./generateStartKeycloakTestingContainer";
-import { URL } from "url";
 import * as fs from "fs";
-
-type ParsedPackageJson = {
-    name: string;
-    version: string;
-    homepage?: string;
-};
+import { readBuildOptions } from "./BuildOptions";
 
 const reactProjectDirPath = process.cwd();
-
-const doUseExternalAssets = process.argv[2]?.toLowerCase() === "--external-assets";
-
-const parsedPackageJson: ParsedPackageJson = require(pathJoin(reactProjectDirPath, "package.json"));
 
 export const keycloakThemeBuildingDirPath = pathJoin(reactProjectDirPath, "build_keycloak");
 export const keycloakThemeEmailDirPath = pathJoin(keycloakThemeBuildingDirPath, "..", "keycloak_email");
 
-function sanitizeThemeName(name: string) {
-    return name
-        .replace(/^@(.*)/, "$1")
-        .split("/")
-        .join("-");
-}
-
 export function main() {
     console.log("🔏 Building the keycloak theme...⌚");
 
-    const extraPagesId: string[] = (parsedPackageJson as any)["keycloakify"]?.["extraPages"] ?? [];
-    const extraThemeProperties: string[] = (parsedPackageJson as any)["keycloakify"]?.["extraThemeProperties"] ?? [];
-    const themeName = sanitizeThemeName(parsedPackageJson.name);
+    const buildOptions = readBuildOptions({
+        "packageJson": fs.readFileSync(pathJoin(reactProjectDirPath, "")).toString("utf8"),
+        "CNAME": fs.readFileSync(pathJoin(reactProjectDirPath, "public", "CNAME")).toString("utf8"),
+        "isExternalAssetsCliParamProvided": process.argv[2]?.toLowerCase() === "--external-assets",
+    });
 
-    const { doBundleEmailTemplate } = generateKeycloakThemeResources({
+    const { doBundlesEmailTemplate } = generateKeycloakThemeResources({
         keycloakThemeBuildingDirPath,
         keycloakThemeEmailDirPath,
         "reactAppBuildDirPath": pathJoin(reactProjectDirPath, "build"),
-        themeName,
-        ...(() => {
-            const url = (() => {
-                const { homepage } = parsedPackageJson;
-
-                if (homepage !== undefined) {
-                    return new URL(homepage);
-                }
-
-                const cnameFilePath = pathJoin(reactProjectDirPath, "public", "CNAME");
-
-                if (fs.existsSync(cnameFilePath)) {
-                    return new URL(`https://${fs.readFileSync(cnameFilePath).toString("utf8").replace(/\s+$/, "")}`);
-                }
-
-                return undefined;
-            })();
-
-            return {
-                "urlPathname": url === undefined ? "/" : url.pathname.replace(/([^/])$/, "$1/"),
-                "urlOrigin": !doUseExternalAssets
-                    ? undefined
-                    : (() => {
-                          if (url === undefined) {
-                              console.error("ERROR: You must specify 'homepage' in your package.json");
-                              process.exit(-1);
-                          }
-
-                          return url.origin;
-                      })(),
-            };
-        })(),
-        extraPagesId,
-        extraThemeProperties,
+        buildOptions,
         //We have to leave it at that otherwise we break our default theme.
         //Problem is that we can't guarantee that the the old resources
         //will still be available on the newer keycloak version.
@@ -80,11 +32,10 @@ export function main() {
     });
 
     const { jarFilePath } = generateJavaStackFiles({
-        "version": parsedPackageJson.version,
-        themeName,
-        "homepage": parsedPackageJson.homepage,
+        "version": buildOptions.version,
         keycloakThemeBuildingDirPath,
-        doBundleEmailTemplate,
+        doBundlesEmailTemplate,
+        buildOptions,
     });
 
     child_process.execSync("mvn package", {
@@ -96,8 +47,8 @@ export function main() {
 
     generateStartKeycloakTestingContainer({
         keycloakThemeBuildingDirPath,
-        themeName,
         "keycloakVersion": containerKeycloakVersion,
+        buildOptions,
     });
 
     console.log(
@@ -145,7 +96,7 @@ export function main() {
             "- Log into the admin console 👉 http://localhost:8080/admin username: admin, password: admin 👈",
             '- Create a realm named "myrealm"',
             '- Create a client with ID: "myclient", "Root URL": "https://www.keycloak.org/app/" and "Valid redirect URIs": "https://www.keycloak.org/app/*"',
-            `- Select Login Theme: ${themeName} (don't forget to save at the bottom of the page)`,
+            `- Select Login Theme: ${buildOptions.themeName} (don't forget to save at the bottom of the page)`,
             `- Go to 👉 https://www.keycloak.org/app/ 👈 Click "Save" then "Sign in". You should see your login page`,
             "",
             "Video demoing this process: https://youtu.be/N3wlBoH4hKg",

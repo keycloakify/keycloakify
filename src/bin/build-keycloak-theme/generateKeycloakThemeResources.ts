@@ -1,48 +1,76 @@
 import { transformCodebase } from "../tools/transformCodebase";
 import * as fs from "fs";
 import { join as pathJoin, basename as pathBasename } from "path";
-import { replaceImportsInCssCode, replaceImportsFromStaticInJsCode } from "./replaceImportFromStatic";
+import { replaceImportsFromStaticInJsCode } from "./replacers/replaceImportsFromStaticInJsCode";
+import { replaceImportsInCssCode } from "./replacers/replaceImportsInCssCode";
 import { generateFtlFilesCodeFactory, pageIds } from "./generateFtl";
 import { downloadBuiltinKeycloakTheme } from "../download-builtin-keycloak-theme";
 import * as child_process from "child_process";
 import { mockTestingResourcesCommonPath, mockTestingResourcesPath, mockTestingSubDirOfPublicDirBasename } from "../mockTestingResourcesPath";
 import { isInside } from "../tools/isInside";
+import type { BuildOptions } from "./BuildOptions";
+import { assert } from "tsafe/assert";
+import { Reflect } from "tsafe/Reflect";
+
+export type BuildOptionsLike = BuildOptionsLike.Standalone | BuildOptionsLike.ExternalAssets;
+
+export namespace BuildOptionsLike {
+    export type Common = {
+        themeName: string;
+        extraPages?: string[];
+        extraThemeProperties?: string[];
+    };
+
+    export type Standalone = Common & {
+        isStandalone: true;
+        urlPathname: string | undefined;
+    };
+
+    export type ExternalAssets = ExternalAssets.SameDomain | ExternalAssets.DifferentDomains;
+
+    export namespace ExternalAssets {
+        export type CommonExternalAssets = Common & {
+            isStandalone: false;
+        };
+
+        export type SameDomain = CommonExternalAssets & {
+            isAppAndKeycloakServerSharingSameDomain: true;
+        };
+
+        export type DifferentDomains = CommonExternalAssets & {
+            isAppAndKeycloakServerSharingSameDomain: false;
+            urlOrigin: string;
+            urlPathname: string | undefined;
+        };
+    }
+}
+
+{
+    const buildOptions = Reflect<BuildOptions>();
+
+    assert<typeof buildOptions extends BuildOptionsLike ? true : false>();
+}
 
 export function generateKeycloakThemeResources(params: {
-    themeName: string;
     reactAppBuildDirPath: string;
     keycloakThemeBuildingDirPath: string;
     keycloakThemeEmailDirPath: string;
-    urlPathname: string;
-    //If urlOrigin is not undefined then it means --externals-assets
-    urlOrigin: undefined | string;
-    extraPagesId: string[];
-    extraThemeProperties: string[];
     keycloakVersion: string;
-}): { doBundleEmailTemplate: boolean } {
-    const {
-        themeName,
-        reactAppBuildDirPath,
-        keycloakThemeBuildingDirPath,
-        keycloakThemeEmailDirPath,
-        urlPathname,
-        urlOrigin,
-        extraPagesId,
-        extraThemeProperties,
-        keycloakVersion,
-    } = params;
+    buildOptions: BuildOptionsLike;
+}): { doBundlesEmailTemplate: boolean } {
+    const { reactAppBuildDirPath, keycloakThemeBuildingDirPath, keycloakThemeEmailDirPath, keycloakVersion, buildOptions } = params;
 
-    const themeDirPath = pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", themeName, "login");
+    const themeDirPath = pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", buildOptions.themeName, "login");
 
     let allCssGlobalsToDefine: Record<string, string> = {};
 
     transformCodebase({
-        "destDirPath": urlOrigin === undefined ? pathJoin(themeDirPath, "resources", "build") : reactAppBuildDirPath,
+        "destDirPath": buildOptions.isStandalone ? pathJoin(themeDirPath, "resources", "build") : reactAppBuildDirPath,
         "srcDirPath": reactAppBuildDirPath,
         "transformSourceCode": ({ filePath, sourceCode }) => {
             //NOTE: Prevent cycles, excludes the folder we generated for debug in public/
             if (
-                urlOrigin === undefined &&
+                buildOptions.isStandalone &&
                 isInside({
                     "dirPath": pathJoin(reactAppBuildDirPath, mockTestingSubDirOfPublicDirBasename),
                     filePath,
@@ -51,7 +79,11 @@ export function generateKeycloakThemeResources(params: {
                 return undefined;
             }
 
-            if (urlOrigin === undefined && /\.css?$/i.test(filePath)) {
+            if (/\.css?$/i.test(filePath)) {
+                if (!buildOptions.isStandalone) {
+                    return undefined;
+                }
+
                 const { cssGlobalsToDefine, fixedCssCode } = replaceImportsInCssCode({
                     "cssCode": sourceCode.toString("utf8"),
                 });
@@ -61,27 +93,27 @@ export function generateKeycloakThemeResources(params: {
                     ...cssGlobalsToDefine,
                 };
 
-                return {
-                    "modifiedSourceCode": Buffer.from(fixedCssCode, "utf8"),
-                };
+                return { "modifiedSourceCode": Buffer.from(fixedCssCode, "utf8") };
             }
 
             if (/\.js?$/i.test(filePath)) {
+                if (!buildOptions.isStandalone && buildOptions.isAppAndKeycloakServerSharingSameDomain) {
+                    return undefined;
+                }
+
                 const { fixedJsCode } = replaceImportsFromStaticInJsCode({
                     "jsCode": sourceCode.toString("utf8"),
-                    urlOrigin,
+                    buildOptions,
                 });
 
-                return {
-                    "modifiedSourceCode": Buffer.from(fixedJsCode, "utf8"),
-                };
+                return { "modifiedSourceCode": Buffer.from(fixedJsCode, "utf8") };
             }
 
-            return urlOrigin === undefined ? { "modifiedSourceCode": sourceCode } : undefined;
+            return buildOptions.isStandalone ? { "modifiedSourceCode": sourceCode } : undefined;
         },
     });
 
-    let doBundleEmailTemplate: boolean;
+    let doBundlesEmailTemplate: boolean;
 
     email: {
         if (!fs.existsSync(keycloakThemeEmailDirPath)) {
@@ -91,11 +123,11 @@ export function generateKeycloakThemeResources(params: {
                     `To start customizing the email template, run: 👉 npx create-keycloak-email-directory 👈`,
                 ].join("\n"),
             );
-            doBundleEmailTemplate = false;
+            doBundlesEmailTemplate = false;
             break email;
         }
 
-        doBundleEmailTemplate = true;
+        doBundlesEmailTemplate = true;
 
         transformCodebase({
             "srcDirPath": keycloakThemeEmailDirPath,
@@ -104,13 +136,12 @@ export function generateKeycloakThemeResources(params: {
     }
 
     const { generateFtlFilesCode } = generateFtlFilesCodeFactory({
-        "cssGlobalsToDefine": allCssGlobalsToDefine,
         "indexHtmlCode": fs.readFileSync(pathJoin(reactAppBuildDirPath, "index.html")).toString("utf8"),
-        urlPathname,
-        urlOrigin,
+        "cssGlobalsToDefine": allCssGlobalsToDefine,
+        "buildOptions": buildOptions,
     });
 
-    [...pageIds, ...extraPagesId].forEach(pageId => {
+    [...pageIds, ...(buildOptions.extraPages ?? [])].forEach(pageId => {
         const { ftlCode } = generateFtlFilesCode({ pageId });
 
         fs.mkdirSync(themeDirPath, { "recursive": true });
@@ -161,8 +192,8 @@ export function generateKeycloakThemeResources(params: {
 
     fs.writeFileSync(
         pathJoin(themeDirPath, "theme.properties"),
-        Buffer.from("parent=keycloak".concat("\n\n", extraThemeProperties.join("\n\n")), "utf8"),
+        Buffer.from(["parent=keycloak", ...(buildOptions.extraThemeProperties ?? [])].join("\n\n"), "utf8"),
     );
 
-    return { doBundleEmailTemplate };
+    return { doBundlesEmailTemplate };
 }

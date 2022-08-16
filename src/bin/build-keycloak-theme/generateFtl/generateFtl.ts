@@ -1,9 +1,14 @@
 import cheerio from "cheerio";
-import { replaceImportsFromStaticInJsCode, replaceImportsInInlineCssCode, generateCssCodeToDefineGlobals } from "../replaceImportFromStatic";
+import { replaceImportsFromStaticInJsCode } from "../replacers/replaceImportsFromStaticInJsCode";
+import { generateCssCodeToDefineGlobals } from "../replacers/replaceImportsInCssCode";
+import { replaceImportsInInlineCssCode } from "../replacers/replaceImportsInInlineCssCode";
 import * as fs from "fs";
 import { join as pathJoin } from "path";
 import { objectKeys } from "tsafe/objectKeys";
 import { ftlValuesGlobalName } from "../ftlValuesGlobalName";
+import type { BuildOptions } from "../BuildOptions";
+import { assert } from "tsafe/assert";
+import { Reflect } from "tsafe/Reflect";
 
 // https://github.com/keycloak/keycloak/blob/main/services/src/main/java/org/keycloak/forms/login/freemarker/Templates.java
 export const pageIds = [
@@ -25,58 +30,111 @@ export const pageIds = [
     "logout-confirm.ftl",
 ] as const;
 
+export type BuildOptionsLike = BuildOptionsLike.Standalone | BuildOptionsLike.ExternalAssets;
+
+export namespace BuildOptionsLike {
+    export type Standalone = {
+        isStandalone: true;
+        urlPathname: string | undefined;
+    };
+
+    export type ExternalAssets = ExternalAssets.SameDomain | ExternalAssets.DifferentDomains;
+
+    export namespace ExternalAssets {
+        export type CommonExternalAssets = {
+            isStandalone: false;
+        };
+
+        export type SameDomain = CommonExternalAssets & {
+            isAppAndKeycloakServerSharingSameDomain: true;
+        };
+
+        export type DifferentDomains = CommonExternalAssets & {
+            isAppAndKeycloakServerSharingSameDomain: false;
+            urlOrigin: string;
+            urlPathname: string | undefined;
+        };
+    }
+}
+
+{
+    const buildOptions = Reflect<BuildOptions>();
+
+    assert<typeof buildOptions extends BuildOptionsLike ? true : false>();
+}
+
 export type PageId = typeof pageIds[number];
 
 export function generateFtlFilesCodeFactory(params: {
-    cssGlobalsToDefine: Record<string, string>;
     indexHtmlCode: string;
-    urlPathname: string;
-    urlOrigin: undefined | string;
+    //NOTE: Expected to be an empty object if external assets mode is enabled.
+    cssGlobalsToDefine: Record<string, string>;
+    buildOptions: BuildOptionsLike;
 }) {
-    const { cssGlobalsToDefine, indexHtmlCode, urlPathname, urlOrigin } = params;
+    const { cssGlobalsToDefine, indexHtmlCode, buildOptions } = params;
 
     const $ = cheerio.load(indexHtmlCode);
 
-    $("script:not([src])").each((...[, element]) => {
-        const { fixedJsCode } = replaceImportsFromStaticInJsCode({
-            "jsCode": $(element).html()!,
-            urlOrigin,
+    fix_imports_statements: {
+        if (!buildOptions.isStandalone && buildOptions.isAppAndKeycloakServerSharingSameDomain) {
+            break fix_imports_statements;
+        }
+
+        $("script:not([src])").each((...[, element]) => {
+            const { fixedJsCode } = replaceImportsFromStaticInJsCode({
+                "jsCode": $(element).html()!,
+                buildOptions,
+            });
+
+            $(element).text(fixedJsCode);
         });
 
-        $(element).text(fixedJsCode);
-    });
+        $("style").each((...[, element]) => {
+            const { fixedCssCode } = replaceImportsInInlineCssCode({
+                "cssCode": $(element).html()!,
+                buildOptions,
+            });
 
-    $("style").each((...[, element]) => {
-        const { fixedCssCode } = replaceImportsInInlineCssCode({
-            "cssCode": $(element).html()!,
-            "urlPathname": params.urlPathname,
-            urlOrigin,
+            $(element).text(fixedCssCode);
         });
 
-        $(element).text(fixedCssCode);
-    });
+        (
+            [
+                ["link", "href"],
+                ["script", "src"],
+            ] as const
+        ).forEach(([selector, attrName]) =>
+            $(selector).each((...[, element]) => {
+                const href = $(element).attr(attrName);
 
-    (
-        [
-            ["link", "href"],
-            ["script", "src"],
-        ] as const
-    ).forEach(([selector, attrName]) =>
-        $(selector).each((...[, element]) => {
-            const href = $(element).attr(attrName);
+                if (href === undefined) {
+                    return;
+                }
 
-            if (href === undefined) {
-                return;
-            }
+                $(element).attr(
+                    attrName,
+                    buildOptions.isStandalone
+                        ? href.replace(new RegExp(`^${(buildOptions.urlPathname ?? "/").replace(/\//g, "\\/")}`), "${url.resourcesPath}/build/")
+                        : href.replace(/^\//, `${buildOptions.urlOrigin}/`),
+                );
+            }),
+        );
 
-            $(element).attr(
-                attrName,
-                urlOrigin !== undefined
-                    ? href.replace(/^\//, `${urlOrigin}/`)
-                    : href.replace(new RegExp(`^${urlPathname.replace(/\//g, "\\/")}`), "${url.resourcesPath}/build/"),
+        if (Object.keys(cssGlobalsToDefine).length !== 0) {
+            $("head").prepend(
+                [
+                    "",
+                    "<style>",
+                    generateCssCodeToDefineGlobals({
+                        cssGlobalsToDefine,
+                        buildOptions,
+                    }).cssCodeToPrependInHead,
+                    "</style>",
+                    "",
+                ].join("\n"),
             );
-        }),
-    );
+        }
+    }
 
     //FTL is no valid html, we can't insert with cheerio, we put placeholder for injecting later.
     const replaceValueBySearchValue = {
@@ -95,18 +153,6 @@ export function generateFtlFilesCodeFactory(params: {
 
     $("head").prepend(
         [
-            ...(Object.keys(cssGlobalsToDefine).length === 0
-                ? []
-                : [
-                      "",
-                      "<style>",
-                      generateCssCodeToDefineGlobals({
-                          cssGlobalsToDefine,
-                          urlPathname,
-                      }).cssCodeToPrependInHead,
-                      "</style>",
-                      "",
-                  ]),
             "<script>",
             `    window.${ftlValuesGlobalName}= ${objectKeys(replaceValueBySearchValue)[0]};`,
             "</script>",

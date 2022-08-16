@@ -5,13 +5,15 @@ import { setupSampleReactProject, sampleReactProjectDirPath } from "./setupSampl
 setupSampleReactProject();
 
 generateKeycloakThemeResources({
-    "themeName": "keycloakify-demo-app",
     "reactAppBuildDirPath": pathJoin(sampleReactProjectDirPath, "build"),
     "keycloakThemeBuildingDirPath": pathJoin(sampleReactProjectDirPath, "build_keycloak_theme"),
     "keycloakThemeEmailDirPath": pathJoin(sampleReactProjectDirPath, "keycloak_email"),
-    "urlPathname": "/keycloakify-demo-app/",
-    "urlOrigin": undefined,
-    "extraPagesId": ["my-custom-page.ftl"],
-    "extraThemeProperties": ["env=test"],
     "keycloakVersion": "11.0.3",
+    "buildOptions": {
+        "themeName": "keycloakify-demo-app",
+        "extraPages": ["my-custom-page.ftl"],
+        "extraThemeProperties": ["env=test"],
+        "isStandalone": true,
+        "urlPathname": "/keycloakify-demo-app/",
+    },
 });
