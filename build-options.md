@@ -6,11 +6,23 @@ Options that can be passed to the `npx build-keycloak-theme` command.
 
 #### `--external-assets`
 
-Build the theme without bundling the assets (static js files, images ect). Keycloakify will read the package.json -> homepage field to know where to download the assets. &#x20;
+{% hint style="info" %}
+`This is for performance optimisation.`
+{% endhint %}
+
+Build the theme without bundling the assets (static js files, images ect). Keycloakify will read the `package.json` -> `homepage` field to know from where the assets should be downloaded. &#x20;
 
 This enable to you to enable CDN and enable big shared file to be cached by the user's browser. &#x20;
 
-See also [`keycloakify.isAppAndKeycloakServerSharingSameDomain`](build-options.md#keycloakify.isappandkeycloakserversharingsamedomain). &#x20;
+Step to make `--external-assets` work: &#x20;
+
+* Provide the url of your app in the `homepage` field of `package.json` [example](https://github.com/garronej/keycloakify-demo-app/blob/7847cc70ef374ab26a6cc7953461cf25603e9a6d/package.json#L2) or in a `public/CNAME` file [example.](https://github.com/garronej/keycloakify-demo-app/blob/main/public/CNAME) (Or use [`keycloakify.isAppAndKeycloakServerSharingSameDomain=true`](build-options.md#keycloakify.isappandkeycloakserversharingsamedomain)`)`
+* Build the theme using `npx build-keycloak-theme --external-assets` [ex](https://github.com/garronej/keycloakify-demo-app/blob/7847cc70ef374ab26a6cc7953461cf25603e9a6d/.github/workflows/ci.yaml#L21)
+* (Optional) Enable [long-term assets caching](https://create-react-app.dev/docs/production-build/#static-file-caching) on the server hosting your app. [This is how you would do it with Ngnix](https://github.com/garronej/keycloakify-demo-app/blob/f08e02e1bd0c67b3cc8d49c03d4dd6d7916f457b/nginx.conf#L17-L29).
+* Make sure not to build your app and the keycloak theme separately (run `yarn keycloak` only once in your CI) and remember to update the Keycloak theme every time you update your app.
+* Be mindful that if your app is down your login pages are down as well.
+
+Checkout a complete setup [here](https://github.com/garronej/keycloakify-demo-app#about-keycloakify)
 
 #### `--silent` [TODO](https://github.com/InseeFrLab/keycloakify/issues/151)
 
