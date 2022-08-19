@@ -14,3 +14,4 @@
 * [💂 Email domain acceptlist](email-domain-acceptlist.md)
 * [🛑 Keycloak error in log](keycloak-error-in-log.md)
 * [💟 Contributing](contributing.md)
+* [📖 Build options](build-options.md)
