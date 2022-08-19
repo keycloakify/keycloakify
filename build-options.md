@@ -43,5 +43,20 @@ More info about this in [this section (I do it only for my project)](limitations
 
 #### keycloakify.extraThemeProperties
 
+By default the `theme.properties` files located in `build_keycloak/src/main/resources/theme/<your app>/login/theme.properties` only contains:&#x20;
 
+```
+parent=keycloak
+```
 
+If, for some reason, you need to add extra properties like for example `env=dev` you can do it by editing your `package.json` this way: &#x20;
+
+```json
+{
+    "keycloakify": {
+        "extraThemeProperties": [ 
+            "env=dev"
+        ]
+    }
+}
+```
