@@ -45,6 +45,13 @@ export function generateJavaStackFiles(params: {
                 `	<version>${version}</version>`,
                 `	<name>${artefactId}</name>`,
                 `	<description />`,
+                `   <build><plugins><plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-jar-plugin</artifactId>`,
+                `   <configuration>`,
+                `   <excludes>`,
+                `   <exclude>**/tmp_xxKdOxnEdx/**</exclude>`,
+                `   </excludes>`,
+                `   </configuration>`,
+                `   </plugin></plugins></build>`,
                 `</project>`,
             ].join("\n");
 
