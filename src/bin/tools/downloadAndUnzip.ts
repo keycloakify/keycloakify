@@ -2,31 +2,74 @@ import { basename as pathBasename, join as pathJoin } from "path";
 import { execSync } from "child_process";
 import * as fs from "fs";
 import { transformCodebase } from "./transformCodebase";
-import { rm_rf, rm, rm_r } from "./rm";
+import { rm, rm_rf } from "./rm";
+import * as crypto from "crypto";
 
 /** assert url ends with .zip */
-export function downloadAndUnzip(params: { url: string; destDirPath: string; pathOfDirToExtractInArchive?: string }) {
-    const { url, destDirPath, pathOfDirToExtractInArchive } = params;
+export function downloadAndUnzip(params: { url: string; destDirPath: string; pathOfDirToExtractInArchive?: string; cacheDirPath: string }) {
+    const { url, destDirPath, pathOfDirToExtractInArchive, cacheDirPath } = params;
 
-    const tmpDirPath = pathJoin(destDirPath, "..", "tmp_xxKdOxnEdx");
-    const zipFilePath = pathBasename(url);
+    const extractDirPath = pathJoin(
+        cacheDirPath,
+        `_${crypto.createHash("sha256").update(JSON.stringify({ url, pathOfDirToExtractInArchive })).digest("hex").substring(0, 15)}`
+    );
 
-    rm_rf(tmpDirPath);
+    fs.mkdirSync(cacheDirPath, { "recursive": true });
 
-    fs.mkdirSync(tmpDirPath, { "recursive": true });
+    const { readIsSuccessByExtractDirPath, writeIsSuccessByExtractDirPath } = (() => {
+        const filePath = pathJoin(cacheDirPath, "isSuccessByExtractDirPath.json");
 
-    execSync(`curl -L ${url} -o ${zipFilePath}`, { "cwd": tmpDirPath });
+        type IsSuccessByExtractDirPath = Record<string, boolean | undefined>;
 
-    execSync(`unzip -o ${zipFilePath}${pathOfDirToExtractInArchive === undefined ? "" : ` "${pathOfDirToExtractInArchive}/**/*"`}`, {
-        "cwd": tmpDirPath
-    });
+        function readIsSuccessByExtractDirPath(): IsSuccessByExtractDirPath {
+            if (!fs.existsSync(filePath)) {
+                return {};
+            }
 
-    rm(pathBasename(url), { "cwd": tmpDirPath });
+            return JSON.parse(fs.readFileSync(filePath).toString("utf8"));
+        }
+
+        function writeIsSuccessByExtractDirPath(isSuccessByExtractDirPath: IsSuccessByExtractDirPath): void {
+            fs.writeFileSync(filePath, Buffer.from(JSON.stringify(isSuccessByExtractDirPath, null, 2), "utf8"));
+        }
+
+        return { readIsSuccessByExtractDirPath, writeIsSuccessByExtractDirPath };
+    })();
+
+    downloadAndUnzip: {
+        const isSuccessByExtractDirPath = readIsSuccessByExtractDirPath();
+
+        if (isSuccessByExtractDirPath[extractDirPath]) {
+            break downloadAndUnzip;
+        }
+
+        writeIsSuccessByExtractDirPath({
+            ...isSuccessByExtractDirPath,
+            [extractDirPath]: false
+        });
+
+        rm_rf(extractDirPath);
+
+        fs.mkdirSync(extractDirPath);
+
+        const zipFileBasename = pathBasename(url);
+
+        execSync(`curl -L ${url} -o ${zipFileBasename}`, { "cwd": extractDirPath });
+
+        execSync(`unzip -o ${zipFileBasename}${pathOfDirToExtractInArchive === undefined ? "" : ` "${pathOfDirToExtractInArchive}/**/*"`}`, {
+            "cwd": extractDirPath
+        });
+
+        rm(zipFileBasename, { "cwd": extractDirPath });
+
+        writeIsSuccessByExtractDirPath({
+            ...isSuccessByExtractDirPath,
+            [extractDirPath]: true
+        });
+    }
 
     transformCodebase({
-        "srcDirPath": pathOfDirToExtractInArchive === undefined ? tmpDirPath : pathJoin(tmpDirPath, pathOfDirToExtractInArchive),
+        "srcDirPath": pathOfDirToExtractInArchive === undefined ? extractDirPath : pathJoin(extractDirPath, pathOfDirToExtractInArchive),
         destDirPath
     });
-
-    rm_r(tmpDirPath);
 }
