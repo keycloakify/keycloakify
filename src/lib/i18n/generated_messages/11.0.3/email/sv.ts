@@ -39,7 +39,7 @@ const messages = {
     "eventUpdateTotpSubject": "Uppdatera OTP",
     "eventUpdateTotpBody": "OTP uppdaterades för ditt konto den {0} från {1}. Om det inte var du, vänligen kontakta i så fall en administratör.",
     "eventUpdateTotpBodyHtml":
-        "<p>OTP uppdaterades för ditt konto den {0} från {1}. Om det inte var du, vänligen kontakta i så fall en administratör.</p>",
+        "<p>OTP uppdaterades för ditt konto den {0} från {1}. Om det inte var du, vänligen kontakta i så fall en administratör.</p>"
 };
 
 export default messages;

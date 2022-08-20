@@ -12,7 +12,7 @@ export function downloadBuiltinKeycloakTheme(params: { keycloakVersion: string; 
         downloadAndUnzip({
             "destDirPath": destDirPath,
             "url": `https://github.com/keycloak/keycloak/archive/refs/tags/${keycloakVersion}.zip`,
-            "pathOfDirToExtractInArchive": `keycloak-${keycloakVersion}/themes/src/main/resources${ext}/theme`,
+            "pathOfDirToExtractInArchive": `keycloak-${keycloakVersion}/themes/src/main/resources${ext}/theme`
         });
     }
 }
@@ -27,7 +27,7 @@ if (require.main === module) {
 
         downloadBuiltinKeycloakTheme({
             keycloakVersion,
-            destDirPath,
+            destDirPath
         });
     })();
 }

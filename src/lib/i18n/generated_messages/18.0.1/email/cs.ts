@@ -64,7 +64,7 @@ const messages = {
     "linkExpirationFormatter.timePeriodUnit.days.3": "dny",
     "linkExpirationFormatter.timePeriodUnit.days.4": "dny",
     "emailVerificationBodyCode": "Ověřte prosím svou e-mailovou adresu zadáním následujícího kódu.\n\n{0}\n\n.",
-    "emailVerificationBodyCodeHtml": "<p>Ověřte prosím svou e-mailovou adresu zadáním následujícího kódu.</p><p><b>{0}</b></p>",
+    "emailVerificationBodyCodeHtml": "<p>Ověřte prosím svou e-mailovou adresu zadáním následujícího kódu.</p><p><b>{0}</b></p>"
 };
 
 export default messages;

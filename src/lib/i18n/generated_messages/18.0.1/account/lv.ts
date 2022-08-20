@@ -179,7 +179,7 @@ const messages = {
     "allApps": "Visas lietojumprogrammas",
     "internalApps": "Iekšējās lietojumprogrammas",
     "thirdpartyApps": "Trešās puses lietojumprogrammas",
-    "appResults": "Rezultāti",
+    "appResults": "Rezultāti"
 };
 
 export default messages;

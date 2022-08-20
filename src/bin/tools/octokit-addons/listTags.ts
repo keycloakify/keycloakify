@@ -19,7 +19,7 @@ export function listTagsFactory(params: { octokit: Octokit }) {
                 owner,
                 repo,
                 per_page,
-                "page": page++,
+                "page": page++
             });
 
             for (const branch of resp.data.map(({ name }) => name)) {

@@ -206,7 +206,7 @@ const messages = {
     "clientNotFoundMessage": "客户端未找到",
     "clientDisabledMessage": "客户端已禁用",
     "invalidParameterMessage": "无效的参数 : {0}",
-    "alreadyLoggedIn": "您已经登录",
+    "alreadyLoggedIn": "您已经登录"
 };
 
 export default messages;

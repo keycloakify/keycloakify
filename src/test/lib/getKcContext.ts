@@ -40,21 +40,21 @@ import { deepClone } from "../../lib/tools/deepClone";
             "mockData": [
                 {
                     "pageId": "login.ftl",
-                    "realm": { displayName },
+                    "realm": { displayName }
                 },
                 {
                     "pageId": "info.ftl",
-                    aNonStandardValue1,
+                    aNonStandardValue1
                 },
                 {
                     "pageId": "register.ftl",
-                    authorizedMailDomains,
+                    authorizedMailDomains
                 },
                 {
                     "pageId": "my-extra-page-2.ftl",
-                    aNonStandardValue2,
-                },
-            ],
+                    aNonStandardValue2
+                }
+            ]
         });
 
         return { kcContext };
@@ -79,8 +79,8 @@ import { deepClone } from "../../lib/tools/deepClone";
                     mock.realm.displayName = displayName;
 
                     return mock;
-                })(),
-            ),
+                })()
+            )
         );
 
         console.log(`PASS ${pageId}`);
@@ -113,8 +113,8 @@ import { deepClone } from "../../lib/tools/deepClone";
                     Object.assign(mock, { aNonStandardValue1 });
 
                     return mock;
-                })(),
-            ),
+                })()
+            )
         );
 
         console.log(`PASS ${pageId}`);
@@ -147,8 +147,8 @@ import { deepClone } from "../../lib/tools/deepClone";
                     Object.assign(mock, { authorizedMailDomains });
 
                     return mock;
-                })(),
-            ),
+                })()
+            )
         );
 
         console.log(`PASS ${pageId}`);
@@ -182,8 +182,8 @@ import { deepClone } from "../../lib/tools/deepClone";
                     Object.assign(mock, { pageId, aNonStandardValue2 });
 
                     return mock;
-                })(),
-            ),
+                })()
+            )
         );
 
         console.log(`PASS ${pageId}`);
@@ -209,8 +209,8 @@ import { deepClone } from "../../lib/tools/deepClone";
                     Object.assign(mock, { pageId });
 
                     return mock;
-                })(),
-            ),
+                })()
+            )
         );
 
         console.log(`PASS ${pageId}`);
@@ -221,7 +221,7 @@ import { deepClone } from "../../lib/tools/deepClone";
     const pageId = "login.ftl";
 
     const { kcContext } = getKcContext({
-        "mockPageId": pageId,
+        "mockPageId": pageId
     });
 
     assert<Equals<typeof kcContext, KcContextBase | undefined>>();

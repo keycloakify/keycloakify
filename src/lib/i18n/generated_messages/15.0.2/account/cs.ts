@@ -149,7 +149,7 @@ const messages = {
     "invalidPasswordRegexPatternMessage": "Neplatné heslo: neshoduje se zadaným regulárním výrazem.",
     "invalidPasswordHistoryMessage": "Neplatné heslo: Nesmí se opakovat žádné z posledních {0} hesel.",
     "invalidPasswordBlacklistedMessage": "Neplatné heslo: heslo je na černé listině.",
-    "invalidPasswordGenericMessage": "Neplatné heslo: nové heslo neodpovídá pravidlům hesla.",
+    "invalidPasswordGenericMessage": "Neplatné heslo: nové heslo neodpovídá pravidlům hesla."
 };
 
 export default messages;

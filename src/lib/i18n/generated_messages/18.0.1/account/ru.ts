@@ -136,7 +136,7 @@ const messages = {
     "invalidPasswordNotUsernameMessage": "Некорректный пароль: пароль не должен совпадать с именем пользователя.",
     "invalidPasswordRegexPatternMessage": "Некорректный пароль: пароль не удовлетворяет регулярному выражению.",
     "invalidPasswordHistoryMessage": "Некорректный пароль: пароль не должен совпадать с последним(и) {0} паролями.",
-    "invalidPasswordGenericMessage": "Некорректный пароль: новый пароль не соответствует правилам пароля.",
+    "invalidPasswordGenericMessage": "Некорректный пароль: новый пароль не соответствует правилам пароля."
 };
 
 export default messages;

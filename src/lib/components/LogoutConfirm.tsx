@@ -35,7 +35,7 @@ const LogoutConfirm = memo(({ kcContext, i18n, ...props }: { kcContext: KcContex
                                             props.kcButtonClass,
                                             props.kcButtonPrimaryClass,
                                             props.kcButtonBlockClass,
-                                            props.kcButtonLargeClass,
+                                            props.kcButtonLargeClass
                                         )}
                                         name="confirmLogout"
                                         id="kc-logout"

@@ -11,7 +11,7 @@ const binDirPath = pathJoin(getProjectRoot(), "dist_test", "bin");
 st.execSyncTrace(
     //`node ${pathJoin(binDirPath, "build-keycloak-theme")} --external-assets`,
     `node ${pathJoin(binDirPath, "build-keycloak-theme")}`,
-    { "cwd": sampleReactProjectDirPath },
+    { "cwd": sampleReactProjectDirPath }
 );
 
 st.execSyncTrace(`node ${pathJoin(binDirPath, "download-builtin-keycloak-theme")}`, { "cwd": sampleReactProjectDirPath });

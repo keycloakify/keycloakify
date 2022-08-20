@@ -233,7 +233,7 @@ const messages = {
     "requiredAction.UPDATE_PASSWORD": "Aktualizace hesla",
     "requiredAction.UPDATE_PROFILE": "Aktualizovat profil",
     "requiredAction.VERIFY_EMAIL": "Ověřit e-mail",
-    "p3pPolicy": 'CP="Toto není politika P3P!"',
+    "p3pPolicy": 'CP="Toto není politika P3P!"'
 };
 
 export default messages;

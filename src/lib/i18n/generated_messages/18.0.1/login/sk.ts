@@ -239,7 +239,7 @@ const messages = {
     "clientCertificate": "certifikát klienta X509:",
     "noCertificate": "[Bez certifikátu]",
     "pageNotFound": "Stránka nebola nájdená",
-    "internalServerError": "Vyskytla sa interná chyba servera",
+    "internalServerError": "Vyskytla sa interná chyba servera"
 };
 
 export default messages;

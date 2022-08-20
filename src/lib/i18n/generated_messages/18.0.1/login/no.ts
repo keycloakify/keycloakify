@@ -196,7 +196,7 @@ const messages = {
     "clientNotFoundMessage": "Klient ikke funnet.",
     "clientDisabledMessage": "Klient deaktivert.",
     "invalidParameterMessage": "Ugyldig parameter: {0}",
-    "alreadyLoggedIn": "Du er allerede innlogget.",
+    "alreadyLoggedIn": "Du er allerede innlogget."
 };
 
 export default messages;

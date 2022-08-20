@@ -182,7 +182,7 @@ const messages = {
     "missingParameterMessage": "Paràmetres que falten: {0}",
     "clientNotFoundMessage": "Client no trobat",
     "invalidParameterMessage": "Paràmetre no vàlid: {0}",
-    "alreadyLoggedIn": "You are already logged in.",
+    "alreadyLoggedIn": "You are already logged in."
 };
 
 export default messages;

@@ -61,7 +61,7 @@ export function replaceImportsFromStaticInJsCode(params: { jsCode: string; build
                     `
                 }
 				return "${u}";
-			})()] = function(${e}) { return "${buildOptions.isStandalone ? "/build/" : ""}static/${language}/"`,
+			})()] = function(${e}) { return "${buildOptions.isStandalone ? "/build/" : ""}static/${language}/"`
     ];
 
     const fixedJsCode = jsCode
@@ -70,13 +70,13 @@ export function replaceImportsFromStaticInJsCode(params: { jsCode: string; build
         .replace(/([a-zA-Z]+\.[a-zA-Z]+)\+"static\//g, (...[, group]) =>
             buildOptions.isStandalone
                 ? `window.${ftlValuesGlobalName}.url.resourcesPath + "/build/static/`
-                : `("${ftlValuesGlobalName}" in window ? "${buildOptions.urlOrigin}" : "") + ${group} + "static/`,
+                : `("${ftlValuesGlobalName}" in window ? "${buildOptions.urlOrigin}" : "") + ${group} + "static/`
         )
         //TODO: Write a test case for this
         .replace(/".chunk.css",([a-zA-Z])+=([a-zA-Z]+\.[a-zA-Z]+)\+([a-zA-Z]+),/, (...[, group1, group2, group3]) =>
             buildOptions.isStandalone
                 ? `".chunk.css",${group1} = window.${ftlValuesGlobalName}.url.resourcesPath + "/build/" + ${group3},`
-                : `".chunk.css",${group1} = ("${ftlValuesGlobalName}" in window ? "${buildOptions.urlOrigin}" : "") + ${group2} + ${group3},`,
+                : `".chunk.css",${group1} = ("${ftlValuesGlobalName}" in window ? "${buildOptions.urlOrigin}" : "") + ${group2} + ${group3},`
         );
 
     return { fixedJsCode };

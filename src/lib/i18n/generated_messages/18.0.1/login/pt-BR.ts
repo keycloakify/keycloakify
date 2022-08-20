@@ -337,7 +337,7 @@ const messages = {
     "errasingData": "Remover todos os seus dados",
     "loggingOutImmediately": "Sair da aplicação imediatamente",
     "accountUnusable": "Qualquer uso subsequente da aplicação não será possível com esta conta",
-    "userDeletedSuccessfully": "Usuário excluído com sucesso",
+    "userDeletedSuccessfully": "Usuário excluído com sucesso"
 };
 
 export default messages;

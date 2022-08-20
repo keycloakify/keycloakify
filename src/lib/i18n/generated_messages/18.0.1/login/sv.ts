@@ -196,7 +196,7 @@ const messages = {
     "clientDisabledMessage": "Klienten är inaktiverad.",
     "invalidParameterMessage": "Ogiltig parameter: {0}",
     "alreadyLoggedIn": "Du är redan inloggad.",
-    "loginAccountTitle": "Logga in till ditt konto",
+    "loginAccountTitle": "Logga in till ditt konto"
 };
 
 export default messages;

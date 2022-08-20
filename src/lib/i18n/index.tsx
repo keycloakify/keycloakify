@@ -102,7 +102,7 @@ export function __unsafe_useI18n<ExtraMessageKey extends string = never>(params:
                         default:
                             return { "default": {} };
                     }
-                })(),
+                })()
             ]).then(modules => modules.map(module => module.default));
 
             if (!isMounted) {
@@ -114,13 +114,13 @@ export function __unsafe_useI18n<ExtraMessageKey extends string = never>(params:
                     "fallbackMessages": {
                         ...fallbackMessages,
                         ...(keycloakifyExtraMessages[fallbackLanguageTag] ?? {}),
-                        ...(extraMessages[fallbackLanguageTag] ?? {}),
+                        ...(extraMessages[fallbackLanguageTag] ?? {})
                     } as any,
                     "messages": {
                         ...messages,
                         ...((keycloakifyExtraMessages as any)[currentLanguageTag] ?? {}),
-                        ...(extraMessages[currentLanguageTag] ?? {}),
-                    } as any,
+                        ...(extraMessages[currentLanguageTag] ?? {})
+                    } as any
                 }),
                 currentLanguageTag,
                 "changeLocale": newLanguageTag => {
@@ -137,8 +137,8 @@ export function __unsafe_useI18n<ExtraMessageKey extends string = never>(params:
                     assert(false, "never");
                 },
                 "labelBySupportedLanguageTag": Object.fromEntries(
-                    (kcContext.locale?.supported ?? []).map(({ languageTag, label }) => [languageTag, label]),
-                ),
+                    (kcContext.locale?.supported ?? []).map(({ languageTag, label }) => [languageTag, label])
+                )
             });
         })();
 
@@ -158,7 +158,7 @@ export function useI18n<ExtraMessageKey extends string = never>(params: {
 }): I18n<MessageKeyBase | ExtraMessageKey> | null {
     return useI18n_private({
         ...params,
-        "doSkip": false,
+        "doSkip": false
     });
 }
 
@@ -223,7 +223,7 @@ function createI18nTranslationFunctions<MessageKey extends string>(params: {
         const out = resolveMsg({
             "key": keyUnwrappedFromCurlyBraces,
             args,
-            doRenderMarkdown,
+            doRenderMarkdown
         });
 
         return (out !== undefined ? out : doRenderMarkdown ? <span>{keyUnwrappedFromCurlyBraces}</span> : keyUnwrappedFromCurlyBraces) as any;
@@ -233,7 +233,7 @@ function createI18nTranslationFunctions<MessageKey extends string>(params: {
         "msgStr": (key, ...args) => resolveMsg({ key, args, "doRenderMarkdown": false }) as string,
         "msg": (key, ...args) => resolveMsg({ key, args, "doRenderMarkdown": true }) as JSX.Element,
         "advancedMsg": (key, ...args) => resolveMsgAdvanced({ key, args, "doRenderMarkdown": true }) as JSX.Element,
-        "advancedMsgStr": (key, ...args) => resolveMsgAdvanced({ key, args, "doRenderMarkdown": false }) as string,
+        "advancedMsgStr": (key, ...args) => resolveMsgAdvanced({ key, args, "doRenderMarkdown": false }) as string
     };
 }
 
@@ -243,7 +243,7 @@ const keycloakifyExtraMessages = {
         "shouldBeDifferent": "{0} should be different to {1}",
         "shouldMatchPattern": "Pattern should match: `/{0}/`",
         "mustBeAnInteger": "Must be an integer",
-        "notAValidOption": "Not a valid option",
+        "notAValidOption": "Not a valid option"
     },
     "fr": {
         /* spell-checker: disable */
@@ -255,7 +255,7 @@ const keycloakifyExtraMessages = {
 
         "logoutConfirmTitle": "Déconnexion",
         "logoutConfirmHeader": "Êtes-vous sûr(e) de vouloir vous déconnecter ?",
-        "doLogout": "Se déconnecter",
+        "doLogout": "Se déconnecter"
         /* spell-checker: enable */
-    },
+    }
 };

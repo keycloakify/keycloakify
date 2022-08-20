@@ -15,7 +15,7 @@ const messages = {
     "ldapErrorMissingClientId": "KlientID må være tilgjengelig i config når sikkerhetsdomenerollemapping ikke brukes.",
     "ldapErrorCantPreserveGroupInheritanceWithUIDMembershipType": "Ikke mulig å bevare gruppearv og samtidig bruke UID medlemskapstype.",
     "ldapErrorCantWriteOnlyForReadOnlyLdap": "Kan ikke sette write-only når LDAP leverandør-modus ikke er WRITABLE",
-    "ldapErrorCantWriteOnlyAndReadOnly": "Kan ikke sette både write-only og read-only",
+    "ldapErrorCantWriteOnlyAndReadOnly": "Kan ikke sette både write-only og read-only"
 };
 
 export default messages;

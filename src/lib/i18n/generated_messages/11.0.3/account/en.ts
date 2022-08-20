@@ -318,7 +318,7 @@ const messages = {
     "openshift.scope.user_info": "User information",
     "openshift.scope.user_check-access": "User access information",
     "openshift.scope.user_full": "Full Access",
-    "openshift.scope.list-projects": "List projects",
+    "openshift.scope.list-projects": "List projects"
 };
 
 export default messages;

@@ -13,20 +13,20 @@ export const kcContextCommonMock: KcContextBase.Common = {
         "resourcesPath": pathJoin(PUBLIC_URL, mockTestingResourcesPath),
         "resourcesCommonPath": pathJoin(PUBLIC_URL, mockTestingResourcesCommonPath),
         "loginRestartFlowUrl": "/auth/realms/myrealm/login-actions/restart?client_id=account&tab_id=HoAx28ja4xg",
-        "loginUrl": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg",
+        "loginUrl": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg"
     },
     "realm": {
         "name": "myrealm",
         "displayName": "myrealm",
         "displayNameHtml": "myrealm",
         "internationalizationEnabled": true,
-        "registrationEmailAsUsername": false,
+        "registrationEmailAsUsername": false
     },
     "messagesPerField": {
         "printIfExists": (...[, x]) => x,
         "existsError": () => true,
         "get": key => `Fake error for ${key}`,
-        "exists": () => true,
+        "exists": () => true
     },
     "locale": {
         "supported": [
@@ -34,117 +34,117 @@ export const kcContextCommonMock: KcContextBase.Common = {
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=de",
                 "label": "Deutsch",
-                "languageTag": "de",
+                "languageTag": "de"
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=no",
                 "label": "Norsk",
-                "languageTag": "no",
+                "languageTag": "no"
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=ru",
                 "label": "Русский",
-                "languageTag": "ru",
+                "languageTag": "ru"
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=sv",
                 "label": "Svenska",
-                "languageTag": "sv",
+                "languageTag": "sv"
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=pt-BR",
                 "label": "Português (Brasil)",
-                "languageTag": "pt-BR",
+                "languageTag": "pt-BR"
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=lt",
                 "label": "Lietuvių",
-                "languageTag": "lt",
+                "languageTag": "lt"
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=en",
                 "label": "English",
-                "languageTag": "en",
+                "languageTag": "en"
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=it",
                 "label": "Italiano",
-                "languageTag": "it",
+                "languageTag": "it"
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=fr",
                 "label": "Français",
-                "languageTag": "fr",
+                "languageTag": "fr"
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=zh-CN",
                 "label": "中文简体",
-                "languageTag": "zh-CN",
+                "languageTag": "zh-CN"
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=es",
                 "label": "Español",
-                "languageTag": "es",
+                "languageTag": "es"
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=cs",
                 "label": "Čeština",
-                "languageTag": "cs",
+                "languageTag": "cs"
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=ja",
                 "label": "日本語",
-                "languageTag": "ja",
+                "languageTag": "ja"
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=sk",
                 "label": "Slovenčina",
-                "languageTag": "sk",
+                "languageTag": "sk"
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=pl",
                 "label": "Polski",
-                "languageTag": "pl",
+                "languageTag": "pl"
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=ca",
                 "label": "Català",
-                "languageTag": "ca",
+                "languageTag": "ca"
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=nl",
                 "label": "Nederlands",
-                "languageTag": "nl",
+                "languageTag": "nl"
             },
             {
                 "url": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=tr",
                 "label": "Türkçe",
-                "languageTag": "tr",
-            },
+                "languageTag": "tr"
+            }
             /* spell-checker: enable */
         ],
-        "currentLanguageTag": "en",
+        "currentLanguageTag": "en"
     },
     "auth": {
         "showUsername": false,
         "showResetCredentials": false,
-        "showTryAnotherWayLink": false,
+        "showTryAnotherWayLink": false
     },
     "client": {
-        "clientId": "myApp",
+        "clientId": "myApp"
     },
     "scripts": [],
     "message": {
         "type": "success",
-        "summary": "This is a test message",
+        "summary": "This is a test message"
     },
-    "isAppInitiatedAction": false,
+    "isAppInitiatedAction": false
 };
 
 const loginUrl = {
     ...kcContextCommonMock.url,
     "loginResetCredentialsUrl": "/auth/realms/myrealm/login-actions/reset-credentials?client_id=account&tab_id=HoAx28ja4xg",
-    "registrationUrl": "/auth/realms/myrealm/login-actions/registration?client_id=account&tab_id=HoAx28ja4xg",
+    "registrationUrl": "/auth/realms/myrealm/login-actions/registration?client_id=account&tab_id=HoAx28ja4xg"
 };
 
 export const kcContextMocks: KcContextBase[] = [
@@ -158,17 +158,17 @@ export const kcContextMocks: KcContextBase[] = [
             "rememberMe": true,
             "password": true,
             "resetPasswordAllowed": true,
-            "registrationAllowed": true,
+            "registrationAllowed": true
         },
         "auth": kcContextCommonMock.auth!,
         "social": {
-            "displayInfo": true,
+            "displayInfo": true
         },
         "usernameEditDisabled": false,
         "login": {
-            "rememberMe": false,
+            "rememberMe": false
         },
-        "registrationDisabled": false,
+        "registrationDisabled": false
     }),
     ...(() => {
         const registerCommon: KcContextBase.RegisterCommon = {
@@ -176,15 +176,15 @@ export const kcContextMocks: KcContextBase[] = [
             "url": {
                 ...loginUrl,
                 "registrationAction":
-                    "http://localhost:8080/auth/realms/myrealm/login-actions/registration?session_code=gwZdUeO7pbYpFTRxiIxRg_QtzMbtFTKrNu6XW_f8asM&execution=12146ce0-b139-4bbd-b25b-0eccfee6577e&client_id=account&tab_id=uS8lYfebLa0",
+                    "http://localhost:8080/auth/realms/myrealm/login-actions/registration?session_code=gwZdUeO7pbYpFTRxiIxRg_QtzMbtFTKrNu6XW_f8asM&execution=12146ce0-b139-4bbd-b25b-0eccfee6577e&client_id=account&tab_id=uS8lYfebLa0"
             },
             "scripts": [],
             "isAppInitiatedAction": false,
             "passwordRequired": true,
             "recaptchaRequired": false,
             "social": {
-                "displayInfo": true,
-            },
+                "displayInfo": true
+            }
         };
 
         return [
@@ -192,8 +192,8 @@ export const kcContextMocks: KcContextBase[] = [
                 "pageId": "register.ftl",
                 ...registerCommon,
                 "register": {
-                    "formData": {},
-                },
+                    "formData": {}
+                }
             }),
             id<KcContextBase.RegisterUserProfile>({
                 "pageId": "register-user-profile.ftl",
@@ -205,16 +205,16 @@ export const kcContextMocks: KcContextBase[] = [
                             {
                                 "validators": {
                                     "username-prohibited-characters": {
-                                        "ignore.empty.value": true,
+                                        "ignore.empty.value": true
                                     },
                                     "up-username-has-value": {},
                                     "length": {
                                         "ignore.empty.value": true,
                                         "min": "3",
-                                        "max": "255",
+                                        "max": "255"
                                     },
                                     "up-duplicate-username": {},
-                                    "up-username-mutation": {},
+                                    "up-username-mutation": {}
                                 },
                                 "displayName": "${username}",
                                 "annotations": {},
@@ -223,27 +223,27 @@ export const kcContextMocks: KcContextBase[] = [
                                 "autocomplete": "username",
                                 "readOnly": false,
                                 "name": "username",
-                                "value": "xxxx",
+                                "value": "xxxx"
                             },
                             {
                                 "validators": {
                                     "up-email-exists-as-username": {},
                                     "length": {
                                         "max": "255",
-                                        "ignore.empty.value": true,
+                                        "ignore.empty.value": true
                                     },
                                     "up-blank-attribute-value": {
                                         "error-message": "missingEmailMessage",
-                                        "fail-on-null": false,
+                                        "fail-on-null": false
                                     },
                                     "up-duplicate-email": {},
                                     "email": {
-                                        "ignore.empty.value": true,
+                                        "ignore.empty.value": true
                                     },
                                     "pattern": {
                                         "ignore.empty.value": true,
-                                        "pattern": "gmail\\.com$",
-                                    },
+                                        "pattern": "gmail\\.com$"
+                                    }
                                 },
                                 "displayName": "${email}",
                                 "annotations": {},
@@ -251,55 +251,55 @@ export const kcContextMocks: KcContextBase[] = [
                                 "groupAnnotations": {},
                                 "autocomplete": "email",
                                 "readOnly": false,
-                                "name": "email",
+                                "name": "email"
                             },
                             {
                                 "validators": {
                                     "length": {
                                         "max": "255",
-                                        "ignore.empty.value": true,
+                                        "ignore.empty.value": true
                                     },
                                     "person-name-prohibited-characters": {
-                                        "ignore.empty.value": true,
+                                        "ignore.empty.value": true
                                     },
                                     "up-immutable-attribute": {},
-                                    "up-attribute-required-by-metadata-value": {},
+                                    "up-attribute-required-by-metadata-value": {}
                                 },
                                 "displayName": "${firstName}",
                                 "annotations": {},
                                 "required": true,
                                 "groupAnnotations": {},
                                 "readOnly": false,
-                                "name": "firstName",
+                                "name": "firstName"
                             },
                             {
                                 "validators": {
                                     "length": {
                                         "max": "255",
-                                        "ignore.empty.value": true,
+                                        "ignore.empty.value": true
                                     },
                                     "person-name-prohibited-characters": {
-                                        "ignore.empty.value": true,
+                                        "ignore.empty.value": true
                                     },
                                     "up-immutable-attribute": {},
-                                    "up-attribute-required-by-metadata-value": {},
+                                    "up-attribute-required-by-metadata-value": {}
                                 },
                                 "displayName": "${lastName}",
                                 "annotations": {},
                                 "required": true,
                                 "groupAnnotations": {},
                                 "readOnly": false,
-                                "name": "lastName",
-                            },
+                                "name": "lastName"
+                            }
                         ];
 
                         return {
                             attributes,
-                            "attributesByName": Object.fromEntries(attributes.map(attribute => [attribute.name, attribute])) as any,
+                            "attributesByName": Object.fromEntries(attributes.map(attribute => [attribute.name, attribute])) as any
                         } as any;
-                    })(),
-                },
-            }),
+                    })()
+                }
+            })
         ];
     })(),
     id<KcContextBase.Info>({
@@ -311,39 +311,39 @@ export const kcContextMocks: KcContextBase[] = [
         "actionUri": "#",
         "client": {
             "clientId": "myApp",
-            "baseUrl": "#",
-        },
+            "baseUrl": "#"
+        }
     }),
     id<KcContextBase.Error>({
         ...kcContextCommonMock,
         "pageId": "error.ftl",
         "client": {
             "clientId": "myApp",
-            "baseUrl": "#",
+            "baseUrl": "#"
         },
         "message": {
             "type": "error",
-            "summary": "This is the error message",
-        },
+            "summary": "This is the error message"
+        }
     }),
     id<KcContextBase.LoginResetPassword>({
         ...kcContextCommonMock,
         "pageId": "login-reset-password.ftl",
         "realm": {
             ...kcContextCommonMock.realm,
-            "loginWithEmailAllowed": false,
-        },
+            "loginWithEmailAllowed": false
+        }
     }),
     id<KcContextBase.LoginVerifyEmail>({
         ...kcContextCommonMock,
         "pageId": "login-verify-email.ftl",
         "user": {
-            "email": "john.doe@gmail.com",
-        },
+            "email": "john.doe@gmail.com"
+        }
     }),
     id<KcContextBase.Terms>({
         ...kcContextCommonMock,
-        "pageId": "terms.ftl",
+        "pageId": "terms.ftl"
     }),
     id<KcContextBase.LoginOtp>({
         ...kcContextCommonMock,
@@ -352,19 +352,19 @@ export const kcContextMocks: KcContextBase[] = [
             "userOtpCredentials": [
                 {
                     "id": "id1",
-                    "userLabel": "label1",
+                    "userLabel": "label1"
                 },
                 {
                     "id": "id2",
-                    "userLabel": "label2",
-                },
-            ],
-        },
+                    "userLabel": "label2"
+                }
+            ]
+        }
     }),
     id<KcContextBase.LoginUpdatePassword>({
         ...kcContextCommonMock,
         "pageId": "login-update-password.ftl",
-        "username": "anUsername",
+        "username": "anUsername"
     }),
     id<KcContextBase.LoginUpdateProfile>({
         ...kcContextCommonMock,
@@ -374,21 +374,21 @@ export const kcContextMocks: KcContextBase[] = [
             "username": "anUsername",
             "email": "foo@example.com",
             "firstName": "aFirstName",
-            "lastName": "aLastName",
-        },
+            "lastName": "aLastName"
+        }
     }),
     id<KcContextBase.LoginIdpLinkConfirm>({
         ...kcContextCommonMock,
         "pageId": "login-idp-link-confirm.ftl",
-        "idpAlias": "FranceConnect",
+        "idpAlias": "FranceConnect"
     }),
     id<KcContextBase.LoginIdpLinkEmail>({
         ...kcContextCommonMock,
         "pageId": "login-idp-link-email.ftl",
         "idpAlias": "FranceConnect",
         "brokerContext": {
-            "username": "anUsername",
-        },
+            "username": "anUsername"
+        }
     }),
     id<KcContextBase.LoginConfigTotp>({
         ...kcContextCommonMock,
@@ -407,21 +407,21 @@ export const kcContextMocks: KcContextBase[] = [
                 digits: 6,
                 lookAheadWindow: 1,
                 type: "totp",
-                period: 30,
-            },
-        },
+                period: 30
+            }
+        }
     }),
     id<KcContextBase.LogoutConfirm>({
         ...kcContextCommonMock,
         "pageId": "logout-confirm.ftl",
         "url": {
             ...kcContextCommonMock.url,
-            "logoutConfirmAction": "Continuer?",
+            "logoutConfirmAction": "Continuer?"
         },
         "client": {
             "clientId": "myApp",
-            "baseUrl": "#",
+            "baseUrl": "#"
         },
-        "logoutConfirm": { "code": "123", skipLink: false },
-    }),
+        "logoutConfirm": { "code": "123", skipLink: false }
+    })
 ];

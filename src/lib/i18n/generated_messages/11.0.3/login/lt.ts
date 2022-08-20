@@ -197,7 +197,7 @@ const messages = {
     "clientNotFoundMessage": "Nenurodytas klientas.",
     "clientDisabledMessage": "Kliento galiojimas išjungtas.",
     "invalidParameterMessage": "Neteisingas parametras: {0}",
-    "alreadyLoggedIn": "Jūs jau esate prisijungę.",
+    "alreadyLoggedIn": "Jūs jau esate prisijungę."
 };
 
 export default messages;

@@ -60,7 +60,7 @@ const messages = {
     "linkExpirationFormatter.timePeriodUnit.days": "nap",
     "linkExpirationFormatter.timePeriodUnit.days.1": "nap",
     "emailVerificationBodyCode": "Kérem erősítse meg az email címét a következő kód megadásával.\n\n{0}\n\n.",
-    "emailVerificationBodyCodeHtml": "<p>Kérem erősítse meg az email címét a következő kód megadásával.</p><p><b>{0}</b></p>",
+    "emailVerificationBodyCodeHtml": "<p>Kérem erősítse meg az email címét a következő kód megadásával.</p><p><b>{0}</b></p>"
 };
 
 export default messages;

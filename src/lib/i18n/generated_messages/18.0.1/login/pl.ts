@@ -284,7 +284,7 @@ const messages = {
         "Musisz zweryfikować swój adres e-mail.  Wiadomość e-mail z kodem weryfikacyjnym została wysłana do {0}. Podaj ten kod poniżej.",
     "console-email-code": "Kod z e-mail:",
     "console-accept-terms": "Akceptujesz warunki? [t/n]:",
-    "console-accept": "t",
+    "console-accept": "t"
 };
 
 export default messages;

@@ -38,7 +38,7 @@ const messages = {
     "eventUpdateTotpSubject": "Oppdater engangskode",
     "eventUpdateTotpBody": "Engangskode ble oppdatert for kontoen din på {0} fra {1}. Hvis dette ikke var deg, vennligst kontakt administrator.",
     "eventUpdateTotpBodyHtml":
-        "<p>Engangskode ble oppdatert for kontoen din på {0} fra {1}. Hvis dette ikke var deg, vennligst kontakt administrator. </p>",
+        "<p>Engangskode ble oppdatert for kontoen din på {0} fra {1}. Hvis dette ikke var deg, vennligst kontakt administrator. </p>"
 };
 
 export default messages;

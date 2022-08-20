@@ -295,7 +295,7 @@ const messages = {
     "addPeople": "Tilføj folk at dele ressourcen med",
     "addTeam": "Tilføj hold at dele ressourcen med",
     "myPermissions": "Mine Tilladelser",
-    "waitingforApproval": "Afventer godkendelse",
+    "waitingforApproval": "Afventer godkendelse"
 };
 
 export default messages;

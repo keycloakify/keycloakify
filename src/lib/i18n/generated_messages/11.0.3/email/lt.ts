@@ -37,7 +37,7 @@ const messages = {
     "eventUpdatePasswordBodyHtml": "<p>{1} paskyroje {0} pakeisas jūsų slaptažodis. Jei Jūs nekeitėte, tuomet susisiekite su administratoriumi</p>",
     "eventUpdateTotpSubject": "OTP atnaujinimas",
     "eventUpdateTotpBody": "OTP Jūsų {1} paskyroje su {0} buvo atnaujintas. Jei tai nebuvote Jūs, tuomet susisiekite su administratoriumi",
-    "eventUpdateTotpBodyHtml": "<p>OTP Jūsų {1} paskyroje su {0} buvo atnaujintas. Jei tai nebuvote Jūs, tuomet susisiekite su administratoriumi</p>",
+    "eventUpdateTotpBodyHtml": "<p>OTP Jūsų {1} paskyroje su {0} buvo atnaujintas. Jei tai nebuvote Jūs, tuomet susisiekite su administratoriumi</p>"
 };
 
 export default messages;

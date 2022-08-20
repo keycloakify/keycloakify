@@ -25,7 +25,7 @@ const messages = {
         "Без конфигурации по части идентификатора URI, URI перенаправления клиента не может содержать несколько компонентов хоста.",
     "pairwiseMalformedSectorIdentifierURI": "Искаженная часть идентификатора URI.",
     "pairwiseFailedToGetRedirectURIs": "Не удалось получить идентификаторы URI перенаправления из части идентификатора URI.",
-    "pairwiseRedirectURIsMismatch": "Клиент URI переадресации не соответствует URI переадресации, полученной из части идентификатора URI.",
+    "pairwiseRedirectURIsMismatch": "Клиент URI переадресации не соответствует URI переадресации, полученной из части идентификатора URI."
 };
 
 export default messages;

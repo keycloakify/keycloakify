@@ -14,6 +14,6 @@ generateKeycloakThemeResources({
         "extraPages": ["my-custom-page.ftl"],
         "extraThemeProperties": ["env=test"],
         "isStandalone": true,
-        "urlPathname": "/keycloakify-demo-app/",
-    },
+        "urlPathname": "/keycloakify-demo-app/"
+    }
 });

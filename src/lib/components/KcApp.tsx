@@ -26,7 +26,7 @@ const KcApp = memo(({ kcContext, i18n: userProvidedI18n, ...props }: { kcContext
         const i18n = useI18n({
             kcContext,
             "extraMessages": {},
-            "doSkip": userProvidedI18n !== undefined,
+            "doSkip": userProvidedI18n !== undefined
         });
 
         return userProvidedI18n ?? i18n;

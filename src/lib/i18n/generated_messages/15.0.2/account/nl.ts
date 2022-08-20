@@ -136,7 +136,7 @@ const messages = {
     "invalidPasswordNotUsernameMessage": "Ongeldig wachtwoord: het mag niet overeenkomen met de gebruikersnaam.",
     "invalidPasswordRegexPatternMessage": "Ongeldig wachtwoord: het voldoet niet aan het door de beheerder ingestelde patroon.",
     "invalidPasswordHistoryMessage": "Ongeldig wachtwoord: het mag niet overeen komen met een van de laatste {0} wachtwoorden.",
-    "invalidPasswordGenericMessage": "Ongeldig wachtwoord: het nieuwe wachtwoord voldoet niet aan het wachtwoordbeleid.",
+    "invalidPasswordGenericMessage": "Ongeldig wachtwoord: het nieuwe wachtwoord voldoet niet aan het wachtwoordbeleid."
 };
 
 export default messages;

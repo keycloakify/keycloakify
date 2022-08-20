@@ -10,7 +10,7 @@ const messages = {
     "invalidPasswordMinSpecialCharsMessage": "Contrasenya incorrecta: ha de contenir almenys {0} caràcters especials.",
     "invalidPasswordMinUpperCaseCharsMessage": "Contrasenya incorrecta: ha de contenir almenys {0} lletres majúscules.",
     "invalidPasswordNotUsernameMessage": "Contrasenya incorrecta: no pot ser igual al nom d'usuari.",
-    "invalidPasswordRegexPatternMessage": "Contrasenya incorrecta: no compleix l'expressió regular.",
+    "invalidPasswordRegexPatternMessage": "Contrasenya incorrecta: no compleix l'expressió regular."
 };
 
 export default messages;

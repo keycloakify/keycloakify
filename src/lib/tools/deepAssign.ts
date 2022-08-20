@@ -16,7 +16,7 @@ export function deepAssign(params: { target: Record<string, unknown>; source: Re
                 "enumerable": true,
                 "writable": true,
                 "configurable": true,
-                "value": dereferencedSource,
+                "value": dereferencedSource
             });
 
             return;
@@ -38,7 +38,7 @@ export function deepAssign(params: { target: Record<string, unknown>; source: Re
 
         deepAssign({
             "target": dereferencedTarget,
-            "source": dereferencedSource,
+            "source": dereferencedSource
         });
     });
 }

@@ -18,14 +18,14 @@ export function downloadAndUnzip(params: { url: string; destDirPath: string; pat
     execSync(`curl -L ${url} -o ${zipFilePath}`, { "cwd": tmpDirPath });
 
     execSync(`unzip -o ${zipFilePath}${pathOfDirToExtractInArchive === undefined ? "" : ` "${pathOfDirToExtractInArchive}/**/*"`}`, {
-        "cwd": tmpDirPath,
+        "cwd": tmpDirPath
     });
 
     rm(pathBasename(url), { "cwd": tmpDirPath });
 
     transformCodebase({
         "srcDirPath": pathOfDirToExtractInArchive === undefined ? tmpDirPath : pathJoin(tmpDirPath, pathOfDirToExtractInArchive),
-        destDirPath,
+        destDirPath
     });
 
     rm_r(tmpDirPath);

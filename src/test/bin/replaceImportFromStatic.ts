@@ -37,8 +37,8 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
         const { fixedJsCode } = replaceImportsFromStaticInJsCode({
             "jsCode": jsCodeUntransformed,
             "buildOptions": {
-                "isStandalone": true,
-            },
+                "isStandalone": true
+            }
         });
 
         const fixedJsCodeExpected = `
@@ -91,8 +91,8 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
             "jsCode": jsCodeUntransformed,
             "buildOptions": {
                 "isStandalone": false,
-                "urlOrigin": "https://demo-app.keycloakify.dev",
-            },
+                "urlOrigin": "https://demo-app.keycloakify.dev"
+            }
         });
 
         const fixedJsCodeExpected = `
@@ -156,7 +156,7 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
             .my-div {
                 background-image: url(/static/media/something.svg);
             }
-        `,
+        `
     });
 
     const fixedCssCodeExpected = `
@@ -177,7 +177,7 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
 
     const cssGlobalsToDefineExpected = {
         "url1f9ef5a892c104c": "url(/logo192.png) no-repeat center center",
-        "urldd75cab58377c19": "url(/static/media/something.svg)",
+        "urldd75cab58377c19": "url(/static/media/something.svg)"
     };
 
     assert(same(cssGlobalsToDefine, cssGlobalsToDefineExpected));
@@ -185,8 +185,8 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
     const { cssCodeToPrependInHead } = generateCssCodeToDefineGlobals({
         cssGlobalsToDefine,
         "buildOptions": {
-            "urlPathname": undefined,
-        },
+            "urlPathname": undefined
+        }
     });
 
     const cssCodeToPrependInHeadExpected = `
@@ -213,7 +213,7 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
             .my-div {
                 background-image: url(/x/y/z/static/media/something.svg);
             }
-        `,
+        `
     });
 
     const fixedCssCodeExpected = `
@@ -234,7 +234,7 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
 
     const cssGlobalsToDefineExpected = {
         "urlf8277cddaa2be78": "url(/x/y/z/logo192.png) no-repeat center center",
-        "url8bdc0887b97ac9a": "url(/x/y/z/static/media/something.svg)",
+        "url8bdc0887b97ac9a": "url(/x/y/z/static/media/something.svg)"
     };
 
     assert(same(cssGlobalsToDefine, cssGlobalsToDefineExpected));
@@ -242,8 +242,8 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
     const { cssCodeToPrependInHead } = generateCssCodeToDefineGlobals({
         cssGlobalsToDefine,
         "buildOptions": {
-            "urlPathname": "/x/y/z/",
-        },
+            "urlPathname": "/x/y/z/"
+        }
     });
 
     const cssCodeToPrependInHeadExpected = `
@@ -293,8 +293,8 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
             cssCode,
             "buildOptions": {
                 "isStandalone": true,
-                "urlPathname": undefined,
-            },
+                "urlPathname": undefined
+            }
         });
 
         const fixedCssCodeExpected = `
@@ -341,8 +341,8 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
             "buildOptions": {
                 "isStandalone": false,
                 "urlOrigin": "https://demo-app.keycloakify.dev",
-                "urlPathname": undefined,
-            },
+                "urlPathname": undefined
+            }
         });
 
         const fixedCssCodeExpected = `
@@ -421,8 +421,8 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
             cssCode,
             "buildOptions": {
                 "isStandalone": true,
-                "urlPathname": "/x/y/z/",
-            },
+                "urlPathname": "/x/y/z/"
+            }
         });
 
         const fixedCssCodeExpected = `
@@ -469,8 +469,8 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
             "buildOptions": {
                 "isStandalone": false,
                 "urlOrigin": "https://demo-app.keycloakify.dev",
-                "urlPathname": "/x/y/z/",
-            },
+                "urlPathname": "/x/y/z/"
+            }
         });
 
         const fixedCssCodeExpected = `

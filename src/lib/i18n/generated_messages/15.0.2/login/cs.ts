@@ -348,7 +348,7 @@ const messages = {
     "loggingOutImmediately": "Okamžité odhlášení",
     "accountUnusable": "Další použití aplikace s tímto účtem nebude možné",
     "userDeletedSuccessfully": "Uživatel úspěšně odstraněn",
-    "access-denied": "Přístup odepřen",
+    "access-denied": "Přístup odepřen"
 };
 
 export default messages;

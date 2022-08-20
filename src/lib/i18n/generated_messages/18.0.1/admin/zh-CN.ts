@@ -25,7 +25,7 @@ const messages = {
         "Without a configured Sector Identifier URI, client redirect URIs must not contain multiple host components.",
     "pairwiseMalformedSectorIdentifierURI": "Malformed Sector Identifier URI.",
     "pairwiseFailedToGetRedirectURIs": "无法从服务器获得重定向URL",
-    "pairwiseRedirectURIsMismatch": "客户端的重定向URI与服务器端获取的URI配置不匹配。",
+    "pairwiseRedirectURIsMismatch": "客户端的重定向URI与服务器端获取的URI配置不匹配。"
 };
 
 export default messages;

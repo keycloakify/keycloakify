@@ -311,7 +311,7 @@ const messages = {
     "webauthn-error-auth-verification": "セキュリティーキーの認証結果が無効です。",
     "webauthn-error-register-verification": "セキュリティーキーの登録結果が無効です。",
     "webauthn-error-user-not-found": "セキュリティーキーで認証された不明なユーザー。",
-    "identity-provider-redirector": "別のアイデンティティー・プロバイダーと接続する",
+    "identity-provider-redirector": "別のアイデンティティー・プロバイダーと接続する"
 };
 
 export default messages;

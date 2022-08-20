@@ -329,7 +329,7 @@ const messages = {
     "webauthn-error-auth-verification": "Resultatet fra log ind med sikkerhedsnøgle er ugyldigt.",
     "webauthn-error-register-verification": "Resultatet fra registrering med sikkerhedsnøglen er ugyldigt.",
     "webauthn-error-user-not-found": "Ukendt bruger authenticated med sikkerhedsnøglen.",
-    "identity-provider-redirector": "Forbind med en anden Identitetsudbyder",
+    "identity-provider-redirector": "Forbind med en anden Identitetsudbyder"
 };
 
 export default messages;

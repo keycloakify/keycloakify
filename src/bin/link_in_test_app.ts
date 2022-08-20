@@ -14,14 +14,14 @@ fs.writeFileSync(
                 return {
                     ...packageJsonParsed,
                     "main": packageJsonParsed["main"].replace(/^dist\//, ""),
-                    "types": packageJsonParsed["types"].replace(/^dist\//, ""),
+                    "types": packageJsonParsed["types"].replace(/^dist\//, "")
                 };
             })(),
             null,
-            2,
+            2
         ),
-        "utf8",
-    ),
+        "utf8"
+    )
 );
 
 const commonThirdPartyDeps = (() => {
@@ -33,10 +33,10 @@ const commonThirdPartyDeps = (() => {
             .map(namespaceModuleName =>
                 fs
                     .readdirSync(pathJoin(keycloakifyDirPath, "node_modules", namespaceModuleName))
-                    .map(submoduleName => `${namespaceModuleName}/${submoduleName}`),
+                    .map(submoduleName => `${namespaceModuleName}/${submoduleName}`)
             )
             .reduce((prev, curr) => [...prev, ...curr], []),
-        ...standaloneModuleNames,
+        ...standaloneModuleNames
     ];
 })();
 
@@ -55,8 +55,8 @@ const execYarnLink = (params: { targetModuleName?: string; cwd: string }) => {
         cwd,
         "env": {
             ...process.env,
-            "HOME": yarnHomeDirPath,
-        },
+            "HOME": yarnHomeDirPath
+        }
     });
 };
 
@@ -77,7 +77,7 @@ commonThirdPartyDeps.forEach(commonThirdPartyDep => {
     console.log(`${current}/${total} ${commonThirdPartyDep}`);
 
     const localInstallPath = pathJoin(
-        ...[keycloakifyDirPath, "node_modules", ...(commonThirdPartyDep.startsWith("@") ? commonThirdPartyDep.split("/") : [commonThirdPartyDep])],
+        ...[keycloakifyDirPath, "node_modules", ...(commonThirdPartyDep.startsWith("@") ? commonThirdPartyDep.split("/") : [commonThirdPartyDep])]
     );
 
     execYarnLink({ "cwd": localInstallPath });
@@ -85,8 +85,8 @@ commonThirdPartyDeps.forEach(commonThirdPartyDep => {
     testAppNames.forEach(testAppName =>
         execYarnLink({
             "cwd": getTestAppPath(testAppName),
-            "targetModuleName": commonThirdPartyDep,
-        }),
+            "targetModuleName": commonThirdPartyDep
+        })
     );
 });
 
@@ -97,6 +97,6 @@ execYarnLink({ "cwd": pathJoin(keycloakifyDirPath, "dist") });
 testAppNames.forEach(testAppName =>
     execYarnLink({
         "cwd": getTestAppPath(testAppName),
-        "targetModuleName": "keycloakify",
-    }),
+        "targetModuleName": "keycloakify"
+    })
 );

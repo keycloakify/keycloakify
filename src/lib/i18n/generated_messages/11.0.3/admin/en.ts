@@ -37,7 +37,7 @@ const messages = {
         "Without a configured Sector Identifier URI, client redirect URIs must not contain multiple host components.",
     "pairwiseMalformedSectorIdentifierURI": "Malformed Sector Identifier URI.",
     "pairwiseFailedToGetRedirectURIs": "Failed to get redirect URIs from the Sector Identifier URI.",
-    "pairwiseRedirectURIsMismatch": "Client redirect URIs does not match redirect URIs fetched from the Sector Identifier URI.",
+    "pairwiseRedirectURIsMismatch": "Client redirect URIs does not match redirect URIs fetched from the Sector Identifier URI."
 };
 
 export default messages;

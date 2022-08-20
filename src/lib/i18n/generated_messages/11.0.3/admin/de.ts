@@ -12,7 +12,7 @@ const messages = {
     "invalidPasswordRegexPatternMessage": "Ungültiges Passwort: stimmt nicht mit Regex-Muster überein.",
     "invalidPasswordHistoryMessage": "Ungültiges Passwort: darf nicht identisch mit einem der letzten {0} Passwörter sein.",
     "invalidPasswordBlacklistedMessage": "Ungültiges Passwort: Passwort ist zu bekannt und auf der schwarzen Liste.",
-    "invalidPasswordGenericMessage": "Ungültiges Passwort: neues Passwort erfüllt die Passwort-Anforderungen nicht.",
+    "invalidPasswordGenericMessage": "Ungültiges Passwort: neues Passwort erfüllt die Passwort-Anforderungen nicht."
 };
 
 export default messages;

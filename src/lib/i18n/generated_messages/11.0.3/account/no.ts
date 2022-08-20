@@ -146,7 +146,7 @@ const messages = {
     "locale_nl": "Nederlands",
     "locale_pt-BR": "Português (Brasil)",
     "locale_ru": "Русский",
-    "locale_zh-CN": "中文简体",
+    "locale_zh-CN": "中文简体"
 };
 
 export default messages;

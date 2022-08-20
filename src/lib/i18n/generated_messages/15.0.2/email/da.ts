@@ -59,7 +59,7 @@ const messages = {
     "forbindexpirationFormatter.timePeriodUnit.days": "dage",
     "forbindexpirationFormatter.timePeriodUnit.days.1": "dag",
     "emailVerificationBodyCode": "Verificer din email adresse ved at indtaste følgende kode.\n\n{0}\n\n.",
-    "emailVerificationBodyCodeHtml": "<p>Verificer din email adresse ved at indtaste følgende kode.</p><p><b>{0}</b></p>",
+    "emailVerificationBodyCodeHtml": "<p>Verificer din email adresse ved at indtaste følgende kode.</p><p><b>{0}</b></p>"
 };
 
 export default messages;

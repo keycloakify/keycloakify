@@ -55,7 +55,7 @@ const messages = {
     "linkExpirationFormatter.timePeriodUnit.days": "päivää",
     "linkExpirationFormatter.timePeriodUnit.days.1": "päivä",
     "emailVerificationBodyCode": "Ole hyvä ja vahvista sähköpostiosoitteesi alla olevalla koodilla.\n\n{0}\n\n.",
-    "emailVerificationBodyCodeHtml": "<p>Ole hyvä ja vahvista sähköpostiosoitteesi alla olevalla koodilla.</p><p><b>{0}</b></p>",
+    "emailVerificationBodyCodeHtml": "<p>Ole hyvä ja vahvista sähköpostiosoitteesi alla olevalla koodilla.</p><p><b>{0}</b></p>"
 };
 
 export default messages;

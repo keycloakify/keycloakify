@@ -11,7 +11,7 @@ export function headInsert(
         | {
               type: "javascript";
               src: string;
-          },
+          }
 ) {
     const htmlElement = document.createElement(
         (() => {
@@ -21,7 +21,7 @@ export function headInsert(
                 case "javascript":
                     return "script";
             }
-        })(),
+        })()
     );
 
     const dLoaded = new Deferred<void>();
@@ -37,15 +37,15 @@ export function headInsert(
                         "href": params.href,
                         "type": "text/css",
                         "rel": "stylesheet",
-                        "media": "screen,print",
+                        "media": "screen,print"
                     };
                 case "javascript":
                     return {
                         "src": params.src,
-                        "type": "text/javascript",
+                        "type": "text/javascript"
                     };
             }
-        })(),
+        })()
     );
 
     document.getElementsByTagName("head")[0][

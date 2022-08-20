@@ -73,7 +73,7 @@ export function generateKeycloakThemeResources(params: {
                 buildOptions.isStandalone &&
                 isInside({
                     "dirPath": pathJoin(reactAppBuildDirPath, mockTestingSubDirOfPublicDirBasename),
-                    filePath,
+                    filePath
                 })
             ) {
                 return undefined;
@@ -85,12 +85,12 @@ export function generateKeycloakThemeResources(params: {
                 }
 
                 const { cssGlobalsToDefine, fixedCssCode } = replaceImportsInCssCode({
-                    "cssCode": sourceCode.toString("utf8"),
+                    "cssCode": sourceCode.toString("utf8")
                 });
 
                 allCssGlobalsToDefine = {
                     ...allCssGlobalsToDefine,
-                    ...cssGlobalsToDefine,
+                    ...cssGlobalsToDefine
                 };
 
                 return { "modifiedSourceCode": Buffer.from(fixedCssCode, "utf8") };
@@ -103,14 +103,14 @@ export function generateKeycloakThemeResources(params: {
 
                 const { fixedJsCode } = replaceImportsFromStaticInJsCode({
                     "jsCode": sourceCode.toString("utf8"),
-                    buildOptions,
+                    buildOptions
                 });
 
                 return { "modifiedSourceCode": Buffer.from(fixedJsCode, "utf8") };
             }
 
             return buildOptions.isStandalone ? { "modifiedSourceCode": sourceCode } : undefined;
-        },
+        }
     });
 
     let doBundlesEmailTemplate: boolean;
@@ -120,8 +120,8 @@ export function generateKeycloakThemeResources(params: {
             console.log(
                 [
                     `Not bundling email template because ${pathBasename(keycloakThemeEmailDirPath)} does not exist`,
-                    `To start customizing the email template, run: 👉 npx create-keycloak-email-directory 👈`,
-                ].join("\n"),
+                    `To start customizing the email template, run: 👉 npx create-keycloak-email-directory 👈`
+                ].join("\n")
             );
             doBundlesEmailTemplate = false;
             break email;
@@ -131,14 +131,14 @@ export function generateKeycloakThemeResources(params: {
 
         transformCodebase({
             "srcDirPath": keycloakThemeEmailDirPath,
-            "destDirPath": pathJoin(themeDirPath, "..", "email"),
+            "destDirPath": pathJoin(themeDirPath, "..", "email")
         });
     }
 
     const { generateFtlFilesCode } = generateFtlFilesCodeFactory({
         "indexHtmlCode": fs.readFileSync(pathJoin(reactAppBuildDirPath, "index.html")).toString("utf8"),
         "cssGlobalsToDefine": allCssGlobalsToDefine,
-        "buildOptions": buildOptions,
+        "buildOptions": buildOptions
     });
 
     [...pageIds, ...(buildOptions.extraPages ?? [])].forEach(pageId => {
@@ -154,26 +154,26 @@ export function generateKeycloakThemeResources(params: {
 
         downloadBuiltinKeycloakTheme({
             keycloakVersion,
-            "destDirPath": tmpDirPath,
+            "destDirPath": tmpDirPath
         });
 
         const themeResourcesDirPath = pathJoin(themeDirPath, "resources");
 
         transformCodebase({
             "srcDirPath": pathJoin(tmpDirPath, "keycloak", "login", "resources"),
-            "destDirPath": themeResourcesDirPath,
+            "destDirPath": themeResourcesDirPath
         });
 
         const reactAppPublicDirPath = pathJoin(reactAppBuildDirPath, "..", "public");
 
         transformCodebase({
             "srcDirPath": pathJoin(tmpDirPath, "keycloak", "common", "resources"),
-            "destDirPath": pathJoin(themeResourcesDirPath, pathBasename(mockTestingResourcesCommonPath)),
+            "destDirPath": pathJoin(themeResourcesDirPath, pathBasename(mockTestingResourcesCommonPath))
         });
 
         transformCodebase({
             "srcDirPath": themeResourcesDirPath,
-            "destDirPath": pathJoin(reactAppPublicDirPath, mockTestingResourcesPath),
+            "destDirPath": pathJoin(reactAppPublicDirPath, mockTestingResourcesPath)
         });
 
         const keycloakResourcesWithinPublicDirPath = pathJoin(reactAppPublicDirPath, mockTestingSubDirOfPublicDirBasename);
@@ -181,8 +181,8 @@ export function generateKeycloakThemeResources(params: {
         fs.writeFileSync(
             pathJoin(keycloakResourcesWithinPublicDirPath, "README.txt"),
             Buffer.from(
-                ["This is just a test folder that helps develop", "the login and register page without having to run a Keycloak container"].join(" "),
-            ),
+                ["This is just a test folder that helps develop", "the login and register page without having to run a Keycloak container"].join(" ")
+            )
         );
 
         fs.writeFileSync(pathJoin(keycloakResourcesWithinPublicDirPath, ".gitignore"), Buffer.from("*", "utf8"));
@@ -192,7 +192,7 @@ export function generateKeycloakThemeResources(params: {
 
     fs.writeFileSync(
         pathJoin(themeDirPath, "theme.properties"),
-        Buffer.from(["parent=keycloak", ...(buildOptions.extraThemeProperties ?? [])].join("\n\n"), "utf8"),
+        Buffer.from(["parent=keycloak", ...(buildOptions.extraThemeProperties ?? [])].join("\n\n"), "utf8")
     );
 
     return { doBundlesEmailTemplate };

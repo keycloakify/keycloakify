@@ -294,7 +294,7 @@ const messages = {
     "openshift.scope.user_info": "Felhasználó adatok",
     "openshift.scope.user_check-access": "Felhasználó hozzáférés adatok",
     "openshift.scope.user_full": "Teljes hozzáférés",
-    "openshift.scope.list-projects": "Projektek listája",
+    "openshift.scope.list-projects": "Projektek listája"
 };
 
 export default messages;

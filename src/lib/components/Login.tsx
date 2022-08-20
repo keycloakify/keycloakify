@@ -74,7 +74,7 @@ const Login = memo(({ kcContext, i18n, ...props }: { kcContext: KcContextBase.Lo
                                                         ? { "disabled": true }
                                                         : {
                                                               "autoFocus": true,
-                                                              "autoComplete": "off",
+                                                              "autoComplete": "off"
                                                           })}
                                                 />
                                             </>
@@ -106,7 +106,7 @@ const Login = memo(({ kcContext, i18n, ...props }: { kcContext: KcContextBase.Lo
                                                         type="checkbox"
                                                         {...(login.rememberMe
                                                             ? {
-                                                                  "checked": true,
+                                                                  "checked": true
                                                               }
                                                             : {})}
                                                     />
@@ -132,7 +132,7 @@ const Login = memo(({ kcContext, i18n, ...props }: { kcContext: KcContextBase.Lo
                                         name="credentialId"
                                         {...(auth?.selectedCredential !== undefined
                                             ? {
-                                                  "value": auth.selectedCredential,
+                                                  "value": auth.selectedCredential
                                               }
                                             : {})}
                                     />
@@ -142,7 +142,7 @@ const Login = memo(({ kcContext, i18n, ...props }: { kcContext: KcContextBase.Lo
                                             props.kcButtonClass,
                                             props.kcButtonPrimaryClass,
                                             props.kcButtonBlockClass,
-                                            props.kcButtonLargeClass,
+                                            props.kcButtonLargeClass
                                         )}
                                         name="login"
                                         id="kc-login"
@@ -159,7 +159,7 @@ const Login = memo(({ kcContext, i18n, ...props }: { kcContext: KcContextBase.Lo
                             <ul
                                 className={cx(
                                     props.kcFormSocialAccountListClass,
-                                    social.providers.length > 4 && props.kcFormSocialAccountDoubleListClass,
+                                    social.providers.length > 4 && props.kcFormSocialAccountDoubleListClass
                                 )}
                             >
                                 {social.providers.map(p => (

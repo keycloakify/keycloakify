@@ -130,7 +130,7 @@ const messages = {
     "invalidPasswordMinSpecialCharsMessage": "Contraseña incorrecta: debe contener al menos {0} caracteres especiales.",
     "invalidPasswordNotUsernameMessage": "Contraseña incorrecta: no puede ser igual al nombre de usuario.",
     "invalidPasswordRegexPatternMessage": "Contraseña incorrecta: no cumple la expresión regular.",
-    "invalidPasswordHistoryMessage": "Contraseña incorrecta: no puede ser igual a ninguna de las últimas {0} contraseñas.",
+    "invalidPasswordHistoryMessage": "Contraseña incorrecta: no puede ser igual a ninguna de las últimas {0} contraseñas."
 };
 
 export default messages;

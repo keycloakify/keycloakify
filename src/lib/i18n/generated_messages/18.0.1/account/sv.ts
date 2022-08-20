@@ -132,7 +132,7 @@ const messages = {
     "invalidPasswordNotUsernameMessage": "Ogiltigt lösenord: Får inte vara samma som användarnamnet.",
     "invalidPasswordRegexPatternMessage": "Ogiltigt lösenord: matchar inte kravet för lösenordsmönster.",
     "invalidPasswordHistoryMessage": "Ogiltigt lösenord: Får inte vara samma som de senaste {0} lösenorden.",
-    "invalidPasswordGenericMessage": "Ogiltigt lösenord: Det nya lösenordet stämmer inte med lösenordspolicyn.",
+    "invalidPasswordGenericMessage": "Ogiltigt lösenord: Det nya lösenordet stämmer inte med lösenordspolicyn."
 };
 
 export default messages;

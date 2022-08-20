@@ -281,7 +281,7 @@ const messages = {
         "E-posta adresinizi doğrulamanız gerekiyor. Bir doğrulama kodu içeren {0} adresine bir e-posta gönderildi. Lütfen bu kodu aşağıdaki girdiye giriniz.",
     "console-email-code": "E-posta Kodu:",
     "console-accept-terms": "Şartları kabul et? [e/h]:",
-    "console-accept": "e",
+    "console-accept": "e"
 };
 
 export default messages;

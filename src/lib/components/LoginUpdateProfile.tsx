@@ -105,7 +105,7 @@ const LoginUpdateProfile = memo(({ kcContext, i18n, ...props }: { kcContext: KcC
                                         props.kcButtonClass,
                                         props.kcButtonPrimaryClass,
                                         props.kcButtonBlockClass,
-                                        props.kcButtonLargeClass,
+                                        props.kcButtonLargeClass
                                     )}
                                     type="submit"
                                     defaultValue={msgStr("doSubmit")}

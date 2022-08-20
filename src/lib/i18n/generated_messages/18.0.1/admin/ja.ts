@@ -30,7 +30,7 @@ const messages = {
         "設定されたセレクター識別子URIがない場合は、クライアントのリダイレクトURIは複数のホスト・コンポーネントを含むことはできません。",
     "pairwiseMalformedSectorIdentifierURI": "不正なセレクター識別子URIです。",
     "pairwiseFailedToGetRedirectURIs": "セクター識別子URIからリダイレクトURIを取得できませんでした。",
-    "pairwiseRedirectURIsMismatch": "クライアントのリダイレクトURIは、セクター識別子URIからフェッチされたリダイレクトURIと一致しません。",
+    "pairwiseRedirectURIsMismatch": "クライアントのリダイレクトURIは、セクター識別子URIからフェッチされたリダイレクトURIと一致しません。"
 };
 
 export default messages;

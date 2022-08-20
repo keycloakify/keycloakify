@@ -15,7 +15,7 @@ const LoginConfigTotp = memo(({ kcContext, i18n, ...props }: { kcContext: KcCont
     const algToKeyUriAlg: Record<KcContextBase.LoginConfigTotp["totp"]["policy"]["algorithm"], string> = {
         HmacSHA1: "SHA1",
         HmacSHA256: "SHA256",
-        HmacSHA512: "SHA512",
+        HmacSHA512: "SHA512"
     };
 
     return (
@@ -159,7 +159,7 @@ const LoginConfigTotp = memo(({ kcContext, i18n, ...props }: { kcContext: KcCont
                                         props.kcButtonClass,
                                         props.kcButtonDefaultClass,
                                         props.kcButtonLargeClass,
-                                        props.kcButtonLargeClass,
+                                        props.kcButtonLargeClass
                                     )}
                                     id="cancelTOTPBtn"
                                     name="cancel-aia"

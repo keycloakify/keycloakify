@@ -328,7 +328,7 @@ const messages = {
     "webauthn-error-auth-verification": "Security key authentication result is invalid.",
     "webauthn-error-register-verification": "Security key registration result is invalid.",
     "webauthn-error-user-not-found": "Unknown user authenticated by the Security key.",
-    "identity-provider-redirector": "Connect with another Identity Provider",
+    "identity-provider-redirector": "Connect with another Identity Provider"
 };
 
 export default messages;

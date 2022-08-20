@@ -36,7 +36,7 @@ export function useDownloadTerms(params: {
         const downloadTermMarkdownConst = useConstCallback(downloadTermMarkdown);
 
         const downloadTermMarkdownMemoized = useConst(() =>
-            memoize((currentLanguageTag: string) => downloadTermMarkdownConst({ currentLanguageTag }), { "promise": true }),
+            memoize((currentLanguageTag: string) => downloadTermMarkdownConst({ currentLanguageTag }), { "promise": true })
         );
 
         return { downloadTermMarkdownMemoized };
@@ -48,7 +48,7 @@ export function useDownloadTerms(params: {
         }
 
         downloadTermMarkdownMemoized(kcContext.locale?.currentLanguageTag ?? fallbackLanguageTag).then(
-            thermMarkdown => (evtTermMarkdown.state = thermMarkdown),
+            thermMarkdown => (evtTermMarkdown.state = thermMarkdown)
         );
     }, []);
 }
@@ -82,7 +82,7 @@ const Terms = memo(({ kcContext, i18n, ...props }: { kcContext: KcContextBase.Te
                                 props.kcButtonClass,
                                 props.kcButtonClass,
                                 props.kcButtonPrimaryClass,
-                                props.kcButtonLargeClass,
+                                props.kcButtonLargeClass
                             )}
                             name="accept"
                             id="kc-accept"

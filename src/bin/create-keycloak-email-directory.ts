@@ -21,12 +21,12 @@ if (require.main === module) {
 
         downloadBuiltinKeycloakTheme({
             keycloakVersion,
-            "destDirPath": builtinKeycloakThemeTmpDirPath,
+            "destDirPath": builtinKeycloakThemeTmpDirPath
         });
 
         transformCodebase({
             "srcDirPath": pathJoin(builtinKeycloakThemeTmpDirPath, "base", "email"),
-            "destDirPath": keycloakThemeEmailDirPath,
+            "destDirPath": keycloakThemeEmailDirPath
         });
 
         console.log(`./${pathBasename(keycloakThemeEmailDirPath)} ready to be customized`);

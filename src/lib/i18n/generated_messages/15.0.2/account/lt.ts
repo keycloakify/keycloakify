@@ -136,7 +136,7 @@ const messages = {
     "invalidPasswordMinSpecialCharsMessage": "Neteisingas slaptažodis: privaloma įvesti {0} specialų simbolį.",
     "invalidPasswordNotUsernameMessage": "Neteisingas slaptažodis: slaptažodis negali sutapti su naudotojo vardu.",
     "invalidPasswordRegexPatternMessage": "Neteisingas slaptažodis: slaptažodis netenkina regex taisyklės(ių).",
-    "invalidPasswordHistoryMessage": "Neteisingas slaptažodis: slaptažodis negali sutapti su prieš tai buvusiais {0} slaptažodžiais.",
+    "invalidPasswordHistoryMessage": "Neteisingas slaptažodis: slaptažodis negali sutapti su prieš tai buvusiais {0} slaptažodžiais."
 };
 
 export default messages;

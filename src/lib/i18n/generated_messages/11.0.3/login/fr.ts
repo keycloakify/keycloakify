@@ -249,7 +249,7 @@ const messages = {
     "clientCertificate": "X509 certificat client:",
     "noCertificate": "[Pas de certificat]",
     "pageNotFound": "Page non trouvée",
-    "internalServerError": "Une erreur interne du serveur s'est produite",
+    "internalServerError": "Une erreur interne du serveur s'est produite"
 };
 
 export default messages;

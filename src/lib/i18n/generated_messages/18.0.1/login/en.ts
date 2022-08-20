@@ -438,7 +438,7 @@ const messages = {
     "frontchannel-logout.message": "You are logging out from following apps",
     "logoutConfirmTitle": "Logging out",
     "logoutConfirmHeader": "Do you want to logout?",
-    "doLogout": "Logout",
+    "doLogout": "Logout"
 };
 
 export default messages;

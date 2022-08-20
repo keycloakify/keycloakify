@@ -326,7 +326,7 @@ const messages = {
     "webauthn-error-auth-verification": "O resultado da autenticação da Chave de Segurança é inválido.",
     "webauthn-error-register-verification": "O resultado do registro da Chave de Segurança é inválido.",
     "webauthn-error-user-not-found": "Usuário desconhecido autenticado pela Chave de Segurança.",
-    "identity-provider-redirector": "Conecte-se com outro Provedor de Identidade",
+    "identity-provider-redirector": "Conecte-se com outro Provedor de Identidade"
 };
 
 export default messages;

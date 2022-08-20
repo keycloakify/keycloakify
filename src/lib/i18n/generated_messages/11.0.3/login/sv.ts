@@ -195,7 +195,7 @@ const messages = {
     "clientNotFoundMessage": "Klienten hittades ej.",
     "clientDisabledMessage": "Klienten är inaktiverad.",
     "invalidParameterMessage": "Ogiltig parameter: {0}",
-    "alreadyLoggedIn": "Du är redan inloggad.",
+    "alreadyLoggedIn": "Du är redan inloggad."
 };
 
 export default messages;

@@ -27,7 +27,7 @@ export function generateJavaStackFiles(params: {
         version,
         buildOptions: { groupId, themeName },
         keycloakThemeBuildingDirPath,
-        doBundlesEmailTemplate,
+        doBundlesEmailTemplate
     } = params;
 
     {
@@ -47,7 +47,7 @@ export function generateJavaStackFiles(params: {
                 `	<version>${version}</version>`,
                 `	<name>${artefactId}</name>`,
                 `	<description />`,
-                `</project>`,
+                `</project>`
             ].join("\n");
 
             return { pomFileCode };
@@ -71,19 +71,19 @@ export function generateJavaStackFiles(params: {
                         "themes": [
                             {
                                 "name": themeName,
-                                "types": ["login", ...(doBundlesEmailTemplate ? ["email"] : [])],
-                            },
-                        ],
+                                "types": ["login", ...(doBundlesEmailTemplate ? ["email"] : [])]
+                            }
+                        ]
                     },
                     null,
-                    2,
+                    2
                 ),
-                "utf8",
-            ),
+                "utf8"
+            )
         );
     }
 
     return {
-        "jarFilePath": pathJoin(keycloakThemeBuildingDirPath, "target", `${themeName}-${version}.jar`),
+        "jarFilePath": pathJoin(keycloakThemeBuildingDirPath, "target", `${themeName}-${version}.jar`)
     };
 }

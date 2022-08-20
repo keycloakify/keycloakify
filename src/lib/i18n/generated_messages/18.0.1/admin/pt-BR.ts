@@ -18,7 +18,7 @@ const messages = {
     "ldapErrorCantWriteOnlyForReadOnlyLdap": "Não é possível definir modo de somente escrita quando o provedor LDAP não suporta escrita",
     "ldapErrorCantWriteOnlyAndReadOnly": "Não é possível definir somente escrita e somente leitura ao mesmo tempo",
     "clientRedirectURIsFragmentError": "URIs de redirecionamento não podem conter fragmentos",
-    "clientRootURLFragmentError": "URL raiz não pode conter fragmentos",
+    "clientRootURLFragmentError": "URL raiz não pode conter fragmentos"
 };
 
 export default messages;

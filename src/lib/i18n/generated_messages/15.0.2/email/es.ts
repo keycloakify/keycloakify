@@ -33,7 +33,7 @@ const messages = {
     "eventUpdateTotpSubject": "Actualización de OTP",
     "eventUpdateTotpBody": "OTP se ha actualizado en tu cuenta el {0} desde {1}. Si no has sido tú, por favor contacta con el administrador.",
     "eventUpdateTotpBodyHtml":
-        "<p>OTP se ha actualizado en tu cuenta el {0} desde {1}. Si no has sido tú, por favor contacta con el administrador.</p>",
+        "<p>OTP se ha actualizado en tu cuenta el {0} desde {1}. Si no has sido tú, por favor contacta con el administrador.</p>"
 };
 
 export default messages;

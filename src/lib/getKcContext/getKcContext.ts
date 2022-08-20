@@ -29,8 +29,8 @@ export function getKcContext<KcContextExtended extends { pageId: string } = neve
                 [
                     `WARNING: You declared the non build in page ${mockPageId} but you didn't `,
                     `provide mock data needed to debug the page outside of Keycloak as you are trying to do now.`,
-                    `Please check the documentation of the getKcContext function`,
-                ].join("\n"),
+                    `Please check the documentation of the getKcContext function`
+                ].join("\n")
             );
         }
 
@@ -38,13 +38,13 @@ export function getKcContext<KcContextExtended extends { pageId: string } = neve
 
         deepAssign({
             "target": kcContext,
-            "source": kcContextDefaultMock !== undefined ? kcContextDefaultMock : { "pageId": mockPageId, ...kcContextCommonMock },
+            "source": kcContextDefaultMock !== undefined ? kcContextDefaultMock : { "pageId": mockPageId, ...kcContextCommonMock }
         });
 
         if (partialKcContextCustomMock !== undefined) {
             deepAssign({
                 "target": kcContext,
-                "source": partialKcContextCustomMock,
+                "source": partialKcContextCustomMock
             });
 
             if (partialKcContextCustomMock.pageId === "register-user-profile.ftl") {
@@ -56,7 +56,7 @@ export function getKcContext<KcContextExtended extends { pageId: string } = neve
                 id<KcContextBase.RegisterUserProfile>(kcContext).profile.attributesByName = {};
 
                 const partialAttributes = [
-                    ...((partialKcContextCustomMock as DeepPartial<KcContextBase.RegisterUserProfile>).profile?.attributes ?? []),
+                    ...((partialKcContextCustomMock as DeepPartial<KcContextBase.RegisterUserProfile>).profile?.attributes ?? [])
                 ].filter(exclude(undefined));
 
                 attributes.forEach(attribute => {
@@ -66,7 +66,7 @@ export function getKcContext<KcContextExtended extends { pageId: string } = neve
 
                     deepAssign({
                         "target": augmentedAttribute,
-                        "source": attribute,
+                        "source": attribute
                     });
 
                     if (partialAttribute !== undefined) {
@@ -74,7 +74,7 @@ export function getKcContext<KcContextExtended extends { pageId: string } = neve
 
                         deepAssign({
                             "target": augmentedAttribute,
-                            "source": partialAttribute,
+                            "source": partialAttribute
                         });
                     }
 

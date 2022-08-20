@@ -221,7 +221,7 @@ const messages = {
     "noResourcesSharedWithYou": "Brak zasobów udostępnionych dla Ciebie",
     "havePermissionRequestsWaitingForApproval": "Masz {0} żądań uprawnień oczekujących na akceptację.",
     "clickHereForDetails": "Więcej szczegółów...",
-    "resourceIsNotBeingShared": "Zasób nie jest współdzielony",
+    "resourceIsNotBeingShared": "Zasób nie jest współdzielony"
 };
 
 export default messages;

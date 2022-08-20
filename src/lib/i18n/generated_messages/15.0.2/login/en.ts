@@ -391,7 +391,7 @@ const messages = {
     "loggingOutImmediately": "Logging you out immediately",
     "accountUnusable": "Any subsequent use of the application will not be possible with this account",
     "userDeletedSuccessfully": "User deleted successfully",
-    "access-denied": "Access denied",
+    "access-denied": "Access denied"
 };
 
 export default messages;

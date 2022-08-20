@@ -310,7 +310,7 @@ const messages = {
     "webauthn-error-auth-verification": "Il risultato dell'autenticazione con la chiave di sicurezza non è valido.",
     "webauthn-error-register-verification": "Il risultato della registrazione della chiave di sicurezza non è valido.",
     "webauthn-error-user-not-found": "Utente sconosciuto autenticato con la chiave di sicurezza.",
-    "identity-provider-redirector": "Connettiti con un altro identity provider.",
+    "identity-provider-redirector": "Connettiti con un altro identity provider."
 };
 
 export default messages;

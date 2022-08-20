@@ -156,7 +156,7 @@ const messages = {
     "personalSubMessage": "Gérez ces informations de base: votre prénom, nom de famille et email",
     "accountSecurityIntroMessage": "Gérez votre mot de passe et l'accès à votre compte",
     "applicationsIntroMessage": "Auditez et gérez les permissions d'accès des applications aux données de votre compte",
-    "applicationType": "Type d'application",
+    "applicationType": "Type d'application"
 };
 
 export default messages;

@@ -394,7 +394,7 @@ const messages = {
     "loggingOutImmediately": "Sinut kirjataan ulos välittömästi",
     "accountUnusable": "Tämän sovelluksen käyttö ei myöhemmin enää ole mahdollista tällä käyttäjätilillä",
     "userDeletedSuccessfully": "Käyttäjä poistettu onnistuneesti",
-    "access-denied": "Pääsy evätty",
+    "access-denied": "Pääsy evätty"
 };
 
 export default messages;

@@ -21,7 +21,7 @@ for (const keycloakVersion of ["11.0.3", "15.0.2", "18.0.1"]) {
 
     downloadBuiltinKeycloakTheme({
         keycloakVersion,
-        "destDirPath": tmpDirPath,
+        "destDirPath": tmpDirPath
     });
 
     type Dictionary = { [idiomId: string]: string };
@@ -42,8 +42,8 @@ for (const keycloakVersion of ["11.0.3", "15.0.2", "18.0.1"]) {
 
             (record[typeOfPage] ??= {})[language.replace(/_/g, "-")] = Object.fromEntries(
                 Object.entries(propertiesParser.parse(fs.readFileSync(pathJoin(baseThemeDirPath, filePath)).toString("utf8"))).map(
-                    ([key, value]: any) => [key, value.replace(/''/g, "'")],
-                ),
+                    ([key, value]: any) => [key, value.replace(/''/g, "'")]
+                )
             );
         });
     }
@@ -69,10 +69,10 @@ for (const keycloakVersion of ["11.0.3", "15.0.2", "18.0.1"]) {
                         `const messages= ${JSON.stringify(recordForPageType[language], null, 2)};`,
                         "",
                         "export default messages;",
-                        "/* spell-checker: enable */",
+                        "/* spell-checker: enable */"
                     ].join("\n"),
-                    "utf8",
-                ),
+                    "utf8"
+                )
             );
 
             console.log(`${filePath} wrote`);

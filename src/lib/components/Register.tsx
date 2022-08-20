@@ -111,7 +111,7 @@ const Register = memo(({ kcContext, i18n, ...props }: { kcContext: KcContextBase
                             <div
                                 className={cx(
                                     props.kcFormGroupClass,
-                                    messagesPerField.printIfExists("password-confirm", props.kcFormGroupErrorClass),
+                                    messagesPerField.printIfExists("password-confirm", props.kcFormGroupErrorClass)
                                 )}
                             >
                                 <div className={cx(props.kcLabelWrapperClass)}>

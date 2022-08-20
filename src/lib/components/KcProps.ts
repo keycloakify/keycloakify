@@ -37,7 +37,7 @@ export const defaultKcTemplateProps = {
     "stylesCommon": [
         "node_modules/patternfly/dist/css/patternfly.min.css",
         "node_modules/patternfly/dist/css/patternfly-additions.min.css",
-        "lib/zocial/zocial.css",
+        "lib/zocial/zocial.css"
     ],
     "styles": ["css/login.css"],
     "scripts": [],
@@ -60,7 +60,7 @@ export const defaultKcTemplateProps = {
     "kcFormGroupClass": ["form-group"],
     "kcLabelWrapperClass": ["col-xs-12", "col-sm-12", "col-md-12", "col-lg-12"],
     "kcSignUpClass": ["login-pf-signup"],
-    "kcInfoAreaWrapperClass": [],
+    "kcInfoAreaWrapperClass": []
 } as const;
 
 assert<typeof defaultKcTemplateProps extends KcTemplateProps ? true : false>();
@@ -192,7 +192,7 @@ export const defaultKcProps = {
     "kcSelectOTPListItemClass": ["card-pf-body", "card-pf-top-element"],
     "kcAuthenticatorOtpCircleClass": ["fa", "fa-mobile", "card-pf-icon-circle"],
     "kcSelectOTPItemHeadingClass": ["card-pf-title", "text-center"],
-    "kcFormOptionsWrapperClass": [],
+    "kcFormOptionsWrapperClass": []
 } as const;
 
 assert<typeof defaultKcProps extends KcProps ? true : false>();

@@ -321,7 +321,7 @@ const messages = {
     "webauthn-error-register-verification": "A biztonsági kulcs alapú regisztráció eredménye érvénytelen.",
     "webauthn-error-user-not-found": "Ismeretlen felhasználót hitelesítettünk a biztonsági kulcs alapján.",
     "identity-provider-redirector": "Összekötés másik személyazonosság-kezelővel",
-    "identity-provider-login-label": "Egyéb bejelentkezési módok",
+    "identity-provider-login-label": "Egyéb bejelentkezési módok"
 };
 
 export default messages;

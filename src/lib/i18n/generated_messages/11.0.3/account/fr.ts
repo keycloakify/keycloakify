@@ -143,7 +143,7 @@ const messages = {
     "invalidPasswordMinSpecialCharsMessage": "Mot de passe invalide: doit contenir au moins {0} caractère(s) spéciaux.",
     "invalidPasswordNotUsernameMessage": "Mot de passe invalide: ne doit pas être identique au nom d'utilisateur.",
     "invalidPasswordRegexPatternMessage": "Mot de passe invalide: ne valide pas l'expression rationnelle.",
-    "invalidPasswordHistoryMessage": "Mot de passe invalide: ne doit pas être égal aux {0} derniers mots de passe.",
+    "invalidPasswordHistoryMessage": "Mot de passe invalide: ne doit pas être égal aux {0} derniers mots de passe."
 };
 
 export default messages;

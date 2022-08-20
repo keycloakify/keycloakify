@@ -20,7 +20,7 @@ export function useGetErrors(params: {
 
     const {
         messagesPerField,
-        profile: { attributes },
+        profile: { attributes }
     } = kcContext;
 
     const { msg, msgStr, advancedMsg, advancedMsgStr } = i18n;
@@ -55,8 +55,8 @@ export function useGetErrors(params: {
                 {
                     "validatorName": undefined,
                     errorMessageStr,
-                    "errorMessage": <span key={0}>{errorMessageStr}</span>,
-                },
+                    "errorMessage": <span key={0}>{errorMessageStr}</span>
+                }
             ];
         }
 
@@ -87,7 +87,7 @@ export function useGetErrors(params: {
                 errors.push({
                     "errorMessage": <Fragment key={errors.length}>{msg(...msgArgs)}</Fragment>,
                     "errorMessageStr": msgStr(...msgArgs),
-                    validatorName,
+                    validatorName
                 });
             }
 
@@ -97,7 +97,7 @@ export function useGetErrors(params: {
                 errors.push({
                     "errorMessage": <Fragment key={errors.length}>{msg(...msgArgs)}</Fragment>,
                     "errorMessageStr": msgStr(...msgArgs),
-                    validatorName,
+                    validatorName
                 });
             }
         }
@@ -142,17 +142,17 @@ export function useGetErrors(params: {
                                 case "different":
                                     return "shouldBeDifferent";
                             }
-                        })(),
+                        })()
                     ),
                 otherName,
                 name,
-                shouldBe,
+                shouldBe
             ] as const;
 
             errors.push({
                 validatorName,
                 "errorMessage": <Fragment key={errors.length}>{advancedMsg(...msgArg)}</Fragment>,
-                "errorMessageStr": advancedMsgStr(...msgArg),
+                "errorMessageStr": advancedMsgStr(...msgArg)
             });
         }
 
@@ -180,7 +180,7 @@ export function useGetErrors(params: {
             errors.push({
                 validatorName,
                 "errorMessage": <Fragment key={errors.length}>{advancedMsg(...msgArgs)}</Fragment>,
-                "errorMessageStr": advancedMsgStr(...msgArgs),
+                "errorMessageStr": advancedMsgStr(...msgArgs)
             });
         }
 
@@ -212,7 +212,7 @@ export function useGetErrors(params: {
             errors.push({
                 validatorName,
                 "errorMessage": <Fragment key={errors.length}>{msg(...msgArgs)}</Fragment>,
-                "errorMessageStr": msgStr(...msgArgs),
+                "errorMessageStr": msgStr(...msgArgs)
             });
         }
 
@@ -239,7 +239,7 @@ export function useGetErrors(params: {
                 errors.push({
                     validatorName,
                     "errorMessage": <Fragment key={errors.length}>{msg(...msgArgs)}</Fragment>,
-                    "errorMessageStr": msgStr(...msgArgs),
+                    "errorMessageStr": msgStr(...msgArgs)
                 });
 
                 break scope;
@@ -251,7 +251,7 @@ export function useGetErrors(params: {
                 errors.push({
                     validatorName,
                     "errorMessage": <Fragment key={errors.length}>{msg(...msgArgs)}</Fragment>,
-                    "errorMessageStr": msgStr(...msgArgs),
+                    "errorMessageStr": msgStr(...msgArgs)
                 });
 
                 break scope;
@@ -263,7 +263,7 @@ export function useGetErrors(params: {
                 errors.push({
                     validatorName,
                     "errorMessage": <Fragment key={errors.length}>{msg(...msgArgs)}</Fragment>,
-                    "errorMessageStr": msgStr(...msgArgs),
+                    "errorMessageStr": msgStr(...msgArgs)
                 });
 
                 break scope;
@@ -292,7 +292,7 @@ export function useGetErrors(params: {
             errors.push({
                 validatorName,
                 "errorMessage": <Fragment key={errors.length}>{advancedMsg(...msgArgs)}</Fragment>,
-                "errorMessageStr": advancedMsgStr(...msgArgs),
+                "errorMessageStr": advancedMsgStr(...msgArgs)
             });
         }
 
@@ -322,10 +322,10 @@ export function useFormValidationSlice(params: {
         passwordValidators = {
             "length": {
                 "ignore.empty.value": true,
-                "min": "4",
-            },
+                "min": "4"
+            }
         },
-        i18n,
+        i18n
     } = params;
 
     const attributesWithPassword = useMemo(
@@ -350,7 +350,7 @@ export function useFormValidationSlice(params: {
                                             "validators": passwordValidators,
                                             "annotations": {},
                                             "groupAnnotations": {},
-                                            "autocomplete": "new-password",
+                                            "autocomplete": "new-password"
                                         }),
                                         id<Attribute>({
                                             "name": "password-confirm",
@@ -362,29 +362,29 @@ export function useFormValidationSlice(params: {
                                                     "name": "password",
                                                     "ignore.empty.value": true,
                                                     "shouldBe": "equal",
-                                                    "error-message": id<`\${${MessageKeyBase}}`>("${invalidPasswordConfirmMessage}"),
-                                                },
+                                                    "error-message": id<`\${${MessageKeyBase}}`>("${invalidPasswordConfirmMessage}")
+                                                }
                                             },
                                             "annotations": {},
                                             "groupAnnotations": {},
-                                            "autocomplete": "new-password",
-                                        }),
-                                    ]),
+                                            "autocomplete": "new-password"
+                                        })
+                                    ])
                           ],
-                          [],
+                          []
                       );
                   })(),
-        [kcContext, passwordValidators],
+        [kcContext, passwordValidators]
     );
 
     const { getErrors } = useGetErrors({
         "kcContext": {
             "messagesPerField": kcContext.messagesPerField,
             "profile": {
-                "attributes": attributesWithPassword,
-            },
+                "attributes": attributesWithPassword
+            }
         },
-        i18n,
+        i18n
     });
 
     const initialInternalState = useMemo(
@@ -396,20 +396,20 @@ export function useFormValidationSlice(params: {
                         "errors": getErrors({
                             "name": attribute.name,
                             "fieldValueByAttributeName": Object.fromEntries(
-                                attributesWithPassword.map(({ name, value }) => [name, { "value": value ?? "" }]),
-                            ),
-                        }),
+                                attributesWithPassword.map(({ name, value }) => [name, { "value": value ?? "" }])
+                            )
+                        })
                     }))
                     .map(({ attribute, errors }) => [
                         attribute.name,
                         {
                             "value": attribute.value ?? "",
                             errors,
-                            "doDisplayPotentialErrorMessages": errors.length !== 0,
-                        },
-                    ]),
+                            "doDisplayPotentialErrorMessages": errors.length !== 0
+                        }
+                    ])
             ),
-        [attributesWithPassword],
+        [attributesWithPassword]
     );
 
     type InternalState = typeof initialInternalState;
@@ -426,7 +426,7 @@ export function useFormValidationSlice(params: {
                 | {
                       action: "focus lost";
                       name: string;
-                  },
+                  }
         ): InternalState => ({
             ...state,
             [params.name]: {
@@ -442,15 +442,15 @@ export function useFormValidationSlice(params: {
                                     "name": params.name,
                                     "fieldValueByAttributeName": {
                                         ...state,
-                                        [params.name]: { "value": params.newValue },
-                                    },
-                                }),
+                                        [params.name]: { "value": params.newValue }
+                                    }
+                                })
                             };
                     }
-                })(),
-            },
+                })()
+            }
         }),
-        initialInternalState,
+        initialInternalState
     );
 
     const formValidationState = useMemo(
@@ -458,15 +458,15 @@ export function useFormValidationSlice(params: {
             "fieldStateByAttributeName": Object.fromEntries(
                 Object.entries(formValidationInternalState).map(([name, { value, errors, doDisplayPotentialErrorMessages }]) => [
                     name,
-                    { value, "displayableErrors": doDisplayPotentialErrorMessages ? errors : [] },
-                ]),
+                    { value, "displayableErrors": doDisplayPotentialErrorMessages ? errors : [] }
+                ])
             ),
             "isFormSubmittable": Object.entries(formValidationInternalState).every(
                 ([name, { value, errors }]) =>
-                    errors.length === 0 && (value !== "" || !attributesWithPassword.find(attribute => attribute.name === name)!.required),
-            ),
+                    errors.length === 0 && (value !== "" || !attributesWithPassword.find(attribute => attribute.name === name)!.required)
+            )
         }),
-        [formValidationInternalState, attributesWithPassword],
+        [formValidationInternalState, attributesWithPassword]
     );
 
     return { formValidationState, formValidationReducer, attributesWithPassword };

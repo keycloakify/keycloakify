@@ -27,7 +27,7 @@ export const pageIds = [
     "login-idp-link-email.ftl",
     "login-page-expired.ftl",
     "login-config-totp.ftl",
-    "logout-confirm.ftl",
+    "logout-confirm.ftl"
 ] as const;
 
 export type BuildOptionsLike = BuildOptionsLike.Standalone | BuildOptionsLike.ExternalAssets;
@@ -83,7 +83,7 @@ export function generateFtlFilesCodeFactory(params: {
         $("script:not([src])").each((...[, element]) => {
             const { fixedJsCode } = replaceImportsFromStaticInJsCode({
                 "jsCode": $(element).html()!,
-                buildOptions,
+                buildOptions
             });
 
             $(element).text(fixedJsCode);
@@ -92,7 +92,7 @@ export function generateFtlFilesCodeFactory(params: {
         $("style").each((...[, element]) => {
             const { fixedCssCode } = replaceImportsInInlineCssCode({
                 "cssCode": $(element).html()!,
-                buildOptions,
+                buildOptions
             });
 
             $(element).text(fixedCssCode);
@@ -101,7 +101,7 @@ export function generateFtlFilesCodeFactory(params: {
         (
             [
                 ["link", "href"],
-                ["script", "src"],
+                ["script", "src"]
             ] as const
         ).forEach(([selector, attrName]) =>
             $(selector).each((...[, element]) => {
@@ -115,9 +115,9 @@ export function generateFtlFilesCodeFactory(params: {
                     attrName,
                     buildOptions.isStandalone
                         ? href.replace(new RegExp(`^${(buildOptions.urlPathname ?? "/").replace(/\//g, "\\/")}`), "${url.resourcesPath}/build/")
-                        : href.replace(/^\//, `${buildOptions.urlOrigin}/`),
+                        : href.replace(/^\//, `${buildOptions.urlOrigin}/`)
                 );
-            }),
+            })
         );
 
         if (Object.keys(cssGlobalsToDefine).length !== 0) {
@@ -127,11 +127,11 @@ export function generateFtlFilesCodeFactory(params: {
                     "<style>",
                     generateCssCodeToDefineGlobals({
                         cssGlobalsToDefine,
-                        buildOptions,
+                        buildOptions
                     }).cssCodeToPrependInHead,
                     "</style>",
-                    "",
-                ].join("\n"),
+                    ""
+                ].join("\n")
             );
         }
     }
@@ -147,8 +147,8 @@ export function generateFtlFilesCodeFactory(params: {
             "    <#list scripts as script>",
             '        <script src="${script}" type="text/javascript"></script>',
             "    </#list>",
-            "</#if>",
-        ].join("\n"),
+            "</#if>"
+        ].join("\n")
     };
 
     $("head").prepend(
@@ -157,8 +157,8 @@ export function generateFtlFilesCodeFactory(params: {
             `    window.${ftlValuesGlobalName}= ${objectKeys(replaceValueBySearchValue)[0]};`,
             "</script>",
             "",
-            objectKeys(replaceValueBySearchValue)[1],
-        ].join("\n"),
+            objectKeys(replaceValueBySearchValue)[1]
+        ].join("\n")
     );
 
     const partiallyFixedIndexHtmlCode = $.html();
@@ -175,7 +175,7 @@ export function generateFtlFilesCodeFactory(params: {
         Object.entries({
             ...replaceValueBySearchValue,
             //If updated, don't forget to change in the ftl script as well.
-            "PAGE_ID_xIgLsPgGId9D8e": pageId,
+            "PAGE_ID_xIgLsPgGId9D8e": pageId
         }).map(([searchValue, replaceValue]) => (ftlCode = ftlCode.replace(searchValue, replaceValue)));
 
         return { ftlCode };

@@ -357,7 +357,7 @@ const messages = {
     "error-invalid-date": "Väärä päivämäärä.",
     "error-user-attribute-read-only": 'Kenttä {0} on "vain luku"-tilassa.',
     "error-username-invalid-character": "Käyttäjänimi sisältää vääriä merkkejä.",
-    "error-person-name-invalid-character": "Nimi sisältää vääriä merkkejä.",
+    "error-person-name-invalid-character": "Nimi sisältää vääriä merkkejä."
 };
 
 export default messages;

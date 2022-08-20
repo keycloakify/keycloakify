@@ -135,7 +135,7 @@ const messages = {
     "invalidPasswordMinSpecialCharsMessage": "无效的密码: 至少包含 {0} 个特殊字符",
     "invalidPasswordNotUsernameMessage": "无效的密码: 不能与用户名相同",
     "invalidPasswordRegexPatternMessage": "无效的密码:  无法与正则表达式匹配",
-    "invalidPasswordHistoryMessage": "无效的密码: 不能与之前的{0} 个旧密码相同",
+    "invalidPasswordHistoryMessage": "无效的密码: 不能与之前的{0} 个旧密码相同"
 };
 
 export default messages;

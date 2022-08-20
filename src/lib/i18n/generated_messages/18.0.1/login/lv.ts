@@ -227,7 +227,7 @@ const messages = {
         "Jums ir jāapstiprina e-pasta adrese. E-pasts tika nosūtīts uz {0}, kas satur apstiprinājuma kodu. Lūdzu ievadiet šo kodu ievadlaukā zemāk.",
     "console-email-code": "E-pasta kods:",
     "console-accept-terms": "Piekrist noteikumiem? [y/n]:",
-    "console-accept": "y",
+    "console-accept": "y"
 };
 
 export default messages;

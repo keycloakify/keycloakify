@@ -264,7 +264,7 @@ const messages = {
         "U bent verplicht om uw e-mailadres te verifiëren. Een e-mail met de verificatiecode is naar {0} gestuurd. Voer deze code hieronder in.",
     "console-email-code": "E-mail Code:",
     "console-accept-terms": "Accepteert u de voorwaarden? [y/n]:",
-    "console-accept": "y",
+    "console-accept": "y"
 };
 
 export default messages;

@@ -24,9 +24,9 @@ export async function promptKeycloakVersion() {
             "count": 10,
             "doIgnoreBeta": true,
             "owner": "keycloak",
-            "repo": "keycloak",
+            "repo": "keycloak"
         }).then(arr => arr.map(({ tag }) => tag))),
-        "11.0.3",
+        "11.0.3"
     ];
 
     if (process.env["GITHUB_ACTIONS"] === "true") {
@@ -34,7 +34,7 @@ export async function promptKeycloakVersion() {
     }
 
     const { value: keycloakVersion } = await cliSelect<string>({
-        "values": tags,
+        "values": tags
     }).catch(() => {
         console.log("Aborting");
 

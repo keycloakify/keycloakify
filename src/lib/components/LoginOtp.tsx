@@ -19,7 +19,7 @@ const LoginOtp = memo(({ kcContext, i18n, ...props }: { kcContext: KcContextBase
 
         headInsert({
             "type": "javascript",
-            "src": pathJoin(kcContext.url.resourcesCommonPath, "node_modules/jquery/dist/jquery.min.js"),
+            "src": pathJoin(kcContext.url.resourcesCommonPath, "node_modules/jquery/dist/jquery.min.js")
         }).then(() => {
             if (isCleanedUp) return;
 

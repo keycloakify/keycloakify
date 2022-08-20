@@ -50,7 +50,7 @@ const messages = {
     "linkExpirationFormatter.timePeriodUnit.hours": "heures",
     "linkExpirationFormatter.timePeriodUnit.hours.1": "heure",
     "linkExpirationFormatter.timePeriodUnit.days": "jours",
-    "linkExpirationFormatter.timePeriodUnit.days.1": "jour",
+    "linkExpirationFormatter.timePeriodUnit.days.1": "jour"
 };
 
 export default messages;

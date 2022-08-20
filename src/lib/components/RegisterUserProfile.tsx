@@ -18,9 +18,9 @@ const RegisterUserProfile = memo(({ kcContext, i18n, ...props_ }: { kcContext: K
     const props = useMemo(
         () => ({
             ...props_,
-            "kcFormGroupClass": cx(props_.kcFormGroupClass, css({ "marginBottom": 20 })),
+            "kcFormGroupClass": cx(props_.kcFormGroupClass, css({ "marginBottom": 20 }))
         }),
-        [cx, css],
+        [cx, css]
     );
 
     const [isFomSubmittable, setIsFomSubmittable] = useState(false);
@@ -79,10 +79,10 @@ const UserProfileFormFields = memo(({ kcContext, onIsFormSubmittableValueChange,
     const {
         formValidationState: { fieldStateByAttributeName, isFormSubmittable },
         formValidationReducer,
-        attributesWithPassword,
+        attributesWithPassword
     } = useFormValidationSlice({
         kcContext,
-        i18n,
+        i18n
     });
 
     useEffect(() => {
@@ -94,22 +94,22 @@ const UserProfileFormFields = memo(({ kcContext, onIsFormSubmittableValueChange,
             [name]: [string],
             [
                 {
-                    target: { value },
-                },
-            ]: [React.ChangeEvent<HTMLInputElement | HTMLSelectElement>],
+                    target: { value }
+                }
+            ]: [React.ChangeEvent<HTMLInputElement | HTMLSelectElement>]
         ) =>
             formValidationReducer({
                 "action": "update value",
                 name,
-                "newValue": value,
-            }),
+                "newValue": value
+            })
     );
 
     const onBlurFactory = useCallbackFactory(([name]: [string]) =>
         formValidationReducer({
             "action": "focus lost",
-            name,
-        }),
+            name
+        })
     );
 
     let currentGroup = "";
@@ -200,8 +200,8 @@ const UserProfileFormFields = memo(({ kcContext, onIsFormSubmittableValueChange,
                                             props.kcInputErrorMessageClass,
                                             css({
                                                 "position": displayableErrors.length === 1 ? "absolute" : undefined,
-                                                "& > span": { "display": "block" },
-                                            }),
+                                                "& > span": { "display": "block" }
+                                            })
                                         )}
                                         aria-live="polite"
                                     >

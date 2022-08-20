@@ -55,7 +55,7 @@ const messages = {
     "linkExpirationFormatter.timePeriodUnit.days": "gün",
     "linkExpirationFormatter.timePeriodUnit.days.1": "gün",
     "emailVerificationBodyCode": "Lütfen aşağıdaki kodu girerek e-posta adresinizi doğrulayın.\n\n{0}\n\n.",
-    "emailVerificationBodyCodeHtml": "<p>Lütfen aşağıdaki kodu girerek e-posta adresinizi doğrulayın.</p><p><b>{0}</b></p>",
+    "emailVerificationBodyCodeHtml": "<p>Lütfen aşağıdaki kodu girerek e-posta adresinizi doğrulayın.</p><p><b>{0}</b></p>"
 };
 
 export default messages;

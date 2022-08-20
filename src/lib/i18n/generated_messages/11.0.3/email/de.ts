@@ -38,7 +38,7 @@ const messages = {
         "<p>Ihr Passwort wurde am {0} von {1} geändert. Falls das nicht Sie waren, dann kontaktieren Sie bitte Ihren Admin.</p>",
     "eventUpdateTotpSubject": "OTP Aktualisiert",
     "eventUpdateTotpBody": "OTP wurde am {0} von {1} geändert. Falls das nicht Sie waren, dann kontaktieren Sie bitte Ihren Admin.",
-    "eventUpdateTotpBodyHtml": "<p>OTP wurde am {0} von {1} geändert. Falls das nicht Sie waren, dann kontaktieren Sie bitte Ihren Admin.</p>",
+    "eventUpdateTotpBodyHtml": "<p>OTP wurde am {0} von {1} geändert. Falls das nicht Sie waren, dann kontaktieren Sie bitte Ihren Admin.</p>"
 };
 
 export default messages;

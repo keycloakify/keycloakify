@@ -51,7 +51,7 @@ const messages = {
     "linkExpirationFormatter.timePeriodUnit.hours": "hodiny",
     "linkExpirationFormatter.timePeriodUnit.hours.1": "hodina",
     "linkExpirationFormatter.timePeriodUnit.days": "dni",
-    "linkExpirationFormatter.timePeriodUnit.days.1": "deň ",
+    "linkExpirationFormatter.timePeriodUnit.days.1": "deň "
 };
 
 export default messages;

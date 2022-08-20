@@ -343,7 +343,7 @@ const messages = {
     "errasingData": "Löschen aller Ihrer Daten",
     "loggingOutImmediately": "Sofortige Abmeldung",
     "accountUnusable": "Eine spätere Nutzung der Anwendung ist mit diesem Konto nicht mehr möglich",
-    "userDeletedSuccessfully": "Nutzer erfolgreich gelöscht",
+    "userDeletedSuccessfully": "Nutzer erfolgreich gelöscht"
 };
 
 export default messages;

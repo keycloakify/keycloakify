@@ -7,6 +7,6 @@ export const sampleReactProjectDirPath = pathJoin(getProjectRoot(), "sample_reac
 export function setupSampleReactProject() {
     downloadAndUnzip({
         "url": "https://github.com/garronej/keycloakify/releases/download/v0.0.1/sample_build_dir_and_package_json.zip",
-        "destDirPath": sampleReactProjectDirPath,
+        "destDirPath": sampleReactProjectDirPath
     });
 }

@@ -102,7 +102,7 @@ const LoginUpdatePassword = memo(({ kcContext, i18n, ...props }: { kcContext: Kc
                                         props.kcButtonClass,
                                         props.kcButtonPrimaryClass,
                                         props.kcButtonBlockClass,
-                                        props.kcButtonLargeClass,
+                                        props.kcButtonLargeClass
                                     )}
                                     type="submit"
                                     defaultValue={msgStr("doSubmit")}

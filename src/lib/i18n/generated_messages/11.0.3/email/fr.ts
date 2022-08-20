@@ -37,7 +37,7 @@ const messages = {
     "eventUpdateTotpBody":
         "Le OTP a été mis à jour pour votre compte {0} depuis {1}. Si vous n'étiez pas à l'origine de cette requête, veuillez contacter votre administrateur.",
     "eventUpdateTotpBodyHtml":
-        "<p>Le OTP a été mis à jour pour votre compte {0} depuis {1}. Si vous n'étiez pas à l'origine de cette requête, veuillez contacter votre administrateur.</p>",
+        "<p>Le OTP a été mis à jour pour votre compte {0} depuis {1}. Si vous n'étiez pas à l'origine de cette requête, veuillez contacter votre administrateur.</p>"
 };
 
 export default messages;

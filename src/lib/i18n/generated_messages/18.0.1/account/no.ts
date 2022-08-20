@@ -134,7 +134,7 @@ const messages = {
     "invalidPasswordMinSpecialCharsMessage": "Ugyldig passord: må inneholde minimum {0} spesialtegn.",
     "invalidPasswordNotUsernameMessage": "Ugyldig passord: kan ikke være likt brukernavn.",
     "invalidPasswordRegexPatternMessage": "Ugyldig passord: tilfredsstiller ikke kravene for passord-mønster.",
-    "invalidPasswordHistoryMessage": "Ugyldig passord: kan ikke være likt noen av de {0} foregående passordene.",
+    "invalidPasswordHistoryMessage": "Ugyldig passord: kan ikke være likt noen av de {0} foregående passordene."
 };
 
 export default messages;

@@ -373,7 +373,7 @@ const messages = {
     "frontchannel-logout.message": "Odhlašujete se z následujících aplikací",
     "logoutConfirmTitle": "Odhlašování",
     "logoutConfirmHeader": "Chcete se odhlásit?",
-    "doLogout": "Odhlásit",
+    "doLogout": "Odhlásit"
 };
 
 export default messages;

@@ -199,7 +199,7 @@ const messages = {
     "clientNotFoundMessage": "Клиент не найден.",
     "clientDisabledMessage": "Клиент отключен.",
     "invalidParameterMessage": "Неверный параметр: {0}",
-    "alreadyLoggedIn": "Вы уже вошли.",
+    "alreadyLoggedIn": "Вы уже вошли."
 };
 
 export default messages;

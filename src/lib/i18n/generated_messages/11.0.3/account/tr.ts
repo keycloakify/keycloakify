@@ -302,7 +302,7 @@ const messages = {
     "addTeam": "Kaynağınızı paylaşmak için ekip ekleyin",
     "myPermissions": "İzinlerim",
     "waitingforApproval": "Onay bekleniyor",
-    "anyPermission": "Herhangi bir izin",
+    "anyPermission": "Herhangi bir izin"
 };
 
 export default messages;

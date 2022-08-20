@@ -50,7 +50,7 @@ export function createKeycloakAdapter(params: {
 
     const neverResolvingPromise: keycloak_js.KeycloakPromise<void, void> = Object.defineProperties(new Promise(() => {}), {
         "success": { "value": () => {} },
-        "error": { "value": () => {} },
+        "error": { "value": () => {} }
     }) as any;
 
     return {
@@ -109,6 +109,6 @@ export function createKeycloakAdapter(params: {
             } else {
                 return window.location.href;
             }
-        },
+        }
     };
 }

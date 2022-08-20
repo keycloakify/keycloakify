@@ -20,7 +20,7 @@ export namespace NpmModuleVersion {
             ...(() => {
                 const str = match[4];
                 return str === undefined ? {} : { "betaPreRelease": parseInt(str) };
-            })(),
+            })()
         };
     }
 

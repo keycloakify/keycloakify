@@ -53,7 +53,7 @@ const messages = {
     "linkExpirationFormatter.timePeriodUnit.days": "日",
     "linkExpirationFormatter.timePeriodUnit.days.1": "日",
     "emailVerificationBodyCode": "次のコードを入力してメールアドレスを確認してください。\n\n{0}\n\n.",
-    "emailVerificationBodyCodeHtml": "<p>次のコードを入力してメールアドレスを確認してください。</p><p><b>{0}</b></p>",
+    "emailVerificationBodyCodeHtml": "<p>次のコードを入力してメールアドレスを確認してください。</p><p><b>{0}</b></p>"
 };
 
 export default messages;

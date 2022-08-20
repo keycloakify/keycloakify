@@ -39,7 +39,7 @@ const Template = memo((props: TemplateProps) => {
         infoNode = null,
         kcContext,
         i18n,
-        doFetchDefaultThemeResources,
+        doFetchDefaultThemeResources
     } = props;
 
     const { cx } = useCssAndCx();
@@ -68,16 +68,16 @@ const Template = memo((props: TemplateProps) => {
         Promise.all(
             [
                 ...toArr(props.stylesCommon).map(relativePath => pathJoin(url.resourcesCommonPath, relativePath)),
-                ...toArr(props.styles).map(relativePath => pathJoin(url.resourcesPath, relativePath)),
+                ...toArr(props.styles).map(relativePath => pathJoin(url.resourcesPath, relativePath))
             ]
                 .reverse()
                 .map(href =>
                     headInsert({
                         "type": "css",
                         href,
-                        "position": "prepend",
-                    }),
-                ),
+                        "position": "prepend"
+                    })
+                )
         ).then(() => {
             if (isUnmounted) {
                 return;
@@ -89,8 +89,8 @@ const Template = memo((props: TemplateProps) => {
         toArr(props.scripts).forEach(relativePath =>
             headInsert({
                 "type": "javascript",
-                "src": pathJoin(url.resourcesPath, relativePath),
-            }),
+                "src": pathJoin(url.resourcesPath, relativePath)
+            })
         );
 
         if (props.kcHtmlClass !== undefined) {
@@ -211,7 +211,7 @@ const Template = memo((props: TemplateProps) => {
                                 <span
                                     className="kc-feedback-text"
                                     dangerouslySetInnerHTML={{
-                                        "__html": message.summary,
+                                        "__html": message.summary
                                     }}
                                 />
                             </div>

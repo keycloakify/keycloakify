@@ -173,7 +173,7 @@ const messages = {
     "resourcesSharedWithMe": "Zdroje zdieľané so mnou",
     "permissionRequestion": "Žiadosti o povolenie",
     "permission": "Oprávnenie",
-    "shares": "podiel (y)",
+    "shares": "podiel (y)"
 };
 
 export default messages;

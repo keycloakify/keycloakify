@@ -27,7 +27,7 @@ const messages = {
         "Zonder een geconfigureerde Sector Identifier URI mogen client redirect URIs niet meerdere host componenten hebben.",
     "pairwiseMalformedSectorIdentifierURI": "Onjuist notatie in Sector Identifier URI.",
     "pairwiseFailedToGetRedirectURIs": "Kon geen redirect URIs verkrijgen van de Sector Identifier URI.",
-    "pairwiseRedirectURIsMismatch": "Client redirect URIs komen niet overeen met redict URIs ontvangen van de Sector Identifier URI.",
+    "pairwiseRedirectURIsMismatch": "Client redirect URIs komen niet overeen met redict URIs ontvangen van de Sector Identifier URI."
 };
 
 export default messages;

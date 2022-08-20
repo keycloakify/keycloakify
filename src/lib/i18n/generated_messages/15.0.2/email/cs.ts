@@ -62,7 +62,7 @@ const messages = {
     "linkExpirationFormatter.timePeriodUnit.days.1": "den",
     "linkExpirationFormatter.timePeriodUnit.days.2": "dny",
     "linkExpirationFormatter.timePeriodUnit.days.3": "dny",
-    "linkExpirationFormatter.timePeriodUnit.days.4": "dny",
+    "linkExpirationFormatter.timePeriodUnit.days.4": "dny"
 };
 
 export default messages;

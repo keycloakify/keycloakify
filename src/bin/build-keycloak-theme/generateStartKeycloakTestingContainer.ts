@@ -27,7 +27,7 @@ export function generateStartKeycloakTestingContainer(params: {
     const {
         keycloakThemeBuildingDirPath,
         keycloakVersion,
-        buildOptions: { themeName },
+        buildOptions: { themeName }
     } = params;
 
     fs.writeFileSync(
@@ -52,14 +52,14 @@ export function generateStartKeycloakTestingContainer(params: {
                     "main",
                     "resources",
                     "theme",
-                    themeName,
+                    themeName
                 )}:/opt/keycloak/themes/${themeName}:rw \\`,
                 `   -it quay.io/keycloak/keycloak:${keycloakVersion} \\`,
                 `   start-dev`,
-                "",
+                ""
             ].join("\n"),
-            "utf8",
+            "utf8"
         ),
-        { "mode": 0o755 },
+        { "mode": 0o755 }
     );
 }

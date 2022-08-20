@@ -133,7 +133,7 @@ const messages = {
     "invalidPasswordMinSpecialCharsMessage": "Senha inválida: deve conter pelo menos {0} caractere(s) especial",
     "invalidPasswordNotUsernameMessage": "Senha inválida: não deve ser igual ao nome de usuário",
     "invalidPasswordRegexPatternMessage": "Senha inválida: não corresponde ao padrão da expressão regular.",
-    "invalidPasswordHistoryMessage": "Senha inválida: não pode ser igual a qualquer uma das {0} últimas senhas.",
+    "invalidPasswordHistoryMessage": "Senha inválida: não pode ser igual a qualquer uma das {0} últimas senhas."
 };
 
 export default messages;

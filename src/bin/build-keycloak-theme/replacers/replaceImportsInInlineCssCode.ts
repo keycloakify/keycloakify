@@ -40,7 +40,7 @@ export function replaceImportsInInlineCssCode(params: { cssCode: string; buildOp
         (...[, group]) =>
             `url(${
                 buildOptions.isStandalone ? "${url.resourcesPath}/build/" + group : buildOptions.urlOrigin + (buildOptions.urlPathname ?? "/") + group
-            })`,
+            })`
     );
 
     return { fixedCssCode };

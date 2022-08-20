@@ -16,8 +16,8 @@ export function transformCodebase(params: { srcDirPath: string; destDirPath: str
         srcDirPath,
         destDirPath,
         transformSourceCode = id<TransformSourceCode>(({ sourceCode }) => ({
-            "modifiedSourceCode": sourceCode,
-        })),
+            "modifiedSourceCode": sourceCode
+        }))
     } = params;
 
     for (const file_relative_path of crawl(srcDirPath)) {
@@ -25,7 +25,7 @@ export function transformCodebase(params: { srcDirPath: string; destDirPath: str
 
         const transformSourceCodeResult = transformSourceCode({
             "sourceCode": fs.readFileSync(filePath),
-            "filePath": path.join(srcDirPath, file_relative_path),
+            "filePath": path.join(srcDirPath, file_relative_path)
         });
 
         if (transformSourceCodeResult === undefined) {
@@ -33,14 +33,14 @@ export function transformCodebase(params: { srcDirPath: string; destDirPath: str
         }
 
         fs.mkdirSync(path.dirname(path.join(destDirPath, file_relative_path)), {
-            "recursive": true,
+            "recursive": true
         });
 
         const { newFileName, modifiedSourceCode } = transformSourceCodeResult;
 
         fs.writeFileSync(
             path.join(path.dirname(path.join(destDirPath, file_relative_path)), newFileName ?? path.basename(file_relative_path)),
-            modifiedSourceCode,
+            modifiedSourceCode
         );
     }
 }

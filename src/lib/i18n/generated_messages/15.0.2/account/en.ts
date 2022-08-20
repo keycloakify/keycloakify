@@ -355,7 +355,7 @@ const messages = {
     "error-invalid-date": "Invalid date.",
     "error-user-attribute-read-only": "The field {0} is read only.",
     "error-username-invalid-character": "Username contains invalid character.",
-    "error-person-name-invalid-character": "Name contains invalid character.",
+    "error-person-name-invalid-character": "Name contains invalid character."
 };
 
 export default messages;

@@ -17,7 +17,7 @@ export function main() {
     const buildOptions = readBuildOptions({
         "packageJson": fs.readFileSync(pathJoin(reactProjectDirPath, "")).toString("utf8"),
         "CNAME": fs.readFileSync(pathJoin(reactProjectDirPath, "public", "CNAME")).toString("utf8"),
-        "isExternalAssetsCliParamProvided": process.argv[2]?.toLowerCase() === "--external-assets",
+        "isExternalAssetsCliParamProvided": process.argv[2]?.toLowerCase() === "--external-assets"
     });
 
     const { doBundlesEmailTemplate } = generateKeycloakThemeResources({
@@ -28,18 +28,18 @@ export function main() {
         //We have to leave it at that otherwise we break our default theme.
         //Problem is that we can't guarantee that the the old resources
         //will still be available on the newer keycloak version.
-        "keycloakVersion": "11.0.3",
+        "keycloakVersion": "11.0.3"
     });
 
     const { jarFilePath } = generateJavaStackFiles({
         "version": buildOptions.version,
         keycloakThemeBuildingDirPath,
         doBundlesEmailTemplate,
-        buildOptions,
+        buildOptions
     });
 
     child_process.execSync("mvn package", {
-        "cwd": keycloakThemeBuildingDirPath,
+        "cwd": keycloakThemeBuildingDirPath
     });
 
     //We want, however, to test in a container running the latest Keycloak version
@@ -48,7 +48,7 @@ export function main() {
     generateStartKeycloakTestingContainer({
         keycloakThemeBuildingDirPath,
         "keycloakVersion": containerKeycloakVersion,
-        buildOptions,
+        buildOptions
     });
 
     console.log(
@@ -100,7 +100,7 @@ export function main() {
             `- Go to 👉 https://www.keycloak.org/app/ 👈 Click "Save" then "Sign in". You should see your login page`,
             "",
             "Video demoing this process: https://youtu.be/N3wlBoH4hKg",
-            "",
-        ].join("\n"),
+            ""
+        ].join("\n")
     );
 }

@@ -47,7 +47,7 @@ const messages = {
     "linkExpirationFormatter.timePeriodUnit.hours": "uur",
     "linkExpirationFormatter.timePeriodUnit.hours.1": "uur",
     "linkExpirationFormatter.timePeriodUnit.days": "dagen",
-    "linkExpirationFormatter.timePeriodUnit.days.1": "dag",
+    "linkExpirationFormatter.timePeriodUnit.days.1": "dag"
 };
 
 export default messages;

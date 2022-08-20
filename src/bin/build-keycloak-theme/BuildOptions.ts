@@ -23,9 +23,9 @@ const zParsedPackageJson = z.object({
         .object({
             "extraPages": z.array(z.string()).optional(),
             "extraThemeProperties": z.array(z.string()).optional(),
-            "isAppAndKeycloakServerSharingSameDomain": z.boolean().optional(),
+            "isAppAndKeycloakServerSharingSameDomain": z.boolean().optional()
         })
-        .optional(),
+        .optional()
 });
 
 assert<Equals<ReturnType<typeof zParsedPackageJson["parse"]>, ParsedPackageJson>>();
@@ -99,7 +99,7 @@ export function readBuildOptions(params: {
                 const out = url.pathname.replace(/([^/])$/, "$1/");
 
                 return out === "/" ? undefined : out;
-            })(),
+            })()
         };
     })();
 
@@ -130,20 +130,20 @@ export function readBuildOptions(params: {
             })(),
             "version": version,
             extraPages,
-            extraThemeProperties,
+            extraThemeProperties
         };
     })();
 
     if (isExternalAssetsCliParamProvided) {
         const commonExternalAssets = id<BuildOptions.ExternalAssets.CommonExternalAssets>({
             ...common,
-            "isStandalone": false,
+            "isStandalone": false
         });
 
         if (parsedPackageJson.keycloakify?.isAppAndKeycloakServerSharingSameDomain) {
             return id<BuildOptions.ExternalAssets.SameDomain>({
                 ...commonExternalAssets,
-                "isAppAndKeycloakServerSharingSameDomain": true,
+                "isAppAndKeycloakServerSharingSameDomain": true
             });
         } else {
             assert(
@@ -156,15 +156,15 @@ export function readBuildOptions(params: {
                     "Alternatively, if your app and the Keycloak server are on the same domain, ",
                     "eg https://example.com is your app and https://example.com/auth is the keycloak",
                     'admin UI, you can set "keycloakify": { "isAppAndKeycloakServerSharingSameDomain": true }',
-                    "in your package.json",
-                ].join(" "),
+                    "in your package.json"
+                ].join(" ")
             );
 
             return id<BuildOptions.ExternalAssets.DifferentDomains>({
                 ...commonExternalAssets,
                 "isAppAndKeycloakServerSharingSameDomain": false,
                 "urlOrigin": url.origin,
-                "urlPathname": url.pathname,
+                "urlPathname": url.pathname
             });
         }
     }
@@ -172,6 +172,6 @@ export function readBuildOptions(params: {
     return id<BuildOptions.Standalone>({
         ...common,
         "isStandalone": true,
-        "urlPathname": url?.pathname,
+        "urlPathname": url?.pathname
     });
 }
