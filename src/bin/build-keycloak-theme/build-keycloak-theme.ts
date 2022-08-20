@@ -15,8 +15,16 @@ export function main() {
     console.log("🔏 Building the keycloak theme...⌚");
 
     const buildOptions = readBuildOptions({
-        "packageJson": fs.readFileSync(pathJoin(reactProjectDirPath, "")).toString("utf8"),
-        "CNAME": fs.readFileSync(pathJoin(reactProjectDirPath, "public", "CNAME")).toString("utf8"),
+        "packageJson": fs.readFileSync(pathJoin(reactProjectDirPath, "package.json")).toString("utf8"),
+        "CNAME": (() => {
+            const cnameFilePath = pathJoin(reactProjectDirPath, "public", "CNAME");
+
+            if (!fs.existsSync(cnameFilePath)) {
+                return undefined;
+            }
+
+            return fs.readFileSync(cnameFilePath).toString("utf8");
+        })(),
         "isExternalAssetsCliParamProvided": process.argv[2]?.toLowerCase() === "--external-assets"
     });
 
