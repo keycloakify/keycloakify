@@ -39,3 +39,7 @@ In order to enable you to use `React.lazy()`, Keyclaokify components are now exp
 -import { Login } from "keycloakify/lib/components/Login";
 +import Login from "keycloakify/lib/components/Login";
 ```
+
+Once you're at it, it might be a good time to update your app to use `<Suspense/>` and `React.lazy()` in order to reduce your bundle size.  See [keycloakify-starter (CSS only)](https://github.com/garronej/keycloakify-setup) or [keycloakify-advanced-starter (component level customization)](https://github.com/garronej/keycloakify-advanced-starter) to see how it's suposed to be setup.
+
+###

@@ -9,7 +9,7 @@
 * [✅ Realtime input validation](realtime-input-validation.md)
 * [⚠ Limitations](limitations.md)
 * [🌉 Context persistence](context-persistence.md)
-* [🌐 Adding i18n messages keys](adding-text-keys.md)
+* [🌎 i18n](i18n.md)
 * [💂 Email domain acceptlist](email-domain-acceptlist.md)
 * [🛑 Keycloak error in log](keycloak-error-in-log.md)
 * [💟 Contributing](contributing.md)
