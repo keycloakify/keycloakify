@@ -34,8 +34,7 @@ The first approach is to only customize the style of the default Keycloak login 
 
 ```tsx
 import { createRoot } from "react-dom/client";
-import KcApp from "keycloakify/components/KcApp";
-import { defaultKcProps, getKcContext } from "keycloakify";
+import KcApp, { defaultKcProps, getKcContext } from "keycloakify";
 
 //We assume the file contains: ".my-class { color: red; }"
 import "./index.css";
