@@ -41,7 +41,7 @@ You won't be able to [import things from your public directory **in your JavaScr
 
 ### `@font-face` importing fonts from the `src/` dir
 
-If you are building the theme with [--external-assets](page-1.md) this limitation doesn't apply, you can import fonts however you see fit.
+If you are building the theme with [--external-assets](build-options.md#external-assets) this limitation doesn't apply, you can import fonts however you see fit.
 
 #### Example of setup that **won't** work
 
@@ -50,7 +50,7 @@ If you are building the theme with [--external-assets](page-1.md) this limitatio
 
 #### Possible workarounds
 
-* [Use `--external-assets`](page-1.md).
+* Use [`--external-assets`](build-options.md#external-assets).
 * If it is possible, use Google Fonts or any other font provider.
 * If you want to host your font recommended approach is to move your fonts into the `public` directory and to place your `@font-face` statements in the `public/index.html`.\
   Example [here](https://github.com/garronej/keycloakify-demo-app/blob/9aa2dbaec28a7786d6b2983c9a59d393dec1b2d6/public/index.html#L27-L73) (and the font are [here](https://github.com/garronej/keycloakify-demo-app/tree/main/public/fonts/WorkSans)).

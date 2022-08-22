@@ -10,7 +10,6 @@
 * [⚠ Limitations](limitations.md)
 * [🌉 Context persistence](context-persistence.md)
 * [🌐 Adding i18n messages keys](adding-text-keys.md)
-* [⚡ Performance optimization](page-1.md)
 * [💂 Email domain acceptlist](email-domain-acceptlist.md)
 * [🛑 Keycloak error in log](keycloak-error-in-log.md)
 * [💟 Contributing](contributing.md)
