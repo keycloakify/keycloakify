@@ -3,7 +3,7 @@
 {% hint style="success" %}
 It's a good idea to first read this quick start section to understand the basic of how Keycloakify works.
 
-However, we recommend you start hacking from [**the demo setup**](https://github.com/garronej/keycloakify-demo-app) (still on v5!) instead of setting up Keycloakify from scratch.
+However, we recommend you start hacking from [**the starter project**](https://github.com/garronej/keycloakify-starter) instead of setting up Keycloakify from scratch.
 {% endhint %}
 
 {% hint style="warning" %}
@@ -18,15 +18,13 @@ yarn add keycloakify @emotion/react
 
 ```json
 "scripts": {
-    "keycloak": "yarn build && build-keycloak-theme",
+    "keycloak": "yarn build && keycloakify",
 }
 ```
 
-```bash
-yarn keycloak # generates the keycloak-theme.jar
-```
-
-On the console will be printed all the instructions about how to load the generated theme in Keycloak
+{% hint style="info" %}
+Running `yarn keycloak` willl generate the **keycloak-theme.jar** file that you'll be able to import in Keycloak.
+{% endhint %}
 
 {% tabs %}
 {% tab title="CSS Only customization" %}
@@ -127,15 +125,15 @@ then select version 11.0.3 ([Video demo](https://user-images.githubusercontent.c
 {% tab title="Component level customization" %}
 If you want to go beyond only customizing the CSS you can re-implement some of the pages or even add new ones.
 
-If you want to go this way checkout the demo setup provided [here](https://github.com/garronej/keycloakify-demo-app/tree/look\_and\_feel). If you prefer a real life example you can checkout [onyxia-web's source](https://github.com/InseeFrLab/onyxia-web/tree/main/src/ui/components/KcApp). The web app is in production [here](https://datalab.sspcloud.fr).
+If you want to go this way checkout the demo setup provided [here](https://github.com/garronej/keycloakify-advanced-starter). If you prefer a real life example you can checkout [onyxia-web's source](https://github.com/InseeFrLab/onyxia-web/tree/main/src/ui/components/KcApp). The web app is in production [here](https://datalab.sspcloud.fr).
 
 See also [this documentation section](limitations.md#i-have-established-that-a-page-that-i-need-isnt-supported-out-of-the-box-by-keycloakify-now-what) for more info on how to add support for extra `ftl` pages.&#x20;
 {% endtab %}
 {% endtabs %}
 
-### How to import the theme in Keycloak
+### How to import the .jar in Keycloak
 
-Before uploading you theme to Keycloak you probably want to give it a spin locally. Read up the following section:&#x20;
+Before loading you theme into Keycloak you probably want to give it a spin locally. Read up the following section:&#x20;
 
 {% content-ref url="developpement.md" %}
 [developpement.md](developpement.md)
