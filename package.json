@@ -21,7 +21,7 @@
         "format:check": "yarn _format --list-different"
     },
     "bin": {
-        "build-keycloak-theme": "dist/bin/build-keycloak-theme/index.js",
+        "keycloakify": "dist/bin/keycloakify/index.js",
         "create-keycloak-email-directory": "dist/bin/create-keycloak-email-directory.js",
         "download-builtin-keycloak-theme": "dist/bin/download-builtin-keycloak-theme.js"
     },

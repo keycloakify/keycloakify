@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { keycloakThemeBuildingDirPath } from "./build-keycloak-theme";
+import { keycloakThemeBuildingDirPath } from "./keycloakify";
 import { join as pathJoin } from "path";
 import { downloadAndUnzip } from "./tools/downloadAndUnzip";
 import { promptKeycloakVersion } from "./promptKeycloakVersion";

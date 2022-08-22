@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { downloadBuiltinKeycloakTheme } from "./download-builtin-keycloak-theme";
-import { keycloakThemeEmailDirPath } from "./build-keycloak-theme";
+import { keycloakThemeEmailDirPath } from "./keycloakify";
 import { join as pathJoin, basename as pathBasename } from "path";
 import { transformCodebase } from "./tools/transformCodebase";
 import { promptKeycloakVersion } from "./promptKeycloakVersion";

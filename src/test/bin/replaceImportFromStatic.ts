@@ -1,6 +1,6 @@
-import { replaceImportsFromStaticInJsCode } from "../../bin/build-keycloak-theme/replacers/replaceImportsFromStaticInJsCode";
-import { generateCssCodeToDefineGlobals, replaceImportsInCssCode } from "../../bin/build-keycloak-theme/replacers/replaceImportsInCssCode";
-import { replaceImportsInInlineCssCode } from "../../bin/build-keycloak-theme/replacers/replaceImportsInInlineCssCode";
+import { replaceImportsFromStaticInJsCode } from "../../bin/keycloakify/replacers/replaceImportsFromStaticInJsCode";
+import { generateCssCodeToDefineGlobals, replaceImportsInCssCode } from "../../bin/keycloakify/replacers/replaceImportsInCssCode";
+import { replaceImportsInInlineCssCode } from "../../bin/keycloakify/replacers/replaceImportsInInlineCssCode";
 import { assert } from "tsafe/assert";
 import { same } from "evt/tools/inDepth/same";
 import { assetIsSameCode } from "../tools/assertIsSameCode";
