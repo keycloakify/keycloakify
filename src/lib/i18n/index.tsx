@@ -20,16 +20,50 @@ assert<KcContextBase extends KcContextLike ? true : false>();
 export type MessageKeyBase = keyof typeof baseMessages | keyof typeof keycloakifyExtraMessages[typeof fallbackLanguageTag];
 
 export type I18n<MessageKey extends string = MessageKeyBase> = {
-    msgStr: (key: MessageKey, ...args: (string | undefined)[]) => string;
-    msg: (key: MessageKey, ...args: (string | undefined)[]) => JSX.Element;
-    /** advancedMsg("${access-denied}") === advancedMsg("access-denied") === msg("access-denied") */
-    advancedMsg: (key: string, ...args: (string | undefined)[]) => JSX.Element;
-    /** advancedMsg("${not-a-message-key}") === advancedMsg(not-a-message-key") === "not-a-message-key" */
-    advancedMsgStr: (key: string, ...args: (string | undefined)[]) => string;
+    /**
+     * e.g: "en", "fr", "zh-CN"
+     *
+     * The current language
+     */
     currentLanguageTag: string;
+    /**
+     * This will cause the page to be reloaded,
+     * on next load currentLanguageTag === newLanguageTag
+     */
     changeLocale: (newLanguageTag: string) => never;
-    /** e.g. "en" => "English", "fr" => "Français" */
+    /**
+     * e.g. "en" => "English", "fr" => "Français"
+     *
+     * Used to render a select that enable user to switch language.
+     * ex: https://user-images.githubusercontent.com/6702424/186044799-38801eec-4e89-483b-81dd-8e9233e8c0eb.png
+     * */
     labelBySupportedLanguageTag: Record<string, string>;
+    /**
+     * Examples assuming currentLanguageTag === "en"
+     *
+     * msg("access-denied") === <span>Access denied</span>
+     * msg("impersonateTitleHtml", "Foo") === <span><strong>Foo</strong> Impersonate User</span>
+     */
+    msg: (key: MessageKey, ...args: (string | undefined)[]) => JSX.Element;
+    /**
+     * It's the same thing as msg() but instead of returning a JSX.Element it returns a string.
+     * It can be more convenient to manipulate strings but if there are HTML tags it wont render.
+     * msgStr("impersonateTitleHtml", "Foo") === "<strong>Foo</strong> Impersonate User"
+     */
+    msgStr: (key: MessageKey, ...args: (string | undefined)[]) => string;
+    /**
+     * Examples assuming currentLanguageTag === "en"
+     * advancedMsg("${access-denied} foo bar") === msg("access-denied") + " foo bar" === <span>Access denied foo bar</span>
+     * advancedMsg("${access-denied}") === advancedMsg("access-denied") === msg("access-denied")
+     * advancedMsg("${not-a-message-key}") === advancedMsg(not-a-message-key") === <span>not-a-message-key</span>
+     */
+    advancedMsg: (key: string, ...args: (string | undefined)[]) => JSX.Element;
+    /**
+     * Examples assuming currentLanguageTag === "en"
+     * advancedMsg("${access-denied} foo bar") === msg("access-denied") + " foo bar" === "Access denied foo bar"
+     * advancedMsg("${not-a-message-key}") === advancedMsg(not-a-message-key") === "not-a-message-key"
+     */
+    advancedMsgStr: (key: string, ...args: (string | undefined)[]) => string;
 };
 
 export function __unsafe_useI18n<ExtraMessageKey extends string = never>(params: {
