@@ -30,14 +30,12 @@ export default function KcApp(props: Props) {
         kcContext,
         "downloadTermMarkdown": async ({ currentLanguageTag }) => {
         
-            const markdownString = await fetch(
-                (() => {
+            const markdownString = await fetch((() => {
                     switch (currentLanguageTag) {
                         case "fr": return tos_fr_url;
                         default: return tos_en_url;
                     }
-                })(),
-            ).then(response => response.text());
+            })()).then(response => response.text());
 
             return markdownString;
         }

@@ -38,7 +38,7 @@ export default function KcApp(props: Props) {
                 "foo": "foo en Francais",
                 /* spell-checker: enable */
             },
-        },
+        }
     });
 
     //NOTE: Locale not yet downloaded
@@ -56,11 +56,7 @@ export default function KcApp(props: Props) {
         <KcAppBase
             kcContext={kcContext}
             i18n={i18n}
-            {...{
-                ...defaultKcProps,
-                // NOTE: The classes are defined in ./KcApp.css
-                "kcHeaderWrapperClass": "my-color my-font",
-            }}
+            {...defaultKcProps}
         />
     );
 }
