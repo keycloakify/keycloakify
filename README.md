@@ -34,7 +34,10 @@
 <p align="center">
     <i>Ultimately this build tool generates a Keycloak theme <a href="https://www.keycloakify.dev">Learn more</a></i>
     <img src="https://user-images.githubusercontent.com/6702424/110260457-a1c3d380-7fac-11eb-853a-80459b65626b.png">
-</p>  
+</p>
+
+> 🗣 Beloved contributors: [Keycloakify v6](https://docs.keycloakify.dev/v/v6/) is just around the corner, please stop
+> submitting PRs against `main` but work on [the `v6` branch](https://github.com/InseeFrLab/keycloakify/tree/v6) instead.
 
 # Changelog highlights
 
