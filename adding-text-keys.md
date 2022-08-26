@@ -45,6 +45,11 @@ export default function KcApp(props: Props) {
     if (i18n === null) {
         return null;
     }
+    
+    /* 
+     * Examples assuming i18n.currentLanguageTag === "en":
+     * i18n.msg("access-denied") === <span>Access denied</span>
+     */
 
     return (
         <KcAppBase
