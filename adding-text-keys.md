@@ -66,3 +66,9 @@ export default function KcApp(props: Props) {
 }
 
 ```
+
+{% hint style="success" %}
+You can set the language you'll get in `i18n.curentLanguageTag` by specifying `ui_locales=xx` as query parameter when redirecting to your login or register page. &#x20;
+
+[See how](context-persistence.md).
+{% endhint %}
