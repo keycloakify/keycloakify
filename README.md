@@ -36,9 +36,6 @@
     <img src="https://user-images.githubusercontent.com/6702424/110260457-a1c3d380-7fac-11eb-853a-80459b65626b.png">
 </p>  
 
-> The official websites of the project are temporarily down. While it is being addressed, you can access the doc [here](https://github.com/InseeFrLab/keycloakify/tree/v5_docs).  
-
-
 # Changelog highlights
 
 ## 5.8.0
