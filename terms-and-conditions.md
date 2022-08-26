@@ -29,19 +29,18 @@ export default function KcApp(props: Props) {
     useDownloadTerms({
         kcContext,
         "downloadTermMarkdown": async ({ currentLanguageTag }) => {
+        
             const markdownString = await fetch(
                 (() => {
                     switch (currentLanguageTag) {
-                        case "fr":
-                            return tos_fr_url;
-                        default:
-                            return tos_en_url;
+                        case "fr": return tos_fr_url;
+                        default: return tos_en_url;
                     }
                 })(),
             ).then(response => response.text());
 
             return markdownString;
-        },
+        }
     });
 
     return (
