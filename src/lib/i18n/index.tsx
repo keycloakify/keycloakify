@@ -27,12 +27,13 @@ export type I18n<MessageKey extends string = MessageKeyBase> = {
      */
     currentLanguageTag: string;
     /**
+     * To call when the user switch language.
      * This will cause the page to be reloaded,
      * on next load currentLanguageTag === newLanguageTag
      */
     changeLocale: (newLanguageTag: string) => never;
     /**
-     * e.g. "en" => "English", "fr" => "Français"
+     * e.g. "en" => "English", "fr" => "Français", ...
      *
      * Used to render a select that enable user to switch language.
      * ex: https://user-images.githubusercontent.com/6702424/186044799-38801eec-4e89-483b-81dd-8e9233e8c0eb.png
@@ -53,8 +54,8 @@ export type I18n<MessageKey extends string = MessageKeyBase> = {
     msgStr: (key: MessageKey, ...args: (string | undefined)[]) => string;
     /**
      * Examples assuming currentLanguageTag === "en"
-     * advancedMsg("${access-denied} foo bar") === msg("access-denied") + " foo bar" === <span>Access denied foo bar</span>
-     * advancedMsg("${access-denied}") === advancedMsg("access-denied") === msg("access-denied")
+     * advancedMsg("${access-denied} foo bar") === <span>${msgStr("access-denied")} foo bar<span> === <span>Access denied foo bar</span>
+     * advancedMsg("${access-denied}") === advancedMsg("access-denied") === msg("access-denied") === <span>Access denied</span>
      * advancedMsg("${not-a-message-key}") === advancedMsg(not-a-message-key") === <span>not-a-message-key</span>
      */
     advancedMsg: (key: string, ...args: (string | undefined)[]) => JSX.Element;
