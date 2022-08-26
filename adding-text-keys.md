@@ -49,6 +49,7 @@ export default function KcApp(props: Props) {
     /* 
      * Examples assuming i18n.currentLanguageTag === "en":
      * i18n.msg("access-denied") === <span>Access denied</span>
+     * i18n.msg("foo") === <span>foo in English</span>
      */
 
     return (
