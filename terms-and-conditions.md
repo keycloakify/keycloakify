@@ -9,4 +9,46 @@ First you need to enable the required action on the Keycloak server admin consol
 
 ![](https://user-images.githubusercontent.com/6702424/114280501-dad2e600-9a39-11eb-9c39-a225572dd38a.png)
 
-Then you'll have to do [something like this](https://github.com/garronej/keycloakify-demo-app/blob/a5b6a50f24bc25e082931f5ad9ebf47492acd12a/src/index.tsx#L46-L63).
+Then you load your own therms in Markdown format like this: &#x20;
+
+[src/KcApp/KcApp.tsx](https://github.com/garronej/keycloakify-starter/blob/main/src/KcApp/KcApp.tsx)
+
+```jsx
+import type { KcContext } from "./kcContext";
+import KcAppBase, { defaultKcProps, useDownloadTerms } from "keycloakify";
+import tos_en_url from "./tos_en.md";
+import tos_fr_url from "./tos_fr.md";
+
+export type Props = {
+    kcContext: KcContext;
+};
+
+export default function KcApp(props: Props) {
+    const { kcContext } = props;
+
+    useDownloadTerms({
+        kcContext,
+        "downloadTermMarkdown": async ({ currentLanguageTag }) => {
+            const markdownString = await fetch(
+                (() => {
+                    switch (currentLanguageTag) {
+                        case "fr":
+                            return tos_fr_url;
+                        default:
+                            return tos_en_url;
+                    }
+                })(),
+            ).then(response => response.text());
+
+            return markdownString;
+        },
+    });
+
+    return (
+        <KcAppBase
+            kcContext={kcContext}
+            {...defaultKcProps}
+        />
+    );
+}
+```
