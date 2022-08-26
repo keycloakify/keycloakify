@@ -777,14 +777,14 @@ event-emitter@^0.3.5:
     d "1"
     es5-ext "~0.10.14"
 
-evt@^2.3.1:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/evt/-/evt-2.3.1.tgz#988fc6fc255db8999240e918afe63ba6c325db99"
-  integrity sha512-+MU1aA0as6hOnGxzQOw9hV/xiKIB1vAY90S+WD6zMzvvhQHlY4aPHk2b8WpWsVs3XErDzlhGzCESVCAuH9kUiA==
+evt@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/evt/-/evt-2.4.0.tgz#5052d3a685bba8f7e7be699b358c1781bd4037bf"
+  integrity sha512-1V8FnExwqzX2fufT793mHfCnQay078kRdAEDHzJz863pgJK9aeDiWXZFs5aKmzJfIgi+svevtApVnleZXz4Jeg==
   dependencies:
-    minimal-polyfills "^2.2.1"
+    minimal-polyfills "^2.2.2"
     run-exclusive "^2.2.16"
-    tsafe "^0.10.1"
+    tsafe "^1.0.1"
 
 execa@^5.1.1:
   version "5.1.1"
@@ -1226,6 +1226,11 @@ minimal-polyfills@^2.2.1:
   resolved "https://registry.yarnpkg.com/minimal-polyfills/-/minimal-polyfills-2.2.1.tgz#7249d7ece666d3b4e1ec1c1b8f949eb9d44e2308"
   integrity sha512-WLmHQrsZob4rVYf8yHapZPNJZ3sspGa/sN8abuSD59b0FifDEE7HMfLUi24z7mPZqTpBXy4Svp+iGvAmclCmXg==
 
+minimal-polyfills@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/minimal-polyfills/-/minimal-polyfills-2.2.2.tgz#6b06a004acce420eb91cf94698f5e6e7f2518378"
+  integrity sha512-eEOUq/LH/DbLWihrxUP050Wi7H/N/I2dQT98Ep6SqOpmIbk4sXOI4wqalve66QoZa+6oljbZWU6I6T4dehQGmw==
+
 minimatch@^3.0.3, minimatch@^3.1.1:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.1.2.tgz#19cd194bfd3e428f049a70817c038d89ab4be35b"
@@ -1420,15 +1425,15 @@ please-upgrade-node@^3.2.0:
   dependencies:
     semver-compare "^1.0.0"
 
-powerhooks@^0.20.10:
-  version "0.20.10"
-  resolved "https://registry.yarnpkg.com/powerhooks/-/powerhooks-0.20.10.tgz#c30ba493ea324806100d9f5df889dea19f3a73ff"
-  integrity sha512-RiQVBgxLavWFVb3hKmzluykvgeVYgVyGtITlnIjVrtfql3jpCHzuVVTq/49oXp18BNEOKCQXzKfFeb42f1v4Pg==
+powerhooks@^0.20.15:
+  version "0.20.15"
+  resolved "https://registry.yarnpkg.com/powerhooks/-/powerhooks-0.20.15.tgz#e5093a11f3ed1badbc09944acf5a3fb15ac3f1d7"
+  integrity sha512-28xNjPTtjPPP8vyi9SWXfn0U9hjxm/UzuarD2uofIXa/CPWmkCeTtikyLoR6yuiE4pOfvdDXVfU5im40GuzJaQ==
   dependencies:
-    evt "^2.3.1"
+    evt "^2.4.0"
     memoizee "^0.4.15"
     resize-observer-polyfill "^1.5.1"
-    tsafe "^0.10.1"
+    tsafe "^1.0.1"
 
 prettier@^2.3.0:
   version "2.7.1"
@@ -1777,6 +1782,11 @@ tsafe@^0.10.1:
   version "0.10.1"
   resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-0.10.1.tgz#8f100b901e4467c43c0484f56a063f4276683ce0"
   integrity sha512-S+LrpSjoH5Pah201KS0MxtJn88HVtKf4ZxUoQuW/Hnl4IK6ALu9Qwjed7RbohDeHn+iMuug4c5Mk/z1Cq2G3nw==
+
+tsafe@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-1.0.1.tgz#c8c4eb2d75d1478418a4941307c5dd667fd76d23"
+  integrity sha512-FgJ1a4rE7YbmW5QIzpsfFl4tsAp0x74FH2bVE6qODb2U8jSrwTr5/ckIazeylme5zXndVbtgKm4BZdqmoGhiPw==
 
 tslib@^2.1.0:
   version "2.4.0"
