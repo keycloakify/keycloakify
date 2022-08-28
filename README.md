@@ -38,6 +38,15 @@
 
 # Changelog highlights
 
+## 6.0.0
+
+-   Bundle size drastically reduced, locals and component dynamically loaded.
+-   First print much quicker, use of React.lazy() everywhere.
+-   Real i18n API.
+-   Actual documentation for build options.
+
+Checkout the migration guide.
+
 ## 5.8.0
 
 -   [React.lazy()](https://reactjs.org/docs/code-splitting.html#reactlazy) support 🎉. [#141](https://github.com/InseeFrLab/keycloakify/issues/141)
