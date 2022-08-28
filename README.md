@@ -79,3 +79,8 @@ The message `termsTitle` ([_Terms and Conditions_ in en.ts](https://github.com/I
     }
 });
 ```
+
+If you have perfomed an modification at the component level of the Terms.tsx component be mindfull that we now use an [Evt](https://www.evt.land/) to re render when the terms Markdown have been downloaded.
+
+{% embed url="https://github.com/InseeFrLab/keycloakify/blob/f0ae5ea908e0aa42391af323b6d5e2fd371af851/src/lib/components/Terms.tsx#L59" %}
+
