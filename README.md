@@ -42,6 +42,14 @@ In order to enable you to use `React.lazy()`, Keyclaokify components are now exp
 
 Once you're at it, it might be a good time to update your app to use `<Suspense/>` and `React.lazy()` in order to reduce your bundle size.  See [keycloakify-starter (CSS only)](https://github.com/garronej/keycloakify-setup) or [keycloakify-advanced-starter (component level customization)](https://github.com/garronej/keycloakify-advanced-starter) to see how it's suposed to be setup.
 
+### i18n: Adding i18n messages keys
+
+In v5 and prior, Keycloakify only provided [a very hacky way](https://docs.keycloakify.dev/v/v5/adding-text-keys) of customizing internatiznalized message. &#x20;
+
+Keycloakify v6 now has a proper i18n api.
+
+
+
 ### Tems and conditions
 
 The message `termsTitle` ([_Terms and Conditions_ in en.ts](https://github.com/InseeFrLab/keycloakify/blob/f0ae5ea908e0aa42391af323b6d5e2fd371af851/src/lib/i18n/generated\_messages/18.0.1/login/en.ts#L66)) was repmaced by a blank string in v5. If you want to do the same in v6 you have to use the new [i18n API](adding-text-keys.md).
