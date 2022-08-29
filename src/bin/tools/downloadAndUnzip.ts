@@ -15,7 +15,7 @@ export function downloadAndUnzip(params: { url: string; destDirPath: string; pat
         rm_rf(tmpDirPath);
 
         fs.mkdirSync(tmpDirPath, { "recursive": true });
-        
+
         execSync(`curl -L ${url} -o ${zipFilePath}`, { "cwd": tmpDirPath });
     }
 
