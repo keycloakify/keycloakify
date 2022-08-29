@@ -73,7 +73,7 @@ import { createRoot } from "react-dom/client";
 
  const { kcContext } = getKcContext();
 
--if( kcContex === undefined ){
+-if( kcContext === undefined ){
 -    throw new Error(
 -        "This app is a Keycloak theme" +
 -        "It isn't meant to be deployed outside of Keycloak"
