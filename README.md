@@ -36,7 +36,8 @@
     <img src="https://user-images.githubusercontent.com/6702424/110260457-a1c3d380-7fac-11eb-853a-80459b65626b.png">
 </p>
 
-> The official websites of the project are temporarily down. While it is being addressed, you can access the doc [here](https://github.com/InseeFrLab/keycloakify/tree/v5_docs).
+> 🗣 Beloved contributors: [Keycloakify v6](https://docs.keycloakify.dev/v/v6/) is just around the corner, please stop
+> submitting PRs against `main` but work on [the `v6` branch](https://github.com/InseeFrLab/keycloakify/tree/v6) instead.
 
 # Changelog highlights
 
