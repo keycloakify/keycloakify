@@ -75,15 +75,15 @@
         "@octokit/rest": "^18.12.0",
         "cheerio": "^1.0.0-rc.5",
         "cli-select": "^1.1.2",
-        "evt": "^2.3.1",
+        "evt": "^2.4.0",
         "memoizee": "^0.4.15",
-        "minimal-polyfills": "^2.2.1",
+        "minimal-polyfills": "^2.2.2",
         "path-browserify": "^1.0.1",
-        "powerhooks": "^0.20.10",
+        "powerhooks": "^0.20.15",
         "react-markdown": "^5.0.3",
         "scripting-tools": "^0.19.13",
-        "tsafe": "^0.10.1",
-        "tss-react": "^3.7.1",
+        "tsafe": "^1.0.1",
+        "tss-react": "^4.0.0",
         "zod": "^3.17.10"
     }
 }

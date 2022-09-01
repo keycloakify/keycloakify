@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { useCssAndCx } from "tss-react";
+import { useCssAndCx } from "../tools/useCssAndCx";
 import type { I18n } from "../i18n";
 
 const LoginIdpLinkConfirm = memo(({ kcContext, i18n, ...props }: { kcContext: KcContextBase.LoginIdpLinkConfirm; i18n: I18n } & KcProps) => {

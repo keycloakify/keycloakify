@@ -2,7 +2,7 @@ import React, { useState, memo } from "react";
 import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { useCssAndCx } from "tss-react";
+import { useCssAndCx } from "../tools/useCssAndCx";
 import { useConstCallback } from "powerhooks/useConstCallback";
 import type { FormEventHandler } from "react";
 import type { I18n } from "../i18n";

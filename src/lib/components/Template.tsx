@@ -7,7 +7,7 @@ import { headInsert } from "../tools/headInsert";
 import { pathJoin } from "../../bin/tools/pathJoin";
 import { useConstCallback } from "powerhooks/useConstCallback";
 import type { KcTemplateProps } from "./KcProps";
-import { useCssAndCx } from "tss-react";
+import { useCssAndCx } from "../tools/useCssAndCx";
 import type { I18n } from "../i18n";
 
 export type TemplateProps = {

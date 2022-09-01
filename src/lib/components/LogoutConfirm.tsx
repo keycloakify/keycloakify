@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { useCssAndCx } from "tss-react";
+import { useCssAndCx } from "../tools/useCssAndCx";
 import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";

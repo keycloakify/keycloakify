@@ -2,7 +2,7 @@ import React, { useMemo, memo, useEffect, useState, Fragment } from "react";
 import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase, Attribute } from "../getKcContext/KcContextBase";
-import { useCssAndCx } from "tss-react";
+import { useCssAndCx } from "../tools/useCssAndCx";
 import type { ReactComponent } from "../tools/ReactComponent";
 import { useCallbackFactory } from "powerhooks/useCallbackFactory";
 import { useFormValidationSlice } from "../useFormValidationSlice";
