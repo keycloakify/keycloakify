@@ -26,7 +26,8 @@ Assuming you have cloned keycloakify in `~/github/keycloakify` this is how you w
 
 ```bash
 cd ~/github # Navigate to the dir where you have the keycloakify project
-git clone https://github.com/garronej/keycloakify-demo-app
+git clone https://github.com/garronej/keycloakify-starter
+#OR: git clone https://github.com/garronej/keycloakify-advanced-starter
 cd keycloakify
 yarn 
 yarn build
@@ -41,7 +42,8 @@ Open a new terminal window
 
 ```bash
 cd ~/github
-cd keycloakify-demo-app
+cd keycloakify-starter
+#OR: cd keycloakify-advanced-starter
 yarn start
 ```
 
