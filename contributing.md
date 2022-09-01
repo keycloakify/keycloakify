@@ -31,9 +31,10 @@ cd keycloakify
 yarn 
 yarn build
 yarn link_in_test_app
-npx tsc -w #This will start the compilation of Keycloakify in watch mode
-           #You will be able to perform changes on the keycloakify code
-           #and see them apply live in the keycloakify-demo-app
+# The following command will start the compilation of Keycloakify
+# in watch mode. You will be able to perform changes on the keycloakify code
+# and see them apply live in the keycloakify-demo-app
+npx tsc -p src/bin -w & npx tsc -p src/lib -w 
 ```
 
 Open a new terminal window
