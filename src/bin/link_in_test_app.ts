@@ -60,7 +60,7 @@ const execYarnLink = (params: { targetModuleName?: string; cwd: string }) => {
     });
 };
 
-const testAppNames = [process.argv[2] ?? "keycloakify-demo-app"] as const;
+const testAppNames = [process.argv[2] ?? "keycloakify-starter"] as const;
 
 const getTestAppPath = (testAppName: typeof testAppNames[number]) => pathJoin(keycloakifyDirPath, "..", testAppName);
 
