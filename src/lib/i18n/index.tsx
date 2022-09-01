@@ -1,6 +1,6 @@
 import "minimal-polyfills/Object.fromEntries";
 //NOTE for later: https://github.com/remarkjs/react-markdown/blob/236182ecf30bd89c1e5a7652acaf8d0bf81e6170/src/renderers.js#L7-L35
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import type baseMessages from "./generated_messages/18.0.1/login/en";
 import { assert } from "tsafe/assert";
@@ -76,12 +76,16 @@ export function __unsafe_useI18n<ExtraMessageKey extends string = never>(params:
 
     const [i18n, setI18n] = useState<I18n<ExtraMessageKey | MessageKeyBase> | undefined>(undefined);
 
+    const refHasStartedFetching = useRef(false);
+
     useEffect(() => {
-        if (doSkip) {
+        if (doSkip || refHasStartedFetching.current) {
             return;
         }
 
         let isMounted = true;
+
+        refHasStartedFetching.current = true;
 
         (async () => {
             const { currentLanguageTag = fallbackLanguageTag } = kcContext.locale ?? {};
