@@ -55,10 +55,13 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
             }
 
             n[(function (){
-                Object.defineProperty(n, "p", {
-                    get: function() { return window.kcContext.url.resourcesPath; },
-                    set: function (){}
-                });
+                var pd= Object.getOwnPropertyDescriptor(n, "p");
+                if( pd === undefined || pd.configurable ){
+                    Object.defineProperty(n, "p", {
+                        get: function() { return window.kcContext.url.resourcesPath; },
+                        set: function (){}
+                    });
+                }
                 return "u";
             })()] = function(e) {
                 return "/build/static/js/" + e + "." + {
@@ -69,10 +72,13 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
             }
 
             t[(function (){
-                Object.defineProperty(t, "p", {
-                    get: function() { return window.kcContext.url.resourcesPath; },
-                    set: function (){}
-                });
+                var pd= Object.getOwnPropertyDescriptor(n, "p");
+                if( pd === undefined || pd.configurable ){
+                    Object.defineProperty(t, "p", {
+                        get: function() { return window.kcContext.url.resourcesPath; },
+                        set: function (){}
+                    });
+                }
                 return "miniCssF";
             })()] = function(e) {
                 return "/build/static/css/" + e + "." + {
@@ -109,11 +115,14 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
             }
 
             n[(function (){
-                var p= "";
-                Object.defineProperty(n, "p", {
-                    get: function() { return ("kcContext" in window ? "https://demo-app.keycloakify.dev" : "") + p; },
-                    set: function (value){ p = value; }
-                });
+                var pd= Object.getOwnPropertyDescriptor(n, "p");
+                if( pd === undefined || pd.configurable ){
+                    var p= "";
+                    Object.defineProperty(n, "p", {
+                        get: function() { return ("kcContext" in window ? "https://demo-app.keycloakify.dev" : "") + p; },
+                        set: function (value){ p = value; }
+                    });
+                }
                 return "u";
             })()] = function(e) {
                 return "static/js/" + e + "." + {
@@ -124,11 +133,14 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
             }
 
             t[(function (){
-                var p= "";
-                Object.defineProperty(t, "p", {
-                    get: function() { return ("kcContext" in window ? "https://demo-app.keycloakify.dev" : "") + p; },
-                    set: function (value){ p = value; }
-                });
+                var pd= Object.getOwnPropertyDescriptor(n, "p");
+                if( pd === undefined || pd.configurable ){
+                    var p= "";
+                    Object.defineProperty(t, "p", {
+                        get: function() { return ("kcContext" in window ? "https://demo-app.keycloakify.dev" : "") + p; },
+                        set: function (value){ p = value; }
+                    });
+                }
                 return "miniCssF";
             })()] = function(e) {
                 return "static/css/" + e + "." + {

@@ -44,6 +44,8 @@ export function replaceImportsFromStaticInJsCode(params: { jsCode: string; build
         new RegExp(`([a-zA-Z]+)\\.([a-zA-Z]+)=function\\(([a-zA-Z]+)\\){return"static\\/${language}\\/"`, "g"),
         (...[, n, u, e]) => `
 			${n}[(function(){
+                var pd= Object.getOwnPropertyDescriptor(n, "p");
+                if( pd === undefined || pd.configurable ){
                 ${
                     buildOptions.isStandalone
                         ? `
@@ -59,6 +61,7 @@ export function replaceImportsFromStaticInJsCode(params: { jsCode: string; build
                         set: function (value){ p = value;}
                     });
                     `
+                }
                 }
 				return "${u}";
 			})()] = function(${e}) { return "${buildOptions.isStandalone ? "/build/" : ""}static/${language}/"`
