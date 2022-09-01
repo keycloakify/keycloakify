@@ -92,3 +92,20 @@ If you have perfomed an modification at the component level of the Terms.tsx com
 
 {% embed url="https://github.com/InseeFrLab/keycloakify/blob/f0ae5ea908e0aa42391af323b6d5e2fd371af851/src/lib/components/Terms.tsx#L59" %}
 
+### useFormValidationSlice()
+
+`useFormValidationSlice()` now require you to pass a i18n object, see [I18n API](adding-text-keys.md).
+
+```diff
+ import { useFormValidationSlice } from "keycloakify";
+ 
+ const {
+     formValidationState: { fieldStateByAttributeName, isFormSubmittable },
+     formValidationReducer,
+     attributesWithPassword: unorderedAttributesWithPassword,
+ } = useFormValidationSlice({
+     kcContext,
+     passwordValidators,
++    i18n
+ });
+```
