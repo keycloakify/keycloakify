@@ -1,5 +1,6 @@
 import { execSync } from "child_process";
 import { join as pathJoin, relative as pathRelative } from "path";
+import { exclude } from "tsafe/exclude";
 import * as fs from "fs";
 
 const keycloakifyDirPath = pathJoin(__dirname, "..", "..");
@@ -60,11 +61,34 @@ const execYarnLink = (params: { targetModuleName?: string; cwd: string }) => {
     });
 };
 
-const testAppNames = [process.argv[2] ?? "keycloakify-starter"] as const;
+const testAppPaths = (() => {
+    const arg = process.argv[2];
 
-const getTestAppPath = (testAppName: typeof testAppNames[number]) => pathJoin(keycloakifyDirPath, "..", testAppName);
+    const testAppNames = arg !== undefined ? [arg] : ["keycloakify-starter", "keycloakify-advanced-starter"];
 
-testAppNames.forEach(testAppName => execSync("yarn install", { "cwd": getTestAppPath(testAppName) }));
+    return testAppNames
+        .map(testAppName => {
+            const testAppPath = pathJoin(keycloakifyDirPath, "..", testAppName);
+
+            if (fs.existsSync(testAppPath)) {
+                return testAppPath;
+            }
+
+            console.warn(`Skipping ${testAppName} since it cant be found here: ${testAppPath}`);
+
+            return undefined;
+        })
+        .filter(exclude(undefined));
+})();
+
+console.log(testAppPaths);
+
+if (testAppPaths.length === 0) {
+    console.error("No test app to link into!");
+    process.exit(-1);
+}
+
+testAppPaths.forEach(testAppPath => execSync("yarn install", { "cwd": testAppPath }));
 
 console.log("=== Linking common dependencies ===");
 
@@ -81,22 +105,24 @@ commonThirdPartyDeps.forEach(commonThirdPartyDep => {
     );
 
     execYarnLink({ "cwd": localInstallPath });
+});
 
-    testAppNames.forEach(testAppName =>
+commonThirdPartyDeps.forEach(commonThirdPartyDep =>
+    testAppPaths.forEach(testAppPath =>
         execYarnLink({
-            "cwd": getTestAppPath(testAppName),
+            "cwd": testAppPath,
             "targetModuleName": commonThirdPartyDep
         })
-    );
-});
+    )
+);
 
 console.log("=== Linking in house dependencies ===");
 
 execYarnLink({ "cwd": pathJoin(keycloakifyDirPath, "dist") });
 
-testAppNames.forEach(testAppName =>
+testAppPaths.forEach(testAppPath =>
     execYarnLink({
-        "cwd": getTestAppPath(testAppName),
+        "cwd": testAppPath,
         "targetModuleName": "keycloakify"
     })
 );
