@@ -81,8 +81,6 @@ const testAppPaths = (() => {
         .filter(exclude(undefined));
 })();
 
-console.log(testAppPaths);
-
 if (testAppPaths.length === 0) {
     console.error("No test app to link into!");
     process.exit(-1);
