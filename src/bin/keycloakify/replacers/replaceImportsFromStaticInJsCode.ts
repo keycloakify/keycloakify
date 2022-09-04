@@ -41,10 +41,10 @@ export function replaceImportsFromStaticInJsCode(params: { jsCode: string; build
     const { jsCode, buildOptions } = params;
 
     const getReplaceArgs = (language: "js" | "css"): Parameters<typeof String.prototype.replace> => [
-        new RegExp(`([a-zA-Z]+)\\.([a-zA-Z]+)=function\\(([a-zA-Z]+)\\){return"static\\/${language}\\/"`, "g"),
+        new RegExp(`([a-zA-Z_]+)\\.([a-zA-Z]+)=function\\(([a-zA-Z]+)\\){return"static\\/${language}\\/"`, "g"),
         (...[, n, u, e]) => `
 			${n}[(function(){
-                var pd= Object.getOwnPropertyDescriptor(n, "p");
+                var pd= Object.getOwnPropertyDescriptor(${n}, "p");
                 if( pd === undefined || pd.configurable ){
                 ${
                     buildOptions.isStandalone

@@ -19,7 +19,7 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
             }[e] + ".chunk.js"
         }
 
-        n.u=function(e){return"static/js/" + e + "." + {
+        __webpack_require__.u=function(e){return"static/js/" + e + "." + {
                 147: "6c5cee76",
                 787: "8da10fcf",
                 922: "be170a73"
@@ -54,10 +54,10 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
                 }[e] + ".chunk.js"
             }
 
-            n[(function (){
-                var pd= Object.getOwnPropertyDescriptor(n, "p");
+            __webpack_require__[(function (){
+                var pd= Object.getOwnPropertyDescriptor(__webpack_require__, "p");
                 if( pd === undefined || pd.configurable ){
-                    Object.defineProperty(n, "p", {
+                    Object.defineProperty(__webpack_require__, "p", {
                         get: function() { return window.kcContext.url.resourcesPath; },
                         set: function (){}
                     });
@@ -72,7 +72,7 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
             }
 
             t[(function (){
-                var pd= Object.getOwnPropertyDescriptor(n, "p");
+                var pd= Object.getOwnPropertyDescriptor(t, "p");
                 if( pd === undefined || pd.configurable ){
                     Object.defineProperty(t, "p", {
                         get: function() { return window.kcContext.url.resourcesPath; },
@@ -114,11 +114,11 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
                 }[e] + ".chunk.js"
             }
 
-            n[(function (){
-                var pd= Object.getOwnPropertyDescriptor(n, "p");
+            __webpack_require__[(function (){
+                var pd= Object.getOwnPropertyDescriptor(__webpack_require__, "p");
                 if( pd === undefined || pd.configurable ){
                     var p= "";
-                    Object.defineProperty(n, "p", {
+                    Object.defineProperty(__webpack_require__, "p", {
                         get: function() { return ("kcContext" in window ? "https://demo-app.keycloakify.dev" : "") + p; },
                         set: function (value){ p = value; }
                     });
@@ -133,7 +133,7 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
             }
 
             t[(function (){
-                var pd= Object.getOwnPropertyDescriptor(n, "p");
+                var pd= Object.getOwnPropertyDescriptor(t, "p");
                 if( pd === undefined || pd.configurable ){
                     var p= "";
                     Object.defineProperty(t, "p", {
