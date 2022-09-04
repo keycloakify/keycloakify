@@ -60,6 +60,8 @@ export function getKcContext<KcContextExtended extends { pageId: string } = neve
                 ].filter(exclude(undefined));
 
                 attributes.forEach(attribute => {
+                    console.log("====>", attribute);
+
                     const partialAttribute = partialAttributes.find(({ name }) => name === attribute.name);
 
                     const augmentedAttribute: Attribute = {} as any;
@@ -82,14 +84,16 @@ export function getKcContext<KcContextExtended extends { pageId: string } = neve
                     id<KcContextBase.RegisterUserProfile>(kcContext).profile.attributesByName[augmentedAttribute.name] = augmentedAttribute;
                 });
 
-                partialAttributes.forEach(partialAttribute => {
-                    const { name } = partialAttribute;
+                partialAttributes
+                    .map(partialAttribute => ({ "validators": {}, ...partialAttribute }))
+                    .forEach(partialAttribute => {
+                        const { name } = partialAttribute;
 
-                    assert(name !== undefined, "If you define a mock attribute it must have at least a name");
+                        assert(name !== undefined, "If you define a mock attribute it must have at least a name");
 
-                    id<KcContextBase.RegisterUserProfile>(kcContext).profile.attributes.push(partialAttribute as any);
-                    id<KcContextBase.RegisterUserProfile>(kcContext).profile.attributesByName[name] = partialAttribute as any;
-                });
+                        id<KcContextBase.RegisterUserProfile>(kcContext).profile.attributes.push(partialAttribute as any);
+                        id<KcContextBase.RegisterUserProfile>(kcContext).profile.attributesByName[name] = partialAttribute as any;
+                    });
             }
         }
 
