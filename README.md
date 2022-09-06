@@ -42,6 +42,11 @@ In order to enable you to use `React.lazy()`, Keyclaokify components are now exp
 
 Once you're at it, it might be a good time to update your app to use `<Suspense/>` and `React.lazy()` in order to reduce your bundle size.  See [keycloakify-starter (CSS only)](https://github.com/garronej/keycloakify-setup) or [keycloakify-advanced-starter (component level customization)](https://github.com/garronej/keycloakify-advanced-starter) to see how it's suposed to be setup.
 
+You can also have a look at a real world migration: &#x20;
+
+* [An app using Keycloakify v5](https://github.com/etalab/sill-web/tree/f1b93012555f8a4c1c5e5afd9020b6246421b64e)
+* [The same app after upgrade to v6](https://github.com/etalab/sill-web/tree/5e6b89380b514f1d8a417b26fcd6b5cb354bf819)
+
 ### i18n: Adding i18n messages keys
 
 In v5 and prior, Keycloakify only provided [a very hacky way](https://docs.keycloakify.dev/v/v5/adding-text-keys) of customizing internatiznalized message. &#x20;
@@ -90,7 +95,9 @@ The message `termsTitle` ([_Terms and Conditions_ in en.ts](https://github.com/I
 
 If you have perfomed an modification at the component level of the Terms.tsx component be mindfull that we now use an [Evt](https://www.evt.land/) to re render when the terms Markdown have been downloaded.
 
-{% embed url="https://github.com/InseeFrLab/keycloakify/blob/f0ae5ea908e0aa42391af323b6d5e2fd371af851/src/lib/components/Terms.tsx#L59" %}
+{% embed url="https://github.com/etalab/sill-web/blob/main/src/ui/components/KcApp/Terms.tsx" %}
+Example of component level configuration of the Terms page
+{% endembed %}
 
 ### useFormValidationSlice()
 
