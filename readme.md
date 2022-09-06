@@ -28,6 +28,8 @@ However, the default pages you will get (before you customize them) will always 
 
 Latest release isn't in the list yet? It probably works fine, we just can't confirm it yet. &#x20;
 
+Older version are likely to be supported as well.&#x20;
+
 </details>
 
 ### Supported React frameworks
