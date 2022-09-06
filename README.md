@@ -45,7 +45,7 @@ Once you're at it, it might be a good time to update your app to use `<Suspense/
 You can also have a look at a real world migration: &#x20;
 
 * [An app using Keycloakify v5](https://github.com/etalab/sill-web/tree/f1b93012555f8a4c1c5e5afd9020b6246421b64e)
-* [The same app after upgrade to v6](https://github.com/etalab/sill-web/tree/5e6b89380b514f1d8a417b26fcd6b5cb354bf819)
+* [The same app after upgrade to v6](https://github.com/etalab/sill-web/tree/main/src/ui/components/KcApp)
 
 ### i18n: Adding i18n messages keys
 
@@ -107,9 +107,9 @@ Example of component level configuration of the Terms page
  import { useFormValidationSlice } from "keycloakify";
  
  const {
-     formValidationState: { fieldStateByAttributeName, isFormSubmittable },
+     formValidationState,
      formValidationReducer,
-     attributesWithPassword: unorderedAttributesWithPassword,
+     attributesWithPassword
  } = useFormValidationSlice({
      kcContext,
      passwordValidators,
