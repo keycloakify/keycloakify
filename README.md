@@ -37,7 +37,7 @@
 </p>
 
 > 🗣 V6 have been released 🎉  
-> [It features major improvements](/#600).  
+> [It features major improvements](https://github.com/InseeFrLab/keycloakify#600).  
 > Checkout [the migration guide](https://docs.keycloakify.dev/v5-to-v6).
 
 # Changelog highlights
