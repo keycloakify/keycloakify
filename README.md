@@ -2,7 +2,7 @@
     <img src="https://user-images.githubusercontent.com/6702424/109387840-eba11f80-7903-11eb-9050-db1dad883f78.png">  
 </p>
 <p align="center">
-    <i>🔏  Create Keycloak themes using React 🔏</i>
+    <i>🔏 Create Keycloak themes using React 🔏</i>
     <br>
     <br>
     <a href="https://github.com/garronej/keycloakify/actions">
@@ -36,6 +36,8 @@
     <img src="https://user-images.githubusercontent.com/6702424/110260457-a1c3d380-7fac-11eb-853a-80459b65626b.png">
 </p>
 
+> 🗣 V6 have been released 🎉 (It features major improvements)[#600]. Checkout [the migration guide](https://docs.keycloakify.dev/v5-to-v6).
+
 # Changelog highlights
 
 ## 6.0.0
@@ -45,7 +47,7 @@
 -   Real i18n API.
 -   Actual documentation for build options.
 
-Checkout the migration guide.
+Checkout [the migration guide](https://docs.keycloakify.dev/v5-to-v6)
 
 ## 5.8.0
 
