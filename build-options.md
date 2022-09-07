@@ -16,7 +16,7 @@ This enable to you to enable CDN and enable big shared file to be cached by the 
 
 Step to make `--external-assets` work: &#x20;
 
-* Provide the url of your app in the `homepage` field of `package.json` [example](https://github.com/garronej/keycloakify-demo-app/blob/7847cc70ef374ab26a6cc7953461cf25603e9a6d/package.json#L2) or in a `public/CNAME` file [example.](https://github.com/garronej/keycloakify-demo-app/blob/main/public/CNAME) (Or use [`keycloakify.isAppAndKeycloakServerSharingSameDomain=true`](build-options.md#keycloakify.isappandkeycloakserversharingsamedomain)`)`
+* Provide the url of your app in the `homepage` field of `package.json` [example](https://github.com/garronej/keycloakify-demo-app/blob/7847cc70ef374ab26a6cc7953461cf25603e9a6d/package.json#L2) or in a `public/CNAME` file [example.](https://github.com/garronej/keycloakify-demo-app/blob/main/public/CNAME) (Or use [`keycloakify.areAppAndKeycloakServerSharingSameDomain=true`](build-options.md#keycloakify.isappandkeycloakserversharingsamedomain)`)`
 * Build the theme using `npx build-keycloak-theme --external-assets` [ex](https://github.com/garronej/keycloakify-demo-app/blob/7847cc70ef374ab26a6cc7953461cf25603e9a6d/.github/workflows/ci.yaml#L21)
 * (Optional) Enable [long-term assets caching](https://create-react-app.dev/docs/production-build/#static-file-caching) on the server hosting your app. [This is how you would do it with Ngnix](https://github.com/garronej/keycloakify-demo-app/blob/f08e02e1bd0c67b3cc8d49c03d4dd6d7916f457b/nginx.conf#L17-L29).
 * Make sure not to build your app and the keycloak theme separately (run `yarn keycloak` only once in your CI) and remember to update the Keycloak theme every time you update your app.
@@ -73,7 +73,7 @@ If, for some reason, you need to add extra properties like for example `env=dev`
 }
 ```
 
-#### `keycloakify.isAppAndKeycloakServerSharingSameDomain`
+#### `keycloakify.areAppAndKeycloakServerSharingSameDomain`
 
 This option is only considered when building with [`--external-assets`](build-options.md#external-assets).  &#x20;
 
@@ -87,7 +87,7 @@ Example: &#x20;
 ```json
 {
     "keycloakify": {
-        "isAppAndKeycloakServerSharingSameDomain": true
+        "areAppAndKeycloakServerSharingSameDomain": true
     }
 }
 ```
