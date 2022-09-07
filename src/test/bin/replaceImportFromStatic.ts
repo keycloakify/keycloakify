@@ -103,13 +103,13 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
 
         const fixedJsCodeExpected = `
             function f() {
-                return ("kcContext" in window ? "https://demo-app.keycloakify.dev" : a.p) + "static/js/" + ({}[e] || e) + "." + {
+                return ("kcContext" in window ? "https://demo-app.keycloakify.dev/" : a.p) + "static/js/" + ({}[e] || e) + "." + {
                     3: "0664cdc0"
                 }[e] + ".chunk.js"
             }
 
             function sameAsF() {
-                return ("kcContext" in window ? "https://demo-app.keycloakify.dev" : a.p) + "static/js/" + ({}[e] || e) + "." + {
+                return ("kcContext" in window ? "https://demo-app.keycloakify.dev/" : a.p) + "static/js/" + ({}[e] || e) + "." + {
                     3: "0664cdc0"
                 }[e] + ".chunk.js"
             }
@@ -119,7 +119,7 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
                 if( pd === undefined || pd.configurable ){
                     var p= "";
                     Object.defineProperty(__webpack_require__, "p", {
-                        get: function() { return "kcContext" in window ? "https://demo-app.keycloakify.dev" : p; },
+                        get: function() { return "kcContext" in window ? "https://demo-app.keycloakify.dev/" : p; },
                         set: function (value){ p = value; }
                     });
                 }
@@ -137,7 +137,7 @@ import { assetIsSameCode } from "../tools/assertIsSameCode";
                 if( pd === undefined || pd.configurable ){
                     var p= "";
                     Object.defineProperty(t, "p", {
-                        get: function() { return "kcContext" in window ? "https://demo-app.keycloakify.dev" : p; },
+                        get: function() { return "kcContext" in window ? "https://demo-app.keycloakify.dev/" : p; },
                         set: function (value){ p = value; }
                     });
                 }
