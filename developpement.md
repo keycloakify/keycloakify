@@ -24,6 +24,10 @@ To acheave that with Keycloakify simply eddit:
 
 then if you run `yarn start` you will see your login page display. **Dont forget to remove mockPageId before releasing** 😉.
 
+{% hint style="warning" %}
+You must run `yarn build && npx keycloakify` at least once before testing your theme with `yarn start` or you will end up [with this](https://user-images.githubusercontent.com/6702424/188874909-b84d1a77-fb0c-4cfa-baf0-4b1854faa9ee.png).
+{% endhint %}
+
 {% hint style="success" %}
 The page is loaded with a default mock context.
 
