@@ -11,7 +11,7 @@ type ParsedPackageJson = {
     keycloakify?: {
         extraPages?: string[];
         extraThemeProperties?: string[];
-        isAppAndKeycloakServerSharingSameDomain?: boolean;
+        areAppAndKeycloakServerSharingSameDomain?: boolean;
     };
 };
 
@@ -23,7 +23,7 @@ const zParsedPackageJson = z.object({
         .object({
             "extraPages": z.array(z.string()).optional(),
             "extraThemeProperties": z.array(z.string()).optional(),
-            "isAppAndKeycloakServerSharingSameDomain": z.boolean().optional()
+            "areAppAndKeycloakServerSharingSameDomain": z.boolean().optional()
         })
         .optional()
 });
@@ -56,11 +56,11 @@ export namespace BuildOptions {
         };
 
         export type SameDomain = CommonExternalAssets & {
-            isAppAndKeycloakServerSharingSameDomain: true;
+            areAppAndKeycloakServerSharingSameDomain: true;
         };
 
         export type DifferentDomains = CommonExternalAssets & {
-            isAppAndKeycloakServerSharingSameDomain: false;
+            areAppAndKeycloakServerSharingSameDomain: false;
             urlOrigin: string;
             urlPathname: string | undefined;
         };
@@ -140,10 +140,10 @@ export function readBuildOptions(params: {
             "isStandalone": false
         });
 
-        if (parsedPackageJson.keycloakify?.isAppAndKeycloakServerSharingSameDomain) {
+        if (parsedPackageJson.keycloakify?.areAppAndKeycloakServerSharingSameDomain) {
             return id<BuildOptions.ExternalAssets.SameDomain>({
                 ...commonExternalAssets,
-                "isAppAndKeycloakServerSharingSameDomain": true
+                "areAppAndKeycloakServerSharingSameDomain": true
             });
         } else {
             assert(
@@ -155,14 +155,14 @@ export function readBuildOptions(params: {
                     "public/CNAME file.",
                     "Alternatively, if your app and the Keycloak server are on the same domain, ",
                     "eg https://example.com is your app and https://example.com/auth is the keycloak",
-                    'admin UI, you can set "keycloakify": { "isAppAndKeycloakServerSharingSameDomain": true }',
+                    'admin UI, you can set "keycloakify": { "areAppAndKeycloakServerSharingSameDomain": true }',
                     "in your package.json"
                 ].join(" ")
             );
 
             return id<BuildOptions.ExternalAssets.DifferentDomains>({
                 ...commonExternalAssets,
-                "isAppAndKeycloakServerSharingSameDomain": false,
+                "areAppAndKeycloakServerSharingSameDomain": false,
                 "urlOrigin": url.origin,
                 "urlPathname": url.pathname
             });

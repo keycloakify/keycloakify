@@ -34,11 +34,11 @@ export namespace BuildOptionsLike {
         };
 
         export type SameDomain = CommonExternalAssets & {
-            isAppAndKeycloakServerSharingSameDomain: true;
+            areAppAndKeycloakServerSharingSameDomain: true;
         };
 
         export type DifferentDomains = CommonExternalAssets & {
-            isAppAndKeycloakServerSharingSameDomain: false;
+            areAppAndKeycloakServerSharingSameDomain: false;
             urlOrigin: string;
             urlPathname: string | undefined;
         };
@@ -97,7 +97,7 @@ export function generateKeycloakThemeResources(params: {
             }
 
             if (/\.js?$/i.test(filePath)) {
-                if (!buildOptions.isStandalone && buildOptions.isAppAndKeycloakServerSharingSameDomain) {
+                if (!buildOptions.isStandalone && buildOptions.areAppAndKeycloakServerSharingSameDomain) {
                     return undefined;
                 }
 

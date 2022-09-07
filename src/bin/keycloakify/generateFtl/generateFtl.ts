@@ -46,11 +46,11 @@ export namespace BuildOptionsLike {
         };
 
         export type SameDomain = CommonExternalAssets & {
-            isAppAndKeycloakServerSharingSameDomain: true;
+            areAppAndKeycloakServerSharingSameDomain: true;
         };
 
         export type DifferentDomains = CommonExternalAssets & {
-            isAppAndKeycloakServerSharingSameDomain: false;
+            areAppAndKeycloakServerSharingSameDomain: false;
             urlOrigin: string;
             urlPathname: string | undefined;
         };
@@ -76,7 +76,7 @@ export function generateFtlFilesCodeFactory(params: {
     const $ = cheerio.load(indexHtmlCode);
 
     fix_imports_statements: {
-        if (!buildOptions.isStandalone && buildOptions.isAppAndKeycloakServerSharingSameDomain) {
+        if (!buildOptions.isStandalone && buildOptions.areAppAndKeycloakServerSharingSameDomain) {
             break fix_imports_statements;
         }
 
