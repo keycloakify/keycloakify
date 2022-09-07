@@ -27,7 +27,14 @@
         <a href="https://www.keycloakify.dev">Home</a>
         -
         <a href="https://docs.keycloakify.dev">Documentation</a>
-</p>
+    </p>
+    <p align="center"> ---- Project starter / Demo setup ---- </p>
+    <p align="center">
+        <a href="https://github.com/garronej/keycloakify-starter">CSS Level customization</a>
+        -
+        <a href="https://github.com/garronej/keycloakify-advanced-starter">Component Level customization</a>
+    </p>
+    <p align="center"> ---- </p>
 
 </p>
 
