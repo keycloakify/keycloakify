@@ -83,8 +83,6 @@ export function __unsafe_useI18n<ExtraMessageKey extends string = never>(params:
             return;
         }
 
-        let isMounted = true;
-
         refHasStartedFetching.current = true;
 
         (async () => {
@@ -144,10 +142,6 @@ export function __unsafe_useI18n<ExtraMessageKey extends string = never>(params:
                 })()
             ]).then(modules => modules.map(module => module.default));
 
-            if (!isMounted) {
-                return;
-            }
-
             setI18n({
                 ...createI18nTranslationFunctions({
                     "fallbackMessages": {
@@ -180,10 +174,6 @@ export function __unsafe_useI18n<ExtraMessageKey extends string = never>(params:
                 )
             });
         })();
-
-        return () => {
-            isMounted = false;
-        };
     }, []);
 
     return i18n ?? null;
