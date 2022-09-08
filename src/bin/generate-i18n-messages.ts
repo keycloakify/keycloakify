@@ -27,7 +27,7 @@ for (const keycloakVersion of ["11.0.3", "15.0.2", "18.0.1"]) {
     downloadBuiltinKeycloakTheme({
         keycloakVersion,
         "destDirPath": tmpDirPath,
-        "isSilent": isSilent
+        isSilent
     });
 
     type Dictionary = { [idiomId: string]: string };
