@@ -6,7 +6,13 @@ import { rm, rm_rf } from "./rm";
 import * as crypto from "crypto";
 
 /** assert url ends with .zip */
-export function downloadAndUnzip(params: { url: string; destDirPath: string; pathOfDirToExtractInArchive?: string; cacheDirPath: string }) {
+export function downloadAndUnzip(params: {
+    isSilent: boolean;
+    url: string;
+    destDirPath: string;
+    pathOfDirToExtractInArchive?: string;
+    cacheDirPath: string;
+}) {
     const { url, destDirPath, pathOfDirToExtractInArchive, cacheDirPath } = params;
 
     const extractDirPath = pathJoin(
@@ -54,7 +60,7 @@ export function downloadAndUnzip(params: { url: string; destDirPath: string; pat
 
         const zipFileBasename = pathBasename(url);
 
-        execSync(`curl -L ${url} -o ${zipFileBasename}`, { "cwd": extractDirPath });
+        execSync(`curl -L ${url} -o ${zipFileBasename} ${params.isSilent ? "-s" : ""}`, { "cwd": extractDirPath });
 
         execSync(`unzip -o ${zipFileBasename}${pathOfDirToExtractInArchive === undefined ? "" : ` "${pathOfDirToExtractInArchive}/**/*"`}`, {
             "cwd": extractDirPath

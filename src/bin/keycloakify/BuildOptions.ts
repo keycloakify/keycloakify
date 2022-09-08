@@ -35,6 +35,7 @@ export type BuildOptions = BuildOptions.Standalone | BuildOptions.ExternalAssets
 
 export namespace BuildOptions {
     export type Common = {
+        isSilent: boolean;
         version: string;
         themeName: string;
         extraPages?: string[];
@@ -71,8 +72,9 @@ export function readBuildOptions(params: {
     packageJson: string;
     CNAME: string | undefined;
     isExternalAssetsCliParamProvided: boolean;
+    isSilent: boolean;
 }): BuildOptions {
-    const { packageJson, CNAME, isExternalAssetsCliParamProvided } = params;
+    const { packageJson, CNAME, isExternalAssetsCliParamProvided, isSilent } = params;
 
     const parsedPackageJson = zParsedPackageJson.parse(JSON.parse(packageJson));
 
@@ -130,7 +132,8 @@ export function readBuildOptions(params: {
             })(),
             "version": version,
             extraPages,
-            extraThemeProperties
+            extraThemeProperties,
+            isSilent
         };
     })();
 

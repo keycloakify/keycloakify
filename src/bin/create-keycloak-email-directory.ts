@@ -6,11 +6,15 @@ import { join as pathJoin, basename as pathBasename } from "path";
 import { transformCodebase } from "./tools/transformCodebase";
 import { promptKeycloakVersion } from "./promptKeycloakVersion";
 import * as fs from "fs";
+import { getCliOptions } from "./tools/cliOptions";
+import { getLogger } from "./tools/logger";
 
 if (require.main === module) {
     (async () => {
+        const { isSilent } = getCliOptions(process.argv.slice(2));
+        const logger = getLogger({ isSilent });
         if (fs.existsSync(keycloakThemeEmailDirPath)) {
-            console.log(`There is already a ./${pathBasename(keycloakThemeEmailDirPath)} directory in your project. Aborting.`);
+            logger.warn(`There is already a ./${pathBasename(keycloakThemeEmailDirPath)} directory in your project. Aborting.`);
 
             process.exit(-1);
         }
@@ -21,7 +25,8 @@ if (require.main === module) {
 
         downloadBuiltinKeycloakTheme({
             keycloakVersion,
-            "destDirPath": builtinKeycloakThemeTmpDirPath
+            "destDirPath": builtinKeycloakThemeTmpDirPath,
+            "isSilent": isSilent
         });
 
         transformCodebase({
@@ -29,7 +34,7 @@ if (require.main === module) {
             "destDirPath": keycloakThemeEmailDirPath
         });
 
-        console.log(`./${pathBasename(keycloakThemeEmailDirPath)} ready to be customized`);
+        logger.log(`./${pathBasename(keycloakThemeEmailDirPath)} ready to be customized`);
 
         fs.rmSync(builtinKeycloakThemeTmpDirPath, { "recursive": true, "force": true });
     })();
