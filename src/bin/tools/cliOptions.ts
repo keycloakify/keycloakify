@@ -10,6 +10,6 @@ export const getCliOptions = (processArgv: string[]): CliOptions => {
 
     return {
         isSilent: typeof argv["silent"] === "boolean" ? argv["silent"] : false,
-        hasExternalAssets: argv["external-assets"] !== undefined
+        hasExternalAssets: typeof argv["external-assets"] === "boolean" ? argv["external-assets"] : false
     };
 };
