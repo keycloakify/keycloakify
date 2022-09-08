@@ -24,7 +24,7 @@ Step to make `--external-assets` work: &#x20;
 
 Checkout a complete setup [here](https://github.com/garronej/keycloakify-demo-app#about-keycloakify)
 
-#### `--silent` [TODO](https://github.com/InseeFrLab/keycloakify/issues/151)
+#### `--silent`
 
 Prevent the build command from generating outputs. &#x20;
 
