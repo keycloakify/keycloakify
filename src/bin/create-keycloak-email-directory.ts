@@ -26,7 +26,7 @@ if (require.main === module) {
         downloadBuiltinKeycloakTheme({
             keycloakVersion,
             "destDirPath": builtinKeycloakThemeTmpDirPath,
-            "isSilent": isSilent
+            isSilent
         });
 
         transformCodebase({
