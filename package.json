@@ -60,6 +60,7 @@
     "devDependencies": {
         "@emotion/react": "^11.4.1",
         "@types/memoizee": "^0.4.7",
+        "@types/minimist": "^1.2.2",
         "@types/node": "^17.0.25",
         "@types/react": "18.0.9",
         "copyfiles": "^2.4.1",
@@ -78,6 +79,7 @@
         "evt": "^2.4.0",
         "memoizee": "^0.4.15",
         "minimal-polyfills": "^2.2.2",
+        "minimist": "^1.2.6",
         "path-browserify": "^1.0.1",
         "powerhooks": "^0.20.15",
         "react-markdown": "^5.0.3",

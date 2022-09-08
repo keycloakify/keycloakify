@@ -11,6 +11,7 @@ import { isInside } from "../tools/isInside";
 import type { BuildOptions } from "./BuildOptions";
 import { assert } from "tsafe/assert";
 import { Reflect } from "tsafe/Reflect";
+import { getLogger } from "../tools/logger";
 
 export type BuildOptionsLike = BuildOptionsLike.Standalone | BuildOptionsLike.ExternalAssets;
 
@@ -19,6 +20,7 @@ export namespace BuildOptionsLike {
         themeName: string;
         extraPages?: string[];
         extraThemeProperties?: string[];
+        isSilent: boolean;
     };
 
     export type Standalone = Common & {
@@ -60,6 +62,7 @@ export function generateKeycloakThemeResources(params: {
 }): { doBundlesEmailTemplate: boolean } {
     const { reactAppBuildDirPath, keycloakThemeBuildingDirPath, keycloakThemeEmailDirPath, keycloakVersion, buildOptions } = params;
 
+    const logger = getLogger({ isSilent: buildOptions.isSilent });
     const themeDirPath = pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", buildOptions.themeName, "login");
 
     let allCssGlobalsToDefine: Record<string, string> = {};
@@ -117,7 +120,7 @@ export function generateKeycloakThemeResources(params: {
 
     email: {
         if (!fs.existsSync(keycloakThemeEmailDirPath)) {
-            console.log(
+            logger.log(
                 [
                     `Not bundling email template because ${pathBasename(keycloakThemeEmailDirPath)} does not exist`,
                     `To start customizing the email template, run: 👉 npx create-keycloak-email-directory 👈`
@@ -154,7 +157,8 @@ export function generateKeycloakThemeResources(params: {
 
         downloadBuiltinKeycloakTheme({
             keycloakVersion,
-            "destDirPath": tmpDirPath
+            "destDirPath": tmpDirPath,
+            isSilent: buildOptions.isSilent
         });
 
         const themeResourcesDirPath = pathJoin(themeDirPath, "resources");
