@@ -310,7 +310,7 @@ export function useFormValidationSlice(params: {
         profile: {
             attributes: Attribute[];
         };
-        passwordRequired: boolean;
+        passwordRequired?: boolean;
         realm: { registrationEmailAsUsername: boolean };
     };
     /** NOTE: Try to avoid passing a new ref every render for better performances. */

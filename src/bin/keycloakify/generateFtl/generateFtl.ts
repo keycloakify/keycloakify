@@ -27,7 +27,8 @@ export const pageIds = [
     "login-idp-link-email.ftl",
     "login-page-expired.ftl",
     "login-config-totp.ftl",
-    "logout-confirm.ftl"
+    "logout-confirm.ftl",
+    "update-user-profile.ftl"
 ] as const;
 
 export type BuildOptionsLike = BuildOptionsLike.Standalone | BuildOptionsLike.ExternalAssets;

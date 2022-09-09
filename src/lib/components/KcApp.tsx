@@ -20,6 +20,7 @@ const LoginPageExpired = lazy(() => import("./LoginPageExpired"));
 const LoginIdpLinkEmail = lazy(() => import("./LoginIdpLinkEmail"));
 const LoginConfigTotp = lazy(() => import("./LoginConfigTotp"));
 const LogoutConfirm = lazy(() => import("./LogoutConfirm"));
+const UpdateUserProfile = lazy(() => import("./UpdateUserProfile"));
 
 const KcApp = memo(({ kcContext, i18n: userProvidedI18n, ...kcProps }: { kcContext: KcContextBase; i18n?: I18n } & KcProps) => {
     const i18n = (function useClosure() {
@@ -74,6 +75,8 @@ const KcApp = memo(({ kcContext, i18n: userProvidedI18n, ...kcProps }: { kcConte
                         return <LoginConfigTotp {...{ kcContext, ...props }} />;
                     case "logout-confirm.ftl":
                         return <LogoutConfirm {...{ kcContext, ...props }} />;
+                    case "update-user-profile.ftl":
+                        return <UpdateUserProfile {...{ kcContext, ...props }} />;
                 }
             })()}
         </Suspense>

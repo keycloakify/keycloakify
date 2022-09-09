@@ -25,7 +25,8 @@ export type KcContextBase =
     | KcContextBase.LoginIdpLinkEmail
     | KcContextBase.LoginPageExpired
     | KcContextBase.LoginConfigTotp
-    | KcContextBase.LogoutConfirm;
+    | KcContextBase.LogoutConfirm
+    | KcContextBase.UpdateUserProfile;
 
 export declare namespace KcContextBase {
     export type Common = {
@@ -268,6 +269,15 @@ export declare namespace KcContextBase {
         logoutConfirm: {
             code: string;
             skipLink?: boolean;
+        };
+    };
+
+    export type UpdateUserProfile = Common & {
+        pageId: "update-user-profile.ftl";
+        profile: {
+            context: "REGISTRATION_PROFILE";
+            attributes: Attribute[];
+            attributesByName: Record<string, Attribute>;
         };
     };
 }
