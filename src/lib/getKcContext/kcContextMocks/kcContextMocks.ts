@@ -430,5 +430,13 @@ export const kcContextMocks: KcContextBase[] = [
             attributes,
             attributesByName
         }
+    }),
+    id<KcContextBase.IdpReviewUserProfile>({
+        ...kcContextCommonMock,
+        "pageId": "idp-review-user-profile.ftl",
+        "profile": {
+            attributes,
+            attributesByName
+        }
     })
 ];

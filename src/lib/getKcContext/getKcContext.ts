@@ -47,8 +47,16 @@ export function getKcContext<KcContextExtended extends { pageId: string } = neve
                 "source": partialKcContextCustomMock
             });
 
-            if (partialKcContextCustomMock.pageId === "register-user-profile.ftl") {
-                assert(kcContextDefaultMock?.pageId === "register-user-profile.ftl");
+            if (
+                partialKcContextCustomMock.pageId === "register-user-profile.ftl" ||
+                partialKcContextCustomMock.pageId === "update-user-profile.ftl" ||
+                partialKcContextCustomMock.pageId === "idp-review-user-profile.ftl"
+            ) {
+                assert(
+                    kcContextDefaultMock?.pageId === "register-user-profile.ftl" ||
+                        kcContextDefaultMock?.pageId === "update-user-profile.ftl" ||
+                        kcContextDefaultMock?.pageId === "idp-review-user-profile.ftl"
+                );
 
                 const { attributes } = kcContextDefaultMock.profile;
 
@@ -60,8 +68,6 @@ export function getKcContext<KcContextExtended extends { pageId: string } = neve
                 ].filter(exclude(undefined));
 
                 attributes.forEach(attribute => {
-                    console.log("====>", attribute);
-
                     const partialAttribute = partialAttributes.find(({ name }) => name === attribute.name);
 
                     const augmentedAttribute: Attribute = {} as any;

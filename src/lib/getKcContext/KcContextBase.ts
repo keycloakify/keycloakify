@@ -26,7 +26,8 @@ export type KcContextBase =
     | KcContextBase.LoginPageExpired
     | KcContextBase.LoginConfigTotp
     | KcContextBase.LogoutConfirm
-    | KcContextBase.UpdateUserProfile;
+    | KcContextBase.UpdateUserProfile
+    | KcContextBase.IdpReviewUserProfile;
 
 export declare namespace KcContextBase {
     export type Common = {
@@ -276,6 +277,14 @@ export declare namespace KcContextBase {
         pageId: "update-user-profile.ftl";
         profile: {
             context: "REGISTRATION_PROFILE";
+            attributes: Attribute[];
+            attributesByName: Record<string, Attribute>;
+        };
+    };
+
+    export type IdpReviewUserProfile = Common & {
+        pageId: "idp-review-user-profile.ftl";
+        profile: {
             attributes: Attribute[];
             attributesByName: Record<string, Attribute>;
         };
