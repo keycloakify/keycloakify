@@ -32,13 +32,7 @@ const RegisterUserProfile = memo(({ kcContext, i18n, ...props_ }: { kcContext: K
             headerNode={msg("registerTitle")}
             formNode={
                 <form id="kc-register-form" className={cx(props.kcFormClass)} action={url.registrationAction} method="post">
-                    <UserProfileFormFields
-                        kcContext={kcContext}
-                        doInsertPasswordFields={true}
-                        onIsFormSubmittableValueChange={setIsFomSubmittable}
-                        i18n={i18n}
-                        {...props}
-                    />
+                    <UserProfileFormFields kcContext={kcContext} onIsFormSubmittableValueChange={setIsFomSubmittable} i18n={i18n} {...props} />
                     {recaptchaRequired && (
                         <div className="form-group">
                             <div className={cx(props.kcInputWrapperClass)}>

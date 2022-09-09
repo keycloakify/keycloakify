@@ -304,6 +304,10 @@ export function useGetErrors(params: {
     return { getErrors };
 }
 
+/**
+ * NOTE: The attributesWithPassword returned is actually augmented with
+ * artificial password related attributes only if kcContext.passwordRequired === true
+ */
 export function useFormValidationSlice(params: {
     kcContext: {
         messagesPerField: Pick<KcContextBase.Common["messagesPerField"], "existsError" | "get">;

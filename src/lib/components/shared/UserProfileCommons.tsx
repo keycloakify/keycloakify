@@ -9,9 +9,7 @@ import type { I18n } from "../../i18n";
 import type { Param0 } from "tsafe/Param0";
 
 export type UserProfileFormFieldsProps = {
-    //kcContext: KcContextBase.RegisterUserProfile;
     kcContext: Param0<typeof useFormValidationSlice>["kcContext"];
-    doInsertPasswordFields: boolean;
     i18n: I18n;
 } & KcProps &
     Partial<Record<"BeforeField" | "AfterField", ReactComponent<{ attribute: Attribute }>>> & {
@@ -19,7 +17,7 @@ export type UserProfileFormFieldsProps = {
     };
 
 export const UserProfileFormFields = memo(
-    ({ kcContext, doInsertPasswordFields, onIsFormSubmittableValueChange, i18n, BeforeField, AfterField, ...props }: UserProfileFormFieldsProps) => {
+    ({ kcContext, onIsFormSubmittableValueChange, i18n, BeforeField, AfterField, ...props }: UserProfileFormFieldsProps) => {
         const { cx, css } = useCssAndCx();
 
         const { advancedMsg } = i18n;
@@ -64,7 +62,7 @@ export const UserProfileFormFields = memo(
 
         return (
             <>
-                {(doInsertPasswordFields ? attributesWithPassword : kcContext.profile.attributes).map((attribute, i) => {
+                {attributesWithPassword.map((attribute, i) => {
                     const { group = "", groupDisplayHeader = "", groupDisplayDescription = "" } = attribute;
 
                     const { value, displayableErrors } = fieldStateByAttributeName[attribute.name];

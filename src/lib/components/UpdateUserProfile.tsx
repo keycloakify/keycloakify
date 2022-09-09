@@ -6,7 +6,7 @@ import { useCssAndCx } from "../tools/useCssAndCx";
 import type { I18n } from "../i18n";
 import { UserProfileFormFields } from "./shared/UserProfileCommons";
 
-const LoginUpdateProfile = memo(({ kcContext, i18n, ...props }: { kcContext: KcContextBase.UpdateUserProfile; i18n: I18n } & KcProps) => {
+const UpdateUserProfile = memo(({ kcContext, i18n, ...props }: { kcContext: KcContextBase.UpdateUserProfile; i18n: I18n } & KcProps) => {
     const { cx } = useCssAndCx();
 
     const { msg, msgStr } = i18n;
@@ -22,13 +22,7 @@ const LoginUpdateProfile = memo(({ kcContext, i18n, ...props }: { kcContext: KcC
             headerNode={msg("loginProfileTitle")}
             formNode={
                 <form id="kc-update-profile-form" className={cx(props.kcFormClass)} action={url.loginAction} method="post">
-                    <UserProfileFormFields
-                        kcContext={kcContext}
-                        doInsertPasswordFields={true}
-                        onIsFormSubmittableValueChange={setIsFomSubmittable}
-                        i18n={i18n}
-                        {...props}
-                    />
+                    <UserProfileFormFields kcContext={kcContext} onIsFormSubmittableValueChange={setIsFomSubmittable} i18n={i18n} {...props} />
 
                     <div className={cx(props.kcFormGroupClass)}>
                         <div id="kc-form-options" className={cx(props.kcFormOptionsClass)}>
@@ -74,4 +68,4 @@ const LoginUpdateProfile = memo(({ kcContext, i18n, ...props }: { kcContext: KcC
     );
 });
 
-export default LoginUpdateProfile;
+export default UpdateUserProfile;
