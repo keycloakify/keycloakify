@@ -276,7 +276,6 @@ export declare namespace KcContextBase {
     export type UpdateUserProfile = Common & {
         pageId: "update-user-profile.ftl";
         profile: {
-            context: "REGISTRATION_PROFILE";
             attributes: Attribute[];
             attributesByName: Record<string, Attribute>;
         };
@@ -285,6 +284,7 @@ export declare namespace KcContextBase {
     export type IdpReviewUserProfile = Common & {
         pageId: "idp-review-user-profile.ftl";
         profile: {
+            context: "IDP_REVIEW";
             attributes: Attribute[];
             attributesByName: Record<string, Attribute>;
         };
