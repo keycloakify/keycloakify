@@ -426,7 +426,6 @@ export const kcContextMocks: KcContextBase[] = [
         ...kcContextCommonMock,
         "pageId": "update-user-profile.ftl",
         "profile": {
-            "context": "REGISTRATION_PROFILE" as const,
             attributes,
             attributesByName
         }
@@ -435,6 +434,7 @@ export const kcContextMocks: KcContextBase[] = [
         ...kcContextCommonMock,
         "pageId": "idp-review-user-profile.ftl",
         "profile": {
+            context: "IDP_REVIEW",
             attributes,
             attributesByName
         }

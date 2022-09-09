@@ -11,6 +11,7 @@ import type { I18n } from "../i18n";
 import memoize from "memoizee";
 import { useConst } from "powerhooks/useConst";
 import { useConstCallback } from "powerhooks/useConstCallback";
+import { Markdown } from "../tools/Markdown";
 
 export const evtTermMarkdown = Evt.create<string | undefined>(undefined);
 
@@ -74,7 +75,7 @@ const Terms = memo(({ kcContext, i18n, ...props }: { kcContext: KcContextBase.Te
             headerNode={msg("termsTitle")}
             formNode={
                 <>
-                    <div id="kc-terms-text">{evtTermMarkdown.state}</div>
+                    <div id="kc-terms-text">{evtTermMarkdown.state && <Markdown>{evtTermMarkdown.state}</Markdown>}</div>
                     <form className="form-actions" action={url.loginAction} method="POST">
                         <input
                             className={cx(

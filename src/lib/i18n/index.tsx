@@ -1,10 +1,10 @@
 import "minimal-polyfills/Object.fromEntries";
 //NOTE for later: https://github.com/remarkjs/react-markdown/blob/236182ecf30bd89c1e5a7652acaf8d0bf81e6170/src/renderers.js#L7-L35
 import React, { useEffect, useState, useRef } from "react";
-import ReactMarkdown from "react-markdown";
 import type baseMessages from "./generated_messages/18.0.1/login/en";
 import { assert } from "tsafe/assert";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
+import { Markdown } from "../tools/Markdown";
 
 export const fallbackLanguageTag = "en";
 
@@ -234,9 +234,9 @@ function createI18nTranslationFunctions<MessageKey extends string>(params: {
         })();
 
         return doRenderMarkdown ? (
-            <ReactMarkdown allowDangerousHtml renderers={key === "termsText" ? undefined : { "paragraph": "span" }}>
+            <Markdown allowDangerousHtml renderers={{ "paragraph": "span" }}>
                 {messageWithArgsInjectedIfAny}
-            </ReactMarkdown>
+            </Markdown>
         ) : (
             messageWithArgsInjectedIfAny
         );
