@@ -45,11 +45,9 @@ jobs:
     - uses: bahmutov/npm-install@v1
     - if: steps.step1.outputs.npm_or_yarn == 'yarn'
       run: |
-        yarn build
         yarn test
     - if: steps.step1.outputs.npm_or_yarn == 'npm'
       run: |
-        npm run build
         npm test
   check_if_version_upgraded:
     name: Check if version upgrade
