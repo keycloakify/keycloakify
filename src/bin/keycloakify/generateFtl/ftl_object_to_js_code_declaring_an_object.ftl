@@ -272,6 +272,11 @@ ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
 
             <#list object as array_item>
 
+                <#if !array_item??>
+                    <#local out_seq += ["null,"]>
+                    <#continue>
+                </#if>
+
                 <#local rec_out = ftl_object_to_js_code_declaring_an_object(array_item, path + [ i ])>
 
                 <#local i = i + 1>
