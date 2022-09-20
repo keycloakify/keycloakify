@@ -8,7 +8,7 @@ description: Test and debug your theme
 
 When building your page you want to see the result of your edit live.
 
-To acheave that with Keycloakify simply eddit:
+To achieve this with Keycloakify simply edit:
 
 ```diff
  import { getKcContext } from "keycloakify";
