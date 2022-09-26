@@ -20,7 +20,7 @@ You can search and replace `build-keycloak-theme` -> `keycloakify` in your proje
 -    "tss-react": "^3.6.0",
 <strong>+    "tss-react": "^4.1.3",
 </strong>-    "keycloakify": "^5.7.0",
-+    "keycloakify": "6.3.6"
++    "keycloakify": "^6.3.6"
  }</code></pre>
 
 .github/workflows/ci.yaml
