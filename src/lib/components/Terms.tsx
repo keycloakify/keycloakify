@@ -54,55 +54,61 @@ export function useDownloadTerms(params: {
     }, []);
 }
 
-const Terms = memo(({ kcContext, i18n, ...props }: { kcContext: KcContextBase.Terms; i18n: I18n } & KcProps) => {
-    const { msg, msgStr } = i18n;
+const Terms = memo(
+    ({
+        kcContext,
+        i18n,
+        doFetchDefaultThemeResources = true,
+        ...props
+    }: { kcContext: KcContextBase.Terms; i18n: I18n; doFetchDefaultThemeResources?: boolean } & KcProps) => {
+        const { msg, msgStr } = i18n;
 
-    useRerenderOnStateChange(evtTermMarkdown);
+        useRerenderOnStateChange(evtTermMarkdown);
 
-    const { cx } = useCssAndCx();
+        const { cx } = useCssAndCx();
 
-    const { url } = kcContext;
+        const { url } = kcContext;
 
-    if (evtTermMarkdown.state === undefined) {
-        return null;
+        if (evtTermMarkdown.state === undefined) {
+            return null;
+        }
+
+        return (
+            <Template
+                {...{ kcContext, i18n, doFetchDefaultThemeResources, ...props }}
+                displayMessage={false}
+                headerNode={msg("termsTitle")}
+                formNode={
+                    <>
+                        <div id="kc-terms-text">{evtTermMarkdown.state && <Markdown>{evtTermMarkdown.state}</Markdown>}</div>
+                        <form className="form-actions" action={url.loginAction} method="POST">
+                            <input
+                                className={cx(
+                                    props.kcButtonClass,
+                                    props.kcButtonClass,
+                                    props.kcButtonClass,
+                                    props.kcButtonPrimaryClass,
+                                    props.kcButtonLargeClass
+                                )}
+                                name="accept"
+                                id="kc-accept"
+                                type="submit"
+                                value={msgStr("doAccept")}
+                            />
+                            <input
+                                className={cx(props.kcButtonClass, props.kcButtonDefaultClass, props.kcButtonLargeClass)}
+                                name="cancel"
+                                id="kc-decline"
+                                type="submit"
+                                value={msgStr("doDecline")}
+                            />
+                        </form>
+                        <div className="clearfix" />
+                    </>
+                }
+            />
+        );
     }
-
-    return (
-        <Template
-            {...{ kcContext, i18n, ...props }}
-            doFetchDefaultThemeResources={true}
-            displayMessage={false}
-            headerNode={msg("termsTitle")}
-            formNode={
-                <>
-                    <div id="kc-terms-text">{evtTermMarkdown.state && <Markdown>{evtTermMarkdown.state}</Markdown>}</div>
-                    <form className="form-actions" action={url.loginAction} method="POST">
-                        <input
-                            className={cx(
-                                props.kcButtonClass,
-                                props.kcButtonClass,
-                                props.kcButtonClass,
-                                props.kcButtonPrimaryClass,
-                                props.kcButtonLargeClass
-                            )}
-                            name="accept"
-                            id="kc-accept"
-                            type="submit"
-                            value={msgStr("doAccept")}
-                        />
-                        <input
-                            className={cx(props.kcButtonClass, props.kcButtonDefaultClass, props.kcButtonLargeClass)}
-                            name="cancel"
-                            id="kc-decline"
-                            type="submit"
-                            value={msgStr("doDecline")}
-                        />
-                    </form>
-                    <div className="clearfix" />
-                </>
-            }
-        />
-    );
-});
+);
 
 export default Terms;
