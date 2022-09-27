@@ -49,6 +49,12 @@
 
 # Changelog highlights
 
+## 6.4.0
+
+-   You can now optionally pass a `doFetchDefaultThemeResources: boolean` prop to every page component and the default `<KcApp />`
+    This enables you to prevent the default CSS and JS that comes with the builtin Keycloak theme to be downloaded.  
+    You'll get [a black slate](https://user-images.githubusercontent.com/6702424/192619083-4baa5df4-4a21-4ec7-8e28-d200d1208299.png).
+
 ## 6.0.0
 
 -   Bundle size drastically reduced, locals and component dynamically loaded.
