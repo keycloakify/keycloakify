@@ -748,14 +748,14 @@ event-emitter@^0.3.5:
     d "1"
     es5-ext "~0.10.14"
 
-evt@^2.4.2:
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/evt/-/evt-2.4.2.tgz#8f29f53a71609f1f5ad09ba313ad8cc0b9c63077"
-  integrity sha512-wPGX4eGgxh5NRff+1VkRfdTRaJA5vbr9rC9CRUIgprVDGDFtI0/vF9I0Yp3HAEGuFbUO978QAsaH6lIgpRCFAg==
+evt@^2.4.3:
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/evt/-/evt-2.4.3.tgz#c70dab423135ade17de8152ea988fc8ef81f4513"
+  integrity sha512-mjvab7nRg3NnioKh9MKs5ajPlBjvrQ+dOTkDPzExpZFnzC9sebVOu7NsRj8xd1WfL02iih1rIYUVz6+Hr2F/Lg==
   dependencies:
     minimal-polyfills "^2.2.2"
     run-exclusive "^2.2.16"
-    tsafe "^1.0.1"
+    tsafe "^1.1.0"
 
 execa@^5.1.1:
   version "5.1.1"
@@ -1385,15 +1385,15 @@ please-upgrade-node@^3.2.0:
   dependencies:
     semver-compare "^1.0.0"
 
-powerhooks@^0.20.17:
-  version "0.20.17"
-  resolved "https://registry.yarnpkg.com/powerhooks/-/powerhooks-0.20.17.tgz#bf9fd0c4a7f21a61aabbfc249a6d631cd1c06006"
-  integrity sha512-c65WYqmSmjFQBLIgHN5nHDryVSU3ARII2C8nNX2cOYFsvzp+MvQJSAP1i1159U9RvuP1iayuUiQRk4nVwZYSlg==
+powerhooks@^0.20.18:
+  version "0.20.18"
+  resolved "https://registry.yarnpkg.com/powerhooks/-/powerhooks-0.20.18.tgz#8d0fe7527d7f43ab8e83587dc6a1e192e3269a52"
+  integrity sha512-oI+WTQu4obdrB8Yjb2Nvcuh4Dyj0ParA8Iq14QCO9VpGGPg1CSl7Zb/Yi5IOpfPis3TZHHMwCUcSIhHNnAkqjQ==
   dependencies:
-    evt "^2.4.2"
+    evt "^2.4.3"
     memoizee "^0.4.15"
     resize-observer-polyfill "^1.5.1"
-    tsafe "^1.0.1"
+    tsafe "^1.1.0"
 
 prettier@^2.3.0:
   version "2.7.1"
@@ -1733,20 +1733,20 @@ trough@^1.0.0:
   resolved "https://registry.yarnpkg.com/trough/-/trough-1.0.5.tgz#b8b639cefad7d0bb2abd37d433ff8293efa5f406"
   integrity sha512-rvuRbTarPXmMb79SmzEp8aqXNKcK+y0XaB298IXueQ8I2PsrATcPBCSPyK/dDNa2iWOhKlfNnOjdAOTBU/nkFA==
 
-tsafe@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-1.0.1.tgz#c8c4eb2d75d1478418a4941307c5dd667fd76d23"
-  integrity sha512-FgJ1a4rE7YbmW5QIzpsfFl4tsAp0x74FH2bVE6qODb2U8jSrwTr5/ckIazeylme5zXndVbtgKm4BZdqmoGhiPw==
+tsafe@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-1.1.0.tgz#3fa2f5a902803fccc8d3a0e28ff8154e0380cffa"
+  integrity sha512-u+dbgaG/D3ej1AGZYOe6pb7eDLhn+cmuw1Vx2pnj62PklH/yj+RN1DOxe18ncbZSu91IXmE8LrrGbwByNmuGvw==
 
 tslib@^2.1.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.4.0.tgz#7cecaa7f073ce680a05847aa77be941098f36dc3"
   integrity sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==
 
-tss-react@^4.1.3:
-  version "4.1.3"
-  resolved "https://registry.yarnpkg.com/tss-react/-/tss-react-4.1.3.tgz#170a2edd85e32ba3b752416eeb45438c35e90243"
-  integrity sha512-Ul99aVoVngHY2nwFC87jZlGP+K3LfG9ZRakimOzRwgJz77f/zXWuY2FVzwaSc+OW804twNaxZZRtLlpagex8sg==
+tss-react@^4.1.4:
+  version "4.1.4"
+  resolved "https://registry.yarnpkg.com/tss-react/-/tss-react-4.1.4.tgz#de049875e0fb3b0a28ec09a1faf8b326d621df15"
+  integrity sha512-/dg3SrbvIZX6pjzVYhsvMBxEKe1W3TFmbzxR0y4X3J2xA1tc5DOsenQHNodWVZ6cE3EHUjb3dLm4tVvkVe/SNw==
   dependencies:
     "@emotion/cache" "*"
     "@emotion/serialize" "*"
