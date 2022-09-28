@@ -1,7 +1,7 @@
 {
   "name": "keycloakify_landingpage",
   "homepage": "https://www.keycloakify.dev",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.9.0",
@@ -13,7 +13,7 @@
     "onyxia-ui": "^0.41.2",
     "powerhooks": "^0.20.16",
     "tsafe": "^1.0.1",
-    "tss-react": "^3.7.1",
+    "tss-react": "^4.1.4",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "i18nifty": "^1.0.2"
