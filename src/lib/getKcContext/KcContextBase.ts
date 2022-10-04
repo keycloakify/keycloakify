@@ -19,6 +19,7 @@ export type KcContextBase =
     | KcContextBase.LoginVerifyEmail
     | KcContextBase.Terms
     | KcContextBase.LoginOtp
+    | KcContextBase.LoginUsername
     | KcContextBase.LoginUpdatePassword
     | KcContextBase.LoginUpdateProfile
     | KcContextBase.LoginIdpLinkConfirm
@@ -195,6 +196,36 @@ export declare namespace KcContextBase {
         pageId: "login-otp.ftl";
         otpLogin: {
             userOtpCredentials: { id: string; userLabel: string }[];
+        };
+    };
+
+    export type LoginUsername = Common & {
+        pageId: "login-username.ftl";
+        url: {
+            loginResetCredentialsUrl: string;
+            registrationUrl: string;
+        };
+        realm: {
+            loginWithEmailAllowed: boolean;
+            rememberMe: boolean;
+            password: boolean;
+            resetPasswordAllowed: boolean;
+            registrationAllowed: boolean;
+        };
+        registrationDisabled: boolean;
+        login: {
+            username?: string;
+            rememberMe?: boolean;
+        };
+        usernameHidden?: boolean;
+        social: {
+            displayInfo: boolean;
+            providers?: {
+                loginUrl: string;
+                alias: string;
+                providerId: string;
+                displayName: string;
+            }[];
         };
     };
 

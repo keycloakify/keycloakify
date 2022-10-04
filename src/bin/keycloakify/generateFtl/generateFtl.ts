@@ -13,6 +13,7 @@ import { Reflect } from "tsafe/Reflect";
 // https://github.com/keycloak/keycloak/blob/main/services/src/main/java/org/keycloak/forms/login/freemarker/Templates.java
 export const pageIds = [
     "login.ftl",
+    "login-username.ftl",
     "register.ftl",
     "register-user-profile.ftl",
     "info.ftl",
