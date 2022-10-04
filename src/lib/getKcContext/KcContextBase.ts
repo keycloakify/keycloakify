@@ -20,6 +20,7 @@ export type KcContextBase =
     | KcContextBase.Terms
     | KcContextBase.LoginOtp
     | KcContextBase.LoginUsername
+    | KcContextBase.LoginPassword
     | KcContextBase.LoginUpdatePassword
     | KcContextBase.LoginUpdateProfile
     | KcContextBase.LoginIdpLinkConfirm
@@ -226,6 +227,29 @@ export declare namespace KcContextBase {
                 providerId: string;
                 displayName: string;
             }[];
+        };
+    };
+
+    export type LoginPassword = Common & {
+        pageId: "login-password.ftl";
+        url: {
+            loginResetCredentialsUrl: string;
+            registrationUrl: string;
+        };
+        realm: {
+            resetPasswordAllowed: boolean;
+        };
+        auth?: {
+            showUsername?: boolean;
+            showResetCredentials?: boolean;
+            showTryAnotherWayLink?: boolean;
+            attemptedUsername?: string;
+        };
+        social: {
+            displayInfo: boolean;
+        };
+        login: {
+            password?: string;
         };
     };
 
