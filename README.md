@@ -49,6 +49,10 @@
 
 # Changelog highlights
 
+## 6.6.0
+
+-   Add support for `login-password.ftl` thanks to [@mstrodl](https://github.com/Mstrodl)'s hacktoberfest [PR](https://github.com/InseeFrLab/keycloakify/pull/184).
+
 ## 6.5.0
 
 -   Add support for `login-username.ftl` thanks to [@mstrodl](https://github.com/Mstrodl)'s hacktoberfest [PR](https://github.com/InseeFrLab/keycloakify/pull/183).
