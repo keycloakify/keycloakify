@@ -359,6 +359,27 @@ export const kcContextMocks: KcContextBase[] = [
             ]
         }
     }),
+    id<KcContextBase.LoginUsername>({
+        ...kcContextCommonMock,
+        "pageId": "login-username.ftl",
+        "url": loginUrl,
+        "realm": {
+            ...kcContextCommonMock.realm,
+            "loginWithEmailAllowed": true,
+            "rememberMe": true,
+            "password": true,
+            "resetPasswordAllowed": true,
+            "registrationAllowed": true
+        },
+        "social": {
+            "displayInfo": true
+        },
+        "usernameHidden": false,
+        "login": {
+            "rememberMe": false
+        },
+        "registrationDisabled": false
+    }),
     id<KcContextBase.LoginUpdatePassword>({
         ...kcContextCommonMock,
         "pageId": "login-update-password.ftl",
