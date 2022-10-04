@@ -49,6 +49,10 @@
 
 # Changelog highlights
 
+## 6.5.0
+
+-   Add support for `login-username.ftl` thanks to [@mstrodl](https://github.com/Mstrodl)'s hacktoberfest [PR](https://github.com/InseeFrLab/keycloakify/pull/183).
+
 ## 6.4.0
 
 -   You can now optionally pass a `doFetchDefaultThemeResources: boolean` prop to every page component and the default `<KcApp />`
