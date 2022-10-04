@@ -380,6 +380,19 @@ export const kcContextMocks: KcContextBase[] = [
         },
         "registrationDisabled": false
     }),
+    id<KcContextBase.LoginPassword>({
+        ...kcContextCommonMock,
+        "pageId": "login-password.ftl",
+        "url": loginUrl,
+        "realm": {
+            ...kcContextCommonMock.realm,
+            "resetPasswordAllowed": true
+        },
+        "social": {
+            "displayInfo": false
+        },
+        "login": {}
+    }),
     id<KcContextBase.LoginUpdatePassword>({
         ...kcContextCommonMock,
         "pageId": "login-update-password.ftl",

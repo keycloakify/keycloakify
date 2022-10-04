@@ -14,6 +14,7 @@ import { Reflect } from "tsafe/Reflect";
 export const pageIds = [
     "login.ftl",
     "login-username.ftl",
+    "login-password.ftl",
     "register.ftl",
     "register-user-profile.ftl",
     "info.ftl",
