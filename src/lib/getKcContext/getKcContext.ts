@@ -10,6 +10,7 @@ import { getKcContextFromWindow } from "./getKcContextFromWindow";
 import { pathJoin } from "../../bin/tools/pathJoin";
 import { pathBasename } from "../tools/pathBasename";
 import { mockTestingResourcesCommonPath } from "../../bin/mockTestingResourcesPath";
+import { symToStr } from "tsafe/symToStr";
 
 export function getKcContext<KcContextExtended extends { pageId: string } = never>(params?: {
     mockPageId?: ExtendsKcContextBase<KcContextExtended>["pageId"];
@@ -21,6 +22,14 @@ export function getKcContext<KcContextExtended extends { pageId: string } = neve
 
     if (mockPageId !== undefined && realKcContext === undefined) {
         //TODO maybe trow if no mock fo custom page
+
+        console.log(
+            [
+                `%cKeycloakify: ${symToStr({ mockPageId })} set to ${mockPageId}.`,
+                `If assets are missing make sure you have built your Keycloak theme at least once.`
+            ].join(" "),
+            "background: red; color: yellow; font-size: medium"
+        );
 
         const kcContextDefaultMock = kcContextMocks.find(({ pageId }) => pageId === mockPageId);
 
