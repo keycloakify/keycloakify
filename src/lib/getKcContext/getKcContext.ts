@@ -17,7 +17,9 @@ export function getKcContext<KcContextExtended extends { pageId: string } = neve
 }): { kcContext: ExtendsKcContextBase<KcContextExtended> | undefined } {
     const { mockPageId, mockData } = params ?? {};
 
-    if (mockPageId !== undefined) {
+    const realKcContext = getKcContextFromWindow<KcContextExtended>();
+
+    if (mockPageId !== undefined && realKcContext === undefined) {
         //TODO maybe trow if no mock fo custom page
 
         const kcContextDefaultMock = kcContextMocks.find(({ pageId }) => pageId === mockPageId);
@@ -106,13 +108,15 @@ export function getKcContext<KcContextExtended extends { pageId: string } = neve
         return { kcContext };
     }
 
-    const kcContext = getKcContextFromWindow<KcContextExtended>();
+    if (realKcContext === undefined) {
+        return { "kcContext": undefined };
+    }
 
-    if (kcContext !== undefined) {
-        const { url } = kcContext;
+    {
+        const { url } = realKcContext;
 
         url.resourcesCommonPath = pathJoin(url.resourcesPath, pathBasename(mockTestingResourcesCommonPath));
     }
 
-    return { kcContext };
+    return { "kcContext": realKcContext };
 }
