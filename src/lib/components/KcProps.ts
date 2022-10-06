@@ -84,6 +84,7 @@ export type KcProps = KcPropsGeneric<
     | "kcFormSocialAccountDoubleListClass"
     | "kcFormSocialAccountListLinkClass"
     | "kcWebAuthnKeyIcon"
+    | "kcWebAuthnDefaultIcon"
     | "kcFormClass"
     | "kcFormGroupErrorClass"
     | "kcLabelClass"
@@ -105,12 +106,16 @@ export type KcProps = KcPropsGeneric<
     | "kcSrOnlyClass"
     | "kcSelectAuthListClass"
     | "kcSelectAuthListItemClass"
+    | "kcSelectAuthListItemFillClass"
     | "kcSelectAuthListItemInfoClass"
     | "kcSelectAuthListItemLeftClass"
     | "kcSelectAuthListItemBodyClass"
     | "kcSelectAuthListItemDescriptionClass"
     | "kcSelectAuthListItemHeadingClass"
     | "kcSelectAuthListItemHelpTextClass"
+    | "kcSelectAuthListItemIconPropertyClass"
+    | "kcSelectAuthListItemIconClass"
+    | "kcSelectAuthListItemTitle"
     | "kcAuthenticatorDefaultClass"
     | "kcAuthenticatorPasswordClass"
     | "kcAuthenticatorOTPClass"
@@ -138,6 +143,7 @@ export const defaultKcProps = {
     "kcFormSocialAccountDoubleListClass": ["login-pf-social-double-col"],
     "kcFormSocialAccountListLinkClass": ["login-pf-social-link"],
     "kcWebAuthnKeyIcon": ["pficon", "pficon-key"],
+    "kcWebAuthnDefaultIcon": ["pficon", "pficon-key"],
 
     "kcFormClass": ["form-horizontal"],
     "kcFormGroupErrorClass": ["has-error"],
@@ -173,6 +179,10 @@ export const defaultKcProps = {
     // css classes for select-authenticator form
     "kcSelectAuthListClass": ["list-group", "list-view-pf"],
     "kcSelectAuthListItemClass": ["list-group-item", "list-view-pf-stacked"],
+    "kcSelectAuthListItemFillClass": ["pf-l-split__item", "pf-m-fill"],
+    "kcSelectAuthListItemIconPropertyClass": ["fa-2x", "select-auth-box-icon-properties"],
+    "kcSelectAuthListItemIconClass": ["pf-l-split__item", "select-auth-box-icon"],
+    "kcSelectAuthListItemTitle": ["select-auth-box-paragraph"],
     "kcSelectAuthListItemInfoClass": ["list-view-pf-main-info"],
     "kcSelectAuthListItemLeftClass": ["list-view-pf-left"],
     "kcSelectAuthListItemBodyClass": ["list-view-pf-body"],

@@ -15,6 +15,7 @@ const Terms = lazy(() => import("./Terms"));
 const LoginOtp = lazy(() => import("./LoginOtp"));
 const LoginPassword = lazy(() => import("./LoginPassword"));
 const LoginUsername = lazy(() => import("./LoginUsername"));
+const WebauthnAuthenticate = lazy(() => import("./WebauthnAuthenticate"));
 const LoginUpdatePassword = lazy(() => import("./LoginUpdatePassword"));
 const LoginUpdateProfile = lazy(() => import("./LoginUpdateProfile"));
 const LoginIdpLinkConfirm = lazy(() => import("./LoginIdpLinkConfirm"));
@@ -73,6 +74,8 @@ const KcApp = memo(
                             return <LoginUsername {...{ kcContext, ...props }} />;
                         case "login-password.ftl":
                             return <LoginPassword {...{ kcContext, ...props }} />;
+                        case "webauthn-authenticate.ftl":
+                            return <WebauthnAuthenticate {...{ kcContext, ...props }} />;
                         case "login-update-password.ftl":
                             return <LoginUpdatePassword {...{ kcContext, ...props }} />;
                         case "login-update-profile.ftl":

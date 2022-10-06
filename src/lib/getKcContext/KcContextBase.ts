@@ -2,6 +2,7 @@ import type { PageId } from "../../bin/keycloakify/generateFtl";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
 import type { MessageKeyBase } from "../i18n";
+import type { KcTemplateClassKey } from "../components/KcProps";
 
 type ExtractAfterStartingWith<Prefix extends string, StrEnum> = StrEnum extends `${Prefix}${infer U}` ? U : never;
 
@@ -20,6 +21,7 @@ export type KcContextBase =
     | KcContextBase.Terms
     | KcContextBase.LoginOtp
     | KcContextBase.LoginUsername
+    | KcContextBase.WebauthnAuthenticate
     | KcContextBase.LoginPassword
     | KcContextBase.LoginUpdatePassword
     | KcContextBase.LoginUpdateProfile
@@ -30,6 +32,16 @@ export type KcContextBase =
     | KcContextBase.LogoutConfirm
     | KcContextBase.UpdateUserProfile
     | KcContextBase.IdpReviewUserProfile;
+
+export type WebauthnAuthenticator = {
+    credentialId: string;
+    transports: {
+        iconClass: KcTemplateClassKey;
+        displayNameProperties: MessageKeyBase[];
+    };
+    label: string;
+    createdAt: string;
+};
 
 export declare namespace KcContextBase {
     export type Common = {
@@ -251,6 +263,24 @@ export declare namespace KcContextBase {
         login: {
             password?: string;
         };
+    };
+
+    export type WebauthnAuthenticate = Common & {
+        pageId: "webauthn-authenticate.ftl";
+        authenticators: {
+            authenticators: WebauthnAuthenticator[];
+        };
+        challenge: string;
+        // I hate this:
+        userVerification: UserVerificationRequirement | "not specified";
+        rpId: string;
+        createTimeout: string;
+        isUserIdentified: "true" | "false";
+        shouldDisplayAuthenticators: boolean;
+        social: {
+            displayInfo: boolean;
+        };
+        login: {};
     };
 
     export type LoginUpdatePassword = Common & {

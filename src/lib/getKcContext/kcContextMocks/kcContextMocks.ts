@@ -393,6 +393,27 @@ export const kcContextMocks: KcContextBase[] = [
         },
         "login": {}
     }),
+    id<KcContextBase.WebauthnAuthenticate>({
+        ...kcContextCommonMock,
+        "pageId": "webauthn-authenticate.ftl",
+        "url": loginUrl,
+        "authenticators": {
+            "authenticators": []
+        },
+        "realm": {
+            ...kcContextCommonMock.realm
+        },
+        "challenge": "",
+        "userVerification": "not specified",
+        "rpId": "",
+        "createTimeout": "0",
+        "isUserIdentified": "false",
+        "shouldDisplayAuthenticators": false,
+        "social": {
+            "displayInfo": false
+        },
+        "login": {}
+    }),
     id<KcContextBase.LoginUpdatePassword>({
         ...kcContextCommonMock,
         "pageId": "login-update-password.ftl",

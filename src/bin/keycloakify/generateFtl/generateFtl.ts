@@ -15,6 +15,7 @@ export const pageIds = [
     "login.ftl",
     "login-username.ftl",
     "login-password.ftl",
+    "webauthn-authenticate.ftl",
     "register.ftl",
     "register-user-profile.ftl",
     "info.ftl",
