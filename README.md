@@ -49,6 +49,10 @@
 
 # Changelog highlights
 
+## 6.7.0
+
+-   Add support for `webauthn-authenticate.ftl` thanks to [@mstrodl](https://github.com/Mstrodl)'s hacktoberfest [PR](https://github.com/InseeFrLab/keycloakify/pull/185).
+
 ## 6.6.0
 
 -   Add support for `login-password.ftl` thanks to [@mstrodl](https://github.com/Mstrodl)'s hacktoberfest [PR](https://github.com/InseeFrLab/keycloakify/pull/184).
