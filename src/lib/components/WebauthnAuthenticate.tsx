@@ -1,10 +1,11 @@
-import React, { useCallback, useRef, useState, memo } from "react";
+import React, { useRef, useState, memo } from "react";
 import Template from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { useCssAndCx } from "../tools/useCssAndCx";
 import type { I18n, MessageKeyBase } from "../i18n";
 import { base64url } from "rfc4648";
+import { useConstCallback } from "powerhooks/useConstCallback";
 
 const WebauthnAuthenticate = memo(
     ({
@@ -23,76 +24,67 @@ const WebauthnAuthenticate = memo(
 
         const { cx } = useCssAndCx();
 
-        const webAuthnAuthenticate = useCallback(() => {
+        const webAuthnAuthenticate = useConstCallback(async () => {
             if (!isUserIdentified) {
                 return;
             }
-            checkAllowCredentials();
-
-            function checkAllowCredentials() {
-                const allowCredentials = authenticators.authenticators.map(
-                    authenticator =>
-                        ({
-                            id: base64url.parse(authenticator.credentialId, { loose: true }),
-                            type: "public-key"
-                        } as PublicKeyCredentialDescriptor)
-                );
-                doAuthenticate(allowCredentials);
+            const allowCredentials = authenticators.authenticators.map(
+                authenticator =>
+                    ({
+                        id: base64url.parse(authenticator.credentialId, { loose: true }),
+                        type: "public-key"
+                    } as PublicKeyCredentialDescriptor)
+            );
+            // Check if WebAuthn is supported by this browser
+            if (!window.PublicKeyCredential) {
+                setError(msgStr("webauthn-unsupported-browser-text"));
+                submitForm();
+                return;
             }
-            function doAuthenticate(allowCredentials: PublicKeyCredentialDescriptor[]) {
-                // Check if WebAuthn is supported by this browser
-                if (!window.PublicKeyCredential) {
-                    setError(msgStr("webauthn-unsupported-browser-text"));
-                    submitForm();
-                    return;
-                }
 
-                const publicKey: PublicKeyCredentialRequestOptions = {
-                    rpId,
-                    challenge: base64url.parse(challenge, { loose: true })
-                };
+            const publicKey: PublicKeyCredentialRequestOptions = {
+                rpId,
+                challenge: base64url.parse(challenge, { loose: true })
+            };
 
-                if (createTimeout !== 0) {
-                    publicKey.timeout = createTimeout * 1000;
-                }
-
-                if (allowCredentials.length) {
-                    publicKey.allowCredentials = allowCredentials;
-                }
-
-                if (userVerification !== "not specified") {
-                    publicKey.userVerification = userVerification;
-                }
-
-                navigator.credentials
-                    .get({ publicKey })
-                    .then(resultRaw => {
-                        if (!resultRaw || resultRaw.type != "public-key") return;
-                        const result = resultRaw as PublicKeyCredential;
-                        if (!("authenticatorData" in result.response)) return;
-                        const response = result.response as AuthenticatorAssertionResponse;
-                        let clientDataJSON = response.clientDataJSON;
-                        let authenticatorData = response.authenticatorData;
-                        let signature = response.signature;
-
-                        setClientDataJSON(base64url.stringify(new Uint8Array(clientDataJSON), { pad: false }));
-                        setAuthenticatorData(base64url.stringify(new Uint8Array(authenticatorData), { pad: false }));
-                        setSignature(base64url.stringify(new Uint8Array(signature), { pad: false }));
-                        setCredentialId(result.id);
-                        setUserHandle(base64url.stringify(new Uint8Array(response.userHandle!), { pad: false }));
-                        submitForm();
-                    })
-                    .catch(err => {
-                        setError(err);
-                        submitForm();
-                    });
+            if (createTimeout !== 0) {
+                publicKey.timeout = createTimeout * 1000;
             }
-        }, [kcContext]);
+
+            if (allowCredentials.length) {
+                publicKey.allowCredentials = allowCredentials;
+            }
+
+            if (userVerification !== "not specified") {
+                publicKey.userVerification = userVerification;
+            }
+
+            try {
+                const resultRaw = await navigator.credentials.get({ publicKey });
+                if (!resultRaw || resultRaw.type != "public-key") return;
+                const result = resultRaw as PublicKeyCredential;
+                if (!("authenticatorData" in result.response)) return;
+                const response = result.response as AuthenticatorAssertionResponse;
+                const clientDataJSON = response.clientDataJSON;
+                const authenticatorData = response.authenticatorData;
+                const signature = response.signature;
+
+                setClientDataJSON(base64url.stringify(new Uint8Array(clientDataJSON), { pad: false }));
+                setAuthenticatorData(base64url.stringify(new Uint8Array(authenticatorData), { pad: false }));
+                setSignature(base64url.stringify(new Uint8Array(signature), { pad: false }));
+                setCredentialId(result.id);
+                setUserHandle(base64url.stringify(new Uint8Array(response.userHandle!), { pad: false }));
+                submitForm();
+            } catch (err) {
+                setError(String(err));
+                submitForm();
+            }
+        });
 
         const webAuthForm = useRef<HTMLFormElement>(null);
-        const submitForm = useCallback(() => {
+        const submitForm = useConstCallback(() => {
             webAuthForm.current!.submit();
-        }, [webAuthForm.current]);
+        });
 
         const [clientDataJSON, setClientDataJSON] = useState("");
         const [authenticatorData, setAuthenticatorData] = useState("");
