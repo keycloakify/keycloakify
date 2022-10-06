@@ -275,7 +275,7 @@ Wouldn't it be great if we could just design the login and register pages as if 
             Just provide a Markdown file, optionally in different languages. That's it.`,
             },
             {
-              "title": "[Demo setups](https://github.com/garronej/keycloakify-demo-app)",
+              "title": "[Demo setups](https://github.com/garronej/keycloakify-advanced-starter)",
               "description": `If you are not big on reading documentation there are working demo repo you can start hacking from.
             `,
             },
