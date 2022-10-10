@@ -967,14 +967,14 @@ event-emitter@^0.3.5:
     d "1"
     es5-ext "~0.10.14"
 
-evt@^2.4.4:
-  version "2.4.4"
-  resolved "https://registry.yarnpkg.com/evt/-/evt-2.4.4.tgz#37d6e28ccb5b1bc91162fc3d5bcfbeb1ef3191cf"
-  integrity sha512-w/ZYdPCRdSfslOhcQHq7DuYoaU04YZKkFPyBwF8pYmOkRizivpbI0jZ8ffY/jITzbLo7RZ0wxN2dqyi62kyGwg==
+evt@^2.4.5:
+  version "2.4.5"
+  resolved "https://registry.yarnpkg.com/evt/-/evt-2.4.5.tgz#9e383c20a7917977e26b9fbad178585916ea8142"
+  integrity sha512-shiXMrEhTHqTl5PacT3vdA1U9i3usnInuxt77Lj0Ph9igNM982b1Uf/3L24OSzI0SqLx/XIRVIJcgzUZ2Ij8AA==
   dependencies:
     minimal-polyfills "^2.2.2"
     run-exclusive "^2.2.16"
-    tsafe "^1.1.1"
+    tsafe "^1.1.2"
 
 execa@^5.1.1:
   version "5.1.1"
@@ -1634,15 +1634,15 @@ please-upgrade-node@^3.2.0:
   dependencies:
     semver-compare "^1.0.0"
 
-powerhooks@^0.20.20:
-  version "0.20.20"
-  resolved "https://registry.yarnpkg.com/powerhooks/-/powerhooks-0.20.20.tgz#f9b2549710f5166f63d80e07c46c16d6da4c6f78"
-  integrity sha512-98Ymz0bjo5Ds9u273wYz1tdJ51sB1jcyjqGa08mRY5dKumewydA/+71zrFelfgkOLRRhVZ+mWynG6DZ7zOVjrQ==
+powerhooks@^0.20.21:
+  version "0.20.21"
+  resolved "https://registry.yarnpkg.com/powerhooks/-/powerhooks-0.20.21.tgz#5520ffbba99b582354660fad0592759c8202016b"
+  integrity sha512-U5J2F252tmyycndAVaFripXtinDn36ZrqU/eRAzqFKnJiXh+pHijNJ2cwnquBvo/gi/m1bsH4v3gXYUQI6nrqg==
   dependencies:
-    evt "^2.4.4"
+    evt "^2.4.5"
     memoizee "^0.4.15"
     resize-observer-polyfill "^1.5.1"
-    tsafe "^1.1.1"
+    tsafe "^1.1.2"
 
 prettier@^2.3.0:
   version "2.7.1"
@@ -1992,10 +1992,10 @@ trough@^1.0.0:
   resolved "https://registry.yarnpkg.com/trough/-/trough-1.0.5.tgz#b8b639cefad7d0bb2abd37d433ff8293efa5f406"
   integrity sha512-rvuRbTarPXmMb79SmzEp8aqXNKcK+y0XaB298IXueQ8I2PsrATcPBCSPyK/dDNa2iWOhKlfNnOjdAOTBU/nkFA==
 
-tsafe@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-1.1.1.tgz#8d6998c726f8c63c518e1d1e283bbcd282a2b9a9"
-  integrity sha512-Ogblm3uh0dVupcCcC4IT641rnSQ7CW9IO0q8yIncG8OBe4DDXEqGtUE8LWf7+0MK1qZGeWPWEqSxlLzY2xzREA==
+tsafe@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-1.1.2.tgz#cece1900bca89e25a84a65e7087f00dff3664b2e"
+  integrity sha512-jom5KsB9vpvOE9dLx2yTrPAJzzwU9CRPgoatoD7m2Zb7FCqo6ueEdZ+AZk+OysM4N+m8EUnIa1s9Pq3IMRDYLA==
 
 tslib@^2.1.0:
   version "2.4.0"
