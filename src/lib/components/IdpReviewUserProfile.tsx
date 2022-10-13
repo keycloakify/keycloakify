@@ -1,57 +1,60 @@
 import React, { useState, memo } from "react";
-import Template from "./Template";
+import DefaultTemplate from "./Template";
+import type { TemplateProps } from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { useCssAndCx } from "../tools/useCssAndCx";
 import type { I18n } from "../i18n";
 import { UserProfileFormFields } from "./shared/UserProfileCommons";
 
-const IdpReviewUserProfile = memo(
-    ({
-        kcContext,
-        i18n,
-        doFetchDefaultThemeResources = true,
-        ...props
-    }: { kcContext: KcContextBase.IdpReviewUserProfile; i18n: I18n; doFetchDefaultThemeResources?: boolean } & KcProps) => {
-        const { cx } = useCssAndCx();
+export type IdpReviewUserProfileProps = KcProps & {
+    kcContext: KcContextBase.IdpReviewUserProfile;
+    i18n: I18n;
+    doFetchDefaultThemeResources?: boolean;
+    Template?: (props: TemplateProps) => JSX.Element | null;
+};
 
-        const { msg, msgStr } = i18n;
+const IdpReviewUserProfile = memo((props: IdpReviewUserProfileProps) => {
+    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template = DefaultTemplate, ...kcProps } = props;
 
-        const { url } = kcContext;
+    const { cx } = useCssAndCx();
 
-        const [isFomSubmittable, setIsFomSubmittable] = useState(false);
+    const { msg, msgStr } = i18n;
 
-        return (
-            <Template
-                {...{ kcContext, i18n, doFetchDefaultThemeResources, ...props }}
-                headerNode={msg("loginIdpReviewProfileTitle")}
-                formNode={
-                    <form id="kc-idp-review-profile-form" className={cx(props.kcFormClass)} action={url.loginAction} method="post">
-                        <UserProfileFormFields kcContext={kcContext} onIsFormSubmittableValueChange={setIsFomSubmittable} i18n={i18n} {...props} />
+    const { url } = kcContext;
 
-                        <div className={cx(props.kcFormGroupClass)}>
-                            <div id="kc-form-options" className={cx(props.kcFormOptionsClass)}>
-                                <div className={cx(props.kcFormOptionsWrapperClass)} />
-                            </div>
-                            <div id="kc-form-buttons" className={cx(props.kcFormButtonsClass)}>
-                                <input
-                                    className={cx(
-                                        props.kcButtonClass,
-                                        props.kcButtonPrimaryClass,
-                                        props.kcButtonBlockClass,
-                                        props.kcButtonLargeClass
-                                    )}
-                                    type="submit"
-                                    value={msgStr("doSubmit")}
-                                    disabled={!isFomSubmittable}
-                                />
-                            </div>
+    const [isFomSubmittable, setIsFomSubmittable] = useState(false);
+
+    return (
+        <Template
+            {...{ kcContext, i18n, doFetchDefaultThemeResources, ...kcProps }}
+            headerNode={msg("loginIdpReviewProfileTitle")}
+            formNode={
+                <form id="kc-idp-review-profile-form" className={cx(kcProps.kcFormClass)} action={url.loginAction} method="post">
+                    <UserProfileFormFields kcContext={kcContext} onIsFormSubmittableValueChange={setIsFomSubmittable} i18n={i18n} {...kcProps} />
+
+                    <div className={cx(kcProps.kcFormGroupClass)}>
+                        <div id="kc-form-options" className={cx(kcProps.kcFormOptionsClass)}>
+                            <div className={cx(kcProps.kcFormOptionsWrapperClass)} />
                         </div>
-                    </form>
-                }
-            />
-        );
-    }
-);
+                        <div id="kc-form-buttons" className={cx(kcProps.kcFormButtonsClass)}>
+                            <input
+                                className={cx(
+                                    kcProps.kcButtonClass,
+                                    kcProps.kcButtonPrimaryClass,
+                                    kcProps.kcButtonBlockClass,
+                                    kcProps.kcButtonLargeClass
+                                )}
+                                type="submit"
+                                value={msgStr("doSubmit")}
+                                disabled={!isFomSubmittable}
+                            />
+                        </div>
+                    </div>
+                </form>
+            }
+        />
+    );
+});
 
 export default IdpReviewUserProfile;

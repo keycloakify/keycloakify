@@ -1,77 +1,80 @@
 import React, { useState, memo } from "react";
-import Template from "./Template";
+import DefaultTemplate from "./Template";
+import type { TemplateProps } from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { useCssAndCx } from "../tools/useCssAndCx";
 import type { I18n } from "../i18n";
 import { UserProfileFormFields } from "./shared/UserProfileCommons";
 
-const UpdateUserProfile = memo(
-    ({
-        kcContext,
-        i18n,
-        doFetchDefaultThemeResources = true,
-        ...props
-    }: { kcContext: KcContextBase.UpdateUserProfile; i18n: I18n; doFetchDefaultThemeResources?: boolean } & KcProps) => {
-        const { cx } = useCssAndCx();
+export type UpdateUserProfileProps = KcProps & {
+    kcContext: KcContextBase.UpdateUserProfile;
+    i18n: I18n;
+    doFetchDefaultThemeResources?: boolean;
+    Template?: (props: TemplateProps) => JSX.Element | null;
+};
 
-        const { msg, msgStr } = i18n;
+const UpdateUserProfile = memo((props: UpdateUserProfileProps) => {
+    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template = DefaultTemplate, ...kcProps } = props;
 
-        const { url, isAppInitiatedAction } = kcContext;
+    const { cx } = useCssAndCx();
 
-        const [isFomSubmittable, setIsFomSubmittable] = useState(false);
+    const { msg, msgStr } = i18n;
 
-        return (
-            <Template
-                {...{ kcContext, i18n, doFetchDefaultThemeResources, ...props }}
-                headerNode={msg("loginProfileTitle")}
-                formNode={
-                    <form id="kc-update-profile-form" className={cx(props.kcFormClass)} action={url.loginAction} method="post">
-                        <UserProfileFormFields kcContext={kcContext} onIsFormSubmittableValueChange={setIsFomSubmittable} i18n={i18n} {...props} />
+    const { url, isAppInitiatedAction } = kcContext;
 
-                        <div className={cx(props.kcFormGroupClass)}>
-                            <div id="kc-form-options" className={cx(props.kcFormOptionsClass)}>
-                                <div className={cx(props.kcFormOptionsWrapperClass)}></div>
-                            </div>
+    const [isFomSubmittable, setIsFomSubmittable] = useState(false);
 
-                            <div id="kc-form-buttons" className={cx(props.kcFormButtonsClass)}>
-                                {isAppInitiatedAction ? (
-                                    <>
-                                        <input
-                                            className={cx(props.kcButtonClass, props.kcButtonPrimaryClass, props.kcButtonLargeClass)}
-                                            type="submit"
-                                            value={msgStr("doSubmit")}
-                                        />
-                                        <button
-                                            className={cx(props.kcButtonClass, props.kcButtonDefaultClass, props.kcButtonLargeClass)}
-                                            type="submit"
-                                            name="cancel-aia"
-                                            value="true"
-                                            formNoValidate
-                                        >
-                                            {msg("doCancel")}
-                                        </button>
-                                    </>
-                                ) : (
-                                    <input
-                                        className={cx(
-                                            props.kcButtonClass,
-                                            props.kcButtonPrimaryClass,
-                                            props.kcButtonBlockClass,
-                                            props.kcButtonLargeClass
-                                        )}
-                                        type="submit"
-                                        defaultValue={msgStr("doSubmit")}
-                                        disabled={!isFomSubmittable}
-                                    />
-                                )}
-                            </div>
+    return (
+        <Template
+            {...{ kcContext, i18n, doFetchDefaultThemeResources, ...kcProps }}
+            headerNode={msg("loginProfileTitle")}
+            formNode={
+                <form id="kc-update-profile-form" className={cx(kcProps.kcFormClass)} action={url.loginAction} method="post">
+                    <UserProfileFormFields kcContext={kcContext} onIsFormSubmittableValueChange={setIsFomSubmittable} i18n={i18n} {...kcProps} />
+
+                    <div className={cx(kcProps.kcFormGroupClass)}>
+                        <div id="kc-form-options" className={cx(kcProps.kcFormOptionsClass)}>
+                            <div className={cx(kcProps.kcFormOptionsWrapperClass)}></div>
                         </div>
-                    </form>
-                }
-            />
-        );
-    }
-);
+
+                        <div id="kc-form-buttons" className={cx(kcProps.kcFormButtonsClass)}>
+                            {isAppInitiatedAction ? (
+                                <>
+                                    <input
+                                        className={cx(kcProps.kcButtonClass, kcProps.kcButtonPrimaryClass, kcProps.kcButtonLargeClass)}
+                                        type="submit"
+                                        value={msgStr("doSubmit")}
+                                    />
+                                    <button
+                                        className={cx(kcProps.kcButtonClass, kcProps.kcButtonDefaultClass, kcProps.kcButtonLargeClass)}
+                                        type="submit"
+                                        name="cancel-aia"
+                                        value="true"
+                                        formNoValidate
+                                    >
+                                        {msg("doCancel")}
+                                    </button>
+                                </>
+                            ) : (
+                                <input
+                                    className={cx(
+                                        kcProps.kcButtonClass,
+                                        kcProps.kcButtonPrimaryClass,
+                                        kcProps.kcButtonBlockClass,
+                                        kcProps.kcButtonLargeClass
+                                    )}
+                                    type="submit"
+                                    defaultValue={msgStr("doSubmit")}
+                                    disabled={!isFomSubmittable}
+                                />
+                            )}
+                        </div>
+                    </div>
+                </form>
+            }
+        />
+    );
+});
 
 export default UpdateUserProfile;

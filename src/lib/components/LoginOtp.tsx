@@ -1,5 +1,6 @@
 import React, { useEffect, memo } from "react";
-import Template from "./Template";
+import DefaultTemplate from "./Template";
+import type { TemplateProps } from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { headInsert } from "../tools/headInsert";
@@ -7,95 +8,97 @@ import { pathJoin } from "../../bin/tools/pathJoin";
 import { useCssAndCx } from "../tools/useCssAndCx";
 import type { I18n } from "../i18n";
 
-const LoginOtp = memo(
-    ({
-        kcContext,
-        i18n,
-        doFetchDefaultThemeResources = true,
-        ...props
-    }: { kcContext: KcContextBase.LoginOtp; i18n: I18n; doFetchDefaultThemeResources?: boolean } & KcProps) => {
-        const { otpLogin, url } = kcContext;
+export type LoginOtpProps = KcProps & {
+    kcContext: KcContextBase.LoginOtp;
+    i18n: I18n;
+    doFetchDefaultThemeResources?: boolean;
+    Template?: (props: TemplateProps) => JSX.Element | null;
+};
 
-        const { cx } = useCssAndCx();
+const LoginOtp = memo((props: LoginOtpProps) => {
+    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template = DefaultTemplate, ...kcProps } = props;
 
-        const { msg, msgStr } = i18n;
+    const { otpLogin, url } = kcContext;
 
-        useEffect(() => {
-            let isCleanedUp = false;
+    const { cx } = useCssAndCx();
 
-            headInsert({
-                "type": "javascript",
-                "src": pathJoin(kcContext.url.resourcesCommonPath, "node_modules/jquery/dist/jquery.min.js")
-            }).then(() => {
-                if (isCleanedUp) return;
+    const { msg, msgStr } = i18n;
 
-                evaluateInlineScript();
-            });
+    useEffect(() => {
+        let isCleanedUp = false;
 
-            return () => {
-                isCleanedUp = true;
-            };
-        }, []);
+        headInsert({
+            "type": "javascript",
+            "src": pathJoin(kcContext.url.resourcesCommonPath, "node_modules/jquery/dist/jquery.min.js")
+        }).then(() => {
+            if (isCleanedUp) return;
 
-        return (
-            <Template
-                {...{ kcContext, i18n, doFetchDefaultThemeResources, ...props }}
-                headerNode={msg("doLogIn")}
-                formNode={
-                    <form id="kc-otp-login-form" className={cx(props.kcFormClass)} action={url.loginAction} method="post">
-                        {otpLogin.userOtpCredentials.length > 1 && (
-                            <div className={cx(props.kcFormGroupClass)}>
-                                <div className={cx(props.kcInputWrapperClass)}>
-                                    {otpLogin.userOtpCredentials.map(otpCredential => (
-                                        <div key={otpCredential.id} className={cx(props.kcSelectOTPListClass)}>
-                                            <input type="hidden" value="${otpCredential.id}" />
-                                            <div className={cx(props.kcSelectOTPListItemClass)}>
-                                                <span className={cx(props.kcAuthenticatorOtpCircleClass)} />
-                                                <h2 className={cx(props.kcSelectOTPItemHeadingClass)}>{otpCredential.userLabel}</h2>
-                                            </div>
+            evaluateInlineScript();
+        });
+
+        return () => {
+            isCleanedUp = true;
+        };
+    }, []);
+
+    return (
+        <Template
+            {...{ kcContext, i18n, doFetchDefaultThemeResources, ...kcProps }}
+            headerNode={msg("doLogIn")}
+            formNode={
+                <form id="kc-otp-login-form" className={cx(kcProps.kcFormClass)} action={url.loginAction} method="post">
+                    {otpLogin.userOtpCredentials.length > 1 && (
+                        <div className={cx(kcProps.kcFormGroupClass)}>
+                            <div className={cx(kcProps.kcInputWrapperClass)}>
+                                {otpLogin.userOtpCredentials.map(otpCredential => (
+                                    <div key={otpCredential.id} className={cx(kcProps.kcSelectOTPListClass)}>
+                                        <input type="hidden" value="${otpCredential.id}" />
+                                        <div className={cx(kcProps.kcSelectOTPListItemClass)}>
+                                            <span className={cx(kcProps.kcAuthenticatorOtpCircleClass)} />
+                                            <h2 className={cx(kcProps.kcSelectOTPItemHeadingClass)}>{otpCredential.userLabel}</h2>
                                         </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-                        <div className={cx(props.kcFormGroupClass)}>
-                            <div className={cx(props.kcLabelWrapperClass)}>
-                                <label htmlFor="otp" className={cx(props.kcLabelClass)}>
-                                    {msg("loginOtpOneTime")}
-                                </label>
-                            </div>
-
-                            <div className={cx(props.kcInputWrapperClass)}>
-                                <input id="otp" name="otp" autoComplete="off" type="text" className={cx(props.kcInputClass)} autoFocus />
+                                    </div>
+                                ))}
                             </div>
                         </div>
-
-                        <div className={cx(props.kcFormGroupClass)}>
-                            <div id="kc-form-options" className={cx(props.kcFormOptionsClass)}>
-                                <div className={cx(props.kcFormOptionsWrapperClass)} />
-                            </div>
-
-                            <div id="kc-form-buttons" className={cx(props.kcFormButtonsClass)}>
-                                <input
-                                    className={cx(
-                                        props.kcButtonClass,
-                                        props.kcButtonPrimaryClass,
-                                        props.kcButtonBlockClass,
-                                        props.kcButtonLargeClass
-                                    )}
-                                    name="login"
-                                    id="kc-login"
-                                    type="submit"
-                                    value={msgStr("doLogIn")}
-                                />
-                            </div>
+                    )}
+                    <div className={cx(kcProps.kcFormGroupClass)}>
+                        <div className={cx(kcProps.kcLabelWrapperClass)}>
+                            <label htmlFor="otp" className={cx(kcProps.kcLabelClass)}>
+                                {msg("loginOtpOneTime")}
+                            </label>
                         </div>
-                    </form>
-                }
-            />
-        );
-    }
-);
+
+                        <div className={cx(kcProps.kcInputWrapperClass)}>
+                            <input id="otp" name="otp" autoComplete="off" type="text" className={cx(kcProps.kcInputClass)} autoFocus />
+                        </div>
+                    </div>
+
+                    <div className={cx(kcProps.kcFormGroupClass)}>
+                        <div id="kc-form-options" className={cx(kcProps.kcFormOptionsClass)}>
+                            <div className={cx(kcProps.kcFormOptionsWrapperClass)} />
+                        </div>
+
+                        <div id="kc-form-buttons" className={cx(kcProps.kcFormButtonsClass)}>
+                            <input
+                                className={cx(
+                                    kcProps.kcButtonClass,
+                                    kcProps.kcButtonPrimaryClass,
+                                    kcProps.kcButtonBlockClass,
+                                    kcProps.kcButtonLargeClass
+                                )}
+                                name="login"
+                                id="kc-login"
+                                type="submit"
+                                value={msgStr("doLogIn")}
+                            />
+                        </div>
+                    </div>
+                </form>
+            }
+        />
+    );
+});
 
 declare const $: any;
 

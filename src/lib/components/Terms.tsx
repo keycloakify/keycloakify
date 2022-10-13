@@ -1,5 +1,6 @@
 import React, { useEffect, memo } from "react";
-import Template from "./Template";
+import DefaultTemplate from "./Template";
+import type { TemplateProps } from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { useCssAndCx } from "../tools/useCssAndCx";
@@ -12,6 +13,7 @@ import memoize from "memoizee";
 import { useConst } from "powerhooks/useConst";
 import { useConstCallback } from "powerhooks/useConstCallback";
 import { Markdown } from "../tools/Markdown";
+import type { Extends } from "tsafe";
 
 export const evtTermMarkdown = Evt.create<string | undefined>(undefined);
 
@@ -22,7 +24,7 @@ export type KcContextLike = {
     };
 };
 
-assert<KcContextBase extends KcContextLike ? true : false>();
+assert<Extends<KcContextBase, KcContextLike>>();
 
 /** Allow to avoid bundling the terms and download it on demand*/
 export function useDownloadTerms(params: {
@@ -54,61 +56,63 @@ export function useDownloadTerms(params: {
     }, []);
 }
 
-const Terms = memo(
-    ({
-        kcContext,
-        i18n,
-        doFetchDefaultThemeResources = true,
-        ...props
-    }: { kcContext: KcContextBase.Terms; i18n: I18n; doFetchDefaultThemeResources?: boolean } & KcProps) => {
-        const { msg, msgStr } = i18n;
+export type TermsProps = KcProps & {
+    kcContext: KcContextBase.Terms;
+    i18n: I18n;
+    doFetchDefaultThemeResources?: boolean;
+    Template?: (props: TemplateProps) => JSX.Element | null;
+};
 
-        useRerenderOnStateChange(evtTermMarkdown);
+const Terms = memo((props: TermsProps) => {
+    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template = DefaultTemplate, ...kcProps } = props;
 
-        const { cx } = useCssAndCx();
+    const { msg, msgStr } = i18n;
 
-        const { url } = kcContext;
+    useRerenderOnStateChange(evtTermMarkdown);
 
-        if (evtTermMarkdown.state === undefined) {
-            return null;
-        }
+    const { cx } = useCssAndCx();
 
-        return (
-            <Template
-                {...{ kcContext, i18n, doFetchDefaultThemeResources, ...props }}
-                displayMessage={false}
-                headerNode={msg("termsTitle")}
-                formNode={
-                    <>
-                        <div id="kc-terms-text">{evtTermMarkdown.state && <Markdown>{evtTermMarkdown.state}</Markdown>}</div>
-                        <form className="form-actions" action={url.loginAction} method="POST">
-                            <input
-                                className={cx(
-                                    props.kcButtonClass,
-                                    props.kcButtonClass,
-                                    props.kcButtonClass,
-                                    props.kcButtonPrimaryClass,
-                                    props.kcButtonLargeClass
-                                )}
-                                name="accept"
-                                id="kc-accept"
-                                type="submit"
-                                value={msgStr("doAccept")}
-                            />
-                            <input
-                                className={cx(props.kcButtonClass, props.kcButtonDefaultClass, props.kcButtonLargeClass)}
-                                name="cancel"
-                                id="kc-decline"
-                                type="submit"
-                                value={msgStr("doDecline")}
-                            />
-                        </form>
-                        <div className="clearfix" />
-                    </>
-                }
-            />
-        );
+    const { url } = kcContext;
+
+    if (evtTermMarkdown.state === undefined) {
+        return null;
     }
-);
+
+    return (
+        <Template
+            {...{ kcContext, i18n, doFetchDefaultThemeResources, ...kcProps }}
+            displayMessage={false}
+            headerNode={msg("termsTitle")}
+            formNode={
+                <>
+                    <div id="kc-terms-text">{evtTermMarkdown.state && <Markdown>{evtTermMarkdown.state}</Markdown>}</div>
+                    <form className="form-actions" action={url.loginAction} method="POST">
+                        <input
+                            className={cx(
+                                kcProps.kcButtonClass,
+                                kcProps.kcButtonClass,
+                                kcProps.kcButtonClass,
+                                kcProps.kcButtonPrimaryClass,
+                                kcProps.kcButtonLargeClass
+                            )}
+                            name="accept"
+                            id="kc-accept"
+                            type="submit"
+                            value={msgStr("doAccept")}
+                        />
+                        <input
+                            className={cx(kcProps.kcButtonClass, kcProps.kcButtonDefaultClass, kcProps.kcButtonLargeClass)}
+                            name="cancel"
+                            id="kc-decline"
+                            type="submit"
+                            value={msgStr("doDecline")}
+                        />
+                    </form>
+                    <div className="clearfix" />
+                </>
+            }
+        />
+    );
+});
 
 export default Terms;
