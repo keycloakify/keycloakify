@@ -16,13 +16,12 @@ jobs:
     - uses: actions/checkout@v3
     - uses: actions/setup-node@v3
     - uses: bahmutov/npm-install@v1
-    - name: If this step fails run 'npm run lint' and 'npm run format' then commit again.
+    - name: If this step fails run 'yarn format' then commit again.
       run: |
         PACKAGE_MANAGER=npm
         if [ -f "./yarn.lock" ]; then
             PACKAGE_MANAGER=yarn
         fi
-        $PACKAGE_MANAGER run lint:check
         $PACKAGE_MANAGER run format:check
   test:
     runs-on: ${{ matrix.os }}
