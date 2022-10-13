@@ -49,6 +49,12 @@
 
 # Changelog highlights
 
+## 6.8.0
+
+-   It is now possible to pass a custom `<Template />` component as a prop to `<KcApp />` and every
+    individual page (`<Login />`, `<RegisterUserProfile />`, ...) it enables to customize only the header and footer for
+    example without having to switch to a full-component level customization. [See issue](https://github.com/InseeFrLab/keycloakify/issues/191).
+
 ## 6.7.0
 
 -   Add support for `webauthn-authenticate.ftl` thanks to [@mstrodl](https://github.com/Mstrodl)'s hacktoberfest [PR](https://github.com/InseeFrLab/keycloakify/pull/185).
