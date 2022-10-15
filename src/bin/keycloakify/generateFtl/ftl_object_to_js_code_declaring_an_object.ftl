@@ -32,60 +32,64 @@ ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
         "printIfExists": function (fieldName, x) {
             <#if !messagesPerField?? >
                 return undefined;
+            <#else>
+                <#list fieldNames as fieldName>
+                    if(fieldName === "${fieldName}" ){
+                        <#attempt>
+                            return "${messagesPerField.printIfExists(fieldName,'1')}" ? x : undefined;
+                        <#recover>
+                        </#attempt>
+                    }
+                </#list>
+                throw new Error("There is no " + fieldName + " field");
             </#if>
-            <#list fieldNames as fieldName>
-                if(fieldName === "${fieldName}" ){
-                    <#attempt>
-                        return "${messagesPerField.printIfExists(fieldName,'1')}" ? x : undefined;
-                    <#recover>
-                    </#attempt>
-                }
-            </#list>
-            throw new Error("There is no " + fieldName + " field");
         },
         "existsError": function (fieldName) {
             <#if !messagesPerField?? >
                 return false;
+            <#else>
+                <#list fieldNames as fieldName>
+                    if(fieldName === "${fieldName}" ){
+                        <#attempt>
+                            return <#if messagesPerField.existsError('${fieldName}')>true<#else>false</#if>;
+                        <#recover>
+                        </#attempt>
+                    }
+                </#list>
+                throw new Error("There is no " + fieldName + " field");
             </#if>
-            <#list fieldNames as fieldName>
-                if(fieldName === "${fieldName}" ){
-                    <#attempt>
-                        return <#if messagesPerField.existsError('${fieldName}')>true<#else>false</#if>;
-                    <#recover>
-                    </#attempt>
-                }
-            </#list>
-            throw new Error("There is no " + fieldName + " field");
         },
         "get": function (fieldName) {
             <#if !messagesPerField?? >
                 return '';
+            <#else>
+                <#list fieldNames as fieldName>
+                    if(fieldName === "${fieldName}" ){
+                        <#attempt>
+                            <#if messagesPerField.existsError('${fieldName}')>
+                                return "${messagesPerField.get('${fieldName}')?no_esc}";
+                            </#if>
+                        <#recover>
+                        </#attempt>
+                    }
+                </#list>
+                throw new Error("There is no " + fieldName + " field");
             </#if>
-            <#list fieldNames as fieldName>
-                if(fieldName === "${fieldName}" ){
-                    <#attempt>
-                        <#if messagesPerField.existsError('${fieldName}')>
-                            return "${messagesPerField.get('${fieldName}')?no_esc}";
-                        </#if>
-                    <#recover>
-                    </#attempt>
-                }
-            </#list>
-            throw new Error("There is no " + fieldName + " field");
         },
         "exists": function (fieldName) {
             <#if !messagesPerField?? >
                 return false;
+            <#else>
+                <#list fieldNames as fieldName>
+                    if(fieldName === "${fieldName}" ){
+                        <#attempt>
+                            return <#if messagesPerField.exists('${fieldName}')>true<#else>false</#if>;
+                        <#recover>
+                        </#attempt>
+                    }
+                </#list>
+                throw new Error("There is no " + fieldName + " field");
             </#if>
-            <#list fieldNames as fieldName>
-                if(fieldName === "${fieldName}" ){
-                    <#attempt>
-                        return <#if messagesPerField.exists('${fieldName}')>true<#else>false</#if>;
-                    <#recover>
-                    </#attempt>
-                }
-            </#list>
-            throw new Error("There is no " + fieldName + " field");
         }
     };
 
