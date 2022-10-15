@@ -104,7 +104,7 @@ import { createRoot } from "react-dom/client";
 
 #### Real world example
 
-To give you an idea of what you can already achieve by only customizing the style the style,
+To give you an idea of what you can achieve by only customizing the style the style,
 
 Here is [**the code**](https://github.com/InseeFrLab/onyxia-web/blob/012639d62327a9a56be80c46e32c32c9497b82db/src/app/components/KcApp.tsx) that produces:&#x20;
 
