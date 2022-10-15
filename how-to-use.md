@@ -11,7 +11,7 @@ Save yourself some time, have quick look at the [requirements page](./). **Windo
 {% endhint %}
 
 ```
-yarn add keycloakify @emotion/react
+yarn add keycloakify
 ```
 
 [`package.json`](https://github.com/garronej/keycloakify-demo-app/blob/main/package.json)
