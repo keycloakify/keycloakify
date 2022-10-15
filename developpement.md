@@ -31,7 +31,7 @@ You must run `yarn build && npx keycloakify` at least once before testing your t
 {% hint style="success" %}
 The page is loaded with a default mock context.
 
-To customize the mock kcContext please refer to [this example](https://github.com/garronej/keycloakify-demo-app/blob/a316ea0046976e6d435a33e896cb9e3d1873c124/src/KcApp/kcContext.ts#L28-L78).
+To customize the mock kcContext please refer to [this example](https://github.com/garronej/keycloakify-advanced-starter/blob/e396fef5fd99c6e3e4f0048d651fd572d6329420/src/KcApp/kcContext.ts#L16-L76).
 {% endhint %}
 
 ### Testing in a real Keycloak instance
