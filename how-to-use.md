@@ -110,6 +110,10 @@ Here is [**the code**](https://github.com/InseeFrLab/onyxia-web/blob/012639d6232
 
 ![Results obtained with CSS only customization of the default theme](https://github.com/InseeFrLab/keycloakify/releases/download/v0.3.8/keycloakify\_after.gif)
 
+It is a good idea to first start with a CSS only customization, as it can be done much quicker than the component level customization, you do it once and it applies to all pages.
+
+Once you have a CSS level customization that looks okay you can start customizing at the component level some specific pages. See [an example implementing](https://github.com/InseeFrLab/onyxia-web/blob/cd1cbbeb7f2c30f9ec226890c8a19a7c57e40a1b/src/ui/components/KcApp/KcApp.tsx#L69-L126) this approach.
+
 {% hint style="info" %}
 The keycloakify components are a plain React translation of the default theme that comes with Keycloak v11.0.3. &#x20;
 
