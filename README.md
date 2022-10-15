@@ -49,6 +49,10 @@
 
 # Changelog highlights
 
+## 6.8.4
+
+-   `@emotion/react` is no longer a peer dependency of Keycloakify.
+
 ## 6.8.0
 
 -   It is now possible to pass a custom `<Template />` component as a prop to `<KcApp />` and every
