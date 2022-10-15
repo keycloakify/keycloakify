@@ -32,7 +32,7 @@ export type KcAppProps = KcProps & {
     kcContext: KcContextBase;
     i18n?: I18n;
     doFetchDefaultThemeResources?: boolean;
-    Template: (props: TemplateProps) => JSX.Element | null;
+    Template?: (props: TemplateProps) => JSX.Element | null;
 };
 
 const KcApp = memo((props_: KcAppProps) => {
