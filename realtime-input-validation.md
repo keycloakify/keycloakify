@@ -13,6 +13,6 @@ NOTE: User profile is only available in Keycloak 15 and it's a beta feature that
 Keycloakify, in [`register-user-profile.ftl`](https://github.com/InseeFrLab/keycloakify/blob/main/src/lib/components/RegisterUserProfile.tsx), provides frontend validation out of the box.
 
 For implementing your own `register-user-profile.ftl` page, you can use [`import { useFormValidationSlice } from "keycloakify";`](https://github.com/InseeFrLab/keycloakify/blob/main/src/lib/useFormValidationSlice.tsx).\
-Find usage example [`here`](https://github.com/InseeFrLab/keycloakify/blob/d3a07edfcb3739e30032dc96fc2a55944dfc3387/src/lib/components/RegisterUserProfile.tsx#L79-L112).
+Find usage example [`here`](https://github.com/InseeFrLab/keycloakify/blob/d8206434bcf0cebbd2d673be8bc6bb37713f4ca7/src/lib/components/shared/UserProfileCommons.tsx#L25-L32).
 
-As for right now [it's not possible to define a pattern for the password](https://keycloak.discourse.group/t/make-password-policies-available-to-freemarker/11632) from the admin console. You can however [pass validators for it to the `useFormValidationSlice` function](https://github.com/InseeFrLab/onyxia-web/blob/2ea1248692bcce090067f9f2a69e7862a3671fdc/src/ui/components/KcApp/RegisterUserProfile.tsx#L47-L70).
+As for right now [it's not possible to define a pattern for the password](https://keycloak.discourse.group/t/make-password-policies-available-to-freemarker/11632) from the admin console. You can however pass validators for it to the `useFormValidationSlice` function.
