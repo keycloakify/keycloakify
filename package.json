@@ -55,12 +55,10 @@
     ],
     "homepage": "https://github.com/garronej/keycloakify",
     "peerDependencies": {
-        "@emotion/react": "^11.4.1",
         "react": "^16.8.0 || ^17.0.0 || ^18.0.0"
     },
     "devDependencies": {
         "@babel/core": "^7.0.0",
-        "@emotion/react": "^11.4.1",
         "@types/memoizee": "^0.4.7",
         "@types/minimist": "^1.2.2",
         "@types/node": "^17.0.25",
@@ -72,6 +70,7 @@
         "properties-parser": "^0.3.1",
         "react": "18.1.0",
         "rimraf": "^3.0.2",
+        "@emotion/react": "^11.10.4",
         "typescript": "^4.2.3"
     },
     "dependencies": {
@@ -88,7 +87,7 @@
         "rfc4648": "^1.5.2",
         "scripting-tools": "^0.19.13",
         "tsafe": "^1.1.3",
-        "tss-react": "^4.3.4",
+        "tss-react": "4.4.1-rc.0",
         "zod": "^3.17.10"
     }
 }

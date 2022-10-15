@@ -3,7 +3,7 @@ import DefaultTemplate from "./Template";
 import type { TemplateProps } from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { useCssAndCx } from "../tools/useCssAndCx";
+import { clsx } from "../tools/clsx";
 import type { I18n, MessageKeyBase } from "../i18n";
 import { base64url } from "rfc4648";
 import { useConstCallback } from "powerhooks/useConstCallback";
@@ -25,8 +25,6 @@ const WebauthnAuthenticate = memo((props: WebauthnAuthenticateProps) => {
     const { authenticators, challenge, shouldDisplayAuthenticators, userVerification, rpId } = kcContext;
     const createTimeout = Number(kcContext.createTimeout);
     const isUserIdentified = kcContext.isUserIdentified == "true";
-
-    const { cx } = useCssAndCx();
 
     const webAuthnAuthenticate = useConstCallback(async () => {
         if (!isUserIdentified) {
@@ -102,7 +100,7 @@ const WebauthnAuthenticate = memo((props: WebauthnAuthenticateProps) => {
             {...{ kcContext, i18n, doFetchDefaultThemeResources, ...kcProps }}
             headerNode={msg("webauthn-login-title")}
             formNode={
-                <div id="kc-form-webauthn" className={cx(kcProps.kcFormClass)}>
+                <div id="kc-form-webauthn" className={clsx(kcProps.kcFormClass)}>
                     <form id="webauth" action={url.loginAction} ref={webAuthForm} method="post">
                         <input type="hidden" id="clientDataJSON" name="clientDataJSON" value={clientDataJSON} />
                         <input type="hidden" id="authenticatorData" name="authenticatorData" value={authenticatorData} />
@@ -111,10 +109,10 @@ const WebauthnAuthenticate = memo((props: WebauthnAuthenticateProps) => {
                         <input type="hidden" id="userHandle" name="userHandle" value={userHandle} />
                         <input type="hidden" id="error" name="error" value={error} />
                     </form>
-                    <div className={cx(kcProps.kcFormGroupClass)}>
+                    <div className={clsx(kcProps.kcFormGroupClass)}>
                         {authenticators &&
                             (() => (
-                                <form id="authn_select" className={cx(kcProps.kcFormClass)}>
+                                <form id="authn_select" className={clsx(kcProps.kcFormClass)}>
                                     {authenticators.authenticators.map(authenticator => (
                                         <input
                                             type="hidden"
@@ -130,23 +128,23 @@ const WebauthnAuthenticate = memo((props: WebauthnAuthenticateProps) => {
                             (() => (
                                 <>
                                     {authenticators.authenticators.length > 1 && (
-                                        <p className={cx(kcProps.kcSelectAuthListItemTitle)}>{msg("webauthn-available-authenticators")}</p>
+                                        <p className={clsx(kcProps.kcSelectAuthListItemTitle)}>{msg("webauthn-available-authenticators")}</p>
                                     )}
-                                    <div className={cx(kcProps.kcFormClass)}>
+                                    <div className={clsx(kcProps.kcFormClass)}>
                                         {authenticators.authenticators.map(authenticator => (
-                                            <div id="kc-webauthn-authenticator" className={cx(kcProps.kcSelectAuthListItemClass)}>
-                                                <div className={cx(kcProps.kcSelectAuthListItemIconClass)}>
+                                            <div id="kc-webauthn-authenticator" className={clsx(kcProps.kcSelectAuthListItemClass)}>
+                                                <div className={clsx(kcProps.kcSelectAuthListItemIconClass)}>
                                                     <i
-                                                        className={cx(
+                                                        className={clsx(
                                                             kcProps[authenticator.transports.iconClass] ?? kcProps.kcWebAuthnDefaultIcon,
                                                             kcProps.kcSelectAuthListItemIconPropertyClass
                                                         )}
                                                     />
                                                 </div>
-                                                <div className={cx(kcProps.kcSelectAuthListItemBodyClass)}>
+                                                <div className={clsx(kcProps.kcSelectAuthListItemBodyClass)}>
                                                     <div
                                                         id="kc-webauthn-authenticator-label"
-                                                        className={cx(kcProps.kcSelectAuthListItemHeadingClass)}
+                                                        className={clsx(kcProps.kcSelectAuthListItemHeadingClass)}
                                                     >
                                                         {authenticator.label}
                                                     </div>
@@ -154,7 +152,7 @@ const WebauthnAuthenticate = memo((props: WebauthnAuthenticateProps) => {
                                                     {authenticator.transports && authenticator.transports.displayNameProperties.length && (
                                                         <div
                                                             id="kc-webauthn-authenticator-transport"
-                                                            className={cx(kcProps.kcSelectAuthListItemDescriptionClass)}
+                                                            className={clsx(kcProps.kcSelectAuthListItemDescriptionClass)}
                                                         >
                                                             {authenticator.transports.displayNameProperties.map(
                                                                 (transport: MessageKeyBase, index: number) => (
@@ -169,25 +167,25 @@ const WebauthnAuthenticate = memo((props: WebauthnAuthenticateProps) => {
                                                         </div>
                                                     )}
 
-                                                    <div className={cx(kcProps.kcSelectAuthListItemDescriptionClass)}>
+                                                    <div className={clsx(kcProps.kcSelectAuthListItemDescriptionClass)}>
                                                         <span id="kc-webauthn-authenticator-created-label">{msg("webauthn-createdAt-label")}</span>
                                                         <span id="kc-webauthn-authenticator-created">{authenticator.createdAt}</span>
                                                     </div>
                                                 </div>
-                                                <div className={cx(kcProps.kcSelectAuthListItemFillClass)} />
+                                                <div className={clsx(kcProps.kcSelectAuthListItemFillClass)} />
                                             </div>
                                         ))}
                                     </div>
                                 </>
                             ))()}
-                        <div id="kc-form-buttons" className={cx(kcProps.kcFormButtonsClass)}>
+                        <div id="kc-form-buttons" className={clsx(kcProps.kcFormButtonsClass)}>
                             <input
                                 id="authenticateWebAuthnButton"
                                 type="button"
                                 onClick={webAuthnAuthenticate}
                                 autoFocus={true}
                                 value={msgStr("webauthn-doAuthenticate")}
-                                className={cx(
+                                className={clsx(
                                     kcProps.kcButtonClass,
                                     kcProps.kcButtonPrimaryClass,
                                     kcProps.kcButtonBlockClass,

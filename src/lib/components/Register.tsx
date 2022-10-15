@@ -3,7 +3,7 @@ import DefaultTemplate from "./Template";
 import type { TemplateProps } from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { useCssAndCx } from "../tools/useCssAndCx";
+import { clsx } from "../tools/clsx";
 import type { I18n } from "../i18n";
 
 export type RegisterProps = KcProps & {
@@ -20,59 +20,57 @@ const Register = memo((props: RegisterProps) => {
 
     const { msg, msgStr } = i18n;
 
-    const { cx } = useCssAndCx();
-
     return (
         <Template
             {...{ kcContext, i18n, doFetchDefaultThemeResources, ...kcProps }}
             headerNode={msg("registerTitle")}
             formNode={
-                <form id="kc-register-form" className={cx(kcProps.kcFormClass)} action={url.registrationAction} method="post">
-                    <div className={cx(kcProps.kcFormGroupClass, messagesPerField.printIfExists("firstName", kcProps.kcFormGroupErrorClass))}>
-                        <div className={cx(kcProps.kcLabelWrapperClass)}>
-                            <label htmlFor="firstName" className={cx(kcProps.kcLabelClass)}>
+                <form id="kc-register-form" className={clsx(kcProps.kcFormClass)} action={url.registrationAction} method="post">
+                    <div className={clsx(kcProps.kcFormGroupClass, messagesPerField.printIfExists("firstName", kcProps.kcFormGroupErrorClass))}>
+                        <div className={clsx(kcProps.kcLabelWrapperClass)}>
+                            <label htmlFor="firstName" className={clsx(kcProps.kcLabelClass)}>
                                 {msg("firstName")}
                             </label>
                         </div>
-                        <div className={cx(kcProps.kcInputWrapperClass)}>
+                        <div className={clsx(kcProps.kcInputWrapperClass)}>
                             <input
                                 type="text"
                                 id="firstName"
-                                className={cx(kcProps.kcInputClass)}
+                                className={clsx(kcProps.kcInputClass)}
                                 name="firstName"
                                 defaultValue={register.formData.firstName ?? ""}
                             />
                         </div>
                     </div>
 
-                    <div className={cx(kcProps.kcFormGroupClass, messagesPerField.printIfExists("lastName", kcProps.kcFormGroupErrorClass))}>
-                        <div className={cx(kcProps.kcLabelWrapperClass)}>
-                            <label htmlFor="lastName" className={cx(kcProps.kcLabelClass)}>
+                    <div className={clsx(kcProps.kcFormGroupClass, messagesPerField.printIfExists("lastName", kcProps.kcFormGroupErrorClass))}>
+                        <div className={clsx(kcProps.kcLabelWrapperClass)}>
+                            <label htmlFor="lastName" className={clsx(kcProps.kcLabelClass)}>
                                 {msg("lastName")}
                             </label>
                         </div>
-                        <div className={cx(kcProps.kcInputWrapperClass)}>
+                        <div className={clsx(kcProps.kcInputWrapperClass)}>
                             <input
                                 type="text"
                                 id="lastName"
-                                className={cx(kcProps.kcInputClass)}
+                                className={clsx(kcProps.kcInputClass)}
                                 name="lastName"
                                 defaultValue={register.formData.lastName ?? ""}
                             />
                         </div>
                     </div>
 
-                    <div className={cx(kcProps.kcFormGroupClass, messagesPerField.printIfExists("email", kcProps.kcFormGroupErrorClass))}>
-                        <div className={cx(kcProps.kcLabelWrapperClass)}>
-                            <label htmlFor="email" className={cx(kcProps.kcLabelClass)}>
+                    <div className={clsx(kcProps.kcFormGroupClass, messagesPerField.printIfExists("email", kcProps.kcFormGroupErrorClass))}>
+                        <div className={clsx(kcProps.kcLabelWrapperClass)}>
+                            <label htmlFor="email" className={clsx(kcProps.kcLabelClass)}>
                                 {msg("email")}
                             </label>
                         </div>
-                        <div className={cx(kcProps.kcInputWrapperClass)}>
+                        <div className={clsx(kcProps.kcInputWrapperClass)}>
                             <input
                                 type="text"
                                 id="email"
-                                className={cx(kcProps.kcInputClass)}
+                                className={clsx(kcProps.kcInputClass)}
                                 name="email"
                                 defaultValue={register.formData.email ?? ""}
                                 autoComplete="email"
@@ -80,17 +78,17 @@ const Register = memo((props: RegisterProps) => {
                         </div>
                     </div>
                     {!realm.registrationEmailAsUsername && (
-                        <div className={cx(kcProps.kcFormGroupClass, messagesPerField.printIfExists("username", kcProps.kcFormGroupErrorClass))}>
-                            <div className={cx(kcProps.kcLabelWrapperClass)}>
-                                <label htmlFor="username" className={cx(kcProps.kcLabelClass)}>
+                        <div className={clsx(kcProps.kcFormGroupClass, messagesPerField.printIfExists("username", kcProps.kcFormGroupErrorClass))}>
+                            <div className={clsx(kcProps.kcLabelWrapperClass)}>
+                                <label htmlFor="username" className={clsx(kcProps.kcLabelClass)}>
                                     {msg("username")}
                                 </label>
                             </div>
-                            <div className={cx(kcProps.kcInputWrapperClass)}>
+                            <div className={clsx(kcProps.kcInputWrapperClass)}>
                                 <input
                                     type="text"
                                     id="username"
-                                    className={cx(kcProps.kcInputClass)}
+                                    className={clsx(kcProps.kcInputClass)}
                                     name="username"
                                     defaultValue={register.formData.username ?? ""}
                                     autoComplete="username"
@@ -100,17 +98,19 @@ const Register = memo((props: RegisterProps) => {
                     )}
                     {passwordRequired && (
                         <>
-                            <div className={cx(kcProps.kcFormGroupClass, messagesPerField.printIfExists("password", kcProps.kcFormGroupErrorClass))}>
-                                <div className={cx(kcProps.kcLabelWrapperClass)}>
-                                    <label htmlFor="password" className={cx(kcProps.kcLabelClass)}>
+                            <div
+                                className={clsx(kcProps.kcFormGroupClass, messagesPerField.printIfExists("password", kcProps.kcFormGroupErrorClass))}
+                            >
+                                <div className={clsx(kcProps.kcLabelWrapperClass)}>
+                                    <label htmlFor="password" className={clsx(kcProps.kcLabelClass)}>
                                         {msg("password")}
                                     </label>
                                 </div>
-                                <div className={cx(kcProps.kcInputWrapperClass)}>
+                                <div className={clsx(kcProps.kcInputWrapperClass)}>
                                     <input
                                         type="password"
                                         id="password"
-                                        className={cx(kcProps.kcInputClass)}
+                                        className={clsx(kcProps.kcInputClass)}
                                         name="password"
                                         autoComplete="new-password"
                                     />
@@ -118,41 +118,41 @@ const Register = memo((props: RegisterProps) => {
                             </div>
 
                             <div
-                                className={cx(
+                                className={clsx(
                                     kcProps.kcFormGroupClass,
                                     messagesPerField.printIfExists("password-confirm", kcProps.kcFormGroupErrorClass)
                                 )}
                             >
-                                <div className={cx(kcProps.kcLabelWrapperClass)}>
-                                    <label htmlFor="password-confirm" className={cx(kcProps.kcLabelClass)}>
+                                <div className={clsx(kcProps.kcLabelWrapperClass)}>
+                                    <label htmlFor="password-confirm" className={clsx(kcProps.kcLabelClass)}>
                                         {msg("passwordConfirm")}
                                     </label>
                                 </div>
-                                <div className={cx(kcProps.kcInputWrapperClass)}>
-                                    <input type="password" id="password-confirm" className={cx(kcProps.kcInputClass)} name="password-confirm" />
+                                <div className={clsx(kcProps.kcInputWrapperClass)}>
+                                    <input type="password" id="password-confirm" className={clsx(kcProps.kcInputClass)} name="password-confirm" />
                                 </div>
                             </div>
                         </>
                     )}
                     {recaptchaRequired && (
                         <div className="form-group">
-                            <div className={cx(kcProps.kcInputWrapperClass)}>
+                            <div className={clsx(kcProps.kcInputWrapperClass)}>
                                 <div className="g-recaptcha" data-size="compact" data-sitekey={recaptchaSiteKey}></div>
                             </div>
                         </div>
                     )}
-                    <div className={cx(kcProps.kcFormGroupClass)}>
-                        <div id="kc-form-options" className={cx(kcProps.kcFormOptionsClass)}>
-                            <div className={cx(kcProps.kcFormOptionsWrapperClass)}>
+                    <div className={clsx(kcProps.kcFormGroupClass)}>
+                        <div id="kc-form-options" className={clsx(kcProps.kcFormOptionsClass)}>
+                            <div className={clsx(kcProps.kcFormOptionsWrapperClass)}>
                                 <span>
                                     <a href={url.loginUrl}>{msg("backToLogin")}</a>
                                 </span>
                             </div>
                         </div>
 
-                        <div id="kc-form-buttons" className={cx(kcProps.kcFormButtonsClass)}>
+                        <div id="kc-form-buttons" className={clsx(kcProps.kcFormButtonsClass)}>
                             <input
-                                className={cx(
+                                className={clsx(
                                     kcProps.kcButtonClass,
                                     kcProps.kcButtonPrimaryClass,
                                     kcProps.kcButtonBlockClass,

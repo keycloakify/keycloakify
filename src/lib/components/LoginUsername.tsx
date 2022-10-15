@@ -3,7 +3,7 @@ import DefaultTemplate from "./Template";
 import type { TemplateProps } from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { useCssAndCx } from "../tools/useCssAndCx";
+import { clsx } from "../tools/clsx";
 import { useConstCallback } from "powerhooks/useConstCallback";
 import type { FormEventHandler } from "react";
 import type { I18n } from "../i18n";
@@ -21,8 +21,6 @@ const LoginUsername = memo((props: LoginUsernameProps) => {
     const { social, realm, url, usernameHidden, login, registrationDisabled } = kcContext;
 
     const { msg, msgStr } = i18n;
-
-    const { cx } = useCssAndCx();
 
     const [isLoginButtonDisabled, setIsLoginButtonDisabled] = useState(false);
 
@@ -47,16 +45,16 @@ const LoginUsername = memo((props: LoginUsernameProps) => {
             displayWide={realm.password && social.providers !== undefined}
             headerNode={msg("doLogIn")}
             formNode={
-                <div id="kc-form" className={cx(realm.password && social.providers !== undefined && kcProps.kcContentWrapperClass)}>
+                <div id="kc-form" className={clsx(realm.password && social.providers !== undefined && kcProps.kcContentWrapperClass)}>
                     <div
                         id="kc-form-wrapper"
-                        className={cx(
+                        className={clsx(
                             realm.password && social.providers && [kcProps.kcFormSocialAccountContentClass, kcProps.kcFormSocialAccountClass]
                         )}
                     >
                         {realm.password && (
                             <form id="kc-form-login" onSubmit={onSubmit} action={url.loginAction} method="post">
-                                <div className={cx(kcProps.kcFormGroupClass)}>
+                                <div className={clsx(kcProps.kcFormGroupClass)}>
                                     {!usernameHidden &&
                                         (() => {
                                             const label = !realm.loginWithEmailAllowed
@@ -69,13 +67,13 @@ const LoginUsername = memo((props: LoginUsernameProps) => {
 
                                             return (
                                                 <>
-                                                    <label htmlFor={autoCompleteHelper} className={cx(kcProps.kcLabelClass)}>
+                                                    <label htmlFor={autoCompleteHelper} className={clsx(kcProps.kcLabelClass)}>
                                                         {msg(label)}
                                                     </label>
                                                     <input
                                                         tabIndex={1}
                                                         id={autoCompleteHelper}
-                                                        className={cx(kcProps.kcInputClass)}
+                                                        className={clsx(kcProps.kcInputClass)}
                                                         //NOTE: This is used by Google Chrome auto fill so we use it to tell
                                                         //the browser how to pre fill the form but before submit we put it back
                                                         //to username because it is what keycloak expects.
@@ -89,7 +87,7 @@ const LoginUsername = memo((props: LoginUsernameProps) => {
                                             );
                                         })()}
                                 </div>
-                                <div className={cx(kcProps.kcFormGroupClass, kcProps.kcFormSettingClass)}>
+                                <div className={clsx(kcProps.kcFormGroupClass, kcProps.kcFormSettingClass)}>
                                     <div id="kc-form-options">
                                         {realm.rememberMe && !usernameHidden && (
                                             <div className="checkbox">
@@ -111,10 +109,10 @@ const LoginUsername = memo((props: LoginUsernameProps) => {
                                         )}
                                     </div>
                                 </div>
-                                <div id="kc-form-buttons" className={cx(kcProps.kcFormGroupClass)}>
+                                <div id="kc-form-buttons" className={clsx(kcProps.kcFormGroupClass)}>
                                     <input
                                         tabIndex={4}
-                                        className={cx(
+                                        className={clsx(
                                             kcProps.kcButtonClass,
                                             kcProps.kcButtonPrimaryClass,
                                             kcProps.kcButtonBlockClass,
@@ -131,16 +129,16 @@ const LoginUsername = memo((props: LoginUsernameProps) => {
                         )}
                     </div>
                     {realm.password && social.providers !== undefined && (
-                        <div id="kc-social-providers" className={cx(kcProps.kcFormSocialAccountContentClass, kcProps.kcFormSocialAccountClass)}>
+                        <div id="kc-social-providers" className={clsx(kcProps.kcFormSocialAccountContentClass, kcProps.kcFormSocialAccountClass)}>
                             <ul
-                                className={cx(
+                                className={clsx(
                                     kcProps.kcFormSocialAccountListClass,
                                     social.providers.length > 4 && kcProps.kcFormSocialAccountDoubleListClass
                                 )}
                             >
                                 {social.providers.map(p => (
-                                    <li key={p.providerId} className={cx(kcProps.kcFormSocialAccountListLinkClass)}>
-                                        <a href={p.loginUrl} id={`zocial-${p.alias}`} className={cx("zocial", p.providerId)}>
+                                    <li key={p.providerId} className={clsx(kcProps.kcFormSocialAccountListLinkClass)}>
+                                        <a href={p.loginUrl} id={`zocial-${p.alias}`} className={clsx("zocial", p.providerId)}>
                                             <span>{p.displayName}</span>
                                         </a>
                                     </li>

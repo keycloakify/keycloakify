@@ -3,7 +3,7 @@ import DefaultTemplate from "./Template";
 import type { TemplateProps } from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { useCssAndCx } from "../tools/useCssAndCx";
+import { clsx } from "../tools/clsx";
 import type { I18n } from "../i18n";
 
 export type LoginUpdateProfile = KcProps & {
@@ -16,8 +16,6 @@ export type LoginUpdateProfile = KcProps & {
 const LoginUpdateProfile = memo((props: LoginUpdateProfile) => {
     const { kcContext, i18n, doFetchDefaultThemeResources = true, Template = DefaultTemplate, ...kcProps } = props;
 
-    const { cx } = useCssAndCx();
-
     const { msg, msgStr } = i18n;
 
     const { url, user, messagesPerField, isAppInitiatedAction } = kcContext;
@@ -27,86 +25,86 @@ const LoginUpdateProfile = memo((props: LoginUpdateProfile) => {
             {...{ kcContext, i18n, doFetchDefaultThemeResources, ...kcProps }}
             headerNode={msg("loginProfileTitle")}
             formNode={
-                <form id="kc-update-profile-form" className={cx(kcProps.kcFormClass)} action={url.loginAction} method="post">
+                <form id="kc-update-profile-form" className={clsx(kcProps.kcFormClass)} action={url.loginAction} method="post">
                     {user.editUsernameAllowed && (
-                        <div className={cx(kcProps.kcFormGroupClass, messagesPerField.printIfExists("username", kcProps.kcFormGroupErrorClass))}>
-                            <div className={cx(kcProps.kcLabelWrapperClass)}>
-                                <label htmlFor="username" className={cx(kcProps.kcLabelClass)}>
+                        <div className={clsx(kcProps.kcFormGroupClass, messagesPerField.printIfExists("username", kcProps.kcFormGroupErrorClass))}>
+                            <div className={clsx(kcProps.kcLabelWrapperClass)}>
+                                <label htmlFor="username" className={clsx(kcProps.kcLabelClass)}>
                                     {msg("username")}
                                 </label>
                             </div>
-                            <div className={cx(kcProps.kcInputWrapperClass)}>
+                            <div className={clsx(kcProps.kcInputWrapperClass)}>
                                 <input
                                     type="text"
                                     id="username"
                                     name="username"
                                     defaultValue={user.username ?? ""}
-                                    className={cx(kcProps.kcInputClass)}
+                                    className={clsx(kcProps.kcInputClass)}
                                 />
                             </div>
                         </div>
                     )}
 
-                    <div className={cx(kcProps.kcFormGroupClass, messagesPerField.printIfExists("email", kcProps.kcFormGroupErrorClass))}>
-                        <div className={cx(kcProps.kcLabelWrapperClass)}>
-                            <label htmlFor="email" className={cx(kcProps.kcLabelClass)}>
+                    <div className={clsx(kcProps.kcFormGroupClass, messagesPerField.printIfExists("email", kcProps.kcFormGroupErrorClass))}>
+                        <div className={clsx(kcProps.kcLabelWrapperClass)}>
+                            <label htmlFor="email" className={clsx(kcProps.kcLabelClass)}>
                                 {msg("email")}
                             </label>
                         </div>
-                        <div className={cx(kcProps.kcInputWrapperClass)}>
-                            <input type="text" id="email" name="email" defaultValue={user.email ?? ""} className={cx(kcProps.kcInputClass)} />
+                        <div className={clsx(kcProps.kcInputWrapperClass)}>
+                            <input type="text" id="email" name="email" defaultValue={user.email ?? ""} className={clsx(kcProps.kcInputClass)} />
                         </div>
                     </div>
 
-                    <div className={cx(kcProps.kcFormGroupClass, messagesPerField.printIfExists("firstName", kcProps.kcFormGroupErrorClass))}>
-                        <div className={cx(kcProps.kcLabelWrapperClass)}>
-                            <label htmlFor="firstName" className={cx(kcProps.kcLabelClass)}>
+                    <div className={clsx(kcProps.kcFormGroupClass, messagesPerField.printIfExists("firstName", kcProps.kcFormGroupErrorClass))}>
+                        <div className={clsx(kcProps.kcLabelWrapperClass)}>
+                            <label htmlFor="firstName" className={clsx(kcProps.kcLabelClass)}>
                                 {msg("firstName")}
                             </label>
                         </div>
-                        <div className={cx(kcProps.kcInputWrapperClass)}>
+                        <div className={clsx(kcProps.kcInputWrapperClass)}>
                             <input
                                 type="text"
                                 id="firstName"
                                 name="firstName"
                                 defaultValue={user.firstName ?? ""}
-                                className={cx(kcProps.kcInputClass)}
+                                className={clsx(kcProps.kcInputClass)}
                             />
                         </div>
                     </div>
 
-                    <div className={cx(kcProps.kcFormGroupClass, messagesPerField.printIfExists("lastName", kcProps.kcFormGroupErrorClass))}>
-                        <div className={cx(kcProps.kcLabelWrapperClass)}>
-                            <label htmlFor="lastName" className={cx(kcProps.kcLabelClass)}>
+                    <div className={clsx(kcProps.kcFormGroupClass, messagesPerField.printIfExists("lastName", kcProps.kcFormGroupErrorClass))}>
+                        <div className={clsx(kcProps.kcLabelWrapperClass)}>
+                            <label htmlFor="lastName" className={clsx(kcProps.kcLabelClass)}>
                                 {msg("lastName")}
                             </label>
                         </div>
-                        <div className={cx(kcProps.kcInputWrapperClass)}>
+                        <div className={clsx(kcProps.kcInputWrapperClass)}>
                             <input
                                 type="text"
                                 id="lastName"
                                 name="lastName"
                                 defaultValue={user.lastName ?? ""}
-                                className={cx(kcProps.kcInputClass)}
+                                className={clsx(kcProps.kcInputClass)}
                             />
                         </div>
                     </div>
 
-                    <div className={cx(kcProps.kcFormGroupClass)}>
-                        <div id="kc-form-options" className={cx(kcProps.kcFormOptionsClass)}>
-                            <div className={cx(kcProps.kcFormOptionsWrapperClass)} />
+                    <div className={clsx(kcProps.kcFormGroupClass)}>
+                        <div id="kc-form-options" className={clsx(kcProps.kcFormOptionsClass)}>
+                            <div className={clsx(kcProps.kcFormOptionsWrapperClass)} />
                         </div>
 
-                        <div id="kc-form-buttons" className={cx(kcProps.kcFormButtonsClass)}>
+                        <div id="kc-form-buttons" className={clsx(kcProps.kcFormButtonsClass)}>
                             {isAppInitiatedAction ? (
                                 <>
                                     <input
-                                        className={cx(kcProps.kcButtonClass, kcProps.kcButtonPrimaryClass, kcProps.kcButtonLargeClass)}
+                                        className={clsx(kcProps.kcButtonClass, kcProps.kcButtonPrimaryClass, kcProps.kcButtonLargeClass)}
                                         type="submit"
                                         defaultValue={msgStr("doSubmit")}
                                     />
                                     <button
-                                        className={cx(kcProps.kcButtonClass, kcProps.kcButtonDefaultClass, kcProps.kcButtonLargeClass)}
+                                        className={clsx(kcProps.kcButtonClass, kcProps.kcButtonDefaultClass, kcProps.kcButtonLargeClass)}
                                         type="submit"
                                         name="cancel-aia"
                                         value="true"
@@ -116,7 +114,7 @@ const LoginUpdateProfile = memo((props: LoginUpdateProfile) => {
                                 </>
                             ) : (
                                 <input
-                                    className={cx(
+                                    className={clsx(
                                         kcProps.kcButtonClass,
                                         kcProps.kcButtonPrimaryClass,
                                         kcProps.kcButtonBlockClass,

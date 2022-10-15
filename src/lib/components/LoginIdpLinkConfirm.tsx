@@ -3,7 +3,7 @@ import DefaultTemplate from "./Template";
 import type { TemplateProps } from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { useCssAndCx } from "../tools/useCssAndCx";
+import { clsx } from "../tools/clsx";
 import type { I18n } from "../i18n";
 
 export type LoginIdpLinkConfirmProps = KcProps & {
@@ -20,18 +20,16 @@ const LoginIdpLinkConfirm = memo((props: LoginIdpLinkConfirmProps) => {
 
     const { msg } = i18n;
 
-    const { cx } = useCssAndCx();
-
     return (
         <Template
             {...{ kcContext, i18n, doFetchDefaultThemeResources, ...kcProps }}
             headerNode={msg("confirmLinkIdpTitle")}
             formNode={
                 <form id="kc-register-form" action={url.loginAction} method="post">
-                    <div className={cx(kcProps.kcFormGroupClass)}>
+                    <div className={clsx(kcProps.kcFormGroupClass)}>
                         <button
                             type="submit"
-                            className={cx(
+                            className={clsx(
                                 kcProps.kcButtonClass,
                                 kcProps.kcButtonDefaultClass,
                                 kcProps.kcButtonBlockClass,
@@ -45,7 +43,7 @@ const LoginIdpLinkConfirm = memo((props: LoginIdpLinkConfirmProps) => {
                         </button>
                         <button
                             type="submit"
-                            className={cx(
+                            className={clsx(
                                 kcProps.kcButtonClass,
                                 kcProps.kcButtonDefaultClass,
                                 kcProps.kcButtonBlockClass,

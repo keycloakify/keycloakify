@@ -1,7 +1,7 @@
 import React, { memo, useEffect, Fragment } from "react";
 import type { KcProps } from "../KcProps";
 import type { Attribute } from "../../getKcContext/KcContextBase";
-import { useCssAndCx } from "../../tools/useCssAndCx";
+import { clsx } from "../../tools/clsx";
 import type { ReactComponent } from "../../tools/ReactComponent";
 import { useCallbackFactory } from "powerhooks/useCallbackFactory";
 import { useFormValidationSlice } from "../../useFormValidationSlice";
@@ -18,8 +18,6 @@ export type UserProfileFormFieldsProps = {
 
 export const UserProfileFormFields = memo(
     ({ kcContext, onIsFormSubmittableValueChange, i18n, BeforeField, AfterField, ...props }: UserProfileFormFieldsProps) => {
-        const { cx, css } = useCssAndCx();
-
         const { advancedMsg } = i18n;
 
         const {
@@ -67,20 +65,20 @@ export const UserProfileFormFields = memo(
 
                     const { value, displayableErrors } = fieldStateByAttributeName[attribute.name];
 
-                    const formGroupClassName = cx(props.kcFormGroupClass, displayableErrors.length !== 0 && props.kcFormGroupErrorClass);
+                    const formGroupClassName = clsx(props.kcFormGroupClass, displayableErrors.length !== 0 && props.kcFormGroupErrorClass);
 
                     return (
                         <Fragment key={i}>
                             {group !== currentGroup && (currentGroup = group) !== "" && (
                                 <div className={formGroupClassName}>
-                                    <div className={cx(props.kcContentWrapperClass)}>
-                                        <label id={`header-${group}`} className={cx(props.kcFormGroupHeader)}>
+                                    <div className={clsx(props.kcContentWrapperClass)}>
+                                        <label id={`header-${group}`} className={clsx(props.kcFormGroupHeader)}>
                                             {advancedMsg(groupDisplayHeader) || currentGroup}
                                         </label>
                                     </div>
                                     {groupDisplayDescription !== "" && (
-                                        <div className={cx(props.kcLabelWrapperClass)}>
-                                            <label id={`description-${group}`} className={`${cx(props.kcLabelClass)}`}>
+                                        <div className={clsx(props.kcLabelWrapperClass)}>
+                                            <label id={`description-${group}`} className={`${clsx(props.kcLabelClass)}`}>
                                                 {advancedMsg(groupDisplayDescription)}
                                             </label>
                                         </div>
@@ -91,13 +89,13 @@ export const UserProfileFormFields = memo(
                             {BeforeField && <BeforeField attribute={attribute} />}
 
                             <div className={formGroupClassName}>
-                                <div className={cx(props.kcLabelWrapperClass)}>
-                                    <label htmlFor={attribute.name} className={cx(props.kcLabelClass)}>
+                                <div className={clsx(props.kcLabelWrapperClass)}>
+                                    <label htmlFor={attribute.name} className={clsx(props.kcLabelClass)}>
                                         {advancedMsg(attribute.displayName ?? "")}
                                     </label>
                                     {attribute.required && <>*</>}
                                 </div>
-                                <div className={cx(props.kcInputWrapperClass)}>
+                                <div className={clsx(props.kcInputWrapperClass)}>
                                     {(() => {
                                         const { options } = attribute.validators;
 
@@ -134,7 +132,7 @@ export const UserProfileFormFields = memo(
                                                 name={attribute.name}
                                                 value={value}
                                                 onChange={onChangeFactory(attribute.name)}
-                                                className={cx(props.kcInputClass)}
+                                                className={clsx(props.kcInputClass)}
                                                 aria-invalid={displayableErrors.length !== 0}
                                                 disabled={attribute.readOnly}
                                                 autoComplete={attribute.autocomplete}
@@ -142,21 +140,26 @@ export const UserProfileFormFields = memo(
                                             />
                                         );
                                     })()}
-                                    {displayableErrors.length !== 0 && (
-                                        <span
-                                            id={`input-error-${attribute.name}`}
-                                            className={cx(
-                                                props.kcInputErrorMessageClass,
-                                                css({
-                                                    "position": displayableErrors.length === 1 ? "absolute" : undefined,
-                                                    "& > span": { "display": "block" }
-                                                })
-                                            )}
-                                            aria-live="polite"
-                                        >
-                                            {displayableErrors.map(({ errorMessage }) => errorMessage)}
-                                        </span>
-                                    )}
+                                    {displayableErrors.length !== 0 &&
+                                        (() => {
+                                            const divId = `input-error-${attribute.name}`;
+
+                                            return (
+                                                <>
+                                                    <style>{`#${divId} > span: { display: block; }`}</style>
+                                                    <span
+                                                        id={divId}
+                                                        className={clsx(props.kcInputErrorMessageClass)}
+                                                        style={{
+                                                            "position": displayableErrors.length === 1 ? "absolute" : undefined
+                                                        }}
+                                                        aria-live="polite"
+                                                    >
+                                                        {displayableErrors.map(({ errorMessage }) => errorMessage)}
+                                                    </span>
+                                                </>
+                                            );
+                                        })()}
                                 </div>
                             </div>
 

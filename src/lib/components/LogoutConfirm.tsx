@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { useCssAndCx } from "../tools/useCssAndCx";
+import { clsx } from "../tools/clsx";
 import DefaultTemplate from "./Template";
 import type { TemplateProps } from "./Template";
 import type { KcProps } from "./KcProps";
@@ -18,8 +18,6 @@ const LogoutConfirm = memo((props: LogoutConfirmProps) => {
 
     const { url, client, logoutConfirm } = kcContext;
 
-    const { cx } = useCssAndCx();
-
     const { msg, msgStr } = i18n;
 
     return (
@@ -33,14 +31,14 @@ const LogoutConfirm = memo((props: LogoutConfirmProps) => {
                         <p className="instruction">{msg("logoutConfirmHeader")}</p>
                         <form className="form-actions" action={url.logoutConfirmAction} method="POST">
                             <input type="hidden" name="session_code" value={logoutConfirm.code} />
-                            <div className={cx(kcProps.kcFormGroupClass)}>
+                            <div className={clsx(kcProps.kcFormGroupClass)}>
                                 <div id="kc-form-options">
-                                    <div className={cx(kcProps.kcFormOptionsWrapperClass)}></div>
+                                    <div className={clsx(kcProps.kcFormOptionsWrapperClass)}></div>
                                 </div>
-                                <div id="kc-form-buttons" className={cx(kcProps.kcFormGroupClass)}>
+                                <div id="kc-form-buttons" className={clsx(kcProps.kcFormGroupClass)}>
                                     <input
                                         tabIndex={4}
-                                        className={cx(
+                                        className={clsx(
                                             kcProps.kcButtonClass,
                                             kcProps.kcButtonPrimaryClass,
                                             kcProps.kcButtonBlockClass,

@@ -3,7 +3,7 @@ import DefaultTemplate from "./Template";
 import type { TemplateProps } from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { useCssAndCx } from "../tools/useCssAndCx";
+import { clsx } from "../tools/clsx";
 import { Evt } from "evt";
 import { useRerenderOnStateChange } from "evt/hooks";
 import { assert } from "tsafe/assert";
@@ -70,8 +70,6 @@ const Terms = memo((props: TermsProps) => {
 
     useRerenderOnStateChange(evtTermMarkdown);
 
-    const { cx } = useCssAndCx();
-
     const { url } = kcContext;
 
     if (evtTermMarkdown.state === undefined) {
@@ -88,7 +86,7 @@ const Terms = memo((props: TermsProps) => {
                     <div id="kc-terms-text">{evtTermMarkdown.state && <Markdown>{evtTermMarkdown.state}</Markdown>}</div>
                     <form className="form-actions" action={url.loginAction} method="POST">
                         <input
-                            className={cx(
+                            className={clsx(
                                 kcProps.kcButtonClass,
                                 kcProps.kcButtonClass,
                                 kcProps.kcButtonClass,
@@ -101,7 +99,7 @@ const Terms = memo((props: TermsProps) => {
                             value={msgStr("doAccept")}
                         />
                         <input
-                            className={cx(kcProps.kcButtonClass, kcProps.kcButtonDefaultClass, kcProps.kcButtonLargeClass)}
+                            className={clsx(kcProps.kcButtonClass, kcProps.kcButtonDefaultClass, kcProps.kcButtonLargeClass)}
                             name="cancel"
                             id="kc-decline"
                             type="submit"

@@ -1,9 +1,9 @@
-import React, { useMemo, memo, useState } from "react";
+import React, { memo, useState } from "react";
 import DefaultTemplate from "./Template";
 import type { TemplateProps } from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { useCssAndCx } from "../tools/useCssAndCx";
+import { clsx } from "../tools/clsx";
 import type { I18n } from "../i18n";
 import { UserProfileFormFields } from "./shared/UserProfileCommons";
 
@@ -15,21 +15,11 @@ export type RegisterUserProfileProps = KcProps & {
 };
 
 const RegisterUserProfile = memo((props: RegisterUserProfileProps) => {
-    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template = DefaultTemplate, ...kcProps_ } = props;
+    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template = DefaultTemplate, ...kcProps } = props;
 
     const { url, messagesPerField, recaptchaRequired, recaptchaSiteKey } = kcContext;
 
     const { msg, msgStr } = i18n;
-
-    const { cx, css } = useCssAndCx();
-
-    const kcProps = useMemo(
-        () => ({
-            ...kcProps_,
-            "kcFormGroupClass": cx(kcProps_.kcFormGroupClass, css({ "marginBottom": 20 }))
-        }),
-        [cx, css]
-    );
 
     const [isFomSubmittable, setIsFomSubmittable] = useState(false);
 
@@ -40,27 +30,27 @@ const RegisterUserProfile = memo((props: RegisterUserProfileProps) => {
             displayRequiredFields={true}
             headerNode={msg("registerTitle")}
             formNode={
-                <form id="kc-register-form" className={cx(kcProps.kcFormClass)} action={url.registrationAction} method="post">
+                <form id="kc-register-form" className={clsx(kcProps.kcFormClass)} action={url.registrationAction} method="post">
                     <UserProfileFormFields kcContext={kcContext} onIsFormSubmittableValueChange={setIsFomSubmittable} i18n={i18n} {...kcProps} />
                     {recaptchaRequired && (
                         <div className="form-group">
-                            <div className={cx(kcProps.kcInputWrapperClass)}>
+                            <div className={clsx(kcProps.kcInputWrapperClass)}>
                                 <div className="g-recaptcha" data-size="compact" data-sitekey={recaptchaSiteKey} />
                             </div>
                         </div>
                     )}
-                    <div className={cx(kcProps.kcFormGroupClass)}>
-                        <div id="kc-form-options" className={cx(kcProps.kcFormOptionsClass)}>
-                            <div className={cx(kcProps.kcFormOptionsWrapperClass)}>
+                    <div className={clsx(kcProps.kcFormGroupClass)} style={{ "marginBottom": 30 }}>
+                        <div id="kc-form-options" className={clsx(kcProps.kcFormOptionsClass)}>
+                            <div className={clsx(kcProps.kcFormOptionsWrapperClass)}>
                                 <span>
                                     <a href={url.loginUrl}>{msg("backToLogin")}</a>
                                 </span>
                             </div>
                         </div>
 
-                        <div id="kc-form-buttons" className={cx(kcProps.kcFormButtonsClass)}>
+                        <div id="kc-form-buttons" className={clsx(kcProps.kcFormButtonsClass)}>
                             <input
-                                className={cx(
+                                className={clsx(
                                     kcProps.kcButtonClass,
                                     kcProps.kcButtonPrimaryClass,
                                     kcProps.kcButtonBlockClass,
