@@ -182,8 +182,8 @@ Wouldn't it be great if we could just design the login and register pages as if 
 
         <GlArticle
           title="Batteries included"
-          body={`Keycloakify bundles your theme into a single \`.jar\` file to be that you'll be able to import
-          into your keycloak instance.`}
+          body={`Keycloakify bundles your theme into a single \`.jar\` that you'll be able to import
+          into your keycloak server.`}
           buttonLabel={`Get started`}
           buttonLink={{ "href": documentationUrl }}
           illustration={
