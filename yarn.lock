@@ -972,14 +972,14 @@ event-emitter@^0.3.5:
     d "1"
     es5-ext "~0.10.14"
 
-evt@^2.4.6:
-  version "2.4.6"
-  resolved "https://registry.yarnpkg.com/evt/-/evt-2.4.6.tgz#79e242cd2f84c2ec0b8119478712f7af80368832"
-  integrity sha512-4kSu9YVklCeddEAu/UCzIISrxc5SAD82hX7gXjBox4yyrPNblYrmJr4GgTOOQpNXTGYci+UIpFUYikgZa9fyTQ==
+evt@^2.4.10:
+  version "2.4.10"
+  resolved "https://registry.yarnpkg.com/evt/-/evt-2.4.10.tgz#91b3c10e5ce50112656bdbe6c599c38f72617e51"
+  integrity sha512-HPepROqeyGpl54AvytYMJh+JoB5eGInaRG3Sqr7VAQX69jzWdou6mq8vNvy41lRSSsK2rQ7XJXoyEaqVnLDBSw==
   dependencies:
     minimal-polyfills "^2.2.2"
-    run-exclusive "^2.2.16"
-    tsafe "^1.1.3"
+    run-exclusive "^2.2.18"
+    tsafe "^1.2.1"
 
 execa@^5.1.1:
   version "5.1.1"
@@ -1639,15 +1639,15 @@ please-upgrade-node@^3.2.0:
   dependencies:
     semver-compare "^1.0.0"
 
-powerhooks@^0.20.23:
-  version "0.20.23"
-  resolved "https://registry.yarnpkg.com/powerhooks/-/powerhooks-0.20.23.tgz#52619405f63bf621c52f0cb944c58414734b618f"
-  integrity sha512-+44ltLJmvti6XZJuaRlfMbjX/2ZkJBw8CybkwDIh/GntOtyertWhbYa1k9QBy2deLKTcBj39Tx86/exIHoCcFA==
+powerhooks@^0.20.24:
+  version "0.20.24"
+  resolved "https://registry.yarnpkg.com/powerhooks/-/powerhooks-0.20.24.tgz#d7c6e22b3b0463c5d967b3951dd7c43b06c89959"
+  integrity sha512-hyRfa5rFe5q1A0N8rbjAuM4HDWevpoy65LSAQmZIoBjAjhCUtVyxohUmeCGkDXKjamEf3fCHFxU/qg57iZozWg==
   dependencies:
-    evt "^2.4.6"
+    evt "^2.4.10"
     memoizee "^0.4.15"
     resize-observer-polyfill "^1.5.1"
-    tsafe "^1.1.3"
+    tsafe "^1.2.1"
 
 prettier@^2.3.0:
   version "2.7.1"
@@ -1787,10 +1787,10 @@ rimraf@^3.0.2:
   dependencies:
     glob "^7.1.3"
 
-run-exclusive@^2.2.16:
-  version "2.2.16"
-  resolved "https://registry.yarnpkg.com/run-exclusive/-/run-exclusive-2.2.16.tgz#8fa30a23037760af296c47872a5f6b38f25accf0"
-  integrity sha512-cdYv2LDvaBCRnrqXrwDFs1SgzGTx0EIsiEReTpsprEDR6hRUVlSyjoMYu+rez4S1gpz6YbOQxcmYFMXJQknVnQ==
+run-exclusive@^2.2.18:
+  version "2.2.18"
+  resolved "https://registry.yarnpkg.com/run-exclusive/-/run-exclusive-2.2.18.tgz#ec930edc3a7044750dc827df9372bde8f610f586"
+  integrity sha512-TXr1Gkl1iEAOCCpBTRm/2m0+1KGjORcWpZZ+VGGTe7dYX8E4y8/fMvrHk0zf+kclec2R//tpvdBxgG0bDgaJfw==
   dependencies:
     minimal-polyfills "^2.2.1"
 
@@ -1997,10 +1997,10 @@ trough@^1.0.0:
   resolved "https://registry.yarnpkg.com/trough/-/trough-1.0.5.tgz#b8b639cefad7d0bb2abd37d433ff8293efa5f406"
   integrity sha512-rvuRbTarPXmMb79SmzEp8aqXNKcK+y0XaB298IXueQ8I2PsrATcPBCSPyK/dDNa2iWOhKlfNnOjdAOTBU/nkFA==
 
-tsafe@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-1.1.3.tgz#fa7c2ae7da689884292b70ee30febbca5c665d03"
-  integrity sha512-QQQoed5Acb7Qe/sjMwE/qg57mxD5MXqY5HcGN4i3QyhJiplpo79ABEZiOBvL1cRTOYIzeryWvWQ3xsotTA49MQ==
+tsafe@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-1.2.1.tgz#578f7acd22b5ff32b5b820b6eb551af9ad4024da"
+  integrity sha512-fDDbPiAG6xjZuyXXakHZi8ewGx7ERxGVJ3dwFtcoex+9lvp/nHm5ROlFAB6lyZSmspG0cjpYpFxrKyRnniiOdQ==
 
 tslib@^2.1.0:
   version "2.4.0"
