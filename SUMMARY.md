@@ -1,7 +1,6 @@
 # Table of contents
 
-* [⬆ v5 -> v6](README.md)
-* [🏁 Requirements](readme.md)
+* [🏁 Requirements](README.md)
 * [👨💻 Quick start](how-to-use.md)
 * [🧪 Development](developpement.md)
 * [📧 Email customization](email-customization.md)
@@ -14,3 +13,4 @@
 * [🛑 Keycloak error in log](keycloak-error-in-log.md)
 * [💟 Contributing](contributing.md)
 * [📖 Build options](build-options.md)
+* [⬆ v5 -> v6](readme-1.md)

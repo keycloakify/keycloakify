@@ -1,124 +1,69 @@
----
-description: Migration guide from v5 to v6
----
+# 🏁 Requirements
 
-# ⬆ v5 -> v6
+{% hint style="warning" %}
+This tool will only run natively on **Linux** and **Mac OS**.
 
-### Main script renamed to `keycloakify`
+**Windows** users will haver to use it via [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10). More info [here](https://github.com/InseeFrLab/keycloakify/issues/54#issuecomment-984834217).
+{% endhint %}
 
-You can search and replace `build-keycloak-theme` -> `keycloakify` in your project.
+{% hint style="success" %}
+This tool will be maintained to stay compatible with every Keycloak version starting from [Keycloak Version 11](https://github.com/keycloak/keycloak/releases/tag/11.0.3).
 
-`package.json`
+However, the default pages you will get (before you customize them) will always be the ones of Keycloak [v11.0.3](https://github.com/keycloak/keycloak/releases/tag/11.0.3) and some extra pages that didn't existed back then like `register-user-profile.ftl.` &#x20;
+{% endhint %}
 
-<pre class="language-diff"><code class="lang-diff"> "scripts": {
-     "start": "react-scripts start",
-     "build": "react-scripts build",
--    "keycloak": "yarn build &#x26;&#x26; build-keycloak-theme"
-+    "keycloak": "yarn build &#x26;&#x26; keycloakify"
- },
- "dependencies": {
--    "tss-react": "^3.6.0",
-<strong>+    "tss-react": "^4.1.3",
-</strong>-    "keycloakify": "^5.7.0",
-+    "keycloakify": "^6.3.6"
- }</code></pre>
+### Supported Keycloak version
 
-.github/workflows/ci.yaml
+<details>
 
-```diff
--- run: npx build-keycloak-theme
-+- run: npx keycloakify
--- run: npx build-keycloak-theme --external-assets
-+- run: npx keycloakify --external-assets
-```
+<summary>See versions Keycloakify have been tested with</summary>
 
-### Components exported using default export
+* [11.0.3](https://hub.docker.com/layers/jboss/keycloak/11.0.3/images/sha256-4438f1e51c1369371cb807dffa526e1208086b3ebb9cab009830a178de949782?context=explore)
+* [12.0.4](https://hub.docker.com/layers/jboss/keycloak/12.0.4/images/sha256-67e0c88e69bd0c7aef972c40bdeb558a974013a28b3668ca790ed63a04d70584?context=explore)
+* [15.0.2](https://hub.docker.com/layers/jboss/keycloak/15.0.2/images/sha256-d8ed1ee5df42a178c341f924377da75db49eab08ea9f058ff39a8ed7ee05ec93?context=explore)
+* [16.1.0](https://hub.docker.com/layers/jboss/keycloak/16.1.0/images/sha256-6ecb9492224c6cfbb55d43f64a5ab634145d8cc1eba14eae8c37e3afde89546e?context=explore)
+* [17.0.1](https://github.com/keycloak/keycloak/releases/tag/17.0.1)
+* [18.0.0](https://quay.io/repository/keycloak/keycloak?tab=tags\&tag=18.0.0)
+* [18.0.2](https://quay.io/repository/keycloak/keycloak?tab=tags\&tag=18.0.2)
 
-In order to enable you to use `React.lazy()`, Keyclaokify components are now exported with default exports instead of named exports. &#x20;
+Latest release isn't in the list yet? It probably works fine, we just can't confirm it yet. &#x20;
 
-```diff
--import { KcApp, defaultKcProps, getKcContext } from "keycloakify";
-+import KcApp, { defaultKcProps, getKcContext } from "keycloakify";
+Older version are likely to be supported as well.&#x20;
 
--import { Login } from "keycloakify/lib/components/Login";
-+import Login from "keycloakify/lib/components/Login";
-```
+</details>
 
-Once you're at it, it might be a good time to update your app to use `<Suspense/>` and `React.lazy()` in order to reduce your bundle size.  See [keycloakify-starter (CSS only)](https://github.com/garronej/keycloakify-starter) or [keycloakify-advanced-starter (component level customization)](https://github.com/garronej/keycloakify-advanced-starter) to see how it's suposed to be setup.
+### Supported React frameworks
 
-You can also have a look at a real world migration: &#x20;
+{% hint style="success" %}
+If you aren't trying to integrate the theme with a preexisting react app, save yourself some time and just use [create-react-app](https://create-react-app.dev).
+{% endhint %}
 
-* [An app using Keycloakify v5](https://github.com/etalab/sill-web/tree/f1b93012555f8a4c1c5e5afd9020b6246421b64e)
-* [The same app after upgrade to v6](https://github.com/etalab/sill-web/tree/main/src/ui/components/KcApp)
+<details>
 
-### i18n: Adding i18n messages keys
+<summary>See more</summary>
 
-In v5 and prior, Keycloakify only provided [a very hacky way](https://docs.keycloakify.dev/v/v5/adding-text-keys) of customizing internatiznalized message. &#x20;
+This tool assumes you are bundling your app with [Webpack](https://webpack.js.org/).&#x20;
 
-Keycloakify v6 now has a proper i18n api.
+It assumes there is a `build/` directory at the root of your react project directory, it's usually generated after running `yarn build`.
 
-{% content-ref url="adding-text-keys.md" %}
-[adding-text-keys.md](adding-text-keys.md)
-{% endcontent-ref %}
+The `build/` directory is expected to contain an `index.html` file and a `build/static/` directory. &#x20;
 
-### Tems and conditions
+Keycloakify also assumes there is a public/ directory at the root of your react project that is used to make static files available. &#x20;
 
-The message `termsTitle` ([_Terms and Conditions_ in en.ts](https://github.com/InseeFrLab/keycloakify/blob/f0ae5ea908e0aa42391af323b6d5e2fd371af851/src/lib/i18n/generated\_messages/18.0.1/login/en.ts#L66)) was repmaced by a blank string in v5. If you want to do the same in v6 you have to use the new [i18n API](adding-text-keys.md).
+Concretely Keycloakify assumes that if there is a `public/a/b.c/foo.txt` file. This file should be available at `https://localhost:<some_port>/a/b/c.foo.txt` when running your app in test mode (usually by firing yarn start).&#x20;
 
-```diff
- useDownloadTerms({
-   kcContext,
-   "downloadTermMarkdown": async ({ currentKcLanguageTag }) => {
-   
--     kcMessages[currentKcLanguageTag].termsTitle = "";
+For more detailed information see [this issue](https://github.com/InseeFrLab/keycloakify/issues/5#issuecomment-832296432).
 
-     const markdownString = await fetch((() => {
-       switch (currentKcLanguageTag) {
-         case "fr": return tos_fr_url;
-         default: return tos_en_url;
-       }
-     })()).then(response => response.text());
+#### My framework doesn’t seem to be supported, what can I do?
 
-     return markdownString;
+Currently Keycloakify is only compatible with SPA React apps. It doesn’t mean that you can't use Keycloakify if you are using Next.js, Express or any other framework that involves a server but your Keycloak theme will need to be a standalone project.\
+Find specific instructions about how to get started [**here**](https://github.com/garronej/keycloakify-demo-app#keycloak-theme-only).
 
-   }
- });
- 
- const i18n = useI18n({
-    kcContext,
-    "extraMessages": {
-        "en": {
-+            "termsTitle": "",
-        },
-        "fr": {
-            /* spell-checker: disable */
-+           "termsTitle": "",
-            /* spell-checker: enable */
-        }
-    }
-});
-```
+To share your styles between your main app and your login pages you will need to externalize your design system by making it a separate module. Checkout [ts\_ci](https://github.com/garronej/ts\_ci), it can help with that (example with [our design system](https://github.com/InseeFrLab/onyxia-ui)).
 
-If you have perfomed an modification at the component level of the Terms.tsx component be mindfull that we now use an [Evt](https://www.evt.land/) to re render when the terms Markdown have been downloaded.
+</details>
 
-{% embed url="https://github.com/etalab/sill-web/blob/main/src/ui/components/KcApp/Terms.tsx" %}
-Example of component level configuration of the Terms page
-{% endembed %}
+### Utility that needs to be installed
 
-### useFormValidationSlice()
-
-`useFormValidationSlice()` now require you to pass a i18n object, see [I18n API](adding-text-keys.md).
-
-```diff
- import { useFormValidationSlice } from "keycloakify";
- 
- const {
-     formValidationState,
-     formValidationReducer,
-     attributesWithPassword
- } = useFormValidationSlice({
-     kcContext,
-     passwordValidators,
-+    i18n
- });
-```
+* `mvn` ([Maven](https://maven.apache.org)), `rm`, `mkdir`, `curl`, `unzip`.
+* `docker` must be up and running when running `start_keycloak_testing_container.sh`&#x20;
