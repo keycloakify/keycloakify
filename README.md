@@ -25,6 +25,8 @@ However, the default pages you will get (before you customize them) will always 
 * [17.0.1](https://github.com/keycloak/keycloak/releases/tag/17.0.1)
 * [18.0.0](https://quay.io/repository/keycloak/keycloak?tab=tags\&tag=18.0.0)
 * [18.0.2](https://quay.io/repository/keycloak/keycloak?tab=tags\&tag=18.0.2)
+* [19.0.1](https://quay.io/repository/keycloak/keycloak?tab=tags\&tag=19.0.1)
+* [20.0.1](https://quay.io/repository/keycloak/keycloak?tab=tags\&tag=20.0.1)
 
 Latest release isn't in the list yet? It probably works fine, we just can't confirm it yet. &#x20;
 
