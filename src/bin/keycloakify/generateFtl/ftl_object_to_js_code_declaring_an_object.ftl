@@ -36,7 +36,11 @@ ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
                 <#list fieldNames as fieldName>
                     if(fieldName === "${fieldName}" ){
                         <#attempt>
-                            return "${messagesPerField.printIfExists(fieldName,'1')}" ? x : undefined;
+                            <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
+                                return <#if messagesPerField.existsError('username', 'password')>x<#else>undefined</#if>;
+                            <#else>
+                                return <#if messagesPerField.existsError('${fieldName}')>x<#else>undefined</#if>;
+                            </#if>
                         <#recover>
                         </#attempt>
                     }
@@ -51,7 +55,11 @@ ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
                 <#list fieldNames as fieldName>
                     if(fieldName === "${fieldName}" ){
                         <#attempt>
-                            return <#if messagesPerField.existsError('${fieldName}')>true<#else>false</#if>;
+                            <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
+                                return <#if messagesPerField.existsError('username', 'password')>true<#else>false</#if>;
+                            <#else>
+                                return <#if messagesPerField.existsError('${fieldName}')>true<#else>false</#if>;
+                            </#if>
                         <#recover>
                         </#attempt>
                     }
@@ -66,8 +74,14 @@ ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
                 <#list fieldNames as fieldName>
                     if(fieldName === "${fieldName}" ){
                         <#attempt>
-                            <#if messagesPerField.existsError('${fieldName}')>
-                                return "${messagesPerField.get('${fieldName}')?no_esc}";
+                            <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
+                                <#if messagesPerField.existsError('username', 'password')>
+                                    return 'Invalid username or password.';
+                                </#if>
+                            <#else>
+                                <#if messagesPerField.existsError('${fieldName}')>
+                                    return "${messagesPerField.get('${fieldName}')?no_esc}";
+                                </#if>
                             </#if>
                         <#recover>
                         </#attempt>
@@ -83,7 +97,11 @@ ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
                 <#list fieldNames as fieldName>
                     if(fieldName === "${fieldName}" ){
                         <#attempt>
-                            return <#if messagesPerField.exists('${fieldName}')>true<#else>false</#if>;
+                            <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
+                                return <#if messagesPerField.exists('username', 'password')>true<#else>false</#if>
+                            <#else>
+                                return <#if messagesPerField.exists('${fieldName}')>true<#else>false</#if>;
+                            </#if>
                         <#recover>
                         </#attempt>
                     }
