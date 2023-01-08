@@ -4,7 +4,7 @@ import { join as pathJoin, relative as pathRelative, dirname as pathDirname } fr
 import { crawl } from "./tools/crawl";
 import { downloadBuiltinKeycloakTheme } from "./download-builtin-keycloak-theme";
 import { getProjectRoot } from "./tools/getProjectRoot";
-import { rm_rf, rm_r } from "./tools/rm";
+import { rmSync } from "fs";
 
 //NOTE: To run without argument when we want to generate src/i18n/generated_kcMessages files,
 // update the version array for generating for newer version.
@@ -17,7 +17,7 @@ for (const keycloakVersion of ["11.0.3", "15.0.2", "18.0.1"]) {
 
     const tmpDirPath = pathJoin(getProjectRoot(), "tmp_xImOef9dOd44");
 
-    rm_rf(tmpDirPath);
+    rmSync(tmpDirPath, {recursive: true, force: true});
 
     downloadBuiltinKeycloakTheme({
         keycloakVersion,
@@ -48,7 +48,7 @@ for (const keycloakVersion of ["11.0.3", "15.0.2", "18.0.1"]) {
         });
     }
 
-    rm_r(tmpDirPath);
+    rmSync(tmpDirPath, {recursive: true, force: true});
 
     Object.keys(record).forEach(pageType => {
         const recordForPageType = record[pageType];

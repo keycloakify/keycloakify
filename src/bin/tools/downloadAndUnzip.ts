@@ -2,7 +2,6 @@ import { basename as pathBasename, join as pathJoin } from "path";
 import { execSync } from "child_process";
 import * as fs from "fs";
 import { transformCodebase } from "./transformCodebase";
-import { rm, rm_rf } from "./rm";
 import * as crypto from "crypto";
 
 /** assert url ends with .zip */
@@ -48,7 +47,7 @@ export function downloadAndUnzip(params: { url: string; destDirPath: string; pat
             [extractDirPath]: false
         });
 
-        rm_rf(extractDirPath);
+        fs.rmSync(extractDirPath, {recursive: true, force: true});
 
         fs.mkdirSync(extractDirPath);
 
@@ -60,7 +59,7 @@ export function downloadAndUnzip(params: { url: string; destDirPath: string; pat
             "cwd": extractDirPath
         });
 
-        rm(zipFileBasename, { "cwd": extractDirPath });
+        fs.rmSync(pathJoin(extractDirPath, zipFileBasename), {recursive: true, force: true});
 
         writeIsSuccessByExtractDirPath({
             ...isSuccessByExtractDirPath,
