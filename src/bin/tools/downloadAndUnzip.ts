@@ -53,7 +53,7 @@ export function downloadAndUnzip(params: {
             [extractDirPath]: false
         });
 
-        fs.rmSync(extractDirPath, {recursive: true, force: true});
+        fs.rmSync(extractDirPath, { "recursive": true, "force": true });
 
         fs.mkdirSync(extractDirPath);
 
@@ -65,7 +65,7 @@ export function downloadAndUnzip(params: {
             "cwd": extractDirPath
         });
 
-        fs.rmSync(pathJoin(extractDirPath, zipFileBasename), {recursive: true, force: true});
+        fs.rmSync(pathJoin(extractDirPath, zipFileBasename), { "recursive": true, "force": true });
 
         writeIsSuccessByExtractDirPath({
             ...isSuccessByExtractDirPath,

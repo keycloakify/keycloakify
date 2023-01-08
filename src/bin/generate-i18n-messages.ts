@@ -21,7 +21,7 @@ for (const keycloakVersion of ["11.0.3", "15.0.2", "18.0.1"]) {
 
     const tmpDirPath = pathJoin(getProjectRoot(), "tmp_xImOef9dOd44");
 
-    fs.rmSync(tmpDirPath, {recursive: true, force: true});
+    fs.rmSync(tmpDirPath, { "recursive": true, "force": true });
 
     downloadBuiltinKeycloakTheme({
         keycloakVersion,
@@ -53,7 +53,7 @@ for (const keycloakVersion of ["11.0.3", "15.0.2", "18.0.1"]) {
         });
     }
 
-    fs.rmSync(tmpDirPath, {recursive: true, force: true});
+    fs.rmSync(tmpDirPath, { recursive: true, force: true });
 
     Object.keys(record).forEach(pageType => {
         const recordForPageType = record[pageType];

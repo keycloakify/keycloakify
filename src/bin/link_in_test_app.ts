@@ -43,7 +43,7 @@ const commonThirdPartyDeps = (() => {
 
 const yarnHomeDirPath = pathJoin(keycloakifyDirPath, ".yarn_home");
 
-fs.rmSync(yarnHomeDirPath, {recursive: true, force: true});
+fs.rmSync(yarnHomeDirPath, { "recursive": true, "force": true });
 fs.mkdirSync(yarnHomeDirPath);
 
 const execYarnLink = (params: { targetModuleName?: string; cwd: string }) => {
