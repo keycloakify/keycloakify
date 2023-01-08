@@ -2,7 +2,7 @@
     <img src="https://user-images.githubusercontent.com/6702424/109387840-eba11f80-7903-11eb-9050-db1dad883f78.png">  
 </p>
 <p align="center">
-    <i>🔏  Create Keycloak themes using React 🔏</i>
+    <i>🔏 Create Keycloak themes using React 🔏</i>
     <br>
     <br>
     <a href="https://github.com/garronej/keycloakify/actions">
@@ -27,7 +27,14 @@
         <a href="https://www.keycloakify.dev">Home</a>
         -
         <a href="https://docs.keycloakify.dev">Documentation</a>
-</p>
+    </p>
+    <p align="center"> ---- Project starter / Demo setup ---- </p>
+    <p align="center">
+        <a href="https://github.com/garronej/keycloakify-starter">CSS Level customization</a>
+        -
+        <a href="https://github.com/garronej/keycloakify-advanced-starter">Component Level customization</a>
+    </p>
+    <p align="center"> ---- </p>
 
 </p>
 
@@ -36,7 +43,39 @@
     <img src="https://user-images.githubusercontent.com/6702424/110260457-a1c3d380-7fac-11eb-853a-80459b65626b.png">
 </p>
 
+> 🗣 V6 have been released 🎉  
+> [It features major improvements](https://github.com/InseeFrLab/keycloakify#600).  
+> Checkout [the migration guide](https://docs.keycloakify.dev/v5-to-v6).
+
 # Changelog highlights
+
+## 6.8.4
+
+-   `@emotion/react` is no longer a peer dependency of Keycloakify.
+
+## 6.8.0
+
+-   It is now possible to pass a custom `<Template />` component as a prop to `<KcApp />` and every
+    individual page (`<Login />`, `<RegisterUserProfile />`, ...) it enables to customize only the header and footer for
+    example without having to switch to a full-component level customization. [See issue](https://github.com/InseeFrLab/keycloakify/issues/191).
+
+## 6.7.0
+
+-   Add support for `webauthn-authenticate.ftl` thanks to [@mstrodl](https://github.com/Mstrodl)'s hacktoberfest [PR](https://github.com/InseeFrLab/keycloakify/pull/185).
+
+## 6.6.0
+
+-   Add support for `login-password.ftl` thanks to [@mstrodl](https://github.com/Mstrodl)'s hacktoberfest [PR](https://github.com/InseeFrLab/keycloakify/pull/184).
+
+## 6.5.0
+
+-   Add support for `login-username.ftl` thanks to [@mstrodl](https://github.com/Mstrodl)'s hacktoberfest [PR](https://github.com/InseeFrLab/keycloakify/pull/183).
+
+## 6.4.0
+
+-   You can now optionally pass a `doFetchDefaultThemeResources: boolean` prop to every page component and the default `<KcApp />`
+    This enables you to prevent the default CSS and JS that comes with the builtin Keycloak theme to be downloaded.  
+    You'll get [a black slate](https://user-images.githubusercontent.com/6702424/192619083-4baa5df4-4a21-4ec7-8e28-d200d1208299.png).
 
 ## 6.0.0
 
@@ -45,7 +84,7 @@
 -   Real i18n API.
 -   Actual documentation for build options.
 
-Checkout the migration guide.
+Checkout [the migration guide](https://docs.keycloakify.dev/v5-to-v6)
 
 ## 5.8.0
 

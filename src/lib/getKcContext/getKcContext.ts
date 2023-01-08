@@ -10,6 +10,7 @@ import { getKcContextFromWindow } from "./getKcContextFromWindow";
 import { pathJoin } from "../../bin/tools/pathJoin";
 import { pathBasename } from "../tools/pathBasename";
 import { mockTestingResourcesCommonPath } from "../../bin/mockTestingResourcesPath";
+import { symToStr } from "tsafe/symToStr";
 
 export function getKcContext<KcContextExtended extends { pageId: string } = never>(params?: {
     mockPageId?: ExtendsKcContextBase<KcContextExtended>["pageId"];
@@ -17,8 +18,18 @@ export function getKcContext<KcContextExtended extends { pageId: string } = neve
 }): { kcContext: ExtendsKcContextBase<KcContextExtended> | undefined } {
     const { mockPageId, mockData } = params ?? {};
 
-    if (mockPageId !== undefined) {
+    const realKcContext = getKcContextFromWindow<KcContextExtended>();
+
+    if (mockPageId !== undefined && realKcContext === undefined) {
         //TODO maybe trow if no mock fo custom page
+
+        console.log(
+            [
+                `%cKeycloakify: ${symToStr({ mockPageId })} set to ${mockPageId}.`,
+                `If assets are missing make sure you have built your Keycloak theme at least once.`
+            ].join(" "),
+            "background: red; color: yellow; font-size: medium"
+        );
 
         const kcContextDefaultMock = kcContextMocks.find(({ pageId }) => pageId === mockPageId);
 
@@ -47,8 +58,16 @@ export function getKcContext<KcContextExtended extends { pageId: string } = neve
                 "source": partialKcContextCustomMock
             });
 
-            if (partialKcContextCustomMock.pageId === "register-user-profile.ftl") {
-                assert(kcContextDefaultMock?.pageId === "register-user-profile.ftl");
+            if (
+                partialKcContextCustomMock.pageId === "register-user-profile.ftl" ||
+                partialKcContextCustomMock.pageId === "update-user-profile.ftl" ||
+                partialKcContextCustomMock.pageId === "idp-review-user-profile.ftl"
+            ) {
+                assert(
+                    kcContextDefaultMock?.pageId === "register-user-profile.ftl" ||
+                        kcContextDefaultMock?.pageId === "update-user-profile.ftl" ||
+                        kcContextDefaultMock?.pageId === "idp-review-user-profile.ftl"
+                );
 
                 const { attributes } = kcContextDefaultMock.profile;
 
@@ -60,8 +79,6 @@ export function getKcContext<KcContextExtended extends { pageId: string } = neve
                 ].filter(exclude(undefined));
 
                 attributes.forEach(attribute => {
-                    console.log("====>", attribute);
-
                     const partialAttribute = partialAttributes.find(({ name }) => name === attribute.name);
 
                     const augmentedAttribute: Attribute = {} as any;
@@ -100,13 +117,15 @@ export function getKcContext<KcContextExtended extends { pageId: string } = neve
         return { kcContext };
     }
 
-    const kcContext = getKcContextFromWindow<KcContextExtended>();
+    if (realKcContext === undefined) {
+        return { "kcContext": undefined };
+    }
 
-    if (kcContext !== undefined) {
-        const { url } = kcContext;
+    {
+        const { url } = realKcContext;
 
         url.resourcesCommonPath = pathJoin(url.resourcesPath, pathBasename(mockTestingResourcesCommonPath));
     }
 
-    return { kcContext };
+    return { "kcContext": realKcContext };
 }

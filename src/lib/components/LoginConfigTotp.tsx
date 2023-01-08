@@ -1,27 +1,34 @@
 import React, { memo } from "react";
-import Template from "./Template";
+import DefaultTemplate from "./Template";
+import type { TemplateProps } from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { useCssAndCx } from "../tools/useCssAndCx";
+import { clsx } from "../tools/clsx";
 import type { I18n } from "../i18n";
 
-const LoginConfigTotp = memo(({ kcContext, i18n, ...props }: { kcContext: KcContextBase.LoginConfigTotp; i18n: I18n } & KcProps) => {
-    const { url, isAppInitiatedAction, totp, mode, messagesPerField } = kcContext;
+export type LoginConfigTotpProps = KcProps & {
+    kcContext: KcContextBase.LoginConfigTotp;
+    i18n: I18n;
+    doFetchDefaultThemeResources?: boolean;
+    Template?: (props: TemplateProps) => JSX.Element | null;
+};
 
-    const { cx } = useCssAndCx();
+const LoginConfigTotp = memo((props: LoginConfigTotpProps) => {
+    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template = DefaultTemplate, ...kcProps } = props;
+
+    const { url, isAppInitiatedAction, totp, mode, messagesPerField } = kcContext;
 
     const { msg, msgStr } = i18n;
 
     const algToKeyUriAlg: Record<KcContextBase.LoginConfigTotp["totp"]["policy"]["algorithm"], string> = {
-        HmacSHA1: "SHA1",
-        HmacSHA256: "SHA256",
-        HmacSHA512: "SHA512"
+        "HmacSHA1": "SHA1",
+        "HmacSHA256": "SHA256",
+        "HmacSHA512": "SHA512"
     };
 
     return (
         <Template
-            {...{ kcContext, i18n, ...props }}
-            doFetchDefaultThemeResources={true}
+            {...{ kcContext, i18n, doFetchDefaultThemeResources, ...kcProps }}
             headerNode={msg("loginTotpTitle")}
             formNode={
                 <>
@@ -93,26 +100,26 @@ const LoginConfigTotp = memo(({ kcContext, i18n, ...props }: { kcContext: KcCont
                         </li>
                     </ol>
 
-                    <form action={url.loginAction} className={cx(props.kcFormClass)} id="kc-totp-settings-form" method="post">
-                        <div className={cx(props.kcFormGroupClass)}>
-                            <div className={cx(props.kcInputWrapperClass)}>
-                                <label htmlFor="totp" className={cx(props.kcLabelClass)}>
+                    <form action={url.loginAction} className={clsx(kcProps.kcFormClass)} id="kc-totp-settings-form" method="post">
+                        <div className={clsx(kcProps.kcFormGroupClass)}>
+                            <div className={clsx(kcProps.kcInputWrapperClass)}>
+                                <label htmlFor="totp" className={clsx(kcProps.kcLabelClass)}>
                                     {msg("authenticatorCode")}
                                 </label>{" "}
                                 <span className="required">*</span>
                             </div>
-                            <div className={cx(props.kcInputWrapperClass)}>
+                            <div className={clsx(kcProps.kcInputWrapperClass)}>
                                 <input
                                     type="text"
                                     id="totp"
                                     name="totp"
                                     autoComplete="off"
-                                    className={cx(props.kcInputClass)}
+                                    className={clsx(kcProps.kcInputClass)}
                                     aria-invalid={messagesPerField.existsError("totp")}
                                 />
 
                                 {messagesPerField.existsError("totp") && (
-                                    <span id="input-error-otp-code" className={cx(props.kcInputErrorMessageClass)} aria-live="polite">
+                                    <span id="input-error-otp-code" className={clsx(kcProps.kcInputErrorMessageClass)} aria-live="polite">
                                         {messagesPerField.get("totp")}
                                     </span>
                                 )}
@@ -121,24 +128,24 @@ const LoginConfigTotp = memo(({ kcContext, i18n, ...props }: { kcContext: KcCont
                             {mode && <input type="hidden" id="mode" value={mode} />}
                         </div>
 
-                        <div className={cx(props.kcFormGroupClass)}>
-                            <div className={cx(props.kcInputWrapperClass)}>
-                                <label htmlFor="userLabel" className={cx(props.kcLabelClass)}>
+                        <div className={clsx(kcProps.kcFormGroupClass)}>
+                            <div className={clsx(kcProps.kcInputWrapperClass)}>
+                                <label htmlFor="userLabel" className={clsx(kcProps.kcLabelClass)}>
                                     {msg("loginTotpDeviceName")}
                                 </label>{" "}
                                 {totp.otpCredentials.length >= 1 && <span className="required">*</span>}
                             </div>
-                            <div className={cx(props.kcInputWrapperClass)}>
+                            <div className={clsx(kcProps.kcInputWrapperClass)}>
                                 <input
                                     type="text"
                                     id="userLabel"
                                     name="userLabel"
                                     autoComplete="off"
-                                    className={cx(props.kcInputClass)}
+                                    className={clsx(kcProps.kcInputClass)}
                                     aria-invalid={messagesPerField.existsError("userLabel")}
                                 />
                                 {messagesPerField.existsError("userLabel") && (
-                                    <span id="input-error-otp-label" className={cx(props.kcInputErrorMessageClass)} aria-live="polite">
+                                    <span id="input-error-otp-label" className={clsx(kcProps.kcInputErrorMessageClass)} aria-live="polite">
                                         {messagesPerField.get("userLabel")}
                                     </span>
                                 )}
@@ -149,17 +156,17 @@ const LoginConfigTotp = memo(({ kcContext, i18n, ...props }: { kcContext: KcCont
                             <>
                                 <input
                                     type="submit"
-                                    className={cx(props.kcButtonClass, props.kcButtonPrimaryClass, props.kcButtonLargeClass)}
+                                    className={clsx(kcProps.kcButtonClass, kcProps.kcButtonPrimaryClass, kcProps.kcButtonLargeClass)}
                                     id="saveTOTPBtn"
                                     value={msgStr("doSubmit")}
                                 />
                                 <button
                                     type="submit"
-                                    className={cx(
-                                        props.kcButtonClass,
-                                        props.kcButtonDefaultClass,
-                                        props.kcButtonLargeClass,
-                                        props.kcButtonLargeClass
+                                    className={clsx(
+                                        kcProps.kcButtonClass,
+                                        kcProps.kcButtonDefaultClass,
+                                        kcProps.kcButtonLargeClass,
+                                        kcProps.kcButtonLargeClass
                                     )}
                                     id="cancelTOTPBtn"
                                     name="cancel-aia"
@@ -171,7 +178,7 @@ const LoginConfigTotp = memo(({ kcContext, i18n, ...props }: { kcContext: KcCont
                         ) : (
                             <input
                                 type="submit"
-                                className={cx(props.kcButtonClass, props.kcButtonPrimaryClass, props.kcButtonLargeClass)}
+                                className={clsx(kcProps.kcButtonClass, kcProps.kcButtonPrimaryClass, kcProps.kcButtonLargeClass)}
                                 id="saveTOTPBtn"
                                 value={msgStr("doSubmit")}
                             />

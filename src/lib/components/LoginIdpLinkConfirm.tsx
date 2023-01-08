@@ -1,28 +1,40 @@
 import React, { memo } from "react";
-import Template from "./Template";
+import DefaultTemplate from "./Template";
+import type { TemplateProps } from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { useCssAndCx } from "../tools/useCssAndCx";
+import { clsx } from "../tools/clsx";
 import type { I18n } from "../i18n";
 
-const LoginIdpLinkConfirm = memo(({ kcContext, i18n, ...props }: { kcContext: KcContextBase.LoginIdpLinkConfirm; i18n: I18n } & KcProps) => {
+export type LoginIdpLinkConfirmProps = KcProps & {
+    kcContext: KcContextBase.LoginIdpLinkConfirm;
+    i18n: I18n;
+    doFetchDefaultThemeResources?: boolean;
+    Template?: (props: TemplateProps) => JSX.Element | null;
+};
+
+const LoginIdpLinkConfirm = memo((props: LoginIdpLinkConfirmProps) => {
+    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template = DefaultTemplate, ...kcProps } = props;
+
     const { url, idpAlias } = kcContext;
 
     const { msg } = i18n;
 
-    const { cx } = useCssAndCx();
-
     return (
         <Template
-            {...{ kcContext, i18n, ...props }}
-            doFetchDefaultThemeResources={true}
+            {...{ kcContext, i18n, doFetchDefaultThemeResources, ...kcProps }}
             headerNode={msg("confirmLinkIdpTitle")}
             formNode={
                 <form id="kc-register-form" action={url.loginAction} method="post">
-                    <div className={cx(props.kcFormGroupClass)}>
+                    <div className={clsx(kcProps.kcFormGroupClass)}>
                         <button
                             type="submit"
-                            className={cx(props.kcButtonClass, props.kcButtonDefaultClass, props.kcButtonBlockClass, props.kcButtonLargeClass)}
+                            className={clsx(
+                                kcProps.kcButtonClass,
+                                kcProps.kcButtonDefaultClass,
+                                kcProps.kcButtonBlockClass,
+                                kcProps.kcButtonLargeClass
+                            )}
                             name="submitAction"
                             id="updateProfile"
                             value="updateProfile"
@@ -31,7 +43,12 @@ const LoginIdpLinkConfirm = memo(({ kcContext, i18n, ...props }: { kcContext: Kc
                         </button>
                         <button
                             type="submit"
-                            className={cx(props.kcButtonClass, props.kcButtonDefaultClass, props.kcButtonBlockClass, props.kcButtonLargeClass)}
+                            className={clsx(
+                                kcProps.kcButtonClass,
+                                kcProps.kcButtonDefaultClass,
+                                kcProps.kcButtonBlockClass,
+                                kcProps.kcButtonLargeClass
+                            )}
                             name="submitAction"
                             id="linkAccount"
                             value="linkAccount"

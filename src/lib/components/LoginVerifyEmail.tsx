@@ -1,18 +1,27 @@
 import React, { memo } from "react";
-import Template from "./Template";
+import DefaultTemplate from "./Template";
+import type { TemplateProps } from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 import type { I18n } from "../i18n";
 
-const LoginVerifyEmail = memo(({ kcContext, i18n, ...props }: { kcContext: KcContextBase.LoginVerifyEmail; i18n: I18n } & KcProps) => {
+export type LoginVerifyEmailProps = KcProps & {
+    kcContext: KcContextBase.LoginVerifyEmail;
+    i18n: I18n;
+    doFetchDefaultThemeResources?: boolean;
+    Template?: (props: TemplateProps) => JSX.Element | null;
+};
+
+const LoginVerifyEmail = memo((props: LoginVerifyEmailProps) => {
+    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template = DefaultTemplate, ...kcProps } = props;
+
     const { msg } = i18n;
 
     const { url, user } = kcContext;
 
     return (
         <Template
-            {...{ kcContext, i18n, ...props }}
-            doFetchDefaultThemeResources={true}
+            {...{ kcContext, i18n, doFetchDefaultThemeResources, ...kcProps }}
             displayMessage={false}
             headerNode={msg("emailVerifyTitle")}
             formNode={

@@ -1,18 +1,27 @@
 import React, { memo } from "react";
-import Template from "./Template";
+import DefaultTemplate from "./Template";
+import type { TemplateProps } from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 import type { I18n } from "../i18n";
 
-const LoginIdpLinkEmail = memo(({ kcContext, i18n, ...props }: { kcContext: KcContextBase.LoginIdpLinkEmail; i18n: I18n } & KcProps) => {
+export type LoginIdpLinkEmailProps = KcProps & {
+    kcContext: KcContextBase.LoginIdpLinkEmail;
+    i18n: I18n;
+    doFetchDefaultThemeResources?: boolean;
+    Template?: (props: TemplateProps) => JSX.Element | null;
+};
+
+const LoginIdpLinkEmail = memo((props: LoginIdpLinkEmailProps) => {
+    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template = DefaultTemplate, ...kcProps } = props;
+
     const { url, realm, brokerContext, idpAlias } = kcContext;
 
     const { msg } = i18n;
 
     return (
         <Template
-            {...{ kcContext, i18n, ...props }}
-            doFetchDefaultThemeResources={true}
+            {...{ kcContext, i18n, doFetchDefaultThemeResources, ...kcProps }}
             headerNode={msg("emailLinkIdpTitle", idpAlias)}
             formNode={
                 <>

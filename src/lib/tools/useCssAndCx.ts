@@ -1,11 +1,12 @@
-import { createMakeStyles } from "tss-react";
+import { clsx as cx } from "./clsx";
 
-const { useStyles } = createMakeStyles({
-    "useTheme": () => ({})
-});
-
+/**
+ * @deprecated: Use clsx instead.
+ * import { clsx } from "keycloakify/lib/tools/clsx";
+ * You can use clsx as cx.
+ * If you where using the css() function you can import
+ * it from @emotion/css: https://emotion.sh/docs/@emotion/css
+ */
 export function useCssAndCx() {
-    const { css, cx } = useStyles();
-
-    return { css, cx };
+    return { cx };
 }

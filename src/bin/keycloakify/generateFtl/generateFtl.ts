@@ -13,6 +13,9 @@ import { Reflect } from "tsafe/Reflect";
 // https://github.com/keycloak/keycloak/blob/main/services/src/main/java/org/keycloak/forms/login/freemarker/Templates.java
 export const pageIds = [
     "login.ftl",
+    "login-username.ftl",
+    "login-password.ftl",
+    "webauthn-authenticate.ftl",
     "register.ftl",
     "register-user-profile.ftl",
     "info.ftl",
@@ -27,7 +30,9 @@ export const pageIds = [
     "login-idp-link-email.ftl",
     "login-page-expired.ftl",
     "login-config-totp.ftl",
-    "logout-confirm.ftl"
+    "logout-confirm.ftl",
+    "update-user-profile.ftl",
+    "idp-review-user-profile.ftl"
 ] as const;
 
 export type BuildOptionsLike = BuildOptionsLike.Standalone | BuildOptionsLike.ExternalAssets;
@@ -46,11 +51,11 @@ export namespace BuildOptionsLike {
         };
 
         export type SameDomain = CommonExternalAssets & {
-            isAppAndKeycloakServerSharingSameDomain: true;
+            areAppAndKeycloakServerSharingSameDomain: true;
         };
 
         export type DifferentDomains = CommonExternalAssets & {
-            isAppAndKeycloakServerSharingSameDomain: false;
+            areAppAndKeycloakServerSharingSameDomain: false;
             urlOrigin: string;
             urlPathname: string | undefined;
         };
@@ -76,7 +81,7 @@ export function generateFtlFilesCodeFactory(params: {
     const $ = cheerio.load(indexHtmlCode);
 
     fix_imports_statements: {
-        if (!buildOptions.isStandalone && buildOptions.isAppAndKeycloakServerSharingSameDomain) {
+        if (!buildOptions.isStandalone && buildOptions.areAppAndKeycloakServerSharingSameDomain) {
             break fix_imports_statements;
         }
 

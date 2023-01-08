@@ -7,6 +7,100 @@ import { pathJoin } from "../../../bin/tools/pathJoin";
 
 const PUBLIC_URL = process.env["PUBLIC_URL"] ?? "/";
 
+const attributes: Attribute[] = [
+    {
+        "validators": {
+            "username-prohibited-characters": {
+                "ignore.empty.value": true
+            },
+            "up-username-has-value": {},
+            "length": {
+                "ignore.empty.value": true,
+                "min": "3",
+                "max": "255"
+            },
+            "up-duplicate-username": {},
+            "up-username-mutation": {}
+        },
+        "displayName": "${username}",
+        "annotations": {},
+        "required": true,
+        "groupAnnotations": {},
+        "autocomplete": "username",
+        "readOnly": false,
+        "name": "username",
+        "value": "xxxx"
+    },
+    {
+        "validators": {
+            "up-email-exists-as-username": {},
+            "length": {
+                "max": "255",
+                "ignore.empty.value": true
+            },
+            "up-blank-attribute-value": {
+                "error-message": "missingEmailMessage",
+                "fail-on-null": false
+            },
+            "up-duplicate-email": {},
+            "email": {
+                "ignore.empty.value": true
+            },
+            "pattern": {
+                "ignore.empty.value": true,
+                "pattern": "gmail\\.com$"
+            }
+        },
+        "displayName": "${email}",
+        "annotations": {},
+        "required": true,
+        "groupAnnotations": {},
+        "autocomplete": "email",
+        "readOnly": false,
+        "name": "email"
+    },
+    {
+        "validators": {
+            "length": {
+                "max": "255",
+                "ignore.empty.value": true
+            },
+            "person-name-prohibited-characters": {
+                "ignore.empty.value": true
+            },
+            "up-immutable-attribute": {},
+            "up-attribute-required-by-metadata-value": {}
+        },
+        "displayName": "${firstName}",
+        "annotations": {},
+        "required": true,
+        "groupAnnotations": {},
+        "readOnly": false,
+        "name": "firstName"
+    },
+    {
+        "validators": {
+            "length": {
+                "max": "255",
+                "ignore.empty.value": true
+            },
+            "person-name-prohibited-characters": {
+                "ignore.empty.value": true
+            },
+            "up-immutable-attribute": {},
+            "up-attribute-required-by-metadata-value": {}
+        },
+        "displayName": "${lastName}",
+        "annotations": {},
+        "required": true,
+        "groupAnnotations": {},
+        "readOnly": false,
+        "name": "lastName"
+    }
+];
+
+const attributesByName = Object.fromEntries(attributes.map(attribute => [attribute.name, attribute])) as any;
+
 export const kcContextCommonMock: KcContextBase.Common = {
     "url": {
         "loginAction": "#",
@@ -200,104 +294,8 @@ export const kcContextMocks: KcContextBase[] = [
                 ...registerCommon,
                 "profile": {
                     "context": "REGISTRATION_PROFILE" as const,
-                    ...(() => {
-                        const attributes: Attribute[] = [
-                            {
-                                "validators": {
-                                    "username-prohibited-characters": {
-                                        "ignore.empty.value": true
-                                    },
-                                    "up-username-has-value": {},
-                                    "length": {
-                                        "ignore.empty.value": true,
-                                        "min": "3",
-                                        "max": "255"
-                                    },
-                                    "up-duplicate-username": {},
-                                    "up-username-mutation": {}
-                                },
-                                "displayName": "${username}",
-                                "annotations": {},
-                                "required": true,
-                                "groupAnnotations": {},
-                                "autocomplete": "username",
-                                "readOnly": false,
-                                "name": "username",
-                                "value": "xxxx"
-                            },
-                            {
-                                "validators": {
-                                    "up-email-exists-as-username": {},
-                                    "length": {
-                                        "max": "255",
-                                        "ignore.empty.value": true
-                                    },
-                                    "up-blank-attribute-value": {
-                                        "error-message": "missingEmailMessage",
-                                        "fail-on-null": false
-                                    },
-                                    "up-duplicate-email": {},
-                                    "email": {
-                                        "ignore.empty.value": true
-                                    },
-                                    "pattern": {
-                                        "ignore.empty.value": true,
-                                        "pattern": "gmail\\.com$"
-                                    }
-                                },
-                                "displayName": "${email}",
-                                "annotations": {},
-                                "required": true,
-                                "groupAnnotations": {},
-                                "autocomplete": "email",
-                                "readOnly": false,
-                                "name": "email"
-                            },
-                            {
-                                "validators": {
-                                    "length": {
-                                        "max": "255",
-                                        "ignore.empty.value": true
-                                    },
-                                    "person-name-prohibited-characters": {
-                                        "ignore.empty.value": true
-                                    },
-                                    "up-immutable-attribute": {},
-                                    "up-attribute-required-by-metadata-value": {}
-                                },
-                                "displayName": "${firstName}",
-                                "annotations": {},
-                                "required": true,
-                                "groupAnnotations": {},
-                                "readOnly": false,
-                                "name": "firstName"
-                            },
-                            {
-                                "validators": {
-                                    "length": {
-                                        "max": "255",
-                                        "ignore.empty.value": true
-                                    },
-                                    "person-name-prohibited-characters": {
-                                        "ignore.empty.value": true
-                                    },
-                                    "up-immutable-attribute": {},
-                                    "up-attribute-required-by-metadata-value": {}
-                                },
-                                "displayName": "${lastName}",
-                                "annotations": {},
-                                "required": true,
-                                "groupAnnotations": {},
-                                "readOnly": false,
-                                "name": "lastName"
-                            }
-                        ];
-
-                        return {
-                            attributes,
-                            "attributesByName": Object.fromEntries(attributes.map(attribute => [attribute.name, attribute])) as any
-                        } as any;
-                    })()
+                    attributes,
+                    attributesByName
                 }
             })
         ];
@@ -361,6 +359,61 @@ export const kcContextMocks: KcContextBase[] = [
             ]
         }
     }),
+    id<KcContextBase.LoginUsername>({
+        ...kcContextCommonMock,
+        "pageId": "login-username.ftl",
+        "url": loginUrl,
+        "realm": {
+            ...kcContextCommonMock.realm,
+            "loginWithEmailAllowed": true,
+            "rememberMe": true,
+            "password": true,
+            "resetPasswordAllowed": true,
+            "registrationAllowed": true
+        },
+        "social": {
+            "displayInfo": true
+        },
+        "usernameHidden": false,
+        "login": {
+            "rememberMe": false
+        },
+        "registrationDisabled": false
+    }),
+    id<KcContextBase.LoginPassword>({
+        ...kcContextCommonMock,
+        "pageId": "login-password.ftl",
+        "url": loginUrl,
+        "realm": {
+            ...kcContextCommonMock.realm,
+            "resetPasswordAllowed": true
+        },
+        "social": {
+            "displayInfo": false
+        },
+        "login": {}
+    }),
+    id<KcContextBase.WebauthnAuthenticate>({
+        ...kcContextCommonMock,
+        "pageId": "webauthn-authenticate.ftl",
+        "url": loginUrl,
+        "authenticators": {
+            "authenticators": []
+        },
+        "realm": {
+            ...kcContextCommonMock.realm
+        },
+        "challenge": "",
+        "userVerification": "not specified",
+        "rpId": "",
+        "createTimeout": "0",
+        "isUserIdentified": "false",
+        "shouldDisplayAuthenticators": false,
+        "social": {
+            "displayInfo": false
+        },
+        "login": {}
+    }),
     id<KcContextBase.LoginUpdatePassword>({
         ...kcContextCommonMock,
         "pageId": "login-update-password.ftl",
@@ -423,5 +476,22 @@ export const kcContextMocks: KcContextBase[] = [
             "baseUrl": "#"
         },
         "logoutConfirm": { "code": "123", skipLink: false }
+    }),
+    id<KcContextBase.UpdateUserProfile>({
+        ...kcContextCommonMock,
+        "pageId": "update-user-profile.ftl",
+        "profile": {
+            attributes,
+            attributesByName
+        }
+    }),
+    id<KcContextBase.IdpReviewUserProfile>({
+        ...kcContextCommonMock,
+        "pageId": "idp-review-user-profile.ftl",
+        "profile": {
+            context: "IDP_REVIEW",
+            attributes,
+            attributesByName
+        }
     })
 ];

@@ -5,6 +5,8 @@ import * as child_process from "child_process";
 import { generateStartKeycloakTestingContainer } from "./generateStartKeycloakTestingContainer";
 import * as fs from "fs";
 import { readBuildOptions } from "./BuildOptions";
+import { getLogger } from "../tools/logger";
+import { getCliOptions } from "../tools/cliOptions";
 
 const reactProjectDirPath = process.cwd();
 
@@ -12,7 +14,9 @@ export const keycloakThemeBuildingDirPath = pathJoin(reactProjectDirPath, "build
 export const keycloakThemeEmailDirPath = pathJoin(keycloakThemeBuildingDirPath, "..", "keycloak_email");
 
 export function main() {
-    console.log("🔏 Building the keycloak theme...⌚");
+    const { isSilent, hasExternalAssets } = getCliOptions(process.argv.slice(2));
+    const logger = getLogger({ isSilent });
+    logger.log("🔏 Building the keycloak theme...⌚");
 
     const buildOptions = readBuildOptions({
         "packageJson": fs.readFileSync(pathJoin(reactProjectDirPath, "package.json")).toString("utf8"),
@@ -25,7 +29,8 @@ export function main() {
 
             return fs.readFileSync(cnameFilePath).toString("utf8");
         })(),
-        "isExternalAssetsCliParamProvided": process.argv[2]?.toLowerCase() === "--external-assets"
+        "isExternalAssetsCliParamProvided": hasExternalAssets,
+        "isSilent": isSilent
     });
 
     const { doBundlesEmailTemplate } = generateKeycloakThemeResources({
@@ -51,7 +56,7 @@ export function main() {
     });
 
     //We want, however, to test in a container running the latest Keycloak version
-    const containerKeycloakVersion = "18.0.2";
+    const containerKeycloakVersion = "20.0.1";
 
     generateStartKeycloakTestingContainer({
         keycloakThemeBuildingDirPath,
@@ -59,7 +64,7 @@ export function main() {
         buildOptions
     });
 
-    console.log(
+    logger.log(
         [
             "",
             `✅ Your keycloak theme has been generated and bundled into ./${pathRelative(reactProjectDirPath, jarFilePath)} 🚀`,

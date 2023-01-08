@@ -4,7 +4,8 @@ import { join as pathJoin, relative as pathRelative, dirname as pathDirname } fr
 import { crawl } from "./tools/crawl";
 import { downloadBuiltinKeycloakTheme } from "./download-builtin-keycloak-theme";
 import { getProjectRoot } from "./tools/getProjectRoot";
-import { rmSync } from "fs";
+import { getCliOptions } from "./tools/cliOptions";
+import { getLogger } from "./tools/logger";
 
 //NOTE: To run without argument when we want to generate src/i18n/generated_kcMessages files,
 // update the version array for generating for newer version.
@@ -12,16 +13,20 @@ import { rmSync } from "fs";
 //@ts-ignore
 const propertiesParser = require("properties-parser");
 
+const { isSilent } = getCliOptions(process.argv.slice(2));
+const logger = getLogger({ isSilent });
+
 for (const keycloakVersion of ["11.0.3", "15.0.2", "18.0.1"]) {
-    console.log({ keycloakVersion });
+    logger.log(JSON.stringify({ keycloakVersion }));
 
     const tmpDirPath = pathJoin(getProjectRoot(), "tmp_xImOef9dOd44");
 
-    rmSync(tmpDirPath, {recursive: true, force: true});
+    fs.rmSync(tmpDirPath, {recursive: true, force: true});
 
     downloadBuiltinKeycloakTheme({
         keycloakVersion,
-        "destDirPath": tmpDirPath
+        "destDirPath": tmpDirPath,
+        isSilent
     });
 
     type Dictionary = { [idiomId: string]: string };
@@ -48,7 +53,7 @@ for (const keycloakVersion of ["11.0.3", "15.0.2", "18.0.1"]) {
         });
     }
 
-    rmSync(tmpDirPath, {recursive: true, force: true});
+    fs.rmSync(tmpDirPath, {recursive: true, force: true});
 
     Object.keys(record).forEach(pageType => {
         const recordForPageType = record[pageType];
@@ -75,7 +80,7 @@ for (const keycloakVersion of ["11.0.3", "15.0.2", "18.0.1"]) {
                 )
             );
 
-            console.log(`${filePath} wrote`);
+            logger.log(`${filePath} wrote`);
         });
     });
 }

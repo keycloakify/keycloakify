@@ -1,21 +1,28 @@
 import React, { memo } from "react";
-import { useCssAndCx } from "../tools/useCssAndCx";
-import Template from "./Template";
+import { clsx } from "../tools/clsx";
+import DefaultTemplate from "./Template";
+import type { TemplateProps } from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 import type { I18n } from "../i18n";
 
-const LogoutConfirm = memo(({ kcContext, i18n, ...props }: { kcContext: KcContextBase.LogoutConfirm; i18n: I18n } & KcProps) => {
-    const { url, client, logoutConfirm } = kcContext;
+export type LogoutConfirmProps = KcProps & {
+    kcContext: KcContextBase.LogoutConfirm;
+    i18n: I18n;
+    doFetchDefaultThemeResources?: boolean;
+    Template?: (props: TemplateProps) => JSX.Element | null;
+};
 
-    const { cx } = useCssAndCx();
+const LogoutConfirm = memo((props: LogoutConfirmProps) => {
+    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template = DefaultTemplate, ...kcProps } = props;
+
+    const { url, client, logoutConfirm } = kcContext;
 
     const { msg, msgStr } = i18n;
 
     return (
         <Template
-            {...{ kcContext, i18n, ...props }}
-            doFetchDefaultThemeResources={true}
+            {...{ kcContext, i18n, doFetchDefaultThemeResources, ...kcProps }}
             displayMessage={false}
             headerNode={msg("logoutConfirmTitle")}
             formNode={
@@ -24,18 +31,18 @@ const LogoutConfirm = memo(({ kcContext, i18n, ...props }: { kcContext: KcContex
                         <p className="instruction">{msg("logoutConfirmHeader")}</p>
                         <form className="form-actions" action={url.logoutConfirmAction} method="POST">
                             <input type="hidden" name="session_code" value={logoutConfirm.code} />
-                            <div className={cx(props.kcFormGroupClass)}>
+                            <div className={clsx(kcProps.kcFormGroupClass)}>
                                 <div id="kc-form-options">
-                                    <div className={cx(props.kcFormOptionsWrapperClass)}></div>
+                                    <div className={clsx(kcProps.kcFormOptionsWrapperClass)}></div>
                                 </div>
-                                <div id="kc-form-buttons" className={cx(props.kcFormGroupClass)}>
+                                <div id="kc-form-buttons" className={clsx(kcProps.kcFormGroupClass)}>
                                     <input
                                         tabIndex={4}
-                                        className={cx(
-                                            props.kcButtonClass,
-                                            props.kcButtonPrimaryClass,
-                                            props.kcButtonBlockClass,
-                                            props.kcButtonLargeClass
+                                        className={clsx(
+                                            kcProps.kcButtonClass,
+                                            kcProps.kcButtonPrimaryClass,
+                                            kcProps.kcButtonBlockClass,
+                                            kcProps.kcButtonLargeClass
                                         )}
                                         name="confirmLogout"
                                         id="kc-logout"

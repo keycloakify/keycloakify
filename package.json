@@ -1,6 +1,6 @@
 {
     "name": "keycloakify",
-    "version": "6.0.0-beta.14",
+    "version": "6.8.10",
     "description": "Keycloak theme generator for Reacts app",
     "repository": {
         "type": "git",
@@ -13,7 +13,8 @@
         "build:test": "rimraf dist_test/ && tsc -p src/test && yarn copy-files dist_test/",
         "grant-exec-perms": "node dist/bin/tools/grant-exec-perms.js",
         "copy-files": "copyfiles -u 1 src/**/*.ftl",
-        "test": "yarn build:test && node dist_test/test/bin && node dist_test/test/lib",
+        "pretest": "yarn build:test",
+        "test": "node dist_test/test/bin && node dist_test/test/lib",
         "generate-messages": "node dist/bin/generate-i18n-messages.js",
         "link_in_test_app": "node dist/bin/link_in_test_app.js",
         "_format": "prettier '**/*.{ts,tsx,json,md}'",
@@ -54,12 +55,12 @@
     ],
     "homepage": "https://github.com/garronej/keycloakify",
     "peerDependencies": {
-        "@emotion/react": "^11.4.1",
         "react": "^16.8.0 || ^17.0.0 || ^18.0.0"
     },
     "devDependencies": {
-        "@emotion/react": "^11.4.1",
+        "@babel/core": "^7.0.0",
         "@types/memoizee": "^0.4.7",
+        "@types/minimist": "^1.2.2",
         "@types/node": "^17.0.25",
         "@types/react": "18.0.9",
         "copyfiles": "^2.4.1",
@@ -69,21 +70,24 @@
         "properties-parser": "^0.3.1",
         "react": "18.1.0",
         "rimraf": "^3.0.2",
+        "@emotion/react": "^11.10.4",
         "typescript": "^4.2.3"
     },
     "dependencies": {
         "@octokit/rest": "^18.12.0",
         "cheerio": "^1.0.0-rc.5",
         "cli-select": "^1.1.2",
-        "evt": "^2.4.0",
+        "evt": "^2.4.13",
         "memoizee": "^0.4.15",
         "minimal-polyfills": "^2.2.2",
+        "minimist": "^1.2.6",
         "path-browserify": "^1.0.1",
-        "powerhooks": "^0.20.15",
+        "powerhooks": "^0.20.32",
         "react-markdown": "^5.0.3",
+        "rfc4648": "^1.5.2",
         "scripting-tools": "^0.19.13",
-        "tsafe": "^1.0.1",
-        "tss-react": "^4.1.1",
+        "tsafe": "^1.4.1",
+        "tss-react": "4.4.1-rc.0",
         "zod": "^3.17.10"
     }
 }

@@ -2,6 +2,7 @@ import type { PageId } from "../../bin/keycloakify/generateFtl";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
 import type { MessageKeyBase } from "../i18n";
+import type { KcTemplateClassKey } from "../components/KcProps";
 
 type ExtractAfterStartingWith<Prefix extends string, StrEnum> = StrEnum extends `${Prefix}${infer U}` ? U : never;
 
@@ -19,13 +20,28 @@ export type KcContextBase =
     | KcContextBase.LoginVerifyEmail
     | KcContextBase.Terms
     | KcContextBase.LoginOtp
+    | KcContextBase.LoginUsername
+    | KcContextBase.WebauthnAuthenticate
+    | KcContextBase.LoginPassword
     | KcContextBase.LoginUpdatePassword
     | KcContextBase.LoginUpdateProfile
     | KcContextBase.LoginIdpLinkConfirm
     | KcContextBase.LoginIdpLinkEmail
     | KcContextBase.LoginPageExpired
     | KcContextBase.LoginConfigTotp
-    | KcContextBase.LogoutConfirm;
+    | KcContextBase.LogoutConfirm
+    | KcContextBase.UpdateUserProfile
+    | KcContextBase.IdpReviewUserProfile;
+
+export type WebauthnAuthenticator = {
+    credentialId: string;
+    transports: {
+        iconClass: KcTemplateClassKey;
+        displayNameProperties: MessageKeyBase[];
+    };
+    label: string;
+    createdAt: string;
+};
 
 export declare namespace KcContextBase {
     export type Common = {
@@ -196,6 +212,77 @@ export declare namespace KcContextBase {
         };
     };
 
+    export type LoginUsername = Common & {
+        pageId: "login-username.ftl";
+        url: {
+            loginResetCredentialsUrl: string;
+            registrationUrl: string;
+        };
+        realm: {
+            loginWithEmailAllowed: boolean;
+            rememberMe: boolean;
+            password: boolean;
+            resetPasswordAllowed: boolean;
+            registrationAllowed: boolean;
+        };
+        registrationDisabled: boolean;
+        login: {
+            username?: string;
+            rememberMe?: boolean;
+        };
+        usernameHidden?: boolean;
+        social: {
+            displayInfo: boolean;
+            providers?: {
+                loginUrl: string;
+                alias: string;
+                providerId: string;
+                displayName: string;
+            }[];
+        };
+    };
+
+    export type LoginPassword = Common & {
+        pageId: "login-password.ftl";
+        url: {
+            loginResetCredentialsUrl: string;
+            registrationUrl: string;
+        };
+        realm: {
+            resetPasswordAllowed: boolean;
+        };
+        auth?: {
+            showUsername?: boolean;
+            showResetCredentials?: boolean;
+            showTryAnotherWayLink?: boolean;
+            attemptedUsername?: string;
+        };
+        social: {
+            displayInfo: boolean;
+        };
+        login: {
+            password?: string;
+        };
+    };
+
+    export type WebauthnAuthenticate = Common & {
+        pageId: "webauthn-authenticate.ftl";
+        authenticators: {
+            authenticators: WebauthnAuthenticator[];
+        };
+        challenge: string;
+        // I hate this:
+        userVerification: UserVerificationRequirement | "not specified";
+        rpId: string;
+        createTimeout: string;
+        isUserIdentified: "true" | "false";
+        shouldDisplayAuthenticators: boolean;
+        social: {
+            displayInfo: boolean;
+        };
+        login: {};
+    };
+
     export type LoginUpdatePassword = Common & {
         pageId: "login-update-password.ftl";
         username: string;
@@ -268,6 +355,23 @@ export declare namespace KcContextBase {
         logoutConfirm: {
             code: string;
             skipLink?: boolean;
+        };
+    };
+
+    export type UpdateUserProfile = Common & {
+        pageId: "update-user-profile.ftl";
+        profile: {
+            attributes: Attribute[];
+            attributesByName: Record<string, Attribute>;
+        };
+    };
+
+    export type IdpReviewUserProfile = Common & {
+        pageId: "idp-review-user-profile.ftl";
+        profile: {
+            context: "IDP_REVIEW";
+            attributes: Attribute[];
+            attributesByName: Record<string, Attribute>;
         };
     };
 }

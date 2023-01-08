@@ -13,11 +13,11 @@
     "packageRules": [
         {
             "packagePatterns": ["*"],
-            "excludePackagePatterns": ["tss-react", "powerhooks", "tsafe", "evt"],
+            "excludePackagePatterns": ["powerhooks", "tsafe", "evt"],
             "enabled": false
         },
         {
-            "packagePatterns": ["tss-react", "powerhooks", "tsafe", "evt"],
+            "packagePatterns": ["powerhooks", "tsafe", "evt"],
             "matchUpdateTypes": ["minor", "patch"],
             "automerge": true,
             "automergeType": "branch",

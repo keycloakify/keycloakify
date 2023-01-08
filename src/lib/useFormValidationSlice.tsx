@@ -304,13 +304,17 @@ export function useGetErrors(params: {
     return { getErrors };
 }
 
+/**
+ * NOTE: The attributesWithPassword returned is actually augmented with
+ * artificial password related attributes only if kcContext.passwordRequired === true
+ */
 export function useFormValidationSlice(params: {
     kcContext: {
         messagesPerField: Pick<KcContextBase.Common["messagesPerField"], "existsError" | "get">;
         profile: {
             attributes: Attribute[];
         };
-        passwordRequired: boolean;
+        passwordRequired?: boolean;
         realm: { registrationEmailAsUsername: boolean };
     };
     /** NOTE: Try to avoid passing a new ref every render for better performances. */

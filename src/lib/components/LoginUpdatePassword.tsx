@@ -1,12 +1,20 @@
 import React, { memo } from "react";
-import Template from "./Template";
+import DefaultTemplate from "./Template";
+import type { TemplateProps } from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import { useCssAndCx } from "../tools/useCssAndCx";
+import { clsx } from "../tools/clsx";
 import type { I18n } from "../i18n";
 
-const LoginUpdatePassword = memo(({ kcContext, i18n, ...props }: { kcContext: KcContextBase.LoginUpdatePassword; i18n: I18n } & KcProps) => {
-    const { cx } = useCssAndCx();
+export type LoginUpdatePasswordProps = KcProps & {
+    kcContext: KcContextBase.LoginUpdatePassword;
+    i18n: I18n;
+    doFetchDefaultThemeResources?: boolean;
+    Template?: (props: TemplateProps) => JSX.Element | null;
+};
+
+const LoginUpdatePassword = memo((props: LoginUpdatePasswordProps) => {
+    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template = DefaultTemplate, ...kcProps } = props;
 
     const { msg, msgStr } = i18n;
 
@@ -14,11 +22,10 @@ const LoginUpdatePassword = memo(({ kcContext, i18n, ...props }: { kcContext: Kc
 
     return (
         <Template
-            {...{ kcContext, i18n, ...props }}
-            doFetchDefaultThemeResources={true}
+            {...{ kcContext, i18n, doFetchDefaultThemeResources, ...kcProps }}
             headerNode={msg("updatePasswordTitle")}
             formNode={
-                <form id="kc-passwd-update-form" className={cx(props.kcFormClass)} action={url.loginAction} method="post">
+                <form id="kc-passwd-update-form" className={clsx(kcProps.kcFormClass)} action={url.loginAction} method="post">
                     <input
                         type="text"
                         id="username"
@@ -30,44 +37,46 @@ const LoginUpdatePassword = memo(({ kcContext, i18n, ...props }: { kcContext: Kc
                     />
                     <input type="password" id="password" name="password" autoComplete="current-password" style={{ display: "none" }} />
 
-                    <div className={cx(props.kcFormGroupClass, messagesPerField.printIfExists("password", props.kcFormGroupErrorClass))}>
-                        <div className={cx(props.kcLabelWrapperClass)}>
-                            <label htmlFor="password-new" className={cx(props.kcLabelClass)}>
+                    <div className={clsx(kcProps.kcFormGroupClass, messagesPerField.printIfExists("password", kcProps.kcFormGroupErrorClass))}>
+                        <div className={clsx(kcProps.kcLabelWrapperClass)}>
+                            <label htmlFor="password-new" className={clsx(kcProps.kcLabelClass)}>
                                 {msg("passwordNew")}
                             </label>
                         </div>
-                        <div className={cx(props.kcInputWrapperClass)}>
+                        <div className={clsx(kcProps.kcInputWrapperClass)}>
                             <input
                                 type="password"
                                 id="password-new"
                                 name="password-new"
                                 autoFocus
                                 autoComplete="new-password"
-                                className={cx(props.kcInputClass)}
+                                className={clsx(kcProps.kcInputClass)}
                             />
                         </div>
                     </div>
 
-                    <div className={cx(props.kcFormGroupClass, messagesPerField.printIfExists("password-confirm", props.kcFormGroupErrorClass))}>
-                        <div className={cx(props.kcLabelWrapperClass)}>
-                            <label htmlFor="password-confirm" className={cx(props.kcLabelClass)}>
+                    <div
+                        className={clsx(kcProps.kcFormGroupClass, messagesPerField.printIfExists("password-confirm", kcProps.kcFormGroupErrorClass))}
+                    >
+                        <div className={clsx(kcProps.kcLabelWrapperClass)}>
+                            <label htmlFor="password-confirm" className={clsx(kcProps.kcLabelClass)}>
                                 {msg("passwordConfirm")}
                             </label>
                         </div>
-                        <div className={cx(props.kcInputWrapperClass)}>
+                        <div className={clsx(kcProps.kcInputWrapperClass)}>
                             <input
                                 type="password"
                                 id="password-confirm"
                                 name="password-confirm"
                                 autoComplete="new-password"
-                                className={cx(props.kcInputClass)}
+                                className={clsx(kcProps.kcInputClass)}
                             />
                         </div>
                     </div>
 
-                    <div className={cx(props.kcFormGroupClass)}>
-                        <div id="kc-form-options" className={cx(props.kcFormOptionsClass)}>
-                            <div className={cx(props.kcFormOptionsWrapperClass)}>
+                    <div className={clsx(kcProps.kcFormGroupClass)}>
+                        <div id="kc-form-options" className={clsx(kcProps.kcFormOptionsClass)}>
+                            <div className={clsx(kcProps.kcFormOptionsWrapperClass)}>
                                 {isAppInitiatedAction && (
                                     <div className="checkbox">
                                         <label>
@@ -79,16 +88,16 @@ const LoginUpdatePassword = memo(({ kcContext, i18n, ...props }: { kcContext: Kc
                             </div>
                         </div>
 
-                        <div id="kc-form-buttons" className={cx(props.kcFormButtonsClass)}>
+                        <div id="kc-form-buttons" className={clsx(kcProps.kcFormButtonsClass)}>
                             {isAppInitiatedAction ? (
                                 <>
                                     <input
-                                        className={cx(props.kcButtonClass, props.kcButtonPrimaryClass, props.kcButtonLargeClass)}
+                                        className={clsx(kcProps.kcButtonClass, kcProps.kcButtonPrimaryClass, kcProps.kcButtonLargeClass)}
                                         type="submit"
                                         defaultValue={msgStr("doSubmit")}
                                     />
                                     <button
-                                        className={cx(props.kcButtonClass, props.kcButtonDefaultClass, props.kcButtonLargeClass)}
+                                        className={clsx(kcProps.kcButtonClass, kcProps.kcButtonDefaultClass, kcProps.kcButtonLargeClass)}
                                         type="submit"
                                         name="cancel-aia"
                                         value="true"
@@ -98,11 +107,11 @@ const LoginUpdatePassword = memo(({ kcContext, i18n, ...props }: { kcContext: Kc
                                 </>
                             ) : (
                                 <input
-                                    className={cx(
-                                        props.kcButtonClass,
-                                        props.kcButtonPrimaryClass,
-                                        props.kcButtonBlockClass,
-                                        props.kcButtonLargeClass
+                                    className={clsx(
+                                        kcProps.kcButtonClass,
+                                        kcProps.kcButtonPrimaryClass,
+                                        kcProps.kcButtonBlockClass,
+                                        kcProps.kcButtonLargeClass
                                     )}
                                     type="submit"
                                     defaultValue={msgStr("doSubmit")}

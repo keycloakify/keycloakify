@@ -1,16 +1,24 @@
 import React, { useEffect, memo } from "react";
-import Template from "./Template";
+import DefaultTemplate from "./Template";
+import type { TemplateProps } from "./Template";
 import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
 import { headInsert } from "../tools/headInsert";
 import { pathJoin } from "../../bin/tools/pathJoin";
-import { useCssAndCx } from "../tools/useCssAndCx";
+import { clsx } from "../tools/clsx";
 import type { I18n } from "../i18n";
 
-const LoginOtp = memo(({ kcContext, i18n, ...props }: { kcContext: KcContextBase.LoginOtp; i18n: I18n } & KcProps) => {
-    const { otpLogin, url } = kcContext;
+export type LoginOtpProps = KcProps & {
+    kcContext: KcContextBase.LoginOtp;
+    i18n: I18n;
+    doFetchDefaultThemeResources?: boolean;
+    Template?: (props: TemplateProps) => JSX.Element | null;
+};
 
-    const { cx } = useCssAndCx();
+const LoginOtp = memo((props: LoginOtpProps) => {
+    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template = DefaultTemplate, ...kcProps } = props;
+
+    const { otpLogin, url } = kcContext;
 
     const { msg, msgStr } = i18n;
 
@@ -33,46 +41,50 @@ const LoginOtp = memo(({ kcContext, i18n, ...props }: { kcContext: KcContextBase
 
     return (
         <Template
-            {...{ kcContext, i18n, ...props }}
-            doFetchDefaultThemeResources={true}
+            {...{ kcContext, i18n, doFetchDefaultThemeResources, ...kcProps }}
             headerNode={msg("doLogIn")}
             formNode={
-                <form id="kc-otp-login-form" className={cx(props.kcFormClass)} action={url.loginAction} method="post">
+                <form id="kc-otp-login-form" className={clsx(kcProps.kcFormClass)} action={url.loginAction} method="post">
                     {otpLogin.userOtpCredentials.length > 1 && (
-                        <div className={cx(props.kcFormGroupClass)}>
-                            <div className={cx(props.kcInputWrapperClass)}>
+                        <div className={clsx(kcProps.kcFormGroupClass)}>
+                            <div className={clsx(kcProps.kcInputWrapperClass)}>
                                 {otpLogin.userOtpCredentials.map(otpCredential => (
-                                    <div key={otpCredential.id} className={cx(props.kcSelectOTPListClass)}>
+                                    <div key={otpCredential.id} className={clsx(kcProps.kcSelectOTPListClass)}>
                                         <input type="hidden" value="${otpCredential.id}" />
-                                        <div className={cx(props.kcSelectOTPListItemClass)}>
-                                            <span className={cx(props.kcAuthenticatorOtpCircleClass)} />
-                                            <h2 className={cx(props.kcSelectOTPItemHeadingClass)}>{otpCredential.userLabel}</h2>
+                                        <div className={clsx(kcProps.kcSelectOTPListItemClass)}>
+                                            <span className={clsx(kcProps.kcAuthenticatorOtpCircleClass)} />
+                                            <h2 className={clsx(kcProps.kcSelectOTPItemHeadingClass)}>{otpCredential.userLabel}</h2>
                                         </div>
                                     </div>
                                 ))}
                             </div>
                         </div>
                     )}
-                    <div className={cx(props.kcFormGroupClass)}>
-                        <div className={cx(props.kcLabelWrapperClass)}>
-                            <label htmlFor="otp" className={cx(props.kcLabelClass)}>
+                    <div className={clsx(kcProps.kcFormGroupClass)}>
+                        <div className={clsx(kcProps.kcLabelWrapperClass)}>
+                            <label htmlFor="otp" className={clsx(kcProps.kcLabelClass)}>
                                 {msg("loginOtpOneTime")}
                             </label>
                         </div>
 
-                        <div className={cx(props.kcInputWrapperClass)}>
-                            <input id="otp" name="otp" autoComplete="off" type="text" className={cx(props.kcInputClass)} autoFocus />
+                        <div className={clsx(kcProps.kcInputWrapperClass)}>
+                            <input id="otp" name="otp" autoComplete="off" type="text" className={clsx(kcProps.kcInputClass)} autoFocus />
                         </div>
                     </div>
 
-                    <div className={cx(props.kcFormGroupClass)}>
-                        <div id="kc-form-options" className={cx(props.kcFormOptionsClass)}>
-                            <div className={cx(props.kcFormOptionsWrapperClass)} />
+                    <div className={clsx(kcProps.kcFormGroupClass)}>
+                        <div id="kc-form-options" className={clsx(kcProps.kcFormOptionsClass)}>
+                            <div className={clsx(kcProps.kcFormOptionsWrapperClass)} />
                         </div>
 
-                        <div id="kc-form-buttons" className={cx(props.kcFormButtonsClass)}>
+                        <div id="kc-form-buttons" className={clsx(kcProps.kcFormButtonsClass)}>
                             <input
-                                className={cx(props.kcButtonClass, props.kcButtonPrimaryClass, props.kcButtonBlockClass, props.kcButtonLargeClass)}
+                                className={clsx(
+                                    kcProps.kcButtonClass,
+                                    kcProps.kcButtonPrimaryClass,
+                                    kcProps.kcButtonBlockClass,
+                                    kcProps.kcButtonLargeClass
+                                )}
                                 name="login"
                                 id="kc-login"
                                 type="submit"
