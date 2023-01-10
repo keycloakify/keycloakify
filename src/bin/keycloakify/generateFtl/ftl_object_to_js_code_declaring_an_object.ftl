@@ -98,7 +98,7 @@ ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
                     if(fieldName === "${fieldName}" ){
                         <#attempt>
                             <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
-                                return <#if messagesPerField.exists('username', 'password')>true<#else>false</#if>
+                                return <#if messagesPerField.exists('username') ||  messagesPerField.exists('password')>true<#else>false</#if>;
                             <#else>
                                 return <#if messagesPerField.exists('${fieldName}')>true<#else>false</#if>;
                             </#if>
