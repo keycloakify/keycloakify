@@ -16,7 +16,7 @@ fs.writeFileSync(
                     ...packageJsonParsed,
                     "main": packageJsonParsed["main"].replace(/^dist\//, ""),
                     "types": packageJsonParsed["types"].replace(/^dist\//, ""),
-                    "bin": packageJsonParsed["bin"].replace(/^dist\//, "")
+                    "bin": Object.fromEntries(Object.entries<string>(packageJsonParsed["bin"]).map(([k, v]) => [k, v.replace(/^dist\//, "")]))
                 };
             })(),
             null,
