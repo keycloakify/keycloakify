@@ -82,7 +82,7 @@
         "minimal-polyfills": "^2.2.2",
         "minimist": "^1.2.6",
         "path-browserify": "^1.0.1",
-        "powerhooks": "^0.20.32",
+        "powerhooks": "^0.21.0",
         "react-markdown": "^5.0.3",
         "rfc4648": "^1.5.2",
         "scripting-tools": "^0.19.13",
