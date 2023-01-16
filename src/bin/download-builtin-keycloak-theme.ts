@@ -7,11 +7,11 @@ import { promptKeycloakVersion } from "./promptKeycloakVersion";
 import { getCliOptions } from "./tools/cliOptions";
 import { getLogger } from "./tools/logger";
 
-export function downloadBuiltinKeycloakTheme(params: { keycloakVersion: string; destDirPath: string; isSilent: boolean }) {
+export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: string; destDirPath: string; isSilent: boolean }) {
     const { keycloakVersion, destDirPath, isSilent } = params;
 
     for (const ext of ["", "-community"]) {
-        downloadAndUnzip({
+        await downloadAndUnzip({
             "destDirPath": destDirPath,
             "url": `https://github.com/keycloak/keycloak/archive/refs/tags/${keycloakVersion}.zip`,
             "pathOfDirToExtractInArchive": `keycloak-${keycloakVersion}/themes/src/main/resources${ext}/theme`,
@@ -31,7 +31,7 @@ if (require.main === module) {
 
         logger.log(`Downloading builtins theme of Keycloak ${keycloakVersion} here ${destDirPath}`);
 
-        downloadBuiltinKeycloakTheme({
+        await downloadBuiltinKeycloakTheme({
             keycloakVersion,
             destDirPath,
             isSilent
