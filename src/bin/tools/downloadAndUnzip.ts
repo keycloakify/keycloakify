@@ -66,7 +66,7 @@ async function download(url: string, dir: string): Promise<string> {
         function request(url1: URL) {
             const headers: Record<string, string> = {};
             if (etag) headers["If-None-Match"] = etag;
-            const req = (url1.protocol === "https:" ? https : http).get(url1, { headers }, response => {
+            (url1.protocol === "https:" ? https : http).get(url1, { headers }, response => {
                 if (response.statusCode === 301 || response.statusCode === 302) {
                     // follow redirects
                     request(new URL(response.headers.location!!));
