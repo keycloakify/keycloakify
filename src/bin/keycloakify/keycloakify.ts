@@ -13,7 +13,7 @@ const reactProjectDirPath = process.cwd();
 export const keycloakThemeBuildingDirPath = pathJoin(reactProjectDirPath, "build_keycloak");
 export const keycloakThemeEmailDirPath = pathJoin(keycloakThemeBuildingDirPath, "..", "keycloak_email");
 
-export function main() {
+export async function main() {
     const { isSilent, hasExternalAssets } = getCliOptions(process.argv.slice(2));
     const logger = getLogger({ isSilent });
     logger.log("🔏 Building the keycloak theme...⌚");
@@ -33,7 +33,7 @@ export function main() {
         "isSilent": isSilent
     });
 
-    const { doBundlesEmailTemplate } = generateKeycloakThemeResources({
+    const { doBundlesEmailTemplate } = await generateKeycloakThemeResources({
         keycloakThemeBuildingDirPath,
         keycloakThemeEmailDirPath,
         "reactAppBuildDirPath": pathJoin(reactProjectDirPath, "build"),

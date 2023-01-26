@@ -5,7 +5,6 @@ import { replaceImportsFromStaticInJsCode } from "./replacers/replaceImportsFrom
 import { replaceImportsInCssCode } from "./replacers/replaceImportsInCssCode";
 import { generateFtlFilesCodeFactory, pageIds } from "./generateFtl";
 import { downloadBuiltinKeycloakTheme } from "../download-builtin-keycloak-theme";
-import * as child_process from "child_process";
 import { mockTestingResourcesCommonPath, mockTestingResourcesPath, mockTestingSubDirOfPublicDirBasename } from "../mockTestingResourcesPath";
 import { isInside } from "../tools/isInside";
 import type { BuildOptions } from "./BuildOptions";
@@ -53,13 +52,13 @@ export namespace BuildOptionsLike {
     assert<typeof buildOptions extends BuildOptionsLike ? true : false>();
 }
 
-export function generateKeycloakThemeResources(params: {
+export async function generateKeycloakThemeResources(params: {
     reactAppBuildDirPath: string;
     keycloakThemeBuildingDirPath: string;
     keycloakThemeEmailDirPath: string;
     keycloakVersion: string;
     buildOptions: BuildOptionsLike;
-}): { doBundlesEmailTemplate: boolean } {
+}): Promise<{ doBundlesEmailTemplate: boolean }> {
     const { reactAppBuildDirPath, keycloakThemeBuildingDirPath, keycloakThemeEmailDirPath, keycloakVersion, buildOptions } = params;
 
     const logger = getLogger({ isSilent: buildOptions.isSilent });
@@ -155,7 +154,7 @@ export function generateKeycloakThemeResources(params: {
     {
         const tmpDirPath = pathJoin(themeDirPath, "..", "tmp_xxKdLpdIdLd");
 
-        downloadBuiltinKeycloakTheme({
+        await downloadBuiltinKeycloakTheme({
             keycloakVersion,
             "destDirPath": tmpDirPath,
             isSilent: buildOptions.isSilent
@@ -190,8 +189,7 @@ export function generateKeycloakThemeResources(params: {
         );
 
         fs.writeFileSync(pathJoin(keycloakResourcesWithinPublicDirPath, ".gitignore"), Buffer.from("*", "utf8"));
-
-        child_process.execSync(`rm -r ${tmpDirPath}`);
+        fs.rmSync(tmpDirPath, { recursive: true, force: true });
     }
 
     fs.writeFileSync(
