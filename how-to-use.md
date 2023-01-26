@@ -6,10 +6,6 @@ It's a good idea to first read this quick start section to understand the basic 
 However, we recommend you start hacking from [**the starter project**](https://github.com/garronej/keycloakify-starter) instead of setting up Keycloakify from scratch.
 {% endhint %}
 
-{% hint style="warning" %}
-Save yourself some time, have quick look at the [requirements page](./). **Windows** users in particular!
-{% endhint %}
-
 ```
 yarn add keycloakify
 ```
