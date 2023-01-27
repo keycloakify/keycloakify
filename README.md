@@ -49,7 +49,7 @@
 
 # Changelog highlights
 
-## 6.9.0
+## 6.10.0
 
 -   Widows compat (thanks to @lordvlad, [see PR](https://github.com/InseeFrLab/keycloakify/pull/226)). WSL is no longer required 🎉
 
