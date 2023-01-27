@@ -1,10 +1,17 @@
 import { getProjectRoot } from "./getProjectRoot";
 import { join as pathJoin } from "path";
-import * as child_process from "child_process";
-import * as fs from "fs";
+import { constants } from "fs";
+import { chmod, stat } from "fs/promises";
 
-Object.entries<string>(JSON.parse(fs.readFileSync(pathJoin(getProjectRoot(), "package.json")).toString("utf8"))["bin"]).forEach(([, scriptPath]) =>
-    child_process.execSync(`chmod +x ${scriptPath}`, {
-        "cwd": getProjectRoot()
-    })
-);
+async () => {
+    var { bin } = await import(pathJoin(getProjectRoot(), "package.json"));
+
+    var promises = Object.values<string>(bin).map(async scriptPath => {
+        const fullPath = pathJoin(getProjectRoot(), scriptPath);
+        const oldMode = (await stat(fullPath)).mode;
+        const newMode = oldMode | constants.S_IXUSR | constants.S_IXGRP | constants.S_IXOTH;
+        await chmod(fullPath, newMode);
+    });
+
+    await Promise.all(promises);
+};
