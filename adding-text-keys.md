@@ -7,7 +7,7 @@ description: >-
 # 🌎 i18n: msg(...)
 
 {% hint style="info" %}
-In Keycloakify you don't [directly eddit the `messages_xx.properties` files](https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FsspJ8BvaNa5VrAWRnnD0%2Fuploads%2FARZ2fA82vANcrQ30kEac%2FUntitled.png?alt=media\&token=14c35c9a-e78d-4cf0-9037-22097eb6071b). &#x20;
+In Keycloakify you don't [directly edit the `messages_xx.properties` files](https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FsspJ8BvaNa5VrAWRnnD0%2Fuploads%2FARZ2fA82vANcrQ30kEac%2FUntitled.png?alt=media\&token=14c35c9a-e78d-4cf0-9037-22097eb6071b). &#x20;
 {% endhint %}
 
 [src/KcApp/KcApp.tsx](https://github.com/garronej/keycloakify-starter/blob/main/src/KcApp/KcApp.tsx)
