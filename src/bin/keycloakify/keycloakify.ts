@@ -7,6 +7,7 @@ import * as fs from "fs";
 import { readBuildOptions } from "./BuildOptions";
 import { getLogger } from "../tools/logger";
 import { getCliOptions } from "../tools/cliOptions";
+import jar from "../tools/jar";
 
 const reactProjectDirPath = process.cwd();
 
@@ -45,17 +46,30 @@ export async function main() {
     });
 
     const { jarFilePath } = generateJavaStackFiles({
-        "version": buildOptions.version,
         keycloakThemeBuildingDirPath,
         doBundlesEmailTemplate,
         buildOptions
     });
 
-    child_process.execSync("mvn package", {
-        "cwd": keycloakThemeBuildingDirPath
-    });
+    if (buildOptions.bundler === "none") {
+        logger.log("😱 Skipping bundling step, there will be no jar");
+    } else if (buildOptions.bundler === "keycloakify") {
+        logger.log("🫶 Let keycloakify do its thang");
+        await jar({
+            "rootPath": keycloakThemeBuildingDirPath,
+            "version": buildOptions.version,
+            "groupId": buildOptions.groupId,
+            "artifactId": buildOptions.artifactId || `${buildOptions.themeName}-keycloak-theme`,
+            "targetPath": jarFilePath
+        });
+    } else {
+        logger.log("🫙 Run maven to deliver a jar");
+        child_process.execSync("mvn package", {
+            "cwd": keycloakThemeBuildingDirPath
+        });
+    }
 
-    //We want, however, to test in a container running the latest Keycloak version
+    // We want, however, to test in a container running the latest Keycloak version
     const containerKeycloakVersion = "20.0.1";
 
     generateStartKeycloakTestingContainer({

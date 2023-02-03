@@ -4,6 +4,8 @@ import type { Equals } from "tsafe";
 import { id } from "tsafe/id";
 import { parse as urlParse } from "url";
 
+const BUNDLERS = ["mvn", "keycloakify", "none"] as const;
+type Bundler = typeof BUNDLERS[number];
 type ParsedPackageJson = {
     name: string;
     version: string;
@@ -12,6 +14,9 @@ type ParsedPackageJson = {
         extraPages?: string[];
         extraThemeProperties?: string[];
         areAppAndKeycloakServerSharingSameDomain?: boolean;
+        artifactId?: string;
+        groupId?: string;
+        bundler?: Bundler;
     };
 };
 
@@ -23,7 +28,10 @@ const zParsedPackageJson = z.object({
         .object({
             "extraPages": z.array(z.string()).optional(),
             "extraThemeProperties": z.array(z.string()).optional(),
-            "areAppAndKeycloakServerSharingSameDomain": z.boolean().optional()
+            "areAppAndKeycloakServerSharingSameDomain": z.boolean().optional(),
+            "artifactId": z.string().optional(),
+            "groupId": z.string().optional(),
+            "bundler": z.enum(BUNDLERS).optional()
         })
         .optional()
 });
@@ -40,8 +48,9 @@ export namespace BuildOptions {
         themeName: string;
         extraPages?: string[];
         extraThemeProperties?: string[];
-        //NOTE: Only for the pom.xml file, questionable utility...
         groupId: string;
+        artifactId?: string;
+        bundler?: Bundler;
     };
 
     export type Standalone = Common & {
@@ -108,7 +117,7 @@ export function readBuildOptions(params: {
     const common: BuildOptions.Common = (() => {
         const { name, keycloakify = {}, version, homepage } = parsedPackageJson;
 
-        const { extraPages, extraThemeProperties } = keycloakify ?? {};
+        const { extraPages, extraThemeProperties, groupId, artifactId, bundler } = keycloakify ?? {};
 
         const themeName = name
             .replace(/^@(.*)/, "$1")
@@ -117,10 +126,14 @@ export function readBuildOptions(params: {
 
         return {
             themeName,
+            "bundler": (process.env.KEYCLOAKIFY_BUNDLER ?? bundler) as Bundler | undefined,
+            "artifactId": process.env.KEYCLOAKIFY_ARTIFACT_ID ?? artifactId,
             "groupId": (() => {
                 const fallbackGroupId = `${themeName}.keycloak`;
 
                 return (
+                    process.env.KEYCLOAKIFY_GROUP_ID ??
+                    groupId ??
                     (!homepage
                         ? fallbackGroupId
                         : urlParse(homepage)
@@ -130,7 +143,7 @@ export function readBuildOptions(params: {
                               .join(".") ?? fallbackGroupId) + ".keycloak"
                 );
             })(),
-            "version": version,
+            "version": process.env.KEYCLOAKFIY_VERSION ?? version,
             extraPages,
             extraThemeProperties,
             isSilent

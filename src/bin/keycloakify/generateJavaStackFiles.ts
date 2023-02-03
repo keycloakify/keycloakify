@@ -7,6 +7,8 @@ import type { BuildOptions } from "./BuildOptions";
 export type BuildOptionsLike = {
     themeName: string;
     groupId: string;
+    artifactId?: string;
+    version: string;
 };
 
 {
@@ -16,7 +18,6 @@ export type BuildOptionsLike = {
 }
 
 export function generateJavaStackFiles(params: {
-    version: string;
     keycloakThemeBuildingDirPath: string;
     doBundlesEmailTemplate: boolean;
     buildOptions: BuildOptionsLike;
@@ -24,18 +25,17 @@ export function generateJavaStackFiles(params: {
     jarFilePath: string;
 } {
     const {
-        version,
-        buildOptions: { groupId, themeName },
+        buildOptions: { groupId, themeName, version, artifactId },
         keycloakThemeBuildingDirPath,
         doBundlesEmailTemplate
     } = params;
+
+    const finalArtifactId = artifactId ?? `${themeName}-keycloak-theme`;
 
     {
         const { pomFileCode } = (function generatePomFileCode(): {
             pomFileCode: string;
         } {
-            const artefactId = `${themeName}-keycloak-theme`;
-
             const pomFileCode = [
                 `<?xml version="1.0"?>`,
                 `<project xmlns="http://maven.apache.org/POM/4.0.0"`,
@@ -43,9 +43,9 @@ export function generateJavaStackFiles(params: {
                 `	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">`,
                 `	<modelVersion>4.0.0</modelVersion>`,
                 `	<groupId>${groupId}</groupId>`,
-                `	<artifactId>${artefactId}</artifactId>`,
+                `	<artifactId>${finalArtifactId}</artifactId>`,
                 `	<version>${version}</version>`,
-                `	<name>${artefactId}</name>`,
+                `	<name>${finalArtifactId}</name>`,
                 `	<description />`,
                 `</project>`
             ].join("\n");
@@ -84,6 +84,6 @@ export function generateJavaStackFiles(params: {
     }
 
     return {
-        "jarFilePath": pathJoin(keycloakThemeBuildingDirPath, "target", `${themeName}-${version}.jar`)
+        "jarFilePath": pathJoin(keycloakThemeBuildingDirPath, "target", `${finalArtifactId}-${version}.jar`)
     };
 }
