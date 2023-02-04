@@ -61,5 +61,4 @@ To share your styles between your main app and your login pages you will need to
 
 ### Utility that needs to be installed
 
-* `mvn` ([Maven](https://maven.apache.org)), `rm`, `mkdir`, `curl`, `unzip`.
 * `docker` must be up and running when running `start_keycloak_testing_container.sh`&#x20;
