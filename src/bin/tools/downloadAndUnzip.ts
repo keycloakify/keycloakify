@@ -243,7 +243,7 @@ async function* iterateZipArchive(zipFile: string): ZipRecordGenerator {
         const filenameLength = chunk.readUint16LE(i + 28);
         const extraLength = chunk.readUint16LE(i + 30);
         const commentLength = chunk.readUint16LE(i + 32);
-        // Start of thea actual content byte stream is after the 'local' record header,
+        // Start of the actual content byte stream is after the 'local' record header,
         // which is  30 bytes long plus filename and extra field
         const start = chunk.readUint32LE(i + 42) + 30 + filenameLength + extraLength;
         const end = start + compressedFileSize;

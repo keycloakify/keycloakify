@@ -3,7 +3,11 @@ import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
 import { id } from "tsafe/id";
 import { parse as urlParse } from "url";
+import { typeGuard } from "tsafe/typeGuard";
+import { symToStr } from "tsafe/symToStr";
 
+const bundlers = ["mvn", "keycloakify", "none"] as const;
+type Bundler = typeof bundlers[number];
 type ParsedPackageJson = {
     name: string;
     version: string;
@@ -12,6 +16,9 @@ type ParsedPackageJson = {
         extraPages?: string[];
         extraThemeProperties?: string[];
         areAppAndKeycloakServerSharingSameDomain?: boolean;
+        artifactId?: string;
+        groupId?: string;
+        bundler?: Bundler;
     };
 };
 
@@ -23,7 +30,10 @@ const zParsedPackageJson = z.object({
         .object({
             "extraPages": z.array(z.string()).optional(),
             "extraThemeProperties": z.array(z.string()).optional(),
-            "areAppAndKeycloakServerSharingSameDomain": z.boolean().optional()
+            "areAppAndKeycloakServerSharingSameDomain": z.boolean().optional(),
+            "artifactId": z.string().optional(),
+            "groupId": z.string().optional(),
+            "bundler": z.enum(bundlers).optional()
         })
         .optional()
 });
@@ -40,8 +50,9 @@ export namespace BuildOptions {
         themeName: string;
         extraPages?: string[];
         extraThemeProperties?: string[];
-        //NOTE: Only for the pom.xml file, questionable utility...
         groupId: string;
+        artifactId: string;
+        bundler: Bundler;
     };
 
     export type Standalone = Common & {
@@ -108,7 +119,7 @@ export function readBuildOptions(params: {
     const common: BuildOptions.Common = (() => {
         const { name, keycloakify = {}, version, homepage } = parsedPackageJson;
 
-        const { extraPages, extraThemeProperties } = keycloakify ?? {};
+        const { extraPages, extraThemeProperties, groupId, artifactId, bundler } = keycloakify ?? {};
 
         const themeName = name
             .replace(/^@(.*)/, "$1")
@@ -117,10 +128,26 @@ export function readBuildOptions(params: {
 
         return {
             themeName,
+            "bundler": (() => {
+                const { KEYCLOAKIFY_BUNDLER } = process.env;
+
+                assert(
+                    typeGuard<Bundler | undefined>(
+                        KEYCLOAKIFY_BUNDLER,
+                        [undefined, ...id<readonly string[]>(bundlers)].includes(KEYCLOAKIFY_BUNDLER)
+                    ),
+                    `${symToStr({ KEYCLOAKIFY_BUNDLER })} should be one of ${bundlers.join(", ")}`
+                );
+
+                return KEYCLOAKIFY_BUNDLER ?? bundler ?? "keycloakify";
+            })(),
+            "artifactId": process.env.KEYCLOAKIFY_ARTIFACT_ID ?? artifactId ?? `${themeName}-keycloak-theme`,
             "groupId": (() => {
                 const fallbackGroupId = `${themeName}.keycloak`;
 
                 return (
+                    process.env.KEYCLOAKIFY_GROUP_ID ??
+                    groupId ??
                     (!homepage
                         ? fallbackGroupId
                         : urlParse(homepage)
@@ -130,7 +157,7 @@ export function readBuildOptions(params: {
                               .join(".") ?? fallbackGroupId) + ".keycloak"
                 );
             })(),
-            "version": version,
+            "version": process.env.KEYCLOAKIFY_VERSION ?? version,
             extraPages,
             extraThemeProperties,
             isSilent
