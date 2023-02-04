@@ -4,9 +4,10 @@ import type { Equals } from "tsafe";
 import { id } from "tsafe/id";
 import { parse as urlParse } from "url";
 import { typeGuard } from "tsafe/typeGuard";
+import { symToStr } from "tsafe/symToStr";
 
-const BUNDLERS = ["mvn", "keycloakify", "none"] as const;
-type Bundler = typeof BUNDLERS[number];
+const bundlers = ["mvn", "keycloakify", "none"] as const;
+type Bundler = typeof bundlers[number];
 type ParsedPackageJson = {
     name: string;
     version: string;
@@ -32,7 +33,7 @@ const zParsedPackageJson = z.object({
             "areAppAndKeycloakServerSharingSameDomain": z.boolean().optional(),
             "artifactId": z.string().optional(),
             "groupId": z.string().optional(),
-            "bundler": z.enum(BUNDLERS).optional()
+            "bundler": z.enum(bundlers).optional()
         })
         .optional()
 });
@@ -51,7 +52,7 @@ export namespace BuildOptions {
         extraThemeProperties?: string[];
         groupId: string;
         artifactId?: string;
-        bundler?: Bundler;
+        bundler: Bundler;
     };
 
     export type Standalone = Common & {
@@ -133,11 +134,12 @@ export function readBuildOptions(params: {
                 assert(
                     typeGuard<Bundler | undefined>(
                         KEYCLOAKIFY_BUNDLER,
-                        KEYCLOAKIFY_BUNDLER === undefined || id<readonly string[]>(BUNDLERS).includes(KEYCLOAKIFY_BUNDLER)
-                    )
+                        [undefined, ...id<readonly string[]>(bundlers)].includes(KEYCLOAKIFY_BUNDLER)
+                    ),
+                    `${symToStr({ KEYCLOAKIFY_BUNDLER })} should be one of ${bundlers.join(", ")}`
                 );
 
-                return KEYCLOAKIFY_BUNDLER ?? bundler;
+                return KEYCLOAKIFY_BUNDLER ?? bundler ?? "keycloakify";
             })(),
             "artifactId": process.env.KEYCLOAKIFY_ARTIFACT_ID ?? artifactId,
             "groupId": (() => {
