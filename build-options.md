@@ -95,6 +95,10 @@ When enabled you don't need to specify a `homepage` field in the `package.json`
 
 _Introduced in 6.11_
 
+{% hint style="danger" %}
+This option is currently borken, fixing...&#x20;
+{% endhint %}
+
 Configure if you want Keycloakify to build the final `.jar` for you or not. &#x20;
 
 {% code title="package.json" %}
