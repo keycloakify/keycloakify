@@ -3,6 +3,7 @@ import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
 import { id } from "tsafe/id";
 import { parse as urlParse } from "url";
+import { typeGuard } from "tsafe/typeGuard";
 
 const BUNDLERS = ["mvn", "keycloakify", "none"] as const;
 type Bundler = typeof BUNDLERS[number];
@@ -126,7 +127,18 @@ export function readBuildOptions(params: {
 
         return {
             themeName,
-            "bundler": (process.env.KEYCLOAKIFY_BUNDLER ?? bundler) as Bundler | undefined,
+            "bundler": (() => {
+                const { KEYCLOAKIFY_BUNDLER } = process.env;
+
+                assert(
+                    typeGuard<Bundler | undefined>(
+                        KEYCLOAKIFY_BUNDLER,
+                        KEYCLOAKIFY_BUNDLER === undefined || id<readonly string[]>(BUNDLERS).includes(KEYCLOAKIFY_BUNDLER)
+                    )
+                );
+
+                return KEYCLOAKIFY_BUNDLER ?? bundler;
+            })(),
             "artifactId": process.env.KEYCLOAKIFY_ARTIFACT_ID ?? artifactId,
             "groupId": (() => {
                 const fallbackGroupId = `${themeName}.keycloak`;
@@ -143,7 +155,7 @@ export function readBuildOptions(params: {
                               .join(".") ?? fallbackGroupId) + ".keycloak"
                 );
             })(),
-            "version": process.env.KEYCLOAKFIY_VERSION ?? version,
+            "version": process.env.KEYCLOAKIFY_VERSION ?? version,
             extraPages,
             extraThemeProperties,
             isSilent
