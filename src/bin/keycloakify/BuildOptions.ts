@@ -139,7 +139,7 @@ export function readBuildOptions(params: {
                     `${symToStr({ KEYCLOAKIFY_BUNDLER })} should be one of ${bundlers.join(", ")}`
                 );
 
-                return KEYCLOAKIFY_BUNDLER ?? bundler ?? "keycloakify";
+                return KEYCLOAKIFY_BUNDLER ?? bundler ?? "mvn";
             })(),
             "artifactId": process.env.KEYCLOAKIFY_ARTIFACT_ID ?? artifactId ?? `${themeName}-keycloak-theme`,
             "groupId": (() => {
