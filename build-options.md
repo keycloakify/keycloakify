@@ -80,7 +80,7 @@ This option is only considered when building with [`--external-assets`](build-op
 Set to `true` it tels Keycloakify that you have configured your reverse proxy so that your app and your Keycloak server are under the same domain, example: &#x20;
 
 * _https://example.com/auth_: Keycloak.
-* _https://example.com/x/y/z_: Your App
+* _https://example.com (or https://example.com/x/y/z)_: Your App
 
 Example: &#x20;
 
