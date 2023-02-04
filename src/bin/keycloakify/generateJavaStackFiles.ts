@@ -30,8 +30,6 @@ export function generateJavaStackFiles(params: {
         doBundlesEmailTemplate
     } = params;
 
-    const finalArtifactId = artifactId ?? `${themeName}-keycloak-theme`;
-
     {
         const { pomFileCode } = (function generatePomFileCode(): {
             pomFileCode: string;
@@ -43,9 +41,9 @@ export function generateJavaStackFiles(params: {
                 `	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">`,
                 `	<modelVersion>4.0.0</modelVersion>`,
                 `	<groupId>${groupId}</groupId>`,
-                `	<artifactId>${finalArtifactId}</artifactId>`,
+                `	<artifactId>${artifactId}</artifactId>`,
                 `	<version>${version}</version>`,
-                `	<name>${finalArtifactId}</name>`,
+                `	<name>${artifactId}</name>`,
                 `	<description />`,
                 `</project>`
             ].join("\n");
@@ -84,6 +82,6 @@ export function generateJavaStackFiles(params: {
     }
 
     return {
-        "jarFilePath": pathJoin(keycloakThemeBuildingDirPath, "target", `${finalArtifactId}-${version}.jar`)
+        "jarFilePath": pathJoin(keycloakThemeBuildingDirPath, "target", `${artifactId}-${version}.jar`)
     };
 }

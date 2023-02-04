@@ -51,7 +51,7 @@ export namespace BuildOptions {
         extraPages?: string[];
         extraThemeProperties?: string[];
         groupId: string;
-        artifactId?: string;
+        artifactId: string;
         bundler: Bundler;
     };
 
@@ -141,7 +141,7 @@ export function readBuildOptions(params: {
 
                 return KEYCLOAKIFY_BUNDLER ?? bundler ?? "keycloakify";
             })(),
-            "artifactId": process.env.KEYCLOAKIFY_ARTIFACT_ID ?? artifactId,
+            "artifactId": process.env.KEYCLOAKIFY_ARTIFACT_ID ?? artifactId ?? `${themeName}-keycloak-theme`,
             "groupId": (() => {
                 const fallbackGroupId = `${themeName}.keycloak`;
 
