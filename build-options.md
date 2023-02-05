@@ -93,11 +93,7 @@ When enabled you don't need to specify a `homepage` field in the `package.json`
 
 ### keycloakify.bundler&#x20;
 
-_Introduced in 6.11_
-
-{% hint style="danger" %}
-This option is currently borken, fixing...&#x20;
-{% endhint %}
+_Introduced in 6.11.4_
 
 Configure if you want Keycloakify to build the final `.jar` for you or not. &#x20;
 
