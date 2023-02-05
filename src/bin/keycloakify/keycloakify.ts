@@ -56,7 +56,7 @@ export async function main() {
     } else if (buildOptions.bundler === "keycloakify") {
         logger.log("🫶 Let keycloakify do its thang");
         await jar({
-            "rootPath": keycloakThemeBuildingDirPath,
+            "rootPath": pathJoin(keycloakThemeBuildingDirPath, "src"),
             "version": buildOptions.version,
             "groupId": buildOptions.groupId,
             "artifactId": buildOptions.artifactId || `${buildOptions.themeName}-keycloak-theme`,
