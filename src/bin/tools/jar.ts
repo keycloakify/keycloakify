@@ -1,5 +1,4 @@
 import { Readable, Transform } from "stream";
-import { pipeline } from "stream/promises";
 import { dirname, relative, sep } from "path";
 import { createWriteStream } from "fs";
 
@@ -71,19 +70,20 @@ export default async function jar({ groupId, artifactId, version, rootPath, targ
         });
 
     await mkdir(dirname(targetPath), { recursive: true });
-    /**
-     * Create an async pipeline, wait until everything is fully processed
-     */
-    await pipeline(
+
+    // Create an async pipeline, wait until everything is fully processed
+    await new Promise<void>((resolve, reject) => {
         // walk all files in `rootPath` recursively
-        Readable.from(walk(rootPath)),
-        // transform every path into a ZipSource object
-        pathToRecord(),
-        // let the zip lib convert all ZipSource objects into a byte stream
-        zip(),
-        // write that byte stream to targetPath
-        createWriteStream(targetPath, { encoding: "binary" })
-    );
+        Readable.from(walk(rootPath))
+            // transform every path into a ZipSource object
+            .pipe(pathToRecord())
+            // let the zip lib convert all ZipSource objects into a byte stream
+            .pipe(zip())
+            // write that byte stream to targetPath
+            .pipe(createWriteStream(targetPath, { encoding: "binary" }))
+            .on("finish", () => resolve())
+            .on("error", e => reject(e));
+    });
 }
 
 /**
