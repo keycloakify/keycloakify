@@ -49,9 +49,9 @@
 
 # Changelog highlights
 
-## 6.11.0
+## 6.11.4
 
--   <del>You no longer need to have Maven installed to build the theme. Thanks to @lordvlad, [see PR](https://github.com/InseeFrLab/keycloakify/pull/239)</del>.
+-   You no longer need to have Maven installed to build the theme. Thanks to @lordvlad, [see PR](https://github.com/InseeFrLab/keycloakify/pull/239).
 -   Feature new build options: [`bundler`](https://docs.keycloakify.dev/build-options#keycloakify.bundler), [`groupId`](https://docs.keycloakify.dev/build-options#keycloakify.groupid), [`artifactId`](https://docs.keycloakify.dev/build-options#keycloakify.artifactid), [`version`](https://docs.keycloakify.dev/build-options#version).  
     Theses options can be user to customize the output name of the .jar. You can use environnement variables to overrides the values read in the package.json. Thanks to @lordvlad.
 
