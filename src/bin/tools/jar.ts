@@ -1,11 +1,11 @@
 import { Readable, Transform } from "stream";
-import { pipeline } from "stream/promises";
-import { relative, sep } from "path";
+import { dirname, relative, sep } from "path";
 import { createWriteStream } from "fs";
 
 import walk from "./walk";
 import type { ZipSource } from "./zip";
 import zip from "./zip";
+import { mkdir } from "fs/promises";
 
 /** Trim leading whitespace from every line */
 const trimIndent = (s: string) => s.replace(/(\n)\s+/g, "$1");
@@ -57,9 +57,9 @@ export default async function jar({ groupId, artifactId, version, rootPath, targ
     const pathToRecord = () =>
         new Transform({
             objectMode: true,
-            transform: function (path, _, cb) {
-                const filename = relative(rootPath, path).split(sep).join("/");
-                this.push({ filename, path });
+            transform: function (fsPath, _, cb) {
+                const path = relative(rootPath, fsPath).split(sep).join("/");
+                this.push({ path, fsPath });
                 cb();
             },
             final: function () {
@@ -69,19 +69,21 @@ export default async function jar({ groupId, artifactId, version, rootPath, targ
             }
         });
 
-    /**
-     * Create an async pipeline, wait until everything is fully processed
-     */
-    await pipeline(
+    await mkdir(dirname(targetPath), { recursive: true });
+
+    // Create an async pipeline, wait until everything is fully processed
+    await new Promise<void>((resolve, reject) => {
         // walk all files in `rootPath` recursively
-        Readable.from(walk(rootPath)),
-        // transform every path into a ZipSource object
-        pathToRecord(),
-        // let the zip lib convert all ZipSource objects into a byte stream
-        zip(),
-        // write that byte stream to targetPath
-        createWriteStream(targetPath, { encoding: "binary" })
-    );
+        Readable.from(walk(rootPath))
+            // transform every path into a ZipSource object
+            .pipe(pathToRecord())
+            // let the zip lib convert all ZipSource objects into a byte stream
+            .pipe(zip())
+            // write that byte stream to targetPath
+            .pipe(createWriteStream(targetPath, { encoding: "binary" }))
+            .on("finish", () => resolve())
+            .on("error", e => reject(e));
+    });
 }
 
 /**

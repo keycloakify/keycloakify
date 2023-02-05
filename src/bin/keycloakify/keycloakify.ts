@@ -60,10 +60,10 @@ export async function main() {
         case "keycloakify":
             logger.log("🫶 Let keycloakify do its thang");
             await jar({
-                "rootPath": keycloakThemeBuildingDirPath,
+                "rootPath": pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources"),
                 "version": buildOptions.version,
                 "groupId": buildOptions.groupId,
-                "artifactId": buildOptions.artifactId || `${buildOptions.themeName}-keycloak-theme`,
+                "artifactId": buildOptions.artifactId,
                 "targetPath": jarFilePath
             });
             break;
