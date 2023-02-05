@@ -34,7 +34,7 @@ export function generateStartKeycloakTestingContainer(params: {
         pathJoin(keycloakThemeBuildingDirPath, generateStartKeycloakTestingContainer.basename),
         Buffer.from(
             [
-                "#!/bin/bash",
+                "#!/usr/bin/env bash",
                 "",
                 `docker rm ${containerName} || true`,
                 "",

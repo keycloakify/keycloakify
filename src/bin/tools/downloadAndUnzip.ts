@@ -172,7 +172,7 @@ async function unzip(zipFile: string, dir: string, archiveDir?: string): Promise
 
 /**
  *
- * @param file fileto read
+ * @param file file to read
  * @param start first byte to read
  * @param end last byte to read
  * @returns Promise of a buffer of read bytes

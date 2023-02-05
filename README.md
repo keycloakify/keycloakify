@@ -49,6 +49,10 @@
 
 # Changelog highlights
 
+## 6.10.0
+
+-   Widows compat (thanks to @lordvlad, [see PR](https://github.com/InseeFrLab/keycloakify/pull/226)). WSL is no longer required 🎉
+
 ## 6.8.4
 
 -   `@emotion/react` is no longer a peer dependency of Keycloakify.
