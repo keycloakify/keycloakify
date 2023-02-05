@@ -216,7 +216,7 @@ export default function zip() {
     const writeRecord = async (source: ZipSource) => {
         if ("fsPath" in source) await writeFromPath(source.path, source.fsPath);
         else if ("data" in source) await writeFromBuffer(source.path, source.data);
-        else throw new Error("Illegal argument " + typeof source + "  " + source);
+        else throw new Error("Illegal argument " + typeof source + "  " + JSON.stringify(source));
     };
 
     /**

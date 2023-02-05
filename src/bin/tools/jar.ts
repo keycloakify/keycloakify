@@ -57,9 +57,9 @@ export default async function jar({ groupId, artifactId, version, rootPath, targ
     const pathToRecord = () =>
         new Transform({
             objectMode: true,
-            transform: function (path, _, cb) {
-                const filename = relative(rootPath, path).split(sep).join("/");
-                this.push({ filename, path });
+            transform: function (fsPath, _, cb) {
+                const path = relative(rootPath, fsPath).split(sep).join("/");
+                this.push({ path, fsPath });
                 cb();
             },
             final: function () {
