@@ -1,11 +1,12 @@
 import { Readable, Transform } from "stream";
 import { pipeline } from "stream/promises";
-import { relative, sep } from "path";
+import { dirname, relative, sep } from "path";
 import { createWriteStream } from "fs";
 
 import walk from "./walk";
 import type { ZipSource } from "./zip";
 import zip from "./zip";
+import { mkdir } from "fs/promises";
 
 /** Trim leading whitespace from every line */
 const trimIndent = (s: string) => s.replace(/(\n)\s+/g, "$1");
@@ -69,6 +70,7 @@ export default async function jar({ groupId, artifactId, version, rootPath, targ
             }
         });
 
+    await mkdir(dirname(targetPath), { recursive: true });
     /**
      * Create an async pipeline, wait until everything is fully processed
      */
