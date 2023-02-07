@@ -1639,15 +1639,15 @@ please-upgrade-node@^3.2.0:
   dependencies:
     semver-compare "^1.0.0"
 
-powerhooks@^0.26.0:
-  version "0.26.0"
-  resolved "https://registry.yarnpkg.com/powerhooks/-/powerhooks-0.26.0.tgz#260f8e5c019ea117911c880bf3b371ecd09786df"
-  integrity sha512-FvoEuj340Jm9HPGV98gjDVVdlolaIYXvQ4Xg7fiNtYdeClAJk264uFHAwFo9isXP92OW2ksvy9wVMCwMhFUGGQ==
+powerhooks@^0.26.1:
+  version "0.26.1"
+  resolved "https://registry.yarnpkg.com/powerhooks/-/powerhooks-0.26.1.tgz#4497cb570af7de68a2120c6afc8326524a4a64a0"
+  integrity sha512-jaT1lx6zjB3NkBQDco/aKC0pxm5au0qi1pgWD9Gu1b3f8pwMclP7ToyGyhrPp/B6zFGNIpGDbE9WiXqEQ8ER7g==
   dependencies:
     evt "^2.4.13"
     memoizee "^0.4.15"
     resize-observer-polyfill "^1.5.1"
-    tsafe "^1.4.2"
+    tsafe "^1.4.3"
 
 prettier@^2.3.0:
   version "2.7.1"
@@ -2001,11 +2001,6 @@ tsafe@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-1.4.1.tgz#59cdad8ac41babf88e56dcd1a683ae2fb145d059"
   integrity sha512-3IDBalvf6SyvHFS14UiwCWzqdSdo+Q0k2J7DZyJYaHW/iraW9DJpaBKDJpry3yQs3o/t/A+oGaRW3iVt2lKxzA==
-
-tsafe@^1.4.2:
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-1.4.2.tgz#1cc597f6e286ef8a64b918a0a6284bd04347e11f"
-  integrity sha512-KfP0PYzRjl1LY1DnJPNlD4a0tZSg4uUuZxI4aG04T+j7WJvKZbh1zpaukphhSmtoJMgX1RV8eZVKTEiH8wOGbA==
 
 tsafe@^1.4.3:
   version "1.4.3"
