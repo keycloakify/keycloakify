@@ -1,6 +1,7 @@
 import { Transform, TransformOptions } from "stream";
 import { createReadStream } from "fs";
 import { stat } from "fs/promises";
+import { Blob } from "buffer";
 
 import { deflateBuffer, deflateStream } from "./deflate";
 
