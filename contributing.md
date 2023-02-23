@@ -10,7 +10,7 @@ description: Looking for submitting a PR? Thank you!
 
 If you need to edit the i18n resources it should be done [here](https://github.com/InseeFrLab/keycloakify/blob/58c8306cf467f5884757683cf34428deba55ce57/src/lib/i18n/index.tsx#L9-L30) (and not in the `src/lib/i18n/generated_kcMessages` dir).
 
-The keycloakify components are a plain React translation of the default theme that comes with Keycloak v11.0.3.
+The keycloakify components are a plain React translation of [the default theme that comes with Keycloak v11.0.3](https://github.com/keycloak/keycloak/tree/11.0.3/themes/src/main/resources/theme/base/login).
 
 You can download the FTL/CSS source files the components are based on with the following command:
 
