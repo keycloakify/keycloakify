@@ -1,22 +1,13 @@
-import React, { useState, memo } from "react";
-import DefaultTemplate from "./Template";
-import type { TemplateProps } from "./Template";
-import type { KcProps } from "./KcProps";
-import type { KcContextBase } from "../getKcContext/KcContextBase";
+import React, { useState } from "react";
 import { clsx } from "../tools/clsx";
-import { useConstCallback } from "powerhooks/useConstCallback";
+import { useConstCallback } from "../tools/useConstCallback";
 import type { FormEventHandler } from "react";
-import type { I18n } from "../i18n";
+import type { KcContextBase } from "../getKcContext/KcContextBase";
+import type { PageProps } from "./shared/KcProps";
+import type { I18nBase } from "../i18n";
 
-export type LoginUsernameProps = KcProps & {
-    kcContext: KcContextBase.LoginUsername;
-    i18n: I18n;
-    doFetchDefaultThemeResources?: boolean;
-    Template?: (props: TemplateProps) => JSX.Element | null;
-};
-
-const LoginUsername = memo((props: LoginUsernameProps) => {
-    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template = DefaultTemplate, ...kcProps } = props;
+export default function LoginUsername(props: PageProps<KcContextBase.LoginUsername, I18nBase>) {
+    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
 
     const { social, realm, url, usernameHidden, login, registrationDisabled } = kcContext;
 
@@ -164,6 +155,4 @@ const LoginUsername = memo((props: LoginUsernameProps) => {
             }
         />
     );
-});
-
-export default LoginUsername;
+}

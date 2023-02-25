@@ -1,22 +1,13 @@
-import React, { useEffect, memo } from "react";
-import DefaultTemplate from "./Template";
-import type { TemplateProps } from "./Template";
-import type { KcProps } from "./KcProps";
-import type { KcContextBase } from "../getKcContext/KcContextBase";
+import React, { useEffect } from "react";
 import { headInsert } from "../tools/headInsert";
 import { pathJoin } from "../../bin/tools/pathJoin";
 import { clsx } from "../tools/clsx";
-import type { I18n } from "../i18n";
+import type { KcContextBase } from "../getKcContext/KcContextBase";
+import type { PageProps } from "./shared/KcProps";
+import type { I18nBase } from "../i18n";
 
-export type LoginOtpProps = KcProps & {
-    kcContext: KcContextBase.LoginOtp;
-    i18n: I18n;
-    doFetchDefaultThemeResources?: boolean;
-    Template?: (props: TemplateProps) => JSX.Element | null;
-};
-
-const LoginOtp = memo((props: LoginOtpProps) => {
-    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template = DefaultTemplate, ...kcProps } = props;
+export default function LoginOtp(props: PageProps<KcContextBase.LoginOtp, I18nBase>) {
+    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
 
     const { otpLogin, url } = kcContext;
 
@@ -96,7 +87,7 @@ const LoginOtp = memo((props: LoginOtpProps) => {
             }
         />
     );
-});
+}
 
 declare const $: any;
 
@@ -121,5 +112,3 @@ function evaluateInlineScript() {
         }
     });
 }
-
-export default LoginOtp;

@@ -1,20 +1,11 @@
-import React, { memo } from "react";
-import DefaultTemplate from "./Template";
-import type { TemplateProps } from "./Template";
-import type { KcProps } from "./KcProps";
-import type { KcContextBase } from "../getKcContext/KcContextBase";
+import React from "react";
 import { clsx } from "../tools/clsx";
-import type { I18n } from "../i18n";
+import type { KcContextBase } from "../getKcContext/KcContextBase";
+import type { PageProps } from "./shared/KcProps";
+import type { I18nBase } from "../i18n";
 
-export type LoginUpdateProfile = KcProps & {
-    kcContext: KcContextBase.LoginUpdateProfile;
-    i18n: I18n;
-    doFetchDefaultThemeResources?: boolean;
-    Template?: (props: TemplateProps) => JSX.Element | null;
-};
-
-const LoginUpdateProfile = memo((props: LoginUpdateProfile) => {
-    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template = DefaultTemplate, ...kcProps } = props;
+export default function LoginUpdateProfile(props: PageProps<KcContextBase.LoginUpdateProfile, I18nBase>) {
+    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
 
     const { msg, msgStr } = i18n;
 
@@ -130,6 +121,4 @@ const LoginUpdateProfile = memo((props: LoginUpdateProfile) => {
             }
         />
     );
-});
-
-export default LoginUpdateProfile;
+}

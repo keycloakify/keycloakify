@@ -1,21 +1,12 @@
-import React, { useState, memo } from "react";
-import DefaultTemplate from "./Template";
-import type { TemplateProps } from "./Template";
-import type { KcProps } from "./KcProps";
-import type { KcContextBase } from "../getKcContext/KcContextBase";
+import React, { useState } from "react";
 import { clsx } from "../tools/clsx";
-import type { I18n } from "../i18n";
 import { UserProfileFormFields } from "./shared/UserProfileCommons";
+import type { KcContextBase } from "../getKcContext/KcContextBase";
+import type { PageProps } from "./shared/KcProps";
+import type { I18nBase } from "../i18n";
 
-export type UpdateUserProfileProps = KcProps & {
-    kcContext: KcContextBase.UpdateUserProfile;
-    i18n: I18n;
-    doFetchDefaultThemeResources?: boolean;
-    Template?: (props: TemplateProps) => JSX.Element | null;
-};
-
-const UpdateUserProfile = memo((props: UpdateUserProfileProps) => {
-    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template = DefaultTemplate, ...kcProps } = props;
+export default function UpdateUserProfile(props: PageProps<KcContextBase.UpdateUserProfile, I18nBase>) {
+    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
 
     const { msg, msgStr } = i18n;
 
@@ -73,6 +64,4 @@ const UpdateUserProfile = memo((props: UpdateUserProfileProps) => {
             }
         />
     );
-});
-
-export default UpdateUserProfile;
+}

@@ -2,7 +2,7 @@ import type { PageId } from "../../bin/keycloakify/generateFtl";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
 import type { MessageKeyBase } from "../i18n";
-import type { KcTemplateClassKey } from "../components/KcProps";
+import type { KcTemplateClassKey } from "../components/shared/KcProps";
 
 type ExtractAfterStartingWith<Prefix extends string, StrEnum> = StrEnum extends `${Prefix}${infer U}` ? U : never;
 

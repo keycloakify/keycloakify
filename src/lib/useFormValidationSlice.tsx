@@ -1,8 +1,8 @@
 import "./tools/Array.prototype.every";
 import React, { useMemo, useReducer, Fragment } from "react";
 import type { KcContextBase, Validators, Attribute } from "./getKcContext/KcContextBase";
-import type { I18n, MessageKeyBase } from "./i18n";
-import { useConstCallback } from "powerhooks/useConstCallback";
+import type { I18nBase, MessageKeyBase } from "./i18n";
+import { useConstCallback } from "./tools/useConstCallback";
 import { id } from "tsafe/id";
 import { emailRegexp } from "./tools/emailRegExp";
 
@@ -14,7 +14,7 @@ export function useGetErrors(params: {
             attributes: { name: string; value?: string; validators: Validators }[];
         };
     };
-    i18n: I18n;
+    i18n: I18nBase;
 }) {
     const { kcContext, i18n } = params;
 
@@ -319,7 +319,7 @@ export function useFormValidationSlice(params: {
     };
     /** NOTE: Try to avoid passing a new ref every render for better performances. */
     passwordValidators?: Validators;
-    i18n: I18n;
+    i18n: I18nBase;
 }) {
     const {
         kcContext,

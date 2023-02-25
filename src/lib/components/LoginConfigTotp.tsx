@@ -1,20 +1,11 @@
-import React, { memo } from "react";
-import DefaultTemplate from "./Template";
-import type { TemplateProps } from "./Template";
-import type { KcProps } from "./KcProps";
-import type { KcContextBase } from "../getKcContext/KcContextBase";
+import React from "react";
 import { clsx } from "../tools/clsx";
-import type { I18n } from "../i18n";
+import type { KcContextBase } from "../getKcContext/KcContextBase";
+import type { PageProps } from "./shared/KcProps";
+import type { I18nBase } from "../i18n";
 
-export type LoginConfigTotpProps = KcProps & {
-    kcContext: KcContextBase.LoginConfigTotp;
-    i18n: I18n;
-    doFetchDefaultThemeResources?: boolean;
-    Template?: (props: TemplateProps) => JSX.Element | null;
-};
-
-const LoginConfigTotp = memo((props: LoginConfigTotpProps) => {
-    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template = DefaultTemplate, ...kcProps } = props;
+export default function LoginConfigTotp(props: PageProps<KcContextBase.LoginConfigTotp, I18nBase>) {
+    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
 
     const { url, isAppInitiatedAction, totp, mode, messagesPerField } = kcContext;
 
@@ -188,6 +179,4 @@ const LoginConfigTotp = memo((props: LoginConfigTotpProps) => {
             }
         />
     );
-});
-
-export default LoginConfigTotp;
+}

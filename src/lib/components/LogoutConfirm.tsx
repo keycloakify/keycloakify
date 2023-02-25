@@ -1,20 +1,11 @@
-import React, { memo } from "react";
+import React from "react";
 import { clsx } from "../tools/clsx";
-import DefaultTemplate from "./Template";
-import type { TemplateProps } from "./Template";
-import type { KcProps } from "./KcProps";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import type { I18n } from "../i18n";
+import type { PageProps } from "./shared/KcProps";
+import type { I18nBase } from "../i18n";
 
-export type LogoutConfirmProps = KcProps & {
-    kcContext: KcContextBase.LogoutConfirm;
-    i18n: I18n;
-    doFetchDefaultThemeResources?: boolean;
-    Template?: (props: TemplateProps) => JSX.Element | null;
-};
-
-const LogoutConfirm = memo((props: LogoutConfirmProps) => {
-    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template = DefaultTemplate, ...kcProps } = props;
+export default function LogoutConfirm(props: PageProps<KcContextBase.LogoutConfirm, I18nBase>) {
+    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
 
     const { url, client, logoutConfirm } = kcContext;
 
@@ -64,6 +55,4 @@ const LogoutConfirm = memo((props: LogoutConfirmProps) => {
             }
         />
     );
-});
-
-export default LogoutConfirm;
+}

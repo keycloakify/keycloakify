@@ -1,20 +1,11 @@
-import React, { memo } from "react";
-import DefaultTemplate from "./Template";
-import type { TemplateProps } from "./Template";
-import type { KcProps } from "./KcProps";
+import React from "react";
 import { assert } from "../tools/assert";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import type { I18n } from "../i18n";
+import type { PageProps } from "./shared/KcProps";
+import type { I18nBase } from "../i18n";
 
-export type InfoProps = KcProps & {
-    kcContext: KcContextBase.Info;
-    i18n: I18n;
-    doFetchDefaultThemeResources?: boolean;
-    Template?: (props: TemplateProps) => JSX.Element | null;
-};
-
-const Info = memo((props: InfoProps) => {
-    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template = DefaultTemplate, ...kcProps } = props;
+export default function Info(props: PageProps<KcContextBase.Info, I18nBase>) {
+    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
 
     const { msgStr, msg } = i18n;
 
@@ -55,6 +46,4 @@ const Info = memo((props: InfoProps) => {
             }
         />
     );
-});
-
-export default Info;
+}

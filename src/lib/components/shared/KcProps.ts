@@ -1,5 +1,8 @@
-import { allPropertiesValuesToUndefined } from "../tools/allPropertiesValuesToUndefined";
+import { allPropertiesValuesToUndefined } from "../../tools/allPropertiesValuesToUndefined";
 import { assert } from "tsafe/assert";
+import type { KcContextBase } from "../../getKcContext";
+import type { ReactNode } from "react";
+import { I18nBase } from "../../i18n";
 
 /** Class names can be provided as an array or separated by whitespace */
 export type KcPropsGeneric<CssClasses extends string> = {
@@ -204,6 +207,29 @@ export const defaultKcProps = {
     "kcSelectOTPItemHeadingClass": ["card-pf-title", "text-center"],
     "kcFormOptionsWrapperClass": []
 } as const;
+
+export type TemplateProps<KcContext extends KcContextBase.Common, I18n extends I18nBase> = {
+    kcContext: KcContext;
+    i18n: I18n;
+    doFetchDefaultThemeResources: boolean;
+} & {
+    displayInfo?: boolean;
+    displayMessage?: boolean;
+    displayRequiredFields?: boolean;
+    displayWide?: boolean;
+    showAnotherWayIfPresent?: boolean;
+    headerNode: ReactNode;
+    showUsernameNode?: ReactNode;
+    formNode: ReactNode;
+    infoNode?: ReactNode;
+} & KcTemplateProps;
+
+export type PageProps<KcContext extends KcContextBase, I18n extends I18nBase> = {
+    kcContext: KcContext;
+    i18n: I18n;
+    doFetchDefaultThemeResources?: boolean;
+    Template: (props: TemplateProps<KcContext, I18n>) => JSX.Element | null;
+} & KcProps;
 
 assert<typeof defaultKcProps extends KcProps ? true : false>();
 

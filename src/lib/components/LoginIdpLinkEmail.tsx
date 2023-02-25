@@ -1,19 +1,10 @@
-import React, { memo } from "react";
-import DefaultTemplate from "./Template";
-import type { TemplateProps } from "./Template";
-import type { KcProps } from "./KcProps";
+import React from "react";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import type { I18n } from "../i18n";
+import type { PageProps } from "./shared/KcProps";
+import type { I18nBase } from "../i18n";
 
-export type LoginIdpLinkEmailProps = KcProps & {
-    kcContext: KcContextBase.LoginIdpLinkEmail;
-    i18n: I18n;
-    doFetchDefaultThemeResources?: boolean;
-    Template?: (props: TemplateProps) => JSX.Element | null;
-};
-
-const LoginIdpLinkEmail = memo((props: LoginIdpLinkEmailProps) => {
-    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template = DefaultTemplate, ...kcProps } = props;
+export default function LoginIdpLinkEmail(props: PageProps<KcContextBase.LoginIdpLinkEmail, I18nBase>) {
+    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
 
     const { url, realm, brokerContext, idpAlias } = kcContext;
 
@@ -38,6 +29,4 @@ const LoginIdpLinkEmail = memo((props: LoginIdpLinkEmailProps) => {
             }
         />
     );
-});
-
-export default LoginIdpLinkEmail;
+}

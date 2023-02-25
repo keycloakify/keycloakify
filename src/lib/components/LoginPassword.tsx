@@ -1,22 +1,13 @@
-import React, { useState, memo } from "react";
-import DefaultTemplate from "./Template";
-import type { TemplateProps } from "./Template";
-import type { KcProps } from "./KcProps";
-import type { KcContextBase } from "../getKcContext/KcContextBase";
+import React, { useState } from "react";
 import { clsx } from "../tools/clsx";
-import { useConstCallback } from "powerhooks/useConstCallback";
+import { useConstCallback } from "../tools/useConstCallback";
 import type { FormEventHandler } from "react";
-import type { I18n } from "../i18n";
+import type { KcContextBase } from "../getKcContext/KcContextBase";
+import type { PageProps } from "./shared/KcProps";
+import type { I18nBase } from "../i18n";
 
-export type LoginPasswordProps = KcProps & {
-    kcContext: KcContextBase.LoginPassword;
-    i18n: I18n;
-    doFetchDefaultThemeResources?: boolean;
-    Template?: (props: TemplateProps) => JSX.Element | null;
-};
-
-const LoginPassword = memo((props: LoginPasswordProps) => {
-    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template = DefaultTemplate, ...kcProps } = props;
+export default function LoginPassword(props: PageProps<KcContextBase.LoginPassword, I18nBase>) {
+    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
 
     const { realm, url, login } = kcContext;
 
@@ -92,6 +83,4 @@ const LoginPassword = memo((props: LoginPasswordProps) => {
             }
         />
     );
-});
-
-export default LoginPassword;
+}

@@ -1,10 +1,9 @@
-import React, { lazy, memo, Suspense } from "react";
-import type { KcContextBase } from "../getKcContext/KcContextBase";
-import type { KcProps } from "./KcProps";
+import React, { lazy, Suspense } from "react";
 import { __unsafe_useI18n as useI18n } from "../i18n";
-import type { I18n } from "../i18n";
 import DefaultTemplate from "./Template";
-import type { TemplateProps } from "./Template";
+import type { KcContextBase } from "../getKcContext/KcContextBase";
+import type { PageProps } from "./shared/KcProps";
+import type { I18nBase } from "../i18n";
 
 const Login = lazy(() => import("./Login"));
 const Register = lazy(() => import("./Register"));
@@ -28,14 +27,7 @@ const LogoutConfirm = lazy(() => import("./LogoutConfirm"));
 const UpdateUserProfile = lazy(() => import("./UpdateUserProfile"));
 const IdpReviewUserProfile = lazy(() => import("./IdpReviewUserProfile"));
 
-export type KcAppProps = KcProps & {
-    kcContext: KcContextBase;
-    i18n?: I18n;
-    doFetchDefaultThemeResources?: boolean;
-    Template?: (props: TemplateProps) => JSX.Element | null;
-};
-
-const KcApp = memo((props_: KcAppProps) => {
+export default function KcApp(props_: PageProps<KcContextBase, I18nBase>) {
     const { kcContext, i18n: userProvidedI18n, Template = DefaultTemplate, ...kcProps } = props_;
 
     const i18n = (function useClosure() {
@@ -104,6 +96,4 @@ const KcApp = memo((props_: KcAppProps) => {
             })()}
         </Suspense>
     );
-});
-
-export default KcApp;
+}

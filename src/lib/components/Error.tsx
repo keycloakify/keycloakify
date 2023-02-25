@@ -1,19 +1,10 @@
-import React, { memo } from "react";
-import DefaultTemplate from "./Template";
-import type { TemplateProps } from "./Template";
-import type { KcProps } from "./KcProps";
+import React from "react";
 import type { KcContextBase } from "../getKcContext/KcContextBase";
-import type { I18n } from "../i18n";
+import type { PageProps } from "./shared/KcProps";
+import type { I18nBase } from "../i18n";
 
-export type ErrorProps = KcProps & {
-    kcContext: KcContextBase.Error;
-    i18n: I18n;
-    doFetchDefaultThemeResources?: boolean;
-    Template?: (props: TemplateProps) => JSX.Element | null;
-};
-
-const Error = memo((props: ErrorProps) => {
-    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template = DefaultTemplate, ...kcProps } = props;
+export default function Error(props: PageProps<KcContextBase.Error, I18nBase>) {
+    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
 
     const { message, client } = kcContext;
 
@@ -38,6 +29,4 @@ const Error = memo((props: ErrorProps) => {
             }
         />
     );
-});
-
-export default Error;
+}

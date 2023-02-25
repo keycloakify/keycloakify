@@ -1,22 +1,14 @@
-import React, { useRef, useState, memo } from "react";
-import DefaultTemplate from "./Template";
-import type { TemplateProps } from "./Template";
-import type { KcProps } from "./KcProps";
-import type { KcContextBase } from "../getKcContext/KcContextBase";
+import React, { useRef, useState } from "react";
 import { clsx } from "../tools/clsx";
-import type { I18n, MessageKeyBase } from "../i18n";
+import type { MessageKeyBase } from "../i18n";
 import { base64url } from "rfc4648";
-import { useConstCallback } from "powerhooks/useConstCallback";
+import { useConstCallback } from "../tools/useConstCallback";
+import type { KcContextBase } from "../getKcContext/KcContextBase";
+import type { PageProps } from "./shared/KcProps";
+import type { I18nBase } from "../i18n";
 
-export type WebauthnAuthenticateProps = KcProps & {
-    kcContext: KcContextBase.WebauthnAuthenticate;
-    i18n: I18n;
-    doFetchDefaultThemeResources?: boolean;
-    Template?: (props: TemplateProps) => JSX.Element | null;
-};
-
-const WebauthnAuthenticate = memo((props: WebauthnAuthenticateProps) => {
-    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template = DefaultTemplate, ...kcProps } = props;
+export default function WebauthnAuthenticate(props: PageProps<KcContextBase.WebauthnAuthenticate, I18nBase>) {
+    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
 
     const { url } = kcContext;
 
@@ -198,6 +190,4 @@ const WebauthnAuthenticate = memo((props: WebauthnAuthenticateProps) => {
             }
         />
     );
-});
-
-export default WebauthnAuthenticate;
+}
