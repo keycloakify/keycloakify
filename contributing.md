@@ -26,12 +26,11 @@ Assuming you have cloned keycloakify in `~/github/keycloakify` this is how you w
 
 ```bash
 cd ~/github # Navigate to the dir where you have the keycloakify project
-git clone https://github.com/garronej/keycloakify-starter
-#OR: git clone https://github.com/garronej/keycloakify-advanced-starter
+git clone https://github.com/garronej/keycloakify-starter # Or your project
 cd keycloakify
-yarn 
+yarn
 yarn build
-yarn link_in_test_app
+yarn link-in-app keycloakify-starter
 # The following command will start the compilation of Keycloakify
 # in watch mode. You will be able to perform changes on the keycloakify code
 # and see them apply live in the keycloakify-demo-app
@@ -42,8 +41,7 @@ Open a new terminal window
 
 ```bash
 cd ~/github
-cd keycloakify-starter
-#OR: cd keycloakify-advanced-starter
+cd keycloakify-starter # Or your project
 yarn start
 ```
 
