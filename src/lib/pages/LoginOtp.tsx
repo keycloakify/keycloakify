@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { headInsert } from "../tools/headInsert";
 import { pathJoin } from "../../bin/tools/pathJoin";
 import { clsx } from "../tools/clsx";
-import type { KcContextBase } from "../getKcContext/KcContextBase";
-import type { PageProps } from "./shared/KcProps";
+import type { KcContextBase } from "../kcContext";
+import type { PageProps } from "../KcProps";
 import type { I18nBase } from "../i18n";
 
 export default function LoginOtp(props: PageProps<KcContextBase.LoginOtp, I18nBase>) {

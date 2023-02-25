@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { clsx } from "../tools/clsx";
 import { UserProfileFormFields } from "./shared/UserProfileCommons";
-import type { KcContextBase } from "../getKcContext/KcContextBase";
-import type { PageProps } from "./shared/KcProps";
+import type { KcContextBase } from "../kcContext";
+import type { PageProps } from "../KcProps";
 import type { I18nBase } from "../i18n";
 
 export default function IdpReviewUserProfile(props: PageProps<KcContextBase.IdpReviewUserProfile, I18nBase>) {

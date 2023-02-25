@@ -1,8 +1,8 @@
-import { allPropertiesValuesToUndefined } from "../../tools/allPropertiesValuesToUndefined";
+import { allPropertiesValuesToUndefined } from "./tools/allPropertiesValuesToUndefined";
 import { assert } from "tsafe/assert";
-import type { KcContextBase } from "../../getKcContext";
+import type { KcContextBase } from "./kcContext";
 import type { ReactNode } from "react";
-import { I18nBase } from "../../i18n";
+import { I18nBase } from "./i18n";
 
 /** Class names can be provided as an array or separated by whitespace */
 export type KcPropsGeneric<CssClasses extends string> = {

@@ -1,7 +1,7 @@
 import React from "react";
 import { assert } from "../tools/assert";
-import type { KcContextBase } from "../getKcContext/KcContextBase";
-import type { PageProps } from "./shared/KcProps";
+import type { KcContextBase } from "../kcContext";
+import type { PageProps } from "../KcProps";
 import type { I18nBase } from "../i18n";
 
 export default function Info(props: PageProps<KcContextBase.Info, I18nBase>) {

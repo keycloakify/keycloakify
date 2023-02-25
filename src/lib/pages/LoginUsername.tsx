@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { clsx } from "../tools/clsx";
 import { useConstCallback } from "../tools/useConstCallback";
 import type { FormEventHandler } from "react";
-import type { KcContextBase } from "../getKcContext/KcContextBase";
-import type { PageProps } from "./shared/KcProps";
+import type { KcContextBase } from "../kcContext";
+import type { PageProps } from "../KcProps";
 import type { I18nBase } from "../i18n";
 
-export default function Login(props: PageProps<KcContextBase.Login, I18nBase>) {
+export default function LoginUsername(props: PageProps<KcContextBase.LoginUsername, I18nBase>) {
     const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
 
-    const { social, realm, url, usernameEditDisabled, login, auth, registrationDisabled } = kcContext;
+    const { social, realm, url, usernameHidden, login, registrationDisabled } = kcContext;
 
     const { msg, msgStr } = i18n;
 
@@ -46,57 +46,41 @@ export default function Login(props: PageProps<KcContextBase.Login, I18nBase>) {
                         {realm.password && (
                             <form id="kc-form-login" onSubmit={onSubmit} action={url.loginAction} method="post">
                                 <div className={clsx(kcProps.kcFormGroupClass)}>
-                                    {(() => {
-                                        const label = !realm.loginWithEmailAllowed
-                                            ? "username"
-                                            : realm.registrationEmailAsUsername
-                                            ? "email"
-                                            : "usernameOrEmail";
+                                    {!usernameHidden &&
+                                        (() => {
+                                            const label = !realm.loginWithEmailAllowed
+                                                ? "username"
+                                                : realm.registrationEmailAsUsername
+                                                ? "email"
+                                                : "usernameOrEmail";
 
-                                        const autoCompleteHelper: typeof label = label === "usernameOrEmail" ? "username" : label;
+                                            const autoCompleteHelper: typeof label = label === "usernameOrEmail" ? "username" : label;
 
-                                        return (
-                                            <>
-                                                <label htmlFor={autoCompleteHelper} className={clsx(kcProps.kcLabelClass)}>
-                                                    {msg(label)}
-                                                </label>
-                                                <input
-                                                    tabIndex={1}
-                                                    id={autoCompleteHelper}
-                                                    className={clsx(kcProps.kcInputClass)}
-                                                    //NOTE: This is used by Google Chrome auto fill so we use it to tell
-                                                    //the browser how to pre fill the form but before submit we put it back
-                                                    //to username because it is what keycloak expects.
-                                                    name={autoCompleteHelper}
-                                                    defaultValue={login.username ?? ""}
-                                                    type="text"
-                                                    {...(usernameEditDisabled
-                                                        ? { "disabled": true }
-                                                        : {
-                                                              "autoFocus": true,
-                                                              "autoComplete": "off"
-                                                          })}
-                                                />
-                                            </>
-                                        );
-                                    })()}
-                                </div>
-                                <div className={clsx(kcProps.kcFormGroupClass)}>
-                                    <label htmlFor="password" className={clsx(kcProps.kcLabelClass)}>
-                                        {msg("password")}
-                                    </label>
-                                    <input
-                                        tabIndex={2}
-                                        id="password"
-                                        className={clsx(kcProps.kcInputClass)}
-                                        name="password"
-                                        type="password"
-                                        autoComplete="off"
-                                    />
+                                            return (
+                                                <>
+                                                    <label htmlFor={autoCompleteHelper} className={clsx(kcProps.kcLabelClass)}>
+                                                        {msg(label)}
+                                                    </label>
+                                                    <input
+                                                        tabIndex={1}
+                                                        id={autoCompleteHelper}
+                                                        className={clsx(kcProps.kcInputClass)}
+                                                        //NOTE: This is used by Google Chrome auto fill so we use it to tell
+                                                        //the browser how to pre fill the form but before submit we put it back
+                                                        //to username because it is what keycloak expects.
+                                                        name={autoCompleteHelper}
+                                                        defaultValue={login.username ?? ""}
+                                                        type="text"
+                                                        autoFocus={true}
+                                                        autoComplete="off"
+                                                    />
+                                                </>
+                                            );
+                                        })()}
                                 </div>
                                 <div className={clsx(kcProps.kcFormGroupClass, kcProps.kcFormSettingClass)}>
                                     <div id="kc-form-options">
-                                        {realm.rememberMe && !usernameEditDisabled && (
+                                        {realm.rememberMe && !usernameHidden && (
                                             <div className="checkbox">
                                                 <label>
                                                     <input
@@ -115,27 +99,8 @@ export default function Login(props: PageProps<KcContextBase.Login, I18nBase>) {
                                             </div>
                                         )}
                                     </div>
-                                    <div className={clsx(kcProps.kcFormOptionsWrapperClass)}>
-                                        {realm.resetPasswordAllowed && (
-                                            <span>
-                                                <a tabIndex={5} href={url.loginResetCredentialsUrl}>
-                                                    {msg("doForgotPassword")}
-                                                </a>
-                                            </span>
-                                        )}
-                                    </div>
                                 </div>
                                 <div id="kc-form-buttons" className={clsx(kcProps.kcFormGroupClass)}>
-                                    <input
-                                        type="hidden"
-                                        id="id-hidden-input"
-                                        name="credentialId"
-                                        {...(auth?.selectedCredential !== undefined
-                                            ? {
-                                                  "value": auth.selectedCredential
-                                              }
-                                            : {})}
-                                    />
                                     <input
                                         tabIndex={4}
                                         className={clsx(

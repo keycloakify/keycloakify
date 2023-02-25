@@ -1,13 +1,13 @@
 import React, { useReducer, useEffect } from "react";
-import { useCallbackFactory } from "../../tools/useCallbackFactory";
-import { useConstCallback } from "../../tools/useConstCallback";
-import { assert } from "../../tools/assert";
-import { headInsert } from "../../tools/headInsert";
-import { pathJoin } from "../../../bin/tools/pathJoin";
-import { clsx } from "../../tools/clsx";
-import type { TemplateProps } from "./KcProps";
-import type { KcContextBase } from "../../getKcContext/KcContextBase";
-import type { I18nBase } from "../../i18n";
+import type { KcContextBase } from "../kcContext";
+import { assert } from "../tools/assert";
+import { useCallbackFactory } from "../tools/useCallbackFactory";
+import { headInsert } from "../tools/headInsert";
+import { pathJoin } from "../../bin/tools/pathJoin";
+import { useConstCallback } from "../tools/useConstCallback";
+import type { TemplateProps } from "../KcProps";
+import { clsx } from "../tools/clsx";
+import type { I18nBase } from "../i18n";
 
 export default function Template(props: TemplateProps<KcContextBase.Common, I18nBase>) {
     const {
@@ -109,14 +109,12 @@ export default function Template(props: TemplateProps<KcContextBase.Common, I18n
                         <div id="kc-locale">
                             <div id="kc-locale-wrapper" className={clsx(props.kcLocaleWrapperClass)}>
                                 <div className="kc-dropdown" id="kc-locale-dropdown">
-                                    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                                     <a href="#" id="kc-current-locale-link">
                                         {labelBySupportedLanguageTag[currentLanguageTag]}
                                     </a>
                                     <ul>
                                         {locale.supported.map(({ languageTag }) => (
                                             <li key={languageTag} className="kc-dropdown-item">
-                                                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                                                 <a href="#" onClick={onChangeLanguageClickFactory(languageTag)}>
                                                     {labelBySupportedLanguageTag[languageTag]}
                                                 </a>
@@ -210,7 +208,6 @@ export default function Template(props: TemplateProps<KcContextBase.Common, I18n
                                 <div className={clsx(displayWide && [props.kcFormSocialAccountContentClass, props.kcFormSocialAccountClass])}>
                                     <div className={clsx(props.kcFormGroupClass)}>
                                         <input type="hidden" name="tryAnotherWay" value="on" />
-                                        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                                         <a href="#" id="try-another-way" onClick={onTryAnotherWayClick}>
                                             {msg("doTryAnotherWay")}
                                         </a>

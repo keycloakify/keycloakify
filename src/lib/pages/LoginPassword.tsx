@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { clsx } from "../tools/clsx";
 import { useConstCallback } from "../tools/useConstCallback";
 import type { FormEventHandler } from "react";
-import type { KcContextBase } from "../getKcContext/KcContextBase";
-import type { PageProps } from "./shared/KcProps";
+import type { KcContextBase } from "../kcContext";
+import type { PageProps } from "../KcProps";
 import type { I18nBase } from "../i18n";
 
 export default function LoginPassword(props: PageProps<KcContextBase.LoginPassword, I18nBase>) {

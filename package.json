@@ -15,12 +15,11 @@
         "copy-files": "copyfiles -u 1 src/**/*.ftl",
         "pretest": "yarn build:test",
         "test": "node dist_test/test/bin && node dist_test/test/lib",
-        "generate-messages": "node dist/bin/generate-i18n-messages.js",
-        "link_in_test_app": "node dist/bin/link_in_test_app.js",
         "_format": "prettier '**/*.{ts,tsx,json,md}'",
         "format": "yarn _format --write",
         "format:check": "yarn _format --list-different",
         "link-in-app": "ts-node --skipProject src/scripts/link-in-app.ts",
+        "generate-messages": "ts-node --skipProject src/scripts/generate-i18n-messages.ts",
         "link-in-starter": "yarn link-in-app keycloakify-advanced-starter",
         "tsc-watch": "tsc -p src/bin -w & tsc -p src/lib -w "
     },

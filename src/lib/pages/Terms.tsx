@@ -9,8 +9,8 @@ import { useConst } from "../tools/useConst";
 import { useConstCallback } from "../tools/useConstCallback";
 import { Markdown } from "../tools/Markdown";
 import type { Extends } from "tsafe";
-import type { KcContextBase } from "../getKcContext/KcContextBase";
-import type { PageProps } from "./shared/KcProps";
+import type { KcContextBase } from "../kcContext";
+import type { PageProps } from "../KcProps";
 import type { I18nBase } from "../i18n";
 
 export default function Terms(props: PageProps<KcContextBase.Terms, I18nBase>) {

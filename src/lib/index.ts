@@ -1,13 +1,13 @@
-export * from "./getKcContext";
+export * from "./kcContext";
 
 export * from "./i18n";
 
-export { useDownloadTerms } from "./components/Terms";
+export { useDownloadTerms } from "./pages/Terms";
 
-export * from "./components/shared/KcProps";
+export * from "./KcProps";
 export * from "./keycloakJsAdapter";
 export * from "./useFormValidationSlice";
 
-import KcApp from "./components/KcApp";
+import KcApp from "./KcApp";
 
 export default KcApp;

@@ -1,6 +1,6 @@
 import React, { useEffect, Fragment } from "react";
-import type { KcProps } from "./KcProps";
-import type { Attribute } from "../../getKcContext/KcContextBase";
+import type { KcProps } from "../../KcProps";
+import type { Attribute } from "../../kcContext/KcContextBase";
 import { clsx } from "../../tools/clsx";
 import type { ReactComponent } from "../../tools/ReactComponent";
 import { useCallbackFactory } from "../../tools/useCallbackFactory";
