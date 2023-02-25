@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { clsx } from "../tools/clsx";
 import { UserProfileFormFields } from "./shared/UserProfileCommons";
-import type { KcContextBase } from "../kcContext";
+import type { KcContextBase } from "../getKcContext";
 import type { PageProps } from "../KcProps";
 import type { I18nBase } from "../i18n";
 

@@ -9,7 +9,7 @@ import { useConst } from "../tools/useConst";
 import { useConstCallback } from "../tools/useConstCallback";
 import { Markdown } from "../tools/Markdown";
 import type { Extends } from "tsafe";
-import type { KcContextBase } from "../kcContext";
+import type { KcContextBase } from "../getKcContext";
 import type { PageProps } from "../KcProps";
 import type { I18nBase } from "../i18n";
 

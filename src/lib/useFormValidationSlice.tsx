@@ -1,6 +1,6 @@
 import "./tools/Array.prototype.every";
 import React, { useMemo, useReducer, Fragment } from "react";
-import type { KcContextBase, Validators, Attribute } from "./kcContext/KcContextBase";
+import type { KcContextBase, Validators, Attribute } from "./getKcContext/KcContextBase";
 import type { I18nBase, MessageKeyBase } from "./i18n";
 import { useConstCallback } from "./tools/useConstCallback";
 import { id } from "tsafe/id";

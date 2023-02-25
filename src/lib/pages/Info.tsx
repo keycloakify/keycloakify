@@ -1,6 +1,6 @@
 import React from "react";
 import { assert } from "../tools/assert";
-import type { KcContextBase } from "../kcContext";
+import type { KcContextBase } from "../getKcContext";
 import type { PageProps } from "../KcProps";
 import type { I18nBase } from "../i18n";
 

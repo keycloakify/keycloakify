@@ -1,5 +1,5 @@
 import React, { useReducer, useEffect } from "react";
-import type { KcContextBase } from "../kcContext";
+import type { KcContextBase } from "../getKcContext";
 import { assert } from "../tools/assert";
 import { useCallbackFactory } from "../tools/useCallbackFactory";
 import { headInsert } from "../tools/headInsert";

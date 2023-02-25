@@ -1,9 +1,10 @@
 import React, { lazy, Suspense } from "react";
 import { __unsafe_useI18n as useI18n } from "./i18n";
 import DefaultTemplate from "./pages/Template";
-import type { KcContextBase } from "./kcContext/KcContextBase";
+import type { KcContextBase } from "./getKcContext/KcContextBase";
 import type { PageProps } from "./KcProps";
 import type { I18nBase } from "./i18n";
+import type { SetOptional } from "./tools/SetOptional";
 
 const Login = lazy(() => import("./pages/Login"));
 const Register = lazy(() => import("./pages/Register"));
@@ -27,7 +28,7 @@ const LogoutConfirm = lazy(() => import("./pages/LogoutConfirm"));
 const UpdateUserProfile = lazy(() => import("./pages/UpdateUserProfile"));
 const IdpReviewUserProfile = lazy(() => import("./pages/IdpReviewUserProfile"));
 
-export default function KcApp(props_: PageProps<KcContextBase, I18nBase>) {
+export default function KcApp(props_: SetOptional<PageProps<KcContextBase, I18nBase>, "Template">) {
     const { kcContext, i18n: userProvidedI18n, Template = DefaultTemplate, ...kcProps } = props_;
 
     const i18n = (function useClosure() {

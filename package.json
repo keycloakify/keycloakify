@@ -18,8 +18,8 @@
         "_format": "prettier '**/*.{ts,tsx,json,md}'",
         "format": "yarn _format --write",
         "format:check": "yarn _format --list-different",
-        "link-in-app": "ts-node --skipProject src/scripts/link-in-app.ts",
         "generate-messages": "ts-node --skipProject src/scripts/generate-i18n-messages.ts",
+        "link-in-app": "ts-node --skipProject src/scripts/link-in-app.ts",
         "link-in-starter": "yarn link-in-app keycloakify-advanced-starter",
         "tsc-watch": "tsc -p src/bin -w & tsc -p src/lib -w "
     },

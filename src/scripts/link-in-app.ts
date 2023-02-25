@@ -54,37 +54,24 @@ const commonThirdPartyDeps = (() => {
     ];
 })();
 
-const { yarnLinkFolderPath, yarnGlobalFolderPath } = (() => {
-    const yarnGlobalDirPath = pathJoin(rootDirPath, ".yarn_home");
+const yarnGlobalDirPath = pathJoin(rootDirPath, ".yarn_home");
 
-    return {
-        "yarnLinkFolderPath": pathJoin(yarnGlobalDirPath, "link"),
-        "yarnGlobalFolderPath": pathJoin(yarnGlobalDirPath, "global")
-    };
-})();
-
-[yarnLinkFolderPath, yarnGlobalFolderPath].forEach(path => {
-    fs.rmSync(path, { "recursive": true, "force": true });
-    fs.mkdirSync(path, { "recursive": true });
-});
+fs.rmSync(yarnGlobalDirPath, { "recursive": true, "force": true });
+fs.mkdirSync(yarnGlobalDirPath);
 
 const execYarnLink = (params: { targetModuleName?: string; cwd: string }) => {
     const { targetModuleName, cwd } = params;
 
-    const cmd = [
-        "yarn",
-        "link",
-        ...(targetModuleName !== undefined ? [targetModuleName] : []),
-        "--link-folder",
-        yarnLinkFolderPath,
-        "--global-folder",
-        yarnGlobalFolderPath
-    ].join(" ");
+    const cmd = ["yarn", "link", ...(targetModuleName !== undefined ? [targetModuleName] : ["--no-bin-links"])].join(" ");
 
     console.log(`$ cd ${pathRelative(rootDirPath, cwd) || "."} && ${cmd}`);
 
     execSync(cmd, {
-        cwd
+        cwd,
+        "env": {
+            ...process.env,
+            "HOME": yarnGlobalDirPath
+        }
     });
 };
 

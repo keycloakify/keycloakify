@@ -1,4 +1,4 @@
-export * from "./kcContext";
+export * from "./getKcContext";
 
 export * from "./i18n";
 
