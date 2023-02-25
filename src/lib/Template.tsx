@@ -1,6 +1,4 @@
 import React, { useReducer, useEffect } from "react";
-import { useCallbackFactory } from "./tools/useCallbackFactory";
-import { useConstCallback } from "./tools/useConstCallback";
 import { assert } from "./tools/assert";
 import { headInsert } from "./tools/headInsert";
 import { pathJoin } from "../bin/tools/pathJoin";
@@ -26,10 +24,6 @@ export default function Template(props: TemplateProps<KcContextBase.Common, I18n
     } = props;
 
     const { msg, changeLocale, labelBySupportedLanguageTag, currentLanguageTag } = i18n;
-
-    const onChangeLanguageClickFactory = useCallbackFactory(([kcLanguageTag]: [string]) => changeLocale(kcLanguageTag));
-
-    const onTryAnotherWayClick = useConstCallback(() => (document.forms["kc-select-try-another-way-form" as never].submit(), false));
 
     const { realm, locale, auth, url, message, isAppInitiatedAction } = kcContext;
 
@@ -117,7 +111,7 @@ export default function Template(props: TemplateProps<KcContextBase.Common, I18n
                                         {locale.supported.map(({ languageTag }) => (
                                             <li key={languageTag} className="kc-dropdown-item">
                                                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                                                <a href="#" onClick={onChangeLanguageClickFactory(languageTag)}>
+                                                <a href="#" onClick={() => changeLocale(languageTag)}>
                                                     {labelBySupportedLanguageTag[languageTag]}
                                                 </a>
                                             </li>
@@ -211,7 +205,14 @@ export default function Template(props: TemplateProps<KcContextBase.Common, I18n
                                     <div className={clsx(props.kcFormGroupClass)}>
                                         <input type="hidden" name="tryAnotherWay" value="on" />
                                         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                                        <a href="#" id="try-another-way" onClick={onTryAnotherWayClick}>
+                                        <a
+                                            href="#"
+                                            id="try-another-way"
+                                            onClick={() => {
+                                                document.forms["kc-select-try-another-way-form" as never].submit();
+                                                return false;
+                                            }}
+                                        >
                                             {msg("doTryAnotherWay")}
                                         </a>
                                     </div>
