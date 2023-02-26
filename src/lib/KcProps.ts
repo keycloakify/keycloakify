@@ -224,11 +224,11 @@ export type TemplateProps<KcContext extends KcContextBase.Common, I18n extends I
     infoNode?: ReactNode;
 } & KcTemplateProps;
 
-export type PageProps<KcContext extends KcContextBase, I18n extends I18nBase> = {
+export type PageProps<KcContext, I18n extends I18nBase> = {
     kcContext: KcContext;
     i18n: I18n;
     doFetchDefaultThemeResources?: boolean;
-    Template: (props: TemplateProps<KcContext, I18n>) => JSX.Element | null;
+    Template: (props: TemplateProps<any, any>) => JSX.Element | null;
 } & KcProps;
 
 assert<typeof defaultKcProps extends KcProps ? true : false>();
