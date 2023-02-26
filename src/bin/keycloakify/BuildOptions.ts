@@ -7,7 +7,7 @@ import { typeGuard } from "tsafe/typeGuard";
 import { symToStr } from "tsafe/symToStr";
 
 const bundlers = ["mvn", "keycloakify", "none"] as const;
-type Bundler = typeof bundlers[number];
+type Bundler = (typeof bundlers)[number];
 type ParsedPackageJson = {
     name: string;
     version: string;
@@ -38,7 +38,7 @@ const zParsedPackageJson = z.object({
         .optional()
 });
 
-assert<Equals<ReturnType<typeof zParsedPackageJson["parse"]>, ParsedPackageJson>>();
+assert<Equals<ReturnType<(typeof zParsedPackageJson)["parse"]>, ParsedPackageJson>>();
 
 /** Consolidated build option gathered form CLI arguments and config in package.json */
 export type BuildOptions = BuildOptions.Standalone | BuildOptions.ExternalAssets;

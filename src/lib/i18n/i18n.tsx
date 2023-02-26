@@ -17,7 +17,7 @@ export type KcContextLike = {
 
 assert<KcContextBase extends KcContextLike ? true : false>();
 
-export type MessageKeyBase = keyof typeof baseMessages | keyof typeof keycloakifyExtraMessages[typeof fallbackLanguageTag];
+export type MessageKeyBase = keyof typeof baseMessages | keyof (typeof keycloakifyExtraMessages)[typeof fallbackLanguageTag];
 
 export type I18n<MessageKey extends string> = {
     /**

@@ -68,7 +68,7 @@ export namespace BuildOptionsLike {
     assert<typeof buildOptions extends BuildOptionsLike ? true : false>();
 }
 
-export type PageId = typeof pageIds[number];
+export type PageId = (typeof pageIds)[number];
 
 export function generateFtlFilesCodeFactory(params: {
     indexHtmlCode: string;
