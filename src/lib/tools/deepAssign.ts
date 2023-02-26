@@ -11,7 +11,7 @@ export function deepAssign(params: { target: Record<string, unknown>; source: Re
     Object.keys(source).forEach(key => {
         var dereferencedSource = source[key];
 
-        if (target[key] === undefined || !(dereferencedSource instanceof Object)) {
+        if (target[key] === undefined || dereferencedSource instanceof Function || !(dereferencedSource instanceof Object)) {
             Object.defineProperty(target, key, {
                 "enumerable": true,
                 "writable": true,
