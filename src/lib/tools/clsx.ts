@@ -17,7 +17,7 @@ export const clsx = (...args: CxArg[]): string => {
                 break;
             case "object": {
                 if (Array.isArray(arg)) {
-                    toAdd = clsx(arg);
+                    toAdd = clsx(...arg);
                 } else {
                     assert(!typeGuard<{ length: number }>(arg, false));
 
