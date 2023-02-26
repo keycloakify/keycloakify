@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, type FormEventHandler } from "react";
 import { clsx } from "../tools/clsx";
 import { useConstCallback } from "../tools/useConstCallback";
-import type { FormEventHandler } from "react";
 import type { KcContextBase } from "../getKcContext";
 import type { PageProps } from "../KcProps";
 import type { I18nBase } from "../i18n";
