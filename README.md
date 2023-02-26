@@ -27,15 +27,9 @@
         <a href="https://www.keycloakify.dev">Home</a>
         -
         <a href="https://docs.keycloakify.dev">Documentation</a>
-    </p>
-    <p align="center"> ---- Project starter / Demo setup ---- </p>
-    <p align="center">
-        <a href="https://github.com/garronej/keycloakify-starter">CSS Level customization</a>
         -
-        <a href="https://github.com/garronej/keycloakify-advanced-starter">Component Level customization</a>
+        <a href="https://github.com/codegouvfr/keycloak-starter">Starter project</a>
     </p>
-    <p align="center"> ---- </p>
-
 </p>
 
 <p align="center">
@@ -48,6 +42,15 @@
 > Checkout [the migration guide](https://docs.keycloakify.dev/v5-to-v6).
 
 # Changelog highlights
+
+## 6.12
+
+Massive improvement in the developer experience:
+
+-   There is now only one starter repo: https://github.com/codegouvfr/keycloakify-starter
+-   A lot of comments have been added in the code of the starter to make it easier to get started.
+-   The doc has been updated: https://docs.keycloakify.dev
+-   A lot of improvements in the type system.
 
 ## 6.11.4
 
