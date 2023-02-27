@@ -15,3 +15,4 @@
 * [📖 Build options](build-options.md)
 * [🏁 Requirements](<README (1).md>)
 * [⬆ v5 -> v6](readme-1.md)
+* [⬆ v6.x -> v6.12](v6.x-greater-than-v6.12.md)
