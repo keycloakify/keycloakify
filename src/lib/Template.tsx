@@ -20,72 +20,27 @@ export default function Template(props: TemplateProps<KcContextBase.Common, I18n
         infoNode = null,
         kcContext,
         i18n,
-        doFetchDefaultThemeResources
+        doFetchDefaultThemeResources,
+        stylesCommon,
+        styles,
+        scripts,
+        kcHtmlClass
     } = props;
 
     const { msg, changeLocale, labelBySupportedLanguageTag, currentLanguageTag } = i18n;
 
     const { realm, locale, auth, url, message, isAppInitiatedAction } = kcContext;
 
-    const [isExtraCssLoaded, setExtraCssLoaded] = useReducer(() => true, false);
+    const { isReady } = usePrepareTemplate({
+        doFetchDefaultThemeResources,
+        stylesCommon,
+        styles,
+        scripts,
+        url,
+        kcHtmlClass
+    });
 
-    useEffect(() => {
-        if (!doFetchDefaultThemeResources) {
-            setExtraCssLoaded();
-            return;
-        }
-
-        let isUnmounted = false;
-        const cleanups: (() => void)[] = [];
-
-        const toArr = (x: string | readonly string[] | undefined) => (typeof x === "string" ? x.split(" ") : x ?? []);
-
-        Promise.all(
-            [
-                ...toArr(props.stylesCommon).map(relativePath => pathJoin(url.resourcesCommonPath, relativePath)),
-                ...toArr(props.styles).map(relativePath => pathJoin(url.resourcesPath, relativePath))
-            ]
-                .reverse()
-                .map(href =>
-                    headInsert({
-                        "type": "css",
-                        href,
-                        "position": "prepend"
-                    })
-                )
-        ).then(() => {
-            if (isUnmounted) {
-                return;
-            }
-
-            setExtraCssLoaded();
-        });
-
-        toArr(props.scripts).forEach(relativePath =>
-            headInsert({
-                "type": "javascript",
-                "src": pathJoin(url.resourcesPath, relativePath)
-            })
-        );
-
-        if (props.kcHtmlClass !== undefined) {
-            const htmlClassList = document.getElementsByTagName("html")[0].classList;
-
-            const tokens = clsx(props.kcHtmlClass).split(" ");
-
-            htmlClassList.add(...tokens);
-
-            cleanups.push(() => htmlClassList.remove(...tokens));
-        }
-
-        return () => {
-            isUnmounted = true;
-
-            cleanups.forEach(f => f());
-        };
-    }, [props.kcHtmlClass]);
-
-    if (!isExtraCssLoaded) {
+    if (!isReady) {
         return null;
     }
 
@@ -231,4 +186,80 @@ export default function Template(props: TemplateProps<KcContextBase.Common, I18n
             </div>
         </div>
     );
+}
+
+export function usePrepareTemplate(params: {
+    doFetchDefaultThemeResources: boolean;
+    stylesCommon: string | readonly string[] | undefined;
+    styles: string | readonly string[] | undefined;
+    scripts: string | readonly string[] | undefined;
+    url: {
+        resourcesCommonPath: string;
+        resourcesPath: string;
+    };
+    kcHtmlClass: string | readonly string[] | undefined;
+}) {
+    const { doFetchDefaultThemeResources, stylesCommon, styles, url, scripts, kcHtmlClass } = params;
+
+    const [isReady, setReady] = useReducer(() => true, !doFetchDefaultThemeResources);
+
+    useEffect(() => {
+        if (!doFetchDefaultThemeResources) {
+            return;
+        }
+
+        let isUnmounted = false;
+
+        const toArr = (x: string | readonly string[] | undefined) => (typeof x === "string" ? x.split(" ") : x ?? []);
+
+        Promise.all(
+            [
+                ...toArr(stylesCommon).map(relativePath => pathJoin(url.resourcesCommonPath, relativePath)),
+                ...toArr(styles).map(relativePath => pathJoin(url.resourcesPath, relativePath))
+            ]
+                .reverse()
+                .map(href =>
+                    headInsert({
+                        "type": "css",
+                        href,
+                        "position": "prepend"
+                    })
+                )
+        ).then(() => {
+            if (isUnmounted) {
+                return;
+            }
+
+            setReady();
+        });
+
+        toArr(scripts).forEach(relativePath =>
+            headInsert({
+                "type": "javascript",
+                "src": pathJoin(url.resourcesPath, relativePath)
+            })
+        );
+
+        return () => {
+            isUnmounted = true;
+        };
+    }, [kcHtmlClass]);
+
+    useEffect(() => {
+        if (kcHtmlClass === undefined) {
+            return;
+        }
+
+        const htmlClassList = document.getElementsByTagName("html")[0].classList;
+
+        const tokens = clsx(kcHtmlClass).split(" ");
+
+        htmlClassList.add(...tokens);
+
+        return () => {
+            htmlClassList.remove(...tokens);
+        };
+    }, [kcHtmlClass]);
+
+    return { isReady };
 }
