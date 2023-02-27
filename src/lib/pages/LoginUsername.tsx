@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { clsx } from "../tools/clsx";
 import { useConstCallback } from "../tools/useConstCallback";
 import type { FormEventHandler } from "react";
-import type { KcContextBase } from "../getKcContext";
 import type { PageProps } from "../KcProps";
+import type { KcContextBase } from "../getKcContext";
 import type { I18nBase } from "../i18n";
 
-export default function LoginUsername(props: PageProps<KcContextBase.LoginUsername, I18nBase>) {
+export default function LoginUsername(props: PageProps<Extract<KcContextBase, { pageId: "login-username.ftl" }>, I18nBase>) {
     const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
 
     const { social, realm, url, usernameHidden, login, registrationDisabled } = kcContext;

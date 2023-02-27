@@ -1,10 +1,10 @@
 import React from "react";
 import { clsx } from "../tools/clsx";
-import type { KcContextBase } from "../getKcContext";
 import type { PageProps } from "../KcProps";
+import type { KcContextBase } from "../getKcContext";
 import type { I18nBase } from "../i18n";
 
-export default function LoginUpdateProfile(props: PageProps<KcContextBase.LoginUpdateProfile, I18nBase>) {
+export default function LoginUpdateProfile(props: PageProps<Extract<KcContextBase, { pageId: "login-update-profile.ftl" }>, I18nBase>) {
     const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
 
     const { msg, msgStr } = i18n;

@@ -1,10 +1,10 @@
 import React from "react";
 import { clsx } from "../tools/clsx";
-import type { KcContextBase } from "../getKcContext";
 import type { PageProps } from "../KcProps";
+import type { KcContextBase } from "../getKcContext";
 import type { I18nBase } from "../i18n";
 
-export default function LogoutConfirm(props: PageProps<KcContextBase.LogoutConfirm, I18nBase>) {
+export default function LogoutConfirm(props: PageProps<Extract<KcContextBase, { pageId: "logout-confirm.ftl" }>, I18nBase>) {
     const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
 
     const { url, client, logoutConfirm } = kcContext;

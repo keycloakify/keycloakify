@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { clsx } from "../tools/clsx";
 import { UserProfileFormFields } from "./shared/UserProfileCommons";
-import type { KcContextBase } from "../getKcContext";
 import type { PageProps } from "../KcProps";
+import type { KcContextBase } from "../getKcContext";
 import type { I18nBase } from "../i18n";
 
-export default function IdpReviewUserProfile(props: PageProps<KcContextBase.IdpReviewUserProfile, I18nBase>) {
+export default function IdpReviewUserProfile(props: PageProps<Extract<KcContextBase, { pageId: "idp-review-user-profile.ftl" }>, I18nBase>) {
     const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
 
     const { msg, msgStr } = i18n;

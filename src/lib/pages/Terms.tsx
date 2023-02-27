@@ -9,11 +9,11 @@ import { useConst } from "../tools/useConst";
 import { useConstCallback } from "../tools/useConstCallback";
 import { Markdown } from "../tools/Markdown";
 import type { Extends } from "tsafe";
-import type { KcContextBase } from "../getKcContext";
 import type { PageProps } from "../KcProps";
+import type { KcContextBase } from "../getKcContext";
 import type { I18nBase } from "../i18n";
 
-export default function Terms(props: PageProps<KcContextBase.Terms, I18nBase>) {
+export default function Terms(props: PageProps<Extract<KcContextBase, { pageId: "terms.ftl" }>, I18nBase>) {
     const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
 
     const { msg, msgStr } = i18n;

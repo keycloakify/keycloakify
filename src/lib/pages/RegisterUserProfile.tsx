@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { clsx } from "../tools/clsx";
 import { UserProfileFormFields } from "./shared/UserProfileCommons";
-import type { KcContextBase } from "../getKcContext";
 import type { PageProps } from "../KcProps";
+import type { KcContextBase } from "../getKcContext";
 import type { I18nBase } from "../i18n";
 
-export default function RegisterUserProfile(props: PageProps<KcContextBase.RegisterUserProfile, I18nBase>) {
+export default function RegisterUserProfile(props: PageProps<Extract<KcContextBase, { pageId: "register-user-profile.ftl" }>, I18nBase>) {
     const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
 
     const { url, messagesPerField, recaptchaRequired, recaptchaSiteKey } = kcContext;

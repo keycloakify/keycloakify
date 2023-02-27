@@ -3,7 +3,7 @@ import type { KcContextBase } from "../getKcContext";
 import type { PageProps } from "../KcProps";
 import type { I18nBase } from "../i18n";
 
-export default function LoginIdpLinkEmail(props: PageProps<KcContextBase.LoginIdpLinkEmail, I18nBase>) {
+export default function LoginIdpLinkEmail(props: PageProps<Extract<KcContextBase, { pageId: "login-idp-link-email.ftl" }>, I18nBase>) {
     const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
 
     const { url, realm, brokerContext, idpAlias } = kcContext;

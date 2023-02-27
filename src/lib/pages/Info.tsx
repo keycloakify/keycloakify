@@ -1,10 +1,10 @@
 import React from "react";
 import { assert } from "../tools/assert";
-import type { KcContextBase } from "../getKcContext";
 import type { PageProps } from "../KcProps";
+import type { KcContextBase } from "../getKcContext";
 import type { I18nBase } from "../i18n";
 
-export default function Info(props: PageProps<KcContextBase.Info, I18nBase>) {
+export default function Info(props: PageProps<Extract<KcContextBase, { pageId: "info.ftl" }>, I18nBase>) {
     const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
 
     const { msgStr, msg } = i18n;
