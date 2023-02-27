@@ -2,7 +2,6 @@ import React, { useEffect, Fragment } from "react";
 import type { KcProps } from "../../KcProps";
 import type { Attribute } from "../../getKcContext/KcContextBase";
 import { clsx } from "../../tools/clsx";
-import type { ReactComponent } from "../../tools/ReactComponent";
 import { useCallbackFactory } from "../../tools/useCallbackFactory";
 import { useFormValidationSlice } from "../../useFormValidationSlice";
 import type { I18nBase } from "../../i18n";
@@ -12,7 +11,7 @@ export type UserProfileFormFieldsProps = {
     kcContext: Param0<typeof useFormValidationSlice>["kcContext"];
     i18n: I18nBase;
 } & KcProps &
-    Partial<Record<"BeforeField" | "AfterField", ReactComponent<{ attribute: Attribute }>>> & {
+    Partial<Record<"BeforeField" | "AfterField", (props: { attribute: Attribute }) => JSX.Element | null>> & {
         onIsFormSubmittableValueChange: (isFormSubmittable: boolean) => void;
     };
 
