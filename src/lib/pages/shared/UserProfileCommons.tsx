@@ -5,10 +5,9 @@ import { clsx } from "../../tools/clsx";
 import { useCallbackFactory } from "../../tools/useCallbackFactory";
 import { useFormValidationSlice } from "../../useFormValidationSlice";
 import type { I18nBase } from "../../i18n";
-import type { Param0 } from "tsafe/Param0";
 
 export type UserProfileFormFieldsProps = {
-    kcContext: Param0<typeof useFormValidationSlice>["kcContext"];
+    kcContext: Parameters<typeof useFormValidationSlice>[0]["kcContext"];
     i18n: I18nBase;
 } & KcProps &
     Partial<Record<"BeforeField" | "AfterField", (props: { attribute: Attribute }) => JSX.Element | null>> & {
