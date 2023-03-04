@@ -10,6 +10,6 @@ The README details everything there is to know and there is a lot of comments in
 If you think some key piece of information are missing like "how do I import my theme in Keycloak" please build the theme of the starter project, information will be printed in the console.&#x20;
 {% endhint %}
 
-{% content-ref url="developpement.md" %}
-[developpement.md](developpement.md)
+{% content-ref url="broken-reference" %}
+[Broken link](broken-reference)
 {% endcontent-ref %}

@@ -1,14 +1,11 @@
----
-description: >-
-  Keycloakify can be integrated to a React app, it's great when you're looking
-  to create a theme for a specific app.
----
-
 # 🔩 Keycloakify in my App
 
-First of, be aware that Keycloakify will only will only work with React SPA build with Webpack. &#x20;
+A Keycloakify theme do not need to be a standalone project.  \
+If you are building an SPA React application that you bundle with Webpack, which is the case when you use [create-react-app](https://create-react-app.dev/), you can install Keycloakify right into your project and build your login pages alongside the other pages of your app. &#x20;
 
-Second, before anything study and mess around with the starter project to familiarize yourself with how Keycloakify works. &#x20;
+{% hint style="warning" %}
+Before moving on and setting up Keycloakify in your project, first, mess around with [the starter project](https://github.com/codegouvfr/keycloakify-starter) to familiarize yourself with Keycloakify.      &#x20;
+{% endhint %}
 
 Once you think you are ready to move on: &#x20;
 
@@ -38,4 +35,9 @@ Git ignore the keycloak build directory: &#x20;
 ```
 {% endcode %}
 
-That's it. You can build your App as a Keycloak theme with `yarn build-keycloak-theme`
+That's it. You can build your App as a Keycloak theme with `yarn build-keycloak-theme`\
+``You might now want to have a look at the available build options:&#x20;
+
+{% content-ref url="build-options.md" %}
+[build-options.md](build-options.md)
+{% endcontent-ref %}
