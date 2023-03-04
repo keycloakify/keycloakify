@@ -30,10 +30,6 @@ Older version are likely to be supported as well.&#x20;
 
 ### Supported React frameworks
 
-{% hint style="success" %}
-If you aren't trying to integrate the theme with a preexisting react app, save yourself some time and just use [create-react-app](https://create-react-app.dev).
-{% endhint %}
-
 <details>
 
 <summary>See more</summary>
