@@ -7077,7 +7077,16 @@ evt@2.0.0-beta.44:
     run-exclusive "^2.2.14"
     tsafe "^0.4.1"
 
-evt@2.4.13, evt@^2.4.13:
+evt@2.4.15:
+  version "2.4.15"
+  resolved "https://registry.yarnpkg.com/evt/-/evt-2.4.15.tgz#bf673dd2b409067fcdc182becd8e7dbed13692e1"
+  integrity sha512-jlDDDWdoDg2wIZa9m08HVelHzEAlZLpLbDcWMqlc6nqKHG1Z3ZqC7teDoNH3upClx3SKwJTC0H7RIMfxe7zX2g==
+  dependencies:
+    minimal-polyfills "^2.2.2"
+    run-exclusive "^2.2.18"
+    tsafe "^1.4.3"
+
+evt@^2.4.13:
   version "2.4.13"
   resolved "https://registry.yarnpkg.com/evt/-/evt-2.4.13.tgz#5ef873159ce62e099d58801a3e4b8e0f5b648017"
   integrity sha512-haTVOsmjzk+28zpzvVwan9Zw2rLQF2izgi7BKjAPRzZAfcv+8scL0TpM8MzvGNKFYHiy+Bq3r6FYIIUPl9kt3A==
@@ -14633,6 +14642,11 @@ tsafe@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-1.4.1.tgz#59cdad8ac41babf88e56dcd1a683ae2fb145d059"
   integrity sha512-3IDBalvf6SyvHFS14UiwCWzqdSdo+Q0k2J7DZyJYaHW/iraW9DJpaBKDJpry3yQs3o/t/A+oGaRW3iVt2lKxzA==
+
+tsafe@^1.4.3:
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-1.4.3.tgz#a98ce83616f0d9c01e3c6167a2ead45ba455b2ae"
+  integrity sha512-KjCdgjIqsbKW9oeJGSMVC23jhWm/VXJwkaZ7jffo/WaTioLGTHJqliHe9dECEVzIACNVNs/fwtKwU8wWK4jY4g==
 
 tsconfig-paths@^3.14.1:
   version "3.14.1"
