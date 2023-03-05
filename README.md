@@ -8,9 +8,6 @@
     <a href="https://github.com/garronej/keycloakify/actions">
       <img src="https://github.com/garronej/keycloakify/workflows/ci/badge.svg?branch=main">
     </a>
-    <a href="https://bundlephobia.com/package/keycloakify">
-      <img src="https://img.shields.io/bundlephobia/minzip/keycloakify">
-    </a>
     <a href="https://www.npmjs.com/package/keycloakify">
       <img src="https://img.shields.io/npm/dm/keycloakify">
     </a>
