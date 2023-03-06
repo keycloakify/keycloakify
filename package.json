@@ -1,6 +1,6 @@
 {
     "name": "keycloakify",
-    "version": "6.12.4",
+    "version": "6.12.5",
     "description": "Keycloak theme generator for Reacts app",
     "repository": {
         "type": "git",
@@ -81,7 +81,7 @@
         "@octokit/rest": "^18.12.0",
         "cheerio": "^1.0.0-rc.5",
         "cli-select": "^1.1.2",
-        "evt": "^2.4.13",
+        "evt": "^2.4.15",
         "minimal-polyfills": "^2.2.2",
         "minimist": "^1.2.6",
         "path-browserify": "^1.0.1",
