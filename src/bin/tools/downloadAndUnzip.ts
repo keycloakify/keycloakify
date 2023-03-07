@@ -1,25 +1,20 @@
-import { dirname as pathDirname, basename as pathBasename, join as pathJoin } from "path";
-import { createReadStream, createWriteStream, unlinkSync } from "fs";
-import { stat, mkdir, unlink, readFile, writeFile } from "fs/promises";
+import { dirname as pathDirname, basename as pathBasename, join as pathJoin, join } from "path";
+import { createReadStream, createWriteStream } from "fs";
+import { stat, mkdir, unlink, writeFile } from "fs/promises";
 import { transformCodebase } from "./transformCodebase";
 import { createHash } from "crypto";
-import http from "http";
-import https from "https";
+import fetch from "make-fetch-happen";
 import { createInflateRaw } from "zlib";
-
 import type { Readable } from "stream";
+import { homedir } from "os";
+import { FetchOptions } from "make-fetch-happen";
+import { exec as execCallback } from "child_process";
+import { promisify } from "util";
+
+const exec = promisify(execCallback);
 
 function hash(s: string) {
     return createHash("sha256").update(s).digest("hex");
-}
-
-async function maybeReadFile(path: string) {
-    try {
-        return await readFile(path, "utf-8");
-    } catch (error) {
-        if ((error as Error & { code: string }).code === "ENOENT") return undefined;
-        throw error;
-    }
 }
 
 async function maybeStat(path: string) {
@@ -32,69 +27,57 @@ async function maybeStat(path: string) {
 }
 
 /**
- * Download a file from `url` to `dir`. Will try to avoid downloading existing
- * files by using an `{hash(url)}.etag` file. If this file exists, we add an
- * etag headear, so server can tell us if file changed and we should re-download
- * or if our file is up-to-date.
+ * Get an npm configuration value as string, undefined if not set.
  *
- * Warning, this method assumes that the target filename can be extracted from
- * url, content-disposition headers are ignored.
+ * @param key
+ * @returns string or undefined
+ */
+async function getNmpConfig(key: string): Promise<string | undefined> {
+    const { stdout } = await exec(`npm config get ${key}`);
+    const value = stdout.trim();
+    return value && value !== "null" ? value : undefined;
+}
+
+/**
+ * Get proxy configuration from npm config files. Note that we don't care about
+ * proxy config in env vars, because make-fetch-happen will do that for us.
+ *
+ * @returns proxy configuration
+ */
+async function getNpmProxyConfig(): Promise<Pick<FetchOptions, "proxy" | "noProxy">> {
+    const proxy = (await getNmpConfig("https-proxy")) ?? (await getNmpConfig("proxy"));
+    const noProxy = (await getNmpConfig("noproxy")) ?? (await getNmpConfig("no-proxy"));
+
+    return { proxy, noProxy };
+}
+
+/**
+ * Download a file from `url` to `dir`. Will try to avoid downloading existing
+ * files by using the cache directory ~/.keycloakify/cache
  *
  * If the target directory does not exist, it will be created.
  *
- * If the target file exists and is out of date, it will be overwritten.
- * If the target file exists and there is no etag file, the target file will
- * be overwritten.
+ * If the target file exists, it will be overwritten.
+ *
+ * We use make-fetch-happen's internal file cache here, so we don't need to
+ * worry about redownloading the same file over and over. Unfortunately, that
+ * cache does not have a single file per entry, but bundles and indexes them,
+ * so we still need to write the contents to the target directory (possibly
+ * over and over), cause the current unzip implementation wants random access.
  *
  * @param url download url
  * @param dir target directory
+ * @param filename target filename
  * @returns promise for the full path of the downloaded file
  */
-async function download(url: string, dir: string): Promise<string> {
-    await mkdir(dir, { recursive: true });
-    const filename = pathBasename(url);
+async function download(url: string, dir: string, filename: string): Promise<string> {
+    const proxyOpts = await getNpmProxyConfig();
+    const opts: FetchOptions = { cachePath: join(homedir(), ".keycloakify/cache"), ...proxyOpts };
+    const response = await fetch(url, opts);
     const filepath = pathJoin(dir, filename);
-    // If downloaded file exists already and has an `.etag` companion file,
-    // read the etag from that file. This will avoid re-downloading the file
-    // if it is up to date.
-    const exists = await maybeStat(filepath);
-    const etagFilepath = pathJoin(dir, "_" + hash(url).substring(0, 15) + ".etag");
-    const etag = !exists ? undefined : await maybeReadFile(etagFilepath);
-
-    return new Promise((resolve, reject) => {
-        // use inner method to allow following redirects
-        function request(url1: URL) {
-            const headers: Record<string, string> = {};
-            if (etag) headers["If-None-Match"] = etag;
-            (url1.protocol === "https:" ? https : http).get(url1, { headers }, response => {
-                if (response.statusCode === 301 || response.statusCode === 302) {
-                    // follow redirects
-                    request(new URL(response.headers.location!!));
-                } else if (response.statusCode === 304) {
-                    // up-to-date, resolve now
-                    resolve(filepath);
-                } else if (response.statusCode !== 200) {
-                    reject(new Error(`Request to ${url1} returned status ${response.statusCode}.`));
-                } else {
-                    const fp = createWriteStream(filepath, { autoClose: true });
-                    fp.on("err", e => {
-                        fp.close();
-                        unlinkSync(filepath);
-                        reject(e);
-                    });
-                    fp.on("finish", async () => {
-                        // when targetfile has been written, write etag file so that
-                        // next time around we don't need to re-download
-                        const responseEtag = response.headers.etag;
-                        if (responseEtag) await writeFile(etagFilepath, responseEtag, "utf-8");
-                        resolve(filepath);
-                    });
-                    response.pipe(fp);
-                }
-            });
-        }
-        request(new URL(url));
-    });
+    await mkdir(dir, { recursive: true });
+    await writeFile(filepath, response.body);
+    return filepath;
 }
 
 /**
@@ -278,7 +261,8 @@ export async function downloadAndUnzip({
     const downloadHash = hash(JSON.stringify({ url, pathOfDirToExtractInArchive })).substring(0, 15);
     const extractDirPath = pathJoin(cacheDirPath, `_${downloadHash}`);
 
-    const zipFilepath = await download(url, cacheDirPath);
+    const filename = pathBasename(url);
+    const zipFilepath = await download(url, cacheDirPath, filename);
     const zipMtime = (await stat(zipFilepath)).mtimeMs;
     const unzipMtime = (await maybeStat(extractDirPath))?.mtimeMs;
 
