@@ -1,11 +1,20 @@
-import "../../tools/Array.prototype.every";
-import React, { useEffect, useMemo, useReducer, Fragment } from "react";
+import React, { useEffect, Fragment } from "react";
 import type { KcProps } from "../../KcProps";
-import type { KcContextBase, Validators, Attribute } from "../../getKcContext";
 import { clsx } from "../../tools/clsx";
+import type { I18nBase } from "../../i18n";
+import type { Attribute } from "../../getKcContext";
+
+// If you are copy pasting this code in your theme project
+// you can delete all the following import and replace them by
+// import { useFormValidation } from "keycloakify/lib/pages/shared/UserProfileCommons";
+// you can also delete the useFormValidation hooks and useGetErrors hooks, they shouldn't need
+// to be modified.
+import "../../tools/Array.prototype.every";
+import { useMemo, useReducer } from "react";
+import type { KcContextBase, Validators } from "../../getKcContext";
 import { useConstCallback } from "../../tools/useConstCallback";
 import { emailRegexp } from "../../tools/emailRegExp";
-import type { I18nBase, MessageKeyBase } from "../../i18n";
+import type { MessageKeyBase } from "../../i18n";
 import { id } from "tsafe/id";
 
 export type UserProfileFormFieldsProps = {
