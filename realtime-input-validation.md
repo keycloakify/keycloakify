@@ -10,7 +10,7 @@ User Profile is a Keycloak feature that enables to [define, from the admin conso
 
 NOTE: User profile is only available in Keycloak 15 and it's a beta feature that [needs to be enabled when launching keycloak](https://github.com/InseeFrLab/keycloakify/blob/59f106bf9e210b63b190826da2bf5f75fc8b7644/src/bin/build-keycloak-theme/build-keycloak-theme.ts#L116-L117) and [enabled in the console](https://user-images.githubusercontent.com/6702424/136874428-b071d614-c7f7-440d-9b2e-670faadc0871.png).
 
-Keycloakify, in [`register-user-profile.ftl`](https://github.com/InseeFrLab/keycloakify/blob/main/src/lib/components/RegisterUserProfile.tsx), provides frontend validation out of the box.
+Keycloakify, in [`register-user-profile.ftl`](https://github.com/InseeFrLab/keycloakify/blob/main/src/lib/pages/RegisterUserProfile.tsx), provides frontend validation out of the box.
 
 For implementing your own `register-user-profile.ftl` page, you can use [`import { useFormValidationSlice } from "keycloakify";`](https://github.com/InseeFrLab/keycloakify/blob/main/src/lib/useFormValidationSlice.tsx).\
 Find usage example [`here`](https://github.com/InseeFrLab/keycloakify/blob/d8206434bcf0cebbd2d673be8bc6bb37713f4ca7/src/lib/components/shared/UserProfileCommons.tsx#L25-L32).
