@@ -17,7 +17,7 @@ This enables to you to levrage CDN and cache big resource files that are used by
 Step to make `--external-assets` work: &#x20;
 
 * Provide the url of your app in the `homepage` field of `package.json` [example](https://github.com/garronej/keycloakify-demo-app/blob/7847cc70ef374ab26a6cc7953461cf25603e9a6d/package.json#L2) or in a `public/CNAME` file [example.](https://github.com/garronej/keycloakify-demo-app/blob/main/public/CNAME) (Or use [`keycloakify.areAppAndKeycloakServerSharingSameDomain=true`](build-options.md#keycloakify.isappandkeycloakserversharingsamedomain)`)`
-* Build the theme using `npx keycloakify --external-assets` [ex](https://github.com/garronej/keycloakify-demo-app/blob/7847cc70ef374ab26a6cc7953461cf25603e9a6d/.github/workflows/ci.yaml#L21)
+* Build the theme using `npx keycloakify --external-assets` [ex](https://github.com/codegouvfr/keycloakify-starter/blob/38dd7a946e60556cdc85a5579da5dd81783ac84f/.github/workflows/ci.yaml#L27)
 * (Optional) Enable [long-term assets caching](https://create-react-app.dev/docs/production-build/#static-file-caching) on the server hosting your app. [This is how you would do it with Ngnix](https://github.com/garronej/keycloakify-demo-app/blob/f08e02e1bd0c67b3cc8d49c03d4dd6d7916f457b/nginx.conf#L17-L29).
 * Make sure not to build your app and the keycloak theme separately (run [`yarn build-keycloak-theme`](https://github.com/codegouvfr/keycloakify-starter/blob/ae6bcd89d5898d8de3dea417e4e0acaf1e8ec30c/package.json#L13) only once in your CI) and remember to update the Keycloak theme every time you update your app.
 * Be mindful that if your app is down your login pages are down as well.
@@ -65,7 +65,8 @@ If, for some reason, you need to add extra properties like for example `env=dev`
 <pre class="language-json" data-title="package.json"><code class="lang-json">{
     "keycloakify": {
 <strong>        "extraThemeProperties": [ 
-</strong><strong>            "env=dev"
+</strong><strong>            "env=dev",
+</strong><strong>            "locales=en,ko"
 </strong><strong>        ]
 </strong>    }
 }
