@@ -12,7 +12,7 @@ Options that can be passed to the `npx keycloakify` command.
 
 Build the theme without bundling the assets (static js files, images ect). Keycloakify will read the `package.json` -> `homepage` field to know from where the assets should be downloaded. &#x20;
 
-This enable to you to enable CDN and enable big shared file to be cached by the user's browser. &#x20;
+This enables to you to levrage CDN and cache big resource files that are used by both the main app and the login pages. &#x20;
 
 Step to make `--external-assets` work: &#x20;
 
