@@ -72,7 +72,9 @@ async function getNpmProxyConfig(): Promise<Pick<FetchOptions, "proxy" | "noProx
  */
 async function download(url: string, dir: string, filename: string): Promise<string> {
     const proxyOpts = await getNpmProxyConfig();
-    const opts: FetchOptions = { cachePath: join(homedir(), ".keycloakify/cache"), ...proxyOpts };
+    const cacheRoot = process.env.XDG_CACHE_HOME ?? homedir();
+    const cachePath = join(cacheRoot, ".keycloakify/cache");
+    const opts: FetchOptions = { cachePath, ...proxyOpts };
     const response = await fetch(url, opts);
     const filepath = pathJoin(dir, filename);
     await mkdir(dir, { recursive: true });
