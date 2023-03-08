@@ -174,6 +174,10 @@ ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
                     ) ||  (
                         ["masterAdminClient", "delegateForUpdate", "defaultRole"]?seq_contains(key) &&
                         are_same_path(path, ["realm"])
+                    ) || (
+                        "error.ftl" == pageId &&
+                        are_same_path(path, ["realm"]) &&
+                        !["name", "displayName", "displayNameHtml", "internationalizationEnabled", "registrationEmailAsUsername" ]?seq_contains(key)
                     )
                 >
                     <#local out_seq += ["/*If you need '" + key + "' on " + pageId + ", please submit an issue to the Keycloakify repo*/"]>

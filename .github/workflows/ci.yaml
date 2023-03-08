@@ -28,7 +28,7 @@ jobs:
     needs: test_lint
     strategy:
       matrix:
-        node: [ '14', '15' ,'16', '17' ]
+        node: [ '14','16' ]
         os: [ windows-latest, ubuntu-latest ]
     name: Test with Node v${{ matrix.node }} on ${{ matrix.os }}
     steps:
