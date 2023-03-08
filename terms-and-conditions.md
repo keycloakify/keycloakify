@@ -11,41 +11,63 @@ First you need to enable the required action on the Keycloak server admin consol
 
 Then you load your own therms in Markdown format like this: &#x20;
 
-[src/KcApp/KcApp.tsx](https://github.com/garronej/keycloakify-starter/blob/main/src/KcApp/KcApp.tsx)
-
-```jsx
+<pre class="language-tsx" data-title="KcApp.tsx"><code class="lang-tsx">import { lazy, Suspense } from "react";
 import type { KcContext } from "./kcContext";
-import KcAppBase, { defaultKcProps, useDownloadTerms } from "keycloakify";
-import tos_en_url from "./tos_en.md";
-import tos_fr_url from "./tos_fr.md";
+import { useI18n } from "./i18n";
+import Fallback, { defaultKcProps, type KcProps, type PageProps } from "keycloakify";
+import Template from "keycloakify/lib/Template";
+<strong>import { useDownloadTerms } from "keycloakify/lib/pages/Terms";
+</strong><strong>import tos_en_url from "./assets/tos_en.md";
+</strong><strong>import tos_fr_url from "./assets/tos_fr.md";
+</strong>
+export default function App(props: { kcContext: KcContext; }) {
 
-export type Props = {
-    kcContext: KcContext;
-};
-
-export default function KcApp(props: Props) {
     const { kcContext } = props;
 
-    useDownloadTerms({
-        kcContext,
-        "downloadTermMarkdown": async ({ currentLanguageTag }) => {
-        
-            const markdownString = await fetch((() => {
-                    switch (currentLanguageTag) {
-                        case "fr": return tos_fr_url;
-                        default: return tos_en_url;
-                    }
-            })()).then(response => response.text());
-
-            return markdownString;
-        }
-    });
-
+    const i18n = useI18n({ kcContext });
+    
+<strong>    useDownloadTerms({
+</strong><strong>	kcContext,
+</strong><strong>	"downloadTermMarkdown": async ({ currentLanguageTag }) => {
+</strong><strong>
+</strong><strong>	    const markdownString = await fetch((() => {
+</strong><strong>		switch (currentLanguageTag) {
+</strong><strong>			case "fr": return tos_fr_url;
+</strong><strong>			default: return tos_en_url;
+</strong><strong>		}
+</strong><strong>	    })()).then(response => response.text());
+</strong><strong>
+</strong><strong>	    return markdownString;
+</strong><strong>	}
+</strong><strong>    });
+</strong>
+    if (i18n === null) {
+        return null;
+    }
+    
+    const pageProps: Omit&#x3C;PageProps&#x3C;any, typeof i18n>, "kcContext"> = {
+        i18n,
+        // Here we have overloaded the default template, however you could use the default one with:  
+        //Template: DefaultTemplate,
+        Template,
+        // Wether or not we should download the CSS and JS resources that comes with the default Keycloak theme.  
+        doFetchDefaultThemeResources: true,
+        ...defaultKcProps,
+    };
+    
     return (
-        <KcAppBase
-            kcContext={kcContext}
-            {...defaultKcProps}
-        />
+        &#x3C;Suspense>
+            {(() => {
+                switch (kcContext.pageId) {
+                    default: return &#x3C;Fallback {...{ kcContext, ...pageProps }} />;
+                }
+            })()}
+        &#x3C;/Suspense>
     );
+
 }
-```
+</code></pre>
+
+You can also completely rework the page if you're not happy with the default look: &#x20;
+
+{% embed url="https://github.com/codegouvfr/keycloakify-starter/blob/main/src/keycloak-theme/pages/Terms.tsx" %}
