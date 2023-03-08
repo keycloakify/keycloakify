@@ -10,9 +10,19 @@ User Profile is a Keycloak feature that enables to [define, from the admin conso
 
 NOTE: User profile is only available in Keycloak 15 and it's a beta feature that [needs to be enabled when launching keycloak](https://github.com/InseeFrLab/keycloakify/blob/59f106bf9e210b63b190826da2bf5f75fc8b7644/src/bin/build-keycloak-theme/build-keycloak-theme.ts#L116-L117) and [enabled in the console](https://user-images.githubusercontent.com/6702424/136874428-b071d614-c7f7-440d-9b2e-670faadc0871.png).
 
-Keycloakify, in [`register-user-profile.ftl`](https://github.com/InseeFrLab/keycloakify/blob/main/src/lib/pages/RegisterUserProfile.tsx), provides client side validation out of the box.
+Keycloakify provides client side validation out of the box but for customizing the registration experience you'll have customize `register-user-profile.ftl`
 
-For implementing your own `register-user-profile.ftl` page, you can use [`import { useFormValidationSlice } from "keycloakify";`](https://github.com/InseeFrLab/keycloakify/blob/main/src/lib/useFormValidationSlice.tsx).\
-Find usage example [`here`](https://github.com/InseeFrLab/keycloakify/blob/d8206434bcf0cebbd2d673be8bc6bb37713f4ca7/src/lib/components/shared/UserProfileCommons.tsx#L25-L32).
+Example in the starter project: &#x20;
 
-As for right now [it's not possible to define a pattern for the password](https://keycloak.discourse.group/t/make-password-policies-available-to-freemarker/11632) from the admin console. You can however pass validators for it to the `useFormValidationSlice` function.
+{% embed url="https://github.com/codegouvfr/keycloakify-starter/blob/main/src/keycloak-theme/pages/RegisterUserProfile.tsx" %}
+The RegisterUserProfile page...
+{% endembed %}
+
+{% embed url="https://github.com/codegouvfr/keycloakify-starter/blob/main/src/keycloak-theme/pages/shared/UserProfileCommons.tsx" %}
+...but this is where the magic happens
+{% endembed %}
+
+{% hint style="warning" %}
+As for right now [Keycloak dosen't allow to define a pattern for the password](https://keycloak.discourse.group/t/make-password-policies-available-to-freemarker/11632) in the admin console. You can however pass validators for it to the `useFormValidation` function. (this is why useFormValidation returns `attributesWithPassword`)
+{% endhint %}
+
