@@ -6,6 +6,180 @@ import { useConstCallback } from "./tools/useConstCallback";
 import { id } from "tsafe/id";
 import { emailRegexp } from "./tools/emailRegExp";
 
+/** @deprecated: Will be removed in the next major. Use this instead:
+ *  import { useFormValidation } from "keycloakify/lib/pages/shares/UserProfileCommons";
+ *
+ *  The API is the same only the returned value formValidationReducer have been renamed formValidationDispatch
+ *  (a it should have been named from the beginning 😬)
+ */
+export function useFormValidationSlice(params: {
+    kcContext: {
+        messagesPerField: Pick<KcContextBase.Common["messagesPerField"], "existsError" | "get">;
+        profile: {
+            attributes: Attribute[];
+        };
+        passwordRequired?: boolean;
+        realm: { registrationEmailAsUsername: boolean };
+    };
+    /** NOTE: Try to avoid passing a new ref every render for better performances. */
+    passwordValidators?: Validators;
+    i18n: I18nBase;
+}) {
+    const {
+        kcContext,
+        passwordValidators = {
+            "length": {
+                "ignore.empty.value": true,
+                "min": "4"
+            }
+        },
+        i18n
+    } = params;
+
+    const attributesWithPassword = useMemo(
+        () =>
+            !kcContext.passwordRequired
+                ? kcContext.profile.attributes
+                : (() => {
+                      const name = kcContext.realm.registrationEmailAsUsername ? "email" : "username";
+
+                      return kcContext.profile.attributes.reduce<Attribute[]>(
+                          (prev, curr) => [
+                              ...prev,
+                              ...(curr.name !== name
+                                  ? [curr]
+                                  : [
+                                        curr,
+                                        id<Attribute>({
+                                            "name": "password",
+                                            "displayName": id<`\${${MessageKeyBase}}`>("${password}"),
+                                            "required": true,
+                                            "readOnly": false,
+                                            "validators": passwordValidators,
+                                            "annotations": {},
+                                            "groupAnnotations": {},
+                                            "autocomplete": "new-password"
+                                        }),
+                                        id<Attribute>({
+                                            "name": "password-confirm",
+                                            "displayName": id<`\${${MessageKeyBase}}`>("${passwordConfirm}"),
+                                            "required": true,
+                                            "readOnly": false,
+                                            "validators": {
+                                                "_compareToOther": {
+                                                    "name": "password",
+                                                    "ignore.empty.value": true,
+                                                    "shouldBe": "equal",
+                                                    "error-message": id<`\${${MessageKeyBase}}`>("${invalidPasswordConfirmMessage}")
+                                                }
+                                            },
+                                            "annotations": {},
+                                            "groupAnnotations": {},
+                                            "autocomplete": "new-password"
+                                        })
+                                    ])
+                          ],
+                          []
+                      );
+                  })(),
+        [kcContext, passwordValidators]
+    );
+
+    const { getErrors } = useGetErrors({
+        "kcContext": {
+            "messagesPerField": kcContext.messagesPerField,
+            "profile": {
+                "attributes": attributesWithPassword
+            }
+        },
+        i18n
+    });
+
+    const initialInternalState = useMemo(
+        () =>
+            Object.fromEntries(
+                attributesWithPassword
+                    .map(attribute => ({
+                        attribute,
+                        "errors": getErrors({
+                            "name": attribute.name,
+                            "fieldValueByAttributeName": Object.fromEntries(
+                                attributesWithPassword.map(({ name, value }) => [name, { "value": value ?? "" }])
+                            )
+                        })
+                    }))
+                    .map(({ attribute, errors }) => [
+                        attribute.name,
+                        {
+                            "value": attribute.value ?? "",
+                            errors,
+                            "doDisplayPotentialErrorMessages": errors.length !== 0
+                        }
+                    ])
+            ),
+        [attributesWithPassword]
+    );
+
+    type InternalState = typeof initialInternalState;
+
+    const [formValidationInternalState, formValidationReducer] = useReducer(
+        (
+            state: InternalState,
+            params:
+                | {
+                      action: "update value";
+                      name: string;
+                      newValue: string;
+                  }
+                | {
+                      action: "focus lost";
+                      name: string;
+                  }
+        ): InternalState => ({
+            ...state,
+            [params.name]: {
+                ...state[params.name],
+                ...(() => {
+                    switch (params.action) {
+                        case "focus lost":
+                            return { "doDisplayPotentialErrorMessages": true };
+                        case "update value":
+                            return {
+                                "value": params.newValue,
+                                "errors": getErrors({
+                                    "name": params.name,
+                                    "fieldValueByAttributeName": {
+                                        ...state,
+                                        [params.name]: { "value": params.newValue }
+                                    }
+                                })
+                            };
+                    }
+                })()
+            }
+        }),
+        initialInternalState
+    );
+
+    const formValidationState = useMemo(
+        () => ({
+            "fieldStateByAttributeName": Object.fromEntries(
+                Object.entries(formValidationInternalState).map(([name, { value, errors, doDisplayPotentialErrorMessages }]) => [
+                    name,
+                    { value, "displayableErrors": doDisplayPotentialErrorMessages ? errors : [] }
+                ])
+            ),
+            "isFormSubmittable": Object.entries(formValidationInternalState).every(
+                ([name, { value, errors }]) =>
+                    errors.length === 0 && (value !== "" || !attributesWithPassword.find(attribute => attribute.name === name)!.required)
+            )
+        }),
+        [formValidationInternalState, attributesWithPassword]
+    );
+
+    return { formValidationState, formValidationReducer, attributesWithPassword };
+}
+
 /** Expect to be used in a component wrapped within a <I18nProvider> */
 export function useGetErrors(params: {
     kcContext: {
@@ -302,176 +476,4 @@ export function useGetErrors(params: {
     });
 
     return { getErrors };
-}
-
-/**
- * NOTE: The attributesWithPassword returned is actually augmented with
- * artificial password related attributes only if kcContext.passwordRequired === true
- */
-export function useFormValidationSlice(params: {
-    kcContext: {
-        messagesPerField: Pick<KcContextBase.Common["messagesPerField"], "existsError" | "get">;
-        profile: {
-            attributes: Attribute[];
-        };
-        passwordRequired?: boolean;
-        realm: { registrationEmailAsUsername: boolean };
-    };
-    /** NOTE: Try to avoid passing a new ref every render for better performances. */
-    passwordValidators?: Validators;
-    i18n: I18nBase;
-}) {
-    const {
-        kcContext,
-        passwordValidators = {
-            "length": {
-                "ignore.empty.value": true,
-                "min": "4"
-            }
-        },
-        i18n
-    } = params;
-
-    const attributesWithPassword = useMemo(
-        () =>
-            !kcContext.passwordRequired
-                ? kcContext.profile.attributes
-                : (() => {
-                      const name = kcContext.realm.registrationEmailAsUsername ? "email" : "username";
-
-                      return kcContext.profile.attributes.reduce<Attribute[]>(
-                          (prev, curr) => [
-                              ...prev,
-                              ...(curr.name !== name
-                                  ? [curr]
-                                  : [
-                                        curr,
-                                        id<Attribute>({
-                                            "name": "password",
-                                            "displayName": id<`\${${MessageKeyBase}}`>("${password}"),
-                                            "required": true,
-                                            "readOnly": false,
-                                            "validators": passwordValidators,
-                                            "annotations": {},
-                                            "groupAnnotations": {},
-                                            "autocomplete": "new-password"
-                                        }),
-                                        id<Attribute>({
-                                            "name": "password-confirm",
-                                            "displayName": id<`\${${MessageKeyBase}}`>("${passwordConfirm}"),
-                                            "required": true,
-                                            "readOnly": false,
-                                            "validators": {
-                                                "_compareToOther": {
-                                                    "name": "password",
-                                                    "ignore.empty.value": true,
-                                                    "shouldBe": "equal",
-                                                    "error-message": id<`\${${MessageKeyBase}}`>("${invalidPasswordConfirmMessage}")
-                                                }
-                                            },
-                                            "annotations": {},
-                                            "groupAnnotations": {},
-                                            "autocomplete": "new-password"
-                                        })
-                                    ])
-                          ],
-                          []
-                      );
-                  })(),
-        [kcContext, passwordValidators]
-    );
-
-    const { getErrors } = useGetErrors({
-        "kcContext": {
-            "messagesPerField": kcContext.messagesPerField,
-            "profile": {
-                "attributes": attributesWithPassword
-            }
-        },
-        i18n
-    });
-
-    const initialInternalState = useMemo(
-        () =>
-            Object.fromEntries(
-                attributesWithPassword
-                    .map(attribute => ({
-                        attribute,
-                        "errors": getErrors({
-                            "name": attribute.name,
-                            "fieldValueByAttributeName": Object.fromEntries(
-                                attributesWithPassword.map(({ name, value }) => [name, { "value": value ?? "" }])
-                            )
-                        })
-                    }))
-                    .map(({ attribute, errors }) => [
-                        attribute.name,
-                        {
-                            "value": attribute.value ?? "",
-                            errors,
-                            "doDisplayPotentialErrorMessages": errors.length !== 0
-                        }
-                    ])
-            ),
-        [attributesWithPassword]
-    );
-
-    type InternalState = typeof initialInternalState;
-
-    const [formValidationInternalState, formValidationReducer] = useReducer(
-        (
-            state: InternalState,
-            params:
-                | {
-                      action: "update value";
-                      name: string;
-                      newValue: string;
-                  }
-                | {
-                      action: "focus lost";
-                      name: string;
-                  }
-        ): InternalState => ({
-            ...state,
-            [params.name]: {
-                ...state[params.name],
-                ...(() => {
-                    switch (params.action) {
-                        case "focus lost":
-                            return { "doDisplayPotentialErrorMessages": true };
-                        case "update value":
-                            return {
-                                "value": params.newValue,
-                                "errors": getErrors({
-                                    "name": params.name,
-                                    "fieldValueByAttributeName": {
-                                        ...state,
-                                        [params.name]: { "value": params.newValue }
-                                    }
-                                })
-                            };
-                    }
-                })()
-            }
-        }),
-        initialInternalState
-    );
-
-    const formValidationState = useMemo(
-        () => ({
-            "fieldStateByAttributeName": Object.fromEntries(
-                Object.entries(formValidationInternalState).map(([name, { value, errors, doDisplayPotentialErrorMessages }]) => [
-                    name,
-                    { value, "displayableErrors": doDisplayPotentialErrorMessages ? errors : [] }
-                ])
-            ),
-            "isFormSubmittable": Object.entries(formValidationInternalState).every(
-                ([name, { value, errors }]) =>
-                    errors.length === 0 && (value !== "" || !attributesWithPassword.find(attribute => attribute.name === name)!.required)
-            )
-        }),
-        [formValidationInternalState, attributesWithPassword]
-    );
-
-    return { formValidationState, formValidationReducer, attributesWithPassword };
 }
