@@ -39,22 +39,56 @@ Main takeaways are:
 
 You won't be able to [import things from your public directory **in your JavaScript code** (it's supported in `public/index.html`)](https://create-react-app.dev/docs/using-the-public-folder/#adding-assets-outside-of-the-module-system). (This isn't recommended anyway).
 
-### `@font-face` importing fonts from the `src/` dir
+### Self hosted fonts
 
+{% hint style="success" %}
 If you are building the theme with [--external-assets](build-options.md#external-assets) this limitation doesn't apply, you can import fonts however you see fit.
+{% endhint %}
 
-#### Example of setup that **won't** work
+This scenario **won't** work
 
-* We have a `fonts/` directory in `src/`
-* We import the font like this [`src: url("/fonts/my-font.woff2") format("woff2");`](https://github.com/garronej/keycloakify-demo-app/blob/07d54a3012ef354ee12b1374c6f7ad1cb125d56b/src/fonts.scss#L4) in a `.scss` a file.
+{% code title="fonts.css" %}
+```css
+@font-face {
+  font-family: Marianne;
+  src: url("./fonts/Marianne-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+```
+{% endcode %}
 
-#### Possible workarounds
+{% code title="index.html" %}
+```html
+<link rel="stylesheet" href="%PUBLIC_URL%/font.css" />
+```
+{% endcode %}
+
+This will:
+
+{% code title="index.html" %}
+```diff
+-<link rel="stylesheet" href="%PUBLIC_URL%/font.css" />
++<style>
++ @font-face {
++   font-family: Marianne;
++   src: url("%PUBLIC_URL%/fonts/Marianne-Light.woff2") format("woff2");
++   font-weight: 300;
++   font-style: normal;
++   font-display: swap;
++ }
++</style>
+```
+{% endcode %}
+
+Example [here](https://github.com/garronej/keycloakify-demo-app/blob/9aa2dbaec28a7786d6b2983c9a59d393dec1b2d6/public/index.html#L27-L73) (and the font are [here](https://github.com/garronej/keycloakify-demo-app/tree/main/public/fonts/WorkSans)).
+
+#### Other workarounds
 
 * Use [`--external-assets`](build-options.md#external-assets).
 * If it is possible, use Google Fonts or any other font provider.
-* If you want to host your font recommended approach is to move your fonts into the `public` directory and to place your `@font-face` statements in the `public/index.html`.\
-  Example [here](https://github.com/garronej/keycloakify-demo-app/blob/9aa2dbaec28a7786d6b2983c9a59d393dec1b2d6/public/index.html#L27-L73) (and the font are [here](https://github.com/garronej/keycloakify-demo-app/tree/main/public/fonts/WorkSans)).
-* If you can't or wont move your `@font-face` statements in the `public/index.html`, you can still [use non relative url](https://github.com/garronej/keycloakify-demo-app/blob/2de8a9eb6f5de9c94f9cd3991faad0377e63268c/src/fonts.scss#L16), you will need to enable [`Access-Control-Allow-Origin`](https://github.com/garronej/keycloakify-demo-app/blob/2de8a9eb6f5de9c94f9cd3991faad0377e63268c/nginx.conf#L17-L19) for your font files, even on the same domain.
+* You can [use non relative url](https://github.com/garronej/keycloakify-demo-app/blob/2de8a9eb6f5de9c94f9cd3991faad0377e63268c/src/fonts.scss#L16), you will need to enable [`Access-Control-Allow-Origin`](https://github.com/garronej/keycloakify-demo-app/blob/2de8a9eb6f5de9c94f9cd3991faad0377e63268c/nginx.conf#L17-L19) for your font files, even on the same domain.
 
 ### login and email only
 
