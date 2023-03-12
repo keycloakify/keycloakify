@@ -82,6 +82,10 @@ This will:
 ```
 {% endcode %}
 
+{% hint style="warning" %}
+Make sure `%PUBLIC_URL%/fonts/Marianne-Light.woff2` actually point to the font file.
+{% endhint %}
+
 Example [here](https://github.com/garronej/keycloakify-demo-app/blob/9aa2dbaec28a7786d6b2983c9a59d393dec1b2d6/public/index.html#L27-L73) (and the font are [here](https://github.com/garronej/keycloakify-demo-app/tree/main/public/fonts/WorkSans)).
 
 #### Other workarounds
