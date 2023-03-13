@@ -40,6 +40,10 @@
 
 # Changelog highlights
 
+## 6.13
+
+-   Build work behind corporate proxies, [see issue](https://github.com/InseeFrLab/keycloakify/issues/257).
+
 ## 6.12
 
 Massive improvement in the developer experience:
