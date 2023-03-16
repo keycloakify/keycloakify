@@ -44,7 +44,8 @@
         "src/",
         "!src/scripts",
         "dist/",
-        "!dist/tsconfig.tsbuildinfo"
+        "!dist/tsconfig.tsbuildinfo",
+        "!dist/bin/tsconfig.tsbuildinfo"
     ],
     "keywords": [
         "bluehats",
