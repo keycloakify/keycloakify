@@ -30,15 +30,18 @@ export function generateStartKeycloakTestingContainer(params: {
         buildOptions: { themeName }
     } = params;
 
+    const keycloakThemePath = pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", themeName).replace(/\\/g, "/");
+
     fs.writeFileSync(
         pathJoin(keycloakThemeBuildingDirPath, generateStartKeycloakTestingContainer.basename),
+
         Buffer.from(
             [
                 "#!/usr/bin/env bash",
                 "",
                 `docker rm ${containerName} || true`,
                 "",
-                `cd ${keycloakThemeBuildingDirPath}`,
+                `cd "${keycloakThemeBuildingDirPath.replace(/\\/g, "/")}"`,
                 "",
                 "docker run \\",
                 "   -p 8080:8080 \\",
@@ -46,14 +49,7 @@ export function generateStartKeycloakTestingContainer(params: {
                 "   -e KEYCLOAK_ADMIN=admin \\",
                 "   -e KEYCLOAK_ADMIN_PASSWORD=admin \\",
                 "   -e JAVA_OPTS=-Dkeycloak.profile=preview \\",
-                `   -v ${pathJoin(
-                    keycloakThemeBuildingDirPath,
-                    "src",
-                    "main",
-                    "resources",
-                    "theme",
-                    themeName
-                )}:/opt/keycloak/themes/${themeName}:rw \\`,
+                `   -v "${keycloakThemePath}":"/opt/keycloak/themes/${themeName}":rw \\`,
                 `   -it quay.io/keycloak/keycloak:${keycloakVersion} \\`,
                 `   start-dev`,
                 ""
