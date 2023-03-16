@@ -20,7 +20,7 @@
         "format:check": "yarn _format --list-different",
         "generate-messages": "ts-node --skipProject src/scripts/generate-i18n-messages.ts",
         "link-in-app": "ts-node --skipProject src/scripts/link-in-app.ts",
-        "link-in-starter": "yarn link-in-app keycloakify-advanced-starter",
+        "link-in-starter": "yarn link-in-app keycloakify-starter",
         "tsc-watch": "tsc -p src/bin -w & tsc -p src/lib -w "
     },
     "bin": {
