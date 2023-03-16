@@ -1,11 +1,11 @@
-import { getKcContext } from "../../lib/getKcContext";
-import type { KcContextBase } from "../../lib/getKcContext";
-import type { ExtendsKcContextBase } from "../../lib/getKcContext";
+import { getKcContext } from "../../getKcContext";
+import type { KcContextBase } from "../../getKcContext";
+import type { ExtendsKcContextBase } from "../../getKcContext";
 import { same } from "evt/tools/inDepth";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
-import { kcContextMocks, kcContextCommonMock } from "../../lib/getKcContext/kcContextMocks";
-import { deepClone } from "../../lib/tools/deepClone";
+import { kcContextMocks, kcContextCommonMock } from "../../getKcContext/kcContextMocks";
+import { deepClone } from "../../tools/deepClone";
 
 {
     const authorizedMailDomains = ["example.com", "another-example.com", "*.yet-another-example.com", "*.example.com", "hello-world.com"];

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { headInsert } from "../tools/headInsert";
-import { pathJoin } from "../../bin/tools/pathJoin";
+import { pathJoin } from "../bin/tools/pathJoin";
 import { clsx } from "../tools/clsx";
 import type { PageProps } from "../KcProps";
 import type { KcContextBase } from "../getKcContext";

@@ -11,7 +11,7 @@ generateKeycloakThemeResources({
     "keycloakVersion": "11.0.3",
     "buildOptions": {
         "themeName": "keycloakify-demo-app",
-        "extraPages": ["my-custom-page.ftl"],
+        "extraLoginPages": ["my-custom-page.ftl"],
         "extraThemeProperties": ["env=test"],
         "isStandalone": true,
         "urlPathname": "/keycloakify-demo-app/",

@@ -1,7 +1,7 @@
 {
-    "extends": "../../tsproject.json",
+    "extends": "../tsproject.json",
     "compilerOptions": {
-        "outDir": "../../dist/lib",
+        "outDir": "../dist",
         "rootDir": ".",
         "module": "ES2020",
         "target": "ES2017",
@@ -10,9 +10,10 @@
         "jsx": "react",
         "allowSyntheticDefaultImports": true
     },
+    "exclude": ["./test", "./bin"],
     "references": [
         {
-            "path": "../bin"
+            "path": "./bin"
         }
     ]
 }

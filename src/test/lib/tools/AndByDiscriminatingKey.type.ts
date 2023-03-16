@@ -1,4 +1,4 @@
-import { AndByDiscriminatingKey } from "../../../lib/tools/AndByDiscriminatingKey";
+import { AndByDiscriminatingKey } from "../../../tools/AndByDiscriminatingKey";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
 

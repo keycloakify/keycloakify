@@ -1,4 +1,4 @@
-import type { LoginThemePageId } from "../../bin/keycloakify/generateFtl";
+import type { LoginThemePageId } from "../bin/keycloakify/generateFtl";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
 import type { MessageKeyBase } from "../i18n";

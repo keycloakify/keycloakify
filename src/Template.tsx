@@ -1,7 +1,7 @@
 import React, { useReducer, useEffect } from "react";
 import { assert } from "./tools/assert";
 import { headInsert } from "./tools/headInsert";
-import { pathJoin } from "../bin/tools/pathJoin";
+import { pathJoin } from "./bin/tools/pathJoin";
 import { clsx } from "./tools/clsx";
 import type { TemplateProps } from "./KcProps";
 import type { KcContextBase } from "./getKcContext/KcContextBase";
