@@ -9,8 +9,6 @@ import { getProjectRoot } from "../../bin/tools/getProjectRoot.js";
 
     const binDirPath = pathJoin(getProjectRoot(), "dist_test", "bin");
 
-    console.log("===>", binDirPath);
-
     st.execSyncTrace(
         //`node ${pathJoin(binDirPath, "keycloakify")} --external-assets`,
         `node ${pathJoin(binDirPath, "keycloakify")}`,
