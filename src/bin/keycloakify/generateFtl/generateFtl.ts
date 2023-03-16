@@ -10,8 +10,11 @@ import type { BuildOptions } from "../BuildOptions";
 import { assert } from "tsafe/assert";
 import { Reflect } from "tsafe/Reflect";
 
-// https://github.com/keycloak/keycloak/blob/main/services/src/main/java/org/keycloak/forms/login/freemarker/Templates.java
-export const pageIds = [
+export const themeTypes = ["login", "account"] as const;
+
+export type ThemeType = (typeof themeTypes)[number];
+
+export const loginThemePageIds = [
     "login.ftl",
     "login-username.ftl",
     "login-password.ftl",
@@ -34,6 +37,11 @@ export const pageIds = [
     "update-user-profile.ftl",
     "idp-review-user-profile.ftl"
 ] as const;
+
+export const accountThemePageIds = ["password.ftl"] as const;
+
+export type LoginThemePageId = (typeof loginThemePageIds)[number];
+export type AccountThemePageId = (typeof accountThemePageIds)[number];
 
 export type BuildOptionsLike = BuildOptionsLike.Standalone | BuildOptionsLike.ExternalAssets;
 
@@ -67,8 +75,6 @@ export namespace BuildOptionsLike {
 
     assert<typeof buildOptions extends BuildOptionsLike ? true : false>();
 }
-
-export type PageId = (typeof pageIds)[number];
 
 export function generateFtlFilesCodeFactory(params: {
     indexHtmlCode: string;

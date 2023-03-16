@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import { join as pathJoin, dirname as pathDirname } from "path";
+import { themeTypes } from "./generateFtl/generateFtl";
 import { assert } from "tsafe/assert";
 import { Reflect } from "tsafe/Reflect";
 import type { BuildOptions } from "./BuildOptions";
@@ -69,7 +70,7 @@ export function generateJavaStackFiles(params: {
                         "themes": [
                             {
                                 "name": themeName,
-                                "types": ["login", ...(doBundlesEmailTemplate ? ["email"] : [])]
+                                "types": [...themeTypes, ...(doBundlesEmailTemplate ? ["email"] : [])]
                             }
                         ]
                     },

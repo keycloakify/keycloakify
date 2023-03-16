@@ -13,7 +13,10 @@ type ParsedPackageJson = {
     version: string;
     homepage?: string;
     keycloakify?: {
+        /** @deprecated: use extraLoginPages instead */
         extraPages?: string[];
+        extraLoginPages?: string[];
+        extraAccountPages?: string[];
         extraThemeProperties?: string[];
         areAppAndKeycloakServerSharingSameDomain?: boolean;
         artifactId?: string;
@@ -29,6 +32,8 @@ const zParsedPackageJson = z.object({
     "keycloakify": z
         .object({
             "extraPages": z.array(z.string()).optional(),
+            "extraLoginPages": z.array(z.string()).optional(),
+            "extraAccountPages": z.array(z.string()).optional(),
             "extraThemeProperties": z.array(z.string()).optional(),
             "areAppAndKeycloakServerSharingSameDomain": z.boolean().optional(),
             "artifactId": z.string().optional(),
@@ -48,7 +53,8 @@ export namespace BuildOptions {
         isSilent: boolean;
         version: string;
         themeName: string;
-        extraPages?: string[];
+        extraLoginPages: string[] | undefined;
+        extraAccountPages: string[] | undefined;
         extraThemeProperties?: string[];
         groupId: string;
         artifactId: string;
@@ -119,7 +125,7 @@ export function readBuildOptions(params: {
     const common: BuildOptions.Common = (() => {
         const { name, keycloakify = {}, version, homepage } = parsedPackageJson;
 
-        const { extraPages, extraThemeProperties, groupId, artifactId, bundler } = keycloakify ?? {};
+        const { extraPages, extraLoginPages, extraAccountPages, extraThemeProperties, groupId, artifactId, bundler } = keycloakify ?? {};
 
         const themeName = name
             .replace(/^@(.*)/, "$1")
@@ -158,7 +164,8 @@ export function readBuildOptions(params: {
                 );
             })(),
             "version": process.env.KEYCLOAKIFY_VERSION ?? version,
-            extraPages,
+            "extraLoginPages": [...(extraPages ?? []), ...(extraLoginPages ?? [])],
+            extraAccountPages,
             extraThemeProperties,
             isSilent
         };
