@@ -4,7 +4,7 @@ import type { MessageKeyBase } from "../i18n";
 import { base64url } from "rfc4648";
 import { useConstCallback } from "../tools/useConstCallback";
 import type { PageProps } from "../KcProps";
-import type { KcContextBase } from "../getKcContext";
+import type { KcContextBase } from "../kcContext";
 import type { I18nBase } from "../i18n";
 
 export default function WebauthnAuthenticate(props: PageProps<Extract<KcContextBase, { pageId: "webauthn-authenticate.ftl" }>, I18nBase>) {

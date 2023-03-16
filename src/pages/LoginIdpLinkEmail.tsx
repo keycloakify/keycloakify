@@ -1,5 +1,5 @@
 import React from "react";
-import type { KcContextBase } from "../getKcContext";
+import type { KcContextBase } from "../kcContext";
 import type { PageProps } from "../KcProps";
 import type { I18nBase } from "../i18n";
 

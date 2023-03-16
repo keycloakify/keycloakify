@@ -3,7 +3,7 @@ import { clsx } from "../tools/clsx";
 import { useConstCallback } from "../tools/useConstCallback";
 import type { FormEventHandler } from "react";
 import type { PageProps } from "../KcProps";
-import type { KcContextBase } from "../getKcContext";
+import type { KcContextBase } from "../kcContext";
 import type { I18nBase } from "../i18n";
 
 export default function LoginUsername(props: PageProps<Extract<KcContextBase, { pageId: "login-username.ftl" }>, I18nBase>) {

@@ -3,7 +3,7 @@ import { headInsert } from "../tools/headInsert";
 import { pathJoin } from "../bin/tools/pathJoin";
 import { clsx } from "../tools/clsx";
 import type { PageProps } from "../KcProps";
-import type { KcContextBase } from "../getKcContext";
+import type { KcContextBase } from "../kcContext";
 import type { I18nBase } from "../i18n";
 
 export default function LoginOtp(props: PageProps<Extract<KcContextBase, { pageId: "login-otp.ftl" }>, I18nBase>) {

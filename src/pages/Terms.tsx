@@ -10,7 +10,7 @@ import { useConstCallback } from "../tools/useConstCallback";
 import { Markdown } from "../tools/Markdown";
 import type { Extends } from "tsafe";
 import type { PageProps } from "../KcProps";
-import type { KcContextBase } from "../getKcContext";
+import type { KcContextBase } from "../kcContext";
 import type { I18nBase } from "../i18n";
 
 export default function Terms(props: PageProps<Extract<KcContextBase, { pageId: "terms.ftl" }>, I18nBase>) {

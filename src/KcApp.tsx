@@ -1,7 +1,7 @@
 import React, { lazy, Suspense } from "react";
 import { __unsafe_useI18n as useI18n } from "./i18n";
 import DefaultTemplate from "./Template";
-import type { KcContextBase } from "./getKcContext/KcContextBase";
+import type { KcContextBase } from "./kcContext/KcContextBase";
 import type { PageProps } from "./KcProps";
 import type { I18nBase } from "./i18n";
 import type { SetOptional } from "./tools/SetOptional";

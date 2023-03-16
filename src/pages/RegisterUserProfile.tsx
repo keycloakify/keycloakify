@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { clsx } from "../tools/clsx";
 import { UserProfileFormFields } from "./shared/UserProfileCommons";
 import type { PageProps } from "../KcProps";
-import type { KcContextBase } from "../getKcContext";
+import type { KcContextBase } from "../kcContext";
 import type { I18nBase } from "../i18n";
 
 export default function RegisterUserProfile(props: PageProps<Extract<KcContextBase, { pageId: "register-user-profile.ftl" }>, I18nBase>) {

@@ -1,6 +1,6 @@
 import React from "react";
 import type { PageProps } from "../KcProps";
-import type { KcContextBase } from "../getKcContext";
+import type { KcContextBase } from "../kcContext";
 import type { I18nBase } from "../i18n";
 
 export default function LoginVerifyEmail(props: PageProps<Extract<KcContextBase, { pageId: "login-verify-email.ftl" }>, I18nBase>) {

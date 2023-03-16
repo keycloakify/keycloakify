@@ -1,10 +1,10 @@
-import { getKcContext } from "../../getKcContext";
-import type { KcContextBase } from "../../getKcContext";
-import type { ExtendsKcContextBase } from "../../getKcContext";
+import { getKcContext } from "../../kcContext";
+import type { KcContextBase } from "../../kcContext";
+import type { ExtendsKcContextBase } from "../../kcContext";
 import { same } from "evt/tools/inDepth";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
-import { kcContextMocks, kcContextCommonMock } from "../../getKcContext/kcContextMocks";
+import { kcContextMocks, kcContextCommonMock } from "../../kcContext/kcContextMocks";
 import { deepClone } from "../../tools/deepClone";
 
 {

@@ -2,7 +2,7 @@ import React, { useEffect, Fragment } from "react";
 import type { KcProps } from "../../KcProps";
 import { clsx } from "../../tools/clsx";
 import type { I18nBase } from "../../i18n";
-import type { Attribute } from "../../getKcContext";
+import type { Attribute } from "../../kcContext";
 
 // If you are copy pasting this code in your theme project
 // you can delete all the following import and replace them by
@@ -11,7 +11,7 @@ import type { Attribute } from "../../getKcContext";
 // to be modified.
 import "../../tools/Array.prototype.every";
 import { useMemo, useReducer } from "react";
-import type { KcContextBase, Validators } from "../../getKcContext";
+import type { KcContextBase, Validators } from "../../kcContext";
 import { useConstCallback } from "../../tools/useConstCallback";
 import { emailRegexp } from "../../tools/emailRegExp";
 import type { MessageKeyBase } from "../../i18n";

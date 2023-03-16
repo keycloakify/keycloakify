@@ -1,7 +1,7 @@
 import React from "react";
 import { clsx } from "../tools/clsx";
 import type { PageProps } from "../KcProps";
-import type { KcContextBase } from "../getKcContext";
+import type { KcContextBase } from "../kcContext";
 import type { I18nBase } from "../i18n";
 
 export default function LogoutConfirm(props: PageProps<Extract<KcContextBase, { pageId: "logout-confirm.ftl" }>, I18nBase>) {

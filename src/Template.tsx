@@ -4,7 +4,7 @@ import { headInsert } from "./tools/headInsert";
 import { pathJoin } from "./bin/tools/pathJoin";
 import { clsx } from "./tools/clsx";
 import type { TemplateProps } from "./KcProps";
-import type { KcContextBase } from "./getKcContext/KcContextBase";
+import type { KcContextBase } from "./kcContext/KcContextBase";
 import type { I18nBase } from "./i18n";
 
 export default function Template(props: TemplateProps<KcContextBase.Common, I18nBase>) {
