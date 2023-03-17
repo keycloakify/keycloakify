@@ -1,13 +1,12 @@
-import React, { useReducer, useEffect } from "react";
-import { assert } from "./tools/assert";
-import { headInsert } from "./tools/headInsert";
-import { pathJoin } from "./bin/tools/pathJoin";
-import { clsx } from "./tools/clsx";
-import type { TemplateProps } from "./KcProps";
-import type { KcContextBase } from "./kcContext/KcContextBase";
-import type { I18nBase } from "./i18n";
+import { assert } from "keycloakify/tools/assert";
+import { clsx } from "keycloakify/tools/clsx";
+import { usePrepareTemplate } from "keycloakify/lib/usePrepareTemplate";
+import { type TemplateProps, defaultTemplateClasses } from "keycloakify/TemplateProps";
+import { useGetClassName } from "keycloakify/lib/getClassName";
+type KcContext = import("./kcContext/KcContextBase").KcContextBase.Common.Login;
+import type { I18nBase as I18n } from "./i18n";
 
-export default function Template(props: TemplateProps<KcContextBase.Common, I18nBase>) {
+export default function Template(props: TemplateProps<KcContext, I18n>) {
     const {
         displayInfo = false,
         displayMessage = true,
@@ -20,24 +19,29 @@ export default function Template(props: TemplateProps<KcContextBase.Common, I18n
         infoNode = null,
         kcContext,
         i18n,
-        doFetchDefaultThemeResources,
-        stylesCommon,
-        styles,
-        scripts,
-        kcHtmlClass
+        doUseDefaultCss,
+        classes
     } = props;
+
+    const { getClassName } = useGetClassName({
+        "defaultClasses": !doUseDefaultCss ? undefined : defaultTemplateClasses,
+        classes
+    });
 
     const { msg, changeLocale, labelBySupportedLanguageTag, currentLanguageTag } = i18n;
 
     const { realm, locale, auth, url, message, isAppInitiatedAction } = kcContext;
 
     const { isReady } = usePrepareTemplate({
-        doFetchDefaultThemeResources,
-        stylesCommon,
-        styles,
-        scripts,
+        "doFetchDefaultThemeResources": doUseDefaultCss,
         url,
-        kcHtmlClass
+        "stylesCommon": [
+            "node_modules/patternfly/dist/css/patternfly.min.css",
+            "node_modules/patternfly/dist/css/patternfly-additions.min.css",
+            "lib/zocial/zocial.css"
+        ],
+        "styles": ["css/login.css"],
+        "htmlClassName": getClassName("kcHtmlClass")
     });
 
     if (!isReady) {
@@ -45,18 +49,18 @@ export default function Template(props: TemplateProps<KcContextBase.Common, I18n
     }
 
     return (
-        <div className={clsx(props.kcLoginClass)}>
-            <div id="kc-header" className={clsx(props.kcHeaderClass)}>
-                <div id="kc-header-wrapper" className={clsx(props.kcHeaderWrapperClass)}>
+        <div className={getClassName("kcLoginClass")}>
+            <div id="kc-header" className={getClassName("kcHeaderClass")}>
+                <div id="kc-header-wrapper" className={getClassName("kcHeaderWrapperClass")}>
                     {msg("loginTitleHtml", realm.displayNameHtml)}
                 </div>
             </div>
 
-            <div className={clsx(props.kcFormCardClass, displayWide && props.kcFormCardAccountClass)}>
-                <header className={clsx(props.kcFormHeaderClass)}>
+            <div className={clsx(getClassName("kcFormCardClass"), displayWide && getClassName("kcFormCardAccountClass"))}>
+                <header className={getClassName("kcFormHeaderClass")}>
                     {realm.internationalizationEnabled && (assert(locale !== undefined), true) && locale.supported.length > 1 && (
                         <div id="kc-locale">
-                            <div id="kc-locale-wrapper" className={clsx(props.kcLocaleWrapperClass)}>
+                            <div id="kc-locale-wrapper" className={getClassName("kcLocaleWrapperClass")}>
                                 <div className="kc-dropdown" id="kc-locale-dropdown">
                                     {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                                     <a href="#" id="kc-current-locale-link">
@@ -78,8 +82,8 @@ export default function Template(props: TemplateProps<KcContextBase.Common, I18n
                     )}
                     {!(auth !== undefined && auth.showUsername && !auth.showResetCredentials) ? (
                         displayRequiredFields ? (
-                            <div className={clsx(props.kcContentWrapperClass)}>
-                                <div className={clsx(props.kcLabelWrapperClass, "subtitle")}>
+                            <div className={getClassName("kcContentWrapperClass")}>
+                                <div className={clsx(getClassName("kcLabelWrapperClass"), "subtitle")}>
                                     <span className="subtitle">
                                         <span className="required">*</span>
                                         {msg("requiredFields")}
@@ -93,20 +97,20 @@ export default function Template(props: TemplateProps<KcContextBase.Common, I18n
                             <h1 id="kc-page-title">{headerNode}</h1>
                         )
                     ) : displayRequiredFields ? (
-                        <div className={clsx(props.kcContentWrapperClass)}>
-                            <div className={clsx(props.kcLabelWrapperClass, "subtitle")}>
+                        <div className={getClassName("kcContentWrapperClass")}>
+                            <div className={clsx(getClassName("kcLabelWrapperClass"), "subtitle")}>
                                 <span className="subtitle">
                                     <span className="required">*</span> {msg("requiredFields")}
                                 </span>
                             </div>
                             <div className="col-md-10">
                                 {showUsernameNode}
-                                <div className={clsx(props.kcFormGroupClass)}>
+                                <div className={getClassName("kcFormGroupClass")}>
                                     <div id="kc-username">
                                         <label id="kc-attempted-username">{auth?.attemptedUsername}</label>
                                         <a id="reset-login" href={url.loginRestartFlowUrl}>
                                             <div className="kc-login-tooltip">
-                                                <i className={clsx(props.kcResetFlowIcon)}></i>
+                                                <i className={getClassName("kcResetFlowIcon")}></i>
                                                 <span className="kc-tooltip-text">{msg("restartLoginTooltip")}</span>
                                             </div>
                                         </a>
@@ -117,12 +121,12 @@ export default function Template(props: TemplateProps<KcContextBase.Common, I18n
                     ) : (
                         <>
                             {showUsernameNode}
-                            <div className={clsx(props.kcFormGroupClass)}>
+                            <div className={getClassName("kcFormGroupClass")}>
                                 <div id="kc-username">
                                     <label id="kc-attempted-username">{auth?.attemptedUsername}</label>
                                     <a id="reset-login" href={url.loginRestartFlowUrl}>
                                         <div className="kc-login-tooltip">
-                                            <i className={clsx(props.kcResetFlowIcon)}></i>
+                                            <i className={getClassName("kcResetFlowIcon")}></i>
                                             <span className="kc-tooltip-text">{msg("restartLoginTooltip")}</span>
                                         </div>
                                     </a>
@@ -136,10 +140,10 @@ export default function Template(props: TemplateProps<KcContextBase.Common, I18n
                         {/* App-initiated actions should not see warning messages about the need to complete the action during login. */}
                         {displayMessage && message !== undefined && (message.type !== "warning" || !isAppInitiatedAction) && (
                             <div className={clsx("alert", `alert-${message.type}`)}>
-                                {message.type === "success" && <span className={clsx(props.kcFeedbackSuccessIcon)}></span>}
-                                {message.type === "warning" && <span className={clsx(props.kcFeedbackWarningIcon)}></span>}
-                                {message.type === "error" && <span className={clsx(props.kcFeedbackErrorIcon)}></span>}
-                                {message.type === "info" && <span className={clsx(props.kcFeedbackInfoIcon)}></span>}
+                                {message.type === "success" && <span className={getClassName("kcFeedbackSuccessIcon")}></span>}
+                                {message.type === "warning" && <span className={getClassName("kcFeedbackWarningIcon")}></span>}
+                                {message.type === "error" && <span className={getClassName("kcFeedbackErrorIcon")}></span>}
+                                {message.type === "info" && <span className={getClassName("kcFeedbackInfoIcon")}></span>}
                                 <span
                                     className="kc-feedback-text"
                                     dangerouslySetInnerHTML={{
@@ -154,10 +158,14 @@ export default function Template(props: TemplateProps<KcContextBase.Common, I18n
                                 id="kc-select-try-another-way-form"
                                 action={url.loginAction}
                                 method="post"
-                                className={clsx(displayWide && props.kcContentWrapperClass)}
+                                className={clsx(displayWide && getClassName("kcContentWrapperClass"))}
                             >
-                                <div className={clsx(displayWide && [props.kcFormSocialAccountContentClass, props.kcFormSocialAccountClass])}>
-                                    <div className={clsx(props.kcFormGroupClass)}>
+                                <div
+                                    className={clsx(
+                                        displayWide && [getClassName("kcFormSocialAccountContentClass"), getClassName("kcFormSocialAccountClass")]
+                                    )}
+                                >
+                                    <div className={getClassName("kcFormGroupClass")}>
                                         <input type="hidden" name="tryAnotherWay" value="on" />
                                         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                                         <a
@@ -175,8 +183,8 @@ export default function Template(props: TemplateProps<KcContextBase.Common, I18n
                             </form>
                         )}
                         {displayInfo && (
-                            <div id="kc-info" className={clsx(props.kcSignUpClass)}>
-                                <div id="kc-info-wrapper" className={clsx(props.kcInfoAreaWrapperClass)}>
+                            <div id="kc-info" className={getClassName("kcSignUpClass")}>
+                                <div id="kc-info-wrapper" className={getClassName("kcInfoAreaWrapperClass")}>
                                     {infoNode}
                                 </div>
                             </div>
@@ -186,80 +194,4 @@ export default function Template(props: TemplateProps<KcContextBase.Common, I18n
             </div>
         </div>
     );
-}
-
-export function usePrepareTemplate(params: {
-    doFetchDefaultThemeResources: boolean;
-    stylesCommon: string | readonly string[] | undefined;
-    styles: string | readonly string[] | undefined;
-    scripts: string | readonly string[] | undefined;
-    url: {
-        resourcesCommonPath: string;
-        resourcesPath: string;
-    };
-    kcHtmlClass: string | readonly string[] | undefined;
-}) {
-    const { doFetchDefaultThemeResources, stylesCommon, styles, url, scripts, kcHtmlClass } = params;
-
-    const [isReady, setReady] = useReducer(() => true, !doFetchDefaultThemeResources);
-
-    useEffect(() => {
-        if (!doFetchDefaultThemeResources) {
-            return;
-        }
-
-        let isUnmounted = false;
-
-        const toArr = (x: string | readonly string[] | undefined) => (typeof x === "string" ? x.split(" ") : x ?? []);
-
-        Promise.all(
-            [
-                ...toArr(stylesCommon).map(relativePath => pathJoin(url.resourcesCommonPath, relativePath)),
-                ...toArr(styles).map(relativePath => pathJoin(url.resourcesPath, relativePath))
-            ]
-                .reverse()
-                .map(href =>
-                    headInsert({
-                        "type": "css",
-                        href,
-                        "position": "prepend"
-                    })
-                )
-        ).then(() => {
-            if (isUnmounted) {
-                return;
-            }
-
-            setReady();
-        });
-
-        toArr(scripts).forEach(relativePath =>
-            headInsert({
-                "type": "javascript",
-                "src": pathJoin(url.resourcesPath, relativePath)
-            })
-        );
-
-        return () => {
-            isUnmounted = true;
-        };
-    }, [kcHtmlClass]);
-
-    useEffect(() => {
-        if (kcHtmlClass === undefined) {
-            return;
-        }
-
-        const htmlClassList = document.getElementsByTagName("html")[0].classList;
-
-        const tokens = clsx(kcHtmlClass).split(" ");
-
-        htmlClassList.add(...tokens);
-
-        return () => {
-            htmlClassList.remove(...tokens);
-        };
-    }, [kcHtmlClass]);
-
-    return { isReady };
 }

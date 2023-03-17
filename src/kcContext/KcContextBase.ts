@@ -1,8 +1,8 @@
-import type { LoginThemePageId } from "../bin/keycloakify/generateFtl";
+import type { LoginThemePageId, AccountThemePageId } from "../bin/keycloakify/generateFtl";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
 import type { MessageKeyBase } from "../i18n";
-import type { KcTemplateClassKey } from "../KcProps";
+import type { KcTemplateClassKey } from "../templates/LoginThemeTemplate";
 
 type ExtractAfterStartingWith<Prefix extends string, StrEnum> = StrEnum extends `${Prefix}${infer U}` ? U : never;
 
@@ -31,69 +31,69 @@ export type KcContextBase =
     | KcContextBase.LoginConfigTotp
     | KcContextBase.LogoutConfirm
     | KcContextBase.UpdateUserProfile
-    | KcContextBase.IdpReviewUserProfile;
-
-export type WebauthnAuthenticator = {
-    credentialId: string;
-    transports: {
-        iconClass: KcTemplateClassKey;
-        displayNameProperties: MessageKeyBase[];
-    };
-    label: string;
-    createdAt: string;
-};
+    | KcContextBase.IdpReviewUserProfile
+    | KcContextBase.Password;
 
 export declare namespace KcContextBase {
-    export type Common = {
-        url: {
-            loginAction: string;
-            resourcesPath: string;
-            resourcesCommonPath: string;
-            loginRestartFlowUrl: string;
-            loginUrl: string;
+    export namespace Common {
+        export type Login = {
+            url: {
+                loginAction: string;
+                resourcesPath: string;
+                resourcesCommonPath: string;
+                loginRestartFlowUrl: string;
+                loginUrl: string;
+            };
+            realm: {
+                name: string;
+                displayName?: string;
+                displayNameHtml?: string;
+                internationalizationEnabled: boolean;
+                registrationEmailAsUsername: boolean;
+            };
+            /** Undefined if !realm.internationalizationEnabled */
+            locale?: {
+                supported: {
+                    url: string;
+                    label: string;
+                    languageTag: string;
+                }[];
+                currentLanguageTag: string;
+            };
+            auth?: {
+                showUsername?: boolean;
+                showResetCredentials?: boolean;
+                showTryAnotherWayLink?: boolean;
+                attemptedUsername?: string;
+            };
+            scripts: string[];
+            message?: {
+                type: "success" | "warning" | "error" | "info";
+                summary: string;
+            };
+            client: {
+                clientId: string;
+                name?: string;
+                description?: string;
+            };
+            isAppInitiatedAction: boolean;
+            messagesPerField: {
+                printIfExists: <T>(fieldName: string, x: T) => T | undefined;
+                existsError: (fieldName: string) => boolean;
+                get: (fieldName: string) => string;
+                exists: (fieldName: string) => boolean;
+            };
         };
-        realm: {
-            name: string;
-            displayName?: string;
-            displayNameHtml?: string;
-            internationalizationEnabled: boolean;
-            registrationEmailAsUsername: boolean;
-        };
-        /** Undefined if !realm.internationalizationEnabled */
-        locale?: {
-            supported: {
-                url: string;
-                label: string;
-                languageTag: string;
-            }[];
-            currentLanguageTag: string;
-        };
-        auth?: {
-            showUsername?: boolean;
-            showResetCredentials?: boolean;
-            showTryAnotherWayLink?: boolean;
-            attemptedUsername?: string;
-        };
-        scripts: string[];
-        message?: {
-            type: "success" | "warning" | "error" | "info";
-            summary: string;
-        };
-        client: {
-            clientId: string;
-            name?: string;
-            description?: string;
-        };
-        isAppInitiatedAction: boolean;
-        messagesPerField: {
-            printIfExists: <T>(fieldName: string, x: T) => T | undefined;
-            existsError: (fieldName: string) => boolean;
-            get: (fieldName: string) => string;
-            exists: (fieldName: string) => boolean;
-        };
-    };
 
-    export type Login = Common & {
+        export type Account = {
+            url: {
+                resourcesPath: string;
+                resourcesCommonPath: string;
+            };
+        };
+    }
+
+    export type Login = Common.Login & {
         pageId: "login.ftl";
         url: {
             loginResetCredentialsUrl: string;
@@ -126,25 +126,7 @@ export declare namespace KcContextBase {
         };
     };
 
-    export type RegisterCommon = Common & {
-        url: {
-            registrationAction: string;
-        };
-        passwordRequired: boolean;
-        recaptchaRequired: boolean;
-        recaptchaSiteKey?: string;
-        social: {
-            displayInfo: boolean;
-            providers?: {
-                loginUrl: string;
-                alias: string;
-                providerId: string;
-                displayName: string;
-            }[];
-        };
-    };
-
-    export type Register = RegisterCommon & {
+    export type Register = RegisterUserProfile.CommonWithLegacy & {
         pageId: "register.ftl";
         register: {
             formData: {
@@ -157,7 +139,7 @@ export declare namespace KcContextBase {
         };
     };
 
-    export type RegisterUserProfile = RegisterCommon & {
+    export type RegisterUserProfile = RegisterUserProfile.CommonWithLegacy & {
         pageId: "register-user-profile.ftl";
         profile: {
             context: "REGISTRATION_PROFILE";
@@ -166,7 +148,27 @@ export declare namespace KcContextBase {
         };
     };
 
-    export type Info = Common & {
+    export namespace RegisterUserProfile {
+        export type CommonWithLegacy = Common.Login & {
+            url: {
+                registrationAction: string;
+            };
+            passwordRequired: boolean;
+            recaptchaRequired: boolean;
+            recaptchaSiteKey?: string;
+            social: {
+                displayInfo: boolean;
+                providers?: {
+                    loginUrl: string;
+                    alias: string;
+                    providerId: string;
+                    displayName: string;
+                }[];
+            };
+        };
+    }
+
+    export type Info = Common.Login & {
         pageId: "info.ftl";
         messageHeader?: string;
         requiredActions?: ExtractAfterStartingWith<"requiredAction.", MessageKeyBase>[];
@@ -178,22 +180,22 @@ export declare namespace KcContextBase {
         };
     };
 
-    export type Error = Common & {
+    export type Error = Common.Login & {
         pageId: "error.ftl";
         client?: {
             baseUrl?: string;
         };
-        message: NonNullable<Common["message"]>;
+        message: NonNullable<Common.Login["message"]>;
     };
 
-    export type LoginResetPassword = Common & {
+    export type LoginResetPassword = Common.Login & {
         pageId: "login-reset-password.ftl";
         realm: {
             loginWithEmailAllowed: boolean;
         };
     };
 
-    export type LoginVerifyEmail = Common & {
+    export type LoginVerifyEmail = Common.Login & {
         pageId: "login-verify-email.ftl";
         //NOTE: Optional because maybe it wasn't defined in older keycloak versions.
         user?: {
@@ -201,18 +203,18 @@ export declare namespace KcContextBase {
         };
     };
 
-    export type Terms = Common & {
+    export type Terms = Common.Login & {
         pageId: "terms.ftl";
     };
 
-    export type LoginOtp = Common & {
+    export type LoginOtp = Common.Login & {
         pageId: "login-otp.ftl";
         otpLogin: {
             userOtpCredentials: { id: string; userLabel: string }[];
         };
     };
 
-    export type LoginUsername = Common & {
+    export type LoginUsername = Common.Login & {
         pageId: "login-username.ftl";
         url: {
             loginResetCredentialsUrl: string;
@@ -242,7 +244,7 @@ export declare namespace KcContextBase {
         };
     };
 
-    export type LoginPassword = Common & {
+    export type LoginPassword = Common.Login & {
         pageId: "login-password.ftl";
         url: {
             loginResetCredentialsUrl: string;
@@ -265,10 +267,10 @@ export declare namespace KcContextBase {
         };
     };
 
-    export type WebauthnAuthenticate = Common & {
+    export type WebauthnAuthenticate = Common.Login & {
         pageId: "webauthn-authenticate.ftl";
         authenticators: {
-            authenticators: WebauthnAuthenticator[];
+            authenticators: WebauthnAuthenticate.WebauthnAuthenticator[];
         };
         challenge: string;
         // I hate this:
@@ -283,12 +285,24 @@ export declare namespace KcContextBase {
         login: {};
     };
 
-    export type LoginUpdatePassword = Common & {
+    export namespace WebauthnAuthenticate {
+        export type WebauthnAuthenticator = {
+            credentialId: string;
+            transports: {
+                iconClass: KcTemplateClassKey;
+                displayNameProperties: MessageKeyBase[];
+            };
+            label: string;
+            createdAt: string;
+        };
+    }
+
+    export type LoginUpdatePassword = Common.Login & {
         pageId: "login-update-password.ftl";
         username: string;
     };
 
-    export type LoginUpdateProfile = Common & {
+    export type LoginUpdateProfile = Common.Login & {
         pageId: "login-update-profile.ftl";
         user: {
             editUsernameAllowed: boolean;
@@ -299,12 +313,12 @@ export declare namespace KcContextBase {
         };
     };
 
-    export type LoginIdpLinkConfirm = Common & {
+    export type LoginIdpLinkConfirm = Common.Login & {
         pageId: "login-idp-link-confirm.ftl";
         idpAlias: string;
     };
 
-    export type LoginIdpLinkEmail = Common & {
+    export type LoginIdpLinkEmail = Common.Login & {
         pageId: "login-idp-link-email.ftl";
         brokerContext: {
             username: string;
@@ -312,11 +326,11 @@ export declare namespace KcContextBase {
         idpAlias: string;
     };
 
-    export type LoginPageExpired = Common & {
+    export type LoginPageExpired = Common.Login & {
         pageId: "login-page-expired.ftl";
     };
 
-    export type LoginConfigTotp = Common & {
+    export type LoginConfigTotp = Common.Login & {
         pageId: "login-config-totp.ftl";
         mode?: "qr" | "manual" | undefined | null;
         totp: {
@@ -344,7 +358,7 @@ export declare namespace KcContextBase {
         };
     };
 
-    export type LogoutConfirm = Common & {
+    export type LogoutConfirm = Common.Login & {
         pageId: "logout-confirm.ftl";
         url: {
             logoutConfirmAction: string;
@@ -358,7 +372,7 @@ export declare namespace KcContextBase {
         };
     };
 
-    export type UpdateUserProfile = Common & {
+    export type UpdateUserProfile = Common.Login & {
         pageId: "update-user-profile.ftl";
         profile: {
             attributes: Attribute[];
@@ -366,12 +380,19 @@ export declare namespace KcContextBase {
         };
     };
 
-    export type IdpReviewUserProfile = Common & {
+    export type IdpReviewUserProfile = Common.Login & {
         pageId: "idp-review-user-profile.ftl";
         profile: {
             context: "IDP_REVIEW";
             attributes: Attribute[];
             attributesByName: Record<string, Attribute>;
+        };
+    };
+
+    export type Password = Common.Account & {
+        pageId: "password.ftl";
+        url: {
+            passwordUrl: string;
         };
     };
 }
@@ -493,4 +514,4 @@ export declare namespace Validators {
     };
 }
 
-assert<Equals<KcContextBase["pageId"], LoginThemePageId>>();
+assert<Equals<KcContextBase["pageId"], LoginThemePageId | AccountThemePageId>>();
