@@ -20,7 +20,7 @@ add the following script
 {
   "scripts": {
      ...
-     "build-keyclak-theme": "yarn build && keycloakify"
+     "build-keycloak-theme": "yarn build && keycloakify"
   }
 }
 ```
