@@ -395,11 +395,6 @@
   dependencies:
     "@types/unist" "*"
 
-"@types/memoizee@^0.4.7":
-  version "0.4.8"
-  resolved "https://registry.yarnpkg.com/@types/memoizee/-/memoizee-0.4.8.tgz#04adc0c266a0f5d72db0556fdda2ba17dad9b519"
-  integrity sha512-qDpXKGgwKywnQt/64fH1O0LiPA++QGIYeykEUiZ51HymKVRLnUSGcRuF60IfpPeeXiuRwiR/W4y7S5VzbrgLCA==
-
 "@types/minimist@^1.2.2":
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/@types/minimist/-/minimist-1.2.2.tgz#ee771e2ba4b3dc5b372935d549fd9617bf345b8c"
@@ -966,14 +961,14 @@ escape-string-regexp@^1.0.5:
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
   integrity sha512-vbRorB5FUQWvla16U8R/qgaFIya2qGzwDrNmCZuYKrbdSUMG6I1ZCGQRefkRVhuOkIGVne7BQ35DSfo1qvJqFg==
 
-evt@^2.4.15:
-  version "2.4.15"
-  resolved "https://registry.yarnpkg.com/evt/-/evt-2.4.15.tgz#bf673dd2b409067fcdc182becd8e7dbed13692e1"
-  integrity sha512-jlDDDWdoDg2wIZa9m08HVelHzEAlZLpLbDcWMqlc6nqKHG1Z3ZqC7teDoNH3upClx3SKwJTC0H7RIMfxe7zX2g==
+evt@^2.4.18:
+  version "2.4.18"
+  resolved "https://registry.yarnpkg.com/evt/-/evt-2.4.18.tgz#931012610dcd3bc7c0877d61018a704e9e5511db"
+  integrity sha512-kMYW3DPrUWvFsOUf3cN1NMdg0MEFYLMLqC7hPSasNs8TOZCOBsDgazr6nXda2iUur/2L6BtRu0oCl2++oGYZxA==
   dependencies:
     minimal-polyfills "^2.2.2"
     run-exclusive "^2.2.18"
-    tsafe "^1.4.3"
+    tsafe "^1.6.0"
 
 execa@^5.1.1:
   version "5.1.1"
@@ -2173,10 +2168,10 @@ ts-node@^10.9.1:
     v8-compile-cache-lib "^3.0.1"
     yn "3.1.1"
 
-tsafe@^1.4.3:
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-1.4.3.tgz#a98ce83616f0d9c01e3c6167a2ead45ba455b2ae"
-  integrity sha512-KjCdgjIqsbKW9oeJGSMVC23jhWm/VXJwkaZ7jffo/WaTioLGTHJqliHe9dECEVzIACNVNs/fwtKwU8wWK4jY4g==
+tsafe@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-1.6.0.tgz#48a9bd0a4c43df43d289bdfc1d89f0d7fffbd612"
+  integrity sha512-wlUeRBnyN3EN2chXznpLm7vBEvJLEOziDU+MN6NRlD99AkwmXgtChNQhp+V97VyRa3Bp05IaL4Cocsc7JlyEUg==
 
 tslib@^2.1.0:
   version "2.5.0"
