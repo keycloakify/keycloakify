@@ -1,11 +1,11 @@
 import "minimal-polyfills/Object.fromEntries";
 import * as fs from "fs";
 import { join as pathJoin, relative as pathRelative, dirname as pathDirname } from "path";
-import { crawl } from "../bin/tools/crawl";
-import { downloadBuiltinKeycloakTheme } from "../bin/download-builtin-keycloak-theme";
-import { getProjectRoot } from "../bin/tools/getProjectRoot";
-import { getCliOptions } from "../bin/tools/cliOptions";
-import { getLogger } from "../bin/tools/logger";
+import { crawl } from "../src/bin/tools/crawl";
+import { downloadBuiltinKeycloakTheme } from "../src/bin/download-builtin-keycloak-theme";
+import { getProjectRoot } from "../src/bin/tools/getProjectRoot";
+import { getCliOptions } from "../src/bin/tools/cliOptions";
+import { getLogger } from "../src/bin/tools/logger";
 
 //NOTE: To run without argument when we want to generate src/i18n/generated_kcMessages files,
 // update the version array for generating for newer version.
