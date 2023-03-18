@@ -3,7 +3,7 @@ import type { ClassKey } from "keycloakify/pages/PageProps";
 import { clsx } from "keycloakify/tools/clsx";
 import { useFormValidation } from "keycloakify/lib/useFormValidation";
 import type { Attribute } from "keycloakify/kcContext";
-import type { I18nBase as I18n } from "../../i18n";
+import type { I18n } from "../../i18n";
 
 export type UserProfileFormFieldsProps = {
     kcContext: Parameters<typeof useFormValidation>[0]["kcContext"];

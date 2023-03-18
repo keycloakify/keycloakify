@@ -1,11 +1,11 @@
 import type { LazyExoticComponent } from "react";
-import type { I18nBase } from "keycloakify/i18n";
+import type { I18n } from "keycloakify/i18n";
 import { type TemplateProps, type TemplateClassKey, defaultTemplateClasses } from "keycloakify/TemplateProps";
 
-export type PageProps<KcContext, I18n extends I18nBase> = {
+export type PageProps<KcContext, I18nExtended extends I18n> = {
     Template: LazyExoticComponent<(props: TemplateProps<any, any>) => JSX.Element | null>;
     kcContext: KcContext;
-    i18n: I18n;
+    i18n: I18nExtended;
     doUseDefaultCss: boolean;
     classes?: Partial<Record<TemplateClassKey | ClassKey, string>>;
 };

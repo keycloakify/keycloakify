@@ -5,7 +5,7 @@ import type { FormEventHandler } from "react";
 import { type PageProps, defaultClasses } from "keycloakify/pages/PageProps";
 import { useGetClassName } from "keycloakify/lib/useGetClassName";
 import type { KcContext } from "../kcContext";
-import type { I18nBase as I18n } from "../i18n";
+import type { I18n } from "../i18n";
 
 export default function LoginPassword(props: PageProps<Extract<KcContext, { "pageId": "login-password.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;

@@ -1,10 +1,10 @@
 import type { ReactNode } from "react";
 import type { KcContext } from "keycloakify/kcContext";
-import type { I18nBase } from "keycloakify/i18n";
+import type { I18n } from "keycloakify/i18n";
 
-export type TemplateProps<KcContext extends KcContext.Common, I18n extends I18nBase> = {
+export type TemplateProps<KcContext extends KcContext.Common, I18nExtended extends I18n> = {
     kcContext: KcContext;
-    i18n: I18n;
+    i18n: I18nExtended;
     doUseDefaultCss: boolean;
     classes?: Partial<Record<TemplateClassKey, string>>;
 

@@ -1,11 +1,7 @@
 import { lazy, Suspense } from "react";
-import { __unsafe_useI18n as useI18n } from "./i18n";
-import type { KcContext } from "./kcContext/KcContext";
+import type { KcContext } from "keycloakify/kcContext";
 import type { PageProps } from "keycloakify/pages/PageProps";
-import type { I18nBase } from "./i18n";
-import type { SetOptional } from "./tools/SetOptional";
-
-const DefaultTemplate = lazy(() => import("keycloakify/Template"));
+import type { I18n } from "keycloakify/i18n";
 
 const Login = lazy(() => import("keycloakify/pages/Login"));
 const Register = lazy(() => import("keycloakify/pages/Register"));
@@ -29,71 +25,55 @@ const LogoutConfirm = lazy(() => import("keycloakify/pages/LogoutConfirm"));
 const UpdateUserProfile = lazy(() => import("keycloakify/pages/UpdateUserProfile"));
 const IdpReviewUserProfile = lazy(() => import("keycloakify/pages/IdpReviewUserProfile"));
 
-export default function KcApp(props_: SetOptional<PageProps<KcContext, I18nBase>, "Template">) {
-    const { kcContext, i18n: userProvidedI18n, Template = DefaultTemplate, ...kcProps } = props_;
-
-    const i18n = (function useClosure() {
-        const i18n = useI18n({
-            kcContext,
-            "extraMessages": {},
-            "doSkip": userProvidedI18n !== undefined
-        });
-
-        return userProvidedI18n ?? i18n;
-    })();
-
-    if (i18n === null) {
-        return null;
-    }
-
-    const commonProps = { i18n, Template, ...kcProps };
+export default function Fallback(props: PageProps<KcContext, I18n>) {
+    const { kcContext, ...rest } = props;
 
     return (
         <Suspense>
             {(() => {
                 switch (kcContext.pageId) {
                     case "login.ftl":
-                        return <Login {...{ kcContext, ...commonProps }} />;
+                        return <Login kcContext={kcContext} {...rest} />;
                     case "register.ftl":
-                        return <Register {...{ kcContext, ...commonProps }} />;
+                        return <Register kcContext={kcContext} {...rest} />;
                     case "register-user-profile.ftl":
-                        return <RegisterUserProfile {...{ kcContext, ...commonProps }} />;
+                        return <RegisterUserProfile kcContext={kcContext} {...rest} />;
                     case "info.ftl":
-                        return <Info {...{ kcContext, ...commonProps }} />;
+                        return <Info kcContext={kcContext} {...rest} />;
                     case "error.ftl":
-                        return <Error {...{ kcContext, ...commonProps }} />;
+                        return <Error kcContext={kcContext} {...rest} />;
                     case "login-reset-password.ftl":
-                        return <LoginResetPassword {...{ kcContext, ...commonProps }} />;
+                        return <LoginResetPassword kcContext={kcContext} {...rest} />;
                     case "login-verify-email.ftl":
-                        return <LoginVerifyEmail {...{ kcContext, ...commonProps }} />;
+                        return <LoginVerifyEmail kcContext={kcContext} {...rest} />;
                     case "terms.ftl":
-                        return <Terms {...{ kcContext, ...commonProps }} />;
+                        return <Terms kcContext={kcContext} {...rest} />;
                     case "login-otp.ftl":
-                        return <LoginOtp {...{ kcContext, ...commonProps }} />;
+                        return <LoginOtp kcContext={kcContext} {...rest} />;
                     case "login-username.ftl":
-                        return <LoginUsername {...{ kcContext, ...commonProps }} />;
+                        return <LoginUsername kcContext={kcContext} {...rest} />;
                     case "login-password.ftl":
-                        return <LoginPassword {...{ kcContext, ...commonProps }} />;
+                        return <LoginPassword kcContext={kcContext} {...rest} />;
                     case "webauthn-authenticate.ftl":
-                        return <WebauthnAuthenticate {...{ kcContext, ...commonProps }} />;
+                        return <WebauthnAuthenticate kcContext={kcContext} {...rest} />;
                     case "login-update-password.ftl":
-                        return <LoginUpdatePassword {...{ kcContext, ...commonProps }} />;
+                        return <LoginUpdatePassword kcContext={kcContext} {...rest} />;
                     case "login-update-profile.ftl":
-                        return <LoginUpdateProfile {...{ kcContext, ...commonProps }} />;
+                        return <LoginUpdateProfile kcContext={kcContext} {...rest} />;
                     case "login-idp-link-confirm.ftl":
-                        return <LoginIdpLinkConfirm {...{ kcContext, ...commonProps }} />;
+                        return <LoginIdpLinkConfirm kcContext={kcContext} {...rest} />;
                     case "login-idp-link-email.ftl":
-                        return <LoginIdpLinkEmail {...{ kcContext, ...commonProps }} />;
+                        return <LoginIdpLinkEmail kcContext={kcContext} {...rest} />;
                     case "login-page-expired.ftl":
-                        return <LoginPageExpired {...{ kcContext, ...commonProps }} />;
+                        return <LoginPageExpired kcContext={kcContext} {...rest} />;
                     case "login-config-totp.ftl":
-                        return <LoginConfigTotp {...{ kcContext, ...commonProps }} />;
+                        return <LoginConfigTotp kcContext={kcContext} {...rest} />;
                     case "logout-confirm.ftl":
-                        return <LogoutConfirm {...{ kcContext, ...commonProps }} />;
+                        return <LogoutConfirm kcContext={kcContext} {...rest} />;
                     case "update-user-profile.ftl":
-                        return <UpdateUserProfile {...{ kcContext, ...commonProps }} />;
+                        return <UpdateUserProfile kcContext={kcContext} {...rest} />;
                     case "idp-review-user-profile.ftl":
-                        return <IdpReviewUserProfile {...{ kcContext, ...commonProps }} />;
+                        return <IdpReviewUserProfile kcContext={kcContext} {...rest} />;
                 }
             })()}
         </Suspense>

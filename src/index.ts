@@ -1,3 +1,3 @@
-import KcApp from "./KcApp";
+import Fallback from "./Fallback";
 
-export default KcApp;
+export default Fallback;

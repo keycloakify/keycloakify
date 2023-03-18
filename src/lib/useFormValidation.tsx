@@ -6,7 +6,7 @@ import type { Attribute, Validators } from "keycloakify/kcContext";
 import { useConstCallback } from "keycloakify/tools/useConstCallback";
 import { emailRegexp } from "keycloakify/tools/emailRegExp";
 import type { KcContext } from "../kcContext";
-import type { I18nBase as I18n } from "../i18n";
+import type { I18n } from "../i18n";
 
 /**
  * NOTE: The attributesWithPassword returned is actually augmented with

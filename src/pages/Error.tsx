@@ -1,6 +1,6 @@
 import { type PageProps } from "keycloakify/pages/PageProps";
 import type { KcContext } from "../kcContext";
-import type { I18nBase as I18n } from "../i18n";
+import type { I18n } from "../i18n";
 
 export default function Error(props: PageProps<Extract<KcContext, { pageId: "error.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;

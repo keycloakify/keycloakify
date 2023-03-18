@@ -19,7 +19,7 @@ assert<KcContext extends KcContextLike ? true : false>();
 
 export type MessageKeyBase = keyof typeof baseMessages | keyof (typeof keycloakifyExtraMessages)[typeof fallbackLanguageTag];
 
-export type I18n<MessageKey extends string> = {
+export type GenericI18n<MessageKey extends string> = {
     /**
      * e.g: "en", "fr", "zh-CN"
      *
@@ -67,21 +67,20 @@ export type I18n<MessageKey extends string> = {
     advancedMsgStr: (key: string, ...args: (string | undefined)[]) => string;
 };
 
-export type I18nBase = I18n<MessageKeyBase>;
+export type I18n = GenericI18n<MessageKeyBase>;
 
-export function __unsafe_useI18n<ExtraMessageKey extends string = never>(params: {
+export function useI18n<ExtraMessageKey extends string = never>(params: {
     kcContext: KcContextLike;
     extraMessages: { [languageTag: string]: { [key in ExtraMessageKey]: string } };
-    doSkip: boolean;
-}): I18n<MessageKeyBase | ExtraMessageKey> | null {
-    const { kcContext, extraMessages, doSkip } = params;
+}): GenericI18n<MessageKeyBase | ExtraMessageKey> | null {
+    const { kcContext, extraMessages } = params;
 
-    const [i18n, setI18n] = useState<I18n<ExtraMessageKey | MessageKeyBase> | undefined>(undefined);
+    const [i18n, setI18n] = useState<GenericI18n<ExtraMessageKey | MessageKeyBase> | undefined>(undefined);
 
     const refHasStartedFetching = useRef(false);
 
     useEffect(() => {
-        if (doSkip || refHasStartedFetching.current) {
+        if (refHasStartedFetching.current) {
             return;
         }
 
@@ -181,22 +180,10 @@ export function __unsafe_useI18n<ExtraMessageKey extends string = never>(params:
     return i18n ?? null;
 }
 
-const useI18n_private = __unsafe_useI18n;
-
-export function useI18n<ExtraMessageKey extends string = never>(params: {
-    kcContext: KcContextLike;
-    extraMessages: { [languageTag: string]: { [key in ExtraMessageKey]: string } };
-}): I18n<MessageKeyBase | ExtraMessageKey> | null {
-    return useI18n_private({
-        ...params,
-        "doSkip": false
-    });
-}
-
 function createI18nTranslationFunctions<MessageKey extends string>(params: {
     fallbackMessages: Record<MessageKey, string>;
     messages: Record<MessageKey, string>;
-}): Pick<I18n<MessageKey>, "msg" | "msgStr" | "advancedMsg" | "advancedMsgStr"> {
+}): Pick<GenericI18n<MessageKey>, "msg" | "msgStr" | "advancedMsg" | "advancedMsgStr"> {
     const { fallbackMessages, messages } = params;
 
     function resolveMsg(props: { key: string; args: (string | undefined)[]; doRenderMarkdown: boolean }): string | JSX.Element | undefined {

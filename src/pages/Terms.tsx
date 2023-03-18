@@ -5,7 +5,7 @@ import { type PageProps, defaultClasses } from "keycloakify/pages/PageProps";
 import { useGetClassName } from "keycloakify/lib/useGetClassName";
 import { evtTermMarkdown } from "keycloakify/lib/useDownloadTerms";
 import type { KcContext } from "../kcContext";
-import type { I18nBase as I18n } from "../i18n";
+import type { I18n } from "../i18n";
 
 export default function Terms(props: PageProps<Extract<KcContext, { pageId: "terms.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;

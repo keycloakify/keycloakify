@@ -1,6 +1,6 @@
 import type { KcContext } from "keycloakify/kcContext";
 import { type PageProps } from "keycloakify/pages/PageProps";
-import type { I18nBase as I18n } from "keycloakify/i18n";
+import type { I18n } from "keycloakify/i18n";
 
 export default function LoginIdpLinkEmail(props: PageProps<Extract<KcContext, { pageId: "login-idp-link-email.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;

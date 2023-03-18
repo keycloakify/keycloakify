@@ -5,7 +5,7 @@ import { clsx } from "keycloakify/tools/clsx";
 import { type PageProps, defaultClasses } from "keycloakify/pages/PageProps";
 import { useGetClassName } from "keycloakify/lib/useGetClassName";
 import type { KcContext } from "../kcContext";
-import type { I18nBase as I18n } from "../i18n";
+import type { I18n } from "../i18n";
 
 export default function LoginOtp(props: PageProps<Extract<KcContext, { pageId: "login-otp.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
