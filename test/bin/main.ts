@@ -7,7 +7,7 @@ import { getProjectRoot } from "keycloakify/bin/tools/getProjectRoot.js";
 (async () => {
     await setupSampleReactProject();
 
-    const binDirPath = pathJoin(getProjectRoot(), "dist_test", "bin");
+    const binDirPath = pathJoin(getProjectRoot(), "dist_test", "src", "bin");
 
     st.execSyncTrace(
         //`node ${pathJoin(binDirPath, "keycloakify")} --external-assets`,
