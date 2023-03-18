@@ -130,6 +130,7 @@ async function unzip(zipFile: string, dir: string, archiveDir?: string): Promise
                 // Pull the file out of the archive, write it to the target directory
                 const input = createRecordReadStream();
                 const output = createWriteStream(filePath);
+                output.setMaxListeners(Infinity);
                 output.on("error", e => reject(Object.assign(e, { filePath })));
                 output.on("finish", () => resolve(filePath));
                 input.pipe(output);
@@ -166,6 +167,7 @@ async function readFileChunk(file: string, start: number, end: number): Promise<
     const chunks: Buffer[] = [];
     return new Promise((resolve, reject) => {
         const stream = createReadStream(file, { start, end });
+        stream.setMaxListeners(Infinity);
         stream.on("error", e => reject(e));
         stream.on("end", () => resolve(Buffer.concat(chunks)));
         stream.on("data", chunk => chunks.push(chunk as Buffer));
