@@ -1,10 +1,11 @@
 import { execSync } from "child_process";
 import { join as pathJoin, relative as pathRelative } from "path";
+import { getProjectRoot } from "../src/bin/tools/getProjectRoot";
 import * as fs from "fs";
 
 const singletonDependencies: string[] = ["react", "@types/react"];
 
-const rootDirPath = pathJoin(__dirname, "..", "..");
+const rootDirPath = getProjectRoot();
 
 //NOTE: This is only required because of: https://github.com/garronej/ts-ci/blob/c0e207b9677523d4ec97fe672ddd72ccbb3c1cc4/README.md?plain=1#L54-L58
 fs.writeFileSync(
