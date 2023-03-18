@@ -9,8 +9,8 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
-        "build": "rimraf dist/ && tsc -p src/bin && tsc -p src && yarn grant-exec-perms && yarn copy-files dist/",
-        "build:test": "rimraf dist_test/ && tsc -p test && yarn copy-files dist_test/",
+        "build": "rimraf dist/ && tsc -p src/bin && tsc -p src/tsconfig.json && tsc-alias -p src/tsconfig.json && yarn grant-exec-perms && yarn copy-files dist/",
+        "build:test": "rimraf dist_test/ && tsc -p test/tsconfig.json && tsc-alias -p test/tsconfig.json && yarn copy-files dist_test/",
         "grant-exec-perms": "node dist/bin/tools/grant-exec-perms.js",
         "copy-files": "copyfiles -u 1 src/**/*.ftl",
         "pretest": "yarn build:test",
@@ -75,6 +75,7 @@
         "rimraf": "^3.0.2",
         "scripting-tools": "^0.19.13",
         "ts-node": "^10.9.1",
+        "tsc-alias": "^1.8.3",
         "typescript": "^5.0.1-rc"
     },
     "dependencies": {

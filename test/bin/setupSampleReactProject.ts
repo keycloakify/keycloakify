@@ -1,6 +1,6 @@
-import { getProjectRoot } from "../../bin/tools/getProjectRoot.js";
+import { getProjectRoot } from "keycloakify/bin/tools/getProjectRoot.js";
 import { join as pathJoin } from "path";
-import { downloadAndUnzip } from "../../bin/tools/downloadAndUnzip";
+import { downloadAndUnzip } from "keycloakify/bin/tools/downloadAndUnzip";
 
 export const sampleReactProjectDirPath = pathJoin(getProjectRoot(), "sample_react_project");
 

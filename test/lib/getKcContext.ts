@@ -164,7 +164,7 @@ import { deepClone } from "../../src/tools/deepClone";
         assert<
             Equals<
                 typeof kcContext,
-                KcContextBase.Common & {
+                KcContextBase.Common.Login & {
                     pageId: typeof pageId;
                     aNonStandardValue2: string;
                 }

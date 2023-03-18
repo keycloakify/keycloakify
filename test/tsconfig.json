@@ -14,7 +14,10 @@
         "strict": true,
         "downlevelIteration": true,
         "jsx": "react",
-        "noFallthroughCasesInSwitch": true
+        "noFallthroughCasesInSwitch": true,
+        "paths": {
+            "keycloakify/*": ["../src/*"]
+        }
     },
     "include": ["../src", "."]
 }
