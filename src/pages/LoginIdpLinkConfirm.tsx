@@ -1,11 +1,16 @@
-import React from "react";
-import { clsx } from "../tools/clsx";
-import type { PageProps } from "../KcProps";
-import type { KcContextBase } from "../kcContext";
-import type { I18nBase } from "../i18n";
+import { clsx } from "keycloakify/tools/clsx";
+import { type PageProps, defaultClasses } from "keycloakify/pages/PageProps";
+import { useGetClassName } from "keycloakify/lib/useGetClassName";
+import type { KcContextBase as KcContext } from "../kcContext";
+import type { I18nBase as I18n } from "../i18n";
 
-export default function LoginIdpLinkConfirm(props: PageProps<Extract<KcContextBase, { pageId: "login-idp-link-confirm.ftl" }>, I18nBase>) {
-    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
+export default function LoginIdpLinkConfirm(props: PageProps<Extract<KcContext, { pageId: "login-idp-link-confirm.ftl" }>, I18n>) {
+    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
+
+    const { getClassName } = useGetClassName({
+        "defaultClasses": !doUseDefaultCss ? undefined : defaultClasses,
+        classes
+    });
 
     const { url, idpAlias } = kcContext;
 
@@ -13,18 +18,18 @@ export default function LoginIdpLinkConfirm(props: PageProps<Extract<KcContextBa
 
     return (
         <Template
-            {...{ kcContext, i18n, doFetchDefaultThemeResources, ...kcProps }}
+            {...{ kcContext, i18n, doUseDefaultCss, classes }}
             headerNode={msg("confirmLinkIdpTitle")}
             formNode={
                 <form id="kc-register-form" action={url.loginAction} method="post">
-                    <div className={clsx(kcProps.kcFormGroupClass)}>
+                    <div className={getClassName("kcFormGroupClass")}>
                         <button
                             type="submit"
                             className={clsx(
-                                kcProps.kcButtonClass,
-                                kcProps.kcButtonDefaultClass,
-                                kcProps.kcButtonBlockClass,
-                                kcProps.kcButtonLargeClass
+                                getClassName("kcButtonClass"),
+                                getClassName("kcButtonDefaultClass"),
+                                getClassName("kcButtonBlockClass"),
+                                getClassName("kcButtonLargeClass")
                             )}
                             name="submitAction"
                             id="updateProfile"
@@ -35,10 +40,10 @@ export default function LoginIdpLinkConfirm(props: PageProps<Extract<KcContextBa
                         <button
                             type="submit"
                             className={clsx(
-                                kcProps.kcButtonClass,
-                                kcProps.kcButtonDefaultClass,
-                                kcProps.kcButtonBlockClass,
-                                kcProps.kcButtonLargeClass
+                                getClassName("kcButtonClass"),
+                                getClassName("kcButtonDefaultClass"),
+                                getClassName("kcButtonBlockClass"),
+                                getClassName("kcButtonLargeClass")
                             )}
                             name="submitAction"
                             id="linkAccount"

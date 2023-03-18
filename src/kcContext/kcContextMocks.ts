@@ -101,7 +101,7 @@ const attributes: Attribute[] = [
 
 const attributesByName = Object.fromEntries(attributes.map(attribute => [attribute.name, attribute])) as any;
 
-export const kcContextCommonMock: KcContextBase.Common = {
+export const kcContextCommonMock: KcContextBase.Common.Login = {
     "url": {
         "loginAction": "#",
         "resourcesPath": pathJoin(PUBLIC_URL, mockTestingResourcesPath),
@@ -268,7 +268,7 @@ export const kcContextMocks: KcContextBase[] = [
         "registrationDisabled": false
     }),
     ...(() => {
-        const registerCommon: KcContextBase.RegisterCommon = {
+        const registerCommon: KcContextBase.RegisterUserProfile.CommonWithLegacy = {
             ...kcContextCommonMock,
             "url": {
                 ...loginUrl,

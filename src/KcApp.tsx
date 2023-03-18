@@ -1,32 +1,33 @@
-import React, { lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 import { __unsafe_useI18n as useI18n } from "./i18n";
-import DefaultTemplate from "./Template";
 import type { KcContextBase } from "./kcContext/KcContextBase";
-import type { PageProps } from "./KcProps";
+import type { PageProps } from "keycloakify/pages/PageProps";
 import type { I18nBase } from "./i18n";
 import type { SetOptional } from "./tools/SetOptional";
 
-const Login = lazy(() => import("./pages/Login"));
-const Register = lazy(() => import("./pages/Register"));
-const RegisterUserProfile = lazy(() => import("./pages/RegisterUserProfile"));
-const Info = lazy(() => import("./pages/Info"));
-const Error = lazy(() => import("./pages/Error"));
-const LoginResetPassword = lazy(() => import("./pages/LoginResetPassword"));
-const LoginVerifyEmail = lazy(() => import("./pages/LoginVerifyEmail"));
-const Terms = lazy(() => import("./pages/Terms"));
-const LoginOtp = lazy(() => import("./pages/LoginOtp"));
-const LoginPassword = lazy(() => import("./pages/LoginPassword"));
-const LoginUsername = lazy(() => import("./pages/LoginUsername"));
-const WebauthnAuthenticate = lazy(() => import("./pages/WebauthnAuthenticate"));
-const LoginUpdatePassword = lazy(() => import("./pages/LoginUpdatePassword"));
-const LoginUpdateProfile = lazy(() => import("./pages/LoginUpdateProfile"));
-const LoginIdpLinkConfirm = lazy(() => import("./pages/LoginIdpLinkConfirm"));
-const LoginPageExpired = lazy(() => import("./pages/LoginPageExpired"));
-const LoginIdpLinkEmail = lazy(() => import("./pages/LoginIdpLinkEmail"));
-const LoginConfigTotp = lazy(() => import("./pages/LoginConfigTotp"));
-const LogoutConfirm = lazy(() => import("./pages/LogoutConfirm"));
-const UpdateUserProfile = lazy(() => import("./pages/UpdateUserProfile"));
-const IdpReviewUserProfile = lazy(() => import("./pages/IdpReviewUserProfile"));
+const DefaultTemplate = lazy(() => import("keycloakify/Template"));
+
+const Login = lazy(() => import("keycloakify/pages/Login"));
+const Register = lazy(() => import("keycloakify/pages/Register"));
+const RegisterUserProfile = lazy(() => import("keycloakify/pages/RegisterUserProfile"));
+const Info = lazy(() => import("keycloakify/pages/Info"));
+const Error = lazy(() => import("keycloakify/pages/Error"));
+const LoginResetPassword = lazy(() => import("keycloakify/pages/LoginResetPassword"));
+const LoginVerifyEmail = lazy(() => import("keycloakify/pages/LoginVerifyEmail"));
+const Terms = lazy(() => import("keycloakify/pages/Terms"));
+const LoginOtp = lazy(() => import("keycloakify/pages/LoginOtp"));
+const LoginPassword = lazy(() => import("keycloakify/pages/LoginPassword"));
+const LoginUsername = lazy(() => import("keycloakify/pages/LoginUsername"));
+const WebauthnAuthenticate = lazy(() => import("keycloakify/pages/WebauthnAuthenticate"));
+const LoginUpdatePassword = lazy(() => import("keycloakify/pages/LoginUpdatePassword"));
+const LoginUpdateProfile = lazy(() => import("keycloakify/pages/LoginUpdateProfile"));
+const LoginIdpLinkConfirm = lazy(() => import("keycloakify/pages/LoginIdpLinkConfirm"));
+const LoginPageExpired = lazy(() => import("keycloakify/pages/LoginPageExpired"));
+const LoginIdpLinkEmail = lazy(() => import("keycloakify/pages/LoginIdpLinkEmail"));
+const LoginConfigTotp = lazy(() => import("keycloakify/pages/LoginConfigTotp"));
+const LogoutConfirm = lazy(() => import("keycloakify/pages/LogoutConfirm"));
+const UpdateUserProfile = lazy(() => import("keycloakify/pages/UpdateUserProfile"));
+const IdpReviewUserProfile = lazy(() => import("keycloakify/pages/IdpReviewUserProfile"));
 
 export default function KcApp(props_: SetOptional<PageProps<KcContextBase, I18nBase>, "Template">) {
     const { kcContext, i18n: userProvidedI18n, Template = DefaultTemplate, ...kcProps } = props_;

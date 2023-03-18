@@ -1,20 +1,19 @@
-import React, { useEffect } from "react";
-import { memoize } from "../tools/memoize";
-import { clsx } from "../tools/clsx";
-import { Evt } from "evt";
+import { clsx } from "keycloakify/tools/clsx";
 import { useRerenderOnStateChange } from "evt/hooks";
-import { assert } from "tsafe/assert";
-import { fallbackLanguageTag } from "../i18n";
-import { useConst } from "../tools/useConst";
-import { useConstCallback } from "../tools/useConstCallback";
 import { Markdown } from "../tools/Markdown";
-import type { Extends } from "tsafe";
-import type { PageProps } from "../KcProps";
-import type { KcContextBase } from "../kcContext";
-import type { I18nBase } from "../i18n";
+import { type PageProps, defaultClasses } from "keycloakify/pages/PageProps";
+import { useGetClassName } from "keycloakify/lib/useGetClassName";
+import { evtTermMarkdown } from "keycloakify/lib/useDownloadTerms";
+import type { KcContextBase as KcContext } from "../kcContext";
+import type { I18nBase as I18n } from "../i18n";
 
-export default function Terms(props: PageProps<Extract<KcContextBase, { pageId: "terms.ftl" }>, I18nBase>) {
-    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
+export default function Terms(props: PageProps<Extract<KcContext, { pageId: "terms.ftl" }>, I18n>) {
+    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
+
+    const { getClassName } = useGetClassName({
+        "defaultClasses": !doUseDefaultCss ? undefined : defaultClasses,
+        classes
+    });
 
     const { msg, msgStr } = i18n;
 
@@ -28,7 +27,7 @@ export default function Terms(props: PageProps<Extract<KcContextBase, { pageId: 
 
     return (
         <Template
-            {...{ kcContext, i18n, doFetchDefaultThemeResources, ...kcProps }}
+            {...{ kcContext, i18n, doUseDefaultCss, classes }}
             displayMessage={false}
             headerNode={msg("termsTitle")}
             formNode={
@@ -37,11 +36,11 @@ export default function Terms(props: PageProps<Extract<KcContextBase, { pageId: 
                     <form className="form-actions" action={url.loginAction} method="POST">
                         <input
                             className={clsx(
-                                kcProps.kcButtonClass,
-                                kcProps.kcButtonClass,
-                                kcProps.kcButtonClass,
-                                kcProps.kcButtonPrimaryClass,
-                                kcProps.kcButtonLargeClass
+                                getClassName("kcButtonClass"),
+                                getClassName("kcButtonClass"),
+                                getClassName("kcButtonClass"),
+                                getClassName("kcButtonPrimaryClass"),
+                                getClassName("kcButtonLargeClass")
                             )}
                             name="accept"
                             id="kc-accept"
@@ -49,7 +48,7 @@ export default function Terms(props: PageProps<Extract<KcContextBase, { pageId: 
                             value={msgStr("doAccept")}
                         />
                         <input
-                            className={clsx(kcProps.kcButtonClass, kcProps.kcButtonDefaultClass, kcProps.kcButtonLargeClass)}
+                            className={clsx(getClassName("kcButtonClass"), getClassName("kcButtonDefaultClass"), getClassName("kcButtonLargeClass"))}
                             name="cancel"
                             id="kc-decline"
                             type="submit"
@@ -62,5 +61,3 @@ export default function Terms(props: PageProps<Extract<KcContextBase, { pageId: 
         />
     );
 }
-
-export const evtTermMarkdown = Evt.create<string | undefined>(undefined);

@@ -14,7 +14,7 @@
         "jsx": "react-jsx",
         "allowSyntheticDefaultImports": true
     },
-    "exclude": ["./test", "./bin"],
+    "exclude": ["./bin"],
     "references": [
         {
             "path": "./bin"

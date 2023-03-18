@@ -1,13 +1,19 @@
-import React, { useState } from "react";
-import { clsx } from "../tools/clsx";
+import { useState } from "react";
+import { clsx } from "keycloakify/tools/clsx";
 import { useConstCallback } from "../tools/useConstCallback";
 import type { FormEventHandler } from "react";
-import type { PageProps } from "../KcProps";
-import type { KcContextBase } from "../kcContext";
-import type { I18nBase } from "../i18n";
+import { type PageProps, defaultClasses } from "keycloakify/pages/PageProps";
+import { useGetClassName } from "keycloakify/lib/useGetClassName";
+import type { KcContextBase as KcContext } from "../kcContext";
+import type { I18nBase as I18n } from "../i18n";
 
-export default function LoginPassword(props: PageProps<Extract<KcContextBase, { "pageId": "login-password.ftl" }>, I18nBase>) {
-    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
+export default function LoginPassword(props: PageProps<Extract<KcContext, { "pageId": "login-password.ftl" }>, I18n>) {
+    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
+
+    const { getClassName } = useGetClassName({
+        "defaultClasses": !doUseDefaultCss ? undefined : defaultClasses,
+        classes
+    });
 
     const { realm, url, login } = kcContext;
 
@@ -27,21 +33,21 @@ export default function LoginPassword(props: PageProps<Extract<KcContextBase, { 
 
     return (
         <Template
-            {...{ kcContext, i18n, doFetchDefaultThemeResources, ...kcProps }}
+            {...{ kcContext, i18n, doUseDefaultCss, classes }}
             headerNode={msg("doLogIn")}
             formNode={
                 <div id="kc-form">
                     <div id="kc-form-wrapper">
                         <form id="kc-form-login" onSubmit={onSubmit} action={url.loginAction} method="post">
-                            <div className={clsx(kcProps.kcFormGroupClass)}>
+                            <div className={getClassName("kcFormGroupClass")}>
                                 <hr />
-                                <label htmlFor="password" className={clsx(kcProps.kcLabelClass)}>
+                                <label htmlFor="password" className={getClassName("kcLabelClass")}>
                                     {msg("password")}
                                 </label>
                                 <input
                                     tabIndex={2}
                                     id="password"
-                                    className={clsx(kcProps.kcInputClass)}
+                                    className={getClassName("kcInputClass")}
                                     name="password"
                                     type="password"
                                     autoFocus={true}
@@ -49,9 +55,9 @@ export default function LoginPassword(props: PageProps<Extract<KcContextBase, { 
                                     defaultValue={login.password ?? ""}
                                 />
                             </div>
-                            <div className={clsx(kcProps.kcFormGroupClass, kcProps.kcFormSettingClass)}>
+                            <div className={clsx(getClassName("kcFormGroupClass"), getClassName("kcFormSettingClass"))}>
                                 <div id="kc-form-options" />
-                                <div className={clsx(kcProps.kcFormOptionsWrapperClass)}>
+                                <div className={getClassName("kcFormOptionsWrapperClass")}>
                                     {realm.resetPasswordAllowed && (
                                         <span>
                                             <a tabIndex={5} href={url.loginResetCredentialsUrl}>
@@ -61,14 +67,14 @@ export default function LoginPassword(props: PageProps<Extract<KcContextBase, { 
                                     )}
                                 </div>
                             </div>
-                            <div id="kc-form-buttons" className={clsx(kcProps.kcFormGroupClass)}>
+                            <div id="kc-form-buttons" className={getClassName("kcFormGroupClass")}>
                                 <input
                                     tabIndex={4}
                                     className={clsx(
-                                        kcProps.kcButtonClass,
-                                        kcProps.kcButtonPrimaryClass,
-                                        kcProps.kcButtonBlockClass,
-                                        kcProps.kcButtonLargeClass
+                                        getClassName("kcButtonClass"),
+                                        getClassName("kcButtonPrimaryClass"),
+                                        getClassName("kcButtonBlockClass"),
+                                        getClassName("kcButtonLargeClass")
                                     )}
                                     name="login"
                                     id="kc-login"

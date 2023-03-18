@@ -1,12 +1,18 @@
-import React, { useState, type FormEventHandler } from "react";
-import { clsx } from "../tools/clsx";
+import { useState, type FormEventHandler } from "react";
+import { clsx } from "keycloakify/tools/clsx";
 import { useConstCallback } from "../tools/useConstCallback";
-import type { PageProps } from "../KcProps";
-import type { KcContextBase } from "../kcContext";
-import type { I18nBase } from "../i18n";
+import { type PageProps, defaultClasses } from "keycloakify/pages/PageProps";
+import { useGetClassName } from "keycloakify/lib/useGetClassName";
+import type { KcContextBase as KcContext } from "../kcContext";
+import type { I18nBase as I18n } from "../i18n";
 
-export default function Login(props: PageProps<Extract<KcContextBase, { pageId: "login.ftl" }>, I18nBase>) {
-    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
+export default function Login(props: PageProps<Extract<KcContext, { pageId: "login.ftl" }>, I18n>) {
+    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
+
+    const { getClassName } = useGetClassName({
+        "defaultClasses": !doUseDefaultCss ? undefined : defaultClasses,
+        classes
+    });
 
     const { social, realm, url, usernameEditDisabled, login, auth, registrationDisabled } = kcContext;
 
@@ -30,21 +36,22 @@ export default function Login(props: PageProps<Extract<KcContextBase, { pageId: 
 
     return (
         <Template
-            {...{ kcContext, i18n, doFetchDefaultThemeResources, ...kcProps }}
+            {...{ kcContext, i18n, doUseDefaultCss, classes }}
             displayInfo={social.displayInfo}
             displayWide={realm.password && social.providers !== undefined}
             headerNode={msg("doLogIn")}
             formNode={
-                <div id="kc-form" className={clsx(realm.password && social.providers !== undefined && kcProps.kcContentWrapperClass)}>
+                <div id="kc-form" className={clsx(realm.password && social.providers !== undefined && getClassName("kcContentWrapperClass"))}>
                     <div
                         id="kc-form-wrapper"
                         className={clsx(
-                            realm.password && social.providers && [kcProps.kcFormSocialAccountContentClass, kcProps.kcFormSocialAccountClass]
+                            realm.password &&
+                                social.providers && [getClassName("kcFormSocialAccountContentClass"), getClassName("kcFormSocialAccountClass")]
                         )}
                     >
                         {realm.password && (
                             <form id="kc-form-login" onSubmit={onSubmit} action={url.loginAction} method="post">
-                                <div className={clsx(kcProps.kcFormGroupClass)}>
+                                <div className={getClassName("kcFormGroupClass")}>
                                     {(() => {
                                         const label = !realm.loginWithEmailAllowed
                                             ? "username"
@@ -56,13 +63,13 @@ export default function Login(props: PageProps<Extract<KcContextBase, { pageId: 
 
                                         return (
                                             <>
-                                                <label htmlFor={autoCompleteHelper} className={clsx(kcProps.kcLabelClass)}>
+                                                <label htmlFor={autoCompleteHelper} className={getClassName("kcLabelClass")}>
                                                     {msg(label)}
                                                 </label>
                                                 <input
                                                     tabIndex={1}
                                                     id={autoCompleteHelper}
-                                                    className={clsx(kcProps.kcInputClass)}
+                                                    className={getClassName("kcInputClass")}
                                                     //NOTE: This is used by Google Chrome auto fill so we use it to tell
                                                     //the browser how to pre fill the form but before submit we put it back
                                                     //to username because it is what keycloak expects.
@@ -80,20 +87,20 @@ export default function Login(props: PageProps<Extract<KcContextBase, { pageId: 
                                         );
                                     })()}
                                 </div>
-                                <div className={clsx(kcProps.kcFormGroupClass)}>
-                                    <label htmlFor="password" className={clsx(kcProps.kcLabelClass)}>
+                                <div className={getClassName("kcFormGroupClass")}>
+                                    <label htmlFor="password" className={getClassName("kcLabelClass")}>
                                         {msg("password")}
                                     </label>
                                     <input
                                         tabIndex={2}
                                         id="password"
-                                        className={clsx(kcProps.kcInputClass)}
+                                        className={getClassName("kcInputClass")}
                                         name="password"
                                         type="password"
                                         autoComplete="off"
                                     />
                                 </div>
-                                <div className={clsx(kcProps.kcFormGroupClass, kcProps.kcFormSettingClass)}>
+                                <div className={clsx(getClassName("kcFormGroupClass"), getClassName("kcFormSettingClass"))}>
                                     <div id="kc-form-options">
                                         {realm.rememberMe && !usernameEditDisabled && (
                                             <div className="checkbox">
@@ -114,7 +121,7 @@ export default function Login(props: PageProps<Extract<KcContextBase, { pageId: 
                                             </div>
                                         )}
                                     </div>
-                                    <div className={clsx(kcProps.kcFormOptionsWrapperClass)}>
+                                    <div className={getClassName("kcFormOptionsWrapperClass")}>
                                         {realm.resetPasswordAllowed && (
                                             <span>
                                                 <a tabIndex={5} href={url.loginResetCredentialsUrl}>
@@ -124,7 +131,7 @@ export default function Login(props: PageProps<Extract<KcContextBase, { pageId: 
                                         )}
                                     </div>
                                 </div>
-                                <div id="kc-form-buttons" className={clsx(kcProps.kcFormGroupClass)}>
+                                <div id="kc-form-buttons" className={getClassName("kcFormGroupClass")}>
                                     <input
                                         type="hidden"
                                         id="id-hidden-input"
@@ -138,10 +145,10 @@ export default function Login(props: PageProps<Extract<KcContextBase, { pageId: 
                                     <input
                                         tabIndex={4}
                                         className={clsx(
-                                            kcProps.kcButtonClass,
-                                            kcProps.kcButtonPrimaryClass,
-                                            kcProps.kcButtonBlockClass,
-                                            kcProps.kcButtonLargeClass
+                                            getClassName("kcButtonClass"),
+                                            getClassName("kcButtonPrimaryClass"),
+                                            getClassName("kcButtonBlockClass"),
+                                            getClassName("kcButtonLargeClass")
                                         )}
                                         name="login"
                                         id="kc-login"
@@ -154,15 +161,18 @@ export default function Login(props: PageProps<Extract<KcContextBase, { pageId: 
                         )}
                     </div>
                     {realm.password && social.providers !== undefined && (
-                        <div id="kc-social-providers" className={clsx(kcProps.kcFormSocialAccountContentClass, kcProps.kcFormSocialAccountClass)}>
+                        <div
+                            id="kc-social-providers"
+                            className={clsx(getClassName("kcFormSocialAccountContentClass"), getClassName("kcFormSocialAccountClass"))}
+                        >
                             <ul
                                 className={clsx(
-                                    kcProps.kcFormSocialAccountListClass,
-                                    social.providers.length > 4 && kcProps.kcFormSocialAccountDoubleListClass
+                                    getClassName("kcFormSocialAccountListClass"),
+                                    social.providers.length > 4 && getClassName("kcFormSocialAccountDoubleListClass")
                                 )}
                             >
                                 {social.providers.map(p => (
-                                    <li key={p.providerId} className={clsx(kcProps.kcFormSocialAccountListLinkClass)}>
+                                    <li key={p.providerId} className={getClassName("kcFormSocialAccountListLinkClass")}>
                                         <a href={p.loginUrl} id={`zocial-${p.alias}`} className={clsx("zocial", p.providerId)}>
                                             <span>{p.displayName}</span>
                                         </a>

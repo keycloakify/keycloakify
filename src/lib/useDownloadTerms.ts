@@ -4,15 +4,19 @@ import { fallbackLanguageTag } from "../i18n";
 import { useConst } from "../tools/useConst";
 import { useConstCallback } from "../tools/useConstCallback";
 import { assert } from "tsafe/assert";
+import { KcContextBase as KcContext } from "../kcContext";
+import { Evt } from "evt";
+
+export const evtTermMarkdown = Evt.create<string | undefined>(undefined);
 
 export type KcContextLike = {
-    pageId: KcContextBase["pageId"];
+    pageId: KcContext["pageId"];
     locale?: {
         currentLanguageTag: string;
     };
 };
 
-assert<KcContextBase extends KcContextLike ? true : false>();
+assert<KcContext extends KcContextLike ? true : false>();
 
 /** Allow to avoid bundling the terms and download it on demand*/
 export function useDownloadTerms(params: {

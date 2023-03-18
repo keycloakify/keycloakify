@@ -1,12 +1,18 @@
-import React, { useState } from "react";
-import { clsx } from "../tools/clsx";
+import { useState } from "react";
+import { clsx } from "keycloakify/tools/clsx";
 import { UserProfileFormFields } from "./shared/UserProfileCommons";
-import type { PageProps } from "../KcProps";
-import type { KcContextBase } from "../kcContext";
-import type { I18nBase } from "../i18n";
+import { type PageProps, defaultClasses } from "keycloakify/pages/PageProps";
+import { useGetClassName } from "keycloakify/lib/useGetClassName";
+import type { KcContextBase as KcContext } from "../kcContext";
+import type { I18nBase as I18n } from "../i18n";
 
-export default function UpdateUserProfile(props: PageProps<Extract<KcContextBase, { pageId: "update-user-profile.ftl" }>, I18nBase>) {
-    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
+export default function UpdateUserProfile(props: PageProps<Extract<KcContext, { pageId: "update-user-profile.ftl" }>, I18n>) {
+    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
+
+    const { getClassName } = useGetClassName({
+        "defaultClasses": !doUseDefaultCss ? undefined : defaultClasses,
+        classes
+    });
 
     const { msg, msgStr } = i18n;
 
@@ -16,27 +22,40 @@ export default function UpdateUserProfile(props: PageProps<Extract<KcContextBase
 
     return (
         <Template
-            {...{ kcContext, i18n, doFetchDefaultThemeResources, ...kcProps }}
+            {...{ kcContext, i18n, doUseDefaultCss, classes }}
             headerNode={msg("loginProfileTitle")}
             formNode={
-                <form id="kc-update-profile-form" className={clsx(kcProps.kcFormClass)} action={url.loginAction} method="post">
-                    <UserProfileFormFields kcContext={kcContext} onIsFormSubmittableValueChange={setIsFomSubmittable} i18n={i18n} {...kcProps} />
+                <form id="kc-update-profile-form" className={getClassName("kcFormClass")} action={url.loginAction} method="post">
+                    <UserProfileFormFields
+                        kcContext={kcContext}
+                        onIsFormSubmittableValueChange={setIsFomSubmittable}
+                        i18n={i18n}
+                        getClassName={getClassName}
+                    />
 
-                    <div className={clsx(kcProps.kcFormGroupClass)}>
-                        <div id="kc-form-options" className={clsx(kcProps.kcFormOptionsClass)}>
-                            <div className={clsx(kcProps.kcFormOptionsWrapperClass)}></div>
+                    <div className={getClassName("kcFormGroupClass")}>
+                        <div id="kc-form-options" className={getClassName("kcFormOptionsClass")}>
+                            <div className={getClassName("kcFormOptionsWrapperClass")}></div>
                         </div>
 
-                        <div id="kc-form-buttons" className={clsx(kcProps.kcFormButtonsClass)}>
+                        <div id="kc-form-buttons" className={getClassName("kcFormButtonsClass")}>
                             {isAppInitiatedAction ? (
                                 <>
                                     <input
-                                        className={clsx(kcProps.kcButtonClass, kcProps.kcButtonPrimaryClass, kcProps.kcButtonLargeClass)}
+                                        className={clsx(
+                                            getClassName("kcButtonClass"),
+                                            getClassName("kcButtonPrimaryClass"),
+                                            getClassName("kcButtonLargeClass")
+                                        )}
                                         type="submit"
                                         value={msgStr("doSubmit")}
                                     />
                                     <button
-                                        className={clsx(kcProps.kcButtonClass, kcProps.kcButtonDefaultClass, kcProps.kcButtonLargeClass)}
+                                        className={clsx(
+                                            getClassName("kcButtonClass"),
+                                            getClassName("kcButtonDefaultClass"),
+                                            getClassName("kcButtonLargeClass")
+                                        )}
                                         type="submit"
                                         name="cancel-aia"
                                         value="true"
@@ -48,10 +67,10 @@ export default function UpdateUserProfile(props: PageProps<Extract<KcContextBase
                             ) : (
                                 <input
                                     className={clsx(
-                                        kcProps.kcButtonClass,
-                                        kcProps.kcButtonPrimaryClass,
-                                        kcProps.kcButtonBlockClass,
-                                        kcProps.kcButtonLargeClass
+                                        getClassName("kcButtonClass"),
+                                        getClassName("kcButtonPrimaryClass"),
+                                        getClassName("kcButtonBlockClass"),
+                                        getClassName("kcButtonLargeClass")
                                     )}
                                     type="submit"
                                     defaultValue={msgStr("doSubmit")}

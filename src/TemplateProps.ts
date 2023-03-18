@@ -5,6 +5,10 @@ import type { I18nBase } from "keycloakify/i18n";
 export type TemplateProps<KcContext extends KcContextBase.Common.Login, I18n extends I18nBase> = {
     kcContext: KcContext;
     i18n: I18n;
+    doUseDefaultCss: boolean;
+    classes?: Partial<Record<TemplateClassKey, string>>;
+
+    formNode: ReactNode;
     displayInfo?: boolean;
     displayMessage?: boolean;
     displayRequiredFields?: boolean;
@@ -12,10 +16,7 @@ export type TemplateProps<KcContext extends KcContextBase.Common.Login, I18n ext
     showAnotherWayIfPresent?: boolean;
     headerNode: ReactNode;
     showUsernameNode?: ReactNode;
-    formNode: ReactNode;
     infoNode?: ReactNode;
-    doUseDefaultCss: boolean;
-    classes?: Partial<Record<TemplateClassKey, string>>;
 };
 
 export type TemplateClassKey =

@@ -5,7 +5,7 @@
         "lib": ["es2015", "DOM", "ES2019.Object"],
         "esModuleInterop": true,
         "declaration": true,
-        "outDir": "../../dist_test",
+        "outDir": "../dist_test",
         "sourceMap": true,
         "newLine": "LF",
         "noUnusedLocals": true,
@@ -16,5 +16,5 @@
         "jsx": "react",
         "noFallthroughCasesInSwitch": true
     },
-    "include": [".."]
+    "include": ["../src", "."]
 }

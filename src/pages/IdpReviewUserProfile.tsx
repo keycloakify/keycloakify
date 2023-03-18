@@ -1,12 +1,18 @@
-import React, { useState } from "react";
-import { clsx } from "../tools/clsx";
+import { useState } from "react";
+import { clsx } from "keycloakify/tools/clsx";
 import { UserProfileFormFields } from "./shared/UserProfileCommons";
-import type { PageProps } from "../KcProps";
-import type { KcContextBase } from "../kcContext";
-import type { I18nBase } from "../i18n";
+import { type PageProps, defaultClasses } from "keycloakify/pages/PageProps";
+import { useGetClassName } from "keycloakify/lib/useGetClassName";
+import type { KcContextBase as KcContext } from "../kcContext";
+import type { I18nBase as I18n } from "../i18n";
 
-export default function IdpReviewUserProfile(props: PageProps<Extract<KcContextBase, { pageId: "idp-review-user-profile.ftl" }>, I18nBase>) {
-    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
+export default function IdpReviewUserProfile(props: PageProps<Extract<KcContext, { pageId: "idp-review-user-profile.ftl" }>, I18n>) {
+    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
+
+    const { getClassName } = useGetClassName({
+        "defaultClasses": !doUseDefaultCss ? undefined : defaultClasses,
+        classes
+    });
 
     const { msg, msgStr } = i18n;
 
@@ -16,23 +22,27 @@ export default function IdpReviewUserProfile(props: PageProps<Extract<KcContextB
 
     return (
         <Template
-            {...{ kcContext, i18n, doFetchDefaultThemeResources, ...kcProps }}
+            {...{ kcContext, i18n, doUseDefaultCss, classes }}
             headerNode={msg("loginIdpReviewProfileTitle")}
             formNode={
-                <form id="kc-idp-review-profile-form" className={clsx(kcProps.kcFormClass)} action={url.loginAction} method="post">
-                    <UserProfileFormFields kcContext={kcContext} onIsFormSubmittableValueChange={setIsFomSubmittable} i18n={i18n} {...kcProps} />
-
-                    <div className={clsx(kcProps.kcFormGroupClass)}>
-                        <div id="kc-form-options" className={clsx(kcProps.kcFormOptionsClass)}>
-                            <div className={clsx(kcProps.kcFormOptionsWrapperClass)} />
+                <form id="kc-idp-review-profile-form" className={getClassName("kcFormClass")} action={url.loginAction} method="post">
+                    <UserProfileFormFields
+                        kcContext={kcContext}
+                        onIsFormSubmittableValueChange={setIsFomSubmittable}
+                        i18n={i18n}
+                        getClassName={getClassName}
+                    />
+                    <div className={getClassName("kcFormGroupClass")}>
+                        <div id="kc-form-options" className={getClassName("kcFormOptionsClass")}>
+                            <div className={getClassName("kcFormOptionsWrapperClass")} />
                         </div>
-                        <div id="kc-form-buttons" className={clsx(kcProps.kcFormButtonsClass)}>
+                        <div id="kc-form-buttons" className={getClassName("kcFormButtonsClass")}>
                             <input
                                 className={clsx(
-                                    kcProps.kcButtonClass,
-                                    kcProps.kcButtonPrimaryClass,
-                                    kcProps.kcButtonBlockClass,
-                                    kcProps.kcButtonLargeClass
+                                    getClassName("kcButtonClass"),
+                                    getClassName("kcButtonPrimaryClass"),
+                                    getClassName("kcButtonBlockClass"),
+                                    getClassName("kcButtonLargeClass")
                                 )}
                                 type="submit"
                                 value={msgStr("doSubmit")}

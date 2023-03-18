@@ -2,7 +2,6 @@ import type { LoginThemePageId, AccountThemePageId } from "../bin/keycloakify/ge
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
 import type { MessageKeyBase } from "../i18n";
-import type { KcTemplateClassKey } from "../templates/LoginThemeTemplate";
 
 type ExtractAfterStartingWith<Prefix extends string, StrEnum> = StrEnum extends `${Prefix}${infer U}` ? U : never;
 
@@ -289,7 +288,7 @@ export declare namespace KcContextBase {
         export type WebauthnAuthenticator = {
             credentialId: string;
             transports: {
-                iconClass: KcTemplateClassKey;
+                iconClass: string;
                 displayNameProperties: MessageKeyBase[];
             };
             label: string;

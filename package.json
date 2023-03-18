@@ -10,7 +10,7 @@
     "types": "dist/index.d.ts",
     "scripts": {
         "build": "rimraf dist/ && tsc -p src/bin && tsc -p src && yarn grant-exec-perms && yarn copy-files dist/",
-        "build:test": "rimraf dist_test/ && tsc -p src/test && yarn copy-files dist_test/",
+        "build:test": "rimraf dist_test/ && tsc -p test && yarn copy-files dist_test/",
         "grant-exec-perms": "node dist/bin/tools/grant-exec-perms.js",
         "copy-files": "copyfiles -u 1 src/**/*.ftl",
         "pretest": "yarn build:test",

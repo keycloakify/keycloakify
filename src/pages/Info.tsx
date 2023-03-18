@@ -1,11 +1,10 @@
-import React from "react";
 import { assert } from "../tools/assert";
-import type { PageProps } from "../KcProps";
-import type { KcContextBase } from "../kcContext";
-import type { I18nBase } from "../i18n";
+import { type PageProps } from "keycloakify/pages/PageProps";
+import type { KcContextBase as KcContext } from "../kcContext";
+import type { I18nBase as I18n } from "../i18n";
 
-export default function Info(props: PageProps<Extract<KcContextBase, { pageId: "info.ftl" }>, I18nBase>) {
-    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
+export default function Info(props: PageProps<Extract<KcContext, { pageId: "info.ftl" }>, I18n>) {
+    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
     const { msgStr, msg } = i18n;
 
@@ -15,7 +14,7 @@ export default function Info(props: PageProps<Extract<KcContextBase, { pageId: "
 
     return (
         <Template
-            {...{ kcContext, i18n, doFetchDefaultThemeResources, ...kcProps }}
+            {...{ kcContext, i18n, doUseDefaultCss, classes }}
             displayMessage={false}
             headerNode={messageHeader !== undefined ? <>{messageHeader}</> : <>{message.summary}</>}
             formNode={

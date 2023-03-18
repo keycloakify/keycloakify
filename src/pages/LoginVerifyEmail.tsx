@@ -1,10 +1,9 @@
-import React from "react";
-import type { PageProps } from "../KcProps";
-import type { KcContextBase } from "../kcContext";
-import type { I18nBase } from "../i18n";
+import { type PageProps } from "keycloakify/pages/PageProps";
+import type { KcContextBase as KcContext } from "../kcContext";
+import type { I18nBase as I18n } from "../i18n";
 
-export default function LoginVerifyEmail(props: PageProps<Extract<KcContextBase, { pageId: "login-verify-email.ftl" }>, I18nBase>) {
-    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
+export default function LoginVerifyEmail(props: PageProps<Extract<KcContext, { pageId: "login-verify-email.ftl" }>, I18n>) {
+    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
     const { msg } = i18n;
 
@@ -12,7 +11,7 @@ export default function LoginVerifyEmail(props: PageProps<Extract<KcContextBase,
 
     return (
         <Template
-            {...{ kcContext, i18n, doFetchDefaultThemeResources, ...kcProps }}
+            {...{ kcContext, i18n, doUseDefaultCss, classes }}
             displayMessage={false}
             headerNode={msg("emailVerifyTitle")}
             formNode={

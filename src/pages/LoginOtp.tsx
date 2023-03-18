@@ -1,13 +1,19 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { headInsert } from "../tools/headInsert";
 import { pathJoin } from "../bin/tools/pathJoin";
-import { clsx } from "../tools/clsx";
-import type { PageProps } from "../KcProps";
-import type { KcContextBase } from "../kcContext";
-import type { I18nBase } from "../i18n";
+import { clsx } from "keycloakify/tools/clsx";
+import { type PageProps, defaultClasses } from "keycloakify/pages/PageProps";
+import { useGetClassName } from "keycloakify/lib/useGetClassName";
+import type { KcContextBase as KcContext } from "../kcContext";
+import type { I18nBase as I18n } from "../i18n";
 
-export default function LoginOtp(props: PageProps<Extract<KcContextBase, { pageId: "login-otp.ftl" }>, I18nBase>) {
-    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
+export default function LoginOtp(props: PageProps<Extract<KcContext, { pageId: "login-otp.ftl" }>, I18n>) {
+    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
+
+    const { getClassName } = useGetClassName({
+        "defaultClasses": !doUseDefaultCss ? undefined : defaultClasses,
+        classes
+    });
 
     const { otpLogin, url } = kcContext;
 
@@ -32,49 +38,49 @@ export default function LoginOtp(props: PageProps<Extract<KcContextBase, { pageI
 
     return (
         <Template
-            {...{ kcContext, i18n, doFetchDefaultThemeResources, ...kcProps }}
+            {...{ kcContext, i18n, doUseDefaultCss, classes }}
             headerNode={msg("doLogIn")}
             formNode={
-                <form id="kc-otp-login-form" className={clsx(kcProps.kcFormClass)} action={url.loginAction} method="post">
+                <form id="kc-otp-login-form" className={getClassName("kcFormClass")} action={url.loginAction} method="post">
                     {otpLogin.userOtpCredentials.length > 1 && (
-                        <div className={clsx(kcProps.kcFormGroupClass)}>
-                            <div className={clsx(kcProps.kcInputWrapperClass)}>
+                        <div className={getClassName("kcFormGroupClass")}>
+                            <div className={getClassName("kcInputWrapperClass")}>
                                 {otpLogin.userOtpCredentials.map(otpCredential => (
-                                    <div key={otpCredential.id} className={clsx(kcProps.kcSelectOTPListClass)}>
+                                    <div key={otpCredential.id} className={getClassName("kcSelectOTPListClass")}>
                                         <input type="hidden" value="${otpCredential.id}" />
-                                        <div className={clsx(kcProps.kcSelectOTPListItemClass)}>
-                                            <span className={clsx(kcProps.kcAuthenticatorOtpCircleClass)} />
-                                            <h2 className={clsx(kcProps.kcSelectOTPItemHeadingClass)}>{otpCredential.userLabel}</h2>
+                                        <div className={getClassName("kcSelectOTPListItemClass")}>
+                                            <span className={getClassName("kcAuthenticatorOtpCircleClass")} />
+                                            <h2 className={getClassName("kcSelectOTPItemHeadingClass")}>{otpCredential.userLabel}</h2>
                                         </div>
                                     </div>
                                 ))}
                             </div>
                         </div>
                     )}
-                    <div className={clsx(kcProps.kcFormGroupClass)}>
-                        <div className={clsx(kcProps.kcLabelWrapperClass)}>
-                            <label htmlFor="otp" className={clsx(kcProps.kcLabelClass)}>
+                    <div className={getClassName("kcFormGroupClass")}>
+                        <div className={getClassName("kcLabelWrapperClass")}>
+                            <label htmlFor="otp" className={getClassName("kcLabelClass")}>
                                 {msg("loginOtpOneTime")}
                             </label>
                         </div>
 
-                        <div className={clsx(kcProps.kcInputWrapperClass)}>
-                            <input id="otp" name="otp" autoComplete="off" type="text" className={clsx(kcProps.kcInputClass)} autoFocus />
+                        <div className={getClassName("kcInputWrapperClass")}>
+                            <input id="otp" name="otp" autoComplete="off" type="text" className={getClassName("kcInputClass")} autoFocus />
                         </div>
                     </div>
 
-                    <div className={clsx(kcProps.kcFormGroupClass)}>
-                        <div id="kc-form-options" className={clsx(kcProps.kcFormOptionsClass)}>
-                            <div className={clsx(kcProps.kcFormOptionsWrapperClass)} />
+                    <div className={getClassName("kcFormGroupClass")}>
+                        <div id="kc-form-options" className={getClassName("kcFormOptionsClass")}>
+                            <div className={getClassName("kcFormOptionsWrapperClass")} />
                         </div>
 
-                        <div id="kc-form-buttons" className={clsx(kcProps.kcFormButtonsClass)}>
+                        <div id="kc-form-buttons" className={getClassName("kcFormButtonsClass")}>
                             <input
                                 className={clsx(
-                                    kcProps.kcButtonClass,
-                                    kcProps.kcButtonPrimaryClass,
-                                    kcProps.kcButtonBlockClass,
-                                    kcProps.kcButtonLargeClass
+                                    getClassName("kcButtonClass"),
+                                    getClassName("kcButtonPrimaryClass"),
+                                    getClassName("kcButtonBlockClass"),
+                                    getClassName("kcButtonLargeClass")
                                 )}
                                 name="login"
                                 id="kc-login"

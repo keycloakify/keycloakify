@@ -1,17 +1,22 @@
-import React from "react";
-import { clsx } from "../tools/clsx";
-import type { PageProps } from "../KcProps";
-import type { KcContextBase } from "../kcContext";
-import type { I18nBase } from "../i18n";
+import { clsx } from "keycloakify/tools/clsx";
+import { type PageProps, defaultClasses } from "keycloakify/pages/PageProps";
+import { useGetClassName } from "keycloakify/lib/useGetClassName";
+import type { KcContextBase as KcContext } from "../kcContext";
+import type { I18nBase as I18n } from "../i18n";
 
-export default function LoginConfigTotp(props: PageProps<Extract<KcContextBase, { pageId: "login-config-totp.ftl" }>, I18nBase>) {
-    const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
+export default function LoginConfigTotp(props: PageProps<Extract<KcContext, { pageId: "login-config-totp.ftl" }>, I18n>) {
+    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
+
+    const { getClassName } = useGetClassName({
+        "defaultClasses": !doUseDefaultCss ? undefined : defaultClasses,
+        classes
+    });
 
     const { url, isAppInitiatedAction, totp, mode, messagesPerField } = kcContext;
 
     const { msg, msgStr } = i18n;
 
-    const algToKeyUriAlg: Record<KcContextBase.LoginConfigTotp["totp"]["policy"]["algorithm"], string> = {
+    const algToKeyUriAlg: Record<KcContext.LoginConfigTotp["totp"]["policy"]["algorithm"], string> = {
         "HmacSHA1": "SHA1",
         "HmacSHA256": "SHA256",
         "HmacSHA512": "SHA512"
@@ -19,7 +24,7 @@ export default function LoginConfigTotp(props: PageProps<Extract<KcContextBase, 
 
     return (
         <Template
-            {...{ kcContext, i18n, doFetchDefaultThemeResources, ...kcProps }}
+            {...{ kcContext, i18n, doUseDefaultCss, classes }}
             headerNode={msg("loginTotpTitle")}
             formNode={
                 <>
@@ -91,26 +96,26 @@ export default function LoginConfigTotp(props: PageProps<Extract<KcContextBase, 
                         </li>
                     </ol>
 
-                    <form action={url.loginAction} className={clsx(kcProps.kcFormClass)} id="kc-totp-settings-form" method="post">
-                        <div className={clsx(kcProps.kcFormGroupClass)}>
-                            <div className={clsx(kcProps.kcInputWrapperClass)}>
-                                <label htmlFor="totp" className={clsx(kcProps.kcLabelClass)}>
+                    <form action={url.loginAction} className={getClassName("kcFormClass")} id="kc-totp-settings-form" method="post">
+                        <div className={getClassName("kcFormGroupClass")}>
+                            <div className={getClassName("kcInputWrapperClass")}>
+                                <label htmlFor="totp" className={getClassName("kcLabelClass")}>
                                     {msg("authenticatorCode")}
                                 </label>{" "}
                                 <span className="required">*</span>
                             </div>
-                            <div className={clsx(kcProps.kcInputWrapperClass)}>
+                            <div className={getClassName("kcInputWrapperClass")}>
                                 <input
                                     type="text"
                                     id="totp"
                                     name="totp"
                                     autoComplete="off"
-                                    className={clsx(kcProps.kcInputClass)}
+                                    className={getClassName("kcInputClass")}
                                     aria-invalid={messagesPerField.existsError("totp")}
                                 />
 
                                 {messagesPerField.existsError("totp") && (
-                                    <span id="input-error-otp-code" className={clsx(kcProps.kcInputErrorMessageClass)} aria-live="polite">
+                                    <span id="input-error-otp-code" className={getClassName("kcInputErrorMessageClass")} aria-live="polite">
                                         {messagesPerField.get("totp")}
                                     </span>
                                 )}
@@ -119,24 +124,24 @@ export default function LoginConfigTotp(props: PageProps<Extract<KcContextBase, 
                             {mode && <input type="hidden" id="mode" value={mode} />}
                         </div>
 
-                        <div className={clsx(kcProps.kcFormGroupClass)}>
-                            <div className={clsx(kcProps.kcInputWrapperClass)}>
-                                <label htmlFor="userLabel" className={clsx(kcProps.kcLabelClass)}>
+                        <div className={getClassName("kcFormGroupClass")}>
+                            <div className={getClassName("kcInputWrapperClass")}>
+                                <label htmlFor="userLabel" className={getClassName("kcLabelClass")}>
                                     {msg("loginTotpDeviceName")}
                                 </label>{" "}
                                 {totp.otpCredentials.length >= 1 && <span className="required">*</span>}
                             </div>
-                            <div className={clsx(kcProps.kcInputWrapperClass)}>
+                            <div className={getClassName("kcInputWrapperClass")}>
                                 <input
                                     type="text"
                                     id="userLabel"
                                     name="userLabel"
                                     autoComplete="off"
-                                    className={clsx(kcProps.kcInputClass)}
+                                    className={getClassName("kcInputClass")}
                                     aria-invalid={messagesPerField.existsError("userLabel")}
                                 />
                                 {messagesPerField.existsError("userLabel") && (
-                                    <span id="input-error-otp-label" className={clsx(kcProps.kcInputErrorMessageClass)} aria-live="polite">
+                                    <span id="input-error-otp-label" className={getClassName("kcInputErrorMessageClass")} aria-live="polite">
                                         {messagesPerField.get("userLabel")}
                                     </span>
                                 )}
@@ -147,17 +152,21 @@ export default function LoginConfigTotp(props: PageProps<Extract<KcContextBase, 
                             <>
                                 <input
                                     type="submit"
-                                    className={clsx(kcProps.kcButtonClass, kcProps.kcButtonPrimaryClass, kcProps.kcButtonLargeClass)}
+                                    className={clsx(
+                                        getClassName("kcButtonClass"),
+                                        getClassName("kcButtonPrimaryClass"),
+                                        getClassName("kcButtonLargeClass")
+                                    )}
                                     id="saveTOTPBtn"
                                     value={msgStr("doSubmit")}
                                 />
                                 <button
                                     type="submit"
                                     className={clsx(
-                                        kcProps.kcButtonClass,
-                                        kcProps.kcButtonDefaultClass,
-                                        kcProps.kcButtonLargeClass,
-                                        kcProps.kcButtonLargeClass
+                                        getClassName("kcButtonClass"),
+                                        getClassName("kcButtonDefaultClass"),
+                                        getClassName("kcButtonLargeClass"),
+                                        getClassName("kcButtonLargeClass")
                                     )}
                                     id="cancelTOTPBtn"
                                     name="cancel-aia"
@@ -169,7 +178,11 @@ export default function LoginConfigTotp(props: PageProps<Extract<KcContextBase, 
                         ) : (
                             <input
                                 type="submit"
-                                className={clsx(kcProps.kcButtonClass, kcProps.kcButtonPrimaryClass, kcProps.kcButtonLargeClass)}
+                                className={clsx(
+                                    getClassName("kcButtonClass"),
+                                    getClassName("kcButtonPrimaryClass"),
+                                    getClassName("kcButtonLargeClass")
+                                )}
                                 id="saveTOTPBtn"
                                 value={msgStr("doSubmit")}
                             />
