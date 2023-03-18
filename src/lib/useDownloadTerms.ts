@@ -4,7 +4,7 @@ import { fallbackLanguageTag } from "../i18n";
 import { useConst } from "../tools/useConst";
 import { useConstCallback } from "../tools/useConstCallback";
 import { assert } from "tsafe/assert";
-import { KcContextBase as KcContext } from "../kcContext";
+import { KcContext } from "../kcContext";
 import { Evt } from "evt";
 
 export const evtTermMarkdown = Evt.create<string | undefined>(undefined);

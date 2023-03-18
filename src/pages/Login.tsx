@@ -3,7 +3,7 @@ import { clsx } from "keycloakify/tools/clsx";
 import { useConstCallback } from "../tools/useConstCallback";
 import { type PageProps, defaultClasses } from "keycloakify/pages/PageProps";
 import { useGetClassName } from "keycloakify/lib/useGetClassName";
-import type { KcContextBase as KcContext } from "../kcContext";
+import type { KcContext } from "../kcContext";
 import type { I18nBase as I18n } from "../i18n";
 
 export default function Login(props: PageProps<Extract<KcContext, { pageId: "login.ftl" }>, I18n>) {

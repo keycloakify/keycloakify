@@ -5,7 +5,7 @@ import { base64url } from "rfc4648";
 import { useConstCallback } from "../tools/useConstCallback";
 import { type PageProps, defaultClasses } from "keycloakify/pages/PageProps";
 import { useGetClassName } from "keycloakify/lib/useGetClassName";
-import type { KcContextBase as KcContext } from "../kcContext";
+import type { KcContext } from "../kcContext";
 import type { I18nBase as I18n } from "../i18n";
 
 export default function WebauthnAuthenticate(props: PageProps<Extract<KcContext, { pageId: "webauthn-authenticate.ftl" }>, I18n>) {

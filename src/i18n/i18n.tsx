@@ -3,7 +3,7 @@ import "minimal-polyfills/Object.fromEntries";
 import { useEffect, useState, useRef } from "react";
 import type baseMessages from "./generated_messages/18.0.1/login/en";
 import { assert } from "tsafe/assert";
-import type { KcContextBase as KcContext } from "../kcContext/KcContextBase";
+import type { KcContext } from "../kcContext/KcContext";
 import { Markdown } from "../tools/Markdown";
 
 export const fallbackLanguageTag = "en";

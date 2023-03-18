@@ -1,5 +1,5 @@
 import "minimal-polyfills/Object.fromEntries";
-import type { KcContextBase, Attribute } from "./KcContextBase";
+import type { KcContext, Attribute } from "./KcContext";
 //NOTE: Aside because we want to be able to import them from node
 import { mockTestingResourcesCommonPath, mockTestingResourcesPath } from "../bin/mockTestingResourcesPath";
 import { id } from "tsafe/id";
@@ -101,7 +101,7 @@ const attributes: Attribute[] = [
 
 const attributesByName = Object.fromEntries(attributes.map(attribute => [attribute.name, attribute])) as any;
 
-export const kcContextCommonMock: KcContextBase.Common = {
+export const kcContextCommonMock: KcContext.Common = {
     "url": {
         "loginAction": "#",
         "resourcesPath": pathJoin(PUBLIC_URL, mockTestingResourcesPath),
@@ -244,8 +244,8 @@ const loginUrl = {
     "registrationUrl": "/auth/realms/myrealm/login-actions/registration?client_id=account&tab_id=HoAx28ja4xg"
 };
 
-export const kcContextMocks: KcContextBase[] = [
-    id<KcContextBase.Login>({
+export const kcContextMocks: KcContext[] = [
+    id<KcContext.Login>({
         ...kcContextCommonMock,
         "pageId": "login.ftl",
         "url": loginUrl,
@@ -268,7 +268,7 @@ export const kcContextMocks: KcContextBase[] = [
         "registrationDisabled": false
     }),
     ...(() => {
-        const registerCommon: KcContextBase.RegisterUserProfile.CommonWithLegacy = {
+        const registerCommon: KcContext.RegisterUserProfile.CommonWithLegacy = {
             ...kcContextCommonMock,
             "url": {
                 ...loginUrl,
@@ -285,14 +285,14 @@ export const kcContextMocks: KcContextBase[] = [
         };
 
         return [
-            id<KcContextBase.Register>({
+            id<KcContext.Register>({
                 "pageId": "register.ftl",
                 ...registerCommon,
                 "register": {
                     "formData": {}
                 }
             }),
-            id<KcContextBase.RegisterUserProfile>({
+            id<KcContext.RegisterUserProfile>({
                 "pageId": "register-user-profile.ftl",
                 ...registerCommon,
                 "profile": {
@@ -303,7 +303,7 @@ export const kcContextMocks: KcContextBase[] = [
             })
         ];
     })(),
-    id<KcContextBase.Info>({
+    id<KcContext.Info>({
         ...kcContextCommonMock,
         "pageId": "info.ftl",
         "messageHeader": "<Message header>",
@@ -315,7 +315,7 @@ export const kcContextMocks: KcContextBase[] = [
             "baseUrl": "#"
         }
     }),
-    id<KcContextBase.Error>({
+    id<KcContext.Error>({
         ...kcContextCommonMock,
         "pageId": "error.ftl",
         "client": {
@@ -327,7 +327,7 @@ export const kcContextMocks: KcContextBase[] = [
             "summary": "This is the error message"
         }
     }),
-    id<KcContextBase.LoginResetPassword>({
+    id<KcContext.LoginResetPassword>({
         ...kcContextCommonMock,
         "pageId": "login-reset-password.ftl",
         "realm": {
@@ -335,18 +335,18 @@ export const kcContextMocks: KcContextBase[] = [
             "loginWithEmailAllowed": false
         }
     }),
-    id<KcContextBase.LoginVerifyEmail>({
+    id<KcContext.LoginVerifyEmail>({
         ...kcContextCommonMock,
         "pageId": "login-verify-email.ftl",
         "user": {
             "email": "john.doe@gmail.com"
         }
     }),
-    id<KcContextBase.Terms>({
+    id<KcContext.Terms>({
         ...kcContextCommonMock,
         "pageId": "terms.ftl"
     }),
-    id<KcContextBase.LoginOtp>({
+    id<KcContext.LoginOtp>({
         ...kcContextCommonMock,
         "pageId": "login-otp.ftl",
         "otpLogin": {
@@ -362,7 +362,7 @@ export const kcContextMocks: KcContextBase[] = [
             ]
         }
     }),
-    id<KcContextBase.LoginUsername>({
+    id<KcContext.LoginUsername>({
         ...kcContextCommonMock,
         "pageId": "login-username.ftl",
         "url": loginUrl,
@@ -383,7 +383,7 @@ export const kcContextMocks: KcContextBase[] = [
         },
         "registrationDisabled": false
     }),
-    id<KcContextBase.LoginPassword>({
+    id<KcContext.LoginPassword>({
         ...kcContextCommonMock,
         "pageId": "login-password.ftl",
         "url": loginUrl,
@@ -396,7 +396,7 @@ export const kcContextMocks: KcContextBase[] = [
         },
         "login": {}
     }),
-    id<KcContextBase.WebauthnAuthenticate>({
+    id<KcContext.WebauthnAuthenticate>({
         ...kcContextCommonMock,
         "pageId": "webauthn-authenticate.ftl",
         "url": loginUrl,
@@ -417,12 +417,12 @@ export const kcContextMocks: KcContextBase[] = [
         },
         "login": {}
     }),
-    id<KcContextBase.LoginUpdatePassword>({
+    id<KcContext.LoginUpdatePassword>({
         ...kcContextCommonMock,
         "pageId": "login-update-password.ftl",
         "username": "anUsername"
     }),
-    id<KcContextBase.LoginUpdateProfile>({
+    id<KcContext.LoginUpdateProfile>({
         ...kcContextCommonMock,
         "pageId": "login-update-profile.ftl",
         "user": {
@@ -433,12 +433,12 @@ export const kcContextMocks: KcContextBase[] = [
             "lastName": "aLastName"
         }
     }),
-    id<KcContextBase.LoginIdpLinkConfirm>({
+    id<KcContext.LoginIdpLinkConfirm>({
         ...kcContextCommonMock,
         "pageId": "login-idp-link-confirm.ftl",
         "idpAlias": "FranceConnect"
     }),
-    id<KcContextBase.LoginIdpLinkEmail>({
+    id<KcContext.LoginIdpLinkEmail>({
         ...kcContextCommonMock,
         "pageId": "login-idp-link-email.ftl",
         "idpAlias": "FranceConnect",
@@ -446,7 +446,7 @@ export const kcContextMocks: KcContextBase[] = [
             "username": "anUsername"
         }
     }),
-    id<KcContextBase.LoginConfigTotp>({
+    id<KcContext.LoginConfigTotp>({
         ...kcContextCommonMock,
         "pageId": "login-config-totp.ftl",
         totp: {
@@ -467,7 +467,7 @@ export const kcContextMocks: KcContextBase[] = [
             }
         }
     }),
-    id<KcContextBase.LogoutConfirm>({
+    id<KcContext.LogoutConfirm>({
         ...kcContextCommonMock,
         "pageId": "logout-confirm.ftl",
         "url": {
@@ -480,7 +480,7 @@ export const kcContextMocks: KcContextBase[] = [
         },
         "logoutConfirm": { "code": "123", skipLink: false }
     }),
-    id<KcContextBase.UpdateUserProfile>({
+    id<KcContext.UpdateUserProfile>({
         ...kcContextCommonMock,
         "pageId": "update-user-profile.ftl",
         "profile": {
@@ -488,7 +488,7 @@ export const kcContextMocks: KcContextBase[] = [
             attributesByName
         }
     }),
-    id<KcContextBase.IdpReviewUserProfile>({
+    id<KcContext.IdpReviewUserProfile>({
         ...kcContextCommonMock,
         "pageId": "idp-review-user-profile.ftl",
         "profile": {

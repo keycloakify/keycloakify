@@ -1,3 +1,3 @@
-export type { KcContextBase, Attribute, Validators } from "./KcContextBase";
-export type { ExtendsKcContextBase } from "./getKcContextFromWindow";
+export type { KcContext, Attribute, Validators } from "./KcContext";
+export type { ExtendsKcContext } from "./getKcContextFromWindow";
 export { getKcContext } from "./getKcContext";

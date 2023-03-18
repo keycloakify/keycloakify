@@ -1,24 +1,24 @@
-import type { KcContextBase, Attribute } from "./KcContextBase";
+import type { KcContext, Attribute } from "./KcContext";
 import { kcContextMocks, kcContextCommonMock } from "./kcContextMocks";
 import type { DeepPartial } from "../tools/DeepPartial";
 import { deepAssign } from "../tools/deepAssign";
 import { id } from "tsafe/id";
 import { exclude } from "tsafe/exclude";
 import { assert } from "tsafe/assert";
-import type { ExtendsKcContextBase } from "./getKcContextFromWindow";
+import type { ExtendsKcContext } from "./getKcContextFromWindow";
 import { getKcContextFromWindow } from "./getKcContextFromWindow";
 import { pathJoin } from "../bin/tools/pathJoin";
 import { pathBasename } from "../tools/pathBasename";
 import { mockTestingResourcesCommonPath } from "../bin/mockTestingResourcesPath";
 import { symToStr } from "tsafe/symToStr";
 
-export function getKcContext<KcContextExtended extends { pageId: string } = never>(params?: {
-    mockPageId?: ExtendsKcContextBase<KcContextExtended>["pageId"];
-    mockData?: readonly DeepPartial<ExtendsKcContextBase<KcContextExtended>>[];
-}): { kcContext: ExtendsKcContextBase<KcContextExtended> | undefined } {
+export function getKcContext<KcContextExtension extends { pageId: string } = never>(params?: {
+    mockPageId?: ExtendsKcContext<KcContextExtension>["pageId"];
+    mockData?: readonly DeepPartial<ExtendsKcContext<KcContextExtension>>[];
+}): { kcContext: ExtendsKcContext<KcContextExtension> | undefined } {
     const { mockPageId, mockData } = params ?? {};
 
-    const realKcContext = getKcContextFromWindow<KcContextExtended>();
+    const realKcContext = getKcContextFromWindow<KcContextExtension>();
 
     if (mockPageId !== undefined && realKcContext === undefined) {
         //TODO maybe trow if no mock fo custom page
@@ -71,11 +71,11 @@ export function getKcContext<KcContextExtended extends { pageId: string } = neve
 
                 const { attributes } = kcContextDefaultMock.profile;
 
-                id<KcContextBase.RegisterUserProfile>(kcContext).profile.attributes = [];
-                id<KcContextBase.RegisterUserProfile>(kcContext).profile.attributesByName = {};
+                id<KcContext.RegisterUserProfile>(kcContext).profile.attributes = [];
+                id<KcContext.RegisterUserProfile>(kcContext).profile.attributesByName = {};
 
                 const partialAttributes = [
-                    ...((partialKcContextCustomMock as DeepPartial<KcContextBase.RegisterUserProfile>).profile?.attributes ?? [])
+                    ...((partialKcContextCustomMock as DeepPartial<KcContext.RegisterUserProfile>).profile?.attributes ?? [])
                 ].filter(exclude(undefined));
 
                 attributes.forEach(attribute => {
@@ -97,8 +97,8 @@ export function getKcContext<KcContextExtended extends { pageId: string } = neve
                         });
                     }
 
-                    id<KcContextBase.RegisterUserProfile>(kcContext).profile.attributes.push(augmentedAttribute);
-                    id<KcContextBase.RegisterUserProfile>(kcContext).profile.attributesByName[augmentedAttribute.name] = augmentedAttribute;
+                    id<KcContext.RegisterUserProfile>(kcContext).profile.attributes.push(augmentedAttribute);
+                    id<KcContext.RegisterUserProfile>(kcContext).profile.attributesByName[augmentedAttribute.name] = augmentedAttribute;
                 });
 
                 partialAttributes
@@ -108,8 +108,8 @@ export function getKcContext<KcContextExtended extends { pageId: string } = neve
 
                         assert(name !== undefined, "If you define a mock attribute it must have at least a name");
 
-                        id<KcContextBase.RegisterUserProfile>(kcContext).profile.attributes.push(partialAttribute as any);
-                        id<KcContextBase.RegisterUserProfile>(kcContext).profile.attributesByName[name] = partialAttribute as any;
+                        id<KcContext.RegisterUserProfile>(kcContext).profile.attributes.push(partialAttribute as any);
+                        id<KcContext.RegisterUserProfile>(kcContext).profile.attributesByName[name] = partialAttribute as any;
                     });
             }
         }

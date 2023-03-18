@@ -1,5 +1,5 @@
 import { type PageProps } from "keycloakify/pages/PageProps";
-import type { KcContextBase as KcContext } from "../kcContext";
+import type { KcContext } from "../kcContext";
 import type { I18nBase as I18n } from "../i18n";
 
 export default function LoginVerifyEmail(props: PageProps<Extract<KcContext, { pageId: "login-verify-email.ftl" }>, I18n>) {

@@ -5,7 +5,7 @@ import type { MessageKeyBase } from "keycloakify/i18n";
 import type { Attribute, Validators } from "keycloakify/kcContext";
 import { useConstCallback } from "keycloakify/tools/useConstCallback";
 import { emailRegexp } from "keycloakify/tools/emailRegExp";
-import type { KcContextBase as KcContext } from "../kcContext";
+import type { KcContext } from "../kcContext";
 import type { I18nBase as I18n } from "../i18n";
 
 /**

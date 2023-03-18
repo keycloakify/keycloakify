@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react";
 import { __unsafe_useI18n as useI18n } from "./i18n";
-import type { KcContextBase } from "./kcContext/KcContextBase";
+import type { KcContext } from "./kcContext/KcContext";
 import type { PageProps } from "keycloakify/pages/PageProps";
 import type { I18nBase } from "./i18n";
 import type { SetOptional } from "./tools/SetOptional";
@@ -29,7 +29,7 @@ const LogoutConfirm = lazy(() => import("keycloakify/pages/LogoutConfirm"));
 const UpdateUserProfile = lazy(() => import("keycloakify/pages/UpdateUserProfile"));
 const IdpReviewUserProfile = lazy(() => import("keycloakify/pages/IdpReviewUserProfile"));
 
-export default function KcApp(props_: SetOptional<PageProps<KcContextBase, I18nBase>, "Template">) {
+export default function KcApp(props_: SetOptional<PageProps<KcContext, I18nBase>, "Template">) {
     const { kcContext, i18n: userProvidedI18n, Template = DefaultTemplate, ...kcProps } = props_;
 
     const i18n = (function useClosure() {

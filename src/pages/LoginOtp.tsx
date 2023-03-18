@@ -4,7 +4,7 @@ import { pathJoin } from "../bin/tools/pathJoin";
 import { clsx } from "keycloakify/tools/clsx";
 import { type PageProps, defaultClasses } from "keycloakify/pages/PageProps";
 import { useGetClassName } from "keycloakify/lib/useGetClassName";
-import type { KcContextBase as KcContext } from "../kcContext";
+import type { KcContext } from "../kcContext";
 import type { I18nBase as I18n } from "../i18n";
 
 export default function LoginOtp(props: PageProps<Extract<KcContext, { pageId: "login-otp.ftl" }>, I18n>) {

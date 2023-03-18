@@ -1,6 +1,6 @@
 import { getKcContext } from "../../src/kcContext";
-import type { KcContextBase } from "../../src/kcContext";
-import type { ExtendsKcContextBase } from "../../src/kcContext";
+import type { KcContext } from "../../src/kcContext";
+import type { ExtendsKcContext } from "../../src/kcContext";
 import { same } from "evt/tools/inDepth";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
@@ -32,7 +32,7 @@ import { deepClone } from "../../src/tools/deepClone";
               aNonStandardValue2: string;
           };
 
-    const getKcContextProxy = (params: { mockPageId: ExtendsKcContextBase<KcContextExtended>["pageId"] }) => {
+    const getKcContextProxy = (params: { mockPageId: ExtendsKcContext<KcContextExtended>["pageId"] }) => {
         const { mockPageId } = params;
 
         const { kcContext } = getKcContext<KcContextExtended>({
@@ -67,7 +67,7 @@ import { deepClone } from "../../src/tools/deepClone";
 
         assert(kcContext?.pageId === pageId);
 
-        assert<Equals<typeof kcContext, KcContextBase.Login>>();
+        assert<Equals<typeof kcContext, KcContext.Login>>();
 
         assert(
             same(
@@ -97,7 +97,7 @@ import { deepClone } from "../../src/tools/deepClone";
         assert<
             Equals<
                 typeof kcContext,
-                KcContextBase.Info & {
+                KcContext.Info & {
                     pageId: typeof pageId;
                     aNonStandardValue1: string;
                 }
@@ -131,7 +131,7 @@ import { deepClone } from "../../src/tools/deepClone";
         assert<
             Equals<
                 typeof kcContext,
-                KcContextBase.Register & {
+                KcContext.Register & {
                     pageId: typeof pageId;
                     authorizedMailDomains: string[];
                 }
@@ -164,7 +164,7 @@ import { deepClone } from "../../src/tools/deepClone";
         assert<
             Equals<
                 typeof kcContext,
-                KcContextBase.Common & {
+                KcContext.Common & {
                     pageId: typeof pageId;
                     aNonStandardValue2: string;
                 }
@@ -198,7 +198,7 @@ import { deepClone } from "../../src/tools/deepClone";
 
         assert(kcContext?.pageId === pageId);
 
-        assert<Equals<typeof kcContext, KcContextBase.Common & { pageId: typeof pageId }>>();
+        assert<Equals<typeof kcContext, KcContext.Common & { pageId: typeof pageId }>>();
 
         assert(
             same(
@@ -224,7 +224,7 @@ import { deepClone } from "../../src/tools/deepClone";
         "mockPageId": pageId
     });
 
-    assert<Equals<typeof kcContext, KcContextBase | undefined>>();
+    assert<Equals<typeof kcContext, KcContext | undefined>>();
 
     assert(same(deepClone(kcContext), deepClone(kcContextMocks.find(({ pageId: pageId_i }) => pageId_i === pageId)!)));
 
@@ -234,7 +234,7 @@ import { deepClone } from "../../src/tools/deepClone";
 {
     const { kcContext } = getKcContext();
 
-    assert<Equals<typeof kcContext, KcContextBase | undefined>>();
+    assert<Equals<typeof kcContext, KcContext | undefined>>();
 
     assert(kcContext === undefined);
 

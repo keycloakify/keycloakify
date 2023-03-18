@@ -1,1 +1,1 @@
-import "./kcContext";
+import "./getKcContext";

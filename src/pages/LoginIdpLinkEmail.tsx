@@ -1,4 +1,4 @@
-import type { KcContextBase as KcContext } from "keycloakify/kcContext";
+import type { KcContext } from "keycloakify/kcContext";
 import { type PageProps } from "keycloakify/pages/PageProps";
 import type { I18nBase as I18n } from "keycloakify/i18n";
 

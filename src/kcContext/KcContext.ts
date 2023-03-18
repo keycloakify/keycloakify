@@ -9,30 +9,30 @@ type ExtractAfterStartingWith<Prefix extends string, StrEnum> = StrEnum extends 
  * Some values might be undefined on some pages.
  * (ex: url.loginAction is undefined on error.ftl)
  */
-export type KcContextBase =
-    | KcContextBase.Login
-    | KcContextBase.Register
-    | KcContextBase.RegisterUserProfile
-    | KcContextBase.Info
-    | KcContextBase.Error
-    | KcContextBase.LoginResetPassword
-    | KcContextBase.LoginVerifyEmail
-    | KcContextBase.Terms
-    | KcContextBase.LoginOtp
-    | KcContextBase.LoginUsername
-    | KcContextBase.WebauthnAuthenticate
-    | KcContextBase.LoginPassword
-    | KcContextBase.LoginUpdatePassword
-    | KcContextBase.LoginUpdateProfile
-    | KcContextBase.LoginIdpLinkConfirm
-    | KcContextBase.LoginIdpLinkEmail
-    | KcContextBase.LoginPageExpired
-    | KcContextBase.LoginConfigTotp
-    | KcContextBase.LogoutConfirm
-    | KcContextBase.UpdateUserProfile
-    | KcContextBase.IdpReviewUserProfile;
+export type KcContext =
+    | KcContext.Login
+    | KcContext.Register
+    | KcContext.RegisterUserProfile
+    | KcContext.Info
+    | KcContext.Error
+    | KcContext.LoginResetPassword
+    | KcContext.LoginVerifyEmail
+    | KcContext.Terms
+    | KcContext.LoginOtp
+    | KcContext.LoginUsername
+    | KcContext.WebauthnAuthenticate
+    | KcContext.LoginPassword
+    | KcContext.LoginUpdatePassword
+    | KcContext.LoginUpdateProfile
+    | KcContext.LoginIdpLinkConfirm
+    | KcContext.LoginIdpLinkEmail
+    | KcContext.LoginPageExpired
+    | KcContext.LoginConfigTotp
+    | KcContext.LogoutConfirm
+    | KcContext.UpdateUserProfile
+    | KcContext.IdpReviewUserProfile;
 
-export declare namespace KcContextBase {
+export declare namespace KcContext {
     export type Common = {
         url: {
             loginAction: string;
@@ -496,4 +496,4 @@ export declare namespace Validators {
     };
 }
 
-assert<Equals<KcContextBase["pageId"], PageId>>();
+assert<Equals<KcContext["pageId"], PageId>>();
