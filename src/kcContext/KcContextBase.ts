@@ -85,6 +85,10 @@ export declare namespace KcContextBase {
         };
 
         export type Account = {
+            locale?: {
+                currentLanguageTag: string;
+                supported: { languageTag: string; url: string; label: string }[];
+            };
             url: {
                 resourcesPath: string;
                 resourcesCommonPath: string;

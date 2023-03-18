@@ -1,9 +1,9 @@
 import "minimal-polyfills/Object.fromEntries";
 //NOTE for later: https://github.com/remarkjs/react-markdown/blob/236182ecf30bd89c1e5a7652acaf8d0bf81e6170/src/renderers.js#L7-L35
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import type baseMessages from "./generated_messages/18.0.1/login/en";
 import { assert } from "tsafe/assert";
-import type { KcContextBase } from "../kcContext/KcContextBase";
+import type { KcContextBase as KcContext } from "../kcContext/KcContextBase";
 import { Markdown } from "../tools/Markdown";
 
 export const fallbackLanguageTag = "en";
@@ -15,7 +15,7 @@ export type KcContextLike = {
     };
 };
 
-assert<KcContextBase extends KcContextLike ? true : false>();
+assert<KcContext extends KcContextLike ? true : false>();
 
 export type MessageKeyBase = keyof typeof baseMessages | keyof (typeof keycloakifyExtraMessages)[typeof fallbackLanguageTag];
 
