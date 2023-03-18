@@ -72,6 +72,10 @@ export async function generateKeycloakThemeResources(params: {
     let generateFtlFilesCode_glob: ReturnType<typeof generateFtlFilesCodeFactory>["generateFtlFilesCode"] | undefined = undefined;
 
     for (const themeType of themeTypes) {
+        if (themeType === "account") {
+            continue;
+        }
+
         const themeDirPath = getThemeDirPath(themeType);
 
         copy_app_resources_to_theme_path: {

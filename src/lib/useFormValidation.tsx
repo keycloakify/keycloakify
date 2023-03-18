@@ -14,7 +14,7 @@ import type { I18nBase as I18n } from "../i18n";
  */
 export function useFormValidation(params: {
     kcContext: {
-        messagesPerField: Pick<KcContext.Common.Login["messagesPerField"], "existsError" | "get">;
+        messagesPerField: Pick<KcContext.Common["messagesPerField"], "existsError" | "get">;
         profile: {
             attributes: Attribute[];
         };
@@ -187,7 +187,7 @@ export function useFormValidation(params: {
 /** Expect to be used in a component wrapped within a <I18nProvider> */
 function useGetErrors(params: {
     kcContext: {
-        messagesPerField: Pick<KcContext.Common.Login["messagesPerField"], "existsError" | "get">;
+        messagesPerField: Pick<KcContext.Common["messagesPerField"], "existsError" | "get">;
         profile: {
             attributes: { name: string; value?: string; validators: Validators }[];
         };

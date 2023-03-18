@@ -3,7 +3,7 @@ import { clsx } from "keycloakify/tools/clsx";
 import { usePrepareTemplate } from "keycloakify/lib/usePrepareTemplate";
 import { type TemplateProps, defaultTemplateClasses } from "keycloakify/TemplateProps";
 import { useGetClassName } from "keycloakify/lib/useGetClassName";
-type KcContext = import("./kcContext/KcContextBase").KcContextBase.Common.Login;
+type KcContext = import("./kcContext/KcContextBase").KcContextBase.Common;
 import type { I18nBase as I18n } from "./i18n";
 
 export default function Template(props: TemplateProps<KcContext, I18n>) {

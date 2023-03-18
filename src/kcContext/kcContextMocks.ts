@@ -101,7 +101,7 @@ const attributes: Attribute[] = [
 
 const attributesByName = Object.fromEntries(attributes.map(attribute => [attribute.name, attribute])) as any;
 
-export const kcContextCommonMock: KcContextBase.Common.Login = {
+export const kcContextCommonMock: KcContextBase.Common = {
     "url": {
         "loginAction": "#",
         "resourcesPath": pathJoin(PUBLIC_URL, mockTestingResourcesPath),

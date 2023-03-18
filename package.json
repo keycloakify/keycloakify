@@ -10,6 +10,7 @@
     "types": "dist/index.d.ts",
     "scripts": {
         "build": "rimraf dist/ && tsc -p src/bin && tsc -p src/tsconfig.json && tsc-alias -p src/tsconfig.json && yarn grant-exec-perms && yarn copy-files dist/",
+        "build:watch": "tsc -p src/tsconfig.json && (concurrently \"tsc -p src/tsconfig.json -w\" \"tsc-alias -p src/tsconfig.json\")",
         "build:test": "rimraf dist_test/ && tsc -p test/tsconfig.json && tsc-alias -p test/tsconfig.json && yarn copy-files dist_test/",
         "grant-exec-perms": "node dist/bin/tools/grant-exec-perms.js",
         "copy-files": "copyfiles -u 1 src/**/*.ftl",
@@ -66,6 +67,7 @@
         "@types/minimist": "^1.2.2",
         "@types/node": "^18.14.1",
         "@types/react": "18.0.9",
+        "concurrently": "^7.6.0",
         "copyfiles": "^2.4.1",
         "husky": "^4.3.8",
         "lint-staged": "^11.0.0",

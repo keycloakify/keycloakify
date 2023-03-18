@@ -40,7 +40,7 @@ export const loginThemePageIds = [
 
 export const accountThemePageIds = ["password.ftl"] as const;
 
-export type LoginThemePageId = (typeof loginThemePageIds)[number];
+export type PageId = (typeof loginThemePageIds)[number];
 export type AccountThemePageId = (typeof accountThemePageIds)[number];
 
 export type BuildOptionsLike = BuildOptionsLike.Standalone | BuildOptionsLike.ExternalAssets;
