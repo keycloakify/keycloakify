@@ -27,7 +27,8 @@
     "bin": {
         "keycloakify": "dist/bin/keycloakify/index.js",
         "create-keycloak-email-directory": "dist/bin/create-keycloak-email-directory.js",
-        "download-builtin-keycloak-theme": "dist/bin/download-builtin-keycloak-theme.js"
+        "download-builtin-keycloak-theme": "dist/bin/download-builtin-keycloak-theme.js",
+        "eject-keycloak-page": "dist/bin/eject-keycloak-page.js"
     },
     "lint-staged": {
         "*.{ts,tsx,json,md}": [
@@ -57,7 +58,7 @@
         "login",
         "register"
     ],
-    "homepage": "https://github.com/garronej/keycloakify",
+    "homepage": "https://www.keycloakify.dev",
     "peerDependencies": {
         "react": "^16.8.0 || ^17.0.0 || ^18.0.0"
     },
