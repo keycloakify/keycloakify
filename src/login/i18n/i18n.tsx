@@ -1,7 +1,8 @@
 import "minimal-polyfills/Object.fromEntries";
 //NOTE for later: https://github.com/remarkjs/react-markdown/blob/236182ecf30bd89c1e5a7652acaf8d0bf81e6170/src/renderers.js#L7-L35
 import { useEffect, useState, useRef } from "react";
-import type baseMessages from "./generated_messages/18.0.1/login/en";
+import fallbackMessages from "./baseMessages/en";
+import { getMessages } from "./baseMessages";
 import { assert } from "tsafe/assert";
 import type { KcContext } from "../kcContext/KcContext";
 import { Markdown } from "keycloakify/tools/Markdown";
@@ -17,7 +18,7 @@ export type KcContextLike = {
 
 assert<KcContext extends KcContextLike ? true : false>();
 
-export type MessageKey = keyof typeof baseMessages | keyof (typeof keycloakifyExtraMessages)[typeof fallbackLanguageTag];
+export type MessageKey = keyof typeof fallbackMessages | keyof (typeof keycloakifyExtraMessages)[typeof fallbackLanguageTag];
 
 export type GenericI18n<MessageKey extends string> = {
     /**
@@ -89,60 +90,6 @@ export function createUseI18n<ExtraMessageKey extends string = never>(extraMessa
             (async () => {
                 const { currentLanguageTag = fallbackLanguageTag } = kcContext.locale ?? {};
 
-                const [fallbackMessages, messages] = await Promise.all([
-                    import("./generated_messages/18.0.1/login/en"),
-                    (() => {
-                        switch (currentLanguageTag) {
-                            case "ca":
-                                return import("./generated_messages/18.0.1/login/ca");
-                            case "cs":
-                                return import("./generated_messages/18.0.1/login/cs");
-                            case "da":
-                                return import("./generated_messages/18.0.1/login/da");
-                            case "de":
-                                return import("./generated_messages/18.0.1/login/de");
-                            case "en":
-                                return import("./generated_messages/18.0.1/login/en");
-                            case "es":
-                                return import("./generated_messages/18.0.1/login/es");
-                            case "fi":
-                                return import("./generated_messages/18.0.1/login/fi");
-                            case "fr":
-                                return import("./generated_messages/18.0.1/login/fr");
-                            case "hu":
-                                return import("./generated_messages/18.0.1/login/hu");
-                            case "it":
-                                return import("./generated_messages/18.0.1/login/it");
-                            case "ja":
-                                return import("./generated_messages/18.0.1/login/ja");
-                            case "lt":
-                                return import("./generated_messages/18.0.1/login/lt");
-                            case "lv":
-                                return import("./generated_messages/18.0.1/login/lv");
-                            case "nl":
-                                return import("./generated_messages/18.0.1/login/nl");
-                            case "no":
-                                return import("./generated_messages/18.0.1/login/no");
-                            case "pl":
-                                return import("./generated_messages/18.0.1/login/pl");
-                            case "pt-BR":
-                                return import("./generated_messages/18.0.1/login/pt-BR");
-                            case "ru":
-                                return import("./generated_messages/18.0.1/login/ru");
-                            case "sk":
-                                return import("./generated_messages/18.0.1/login/sk");
-                            case "sv":
-                                return import("./generated_messages/18.0.1/login/sv");
-                            case "tr":
-                                return import("./generated_messages/18.0.1/login/tr");
-                            case "zh-CN":
-                                return import("./generated_messages/18.0.1/login/zh-CN");
-                            default:
-                                return { "default": {} };
-                        }
-                    })()
-                ]).then(modules => modules.map(module => module.default));
-
                 setI18n({
                     ...createI18nTranslationFunctions({
                         "fallbackMessages": {
@@ -151,7 +98,7 @@ export function createUseI18n<ExtraMessageKey extends string = never>(extraMessa
                             ...(extraMessages[fallbackLanguageTag] ?? {})
                         } as any,
                         "messages": {
-                            ...messages,
+                            ...(await getMessages(currentLanguageTag)),
                             ...((keycloakifyExtraMessages as any)[currentLanguageTag] ?? {}),
                             ...(extraMessages[currentLanguageTag] ?? {})
                         } as any

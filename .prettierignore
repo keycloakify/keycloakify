@@ -7,5 +7,6 @@ node_modules/
 /src/tools/types/
 /sample_react_project
 /build_keycloak/
-/src/i18n/generated_messages/
 /.vscode/
+/src/login/i18n/baseMessages/
+/src/account/i18n/baseMessages/

@@ -9,6 +9,7 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
+        "postinstall": "yarn generate-i18n-messages",
         "build": "rimraf dist/ && tsc -p src/bin && tsc -p src/tsconfig.json && tsc-alias -p src/tsconfig.json && yarn grant-exec-perms && yarn copy-files dist/",
         "build:watch": "tsc -p src/tsconfig.json && (concurrently \"tsc -p src/tsconfig.json -w\" \"tsc-alias -p src/tsconfig.json\")",
         "build:test": "rimraf dist_test/ && tsc -p test/tsconfig.json && tsc-alias -p test/tsconfig.json && yarn copy-files dist_test/src",

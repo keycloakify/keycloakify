@@ -50,3 +50,5 @@ jspm_packages
 
 /keycloak_email
 /build_keycloak
+/src/login/i18n/baseMessages/
+/src/account/i18n/baseMessages/
