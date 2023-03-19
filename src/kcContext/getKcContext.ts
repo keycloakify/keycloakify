@@ -5,7 +5,7 @@ import { deepAssign } from "../tools/deepAssign";
 import { id } from "tsafe/id";
 import { exclude } from "tsafe/exclude";
 import { assert } from "tsafe/assert";
-import type { ExtendsKcContext } from "./getKcContextFromWindow";
+import type { ExtendKcContext } from "./getKcContextFromWindow";
 import { getKcContextFromWindow } from "./getKcContextFromWindow";
 import { pathJoin } from "../bin/tools/pathJoin";
 import { pathBasename } from "../tools/pathBasename";
@@ -13,9 +13,9 @@ import { mockTestingResourcesCommonPath } from "../bin/mockTestingResourcesPath"
 import { symToStr } from "tsafe/symToStr";
 
 export function getKcContext<KcContextExtension extends { pageId: string } = never>(params?: {
-    mockPageId?: ExtendsKcContext<KcContextExtension>["pageId"];
-    mockData?: readonly DeepPartial<ExtendsKcContext<KcContextExtension>>[];
-}): { kcContext: ExtendsKcContext<KcContextExtension> | undefined } {
+    mockPageId?: ExtendKcContext<KcContextExtension>["pageId"];
+    mockData?: readonly DeepPartial<ExtendKcContext<KcContextExtension>>[];
+}): { kcContext: ExtendKcContext<KcContextExtension> | undefined } {
     const { mockPageId, mockData } = params ?? {};
 
     const realKcContext = getKcContextFromWindow<KcContextExtension>();

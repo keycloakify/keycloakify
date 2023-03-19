@@ -17,7 +17,7 @@ export type KcContextLike = {
 
 assert<KcContext extends KcContextLike ? true : false>();
 
-export type MessageKeyBase = keyof typeof baseMessages | keyof (typeof keycloakifyExtraMessages)[typeof fallbackLanguageTag];
+export type MessageKey = keyof typeof baseMessages | keyof (typeof keycloakifyExtraMessages)[typeof fallbackLanguageTag];
 
 export type GenericI18n<MessageKey extends string> = {
     /**
@@ -67,15 +67,15 @@ export type GenericI18n<MessageKey extends string> = {
     advancedMsgStr: (key: string, ...args: (string | undefined)[]) => string;
 };
 
-export type I18n = GenericI18n<MessageKeyBase>;
+export type I18n = GenericI18n<MessageKey>;
 
 export function createUseI18n<ExtraMessageKey extends string = never>(extraMessages: {
     [languageTag: string]: { [key in ExtraMessageKey]: string };
 }) {
-    function useI18n(params: { kcContext: KcContextLike }): GenericI18n<MessageKeyBase | ExtraMessageKey> | null {
+    function useI18n(params: { kcContext: KcContextLike }): GenericI18n<MessageKey | ExtraMessageKey> | null {
         const { kcContext } = params;
 
-        const [i18n, setI18n] = useState<GenericI18n<ExtraMessageKey | MessageKeyBase> | undefined>(undefined);
+        const [i18n, setI18n] = useState<GenericI18n<ExtraMessageKey | MessageKey> | undefined>(undefined);
 
         const refHasStartedFetching = useRef(false);
 

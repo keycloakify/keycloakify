@@ -1,8 +1,8 @@
 import "keycloakify/tools/Array.prototype.every";
 import { useMemo, useReducer, Fragment } from "react";
 import { id } from "tsafe/id";
-import type { MessageKeyBase } from "keycloakify/i18n";
-import type { Attribute, Validators } from "keycloakify/kcContext";
+import type { MessageKey } from "keycloakify/i18n/i18n";
+import type { Attribute, Validators } from "keycloakify/kcContext/KcContext";
 import { useConstCallback } from "keycloakify/tools/useConstCallback";
 import { emailRegexp } from "keycloakify/tools/emailRegExp";
 import type { KcContext } from "../kcContext";
@@ -52,7 +52,7 @@ export function useFormValidation(params: {
                                         curr,
                                         id<Attribute>({
                                             "name": "password",
-                                            "displayName": id<`\${${MessageKeyBase}}`>("${password}"),
+                                            "displayName": id<`\${${MessageKey}}`>("${password}"),
                                             "required": true,
                                             "readOnly": false,
                                             "validators": passwordValidators,
@@ -62,7 +62,7 @@ export function useFormValidation(params: {
                                         }),
                                         id<Attribute>({
                                             "name": "password-confirm",
-                                            "displayName": id<`\${${MessageKeyBase}}`>("${passwordConfirm}"),
+                                            "displayName": id<`\${${MessageKey}}`>("${passwordConfirm}"),
                                             "required": true,
                                             "readOnly": false,
                                             "validators": {
@@ -70,7 +70,7 @@ export function useFormValidation(params: {
                                                     "name": "password",
                                                     "ignore.empty.value": true,
                                                     "shouldBe": "equal",
-                                                    "error-message": id<`\${${MessageKeyBase}}`>("${invalidPasswordConfirmMessage}")
+                                                    "error-message": id<`\${${MessageKey}}`>("${invalidPasswordConfirmMessage}")
                                                 }
                                             },
                                             "annotations": {},
@@ -312,7 +312,7 @@ function useGetErrors(params: {
 
             const msgArg = [
                 errorMessageKey ??
-                    id<MessageKeyBase>(
+                    id<MessageKey>(
                         (() => {
                             switch (shouldBe) {
                                 case "equal":
@@ -353,7 +353,7 @@ function useGetErrors(params: {
                 break scope;
             }
 
-            const msgArgs = [errorMessageKey ?? id<MessageKeyBase>("shouldMatchPattern"), pattern] as const;
+            const msgArgs = [errorMessageKey ?? id<MessageKey>("shouldMatchPattern"), pattern] as const;
 
             errors.push({
                 validatorName,
@@ -385,7 +385,7 @@ function useGetErrors(params: {
                 break scope;
             }
 
-            const msgArgs = [id<MessageKeyBase>("invalidEmailMessage")] as const;
+            const msgArgs = [id<MessageKey>("invalidEmailMessage")] as const;
 
             errors.push({
                 validatorName,
@@ -465,7 +465,7 @@ function useGetErrors(params: {
                 break scope;
             }
 
-            const msgArgs = [id<MessageKeyBase>("notAValidOption")] as const;
+            const msgArgs = [id<MessageKey>("notAValidOption")] as const;
 
             errors.push({
                 validatorName,

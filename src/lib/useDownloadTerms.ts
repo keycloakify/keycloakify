@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import { memoize } from "../tools/memoize";
-import { fallbackLanguageTag } from "../i18n";
-import { useConst } from "../tools/useConst";
-import { useConstCallback } from "../tools/useConstCallback";
+import { memoize } from "keycloakify/tools/memoize";
+import { fallbackLanguageTag } from "keycloakify/i18n/i18n";
+import { useConst } from "keycloakify/tools/useConst";
+import { useConstCallback } from "keycloakify/tools/useConstCallback";
 import { assert } from "tsafe/assert";
-import { KcContext } from "../kcContext";
 import { Evt } from "evt";
+import { KcContext } from "../kcContext";
 
 export const evtTermMarkdown = Evt.create<string | undefined>(undefined);
 

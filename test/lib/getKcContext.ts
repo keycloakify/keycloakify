@@ -1,6 +1,6 @@
-import { getKcContext } from "../../src/kcContext";
+import { getKcContext } from "../../src/kcContext/getKcContext";
+import type { ExtendKcContext } from "../../src/kcContext/getKcContextFromWindow";
 import type { KcContext } from "../../src/kcContext";
-import type { ExtendsKcContext } from "../../src/kcContext";
 import { same } from "evt/tools/inDepth";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
@@ -15,7 +15,7 @@ import { deepClone } from "../../src/tools/deepClone";
     const aNonStandardValue1 = "a non standard value 1";
     const aNonStandardValue2 = "a non standard value 2";
 
-    type KcContextExtended =
+    type KcContextExtension =
         | {
               pageId: "register.ftl";
               authorizedMailDomains: string[];
@@ -32,10 +32,10 @@ import { deepClone } from "../../src/tools/deepClone";
               aNonStandardValue2: string;
           };
 
-    const getKcContextProxy = (params: { mockPageId: ExtendsKcContext<KcContextExtended>["pageId"] }) => {
+    const getKcContextProxy = (params: { mockPageId: ExtendKcContext<KcContextExtension>["pageId"] }) => {
         const { mockPageId } = params;
 
-        const { kcContext } = getKcContext<KcContextExtended>({
+        const { kcContext } = getKcContext<KcContextExtension>({
             mockPageId,
             "mockData": [
                 {

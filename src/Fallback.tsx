@@ -1,7 +1,7 @@
 import { lazy, Suspense } from "react";
-import type { KcContext } from "keycloakify/kcContext";
 import type { PageProps } from "keycloakify/pages/PageProps";
 import type { I18n } from "keycloakify/i18n";
+import type { KcContext } from "./kcContext";
 
 const Login = lazy(() => import("keycloakify/pages/Login"));
 const Register = lazy(() => import("keycloakify/pages/Register"));

@@ -2,7 +2,7 @@ import { useEffect, Fragment } from "react";
 import type { ClassKey } from "keycloakify/pages/PageProps";
 import { clsx } from "keycloakify/tools/clsx";
 import { useFormValidation } from "keycloakify/lib/useFormValidation";
-import type { Attribute } from "keycloakify/kcContext";
+import type { Attribute } from "keycloakify/kcContext/KcContext";
 import type { I18n } from "../../i18n";
 
 export type UserProfileFormFieldsProps = {

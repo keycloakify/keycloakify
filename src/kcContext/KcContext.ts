@@ -1,7 +1,7 @@
 import type { PageId } from "../bin/keycloakify/generateFtl";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
-import type { MessageKeyBase } from "../i18n";
+import type { MessageKey } from "../i18n/i18n";
 
 type ExtractAfterStartingWith<Prefix extends string, StrEnum> = StrEnum extends `${Prefix}${infer U}` ? U : never;
 
@@ -160,7 +160,7 @@ export declare namespace KcContext {
     export type Info = Common & {
         pageId: "info.ftl";
         messageHeader?: string;
-        requiredActions?: ExtractAfterStartingWith<"requiredAction.", MessageKeyBase>[];
+        requiredActions?: ExtractAfterStartingWith<"requiredAction.", MessageKey>[];
         skipLink: boolean;
         pageRedirectUri?: string;
         actionUri?: string;
@@ -279,7 +279,7 @@ export declare namespace KcContext {
             credentialId: string;
             transports: {
                 iconClass: string;
-                displayNameProperties: MessageKeyBase[];
+                displayNameProperties: MessageKey[];
             };
             label: string;
             createdAt: string;

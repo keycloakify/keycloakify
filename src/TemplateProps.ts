@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import type { KcContext } from "keycloakify/kcContext";
-import type { I18n } from "keycloakify/i18n";
+import type { KcContext } from "./kcContext";
+import type { I18n } from "./i18n";
 
 export type TemplateProps<KcContext extends KcContext.Common, I18nExtended extends I18n> = {
     kcContext: KcContext;

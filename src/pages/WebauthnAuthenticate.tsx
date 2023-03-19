@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { clsx } from "keycloakify/tools/clsx";
-import type { MessageKeyBase } from "../i18n";
+import type { MessageKey } from "../i18n/i18n";
 import { base64url } from "rfc4648";
 import { useConstCallback } from "../tools/useConstCallback";
 import { type PageProps, defaultClasses } from "keycloakify/pages/PageProps";
@@ -158,7 +158,7 @@ export default function WebauthnAuthenticate(props: PageProps<Extract<KcContext,
                                                             className={getClassName("kcSelectAuthListItemDescriptionClass")}
                                                         >
                                                             {authenticator.transports.displayNameProperties.map(
-                                                                (transport: MessageKeyBase, index: number) => (
+                                                                (transport: MessageKey, index: number) => (
                                                                     <>
                                                                         <span>{msg(transport)}</span>
                                                                         {index < authenticator.transports.displayNameProperties.length - 1 && (
