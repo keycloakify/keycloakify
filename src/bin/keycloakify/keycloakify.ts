@@ -14,7 +14,7 @@ import type { Equals } from "tsafe";
 const reactProjectDirPath = process.cwd();
 
 export const keycloakThemeBuildingDirPath = pathJoin(reactProjectDirPath, "build_keycloak");
-export const keycloakThemeEmailDirPath = pathJoin(keycloakThemeBuildingDirPath, "..", "keycloak_email");
+export const keycloakThemeEmailDirPath = pathJoin(reactProjectDirPath, "src", "keycloak-theme", "email");
 
 export async function main() {
     const { isSilent, hasExternalAssets } = getCliOptions(process.argv.slice(2));

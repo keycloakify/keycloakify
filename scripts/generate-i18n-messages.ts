@@ -56,11 +56,15 @@ const logger = getLogger({ isSilent });
 
         fs.rmSync(tmpDirPath, { recursive: true, force: true });
 
-        Object.keys(record).forEach(pageType => {
-            const recordForPageType = record[pageType];
+        Object.keys(record).forEach(themeType => {
+            const recordForPageType = record[themeType];
 
             Object.keys(recordForPageType).forEach(language => {
-                const filePath = pathJoin(getProjectRoot(), "src", "i18n", "generated_messages", keycloakVersion, pageType, `${language}.ts`);
+                if (themeType !== "login") {
+                    return;
+                }
+
+                const filePath = pathJoin(getProjectRoot(), "src", themeType, "i18n", "generated_messages", keycloakVersion, `${language}.ts`);
 
                 fs.mkdirSync(pathDirname(filePath), { "recursive": true });
 
