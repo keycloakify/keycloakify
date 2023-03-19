@@ -1,4 +1,4 @@
-import type { PageId } from "keycloakify/bin/keycloakify/generateFtl";
+import type { LoginThemePageId } from "keycloakify/bin/keycloakify/generateFtl";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
 import type { MessageKey } from "../i18n/i18n";
@@ -496,4 +496,4 @@ export declare namespace Validators {
     };
 }
 
-assert<Equals<KcContext["pageId"], PageId>>();
+assert<Equals<KcContext["pageId"], LoginThemePageId>>();
