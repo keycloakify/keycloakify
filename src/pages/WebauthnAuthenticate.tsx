@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { clsx } from "keycloakify/tools/clsx";
-import type { MessageKey } from "../i18n/i18n";
+import type { MessageKey } from "keycloakify/i18n/i18n";
 import { base64url } from "rfc4648";
 import { useConstCallback } from "keycloakify/tools/useConstCallback";
 import { type PageProps, defaultClasses } from "keycloakify/pages/PageProps";
