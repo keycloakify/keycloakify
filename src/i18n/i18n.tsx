@@ -69,115 +69,118 @@ export type GenericI18n<MessageKey extends string> = {
 
 export type I18n = GenericI18n<MessageKeyBase>;
 
-export function useGenericI18n<ExtraMessageKey extends string = never>(params: {
-    kcContext: KcContextLike;
-    extraMessages: { [languageTag: string]: { [key in ExtraMessageKey]: string } };
-}): GenericI18n<MessageKeyBase | ExtraMessageKey> | null {
-    const { kcContext, extraMessages } = params;
+export function createUseI18n<ExtraMessageKey extends string = never>(extraMessages: {
+    [languageTag: string]: { [key in ExtraMessageKey]: string };
+}) {
+    function useI18n(params: { kcContext: KcContextLike }): GenericI18n<MessageKeyBase | ExtraMessageKey> | null {
+        const { kcContext } = params;
 
-    const [i18n, setI18n] = useState<GenericI18n<ExtraMessageKey | MessageKeyBase> | undefined>(undefined);
+        const [i18n, setI18n] = useState<GenericI18n<ExtraMessageKey | MessageKeyBase> | undefined>(undefined);
 
-    const refHasStartedFetching = useRef(false);
+        const refHasStartedFetching = useRef(false);
 
-    useEffect(() => {
-        if (refHasStartedFetching.current) {
-            return;
-        }
+        useEffect(() => {
+            if (refHasStartedFetching.current) {
+                return;
+            }
 
-        refHasStartedFetching.current = true;
+            refHasStartedFetching.current = true;
 
-        (async () => {
-            const { currentLanguageTag = fallbackLanguageTag } = kcContext.locale ?? {};
+            (async () => {
+                const { currentLanguageTag = fallbackLanguageTag } = kcContext.locale ?? {};
 
-            const [fallbackMessages, messages] = await Promise.all([
-                import("./generated_messages/18.0.1/login/en"),
-                (() => {
-                    switch (currentLanguageTag) {
-                        case "ca":
-                            return import("./generated_messages/18.0.1/login/ca");
-                        case "cs":
-                            return import("./generated_messages/18.0.1/login/cs");
-                        case "da":
-                            return import("./generated_messages/18.0.1/login/da");
-                        case "de":
-                            return import("./generated_messages/18.0.1/login/de");
-                        case "en":
-                            return import("./generated_messages/18.0.1/login/en");
-                        case "es":
-                            return import("./generated_messages/18.0.1/login/es");
-                        case "fi":
-                            return import("./generated_messages/18.0.1/login/fi");
-                        case "fr":
-                            return import("./generated_messages/18.0.1/login/fr");
-                        case "hu":
-                            return import("./generated_messages/18.0.1/login/hu");
-                        case "it":
-                            return import("./generated_messages/18.0.1/login/it");
-                        case "ja":
-                            return import("./generated_messages/18.0.1/login/ja");
-                        case "lt":
-                            return import("./generated_messages/18.0.1/login/lt");
-                        case "lv":
-                            return import("./generated_messages/18.0.1/login/lv");
-                        case "nl":
-                            return import("./generated_messages/18.0.1/login/nl");
-                        case "no":
-                            return import("./generated_messages/18.0.1/login/no");
-                        case "pl":
-                            return import("./generated_messages/18.0.1/login/pl");
-                        case "pt-BR":
-                            return import("./generated_messages/18.0.1/login/pt-BR");
-                        case "ru":
-                            return import("./generated_messages/18.0.1/login/ru");
-                        case "sk":
-                            return import("./generated_messages/18.0.1/login/sk");
-                        case "sv":
-                            return import("./generated_messages/18.0.1/login/sv");
-                        case "tr":
-                            return import("./generated_messages/18.0.1/login/tr");
-                        case "zh-CN":
-                            return import("./generated_messages/18.0.1/login/zh-CN");
-                        default:
-                            return { "default": {} };
-                    }
-                })()
-            ]).then(modules => modules.map(module => module.default));
+                const [fallbackMessages, messages] = await Promise.all([
+                    import("./generated_messages/18.0.1/login/en"),
+                    (() => {
+                        switch (currentLanguageTag) {
+                            case "ca":
+                                return import("./generated_messages/18.0.1/login/ca");
+                            case "cs":
+                                return import("./generated_messages/18.0.1/login/cs");
+                            case "da":
+                                return import("./generated_messages/18.0.1/login/da");
+                            case "de":
+                                return import("./generated_messages/18.0.1/login/de");
+                            case "en":
+                                return import("./generated_messages/18.0.1/login/en");
+                            case "es":
+                                return import("./generated_messages/18.0.1/login/es");
+                            case "fi":
+                                return import("./generated_messages/18.0.1/login/fi");
+                            case "fr":
+                                return import("./generated_messages/18.0.1/login/fr");
+                            case "hu":
+                                return import("./generated_messages/18.0.1/login/hu");
+                            case "it":
+                                return import("./generated_messages/18.0.1/login/it");
+                            case "ja":
+                                return import("./generated_messages/18.0.1/login/ja");
+                            case "lt":
+                                return import("./generated_messages/18.0.1/login/lt");
+                            case "lv":
+                                return import("./generated_messages/18.0.1/login/lv");
+                            case "nl":
+                                return import("./generated_messages/18.0.1/login/nl");
+                            case "no":
+                                return import("./generated_messages/18.0.1/login/no");
+                            case "pl":
+                                return import("./generated_messages/18.0.1/login/pl");
+                            case "pt-BR":
+                                return import("./generated_messages/18.0.1/login/pt-BR");
+                            case "ru":
+                                return import("./generated_messages/18.0.1/login/ru");
+                            case "sk":
+                                return import("./generated_messages/18.0.1/login/sk");
+                            case "sv":
+                                return import("./generated_messages/18.0.1/login/sv");
+                            case "tr":
+                                return import("./generated_messages/18.0.1/login/tr");
+                            case "zh-CN":
+                                return import("./generated_messages/18.0.1/login/zh-CN");
+                            default:
+                                return { "default": {} };
+                        }
+                    })()
+                ]).then(modules => modules.map(module => module.default));
 
-            setI18n({
-                ...createI18nTranslationFunctions({
-                    "fallbackMessages": {
-                        ...fallbackMessages,
-                        ...(keycloakifyExtraMessages[fallbackLanguageTag] ?? {}),
-                        ...(extraMessages[fallbackLanguageTag] ?? {})
-                    } as any,
-                    "messages": {
-                        ...messages,
-                        ...((keycloakifyExtraMessages as any)[currentLanguageTag] ?? {}),
-                        ...(extraMessages[currentLanguageTag] ?? {})
-                    } as any
-                }),
-                currentLanguageTag,
-                "changeLocale": newLanguageTag => {
-                    const { locale } = kcContext;
+                setI18n({
+                    ...createI18nTranslationFunctions({
+                        "fallbackMessages": {
+                            ...fallbackMessages,
+                            ...(keycloakifyExtraMessages[fallbackLanguageTag] ?? {}),
+                            ...(extraMessages[fallbackLanguageTag] ?? {})
+                        } as any,
+                        "messages": {
+                            ...messages,
+                            ...((keycloakifyExtraMessages as any)[currentLanguageTag] ?? {}),
+                            ...(extraMessages[currentLanguageTag] ?? {})
+                        } as any
+                    }),
+                    currentLanguageTag,
+                    "changeLocale": newLanguageTag => {
+                        const { locale } = kcContext;
 
-                    assert(locale !== undefined, "Internationalization not enabled");
+                        assert(locale !== undefined, "Internationalization not enabled");
 
-                    const targetSupportedLocale = locale.supported.find(({ languageTag }) => languageTag === newLanguageTag);
+                        const targetSupportedLocale = locale.supported.find(({ languageTag }) => languageTag === newLanguageTag);
 
-                    assert(targetSupportedLocale !== undefined, `${newLanguageTag} need to be enabled in Keycloak admin`);
+                        assert(targetSupportedLocale !== undefined, `${newLanguageTag} need to be enabled in Keycloak admin`);
 
-                    window.location.href = targetSupportedLocale.url;
+                        window.location.href = targetSupportedLocale.url;
 
-                    assert(false, "never");
-                },
-                "labelBySupportedLanguageTag": Object.fromEntries(
-                    (kcContext.locale?.supported ?? []).map(({ languageTag, label }) => [languageTag, label])
-                )
-            });
-        })();
-    }, []);
+                        assert(false, "never");
+                    },
+                    "labelBySupportedLanguageTag": Object.fromEntries(
+                        (kcContext.locale?.supported ?? []).map(({ languageTag, label }) => [languageTag, label])
+                    )
+                });
+            })();
+        }, []);
 
-    return i18n ?? null;
+        return i18n ?? null;
+    }
+
+    return { useI18n };
 }
 
 function createI18nTranslationFunctions<MessageKey extends string>(params: {
