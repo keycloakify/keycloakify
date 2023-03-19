@@ -60,7 +60,7 @@ const logger = getLogger({ isSilent });
             const recordForPageType = record[pageType];
 
             Object.keys(recordForPageType).forEach(language => {
-                const filePath = pathJoin(getProjectRoot(), "src", "lib", "i18n", "generated_messages", keycloakVersion, pageType, `${language}.ts`);
+                const filePath = pathJoin(getProjectRoot(), "src", "i18n", "generated_messages", keycloakVersion, pageType, `${language}.ts`);
 
                 fs.mkdirSync(pathDirname(filePath), { "recursive": true });
 
