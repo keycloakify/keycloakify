@@ -20,7 +20,7 @@ import { kebabCaseToCamelCase } from "./tools/kebabCaseToSnakeCase";
         process.exit(-1);
     });
 
-    const pageBasename = `${capitalize(kebabCaseToCamelCase(pageId))}.tsx`;
+    const pageBasename = capitalize(kebabCaseToCamelCase(pageId)).replace(/ftl$/, "tsx");
 
     console.log(pageId);
 

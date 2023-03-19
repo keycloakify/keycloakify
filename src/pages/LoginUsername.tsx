@@ -1,7 +1,7 @@
+import type { FormEventHandler } from "react";
 import { useState } from "react";
 import { clsx } from "keycloakify/tools/clsx";
-import { useConstCallback } from "../tools/useConstCallback";
-import type { FormEventHandler } from "react";
+import { useConstCallback } from "keycloakify/tools/useConstCallback";
 import { type PageProps, defaultClasses } from "keycloakify/pages/PageProps";
 import { useGetClassName } from "keycloakify/lib/useGetClassName";
 import type { KcContext } from "../kcContext";

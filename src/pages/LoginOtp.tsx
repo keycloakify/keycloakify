@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { headInsert } from "../tools/headInsert";
-import { pathJoin } from "../bin/tools/pathJoin";
+import { headInsert } from "keycloakify/tools/headInsert";
+import { pathJoin } from "keycloakify/bin/tools/pathJoin";
 import { clsx } from "keycloakify/tools/clsx";
 import { type PageProps, defaultClasses } from "keycloakify/pages/PageProps";
 import { useGetClassName } from "keycloakify/lib/useGetClassName";
