@@ -42,6 +42,7 @@ export function crc32(input: Readable | String | Buffer): Promise<number> {
     } else if (input instanceof Readable) {
         return new Promise<number>((resolve, reject) => {
             let crc = ~0;
+            input.setMaxListeners(Infinity);
             input.on("end", () => resolve((crc ^ -1) >>> 0));
             input.on("error", e => reject(e));
             input.on("data", (chunk: Buffer) => {

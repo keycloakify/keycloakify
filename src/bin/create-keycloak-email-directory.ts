@@ -23,7 +23,7 @@ if (require.main === module) {
 
         const builtinKeycloakThemeTmpDirPath = pathJoin(keycloakThemeEmailDirPath, "..", "tmp_xIdP3_builtin_keycloak_theme");
 
-        downloadBuiltinKeycloakTheme({
+        await downloadBuiltinKeycloakTheme({
             keycloakVersion,
             "destDirPath": builtinKeycloakThemeTmpDirPath,
             isSilent
