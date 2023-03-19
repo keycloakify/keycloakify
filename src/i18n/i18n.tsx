@@ -69,7 +69,7 @@ export type GenericI18n<MessageKey extends string> = {
 
 export type I18n = GenericI18n<MessageKeyBase>;
 
-export function useI18n<ExtraMessageKey extends string = never>(params: {
+export function useGenericI18n<ExtraMessageKey extends string = never>(params: {
     kcContext: KcContextLike;
     extraMessages: { [languageTag: string]: { [key in ExtraMessageKey]: string } };
 }): GenericI18n<MessageKeyBase | ExtraMessageKey> | null {

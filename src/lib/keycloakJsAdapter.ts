@@ -43,7 +43,7 @@ export declare namespace keycloak_js {
  */
 export function createKeycloakAdapter(params: {
     keycloakInstance: keycloak_js.KeycloakInstance;
-    transformUrlBeforeRedirect(url: string): string;
+    transformUrlBeforeRedirect: (url: string) => string;
     getRedirectMethod?: () => "overwrite location.href" | "location.replace";
 }): keycloak_js.KeycloakAdapter {
     const { keycloakInstance, transformUrlBeforeRedirect, getRedirectMethod = () => "overwrite location.href" } = params;

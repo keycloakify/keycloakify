@@ -1,6 +1,6 @@
 import { clsx } from "keycloakify/tools/clsx";
 import { useRerenderOnStateChange } from "evt/hooks";
-import { Markdown } from "../tools/Markdown";
+import { Markdown } from "keycloakify/tools/Markdown";
 import { type PageProps, defaultClasses } from "keycloakify/pages/PageProps";
 import { useGetClassName } from "keycloakify/lib/useGetClassName";
 import { evtTermMarkdown } from "keycloakify/lib/useDownloadTerms";
