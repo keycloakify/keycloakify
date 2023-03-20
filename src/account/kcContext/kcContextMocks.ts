@@ -8,18 +8,21 @@ const PUBLIC_URL = process.env["PUBLIC_URL"] ?? "/";
 
 export const kcContextCommonMock: KcContext.Common = {
     "url": {
-        "loginAction": "#",
         "resourcesPath": pathJoin(PUBLIC_URL, mockTestingResourcesPath),
         "resourcesCommonPath": pathJoin(PUBLIC_URL, mockTestingResourcesCommonPath),
-        "loginRestartFlowUrl": "/auth/realms/myrealm/login-actions/restart?client_id=account&tab_id=HoAx28ja4xg",
-        "loginUrl": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg"
+        "resourceUrl": "#",
+        "accountUrl": "#",
+        "applicationsUrl": "#",
+        "getLogoutUrl": () => "#",
+        "logUrl": "#",
+        "passwordUrl": "#",
+        "sessionsUrl": "#",
+        "socialUrl": "#",
+        "totpUrl": "#"
     },
     "realm": {
-        "name": "myrealm",
-        "displayName": "myrealm",
-        "displayNameHtml": "myrealm",
         "internationalizationEnabled": true,
-        "registrationEmailAsUsername": false
+        "userManagedAccessAllowed": true
     },
     "messagesPerField": {
         "printIfExists": () => {
@@ -126,20 +129,17 @@ export const kcContextCommonMock: KcContext.Common = {
         ],
         "currentLanguageTag": "en"
     },
-    "auth": {
-        "showUsername": false,
-        "showResetCredentials": false,
-        "showTryAnotherWayLink": false
-    },
-    "client": {
-        "clientId": "myApp"
-    },
-    "scripts": [],
     "message": {
         "type": "success",
         "summary": "This is a test message"
     },
-    "isAppInitiatedAction": false
+    "features": {
+        "authorization": true,
+        "identityFederation": true,
+        "log": true,
+        "passwordUpdateSupported": true
+    },
+    "referrer": undefined
 };
 
 export const kcContextMocks: KcContext[] = [
@@ -148,6 +148,25 @@ export const kcContextMocks: KcContext[] = [
         "pageId": "password.ftl",
         "password": {
             "passwordSet": true
+        }
+    }),
+    id<KcContext.Account>({
+        ...kcContextCommonMock,
+        "pageId": "account.ftl",
+        "url": {
+            ...kcContextCommonMock.url,
+            "referrerURI": "#",
+            "accountUrl": "#"
+        },
+        "realm": {
+            ...kcContextCommonMock.realm,
+            "registrationEmailAsUsername": true,
+            "editUsernameAllowed": true
+        },
+        "stateChecker": "",
+        "account": {
+            "firstName": "john",
+            "lastName": "doe"
         }
     })
 ];
