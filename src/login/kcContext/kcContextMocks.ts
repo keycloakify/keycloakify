@@ -117,7 +117,6 @@ export const kcContextCommonMock: KcContext.Common = {
     },
     "messagesPerField": {
         "printIfExists": () => {
-            console.log("coucou");
             return undefined;
         },
         "existsError": () => false,

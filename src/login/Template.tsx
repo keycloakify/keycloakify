@@ -1,8 +1,8 @@
 import { assert } from "keycloakify/tools/assert";
 import { clsx } from "keycloakify/tools/clsx";
-import { usePrepareTemplate } from "keycloakify/login/lib/usePrepareTemplate";
+import { usePrepareTemplate } from "keycloakify/lib/usePrepareTemplate";
 import { type TemplateProps, defaultTemplateClasses } from "keycloakify/login/TemplateProps";
-import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
+import { useGetClassName } from "keycloakify/lib/useGetClassName";
 import type { KcContext } from "./kcContext";
 import type { I18n } from "./i18n";
 
@@ -41,7 +41,8 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
             "lib/zocial/zocial.css"
         ],
         "styles": ["css/login.css"],
-        "htmlClassName": getClassName("kcHtmlClass")
+        "htmlClassName": getClassName("kcHtmlClass"),
+        "bodyClassName": undefined
     });
 
     if (!isReady) {

@@ -4,7 +4,7 @@ import type { MessageKey } from "keycloakify/login/i18n/i18n";
 import { base64url } from "rfc4648";
 import { useConstCallback } from "keycloakify/tools/useConstCallback";
 import { type PageProps, defaultClasses } from "keycloakify/login/pages/PageProps";
-import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
+import { useGetClassName } from "keycloakify/lib/useGetClassName";
 import type { KcContext } from "../kcContext";
 import type { I18n } from "../i18n";
 

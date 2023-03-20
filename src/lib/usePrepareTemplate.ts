@@ -12,9 +12,10 @@ export function usePrepareTemplate(params: {
         resourcesCommonPath: string;
         resourcesPath: string;
     };
-    htmlClassName: string;
+    htmlClassName: string | undefined;
+    bodyClassName: string | undefined;
 }) {
-    const { doFetchDefaultThemeResources, stylesCommon, styles, url, scripts, htmlClassName } = params;
+    const { doFetchDefaultThemeResources, stylesCommon, styles, url, scripts, htmlClassName, bodyClassName } = params;
 
     const [isReady, setReady] = useReducer(() => true, !doFetchDefaultThemeResources);
 
@@ -58,17 +59,35 @@ export function usePrepareTemplate(params: {
         };
     }, []);
 
+    useSetClassName({
+        "target": "html",
+        "className": htmlClassName
+    });
+
+    useSetClassName({
+        "target": "body",
+        "className": bodyClassName
+    });
+
+    return { isReady };
+}
+
+function useSetClassName(params: { target: "html" | "body"; className: string | undefined }) {
+    const { target, className } = params;
+
     useEffect(() => {
+        if (className === undefined) {
+            return;
+        }
+
         const htmlClassList = document.getElementsByTagName("html")[0].classList;
 
-        const tokens = clsx(htmlClassName).split(" ");
+        const tokens = clsx(target).split(" ");
 
         htmlClassList.add(...tokens);
 
         return () => {
             htmlClassList.remove(...tokens);
         };
-    }, [htmlClassName]);
-
-    return { isReady };
+    }, [className]);
 }

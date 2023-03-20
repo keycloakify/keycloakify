@@ -38,7 +38,7 @@ export const loginThemePageIds = [
     "idp-review-user-profile.ftl"
 ] as const;
 
-export const accountThemePageIds = ["password.ftl"] as const;
+export const accountThemePageIds = ["password.ftl", "account.ftl"] as const;
 
 export type LoginThemePageId = (typeof loginThemePageIds)[number];
 export type AccountThemePageId = (typeof accountThemePageIds)[number];

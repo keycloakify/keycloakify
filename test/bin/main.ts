@@ -16,6 +16,8 @@ import { getProjectRoot } from "keycloakify/bin/tools/getProjectRoot.js";
 
     st.execSyncTrace(`node ${pathJoin(binDirPath, "initialize-email-theme")}`, { "cwd": sampleReactProjectDirPath });
 
+    st.execSyncTrace(`node ${pathJoin(binDirPath, "download-builtin-keycloak-theme")}`, { "cwd": sampleReactProjectDirPath });
+
     st.execSyncTrace(
         //`node ${pathJoin(binDirPath, "keycloakify")} --external-assets`,
         `node ${pathJoin(binDirPath, "keycloakify")}`,

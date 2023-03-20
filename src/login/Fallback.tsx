@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
-import type { I18n } from "keycloakify/login/i18n";
+import { assert, type Equals } from "tsafe/assert";
+import type { I18n } from "./i18n";
 import type { KcContext } from "./kcContext";
 
 const Login = lazy(() => import("keycloakify/login/pages/Login"));
@@ -75,6 +76,7 @@ export default function Fallback(props: PageProps<KcContext, I18n>) {
                     case "idp-review-user-profile.ftl":
                         return <IdpReviewUserProfile kcContext={kcContext} {...rest} />;
                 }
+                assert<Equals<typeof kcContext, never>>(false);
             })()}
         </Suspense>
     );

@@ -2,8 +2,7 @@
 <#assign pageId="PAGE_ID_xIgLsPgGId9D8e">
 (()=>{
 
-    const out = 
-${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
+    const out = ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
 
     out["msg"]= function(){ throw new Error("use import { useKcMessage } from 'keycloakify'"); };
     out["advancedMsg"]= function(){ throw new Error("use import { useKcMessage } from 'keycloakify'"); };
@@ -112,6 +111,13 @@ ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
     };
 
     out["pageId"] = "${pageId}";
+
+    out["url"]["getLogoutUrl"] = function () {
+        <#attempt>
+            return "${url.getLogoutUrl()}";
+        <#recover>
+        </#attempt>
+    };
 
     return out;
 

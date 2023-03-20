@@ -58,7 +58,7 @@ const logger = getLogger({ isSilent });
     Object.keys(record).forEach(themeType => {
         const recordForPageType = record[themeType];
 
-        if (themeType !== "login") {
+        if (themeType !== "login" && themeType !== "account") {
             return;
         }
 
