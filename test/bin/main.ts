@@ -6,6 +6,8 @@ import { join as pathJoin } from "path";
 import { getProjectRoot } from "keycloakify/bin/tools/getProjectRoot.js";
 
 (async () => {
+    fs.rmSync(sampleReactProjectDirPath, { "recursive": true });
+
     await setupSampleReactProject();
 
     const binDirPath = pathJoin(getProjectRoot(), "dist_test", "src", "bin");

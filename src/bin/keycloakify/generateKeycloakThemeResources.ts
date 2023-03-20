@@ -3,7 +3,7 @@ import * as fs from "fs";
 import { join as pathJoin, basename as pathBasename } from "path";
 import { replaceImportsFromStaticInJsCode } from "./replacers/replaceImportsFromStaticInJsCode";
 import { replaceImportsInCssCode } from "./replacers/replaceImportsInCssCode";
-import { generateFtlFilesCodeFactory, loginThemePageIds, themeTypes, ThemeType } from "./generateFtl";
+import { generateFtlFilesCodeFactory, loginThemePageIds, accountThemePageIds, themeTypes, type ThemeType } from "./generateFtl";
 import { downloadBuiltinKeycloakTheme } from "../download-builtin-keycloak-theme";
 import { mockTestingResourcesCommonPath, mockTestingResourcesPath, mockTestingSubDirOfPublicDirBasename } from "../mockTestingResourcesPath";
 import { isInside } from "../tools/isInside";
@@ -151,7 +151,24 @@ export async function generateKeycloakThemeResources(params: {
             return generateFtlFilesCode;
         })();
 
-        [...loginThemePageIds, ...(buildOptions.extraLoginPages ?? [])].forEach(pageId => {
+        [
+            ...(() => {
+                switch (themeType) {
+                    case "login":
+                        return loginThemePageIds;
+                    case "account":
+                        return accountThemePageIds;
+                }
+            })(),
+            ...((() => {
+                switch (themeType) {
+                    case "login":
+                        return buildOptions.extraLoginPages;
+                    case "account":
+                        return buildOptions.extraAccountPages;
+                }
+            })() ?? [])
+        ].forEach(pageId => {
             const { ftlCode } = generateFtlFilesCode({ pageId });
 
             fs.mkdirSync(themeDirPath, { "recursive": true });

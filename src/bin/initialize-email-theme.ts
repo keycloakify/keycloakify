@@ -13,8 +13,6 @@ import { getLogger } from "./tools/logger";
     const { isSilent } = getCliOptions(process.argv.slice(2));
     const logger = getLogger({ isSilent });
 
-    console.log({ keycloakThemeEmailDirPath });
-
     if (fs.existsSync(keycloakThemeEmailDirPath)) {
         logger.warn(`There is already a ${pathRelative(process.cwd(), keycloakThemeEmailDirPath)} directory in your project. Aborting.`);
 
