@@ -27,7 +27,7 @@
     },
     "bin": {
         "keycloakify": "dist/bin/keycloakify/index.js",
-        "create-keycloak-email-directory": "dist/bin/create-keycloak-email-directory.js",
+        "initialize-email-theme": "dist/bin/initialize-email-theme.js",
         "download-builtin-keycloak-theme": "dist/bin/download-builtin-keycloak-theme.js",
         "eject-keycloak-page": "dist/bin/eject-keycloak-page.js"
     },
