@@ -1,5 +1,6 @@
 import { transformCodebase } from "../tools/transformCodebase";
-import * as fs from "fs";
+import * as fs from "fs/promises";
+import * as fsSync from "fs";
 import { join as pathJoin, basename as pathBasename } from "path";
 import { replaceImportsFromStaticInJsCode } from "./replacers/replaceImportsFromStaticInJsCode";
 import { replaceImportsInCssCode } from "./replacers/replaceImportsInCssCode";
@@ -66,59 +67,65 @@ export async function generateKeycloakThemeResources(params: {
 
     let allCssGlobalsToDefine: Record<string, string> = {};
 
-    transformCodebase({
-        "destDirPath": buildOptions.isStandalone ? pathJoin(themeDirPath, "resources", "build") : reactAppBuildDirPath,
-        "srcDirPath": reactAppBuildDirPath,
-        "transformSourceCode": ({ filePath, sourceCode }) => {
-            //NOTE: Prevent cycles, excludes the folder we generated for debug in public/
-            if (
-                buildOptions.isStandalone &&
-                isInside({
-                    "dirPath": pathJoin(reactAppBuildDirPath, mockTestingSubDirOfPublicDirBasename),
-                    filePath
-                })
-            ) {
-                return undefined;
-            }
+    const mainPromises: Promise<void>[] = [];
 
-            if (/\.css?$/i.test(filePath)) {
-                if (!buildOptions.isStandalone) {
+    logger.log("transformCodebase");
+
+    mainPromises.push(
+        transformCodebase({
+            "destDirPath": buildOptions.isStandalone ? pathJoin(themeDirPath, "resources", "build") : reactAppBuildDirPath,
+            "srcDirPath": reactAppBuildDirPath,
+            "transformSourceCode": ({ filePath, sourceCode }) => {
+                //NOTE: Prevent cycles, excludes the folder we generated for debug in public/
+                if (
+                    buildOptions.isStandalone &&
+                    isInside({
+                        "dirPath": pathJoin(reactAppBuildDirPath, mockTestingSubDirOfPublicDirBasename),
+                        filePath
+                    })
+                ) {
                     return undefined;
                 }
 
-                const { cssGlobalsToDefine, fixedCssCode } = replaceImportsInCssCode({
-                    "cssCode": sourceCode.toString("utf8")
-                });
+                if (/\.css?$/i.test(filePath)) {
+                    if (!buildOptions.isStandalone) {
+                        return undefined;
+                    }
 
-                allCssGlobalsToDefine = {
-                    ...allCssGlobalsToDefine,
-                    ...cssGlobalsToDefine
-                };
+                    const { cssGlobalsToDefine, fixedCssCode } = replaceImportsInCssCode({
+                        "cssCode": sourceCode.toString("utf8")
+                    });
 
-                return { "modifiedSourceCode": Buffer.from(fixedCssCode, "utf8") };
-            }
+                    allCssGlobalsToDefine = {
+                        ...allCssGlobalsToDefine,
+                        ...cssGlobalsToDefine
+                    };
 
-            if (/\.js?$/i.test(filePath)) {
-                if (!buildOptions.isStandalone && buildOptions.areAppAndKeycloakServerSharingSameDomain) {
-                    return undefined;
+                    return { "modifiedSourceCode": Buffer.from(fixedCssCode, "utf8") };
                 }
 
-                const { fixedJsCode } = replaceImportsFromStaticInJsCode({
-                    "jsCode": sourceCode.toString("utf8"),
-                    buildOptions
-                });
+                if (/\.js?$/i.test(filePath)) {
+                    if (!buildOptions.isStandalone && buildOptions.areAppAndKeycloakServerSharingSameDomain) {
+                        return undefined;
+                    }
 
-                return { "modifiedSourceCode": Buffer.from(fixedJsCode, "utf8") };
+                    const { fixedJsCode } = replaceImportsFromStaticInJsCode({
+                        "jsCode": sourceCode.toString("utf8"),
+                        buildOptions
+                    });
+
+                    return { "modifiedSourceCode": Buffer.from(fixedJsCode, "utf8") };
+                }
+
+                return buildOptions.isStandalone ? { "modifiedSourceCode": sourceCode } : undefined;
             }
-
-            return buildOptions.isStandalone ? { "modifiedSourceCode": sourceCode } : undefined;
-        }
-    });
+        })
+    );
 
     let doBundlesEmailTemplate: boolean;
 
     email: {
-        if (!fs.existsSync(keycloakThemeEmailDirPath)) {
+        if (!fsSync.existsSync(keycloakThemeEmailDirPath)) {
             logger.log(
                 [
                     `Not bundling email template because ${pathBasename(keycloakThemeEmailDirPath)} does not exist`,
@@ -131,68 +138,90 @@ export async function generateKeycloakThemeResources(params: {
 
         doBundlesEmailTemplate = true;
 
-        transformCodebase({
-            "srcDirPath": keycloakThemeEmailDirPath,
-            "destDirPath": pathJoin(themeDirPath, "..", "email")
-        });
+        mainPromises.push(
+            transformCodebase({
+                "srcDirPath": keycloakThemeEmailDirPath,
+                "destDirPath": pathJoin(themeDirPath, "..", "email")
+            })
+        );
     }
 
-    const { generateFtlFilesCode } = generateFtlFilesCodeFactory({
-        "indexHtmlCode": fs.readFileSync(pathJoin(reactAppBuildDirPath, "index.html")).toString("utf8"),
+    const { generateFtlFilesCode } = await generateFtlFilesCodeFactory({
+        "indexHtmlCode": (await fs.readFile(pathJoin(reactAppBuildDirPath, "index.html"))).toString("utf8"),
         "cssGlobalsToDefine": allCssGlobalsToDefine,
         "buildOptions": buildOptions
     });
 
-    [...pageIds, ...(buildOptions.extraPages ?? [])].forEach(pageId => {
-        const { ftlCode } = generateFtlFilesCode({ pageId });
+    mainPromises.push(
+        Promise.all(
+            [...pageIds, ...(buildOptions.extraPages ?? [])].map(async pageId => {
+                const { ftlCode } = generateFtlFilesCode({ pageId });
 
-        fs.mkdirSync(themeDirPath, { "recursive": true });
+                await fs.mkdir(themeDirPath, { "recursive": true });
 
-        fs.writeFileSync(pathJoin(themeDirPath, pageId), Buffer.from(ftlCode, "utf8"));
-    });
+                await fs.writeFile(pathJoin(themeDirPath, pageId), Buffer.from(ftlCode, "utf8"));
+            })
+        ).then(() => {})
+    );
 
-    {
-        const tmpDirPath = pathJoin(themeDirPath, "..", "tmp_xxKdLpdIdLd");
+    mainPromises.push(
+        (async () => {
+            const tmpDirPath = pathJoin(themeDirPath, "..", "tmp_xxKdLpdIdLd");
 
-        await downloadBuiltinKeycloakTheme({
-            keycloakVersion,
-            "destDirPath": tmpDirPath,
-            isSilent: buildOptions.isSilent
-        });
+            await downloadBuiltinKeycloakTheme({
+                keycloakVersion,
+                "destDirPath": tmpDirPath,
+                isSilent: buildOptions.isSilent
+            });
 
-        const themeResourcesDirPath = pathJoin(themeDirPath, "resources");
+            const themePromises: Promise<void>[] = [];
 
-        transformCodebase({
-            "srcDirPath": pathJoin(tmpDirPath, "keycloak", "login", "resources"),
-            "destDirPath": themeResourcesDirPath
-        });
+            const themeResourcesDirPath = pathJoin(themeDirPath, "resources");
 
-        const reactAppPublicDirPath = pathJoin(reactAppBuildDirPath, "..", "public");
+            themePromises.push(
+                transformCodebase({
+                    "srcDirPath": pathJoin(tmpDirPath, "keycloak", "login", "resources"),
+                    "destDirPath": themeResourcesDirPath
+                })
+            );
 
-        transformCodebase({
-            "srcDirPath": pathJoin(tmpDirPath, "keycloak", "common", "resources"),
-            "destDirPath": pathJoin(themeResourcesDirPath, pathBasename(mockTestingResourcesCommonPath))
-        });
+            const reactAppPublicDirPath = pathJoin(reactAppBuildDirPath, "..", "public");
 
-        transformCodebase({
-            "srcDirPath": themeResourcesDirPath,
-            "destDirPath": pathJoin(reactAppPublicDirPath, mockTestingResourcesPath)
-        });
+            themePromises.push(
+                transformCodebase({
+                    "srcDirPath": pathJoin(tmpDirPath, "keycloak", "common", "resources"),
+                    "destDirPath": pathJoin(themeResourcesDirPath, pathBasename(mockTestingResourcesCommonPath))
+                })
+            );
 
-        const keycloakResourcesWithinPublicDirPath = pathJoin(reactAppPublicDirPath, mockTestingSubDirOfPublicDirBasename);
+            themePromises.push(
+                transformCodebase({
+                    "srcDirPath": themeResourcesDirPath,
+                    "destDirPath": pathJoin(reactAppPublicDirPath, mockTestingResourcesPath)
+                })
+            );
 
-        fs.writeFileSync(
-            pathJoin(keycloakResourcesWithinPublicDirPath, "README.txt"),
-            Buffer.from(
-                ["This is just a test folder that helps develop", "the login and register page without having to run a Keycloak container"].join(" ")
-            )
-        );
+            const keycloakResourcesWithinPublicDirPath = pathJoin(reactAppPublicDirPath, mockTestingSubDirOfPublicDirBasename);
 
-        fs.writeFileSync(pathJoin(keycloakResourcesWithinPublicDirPath, ".gitignore"), Buffer.from("*", "utf8"));
-        fs.rmSync(tmpDirPath, { recursive: true, force: true });
-    }
+            await Promise.all(themePromises);
 
-    fs.writeFileSync(
+            await fs.writeFile(
+                pathJoin(keycloakResourcesWithinPublicDirPath, "README.txt"),
+                Buffer.from(
+                    ["This is just a test folder that helps develop", "the login and register page without having to run a Keycloak container"].join(
+                        " "
+                    )
+                )
+            );
+
+            await fs.writeFile(pathJoin(keycloakResourcesWithinPublicDirPath, ".gitignore"), Buffer.from("*", "utf8"));
+            await fs.rm(tmpDirPath, { recursive: true, force: true });
+        })()
+    );
+
+    await Promise.all(mainPromises);
+
+    await fs.writeFile(
         pathJoin(themeDirPath, "theme.properties"),
         Buffer.from(["parent=keycloak", ...(buildOptions.extraThemeProperties ?? [])].join("\n\n"), "utf8")
     );

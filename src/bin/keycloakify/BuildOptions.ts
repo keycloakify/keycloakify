@@ -79,15 +79,15 @@ export namespace BuildOptions {
     }
 }
 
-export function readBuildOptions(params: {
+export async function readBuildOptions(params: {
     packageJson: string;
     CNAME: string | undefined;
     isExternalAssetsCliParamProvided: boolean;
     isSilent: boolean;
-}): BuildOptions {
+}): Promise<BuildOptions> {
     const { packageJson, CNAME, isExternalAssetsCliParamProvided, isSilent } = params;
 
-    const parsedPackageJson = zParsedPackageJson.parse(JSON.parse(packageJson));
+    const parsedPackageJson = await zParsedPackageJson.parseAsync(JSON.parse(packageJson));
 
     const url = (() => {
         const { homepage } = parsedPackageJson;

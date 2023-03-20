@@ -1,8 +1,8 @@
-import cheerio from "cheerio";
+import * as cheerio from "cheerio";
 import { replaceImportsFromStaticInJsCode } from "../replacers/replaceImportsFromStaticInJsCode";
 import { generateCssCodeToDefineGlobals } from "../replacers/replaceImportsInCssCode";
 import { replaceImportsInInlineCssCode } from "../replacers/replaceImportsInInlineCssCode";
-import * as fs from "fs";
+import * as fs from "fs/promises";
 import { join as pathJoin } from "path";
 import { objectKeys } from "tsafe/objectKeys";
 import { ftlValuesGlobalName } from "../ftlValuesGlobalName";
@@ -70,7 +70,7 @@ export namespace BuildOptionsLike {
 
 export type PageId = (typeof pageIds)[number];
 
-export function generateFtlFilesCodeFactory(params: {
+export async function generateFtlFilesCodeFactory(params: {
     indexHtmlCode: string;
     //NOTE: Expected to be an empty object if external assets mode is enabled.
     cssGlobalsToDefine: Record<string, string>;
@@ -143,8 +143,7 @@ export function generateFtlFilesCodeFactory(params: {
 
     //FTL is no valid html, we can't insert with cheerio, we put placeholder for injecting later.
     const replaceValueBySearchValue = {
-        '{ "x": "vIdLqMeOed9sdLdIdOxdK0d" }': fs
-            .readFileSync(pathJoin(__dirname, "ftl_object_to_js_code_declaring_an_object.ftl"))
+        '{ "x": "vIdLqMeOed9sdLdIdOxdK0d" }': (await fs.readFile(pathJoin(__dirname, "ftl_object_to_js_code_declaring_an_object.ftl")))
             .toString("utf8")
             .match(/^<script>const _=((?:.|\n)+)<\/script>[\n]?$/)![1],
         "<!-- xIdLqMeOedErIdLsPdNdI9dSlxI -->": [

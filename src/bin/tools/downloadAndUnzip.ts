@@ -1,13 +1,11 @@
-import { dirname as pathDirname, basename as pathBasename, join as pathJoin, join } from "path";
+import { dirname as pathDirname, basename as pathBasename, join as pathJoin } from "path";
 import { createReadStream, createWriteStream } from "fs";
 import { stat, mkdir, unlink, writeFile } from "fs/promises";
 import { transformCodebase } from "./transformCodebase";
 import { createHash } from "crypto";
-import fetch from "make-fetch-happen";
+import fetch, { FetchOptions } from "make-fetch-happen";
 import { createInflateRaw } from "zlib";
-import type { Readable } from "stream";
-import { homedir } from "os";
-import { FetchOptions } from "make-fetch-happen";
+import { Readable } from "stream";
 import { exec as execCallback } from "child_process";
 import { promisify } from "util";
 
@@ -71,14 +69,24 @@ async function getNpmProxyConfig(): Promise<Pick<FetchOptions, "proxy" | "noProx
  * @returns promise for the full path of the downloaded file
  */
 async function download(url: string, dir: string, filename: string): Promise<string> {
-    const proxyOpts = await getNpmProxyConfig();
-    const cacheRoot = process.env.XDG_CACHE_HOME ?? homedir();
-    const cachePath = join(cacheRoot, ".keycloakify/cache");
-    const opts: FetchOptions = { cachePath, ...proxyOpts };
-    const response = await fetch(url, opts);
+    console.log(`Downloading ${url} to ${dir}...`);
+
     const filepath = pathJoin(dir, filename);
     await mkdir(dir, { recursive: true });
+
+    if (await maybeStat(filepath)) {
+        console.log(`File ${filepath} already exists, skipping download.`);
+        return filepath;
+    }
+
+    const proxyOpts = await getNpmProxyConfig();
+
+    const response = await fetch(url, proxyOpts);
+
     await writeFile(filepath, response.body);
+
+    console.log(`Downloaded ${url} to ${filepath}!`);
+
     return filepath;
 }
 
@@ -271,5 +279,5 @@ export async function downloadAndUnzip({
     if (!unzipMtime || zipMtime > unzipMtime) await unzip(zipFilepath, extractDirPath, pathOfDirToExtractInArchive);
 
     const srcDirPath = pathOfDirToExtractInArchive === undefined ? extractDirPath : pathJoin(extractDirPath, pathOfDirToExtractInArchive);
-    transformCodebase({ srcDirPath, destDirPath });
+    await transformCodebase({ srcDirPath, destDirPath });
 }

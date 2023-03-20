@@ -3,13 +3,14 @@ import { generateJavaStackFiles } from "./generateJavaStackFiles";
 import { join as pathJoin, relative as pathRelative, basename as pathBasename } from "path";
 import * as child_process from "child_process";
 import { generateStartKeycloakTestingContainer } from "./generateStartKeycloakTestingContainer";
-import * as fs from "fs";
+import * as fs from "fs/promises";
 import { readBuildOptions } from "./BuildOptions";
 import { getLogger } from "../tools/logger";
 import { getCliOptions } from "../tools/cliOptions";
 import jar from "../tools/jar";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
+import { existsSync } from "fs";
 
 const reactProjectDirPath = process.cwd();
 
@@ -17,20 +18,22 @@ export const keycloakThemeBuildingDirPath = pathJoin(reactProjectDirPath, "build
 export const keycloakThemeEmailDirPath = pathJoin(keycloakThemeBuildingDirPath, "..", "keycloak_email");
 
 export async function main() {
+    console.time("keycloakify");
+
     const { isSilent, hasExternalAssets } = getCliOptions(process.argv.slice(2));
     const logger = getLogger({ isSilent });
     logger.log("🔏 Building the keycloak theme...⌚");
 
-    const buildOptions = readBuildOptions({
-        "packageJson": fs.readFileSync(pathJoin(reactProjectDirPath, "package.json")).toString("utf8"),
-        "CNAME": (() => {
+    const buildOptions = await readBuildOptions({
+        "packageJson": (await fs.readFile(pathJoin(reactProjectDirPath, "package.json"))).toString("utf8"),
+        "CNAME": await (async () => {
             const cnameFilePath = pathJoin(reactProjectDirPath, "public", "CNAME");
 
-            if (!fs.existsSync(cnameFilePath)) {
+            if (!existsSync(cnameFilePath)) {
                 return undefined;
             }
 
-            return fs.readFileSync(cnameFilePath).toString("utf8");
+            return (await fs.readFile(cnameFilePath)).toString("utf8");
         })(),
         "isExternalAssetsCliParamProvided": hasExternalAssets,
         "isSilent": isSilent
@@ -47,7 +50,7 @@ export async function main() {
         "keycloakVersion": "11.0.3"
     });
 
-    const { jarFilePath } = generateJavaStackFiles({
+    const { jarFilePath } = await generateJavaStackFiles({
         keycloakThemeBuildingDirPath,
         doBundlesEmailTemplate,
         buildOptions
@@ -136,4 +139,6 @@ export async function main() {
             ""
         ].join("\n")
     );
+
+    console.timeEnd("keycloakify");
 }

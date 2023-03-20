@@ -1,4 +1,4 @@
-import * as fs from "fs";
+import * as fs from "fs/promises";
 import { join as pathJoin, dirname as pathDirname } from "path";
 import { assert } from "tsafe/assert";
 import { Reflect } from "tsafe/Reflect";
@@ -17,13 +17,13 @@ export type BuildOptionsLike = {
     assert<typeof buildOptions extends BuildOptionsLike ? true : false>();
 }
 
-export function generateJavaStackFiles(params: {
+export async function generateJavaStackFiles(params: {
     keycloakThemeBuildingDirPath: string;
     doBundlesEmailTemplate: boolean;
     buildOptions: BuildOptionsLike;
-}): {
+}): Promise<{
     jarFilePath: string;
-} {
+}> {
     const {
         buildOptions: { groupId, themeName, version, artifactId },
         keycloakThemeBuildingDirPath,
@@ -51,17 +51,17 @@ export function generateJavaStackFiles(params: {
             return { pomFileCode };
         })();
 
-        fs.writeFileSync(pathJoin(keycloakThemeBuildingDirPath, "pom.xml"), Buffer.from(pomFileCode, "utf8"));
+        await fs.writeFile(pathJoin(keycloakThemeBuildingDirPath, "pom.xml"), Buffer.from(pomFileCode, "utf8"));
     }
 
     {
         const themeManifestFilePath = pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "META-INF", "keycloak-themes.json");
 
         try {
-            fs.mkdirSync(pathDirname(themeManifestFilePath));
+            await fs.mkdir(pathDirname(themeManifestFilePath));
         } catch {}
 
-        fs.writeFileSync(
+        await fs.writeFile(
             themeManifestFilePath,
             Buffer.from(
                 JSON.stringify(

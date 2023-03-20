@@ -10,15 +10,17 @@ import { getLogger } from "./tools/logger";
 export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: string; destDirPath: string; isSilent: boolean }) {
     const { keycloakVersion, destDirPath, isSilent } = params;
 
-    for (const ext of ["", "-community"]) {
-        await downloadAndUnzip({
-            "destDirPath": destDirPath,
-            "url": `https://github.com/keycloak/keycloak/archive/refs/tags/${keycloakVersion}.zip`,
-            "pathOfDirToExtractInArchive": `keycloak-${keycloakVersion}/themes/src/main/resources${ext}/theme`,
-            "cacheDirPath": pathJoin(keycloakThemeBuildingDirPath, ".cache"),
-            isSilent
-        });
-    }
+    await Promise.all(
+        ["", "-community"].map(ext =>
+            downloadAndUnzip({
+                "destDirPath": destDirPath,
+                "url": `https://github.com/keycloak/keycloak/archive/refs/tags/${keycloakVersion}.zip`,
+                "pathOfDirToExtractInArchive": `keycloak-${keycloakVersion}/themes/src/main/resources${ext}/theme`,
+                "cacheDirPath": pathJoin(keycloakThemeBuildingDirPath, ".cache"),
+                isSilent
+            })
+        )
+    );
 }
 
 if (require.main === module) {
