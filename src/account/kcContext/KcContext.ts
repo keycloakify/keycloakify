@@ -51,6 +51,12 @@ export declare namespace KcContext {
             get: (fieldName: string) => string;
             exists: (fieldName: string) => boolean;
         };
+        account: {
+            email?: string;
+            firstName: string;
+            lastName?: string;
+            username?: string;
+        };
     };
 
     export type Password = Common & {
@@ -71,10 +77,6 @@ export declare namespace KcContext {
             editUsernameAllowed: boolean;
         };
         stateChecker: string;
-        account: {
-            firstName: string;
-            lastName?: string;
-        };
     };
 }
 

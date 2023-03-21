@@ -3,18 +3,15 @@ import { clsx } from "keycloakify/tools/clsx";
 import type { MessageKey } from "keycloakify/login/i18n/i18n";
 import { base64url } from "rfc4648";
 import { useConstCallback } from "keycloakify/tools/useConstCallback";
-import { type PageProps, defaultClasses } from "keycloakify/login/pages/PageProps";
-import { useGetClassName } from "keycloakify/lib/useGetClassName";
+import type { PageProps } from "keycloakify/login/pages/PageProps";
+import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import type { KcContext } from "../kcContext";
 import type { I18n } from "../i18n";
 
 export default function WebauthnAuthenticate(props: PageProps<Extract<KcContext, { pageId: "webauthn-authenticate.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
-    const { getClassName } = useGetClassName({
-        "defaultClasses": !doUseDefaultCss ? undefined : defaultClasses,
-        classes
-    });
+    const { getClassName } = useGetClassName({ doUseDefaultCss, classes });
 
     const { url } = kcContext;
 

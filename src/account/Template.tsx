@@ -1,12 +1,15 @@
 import { clsx } from "keycloakify/tools/clsx";
 import { usePrepareTemplate } from "keycloakify/lib/usePrepareTemplate";
 import { type TemplateProps } from "keycloakify/account/TemplateProps";
+import { useGetClassName } from "keycloakify/account/lib/useGetClassName";
 import type { KcContext } from "./kcContext";
 import type { I18n } from "./i18n";
 import { assert } from "keycloakify/tools/assert";
 
 export default function Template(props: TemplateProps<KcContext, I18n>) {
-    const { kcContext, i18n, doUseDefaultCss, bodyClass, active, children } = props;
+    const { kcContext, i18n, doUseDefaultCss, active, classes, children } = props;
+
+    const { getClassName } = useGetClassName({ doUseDefaultCss, classes });
 
     const { msg, changeLocale, labelBySupportedLanguageTag, currentLanguageTag } = i18n;
 
@@ -18,7 +21,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
         "stylesCommon": ["node_modules/patternfly/dist/css/patternfly.min.css", "node_modules/patternfly/dist/css/patternfly-additions.min.css"],
         "styles": ["css/account.css"],
         "htmlClassName": undefined,
-        "bodyClassName": clsx("admin-console", "user", bodyClass)
+        "bodyClassName": clsx("admin-console", "user", getClassName("kcBodyClass"))
     });
 
     if (!isReady) {

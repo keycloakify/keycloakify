@@ -6,7 +6,7 @@ export type TemplateProps<KcContext extends KcContext.Common, I18nExtended exten
     kcContext: KcContext;
     i18n: I18nExtended;
     doUseDefaultCss: boolean;
-    classes?: Partial<Record<TemplateClassKey, string>>;
+    classes?: Partial<Record<ClassKey, string>>;
 
     displayInfo?: boolean;
     displayMessage?: boolean;
@@ -20,7 +20,7 @@ export type TemplateProps<KcContext extends KcContext.Common, I18nExtended exten
     children: ReactNode;
 };
 
-export type TemplateClassKey =
+export type ClassKey =
     | "kcHtmlClass"
     | "kcLoginClass"
     | "kcHeaderClass"
@@ -40,27 +40,57 @@ export type TemplateClassKey =
     | "kcFormSocialAccountContentClass"
     | "kcFormSocialAccountClass"
     | "kcSignUpClass"
-    | "kcInfoAreaWrapperClass";
-
-export const defaultTemplateClasses: Record<TemplateClassKey, string | undefined> = {
-    "kcHtmlClass": "login-pf",
-    "kcLoginClass": "login-pf-page",
-    "kcContentWrapperClass": "row",
-    "kcHeaderClass": "login-pf-page-header",
-    "kcHeaderWrapperClass": undefined,
-    "kcFormCardClass": "card-pf",
-    "kcFormCardAccountClass": "login-pf-accounts",
-    "kcFormSocialAccountClass": "login-pf-social-section",
-    "kcFormSocialAccountContentClass": "col-xs-12 col-sm-6",
-    "kcFormHeaderClass": "login-pf-header",
-    "kcLocaleWrapperClass": undefined,
-    "kcFeedbackErrorIcon": "pficon pficon-error-circle-o",
-    "kcFeedbackWarningIcon": "pficon pficon-warning-triangle-o",
-    "kcFeedbackSuccessIcon": "pficon pficon-ok",
-    "kcFeedbackInfoIcon": "pficon pficon-info",
-    "kcResetFlowIcon": "pficon pficon-arrow fa-2x",
-    "kcFormGroupClass": "form-group",
-    "kcLabelWrapperClass": "col-xs-12 col-sm-12 col-md-12 col-lg-12",
-    "kcSignUpClass": "login-pf-signup",
-    "kcInfoAreaWrapperClass": undefined
-};
+    | "kcInfoAreaWrapperClass"
+    | "kcLogoClass"
+    | "kcContainerClass"
+    | "kcContentClass"
+    | "kcFeedbackAreaClass"
+    | "kcLocaleClass"
+    | "kcAlertIconClasserror"
+    | "kcFormAreaClass"
+    | "kcFormSocialAccountListClass"
+    | "kcFormSocialAccountDoubleListClass"
+    | "kcFormSocialAccountListLinkClass"
+    | "kcWebAuthnKeyIcon"
+    | "kcWebAuthnDefaultIcon"
+    | "kcFormClass"
+    | "kcFormGroupErrorClass"
+    | "kcLabelClass"
+    | "kcInputClass"
+    | "kcInputErrorMessageClass"
+    | "kcInputWrapperClass"
+    | "kcFormOptionsClass"
+    | "kcFormButtonsClass"
+    | "kcFormSettingClass"
+    | "kcTextareaClass"
+    | "kcInfoAreaClass"
+    | "kcFormGroupHeader"
+    | "kcButtonClass"
+    | "kcButtonPrimaryClass"
+    | "kcButtonDefaultClass"
+    | "kcButtonLargeClass"
+    | "kcButtonBlockClass"
+    | "kcInputLargeClass"
+    | "kcSrOnlyClass"
+    | "kcSelectAuthListClass"
+    | "kcSelectAuthListItemClass"
+    | "kcSelectAuthListItemFillClass"
+    | "kcSelectAuthListItemInfoClass"
+    | "kcSelectAuthListItemLeftClass"
+    | "kcSelectAuthListItemBodyClass"
+    | "kcSelectAuthListItemDescriptionClass"
+    | "kcSelectAuthListItemHeadingClass"
+    | "kcSelectAuthListItemHelpTextClass"
+    | "kcSelectAuthListItemIconPropertyClass"
+    | "kcSelectAuthListItemIconClass"
+    | "kcSelectAuthListItemTitle"
+    | "kcAuthenticatorDefaultClass"
+    | "kcAuthenticatorPasswordClass"
+    | "kcAuthenticatorOTPClass"
+    | "kcAuthenticatorWebAuthnClass"
+    | "kcAuthenticatorWebAuthnPasswordlessClass"
+    | "kcSelectOTPListClass"
+    | "kcSelectOTPListItemClass"
+    | "kcAuthenticatorOtpCircleClass"
+    | "kcSelectOTPItemHeadingClass"
+    | "kcFormOptionsWrapperClass";

@@ -139,7 +139,13 @@ export const kcContextCommonMock: KcContext.Common = {
         "log": true,
         "passwordUpdateSupported": true
     },
-    "referrer": undefined
+    "referrer": undefined,
+    "account": {
+        "firstName": "john",
+        "lastName": "doe",
+        "email": "john.doe@code.gouv.fr",
+        "username": "doe_j"
+    }
 };
 
 export const kcContextMocks: KcContext[] = [
@@ -163,10 +169,6 @@ export const kcContextMocks: KcContext[] = [
             "registrationEmailAsUsername": true,
             "editUsernameAllowed": true
         },
-        "stateChecker": "",
-        "account": {
-            "firstName": "john",
-            "lastName": "doe"
-        }
+        "stateChecker": ""
     })
 ];

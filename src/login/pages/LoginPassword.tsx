@@ -2,8 +2,8 @@ import { useState } from "react";
 import { clsx } from "keycloakify/tools/clsx";
 import { useConstCallback } from "keycloakify/tools/useConstCallback";
 import type { FormEventHandler } from "react";
-import { type PageProps, defaultClasses } from "keycloakify/login/pages/PageProps";
-import { useGetClassName } from "keycloakify/lib/useGetClassName";
+import type { PageProps } from "keycloakify/login/pages/PageProps";
+import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import type { KcContext } from "../kcContext";
 import type { I18n } from "../i18n";
 
@@ -11,7 +11,7 @@ export default function LoginPassword(props: PageProps<Extract<KcContext, { "pag
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
     const { getClassName } = useGetClassName({
-        "defaultClasses": !doUseDefaultCss ? undefined : defaultClasses,
+        doUseDefaultCss,
         classes
     });
 

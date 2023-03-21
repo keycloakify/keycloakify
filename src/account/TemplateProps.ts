@@ -7,6 +7,8 @@ export type TemplateProps<KcContext extends KcContext.Common, I18nExtended exten
     i18n: I18nExtended;
     doUseDefaultCss: boolean;
     active: string;
-    bodyClass: string | undefined;
+    classes?: Partial<Record<ClassKey, string>>;
     children: ReactNode;
 };
+
+export type ClassKey = "kcBodyClass" | "kcButtonClass" | "kcButtonPrimaryClass" | "kcButtonLargeClass" | "kcButtonDefaultClass";

@@ -1,15 +1,18 @@
 import { clsx } from "keycloakify/tools/clsx";
 import { useConstCallback } from "keycloakify/tools/useConstCallback";
 
-export function useGetClassName<ClassKey extends string>(params: {
-    defaultClasses?: Record<ClassKey, string | undefined>;
-    classes?: Partial<Record<ClassKey, string>>;
-}) {
-    const { defaultClasses, classes } = params;
+export function createUseClassName<ClassKey extends string>(params: { defaultClasses: Record<ClassKey, string | undefined> }) {
+    const { defaultClasses } = params;
 
-    const getClassName = useConstCallback((classKey: ClassKey): string => {
-        return clsx(classKey, defaultClasses?.[classKey], classes?.[classKey]);
-    });
+    function useGetClassName(params: { doUseDefaultCss: boolean; classes: Partial<Record<ClassKey, string>> | undefined }) {
+        const { classes } = params;
 
-    return { getClassName };
+        const getClassName = useConstCallback((classKey: ClassKey): string => {
+            return clsx(classKey, defaultClasses[classKey], classes?.[classKey]);
+        });
+
+        return { getClassName };
+    }
+
+    return { useGetClassName };
 }

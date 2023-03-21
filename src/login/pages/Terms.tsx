@@ -1,8 +1,8 @@
 import { clsx } from "keycloakify/tools/clsx";
 import { useRerenderOnStateChange } from "evt/hooks";
 import { Markdown } from "keycloakify/tools/Markdown";
-import { type PageProps, defaultClasses } from "keycloakify/login/pages/PageProps";
-import { useGetClassName } from "keycloakify/lib/useGetClassName";
+import type { PageProps } from "keycloakify/login/pages/PageProps";
+import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import { evtTermMarkdown } from "keycloakify/login/lib/useDownloadTerms";
 import type { KcContext } from "../kcContext";
 import type { I18n } from "../i18n";
@@ -11,7 +11,7 @@ export default function Terms(props: PageProps<Extract<KcContext, { pageId: "ter
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
     const { getClassName } = useGetClassName({
-        "defaultClasses": !doUseDefaultCss ? undefined : defaultClasses,
+        doUseDefaultCss,
         classes
     });
 

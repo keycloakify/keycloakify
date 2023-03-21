@@ -1,5 +1,5 @@
 import { useEffect, Fragment } from "react";
-import type { ClassKey } from "keycloakify/login/pages/PageProps";
+import type { ClassKey } from "keycloakify/login/TemplateProps";
 import { clsx } from "keycloakify/tools/clsx";
 import { useFormValidation } from "keycloakify/login/lib/useFormValidation";
 import type { Attribute } from "keycloakify/login/kcContext/KcContext";

@@ -1,6 +1,6 @@
 import { clsx } from "keycloakify/tools/clsx";
-import { type PageProps, defaultClasses } from "keycloakify/account/pages/PageProps";
-import { useGetClassName } from "keycloakify/lib/useGetClassName";
+import type { PageProps } from "keycloakify/account/pages/PageProps";
+import { useGetClassName } from "keycloakify/account/lib/useGetClassName";
 import type { KcContext } from "../kcContext";
 import type { I18n } from "../i18n";
 
@@ -8,8 +8,11 @@ export default function LogoutConfirm(props: PageProps<Extract<KcContext, { page
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
     const { getClassName } = useGetClassName({
-        "defaultClasses": !doUseDefaultCss ? undefined : defaultClasses,
-        classes
+        doUseDefaultCss,
+        "classes": {
+            ...classes,
+            "kcBodyClass": clsx(classes?.kcBodyClass, "user")
+        }
     });
 
     const { url, realm, messagesPerField, stateChecker, account } = kcContext;
@@ -17,7 +20,7 @@ export default function LogoutConfirm(props: PageProps<Extract<KcContext, { page
     const { msg } = i18n;
 
     return (
-        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} active="account" bodyClass="user">
+        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} active="account">
             <div className="row">
                 <div className="col-md-10">
                     <h2>{msg("editAccountHtmlTitle")}</h2>
@@ -33,7 +36,7 @@ export default function LogoutConfirm(props: PageProps<Extract<KcContext, { page
                 <input type="hidden" id="stateChecker" name="stateChecker" value={stateChecker} />
 
                 {!realm.registrationEmailAsUsername && (
-                    <div className="form-group ${messagesPerField.printIfExists('username','has-error')}">
+                    <div className={clsx("form-group", messagesPerField.printIfExists("username", "has-error"))}>
                         <div className="col-sm-2 col-md-2">
                             <label htmlFor="username" className="control-label">
                                 {msg("username")}
@@ -48,7 +51,7 @@ export default function LogoutConfirm(props: PageProps<Extract<KcContext, { page
                                 id="username"
                                 name="username"
                                 disabled={!realm.editUsernameAllowed}
-                                value="${(account.username!'')}"
+                                value={account.username ?? ""}
                             />
                         </div>
                     </div>
@@ -63,7 +66,7 @@ export default function LogoutConfirm(props: PageProps<Extract<KcContext, { page
                     </div>
 
                     <div className="col-sm-10 col-md-10">
-                        <input type="text" className="form-control" id="email" name="email" autoFocus value="${(account.email!'')}" />
+                        <input type="text" className="form-control" id="email" name="email" autoFocus value={account.email ?? ""} />
                     </div>
                 </div>
 
@@ -89,7 +92,7 @@ export default function LogoutConfirm(props: PageProps<Extract<KcContext, { page
                     </div>
 
                     <div className="col-sm-10 col-md-10">
-                        <input type="text" className="form-control" id="lastName" name="lastName" value={account.lastName || ""} />
+                        <input type="text" className="form-control" id="lastName" name="lastName" value={account.lastName ?? ""} />
                     </div>
                 </div>
 

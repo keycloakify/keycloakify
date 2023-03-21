@@ -1,6 +1,6 @@
 import { clsx } from "keycloakify/tools/clsx";
-import { type PageProps, defaultClasses } from "keycloakify/account/pages/PageProps";
-import { useGetClassName } from "keycloakify/lib/useGetClassName";
+import type { PageProps } from "keycloakify/account/pages/PageProps";
+import { useGetClassName } from "keycloakify/account/lib/useGetClassName";
 import type { KcContext } from "../kcContext";
 import type { I18n } from "../i18n";
 
@@ -8,16 +8,19 @@ export default function LogoutConfirm(props: PageProps<Extract<KcContext, { page
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
     const { getClassName } = useGetClassName({
-        "defaultClasses": !doUseDefaultCss ? undefined : defaultClasses,
-        classes
+        doUseDefaultCss,
+        "classes": {
+            ...classes,
+            "kcBodyClass": clsx(classes?.kcBodyClass, "password")
+        }
     });
 
-    const { password } = kcContext;
+    const { url, password, account } = kcContext;
 
     const { msg } = i18n;
 
     return (
-        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} active="password" bodyClass="password">
+        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} active="password">
             <div className="row">
                 <div className="col-md-10">
                     <h2>{msg("changePasswordHtmlTitle")}</h2>
@@ -27,12 +30,12 @@ export default function LogoutConfirm(props: PageProps<Extract<KcContext, { page
                 </div>
             </div>
 
-            <form action="${url.passwordUrl}" className="form-horizontal" method="post">
+            <form action={url.passwordUrl} className="form-horizontal" method="post">
                 <input
                     type="text"
                     id="username"
                     name="username"
-                    value="${(account.username!'')}"
+                    value={account.username ?? ""}
                     autoComplete="username"
                     readOnly
                     style={{ "display": "none;" }}

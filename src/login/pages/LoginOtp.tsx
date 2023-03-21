@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { headInsert } from "keycloakify/tools/headInsert";
 import { pathJoin } from "keycloakify/bin/tools/pathJoin";
 import { clsx } from "keycloakify/tools/clsx";
-import { type PageProps, defaultClasses } from "keycloakify/login/pages/PageProps";
-import { useGetClassName } from "keycloakify/lib/useGetClassName";
+import type { PageProps } from "keycloakify/login/pages/PageProps";
+import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import type { KcContext } from "../kcContext";
 import type { I18n } from "../i18n";
 
@@ -11,7 +11,7 @@ export default function LoginOtp(props: PageProps<Extract<KcContext, { pageId: "
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
     const { getClassName } = useGetClassName({
-        "defaultClasses": !doUseDefaultCss ? undefined : defaultClasses,
+        doUseDefaultCss,
         classes
     });
 
