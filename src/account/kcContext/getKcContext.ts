@@ -62,6 +62,10 @@ export function getKcContext<KcContextExtension extends { pageId: string } = nev
         return { "kcContext": undefined };
     }
 
+    if (!("account" in realKcContext)) {
+        return { "kcContext": undefined };
+    }
+
     {
         const { url } = realKcContext;
 
