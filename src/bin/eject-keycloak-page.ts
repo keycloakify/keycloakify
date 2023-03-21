@@ -58,7 +58,7 @@ import { assert, Equals } from "tsafe/assert";
         process.exit(-1);
     }
 
-    writeFile(targetFilePath, await readFile(pathJoin(projectRootDir, "src", "pages", themeType, pageBasename)));
+    writeFile(targetFilePath, await readFile(pathJoin(projectRootDir, "src", themeType, "pages", pageBasename)));
 
     console.log(`${pathRelative(process.cwd(), targetFilePath)} created`);
 })();
