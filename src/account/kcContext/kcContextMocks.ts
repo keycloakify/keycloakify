@@ -1,8 +1,8 @@
 import "minimal-polyfills/Object.fromEntries";
-import type { KcContext } from "./KcContext";
 import { mockTestingResourcesCommonPath, mockTestingResourcesPath } from "keycloakify/bin/mockTestingResourcesPath";
 import { pathJoin } from "keycloakify/bin/tools/pathJoin";
 import { id } from "tsafe/id";
+import type { KcContext } from "./KcContext";
 
 const PUBLIC_URL = process.env["PUBLIC_URL"] ?? "/";
 
