@@ -34,7 +34,15 @@ import { getLogger } from "./tools/logger";
         "destDirPath": keycloakThemeEmailDirPath
     });
 
-    logger.log(`${pathRelative(process.cwd(), keycloakThemeEmailDirPath)} ready to be customized`);
+    {
+        const themePropertyFilePath = pathJoin(keycloakThemeEmailDirPath, "theme.properties");
+
+        fs.writeFileSync(themePropertyFilePath, Buffer.from(`parent=base\n${fs.readFileSync(themePropertyFilePath).toString("utf8")}`, "utf8"));
+    }
+
+    logger.log(
+        `${pathRelative(process.cwd(), keycloakThemeEmailDirPath)} ready to be customized, feel free to remove every file you do not customize`
+    );
 
     fs.rmSync(builtinKeycloakThemeTmpDirPath, { "recursive": true, "force": true });
 })();
