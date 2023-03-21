@@ -110,14 +110,16 @@
         }
     };
 
-    out["pageId"] = "${pageId}";
+    <#if account??>
+        out["url"]["getLogoutUrl"] = function () {
+            <#attempt>
+                return "${url.getLogoutUrl()}";
+            <#recover>
+            </#attempt>
+        };
+    </#if>
 
-    out["url"]["getLogoutUrl"] = function () {
-        <#attempt>
-            return "${url.getLogoutUrl()}";
-        <#recover>
-        </#attempt>
-    };
+    out["pageId"] = "${pageId}";
 
     return out;
 
