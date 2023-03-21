@@ -131,6 +131,7 @@ export async function main() {
             `Once your container is up and running: `,
             "- Log into the admin console 👉 http://localhost:8080/admin username: admin, password: admin 👈",
             `- Create a realm named     "myrealm"`,
+            `- Enable the Account theme: Realm settings -> tab Themes -> Account theme, select ${buildOptions.themeName} `,
             `- Create a client with ID: "myclient"`,
             `  Root URL:                        https://www.keycloak.org/app/`,
             `  Valid redirect URIs:             https://www.keycloak.org/app* http://localhost* (localhost isn't necessary here but it will be once you'll want to test the integration with your app)`,
@@ -139,8 +140,7 @@ export async function main() {
             `  Login Theme: ${buildOptions.themeName}`,
             `  Click save at the bottom of the page.`,
             `- Go to 👉 https://www.keycloak.org/app/ 👈 Click "Save" then "Sign in". You should see your login page`,
-            ``,
-            `Video demoing this process: https://youtu.be/N3wlBoH4hKg`,
+            `- Got to 👉  http://localhost:8080/realms/myrealm/account 👈 to see your account theme`,
             ``
         ].join("\n")
     );
