@@ -80,9 +80,9 @@ function useSetClassName(params: { target: "html" | "body"; className: string | 
             return;
         }
 
-        const htmlClassList = document.getElementsByTagName("html")[0].classList;
+        const htmlClassList = document.getElementsByTagName(target)[0].classList;
 
-        const tokens = clsx(target).split(" ");
+        const tokens = clsx(className).split(" ");
 
         htmlClassList.add(...tokens);
 
