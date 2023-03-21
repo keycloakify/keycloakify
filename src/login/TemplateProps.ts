@@ -8,7 +8,6 @@ export type TemplateProps<KcContext extends KcContext.Common, I18nExtended exten
     doUseDefaultCss: boolean;
     classes?: Partial<Record<TemplateClassKey, string>>;
 
-    formNode: ReactNode;
     displayInfo?: boolean;
     displayMessage?: boolean;
     displayRequiredFields?: boolean;
@@ -17,6 +16,8 @@ export type TemplateProps<KcContext extends KcContext.Common, I18nExtended exten
     headerNode: ReactNode;
     showUsernameNode?: ReactNode;
     infoNode?: ReactNode;
+
+    children: ReactNode;
 };
 
 export type TemplateClassKey =

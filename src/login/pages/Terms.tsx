@@ -26,38 +26,31 @@ export default function Terms(props: PageProps<Extract<KcContext, { pageId: "ter
     }
 
     return (
-        <Template
-            {...{ kcContext, i18n, doUseDefaultCss, classes }}
-            displayMessage={false}
-            headerNode={msg("termsTitle")}
-            formNode={
-                <>
-                    <div id="kc-terms-text">{evtTermMarkdown.state && <Markdown>{evtTermMarkdown.state}</Markdown>}</div>
-                    <form className="form-actions" action={url.loginAction} method="POST">
-                        <input
-                            className={clsx(
-                                getClassName("kcButtonClass"),
-                                getClassName("kcButtonClass"),
-                                getClassName("kcButtonClass"),
-                                getClassName("kcButtonPrimaryClass"),
-                                getClassName("kcButtonLargeClass")
-                            )}
-                            name="accept"
-                            id="kc-accept"
-                            type="submit"
-                            value={msgStr("doAccept")}
-                        />
-                        <input
-                            className={clsx(getClassName("kcButtonClass"), getClassName("kcButtonDefaultClass"), getClassName("kcButtonLargeClass"))}
-                            name="cancel"
-                            id="kc-decline"
-                            type="submit"
-                            value={msgStr("doDecline")}
-                        />
-                    </form>
-                    <div className="clearfix" />
-                </>
-            }
-        />
+        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} displayMessage={false} headerNode={msg("termsTitle")}>
+            <div id="kc-terms-text">{evtTermMarkdown.state && <Markdown>{evtTermMarkdown.state}</Markdown>}</div>
+            <form className="form-actions" action={url.loginAction} method="POST">
+                <input
+                    className={clsx(
+                        getClassName("kcButtonClass"),
+                        getClassName("kcButtonClass"),
+                        getClassName("kcButtonClass"),
+                        getClassName("kcButtonPrimaryClass"),
+                        getClassName("kcButtonLargeClass")
+                    )}
+                    name="accept"
+                    id="kc-accept"
+                    type="submit"
+                    value={msgStr("doAccept")}
+                />
+                <input
+                    className={clsx(getClassName("kcButtonClass"), getClassName("kcButtonDefaultClass"), getClassName("kcButtonLargeClass"))}
+                    name="cancel"
+                    id="kc-decline"
+                    type="submit"
+                    value={msgStr("doDecline")}
+                />
+            </form>
+            <div className="clearfix" />
+        </Template>
     );
 }

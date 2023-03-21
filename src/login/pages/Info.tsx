@@ -17,32 +17,31 @@ export default function Info(props: PageProps<Extract<KcContext, { pageId: "info
             {...{ kcContext, i18n, doUseDefaultCss, classes }}
             displayMessage={false}
             headerNode={messageHeader !== undefined ? <>{messageHeader}</> : <>{message.summary}</>}
-            formNode={
-                <div id="kc-info-message">
-                    <p className="instruction">
-                        {message.summary}
+        >
+            <div id="kc-info-message">
+                <p className="instruction">
+                    {message.summary}
 
-                        {requiredActions !== undefined && (
-                            <b>{requiredActions.map(requiredAction => msgStr(`requiredAction.${requiredAction}` as const)).join(",")}</b>
-                        )}
-                    </p>
-                    {!skipLink && pageRedirectUri !== undefined ? (
-                        <p>
-                            <a href={pageRedirectUri}>{msg("backToApplication")}</a>
-                        </p>
-                    ) : actionUri !== undefined ? (
-                        <p>
-                            <a href={actionUri}>{msg("proceedWithAction")}</a>
-                        </p>
-                    ) : (
-                        client.baseUrl !== undefined && (
-                            <p>
-                                <a href={client.baseUrl}>{msg("backToApplication")}</a>
-                            </p>
-                        )
+                    {requiredActions !== undefined && (
+                        <b>{requiredActions.map(requiredAction => msgStr(`requiredAction.${requiredAction}` as const)).join(",")}</b>
                     )}
-                </div>
-            }
-        />
+                </p>
+                {!skipLink && pageRedirectUri !== undefined ? (
+                    <p>
+                        <a href={pageRedirectUri}>{msg("backToApplication")}</a>
+                    </p>
+                ) : actionUri !== undefined ? (
+                    <p>
+                        <a href={actionUri}>{msg("proceedWithAction")}</a>
+                    </p>
+                ) : (
+                    client.baseUrl !== undefined && (
+                        <p>
+                            <a href={client.baseUrl}>{msg("backToApplication")}</a>
+                        </p>
+                    )
+                )}
+            </div>
+        </Template>
     );
 }

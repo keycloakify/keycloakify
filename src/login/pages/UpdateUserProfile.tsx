@@ -21,66 +21,62 @@ export default function UpdateUserProfile(props: PageProps<Extract<KcContext, { 
     const [isFomSubmittable, setIsFomSubmittable] = useState(false);
 
     return (
-        <Template
-            {...{ kcContext, i18n, doUseDefaultCss, classes }}
-            headerNode={msg("loginProfileTitle")}
-            formNode={
-                <form id="kc-update-profile-form" className={getClassName("kcFormClass")} action={url.loginAction} method="post">
-                    <UserProfileFormFields
-                        kcContext={kcContext}
-                        onIsFormSubmittableValueChange={setIsFomSubmittable}
-                        i18n={i18n}
-                        getClassName={getClassName}
-                    />
+        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} headerNode={msg("loginProfileTitle")}>
+            <form id="kc-update-profile-form" className={getClassName("kcFormClass")} action={url.loginAction} method="post">
+                <UserProfileFormFields
+                    kcContext={kcContext}
+                    onIsFormSubmittableValueChange={setIsFomSubmittable}
+                    i18n={i18n}
+                    getClassName={getClassName}
+                />
 
-                    <div className={getClassName("kcFormGroupClass")}>
-                        <div id="kc-form-options" className={getClassName("kcFormOptionsClass")}>
-                            <div className={getClassName("kcFormOptionsWrapperClass")}></div>
-                        </div>
+                <div className={getClassName("kcFormGroupClass")}>
+                    <div id="kc-form-options" className={getClassName("kcFormOptionsClass")}>
+                        <div className={getClassName("kcFormOptionsWrapperClass")}></div>
+                    </div>
 
-                        <div id="kc-form-buttons" className={getClassName("kcFormButtonsClass")}>
-                            {isAppInitiatedAction ? (
-                                <>
-                                    <input
-                                        className={clsx(
-                                            getClassName("kcButtonClass"),
-                                            getClassName("kcButtonPrimaryClass"),
-                                            getClassName("kcButtonLargeClass")
-                                        )}
-                                        type="submit"
-                                        value={msgStr("doSubmit")}
-                                    />
-                                    <button
-                                        className={clsx(
-                                            getClassName("kcButtonClass"),
-                                            getClassName("kcButtonDefaultClass"),
-                                            getClassName("kcButtonLargeClass")
-                                        )}
-                                        type="submit"
-                                        name="cancel-aia"
-                                        value="true"
-                                        formNoValidate
-                                    >
-                                        {msg("doCancel")}
-                                    </button>
-                                </>
-                            ) : (
+                    <div id="kc-form-buttons" className={getClassName("kcFormButtonsClass")}>
+                        {isAppInitiatedAction ? (
+                            <>
                                 <input
                                     className={clsx(
                                         getClassName("kcButtonClass"),
                                         getClassName("kcButtonPrimaryClass"),
-                                        getClassName("kcButtonBlockClass"),
                                         getClassName("kcButtonLargeClass")
                                     )}
                                     type="submit"
-                                    defaultValue={msgStr("doSubmit")}
-                                    disabled={!isFomSubmittable}
+                                    value={msgStr("doSubmit")}
                                 />
-                            )}
-                        </div>
+                                <button
+                                    className={clsx(
+                                        getClassName("kcButtonClass"),
+                                        getClassName("kcButtonDefaultClass"),
+                                        getClassName("kcButtonLargeClass")
+                                    )}
+                                    type="submit"
+                                    name="cancel-aia"
+                                    value="true"
+                                    formNoValidate
+                                >
+                                    {msg("doCancel")}
+                                </button>
+                            </>
+                        ) : (
+                            <input
+                                className={clsx(
+                                    getClassName("kcButtonClass"),
+                                    getClassName("kcButtonPrimaryClass"),
+                                    getClassName("kcButtonBlockClass"),
+                                    getClassName("kcButtonLargeClass")
+                                )}
+                                type="submit"
+                                defaultValue={msgStr("doSubmit")}
+                                disabled={!isFomSubmittable}
+                            />
+                        )}
                     </div>
-                </form>
-            }
-        />
+                </div>
+            </form>
+        </Template>
     );
 }

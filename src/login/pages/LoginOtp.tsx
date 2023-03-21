@@ -37,61 +37,57 @@ export default function LoginOtp(props: PageProps<Extract<KcContext, { pageId: "
     }, []);
 
     return (
-        <Template
-            {...{ kcContext, i18n, doUseDefaultCss, classes }}
-            headerNode={msg("doLogIn")}
-            formNode={
-                <form id="kc-otp-login-form" className={getClassName("kcFormClass")} action={url.loginAction} method="post">
-                    {otpLogin.userOtpCredentials.length > 1 && (
-                        <div className={getClassName("kcFormGroupClass")}>
-                            <div className={getClassName("kcInputWrapperClass")}>
-                                {otpLogin.userOtpCredentials.map(otpCredential => (
-                                    <div key={otpCredential.id} className={getClassName("kcSelectOTPListClass")}>
-                                        <input type="hidden" value="${otpCredential.id}" />
-                                        <div className={getClassName("kcSelectOTPListItemClass")}>
-                                            <span className={getClassName("kcAuthenticatorOtpCircleClass")} />
-                                            <h2 className={getClassName("kcSelectOTPItemHeadingClass")}>{otpCredential.userLabel}</h2>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    )}
+        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} headerNode={msg("doLogIn")}>
+            <form id="kc-otp-login-form" className={getClassName("kcFormClass")} action={url.loginAction} method="post">
+                {otpLogin.userOtpCredentials.length > 1 && (
                     <div className={getClassName("kcFormGroupClass")}>
-                        <div className={getClassName("kcLabelWrapperClass")}>
-                            <label htmlFor="otp" className={getClassName("kcLabelClass")}>
-                                {msg("loginOtpOneTime")}
-                            </label>
-                        </div>
-
                         <div className={getClassName("kcInputWrapperClass")}>
-                            <input id="otp" name="otp" autoComplete="off" type="text" className={getClassName("kcInputClass")} autoFocus />
+                            {otpLogin.userOtpCredentials.map(otpCredential => (
+                                <div key={otpCredential.id} className={getClassName("kcSelectOTPListClass")}>
+                                    <input type="hidden" value="${otpCredential.id}" />
+                                    <div className={getClassName("kcSelectOTPListItemClass")}>
+                                        <span className={getClassName("kcAuthenticatorOtpCircleClass")} />
+                                        <h2 className={getClassName("kcSelectOTPItemHeadingClass")}>{otpCredential.userLabel}</h2>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
-
-                    <div className={getClassName("kcFormGroupClass")}>
-                        <div id="kc-form-options" className={getClassName("kcFormOptionsClass")}>
-                            <div className={getClassName("kcFormOptionsWrapperClass")} />
-                        </div>
-
-                        <div id="kc-form-buttons" className={getClassName("kcFormButtonsClass")}>
-                            <input
-                                className={clsx(
-                                    getClassName("kcButtonClass"),
-                                    getClassName("kcButtonPrimaryClass"),
-                                    getClassName("kcButtonBlockClass"),
-                                    getClassName("kcButtonLargeClass")
-                                )}
-                                name="login"
-                                id="kc-login"
-                                type="submit"
-                                value={msgStr("doLogIn")}
-                            />
-                        </div>
+                )}
+                <div className={getClassName("kcFormGroupClass")}>
+                    <div className={getClassName("kcLabelWrapperClass")}>
+                        <label htmlFor="otp" className={getClassName("kcLabelClass")}>
+                            {msg("loginOtpOneTime")}
+                        </label>
                     </div>
-                </form>
-            }
-        />
+
+                    <div className={getClassName("kcInputWrapperClass")}>
+                        <input id="otp" name="otp" autoComplete="off" type="text" className={getClassName("kcInputClass")} autoFocus />
+                    </div>
+                </div>
+
+                <div className={getClassName("kcFormGroupClass")}>
+                    <div id="kc-form-options" className={getClassName("kcFormOptionsClass")}>
+                        <div className={getClassName("kcFormOptionsWrapperClass")} />
+                    </div>
+
+                    <div id="kc-form-buttons" className={getClassName("kcFormButtonsClass")}>
+                        <input
+                            className={clsx(
+                                getClassName("kcButtonClass"),
+                                getClassName("kcButtonPrimaryClass"),
+                                getClassName("kcButtonBlockClass"),
+                                getClassName("kcButtonLargeClass")
+                            )}
+                            name="login"
+                            id="kc-login"
+                            type="submit"
+                            value={msgStr("doLogIn")}
+                        />
+                    </div>
+                </div>
+            </form>
+        </Template>
     );
 }
 

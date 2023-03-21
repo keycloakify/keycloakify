@@ -26,46 +26,45 @@ export default function RegisterUserProfile(props: PageProps<Extract<KcContext, 
             displayMessage={messagesPerField.exists("global")}
             displayRequiredFields={true}
             headerNode={msg("registerTitle")}
-            formNode={
-                <form id="kc-register-form" className={getClassName("kcFormClass")} action={url.registrationAction} method="post">
-                    <UserProfileFormFields
-                        kcContext={kcContext}
-                        onIsFormSubmittableValueChange={setIsFomSubmittable}
-                        i18n={i18n}
-                        getClassName={getClassName}
-                    />
-                    {recaptchaRequired && (
-                        <div className="form-group">
-                            <div className={getClassName("kcInputWrapperClass")}>
-                                <div className="g-recaptcha" data-size="compact" data-sitekey={recaptchaSiteKey} />
-                            </div>
-                        </div>
-                    )}
-                    <div className={getClassName("kcFormGroupClass")} style={{ "marginBottom": 30 }}>
-                        <div id="kc-form-options" className={getClassName("kcFormOptionsClass")}>
-                            <div className={getClassName("kcFormOptionsWrapperClass")}>
-                                <span>
-                                    <a href={url.loginUrl}>{msg("backToLogin")}</a>
-                                </span>
-                            </div>
-                        </div>
-
-                        <div id="kc-form-buttons" className={getClassName("kcFormButtonsClass")}>
-                            <input
-                                className={clsx(
-                                    getClassName("kcButtonClass"),
-                                    getClassName("kcButtonPrimaryClass"),
-                                    getClassName("kcButtonBlockClass"),
-                                    getClassName("kcButtonLargeClass")
-                                )}
-                                type="submit"
-                                value={msgStr("doRegister")}
-                                disabled={!isFomSubmittable}
-                            />
+        >
+            <form id="kc-register-form" className={getClassName("kcFormClass")} action={url.registrationAction} method="post">
+                <UserProfileFormFields
+                    kcContext={kcContext}
+                    onIsFormSubmittableValueChange={setIsFomSubmittable}
+                    i18n={i18n}
+                    getClassName={getClassName}
+                />
+                {recaptchaRequired && (
+                    <div className="form-group">
+                        <div className={getClassName("kcInputWrapperClass")}>
+                            <div className="g-recaptcha" data-size="compact" data-sitekey={recaptchaSiteKey} />
                         </div>
                     </div>
-                </form>
-            }
-        />
+                )}
+                <div className={getClassName("kcFormGroupClass")} style={{ "marginBottom": 30 }}>
+                    <div id="kc-form-options" className={getClassName("kcFormOptionsClass")}>
+                        <div className={getClassName("kcFormOptionsWrapperClass")}>
+                            <span>
+                                <a href={url.loginUrl}>{msg("backToLogin")}</a>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div id="kc-form-buttons" className={getClassName("kcFormButtonsClass")}>
+                        <input
+                            className={clsx(
+                                getClassName("kcButtonClass"),
+                                getClassName("kcButtonPrimaryClass"),
+                                getClassName("kcButtonBlockClass"),
+                                getClassName("kcButtonLargeClass")
+                            )}
+                            type="submit"
+                            value={msgStr("doRegister")}
+                            disabled={!isFomSubmittable}
+                        />
+                    </div>
+                </div>
+            </form>
+        </Template>
     );
 }

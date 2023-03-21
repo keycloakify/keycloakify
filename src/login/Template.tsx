@@ -15,12 +15,12 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
         showAnotherWayIfPresent = true,
         headerNode,
         showUsernameNode = null,
-        formNode,
         infoNode = null,
         kcContext,
         i18n,
         doUseDefaultCss,
-        classes
+        classes,
+        children
     } = props;
 
     const { getClassName } = useGetClassName({
@@ -153,7 +153,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                                 />
                             </div>
                         )}
-                        {formNode}
+                        {children}
                         {auth !== undefined && auth.showTryAnotherWayLink && showAnotherWayIfPresent && (
                             <form
                                 id="kc-select-try-another-way-form"

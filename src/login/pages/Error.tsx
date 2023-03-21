@@ -10,22 +10,17 @@ export default function Error(props: PageProps<Extract<KcContext, { pageId: "err
     const { msg } = i18n;
 
     return (
-        <Template
-            {...{ kcContext, i18n, doUseDefaultCss, classes }}
-            displayMessage={false}
-            headerNode={msg("errorTitle")}
-            formNode={
-                <div id="kc-error-message">
-                    <p className="instruction">{message.summary}</p>
-                    {client !== undefined && client.baseUrl !== undefined && (
-                        <p>
-                            <a id="backToApplication" href={client.baseUrl}>
-                                {msg("backToApplication")}
-                            </a>
-                        </p>
-                    )}
-                </div>
-            }
-        />
+        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} displayMessage={false} headerNode={msg("errorTitle")}>
+            <div id="kc-error-message">
+                <p className="instruction">{message.summary}</p>
+                {client !== undefined && client.baseUrl !== undefined && (
+                    <p>
+                        <a id="backToApplication" href={client.baseUrl}>
+                            {msg("backToApplication")}
+                        </a>
+                    </p>
+                )}
+            </div>
+        </Template>
     );
 }

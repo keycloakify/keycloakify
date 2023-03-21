@@ -10,22 +10,15 @@ export default function LoginVerifyEmail(props: PageProps<Extract<KcContext, { p
     const { url, user } = kcContext;
 
     return (
-        <Template
-            {...{ kcContext, i18n, doUseDefaultCss, classes }}
-            displayMessage={false}
-            headerNode={msg("emailVerifyTitle")}
-            formNode={
-                <>
-                    <p className="instruction">{msg("emailVerifyInstruction1", user?.email)}</p>
-                    <p className="instruction">
-                        {msg("emailVerifyInstruction2")}
-                        <br />
-                        <a href={url.loginAction}>{msg("doClickHere")}</a>
-                        &nbsp;
-                        {msg("emailVerifyInstruction3")}
-                    </p>
-                </>
-            }
-        />
+        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} displayMessage={false} headerNode={msg("emailVerifyTitle")}>
+            <p className="instruction">{msg("emailVerifyInstruction1", user?.email)}</p>
+            <p className="instruction">
+                {msg("emailVerifyInstruction2")}
+                <br />
+                <a href={url.loginAction}>{msg("doClickHere")}</a>
+                &nbsp;
+                {msg("emailVerifyInstruction3")}
+            </p>
+        </Template>
     );
 }

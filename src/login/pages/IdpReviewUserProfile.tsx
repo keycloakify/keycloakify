@@ -21,37 +21,33 @@ export default function IdpReviewUserProfile(props: PageProps<Extract<KcContext,
     const [isFomSubmittable, setIsFomSubmittable] = useState(false);
 
     return (
-        <Template
-            {...{ kcContext, i18n, doUseDefaultCss, classes }}
-            headerNode={msg("loginIdpReviewProfileTitle")}
-            formNode={
-                <form id="kc-idp-review-profile-form" className={getClassName("kcFormClass")} action={url.loginAction} method="post">
-                    <UserProfileFormFields
-                        kcContext={kcContext}
-                        onIsFormSubmittableValueChange={setIsFomSubmittable}
-                        i18n={i18n}
-                        getClassName={getClassName}
-                    />
-                    <div className={getClassName("kcFormGroupClass")}>
-                        <div id="kc-form-options" className={getClassName("kcFormOptionsClass")}>
-                            <div className={getClassName("kcFormOptionsWrapperClass")} />
-                        </div>
-                        <div id="kc-form-buttons" className={getClassName("kcFormButtonsClass")}>
-                            <input
-                                className={clsx(
-                                    getClassName("kcButtonClass"),
-                                    getClassName("kcButtonPrimaryClass"),
-                                    getClassName("kcButtonBlockClass"),
-                                    getClassName("kcButtonLargeClass")
-                                )}
-                                type="submit"
-                                value={msgStr("doSubmit")}
-                                disabled={!isFomSubmittable}
-                            />
-                        </div>
+        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} headerNode={msg("loginIdpReviewProfileTitle")}>
+            <form id="kc-idp-review-profile-form" className={getClassName("kcFormClass")} action={url.loginAction} method="post">
+                <UserProfileFormFields
+                    kcContext={kcContext}
+                    onIsFormSubmittableValueChange={setIsFomSubmittable}
+                    i18n={i18n}
+                    getClassName={getClassName}
+                />
+                <div className={getClassName("kcFormGroupClass")}>
+                    <div id="kc-form-options" className={getClassName("kcFormOptionsClass")}>
+                        <div className={getClassName("kcFormOptionsWrapperClass")} />
                     </div>
-                </form>
-            }
-        />
+                    <div id="kc-form-buttons" className={getClassName("kcFormButtonsClass")}>
+                        <input
+                            className={clsx(
+                                getClassName("kcButtonClass"),
+                                getClassName("kcButtonPrimaryClass"),
+                                getClassName("kcButtonBlockClass"),
+                                getClassName("kcButtonLargeClass")
+                            )}
+                            type="submit"
+                            value={msgStr("doSubmit")}
+                            disabled={!isFomSubmittable}
+                        />
+                    </div>
+                </div>
+            </form>
+        </Template>
     );
 }
