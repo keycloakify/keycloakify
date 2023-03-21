@@ -74,7 +74,7 @@ async function download(url: string, dir: string, filename: string): Promise<str
     const proxyOpts = await getNpmProxyConfig();
     const cacheRoot = process.env.XDG_CACHE_HOME ?? homedir();
     const cachePath = join(cacheRoot, ".keycloakify/cache");
-    const opts: FetchOptions = { cachePath, ...proxyOpts };
+    const opts: FetchOptions = { cachePath, cache: 'force-cache', ...proxyOpts };
     const response = await fetch(url, opts);
     const filepath = pathJoin(dir, filename);
     await mkdir(dir, { recursive: true });
