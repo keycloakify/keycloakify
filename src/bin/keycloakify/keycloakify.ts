@@ -1,6 +1,6 @@
 import { generateKeycloakThemeResources } from "./generateKeycloakThemeResources";
 import { generateJavaStackFiles } from "./generateJavaStackFiles";
-import { join as pathJoin, relative as pathRelative, basename as pathBasename } from "path";
+import { join as pathJoin, relative as pathRelative, basename as pathBasename, sep as pathSep } from "path";
 import * as child_process from "child_process";
 import { generateStartKeycloakTestingContainer } from "./generateStartKeycloakTestingContainer";
 import * as fs from "fs";
@@ -42,7 +42,7 @@ export async function main() {
         "reactAppBuildDirPath": pathJoin(reactProjectDirPath, "build"),
         buildOptions,
         //We have to leave it at that otherwise we break our default theme.
-        //Problem is that we can't guarantee that the the old resources
+        //Problem is that we can`t guarantee that the the old resources
         //will still be available on the newer keycloak version.
         "keycloakVersion": "11.0.3"
     });
@@ -121,19 +121,27 @@ export async function main() {
             "",
             `To test your theme locally you can spin up a Keycloak ${containerKeycloakVersion} container image with the theme pre loaded by running:`,
             "",
-            `👉 $ ./${pathRelative(reactProjectDirPath, pathJoin(keycloakThemeBuildingDirPath, generateStartKeycloakTestingContainer.basename))} 👈`,
+            `👉 $ .${pathSep}${pathRelative(
+                reactProjectDirPath,
+                pathJoin(keycloakThemeBuildingDirPath, generateStartKeycloakTestingContainer.basename)
+            )} 👈`,
             "",
-            "Test with different Keycloak versions by editing the .sh file. see available versions here: https://quay.io/repository/keycloak/keycloak?tab=tags",
-            "",
-            "Once your container is up and running: ",
+            `Test with different Keycloak versions by editing the .sh file. see available versions here: https://quay.io/repository/keycloak/keycloak?tab=tags`,
+            ``,
+            `Once your container is up and running: `,
             "- Log into the admin console 👉 http://localhost:8080/admin username: admin, password: admin 👈",
-            '- Create a realm named "myrealm"',
-            '- Create a client with ID: "myclient", "Root URL": "https://www.keycloak.org/app/" and "Valid redirect URIs": "https://www.keycloak.org/app/*"',
-            `- Select Login Theme: ${buildOptions.themeName} (don't forget to save at the bottom of the page)`,
+            `- Create a realm named     "myrealm"`,
+            `- Create a client with ID: "myclient"`,
+            `  Root URL:                        https://www.keycloak.org/app/`,
+            `  Valid redirect URIs:             https://www.keycloak.org/app* http://localhost* (localhost isn't necessary here but it will be once you'll want to test the integration with your app)`,
+            `  Valid post logout redirect URIs: https://www.keycloak.org/app* http://localhost*`,
+            `  Web origins:                     *`,
+            `  Login Theme: ${buildOptions.themeName}`,
+            `  Click save at the bottom of the page.`,
             `- Go to 👉 https://www.keycloak.org/app/ 👈 Click "Save" then "Sign in". You should see your login page`,
-            "",
-            "Video demoing this process: https://youtu.be/N3wlBoH4hKg",
-            ""
+            ``,
+            `Video demoing this process: https://youtu.be/N3wlBoH4hKg`,
+            ``
         ].join("\n")
     );
 }
