@@ -101,7 +101,8 @@ export declare namespace KcContext {
         registrationDisabled: boolean;
         login: {
             username?: string;
-            rememberMe?: boolean;
+            rememberMe?: string;
+            password?: string;
         };
         usernameEditDisabled: boolean;
         social: {
@@ -219,7 +220,7 @@ export declare namespace KcContext {
         registrationDisabled: boolean;
         login: {
             username?: string;
-            rememberMe?: boolean;
+            rememberMe?: string;
         };
         usernameHidden?: boolean;
         social: {

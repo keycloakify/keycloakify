@@ -260,9 +260,7 @@ export const kcContextMocks: KcContext[] = [
             "displayInfo": true
         },
         "usernameEditDisabled": false,
-        "login": {
-            "rememberMe": false
-        },
+        "login": {},
         "registrationDisabled": false
     }),
     ...(() => {
@@ -376,9 +374,7 @@ export const kcContextMocks: KcContext[] = [
             "displayInfo": true
         },
         "usernameHidden": false,
-        "login": {
-            "rememberMe": false
-        },
+        "login": {},
         "registrationDisabled": false
     }),
     id<KcContext.LoginPassword>({

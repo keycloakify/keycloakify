@@ -124,7 +124,7 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
                                                     id="rememberMe"
                                                     name="rememberMe"
                                                     type="checkbox"
-                                                    {...(login.rememberMe
+                                                    {...(login.rememberMe === "on"
                                                         ? {
                                                               "checked": true
                                                           }
