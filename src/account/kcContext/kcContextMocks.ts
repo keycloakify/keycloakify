@@ -154,7 +154,8 @@ export const kcContextMocks: KcContext[] = [
         "pageId": "password.ftl",
         "password": {
             "passwordSet": true
-        }
+        },
+        "stateChecker": "state checker"
     }),
     id<KcContext.Account>({
         ...kcContextCommonMock,
