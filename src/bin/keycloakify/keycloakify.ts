@@ -143,6 +143,8 @@ export async function main() {
             ``,
             `- Go to  👉  https://www.keycloak.org/app/ 👈 Click "Save" then "Sign in". You should see your login page`,
             `- Got to 👉  http://localhost:8080/realms/myrealm/account 👈 to see your account theme`,
+            ``,
+            `Video tutorial: https://youtu.be/WMyGZNHQkjU`,
             ``
         ].join("\n")
     );
