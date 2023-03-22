@@ -40,6 +40,12 @@
 
 # Changelog highlights
 
+## 7.0 🍾
+
+-   Account theme support 🚀
+-   It's much easier to customize pages at the CSS level, you can now see in the browser dev tool the customizable classes.
+-   New interactive CLI tool `npx eject-keycloak-page`, that enables to select the page you want to customize at the component level.
+
 ## 6.13
 
 -   Build work behind corporate proxies, [see issue](https://github.com/InseeFrLab/keycloakify/issues/257).
