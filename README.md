@@ -25,6 +25,8 @@
         -
         <a href="https://docs.keycloakify.dev">Documentation</a>
         -
+        <a href="https://storybook.keycloakify.dev/storybook">Storybook</a>
+        -
         <a href="https://github.com/codegouvfr/keycloakify-starter">Starter project</a>
     </p>
 </p>
