@@ -36,9 +36,9 @@
     <img src="https://user-images.githubusercontent.com/6702424/110260457-a1c3d380-7fac-11eb-853a-80459b65626b.png">
 </p>
 
-> 🗣 V6 have been released 🎉  
-> [It features major improvements](https://github.com/InseeFrLab/keycloakify#600).  
-> Checkout [the migration guide](https://docs.keycloakify.dev/v5-to-v6).
+> 🗣 V7 have been released 🎉  
+> [It features major improvements](https://github.com/InseeFrLab/keycloakify#70-).  
+> Checkout [the migration guide](https://docs.keycloakify.dev/migration-guides/v6-greater-than-v7).
 
 # Changelog highlights
 
