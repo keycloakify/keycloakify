@@ -15,7 +15,7 @@ export default function LogoutConfirm(props: PageProps<Extract<KcContext, { page
         }
     });
 
-    const { url, password, account } = kcContext;
+    const { url, password, account, stateChecker } = kcContext;
 
     const { msg } = i18n;
 
@@ -55,7 +55,7 @@ export default function LogoutConfirm(props: PageProps<Extract<KcContext, { page
                     </div>
                 )}
 
-                <input type="hidden" id="stateChecker" name="stateChecker" value="${stateChecker}" />
+                <input type="hidden" id="stateChecker" name="stateChecker" value={stateChecker} />
 
                 <div className="form-group">
                     <div className="col-sm-2 col-md-2">

@@ -64,6 +64,7 @@ export declare namespace KcContext {
         password: {
             passwordSet: boolean;
         };
+        stateChecker: string;
     };
 
     export type Account = Common & {
