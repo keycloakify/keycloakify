@@ -14,7 +14,7 @@
         "jsx": "react-jsx",
         "allowSyntheticDefaultImports": true
     },
-    "exclude": ["./bin"],
+    "exclude": ["./bin", "./vite"],
     "references": [
         {
             "path": "./bin"

@@ -10,7 +10,7 @@
     "types": "dist/index.d.ts",
     "scripts": {
         "prepare": "yarn generate-i18n-messages",
-        "build": "rimraf dist/ && tsc -p src/bin && tsc -p src/tsconfig.json && tsc-alias -p src/tsconfig.json && yarn grant-exec-perms && yarn copy-files dist/",
+        "build": "rimraf dist/ && tsc -p src/bin && tsc -p src/vite && tsc -p src/tsconfig.json && tsc-alias -p src/tsconfig.json && yarn grant-exec-perms && yarn copy-files dist/",
         "build:watch": "tsc -p src/tsconfig.json && (concurrently \"tsc -p src/tsconfig.json -w\" \"tsc-alias -p src/tsconfig.json\")",
         "build:test": "rimraf dist_test/ && tsc -p test/tsconfig.json && tsc-alias -p test/tsconfig.json && yarn copy-files dist_test/src",
         "grant-exec-perms": "node dist/bin/tools/grant-exec-perms.js",
@@ -80,7 +80,8 @@
         "scripting-tools": "^0.19.13",
         "ts-node": "^10.9.1",
         "tsc-alias": "^1.8.3",
-        "typescript": "^5.0.1-rc"
+        "typescript": "^5.0.1-rc",
+        "vite": "^4.2.1"
     },
     "dependencies": {
         "@octokit/rest": "^18.12.0",

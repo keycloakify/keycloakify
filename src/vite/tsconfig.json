@@ -1,12 +1,16 @@
 {
     "extends": "../../tsproject.json",
     "compilerOptions": {
-        "composite": true,
         "module": "CommonJS",
         "target": "ES5",
         "esModuleInterop": true,
         "lib": ["es2015", "DOM", "ES2019.Object"],
-        "outDir": "../../dist/bin",
+        "outDir": "../../dist/vite",
         "rootDir": "."
-    }
+    },
+    "references": [
+        {
+            "path": "../bin"
+        }
+    ]
 }
