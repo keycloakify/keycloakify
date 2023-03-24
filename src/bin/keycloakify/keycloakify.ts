@@ -38,7 +38,15 @@ export async function main() {
 
     const { doBundlesEmailTemplate } = await generateKeycloakThemeResources({
         keycloakThemeBuildingDirPath,
-        "emailThemeSrcDirPath": getEmailThemeSrcDirPath().emailThemeSrcDirPath,
+        "emailThemeSrcDirPath": (() => {
+            const { emailThemeSrcDirPath } = getEmailThemeSrcDirPath();
+
+            if (emailThemeSrcDirPath === undefined || !fs.existsSync(emailThemeSrcDirPath)) {
+                return;
+            }
+
+            return emailThemeSrcDirPath;
+        })(),
         "reactAppBuildDirPath": pathJoin(reactProjectDirPath, "build"),
         buildOptions,
         //We have to leave it at that otherwise we break our default theme.
