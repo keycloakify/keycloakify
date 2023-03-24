@@ -10,7 +10,6 @@ import { isInside } from "../tools/isInside";
 import type { BuildOptions } from "./BuildOptions";
 import { assert } from "tsafe/assert";
 import { Reflect } from "tsafe/Reflect";
-import { getLogger } from "../tools/logger";
 
 export type BuildOptionsLike = BuildOptionsLike.Standalone | BuildOptionsLike.ExternalAssets;
 
@@ -56,13 +55,11 @@ export namespace BuildOptionsLike {
 export async function generateKeycloakThemeResources(params: {
     reactAppBuildDirPath: string;
     keycloakThemeBuildingDirPath: string;
-    keycloakThemeEmailDirPath: string;
+    emailThemeSrcDirPath: string | undefined;
     keycloakVersion: string;
     buildOptions: BuildOptionsLike;
 }): Promise<{ doBundlesEmailTemplate: boolean }> {
-    const { reactAppBuildDirPath, keycloakThemeBuildingDirPath, keycloakThemeEmailDirPath, keycloakVersion, buildOptions } = params;
-
-    const logger = getLogger({ isSilent: buildOptions.isSilent });
+    const { reactAppBuildDirPath, keycloakThemeBuildingDirPath, emailThemeSrcDirPath, keycloakVersion, buildOptions } = params;
 
     const getThemeDirPath = (themeType: ThemeType | "email") =>
         pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", buildOptions.themeName, themeType);
@@ -228,13 +225,7 @@ export async function generateKeycloakThemeResources(params: {
     let doBundlesEmailTemplate: boolean;
 
     email: {
-        if (!fs.existsSync(keycloakThemeEmailDirPath)) {
-            logger.log(
-                [
-                    `Not bundling email template because ${pathBasename(keycloakThemeEmailDirPath)} does not exist`,
-                    `To start customizing the email template, run: 👉 npx create-keycloak-email-directory 👈`
-                ].join("\n")
-            );
+        if (emailThemeSrcDirPath === undefined) {
             doBundlesEmailTemplate = false;
             break email;
         }
@@ -242,7 +233,7 @@ export async function generateKeycloakThemeResources(params: {
         doBundlesEmailTemplate = true;
 
         transformCodebase({
-            "srcDirPath": keycloakThemeEmailDirPath,
+            "srcDirPath": emailThemeSrcDirPath,
             "destDirPath": getThemeDirPath("email")
         });
     }

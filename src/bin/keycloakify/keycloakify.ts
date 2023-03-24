@@ -9,12 +9,12 @@ import { getLogger } from "../tools/logger";
 import { getCliOptions } from "../tools/cliOptions";
 import jar from "../tools/jar";
 import { assert } from "tsafe/assert";
-import type { Equals } from "tsafe";
+import { Equals } from "tsafe";
+import { getEmailThemeSrcDirPath } from "../initialize-email-theme";
 
 const reactProjectDirPath = process.cwd();
 
 export const keycloakThemeBuildingDirPath = pathJoin(reactProjectDirPath, "build_keycloak");
-export const keycloakThemeEmailDirPath = pathJoin(reactProjectDirPath, "src", "keycloak-theme", "email");
 
 export async function main() {
     const { isSilent, hasExternalAssets } = getCliOptions(process.argv.slice(2));
@@ -38,7 +38,7 @@ export async function main() {
 
     const { doBundlesEmailTemplate } = await generateKeycloakThemeResources({
         keycloakThemeBuildingDirPath,
-        keycloakThemeEmailDirPath,
+        "emailThemeSrcDirPath": getEmailThemeSrcDirPath().emailThemeSrcDirPath,
         "reactAppBuildDirPath": pathJoin(reactProjectDirPath, "build"),
         buildOptions,
         //We have to leave it at that otherwise we break our default theme.
