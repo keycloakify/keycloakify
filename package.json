@@ -4,7 +4,7 @@
     "description": "Create Keycloak themes using React",
     "repository": {
         "type": "git",
-        "url": "git://github.com/inseefrlab/keycloakify.git"
+        "url": "git://github.com/keycloakify/keycloakify.git"
     },
     "main": "dist/index.js",
     "types": "dist/index.d.ts",

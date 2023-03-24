@@ -6,7 +6,7 @@ export const sampleReactProjectDirPath = pathJoin(getProjectRoot(), "sample_reac
 
 export async function setupSampleReactProject() {
     await downloadAndUnzip({
-        "url": "https://github.com/InseeFrLab/keycloakify/releases/download/v0.0.1/sample_build_dir_and_package_json.zip",
+        "url": "https://github.com/keycloakify/keycloakify/releases/download/v0.0.1/sample_build_dir_and_package_json.zip",
         "destDirPath": sampleReactProjectDirPath,
         "cacheDirPath": pathJoin(sampleReactProjectDirPath, "build_keycloak", ".cache"),
         "isSilent": false

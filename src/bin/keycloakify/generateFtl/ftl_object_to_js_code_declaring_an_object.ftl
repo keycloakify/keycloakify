@@ -164,9 +164,9 @@
                         key == "updateProfileCtx" && 
                         are_same_path(path, [])
                     ) || (
-                        <#-- https://github.com/InseeFrLab/keycloakify/pull/65#issuecomment-991896344 (reports with saml-post-form.ftl) -->
-                        <#-- https://github.com/InseeFrLab/keycloakify/issues/91#issue-1212319466 (reports with error.ftl and Kc18) -->
-                        <#-- https://github.com/InseeFrLab/keycloakify/issues/109#issuecomment-1134610163 -->
+                        <#-- https://github.com/keycloakify/keycloakify/pull/65#issuecomment-991896344 (reports with saml-post-form.ftl) -->
+                        <#-- https://github.com/keycloakify/keycloakify/issues/91#issue-1212319466 (reports with error.ftl and Kc18) -->
+                        <#-- https://github.com/keycloakify/keycloakify/issues/109#issuecomment-1134610163 -->
                         key == "loginAction" && 
                         are_same_path(path, ["url"]) && 
                         ["saml-post-form.ftl", "error.ftl", "info.ftl"]?seq_contains(pageId) &&
