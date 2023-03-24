@@ -7,7 +7,7 @@ setupSampleReactProject();
 generateKeycloakThemeResources({
     "reactAppBuildDirPath": pathJoin(sampleReactProjectDirPath, "build"),
     "keycloakThemeBuildingDirPath": pathJoin(sampleReactProjectDirPath, "build_keycloak_theme"),
-    "keycloakThemeEmailDirPath": pathJoin(sampleReactProjectDirPath, "keycloak_email"),
+    "emailThemeSrcDirPath": undefined,
     "keycloakVersion": "11.0.3",
     "buildOptions": {
         "themeName": "keycloakify-demo-app",
