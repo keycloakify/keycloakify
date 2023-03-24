@@ -15,7 +15,9 @@ const reactProjectDirPath = process.cwd();
 const themeSrcDirBasename = "keycloak-theme";
 
 function getThemeSrcDirPath() {
-    const themeSrcDirPath: string | undefined = crawl(pathJoin(reactProjectDirPath, "src"))
+    const srcDirPath = pathJoin(reactProjectDirPath, "src");
+
+    const themeSrcDirPath: string | undefined = crawl(srcDirPath)
         .map(fileRelativePath => {
             const split = fileRelativePath.split(themeSrcDirBasename);
 
@@ -23,7 +25,7 @@ function getThemeSrcDirPath() {
                 return undefined;
             }
 
-            return split[0] + themeSrcDirBasename;
+            return pathJoin(srcDirPath, split[0] + themeSrcDirBasename);
         })
         .filter(exclude(undefined))[0];
     return { themeSrcDirPath };
