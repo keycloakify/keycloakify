@@ -49,10 +49,7 @@ export async function main() {
         })(),
         "reactAppBuildDirPath": pathJoin(reactProjectDirPath, "build"),
         buildOptions,
-        //We have to leave it at that otherwise we break our default theme.
-        //Problem is that we can`t guarantee that the the old resources
-        //will still be available on the newer keycloak version.
-        "keycloakVersion": "11.0.3"
+        "keycloakVersion": buildOptions.keycloakVersionDefaultAssets
     });
 
     const { jarFilePath } = generateJavaStackFiles({

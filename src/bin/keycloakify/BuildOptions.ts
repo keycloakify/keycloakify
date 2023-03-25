@@ -22,6 +22,7 @@ type ParsedPackageJson = {
         artifactId?: string;
         groupId?: string;
         bundler?: Bundler;
+        keycloakVersionDefaultAssets?: string;
     };
 };
 
@@ -38,7 +39,8 @@ const zParsedPackageJson = z.object({
             "areAppAndKeycloakServerSharingSameDomain": z.boolean().optional(),
             "artifactId": z.string().optional(),
             "groupId": z.string().optional(),
-            "bundler": z.enum(bundlers).optional()
+            "bundler": z.enum(bundlers).optional(),
+            "keycloakVersionDefaultAssets": z.string().optional()
         })
         .optional()
 });
@@ -59,6 +61,7 @@ export namespace BuildOptions {
         groupId: string;
         artifactId: string;
         bundler: Bundler;
+        keycloakVersionDefaultAssets: string;
     };
 
     export type Standalone = Common & {
@@ -125,7 +128,8 @@ export function readBuildOptions(params: {
     const common: BuildOptions.Common = (() => {
         const { name, keycloakify = {}, version, homepage } = parsedPackageJson;
 
-        const { extraPages, extraLoginPages, extraAccountPages, extraThemeProperties, groupId, artifactId, bundler } = keycloakify ?? {};
+        const { extraPages, extraLoginPages, extraAccountPages, extraThemeProperties, groupId, artifactId, bundler, keycloakVersionDefaultAssets } =
+            keycloakify ?? {};
 
         const themeName = name
             .replace(/^@(.*)/, "$1")
@@ -167,7 +171,8 @@ export function readBuildOptions(params: {
             "extraLoginPages": [...(extraPages ?? []), ...(extraLoginPages ?? [])],
             extraAccountPages,
             extraThemeProperties,
-            isSilent
+            isSilent,
+            "keycloakVersionDefaultAssets": keycloakVersionDefaultAssets ?? "11.0.3"
         };
     })();
 
