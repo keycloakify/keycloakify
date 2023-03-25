@@ -7,37 +7,7 @@ import { promptKeycloakVersion } from "./promptKeycloakVersion";
 import * as fs from "fs";
 import { getCliOptions } from "./tools/cliOptions";
 import { getLogger } from "./tools/logger";
-import { crawl } from "./tools/crawl";
-import { exclude } from "tsafe/exclude";
-
-const reactProjectDirPath = process.cwd();
-
-const themeSrcDirBasename = "keycloak-theme";
-
-function getThemeSrcDirPath() {
-    const srcDirPath = pathJoin(reactProjectDirPath, "src");
-
-    const themeSrcDirPath: string | undefined = crawl(srcDirPath)
-        .map(fileRelativePath => {
-            const split = fileRelativePath.split(themeSrcDirBasename);
-
-            if (split.length !== 2) {
-                return undefined;
-            }
-
-            return pathJoin(srcDirPath, split[0] + themeSrcDirBasename);
-        })
-        .filter(exclude(undefined))[0];
-
-    if (themeSrcDirBasename === undefined) {
-        if (fs.existsSync(pathJoin(srcDirPath, "login")) || fs.existsSync(pathJoin(srcDirPath, "account"))) {
-            return { "themeSrcDirPath": srcDirPath };
-        }
-        return { "themeSrcDirPath": undefined };
-    }
-
-    return { themeSrcDirPath };
-}
+import { getThemeSrcDirPath } from "./getThemeSrcDirPath";
 
 export function getEmailThemeSrcDirPath() {
     const { themeSrcDirPath } = getThemeSrcDirPath();
@@ -54,7 +24,7 @@ async function main() {
     const { emailThemeSrcDirPath } = getEmailThemeSrcDirPath();
 
     if (emailThemeSrcDirPath === undefined) {
-        logger.warn(`Couldn't locate you ${themeSrcDirBasename} directory`);
+        logger.warn("Couldn't locate your theme source directory");
 
         process.exit(-1);
     }
