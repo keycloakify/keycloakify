@@ -7,6 +7,8 @@ export default function tee(input: Readable) {
     let aFull = false;
     let bFull = false;
 
+    a.setMaxListeners(Infinity);
+
     a.on("drain", () => {
         aFull = false;
         if (!aFull && !bFull) input.resume();
