@@ -22,7 +22,7 @@ export function getThemeSrcDirPath() {
         })
         .filter(exclude(undefined))[0];
 
-    if (themeSrcDirBasename === undefined) {
+    if (themeSrcDirPath === undefined) {
         if (fs.existsSync(pathJoin(srcDirPath, "login")) || fs.existsSync(pathJoin(srcDirPath, "account"))) {
             return { "themeSrcDirPath": srcDirPath };
         }
