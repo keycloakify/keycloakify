@@ -30,10 +30,10 @@ function getThemeSrcDirPath() {
         .filter(exclude(undefined))[0];
 
     if (themeSrcDirBasename === undefined) {
-        if (!fs.existsSync(pathJoin(srcDirPath, "kcContext.ts"))) {
-            return { "themeSrcDirPath": undefined };
+        if (fs.existsSync(pathJoin(srcDirPath, "login")) || fs.existsSync(pathJoin(srcDirPath, "account"))) {
+            return { "themeSrcDirPath": srcDirPath };
         }
-        return { "themeSrcDirPath": srcDirPath };
+        return { "themeSrcDirPath": undefined };
     }
 
     return { themeSrcDirPath };
