@@ -28,6 +28,14 @@ function getThemeSrcDirPath() {
             return pathJoin(srcDirPath, split[0] + themeSrcDirBasename);
         })
         .filter(exclude(undefined))[0];
+
+    if (themeSrcDirBasename === undefined) {
+        if (!fs.existsSync(pathJoin(srcDirPath, "kcContext.ts"))) {
+            return { "themeSrcDirPath": undefined };
+        }
+        return { "themeSrcDirPath": srcDirPath };
+    }
+
     return { themeSrcDirPath };
 }
 
