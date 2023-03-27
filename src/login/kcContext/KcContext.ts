@@ -185,7 +185,7 @@ export declare namespace KcContext {
         };
         url: {
             loginResetCredentialsUrl: string;
-        }
+        };
     };
 
     export type LoginVerifyEmail = Common & {
