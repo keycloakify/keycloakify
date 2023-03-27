@@ -183,6 +183,9 @@ export declare namespace KcContext {
         realm: {
             loginWithEmailAllowed: boolean;
         };
+        url: {
+            loginResetCredentialsUrl: string;
+        }
     };
 
     export type LoginVerifyEmail = Common & {

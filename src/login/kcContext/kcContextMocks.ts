@@ -329,7 +329,8 @@ export const kcContextMocks: KcContext[] = [
         "realm": {
             ...kcContextCommonMock.realm,
             "loginWithEmailAllowed": false
-        }
+        },
+        url: loginUrl
     }),
     id<KcContext.LoginVerifyEmail>({
         ...kcContextCommonMock,
