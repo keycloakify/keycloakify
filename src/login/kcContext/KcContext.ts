@@ -30,7 +30,8 @@ export type KcContext =
     | KcContext.LoginConfigTotp
     | KcContext.LogoutConfirm
     | KcContext.UpdateUserProfile
-    | KcContext.IdpReviewUserProfile;
+    | KcContext.IdpReviewUserProfile
+    | KcContext.UpdateEmail;
 
 export declare namespace KcContext {
     export type Common = {
@@ -379,6 +380,13 @@ export declare namespace KcContext {
             context: "IDP_REVIEW";
             attributes: Attribute[];
             attributesByName: Record<string, Attribute>;
+        };
+    };
+
+    export type UpdateEmail = Common & {
+        pageId: "update-email.ftl";
+        email: {
+            value?: string;
         };
     };
 }
