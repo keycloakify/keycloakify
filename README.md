@@ -36,6 +36,8 @@
     <img src="https://user-images.githubusercontent.com/6702424/110260457-a1c3d380-7fac-11eb-853a-80459b65626b.png">
 </p>
 
+The more ⭐️ the project gets, the more time I spend improving and maintaining it. Thank you for your support 😊
+
 > 🗣 V7 have been released 🎉  
 > [It features major improvements](https://github.com/keycloakify/keycloakify#70-).  
 > Checkout [the migration guide](https://docs.keycloakify.dev/migration-guides/v6-greater-than-v7).
