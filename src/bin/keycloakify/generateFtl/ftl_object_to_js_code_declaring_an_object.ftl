@@ -13,7 +13,8 @@
             "totp", "totpSecret", "SAMLRequest", "SAMLResponse", "relayState", "device_user_code", "code", 
             "password-new", "rememberMe", "login", "authenticationExecution", "cancel-aia", "clientDataJSON", 
             "authenticatorData", "signature", "credentialId", "userHandle", "error", "authn_use_chk", "authenticationExecution", 
-            "isSetRetry", "try-again", "attestationObject", "publicKeyCredentialId", "authenticatorLabel"
+            "isSetRetry", "try-again", "attestationObject", "publicKeyCredentialId", "authenticatorLabel",
+            "location", "occupation"
         ]>
     
         <#attempt>
