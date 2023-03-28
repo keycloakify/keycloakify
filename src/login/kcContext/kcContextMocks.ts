@@ -491,5 +491,12 @@ export const kcContextMocks: KcContext[] = [
             attributes,
             attributesByName
         }
+    }),
+    id<KcContext.UpdateEmail>({
+        ...kcContextCommonMock,
+        "pageId": "update-email.ftl",
+        "email": {
+            value: "email@example.com"
+        }
     })
 ];

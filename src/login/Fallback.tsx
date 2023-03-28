@@ -25,6 +25,7 @@ const LoginConfigTotp = lazy(() => import("keycloakify/login/pages/LoginConfigTo
 const LogoutConfirm = lazy(() => import("keycloakify/login/pages/LogoutConfirm"));
 const UpdateUserProfile = lazy(() => import("keycloakify/login/pages/UpdateUserProfile"));
 const IdpReviewUserProfile = lazy(() => import("keycloakify/login/pages/IdpReviewUserProfile"));
+const UpdateEmail = lazy(() => import("keycloakify/login/pages/UpdateEmail"));
 
 export default function Fallback(props: PageProps<KcContext, I18n>) {
     const { kcContext, ...rest } = props;
@@ -75,6 +76,8 @@ export default function Fallback(props: PageProps<KcContext, I18n>) {
                         return <UpdateUserProfile kcContext={kcContext} {...rest} />;
                     case "idp-review-user-profile.ftl":
                         return <IdpReviewUserProfile kcContext={kcContext} {...rest} />;
+                    case "update-email.ftl":
+                        return <UpdateEmail kcContext={kcContext} {...rest} />;
                 }
                 assert<Equals<typeof kcContext, never>>(false);
             })()}
