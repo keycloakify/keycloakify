@@ -1,6 +1,6 @@
-import type { KcContext } from "./KcContext";
 import type { AndByDiscriminatingKey } from "keycloakify/tools/AndByDiscriminatingKey";
 import { ftlValuesGlobalName } from "keycloakify/bin/keycloakify/ftlValuesGlobalName";
+import type { KcContext } from "./KcContext";
 
 export type ExtendKcContext<KcContextExtension extends { pageId: string }> = [KcContextExtension] extends [never]
     ? KcContext

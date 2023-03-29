@@ -1,27 +1,43 @@
 #!/usr/bin/env node
 
 import { downloadBuiltinKeycloakTheme } from "./download-builtin-keycloak-theme";
-import { keycloakThemeEmailDirPath } from "./keycloakify";
 import { join as pathJoin, relative as pathRelative } from "path";
 import { transformCodebase } from "./tools/transformCodebase";
 import { promptKeycloakVersion } from "./promptKeycloakVersion";
 import * as fs from "fs";
 import { getCliOptions } from "./tools/cliOptions";
 import { getLogger } from "./tools/logger";
+import { getThemeSrcDirPath } from "./getThemeSrcDirPath";
 
-(async () => {
+export function getEmailThemeSrcDirPath() {
+    const { themeSrcDirPath } = getThemeSrcDirPath();
+
+    const emailThemeSrcDirPath = themeSrcDirPath === undefined ? undefined : pathJoin(themeSrcDirPath, "email");
+
+    return { emailThemeSrcDirPath };
+}
+
+async function main() {
     const { isSilent } = getCliOptions(process.argv.slice(2));
     const logger = getLogger({ isSilent });
 
-    if (fs.existsSync(keycloakThemeEmailDirPath)) {
-        logger.warn(`There is already a ${pathRelative(process.cwd(), keycloakThemeEmailDirPath)} directory in your project. Aborting.`);
+    const { emailThemeSrcDirPath } = getEmailThemeSrcDirPath();
+
+    if (emailThemeSrcDirPath === undefined) {
+        logger.warn("Couldn't locate your theme source directory");
+
+        process.exit(-1);
+    }
+
+    if (fs.existsSync(emailThemeSrcDirPath)) {
+        logger.warn(`There is already a ${pathRelative(process.cwd(), emailThemeSrcDirPath)} directory in your project. Aborting.`);
 
         process.exit(-1);
     }
 
     const { keycloakVersion } = await promptKeycloakVersion();
 
-    const builtinKeycloakThemeTmpDirPath = pathJoin(keycloakThemeEmailDirPath, "..", "tmp_xIdP3_builtin_keycloak_theme");
+    const builtinKeycloakThemeTmpDirPath = pathJoin(emailThemeSrcDirPath, "..", "tmp_xIdP3_builtin_keycloak_theme");
 
     await downloadBuiltinKeycloakTheme({
         keycloakVersion,
@@ -31,18 +47,20 @@ import { getLogger } from "./tools/logger";
 
     transformCodebase({
         "srcDirPath": pathJoin(builtinKeycloakThemeTmpDirPath, "base", "email"),
-        "destDirPath": keycloakThemeEmailDirPath
+        "destDirPath": emailThemeSrcDirPath
     });
 
     {
-        const themePropertyFilePath = pathJoin(keycloakThemeEmailDirPath, "theme.properties");
+        const themePropertyFilePath = pathJoin(emailThemeSrcDirPath, "theme.properties");
 
         fs.writeFileSync(themePropertyFilePath, Buffer.from(`parent=base\n${fs.readFileSync(themePropertyFilePath).toString("utf8")}`, "utf8"));
     }
 
-    logger.log(
-        `${pathRelative(process.cwd(), keycloakThemeEmailDirPath)} ready to be customized, feel free to remove every file you do not customize`
-    );
+    logger.log(`${pathRelative(process.cwd(), emailThemeSrcDirPath)} ready to be customized, feel free to remove every file you do not customize`);
 
     fs.rmSync(builtinKeycloakThemeTmpDirPath, { "recursive": true, "force": true });
-})();
+}
+
+if (require.main === module) {
+    main();
+}

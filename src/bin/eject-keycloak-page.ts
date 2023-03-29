@@ -16,6 +16,7 @@ import { existsSync } from "fs";
 import { join as pathJoin, relative as pathRelative } from "path";
 import { kebabCaseToCamelCase } from "./tools/kebabCaseToSnakeCase";
 import { assert, Equals } from "tsafe/assert";
+import { getThemeSrcDirPath } from "./getThemeSrcDirPath";
 
 (async () => {
     const projectRootDir = getProjectRoot();
@@ -50,7 +51,13 @@ import { assert, Equals } from "tsafe/assert";
 
     const pageBasename = capitalize(kebabCaseToCamelCase(pageId)).replace(/ftl$/, "tsx");
 
-    const targetFilePath = pathJoin(process.cwd(), "src", "keycloak-theme", themeType, "pages", pageBasename);
+    const { themeSrcDirPath } = getThemeSrcDirPath();
+
+    if (themeSrcDirPath === undefined) {
+        throw new Error("Couldn't locate your theme sources");
+    }
+
+    const targetFilePath = pathJoin(themeSrcDirPath, themeType, "pages", pageBasename);
 
     if (existsSync(targetFilePath)) {
         console.log(`${pageId} is already ejected, ${pathRelative(process.cwd(), targetFilePath)} already exists`);

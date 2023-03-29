@@ -30,7 +30,8 @@ export type KcContext =
     | KcContext.LoginConfigTotp
     | KcContext.LogoutConfirm
     | KcContext.UpdateUserProfile
-    | KcContext.IdpReviewUserProfile;
+    | KcContext.IdpReviewUserProfile
+    | KcContext.UpdateEmail;
 
 export declare namespace KcContext {
     export type Common = {
@@ -101,7 +102,8 @@ export declare namespace KcContext {
         registrationDisabled: boolean;
         login: {
             username?: string;
-            rememberMe?: boolean;
+            rememberMe?: string;
+            password?: string;
         };
         usernameEditDisabled: boolean;
         social: {
@@ -182,6 +184,9 @@ export declare namespace KcContext {
         realm: {
             loginWithEmailAllowed: boolean;
         };
+        url: {
+            loginResetCredentialsUrl: string;
+        };
     };
 
     export type LoginVerifyEmail = Common & {
@@ -219,7 +224,7 @@ export declare namespace KcContext {
         registrationDisabled: boolean;
         login: {
             username?: string;
-            rememberMe?: boolean;
+            rememberMe?: string;
         };
         usernameHidden?: boolean;
         social: {
@@ -375,6 +380,13 @@ export declare namespace KcContext {
             context: "IDP_REVIEW";
             attributes: Attribute[];
             attributesByName: Record<string, Attribute>;
+        };
+    };
+
+    export type UpdateEmail = Common & {
+        pageId: "update-email.ftl";
+        email: {
+            value?: string;
         };
     };
 }

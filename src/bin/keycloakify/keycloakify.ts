@@ -1,6 +1,6 @@
 import { generateKeycloakThemeResources } from "./generateKeycloakThemeResources";
 import { generateJavaStackFiles } from "./generateJavaStackFiles";
-import { join as pathJoin, relative as pathRelative, basename as pathBasename } from "path";
+import { join as pathJoin, relative as pathRelative, basename as pathBasename, sep as pathSep } from "path";
 import * as child_process from "child_process";
 import { generateStartKeycloakTestingContainer } from "./generateStartKeycloakTestingContainer";
 import * as fs from "fs";
@@ -9,12 +9,12 @@ import { getLogger } from "../tools/logger";
 import { getCliOptions } from "../tools/cliOptions";
 import jar from "../tools/jar";
 import { assert } from "tsafe/assert";
-import type { Equals } from "tsafe";
+import { Equals } from "tsafe";
+import { getEmailThemeSrcDirPath } from "../initialize-email-theme";
 
 const reactProjectDirPath = process.cwd();
 
 export const keycloakThemeBuildingDirPath = pathJoin(reactProjectDirPath, "build_keycloak");
-export const keycloakThemeEmailDirPath = pathJoin(reactProjectDirPath, "src", "keycloak-theme", "email");
 
 export async function main() {
     const { isSilent, hasExternalAssets } = getCliOptions(process.argv.slice(2));
@@ -38,13 +38,18 @@ export async function main() {
 
     const { doBundlesEmailTemplate } = await generateKeycloakThemeResources({
         keycloakThemeBuildingDirPath,
-        keycloakThemeEmailDirPath,
+        "emailThemeSrcDirPath": (() => {
+            const { emailThemeSrcDirPath } = getEmailThemeSrcDirPath();
+
+            if (emailThemeSrcDirPath === undefined || !fs.existsSync(emailThemeSrcDirPath)) {
+                return;
+            }
+
+            return emailThemeSrcDirPath;
+        })(),
         "reactAppBuildDirPath": pathJoin(reactProjectDirPath, "build"),
         buildOptions,
-        //We have to leave it at that otherwise we break our default theme.
-        //Problem is that we can't guarantee that the the old resources
-        //will still be available on the newer keycloak version.
-        "keycloakVersion": "11.0.3"
+        "keycloakVersion": buildOptions.keycloakVersionDefaultAssets
     });
 
     const { jarFilePath } = generateJavaStackFiles({
@@ -121,19 +126,31 @@ export async function main() {
             "",
             `To test your theme locally you can spin up a Keycloak ${containerKeycloakVersion} container image with the theme pre loaded by running:`,
             "",
-            `👉 $ ./${pathRelative(reactProjectDirPath, pathJoin(keycloakThemeBuildingDirPath, generateStartKeycloakTestingContainer.basename))} 👈`,
+            `👉 $ .${pathSep}${pathRelative(
+                reactProjectDirPath,
+                pathJoin(keycloakThemeBuildingDirPath, generateStartKeycloakTestingContainer.basename)
+            )} 👈`,
             "",
-            "Test with different Keycloak versions by editing the .sh file. see available versions here: https://quay.io/repository/keycloak/keycloak?tab=tags",
-            "",
-            "Once your container is up and running: ",
+            `Test with different Keycloak versions by editing the .sh file. see available versions here: https://quay.io/repository/keycloak/keycloak?tab=tags`,
+            ``,
+            `Once your container is up and running: `,
             "- Log into the admin console 👉 http://localhost:8080/admin username: admin, password: admin 👈",
-            '- Create a realm named "myrealm"',
-            '- Create a client with ID: "myclient", "Root URL": "https://www.keycloak.org/app/" and "Valid redirect URIs": "https://www.keycloak.org/app/*"',
-            `- Select Login Theme: ${buildOptions.themeName} (don't forget to save at the bottom of the page)`,
-            `- Go to 👉 https://www.keycloak.org/app/ 👈 Click "Save" then "Sign in". You should see your login page`,
-            "",
-            "Video demoing this process: https://youtu.be/N3wlBoH4hKg",
-            ""
+            `- Create a realm:                  myrealm`,
+            `- Enable registration:             Realm settings -> Login tab  -> User registration: on`,
+            `- Enable the Account theme:        Realm settings -> Themes tab -> Account theme, select ${buildOptions.themeName} `,
+            `- Create a client id               myclient`,
+            `  Root URL:                        https://www.keycloak.org/app/`,
+            `  Valid redirect URIs:             https://www.keycloak.org/app* http://localhost* (localhost is optional)`,
+            `  Valid post logout redirect URIs: https://www.keycloak.org/app* http://localhost*`,
+            `  Web origins:                     *`,
+            `  Login Theme:                     ${buildOptions.themeName}`,
+            `  Save (button at the bottom of the page)`,
+            ``,
+            `- Go to  👉  https://www.keycloak.org/app/ 👈 Click "Save" then "Sign in". You should see your login page`,
+            `- Got to 👉  http://localhost:8080/realms/myrealm/account 👈 to see your account theme`,
+            ``,
+            `Video tutorial: https://youtu.be/WMyGZNHQkjU`,
+            ``
         ].join("\n")
     );
 }

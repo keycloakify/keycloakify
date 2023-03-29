@@ -14,7 +14,7 @@
     <a href="https://github.com/garronej/keycloakify/blob/main/LICENSE">
       <img src="https://img.shields.io/npm/l/keycloakify">
     </a>
-    <a href="https://github.com/InseeFrLab/keycloakify/blob/729503fe31a155a823f46dd66ad4ff34ca274e0a/tsconfig.json#L14">
+    <a href="https://github.com/keycloakify/keycloakify/blob/729503fe31a155a823f46dd66ad4ff34ca274e0a/tsconfig.json#L14">
         <img src="https://camo.githubusercontent.com/0f9fcc0ac1b8617ad4989364f60f78b2d6b32985ad6a508f215f14d8f897b8d3/68747470733a2f2f62616467656e2e6e65742f62616467652f547970655363726970742f7374726963742532302546302539462539322541412f626c7565">
     </a>
     <a href="https://github.com/thomasdarimont/awesome-keycloak">
@@ -25,6 +25,8 @@
         -
         <a href="https://docs.keycloakify.dev">Documentation</a>
         -
+        <a href="https://storybook.keycloakify.dev/storybook">Storybook</a>
+        -
         <a href="https://github.com/codegouvfr/keycloakify-starter">Starter project</a>
     </p>
 </p>
@@ -34,15 +36,25 @@
     <img src="https://user-images.githubusercontent.com/6702424/110260457-a1c3d380-7fac-11eb-853a-80459b65626b.png">
 </p>
 
-> 🗣 V6 have been released 🎉  
-> [It features major improvements](https://github.com/InseeFrLab/keycloakify#600).  
-> Checkout [the migration guide](https://docs.keycloakify.dev/v5-to-v6).
+The more ⭐️ the project gets, the more time I spend improving and maintaining it. Thank you for your support 😊
+
+> 🗣 V7 have been released 🎉  
+> [It features major improvements](https://github.com/keycloakify/keycloakify#70-).  
+> Checkout [the migration guide](https://docs.keycloakify.dev/migration-guides/v6-greater-than-v7).
 
 # Changelog highlights
 
+## 7.0 🍾
+
+-   Account theme support 🚀
+-   It's much easier to customize pages at the CSS level, you can now see in the browser dev tool the customizable classes.
+-   New interactive CLI tool `npx eject-keycloak-page`, that enables to select the page you want to customize at the component level.
+-   There is [a Storybook](https://storybook.keycloakify.dev)
+-   [Remember me is fixed](https://github.com/keycloakify/keycloakify/pull/272)
+
 ## 6.13
 
--   Build work behind corporate proxies, [see issue](https://github.com/InseeFrLab/keycloakify/issues/257).
+-   Build work behind corporate proxies, [see issue](https://github.com/keycloakify/keycloakify/issues/257).
 
 ## 6.12
 
@@ -55,13 +67,13 @@ Massive improvement in the developer experience:
 
 ## 6.11.4
 
--   You no longer need to have Maven installed to build the theme. Thanks to @lordvlad, [see PR](https://github.com/InseeFrLab/keycloakify/pull/239).
+-   You no longer need to have Maven installed to build the theme. Thanks to @lordvlad, [see PR](https://github.com/keycloakify/keycloakify/pull/239).
 -   Feature new build options: [`bundler`](https://docs.keycloakify.dev/build-options#keycloakify.bundler), [`groupId`](https://docs.keycloakify.dev/build-options#keycloakify.groupid), [`artifactId`](https://docs.keycloakify.dev/build-options#keycloakify.artifactid), [`version`](https://docs.keycloakify.dev/build-options#version).  
     Theses options can be user to customize the output name of the .jar. You can use environnement variables to overrides the values read in the package.json. Thanks to @lordvlad.
 
 ## 6.10.0
 
--   Widows compat (thanks to @lordvlad, [see PR](https://github.com/InseeFrLab/keycloakify/pull/226)). WSL is no longer required 🎉
+-   Widows compat (thanks to @lordvlad, [see PR](https://github.com/keycloakify/keycloakify/pull/226)). WSL is no longer required 🎉
 
 ## 6.8.4
 
@@ -71,19 +83,19 @@ Massive improvement in the developer experience:
 
 -   It is now possible to pass a custom `<Template />` component as a prop to `<KcApp />` and every
     individual page (`<Login />`, `<RegisterUserProfile />`, ...) it enables to customize only the header and footer for
-    example without having to switch to a full-component level customization. [See issue](https://github.com/InseeFrLab/keycloakify/issues/191).
+    example without having to switch to a full-component level customization. [See issue](https://github.com/keycloakify/keycloakify/issues/191).
 
 ## 6.7.0
 
--   Add support for `webauthn-authenticate.ftl` thanks to [@mstrodl](https://github.com/Mstrodl)'s hacktoberfest [PR](https://github.com/InseeFrLab/keycloakify/pull/185).
+-   Add support for `webauthn-authenticate.ftl` thanks to [@mstrodl](https://github.com/Mstrodl)'s hacktoberfest [PR](https://github.com/keycloakify/keycloakify/pull/185).
 
 ## 6.6.0
 
--   Add support for `login-password.ftl` thanks to [@mstrodl](https://github.com/Mstrodl)'s hacktoberfest [PR](https://github.com/InseeFrLab/keycloakify/pull/184).
+-   Add support for `login-password.ftl` thanks to [@mstrodl](https://github.com/Mstrodl)'s hacktoberfest [PR](https://github.com/keycloakify/keycloakify/pull/184).
 
 ## 6.5.0
 
--   Add support for `login-username.ftl` thanks to [@mstrodl](https://github.com/Mstrodl)'s hacktoberfest [PR](https://github.com/InseeFrLab/keycloakify/pull/183).
+-   Add support for `login-username.ftl` thanks to [@mstrodl](https://github.com/Mstrodl)'s hacktoberfest [PR](https://github.com/keycloakify/keycloakify/pull/183).
 
 ## 6.4.0
 
@@ -102,11 +114,11 @@ Checkout [the migration guide](https://docs.keycloakify.dev/v5-to-v6)
 
 ## 5.8.0
 
--   [React.lazy()](https://reactjs.org/docs/code-splitting.html#reactlazy) support 🎉. [#141](https://github.com/InseeFrLab/keycloakify/issues/141)
+-   [React.lazy()](https://reactjs.org/docs/code-splitting.html#reactlazy) support 🎉. [#141](https://github.com/keycloakify/keycloakify/issues/141)
 
 ## 5.7.0
 
--   Feat `logout-confirm.ftl`. [PR](https://github.com/InseeFrLab/keycloakify/pull/120)
+-   Feat `logout-confirm.ftl`. [PR](https://github.com/keycloakify/keycloakify/pull/120)
 
 ## 5.6.4
 
@@ -114,7 +126,7 @@ Fix `login-verify-email.ftl` page. [Before](https://user-images.githubuserconten
 
 ## v5.6.0
 
-Add support for `login-config-totp.ftl` page [#127](https://github.com/InseeFrLab/keycloakify/pull/127).
+Add support for `login-config-totp.ftl` page [#127](https://github.com/keycloakify/keycloakify/pull/127).
 
 ## v5.3.0
 
@@ -129,7 +141,7 @@ Import of terms and services have changed. [See example](https://github.com/garr
 
 ## v4.10.0
 
-Add `login-idp-link-email.ftl` page [See PR](https://github.com/InseeFrLab/keycloakify/pull/92).
+Add `login-idp-link-email.ftl` page [See PR](https://github.com/keycloakify/keycloakify/pull/92).
 
 ## v4.8.0
 
@@ -142,7 +154,7 @@ Add `login-idp-link-email.ftl` page [See PR](https://github.com/InseeFrLab/keycl
 ## v4.7.2
 
 > WARNING: This is broken.  
-> Testing with local Keycloak container working with M1 Mac. Thanks to [@eduardosanzb](https://github.com/InseeFrLab/keycloakify/issues/43#issuecomment-975699658).  
+> Testing with local Keycloak container working with M1 Mac. Thanks to [@eduardosanzb](https://github.com/keycloakify/keycloakify/issues/43#issuecomment-975699658).  
 > Be aware: When running M1s you are testing with Keycloak v15 else the local container spun will be a Keycloak v16.1.0.
 
 ## v4.7.0
@@ -176,12 +188,12 @@ Change [this](https://github.com/garronej/keycloakify-demo-app/blob/df664c13c77c
 
 No breaking changes except that `@emotion/react`, [`tss-react`](https://www.npmjs.com/package/tss-react) and [`powerhooks`](https://www.npmjs.com/package/powerhooks) are now `peerDependencies` instead of being just dependencies.  
 It's important to avoid problem when using `keycloakify` alongside [`mui`](https://mui.com) and
-[when passing params from the app to the login page](https://github.com/InseeFrLab/keycloakify#implement-context-persistence-optional).
+[when passing params from the app to the login page](https://github.com/keycloakify/keycloakify#implement-context-persistence-optional).
 
 ## v2.5
 
--   Feature [Use advanced message](https://github.com/InseeFrLab/keycloakify/blob/59f106bf9e210b63b190826da2bf5f75fc8b7644/src/lib/i18n/useKcMessage.tsx#L53-L66)
-    and [`messagesPerFields`](https://github.com/InseeFrLab/keycloakify/blob/59f106bf9e210b63b190826da2bf5f75fc8b7644/src/lib/getKcContext/KcContextBase.ts#L70-L75) (implementation [here](https://github.com/InseeFrLab/keycloakify/blob/59f106bf9e210b63b190826da2bf5f75fc8b7644/src/bin/build-keycloak-theme/generateFtl/common.ftl#L130-L189))
+-   Feature [Use advanced message](https://github.com/keycloakify/keycloakify/blob/59f106bf9e210b63b190826da2bf5f75fc8b7644/src/lib/i18n/useKcMessage.tsx#L53-L66)
+    and [`messagesPerFields`](https://github.com/keycloakify/keycloakify/blob/59f106bf9e210b63b190826da2bf5f75fc8b7644/src/lib/getKcContext/KcContextBase.ts#L70-L75) (implementation [here](https://github.com/keycloakify/keycloakify/blob/59f106bf9e210b63b190826da2bf5f75fc8b7644/src/bin/build-keycloak-theme/generateFtl/common.ftl#L130-L189))
 -   Test container now uses Keycloak version `15.0.2`.
 
 ## v2

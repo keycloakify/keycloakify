@@ -10,7 +10,11 @@ export declare namespace AndByDiscriminatingKey {
         U1,
         U1Again extends Record<DiscriminatingKey, string>,
         U2 extends Record<DiscriminatingKey, string>
-    > = U1 extends Pick<U2, DiscriminatingKey> ? Tf2<DiscriminatingKey, U1, U2, U1Again> : U1;
+    > = U1 extends Pick<U2, DiscriminatingKey>
+        ? Tf2<DiscriminatingKey, U1, U2, U1Again>
+        : U1Again[DiscriminatingKey] & U2[DiscriminatingKey] extends never
+        ? U1 | U2
+        : U1;
 
     export type Tf2<
         DiscriminatingKey extends string,

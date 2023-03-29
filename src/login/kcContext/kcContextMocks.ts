@@ -260,9 +260,7 @@ export const kcContextMocks: KcContext[] = [
             "displayInfo": true
         },
         "usernameEditDisabled": false,
-        "login": {
-            "rememberMe": false
-        },
+        "login": {},
         "registrationDisabled": false
     }),
     ...(() => {
@@ -331,7 +329,8 @@ export const kcContextMocks: KcContext[] = [
         "realm": {
             ...kcContextCommonMock.realm,
             "loginWithEmailAllowed": false
-        }
+        },
+        url: loginUrl
     }),
     id<KcContext.LoginVerifyEmail>({
         ...kcContextCommonMock,
@@ -376,9 +375,7 @@ export const kcContextMocks: KcContext[] = [
             "displayInfo": true
         },
         "usernameHidden": false,
-        "login": {
-            "rememberMe": false
-        },
+        "login": {},
         "registrationDisabled": false
     }),
     id<KcContext.LoginPassword>({
@@ -493,6 +490,13 @@ export const kcContextMocks: KcContext[] = [
             context: "IDP_REVIEW",
             attributes,
             attributesByName
+        }
+    }),
+    id<KcContext.UpdateEmail>({
+        ...kcContextCommonMock,
+        "pageId": "update-email.ftl",
+        "email": {
+            value: "email@example.com"
         }
     })
 ];

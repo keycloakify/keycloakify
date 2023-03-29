@@ -1,4 +1,3 @@
-import { kcContextMocks, kcContextCommonMock } from "./kcContextMocks";
 import type { DeepPartial } from "keycloakify/tools/DeepPartial";
 import { deepAssign } from "keycloakify/tools/deepAssign";
 import type { ExtendKcContext } from "./getKcContextFromWindow";
@@ -7,6 +6,7 @@ import { pathJoin } from "keycloakify/bin/tools/pathJoin";
 import { pathBasename } from "keycloakify/tools/pathBasename";
 import { mockTestingResourcesCommonPath } from "keycloakify/bin/mockTestingResourcesPath";
 import { symToStr } from "tsafe/symToStr";
+import { kcContextMocks, kcContextCommonMock } from "keycloakify/account/kcContext/kcContextMocks";
 
 export function getKcContext<KcContextExtension extends { pageId: string } = never>(params?: {
     mockPageId?: ExtendKcContext<KcContextExtension>["pageId"];
@@ -59,6 +59,10 @@ export function getKcContext<KcContextExtension extends { pageId: string } = nev
     }
 
     if (realKcContext === undefined) {
+        return { "kcContext": undefined };
+    }
+
+    if (!("account" in realKcContext)) {
         return { "kcContext": undefined };
     }
 

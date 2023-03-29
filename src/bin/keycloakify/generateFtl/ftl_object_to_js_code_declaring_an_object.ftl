@@ -13,7 +13,8 @@
             "totp", "totpSecret", "SAMLRequest", "SAMLResponse", "relayState", "device_user_code", "code", 
             "password-new", "rememberMe", "login", "authenticationExecution", "cancel-aia", "clientDataJSON", 
             "authenticatorData", "signature", "credentialId", "userHandle", "error", "authn_use_chk", "authenticationExecution", 
-            "isSetRetry", "try-again", "attestationObject", "publicKeyCredentialId", "authenticatorLabel"
+            "isSetRetry", "try-again", "attestationObject", "publicKeyCredentialId", "authenticatorLabel",
+            "location", "occupation"
         ]>
     
         <#attempt>
@@ -110,14 +111,16 @@
         }
     };
 
-    out["pageId"] = "${pageId}";
+    <#if account??>
+        out["url"]["getLogoutUrl"] = function () {
+            <#attempt>
+                return "${url.getLogoutUrl()}";
+            <#recover>
+            </#attempt>
+        };
+    </#if>
 
-    out["url"]["getLogoutUrl"] = function () {
-        <#attempt>
-            return "${url.getLogoutUrl()}";
-        <#recover>
-        </#attempt>
-    };
+    out["pageId"] = "${pageId}";
 
     return out;
 
@@ -162,9 +165,9 @@
                         key == "updateProfileCtx" && 
                         are_same_path(path, [])
                     ) || (
-                        <#-- https://github.com/InseeFrLab/keycloakify/pull/65#issuecomment-991896344 (reports with saml-post-form.ftl) -->
-                        <#-- https://github.com/InseeFrLab/keycloakify/issues/91#issue-1212319466 (reports with error.ftl and Kc18) -->
-                        <#-- https://github.com/InseeFrLab/keycloakify/issues/109#issuecomment-1134610163 -->
+                        <#-- https://github.com/keycloakify/keycloakify/pull/65#issuecomment-991896344 (reports with saml-post-form.ftl) -->
+                        <#-- https://github.com/keycloakify/keycloakify/issues/91#issue-1212319466 (reports with error.ftl and Kc18) -->
+                        <#-- https://github.com/keycloakify/keycloakify/issues/109#issuecomment-1134610163 -->
                         key == "loginAction" && 
                         are_same_path(path, ["url"]) && 
                         ["saml-post-form.ftl", "error.ftl", "info.ftl"]?seq_contains(pageId) &&

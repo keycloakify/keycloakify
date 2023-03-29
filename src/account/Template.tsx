@@ -43,6 +43,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                                 {realm.internationalizationEnabled && (assert(locale !== undefined), true) && locale.supported.length > 1 && (
                                     <li>
                                         <div className="kc-dropdown" id="kc-locale-dropdown">
+                                            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                                             <a href="#" id="kc-current-locale-link">
                                                 {labelBySupportedLanguageTag[currentLanguageTag]}
                                             </a>
