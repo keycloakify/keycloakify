@@ -7,7 +7,7 @@ import { getProjectRoot } from "../src/bin/tools/getProjectRoot";
 import { getCliOptions } from "../src/bin/tools/cliOptions";
 import { getLogger } from "../src/bin/tools/logger";
 
-//NOTE: To run without argument when we want to generate src/i18n/generated_kcMessages files,
+// NOTE: To run without argument when we want to generate src/i18n/generated_kcMessages files,
 // update the version array for generating for newer version.
 
 //@ts-ignore
@@ -16,7 +16,7 @@ const propertiesParser = require("properties-parser");
 const { isSilent } = getCliOptions(process.argv.slice(2));
 const logger = getLogger({ isSilent });
 
-(async () => {
+async function main() {
     const keycloakVersion = "21.0.1";
 
     const tmpDirPath = pathJoin(getProjectRoot(), "tmp_xImOef9dOd44");
@@ -37,7 +37,9 @@ const logger = getLogger({ isSilent });
         const baseThemeDirPath = pathJoin(tmpDirPath, "base");
 
         crawl(baseThemeDirPath).forEach(filePath => {
-            const match = filePath.match(/^([^/]+)\/messages\/messages_([^.]+)\.properties$/);
+            const match =
+                filePath.match(/^([^/]+)\/messages\/messages_([^.]+)\.properties$/) ||
+                filePath.match(/^([^\\]+)\\messages\\messages_([^.]+)\.properties$/);
 
             if (match === null) {
                 return;
@@ -114,4 +116,8 @@ const logger = getLogger({ isSilent });
             )
         );
     });
-})();
+}
+
+if (require.main === module) {
+    main().catch(e => console.error(e));
+}
