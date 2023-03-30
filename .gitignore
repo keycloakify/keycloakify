@@ -52,3 +52,6 @@ jspm_packages
 /build_keycloak
 /src/login/i18n/baseMessages/
 /src/account/i18n/baseMessages/
+
+# VS Code devcontainers
+.devcontainer
