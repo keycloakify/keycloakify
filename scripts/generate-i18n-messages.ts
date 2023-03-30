@@ -1,6 +1,6 @@
 import "minimal-polyfills/Object.fromEntries";
 import * as fs from "fs";
-import { join as pathJoin, relative as pathRelative, dirname as pathDirname } from "path";
+import { join as pathJoin, relative as pathRelative, dirname as pathDirname, sep as pathSep } from "path";
 import { crawl } from "../src/bin/tools/crawl";
 import { downloadBuiltinKeycloakTheme } from "../src/bin/download-builtin-keycloak-theme";
 import { getProjectRoot } from "../src/bin/tools/getProjectRoot";
@@ -35,11 +35,10 @@ async function main() {
 
     {
         const baseThemeDirPath = pathJoin(tmpDirPath, "base");
+        const re = new RegExp(`^([^\\${pathSep}]+)\\${pathSep}messages\\${pathSep}messages_([^.]+).properties$`);
 
         crawl(baseThemeDirPath).forEach(filePath => {
-            const match =
-                filePath.match(/^([^/]+)\/messages\/messages_([^.]+)\.properties$/) ||
-                filePath.match(/^([^\\]+)\\messages\\messages_([^.]+)\.properties$/);
+            const match = filePath.match(re);
 
             if (match === null) {
                 return;
