@@ -41,9 +41,11 @@ jspm_packages
 .DS_Store
 
 /dist
+# Test Build Directories
 /dist_test
-
 /sample_react_project/
+/sample_custom_react_project/
+/keycloakify_starter_test/
 /.yarn_home/
 
 .idea
