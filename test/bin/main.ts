@@ -1,4 +1,3 @@
-import "./replaceImportFromStatic";
 import { setupSampleReactProject, sampleReactProjectDirPath } from "./setupSampleReactProject";
 import * as st from "scripting-tools";
 import * as fs from "fs";
