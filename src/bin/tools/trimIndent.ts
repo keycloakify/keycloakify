@@ -2,7 +2,7 @@
  * Concatenate the string fragments and interpolated values
  * to get a single string.
  */
-function populateTemplate(strings: TemplateStringsArray, ...args: any[]) {
+function populateTemplate(strings: TemplateStringsArray, ...args: unknown[]) {
     const chunks = [];
     for (let i = 0; i < strings.length; i++) {
         let lastStringLineLength = 0;
@@ -14,7 +14,8 @@ function populateTemplate(strings: TemplateStringsArray, ...args: any[]) {
         if (args[i]) {
             // if the interpolation value has newlines, indent the interpolation values
             // using the last known string indent
-            chunks.push(args[i].replace(/([\r?\n])/g, "$1" + " ".repeat(lastStringLineLength)));
+            const chunk = String(args[i]).replace(/([\r?\n])/g, "$1" + " ".repeat(lastStringLineLength));
+            chunks.push(chunk);
         }
     }
     return chunks.join("");
@@ -23,14 +24,17 @@ function populateTemplate(strings: TemplateStringsArray, ...args: any[]) {
 function trimIndentPrivate(removeEmptyLeadingAndTrailingLines: boolean, strings: TemplateStringsArray, ...args: any[]) {
     // Remove initial and final newlines
     let string = populateTemplate(strings, ...args);
-    if (removeEmptyLeadingAndTrailingLines) string = string.replace(/^[\r\n]/, "").replace(/[^\S\r\n]*[\r\n]$/, "");
+    if (removeEmptyLeadingAndTrailingLines) {
+        string = string.replace(/^[\r\n]/, "").replace(/[^\S\r\n]*[\r\n]$/, "");
+    }
     const dents = string.match(/^([ \t])+/gm)?.map(s => s.length) ?? [];
     // No dents? no change required
     if (!dents || dents.length == 0) return string;
     const minDent = Math.min(...dents);
     // The min indentation is 0, no change needed
     if (!minDent) return string;
-    const dedented = string.replace(new RegExp(`^${" ".repeat(minDent)}`, "gm"), "");
+    const re = new RegExp(`^${" ".repeat(minDent)}`, "gm");
+    const dedented = string.replace(re, "");
     return dedented;
 }
 
@@ -38,7 +42,7 @@ function trimIndentPrivate(removeEmptyLeadingAndTrailingLines: boolean, strings:
  * Shift all lines left by the *smallest* indentation level,
  * and remove initial newline and all trailing spaces.
  */
-export default function trimIndent(strings: TemplateStringsArray, ...args: any[]) {
+export default function trimIndent(strings: TemplateStringsArray, ...args: unknown[]) {
     return trimIndentPrivate(true, strings, ...args);
 }
 
@@ -46,6 +50,6 @@ export default function trimIndent(strings: TemplateStringsArray, ...args: any[]
  * Shift all lines left by the *smallest* indentation level,
  * and _keep_ initial newline and all trailing spaces.
  */
-trimIndent.keepLeadingAndTrailingNewlines = function (strings: TemplateStringsArray, ...args: any[]) {
+trimIndent.keepLeadingAndTrailingNewlines = function (strings: TemplateStringsArray, ...args: unknown[]) {
     return trimIndentPrivate(false, strings, ...args);
 };
