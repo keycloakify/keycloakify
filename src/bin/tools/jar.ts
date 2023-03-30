@@ -90,5 +90,5 @@ if (require.main === module) {
             groupId: process.env.GROUP_ID ?? "group",
             version: process.env.VERSION ?? "1.0.0"
         });
-    main().catch(e => console.error(e));
+    main();
 }
