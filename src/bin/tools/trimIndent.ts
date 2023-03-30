@@ -3,7 +3,7 @@
  * to get a single string.
  */
 function populateTemplate(strings: TemplateStringsArray, ...args: unknown[]) {
-    const chunks = [];
+    const chunks: string[] = [];
     for (let i = 0; i < strings.length; i++) {
         let lastStringLineLength = 0;
         if (strings[i]) {
