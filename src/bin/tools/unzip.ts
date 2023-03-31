@@ -29,7 +29,7 @@ export async function unzip(file: string, targetFolder: string, unzipSubPath?: s
         targetFolder += "/";
     }
     if (!fs.existsSync(targetFolder)) {
-        fs.mkdirSync(targetFolder, { recursive: true})
+        fs.mkdirSync(targetFolder, { recursive: true });
     }
 
     return new Promise<void>((resolve, reject) => {
