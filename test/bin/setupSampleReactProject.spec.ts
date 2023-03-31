@@ -55,7 +55,7 @@ describe("Sample Project", () => {
             const destDirPath = pathJoin(getKeycloakBuildPath(), "src", "main", "resources", "theme");
             await downloadBuiltinKeycloakTheme({ destDirPath, keycloakVersion: "11.0.3", isSilent: false });
         },
-        { timeout: 30000 }
+        { timeout: 90000 }
     );
     it(
         "Sets up the project with a custom input and output directory without error",
@@ -72,6 +72,6 @@ describe("Sample Project", () => {
             const destDirPath = pathJoin(getKeycloakBuildPath(), "src", "main", "resources", "theme");
             await downloadBuiltinKeycloakTheme({ destDirPath, keycloakVersion: "11.0.3", isSilent: false });
         },
-        { timeout: 30000 }
+        { timeout: 90000 }
     );
 });
