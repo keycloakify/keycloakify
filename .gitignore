@@ -41,14 +41,15 @@ jspm_packages
 .DS_Store
 
 /dist
-/dist_test
-
+/keycloakify_starter_test/
+/sample_custom_react_project/
 /sample_react_project/
 /.yarn_home/
 
 .idea
 
-/keycloak_email
-/build_keycloak
 /src/login/i18n/baseMessages/
 /src/account/i18n/baseMessages/
+
+# VS Code devcontainers
+.devcontainer
