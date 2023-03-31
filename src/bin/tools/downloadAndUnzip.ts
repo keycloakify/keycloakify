@@ -53,25 +53,19 @@ async function getNpmProxyConfig(): Promise<Pick<FetchOptions, "proxy" | "noProx
     return { proxy, noProxy };
 }
 
-export async function downloadAndUnzip({
-    url,
-    destDirPath,
-    pathOfDirToExtractInArchive
-}: {
-    url: string;
-    destDirPath: string;
-    pathOfDirToExtractInArchive?: string;
-}) {
+export async function downloadAndUnzip(params: { url: string; destDirPath: string; pathOfDirToExtractInArchive?: string }) {
+    const { url, destDirPath, pathOfDirToExtractInArchive } = params;
+
     const downloadHash = hash(JSON.stringify({ url })).substring(0, 15);
     const projectRoot = getProjectRoot();
-    const cacheRoot = process.env.XDG_CACHE_HOME ?? `${projectRoot}/node_modules/.cache`;
+    const cacheRoot = process.env.XDG_CACHE_HOME ?? pathJoin(projectRoot, "node_modules", ".cache");
     const zipFilePath = pathJoin(cacheRoot, "keycloakify", "zip", `_${downloadHash}.zip`);
     const extractDirPath = pathJoin(cacheRoot, "keycloakify", "unzip", `_${downloadHash}`);
 
     if (!(await exists(zipFilePath))) {
         const proxyOpts = await getNpmProxyConfig();
         const response = await fetch(url, proxyOpts);
-        await mkdir(pathDirname(zipFilePath), { recursive: true });
+        await mkdir(pathDirname(zipFilePath), { "recursive": true });
         /**
          * The correct way to fix this is to upgrade node-fetch beyond 3.2.5
          * (see https://github.com/node-fetch/node-fetch/issues/1295#issuecomment-1144061991.)
