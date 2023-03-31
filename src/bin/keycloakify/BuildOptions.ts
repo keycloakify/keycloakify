@@ -3,7 +3,8 @@ import { id } from "tsafe/id";
 import { parse as urlParse } from "url";
 import { typeGuard } from "tsafe/typeGuard";
 import { symToStr } from "tsafe/symToStr";
-import { Bundler, bundlers, getParsedPackageJson } from "./parsed-package-json";
+import { bundlers, getParsedPackageJson } from "./parsed-package-json";
+import type { Bundler } from "./parsed-package-json";
 import { getAppInputPath, getKeycloakBuildPath } from "./build-paths";
 
 /** Consolidated build option gathered form CLI arguments and config in package.json */
