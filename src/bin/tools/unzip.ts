@@ -28,6 +28,9 @@ export async function unzip(file: string, targetFolder: string, unzipSubPath?: s
     if (!targetFolder.endsWith("/") || !targetFolder.endsWith("\\")) {
         targetFolder += "/";
     }
+    if (!fs.existsSync(targetFolder)) {
+        fs.mkdirSync(targetFolder, { recursive: true });
+    }
 
     return new Promise<void>((resolve, reject) => {
         yauzl.open(file, { lazyEntries: true }, async (err, zipfile) => {

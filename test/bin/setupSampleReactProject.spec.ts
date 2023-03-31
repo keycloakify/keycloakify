@@ -15,10 +15,10 @@ async function setupSampleReactProject(destDir: string) {
         "destDirPath": destDir
     });
 }
-
+let parsedPackageJson: Record<string, unknown> = {};
 vi.mock("keycloakify/bin/keycloakify/parsed-package-json", async () => ({
     ...((await vi.importActual("keycloakify/bin/keycloakify/parsed-package-json")) as Record<string, unknown>),
-    getParsedPackageJson: () => ({})
+    getParsedPackageJson: () => parsedPackageJson
 }));
 
 vi.mock("keycloakify/bin/promptKeycloakVersion", async () => ({
@@ -55,6 +55,23 @@ describe("Sample Project", () => {
             const destDirPath = pathJoin(getKeycloakBuildPath(), "src", "main", "resources", "theme");
             await downloadBuiltinKeycloakTheme({ destDirPath, keycloakVersion: "11.0.3", isSilent: false });
         },
-        { timeout: 30000 }
+        { timeout: 90000 }
+    );
+    it(
+        "Sets up the project with a custom input and output directory without error",
+        async () => {
+            parsedPackageJson = {
+                "keycloakify": {
+                    "appInputPath": "./custom_input/build",
+                    "keycloakBuildDir": "./custom_output"
+                }
+            };
+            await setupSampleReactProject(pathJoin(sampleReactProjectDirPath, "custom_input"));
+            await initializeEmailTheme();
+
+            const destDirPath = pathJoin(getKeycloakBuildPath(), "src", "main", "resources", "theme");
+            await downloadBuiltinKeycloakTheme({ destDirPath, keycloakVersion: "11.0.3", isSilent: false });
+        },
+        { timeout: 90000 }
     );
 });
