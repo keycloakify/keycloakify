@@ -35,6 +35,7 @@ describe("Sample Project", () => {
     });
 
     afterAll(() => {
+        fs.rmSync(sampleReactProjectDirPath, { "recursive": true });
         process.cwd = nativeCwd;
     });
     beforeEach(() => {

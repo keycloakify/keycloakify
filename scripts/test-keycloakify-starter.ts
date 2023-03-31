@@ -18,12 +18,12 @@ writeFileSync(path.join(process.cwd(), "dist", "package.json"), JSON.stringify(p
 try {
     execSync("yarn unlink");
 } catch {}
-execSync("yarn link", { cwd: path.join(process.cwd(), "dist") });
+execSync("yarn link", { "cwd": path.join(process.cwd(), "dist") });
 
 // Clone latest keycloakify-starter and link to keycloakify output
 execSync(`git clone https://github.com/keycloakify/keycloakify-starter.git ${testDir}`);
-execSync("yarn install", { cwd: path.join(process.cwd(), testDir) });
-execSync("yarn link keycloakify", { cwd: path.join(process.cwd(), testDir) });
+execSync("yarn install", { "cwd": path.join(process.cwd(), testDir) });
+execSync("yarn link keycloakify", { "cwd": path.join(process.cwd(), testDir) });
 
 //Ensure keycloak theme can be built
-execSync("yarn build-keycloak-theme", { cwd: path.join(process.cwd(), testDir) });
+execSync("yarn build-keycloak-theme", { "cwd": path.join(process.cwd(), testDir) });

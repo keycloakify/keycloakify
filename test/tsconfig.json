@@ -10,7 +10,7 @@
         "newLine": "LF",
         "noUnusedLocals": true,
         "noUnusedParameters": true,
-        "incremental": true,
+        "incremental": false,
         "strict": true,
         "downlevelIteration": true,
         "jsx": "react-jsx",

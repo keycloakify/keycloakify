@@ -19,16 +19,16 @@ const nativeCwd = process.cwd;
 vi.mock("keycloakify/bin/keycloakify/parsed-package-json", async () => ({
     ...((await vi.importActual("keycloakify/bin/keycloakify/parsed-package-json")) as Record<string, unknown>),
     getParsedPackageJson: () => ({
-        keycloakify: {
-            appInputPath: "./custom_input/build",
-            keycloakBuildDir: "./custom_output"
+        "keycloakify": {
+            "appInputPath": "./custom_input/build",
+            "keycloakBuildDir": "./custom_output"
         }
     })
 }));
 
 vi.mock("keycloakify/bin/promptKeycloakVersion", async () => ({
     ...((await vi.importActual("keycloakify/bin/promptKeycloakVersion")) as Record<string, unknown>),
-    promptKeycloakVersion: () => ({ keycloakVersion: "11.0.3" })
+    promptKeycloakVersion: () => ({ "keycloakVersion": "11.0.3" })
 }));
 
 describe("Sample Project", () => {
@@ -38,6 +38,7 @@ describe("Sample Project", () => {
     });
 
     afterAll(() => {
+        fs.rmSync(sampleReactProjectDirPath, { "recursive": true });
         process.cwd = nativeCwd;
     });
     beforeEach(() => {
