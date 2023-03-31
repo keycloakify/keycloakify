@@ -16,7 +16,7 @@ import { existsSync } from "fs";
 import { join as pathJoin, relative as pathRelative } from "path";
 import { kebabCaseToCamelCase } from "./tools/kebabCaseToSnakeCase";
 import { assert, Equals } from "tsafe/assert";
-import { getThemeSrcDirPath } from "./getThemeSrcDirPath";
+import { getThemeSrcDirPath } from "./keycloakify/build-paths";
 
 (async () => {
     const projectRootDir = getProjectRoot();

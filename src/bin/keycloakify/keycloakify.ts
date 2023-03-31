@@ -10,11 +10,8 @@ import { getCliOptions } from "../tools/cliOptions";
 import jar from "../tools/jar";
 import { assert } from "tsafe/assert";
 import { Equals } from "tsafe";
-import { getEmailThemeSrcDirPath } from "../initialize-email-theme";
-
-const reactProjectDirPath = process.cwd();
-
-export const keycloakThemeBuildingDirPath = pathJoin(reactProjectDirPath, "build_keycloak");
+import { getEmailThemeSrcDirPath } from "./build-paths";
+import { getCnamePath, getAppInputPath, getKeycloakBuildPath, getReactProjectDirPath } from "./build-paths";
 
 export async function main() {
     const { isSilent, hasExternalAssets } = getCliOptions(process.argv.slice(2));
@@ -22,9 +19,8 @@ export async function main() {
     logger.log("🔏 Building the keycloak theme...⌚");
 
     const buildOptions = readBuildOptions({
-        "packageJson": fs.readFileSync(pathJoin(reactProjectDirPath, "package.json")).toString("utf8"),
         "CNAME": (() => {
-            const cnameFilePath = pathJoin(reactProjectDirPath, "public", "CNAME");
+            const cnameFilePath = getCnamePath();
 
             if (!fs.existsSync(cnameFilePath)) {
                 return undefined;
@@ -37,7 +33,7 @@ export async function main() {
     });
 
     const { doBundlesEmailTemplate } = await generateKeycloakThemeResources({
-        keycloakThemeBuildingDirPath,
+        keycloakThemeBuildingDirPath: buildOptions.keycloakBuildPath,
         "emailThemeSrcDirPath": (() => {
             const { emailThemeSrcDirPath } = getEmailThemeSrcDirPath();
 
@@ -47,13 +43,13 @@ export async function main() {
 
             return emailThemeSrcDirPath;
         })(),
-        "reactAppBuildDirPath": pathJoin(reactProjectDirPath, "build"),
+        "reactAppBuildDirPath": getAppInputPath(),
         buildOptions,
         "keycloakVersion": buildOptions.keycloakVersionDefaultAssets
     });
 
     const { jarFilePath } = generateJavaStackFiles({
-        keycloakThemeBuildingDirPath,
+        keycloakThemeBuildingDirPath: buildOptions.keycloakBuildPath,
         doBundlesEmailTemplate,
         buildOptions
     });
@@ -65,7 +61,7 @@ export async function main() {
         case "keycloakify":
             logger.log("🫶 Let keycloakify do its thang");
             await jar({
-                "rootPath": pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources"),
+                "rootPath": pathJoin(buildOptions.keycloakBuildPath, "src", "main", "resources"),
                 "version": buildOptions.version,
                 "groupId": buildOptions.groupId,
                 "artifactId": buildOptions.artifactId,
@@ -74,7 +70,7 @@ export async function main() {
             break;
         case "mvn":
             logger.log("🫙 Run maven to deliver a jar");
-            child_process.execSync("mvn package", { "cwd": keycloakThemeBuildingDirPath });
+            child_process.execSync("mvn package", { "cwd": buildOptions.keycloakBuildPath });
             break;
         default:
             assert<Equals<typeof buildOptions.bundler, never>>(false);
@@ -84,7 +80,7 @@ export async function main() {
     const containerKeycloakVersion = "20.0.1";
 
     generateStartKeycloakTestingContainer({
-        keycloakThemeBuildingDirPath,
+        keycloakThemeBuildingDirPath: buildOptions.keycloakBuildPath,
         "keycloakVersion": containerKeycloakVersion,
         buildOptions
     });
@@ -92,7 +88,7 @@ export async function main() {
     logger.log(
         [
             "",
-            `✅ Your keycloak theme has been generated and bundled into ./${pathRelative(reactProjectDirPath, jarFilePath)} 🚀`,
+            `✅ Your keycloak theme has been generated and bundled into ./${pathRelative(getReactProjectDirPath(), jarFilePath)} 🚀`,
             `It is to be placed in "/opt/keycloak/providers" in the container running a quay.io/keycloak/keycloak Docker image.`,
             "",
             //TODO: Restore when we find a good Helm chart for Keycloak.
@@ -127,8 +123,8 @@ export async function main() {
             `To test your theme locally you can spin up a Keycloak ${containerKeycloakVersion} container image with the theme pre loaded by running:`,
             "",
             `👉 $ .${pathSep}${pathRelative(
-                reactProjectDirPath,
-                pathJoin(keycloakThemeBuildingDirPath, generateStartKeycloakTestingContainer.basename)
+                getReactProjectDirPath(),
+                pathJoin(getKeycloakBuildPath(), generateStartKeycloakTestingContainer.basename)
             )} 👈`,
             "",
             `Test with different Keycloak versions by editing the .sh file. see available versions here: https://quay.io/repository/keycloak/keycloak?tab=tags`,

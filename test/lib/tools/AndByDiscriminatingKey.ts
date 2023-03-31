@@ -1,4 +1,4 @@
-import { AndByDiscriminatingKey } from "../../../src/tools/AndByDiscriminatingKey";
+import { AndByDiscriminatingKey } from "keycloakify/tools/AndByDiscriminatingKey";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
 

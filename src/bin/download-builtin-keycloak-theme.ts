@@ -1,11 +1,10 @@
 #!/usr/bin/env node
-
-import { keycloakThemeBuildingDirPath } from "./keycloakify";
 import { join as pathJoin } from "path";
 import { downloadAndUnzip } from "./tools/downloadAndUnzip";
 import { promptKeycloakVersion } from "./promptKeycloakVersion";
 import { getCliOptions } from "./tools/cliOptions";
 import { getLogger } from "./tools/logger";
+import { getKeycloakBuildPath } from "./keycloakify/build-paths";
 
 export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: string; destDirPath: string; isSilent: boolean }) {
     const { keycloakVersion, destDirPath } = params;
@@ -26,7 +25,7 @@ async function main() {
     const logger = getLogger({ isSilent });
     const { keycloakVersion } = await promptKeycloakVersion();
 
-    const destDirPath = pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme");
+    const destDirPath = pathJoin(getKeycloakBuildPath(), "src", "main", "resources", "theme");
 
     logger.log(`Downloading builtins theme of Keycloak ${keycloakVersion} here ${destDirPath}`);
 
@@ -38,5 +37,5 @@ async function main() {
 }
 
 if (require.main === module) {
-    main().catch(e => console.error(e));
+    main();
 }

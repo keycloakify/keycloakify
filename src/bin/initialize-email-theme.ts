@@ -7,17 +7,9 @@ import { promptKeycloakVersion } from "./promptKeycloakVersion";
 import * as fs from "fs";
 import { getCliOptions } from "./tools/cliOptions";
 import { getLogger } from "./tools/logger";
-import { getThemeSrcDirPath } from "./getThemeSrcDirPath";
+import { getEmailThemeSrcDirPath } from "./keycloakify/build-paths";
 
-export function getEmailThemeSrcDirPath() {
-    const { themeSrcDirPath } = getThemeSrcDirPath();
-
-    const emailThemeSrcDirPath = themeSrcDirPath === undefined ? undefined : pathJoin(themeSrcDirPath, "email");
-
-    return { emailThemeSrcDirPath };
-}
-
-async function main() {
+export async function main() {
     const { isSilent } = getCliOptions(process.argv.slice(2));
     const logger = getLogger({ isSilent });
 

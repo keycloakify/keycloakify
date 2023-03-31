@@ -12,11 +12,11 @@
         "prepare": "yarn generate-i18n-messages",
         "build": "rimraf dist/ && tsc -p src/bin && tsc -p src/tsconfig.json && tsc-alias -p src/tsconfig.json && yarn grant-exec-perms && yarn copy-files dist/",
         "build:watch": "tsc -p src/tsconfig.json && (concurrently \"tsc -p src/tsconfig.json -w\" \"tsc-alias -p src/tsconfig.json\")",
-        "build:test": "rimraf dist_test/ && tsc -p test/tsconfig.json && tsc-alias -p test/tsconfig.json && yarn copy-files dist_test/src",
         "grant-exec-perms": "node dist/bin/tools/grant-exec-perms.js",
         "copy-files": "copyfiles -u 1 src/**/*.ftl",
-        "test": "yarn build:test && node dist_test/test/bin && node dist_test/test/lib",
-        "test:sample-app": "yarn build:test && node dist_test/test/bin/main.js",
+        "test": "yarn test:types && vitest run",
+        "test:keycloakify-starter": "ts-node scripts/test-keycloakify-starter",
+        "test:types": "tsc -p test/tsconfig.json --noEmit",
         "_format": "prettier '**/*.{ts,tsx,json,md}'",
         "format": "yarn _format --write",
         "format:check": "yarn _format --list-different",
@@ -80,7 +80,8 @@
         "scripting-tools": "^0.19.13",
         "ts-node": "^10.9.1",
         "tsc-alias": "^1.8.3",
-        "typescript": "^5.0.1-rc"
+        "typescript": "^5.0.1-rc",
+        "vitest": "^0.29.8"
     },
     "dependencies": {
         "@octokit/rest": "^18.12.0",

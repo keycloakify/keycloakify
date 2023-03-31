@@ -1,13 +1,14 @@
-import { getKcContext } from "../../src/login/kcContext/getKcContext";
-import type { ExtendKcContext } from "../../src/login/kcContext/getKcContextFromWindow";
-import type { KcContext } from "../../src/login/kcContext";
+import { getKcContext } from "keycloakify/login/kcContext/getKcContext";
+import type { ExtendKcContext } from "keycloakify/login/kcContext/getKcContextFromWindow";
+import type { KcContext } from "keycloakify/login/kcContext";
 import { same } from "evt/tools/inDepth";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
-import { kcContextMocks, kcContextCommonMock } from "../../src/login/kcContext/kcContextMocks";
-import { deepClone } from "../../src/tools/deepClone";
+import { kcContextMocks, kcContextCommonMock } from "keycloakify/login/kcContext/kcContextMocks";
+import { deepClone } from "keycloakify/tools/deepClone";
+import { expect, it, describe } from "vitest";
 
-{
+describe("getKcContext", () => {
     const authorizedMailDomains = ["example.com", "another-example.com", "*.yet-another-example.com", "*.example.com", "hello-world.com"];
 
     const displayName = "this is an overwritten common value";
@@ -59,8 +60,7 @@ import { deepClone } from "../../src/tools/deepClone";
 
         return { kcContext };
     };
-
-    {
+    it("has proper API for login.ftl", () => {
         const pageId = "login.ftl";
 
         const { kcContext } = getKcContextProxy({ "mockPageId": pageId });
@@ -69,7 +69,7 @@ import { deepClone } from "../../src/tools/deepClone";
 
         assert<Equals<typeof kcContext, KcContext.Login>>();
 
-        assert(
+        expect(
             same(
                 //NOTE: deepClone for printIfExists or other functions...
                 deepClone(kcContext),
@@ -81,12 +81,10 @@ import { deepClone } from "../../src/tools/deepClone";
                     return mock;
                 })()
             )
-        );
+        ).toBe(true);
+    });
 
-        console.log(`PASS ${pageId}`);
-    }
-
-    {
+    it("has a proper API for info.ftl", () => {
         const pageId = "info.ftl";
 
         const { kcContext } = getKcContextProxy({ "mockPageId": pageId });
@@ -104,7 +102,7 @@ import { deepClone } from "../../src/tools/deepClone";
             >
         >();
 
-        assert(
+        expect(
             same(
                 deepClone(kcContext),
                 (() => {
@@ -115,12 +113,9 @@ import { deepClone } from "../../src/tools/deepClone";
                     return mock;
                 })()
             )
-        );
-
-        console.log(`PASS ${pageId}`);
-    }
-
-    {
+        ).toBe(true);
+    });
+    it("has a proper API for register.ftl", () => {
         const pageId = "register.ftl";
 
         const { kcContext } = getKcContextProxy({ "mockPageId": pageId });
@@ -138,7 +133,7 @@ import { deepClone } from "../../src/tools/deepClone";
             >
         >();
 
-        assert(
+        expect(
             same(
                 deepClone(kcContext),
                 (() => {
@@ -149,12 +144,9 @@ import { deepClone } from "../../src/tools/deepClone";
                     return mock;
                 })()
             )
-        );
-
-        console.log(`PASS ${pageId}`);
-    }
-
-    {
+        ).toBe(true);
+    });
+    it("has a proper API for my-extra-page-2.ftl", () => {
         const pageId = "my-extra-page-2.ftl";
 
         const { kcContext } = getKcContextProxy({ "mockPageId": pageId });
@@ -173,7 +165,7 @@ import { deepClone } from "../../src/tools/deepClone";
 
         kcContext.aNonStandardValue2;
 
-        assert(
+        expect(
             same(
                 deepClone(kcContext),
                 (() => {
@@ -184,12 +176,9 @@ import { deepClone } from "../../src/tools/deepClone";
                     return mock;
                 })()
             )
-        );
-
-        console.log(`PASS ${pageId}`);
-    }
-
-    {
+        ).toBe(true);
+    });
+    it("has a proper API for my-extra-page-1.ftl", () => {
         const pageId = "my-extra-page-1.ftl";
 
         console.log("We expect a warning here =>");
@@ -200,7 +189,7 @@ import { deepClone } from "../../src/tools/deepClone";
 
         assert<Equals<typeof kcContext, KcContext.Common & { pageId: typeof pageId }>>();
 
-        assert(
+        expect(
             same(
                 deepClone(kcContext),
                 (() => {
@@ -211,32 +200,24 @@ import { deepClone } from "../../src/tools/deepClone";
                     return mock;
                 })()
             )
-        );
-
-        console.log(`PASS ${pageId}`);
-    }
-}
-
-{
-    const pageId = "login.ftl";
-
-    const { kcContext } = getKcContext({
-        "mockPageId": pageId
+        ).toBe(true);
     });
+    it("returns the proper mock for login.ftl", () => {
+        const pageId = "login.ftl";
 
-    assert<Equals<typeof kcContext, KcContext | undefined>>();
+        const { kcContext } = getKcContext({
+            "mockPageId": pageId
+        });
 
-    assert(same(deepClone(kcContext), deepClone(kcContextMocks.find(({ pageId: pageId_i }) => pageId_i === pageId)!)));
+        assert<Equals<typeof kcContext, KcContext | undefined>>();
 
-    console.log("PASS no extension");
-}
+        assert(same(deepClone(kcContext), deepClone(kcContextMocks.find(({ pageId: pageId_i }) => pageId_i === pageId)!)));
+    });
+    it("returns the proper mock for login.ftl", () => {
+        const { kcContext } = getKcContext();
 
-{
-    const { kcContext } = getKcContext();
+        assert<Equals<typeof kcContext, KcContext | undefined>>();
 
-    assert<Equals<typeof kcContext, KcContext | undefined>>();
-
-    assert(kcContext === undefined);
-
-    console.log("PASS no extension, no mock");
-}
+        assert(kcContext === undefined);
+    });
+});

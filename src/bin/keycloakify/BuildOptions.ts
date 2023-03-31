@@ -1,51 +1,10 @@
-import { z } from "zod";
 import { assert } from "tsafe/assert";
-import type { Equals } from "tsafe";
 import { id } from "tsafe/id";
 import { parse as urlParse } from "url";
 import { typeGuard } from "tsafe/typeGuard";
 import { symToStr } from "tsafe/symToStr";
-
-const bundlers = ["mvn", "keycloakify", "none"] as const;
-type Bundler = (typeof bundlers)[number];
-type ParsedPackageJson = {
-    name: string;
-    version: string;
-    homepage?: string;
-    keycloakify?: {
-        /** @deprecated: use extraLoginPages instead */
-        extraPages?: string[];
-        extraLoginPages?: string[];
-        extraAccountPages?: string[];
-        extraThemeProperties?: string[];
-        areAppAndKeycloakServerSharingSameDomain?: boolean;
-        artifactId?: string;
-        groupId?: string;
-        bundler?: Bundler;
-        keycloakVersionDefaultAssets?: string;
-    };
-};
-
-const zParsedPackageJson = z.object({
-    "name": z.string(),
-    "version": z.string(),
-    "homepage": z.string().optional(),
-    "keycloakify": z
-        .object({
-            "extraPages": z.array(z.string()).optional(),
-            "extraLoginPages": z.array(z.string()).optional(),
-            "extraAccountPages": z.array(z.string()).optional(),
-            "extraThemeProperties": z.array(z.string()).optional(),
-            "areAppAndKeycloakServerSharingSameDomain": z.boolean().optional(),
-            "artifactId": z.string().optional(),
-            "groupId": z.string().optional(),
-            "bundler": z.enum(bundlers).optional(),
-            "keycloakVersionDefaultAssets": z.string().optional()
-        })
-        .optional()
-});
-
-assert<Equals<ReturnType<(typeof zParsedPackageJson)["parse"]>, ParsedPackageJson>>();
+import { Bundler, bundlers, getParsedPackageJson } from "./parsed-package-json";
+import { getAppInputPath, getKeycloakBuildPath } from "./build-paths";
 
 /** Consolidated build option gathered form CLI arguments and config in package.json */
 export type BuildOptions = BuildOptions.Standalone | BuildOptions.ExternalAssets;
@@ -62,6 +21,10 @@ export namespace BuildOptions {
         artifactId: string;
         bundler: Bundler;
         keycloakVersionDefaultAssets: string;
+        // Directory of your built react project. Defaults to {cwd}/build
+        appInputPath: string;
+        // Directory that keycloakify outputs to. Defaults to {cwd}/build_keycloak
+        keycloakBuildPath: string;
     };
 
     export type Standalone = Common & {
@@ -88,15 +51,10 @@ export namespace BuildOptions {
     }
 }
 
-export function readBuildOptions(params: {
-    packageJson: string;
-    CNAME: string | undefined;
-    isExternalAssetsCliParamProvided: boolean;
-    isSilent: boolean;
-}): BuildOptions {
-    const { packageJson, CNAME, isExternalAssetsCliParamProvided, isSilent } = params;
+export function readBuildOptions(params: { CNAME: string | undefined; isExternalAssetsCliParamProvided: boolean; isSilent: boolean }): BuildOptions {
+    const { CNAME, isExternalAssetsCliParamProvided, isSilent } = params;
 
-    const parsedPackageJson = zParsedPackageJson.parse(JSON.parse(packageJson));
+    const parsedPackageJson = getParsedPackageJson();
 
     const url = (() => {
         const { homepage } = parsedPackageJson;
@@ -172,7 +130,9 @@ export function readBuildOptions(params: {
             extraAccountPages,
             extraThemeProperties,
             isSilent,
-            "keycloakVersionDefaultAssets": keycloakVersionDefaultAssets ?? "11.0.3"
+            "keycloakVersionDefaultAssets": keycloakVersionDefaultAssets ?? "11.0.3",
+            appInputPath: getAppInputPath(),
+            keycloakBuildPath: getKeycloakBuildPath()
         };
     })();
 
