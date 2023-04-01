@@ -30,9 +30,11 @@ export default function trimIndent(strings: TemplateStringsArray, ...args: any[]
     let string = populateTemplate(strings, ...args)
         .replace(/^[\r\n]/, "")
         .replace(/\r?\n *$/, "");
-    const dents = string.match(/^([ \t])+/gm)
-        ?.filter(s => /^\s+$/.test(s))
-        ?.map(s => s.length) ?? [];
+    const dents =
+        string
+            .match(/^([ \t])+/gm)
+            ?.filter(s => /^\s+$/.test(s))
+            ?.map(s => s.length) ?? [];
     // No dents? no change required
     if (!dents || dents.length == 0) return string;
     const minDent = Math.min(...dents);
