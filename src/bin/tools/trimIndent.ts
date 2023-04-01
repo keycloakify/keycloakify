@@ -21,13 +21,18 @@ function populateTemplate(strings: TemplateStringsArray, ...args: unknown[]) {
     return chunks.join("");
 }
 
-function trimIndentPrivate(removeEmptyLeadingAndTrailingLines: boolean, strings: TemplateStringsArray, ...args: any[]) {
+/**
+ * Shift all lines left by the *smallest* indentation level,
+ * and remove initial newline and all trailing spaces.
+ */
+export default function trimIndent(strings: TemplateStringsArray, ...args: any[]) {
     // Remove initial and final newlines
-    let string = populateTemplate(strings, ...args);
-    if (removeEmptyLeadingAndTrailingLines) {
-        string = string.replace(/^[\r\n]/, "").replace(/[^\S\r\n]*[\r\n]$/, "");
-    }
-    const dents = string.match(/^([ \t])+/gm)?.map(s => s.length) ?? [];
+    let string = populateTemplate(strings, ...args)
+        .replace(/^[\r\n]/, "")
+        .replace(/\r?\n *$/, "");
+    const dents = string.match(/^([ \t])+/gm)
+        ?.filter(s => /^\s+$/.test(s))
+        ?.map(s => s.length) ?? [];
     // No dents? no change required
     if (!dents || dents.length == 0) return string;
     const minDent = Math.min(...dents);
@@ -37,19 +42,3 @@ function trimIndentPrivate(removeEmptyLeadingAndTrailingLines: boolean, strings:
     const dedented = string.replace(re, "");
     return dedented;
 }
-
-/**
- * Shift all lines left by the *smallest* indentation level,
- * and remove initial newline and all trailing spaces.
- */
-export default function trimIndent(strings: TemplateStringsArray, ...args: unknown[]) {
-    return trimIndentPrivate(true, strings, ...args);
-}
-
-/**
- * Shift all lines left by the *smallest* indentation level,
- * and _keep_ initial newline and all trailing spaces.
- */
-trimIndent.keepLeadingAndTrailingNewlines = function (strings: TemplateStringsArray, ...args: unknown[]) {
-    return trimIndentPrivate(false, strings, ...args);
-};
