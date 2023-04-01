@@ -52,7 +52,6 @@ ipsum
 
         assert.equal(txt, ["lorem", String(d), "ipsum"].join("\n"));
     });
-});
 
     it("inderpolates preserving new-lines in the interpolated bits", () => {
         const a = ["ipsum", "dolor", "sit"].join('\n')
@@ -63,3 +62,5 @@ ipsum
             `
         assert.equal(txt, ['lorem', 'ipsum', 'dolor', 'sit', 'amet'].join('\n'))
     })
+
+});
