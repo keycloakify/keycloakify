@@ -8,7 +8,6 @@ import { objectKeys } from "tsafe/objectKeys";
 import { ftlValuesGlobalName } from "../ftlValuesGlobalName";
 import type { BuildOptions } from "../BuildOptions";
 import { assert } from "tsafe/assert";
-import { Reflect } from "tsafe/Reflect";
 
 export const themeTypes = ["login", "account"] as const;
 
@@ -47,7 +46,11 @@ export type AccountThemePageId = (typeof accountThemePageIds)[number];
 export type BuildOptionsLike = BuildOptionsLike.Standalone | BuildOptionsLike.ExternalAssets;
 
 export namespace BuildOptionsLike {
-    export type Standalone = {
+    export type Common = {
+        customUserAttributes: string[];
+    };
+
+    export type Standalone = Common & {
         isStandalone: true;
         urlPathname: string | undefined;
     };
@@ -59,23 +62,21 @@ export namespace BuildOptionsLike {
             isStandalone: false;
         };
 
-        export type SameDomain = CommonExternalAssets & {
-            areAppAndKeycloakServerSharingSameDomain: true;
-        };
+        export type SameDomain = Common &
+            CommonExternalAssets & {
+                areAppAndKeycloakServerSharingSameDomain: true;
+            };
 
-        export type DifferentDomains = CommonExternalAssets & {
-            areAppAndKeycloakServerSharingSameDomain: false;
-            urlOrigin: string;
-            urlPathname: string | undefined;
-        };
+        export type DifferentDomains = Common &
+            CommonExternalAssets & {
+                areAppAndKeycloakServerSharingSameDomain: false;
+                urlOrigin: string;
+                urlPathname: string | undefined;
+            };
     }
 }
 
-{
-    const buildOptions = Reflect<BuildOptions>();
-
-    assert<typeof buildOptions extends BuildOptionsLike ? true : false>();
-}
+assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
 export function generateFtlFilesCodeFactory(params: {
     indexHtmlCode: string;
@@ -153,7 +154,11 @@ export function generateFtlFilesCodeFactory(params: {
         '{ "x": "vIdLqMeOed9sdLdIdOxdK0d" }': fs
             .readFileSync(pathJoin(__dirname, "ftl_object_to_js_code_declaring_an_object.ftl"))
             .toString("utf8")
-            .match(/^<script>const _=((?:.|\n)+)<\/script>[\n]?$/)![1],
+            .match(/^<script>const _=((?:.|\n)+)<\/script>[\n]?$/)![1]
+            .replace(
+                "CUSTOM_USER_ATTRIBUTES_eKsIY4ZsZ4xeM",
+                buildOptions.customUserAttributes.length === 0 ? "" : ", " + buildOptions.customUserAttributes.map(name => `"${name}"`).join(", ")
+            ),
         "<!-- xIdLqMeOedErIdLsPdNdI9dSlxI -->": [
             "<#if scripts??>",
             "    <#list scripts as script>",

@@ -26,6 +26,7 @@ export namespace BuildOptions {
         appInputPath: string;
         // Directory that keycloakify outputs to. Defaults to {cwd}/build_keycloak
         keycloakBuildPath: string;
+        customUserAttributes: string[];
     };
 
     export type Standalone = Common & {
@@ -133,7 +134,8 @@ export function readBuildOptions(params: { CNAME: string | undefined; isExternal
             isSilent,
             "keycloakVersionDefaultAssets": keycloakVersionDefaultAssets ?? "11.0.3",
             appInputPath: getAppInputPath(),
-            keycloakBuildPath: getKeycloakBuildPath()
+            keycloakBuildPath: getKeycloakBuildPath(),
+            "customUserAttributes": keycloakify.customUserAttributes ?? []
         };
     })();
 

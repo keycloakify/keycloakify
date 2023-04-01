@@ -9,7 +9,6 @@ import { mockTestingResourcesCommonPath, mockTestingResourcesPath, mockTestingSu
 import { isInside } from "../tools/isInside";
 import type { BuildOptions } from "./BuildOptions";
 import { assert } from "tsafe/assert";
-import { Reflect } from "tsafe/Reflect";
 
 export type BuildOptionsLike = BuildOptionsLike.Standalone | BuildOptionsLike.ExternalAssets;
 
@@ -20,6 +19,7 @@ export namespace BuildOptionsLike {
         extraAccountPages?: string[];
         extraThemeProperties?: string[];
         isSilent: boolean;
+        customUserAttributes: string[];
     };
 
     export type Standalone = Common & {
@@ -46,11 +46,7 @@ export namespace BuildOptionsLike {
     }
 }
 
-{
-    const buildOptions = Reflect<BuildOptions>();
-
-    assert<typeof buildOptions extends BuildOptionsLike ? true : false>();
-}
+assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
 export async function generateKeycloakThemeResources(params: {
     reactAppBuildDirPath: string;
@@ -142,7 +138,7 @@ export async function generateKeycloakThemeResources(params: {
             const { generateFtlFilesCode } = generateFtlFilesCodeFactory({
                 "indexHtmlCode": fs.readFileSync(pathJoin(reactAppBuildDirPath, "index.html")).toString("utf8"),
                 "cssGlobalsToDefine": allCssGlobalsToDefine,
-                "buildOptions": buildOptions
+                buildOptions
             });
 
             return generateFtlFilesCode;
