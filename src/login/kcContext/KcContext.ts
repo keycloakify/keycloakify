@@ -31,7 +31,8 @@ export type KcContext =
     | KcContext.LogoutConfirm
     | KcContext.UpdateUserProfile
     | KcContext.IdpReviewUserProfile
-    | KcContext.UpdateEmail;
+    | KcContext.UpdateEmail
+    | KcContext.SelectAuthenticator;
 
 export declare namespace KcContext {
     export type Common = {
@@ -389,6 +390,39 @@ export declare namespace KcContext {
             value?: string;
         };
     };
+
+    export type SelectAuthenticator = Common & {
+        pageId: "select-authenticator.ftl";
+        auth: {
+            authenticationSelections: SelectAuthenticator.AuthenticationSelection[];
+        };
+    };
+
+    export namespace SelectAuthenticator {
+        export type AuthenticationSelection = {
+            authExecId: string;
+            displayName:
+                | "otp-display-name"
+                | "password-display-name"
+                | "auth-username-form-display-name"
+                | "auth-username-password-form-display-name"
+                | "webauthn-display-name"
+                | "webauthn-passwordless-display-name";
+            helpText:
+                | "otp-help-text"
+                | "password-help-text"
+                | "auth-username-form-help-text"
+                | "auth-username-password-form-help-text"
+                | "webauthn-help-text"
+                | "webauthn-passwordless-help-text";
+            iconCssClass?:
+                | "kcAuthenticatorDefaultClass"
+                | "kcAuthenticatorPasswordClass"
+                | "kcAuthenticatorOTPClass"
+                | "kcAuthenticatorWebAuthnClass"
+                | "kcAuthenticatorWebAuthnPasswordlessClass";
+        };
+    }
 }
 
 export type Attribute = {
