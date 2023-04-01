@@ -2,7 +2,7 @@ import * as fs from "fs";
 import { exclude } from "tsafe";
 import { crawl } from "../tools/crawl";
 import { pathJoin } from "../tools/pathJoin";
-import { getParsedPackageJson } from "./parsed-package-json";
+import { getParsedPackageJson } from "./parsedPackageJson";
 
 const DEFAULT_APP_INPUT_PATH = "build";
 

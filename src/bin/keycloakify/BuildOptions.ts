@@ -3,8 +3,7 @@ import { id } from "tsafe/id";
 import { parse as urlParse } from "url";
 import { typeGuard } from "tsafe/typeGuard";
 import { symToStr } from "tsafe/symToStr";
-import { bundlers, getParsedPackageJson } from "./parsed-package-json";
-import type { Bundler } from "./parsed-package-json";
+import { bundlers, getParsedPackageJson, type Bundler } from "./parsedPackageJson";
 import { getAppInputPath, getKeycloakBuildPath } from "./build-paths";
 
 /** Consolidated build option gathered form CLI arguments and config in package.json */
@@ -91,10 +90,12 @@ export function readBuildOptions(params: { CNAME: string | undefined; isExternal
         const { extraPages, extraLoginPages, extraAccountPages, extraThemeProperties, groupId, artifactId, bundler, keycloakVersionDefaultAssets } =
             keycloakify ?? {};
 
-        const themeName = name
-            .replace(/^@(.*)/, "$1")
-            .split("/")
-            .join("-");
+        const themeName =
+            keycloakify.themeName ??
+            name
+                .replace(/^@(.*)/, "$1")
+                .split("/")
+                .join("-");
 
         return {
             themeName,

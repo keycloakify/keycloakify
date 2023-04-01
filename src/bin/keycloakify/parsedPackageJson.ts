@@ -25,6 +25,7 @@ type ParsedPackageJson = {
         appInputPath?: string;
         keycloakBuildPath?: string;
         customUserAttributes?: string[];
+        themeName?: string;
     };
 };
 
@@ -45,7 +46,8 @@ const zParsedPackageJson = z.object({
             "keycloakVersionDefaultAssets": z.string().optional(),
             "appInputPath": z.string().optional(),
             "keycloakBuildPath": z.string().optional(),
-            "customUserAttributes": z.array(z.string()).optional()
+            "customUserAttributes": z.array(z.string()).optional(),
+            "themeName": z.string().optional()
         })
         .optional()
 });
