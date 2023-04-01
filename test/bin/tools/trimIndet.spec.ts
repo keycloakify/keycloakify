@@ -54,13 +54,12 @@ ipsum
     });
 
     it("inderpolates preserving new-lines in the interpolated bits", () => {
-        const a = ["ipsum", "dolor", "sit"].join('\n')
+        const a = ["ipsum", "dolor", "sit"].join("\n");
         const txt = trimIndent`
             lorem
             ${a}
             amet
-            `
-        assert.equal(txt, ['lorem', 'ipsum', 'dolor', 'sit', 'amet'].join('\n'))
-    })
-
+            `;
+        assert.equal(txt, ["lorem", "ipsum", "dolor", "sit", "amet"].join("\n"));
+    });
 });
