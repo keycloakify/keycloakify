@@ -4,8 +4,8 @@ import { join as pathJoin } from "path";
 import { downloadAndUnzip } from "keycloakify/bin/tools/downloadAndUnzip";
 import { main as initializeEmailTheme } from "keycloakify/bin/initialize-email-theme";
 import { it, describe, afterAll, beforeAll, beforeEach, vi } from "vitest";
-import { getKeycloakBuildPath } from "keycloakify/bin/keycloakify/build-paths";
 import { downloadBuiltinKeycloakTheme } from "keycloakify/bin/download-builtin-keycloak-theme";
+import { readBuildOptions } from "keycloakify/bin/keycloakify/BuildOptions";
 
 export const sampleReactProjectDirPath = pathJoin(getProjectRoot(), "sample_react_project");
 
@@ -33,7 +33,6 @@ describe("Sample Project", () => {
         // Monkey patching the cwd to the app location for the duration of this test
         process.cwd = () => sampleReactProjectDirPath;
     });
-
     afterAll(() => {
         fs.rmSync(sampleReactProjectDirPath, { "recursive": true });
         process.cwd = nativeCwd;
@@ -52,7 +51,17 @@ describe("Sample Project", () => {
             await setupSampleReactProject(sampleReactProjectDirPath);
             await initializeEmailTheme();
 
-            const destDirPath = pathJoin(getKeycloakBuildPath(), "src", "main", "resources", "theme");
+            const destDirPath = pathJoin(
+                readBuildOptions({
+                    "isExternalAssetsCliParamProvided": false,
+                    "isSilent": true,
+                    "projectDirPath": process.cwd()
+                }).keycloakifyBuildDirPath,
+                "src",
+                "main",
+                "resources",
+                "theme"
+            );
             await downloadBuiltinKeycloakTheme({ destDirPath, keycloakVersion: "11.0.3", isSilent: false });
         },
         { timeout: 90000 }
@@ -62,14 +71,24 @@ describe("Sample Project", () => {
         async () => {
             parsedPackageJson = {
                 "keycloakify": {
-                    "appInputPath": "./custom_input/build",
+                    "reactAppBuildDirPath": "./custom_input/build",
                     "keycloakBuildDir": "./custom_output"
                 }
             };
             await setupSampleReactProject(pathJoin(sampleReactProjectDirPath, "custom_input"));
             await initializeEmailTheme();
 
-            const destDirPath = pathJoin(getKeycloakBuildPath(), "src", "main", "resources", "theme");
+            const destDirPath = pathJoin(
+                readBuildOptions({
+                    "isExternalAssetsCliParamProvided": false,
+                    "isSilent": true,
+                    "projectDirPath": process.cwd()
+                }).keycloakifyBuildDirPath,
+                "src",
+                "main",
+                "resources",
+                "theme"
+            );
             await downloadBuiltinKeycloakTheme({ destDirPath, keycloakVersion: "11.0.3", isSilent: false });
         },
         { timeout: 90000 }

@@ -4,7 +4,8 @@ import { parse as urlParse } from "url";
 import { typeGuard } from "tsafe/typeGuard";
 import { symToStr } from "tsafe/symToStr";
 import { bundlers, getParsedPackageJson, type Bundler } from "./parsedPackageJson";
-import { getAppInputPath, getKeycloakBuildPath } from "./build-paths";
+import * as fs from "fs";
+import { join as pathJoin, sep as pathSep } from "path";
 
 /** Consolidated build option gathered form CLI arguments and config in package.json */
 export type BuildOptions = BuildOptions.Standalone | BuildOptions.ExternalAssets;
@@ -21,10 +22,10 @@ export namespace BuildOptions {
         artifactId: string;
         bundler: Bundler;
         keycloakVersionDefaultAssets: string;
-        // Directory of your built react project. Defaults to {cwd}/build
-        appInputPath: string;
-        // Directory that keycloakify outputs to. Defaults to {cwd}/build_keycloak
-        keycloakBuildPath: string;
+        /** Directory of your built react project. Defaults to {cwd}/build */
+        reactAppBuildDirPath: string;
+        /** Directory that keycloakify outputs to. Defaults to {cwd}/build_keycloak */
+        keycloakifyBuildDirPath: string;
         customUserAttributes: string[];
     };
 
@@ -52,10 +53,10 @@ export namespace BuildOptions {
     }
 }
 
-export function readBuildOptions(params: { CNAME: string | undefined; isExternalAssetsCliParamProvided: boolean; isSilent: boolean }): BuildOptions {
-    const { CNAME, isExternalAssetsCliParamProvided, isSilent } = params;
+export function readBuildOptions(params: { projectDirPath: string; isExternalAssetsCliParamProvided: boolean; isSilent: boolean }): BuildOptions {
+    const { projectDirPath, isExternalAssetsCliParamProvided, isSilent } = params;
 
-    const parsedPackageJson = getParsedPackageJson();
+    const parsedPackageJson = getParsedPackageJson({ projectDirPath });
 
     const url = (() => {
         const { homepage } = parsedPackageJson;
@@ -65,6 +66,16 @@ export function readBuildOptions(params: { CNAME: string | undefined; isExternal
         if (homepage !== undefined) {
             url = new URL(homepage);
         }
+
+        const CNAME = (() => {
+            const cnameFilePath = pathJoin(projectDirPath, "public", "CNAME");
+
+            if (!fs.existsSync(cnameFilePath)) {
+                return undefined;
+            }
+
+            return fs.readFileSync(cnameFilePath).toString("utf8");
+        })();
 
         if (CNAME !== undefined) {
             url = new URL(`https://${CNAME.replace(/\s+$/, "")}`);
@@ -134,8 +145,40 @@ export function readBuildOptions(params: { CNAME: string | undefined; isExternal
             extraThemeProperties,
             isSilent,
             "keycloakVersionDefaultAssets": keycloakVersionDefaultAssets ?? "11.0.3",
-            appInputPath: getAppInputPath(),
-            keycloakBuildPath: getKeycloakBuildPath(),
+            "reactAppBuildDirPath": (() => {
+                let { reactAppBuildDirPath = undefined } = parsedPackageJson.keycloakify ?? {};
+
+                if (reactAppBuildDirPath === undefined) {
+                    return pathJoin(projectDirPath, "build");
+                }
+
+                if (pathSep === "\\") {
+                    reactAppBuildDirPath = reactAppBuildDirPath.replace(/\//g, pathSep);
+                }
+
+                if (reactAppBuildDirPath.startsWith(`.${pathSep}`)) {
+                    return pathJoin(projectDirPath, reactAppBuildDirPath);
+                }
+
+                return reactAppBuildDirPath;
+            })(),
+            "keycloakifyBuildDirPath": (() => {
+                let { keycloakifyBuildDirPath = undefined } = parsedPackageJson.keycloakify ?? {};
+
+                if (keycloakifyBuildDirPath === undefined) {
+                    return pathJoin(projectDirPath, "build_keycloak");
+                }
+
+                if (pathSep === "\\") {
+                    keycloakifyBuildDirPath = keycloakifyBuildDirPath.replace(/\//g, pathSep);
+                }
+
+                if (keycloakifyBuildDirPath.startsWith(`.${pathSep}`)) {
+                    return pathJoin(projectDirPath, keycloakifyBuildDirPath);
+                }
+
+                return keycloakifyBuildDirPath;
+            })(),
             "customUserAttributes": keycloakify.customUserAttributes ?? []
         };
     })();

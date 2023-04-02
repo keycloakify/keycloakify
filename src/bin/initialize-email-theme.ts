@@ -7,13 +7,15 @@ import { promptKeycloakVersion } from "./promptKeycloakVersion";
 import * as fs from "fs";
 import { getCliOptions } from "./tools/cliOptions";
 import { getLogger } from "./tools/logger";
-import { getEmailThemeSrcDirPath } from "./keycloakify/build-paths";
+import { getEmailThemeSrcDirPath } from "./getSrcDirPath";
 
 export async function main() {
     const { isSilent } = getCliOptions(process.argv.slice(2));
     const logger = getLogger({ isSilent });
 
-    const { emailThemeSrcDirPath } = getEmailThemeSrcDirPath();
+    const { emailThemeSrcDirPath } = getEmailThemeSrcDirPath({
+        "projectDirPath": process.cwd()
+    });
 
     if (emailThemeSrcDirPath === undefined) {
         logger.warn("Couldn't locate your theme source directory");

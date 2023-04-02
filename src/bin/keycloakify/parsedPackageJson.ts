@@ -4,10 +4,9 @@ import type { Equals } from "tsafe";
 import { z } from "zod";
 import { pathJoin } from "../tools/pathJoin";
 
-const reactProjectDirPath = process.cwd();
 export const bundlers = ["mvn", "keycloakify", "none"] as const;
 export type Bundler = (typeof bundlers)[number];
-type ParsedPackageJson = {
+export type ParsedPackageJson = {
     name: string;
     version: string;
     homepage?: string;
@@ -22,8 +21,8 @@ type ParsedPackageJson = {
         groupId?: string;
         bundler?: Bundler;
         keycloakVersionDefaultAssets?: string;
-        appInputPath?: string;
-        keycloakBuildPath?: string;
+        reactAppBuildDirPath?: string;
+        keycloakifyBuildDirPath?: string;
         customUserAttributes?: string[];
         themeName?: string;
     };
@@ -44,8 +43,8 @@ const zParsedPackageJson = z.object({
             "groupId": z.string().optional(),
             "bundler": z.enum(bundlers).optional(),
             "keycloakVersionDefaultAssets": z.string().optional(),
-            "appInputPath": z.string().optional(),
-            "keycloakBuildPath": z.string().optional(),
+            "reactAppBuildDirPath": z.string().optional(),
+            "keycloakifyBuildDirPath": z.string().optional(),
             "customUserAttributes": z.array(z.string()).optional(),
             "themeName": z.string().optional()
         })
@@ -55,8 +54,11 @@ const zParsedPackageJson = z.object({
 assert<Equals<ReturnType<(typeof zParsedPackageJson)["parse"]>, ParsedPackageJson>>();
 
 let parsedPackageJson: undefined | ReturnType<(typeof zParsedPackageJson)["parse"]>;
-export const getParsedPackageJson = () => {
-    if (parsedPackageJson) return parsedPackageJson;
-    parsedPackageJson = zParsedPackageJson.parse(JSON.parse(fs.readFileSync(pathJoin(reactProjectDirPath, "package.json")).toString("utf8")));
+export function getParsedPackageJson(params: { projectDirPath: string }) {
+    const { projectDirPath } = params;
+    if (parsedPackageJson) {
+        return parsedPackageJson;
+    }
+    parsedPackageJson = zParsedPackageJson.parse(JSON.parse(fs.readFileSync(pathJoin(projectDirPath, "package.json")).toString("utf8")));
     return parsedPackageJson;
-};
+}

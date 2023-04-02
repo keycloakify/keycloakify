@@ -16,10 +16,10 @@ import { existsSync } from "fs";
 import { join as pathJoin, relative as pathRelative } from "path";
 import { kebabCaseToCamelCase } from "./tools/kebabCaseToSnakeCase";
 import { assert, Equals } from "tsafe/assert";
-import { getThemeSrcDirPath } from "./keycloakify/build-paths";
+import { getThemeSrcDirPath } from "./getSrcDirPath";
 
 (async () => {
-    const projectRootDir = getProjectRoot();
+    const projectDirPath = getProjectRoot();
 
     console.log("Select a theme type");
 
@@ -51,7 +51,7 @@ import { getThemeSrcDirPath } from "./keycloakify/build-paths";
 
     const pageBasename = capitalize(kebabCaseToCamelCase(pageId)).replace(/ftl$/, "tsx");
 
-    const { themeSrcDirPath } = getThemeSrcDirPath();
+    const { themeSrcDirPath } = getThemeSrcDirPath({ "projectDirPath": projectDirPath });
 
     if (themeSrcDirPath === undefined) {
         throw new Error("Couldn't locate your theme sources");
@@ -65,7 +65,7 @@ import { getThemeSrcDirPath } from "./keycloakify/build-paths";
         process.exit(-1);
     }
 
-    writeFile(targetFilePath, await readFile(pathJoin(projectRootDir, "src", themeType, "pages", pageBasename)));
+    writeFile(targetFilePath, await readFile(pathJoin(projectDirPath, "src", themeType, "pages", pageBasename)));
 
     console.log(`${pathRelative(process.cwd(), targetFilePath)} created`);
 })();
