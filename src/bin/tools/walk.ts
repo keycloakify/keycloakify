@@ -8,7 +8,7 @@ import { resolve } from "path";
  * @param root the starting directory
  * @returns AsyncGenerator
  */
-export default async function* walk(root: string): AsyncGenerator<string, void, void> {
+export default async function* walk(root: string): AsyncGenerator<string, void, unknown> {
     for (const entry of await readdir(root, { withFileTypes: true })) {
         const absolutePath = resolve(root, entry.name);
         if (entry.isDirectory()) {
