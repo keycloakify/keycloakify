@@ -54,8 +54,9 @@ export async function generateKeycloakThemeResources(params: {
     emailThemeSrcDirPath: string | undefined;
     keycloakVersion: string;
     buildOptions: BuildOptionsLike;
+    keycloakifyVersion: string;
 }): Promise<{ doBundlesEmailTemplate: boolean }> {
-    const { reactAppBuildDirPath, keycloakThemeBuildingDirPath, emailThemeSrcDirPath, keycloakVersion, buildOptions } = params;
+    const { reactAppBuildDirPath, keycloakThemeBuildingDirPath, emailThemeSrcDirPath, keycloakVersion, buildOptions, keycloakifyVersion } = params;
 
     const getThemeDirPath = (themeType: ThemeType | "email") =>
         pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", buildOptions.themeName, themeType);
@@ -138,7 +139,8 @@ export async function generateKeycloakThemeResources(params: {
             const { generateFtlFilesCode } = generateFtlFilesCodeFactory({
                 "indexHtmlCode": fs.readFileSync(pathJoin(reactAppBuildDirPath, "index.html")).toString("utf8"),
                 "cssGlobalsToDefine": allCssGlobalsToDefine,
-                buildOptions
+                buildOptions,
+                keycloakifyVersion
             });
 
             return generateFtlFilesCode;

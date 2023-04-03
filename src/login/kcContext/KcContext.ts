@@ -36,6 +36,7 @@ export type KcContext =
 
 export declare namespace KcContext {
     export type Common = {
+        keycloakifyVersion: string;
         url: {
             loginAction: string;
             resourcesPath: string;

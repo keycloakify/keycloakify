@@ -11,6 +11,7 @@ import jar from "../tools/jar";
 import { assert } from "tsafe/assert";
 import { Equals } from "tsafe";
 import { getEmailThemeSrcDirPath } from "../getSrcDirPath";
+import { getProjectRoot } from "../tools/getProjectRoot";
 
 export async function main() {
     const { isSilent, hasExternalAssets } = getCliOptions(process.argv.slice(2));
@@ -38,7 +39,14 @@ export async function main() {
         })(),
         "reactAppBuildDirPath": buildOptions.reactAppBuildDirPath,
         buildOptions,
-        "keycloakVersion": buildOptions.keycloakVersionDefaultAssets
+        "keycloakVersion": buildOptions.keycloakVersionDefaultAssets,
+        "keycloakifyVersion": (() => {
+            const version = JSON.parse(fs.readFileSync(pathJoin(getProjectRoot(), "package.json")).toString("utf8"))["version"];
+
+            assert(typeof version === "string");
+
+            return version;
+        })()
     });
 
     const { jarFilePath } = generateJavaStackFiles({

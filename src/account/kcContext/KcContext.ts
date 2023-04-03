@@ -6,6 +6,7 @@ export type KcContext = KcContext.Password | KcContext.Account;
 
 export declare namespace KcContext {
     export type Common = {
+        keycloakifyVersion: string;
         locale?: {
             supported: {
                 url: string;

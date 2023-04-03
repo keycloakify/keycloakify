@@ -53,8 +53,9 @@ export function generateFtlFilesCodeFactory(params: {
     //NOTE: Expected to be an empty object if external assets mode is enabled.
     cssGlobalsToDefine: Record<string, string>;
     buildOptions: BuildOptionsLike;
+    keycloakifyVersion: string;
 }) {
-    const { cssGlobalsToDefine, indexHtmlCode, buildOptions } = params;
+    const { cssGlobalsToDefine, indexHtmlCode, buildOptions, keycloakifyVersion } = params;
 
     const $ = cheerio.load(indexHtmlCode);
 
@@ -128,7 +129,8 @@ export function generateFtlFilesCodeFactory(params: {
             .replace(
                 "CUSTOM_USER_ATTRIBUTES_eKsIY4ZsZ4xeM",
                 buildOptions.customUserAttributes.length === 0 ? "" : ", " + buildOptions.customUserAttributes.map(name => `"${name}"`).join(", ")
-            ),
+            )
+            .replace("KEYCLOAKIFY_VERSION_xEdKd3xEdr", keycloakifyVersion),
         "<!-- xIdLqMeOedErIdLsPdNdI9dSlxI -->": [
             "<#if scripts??>",
             "    <#list scripts as script>",
@@ -161,7 +163,6 @@ export function generateFtlFilesCodeFactory(params: {
 
         Object.entries({
             ...replaceValueBySearchValue,
-            //If updated, don't forget to change in the ftl script as well.
             "PAGE_ID_xIgLsPgGId9D8e": pageId
         }).map(([searchValue, replaceValue]) => (ftlCode = ftlCode.replace(searchValue, replaceValue)));
 

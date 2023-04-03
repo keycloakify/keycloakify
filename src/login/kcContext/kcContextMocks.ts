@@ -101,6 +101,7 @@ const attributes: Attribute[] = [
 const attributesByName = Object.fromEntries(attributes.map(attribute => [attribute.name, attribute])) as any;
 
 export const kcContextCommonMock: KcContext.Common = {
+    "keycloakifyVersion": "0.0.0",
     "url": {
         "loginAction": "#",
         "resourcesPath": pathJoin(PUBLIC_URL, mockTestingResourcesPath),

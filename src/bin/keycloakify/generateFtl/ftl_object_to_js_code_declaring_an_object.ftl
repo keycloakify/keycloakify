@@ -119,6 +119,7 @@
     </#if>
 
     out["pageId"] = "PAGE_ID_xIgLsPgGId9D8e";
+    out["keycloakifyVersion"] = "KEYCLOAKIFY_VERSION_xEdKd3xEdr";
 
     return out;
 
