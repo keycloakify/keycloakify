@@ -9,7 +9,7 @@ import {
     type AccountThemePageId,
     themeTypes,
     type ThemeType
-} from "./keycloakify/generateFtl/generateFtl";
+} from "./keycloakify/generateFtl";
 import { capitalize } from "tsafe/capitalize";
 import { readFile, writeFile } from "fs/promises";
 import { existsSync } from "fs";
