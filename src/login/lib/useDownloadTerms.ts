@@ -10,7 +10,7 @@ import { KcContext } from "../kcContext";
 export const evtTermMarkdown = Evt.create<string | undefined>(undefined);
 
 export type KcContextLike = {
-    pageId: KcContext["pageId"];
+    pageId: string;
     locale?: {
         currentLanguageTag: string;
     };
