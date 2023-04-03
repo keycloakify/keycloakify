@@ -21,13 +21,17 @@ export default function Terms(props: PageProps<Extract<KcContext, { pageId: "ter
 
     const { url } = kcContext;
 
-    if (evtTermMarkdown.state === undefined) {
+    const termMarkdown = evtTermMarkdown.state;
+
+    if (termMarkdown === undefined) {
         return null;
     }
 
     return (
         <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} displayMessage={false} headerNode={msg("termsTitle")}>
-            <div id="kc-terms-text">{evtTermMarkdown.state && <Markdown>{evtTermMarkdown.state}</Markdown>}</div>
+            <div id="kc-terms-text">
+                <Markdown>{termMarkdown}</Markdown>
+            </div>
             <form className="form-actions" action={url.loginAction} method="POST">
                 <input
                     className={clsx(
