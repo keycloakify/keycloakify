@@ -1,5 +1,4 @@
 <script>const _= 
-<#assign pageId="PAGE_ID_xIgLsPgGId9D8e">
 (()=>{
 
     const out = ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
@@ -119,7 +118,7 @@
         };
     </#if>
 
-    out["pageId"] = "${pageId}";
+    out["pageId"] = "PAGE_ID_xIgLsPgGId9D8e";
 
     return out;
 
