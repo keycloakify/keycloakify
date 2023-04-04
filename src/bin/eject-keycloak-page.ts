@@ -19,8 +19,6 @@ import { assert, Equals } from "tsafe/assert";
 import { getThemeSrcDirPath } from "./getSrcDirPath";
 
 (async () => {
-    const projectDirPath = getProjectRoot();
-
     console.log("Select a theme type");
 
     const { value: themeType } = await cliSelect<ThemeType>({
@@ -51,7 +49,7 @@ import { getThemeSrcDirPath } from "./getSrcDirPath";
 
     const pageBasename = capitalize(kebabCaseToCamelCase(pageId)).replace(/ftl$/, "tsx");
 
-    const { themeSrcDirPath } = getThemeSrcDirPath({ "projectDirPath": projectDirPath });
+    const { themeSrcDirPath } = getThemeSrcDirPath({ "projectDirPath": process.cwd() });
 
     if (themeSrcDirPath === undefined) {
         throw new Error("Couldn't locate your theme sources");
@@ -65,7 +63,7 @@ import { getThemeSrcDirPath } from "./getSrcDirPath";
         process.exit(-1);
     }
 
-    writeFile(targetFilePath, await readFile(pathJoin(projectDirPath, "src", themeType, "pages", pageBasename)));
+    await writeFile(targetFilePath, await readFile(pathJoin(getProjectRoot(), "src", themeType, "pages", pageBasename)));
 
     console.log(`${pathRelative(process.cwd(), targetFilePath)} created`);
 })();
