@@ -12,6 +12,7 @@
         "prepare": "yarn generate-i18n-messages",
         "build": "rimraf dist/ && tsc -p src/bin && tsc -p src/tsconfig.json && tsc-alias -p src/tsconfig.json && yarn grant-exec-perms && yarn copy-files dist/",
         "build:watch": "tsc -p src/tsconfig.json && (concurrently \"tsc -p src/tsconfig.json -w\" \"tsc-alias -p src/tsconfig.json\")",
+        "generate:json-schema": "ts-node scripts/generate-json-schema.ts",
         "grant-exec-perms": "node dist/bin/tools/grant-exec-perms.js",
         "copy-files": "copyfiles -u 1 src/**/*.ftl",
         "test": "yarn test:types && vitest run",
@@ -82,7 +83,8 @@
         "ts-node": "^10.9.1",
         "tsc-alias": "^1.8.3",
         "typescript": "^5.0.1-rc",
-        "vitest": "^0.29.8"
+        "vitest": "^0.29.8",
+        "zod-to-json-schema": "^3.20.4"
     },
     "dependencies": {
         "@octokit/rest": "^18.12.0",
