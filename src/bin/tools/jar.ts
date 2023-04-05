@@ -48,7 +48,7 @@ export async function jarStream({ groupId, artifactId, version, asyncPathGenerat
     for await (const entry of asyncPathGeneratorFn()) {
         if ("buffer" in entry) {
             zipFile.addBuffer(entry.buffer, entry.zipPath);
-        } else if ("fsPath" in entry) {
+        } else if ("fsPath" in entry && entry.fsPath.endsWith(sep)) {
             zipFile.addFile(entry.fsPath, entry.zipPath);
         }
     }
