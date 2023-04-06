@@ -20,6 +20,7 @@ export namespace BuildOptionsLike {
         extraThemeProperties?: string[];
         isSilent: boolean;
         customUserAttributes: string[];
+        themeVersion: string;
     };
 
     export type Standalone = Common & {

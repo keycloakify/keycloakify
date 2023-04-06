@@ -118,8 +118,9 @@
         };
     </#if>
 
-    out["pageId"] = "PAGE_ID_xIgLsPgGId9D8e";
     out["keycloakifyVersion"] = "KEYCLOAKIFY_VERSION_xEdKd3xEdr";
+    out["themeVersion"] = "KEYCLOAKIFY_THEME_VERSION_sIgKd3xEdr3dx";
+    out["pageId"] = "PAGE_ID_xIgLsPgGId9D8e";
 
     return out;
 

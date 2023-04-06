@@ -8,7 +8,7 @@ export const bundlers = ["mvn", "keycloakify", "none"] as const;
 export type Bundler = (typeof bundlers)[number];
 export type ParsedPackageJson = {
     name: string;
-    version: string;
+    version?: string;
     homepage?: string;
     keycloakify?: {
         /** @deprecated: use extraLoginPages instead */
@@ -30,7 +30,7 @@ export type ParsedPackageJson = {
 
 export const zParsedPackageJson = z.object({
     "name": z.string(),
-    "version": z.string(),
+    "version": z.string().optional(),
     "homepage": z.string().optional(),
     "keycloakify": z
         .object({

@@ -9,7 +9,7 @@ export type BuildOptionsLike = {
     themeName: string;
     groupId: string;
     artifactId?: string;
-    version: string;
+    themeVersion: string;
 };
 
 {
@@ -26,7 +26,7 @@ export function generateJavaStackFiles(params: {
     jarFilePath: string;
 } {
     const {
-        buildOptions: { groupId, themeName, version, artifactId },
+        buildOptions: { groupId, themeName, themeVersion, artifactId },
         keycloakThemeBuildingDirPath,
         doBundlesEmailTemplate
     } = params;
@@ -43,7 +43,7 @@ export function generateJavaStackFiles(params: {
                 `	<modelVersion>4.0.0</modelVersion>`,
                 `	<groupId>${groupId}</groupId>`,
                 `	<artifactId>${artifactId}</artifactId>`,
-                `	<version>${version}</version>`,
+                `	<version>${themeVersion}</version>`,
                 `	<name>${artifactId}</name>`,
                 `	<description />`,
                 `</project>`
@@ -83,6 +83,6 @@ export function generateJavaStackFiles(params: {
     }
 
     return {
-        "jarFilePath": pathJoin(keycloakThemeBuildingDirPath, "target", `${artifactId}-${version}.jar`)
+        "jarFilePath": pathJoin(keycloakThemeBuildingDirPath, "target", `${artifactId}-${themeVersion}.jar`)
     };
 }
