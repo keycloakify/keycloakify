@@ -66,9 +66,9 @@ describe("jar", () => {
 
     const tmpDirs: string[] = [];
 
-    //    afterAll(async () => {
-    //        await Promise.all(tmpDirs.map(dir => rm(dir, { force: true, recursive: true })));
-    //    });
+    afterAll(async () => {
+        await Promise.all(tmpDirs.map(dir => rm(dir, { force: true, recursive: true })));
+    });
 
     it("creates jar artifacts without error", async () => {
         async function* mockFiles(): ZipEntryGenerator {
