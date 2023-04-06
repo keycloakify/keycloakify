@@ -62,10 +62,9 @@ function readAll(zipFile: ZipFile): Promise<Map<string, Buffer>> {
 }
 
 describe("jar", () => {
+    const coords = { artifactId: "someArtifactId", groupId: "someGroupId", version: "1.2.3" };
 
-    const coords = { artifactId: "someArtifactId", groupId: "someGroupId", version: "1.2.3" }
-
-    const tmpDirs: string[] = []
+    const tmpDirs: string[] = [];
 
     //    afterAll(async () => {
     //        await Promise.all(tmpDirs.map(dir => rm(dir, { force: true, recursive: true })));
@@ -98,31 +97,29 @@ describe("jar", () => {
     });
 
     it("creates a jar from _real_ files without error", async () => {
+        const tmp = await mkdtemp(path.join(tmpdir(), "kc-jar-test-"));
+        tmpDirs.push(tmp);
+        const rootPath = path.join(tmp, "src");
+        const targetPath = path.join(tmp, "jar.jar");
+        await mkdir(rootPath);
 
-        const tmp = await mkdtemp(path.join(tmpdir(), "kc-jar-test-"))
-        tmpDirs.push(tmp)
-        const rootPath = path.join(tmp, "src")
-        const targetPath = path.join(tmp, "jar.jar")
-        await mkdir(rootPath)
+        await cp(path.dirname(__dirname), rootPath, { recursive: true });
 
-        await cp(path.dirname(__dirname), rootPath, { recursive: true })
-
-        await jar({ ...coords, rootPath, targetPath })
+        await jar({ ...coords, rootPath, targetPath });
 
         const buffered = await readToBuffer(createReadStream(targetPath));
         const unzipped = await unzipBuffer(buffered);
         const entries = await readAll(unzipped);
-        const zipPaths = Array.from(entries.keys())
+        const zipPaths = Array.from(entries.keys());
 
         assert.isOk(entries.has("META-INF/MANIFEST.MF"));
         assert.isOk(entries.has("META-INF/maven/someGroupId/someArtifactId/pom.properties"));
 
         for await (const fsPath of walk(rootPath)) {
             if (!fsPath.endsWith(path.sep)) {
-                const rel = path.relative(rootPath, fsPath).replace(path.sep === "/" ? /\//g : /\\/g, "/")
-                assert.isOk(zipPaths.includes(rel), `missing ${rel} (${rel}, ${zipPaths.join(", ")})`)
+                const rel = path.relative(rootPath, fsPath).replace(path.sep === "/" ? /\//g : /\\/g, "/");
+                assert.isOk(zipPaths.includes(rel), `missing ${rel} (${rel}, ${zipPaths.join(", ")})`);
             }
         }
-
-    })
+    });
 });

@@ -12,8 +12,8 @@ export default async function* walk(root: string): AsyncGenerator<string, void, 
     for (const entry of await readdir(root, { withFileTypes: true })) {
         const absolutePath = resolve(root, entry.name);
         if (entry.isDirectory()) {
-            yield absolutePath.endsWith(sep) ? absolutePath : (absolutePath + sep);
+            yield absolutePath.endsWith(sep) ? absolutePath : absolutePath + sep;
             yield* walk(absolutePath);
-        } else yield absolutePath.endsWith(sep) ? absolutePath.substring(0, absolutePath.length-1) : absolutePath;
+        } else yield absolutePath.endsWith(sep) ? absolutePath.substring(0, absolutePath.length - 1) : absolutePath;
     }
 }
