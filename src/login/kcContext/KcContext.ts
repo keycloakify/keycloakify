@@ -333,7 +333,6 @@ export declare namespace KcContext {
             totpSecretEncoded: string;
             qrUrl: string;
             policy: {
-                supportedApplications: string[];
                 algorithm: "HmacSHA1" | "HmacSHA256" | "HmacSHA512";
                 digits: number;
                 lookAheadWindow: number;
@@ -347,6 +346,7 @@ export declare namespace KcContext {
                       initialCounter: number;
                   }
             );
+            supportedApplications: string[];
             totpSecretQrCode: string;
             manualUrl: string;
             totpSecret: string;
