@@ -1,0 +1,91 @@
+{
+    "allOf": [
+        {
+            "$ref": "https://json.schemastore.org/package.json"
+        },
+        {
+            "$ref": "keycloakifyPackageJsonSchema"
+        }
+    ],
+    "$ref": "#/definitions/keycloakifyPackageJsonSchema",
+    "definitions": {
+        "keycloakifyPackageJsonSchema": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "string"
+                },
+                "homepage": {
+                    "type": "string"
+                },
+                "keycloakify": {
+                    "type": "object",
+                    "properties": {
+                        "extraPages": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "extraLoginPages": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "extraAccountPages": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "extraThemeProperties": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "areAppAndKeycloakServerSharingSameDomain": {
+                            "type": "boolean"
+                        },
+                        "artifactId": {
+                            "type": "string"
+                        },
+                        "groupId": {
+                            "type": "string"
+                        },
+                        "bundler": {
+                            "type": "string",
+                            "enum": ["mvn", "keycloakify", "none"]
+                        },
+                        "keycloakVersionDefaultAssets": {
+                            "type": "string"
+                        },
+                        "reactAppBuildDirPath": {
+                            "type": "string"
+                        },
+                        "keycloakifyBuildDirPath": {
+                            "type": "string"
+                        },
+                        "customUserAttributes": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "themeName": {
+                            "type": "string"
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            },
+            "required": ["name", "version"],
+            "additionalProperties": false
+        }
+    },
+    "$schema": "http://json-schema.org/draft-07/schema#"
+}
