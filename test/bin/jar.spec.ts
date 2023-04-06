@@ -1,7 +1,12 @@
-import { jarStream, type ZipEntryGenerator } from "keycloakify/bin/tools/jar";
+import jar, { jarStream, type ZipEntryGenerator } from "keycloakify/bin/tools/jar";
 import { fromBuffer, Entry, ZipFile } from "yauzl";
-import { it, describe, assert } from "vitest";
+import { it, describe, assert, afterAll } from "vitest";
 import { Readable } from "stream";
+import { tmpdir } from "os";
+import { mkdtemp, cp, mkdir, rm } from "fs/promises";
+import path from "path";
+import { createReadStream } from "fs";
+import walk from "keycloakify/bin/tools/walk";
 
 type AsyncIterable<T> = {
     [Symbol.asyncIterator](): AsyncIterableIterator<T>;
@@ -17,7 +22,7 @@ async function readToBuffer(stream: NodeJS.ReadableStream) {
     return Buffer.concat(await arrayFromAsync(stream as AsyncIterable<Buffer>));
 }
 
-function unzip(buffer: Buffer) {
+function unzipBuffer(buffer: Buffer) {
     return new Promise<ZipFile>((resolve, reject) =>
         fromBuffer(buffer, { lazyEntries: true }, (err, zipFile) => {
             if (err !== null) {
@@ -57,15 +62,23 @@ function readAll(zipFile: ZipFile): Promise<Map<string, Buffer>> {
 }
 
 describe("jar", () => {
+
+    const coords = { artifactId: "someArtifactId", groupId: "someGroupId", version: "1.2.3" }
+
+    const tmpDirs: string[] = []
+
+    //    afterAll(async () => {
+    //        await Promise.all(tmpDirs.map(dir => rm(dir, { force: true, recursive: true })));
+    //    });
+
     it("creates jar artifacts without error", async () => {
         async function* mockFiles(): ZipEntryGenerator {
             yield { zipPath: "foo", buffer: Buffer.from("foo") };
         }
 
-        const opts = { artifactId: "someArtifactId", groupId: "someGroupId", version: "1.2.3", asyncPathGeneratorFn: mockFiles };
-        const zipped = await jarStream(opts);
+        const zipped = await jarStream({ ...coords, asyncPathGeneratorFn: mockFiles });
         const buffered = await readToBuffer(zipped.outputStream);
-        const unzipped = await unzip(buffered);
+        const unzipped = await unzipBuffer(buffered);
         const entries = await readAll(unzipped);
 
         assert.equal(entries.size, 3);
@@ -83,4 +96,33 @@ describe("jar", () => {
         assert.isOk(pomProperties?.includes("someGroupId"));
         assert.isOk(pomProperties?.includes("someArtifactId"));
     });
+
+    it("creates a jar from _real_ files without error", async () => {
+
+        const tmp = await mkdtemp(path.join(tmpdir(), "kc-jar-test-"))
+        tmpDirs.push(tmp)
+        const rootPath = path.join(tmp, "src")
+        const targetPath = path.join(tmp, "jar.jar")
+        await mkdir(rootPath)
+
+        await cp(path.dirname(__dirname), rootPath, { recursive: true })
+
+        await jar({ ...coords, rootPath, targetPath })
+
+        const buffered = await readToBuffer(createReadStream(targetPath));
+        const unzipped = await unzipBuffer(buffered);
+        const entries = await readAll(unzipped);
+        const zipPaths = Array.from(entries.keys())
+
+        assert.isOk(entries.has("META-INF/MANIFEST.MF"));
+        assert.isOk(entries.has("META-INF/maven/someGroupId/someArtifactId/pom.properties"));
+
+        for await (const fsPath of walk(rootPath)) {
+            if (!fsPath.endsWith(path.sep)) {
+                const rel = path.relative(rootPath, fsPath).replace(path.sep === "/" ? /\//g : /\\/g, "/")
+                assert.isOk(zipPaths.includes(rel), `missing ${rel} (${rel}, ${zipPaths.join(", ")})`)
+            }
+        }
+
+    })
 });
