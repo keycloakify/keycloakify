@@ -26,6 +26,11 @@ export async function main() {
         "isSilent": isSilent
     });
 
+    if (!buildOptions.keepBuildDir) {
+        logger.log("🧹 Cleanup files under " + buildOptions.keycloakifyBuildDirPath);
+        fs.rmSync(buildOptions.keycloakifyBuildDirPath, { recursive: true, force: true });
+    }
+
     const { doBundlesEmailTemplate } = await generateKeycloakThemeResources({
         keycloakThemeBuildingDirPath: buildOptions.keycloakifyBuildDirPath,
         "emailThemeSrcDirPath": (() => {

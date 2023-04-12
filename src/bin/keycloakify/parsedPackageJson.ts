@@ -25,6 +25,7 @@ export type ParsedPackageJson = {
         keycloakifyBuildDirPath?: string;
         customUserAttributes?: string[];
         themeName?: string;
+        keepBuildDir?: boolean;
     };
 };
 
@@ -46,7 +47,8 @@ export const zParsedPackageJson = z.object({
             "reactAppBuildDirPath": z.string().optional(),
             "keycloakifyBuildDirPath": z.string().optional(),
             "customUserAttributes": z.array(z.string()).optional(),
-            "themeName": z.string().optional()
+            "themeName": z.string().optional(),
+            "keepBuildDir": z.boolean().optional()
         })
         .optional()
 });

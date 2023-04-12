@@ -78,6 +78,9 @@
                         },
                         "themeName": {
                             "type": "string"
+                        },
+                        "keepBuildDir": {
+                            "type": "boolean"
                         }
                     },
                     "additionalProperties": false

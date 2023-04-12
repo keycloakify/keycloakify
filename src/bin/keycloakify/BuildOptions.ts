@@ -27,6 +27,7 @@ export namespace BuildOptions {
         /** Directory that keycloakify outputs to. Defaults to {cwd}/build_keycloak */
         keycloakifyBuildDirPath: string;
         customUserAttributes: string[];
+        keepBuildDir: boolean;
     };
 
     export type Standalone = Common & {
@@ -98,8 +99,17 @@ export function readBuildOptions(params: { projectDirPath: string; isExternalAss
     const common: BuildOptions.Common = (() => {
         const { name, keycloakify = {}, version, homepage } = parsedPackageJson;
 
-        const { extraPages, extraLoginPages, extraAccountPages, extraThemeProperties, groupId, artifactId, bundler, keycloakVersionDefaultAssets } =
-            keycloakify ?? {};
+        const {
+            extraPages,
+            extraLoginPages,
+            extraAccountPages,
+            extraThemeProperties,
+            groupId,
+            artifactId,
+            bundler,
+            keycloakVersionDefaultAssets,
+            keepBuildDir
+        } = keycloakify ?? {};
 
         const themeName =
             keycloakify.themeName ??
@@ -179,7 +189,8 @@ export function readBuildOptions(params: { projectDirPath: string; isExternalAss
 
                 return keycloakifyBuildDirPath;
             })(),
-            "customUserAttributes": keycloakify.customUserAttributes ?? []
+            "customUserAttributes": keycloakify.customUserAttributes ?? [],
+            "keepBuildDir": keepBuildDir ?? false
         };
     })();
 
