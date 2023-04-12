@@ -18,6 +18,7 @@ export type BuildOptionsLike = BuildOptionsLike.Standalone | BuildOptionsLike.Ex
 export namespace BuildOptionsLike {
     export type Common = {
         customUserAttributes: string[];
+        themeVersion: string;
     };
 
     export type Standalone = Common & {
@@ -130,7 +131,8 @@ export function generateFtlFilesCodeFactory(params: {
                 "CUSTOM_USER_ATTRIBUTES_eKsIY4ZsZ4xeM",
                 buildOptions.customUserAttributes.length === 0 ? "" : ", " + buildOptions.customUserAttributes.map(name => `"${name}"`).join(", ")
             )
-            .replace("KEYCLOAKIFY_VERSION_xEdKd3xEdr", keycloakifyVersion),
+            .replace("KEYCLOAKIFY_VERSION_xEdKd3xEdr", keycloakifyVersion)
+            .replace("KEYCLOAKIFY_THEME_VERSION_sIgKd3xEdr3dx", buildOptions.themeVersion),
         "<!-- xIdLqMeOedErIdLsPdNdI9dSlxI -->": [
             "<#if scripts??>",
             "    <#list scripts as script>",

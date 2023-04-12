@@ -68,7 +68,7 @@ export async function main() {
             logger.log("🫶 Let keycloakify do its thang");
             await jar({
                 "rootPath": pathJoin(buildOptions.keycloakifyBuildDirPath, "src", "main", "resources"),
-                "version": buildOptions.version,
+                "version": buildOptions.themeVersion,
                 "groupId": buildOptions.groupId,
                 "artifactId": buildOptions.artifactId,
                 "targetPath": jarFilePath

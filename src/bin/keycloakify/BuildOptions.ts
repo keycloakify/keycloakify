@@ -13,7 +13,7 @@ export type BuildOptions = BuildOptions.Standalone | BuildOptions.ExternalAssets
 export namespace BuildOptions {
     export type Common = {
         isSilent: boolean;
-        version: string;
+        themeVersion: string;
         themeName: string;
         extraLoginPages: string[] | undefined;
         extraAccountPages: string[] | undefined;
@@ -149,7 +149,7 @@ export function readBuildOptions(params: { projectDirPath: string; isExternalAss
                               .join(".") ?? fallbackGroupId) + ".keycloak"
                 );
             })(),
-            "version": process.env.KEYCLOAKIFY_VERSION ?? version,
+            "themeVersion": process.env.KEYCLOAKIFY_THEME_VERSION ?? process.env.KEYCLOAKIFY_VERSION ?? version ?? "0.0.0",
             "extraLoginPages": [...(extraPages ?? []), ...(extraLoginPages ?? [])],
             extraAccountPages,
             extraThemeProperties,
