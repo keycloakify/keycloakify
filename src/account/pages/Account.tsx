@@ -124,7 +124,6 @@ export default function LogoutConfirm(props: PageProps<Extract<KcContext, { page
                             >
                                 {msg("doCancel")}
                             </button>
-                            I
                         </div>
                     </div>
                 </div>
