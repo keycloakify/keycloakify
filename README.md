@@ -59,7 +59,31 @@ Their dedicated support helps us continue the development and maintenance of thi
     <i>5% of your annual subscription will be donated to us, and you'll get 5% off too.</i>
 </p>
 
-Thank you, [Cloud IAM](https://www.cloud-iam.com/), for your support!
+Thank you, [Cloud IAM](https://www.cloud-iam.com/), for your support!  
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://willwill96.github.io/the-ui-dawg-static-site/en/introduction/"><img src="https://avatars.githubusercontent.com/u/10997562?v=4?s=100" width="100px;" alt="William Will"/><br /><sub><b>William Will</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=willwill96" title="Tests">⚠️</a> <a href="https://github.com/keycloakify/keycloakify/commits?author=willwill96" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/lordvlad"><img src="https://avatars.githubusercontent.com/u/1217769?v=4?s=100" width="100px;" alt="Waldemar Reusch"/><br /><sub><b>Waldemar Reusch</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=lordvlad" title="Tests">⚠️</a> <a href="https://github.com/keycloakify/keycloakify/commits?author=lordvlad" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/mkreuzmayr"><img src="https://avatars.githubusercontent.com/u/20108212?v=4?s=100" width="100px;" alt="Michael Kreuzmayr"/><br /><sub><b>Michael Kreuzmayr</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=mkreuzmayr" title="Tests">⚠️</a> <a href="https://github.com/keycloakify/keycloakify/commits?author=mkreuzmayr" title="Code">💻</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
 
 ## Changelog highlights
 
@@ -220,27 +244,3 @@ It's important to avoid problem when using `keycloakify` alongside [`mui`](https
 -   It's now possible to implement custom `.ftl` pages.
 -   Support for Keycloak plugins that introduce non standard ftl values.
     (Like for example [this plugin](https://github.com/micedre/keycloak-mail-whitelisting) that define `authorizedMailDomains` in `register.ftl`).
-
-## Contributors ✨
-
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<table>
-  <tbody>
-    <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://willwill96.github.io/the-ui-dawg-static-site/en/introduction/"><img src="https://avatars.githubusercontent.com/u/10997562?v=4?s=100" width="100px;" alt="William Will"/><br /><sub><b>William Will</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=willwill96" title="Tests">⚠️</a> <a href="https://github.com/keycloakify/keycloakify/commits?author=willwill96" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/lordvlad"><img src="https://avatars.githubusercontent.com/u/1217769?v=4?s=100" width="100px;" alt="Waldemar Reusch"/><br /><sub><b>Waldemar Reusch</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=lordvlad" title="Tests">⚠️</a> <a href="https://github.com/keycloakify/keycloakify/commits?author=lordvlad" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/mkreuzmayr"><img src="https://avatars.githubusercontent.com/u/20108212?v=4?s=100" width="100px;" alt="Michael Kreuzmayr"/><br /><sub><b>Michael Kreuzmayr</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=mkreuzmayr" title="Tests">⚠️</a> <a href="https://github.com/keycloakify/keycloakify/commits?author=mkreuzmayr" title="Code">💻</a></td>
-    </tr>
-  </tbody>
-</table>
-
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
-
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
