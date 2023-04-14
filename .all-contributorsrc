@@ -1,0 +1,26 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "willwill96",
+      "name": "William Will",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10997562?v=4",
+      "profile": "https://willwill96.github.io/the-ui-dawg-static-site/en/introduction/",
+      "contributions": [
+        "test",
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true,
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "projectName": "keycloakify",
+  "projectOwner": "keycloakify"
+}
