@@ -1,4 +1,7 @@
 <p align="center">
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
     <img src="https://user-images.githubusercontent.com/6702424/109387840-eba11f80-7903-11eb-9050-db1dad883f78.png">  
 </p>
 <p align="center">
@@ -217,3 +220,25 @@ It's important to avoid problem when using `keycloakify` alongside [`mui`](https
 -   It's now possible to implement custom `.ftl` pages.
 -   Support for Keycloak plugins that introduce non standard ftl values.
     (Like for example [this plugin](https://github.com/micedre/keycloak-mail-whitelisting) that define `authorizedMailDomains` in `register.ftl`).
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://willwill96.github.io/the-ui-dawg-static-site/en/introduction/"><img src="https://avatars.githubusercontent.com/u/10997562?v=4?s=100" width="100px;" alt="William Will"/><br /><sub><b>William Will</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=willwill96" title="Tests">⚠️</a> <a href="https://github.com/keycloakify/keycloakify/commits?author=willwill96" title="Code">💻</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
