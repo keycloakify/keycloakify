@@ -122,6 +122,16 @@
         "test",
         "code"
       ]
+    },
+    {
+      "login": "lazToum",
+      "name": "Lazaros Toumanidis",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4764837?v=4",
+      "profile": "https://github.com/lazToum",
+      "contributions": [
+        "test",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
