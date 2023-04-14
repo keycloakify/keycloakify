@@ -63,6 +63,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "Tasyp",
+      "name": "German Öö",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6623212?v=4",
+      "profile": "https://tasyp.xyz/",
+      "contributions": [
+        "test",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
