@@ -73,6 +73,16 @@
         "test",
         "code"
       ]
+    },
+    {
+      "login": "revolunet",
+      "name": "Julien Bouquillon",
+      "avatar_url": "https://avatars.githubusercontent.com/u/124937?v=4",
+      "profile": "https://revolunet.com",
+      "contributions": [
+        "test",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
