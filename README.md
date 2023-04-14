@@ -36,7 +36,7 @@
     <img src="https://user-images.githubusercontent.com/6702424/110260457-a1c3d380-7fac-11eb-853a-80459b65626b.png">
 </p>
 
-## Sponsor
+## Sponsor 👼
 
 We are exclusively sponsored by [Cloud IAM](https://www.cloud-iam.com), a French company offering Keycloak as a service.  
 Their dedicated support helps us continue the development and maintenance of this project.
