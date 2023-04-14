@@ -54,6 +54,15 @@
         "test",
         "code"
       ]
+    },
+    {
+      "login": "Mstrodl",
+      "name": "Mary ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6877780?v=4",
+      "profile": "https://coolmathgames.tech",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
