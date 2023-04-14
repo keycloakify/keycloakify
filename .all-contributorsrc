@@ -44,6 +44,16 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "Ann2827",
+      "name": "Bystrova Ann",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32645809?v=4",
+      "profile": "https://github.com/Ann2827",
+      "contributions": [
+        "test",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
