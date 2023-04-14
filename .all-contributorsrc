@@ -102,6 +102,16 @@
         "test",
         "code"
       ]
+    },
+    {
+      "login": "0x-Void",
+      "name": "Void",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32745739?v=4",
+      "profile": "https://github.com/0x-Void",
+      "contributions": [
+        "test",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
