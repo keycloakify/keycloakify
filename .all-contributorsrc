@@ -7,30 +7,20 @@
   "commitConvention": "angular",
   "contributors": [
     {
-      "login": "willwill96",
-      "name": "William Will",
-      "avatar_url": "https://avatars.githubusercontent.com/u/10997562?v=4",
-      "profile": "https://willwill96.github.io/the-ui-dawg-static-site/en/introduction/",
-      "contributions": [
-        "test",
-        "code"
-      ]
-    },
-    {
       "login": "lordvlad",
       "name": "Waldemar Reusch",
       "avatar_url": "https://avatars.githubusercontent.com/u/1217769?v=4",
       "profile": "https://github.com/lordvlad",
       "contributions": [
-        "test",
-        "code"
+        "code",
+        "test"
       ]
     },
     {
-      "login": "mkreuzmayr",
-      "name": "Michael Kreuzmayr",
-      "avatar_url": "https://avatars.githubusercontent.com/u/20108212?v=4",
-      "profile": "https://github.com/mkreuzmayr",
+      "login": "willwill96",
+      "name": "William Will",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10997562?v=4",
+      "profile": "https://willwill96.github.io/the-ui-dawg-static-site/en/introduction/",
       "contributions": [
         "test",
         "code"
@@ -50,6 +40,16 @@
       "name": "Bystrova Ann",
       "avatar_url": "https://avatars.githubusercontent.com/u/32645809?v=4",
       "profile": "https://github.com/Ann2827",
+      "contributions": [
+        "test",
+        "code"
+      ]
+    },
+    {
+      "login": "mkreuzmayr",
+      "name": "Michael Kreuzmayr",
+      "avatar_url": "https://avatars.githubusercontent.com/u/20108212?v=4",
+      "profile": "https://github.com/mkreuzmayr",
       "contributions": [
         "test",
         "code"
@@ -82,6 +82,15 @@
       "contributions": [
         "test",
         "code"
+      ]
+    },
+    {
+      "login": "kasir-barati",
+      "name": "Kasir Barati",
+      "avatar_url": "https://avatars.githubusercontent.com/u/73785723?v=4",
+      "profile": "http://kasir-barati.github.io",
+      "contributions": [
+        "doc"
       ]
     }
   ],
