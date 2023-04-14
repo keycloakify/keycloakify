@@ -12,8 +12,7 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/1217769?v=4",
       "profile": "https://github.com/lordvlad",
       "contributions": [
-        "code",
-        "test"
+        "code"
       ]
     },
     {
@@ -22,17 +21,7 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/10997562?v=4",
       "profile": "https://willwill96.github.io/the-ui-dawg-static-site/en/introduction/",
       "contributions": [
-        "test",
         "code"
-      ]
-    },
-    {
-      "login": "kasir-barati",
-      "name": "Kasir Barati",
-      "avatar_url": "https://avatars.githubusercontent.com/u/73785723?v=4",
-      "profile": "http://kasir-barati.github.io",
-      "contributions": [
-        "doc"
       ]
     },
     {
@@ -41,7 +30,6 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/32645809?v=4",
       "profile": "https://github.com/Ann2827",
       "contributions": [
-        "test",
         "code"
       ]
     },
@@ -70,7 +58,6 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/6623212?v=4",
       "profile": "https://tasyp.xyz/",
       "contributions": [
-        "test",
         "code"
       ]
     },
@@ -80,7 +67,51 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/124937?v=4",
       "profile": "https://revolunet.com",
       "contributions": [
-        "test",
+        "code"
+      ]
+    },
+    {
+      "login": "aidangilmore",
+      "name": "Aidan Gilmore",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32880357?v=4",
+      "profile": "https://github.com/aidangilmore",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "0x-Void",
+      "name": "Void",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32745739?v=4",
+      "profile": "https://github.com/0x-Void",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "juffe",
+      "name": "juffe",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5393231?v=4",
+      "profile": "https://github.com/juffe",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "lazToum",
+      "name": "Lazaros Toumanidis",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4764837?v=4",
+      "profile": "https://github.com/lazToum",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "marcmrf",
+      "name": "Marc",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9928519?v=4",
+      "profile": "https://github.com/marcmrf",
+      "contributions": [
         "code"
       ]
     },
@@ -91,56 +122,6 @@
       "profile": "http://kasir-barati.github.io",
       "contributions": [
         "doc"
-      ]
-    },
-    {
-      "login": "aidangilmore",
-      "name": "Aidan Gilmore",
-      "avatar_url": "https://avatars.githubusercontent.com/u/32880357?v=4",
-      "profile": "https://github.com/aidangilmore",
-      "contributions": [
-        "test",
-        "code"
-      ]
-    },
-    {
-      "login": "0x-Void",
-      "name": "Void",
-      "avatar_url": "https://avatars.githubusercontent.com/u/32745739?v=4",
-      "profile": "https://github.com/0x-Void",
-      "contributions": [
-        "test",
-        "code"
-      ]
-    },
-    {
-      "login": "juffe",
-      "name": "juffe",
-      "avatar_url": "https://avatars.githubusercontent.com/u/5393231?v=4",
-      "profile": "https://github.com/juffe",
-      "contributions": [
-        "test",
-        "code"
-      ]
-    },
-    {
-      "login": "lazToum",
-      "name": "Lazaros Toumanidis",
-      "avatar_url": "https://avatars.githubusercontent.com/u/4764837?v=4",
-      "profile": "https://github.com/lazToum",
-      "contributions": [
-        "test",
-        "code"
-      ]
-    },
-    {
-      "login": "marcmrf",
-      "name": "Marc",
-      "avatar_url": "https://avatars.githubusercontent.com/u/9928519?v=4",
-      "profile": "https://github.com/marcmrf",
-      "contributions": [
-        "test",
-        "code"
       ]
     }
   ],
