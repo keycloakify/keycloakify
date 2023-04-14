@@ -36,7 +36,7 @@
     <img src="https://user-images.githubusercontent.com/6702424/110260457-a1c3d380-7fac-11eb-853a-80459b65626b.png">
 </p>
 
-## Sponsor
+## Sponsor 👼
 
 We are exclusively sponsored by [Cloud IAM](https://www.cloud-iam.com), a French company offering Keycloak as a service.  
 Their dedicated support helps us continue the development and maintenance of this project.
@@ -57,6 +57,32 @@ Their dedicated support helps us continue the development and maintenance of thi
 </p>
 
 Thank you, [Cloud IAM](https://www.cloud-iam.com/), for your support!
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/lordvlad"><img src="https://avatars.githubusercontent.com/u/1217769?v=4?s=100" width="100px;" alt="Waldemar Reusch"/><br /><sub><b>Waldemar Reusch</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=lordvlad" title="Tests">⚠️</a> <a href="https://github.com/keycloakify/keycloakify/commits?author=lordvlad" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://willwill96.github.io/the-ui-dawg-static-site/en/introduction/"><img src="https://avatars.githubusercontent.com/u/10997562?v=4?s=100" width="100px;" alt="William Will"/><br /><sub><b>William Will</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=willwill96" title="Tests">⚠️</a> <a href="https://github.com/keycloakify/keycloakify/commits?author=willwill96" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://tasyp.xyz/"><img src="https://avatars.githubusercontent.com/u/6623212?v=4?s=100" width="100px;" alt="German Öö"/><br /><sub><b>German Öö</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=Tasyp" title="Tests">⚠️</a> <a href="https://github.com/keycloakify/keycloakify/commits?author=Tasyp" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://coolmathgames.tech"><img src="https://avatars.githubusercontent.com/u/6877780?v=4?s=100" width="100px;" alt="Mary "/><br /><sub><b>Mary </b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=Mstrodl" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Ann2827"><img src="https://avatars.githubusercontent.com/u/32645809?v=4?s=100" width="100px;" alt="Bystrova Ann"/><br /><sub><b>Bystrova Ann</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=Ann2827" title="Tests">⚠️</a> <a href="https://github.com/keycloakify/keycloakify/commits?author=Ann2827" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/mkreuzmayr"><img src="https://avatars.githubusercontent.com/u/20108212?v=4?s=100" width="100px;" alt="Michael Kreuzmayr"/><br /><sub><b>Michael Kreuzmayr</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=mkreuzmayr" title="Tests">⚠️</a> <a href="https://github.com/keycloakify/keycloakify/commits?author=mkreuzmayr" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://kasir-barati.github.io"><img src="https://avatars.githubusercontent.com/u/73785723?v=4?s=100" width="100px;" alt="Kasir Barati"/><br /><sub><b>Kasir Barati</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=kasir-barati" title="Documentation">📖</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
 
 ## Changelog highlights
 
