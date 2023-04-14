@@ -35,6 +35,15 @@
         "test",
         "code"
       ]
+    },
+    {
+      "login": "kasir-barati",
+      "name": "Kasir Barati",
+      "avatar_url": "https://avatars.githubusercontent.com/u/73785723?v=4",
+      "profile": "http://kasir-barati.github.io",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
