@@ -36,13 +36,29 @@
     <img src="https://user-images.githubusercontent.com/6702424/110260457-a1c3d380-7fac-11eb-853a-80459b65626b.png">
 </p>
 
-The more ⭐️ the project gets, the more time I spend improving and maintaining it. Thank you for your support 😊
+## Sponsor
 
-> 🗣 V7 have been released 🎉  
-> [It features major improvements](https://github.com/keycloakify/keycloakify#70-).  
-> Checkout [the migration guide](https://docs.keycloakify.dev/migration-guides/v6-greater-than-v7).
+We are exclusively sponsored by [Cloud IAM](https://www.cloud-iam.com), a French company offering Keycloak as a service.  
+Their dedicated support helps us continue the development and maintenance of this project.
 
-# Changelog highlights
+[Cloud IAM](https://www.cloud-iam.com/) provides the following services:
+
+-   Perfectly configured and optimized Keycloak IAM, ready in seconds.
+-   Custom theme building for your brand using Keycloakify.
+
+<p align="center">
+    <a href="https://www.cloud-iam.com/">
+      <img src="https://user-images.githubusercontent.com/6702424/232165752-17134e68-4a55-4d6e-8672-e9132ecac5d5.svg" alt="Cloud IAM Logo" width="200"/>
+    </a>
+    <br/>
+    <i>Use promo code <code>keycloakify</code>  </i>
+    <br/>
+    <i>5% of your annual subscription will be donated to us, and you'll get 5% off too.</i>
+</p>
+
+Thank you, [Cloud IAM](https://www.cloud-iam.com/), for your support!
+
+## Changelog highlights
 
 ## 7.0 🍾
 
