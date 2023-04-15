@@ -36,6 +36,22 @@ jobs:
     - run: yarn test
     - run: yarn test:keycloakify-starter
 
+  storybook:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    needs: test
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+    - uses: bahmutov/npm-install@v1
+    - run: yarn build-storybook -o ./build_storybook
+    - run: git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${{github.repository}}.git
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - run: npx -y -p gh-pages@3.1.0 gh-pages -d ./build_storybook -u "github-actions-bot <actions@github.com>" 
+
   check_if_version_upgraded:
     name: Check if version upgrade
     # When someone forks the repo and opens a PR we want to enables the tests to be run (the previous jobs)
