@@ -95,6 +95,10 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 ## Changelog highlights
 
+## 7.7
+
+-   Better storybook support, see [the starter project](https://github.com/keycloakify/keycloakify-starter).
+
 ## 7.0 🍾
 
 -   Account theme support 🚀
