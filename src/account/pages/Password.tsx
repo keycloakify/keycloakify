@@ -26,7 +26,7 @@ export default function LogoutConfirm(props: PageProps<Extract<KcContext, { page
                     <h2>{msg("changePasswordHtmlTitle")}</h2>
                 </div>
                 <div className="col-md-2 subtitle">
-                    <span className="subtitle">${msg("allFieldsRequired")}</span>
+                    <span className="subtitle">{msg("allFieldsRequired")}</span>
                 </div>
             </div>
 
@@ -38,7 +38,7 @@ export default function LogoutConfirm(props: PageProps<Extract<KcContext, { page
                     value={account.username ?? ""}
                     autoComplete="username"
                     readOnly
-                    style={{ "display": "none;" }}
+                    style={{ "display": "none" }}
                 />
 
                 {password.passwordSet && (
