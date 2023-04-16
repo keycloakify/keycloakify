@@ -15,11 +15,11 @@ export function createGetKcContext<KcContextExtension extends { pageId: string }
 }) {
     const { mockData } = params ?? {};
 
-    function getKcContext<PageId extends ExtendKcContext<KcContextExtension>["pageId"]>(params?: {
+    function getKcContext<PageId extends ExtendKcContext<KcContextExtension>["pageId"] | undefined = undefined>(params?: {
         mockPageId?: PageId;
         storyParams?: DeepPartial<Extract<ExtendKcContext<KcContextExtension>, { pageId: PageId }>>;
     }): {
-        kcContext: ExtendKcContext<KcContextExtension>["pageId"] extends PageId
+        kcContext: PageId extends undefined
             ? ExtendKcContext<KcContextExtension> | undefined
             : Extract<ExtendKcContext<KcContextExtension>, { pageId: PageId }>;
     } {

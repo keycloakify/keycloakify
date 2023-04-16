@@ -258,4 +258,16 @@ describe("createGetKcContext", () => {
 
         assert<Equals<typeof kcContext, KcContext.Login | KcContext.Register>>();
     });
+
+    it("no undefined as long as we provide a mock pageId", () => {
+        const { getKcContext } = createGetKcContext();
+
+        const mockPageId: KcContext["pageId"] = "login.ftl" as any;
+
+        const { kcContext } = getKcContext({
+            mockPageId
+        });
+
+        assert<Equals<typeof kcContext, KcContext>>();
+    });
 });
