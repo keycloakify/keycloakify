@@ -184,7 +184,7 @@ export async function generateKeycloakThemeResources(params: {
             const themeResourcesDirPath = pathJoin(themeDirPath, "resources");
 
             transformCodebase({
-                "srcDirPath": pathJoin(tmpDirPath, "keycloak", "login", "resources"),
+                "srcDirPath": pathJoin(tmpDirPath, "keycloak", themeType, "resources"),
                 "destDirPath": themeResourcesDirPath
             });
 
