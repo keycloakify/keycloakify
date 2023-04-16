@@ -1,4 +1,4 @@
-import { getKcContext } from "keycloakify/login/kcContext/getKcContext";
+import { createGetKcContext } from "keycloakify/login/kcContext/createGetKcContext";
 import type { ExtendKcContext } from "keycloakify/login/kcContext/getKcContextFromWindow";
 import type { KcContext } from "keycloakify/login/kcContext";
 import { same } from "evt/tools/inDepth";
@@ -8,7 +8,7 @@ import { kcContextMocks, kcContextCommonMock } from "keycloakify/login/kcContext
 import { deepClone } from "keycloakify/tools/deepClone";
 import { expect, it, describe } from "vitest";
 
-describe("getKcContext", () => {
+describe("createGetKcContext", () => {
     const authorizedMailDomains = ["example.com", "another-example.com", "*.yet-another-example.com", "*.example.com", "hello-world.com"];
 
     const displayName = "this is an overwritten common value";
@@ -36,8 +36,7 @@ describe("getKcContext", () => {
     const getKcContextProxy = (params: { mockPageId: ExtendKcContext<KcContextExtension>["pageId"] }) => {
         const { mockPageId } = params;
 
-        const { kcContext } = getKcContext<KcContextExtension>({
-            mockPageId,
+        const { getKcContext } = createGetKcContext<KcContextExtension>({
             "mockData": [
                 {
                     "pageId": "login.ftl",
@@ -56,6 +55,10 @@ describe("getKcContext", () => {
                     aNonStandardValue2
                 }
             ]
+        });
+
+        const { kcContext } = getKcContext({
+            mockPageId
         });
 
         return { kcContext };
@@ -205,19 +208,42 @@ describe("getKcContext", () => {
     it("returns the proper mock for login.ftl", () => {
         const pageId = "login.ftl";
 
+        const { getKcContext } = createGetKcContext();
+
         const { kcContext } = getKcContext({
             "mockPageId": pageId
         });
 
-        assert<Equals<typeof kcContext, KcContext | undefined>>();
+        assert<Equals<typeof kcContext, KcContext.Login | undefined>>();
 
         assert(same(deepClone(kcContext), deepClone(kcContextMocks.find(({ pageId: pageId_i }) => pageId_i === pageId)!)));
     });
     it("returns undefined when no mock is specified", () => {
+        const { getKcContext } = createGetKcContext();
+
         const { kcContext } = getKcContext();
 
         assert<Equals<typeof kcContext, KcContext | undefined>>();
 
         assert(kcContext === undefined);
+    });
+
+    it("mock are properly overwriten", () => {
+        const { getKcContext } = createGetKcContext();
+
+        const displayName = "myDisplayName";
+
+        const { kcContext } = getKcContext({
+            "mockPageId": "login.ftl",
+            "storyParams": {
+                "realm": {
+                    displayName
+                }
+            }
+        });
+
+        assert<Equals<typeof kcContext, KcContext.Login | undefined>>();
+
+        assert(kcContext?.realm.displayName === displayName);
     });
 });
