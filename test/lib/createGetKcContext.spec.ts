@@ -214,7 +214,7 @@ describe("createGetKcContext", () => {
             "mockPageId": pageId
         });
 
-        assert<Equals<typeof kcContext, KcContext.Login | undefined>>();
+        assert<Equals<typeof kcContext, KcContext.Login>>();
 
         assert(same(deepClone(kcContext), deepClone(kcContextMocks.find(({ pageId: pageId_i }) => pageId_i === pageId)!)));
     });
@@ -228,7 +228,7 @@ describe("createGetKcContext", () => {
         assert(kcContext === undefined);
     });
 
-    it("mock are properly overwriten", () => {
+    it("mock are properly overwritten", () => {
         const { getKcContext } = createGetKcContext();
 
         const displayName = "myDisplayName";
@@ -242,8 +242,20 @@ describe("createGetKcContext", () => {
             }
         });
 
-        assert<Equals<typeof kcContext, KcContext.Login | undefined>>();
+        assert<Equals<typeof kcContext, KcContext.Login>>();
 
         assert(kcContext?.realm.displayName === displayName);
+    });
+
+    it("mockPageId doesn't have to be a singleton", () => {
+        const { getKcContext } = createGetKcContext();
+
+        const mockPageId: "login.ftl" | "register.ftl" = "login.ftl" as any;
+
+        const { kcContext } = getKcContext({
+            mockPageId
+        });
+
+        assert<Equals<typeof kcContext, KcContext.Login | KcContext.Register>>();
     });
 });

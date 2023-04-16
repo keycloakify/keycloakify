@@ -18,10 +18,14 @@ export function createGetKcContext<KcContextExtension extends { pageId: string }
 }) {
     const { mockData } = params ?? {};
 
-    function getKcContext<PageId extends ExtendKcContext<KcContextExtension>["pageId"] = ExtendKcContext<KcContextExtension>["pageId"]>(params?: {
+    function getKcContext<PageId extends ExtendKcContext<KcContextExtension>["pageId"]>(params?: {
         mockPageId?: PageId;
         storyParams?: DeepPartial<Extract<ExtendKcContext<KcContextExtension>, { pageId: PageId }>>;
-    }): { kcContext: Extract<ExtendKcContext<KcContextExtension>, { pageId: PageId }> | undefined } {
+    }): {
+        kcContext: ExtendKcContext<KcContextExtension>["pageId"] extends PageId
+            ? ExtendKcContext<KcContextExtension> | undefined
+            : Extract<ExtendKcContext<KcContextExtension>, { pageId: PageId }>;
+    } {
         const { mockPageId, storyParams } = params ?? {};
 
         const realKcContext = getKcContextFromWindow<KcContextExtension>();
@@ -144,11 +148,11 @@ export function createGetKcContext<KcContextExtension extends { pageId: string }
         }
 
         if (realKcContext === undefined) {
-            return { "kcContext": undefined };
+            return { "kcContext": undefined as any };
         }
 
         if (id<readonly string[]>(loginThemePageIds).indexOf(realKcContext.pageId) < 0 && !("login" in realKcContext)) {
-            return { "kcContext": undefined };
+            return { "kcContext": undefined as any };
         }
 
         {
