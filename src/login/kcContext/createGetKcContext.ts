@@ -20,13 +20,13 @@ export function createGetKcContext<KcContextExtension extends { pageId: string }
 
     function getKcContext<PageId extends ExtendKcContext<KcContextExtension>["pageId"] | undefined = undefined>(params?: {
         mockPageId?: PageId;
-        storyParams?: DeepPartial<Extract<ExtendKcContext<KcContextExtension>, { pageId: PageId }>>;
+        storyPartialKcContext?: DeepPartial<Extract<ExtendKcContext<KcContextExtension>, { pageId: PageId }>>;
     }): {
         kcContext: PageId extends undefined
             ? ExtendKcContext<KcContextExtension> | undefined
             : Extract<ExtendKcContext<KcContextExtension>, { pageId: PageId }>;
     } {
-        const { mockPageId, storyParams } = params ?? {};
+        const { mockPageId, storyPartialKcContext } = params ?? {};
 
         const realKcContext = getKcContextFromWindow<KcContextExtension>();
 
@@ -55,10 +55,10 @@ export function createGetKcContext<KcContextExtension extends { pageId: string }
                     });
                 }
 
-                if (storyParams !== undefined) {
+                if (storyPartialKcContext !== undefined) {
                     deepAssign({
                         "target": out,
-                        "source": storyParams
+                        "source": storyPartialKcContext
                     });
                 }
 

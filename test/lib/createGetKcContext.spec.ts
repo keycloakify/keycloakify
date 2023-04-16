@@ -235,7 +235,7 @@ describe("createGetKcContext", () => {
 
         const { kcContext } = getKcContext({
             "mockPageId": "login.ftl",
-            "storyParams": {
+            "storyPartialKcContext": {
                 "realm": {
                     displayName
                 }
