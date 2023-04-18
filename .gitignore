@@ -56,3 +56,5 @@ jspm_packages
 
 /stories/assets/fonts/
 /.storybook/static/keycloak_static/
+/build_storybook/
+/storybook-static/
