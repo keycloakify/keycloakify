@@ -13,3 +13,4 @@ node_modules/
 /sample_react_project/
 /sample_custom_react_project/
 /keycloakify_starter_test/
+/.storybook/static/keycloak_static/
