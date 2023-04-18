@@ -9,7 +9,7 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
-        "prepare": "yarn generate-i18n-messages && yarn copy-fonts",
+        "prepare": "yarn generate-i18n-messages && yarn copy-fonts && yarn setup-keycloak-static-assets-for-storybook",
         "build": "rimraf dist/ && tsc -p src/bin && tsc -p src/tsconfig.json && tsc-alias -p src/tsconfig.json && yarn grant-exec-perms && yarn copy-files dist/",
         "build:watch": "tsc -p src/tsconfig.json && (concurrently \"tsc -p src/tsconfig.json -w\" \"tsc-alias -p src/tsconfig.json\")",
         "generate:json-schema": "ts-node scripts/generate-json-schema.ts",
@@ -27,7 +27,8 @@
         "tsc-watch": "tsc -p src/bin -w & tsc -p src/lib -w",
         "storybook": "start-storybook -p 6006",
         "build-storybook": "build-storybook",
-        "copy-fonts": "copyfiles -u 2 .storybook/static/fonts/**/* stories/assets"
+        "copy-fonts": "copyfiles -u 2 .storybook/static/fonts/**/* stories/assets",
+        "setup-keycloak-static-assets-for-storybook": "ts-node --skipProject scripts/setup-keycloak-static-assets-for-storybook.ts"
     },
     "bin": {
         "keycloakify": "dist/bin/keycloakify/index.js",

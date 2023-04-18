@@ -1,14 +1,14 @@
-import { transformCodebase } from "../tools/transformCodebase";
+import { transformCodebase } from "../../tools/transformCodebase";
 import * as fs from "fs";
-import { join as pathJoin, basename as pathBasename } from "path";
-import { replaceImportsFromStaticInJsCode } from "./replacers/replaceImportsFromStaticInJsCode";
-import { replaceImportsInCssCode } from "./replacers/replaceImportsInCssCode";
-import { generateFtlFilesCodeFactory, loginThemePageIds, accountThemePageIds, themeTypes, type ThemeType } from "./generateFtl";
-import { downloadBuiltinKeycloakTheme } from "../download-builtin-keycloak-theme";
-import { mockTestingResourcesCommonPath, mockTestingResourcesPath, mockTestingSubDirOfPublicDirBasename } from "../mockTestingResourcesPath";
-import { isInside } from "../tools/isInside";
-import type { BuildOptions } from "./BuildOptions";
+import { join as pathJoin } from "path";
+import { replaceImportsFromStaticInJsCode } from "../replacers/replaceImportsFromStaticInJsCode";
+import { replaceImportsInCssCode } from "../replacers/replaceImportsInCssCode";
+import { generateFtlFilesCodeFactory, loginThemePageIds, accountThemePageIds, themeTypes, type ThemeType } from "../generateFtl";
+import { mockTestingSubDirOfPublicDirBasename } from "../../mockTestingResourcesPath";
+import { isInside } from "../../tools/isInside";
+import type { BuildOptions } from "../BuildOptions";
 import { assert } from "tsafe/assert";
+import { downloadKeycloakStaticResources } from "./downloadKeycloakStaticResources";
 
 export type BuildOptionsLike = BuildOptionsLike.Standalone | BuildOptionsLike.ExternalAssets;
 
@@ -21,6 +21,7 @@ export namespace BuildOptionsLike {
         isSilent: boolean;
         customUserAttributes: string[];
         themeVersion: string;
+        keycloakVersionDefaultAssets: string;
     };
 
     export type Standalone = Common & {
@@ -49,15 +50,14 @@ export namespace BuildOptionsLike {
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
-export async function generateKeycloakThemeResources(params: {
+export async function generateTheme(params: {
     reactAppBuildDirPath: string;
     keycloakThemeBuildingDirPath: string;
     emailThemeSrcDirPath: string | undefined;
-    keycloakVersion: string;
     buildOptions: BuildOptionsLike;
     keycloakifyVersion: string;
 }): Promise<{ doBundlesEmailTemplate: boolean }> {
-    const { reactAppBuildDirPath, keycloakThemeBuildingDirPath, emailThemeSrcDirPath, keycloakVersion, buildOptions, keycloakifyVersion } = params;
+    const { reactAppBuildDirPath, keycloakThemeBuildingDirPath, emailThemeSrcDirPath, buildOptions, keycloakifyVersion } = params;
 
     const getThemeDirPath = (themeType: ThemeType | "email") =>
         pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", buildOptions.themeName, themeType);
@@ -172,47 +172,33 @@ export async function generateKeycloakThemeResources(params: {
             fs.writeFileSync(pathJoin(themeDirPath, pageId), Buffer.from(ftlCode, "utf8"));
         });
 
+        const downloadKeycloakStaticResources_configured = async (themeDirPath: string) =>
+            await downloadKeycloakStaticResources({
+                "isSilent": buildOptions.isSilent,
+                "keycloakVersion": buildOptions.keycloakVersionDefaultAssets,
+                themeDirPath,
+                themeType
+            });
+
+        await downloadKeycloakStaticResources_configured(themeDirPath);
+
         {
-            const tmpDirPath = pathJoin(themeDirPath, "..", "tmp_xxKdLpdIdLd");
+            const keycloakResourcesWithinPublicDirPath = pathJoin(reactAppBuildDirPath, "..", "public", mockTestingSubDirOfPublicDirBasename);
 
-            await downloadBuiltinKeycloakTheme({
-                keycloakVersion,
-                "destDirPath": tmpDirPath,
-                isSilent: buildOptions.isSilent
-            });
-
-            const themeResourcesDirPath = pathJoin(themeDirPath, "resources");
-
-            transformCodebase({
-                "srcDirPath": pathJoin(tmpDirPath, "keycloak", themeType, "resources"),
-                "destDirPath": themeResourcesDirPath
-            });
-
-            const reactAppPublicDirPath = pathJoin(reactAppBuildDirPath, "..", "public");
-
-            transformCodebase({
-                "srcDirPath": pathJoin(tmpDirPath, "keycloak", "common", "resources"),
-                "destDirPath": pathJoin(themeResourcesDirPath, pathBasename(mockTestingResourcesCommonPath))
-            });
-
-            transformCodebase({
-                "srcDirPath": themeResourcesDirPath,
-                "destDirPath": pathJoin(reactAppPublicDirPath, mockTestingResourcesPath)
-            });
-
-            const keycloakResourcesWithinPublicDirPath = pathJoin(reactAppPublicDirPath, mockTestingSubDirOfPublicDirBasename);
+            await downloadKeycloakStaticResources_configured(keycloakResourcesWithinPublicDirPath);
 
             fs.writeFileSync(
                 pathJoin(keycloakResourcesWithinPublicDirPath, "README.txt"),
                 Buffer.from(
-                    ["This is just a test folder that helps develop", "the login and register page without having to run a Keycloak container"].join(
-                        " "
-                    )
+                    // prettier-ignore
+                    [
+                        "This is just a test folder that helps develop",
+                        "the login and register page without having to run a Keycloak container"
+                    ].join(" ")
                 )
             );
 
             fs.writeFileSync(pathJoin(keycloakResourcesWithinPublicDirPath, ".gitignore"), Buffer.from("*", "utf8"));
-            fs.rmSync(tmpDirPath, { recursive: true, force: true });
         }
 
         fs.writeFileSync(

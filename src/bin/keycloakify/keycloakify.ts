@@ -1,4 +1,4 @@
-import { generateKeycloakThemeResources } from "./generateKeycloakThemeResources";
+import { generateTheme } from "./generateTheme";
 import { generateJavaStackFiles } from "./generateJavaStackFiles";
 import { join as pathJoin, relative as pathRelative, basename as pathBasename, sep as pathSep } from "path";
 import * as child_process from "child_process";
@@ -26,7 +26,7 @@ export async function main() {
         "isSilent": isSilent
     });
 
-    const { doBundlesEmailTemplate } = await generateKeycloakThemeResources({
+    const { doBundlesEmailTemplate } = await generateTheme({
         keycloakThemeBuildingDirPath: buildOptions.keycloakifyBuildDirPath,
         "emailThemeSrcDirPath": (() => {
             const { emailThemeSrcDirPath } = getEmailThemeSrcDirPath({ projectDirPath });
@@ -39,7 +39,6 @@ export async function main() {
         })(),
         "reactAppBuildDirPath": buildOptions.reactAppBuildDirPath,
         buildOptions,
-        "keycloakVersion": buildOptions.keycloakVersionDefaultAssets,
         "keycloakifyVersion": (() => {
             const version = JSON.parse(fs.readFileSync(pathJoin(getProjectRoot(), "package.json")).toString("utf8"))["version"];
 

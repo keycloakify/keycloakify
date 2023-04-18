@@ -55,3 +55,4 @@ jspm_packages
 .devcontainer
 
 /stories/assets/fonts/
+/.storybook/static/keycloak_static/

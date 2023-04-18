@@ -53,6 +53,8 @@ export namespace BuildOptions {
     }
 }
 
+export const defaultKeycloakVersionDefaultAssets = "11.0.3";
+
 export function readBuildOptions(params: { projectDirPath: string; isExternalAssetsCliParamProvided: boolean; isSilent: boolean }): BuildOptions {
     const { projectDirPath, isExternalAssetsCliParamProvided, isSilent } = params;
 
@@ -144,7 +146,7 @@ export function readBuildOptions(params: { projectDirPath: string; isExternalAss
             extraAccountPages,
             extraThemeProperties,
             isSilent,
-            "keycloakVersionDefaultAssets": keycloakVersionDefaultAssets ?? "11.0.3",
+            "keycloakVersionDefaultAssets": keycloakVersionDefaultAssets ?? defaultKeycloakVersionDefaultAssets,
             "reactAppBuildDirPath": (() => {
                 let { reactAppBuildDirPath = undefined } = parsedPackageJson.keycloakify ?? {};
 
