@@ -51,7 +51,7 @@ Their dedicated support helps us continue the development and maintenance of thi
       <img src="https://user-images.githubusercontent.com/6702424/232165752-17134e68-4a55-4d6e-8672-e9132ecac5d5.svg" alt="Cloud IAM Logo" width="200"/>
     </a>
     <br/>
-    <i>Use promo code <code>keycloakify</code>  </i>
+    <i>Use promo code <code>keycloakify5</code>  </i>
     <br/>
     <i>5% of your annual subscription will be donated to us, and you'll get 5% off too.</i>
 </p>
