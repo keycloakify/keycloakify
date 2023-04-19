@@ -1,4 +1,4 @@
-import { generateKeycloakThemeResources } from "./generateKeycloakThemeResources";
+import { generateTheme } from "./generateTheme";
 import { generateJavaStackFiles } from "./generateJavaStackFiles";
 import { join as pathJoin, relative as pathRelative, basename as pathBasename, sep as pathSep } from "path";
 import * as child_process from "child_process";
@@ -6,7 +6,6 @@ import { generateStartKeycloakTestingContainer } from "./generateStartKeycloakTe
 import * as fs from "fs";
 import { readBuildOptions } from "./BuildOptions";
 import { getLogger } from "../tools/logger";
-import { getCliOptions } from "../tools/cliOptions";
 import jar from "../tools/jar";
 import { assert } from "tsafe/assert";
 import { Equals } from "tsafe";
@@ -14,19 +13,17 @@ import { getEmailThemeSrcDirPath } from "../getSrcDirPath";
 import { getProjectRoot } from "../tools/getProjectRoot";
 
 export async function main() {
-    const { isSilent, hasExternalAssets } = getCliOptions(process.argv.slice(2));
-    const logger = getLogger({ isSilent });
-    logger.log("🔏 Building the keycloak theme...⌚");
-
     const projectDirPath = process.cwd();
 
     const buildOptions = readBuildOptions({
         projectDirPath,
-        "isExternalAssetsCliParamProvided": hasExternalAssets,
-        "isSilent": isSilent
+        "processArgv": process.argv.slice(2)
     });
 
-    const { doBundlesEmailTemplate } = await generateKeycloakThemeResources({
+    const logger = getLogger({ "isSilent": buildOptions.isSilent });
+    logger.log("🔏 Building the keycloak theme...⌚");
+
+    const { doBundlesEmailTemplate } = await generateTheme({
         keycloakThemeBuildingDirPath: buildOptions.keycloakifyBuildDirPath,
         "emailThemeSrcDirPath": (() => {
             const { emailThemeSrcDirPath } = getEmailThemeSrcDirPath({ projectDirPath });
@@ -39,7 +36,6 @@ export async function main() {
         })(),
         "reactAppBuildDirPath": buildOptions.reactAppBuildDirPath,
         buildOptions,
-        "keycloakVersion": buildOptions.keycloakVersionDefaultAssets,
         "keycloakifyVersion": (() => {
             const version = JSON.parse(fs.readFileSync(pathJoin(getProjectRoot(), "package.json")).toString("utf8"))["version"];
 

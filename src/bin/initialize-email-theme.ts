@@ -4,13 +4,17 @@ import { downloadBuiltinKeycloakTheme } from "./download-builtin-keycloak-theme"
 import { join as pathJoin, relative as pathRelative } from "path";
 import { transformCodebase } from "./tools/transformCodebase";
 import { promptKeycloakVersion } from "./promptKeycloakVersion";
+import { readBuildOptions } from "./keycloakify/BuildOptions";
 import * as fs from "fs";
-import { getCliOptions } from "./tools/cliOptions";
 import { getLogger } from "./tools/logger";
 import { getEmailThemeSrcDirPath } from "./getSrcDirPath";
 
 export async function main() {
-    const { isSilent } = getCliOptions(process.argv.slice(2));
+    const { isSilent } = readBuildOptions({
+        "projectDirPath": process.cwd(),
+        "processArgv": process.argv.slice(2)
+    });
+
     const logger = getLogger({ isSilent });
 
     const { emailThemeSrcDirPath } = getEmailThemeSrcDirPath({

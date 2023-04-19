@@ -53,8 +53,7 @@ describe("Sample Project", () => {
 
             const destDirPath = pathJoin(
                 readBuildOptions({
-                    "isExternalAssetsCliParamProvided": false,
-                    "isSilent": true,
+                    "processArgv": ["--silent"],
                     "projectDirPath": process.cwd()
                 }).keycloakifyBuildDirPath,
                 "src",
@@ -62,7 +61,7 @@ describe("Sample Project", () => {
                 "resources",
                 "theme"
             );
-            await downloadBuiltinKeycloakTheme({ destDirPath, keycloakVersion: "11.0.3", isSilent: false });
+            await downloadBuiltinKeycloakTheme({ destDirPath, keycloakVersion: "11.0.3", "isSilent": false });
         },
         { timeout: 90000 }
     );
@@ -80,8 +79,7 @@ describe("Sample Project", () => {
 
             const destDirPath = pathJoin(
                 readBuildOptions({
-                    "isExternalAssetsCliParamProvided": false,
-                    "isSilent": true,
+                    "processArgv": ["--silent"],
                     "projectDirPath": process.cwd()
                 }).keycloakifyBuildDirPath,
                 "src",
@@ -89,7 +87,7 @@ describe("Sample Project", () => {
                 "resources",
                 "theme"
             );
-            await downloadBuiltinKeycloakTheme({ destDirPath, keycloakVersion: "11.0.3", isSilent: false });
+            await downloadBuiltinKeycloakTheme({ destDirPath, "keycloakVersion": "11.0.3", "isSilent": false });
         },
         { timeout: 90000 }
     );

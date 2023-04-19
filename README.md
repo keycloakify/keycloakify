@@ -20,6 +20,9 @@
     <a href="https://github.com/thomasdarimont/awesome-keycloak">
         <img src="https://awesome.re/mentioned-badge.svg"/>
     </a>
+    <a href="https://discord.gg/rBzsYtUn">
+        <img src="https://img.shields.io/discord/1097708346976505977"/>
+    </a>
     <p align="center">
         <a href="https://www.keycloakify.dev">Home</a>
         -
@@ -36,13 +39,68 @@
     <img src="https://user-images.githubusercontent.com/6702424/110260457-a1c3d380-7fac-11eb-853a-80459b65626b.png">
 </p>
 
-The more ⭐️ the project gets, the more time I spend improving and maintaining it. Thank you for your support 😊
+## Sponsor 👼
 
-> 🗣 V7 have been released 🎉  
-> [It features major improvements](https://github.com/keycloakify/keycloakify#70-).  
-> Checkout [the migration guide](https://docs.keycloakify.dev/migration-guides/v6-greater-than-v7).
+We are exclusively sponsored by [Cloud IAM](https://www.cloud-iam.com), a French company offering Keycloak as a service.  
+Their dedicated support helps us continue the development and maintenance of this project.
 
-# Changelog highlights
+[Cloud IAM](https://www.cloud-iam.com/) provides the following services:
+
+-   Perfectly configured and optimized Keycloak IAM, ready in seconds.
+-   Custom theme building for your brand using Keycloakify.
+
+<p align="center">
+    <a href="https://www.cloud-iam.com/">
+      <img src="https://user-images.githubusercontent.com/6702424/232165752-17134e68-4a55-4d6e-8672-e9132ecac5d5.svg" alt="Cloud IAM Logo" width="200"/>
+    </a>
+    <br/>
+    <i>Use promo code <code>keycloakify5</code>  </i>
+    <br/>
+    <i>5% of your annual subscription will be donated to us, and you'll get 5% off too.</i>
+</p>
+
+Thank you, [Cloud IAM](https://www.cloud-iam.com/), for your support!
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/lordvlad"><img src="https://avatars.githubusercontent.com/u/1217769?v=4?s=100" width="100px;" alt="Waldemar Reusch"/><br /><sub><b>Waldemar Reusch</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=lordvlad" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://willwill96.github.io/the-ui-dawg-static-site/en/introduction/"><img src="https://avatars.githubusercontent.com/u/10997562?v=4?s=100" width="100px;" alt="William Will"/><br /><sub><b>William Will</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=willwill96" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Ann2827"><img src="https://avatars.githubusercontent.com/u/32645809?v=4?s=100" width="100px;" alt="Bystrova Ann"/><br /><sub><b>Bystrova Ann</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=Ann2827" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/mkreuzmayr"><img src="https://avatars.githubusercontent.com/u/20108212?v=4?s=100" width="100px;" alt="Michael Kreuzmayr"/><br /><sub><b>Michael Kreuzmayr</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=mkreuzmayr" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://coolmathgames.tech"><img src="https://avatars.githubusercontent.com/u/6877780?v=4?s=100" width="100px;" alt="Mary "/><br /><sub><b>Mary </b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=Mstrodl" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://tasyp.xyz/"><img src="https://avatars.githubusercontent.com/u/6623212?v=4?s=100" width="100px;" alt="German Öö"/><br /><sub><b>German Öö</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=Tasyp" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://revolunet.com"><img src="https://avatars.githubusercontent.com/u/124937?v=4?s=100" width="100px;" alt="Julien Bouquillon"/><br /><sub><b>Julien Bouquillon</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=revolunet" title="Code">💻</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/aidangilmore"><img src="https://avatars.githubusercontent.com/u/32880357?v=4?s=100" width="100px;" alt="Aidan Gilmore"/><br /><sub><b>Aidan Gilmore</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=aidangilmore" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/0x-Void"><img src="https://avatars.githubusercontent.com/u/32745739?v=4?s=100" width="100px;" alt="Void"/><br /><sub><b>Void</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=0x-Void" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/juffe"><img src="https://avatars.githubusercontent.com/u/5393231?v=4?s=100" width="100px;" alt="juffe"/><br /><sub><b>juffe</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=juffe" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/lazToum"><img src="https://avatars.githubusercontent.com/u/4764837?v=4?s=100" width="100px;" alt="Lazaros Toumanidis"/><br /><sub><b>Lazaros Toumanidis</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=lazToum" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/marcmrf"><img src="https://avatars.githubusercontent.com/u/9928519?v=4?s=100" width="100px;" alt="Marc"/><br /><sub><b>Marc</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=marcmrf" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://kasir-barati.github.io"><img src="https://avatars.githubusercontent.com/u/73785723?v=4?s=100" width="100px;" alt="Kasir Barati"/><br /><sub><b>Kasir Barati</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=kasir-barati" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/asashay"><img src="https://avatars.githubusercontent.com/u/10714670?v=4?s=100" width="100px;" alt="Alex Oliynyk"/><br /><sub><b>Alex Oliynyk</b></sub></a><br /> <a href="https://github.com/keycloakify/keycloakify/commits?author=asashay" title="Code">💻</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+## Changelog highlights
+
+## 7.7
+
+-   Better storybook support, see [the starter project](https://github.com/keycloakify/keycloakify-starter).
 
 ## 7.0 🍾
 

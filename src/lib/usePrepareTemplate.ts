@@ -15,7 +15,7 @@ export function usePrepareTemplate(params: {
     htmlClassName: string | undefined;
     bodyClassName: string | undefined;
 }) {
-    const { doFetchDefaultThemeResources, stylesCommon, styles, url, scripts, htmlClassName, bodyClassName } = params;
+    const { doFetchDefaultThemeResources, stylesCommon = [], styles = [], url, scripts = [], htmlClassName, bodyClassName } = params;
 
     const [isReady, setReady] = useReducer(() => true, !doFetchDefaultThemeResources);
 
@@ -26,36 +26,49 @@ export function usePrepareTemplate(params: {
 
         let isUnmounted = false;
 
-        Promise.all(
+        const removeArray: (() => void)[] = [];
+
+        (async () => {
+            const prLoadedArray: Promise<void>[] = [];
+
             [
-                ...(stylesCommon ?? []).map(relativePath => pathJoin(url.resourcesCommonPath, relativePath)),
-                ...(styles ?? []).map(relativePath => pathJoin(url.resourcesPath, relativePath))
+                ...stylesCommon.map(relativePath => pathJoin(url.resourcesCommonPath, relativePath)),
+                ...styles.map(relativePath => pathJoin(url.resourcesPath, relativePath))
             ]
                 .reverse()
-                .map(href =>
-                    headInsert({
+                .forEach(href => {
+                    const { prLoaded, remove } = headInsert({
                         "type": "css",
-                        href,
-                        "position": "prepend"
-                    })
-                )
-        ).then(() => {
+                        "position": "prepend",
+                        href
+                    });
+
+                    removeArray.push(remove);
+
+                    prLoadedArray.push(prLoaded);
+                });
+
+            await Promise.all(prLoadedArray);
+
             if (isUnmounted) {
                 return;
             }
 
             setReady();
-        });
+        })();
 
-        (scripts ?? []).forEach(relativePath =>
-            headInsert({
+        scripts.forEach(relativePath => {
+            const { remove } = headInsert({
                 "type": "javascript",
                 "src": pathJoin(url.resourcesPath, relativePath)
-            })
-        );
+            });
+
+            removeArray.push(remove);
+        });
 
         return () => {
             isUnmounted = true;
+            removeArray.forEach(remove => remove());
         };
     }, []);
 

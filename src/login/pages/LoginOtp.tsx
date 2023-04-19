@@ -22,17 +22,24 @@ export default function LoginOtp(props: PageProps<Extract<KcContext, { pageId: "
     useEffect(() => {
         let isCleanedUp = false;
 
-        headInsert({
+        const { prLoaded, remove } = headInsert({
             "type": "javascript",
             "src": pathJoin(kcContext.url.resourcesCommonPath, "node_modules/jquery/dist/jquery.min.js")
-        }).then(() => {
-            if (isCleanedUp) return;
+        });
+
+        (async () => {
+            await prLoaded;
+
+            if (isCleanedUp) {
+                return;
+            }
 
             evaluateInlineScript();
-        });
+        })();
 
         return () => {
             isCleanedUp = true;
+            remove();
         };
     }, []);
 

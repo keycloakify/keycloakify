@@ -1,0 +1,34 @@
+import { Meta } from "@storybook/addon-docs";
+import { useDarkMode } from "storybook-dark-mode";
+import "./assets/fonts/WorkSans/font.css";
+
+<Meta
+    title="Introduction" 
+    parameters={{
+        "viewMode": "docs",
+        "previewTabs": {
+            "canvas": { "hidden": true },
+            "zoom": { "hidden": true },
+            "storybook/background": { "hidden": true },
+            "storybook/viewport": { "hidden": true },
+        },
+    }}
+/>
+
+<div style={{ "margin": "0 auto", "maxWidth": "700px", "textAlign": "center" }}>
+<img src="preview.png" />
+<h1><a href="#">Keycloakify </a> Storybook</h1>
+
+<p>
+This website showcases all the Keycloak user-facing pages that can be customized using Keycloakify.
+The storybook serves as a comprehensive reference to help you determine which pages you would like to personalize.
+Keep in mind that customizing the <code>Template</code> component alone will already cover 90% of your customization needs.
+</p>
+
+<p>
+If you discover that a page you wish to customize is not currently supported by Keycloakify, don't worry. 
+Simply refer to <a href="https://docs.keycloakify.dev/limitations#i-have-established-that-a-page-that-i-need-isnt-supported-out-of-the-box-by-keycloakify-now-what">this documentation page</a> for further assistance.
+</p>
+
+
+</div>

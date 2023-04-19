@@ -1,6 +1,6 @@
 {
     "name": "keycloakify",
-    "version": "7.6.6",
+    "version": "7.9.0-rc.0",
     "description": "Create Keycloak themes using React",
     "repository": {
         "type": "git",
@@ -10,8 +10,8 @@
     "types": "dist/index.d.ts",
     "scripts": {
         "prepare": "yarn generate-i18n-messages",
-        "build": "rimraf dist/ && tsc -p src/bin && tsc -p src/tsconfig.json && tsc-alias -p src/tsconfig.json && yarn grant-exec-perms && yarn copy-files dist/",
-        "build:watch": "tsc -p src/tsconfig.json && (concurrently \"tsc -p src/tsconfig.json -w\" \"tsc-alias -p src/tsconfig.json\")",
+        "build": "rimraf dist/ && tsc -p src/bin && tsc -p src && tsc-alias -p src/tsconfig.json && yarn grant-exec-perms && yarn copy-files dist/",
+        "watch-in-starter": "yarn build && yarn link-in-starter && (concurrently \"tsc -p src -w\" \"tsc-alias -p src/tsconfig.json\" \"tsc -p src/bin -w\")",
         "generate:json-schema": "ts-node scripts/generate-json-schema.ts",
         "grant-exec-perms": "node dist/bin/tools/grant-exec-perms.js",
         "copy-files": "copyfiles -u 1 src/**/*.ftl",
@@ -24,13 +24,16 @@
         "generate-i18n-messages": "ts-node --skipProject scripts/generate-i18n-messages.ts",
         "link-in-app": "ts-node --skipProject scripts/link-in-app.ts",
         "link-in-starter": "yarn link-in-app keycloakify-starter",
-        "tsc-watch": "tsc -p src/bin -w & tsc -p src/lib -w "
+        "copy-keycloak-resources-to-storybook-static": "PUBLIC_DIR_PATH=.storybook/static node dist/bin/copy-keycloak-resources-to-public.js",
+        "storybook": "yarn build && yarn copy-keycloak-resources-to-storybook-static && (concurrently \"tsc -p src -w\" \"tsc-alias -p src/tsconfig.json\" \"start-storybook -p 6006\")",
+        "build-storybook": "yarn build && yarn copy-keycloak-resources-to-storybook-static && build-storybook"
     },
     "bin": {
-        "keycloakify": "dist/bin/keycloakify/index.js",
-        "initialize-email-theme": "dist/bin/initialize-email-theme.js",
+        "copy-keycloak-resources-to-public": "dist/bin/copy-keycloak-resources-to-public.js",
         "download-builtin-keycloak-theme": "dist/bin/download-builtin-keycloak-theme.js",
-        "eject-keycloak-page": "dist/bin/eject-keycloak-page.js"
+        "eject-keycloak-page": "dist/bin/eject-keycloak-page.js",
+        "initialize-email-theme": "dist/bin/initialize-email-theme.js",
+        "keycloakify": "dist/bin/keycloakify/index.js"
     },
     "lint-staged": {
         "*.{ts,tsx,json,md}": [
@@ -66,23 +69,36 @@
     },
     "devDependencies": {
         "@babel/core": "^7.0.0",
+        "@storybook/addon-a11y": "^6.5.16",
+        "@storybook/addon-actions": "^6.5.13",
+        "@storybook/addon-essentials": "^6.5.13",
+        "@storybook/addon-interactions": "^6.5.13",
+        "@storybook/addon-links": "^6.5.13",
+        "@storybook/builder-webpack5": "^6.5.13",
+        "@storybook/manager-webpack5": "^6.5.13",
+        "@storybook/react": "^6.5.13",
+        "@storybook/testing-library": "^0.0.13",
         "@types/make-fetch-happen": "^10.0.1",
         "@types/minimist": "^1.2.2",
         "@types/node": "^18.15.3",
-        "@types/react": "18.0.9",
+        "@types/react": "^18.0.35",
+        "@types/react-dom": "^18.0.11",
         "@types/yauzl": "^2.10.0",
-        "concurrently": "^7.6.0",
+        "concurrently": "^8.0.1",
         "copyfiles": "^2.4.1",
+        "eslint-plugin-storybook": "^0.6.7",
         "husky": "^4.3.8",
         "lint-staged": "^11.0.0",
         "prettier": "^2.3.0",
         "properties-parser": "^0.3.1",
-        "react": "18.1.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
         "rimraf": "^3.0.2",
         "scripting-tools": "^0.19.13",
+        "storybook-dark-mode": "^1.1.2",
         "ts-node": "^10.9.1",
         "tsc-alias": "^1.8.3",
-        "typescript": "^5.0.1-rc",
+        "typescript": "^4.9.1-beta",
         "vitest": "^0.29.8",
         "zod-to-json-schema": "^3.20.4"
     },

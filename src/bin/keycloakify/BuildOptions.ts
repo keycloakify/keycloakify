@@ -6,6 +6,7 @@ import { symToStr } from "tsafe/symToStr";
 import { bundlers, getParsedPackageJson, type Bundler } from "./parsedPackageJson";
 import * as fs from "fs";
 import { join as pathJoin, sep as pathSep } from "path";
+import parseArgv from "minimist";
 
 /** Consolidated build option gathered form CLI arguments and config in package.json */
 export type BuildOptions = BuildOptions.Standalone | BuildOptions.ExternalAssets;
@@ -53,8 +54,17 @@ export namespace BuildOptions {
     }
 }
 
-export function readBuildOptions(params: { projectDirPath: string; isExternalAssetsCliParamProvided: boolean; isSilent: boolean }): BuildOptions {
-    const { projectDirPath, isExternalAssetsCliParamProvided, isSilent } = params;
+export function readBuildOptions(params: { projectDirPath: string; processArgv: string[] }): BuildOptions {
+    const { projectDirPath, processArgv } = params;
+
+    const { isExternalAssetsCliParamProvided, isSilentCliParamProvided } = (() => {
+        const argv = parseArgv(processArgv);
+
+        return {
+            "isSilentCliParamProvided": typeof argv["silent"] === "boolean" ? argv["silent"] : false,
+            "isExternalAssetsCliParamProvided": typeof argv["external-assets"] === "boolean" ? argv["external-assets"] : false
+        };
+    })();
 
     const parsedPackageJson = getParsedPackageJson({ projectDirPath });
 
@@ -143,7 +153,7 @@ export function readBuildOptions(params: { projectDirPath: string; isExternalAss
             "extraLoginPages": [...(extraPages ?? []), ...(extraLoginPages ?? [])],
             extraAccountPages,
             extraThemeProperties,
-            isSilent,
+            "isSilent": isSilentCliParamProvided,
             "keycloakVersionDefaultAssets": keycloakVersionDefaultAssets ?? "11.0.3",
             "reactAppBuildDirPath": (() => {
                 let { reactAppBuildDirPath = undefined } = parsedPackageJson.keycloakify ?? {};

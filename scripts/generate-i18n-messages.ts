@@ -4,7 +4,6 @@ import { join as pathJoin, relative as pathRelative, dirname as pathDirname, sep
 import { crawl } from "../src/bin/tools/crawl";
 import { downloadBuiltinKeycloakTheme } from "../src/bin/download-builtin-keycloak-theme";
 import { getProjectRoot } from "../src/bin/tools/getProjectRoot";
-import { getCliOptions } from "../src/bin/tools/cliOptions";
 import { getLogger } from "../src/bin/tools/logger";
 
 // NOTE: To run without argument when we want to generate src/i18n/generated_kcMessages files,
@@ -13,7 +12,8 @@ import { getLogger } from "../src/bin/tools/logger";
 //@ts-ignore
 const propertiesParser = require("properties-parser");
 
-const { isSilent } = getCliOptions(process.argv.slice(2));
+const isSilent = true;
+
 const logger = getLogger({ isSilent });
 
 async function main() {

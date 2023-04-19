@@ -55,3 +55,7 @@ jspm_packages
 .devcontainer
 /.yarn
 /.yarnrc.yml
+
+/stories/assets/fonts/
+/build_storybook/
+/storybook-static/

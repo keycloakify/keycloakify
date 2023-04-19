@@ -1,6 +1,6 @@
 import "minimal-polyfills/Object.fromEntries";
 import type { KcContext, Attribute } from "./KcContext";
-import { mockTestingResourcesCommonPath, mockTestingResourcesPath } from "keycloakify/bin/mockTestingResourcesPath";
+import { resourcesCommonDirPathRelativeToPublicDir, resourcesDirPathRelativeToPublicDir } from "keycloakify/bin/mockTestingResourcesPath";
 import { pathJoin } from "keycloakify/bin/tools/pathJoin";
 import { id } from "tsafe/id";
 
@@ -104,8 +104,8 @@ export const kcContextCommonMock: KcContext.Common = {
     "keycloakifyVersion": "0.0.0",
     "url": {
         "loginAction": "#",
-        "resourcesPath": pathJoin(PUBLIC_URL, mockTestingResourcesPath),
-        "resourcesCommonPath": pathJoin(PUBLIC_URL, mockTestingResourcesCommonPath),
+        "resourcesPath": pathJoin(PUBLIC_URL, resourcesDirPathRelativeToPublicDir),
+        "resourcesCommonPath": pathJoin(PUBLIC_URL, resourcesCommonDirPathRelativeToPublicDir),
         "loginRestartFlowUrl": "/auth/realms/myrealm/login-actions/restart?client_id=account&tab_id=HoAx28ja4xg",
         "loginUrl": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg"
     },

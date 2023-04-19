@@ -213,7 +213,7 @@ describe("getKcContext", () => {
 
         assert(same(deepClone(kcContext), deepClone(kcContextMocks.find(({ pageId: pageId_i }) => pageId_i === pageId)!)));
     });
-    it("returns the proper mock for login.ftl", () => {
+    it("returns undefined when no mock is specified", () => {
         const { kcContext } = getKcContext();
 
         assert<Equals<typeof kcContext, KcContext | undefined>>();
