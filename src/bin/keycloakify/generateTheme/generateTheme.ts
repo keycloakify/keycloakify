@@ -172,6 +172,40 @@ export async function generateTheme(params: {
             fs.writeFileSync(pathJoin(themeDirPath, pageId), Buffer.from(ftlCode, "utf8"));
         });
 
+        //TODO: Remove this block we left it for now only for backward compatibility
+        // we now have a separate script for this
+        copy_keycloak_resources_to_public: {
+            const keycloakDirInPublicDir = pathJoin(reactAppBuildDirPath, "..", "public", basenameOfKeycloakDirInPublicDir);
+
+            if (fs.existsSync(keycloakDirInPublicDir)) {
+                break copy_keycloak_resources_to_public;
+            }
+
+            await downloadKeycloakStaticResources({
+                "isSilent": buildOptions.isSilent,
+                "keycloakVersion": buildOptions.keycloakVersionDefaultAssets,
+                "themeDirPath": keycloakDirInPublicDir,
+                themeType
+            });
+
+            if (themeType !== themeTypes[0]) {
+                break copy_keycloak_resources_to_public;
+            }
+
+            fs.writeFileSync(
+                pathJoin(keycloakDirInPublicDir, "README.txt"),
+                Buffer.from(
+                    // prettier-ignore
+                    [
+                        "This is just a test folder that helps develop",
+                        "the login and register page without having to run a Keycloak container"
+                    ].join(" ")
+                )
+            );
+
+            fs.writeFileSync(pathJoin(keycloakDirInPublicDir, ".gitignore"), Buffer.from("*", "utf8"));
+        }
+
         await downloadKeycloakStaticResources({
             "isSilent": buildOptions.isSilent,
             "keycloakVersion": buildOptions.keycloakVersionDefaultAssets,
