@@ -453,8 +453,8 @@ export const kcContextMocks: KcContext[] = [
             manualUrl: "#",
             totpSecret: "G4nsI8lQagRMUchH8jEG",
             otpCredentials: [],
+            supportedApplications: ["FreeOTP", "Google Authenticator"],
             policy: {
-                supportedApplications: ["FreeOTP", "Google Authenticator"],
                 algorithm: "HmacSHA1",
                 digits: 6,
                 lookAheadWindow: 1,

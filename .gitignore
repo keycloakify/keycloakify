@@ -53,6 +53,8 @@ jspm_packages
 
 # VS Code devcontainers
 .devcontainer
+/.yarn
+/.yarnrc.yml
 
 /stories/assets/fonts/
 /build_storybook/
