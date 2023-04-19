@@ -1,6 +1,6 @@
 import React from "react";
 import type { ComponentMeta } from "@storybook/react";
-import { createPageStory } from "./createPageStory";
+import { createPageStory } from "../createPageStory";
 
 const pageId = "error.ftl";
 
