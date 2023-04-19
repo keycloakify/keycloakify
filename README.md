@@ -86,7 +86,10 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/lazToum"><img src="https://avatars.githubusercontent.com/u/4764837?v=4?s=100" width="100px;" alt="Lazaros Toumanidis"/><br /><sub><b>Lazaros Toumanidis</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=lazToum" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/marcmrf"><img src="https://avatars.githubusercontent.com/u/9928519?v=4?s=100" width="100px;" alt="Marc"/><br /><sub><b>Marc</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=marcmrf" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://kasir-barati.github.io"><img src="https://avatars.githubusercontent.com/u/73785723?v=4?s=100" width="100px;" alt="Kasir Barati"/><br /><sub><b>Kasir Barati</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=kasir-barati" title="Documentation">📖</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/asashay"><img src="https://avatars.githubusercontent.com/u/10714670?v=4?s=100" width="100px;" alt="Alex Oliynyk"/><br /><sub><b>Alex Oliynyk</b></sub></a><br /> <a href="https://github.com/keycloakify/keycloakify/commits?author=asashay" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/asashay"><img src="https://avatars.githubusercontent.com/u/10714670?v=4?s=100" width="100px;" alt="Alex Oliynyk"/><br /><sub><b>Alex Oliynyk</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=asashay" title="Code">💻</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://www.gravitysoftware.be"><img src="https://avatars.githubusercontent.com/u/1140574?v=4?s=100" width="100px;" alt="Thomas Silvestre"/><br /><sub><b>Thomas Silvestre</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=thosil" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
