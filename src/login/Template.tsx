@@ -29,8 +29,6 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
 
     const { realm, locale, auth, url, message, isAppInitiatedAction } = kcContext;
 
-    console.log("Mount Template");
-
     const { isReady } = usePrepareTemplate({
         "doFetchDefaultThemeResources": doUseDefaultCss,
         url,
