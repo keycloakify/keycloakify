@@ -17,6 +17,12 @@ export const parameters = {
     "docs": {
         "container": DocsContainer
     },
+    "controls": {
+        "disable": true,
+    },
+    "actions": {
+        "disable": true
+    },
     "viewport": {
         "viewports": {
             "1440p": {
@@ -68,7 +74,7 @@ export const parameters = {
                     "height": "844px",
                 },
             },
-            "iphone5se":{
+            "iphone5se": {
                 "name": "Iphone 5/SE",
                 "styles": {
                     "width": "320px",
