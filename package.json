@@ -9,7 +9,7 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
-        "prepare": "yarn generate-i18n-messages && yarn setup-keycloak-static-assets-for-storybook",
+        "prepare": "yarn generate-i18n-messages",
         "build": "rimraf dist/ && tsc -p src/bin && tsc -p src && tsc-alias -p src/tsconfig.json && yarn grant-exec-perms && yarn copy-files dist/",
         "watch-in-starter": "yarn build && yarn link-in-starter && (concurrently \"tsc -p src -w\" \"tsc-alias -p src/tsconfig.json\" \"tsc -p src/bin -w\")",
         "generate:json-schema": "ts-node scripts/generate-json-schema.ts",
@@ -24,12 +24,13 @@
         "generate-i18n-messages": "ts-node --skipProject scripts/generate-i18n-messages.ts",
         "link-in-app": "ts-node --skipProject scripts/link-in-app.ts",
         "link-in-starter": "yarn link-in-app keycloakify-starter",
-        "storybook": "start-storybook -p 6006",
-        "build-storybook": "build-storybook",
-        "setup-keycloak-static-assets-for-storybook": "ts-node --skipProject scripts/setup-keycloak-static-assets-for-storybook.ts"
+        "copy-keycloak-resources-to-storybook-static": "PUBLIC_DIR_PATH=.storybook/static node dist/bin/copy-keycloak-resources-to-public.js",
+        "storybook": "yarn build && yarn copy-keycloak-resources-to-storybook-static && (concurrently \"tsc -p src -w\" \"tsc-alias -p src/tsconfig.json\" \"start-storybook -p 6006\")",
+        "build-storybook": "yarn build && yarn copy-keycloak-resources-to-storybook-static && build-storybook"
     },
     "bin": {
         "keycloakify": "dist/bin/keycloakify/index.js",
+        "copy-keycloak-resources-to-public": "dist/bin/copy-keycloak-resources-to-public.js",
         "initialize-email-theme": "dist/bin/initialize-email-theme.js",
         "download-builtin-keycloak-theme": "dist/bin/download-builtin-keycloak-theme.js",
         "eject-keycloak-page": "dist/bin/eject-keycloak-page.js"

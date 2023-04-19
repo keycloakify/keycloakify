@@ -9,7 +9,7 @@ import type { ExtendKcContext } from "./getKcContextFromWindow";
 import { getKcContextFromWindow } from "./getKcContextFromWindow";
 import { pathJoin } from "keycloakify/bin/tools/pathJoin";
 import { pathBasename } from "keycloakify/tools/pathBasename";
-import { mockTestingResourcesCommonPath } from "keycloakify/bin/mockTestingResourcesPath";
+import { resourcesCommonDirPathRelativeToPublicDir } from "keycloakify/bin/mockTestingResourcesPath";
 import { symToStr } from "tsafe/symToStr";
 import { loginThemePageIds } from "keycloakify/bin/keycloakify/generateFtl/pageId";
 
@@ -158,7 +158,7 @@ export function createGetKcContext<KcContextExtension extends { pageId: string }
         {
             const { url } = realKcContext;
 
-            url.resourcesCommonPath = pathJoin(url.resourcesPath, pathBasename(mockTestingResourcesCommonPath));
+            url.resourcesCommonPath = pathJoin(url.resourcesPath, pathBasename(resourcesCommonDirPathRelativeToPublicDir));
         }
 
         return { "kcContext": realKcContext as any };

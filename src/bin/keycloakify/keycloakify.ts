@@ -6,7 +6,6 @@ import { generateStartKeycloakTestingContainer } from "./generateStartKeycloakTe
 import * as fs from "fs";
 import { readBuildOptions } from "./BuildOptions";
 import { getLogger } from "../tools/logger";
-import { getCliOptions } from "../tools/cliOptions";
 import jar from "../tools/jar";
 import { assert } from "tsafe/assert";
 import { Equals } from "tsafe";
@@ -14,17 +13,15 @@ import { getEmailThemeSrcDirPath } from "../getSrcDirPath";
 import { getProjectRoot } from "../tools/getProjectRoot";
 
 export async function main() {
-    const { isSilent, hasExternalAssets } = getCliOptions(process.argv.slice(2));
-    const logger = getLogger({ isSilent });
-    logger.log("🔏 Building the keycloak theme...⌚");
-
     const projectDirPath = process.cwd();
 
     const buildOptions = readBuildOptions({
         projectDirPath,
-        "isExternalAssetsCliParamProvided": hasExternalAssets,
-        "isSilent": isSilent
+        "processArgv": process.argv.slice(2)
     });
+
+    const logger = getLogger({ "isSilent": buildOptions.isSilent });
+    logger.log("🔏 Building the keycloak theme...⌚");
 
     const { doBundlesEmailTemplate } = await generateTheme({
         keycloakThemeBuildingDirPath: buildOptions.keycloakifyBuildDirPath,

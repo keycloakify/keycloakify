@@ -2,7 +2,6 @@
 import { join as pathJoin } from "path";
 import { downloadAndUnzip } from "./tools/downloadAndUnzip";
 import { promptKeycloakVersion } from "./promptKeycloakVersion";
-import { getCliOptions } from "./tools/cliOptions";
 import { getLogger } from "./tools/logger";
 import { readBuildOptions } from "./keycloakify/BuildOptions";
 
@@ -21,28 +20,22 @@ export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: st
 }
 
 async function main() {
-    const { isSilent } = getCliOptions(process.argv.slice(2));
-    const logger = getLogger({ isSilent });
+    const buildOptions = readBuildOptions({
+        "projectDirPath": process.cwd(),
+        "processArgv": process.argv.slice(2)
+    });
+
+    const logger = getLogger({ "isSilent": buildOptions.isSilent });
     const { keycloakVersion } = await promptKeycloakVersion();
 
-    const destDirPath = pathJoin(
-        readBuildOptions({
-            "isSilent": true,
-            "isExternalAssetsCliParamProvided": false,
-            "projectDirPath": process.cwd()
-        }).keycloakifyBuildDirPath,
-        "src",
-        "main",
-        "resources",
-        "theme"
-    );
+    const destDirPath = pathJoin(buildOptions.keycloakifyBuildDirPath, "src", "main", "resources", "theme");
 
     logger.log(`Downloading builtins theme of Keycloak ${keycloakVersion} here ${destDirPath}`);
 
     await downloadBuiltinKeycloakTheme({
         keycloakVersion,
         destDirPath,
-        isSilent
+        "isSilent": buildOptions.isSilent
     });
 }
 

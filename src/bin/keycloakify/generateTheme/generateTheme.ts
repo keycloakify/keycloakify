@@ -4,7 +4,7 @@ import { join as pathJoin } from "path";
 import { replaceImportsFromStaticInJsCode } from "../replacers/replaceImportsFromStaticInJsCode";
 import { replaceImportsInCssCode } from "../replacers/replaceImportsInCssCode";
 import { generateFtlFilesCodeFactory, loginThemePageIds, accountThemePageIds, themeTypes, type ThemeType } from "../generateFtl";
-import { mockTestingSubDirOfPublicDirBasename } from "../../mockTestingResourcesPath";
+import { basenameOfKeycloakDirInPublicDir } from "../../mockTestingResourcesPath";
 import { isInside } from "../../tools/isInside";
 import type { BuildOptions } from "../BuildOptions";
 import { assert } from "tsafe/assert";
@@ -84,7 +84,7 @@ export async function generateTheme(params: {
                     if (
                         buildOptions.isStandalone &&
                         isInside({
-                            "dirPath": pathJoin(reactAppBuildDirPath, mockTestingSubDirOfPublicDirBasename),
+                            "dirPath": pathJoin(reactAppBuildDirPath, basenameOfKeycloakDirInPublicDir),
                             filePath
                         })
                     ) {
@@ -172,34 +172,12 @@ export async function generateTheme(params: {
             fs.writeFileSync(pathJoin(themeDirPath, pageId), Buffer.from(ftlCode, "utf8"));
         });
 
-        const downloadKeycloakStaticResources_configured = async (themeDirPath: string) =>
-            await downloadKeycloakStaticResources({
-                "isSilent": buildOptions.isSilent,
-                "keycloakVersion": buildOptions.keycloakVersionDefaultAssets,
-                themeDirPath,
-                themeType
-            });
-
-        await downloadKeycloakStaticResources_configured(themeDirPath);
-
-        {
-            const keycloakResourcesWithinPublicDirPath = pathJoin(reactAppBuildDirPath, "..", "public", mockTestingSubDirOfPublicDirBasename);
-
-            await downloadKeycloakStaticResources_configured(keycloakResourcesWithinPublicDirPath);
-
-            fs.writeFileSync(
-                pathJoin(keycloakResourcesWithinPublicDirPath, "README.txt"),
-                Buffer.from(
-                    // prettier-ignore
-                    [
-                        "This is just a test folder that helps develop",
-                        "the login and register page without having to run a Keycloak container"
-                    ].join(" ")
-                )
-            );
-
-            fs.writeFileSync(pathJoin(keycloakResourcesWithinPublicDirPath, ".gitignore"), Buffer.from("*", "utf8"));
-        }
+        await downloadKeycloakStaticResources({
+            "isSilent": buildOptions.isSilent,
+            "keycloakVersion": buildOptions.keycloakVersionDefaultAssets,
+            themeDirPath,
+            themeType
+        });
 
         fs.writeFileSync(
             pathJoin(themeDirPath, "theme.properties"),
