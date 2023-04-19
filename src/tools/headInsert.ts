@@ -12,7 +12,7 @@ export function headInsert(
               type: "javascript";
               src: string;
           }
-) {
+): { remove: () => void; prLoaded: Promise<void> } {
     const htmlElement = document.createElement(
         (() => {
             switch (params.type) {
@@ -66,5 +66,8 @@ export function headInsert(
         })()
     ](htmlElement);
 
-    return dLoaded.pr;
+    return {
+        "prLoaded": dLoaded.pr,
+        "remove": () => htmlElement.remove()
+    };
 }
