@@ -3,6 +3,7 @@ import React from "react";
 import { DocsContainer as BaseContainer } from "@storybook/addon-docs";
 import { useDarkMode } from "storybook-dark-mode";
 import { darkTheme, lightTheme } from "./customTheme";
+import "./static/fonts/WorkSans/font.css";
 
 export const DocsContainer = ({ children, context }) => {
     const isStorybookUiDark = useDarkMode();
