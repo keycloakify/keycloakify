@@ -1,5 +1,5 @@
 import { Meta } from "@storybook/addon-docs";
-import { useDarkMode } from "storybook-dark-mode";
+import { KeycloakifyRotatingLogo } from "./KeycloakifyRotatingLogo";
 
 <Meta
     title="Introduction" 
@@ -15,13 +15,15 @@ import { useDarkMode } from "storybook-dark-mode";
 />
 
 <div style={{ "margin": "0 auto", "maxWidth": "700px", "textAlign": "center" }}>
-<img src="preview.png" />
+<div style={{ "display": "flex", "justifyContent": "center" }}>
+<KeycloakifyRotatingLogo style={{ "width": 400 }} />
+</div>
 <h1><a href="#">Keycloakify </a> Storybook</h1>
 
 <p>
 This website showcases all the Keycloak user-facing pages that can be customized using Keycloakify.
 The storybook serves as a comprehensive reference to help you determine which pages you would like to personalize.
-Keep in mind that customizing the <code>Template</code> component alone will already cover 90% of your customization needs.
+Keep in mind that customizing the <a href="https://github.com/keycloakify/keycloakify-starter/blob/main/src/keycloak-theme/login/Template.tsx"><code>Template</code></a> component alone will already cover 90% of your customization needs.
 </p>
 
 <p>

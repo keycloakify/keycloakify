@@ -25,7 +25,7 @@
         "link-in-app": "ts-node --skipProject scripts/link-in-app.ts",
         "link-in-starter": "yarn link-in-app keycloakify-starter",
         "copy-keycloak-resources-to-storybook-static": "PUBLIC_DIR_PATH=.storybook/static node dist/bin/copy-keycloak-resources-to-public.js",
-        "storybook": "yarn build && yarn copy-keycloak-resources-to-storybook-static && (concurrently \"tsc -p src -w\" \"tsc-alias -p src/tsconfig.json\" \"start-storybook -p 6006\")",
+        "storybook": "yarn build && yarn copy-keycloak-resources-to-storybook-static && start-storybook -p 6006",
         "build-storybook": "yarn build && yarn copy-keycloak-resources-to-storybook-static && build-storybook"
     },
     "bin": {
@@ -69,6 +69,7 @@
     },
     "devDependencies": {
         "@babel/core": "^7.0.0",
+        "@emotion/react": "^11.10.6",
         "@storybook/addon-a11y": "^6.5.16",
         "@storybook/addon-actions": "^6.5.13",
         "@storybook/addon-essentials": "^6.5.13",
@@ -89,6 +90,7 @@
         "eslint-plugin-storybook": "^0.6.7",
         "husky": "^4.3.8",
         "lint-staged": "^11.0.0",
+        "powerhooks": "^0.26.7",
         "prettier": "^2.3.0",
         "properties-parser": "^0.3.1",
         "react": "^18.2.0",
@@ -98,6 +100,7 @@
         "storybook-dark-mode": "^1.1.2",
         "ts-node": "^10.9.1",
         "tsc-alias": "^1.8.3",
+        "tss-react": "^4.8.2",
         "typescript": "^4.9.1-beta",
         "vitest": "^0.29.8",
         "zod-to-json-schema": "^3.20.4"
