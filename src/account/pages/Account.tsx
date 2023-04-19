@@ -4,7 +4,7 @@ import { useGetClassName } from "keycloakify/account/lib/useGetClassName";
 import type { KcContext } from "../kcContext";
 import type { I18n } from "../i18n";
 
-export default function LogoutConfirm(props: PageProps<Extract<KcContext, { pageId: "account.ftl" }>, I18n>) {
+export default function Account(props: PageProps<Extract<KcContext, { pageId: "account.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
     const { getClassName } = useGetClassName({
