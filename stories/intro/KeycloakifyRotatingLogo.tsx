@@ -22,7 +22,7 @@ export const KeycloakifyRotatingLogo = memo((props: Props) => {
         onLoadProp?.();
     });
 
-    const { classes, cx } = useStyles({
+    const { classes } = useStyles({
         isImageLoaded
     });
     return (
