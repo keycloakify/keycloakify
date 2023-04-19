@@ -18,7 +18,7 @@ import * as fs from "fs";
     const keycloakDirInPublicDir = pathJoin(process.env["PUBLIC_DIR_PATH"] || pathJoin(projectDirPath, "public"), basenameOfKeycloakDirInPublicDir);
 
     if (fs.existsSync(keycloakDirInPublicDir)) {
-        console.log(`${pathRelative(projectDirPath, keycloakDirInPublicDir)} already exists. Aborting.`);
+        console.log(`${pathRelative(projectDirPath, keycloakDirInPublicDir)} already exists.`);
         return;
     }
 
@@ -43,4 +43,6 @@ import * as fs from "fs";
     );
 
     fs.writeFileSync(pathJoin(keycloakDirInPublicDir, ".gitignore"), Buffer.from("*", "utf8"));
+
+    console.log(`${pathRelative(projectDirPath, keycloakDirInPublicDir)} directory created.`);
 })();

@@ -30,13 +30,7 @@ export function createGetKcContext<KcContextExtension extends { pageId: string }
         if (mockPageId !== undefined && realKcContext === undefined) {
             //TODO maybe trow if no mock fo custom page
 
-            console.log(
-                [
-                    `%cKeycloakify: ${symToStr({ mockPageId })} set to ${mockPageId}.`,
-                    `If assets are missing make sure you have built your Keycloak theme at least once.`
-                ].join(" "),
-                "background: red; color: yellow; font-size: medium"
-            );
+            console.log(`%cKeycloakify: ${symToStr({ mockPageId })} set to ${mockPageId}.`, "background: red; color: yellow; font-size: medium");
 
             const kcContextDefaultMock = kcContextMocks.find(({ pageId }) => pageId === mockPageId);
 
