@@ -96,7 +96,17 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-## Changelog highlights
+# Changelog highlights
+
+## 7.9
+
+-   Separate script for copying the default theme static assets to the public directory.  
+    Theses assets are only needed for testing your theme locally in Storybook or with a `mockPageId`.  
+    You are now expected to have a `"prepare": "copy-keycloak-resources-to-public",` in your package.json scripts.  
+    This script will create `public/keycloak-assets` when you run `yarn install` (If you are using another package manager
+    like `pnpm` makes sure that `"prepare"` is actually ran.)  
+    [See the updated starter](https://github.com/keycloakify/keycloakify-starter/blob/94532fcf10bf8b19e0873be8575fd28a8958a806/package.json#L11).  
+    `public/keycloak-assets` shouldn't be tracked by GIT and is automatically ignored.
 
 ## 7.7
 
