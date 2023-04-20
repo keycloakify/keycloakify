@@ -5,7 +5,7 @@ import { useDarkMode } from "storybook-dark-mode";
 import { darkTheme, lightTheme } from "./customTheme";
 import "./static/fonts/WorkSans/font.css";
 
-export const DocsContainer = ({ children, context }) => {
+export function DocsContainer({ children, context }) {
     const isStorybookUiDark = useDarkMode();
 
     const theme = isStorybookUiDark ? darkTheme : lightTheme;
@@ -58,4 +58,19 @@ export const DocsContainer = ({ children, context }) => {
             </BaseContainer>
         </>
     );
-};
+}
+
+export function CanvasContainer({ children }) {
+
+    return (
+        <>
+            <style>{`
+                body {
+                    padding: 0 !important;
+                }
+            `}</style>
+            {children}
+        </>
+    );
+
+}

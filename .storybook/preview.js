@@ -1,5 +1,5 @@
 import { darkTheme, lightTheme } from "./customTheme";
-import { DocsContainer } from "./DocsContainer";
+import { DocsContainer, CanvasContainer } from "./Containers";
 
 export const parameters = {
     "actions": { "argTypesRegex": "^on[A-Z].*" },
@@ -102,6 +102,14 @@ export const parameters = {
             getHardCodedWeight(b[1].kind) - getHardCodedWeight(a[1].kind),
     },
 };
+
+export const decorators = [
+    (Story) => (
+        <CanvasContainer>
+            <Story />
+        </CanvasContainer>
+    ),
+];
 
 const { getHardCodedWeight } = (() => {
 
