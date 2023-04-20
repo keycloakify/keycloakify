@@ -7,6 +7,9 @@ import type { PageProps } from "keycloakify/login/pages/PageProps";
 import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import type { KcContext } from "../kcContext";
 import type { I18n } from "../i18n";
+import { assert } from "tsafe/assert";
+import { is } from "tsafe/is";
+import { typeGuard } from "tsafe/typeGuard";
 
 export default function WebauthnAuthenticate(props: PageProps<Extract<KcContext, { pageId: "webauthn-authenticate.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
@@ -21,10 +24,24 @@ export default function WebauthnAuthenticate(props: PageProps<Extract<KcContext,
     const createTimeout = Number(kcContext.createTimeout);
     const isUserIdentified = kcContext.isUserIdentified == "true";
 
+    const formElementRef = useRef<HTMLFormElement>(null);
+
     const webAuthnAuthenticate = useConstCallback(async () => {
         if (!isUserIdentified) {
             return;
         }
+
+        const submitForm = async (): Promise<void> => {
+            const formElement = formElementRef.current;
+
+            if (formElement === null) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+                return submitForm();
+            }
+
+            formElement.submit();
+        };
+
         const allowCredentials = authenticators.authenticators.map(
             authenticator =>
                 ({
@@ -57,30 +74,36 @@ export default function WebauthnAuthenticate(props: PageProps<Extract<KcContext,
         }
 
         try {
-            const resultRaw = await navigator.credentials.get({ publicKey });
-            if (!resultRaw || resultRaw.type != "public-key") return;
-            const result = resultRaw as PublicKeyCredential;
-            if (!("authenticatorData" in result.response)) return;
-            const response = result.response as AuthenticatorAssertionResponse;
+            const result = await navigator.credentials.get({ publicKey });
+            if (!result || result.type != "public-key") {
+                return;
+            }
+            assert(is<PublicKeyCredential>(result));
+            if (!("authenticatorData" in result.response)) {
+                return;
+            }
+            const response = result.response;
+
             const clientDataJSON = response.clientDataJSON;
+
+            assert(
+                typeGuard<AuthenticatorAssertionResponse>(response, "signature" in response && response.authenticatorData instanceof ArrayBuffer),
+                "response not an AuthenticatorAssertionResponse"
+            );
+
             const authenticatorData = response.authenticatorData;
             const signature = response.signature;
 
-            setClientDataJSON(base64url.stringify(new Uint8Array(clientDataJSON), { pad: false }));
-            setAuthenticatorData(base64url.stringify(new Uint8Array(authenticatorData), { pad: false }));
-            setSignature(base64url.stringify(new Uint8Array(signature), { pad: false }));
+            setClientDataJSON(base64url.stringify(new Uint8Array(clientDataJSON), { "pad": false }));
+            setAuthenticatorData(base64url.stringify(new Uint8Array(authenticatorData), { "pad": false }));
+            setSignature(base64url.stringify(new Uint8Array(signature), { "pad": false }));
             setCredentialId(result.id);
-            setUserHandle(base64url.stringify(new Uint8Array(response.userHandle!), { pad: false }));
-            submitForm();
+            setUserHandle(base64url.stringify(new Uint8Array(response.userHandle!), { "pad": false }));
         } catch (err) {
             setError(String(err));
-            submitForm();
         }
-    });
 
-    const webAuthForm = useRef<HTMLFormElement>(null);
-    const submitForm = useConstCallback(() => {
-        webAuthForm.current!.submit();
+        submitForm();
     });
 
     const [clientDataJSON, setClientDataJSON] = useState("");
@@ -93,7 +116,7 @@ export default function WebauthnAuthenticate(props: PageProps<Extract<KcContext,
     return (
         <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} headerNode={msg("webauthn-login-title")}>
             <div id="kc-form-webauthn" className={getClassName("kcFormClass")}>
-                <form id="webauth" action={url.loginAction} ref={webAuthForm} method="post">
+                <form id="webauth" action={url.loginAction} ref={formElementRef} method="post">
                     <input type="hidden" id="clientDataJSON" name="clientDataJSON" value={clientDataJSON} />
                     <input type="hidden" id="authenticatorData" name="authenticatorData" value={authenticatorData} />
                     <input type="hidden" id="signature" name="signature" value={signature} />
