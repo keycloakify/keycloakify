@@ -50,8 +50,8 @@ Their dedicated support helps us continue the development and maintenance of thi
 -   Custom theme building for your brand using Keycloakify.
 
 <p align="center">
-    <a href="https://www.cloud-iam.com/">
-      <img src="https://user-images.githubusercontent.com/6702424/232165752-17134e68-4a55-4d6e-8672-e9132ecac5d5.svg" alt="Cloud IAM Logo" width="200"/>
+    <a href="https://cloud-iam.com/?mtm_campaign=keycloakify-deal&mtm_source=keycloakify-github">
+      <img src="https://user-images.githubusercontent.com/6702424/233476937-e37b1dc6-5a1c-4a0d-ba02-61c2ce62ffb6.png" alt="Cloud IAM Logo" width="350"/>
     </a>
     <br/>
     <i>Use promo code <code>keycloakify5</code>  </i>
