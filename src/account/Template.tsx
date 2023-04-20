@@ -60,7 +60,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                                         </div>
                                     </li>
                                 )}
-                                {referrer?.url !== undefined && (
+                                {referrer?.url && (
                                     <li>
                                         <a href={referrer.url} id="referrer">
                                             {msg("backTo", referrer.name)}
