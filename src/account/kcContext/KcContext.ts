@@ -26,7 +26,13 @@ export declare namespace KcContext {
             resourceUrl: string;
             resourcesCommonPath: string;
             resourcesPath: string;
+            /** @deprecated, not present in recent keycloak version apparently, use kcContext.referrer instead */
             referrerURI?: string;
+            // Present only if redirected to account page with ?referrer=xxx&referrer_uri=http...
+            referrer?: {
+                url: string; // The url of the App
+                name: string; // NOTE: Client id
+            };
             getLogoutUrl: () => string;
         };
         features: {
