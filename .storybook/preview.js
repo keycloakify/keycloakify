@@ -107,12 +107,8 @@ const { getHardCodedWeight } = (() => {
 
     const orderedPagesPrefix = [
         "Introduction",
-        //"components/Header",
-        //"components/Footer",
-        "components/Alert",
-        "components/Tabs",
-        "components/Stepper",
-        "components/Button",
+        "login/login.ftl",
+        "login/error.ftl",
     ];
 
     function getHardCodedWeight(kind) {
