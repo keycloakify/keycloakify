@@ -26,6 +26,7 @@ export declare namespace KcContext {
             resourceUrl: string;
             resourcesCommonPath: string;
             resourcesPath: string;
+            referrerURI?: string;
             getLogoutUrl: () => string;
         };
         features: {
@@ -71,7 +72,6 @@ export declare namespace KcContext {
     export type Account = Common & {
         pageId: "account.ftl";
         url: {
-            referrerURI: string;
             accountUrl: string;
         };
         realm: {
