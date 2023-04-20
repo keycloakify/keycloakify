@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { clsx } from "keycloakify/tools/clsx";
 import type { PageProps } from "keycloakify/account/pages/PageProps";
 import { useGetClassName } from "keycloakify/account/lib/useGetClassName";
@@ -17,10 +18,69 @@ export default function Password(props: PageProps<Extract<KcContext, { pageId: "
 
     const { url, password, account, stateChecker } = kcContext;
 
-    const { msg } = i18n;
+    const { msgStr, msg } = i18n;
+
+    const [currentPassword, setCurrentPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [newPasswordConfirm, setNewPasswordConfirm] = useState("");
+    const [newPasswordError, setNewPasswordError] = useState("");
+    const [newPasswordConfirmError, setNewPasswordConfirmError] = useState("");
+    const [hasNewPasswordBlurred, setHasNewPasswordBlurred] = useState(false);
+    const [hasNewPasswordConfirmBlurred, setHasNewPasswordConfirmBlurred] = useState(false);
+
+    const checkNewPassword = (newPassword: string) => {
+        if (!password.passwordSet) {
+            return;
+        }
+
+        if (newPassword === currentPassword) {
+            setNewPasswordError(msgStr("newPasswordSameAsOld"));
+        } else {
+            setNewPasswordError("");
+        }
+    };
+
+    const checkNewPasswordConfirm = (newPasswordConfirm: string) => {
+        if (newPasswordConfirm === "") {
+            return;
+        }
+
+        if (newPassword !== newPasswordConfirm) {
+            setNewPasswordConfirmError(msgStr("passwordConfirmNotMatch"));
+        } else {
+            setNewPasswordConfirmError("");
+        }
+    };
 
     return (
-        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} active="password">
+        <Template
+            {...{
+                kcContext: {
+                    ...kcContext,
+                    "message": (() => {
+                        if (newPasswordError !== "") {
+                            return {
+                                "type": "error",
+                                "summary": newPasswordError
+                            };
+                        }
+
+                        if (newPasswordConfirmError !== "") {
+                            return {
+                                "type": "error",
+                                "summary": newPasswordConfirmError
+                            };
+                        }
+
+                        return kcContext.message;
+                    })()
+                },
+                i18n,
+                doUseDefaultCss,
+                classes
+            }}
+            active="password"
+        >
             <div className="row">
                 <div className="col-md-10">
                     <h2>{msg("changePasswordHtmlTitle")}</h2>
@@ -48,9 +108,17 @@ export default function Password(props: PageProps<Extract<KcContext, { pageId: "
                                 {msg("password")}
                             </label>
                         </div>
-
                         <div className="col-sm-10 col-md-10">
-                            <input type="password" className="form-control" id="password" name="password" autoFocus autoComplete="current-password" />
+                            <input
+                                type="password"
+                                className="form-control"
+                                id="password"
+                                name="password"
+                                autoFocus
+                                autoComplete="current-password"
+                                value={currentPassword}
+                                onChange={event => setCurrentPassword(event.target.value)}
+                            />
                         </div>
                     </div>
                 )}
@@ -63,9 +131,27 @@ export default function Password(props: PageProps<Extract<KcContext, { pageId: "
                             {msg("passwordNew")}
                         </label>
                     </div>
-
                     <div className="col-sm-10 col-md-10">
-                        <input type="password" className="form-control" id="password-new" name="password-new" autoComplete="new-password" />
+                        <input
+                            type="password"
+                            className="form-control"
+                            id="password-new"
+                            name="password-new"
+                            autoComplete="new-password"
+                            value={newPassword}
+                            onChange={event => {
+                                const newPassword = event.target.value;
+
+                                setNewPassword(newPassword);
+                                if (hasNewPasswordBlurred) {
+                                    checkNewPassword(newPassword);
+                                }
+                            }}
+                            onBlur={() => {
+                                setHasNewPasswordBlurred(true);
+                                checkNewPassword(newPassword);
+                            }}
+                        />
                     </div>
                 </div>
 
@@ -77,7 +163,26 @@ export default function Password(props: PageProps<Extract<KcContext, { pageId: "
                     </div>
 
                     <div className="col-sm-10 col-md-10">
-                        <input type="password" className="form-control" id="password-confirm" name="password-confirm" autoComplete="new-password" />
+                        <input
+                            type="password"
+                            className="form-control"
+                            id="password-confirm"
+                            name="password-confirm"
+                            autoComplete="new-password"
+                            value={newPasswordConfirm}
+                            onChange={event => {
+                                const newPasswordConfirm = event.target.value;
+
+                                setNewPasswordConfirm(newPasswordConfirm);
+                                if (hasNewPasswordConfirmBlurred) {
+                                    checkNewPasswordConfirm(newPasswordConfirm);
+                                }
+                            }}
+                            onBlur={() => {
+                                setHasNewPasswordConfirmBlurred(true);
+                                checkNewPasswordConfirm(newPasswordConfirm);
+                            }}
+                        />
                     </div>
                 </div>
 
@@ -85,6 +190,7 @@ export default function Password(props: PageProps<Extract<KcContext, { pageId: "
                     <div id="kc-form-buttons" className="col-md-offset-2 col-md-10 submit">
                         <div>
                             <button
+                                disabled={newPasswordError !== "" || newPasswordConfirmError !== ""}
                                 type="submit"
                                 className={clsx(
                                     getClassName("kcButtonClass"),

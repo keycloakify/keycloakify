@@ -211,7 +211,9 @@ const keycloakifyExtraMessages = {
         "shouldBeDifferent": "{0} should be different to {1}",
         "shouldMatchPattern": "Pattern should match: `/{0}/`",
         "mustBeAnInteger": "Must be an integer",
-        "notAValidOption": "Not a valid option"
+        "notAValidOption": "Not a valid option",
+        "newPasswordSameAsOld": "New password must be different from the old one",
+        "passwordConfirmNotMatch": "Password confirmation does not match"
     },
     "fr": {
         /* spell-checker: disable */
@@ -223,7 +225,9 @@ const keycloakifyExtraMessages = {
 
         "logoutConfirmTitle": "Déconnexion",
         "logoutConfirmHeader": "Êtes-vous sûr(e) de vouloir vous déconnecter ?",
-        "doLogout": "Se déconnecter"
+        "doLogout": "Se déconnecter",
+        "newPasswordSameAsOld": "Le nouveau mot de passe doit être différent de l'ancien",
+        "passwordConfirmNotMatch": "La confirmation du mot de passe ne correspond pas"
         /* spell-checker: enable */
     }
 };
