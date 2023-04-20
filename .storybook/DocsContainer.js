@@ -16,7 +16,7 @@ export const DocsContainer = ({ children, context }) => {
         <>
             <style>{`
                 body {
-                    padding: 0 !important,
+                    padding: 0 !important;
                     background-color: ${backgroundColor};
                 }
 
