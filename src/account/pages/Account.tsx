@@ -99,9 +99,7 @@ export default function Account(props: PageProps<Extract<KcContext, { pageId: "a
                 <div className="form-group">
                     <div id="kc-form-buttons" className="col-md-offset-2 col-md-10 submit">
                         <div>
-                            {(referrer !== undefined || url.referrerURI !== undefined) && (
-                                <a href={referrer?.url ?? url.referrerURI}>{msg("backToApplication")}</a>
-                            )}
+                            {referrer !== undefined && <a href={referrer?.url}>{msg("backToApplication")}</a>}
                             <button
                                 type="submit"
                                 className={clsx(

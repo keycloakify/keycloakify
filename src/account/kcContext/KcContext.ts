@@ -28,11 +28,6 @@ export declare namespace KcContext {
             resourcesPath: string;
             /** @deprecated, not present in recent keycloak version apparently, use kcContext.referrer instead */
             referrerURI?: string;
-            // Present only if redirected to account page with ?referrer=xxx&referrer_uri=http...
-            referrer?: {
-                url: string; // The url of the App
-                name: string; // NOTE: Client id
-            };
             getLogoutUrl: () => string;
         };
         features: {
@@ -45,13 +40,14 @@ export declare namespace KcContext {
             internationalizationEnabled: boolean;
             userManagedAccessAllowed: boolean;
         };
+        // Present only if redirected to account page with ?referrer=xxx&referrer_uri=http...
         message?: {
             type: "success" | "warning" | "error" | "info";
             summary: string;
         };
         referrer?: {
-            url?: string;
-            name: string;
+            url: string; // The url of the App
+            name: string; // Client id
         };
         messagesPerField: {
             printIfExists: <T>(fieldName: string, x: T) => T | undefined;
