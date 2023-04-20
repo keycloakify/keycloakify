@@ -7,11 +7,11 @@ const pageId = "login.ftl";
 const { PageStory } = createPageStory({ pageId });
 
 const meta: ComponentMeta<any> = {
-    "title": `login/${pageId}`,
-    "component": PageStory,
-    "parameters": {
-        "viewMode": "story",
-        "previewTabs": {
+    title: `login/${pageId}`,
+    component: PageStory,
+    parameters: {
+        viewMode: "story",
+        previewTabs: {
             "storybook/docs/panel": {
                 "hidden": true
             }
