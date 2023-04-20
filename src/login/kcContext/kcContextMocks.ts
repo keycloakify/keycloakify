@@ -3,6 +3,8 @@ import type { KcContext, Attribute } from "./KcContext";
 import { resourcesCommonDirPathRelativeToPublicDir, resourcesDirPathRelativeToPublicDir } from "keycloakify/bin/mockTestingResourcesPath";
 import { pathJoin } from "keycloakify/bin/tools/pathJoin";
 import { id } from "tsafe/id";
+import { assert, type Equals } from "tsafe/assert";
+import type { LoginThemePageId } from "keycloakify/bin/keycloakify/generateFtl";
 
 const PUBLIC_URL = process.env["PUBLIC_URL"] ?? "/";
 
@@ -243,7 +245,7 @@ const loginUrl = {
     "registrationUrl": "/auth/realms/myrealm/login-actions/registration?client_id=account&tab_id=HoAx28ja4xg"
 };
 
-export const kcContextMocks: KcContext[] = [
+export const kcContextMocks = [
     id<KcContext.Login>({
         ...kcContextCommonMock,
         "pageId": "login.ftl",
@@ -519,5 +521,27 @@ export const kcContextMocks: KcContext[] = [
                 }
             ]
         }
+    }),
+    id<KcContext.SamlPostForm>({
+        ...kcContextCommonMock,
+        pageId: "saml-post-form.ftl",
+        "samlPost": {
+            "url": "https://saml-post-url"
+        }
+    }),
+    id<KcContext.LoginPageExpired>({
+        ...kcContextCommonMock,
+        pageId: "login-page-expired.ftl"
     })
 ];
+
+{
+    type Got = (typeof kcContextMocks)[number]["pageId"];
+    type Expected = LoginThemePageId;
+
+    type OnlyInGot = Exclude<Got, Expected>;
+    type OnlyInExpected = Exclude<Expected, Got>;
+
+    assert<Equals<OnlyInGot, never>>();
+    assert<Equals<OnlyInExpected, never>>();
+}

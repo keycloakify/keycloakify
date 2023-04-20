@@ -32,7 +32,8 @@ export type KcContext =
     | KcContext.UpdateUserProfile
     | KcContext.IdpReviewUserProfile
     | KcContext.UpdateEmail
-    | KcContext.SelectAuthenticator;
+    | KcContext.SelectAuthenticator
+    | KcContext.SamlPostForm;
 
 export declare namespace KcContext {
     export type Common = {
@@ -82,6 +83,16 @@ export declare namespace KcContext {
             existsError: (fieldName: string) => boolean;
             get: (fieldName: string) => string;
             exists: (fieldName: string) => boolean;
+        };
+    };
+
+    export type SamlPostForm = Common & {
+        pageId: "saml-post-form.ftl";
+        samlPost: {
+            url: string;
+            SAMLRequest?: string;
+            SAMLResponse?: string;
+            RelayState?: string;
         };
     };
 
@@ -543,4 +554,13 @@ export declare namespace Validators {
     };
 }
 
-assert<Equals<KcContext["pageId"], LoginThemePageId>>();
+{
+    type Got = KcContext["pageId"];
+    type Expected = LoginThemePageId;
+
+    type OnlyInGot = Exclude<Got, Expected>;
+    type OnlyInExpected = Exclude<Expected, Got>;
+
+    assert<Equals<OnlyInGot, never>>();
+    assert<Equals<OnlyInExpected, never>>();
+}

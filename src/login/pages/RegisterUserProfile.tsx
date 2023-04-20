@@ -14,7 +14,9 @@ export default function RegisterUserProfile(props: PageProps<Extract<KcContext, 
         classes
     });
 
-    const { url, messagesPerField, recaptchaRequired, recaptchaSiteKey } = kcContext;
+    const { url, messagesPerField, recaptchaRequired, recaptchaSiteKey, realm } = kcContext;
+
+    realm.registrationEmailAsUsername;
 
     const { msg, msgStr } = i18n;
 
