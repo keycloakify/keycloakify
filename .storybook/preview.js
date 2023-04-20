@@ -116,6 +116,9 @@ const { getHardCodedWeight } = (() => {
     const orderedPagesPrefix = [
         "Introduction",
         "login/login.ftl",
+        "login/register-user-profile.ftl",
+        "login/register.ftl",
+        "login/terms.ftl",
         "login/error.ftl",
     ];
 
