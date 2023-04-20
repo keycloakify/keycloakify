@@ -46,7 +46,7 @@ Their dedicated support helps us continue the development and maintenance of thi
 
 [Cloud IAM](https://www.cloud-iam.com/) provides the following services:
 
--   Perfectly configured and optimized Keycloak IAM, ready in seconds.
+-   Simplify and secure your Keycloak Identity and Access Management. Keycloak as a Service.
 -   Custom theme building for your brand using Keycloakify.
 
 <p align="center">
