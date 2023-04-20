@@ -22,3 +22,10 @@ const meta: ComponentMeta<any> = {
 export default meta;
 
 export const Default = () => <PageStory />;
+export const WithNoMessage = () => (
+    <PageStory
+        kcContext={{
+            message: undefined
+        }}
+    />
+);
