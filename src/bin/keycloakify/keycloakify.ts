@@ -141,8 +141,8 @@ export async function main() {
             `                                                                        Login Theme:                     ${buildOptions.themeName}`,
             `                                                                        Save (button at the bottom of the page)`,
             ``,
-            `- Go to  👉  https://www.keycloak.org/app/ 👈 Click "Save" then "Sign in". You should see your login page`,
-            `- Got to 👉  http://localhost:8080/realms/myrealm/account 👈 to see your account theme`,
+            `- Go to  👉  https://www.keycloak.org/app/ 👈 Click "Save".`,
+            `- Got to 👉  http://localhost:8080/realms/myrealm/account 👈 Click "Sign in". You should see your Login page.`,
             ``,
             `Video tutorial: https://youtu.be/WMyGZNHQkjU`,
             ``
