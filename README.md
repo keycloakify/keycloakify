@@ -44,7 +44,7 @@
 We are exclusively sponsored by [Cloud IAM](https://www.cloud-iam.com), a French company offering Keycloak as a service.  
 Their dedicated support helps us continue the development and maintenance of this project.
 
-[Cloud IAM](https://www.cloud-iam.com/) provides the following services:
+[Cloud IAM](https://cloud-iam.com/?mtm_campaign=keycloakify-deal&mtm_source=keycloakify-github) provides the following services:
 
 -   Simplify and secure your Keycloak Identity and Access Management. Keycloak as a Service.
 -   Custom theme building for your brand using Keycloakify.
@@ -59,7 +59,7 @@ Their dedicated support helps us continue the development and maintenance of thi
     <i>5% of your annual subscription will be donated to us, and you'll get 5% off too.</i>
 </p>
 
-Thank you, [Cloud IAM](https://www.cloud-iam.com/), for your support!
+Thank you, [Cloud IAM](https://cloud-iam.com/?mtm_campaign=keycloakify-deal&mtm_source=keycloakify-github), for your support!
 
 ## Contributors ✨
 
