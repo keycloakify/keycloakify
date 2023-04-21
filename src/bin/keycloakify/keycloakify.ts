@@ -142,7 +142,8 @@ export async function main() {
             `                                                                        Save (button at the bottom of the page)`,
             ``,
             `- Go to  👉  https://www.keycloak.org/app/ 👈 Click "Save".`,
-            `- Got to 👉  http://localhost:8080/realms/myrealm/account 👈 Click "Sign in". You should see your Login page.`,
+            `- Got to 👉  http://localhost:8080/realms/myrealm/account 👈 to see your account theme.`,
+            `- Click "Sign in". You should see your Login page.`,
             ``,
             `Video tutorial: https://youtu.be/WMyGZNHQkjU`,
             ``
