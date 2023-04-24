@@ -44,22 +44,30 @@
 We are exclusively sponsored by [Cloud IAM](https://www.cloud-iam.com), a French company offering Keycloak as a service.  
 Their dedicated support helps us continue the development and maintenance of this project.
 
-[Cloud IAM](https://www.cloud-iam.com/) provides the following services:
+[Cloud IAM](https://cloud-iam.com/?mtm_campaign=keycloakify-deal&mtm_source=keycloakify-github) provides the following services:
 
 -   Simplify and secure your Keycloak Identity and Access Management. Keycloak as a Service.
 -   Custom theme building for your brand using Keycloakify.
 
+<div align="center">
+
+![Logo Dark](https://user-images.githubusercontent.com/6702424/234135797-c84d0a90-0526-43e5-a186-70cbebdeb278.png#gh-dark-mode-only)
+
+</div>
+
+<div align="center">
+
+![Logo Light](https://user-images.githubusercontent.com/6702424/234135799-68684c33-4ec5-48d4-8763-0f3922c86643.png#gh-light-mode-only)
+
+</div>
+
 <p align="center">
-    <a href="https://cloud-iam.com/?mtm_campaign=keycloakify-deal&mtm_source=keycloakify-github">
-      <img src="https://user-images.githubusercontent.com/6702424/233476937-e37b1dc6-5a1c-4a0d-ba02-61c2ce62ffb6.png" alt="Cloud IAM Logo" width="350"/>
-    </a>
-    <br/>
-    <i>Use promo code <code>keycloakify5</code>  </i>
+    <i>Checkout <a href="https://cloud-iam.com/?mtm_campaign=keycloakify-deal&mtm_source=keycloakify-github">Cloud IAM</a> and use promo code <code>keycloakify5</code></i>
     <br/>
     <i>5% of your annual subscription will be donated to us, and you'll get 5% off too.</i>
 </p>
 
-Thank you, [Cloud IAM](https://www.cloud-iam.com/), for your support!
+Thank you, [Cloud IAM](https://cloud-iam.com/?mtm_campaign=keycloakify-deal&mtm_source=keycloakify-github), for your support!
 
 ## Contributors ✨
 
@@ -108,10 +116,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     You are now expected to have a `"prepare": "copy-keycloak-resources-to-public",` in your package.json scripts.  
     This script will create `public/keycloak-assets` when you run `yarn install` (If you are using another package manager
     like `pnpm` makes sure that `"prepare"` is actually ran.)  
-    [See the updated starter](https://github.com/keycloakify/keycloakify-starter/blob/94532fcf10bf8b19e0873be8575fd28a8958a806/package.json#L11).  
-    `public/keycloak-assets` shouldn't be tracked by GIT and is automatically ignored.
+    [See the updated starter](https://github.com/keycloakify/keycloakify-starter/blob/94532fcf10bf8b19e0873be8575fd28a8958a806/package.json#L11). `public/keycloak-assets` shouldn't be tracked by GIT and is automatically ignored.  
 
-## 7.7
+## 7.7
 
 -   Better storybook support, see [the starter project](https://github.com/keycloakify/keycloakify-starter).
 
