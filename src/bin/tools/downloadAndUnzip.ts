@@ -1,5 +1,6 @@
 import { exec as execCallback } from "child_process";
 import { createHash } from "crypto";
+import debug from "debug";
 import { mkdir, readFile, stat, writeFile } from "fs/promises";
 import fetch, { type FetchOptions } from "make-fetch-happen";
 import { dirname as pathDirname, join as pathJoin } from "path";
@@ -9,6 +10,7 @@ import { getProjectRoot } from "./getProjectRoot";
 import { transformCodebase } from "./transformCodebase";
 import { unzip } from "./unzip";
 
+const log = { debug: debug("keycloakify:debug:downloadAndUnzip") }
 const exec = promisify(execCallback);
 
 function hash(s: string) {
@@ -18,9 +20,13 @@ function hash(s: string) {
 async function exists(path: string) {
     try {
         await stat(path);
+        log.debug(`File '${path} exists`)
         return true;
     } catch (error) {
-        if ((error as Error & { code: string }).code === "ENOENT") return false;
+        if ((error as Error & { code: string }).code === "ENOENT") {
+            log.debug(`File '${path} does not exist`)
+            return false;
+        }
         throw error;
     }
 }
@@ -50,6 +56,7 @@ async function getNmpConfig() {
 
 async function readNpmConfig() {
     const { stdout } = await exec("npm config get", { encoding: "utf8" });
+    log.debug(`NPM Config:\n${stdout}\n---`)
     return stdout;
 }
 
@@ -71,6 +78,7 @@ function chunks<T>(arr: T[], size: number = 2) {
 }
 
 async function readCafile(cafile: string) {
+    log.debug(`Reading additional ca entries from '${cafile}'`)
     const cafileContent = await readFile(cafile, "utf-8");
     return chunks(cafileContent.split(/(-----END CERTIFICATE-----)/), 2).map(ca => ca.join("").replace(/^\n/, "").replace(/\n/g, "\\n"));
 }
@@ -105,8 +113,11 @@ export async function downloadAndUnzip(params: { url: string; destDirPath: strin
     const zipFilePath = pathJoin(cacheRoot, "keycloakify", "zip", `_${downloadHash}.zip`);
     const extractDirPath = pathJoin(cacheRoot, "keycloakify", "unzip", `_${downloadHash}`);
 
+    log.debug(`Load '${url}' to '${destDirPath}' ${pathOfDirToExtractInArchive ? ` (only ${pathOfDirToExtractInArchive})` : ''}`)
+
     if (!(await exists(zipFilePath))) {
         const opts = await getFetchOptions();
+        log.debug(`Load '${url}' to '${zipFilePath}' using options ${JSON.stringify(opts)}`)
         const response = await fetch(url, opts);
         await mkdir(pathDirname(zipFilePath), { "recursive": true });
         /**
