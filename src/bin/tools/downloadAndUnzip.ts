@@ -1,6 +1,6 @@
 import { exec as execCallback } from "child_process";
 import { createHash } from "crypto";
-import { mkdir, stat, writeFile } from "fs/promises";
+import { mkdir, readFile, stat, writeFile } from "fs/promises";
 import fetch, { type FetchOptions } from "make-fetch-happen";
 import { dirname as pathDirname, join as pathJoin } from "path";
 import { assert } from "tsafe";
@@ -25,32 +25,75 @@ async function exists(path: string) {
     }
 }
 
+function ensureArray<T>(arg0: T | T[]) {
+    return Array.isArray(arg0) ? arg0 : typeof arg0 === "undefined" ? [] : [arg0];
+}
+
+function ensureSingleOrNone<T>(arg0: T | T[]) {
+    if (!Array.isArray(arg0)) return arg0;
+    if (arg0.length === 0) return undefined;
+    if (arg0.length === 1) return arg0[0];
+    throw new Error("Illegal configuration, expected a single value but found multiple: " + arg0.map(String).join(", "));
+}
+
+type NPMConfig = Record<string, string | string[]>;
+
+const npmConfigReducer = (cfg: NPMConfig, [key, value]: [string, string]) =>
+    key in cfg ? { ...cfg, [key]: [...ensureArray(cfg[key]), value] } : { ...cfg, [key]: value };
+
 /**
  * Get npm configuration as map
  */
-async function getNmpConfig(): Promise<Record<string, string>> {
+async function getNmpConfig() {
+    return readNpmConfig().then(parseNpmConfig);
+}
+
+async function readNpmConfig() {
     const { stdout } = await exec("npm config get", { encoding: "utf8" });
+    return stdout;
+}
+
+function parseNpmConfig(stdout: string) {
     return stdout
         .split("\n")
         .filter(line => !line.startsWith(";"))
         .map(line => line.trim())
-        .map(line => line.split("=", 2))
-        .reduce((cfg, [key, value]) => ({ ...cfg, [key]: value }), {});
+        .map(line => line.split("=", 2) as [string, string])
+        .reduce(npmConfigReducer, {} as NPMConfig);
+}
+
+function maybeBoolean(arg0: string | undefined) {
+    return typeof arg0 === "undefined" ? undefined : Boolean(arg0);
+}
+
+function chunks<T>(arr: T[], size: number = 2) {
+    return arr.map((_, i) => i % size == 0 && arr.slice(i, i + size)).filter(Boolean) as T[][];
+}
+
+async function readCafile(cafile: string) {
+    const cafileContent = await readFile(cafile, "utf-8");
+    return chunks(cafileContent.split(/(-----END CERTIFICATE-----)/), 2).map(ca => ca.join("").replace(/^\n/, "").replace(/\n/g, "\\n"));
 }
 
 /**
- * Get proxy configuration from npm config files. Note that we don't care about
+ * Get proxy and ssl configuration from npm config files. Note that we don't care about
  * proxy config in env vars, because make-fetch-happen will do that for us.
  *
  * @returns proxy configuration
  */
-async function getNpmProxyConfig(): Promise<Pick<FetchOptions, "proxy" | "noProxy">> {
+async function getFetchOptions(): Promise<Pick<FetchOptions, "proxy" | "noProxy" | "strictSSL" | "ca" | "cert">> {
     const cfg = await getNmpConfig();
 
-    const proxy = cfg["https-proxy"] ?? cfg["proxy"];
+    const proxy = ensureSingleOrNone(cfg["https-proxy"] ?? cfg["proxy"]);
     const noProxy = cfg["noproxy"] ?? cfg["no-proxy"];
+    const strictSSL = maybeBoolean(ensureSingleOrNone(cfg["strict-ssl"]));
+    const cert = cfg["cert"];
+    const ca = ensureArray(cfg["ca"] ?? cfg["ca[]"]);
+    const cafile = ensureSingleOrNone(cfg["cafile"]);
 
-    return { proxy, noProxy };
+    if (typeof cafile !== "undefined" && cafile !== "null") ca.push(...(await readCafile(cafile)));
+
+    return { proxy, noProxy, strictSSL, cert, ca };
 }
 
 export async function downloadAndUnzip(params: { url: string; destDirPath: string; pathOfDirToExtractInArchive?: string }) {
@@ -63,7 +106,7 @@ export async function downloadAndUnzip(params: { url: string; destDirPath: strin
     const extractDirPath = pathJoin(cacheRoot, "keycloakify", "unzip", `_${downloadHash}`);
 
     if (!(await exists(zipFilePath))) {
-        const proxyOpts = await getNpmProxyConfig();
+        const proxyOpts = await getFetchOptions();
         const response = await fetch(url, proxyOpts);
         await mkdir(pathDirname(zipFilePath), { "recursive": true });
         /**
