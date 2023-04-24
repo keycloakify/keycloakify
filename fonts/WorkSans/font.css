@@ -1,0 +1,37 @@
+/* latin */
+@font-face {
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: normal;
+  /*400*/
+  font-display: swap;
+  src: url("./worksans-regular-webfont.woff2") format("woff2");
+}
+
+/* latin */
+@font-face {
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("./worksans-medium-webfont.woff2") format("woff2");
+}
+
+/* latin */
+@font-face {
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("./worksans-semibold-webfont.woff2") format("woff2");
+}
+
+/* latin */
+@font-face {
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: bold;
+  /*700*/
+  font-display: swap;
+  src: url("./worksans-bold-webfont.woff2") format("woff2");
+}

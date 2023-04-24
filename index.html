@@ -1,0 +1,59 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"/><title>Webpack App</title><meta name="viewport" content="width=device-width,initial-scale=1"/><style>html, body {
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  * {
+    box-sizing: border-box;
+  }</style><script>/* globals window */
+  /* eslint-disable no-underscore-dangle */
+  try {
+    if (window.top !== window) {
+      window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = window.top.__REACT_DEVTOOLS_GLOBAL_HOOK__;
+    }
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.warn('unable to connect to top frame for connecting dev tools');
+  }
+
+  window.onerror = function onerror(message, source, line, column, err) {
+    if (window.CONFIG_TYPE !== 'DEVELOPMENT') return;
+    // eslint-disable-next-line no-var, vars-on-top
+    var xhr = new window.XMLHttpRequest();
+    xhr.open('POST', '/runtime-error');
+    xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+    xhr.send(
+      JSON.stringify({
+        /* eslint-disable object-shorthand */
+        message: message,
+        source: source,
+        line: line,
+        column: column,
+        error: err && { message: err.message, name: err.name, stack: err.stack },
+        origin: 'manager',
+        /* eslint-enable object-shorthand */
+      })
+    );
+  };</script><link rel="apple-touch-icon" sizes="180x180" href="/favicon_package/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/favicon_package/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/favicon_package/favicon-16x16.png"><link rel="manifest" href="/favicon_package/site.webmanifest"><link rel="mask-icon" href="/favicon_package/safari-pinned-tab.svg" color="#5bbad5"><title>Keycloakify Storybook</title><meta name="title" content="Keycloakify Storybook"><meta name="description" content="Storybook of default components to use as a reference when building a custom Keycloak theme"><meta property="og:url" content="https://www.keycloakify.dev"><meta property="og:type" content="website"><meta property="og:title" content="Keycloakify Storybook"><meta property="og:description" content="Storybook of default components to use as a reference when building a custom Keycloak theme"><meta property="og:image" content="https://storybook.keycloakify.dev/preview.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Keycloakify Storybook"><meta name="twitter:description" content="Storybook of default components to use as a reference when building a custom Keycloak theme"><meta name="twitter:image" content="https://storybook.keycloakify.dev/preview.png"><link rel="preload" href="/fonts/WorkSans/worksans-bold-webfont.woff2" as="font" crossorigin="anonymous"><link rel="preload" href="/fonts/WorkSans/worksans-medium-webfont.woff2" as="font" crossorigin="anonymous"><link rel="preload" href="/fonts/WorkSans/worksans-regular-webfont.woff2" as="font" crossorigin="anonymous"><link rel="preload" href="/fonts/WorkSans/worksans-semibold-webfont.woff2" as="font" crossorigin="anonymous"><link rel="stylesheet" href="/fonts/WorkSans/font.css"><style>#root[hidden],
+      #docs-root[hidden] {
+        display: none !important;
+      }</style></head><body><div id="root"></div><div id="docs-root"></div><script>window['CONFIG_TYPE'] = "PRODUCTION";
+          
+      
+          
+            window['LOGLEVEL'] = "info";
+          
+      
+          
+            window['FEATURES'] = {"postcss":true,"emotionAlias":false,"warnOnLegacyHierarchySeparator":true,"buildStoriesJson":false,"storyStoreV7":false,"modernInlineRender":false,"breakingChangesV7":false,"interactionsDebugger":false,"babelModeV7":false,"argTypeTargetsV7":false,"previewMdx2":false};
+          
+      
+          
+      
+          
+      
+          
+            window['DOCS_MODE'] = false;</script><script src="runtime~main.5acabe14b3900323beb2.manager.bundle.js"></script><script src="826.69755296b67440263ca4.manager.bundle.js"></script><script src="main.2f21d48492887a731906.manager.bundle.js"></script></body></html>
