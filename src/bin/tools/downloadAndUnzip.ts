@@ -93,7 +93,7 @@ async function getFetchOptions(): Promise<Pick<FetchOptions, "proxy" | "noProxy"
 
     if (typeof cafile !== "undefined" && cafile !== "null") ca.push(...(await readCafile(cafile)));
 
-    return { proxy, noProxy, strictSSL, cert, ca };
+    return { proxy, noProxy, strictSSL, cert, ca: ca.length === 0 ? undefined : ca };
 }
 
 export async function downloadAndUnzip(params: { url: string; destDirPath: string; pathOfDirToExtractInArchive?: string }) {
@@ -106,8 +106,8 @@ export async function downloadAndUnzip(params: { url: string; destDirPath: strin
     const extractDirPath = pathJoin(cacheRoot, "keycloakify", "unzip", `_${downloadHash}`);
 
     if (!(await exists(zipFilePath))) {
-        const proxyOpts = await getFetchOptions();
-        const response = await fetch(url, proxyOpts);
+        const opts = await getFetchOptions();
+        const response = await fetch(url, opts);
         await mkdir(pathDirname(zipFilePath), { "recursive": true });
         /**
          * The correct way to fix this is to upgrade node-fetch beyond 3.2.5
