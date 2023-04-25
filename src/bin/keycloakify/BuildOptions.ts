@@ -13,7 +13,6 @@ export type BuildOptions = BuildOptions.Standalone | BuildOptions.ExternalAssets
 
 export namespace BuildOptions {
     export type Common = {
-        isSilent: boolean;
         themeVersion: string;
         themeName: string;
         extraLoginPages: string[] | undefined;
@@ -57,11 +56,10 @@ export namespace BuildOptions {
 export function readBuildOptions(params: { projectDirPath: string; processArgv: string[] }): BuildOptions {
     const { projectDirPath, processArgv } = params;
 
-    const { isExternalAssetsCliParamProvided, isSilentCliParamProvided } = (() => {
+    const { isExternalAssetsCliParamProvided } = (() => {
         const argv = parseArgv(processArgv);
 
         return {
-            "isSilentCliParamProvided": typeof argv["silent"] === "boolean" ? argv["silent"] : false,
             "isExternalAssetsCliParamProvided": typeof argv["external-assets"] === "boolean" ? argv["external-assets"] : false
         };
     })();
@@ -153,7 +151,6 @@ export function readBuildOptions(params: { projectDirPath: string; processArgv: 
             "extraLoginPages": [...(extraPages ?? []), ...(extraLoginPages ?? [])],
             extraAccountPages,
             extraThemeProperties,
-            "isSilent": isSilentCliParamProvided,
             "keycloakVersionDefaultAssets": keycloakVersionDefaultAssets ?? "11.0.3",
             "reactAppBuildDirPath": (() => {
                 let { reactAppBuildDirPath = undefined } = parsedPackageJson.keycloakify ?? {};

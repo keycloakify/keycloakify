@@ -18,7 +18,6 @@ export namespace BuildOptionsLike {
         extraLoginPages?: string[];
         extraAccountPages?: string[];
         extraThemeProperties?: string[];
-        isSilent: boolean;
         customUserAttributes: string[];
         themeVersion: string;
         keycloakVersionDefaultAssets: string;
@@ -182,7 +181,6 @@ export async function generateTheme(params: {
             }
 
             await downloadKeycloakStaticResources({
-                "isSilent": buildOptions.isSilent,
                 "keycloakVersion": buildOptions.keycloakVersionDefaultAssets,
                 "themeDirPath": keycloakDirInPublicDir,
                 themeType
@@ -207,7 +205,6 @@ export async function generateTheme(params: {
         }
 
         await downloadKeycloakStaticResources({
-            "isSilent": buildOptions.isSilent,
             "keycloakVersion": buildOptions.keycloakVersionDefaultAssets,
             themeDirPath,
             themeType

@@ -8,8 +8,8 @@ import { promisify } from "node:util";
 
 const log = {
     debug: debug("keycloakify:debug:unzip"),
-    trace: debug("keycloakify:trace:unzip"),
-}
+    trace: debug("keycloakify:trace:unzip")
+};
 
 const pipeline = promisify(stream.pipeline);
 
@@ -39,7 +39,7 @@ export async function unzip(file: string, targetFolder: string, unzipSubPath?: s
         fs.mkdirSync(targetFolder, { recursive: true });
     }
 
-    log.debug(`Unzipping '${file}' to '${targetFolder}'${unzipSubPath ? ` (only ${unzipSubPath})` : ''} ...`)
+    log.debug(`Unzipping '${file}' to '${targetFolder}'${unzipSubPath ? ` (only ${unzipSubPath})` : ""} ...`);
 
     return new Promise<void>((resolve, reject) => {
         yauzl.open(file, { lazyEntries: true }, async (err, zipfile) => {
@@ -54,7 +54,7 @@ export async function unzip(file: string, targetFolder: string, unzipSubPath?: s
                 if (unzipSubPath) {
                     // Skip files outside of the unzipSubPath
                     if (!entry.fileName.startsWith(unzipSubPath)) {
-                        log.trace(`Skip file '${entry.fileName}' because its not in '${unzipSubPath}'`)
+                        log.trace(`Skip file '${entry.fileName}' because its not in '${unzipSubPath}'`);
                         zipfile.readEntry();
                         return;
                     }
@@ -69,7 +69,7 @@ export async function unzip(file: string, targetFolder: string, unzipSubPath?: s
                 // Note that entries for directories themselves are optional.
                 // An entry's fileName implicitly requires its parent directories to exist.
                 if (/[\/\\]$/.test(target)) {
-                    log.trace(`Make directory '${target}'`)
+                    log.trace(`Make directory '${target}'`);
                     await fsp.mkdir(target, { recursive: true });
 
                     zipfile.readEntry();
@@ -78,12 +78,12 @@ export async function unzip(file: string, targetFolder: string, unzipSubPath?: s
 
                 // Skip existing files
                 if (await pathExists(target)) {
-                    log.trace(`Skip existing file '${target}'`)
+                    log.trace(`Skip existing file '${target}'`);
                     zipfile.readEntry();
                     return;
                 }
 
-                log.trace(`Extracting '${entry.fileName}' to '${target}' ... `)
+                log.trace(`Extracting '${entry.fileName}' to '${target}' ... `);
                 zipfile.openReadStream(entry, async (err, readStream) => {
                     if (err) {
                         reject(err);
@@ -91,7 +91,7 @@ export async function unzip(file: string, targetFolder: string, unzipSubPath?: s
                     }
 
                     await pipeline(readStream, fs.createWriteStream(target));
-                    log.trace(`Extracting '${entry.fileName}' to '${target}' ... done.`)
+                    log.trace(`Extracting '${entry.fileName}' to '${target}' ... done.`);
 
                     zipfile.readEntry();
                 });
@@ -99,7 +99,7 @@ export async function unzip(file: string, targetFolder: string, unzipSubPath?: s
 
             zipfile.once("end", function () {
                 zipfile.close();
-                log.debug(`Unzipping '${file}' to '${targetFolder}'${unzipSubPath ? ` (only ${unzipSubPath})` : ''} ... done.`);
+                log.debug(`Unzipping '${file}' to '${targetFolder}'${unzipSubPath ? ` (only ${unzipSubPath})` : ""} ... done.`);
                 resolve();
             });
         });

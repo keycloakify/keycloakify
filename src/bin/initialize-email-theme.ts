@@ -4,19 +4,13 @@ import { downloadBuiltinKeycloakTheme } from "./download-builtin-keycloak-theme"
 import { join as pathJoin, relative as pathRelative } from "path";
 import { transformCodebase } from "./tools/transformCodebase";
 import { promptKeycloakVersion } from "./promptKeycloakVersion";
-import { readBuildOptions } from "./keycloakify/BuildOptions";
 import * as fs from "fs";
-import { getLogger } from "./tools/logger";
+import { getLogger, setLogLevel } from "./tools/logger";
 import { getEmailThemeSrcDirPath } from "./getSrcDirPath";
 
+const logger = getLogger("initialize-email-theme");
+
 export async function main() {
-    const { isSilent } = readBuildOptions({
-        "projectDirPath": process.cwd(),
-        "processArgv": process.argv.slice(2)
-    });
-
-    const logger = getLogger({ isSilent });
-
     const { emailThemeSrcDirPath } = getEmailThemeSrcDirPath({
         "projectDirPath": process.cwd()
     });
@@ -39,8 +33,7 @@ export async function main() {
 
     await downloadBuiltinKeycloakTheme({
         keycloakVersion,
-        "destDirPath": builtinKeycloakThemeTmpDirPath,
-        isSilent
+        "destDirPath": builtinKeycloakThemeTmpDirPath
     });
 
     transformCodebase({
@@ -54,11 +47,12 @@ export async function main() {
         fs.writeFileSync(themePropertyFilePath, Buffer.from(`parent=base\n${fs.readFileSync(themePropertyFilePath).toString("utf8")}`, "utf8"));
     }
 
-    logger.log(`${pathRelative(process.cwd(), emailThemeSrcDirPath)} ready to be customized, feel free to remove every file you do not customize`);
+    logger.info(`${pathRelative(process.cwd(), emailThemeSrcDirPath)} ready to be customized, feel free to remove every file you do not customize`);
 
     fs.rmSync(builtinKeycloakThemeTmpDirPath, { "recursive": true, "force": true });
 }
 
 if (require.main === module) {
+    setLogLevel();
     main();
 }
