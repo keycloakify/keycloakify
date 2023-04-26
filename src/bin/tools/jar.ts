@@ -73,8 +73,9 @@ export default async function jar({ groupId, artifactId, version, rootPath, targ
     await mkdir(dirname(targetPath), { recursive: true });
 
     const asyncPathGeneratorFn = async function* (): ZipEntryGenerator {
-        for await (const fsPath of walk(join(rootPath, "src", "main", "resources"))) {
-            const zipPath = relative(rootPath, fsPath).split(sep).join("/");
+        const resourcesPath = join(rootPath, "src", "main", "resources");
+        for await (const fsPath of walk(resourcesPath)) {
+            const zipPath = relative(resourcesPath, fsPath).split(sep).join("/");
             yield { fsPath, zipPath };
         }
         yield {
