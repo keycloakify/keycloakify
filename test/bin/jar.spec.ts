@@ -105,7 +105,7 @@ describe("jar", () => {
         const resourcesPath = path.join(tmp, "root", "src", "main", "resources");
         const targetPath = path.join(tmp, "jar.jar");
 
-        await mkdir(resourcesPath, { recursive: true })
+        await mkdir(resourcesPath, { recursive: true });
         await writeFile(path.join(rootPath, "pom.xml"), "foo", "utf-8");
 
         await cp(path.dirname(__dirname), resourcesPath, { recursive: true });
