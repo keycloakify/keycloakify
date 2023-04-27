@@ -55,8 +55,9 @@ export function generateFtlFilesCodeFactory(params: {
     cssGlobalsToDefine: Record<string, string>;
     buildOptions: BuildOptionsLike;
     keycloakifyVersion: string;
+    themeType: ThemeType;
 }) {
-    const { cssGlobalsToDefine, indexHtmlCode, buildOptions, keycloakifyVersion } = params;
+    const { cssGlobalsToDefine, indexHtmlCode, buildOptions, keycloakifyVersion, themeType } = params;
 
     const $ = cheerio.load(indexHtmlCode);
 
@@ -132,7 +133,8 @@ export function generateFtlFilesCodeFactory(params: {
                 buildOptions.customUserAttributes.length === 0 ? "" : ", " + buildOptions.customUserAttributes.map(name => `"${name}"`).join(", ")
             )
             .replace("KEYCLOAKIFY_VERSION_xEdKd3xEdr", keycloakifyVersion)
-            .replace("KEYCLOAKIFY_THEME_VERSION_sIgKd3xEdr3dx", buildOptions.themeVersion),
+            .replace("KEYCLOAKIFY_THEME_VERSION_sIgKd3xEdr3dx", buildOptions.themeVersion)
+            .replace("KEYCLOAKIFY_THEME_TYPE_dExKd3xEdr", themeType),
         "<!-- xIdLqMeOedErIdLsPdNdI9dSlxI -->": [
             "<#if scripts??>",
             "    <#list scripts as script>",

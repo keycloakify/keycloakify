@@ -11,7 +11,6 @@ import { pathJoin } from "keycloakify/bin/tools/pathJoin";
 import { pathBasename } from "keycloakify/tools/pathBasename";
 import { resourcesCommonDirPathRelativeToPublicDir } from "keycloakify/bin/mockTestingResourcesPath";
 import { symToStr } from "tsafe/symToStr";
-import { loginThemePageIds } from "keycloakify/bin/keycloakify/generateFtl/pageId";
 
 export function createGetKcContext<KcContextExtension extends { pageId: string } = never>(params?: {
     mockData?: readonly DeepPartial<ExtendKcContext<KcContextExtension>>[];
@@ -145,7 +144,7 @@ export function createGetKcContext<KcContextExtension extends { pageId: string }
             return { "kcContext": undefined as any };
         }
 
-        if (id<readonly string[]>(loginThemePageIds).indexOf(realKcContext.pageId) < 0 && !("login" in realKcContext)) {
+        if (realKcContext.themeType !== "login") {
             return { "kcContext": undefined as any };
         }
 

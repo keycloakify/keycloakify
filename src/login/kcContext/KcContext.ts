@@ -1,4 +1,4 @@
-import type { LoginThemePageId } from "keycloakify/bin/keycloakify/generateFtl";
+import type { LoginThemePageId, ThemeType } from "keycloakify/bin/keycloakify/generateFtl";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
 import type { MessageKey } from "../i18n/i18n";
@@ -38,6 +38,7 @@ export type KcContext =
 export declare namespace KcContext {
     export type Common = {
         keycloakifyVersion: string;
+        themeType: "login";
         url: {
             loginAction: string;
             resourcesPath: string;
@@ -564,3 +565,5 @@ export declare namespace Validators {
     assert<Equals<OnlyInGot, never>>();
     assert<Equals<OnlyInExpected, never>>();
 }
+
+assert<KcContext["themeType"] extends ThemeType ? true : false>();

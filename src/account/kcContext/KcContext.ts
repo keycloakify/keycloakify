@@ -1,4 +1,4 @@
-import type { AccountThemePageId } from "keycloakify/bin/keycloakify/generateFtl";
+import type { AccountThemePageId, ThemeType } from "keycloakify/bin/keycloakify/generateFtl";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
 
@@ -7,6 +7,7 @@ export type KcContext = KcContext.Password | KcContext.Account;
 export declare namespace KcContext {
     export type Common = {
         keycloakifyVersion: string;
+        themeType: "account";
         locale?: {
             supported: {
                 url: string;
@@ -84,4 +85,15 @@ export declare namespace KcContext {
     };
 }
 
-assert<Equals<KcContext["pageId"], AccountThemePageId>>();
+{
+    type Got = KcContext["pageId"];
+    type Expected = AccountThemePageId;
+
+    type OnlyInGot = Exclude<Got, Expected>;
+    type OnlyInExpected = Exclude<Expected, Got>;
+
+    assert<Equals<OnlyInGot, never>>();
+    assert<Equals<OnlyInExpected, never>>();
+}
+
+assert<KcContext["themeType"] extends ThemeType ? true : false>();

@@ -8,6 +8,7 @@ const PUBLIC_URL = process.env["PUBLIC_URL"] ?? "/";
 
 export const kcContextCommonMock: KcContext.Common = {
     "keycloakifyVersion": "0.0.0",
+    "themeType": "account",
     "url": {
         "resourcesPath": pathJoin(PUBLIC_URL, resourcesDirPathRelativeToPublicDir),
         "resourcesCommonPath": pathJoin(PUBLIC_URL, resourcesCommonDirPathRelativeToPublicDir),

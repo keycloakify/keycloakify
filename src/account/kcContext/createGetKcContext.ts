@@ -7,8 +7,6 @@ import { pathBasename } from "keycloakify/tools/pathBasename";
 import { resourcesCommonDirPathRelativeToPublicDir } from "keycloakify/bin/mockTestingResourcesPath";
 import { symToStr } from "tsafe/symToStr";
 import { kcContextMocks, kcContextCommonMock } from "keycloakify/account/kcContext/kcContextMocks";
-import { id } from "tsafe/id";
-import { accountThemePageIds } from "keycloakify/bin/keycloakify/generateFtl/pageId";
 
 export function createGetKcContext<KcContextExtension extends { pageId: string } = never>(params?: {
     mockData?: readonly DeepPartial<ExtendKcContext<KcContextExtension>>[];
@@ -87,7 +85,7 @@ export function createGetKcContext<KcContextExtension extends { pageId: string }
             return { "kcContext": undefined as any };
         }
 
-        if (id<readonly string[]>(accountThemePageIds).indexOf(realKcContext.pageId) < 0 && !("account" in realKcContext)) {
+        if (realKcContext.themeType !== "account") {
             return { "kcContext": undefined as any };
         }
 

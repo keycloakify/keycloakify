@@ -121,6 +121,7 @@
 
     out["keycloakifyVersion"] = "KEYCLOAKIFY_VERSION_xEdKd3xEdr";
     out["themeVersion"] = "KEYCLOAKIFY_THEME_VERSION_sIgKd3xEdr3dx";
+    out["themeType"] = "KEYCLOAKIFY_THEME_TYPE_dExKd3xEdr";
     out["pageId"] = "${pageId}";
 
     return out;

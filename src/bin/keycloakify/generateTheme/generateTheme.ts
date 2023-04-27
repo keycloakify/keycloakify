@@ -141,7 +141,8 @@ export async function generateTheme(params: {
                 "indexHtmlCode": fs.readFileSync(pathJoin(reactAppBuildDirPath, "index.html")).toString("utf8"),
                 "cssGlobalsToDefine": allCssGlobalsToDefine,
                 buildOptions,
-                keycloakifyVersion
+                keycloakifyVersion,
+                themeType
             });
 
             return generateFtlFilesCode;
