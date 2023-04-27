@@ -3,7 +3,7 @@ import { fromBuffer, Entry, ZipFile } from "yauzl";
 import { it, describe, assert, afterAll } from "vitest";
 import { Readable } from "stream";
 import { tmpdir } from "os";
-import { mkdtemp, cp, mkdir, rm } from "fs/promises";
+import { mkdtemp, cp, mkdir, rm, writeFile } from "fs/promises";
 import path from "path";
 import { createReadStream } from "fs";
 import walk from "keycloakify/bin/tools/walk";
@@ -98,12 +98,17 @@ describe("jar", () => {
 
     it("creates a jar from _real_ files without error", async () => {
         const tmp = await mkdtemp(path.join(tmpdir(), "kc-jar-test-"));
-        tmpDirs.push(tmp);
-        const rootPath = path.join(tmp, "src");
-        const targetPath = path.join(tmp, "jar.jar");
-        await mkdir(rootPath);
 
-        await cp(path.dirname(__dirname), rootPath, { recursive: true });
+        tmpDirs.push(tmp);
+
+        const rootPath = path.join(tmp, "root");
+        const resourcesPath = path.join(tmp, "root", "src", "main", "resources");
+        const targetPath = path.join(tmp, "jar.jar");
+
+        await mkdir(resourcesPath, { recursive: true })
+        await writeFile(path.join(rootPath, "pom.xml"), "foo", "utf-8");
+
+        await cp(path.dirname(__dirname), resourcesPath, { recursive: true });
 
         await jar({ ...coords, rootPath, targetPath });
 
@@ -114,11 +119,12 @@ describe("jar", () => {
 
         assert.isOk(entries.has("META-INF/MANIFEST.MF"));
         assert.isOk(entries.has("META-INF/maven/someGroupId/someArtifactId/pom.properties"));
+        assert.isOk(entries.has("META-INF/maven/someGroupId/someArtifactId/pom.xml"));
 
-        for await (const fsPath of walk(rootPath)) {
+        for await (const fsPath of walk(resourcesPath)) {
             if (!fsPath.endsWith(path.sep)) {
-                const rel = path.relative(rootPath, fsPath).replace(path.sep === "/" ? /\//g : /\\/g, "/");
-                assert.isOk(zipPaths.includes(rel), `missing ${rel} (${rel}, ${zipPaths.join(", ")})`);
+                const rel = path.relative(resourcesPath, fsPath).replace(path.sep === "/" ? /\//g : /\\/g, "/");
+                assert.isOk(zipPaths.includes(rel), `missing '${rel}' (${rel}, '${zipPaths.join("', '")}')`);
             }
         }
     });
