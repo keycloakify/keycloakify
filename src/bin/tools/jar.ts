@@ -5,13 +5,12 @@ import walk from "./walk";
 import { ZipFile } from "yazl";
 import { mkdir } from "fs/promises";
 import trimIndent from "./trimIndent";
-import { Readable, Transform } from "stream";
-import zip from "./zip";
+import { PassThrough, Readable } from "stream";
+import zip, { type ZipSource } from "./zip";
 
-export type ZipEntry = { zipPath: string } & ({ fsPath: string } | { buffer: Buffer });
-export type ZipEntryGenerator = AsyncGenerator<ZipEntry, void, unknown>;
+export type ZipEntryGenerator = AsyncGenerator<ZipSource, void, unknown>;
 
-const zipper = process.env.KEYCLOAKIFY_ZIPPER ?? "custom";
+const USE_CUSTOM_ZIPPER = typeof process.env.USE_CUSTOM_ZIPPER !== "undefined";
 
 type CommonJarArgs = {
     groupId: string;
@@ -47,21 +46,16 @@ function getExtraFiles({ groupId, artifactId, version }: CommonJarArgs) {
             version=${version}
             `);
 
-    return { manifest: { path: manifestPath, data: manifestData }, pomProps: { path: pomPropsPath, data: pomPropsData } };
+    return { manifest: { zipPath: manifestPath, data: manifestData }, pomProps: { zipPath: pomPropsPath, data: pomPropsData } };
 }
 
-export async function zipperStream({ groupId, artifactId, version, asyncPathGeneratorFn }: JarStreamArgs) {
+export async function zipperStream({ groupId, artifactId, version, asyncPathGeneratorFn }: JarStreamArgs): Promise<NodeJS.ReadableStream> {
     /**
-     * Convert every path entry to a ZipSource record, and when all records are
-     * processed, append records for MANIFEST.mf and pom.properties
+     * Append records for MANIFEST.mf and pom.properties
      */
     const pathToRecord = () =>
-        new Transform({
+        new PassThrough({
             objectMode: true,
-            transform: function ({ fsPath, zipPath }: { fsPath: string; zipPath: string }, _, cb) {
-                this.push({ path: zipPath, fsPath });
-                cb();
-            },
             final: function () {
                 const { manifest, pomProps } = getExtraFiles({ groupId, artifactId, version });
                 this.push(manifest);
@@ -79,21 +73,24 @@ export async function zipperStream({ groupId, artifactId, version, asyncPathGene
     );
 }
 
-export async function yazlStream({ groupId, artifactId, version, asyncPathGeneratorFn }: JarStreamArgs) {
-    const { manifest, pomProps } = getExtraFiles({ groupId, artifactId, version });
-
+export async function yazlStream({ groupId, artifactId, version, asyncPathGeneratorFn }: JarStreamArgs): Promise<NodeJS.ReadableStream> {
     const zipFile = new ZipFile();
 
     for await (const entry of asyncPathGeneratorFn()) {
-        if ("buffer" in entry) {
-            zipFile.addBuffer(entry.buffer, entry.zipPath);
-        } else if ("fsPath" in entry && !entry.fsPath.endsWith(sep)) {
-            zipFile.addFile(entry.fsPath, entry.zipPath);
+        if ("data" in entry) {
+            zipFile.addBuffer(entry.data, entry.zipPath);
+        } else if ("fsPath" in entry) {
+            if (entry.fsPath.endsWith(sep)) {
+                zipFile.addEmptyDirectory(entry.zipPath);
+            } else {
+                zipFile.addFile(entry.fsPath, entry.zipPath);
+            }
         }
     }
 
-    zipFile.addBuffer(manifest.data, manifest.path);
-    zipFile.addBuffer(pomProps.data, pomProps.path);
+    const { manifest, pomProps } = getExtraFiles({ groupId, artifactId, version });
+    zipFile.addBuffer(manifest.data, manifest.zipPath, { compress: true });
+    zipFile.addBuffer(pomProps.data, pomProps.zipPath, { compress: true });
 
     zipFile.end();
 
@@ -123,10 +120,9 @@ export default async function jar({ groupId, artifactId, version, rootPath, targ
         };
     };
 
-    const zipStream =
-        zipper === "yazl"
-            ? await yazlStream({ groupId, artifactId, version, asyncPathGeneratorFn })
-            : await zipperStream({ groupId, artifactId, version, asyncPathGeneratorFn });
+    const zipStream = USE_CUSTOM_ZIPPER
+        ? await zipperStream({ groupId, artifactId, version, asyncPathGeneratorFn })
+        : await yazlStream({ groupId, artifactId, version, asyncPathGeneratorFn });
 
     await new Promise<void>(async (resolve, reject) => {
         zipStream

@@ -1,4 +1,4 @@
-import jar, { jarStream, type ZipEntryGenerator } from "keycloakify/bin/tools/jar";
+import jar, { yazlStream, zipperStream, type ZipEntryGenerator } from "keycloakify/bin/tools/jar";
 import { fromBuffer, Entry, ZipFile } from "yauzl";
 import { it, describe, assert, afterAll } from "vitest";
 import { Readable } from "stream";
@@ -61,6 +61,44 @@ function readAll(zipFile: ZipFile): Promise<Map<string, Buffer>> {
     });
 }
 
+describe("yazlStream", () => {
+    const coords = { artifactId: "someArtifactId", groupId: "someGroupId", version: "1.2.3" };
+
+    it("creates jar artifacts without error", async () => {
+        async function* mockFiles(): ZipEntryGenerator {
+            yield { zipPath: "foo", data: Buffer.from("foo") };
+        }
+
+        const zipped = await yazlStream({ ...coords, asyncPathGeneratorFn: mockFiles });
+        const buffered = await readToBuffer(zipped);
+        const unzipped = await unzipBuffer(buffered);
+        const entries = await readAll(unzipped);
+
+        validateSimpleJarEntries(entries);
+    });
+});
+
+describe("zipperStream", () => {
+    const coords = { artifactId: "someArtifactId", groupId: "someGroupId", version: "1.2.3" };
+
+    it(
+        "creates jar artifacts without error",
+        async () => {
+            async function* mockFiles(): ZipEntryGenerator {
+                yield { zipPath: "foo", data: Buffer.from("foo") };
+            }
+
+            const zipped = await zipperStream({ ...coords, asyncPathGeneratorFn: mockFiles });
+            const buffered = await readToBuffer(zipped);
+            const unzipped = await unzipBuffer(buffered);
+            const entries = await readAll(unzipped);
+
+            validateSimpleJarEntries(entries);
+        },
+        10 * 60 * 1000
+    );
+});
+
 describe("jar", () => {
     const coords = { artifactId: "someArtifactId", groupId: "someGroupId", version: "1.2.3" };
 
@@ -68,32 +106,6 @@ describe("jar", () => {
 
     afterAll(async () => {
         await Promise.all(tmpDirs.map(dir => rm(dir, { force: true, recursive: true })));
-    });
-
-    it("creates jar artifacts without error", async () => {
-        async function* mockFiles(): ZipEntryGenerator {
-            yield { zipPath: "foo", buffer: Buffer.from("foo") };
-        }
-
-        const zipped = await jarStream({ ...coords, asyncPathGeneratorFn: mockFiles });
-        const buffered = await readToBuffer(zipped.outputStream);
-        const unzipped = await unzipBuffer(buffered);
-        const entries = await readAll(unzipped);
-
-        assert.equal(entries.size, 3);
-        assert.isOk(entries.has("foo"));
-        assert.isOk(entries.has("META-INF/MANIFEST.MF"));
-        assert.isOk(entries.has("META-INF/maven/someGroupId/someArtifactId/pom.properties"));
-
-        assert.equal("foo", entries.get("foo")?.toString("utf-8"));
-
-        const manifest = entries.get("META-INF/MANIFEST.MF")?.toString("utf-8");
-        const pomProperties = entries.get("META-INF/maven/someGroupId/someArtifactId/pom.properties")?.toString("utf-8");
-
-        assert.isOk(manifest?.includes("Created-By: Keycloakify"));
-        assert.isOk(pomProperties?.includes("1.2.3"));
-        assert.isOk(pomProperties?.includes("someGroupId"));
-        assert.isOk(pomProperties?.includes("someArtifactId"));
     });
 
     it("creates a jar from _real_ files without error", async () => {
@@ -129,3 +141,20 @@ describe("jar", () => {
         }
     });
 });
+
+function validateSimpleJarEntries(entries: Map<string, Buffer>) {
+    assert.equal(entries.size, 3);
+    assert.isOk(entries.has("foo"));
+    assert.isOk(entries.has("META-INF/MANIFEST.MF"));
+    assert.isOk(entries.has("META-INF/maven/someGroupId/someArtifactId/pom.properties"));
+
+    assert.equal("foo", entries.get("foo")?.toString("utf-8"));
+
+    const manifest = entries.get("META-INF/MANIFEST.MF")?.toString("utf-8");
+    const pomProperties = entries.get("META-INF/maven/someGroupId/someArtifactId/pom.properties")?.toString("utf-8");
+
+    assert.isOk(manifest?.includes("Created-By: Keycloakify"));
+    assert.isOk(pomProperties?.includes("1.2.3"));
+    assert.isOk(pomProperties?.includes("someGroupId"));
+    assert.isOk(pomProperties?.includes("someArtifactId"));
+}

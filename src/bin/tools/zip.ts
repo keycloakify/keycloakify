@@ -11,10 +11,10 @@ import { deflateBuffer, deflateStream } from "./deflate";
  * @property path of the source file, if the source is an actual file
  * @property data the actual data buffer, if the source is constructed in-memory
  */
-export type ZipSource = { path: string } & ({ fsPath: string } | { data: Buffer });
+export type ZipSource = { zipPath: string } & ({ fsPath: string } | { data: Buffer });
 
 export type ZipRecord = {
-    path: string;
+    zipPath: string;
     compression: "deflate" | undefined;
     uncompressedSize: number;
     compressedSize?: number;
@@ -35,8 +35,8 @@ function utf8size(s: string) {
  * @link https://en.wikipedia.org/wiki/ZIP_(file_format)#Local_file_header
  */
 function localHeader(record: ZipRecord) {
-    const { path, compression, uncompressedSize } = record;
-    const filenameSize = utf8size(path);
+    const { zipPath, compression, uncompressedSize } = record;
+    const filenameSize = utf8size(zipPath);
     const buf = Buffer.alloc(30 + filenameSize);
 
     buf.writeUInt32LE(0x04_03_4b_50, 0); // local header signature
@@ -51,7 +51,7 @@ function localHeader(record: ZipRecord) {
     buf.writeUInt32LE(uncompressedSize, 22);
     buf.writeUInt16LE(filenameSize, 26);
     buf.writeUInt16LE(0, 28); // extra field length
-    buf.write(path, 30, "utf-8");
+    buf.write(zipPath, 30, "utf-8");
 
     return buf;
 }
@@ -62,10 +62,10 @@ function localHeader(record: ZipRecord) {
  * @link https://en.wikipedia.org/wiki/ZIP_(file_format)#Central_directory_file_header
  */
 function centralHeader(record: ZipRecord) {
-    const { path, compression, crc32, compressedSize, uncompressedSize, offset } = record;
-    const filenameSize = utf8size(path);
+    const { zipPath, compression, crc32, compressedSize, uncompressedSize, offset } = record;
+    const filenameSize = utf8size(zipPath);
     const buf = Buffer.alloc(46 + filenameSize);
-    const isFile = !path.endsWith("/");
+    const isFile = !zipPath.endsWith("/");
 
     if (typeof offset === "undefined") throw new Error("Illegal argument");
 
@@ -90,7 +90,7 @@ function centralHeader(record: ZipRecord) {
     buf.writeUInt16LE(0, 36); // internal
     buf.writeUInt32LE(externalAttr, 38); // external
     buf.writeUInt32LE(offset, 42); // offset where file starts
-    buf.write(path, 46, "utf-8");
+    buf.write(zipPath, 46, "utf-8");
 
     return buf;
 }
@@ -139,11 +139,11 @@ export default function zip() {
 
     /**
      * Write a directory entry to the archive
-     * @param path
+     * @param zipPath
      */
-    const writeDir = async (path: string) => {
+    const writeDir = async (zipPath: string) => {
         const record: ZipRecord = {
-            path: path + "/",
+            zipPath: zipPath + "/",
             offset,
             compression: undefined,
             uncompressedSize: 0
@@ -156,13 +156,13 @@ export default function zip() {
 
     /**
      * Write a file entry to the archive
-     * @param archivePath path of the file in archive
+     * @param zipPath path of the file in archive
      * @param fsPath path to file on filesystem
      * @param size of the actual, uncompressed, file
      */
-    const writeFile = async (archivePath: string, fsPath: string, size: number) => {
+    const writeFile = async (zipPath: string, fsPath: string, size: number) => {
         const record: ZipRecord = {
-            path: archivePath,
+            zipPath,
             offset,
             compression: "deflate",
             uncompressedSize: size
@@ -180,23 +180,23 @@ export default function zip() {
 
     /**
      * Write archive record based on filesystem file or directory
-     * @param archivePath path of item in archive
+     * @param zipPath path of item in archive
      * @param fsPath path to item on filesystem
      */
-    const writeFromPath = async (archivePath: string, fsPath: string) => {
+    const writeFromPath = async (zipPath: string, fsPath: string) => {
         const fileStats = await stat(fsPath);
-        fileStats.isDirectory() ? await writeDir(archivePath) /**/ : await writeFile(archivePath, fsPath, fileStats.size) /**/;
+        fileStats.isDirectory() ? await writeDir(zipPath) : await writeFile(zipPath, fsPath, fileStats.size);
     };
 
     /**
      * Write archive record based on data in a buffer
-     * @param path
+     * @param zipPath
      * @param data
      */
-    const writeFromBuffer = async (path: string, data: Buffer) => {
+    const writeFromBuffer = async (zipPath: string, data: Buffer) => {
         const { deflated, crc32 } = await deflateBuffer(data);
         const record: ZipRecord = {
-            path,
+            zipPath,
             compression: "deflate",
             crc32,
             uncompressedSize: data.length,
@@ -215,8 +215,8 @@ export default function zip() {
      * @param source
      */
     const writeRecord = async (source: ZipSource) => {
-        if ("fsPath" in source) await writeFromPath(source.path, source.fsPath);
-        else if ("data" in source) await writeFromBuffer(source.path, source.data);
+        if ("fsPath" in source) await writeFromPath(source.zipPath, source.fsPath);
+        else if ("data" in source) await writeFromBuffer(source.zipPath, source.data);
         else throw new Error("Illegal argument " + typeof source + "  " + JSON.stringify(source));
     };
 
@@ -227,8 +227,12 @@ export default function zip() {
      * @param cb
      */
     const transform: TransformOptions["transform"] = async (source: ZipSource, _, cb) => {
-        await writeRecord(source);
-        cb();
+        try {
+            await writeRecord(source);
+            cb();
+        } catch (e) {
+            cb(e as Error);
+        }
     };
 
     /** offset and records keep local state during processing */
