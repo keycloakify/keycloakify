@@ -1,4 +1,4 @@
-import { dirname, relative, sep } from "path";
+import { dirname, relative, sep, join } from "path";
 import { createWriteStream } from "fs";
 
 import walk from "./walk";
@@ -48,8 +48,12 @@ export async function jarStream({ groupId, artifactId, version, asyncPathGenerat
     for await (const entry of asyncPathGeneratorFn()) {
         if ("buffer" in entry) {
             zipFile.addBuffer(entry.buffer, entry.zipPath);
-        } else if ("fsPath" in entry && !entry.fsPath.endsWith(sep)) {
-            zipFile.addFile(entry.fsPath, entry.zipPath);
+        } else if ("fsPath" in entry) {
+            if (entry.fsPath.endsWith(sep)) {
+                zipFile.addEmptyDirectory(entry.zipPath);
+            } else {
+                zipFile.addFile(entry.fsPath, entry.zipPath);
+            }
         }
     }
 
@@ -65,15 +69,23 @@ export async function jarStream({ groupId, artifactId, version, asyncPathGenerat
  * Create a jar archive, using the resources found at `rootPath` (a directory) and write the
  * archive to `targetPath` (a file). Use `groupId`, `artifactId` and `version` to define
  * the contents of the pom.properties file which is going to be added to the archive.
+ * The root directory is expectedto have a conventional maven/gradle folder structure with a
+ * single `pom.xml` file at the root and a `src/main/resources` directory containing all
+ * application resources.
  */
 export default async function jar({ groupId, artifactId, version, rootPath, targetPath }: JarArgs) {
     await mkdir(dirname(targetPath), { recursive: true });
 
     const asyncPathGeneratorFn = async function* (): ZipEntryGenerator {
-        for await (const fsPath of walk(rootPath)) {
-            const zipPath = relative(rootPath, fsPath).split(sep).join("/");
+        const resourcesPath = join(rootPath, "src", "main", "resources");
+        for await (const fsPath of walk(resourcesPath)) {
+            const zipPath = relative(resourcesPath, fsPath).split(sep).join("/");
             yield { fsPath, zipPath };
         }
+        yield {
+            fsPath: join(rootPath, "pom.xml"),
+            zipPath: `META-INF/maven/${groupId}/${artifactId}/pom.xml`
+        };
     };
 
     const zipFile = await jarStream({ groupId, artifactId, version, asyncPathGeneratorFn });
