@@ -11,7 +11,7 @@ import zip from "./zip";
 export type ZipEntry = { zipPath: string } & ({ fsPath: string } | { buffer: Buffer });
 export type ZipEntryGenerator = AsyncGenerator<ZipEntry, void, unknown>;
 
-const zipper = process.env.KEYCLOAKIFY_ZIPPER ?? 'custom';
+const zipper = process.env.KEYCLOAKIFY_ZIPPER ?? "custom";
 
 type CommonJarArgs = {
     groupId: string;
@@ -29,7 +29,6 @@ export type JarArgs = CommonJarArgs & {
 };
 
 function getExtraFiles({ groupId, artifactId, version }: CommonJarArgs) {
-
     const manifestPath = "META-INF/MANIFEST.MF";
     const manifestData = Buffer.from(trimIndent`
             Manifest-Version: 1.0
@@ -48,7 +47,7 @@ function getExtraFiles({ groupId, artifactId, version }: CommonJarArgs) {
             version=${version}
             `);
 
-    return { manifest: { path: manifestPath, data: manifestData }, pomProps: { path: pomPropsPath, data: pomPropsData } }
+    return { manifest: { path: manifestPath, data: manifestData }, pomProps: { path: pomPropsPath, data: pomPropsData } };
 }
 
 export async function zipperStream({ groupId, artifactId, version, asyncPathGeneratorFn }: JarStreamArgs) {
@@ -59,27 +58,29 @@ export async function zipperStream({ groupId, artifactId, version, asyncPathGene
     const pathToRecord = () =>
         new Transform({
             objectMode: true,
-            transform: function ({ fsPath, zipPath }: { fsPath: string, zipPath: string }, _, cb) {
+            transform: function ({ fsPath, zipPath }: { fsPath: string; zipPath: string }, _, cb) {
                 this.push({ path: zipPath, fsPath });
                 cb();
             },
             final: function () {
-                const { manifest, pomProps } = getExtraFiles({ groupId, artifactId, version })
+                const { manifest, pomProps } = getExtraFiles({ groupId, artifactId, version });
                 this.push(manifest);
                 this.push(pomProps);
                 this.push(null);
             }
         });
 
-    return Readable.from(asyncPathGeneratorFn())
-        // transform every path into a ZipSource object
-        .pipe(pathToRecord())
-        // let the zip lib convert all ZipSource objects into a byte stream
-        .pipe(zip())
+    return (
+        Readable.from(asyncPathGeneratorFn())
+            // transform every path into a ZipSource object
+            .pipe(pathToRecord())
+            // let the zip lib convert all ZipSource objects into a byte stream
+            .pipe(zip())
+    );
 }
 
 export async function yazlStream({ groupId, artifactId, version, asyncPathGeneratorFn }: JarStreamArgs) {
-    const { manifest, pomProps } = getExtraFiles({ groupId, artifactId, version })
+    const { manifest, pomProps } = getExtraFiles({ groupId, artifactId, version });
 
     const zipFile = new ZipFile();
 
@@ -122,9 +123,10 @@ export default async function jar({ groupId, artifactId, version, rootPath, targ
         };
     };
 
-    const zipStream = zipper === 'yazl'
-        ? await yazlStream({ groupId, artifactId, version, asyncPathGeneratorFn })
-        : await zipperStream({ groupId, artifactId, version, asyncPathGeneratorFn })
+    const zipStream =
+        zipper === "yazl"
+            ? await yazlStream({ groupId, artifactId, version, asyncPathGeneratorFn })
+            : await zipperStream({ groupId, artifactId, version, asyncPathGeneratorFn });
 
     await new Promise<void>(async (resolve, reject) => {
         zipStream
