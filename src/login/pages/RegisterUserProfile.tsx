@@ -20,7 +20,7 @@ export default function RegisterUserProfile(props: PageProps<Extract<KcContext, 
 
     const { msg, msgStr } = i18n;
 
-    const [isFomSubmittable, setIsFomSubmittable] = useState(false);
+    const [isFormSubmittable, setIsFormSubmittable] = useState(false);
 
     return (
         <Template
@@ -32,7 +32,7 @@ export default function RegisterUserProfile(props: PageProps<Extract<KcContext, 
             <form id="kc-register-form" className={getClassName("kcFormClass")} action={url.registrationAction} method="post">
                 <UserProfileFormFields
                     kcContext={kcContext}
-                    onIsFormSubmittableValueChange={setIsFomSubmittable}
+                    onIsFormSubmittableValueChange={setIsFormSubmittable}
                     i18n={i18n}
                     getClassName={getClassName}
                 />
@@ -62,7 +62,7 @@ export default function RegisterUserProfile(props: PageProps<Extract<KcContext, 
                             )}
                             type="submit"
                             value={msgStr("doRegister")}
-                            disabled={!isFomSubmittable}
+                            disabled={!isFormSubmittable}
                         />
                     </div>
                 </div>
