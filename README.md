@@ -47,7 +47,7 @@
 
 ## Sponsor 👼
 
-We are exclusively sponsored by [Cloud IAM](https://www.cloud-iam.com), a French company offering Keycloak as a service.  
+We are exclusively sponsored by [Cloud IAM](https://cloud-iam.com/?mtm_campaign=keycloakify-deal&mtm_source=keycloakify-github), a French company offering Keycloak as a service.  
 Their dedicated support helps us continue the development and maintenance of this project.
 
 [Cloud IAM](https://cloud-iam.com/?mtm_campaign=keycloakify-deal&mtm_source=keycloakify-github) provides the following services:
