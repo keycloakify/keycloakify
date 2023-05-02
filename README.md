@@ -104,6 +104,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://www.gravitysoftware.be"><img src="https://avatars.githubusercontent.com/u/1140574?v=4?s=100" width="100px;" alt="Thomas Silvestre"/><br /><sub><b>Thomas Silvestre</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=thosil" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/satanshiro"><img src="https://avatars.githubusercontent.com/u/38865738?v=4?s=100" width="100px;" alt="satanshiro"/><br /><sub><b>satanshiro</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=satanshiro" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
