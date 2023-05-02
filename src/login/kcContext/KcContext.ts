@@ -93,7 +93,7 @@ export declare namespace KcContext {
             url: string;
             SAMLRequest?: string;
             SAMLResponse?: string;
-            RelayState?: string;
+            relayState?: string;
         };
     };
 
