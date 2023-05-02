@@ -9,7 +9,9 @@ export default function SamlPostForm(props: PageProps<Extract<KcContext, { pageI
     const { msgStr, msg } = i18n;
 
     const { samlPost } = kcContext;
-    useEffect(() => { document.forms[0].submit(); }, [samlPost]);
+    useEffect(() => {
+        document.forms[0].submit();
+    }, [samlPost]);
     return (
         <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} displayMessage={false} headerNode={msg("saml.post-form.title")}>
             <p>{msg("saml.post-form.message")}</p>
