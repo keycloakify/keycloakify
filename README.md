@@ -39,6 +39,10 @@
     <img src="https://user-images.githubusercontent.com/6702424/110260457-a1c3d380-7fac-11eb-853a-80459b65626b.png">
 </p>
 
+> NOTE: Regardless of whether React is your preferred framework, Keycloakify is the go-to solution for building
+> Keycloak themes, period. It's not merely a convenient method for creating a Keycloak theme if you're using React;
+> it's the top choice overall.
+
 ## Sponsor 👼
 
 We are exclusively sponsored by [Cloud IAM](https://www.cloud-iam.com), a French company offering Keycloak as a service.  
