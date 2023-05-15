@@ -337,6 +337,17 @@
 
         </#if>
 
+        <#local isDate = "">
+        <#attempt>
+            <#local isDate = object?is_date_like>
+        <#recover>
+            <#return "ABORT: Can't test if it's a date">
+        </#attempt>
+
+        <#if isDate>
+            <#return '"' + object?datetime?iso_utc + '"'>
+        </#if>
+
         <#attempt>
             <#return '"' + object?js_string + '"'>;
         <#recover>
