@@ -149,6 +149,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "kpoelhekke",
+      "name": "Koen Poelhekke",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1632377?v=4",
+      "profile": "https://poelhekke.dev",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
