@@ -9,7 +9,7 @@ function populateTemplate(strings: TemplateStringsArray, ...args: unknown[]) {
         if (strings[i]) {
             chunks.push(strings[i]);
             // remember last indent of the string portion
-            lastStringLineLength = strings[i].split("\n").at(-1)?.length ?? 0;
+            lastStringLineLength = strings[i].split("\n").slice(-1)[0]?.length ?? 0;
         }
         if (args[i]) {
             // if the interpolation value has newlines, indent the interpolation values
