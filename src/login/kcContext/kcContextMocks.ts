@@ -527,7 +527,7 @@ export const kcContextMocks = [
         ...kcContextCommonMock,
         pageId: "saml-post-form.ftl",
         "samlPost": {
-            "url": "https://saml-post-url"
+            "url": ""
         }
     }),
     id<KcContext.LoginPageExpired>({
