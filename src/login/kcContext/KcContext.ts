@@ -39,6 +39,7 @@ export declare namespace KcContext {
     export type Common = {
         keycloakifyVersion: string;
         themeType: "login";
+        themeName: string;
         url: {
             loginAction: string;
             resourcesPath: string;

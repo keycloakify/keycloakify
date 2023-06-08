@@ -23,27 +23,38 @@ export async function main() {
     const logger = getLogger({ "isSilent": buildOptions.isSilent });
     logger.log("🔏 Building the keycloak theme...⌚");
 
-    const { doBundlesEmailTemplate } = await generateTheme({
-        keycloakThemeBuildingDirPath: buildOptions.keycloakifyBuildDirPath,
-        "emailThemeSrcDirPath": (() => {
-            const { emailThemeSrcDirPath } = getEmailThemeSrcDirPath({ projectDirPath });
+    let doBundlesEmailTemplate: boolean | undefined;
 
-            if (emailThemeSrcDirPath === undefined || !fs.existsSync(emailThemeSrcDirPath)) {
-                return;
-            }
+    for (const themeName of [buildOptions.themeName, ...buildOptions.extraThemeNames]) {
+        const { doBundlesEmailTemplate: doBundlesEmailTemplate_ } = await generateTheme({
+            keycloakThemeBuildingDirPath: buildOptions.keycloakifyBuildDirPath,
+            "emailThemeSrcDirPath": (() => {
+                const { emailThemeSrcDirPath } = getEmailThemeSrcDirPath({ projectDirPath });
 
-            return emailThemeSrcDirPath;
-        })(),
-        "reactAppBuildDirPath": buildOptions.reactAppBuildDirPath,
-        buildOptions,
-        "keycloakifyVersion": (() => {
-            const version = JSON.parse(fs.readFileSync(pathJoin(getProjectRoot(), "package.json")).toString("utf8"))["version"];
+                if (emailThemeSrcDirPath === undefined || !fs.existsSync(emailThemeSrcDirPath)) {
+                    return;
+                }
 
-            assert(typeof version === "string");
+                return emailThemeSrcDirPath;
+            })(),
+            "reactAppBuildDirPath": buildOptions.reactAppBuildDirPath,
+            "buildOptions": {
+                ...buildOptions,
+                "themeName": themeName
+            },
+            "keycloakifyVersion": (() => {
+                const version = JSON.parse(fs.readFileSync(pathJoin(getProjectRoot(), "package.json")).toString("utf8"))["version"];
 
-            return version;
-        })()
-    });
+                assert(typeof version === "string");
+
+                return version;
+            })()
+        });
+
+        doBundlesEmailTemplate ??= doBundlesEmailTemplate_;
+    }
+
+    assert(doBundlesEmailTemplate !== undefined);
 
     const { jarFilePath } = generateJavaStackFiles({
         keycloakThemeBuildingDirPath: buildOptions.keycloakifyBuildDirPath,

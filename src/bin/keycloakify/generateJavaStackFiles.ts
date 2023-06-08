@@ -7,6 +7,7 @@ import type { BuildOptions } from "./BuildOptions";
 
 export type BuildOptionsLike = {
     themeName: string;
+    extraThemeNames: string[];
     groupId: string;
     artifactId?: string;
     themeVersion: string;
@@ -26,7 +27,7 @@ export function generateJavaStackFiles(params: {
     jarFilePath: string;
 } {
     const {
-        buildOptions: { groupId, themeName, themeVersion, artifactId },
+        buildOptions: { groupId, themeName, extraThemeNames, themeVersion, artifactId },
         keycloakThemeBuildingDirPath,
         doBundlesEmailTemplate
     } = params;
@@ -67,12 +68,12 @@ export function generateJavaStackFiles(params: {
             Buffer.from(
                 JSON.stringify(
                     {
-                        "themes": [
+                        "themes": [themeName, ...extraThemeNames].map(themeName => [
                             {
                                 "name": themeName,
                                 "types": [...themeTypes, ...(doBundlesEmailTemplate ? ["email"] : [])]
                             }
-                        ]
+                        ])
                     },
                     null,
                     2

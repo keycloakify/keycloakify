@@ -105,6 +105,7 @@ const attributesByName = Object.fromEntries(attributes.map(attribute => [attribu
 export const kcContextCommonMock: KcContext.Common = {
     "keycloakifyVersion": "0.0.0",
     "themeType": "login",
+    "themeName": "my-theme-name",
     "url": {
         "loginAction": "#",
         "resourcesPath": pathJoin(PUBLIC_URL, resourcesDirPathRelativeToPublicDir),

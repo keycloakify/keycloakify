@@ -6,6 +6,7 @@ import type { BuildOptions } from "./BuildOptions";
 
 export type BuildOptionsLike = {
     themeName: string;
+    extraThemeNames: string[];
 };
 
 {
@@ -27,10 +28,8 @@ export function generateStartKeycloakTestingContainer(params: {
     const {
         keycloakThemeBuildingDirPath,
         keycloakVersion,
-        buildOptions: { themeName }
+        buildOptions: { themeName, extraThemeNames }
     } = params;
-
-    const keycloakThemePath = pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", themeName).replace(/\\/g, "/");
 
     fs.writeFileSync(
         pathJoin(keycloakThemeBuildingDirPath, generateStartKeycloakTestingContainer.basename),
@@ -49,7 +48,13 @@ export function generateStartKeycloakTestingContainer(params: {
                 "   -e KEYCLOAK_ADMIN=admin \\",
                 "   -e KEYCLOAK_ADMIN_PASSWORD=admin \\",
                 "   -e JAVA_OPTS=-Dkeycloak.profile=preview \\",
-                `   -v "${keycloakThemePath}":"/opt/keycloak/themes/${themeName}":rw \\`,
+                ...[themeName, ...extraThemeNames].map(
+                    themeName =>
+                        `   -v "${pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", themeName).replace(
+                            /\\/g,
+                            "/"
+                        )}":"/opt/keycloak/themes/${themeName}":rw \\`
+                ),
                 `   -it quay.io/keycloak/keycloak:${keycloakVersion} \\`,
                 `   start-dev`,
                 ""

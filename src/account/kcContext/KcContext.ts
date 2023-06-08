@@ -8,6 +8,7 @@ export declare namespace KcContext {
     export type Common = {
         keycloakifyVersion: string;
         themeType: "account";
+        themeName: string;
         locale?: {
             supported: {
                 url: string;

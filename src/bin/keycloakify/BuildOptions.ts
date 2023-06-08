@@ -16,6 +16,7 @@ export namespace BuildOptions {
         isSilent: boolean;
         themeVersion: string;
         themeName: string;
+        extraThemeNames: string[];
         extraLoginPages: string[] | undefined;
         extraAccountPages: string[] | undefined;
         extraThemeProperties?: string[];
@@ -108,8 +109,17 @@ export function readBuildOptions(params: { projectDirPath: string; processArgv: 
     const common: BuildOptions.Common = (() => {
         const { name, keycloakify = {}, version, homepage } = parsedPackageJson;
 
-        const { extraPages, extraLoginPages, extraAccountPages, extraThemeProperties, groupId, artifactId, bundler, keycloakVersionDefaultAssets } =
-            keycloakify ?? {};
+        const {
+            extraPages,
+            extraLoginPages,
+            extraAccountPages,
+            extraThemeProperties,
+            groupId,
+            artifactId,
+            bundler,
+            keycloakVersionDefaultAssets,
+            extraThemeNames = []
+        } = keycloakify ?? {};
 
         const themeName =
             keycloakify.themeName ??
@@ -120,6 +130,7 @@ export function readBuildOptions(params: { projectDirPath: string; processArgv: 
 
         return {
             themeName,
+            extraThemeNames,
             "bundler": (() => {
                 const { KEYCLOAKIFY_BUNDLER } = process.env;
 

@@ -17,6 +17,7 @@ export type BuildOptionsLike = BuildOptionsLike.Standalone | BuildOptionsLike.Ex
 
 export namespace BuildOptionsLike {
     export type Common = {
+        themeName: string;
         customUserAttributes: string[];
         themeVersion: string;
     };
@@ -134,7 +135,8 @@ export function generateFtlFilesCodeFactory(params: {
             )
             .replace("KEYCLOAKIFY_VERSION_xEdKd3xEdr", keycloakifyVersion)
             .replace("KEYCLOAKIFY_THEME_VERSION_sIgKd3xEdr3dx", buildOptions.themeVersion)
-            .replace("KEYCLOAKIFY_THEME_TYPE_dExKd3xEdr", themeType),
+            .replace("KEYCLOAKIFY_THEME_TYPE_dExKd3xEdr", themeType)
+            .replace("KEYCLOAKIFY_THEME_NAME_cXxKd3xEer", buildOptions.themeName),
         "<!-- xIdLqMeOedErIdLsPdNdI9dSlxI -->": [
             "<#if scripts??>",
             "    <#list scripts as script>",
