@@ -117,6 +117,11 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 # Changelog highlights
 
+## 7.12
+
+-   You can now pack multiple themes variant in a single `.jar` bundle. In vanilla Keycloak themes you have the ability to extend a base theme.
+    There is now an idiomatic way of achieving the same result. [Learn more](https://docs.keycloakify.dev/build-options#keycloakify.extrathemenames).
+
 ## 7.9
 
 -   Separate script for copying the default theme static assets to the public directory.  
