@@ -20,7 +20,7 @@
     <a href="https://github.com/thomasdarimont/awesome-keycloak">
         <img src="https://awesome.re/mentioned-badge.svg"/>
     </a>
-    <a href="https://discord.gg/rBzsYtUn">
+    <a href="https://discord.gg/kYFZG7fQmn">
         <img src="https://img.shields.io/discord/1097708346976505977"/>
     </a>
     <p align="center">
