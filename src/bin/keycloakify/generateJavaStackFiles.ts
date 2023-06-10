@@ -68,12 +68,10 @@ export function generateJavaStackFiles(params: {
             Buffer.from(
                 JSON.stringify(
                     {
-                        "themes": [themeName, ...extraThemeNames].map(themeName => [
-                            {
-                                "name": themeName,
-                                "types": [...themeTypes, ...(doBundlesEmailTemplate ? ["email"] : [])]
-                            }
-                        ])
+                        "themes": [themeName, ...extraThemeNames].map(themeName => ({
+                            "name": themeName,
+                            "types": [...themeTypes, ...(doBundlesEmailTemplate ? ["email"] : [])]
+                        }))
                     },
                     null,
                     2
