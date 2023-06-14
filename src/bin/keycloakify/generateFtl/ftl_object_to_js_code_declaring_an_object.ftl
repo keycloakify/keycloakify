@@ -61,6 +61,7 @@
                                 return <#if messagesPerField.existsError('${fieldName}')>true<#else>false</#if>;
                             </#if>
                         <#recover>
+                          return false;
                         </#attempt>
                     }
                 </#list>
@@ -84,6 +85,7 @@
                                 </#if>
                             </#if>
                         <#recover>
+                          return '';
                         </#attempt>
                     }
                 </#list>
@@ -103,6 +105,7 @@
                                 return <#if messagesPerField.exists('${fieldName}')>true<#else>false</#if>;
                             </#if>
                         <#recover>
+                          return false;
                         </#attempt>
                     }
                 </#list>
