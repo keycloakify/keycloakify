@@ -41,6 +41,7 @@
                                 return <#if messagesPerField.existsError('${fieldName}')>x<#else>undefined</#if>;
                             </#if>
                         <#recover>
+                          return undefined;
                         </#attempt>
                     }
                 </#list>
