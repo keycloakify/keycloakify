@@ -61,7 +61,7 @@ describe("Sample Project", () => {
                 "resources",
                 "theme"
             );
-            await downloadBuiltinKeycloakTheme({ destDirPath, keycloakVersion: "11.0.3", "isSilent": false });
+            await downloadBuiltinKeycloakTheme({ destDirPath, keycloakVersion: "11.0.3" });
         },
         { timeout: 90000 }
     );
@@ -87,7 +87,7 @@ describe("Sample Project", () => {
                 "resources",
                 "theme"
             );
-            await downloadBuiltinKeycloakTheme({ destDirPath, "keycloakVersion": "11.0.3", "isSilent": false });
+            await downloadBuiltinKeycloakTheme({ destDirPath, "keycloakVersion": "11.0.3" });
         },
         { timeout: 90000 }
     );

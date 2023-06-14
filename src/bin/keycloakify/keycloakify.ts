@@ -12,6 +12,8 @@ import { Equals } from "tsafe";
 import { getEmailThemeSrcDirPath } from "../getSrcDirPath";
 import { getProjectRoot } from "../tools/getProjectRoot";
 
+const logger = getLogger();
+
 export async function main() {
     const projectDirPath = process.cwd();
 
@@ -20,8 +22,7 @@ export async function main() {
         "processArgv": process.argv.slice(2)
     });
 
-    const logger = getLogger({ "isSilent": buildOptions.isSilent });
-    logger.log("🔏 Building the keycloak theme...⌚");
+    logger.info("🔏 Building the keycloak theme...⌚");
 
     let doBundlesEmailTemplate: boolean | undefined;
 
@@ -64,10 +65,10 @@ export async function main() {
 
     switch (buildOptions.bundler) {
         case "none":
-            logger.log("😱 Skipping bundling step, there will be no jar");
+            logger.info("😱 Skipping bundling step, there will be no jar");
             break;
         case "keycloakify":
-            logger.log("🫶 Let keycloakify do its thang");
+            logger.info("🫶 Let keycloakify do its thang");
             await jar({
                 "rootPath": buildOptions.keycloakifyBuildDirPath,
                 "version": buildOptions.themeVersion,
@@ -77,7 +78,7 @@ export async function main() {
             });
             break;
         case "mvn":
-            logger.log("🫙 Run maven to deliver a jar");
+            logger.info("🫙 Run maven to deliver a jar");
             child_process.execSync("mvn package", { "cwd": buildOptions.keycloakifyBuildDirPath });
             break;
         default:
@@ -93,7 +94,7 @@ export async function main() {
         buildOptions
     });
 
-    logger.log(
+    logger.info(
         [
             "",
             `✅ Your keycloak theme has been generated and bundled into .${pathSep}${pathRelative(projectDirPath, jarFilePath)} 🚀`,

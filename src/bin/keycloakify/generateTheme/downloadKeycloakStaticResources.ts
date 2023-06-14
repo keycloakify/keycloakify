@@ -15,11 +15,10 @@ export async function downloadKeycloakStaticResources(
     params: {
         themeType: ThemeType;
         themeDirPath: string;
-        isSilent: boolean;
         keycloakVersion: string;
     }
 ) {
-    const { themeType, isSilent, themeDirPath, keycloakVersion } = params;
+    const { themeType, themeDirPath, keycloakVersion } = params;
 
     const tmpDirPath = pathJoin(
         themeDirPath,
@@ -29,8 +28,7 @@ export async function downloadKeycloakStaticResources(
 
     await downloadBuiltinKeycloakTheme({
         keycloakVersion,
-        "destDirPath": tmpDirPath,
-        isSilent
+        "destDirPath": tmpDirPath
     });
 
     transformCodebase({

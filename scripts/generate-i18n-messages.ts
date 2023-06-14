@@ -4,7 +4,7 @@ import { join as pathJoin, relative as pathRelative, dirname as pathDirname, sep
 import { crawl } from "../src/bin/tools/crawl";
 import { downloadBuiltinKeycloakTheme } from "../src/bin/download-builtin-keycloak-theme";
 import { getProjectRoot } from "../src/bin/tools/getProjectRoot";
-import { getLogger } from "../src/bin/tools/logger";
+import { getLogger, setLogLevel } from "../src/bin/tools/logger";
 
 // NOTE: To run without argument when we want to generate src/i18n/generated_kcMessages files,
 // update the version array for generating for newer version.
@@ -12,12 +12,11 @@ import { getLogger } from "../src/bin/tools/logger";
 //@ts-ignore
 const propertiesParser = require("properties-parser");
 
-const isSilent = true;
-
-const logger = getLogger({ isSilent });
+const logger = getLogger("generate-i18n-messages");
 
 async function main() {
     const keycloakVersion = "21.0.1";
+    logger.info(`Generating i18n message files from keycloak ${keycloakVersion} sources`);
 
     const tmpDirPath = pathJoin(getProjectRoot(), "tmp_xImOef9dOd44");
 
@@ -25,8 +24,7 @@ async function main() {
 
     await downloadBuiltinKeycloakTheme({
         keycloakVersion,
-        "destDirPath": tmpDirPath,
-        isSilent
+        "destDirPath": tmpDirPath
     });
 
     type Dictionary = { [idiomId: string]: string };
@@ -93,7 +91,7 @@ async function main() {
                 )
             );
 
-            logger.log(`${filePath} wrote`);
+            logger.debug(`Wrote ${filePath}`);
         });
 
         fs.writeFileSync(
@@ -114,9 +112,12 @@ async function main() {
                 "utf8"
             )
         );
+
+        logger.debug(`Wrote ${pathJoin(baseMessagesDirPath, "index.ts")}`);
     });
 }
 
 if (require.main === module) {
+    setLogLevel();
     main();
 }
