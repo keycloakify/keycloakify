@@ -28,85 +28,373 @@
         <#recover>
         </#attempt>
     
-        "printIfExists": function (fieldName, x) {
-            <#if !messagesPerField?? >
-                return undefined;
-            <#else>
-                <#list fieldNames as fieldName>
-                    if(fieldName === "${fieldName}" ){
-                        <#attempt>
-                            <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
-                                return <#if messagesPerField.existsError('username', 'password')>x<#else>undefined</#if>;
-                            <#else>
-                                return <#if messagesPerField.existsError('${fieldName}')>x<#else>undefined</#if>;
-                            </#if>
-                        <#recover>
-                        </#attempt>
-                    }
-                </#list>
-                throw new Error("There is no " + fieldName + " field");
+        "printIfExists": function (fieldName, text) {
+
+            <#if !messagesPerField?? || !(messagesPerField?is_hash)>   
+                throw new Error("You're not supposed to use messagesPerField.printIfExists in this page");
             </#if>
+
+            <#list fieldNames as fieldName>
+                if(fieldName === "${fieldName}" ){
+
+                    <#-- https://github.com/keycloakify/keycloakify/pull/359 Compat with Keycloak prior v12 -->
+                    <#if !messagesPerField.existsError??>
+
+                        <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
+                        <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
+
+                            <#local doExistMessageForUsernameOrPassword = "">
+
+                            <#attempt>
+                                <#local doExistMessageForUsernameOrPassword = messagesPerField.exists('username')>
+                            <#recover>
+                                <#local doExistMessageForUsernameOrPassword = true>
+                            </#attempt>
+
+                            <#if !doExists>
+                                <#attempt>
+                                    <#local doExistMessageForUsernameOrPassword = messagesPerField.exists('password')>
+                                <#recover>
+                                    <#local doExistMessageForUsernameOrPassword = true>
+                                </#attempt>
+                            </#if>
+
+                            return <#if doExistMessageForUsernameOrPassword>text<#else>undefined</#if>;
+
+                        <#else>
+
+                            <#local doExistMessageForField = "">
+
+                            <#attempt>
+                                <#local doExistMessageForField = messagesPerField.exists('${fieldName}')>
+                            <#recover>
+                                <#local doExistMessageForField = true>
+                            </#attempt>
+
+                            return <#if doExistMessageForField>text<#else>undefined</#if>;
+
+                        </#if>
+
+                    <#else>
+
+                        <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
+                        <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
+
+                            <#local doExistErrorOnUsernameOrPassword = "">
+
+                            <#attempt>
+                                <#local doExistErrorOnUsernameOrPassword = messagesPerField.existsError('username', 'password')>
+                            <#recover>
+                                <#local doExistErrorOnUsernameOrPassword = true>
+                            </#attempt>
+
+                            <#if doExistErrorOnUsernameOrPassword>
+                                return text;
+                            <#else>
+
+                                <#local doExistMessageForField = "">
+
+                                <#attempt>
+                                    <#local doExistMessageForField = messagesPerField.exists('${fieldName}')>
+                                <#recover>
+                                    <#local doExistMessageForField = true>
+                                </#attempt>
+
+                                return <#if doExistMessageForField>text<#else>undefined</#if>;
+
+                            </#if>
+
+                        <#else>
+
+                            <#local doExistMessageForField = "">
+
+                            <#attempt>
+                                <#local doExistMessageForField = messagesPerField.exists('${fieldName}')>
+                            <#recover>
+                                <#local doExistMessageForField = true>
+                            </#attempt>
+
+                            return <#if doExistMessageForField>text<#else>undefined</#if>;
+
+                        </#if>
+
+                    </#if>
+
+                }
+            </#list>
+
+            throw new Error("There is no " + fieldName + " field. See: https://docs.keycloakify.dev/build-options#keycloakify.customuserattributes");
         },
         "existsError": function (fieldName) {
-            <#if !messagesPerField?? >
-                return false;
-            <#else>
-                <#list fieldNames as fieldName>
-                    if(fieldName === "${fieldName}" ){
-                        <#attempt>
-                            <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
-                                return <#if messagesPerField.existsError('username', 'password')>true<#else>false</#if>;
-                            <#else>
-                                return <#if messagesPerField.existsError('${fieldName}')>true<#else>false</#if>;
-                            </#if>
-                        <#recover>
-                        </#attempt>
-                    }
-                </#list>
-                throw new Error("There is no " + fieldName + " field");
+
+            <#if !messagesPerField?? || !(messagesPerField?is_hash)>   
+                throw new Error("You're not supposed to use messagesPerField.printIfExists in this page");
             </#if>
+
+            <#list fieldNames as fieldName>
+                if(fieldName === "${fieldName}" ){
+
+                    <#-- https://github.com/keycloakify/keycloakify/pull/359 Compat with Keycloak prior v12 -->
+                    <#if !messagesPerField.existsError??>
+
+                        <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
+                        <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
+
+                            <#local doExistMessageForUsernameOrPassword = "">
+
+                            <#attempt>
+                                <#local doExistMessageForUsernameOrPassword = messagesPerField.exists('username')>
+                            <#recover>
+                                <#local doExistMessageForUsernameOrPassword = true>
+                            </#attempt>
+
+                            <#if !doExistMessageForUsernameOrPassword>
+                                <#attempt>
+                                    <#local doExistMessageForUsernameOrPassword = messagesPerField.exists('password')>
+                                <#recover>
+                                    <#local doExistMessageForUsernameOrPassword = true>
+                                </#attempt>
+                            </#if>
+
+                            return <#if doExistMessageForUsernameOrPassword>true<#else>false</#if>;
+
+                        <#else>
+
+                            <#local doExistMessageForField = "">
+
+                            <#attempt>
+                                <#local doExistMessageForField = messagesPerField.exists('${fieldName}')>
+                            <#recover>
+                                <#local doExistMessageForField = true>
+                            </#attempt>
+
+                            return <#if doExistMessageForField>true<#else>false</#if>;
+
+                        </#if>
+
+                    <#else>
+
+                        <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
+                        <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
+
+                            <#local doExistErrorOnUsernameOrPassword = "">
+
+                            <#attempt>
+                                <#local doExistErrorOnUsernameOrPassword = messagesPerField.existsError('username', 'password')>
+                            <#recover>
+                                <#local doExistErrorOnUsernameOrPassword = true>
+                            </#attempt>
+
+                            return <#if doExistErrorOnUsernameOrPassword>true<#else>false</#if>;
+
+                        <#else>
+
+                            <#local doExistErrorMessageForField = "">
+
+                            <#attempt>
+                                <#local doExistErrorMessageForField = messagesPerField.existsError('${fieldName}')>
+                            <#recover>
+                                <#local doExistErrorMessageForField = true>
+                            </#attempt>
+
+                            return <#if doExistErrorMessageForField>true<#else>false</#if>;
+
+                        </#if>
+
+                    </#if>
+
+                }
+            </#list>
+
+            throw new Error("There is no " + fieldName + " field. See: https://docs.keycloakify.dev/build-options#keycloakify.customuserattributes");
+
         },
         "get": function (fieldName) {
-            <#if !messagesPerField?? >
-                return '';
-            <#else>
-                <#list fieldNames as fieldName>
-                    if(fieldName === "${fieldName}" ){
-                        <#attempt>
-                            <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
-                                <#if messagesPerField.existsError('username', 'password')>
-                                    return 'Invalid username or password.';
-                                </#if>
-                            <#else>
-                                <#if messagesPerField.existsError('${fieldName}')>
-                                    return "${messagesPerField.get('${fieldName}')?no_esc}";
-                                </#if>
-                            </#if>
-                        <#recover>
-                        </#attempt>
-                    }
-                </#list>
-                throw new Error("There is no " + fieldName + " field");
+
+
+            <#if !messagesPerField?? || !(messagesPerField?is_hash)>   
+                throw new Error("You're not supposed to use messagesPerField.get in this page");
             </#if>
+
+            <#list fieldNames as fieldName>
+                if(fieldName === "${fieldName}" ){
+
+                    <#-- https://github.com/keycloakify/keycloakify/pull/359 Compat with Keycloak prior v12 -->
+                    <#if !messagesPerField.existsError??>
+
+                        <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
+                        <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
+
+                            <#local doExistMessageForUsernameOrPassword = "">
+
+                            <#attempt>
+                                <#local doExistMessageForUsernameOrPassword = messagesPerField.exists('username')>
+                            <#recover>
+                                <#local doExistMessageForUsernameOrPassword = true>
+                            </#attempt>
+
+                            <#if !doExistMessageForUsernameOrPassword>
+                                <#attempt>
+                                    <#local doExistMessageForUsernameOrPassword = messagesPerField.exists('password')>
+                                <#recover>
+                                    <#local doExistMessageForUsernameOrPassword = true>
+                                </#attempt>
+                            </#if>
+
+                            <#if !doExistMessageForUsernameOrPassword>
+                                return "";
+                            <#else>
+                                <#attempt>
+                                    return "${kcSanitize(msg('invalidUserMessage'))?no_esc}";
+                                <#recover>
+                                    return "Invalid username or password.";
+                                </#attempt>
+                            </#if>
+
+                        <#else>
+
+                            <#attempt>
+                                return "${messagesPerField.get('${fieldName}')?no_esc}";
+                            <#recover>
+                                return "invalid field";
+                            </#attempt>
+
+                        </#if>
+
+                    <#else>
+
+                        // CONITNUE HERE!!!!!
+
+                        <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
+                        <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
+
+                            <#local doExistErrorOnUsernameOrPassword = "">
+
+                            <#attempt>
+                                <#local doExistErrorOnUsernameOrPassword = messagesPerField.existsError('username', 'password')>
+                            <#recover>
+                                <#local doExistErrorOnUsernameOrPassword = true>
+                            </#attempt>
+
+                            <#if doExistErrorOnUsernameOrPassword>
+
+                                <#attempt>
+                                    return "${kcSanitize(msg('invalidUserMessage'))?no_esc}";
+                                <#recover>
+                                    return "Invalid username or password.";
+                                </#attempt>
+
+                            <#else>
+
+                                <#attempt>
+                                    return "${messagesPerField.get('${fieldName}')?no_esc}";
+                                <#recover>
+                                    return "";
+                                </#attempt>
+
+                            </#if>
+
+                        <#else>
+
+                            <#attempt>
+                                return "${messagesPerField.get('${fieldName}')?no_esc}";
+                            <#recover>
+                                return "invalid field";
+                            </#attempt>
+
+                        </#if>
+
+                    </#if>
+
+                }
+            </#list>
+
+            throw new Error("There is no " + fieldName + " field. See: https://docs.keycloakify.dev/build-options#keycloakify.customuserattributes");
+
         },
         "exists": function (fieldName) {
-            <#if !messagesPerField?? >
-                return false;
-            <#else>
-                <#list fieldNames as fieldName>
-                    if(fieldName === "${fieldName}" ){
-                        <#attempt>
-                            <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
-                                return <#if messagesPerField.exists('username') ||  messagesPerField.exists('password')>true<#else>false</#if>;
-                            <#else>
-                                return <#if messagesPerField.exists('${fieldName}')>true<#else>false</#if>;
-                            </#if>
-                        <#recover>
-                        </#attempt>
-                    }
-                </#list>
-                throw new Error("There is no " + fieldName + " field");
+
+            <#if !messagesPerField?? || !(messagesPerField?is_hash)>   
+                throw new Error("You're not supposed to use messagesPerField.exists in this page");
             </#if>
+
+            <#list fieldNames as fieldName>
+                if(fieldName === "${fieldName}" ){
+
+                    <#-- https://github.com/keycloakify/keycloakify/pull/359 Compat with Keycloak prior v12 -->
+                    <#if !messagesPerField.existsError??>
+
+                        <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
+                        <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
+
+                            <#local doExistMessageForUsernameOrPassword = "">
+
+                            <#attempt>
+                                <#local doExistMessageForUsernameOrPassword = messagesPerField.exists('username')>
+                            <#recover>
+                                <#local doExistMessageForUsernameOrPassword = true>
+                            </#attempt>
+
+                            <#if !doExistMessageForUsernameOrPassword>
+                                <#attempt>
+                                    <#local doExistMessageForUsernameOrPassword = messagesPerField.exists('password')>
+                                <#recover>
+                                    <#local doExistMessageForUsernameOrPassword = true>
+                                </#attempt>
+                            </#if>
+
+                            return <#if doExistMessageForUsernameOrPassword>true<#else>false</#if>;
+
+                        <#else>
+
+                            <#local doExistMessageForField = "">
+
+                            <#attempt>
+                                <#local doExistMessageForField = messagesPerField.exists('${fieldName}')>
+                            <#recover>
+                                <#local doExistMessageForField = true>
+                            </#attempt>
+
+                            return <#if doExistMessageForField>true<#else>false</#if>;
+
+                        </#if>
+
+                    <#else>
+
+                        <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
+                        <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
+
+                            <#local doExistErrorOnUsernameOrPassword = "">
+
+                            <#attempt>
+                                <#local doExistErrorOnUsernameOrPassword = messagesPerField.existsError('username', 'password')>
+                            <#recover>
+                                <#local doExistErrorOnUsernameOrPassword = true>
+                            </#attempt>
+
+                            return <#if doExistErrorOnUsernameOrPassword>true<#else>false</#if>;
+
+                        <#else>
+
+                            <#local doExistErrorMessageForField = "">
+
+                            <#attempt>
+                                <#local doExistErrorMessageForField = messagesPerField.exists('${fieldName}')>
+                            <#recover>
+                                <#local doExistErrorMessageForField = true>
+                            </#attempt>
+
+                            return <#if doExistErrorMessageForField>true<#else>false</#if>;
+
+                        </#if>
+
+                    </#if>
+
+                }
+            </#list>
+
+            throw new Error("There is no " + fieldName + " field. See: https://docs.keycloakify.dev/build-options#keycloakify.customuserattributes");
+
         }
     };
 

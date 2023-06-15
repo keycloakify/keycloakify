@@ -52,9 +52,34 @@ export declare namespace KcContext {
             name: string; // Client id
         };
         messagesPerField: {
-            printIfExists: <T>(fieldName: string, x: T) => T | undefined;
+            /**
+             * Return text if message for given field exists. Useful eg. to add css styles for fields with message.
+             *
+             * @param fieldName to check for
+             * @param text to return
+             * @return text if message exists for given field, else undefined
+             */
+            printIfExists: <T extends string>(fieldName: string, text: T) => T | undefined;
+            /**
+             * Check if exists error message for given fields
+             *
+             * @param fields
+             * @return boolean
+             */
             existsError: (fieldName: string) => boolean;
+            /**
+             * Get message for given field.
+             *
+             * @param fieldName
+             * @return message text or empty string
+             */
             get: (fieldName: string) => string;
+            /**
+             * Check if message for given field exists
+             *
+             * @param field
+             * @return boolean
+             */
             exists: (fieldName: string) => boolean;
         };
         account: {
