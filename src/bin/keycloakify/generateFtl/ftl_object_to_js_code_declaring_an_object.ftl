@@ -35,8 +35,8 @@
                 <#list fieldNames as fieldName>
                     if(fieldName === "${fieldName}" ){
                         <#attempt>
-                            <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
-                                return <#if messagesPerField.exists('username') ||  messagesPerField.exists('password')>x<#else>undefined</#if>;
+                            <#if ('${fieldName}' == 'username' || '${fieldName}' == 'password') && messagesPerField.existsError('username', 'password')>
+                                    return x;
                             <#else>
                                 return <#if messagesPerField.exists('${fieldName}')>x<#else>undefined</#if>;
                             </#if>
