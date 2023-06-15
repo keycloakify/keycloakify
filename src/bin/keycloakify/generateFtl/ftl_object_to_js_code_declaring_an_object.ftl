@@ -36,9 +36,9 @@
                     if(fieldName === "${fieldName}" ){
                         <#attempt>
                             <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
-                                return <#if messagesPerField.existsError('username', 'password')>x<#else>undefined</#if>;
+                                return <#if messagesPerField.exists('username', 'password')>x<#else>undefined</#if>;
                             <#else>
-                                return <#if messagesPerField.existsError('${fieldName}')>x<#else>undefined</#if>;
+                                return <#if messagesPerField.exists('${fieldName}')>x<#else>undefined</#if>;
                             </#if>
                         <#recover>
                         </#attempt>
