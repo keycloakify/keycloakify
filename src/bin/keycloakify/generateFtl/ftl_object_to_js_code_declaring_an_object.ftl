@@ -43,19 +43,19 @@
                         <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
                         <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
 
-                            <#local doExistMessageForUsernameOrPassword = "">
+                            <#assign doExistMessageForUsernameOrPassword = "">
 
                             <#attempt>
-                                <#local doExistMessageForUsernameOrPassword = messagesPerField.exists('username')>
+                                <#assign doExistMessageForUsernameOrPassword = messagesPerField.exists('username')>
                             <#recover>
-                                <#local doExistMessageForUsernameOrPassword = true>
+                                <#assign doExistMessageForUsernameOrPassword = true>
                             </#attempt>
 
                             <#if !doExistMessageForUsernameOrPassword>
                                 <#attempt>
-                                    <#local doExistMessageForUsernameOrPassword = messagesPerField.exists('password')>
+                                    <#assign doExistMessageForUsernameOrPassword = messagesPerField.exists('password')>
                                 <#recover>
-                                    <#local doExistMessageForUsernameOrPassword = true>
+                                    <#assign doExistMessageForUsernameOrPassword = true>
                                 </#attempt>
                             </#if>
 
@@ -63,12 +63,12 @@
 
                         <#else>
 
-                            <#local doExistMessageForField = "">
+                            <#assign doExistMessageForField = "">
 
                             <#attempt>
-                                <#local doExistMessageForField = messagesPerField.exists('${fieldName}')>
+                                <#assign doExistMessageForField = messagesPerField.exists('${fieldName}')>
                             <#recover>
-                                <#local doExistMessageForField = true>
+                                <#assign doExistMessageForField = true>
                             </#attempt>
 
                             return <#if doExistMessageForField>text<#else>undefined</#if>;
@@ -80,24 +80,24 @@
                         <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
                         <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
 
-                            <#local doExistErrorOnUsernameOrPassword = "">
+                            <#assign doExistErrorOnUsernameOrPassword = "">
 
                             <#attempt>
-                                <#local doExistErrorOnUsernameOrPassword = messagesPerField.existsError('username', 'password')>
+                                <#assign doExistErrorOnUsernameOrPassword = messagesPerField.existsError('username', 'password')>
                             <#recover>
-                                <#local doExistErrorOnUsernameOrPassword = true>
+                                <#assign doExistErrorOnUsernameOrPassword = true>
                             </#attempt>
 
                             <#if doExistErrorOnUsernameOrPassword>
                                 return text;
                             <#else>
 
-                                <#local doExistMessageForField = "">
+                                <#assign doExistMessageForField = "">
 
                                 <#attempt>
-                                    <#local doExistMessageForField = messagesPerField.exists('${fieldName}')>
+                                    <#assign doExistMessageForField = messagesPerField.exists('${fieldName}')>
                                 <#recover>
-                                    <#local doExistMessageForField = true>
+                                    <#assign doExistMessageForField = true>
                                 </#attempt>
 
                                 return <#if doExistMessageForField>text<#else>undefined</#if>;
@@ -106,12 +106,12 @@
 
                         <#else>
 
-                            <#local doExistMessageForField = "">
+                            <#assign doExistMessageForField = "">
 
                             <#attempt>
-                                <#local doExistMessageForField = messagesPerField.exists('${fieldName}')>
+                                <#assign doExistMessageForField = messagesPerField.exists('${fieldName}')>
                             <#recover>
-                                <#local doExistMessageForField = true>
+                                <#assign doExistMessageForField = true>
                             </#attempt>
 
                             return <#if doExistMessageForField>text<#else>undefined</#if>;
@@ -140,19 +140,19 @@
                         <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
                         <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
 
-                            <#local doExistMessageForUsernameOrPassword = "">
+                            <#assign doExistMessageForUsernameOrPassword = "">
 
                             <#attempt>
-                                <#local doExistMessageForUsernameOrPassword = messagesPerField.exists('username')>
+                                <#assign doExistMessageForUsernameOrPassword = messagesPerField.exists('username')>
                             <#recover>
-                                <#local doExistMessageForUsernameOrPassword = true>
+                                <#assign doExistMessageForUsernameOrPassword = true>
                             </#attempt>
 
                             <#if !doExistMessageForUsernameOrPassword>
                                 <#attempt>
-                                    <#local doExistMessageForUsernameOrPassword = messagesPerField.exists('password')>
+                                    <#assign doExistMessageForUsernameOrPassword = messagesPerField.exists('password')>
                                 <#recover>
-                                    <#local doExistMessageForUsernameOrPassword = true>
+                                    <#assign doExistMessageForUsernameOrPassword = true>
                                 </#attempt>
                             </#if>
 
@@ -160,12 +160,12 @@
 
                         <#else>
 
-                            <#local doExistMessageForField = "">
+                            <#assign doExistMessageForField = "">
 
                             <#attempt>
-                                <#local doExistMessageForField = messagesPerField.exists('${fieldName}')>
+                                <#assign doExistMessageForField = messagesPerField.exists('${fieldName}')>
                             <#recover>
-                                <#local doExistMessageForField = true>
+                                <#assign doExistMessageForField = true>
                             </#attempt>
 
                             return <#if doExistMessageForField>true<#else>false</#if>;
@@ -177,24 +177,24 @@
                         <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
                         <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
 
-                            <#local doExistErrorOnUsernameOrPassword = "">
+                            <#assign doExistErrorOnUsernameOrPassword = "">
 
                             <#attempt>
-                                <#local doExistErrorOnUsernameOrPassword = messagesPerField.existsError('username', 'password')>
+                                <#assign doExistErrorOnUsernameOrPassword = messagesPerField.existsError('username', 'password')>
                             <#recover>
-                                <#local doExistErrorOnUsernameOrPassword = true>
+                                <#assign doExistErrorOnUsernameOrPassword = true>
                             </#attempt>
 
                             return <#if doExistErrorOnUsernameOrPassword>true<#else>false</#if>;
 
                         <#else>
 
-                            <#local doExistErrorMessageForField = "">
+                            <#assign doExistErrorMessageForField = "">
 
                             <#attempt>
-                                <#local doExistErrorMessageForField = messagesPerField.existsError('${fieldName}')>
+                                <#assign doExistErrorMessageForField = messagesPerField.existsError('${fieldName}')>
                             <#recover>
-                                <#local doExistErrorMessageForField = true>
+                                <#assign doExistErrorMessageForField = true>
                             </#attempt>
 
                             return <#if doExistErrorMessageForField>true<#else>false</#if>;
@@ -225,19 +225,19 @@
                         <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
                         <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
 
-                            <#local doExistMessageForUsernameOrPassword = "">
+                            <#assign doExistMessageForUsernameOrPassword = "">
 
                             <#attempt>
-                                <#local doExistMessageForUsernameOrPassword = messagesPerField.exists('username')>
+                                <#assign doExistMessageForUsernameOrPassword = messagesPerField.exists('username')>
                             <#recover>
-                                <#local doExistMessageForUsernameOrPassword = true>
+                                <#assign doExistMessageForUsernameOrPassword = true>
                             </#attempt>
 
                             <#if !doExistMessageForUsernameOrPassword>
                                 <#attempt>
-                                    <#local doExistMessageForUsernameOrPassword = messagesPerField.exists('password')>
+                                    <#assign doExistMessageForUsernameOrPassword = messagesPerField.exists('password')>
                                 <#recover>
-                                    <#local doExistMessageForUsernameOrPassword = true>
+                                    <#assign doExistMessageForUsernameOrPassword = true>
                                 </#attempt>
                             </#if>
 
@@ -266,12 +266,12 @@
                         <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
                         <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
 
-                            <#local doExistErrorOnUsernameOrPassword = "">
+                            <#assign doExistErrorOnUsernameOrPassword = "">
 
                             <#attempt>
-                                <#local doExistErrorOnUsernameOrPassword = messagesPerField.existsError('username', 'password')>
+                                <#assign doExistErrorOnUsernameOrPassword = messagesPerField.existsError('username', 'password')>
                             <#recover>
-                                <#local doExistErrorOnUsernameOrPassword = true>
+                                <#assign doExistErrorOnUsernameOrPassword = true>
                             </#attempt>
 
                             <#if doExistErrorOnUsernameOrPassword>
@@ -325,19 +325,19 @@
                         <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
                         <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
 
-                            <#local doExistMessageForUsernameOrPassword = "">
+                            <#assign doExistMessageForUsernameOrPassword = "">
 
                             <#attempt>
-                                <#local doExistMessageForUsernameOrPassword = messagesPerField.exists('username')>
+                                <#assign doExistMessageForUsernameOrPassword = messagesPerField.exists('username')>
                             <#recover>
-                                <#local doExistMessageForUsernameOrPassword = true>
+                                <#assign doExistMessageForUsernameOrPassword = true>
                             </#attempt>
 
                             <#if !doExistMessageForUsernameOrPassword>
                                 <#attempt>
-                                    <#local doExistMessageForUsernameOrPassword = messagesPerField.exists('password')>
+                                    <#assign doExistMessageForUsernameOrPassword = messagesPerField.exists('password')>
                                 <#recover>
-                                    <#local doExistMessageForUsernameOrPassword = true>
+                                    <#assign doExistMessageForUsernameOrPassword = true>
                                 </#attempt>
                             </#if>
 
@@ -345,12 +345,12 @@
 
                         <#else>
 
-                            <#local doExistMessageForField = "">
+                            <#assign doExistMessageForField = "">
 
                             <#attempt>
-                                <#local doExistMessageForField = messagesPerField.exists('${fieldName}')>
+                                <#assign doExistMessageForField = messagesPerField.exists('${fieldName}')>
                             <#recover>
-                                <#local doExistMessageForField = true>
+                                <#assign doExistMessageForField = true>
                             </#attempt>
 
                             return <#if doExistMessageForField>true<#else>false</#if>;
@@ -362,24 +362,24 @@
                         <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
                         <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
 
-                            <#local doExistErrorOnUsernameOrPassword = "">
+                            <#assign doExistErrorOnUsernameOrPassword = "">
 
                             <#attempt>
-                                <#local doExistErrorOnUsernameOrPassword = messagesPerField.existsError('username', 'password')>
+                                <#assign doExistErrorOnUsernameOrPassword = messagesPerField.existsError('username', 'password')>
                             <#recover>
-                                <#local doExistErrorOnUsernameOrPassword = true>
+                                <#assign doExistErrorOnUsernameOrPassword = true>
                             </#attempt>
 
                             return <#if doExistErrorOnUsernameOrPassword>true<#else>false</#if>;
 
                         <#else>
 
-                            <#local doExistErrorMessageForField = "">
+                            <#assign doExistErrorMessageForField = "">
 
                             <#attempt>
-                                <#local doExistErrorMessageForField = messagesPerField.exists('${fieldName}')>
+                                <#assign doExistErrorMessageForField = messagesPerField.exists('${fieldName}')>
                             <#recover>
-                                <#local doExistErrorMessageForField = true>
+                                <#assign doExistErrorMessageForField = true>
                             </#attempt>
 
                             return <#if doExistErrorMessageForField>true<#else>false</#if>;
