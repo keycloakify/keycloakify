@@ -51,7 +51,7 @@
                                 <#local doExistMessageForUsernameOrPassword = true>
                             </#attempt>
 
-                            <#if !doExists>
+                            <#if !doExistMessageForUsernameOrPassword>
                                 <#attempt>
                                     <#local doExistMessageForUsernameOrPassword = messagesPerField.exists('password')>
                                 <#recover>
