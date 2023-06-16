@@ -263,8 +263,6 @@
 
                     <#else>
 
-                        // CONITNUE HERE!!!!!
-
                         <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
                         <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
 
