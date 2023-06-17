@@ -463,6 +463,10 @@
                         ["saml-post-form.ftl", "error.ftl", "info.ftl", "login-oauth-grant.ftl"]?seq_contains(pageId) &&
                         !(auth?has_content && auth.showTryAnotherWayLink())
                     ) || (
+                        <#-- https://github.com/keycloakify/keycloakify/issues/362 -->
+                        ["secretData", "value"]?seq_contains(key) && 
+                        are_same_path(path, [ "totp", "otpCredentials" ])
+                    ) || (
                         ["contextData", "idpConfig", "idp", "authenticationSession"]?seq_contains(key) &&
                         are_same_path(path, ["brokerContext"]) &&
                         ["login-idp-link-confirm.ftl", "login-idp-link-email.ftl" ]?seq_contains(pageId)
