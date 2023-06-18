@@ -465,7 +465,7 @@
                     ) || (
                         <#-- https://github.com/keycloakify/keycloakify/issues/362 -->
                         ["secretData", "value"]?seq_contains(key) && 
-                        are_same_path(path, [ "totp", "otpCredentials" ])
+                        are_same_path(path, [ "totp", "otpCredentials", "*" ])
                     ) || (
                         ["contextData", "idpConfig", "idp", "authenticationSession"]?seq_contains(key) &&
                         are_same_path(path, ["brokerContext"]) &&
