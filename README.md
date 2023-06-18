@@ -117,6 +117,10 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 # Changelog highlights
 
+## 7.13
+
+-   Deprecate `customUserAttribute`, Keycloakify now analyze your code to predict field name usage. [See doc](https://docs.keycloakify.dev/build-options#customuserattributes).
+
 ## 7.12
 
 -   You can now pack multiple themes variant in a single `.jar` bundle. In vanilla Keycloak themes you have the ability to extend a base theme.
