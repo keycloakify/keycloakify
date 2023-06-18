@@ -23,7 +23,6 @@ export type ParsedPackageJson = {
         keycloakVersionDefaultAssets?: string;
         reactAppBuildDirPath?: string;
         keycloakifyBuildDirPath?: string;
-        customUserAttributes?: string[];
         themeName?: string;
         extraThemeNames?: string[];
     };
@@ -46,7 +45,6 @@ export const zParsedPackageJson = z.object({
             "keycloakVersionDefaultAssets": z.string().optional(),
             "reactAppBuildDirPath": z.string().optional(),
             "keycloakifyBuildDirPath": z.string().optional(),
-            "customUserAttributes": z.array(z.string()).optional(),
             "themeName": z.string().optional(),
             "extraThemeNames": z.array(z.string()).optional()
         })

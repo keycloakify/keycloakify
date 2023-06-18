@@ -9,8 +9,9 @@ import { getLogger } from "../tools/logger";
 import jar from "../tools/jar";
 import { assert } from "tsafe/assert";
 import { Equals } from "tsafe";
-import { getEmailThemeSrcDirPath } from "../getSrcDirPath";
+import { getThemeSrcDirPath } from "../getSrcDirPath";
 import { getProjectRoot } from "../tools/getProjectRoot";
+import { objectKeys } from "tsafe/objectKeys";
 
 export async function main() {
     const projectDirPath = process.cwd();
@@ -23,42 +24,54 @@ export async function main() {
     const logger = getLogger({ "isSilent": buildOptions.isSilent });
     logger.log("🔏 Building the keycloak theme...⌚");
 
-    let doBundlesEmailTemplate: boolean | undefined;
+    const keycloakifyDirPath = getProjectRoot();
+
+    const { themeSrcDirPath } = getThemeSrcDirPath({ projectDirPath });
 
     for (const themeName of [buildOptions.themeName, ...buildOptions.extraThemeNames]) {
-        const { doBundlesEmailTemplate: doBundlesEmailTemplate_ } = await generateTheme({
-            keycloakThemeBuildingDirPath: buildOptions.keycloakifyBuildDirPath,
-            "emailThemeSrcDirPath": (() => {
-                const { emailThemeSrcDirPath } = getEmailThemeSrcDirPath({ projectDirPath });
-
-                if (emailThemeSrcDirPath === undefined || !fs.existsSync(emailThemeSrcDirPath)) {
-                    return;
-                }
-
-                return emailThemeSrcDirPath;
-            })(),
+        await generateTheme({
+            "keycloakThemeBuildingDirPath": buildOptions.keycloakifyBuildDirPath,
+            themeSrcDirPath,
+            "keycloakifySrcDirPath": pathJoin(keycloakifyDirPath, "src"),
             "reactAppBuildDirPath": buildOptions.reactAppBuildDirPath,
             "buildOptions": {
                 ...buildOptions,
                 "themeName": themeName
             },
             "keycloakifyVersion": (() => {
-                const version = JSON.parse(fs.readFileSync(pathJoin(getProjectRoot(), "package.json")).toString("utf8"))["version"];
+                const version = JSON.parse(fs.readFileSync(pathJoin(keycloakifyDirPath, "package.json")).toString("utf8"))["version"];
 
                 assert(typeof version === "string");
 
                 return version;
             })()
         });
-
-        doBundlesEmailTemplate ??= doBundlesEmailTemplate_;
     }
 
-    assert(doBundlesEmailTemplate !== undefined);
-
     const { jarFilePath } = generateJavaStackFiles({
-        keycloakThemeBuildingDirPath: buildOptions.keycloakifyBuildDirPath,
-        doBundlesEmailTemplate,
+        "keycloakThemeBuildingDirPath": buildOptions.keycloakifyBuildDirPath,
+        "implementedThemeTypes": (() => {
+            const implementedThemeTypes = {
+                "login": false,
+                "account": false,
+                "email": false
+            };
+
+            if (themeSrcDirPath === undefined) {
+                implementedThemeTypes["login"] = true;
+                implementedThemeTypes["account"] = true;
+                return implementedThemeTypes;
+            }
+
+            for (const themeType of objectKeys(implementedThemeTypes)) {
+                if (!fs.existsSync(pathJoin(themeSrcDirPath, themeType))) {
+                    continue;
+                }
+                implementedThemeTypes[themeType] = true;
+            }
+
+            return implementedThemeTypes;
+        })(),
         buildOptions
     });
 

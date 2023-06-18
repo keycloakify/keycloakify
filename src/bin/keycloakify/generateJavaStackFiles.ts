@@ -1,9 +1,9 @@
 import * as fs from "fs";
 import { join as pathJoin, dirname as pathDirname } from "path";
-import { themeTypes } from "./generateFtl/generateFtl";
 import { assert } from "tsafe/assert";
 import { Reflect } from "tsafe/Reflect";
 import type { BuildOptions } from "./BuildOptions";
+import type { ThemeType } from "./generateFtl";
 
 export type BuildOptionsLike = {
     themeName: string;
@@ -21,7 +21,7 @@ export type BuildOptionsLike = {
 
 export function generateJavaStackFiles(params: {
     keycloakThemeBuildingDirPath: string;
-    doBundlesEmailTemplate: boolean;
+    implementedThemeTypes: Record<ThemeType | "email", boolean>;
     buildOptions: BuildOptionsLike;
 }): {
     jarFilePath: string;
@@ -29,7 +29,7 @@ export function generateJavaStackFiles(params: {
     const {
         buildOptions: { groupId, themeName, extraThemeNames, themeVersion, artifactId },
         keycloakThemeBuildingDirPath,
-        doBundlesEmailTemplate
+        implementedThemeTypes
     } = params;
 
     {
@@ -70,7 +70,9 @@ export function generateJavaStackFiles(params: {
                     {
                         "themes": [themeName, ...extraThemeNames].map(themeName => ({
                             "name": themeName,
-                            "types": [...themeTypes, ...(doBundlesEmailTemplate ? ["email"] : [])]
+                            "types": Object.entries(implementedThemeTypes)
+                                .filter(([, isImplemented]) => isImplemented)
+                                .map(([themeType]) => themeType)
                         }))
                     },
                     null,

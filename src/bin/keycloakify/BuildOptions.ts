@@ -28,7 +28,6 @@ export namespace BuildOptions {
         reactAppBuildDirPath: string;
         /** Directory that keycloakify outputs to. Defaults to {cwd}/build_keycloak */
         keycloakifyBuildDirPath: string;
-        customUserAttributes: string[];
     };
 
     export type Standalone = Common & {
@@ -199,8 +198,7 @@ export function readBuildOptions(params: { projectDirPath: string; processArgv: 
                 }
 
                 return keycloakifyBuildDirPath;
-            })(),
-            "customUserAttributes": keycloakify.customUserAttributes ?? []
+            })()
         };
     })();
 

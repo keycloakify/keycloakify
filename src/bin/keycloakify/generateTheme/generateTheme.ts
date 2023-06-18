@@ -9,6 +9,7 @@ import { isInside } from "../../tools/isInside";
 import type { BuildOptions } from "../BuildOptions";
 import { assert } from "tsafe/assert";
 import { downloadKeycloakStaticResources } from "./downloadKeycloakStaticResources";
+import { readFieldNameUsage } from "./readFieldNameUsage";
 
 export type BuildOptionsLike = BuildOptionsLike.Standalone | BuildOptionsLike.ExternalAssets;
 
@@ -19,7 +20,6 @@ export namespace BuildOptionsLike {
         extraAccountPages?: string[];
         extraThemeProperties?: string[];
         isSilent: boolean;
-        customUserAttributes: string[];
         themeVersion: string;
         keycloakVersionDefaultAssets: string;
     };
@@ -53,11 +53,12 @@ assert<BuildOptions extends BuildOptionsLike ? true : false>();
 export async function generateTheme(params: {
     reactAppBuildDirPath: string;
     keycloakThemeBuildingDirPath: string;
-    emailThemeSrcDirPath: string | undefined;
+    themeSrcDirPath: string | undefined;
+    keycloakifySrcDirPath: string;
     buildOptions: BuildOptionsLike;
     keycloakifyVersion: string;
-}): Promise<{ doBundlesEmailTemplate: boolean }> {
-    const { reactAppBuildDirPath, keycloakThemeBuildingDirPath, emailThemeSrcDirPath, buildOptions, keycloakifyVersion } = params;
+}): Promise<void> {
+    const { reactAppBuildDirPath, keycloakThemeBuildingDirPath, themeSrcDirPath, keycloakifySrcDirPath, buildOptions, keycloakifyVersion } = params;
 
     const getThemeDirPath = (themeType: ThemeType | "email") =>
         pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", buildOptions.themeName, themeType);
@@ -142,7 +143,12 @@ export async function generateTheme(params: {
                 "cssGlobalsToDefine": allCssGlobalsToDefine,
                 buildOptions,
                 keycloakifyVersion,
-                themeType
+                themeType,
+                "fieldNames": readFieldNameUsage({
+                    keycloakifySrcDirPath,
+                    themeSrcDirPath,
+                    themeType
+                })
             });
 
             return generateFtlFilesCode;
@@ -220,21 +226,20 @@ export async function generateTheme(params: {
         );
     }
 
-    let doBundlesEmailTemplate: boolean;
-
     email: {
-        if (emailThemeSrcDirPath === undefined) {
-            doBundlesEmailTemplate = false;
+        if (themeSrcDirPath === undefined) {
             break email;
         }
 
-        doBundlesEmailTemplate = true;
+        const emailThemeSrcDirPath = pathJoin(themeSrcDirPath, "email");
+
+        if (!fs.existsSync(emailThemeSrcDirPath)) {
+            break email;
+        }
 
         transformCodebase({
             "srcDirPath": emailThemeSrcDirPath,
             "destDirPath": getThemeDirPath("email")
         });
     }
-
-    return { doBundlesEmailTemplate };
 }

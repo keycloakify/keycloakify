@@ -31,13 +31,3 @@ export function getThemeSrcDirPath(params: { projectDirPath: string }) {
 
     return { themeSrcDirPath };
 }
-
-export function getEmailThemeSrcDirPath(params: { projectDirPath: string }) {
-    const { projectDirPath } = params;
-
-    const { themeSrcDirPath } = getThemeSrcDirPath({ projectDirPath });
-
-    const emailThemeSrcDirPath = themeSrcDirPath === undefined ? undefined : pathJoin(themeSrcDirPath, "email");
-
-    return { emailThemeSrcDirPath };
-}

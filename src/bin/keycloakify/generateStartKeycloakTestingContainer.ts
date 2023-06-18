@@ -33,7 +33,6 @@ export function generateStartKeycloakTestingContainer(params: {
 
     fs.writeFileSync(
         pathJoin(keycloakThemeBuildingDirPath, generateStartKeycloakTestingContainer.basename),
-
         Buffer.from(
             [
                 "#!/usr/bin/env bash",

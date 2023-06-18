@@ -8,13 +8,7 @@
     out["advancedMsg"]= function(){ throw new Error("use import { useKcMessage } from 'keycloakify'"); };
 
     out["messagesPerField"]= {
-        <#assign fieldNames = [
-            "global", "userLabel", "username", "email", "firstName", "lastName", "password", "password-confirm",
-            "totp", "totpSecret", "SAMLRequest", "SAMLResponse", "relayState", "device_user_code", "code", 
-            "password-new", "rememberMe", "login", "authenticationExecution", "cancel-aia", "clientDataJSON", 
-            "authenticatorData", "signature", "credentialId", "userHandle", "error", "authn_use_chk", "authenticationExecution", 
-            "isSetRetry", "try-again", "attestationObject", "publicKeyCredentialId", "authenticatorLabel"CUSTOM_USER_ATTRIBUTES_eKsIY4ZsZ4xeM
-        ]>
+        <#assign fieldNames = [ FIELD_NAMES_eKsIY4ZsZ4xeM ]>
     
         <#attempt>
             <#if profile?? && profile.attributes?? && profile.attributes?is_enumerable>

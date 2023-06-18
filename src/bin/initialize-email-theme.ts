@@ -7,7 +7,7 @@ import { promptKeycloakVersion } from "./promptKeycloakVersion";
 import { readBuildOptions } from "./keycloakify/BuildOptions";
 import * as fs from "fs";
 import { getLogger } from "./tools/logger";
-import { getEmailThemeSrcDirPath } from "./getSrcDirPath";
+import { getThemeSrcDirPath } from "./getSrcDirPath";
 
 export async function main() {
     const { isSilent } = readBuildOptions({
@@ -17,15 +17,17 @@ export async function main() {
 
     const logger = getLogger({ isSilent });
 
-    const { emailThemeSrcDirPath } = getEmailThemeSrcDirPath({
+    const { themeSrcDirPath } = getThemeSrcDirPath({
         "projectDirPath": process.cwd()
     });
 
-    if (emailThemeSrcDirPath === undefined) {
+    if (themeSrcDirPath === undefined) {
         logger.warn("Couldn't locate your theme source directory");
 
         process.exit(-1);
     }
+
+    const emailThemeSrcDirPath = pathJoin(themeSrcDirPath, "email");
 
     if (fs.existsSync(emailThemeSrcDirPath)) {
         logger.warn(`There is already a ${pathRelative(process.cwd(), emailThemeSrcDirPath)} directory in your project. Aborting.`);

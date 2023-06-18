@@ -18,7 +18,6 @@ export type BuildOptionsLike = BuildOptionsLike.Standalone | BuildOptionsLike.Ex
 export namespace BuildOptionsLike {
     export type Common = {
         themeName: string;
-        customUserAttributes: string[];
         themeVersion: string;
     };
 
@@ -57,8 +56,9 @@ export function generateFtlFilesCodeFactory(params: {
     buildOptions: BuildOptionsLike;
     keycloakifyVersion: string;
     themeType: ThemeType;
+    fieldNames: string[];
 }) {
-    const { cssGlobalsToDefine, indexHtmlCode, buildOptions, keycloakifyVersion, themeType } = params;
+    const { cssGlobalsToDefine, indexHtmlCode, buildOptions, keycloakifyVersion, themeType, fieldNames } = params;
 
     const $ = cheerio.load(indexHtmlCode);
 
@@ -129,10 +129,7 @@ export function generateFtlFilesCodeFactory(params: {
             .readFileSync(pathJoin(__dirname, "ftl_object_to_js_code_declaring_an_object.ftl"))
             .toString("utf8")
             .match(/^<script>const _=((?:.|\n)+)<\/script>[\n]?$/)![1]
-            .replace(
-                "CUSTOM_USER_ATTRIBUTES_eKsIY4ZsZ4xeM",
-                buildOptions.customUserAttributes.length === 0 ? "" : ", " + buildOptions.customUserAttributes.map(name => `"${name}"`).join(", ")
-            )
+            .replace("FIELD_NAMES_eKsIY4ZsZ4xeM", fieldNames.map(name => `"${name}"`).join(", "))
             .replace("KEYCLOAKIFY_VERSION_xEdKd3xEdr", keycloakifyVersion)
             .replace("KEYCLOAKIFY_THEME_VERSION_sIgKd3xEdr3dx", buildOptions.themeVersion)
             .replace("KEYCLOAKIFY_THEME_TYPE_dExKd3xEdr", themeType)
