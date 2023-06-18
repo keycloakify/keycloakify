@@ -80,11 +80,12 @@ export function readFieldNameUsage(params: {
         for (const filePath of filePaths) {
             const rawSourceFile = fs.readFileSync(filePath).toString("utf8");
 
+            if (!rawSourceFile.includes("messagesPerField")) {
+                continue;
+            }
+
             fieldNames.push(
-                ...Array.from(
-                    rawSourceFile.matchAll(/messagesPerField\.(?:(?:printIfExists)|(?:existsError)|(?:get)|(?:exists))\(["']([^"']+)["']/g),
-                    m => m[1]
-                )
+                ...Array.from(rawSourceFile.matchAll(/(?:(?:printIfExists)|(?:existsError)|(?:get)|(?:exists))\(["']([^"']+)["']/g), m => m[1])
             );
         }
     }
