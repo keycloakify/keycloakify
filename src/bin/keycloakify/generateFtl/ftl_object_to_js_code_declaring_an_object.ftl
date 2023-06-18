@@ -117,7 +117,7 @@
                 }
             </#list>
 
-            throw new Error("There is no " + fieldName + " field. See: https://docs.keycloakify.dev/build-options#keycloakify.customuserattributes");
+            throw new Error(fieldName + "is probably runtime generated, see: https://docs.keycloakify.dev/limitations#field-names-cant-be-runtime-generated");
         },
         "existsError": function (fieldName) {
 
@@ -200,7 +200,7 @@
                 }
             </#list>
 
-            throw new Error("There is no " + fieldName + " field. See: https://docs.keycloakify.dev/build-options#keycloakify.customuserattributes");
+            throw new Error(fieldName + "is probably runtime generated, see: https://docs.keycloakify.dev/limitations#field-names-cant-be-runtime-generated");
 
         },
         "get": function (fieldName) {
@@ -301,7 +301,7 @@
                 }
             </#list>
 
-            throw new Error("There is no " + fieldName + " field. See: https://docs.keycloakify.dev/build-options#keycloakify.customuserattributes");
+            throw new Error(fieldName + "is probably runtime generated, see: https://docs.keycloakify.dev/limitations#field-names-cant-be-runtime-generated");
 
         },
         "exists": function (fieldName) {
@@ -385,7 +385,7 @@
                 }
             </#list>
 
-            throw new Error("There is no " + fieldName + " field. See: https://docs.keycloakify.dev/build-options#keycloakify.customuserattributes");
+            throw new Error(fieldName + "is probably runtime generated, see: https://docs.keycloakify.dev/limitations#field-names-cant-be-runtime-generated");
 
         }
     };
