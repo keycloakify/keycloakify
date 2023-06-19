@@ -211,7 +211,8 @@ const keycloakifyExtraMessages = {
         "shouldBeDifferent": "{0} should be different to {1}",
         "shouldMatchPattern": "Pattern should match: `/{0}/`",
         "mustBeAnInteger": "Must be an integer",
-        "notAValidOption": "Not a valid option"
+        "notAValidOption": "Not a valid option",
+        "selectAnOption": "Select an option"
     },
     "fr": {
         /* spell-checker: disable */
@@ -223,7 +224,8 @@ const keycloakifyExtraMessages = {
 
         "logoutConfirmTitle": "Déconnexion",
         "logoutConfirmHeader": "Êtes-vous sûr(e) de vouloir vous déconnecter ?",
-        "doLogout": "Se déconnecter"
+        "doLogout": "Se déconnecter",
+        "selectAnOption": "Sélectionner une option"
         /* spell-checker: enable */
     }
 };
