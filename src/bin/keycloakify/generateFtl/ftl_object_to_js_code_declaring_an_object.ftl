@@ -34,6 +34,8 @@
                     <#-- https://github.com/keycloakify/keycloakify/pull/359 Compat with Keycloak prior v12 -->
                     <#if !messagesPerField.existsError??>
 
+                        /* Consider updating to Keycloak v12 or newer */
+
                         <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
                         <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
 
@@ -42,6 +44,7 @@
                             <#attempt>
                                 <#assign doExistMessageForUsernameOrPassword = messagesPerField.exists('username')>
                             <#recover>
+                                /* There was an FTL error calling messagesPerField.exists('username') */
                                 <#assign doExistMessageForUsernameOrPassword = true>
                             </#attempt>
 
@@ -49,6 +52,7 @@
                                 <#attempt>
                                     <#assign doExistMessageForUsernameOrPassword = messagesPerField.exists('password')>
                                 <#recover>
+                                    /* There was an FTL error calling messagesPerField.exists('password') */
                                     <#assign doExistMessageForUsernameOrPassword = true>
                                 </#attempt>
                             </#if>
