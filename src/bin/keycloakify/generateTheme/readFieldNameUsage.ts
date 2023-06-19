@@ -85,7 +85,7 @@ export function readFieldNameUsage(params: {
             }
 
             fieldNames.push(
-                ...Array.from(rawSourceFile.matchAll(/(?:(?:printIfExists)|(?:existsError)|(?:get)|(?:exists))\(["']([^"']+)["']/g), m => m[1])
+                ...Array.from(rawSourceFile.matchAll(/(?:(?:printIfExists)|(?:existsError)|(?:get)|(?:exists))\(\s*["']([^"']+)["']/g), m => m[1])
             );
         }
     }
