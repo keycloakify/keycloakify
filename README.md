@@ -127,7 +127,8 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 ## 7.13
 
--   Deprecate `customUserAttribute`, Keycloakify now analyze your code to predict field name usage. [See doc](https://docs.keycloakify.dev/build-options#customuserattributes).
+-   Deprecate `customUserAttribute`, Keycloakify now analyze your code to predict field name usage. [See doc](https://docs.keycloakify.dev/build-options#customuserattributes).  
+    It's now mandatory to [adopt the new directory structure](https://docs.keycloakify.dev/migration-guides/v6-greater-than-v7).
 
 ## 7.12
 
