@@ -16,9 +16,9 @@ export type BuildOptionsLike = BuildOptionsLike.Standalone | BuildOptionsLike.Ex
 export namespace BuildOptionsLike {
     export type Common = {
         themeName: string;
-        extraLoginPages?: string[];
-        extraAccountPages?: string[];
-        extraThemeProperties?: string[];
+        extraLoginPages: string[] | undefined;
+        extraAccountPages: string[] | undefined;
+        extraThemeProperties: string[] | undefined;
         isSilent: boolean;
         themeVersion: string;
         keycloakVersionDefaultAssets: string;

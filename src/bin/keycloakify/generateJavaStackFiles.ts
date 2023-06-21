@@ -9,7 +9,7 @@ export type BuildOptionsLike = {
     themeName: string;
     extraThemeNames: string[];
     groupId: string;
-    artifactId?: string;
+    artifactId: string;
     themeVersion: string;
 };
 

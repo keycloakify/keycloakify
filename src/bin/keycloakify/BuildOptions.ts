@@ -19,7 +19,7 @@ export namespace BuildOptions {
         extraThemeNames: string[];
         extraLoginPages: string[] | undefined;
         extraAccountPages: string[] | undefined;
-        extraThemeProperties?: string[];
+        extraThemeProperties: string[] | undefined;
         groupId: string;
         artifactId: string;
         bundler: Bundler;
