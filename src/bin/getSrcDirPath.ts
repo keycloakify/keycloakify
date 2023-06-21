@@ -10,7 +10,7 @@ export function getThemeSrcDirPath(params: { projectDirPath: string }) {
 
     const srcDirPath = pathJoin(projectDirPath, "src");
 
-    const themeSrcDirPath: string | undefined = crawl(srcDirPath)
+    const themeSrcDirPath: string | undefined = crawl({ "dirPath": srcDirPath, "returnedPathsType": "relative to dirPath" })
         .map(fileRelativePath => {
             const split = fileRelativePath.split(themeSrcDirBasename);
 

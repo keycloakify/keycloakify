@@ -30,18 +30,6 @@
                                 "type": "string"
                             }
                         },
-                        "extraLoginPages": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
-                        "extraAccountPages": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
                         "extraThemeProperties": {
                             "type": "array",
                             "items": {

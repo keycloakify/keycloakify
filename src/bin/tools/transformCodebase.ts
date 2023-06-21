@@ -20,12 +20,12 @@ export function transformCodebase(params: { srcDirPath: string; destDirPath: str
         }))
     } = params;
 
-    for (const file_relative_path of crawl(srcDirPath)) {
+    for (const file_relative_path of crawl({ "dirPath": srcDirPath, "returnedPathsType": "relative to dirPath" })) {
         const filePath = path.join(srcDirPath, file_relative_path);
 
         const transformSourceCodeResult = transformSourceCode({
             "sourceCode": fs.readFileSync(filePath),
-            "filePath": path.join(srcDirPath, file_relative_path)
+            filePath
         });
 
         if (transformSourceCodeResult === undefined) {

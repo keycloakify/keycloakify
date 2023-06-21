@@ -73,9 +73,7 @@ export function readFieldNameUsage(params: {
             })()
         ] as const
     ).filter(exclude(undefined))) {
-        const filePaths = crawl(srcDirPath)
-            .filter(filePath => /\.(ts|tsx|js|jsx)$/.test(filePath))
-            .map(filePath => pathJoin(srcDirPath, filePath));
+        const filePaths = crawl({ "dirPath": srcDirPath, "returnedPathsType": "absolute" }).filter(filePath => /\.(ts|tsx|js|jsx)$/.test(filePath));
 
         for (const filePath of filePaths) {
             const rawSourceFile = fs.readFileSync(filePath).toString("utf8");

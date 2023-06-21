@@ -11,10 +11,6 @@ export type ParsedPackageJson = {
     version?: string;
     homepage?: string;
     keycloakify?: {
-        /** @deprecated: use extraLoginPages instead */
-        extraPages?: string[];
-        extraLoginPages?: string[];
-        extraAccountPages?: string[];
         extraThemeProperties?: string[];
         areAppAndKeycloakServerSharingSameDomain?: boolean;
         artifactId?: string;
@@ -34,9 +30,6 @@ export const zParsedPackageJson = z.object({
     "homepage": z.string().optional(),
     "keycloakify": z
         .object({
-            "extraPages": z.array(z.string()).optional(),
-            "extraLoginPages": z.array(z.string()).optional(),
-            "extraAccountPages": z.array(z.string()).optional(),
             "extraThemeProperties": z.array(z.string()).optional(),
             "areAppAndKeycloakServerSharingSameDomain": z.boolean().optional(),
             "artifactId": z.string().optional(),

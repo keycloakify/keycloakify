@@ -10,14 +10,13 @@ import type { BuildOptions } from "../BuildOptions";
 import { assert } from "tsafe/assert";
 import { downloadKeycloakStaticResources } from "./downloadKeycloakStaticResources";
 import { readFieldNameUsage } from "./readFieldNameUsage";
+import { readExtraPagesNames } from "./readExtraPageNames";
 
 export type BuildOptionsLike = BuildOptionsLike.Standalone | BuildOptionsLike.ExternalAssets;
 
 export namespace BuildOptionsLike {
     export type Common = {
         themeName: string;
-        extraLoginPages: string[] | undefined;
-        extraAccountPages: string[] | undefined;
         extraThemeProperties: string[] | undefined;
         isSilent: boolean;
         themeVersion: string;
@@ -163,14 +162,12 @@ export async function generateTheme(params: {
                         return accountThemePageIds;
                 }
             })(),
-            ...((() => {
-                switch (themeType) {
-                    case "login":
-                        return buildOptions.extraLoginPages;
-                    case "account":
-                        return buildOptions.extraAccountPages;
-                }
-            })() ?? [])
+            ...(themeSrcDirPath === undefined
+                ? []
+                : readExtraPagesNames({
+                      themeType,
+                      themeSrcDirPath
+                  }))
         ].forEach(pageId => {
             const { ftlCode } = generateFtlFilesCode({ pageId });
 
