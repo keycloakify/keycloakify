@@ -2,9 +2,11 @@ import * as fs from "fs";
 import { exclude } from "tsafe";
 import { crawl } from "./tools/crawl";
 import { join as pathJoin } from "path";
+import { themeTypes } from "./keycloakify/generateFtl";
 
 const themeSrcDirBasename = "keycloak-theme";
 
+/** Can't catch error, if the directory isn't found, this function will just exit the process with an error message. */
 export function getThemeSrcDirPath(params: { projectDirPath: string }) {
     const { projectDirPath } = params;
 
@@ -22,12 +24,24 @@ export function getThemeSrcDirPath(params: { projectDirPath: string }) {
         })
         .filter(exclude(undefined))[0];
 
-    if (themeSrcDirPath === undefined) {
-        if (fs.existsSync(pathJoin(srcDirPath, "login")) || fs.existsSync(pathJoin(srcDirPath, "account"))) {
-            return { "themeSrcDirPath": srcDirPath };
-        }
-        return { "themeSrcDirPath": undefined };
+    if (themeSrcDirPath !== undefined) {
+        return { themeSrcDirPath };
     }
 
-    return { themeSrcDirPath };
+    for (const themeType of [...themeTypes, "email"]) {
+        if (!fs.existsSync(pathJoin(srcDirPath, themeType))) {
+            continue;
+        }
+        return { "themeSrcDirPath": srcDirPath };
+    }
+
+    console.error(
+        [
+            "Can't locate your theme source directory. It should be either: ",
+            "src/ or src/keycloak-theme.",
+            "Example in the starter: https://github.com/keycloakify/keycloakify-starter/tree/main/src/keycloak-theme"
+        ].join("\n")
+    );
+
+    process.exit(-1);
 }

@@ -51,10 +51,6 @@ import { getThemeSrcDirPath } from "./getSrcDirPath";
 
     const { themeSrcDirPath } = getThemeSrcDirPath({ "projectDirPath": process.cwd() });
 
-    if (themeSrcDirPath === undefined) {
-        throw new Error("Couldn't locate your theme sources");
-    }
-
     const targetFilePath = pathJoin(themeSrcDirPath, themeType, "pages", pageBasename);
 
     if (existsSync(targetFilePath)) {

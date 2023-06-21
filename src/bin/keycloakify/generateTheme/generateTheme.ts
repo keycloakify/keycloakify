@@ -52,7 +52,7 @@ assert<BuildOptions extends BuildOptionsLike ? true : false>();
 export async function generateTheme(params: {
     reactAppBuildDirPath: string;
     keycloakThemeBuildingDirPath: string;
-    themeSrcDirPath: string | undefined;
+    themeSrcDirPath: string;
     keycloakifySrcDirPath: string;
     buildOptions: BuildOptionsLike;
     keycloakifyVersion: string;
@@ -67,6 +67,10 @@ export async function generateTheme(params: {
     let generateFtlFilesCode_glob: ReturnType<typeof generateFtlFilesCodeFactory>["generateFtlFilesCode"] | undefined = undefined;
 
     for (const themeType of themeTypes) {
+        if (!fs.existsSync(pathJoin(themeSrcDirPath, themeType))) {
+            continue;
+        }
+
         const themeDirPath = getThemeDirPath(themeType);
 
         copy_app_resources_to_theme_path: {
@@ -132,26 +136,21 @@ export async function generateTheme(params: {
             });
         }
 
-        const generateFtlFilesCode = (() => {
-            if (generateFtlFilesCode_glob !== undefined) {
-                return generateFtlFilesCode_glob;
-            }
-
-            const { generateFtlFilesCode } = generateFtlFilesCodeFactory({
-                "indexHtmlCode": fs.readFileSync(pathJoin(reactAppBuildDirPath, "index.html")).toString("utf8"),
-                "cssGlobalsToDefine": allCssGlobalsToDefine,
-                buildOptions,
-                keycloakifyVersion,
-                themeType,
-                "fieldNames": readFieldNameUsage({
-                    keycloakifySrcDirPath,
-                    themeSrcDirPath,
-                    themeType
-                })
-            });
-
-            return generateFtlFilesCode;
-        })();
+        const generateFtlFilesCode =
+            generateFtlFilesCode_glob !== undefined
+                ? generateFtlFilesCode_glob
+                : generateFtlFilesCodeFactory({
+                      "indexHtmlCode": fs.readFileSync(pathJoin(reactAppBuildDirPath, "index.html")).toString("utf8"),
+                      "cssGlobalsToDefine": allCssGlobalsToDefine,
+                      buildOptions,
+                      keycloakifyVersion,
+                      themeType,
+                      "fieldNames": readFieldNameUsage({
+                          keycloakifySrcDirPath,
+                          themeSrcDirPath,
+                          themeType
+                      })
+                  }).generateFtlFilesCode;
 
         [
             ...(() => {
@@ -162,12 +161,10 @@ export async function generateTheme(params: {
                         return accountThemePageIds;
                 }
             })(),
-            ...(themeSrcDirPath === undefined
-                ? []
-                : readExtraPagesNames({
-                      themeType,
-                      themeSrcDirPath
-                  }))
+            ...readExtraPagesNames({
+                themeType,
+                themeSrcDirPath
+            })
         ].forEach(pageId => {
             const { ftlCode } = generateFtlFilesCode({ pageId });
 
@@ -224,10 +221,6 @@ export async function generateTheme(params: {
     }
 
     email: {
-        if (themeSrcDirPath === undefined) {
-            break email;
-        }
-
         const emailThemeSrcDirPath = pathJoin(themeSrcDirPath, "email");
 
         if (!fs.existsSync(emailThemeSrcDirPath)) {

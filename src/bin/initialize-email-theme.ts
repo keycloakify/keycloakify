@@ -21,12 +21,6 @@ export async function main() {
         "projectDirPath": process.cwd()
     });
 
-    if (themeSrcDirPath === undefined) {
-        logger.warn("Couldn't locate your theme source directory");
-
-        process.exit(-1);
-    }
-
     const emailThemeSrcDirPath = pathJoin(themeSrcDirPath, "email");
 
     if (fs.existsSync(emailThemeSrcDirPath)) {

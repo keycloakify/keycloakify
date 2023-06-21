@@ -57,12 +57,6 @@ export async function main() {
                 "email": false
             };
 
-            if (themeSrcDirPath === undefined) {
-                implementedThemeTypes["login"] = true;
-                implementedThemeTypes["account"] = true;
-                return implementedThemeTypes;
-            }
-
             for (const themeType of objectKeys(implementedThemeTypes)) {
                 if (!fs.existsSync(pathJoin(themeSrcDirPath, themeType))) {
                     continue;
