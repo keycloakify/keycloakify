@@ -45,6 +45,10 @@
 > when using React; it's a well-regarded solution that many
 > developers appreciate.
 
+Keycloakify is fully compatible with Keycloak, starting from version 11 and is anticipated to maintain compatibility with all future versions.  
+You can update your Keycloak, your Keycloakify generated theme won't break.  
+To understand the basis of my confidence in this, you can [visit this discussion thread where I've explained in detail](https://github.com/keycloakify/keycloakify/discussions/346).
+
 ## Sponsor 👼
 
 We are exclusively sponsored by [Cloud IAM](https://cloud-iam.com/?mtm_campaign=keycloakify-deal&mtm_source=keycloakify-github), a French company offering Keycloak as a service.  
