@@ -70,12 +70,6 @@
                         "keycloakifyBuildDirPath": {
                             "type": "string"
                         },
-                        "customUserAttributes": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
                         "themeName": {
                             "type": "string"
                         }
