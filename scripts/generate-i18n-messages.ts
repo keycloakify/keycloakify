@@ -37,7 +37,10 @@ async function main() {
         const baseThemeDirPath = pathJoin(tmpDirPath, "base");
         const re = new RegExp(`^([^\\${pathSep}]+)\\${pathSep}messages\\${pathSep}messages_([^.]+).properties$`);
 
-        crawl(baseThemeDirPath).forEach(filePath => {
+        crawl({
+            "dirPath": baseThemeDirPath,
+            "returnedPathsType": "relative to dirPath"
+        }).forEach(filePath => {
             const match = filePath.match(re);
 
             if (match === null) {
