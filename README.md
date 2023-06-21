@@ -117,6 +117,10 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 # Changelog highlights
 
+## 7.14
+
+-   Deprecate the `extraPages` build option. Keycloakify is now able to analyze your code to detect extra pages.
+
 ## 7.13
 
 -   Deprecate `customUserAttribute`, Keycloakify now analyze your code to predict field name usage. [See doc](https://docs.keycloakify.dev/build-options#customuserattributes).
