@@ -1,8 +1,15 @@
 import * as fs from "fs";
 import * as path from "path";
 
-const crawlRec = (dir_path: string, paths: string[]) => {
-    for (const file_name of fs.readdirSync(dir_path)) {
+export const crawlRec = (dir_path: string, paths: string[]) => {
+    let file_names: string[] = [];
+    try {
+        file_names = fs.readdirSync(dir_path);
+    } catch (e) {
+        // dir_path does not exist
+        return;
+    }
+    for (const file_name of file_names) {
         const file_path = path.join(dir_path, file_name);
 
         if (fs.lstatSync(file_path).isDirectory()) {
