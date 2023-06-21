@@ -1,6 +1,6 @@
 import path from "path";
 import { it, describe, expect, vi, beforeAll, afterAll } from "vitest";
-import { crawlRec } from "keycloakify/bin/tools/crawl";
+import { crawl } from "keycloakify/bin/tools/crawl";
 
 describe("crawl", () => {
     describe("crawRec", () => {
@@ -41,13 +41,11 @@ describe("crawl", () => {
             vi.resetAllMocks();
         });
         it("returns files under a given dir_path", async () => {
-            const paths: string[] = [];
-            crawlRec("root_dir/sub_1_dir/sub_3_dir", paths);
+            const paths = crawl({ "dirPath": "root_dir/sub_1_dir/sub_3_dir", "returnedPathsType": "absolute" });
             expect(paths).toEqual(["root_dir/sub_1_dir/sub_3_dir/file_5"]);
         });
         it("returns files recursively under a given dir_path", async () => {
-            const paths: string[] = [];
-            crawlRec("root_dir", paths);
+            const paths = crawl({ "dirPath": "root_dir", "returnedPathsType": "absolute" });
             expect(paths).toEqual([
                 "root_dir/sub_1_dir/file_3",
                 "root_dir/sub_1_dir/sub_3_dir/file_5",
@@ -56,10 +54,15 @@ describe("crawl", () => {
                 "root_dir/file_2"
             ]);
         });
-        it("return empty file list if dir_path does not exist", async () => {
-            const paths: string[] = [];
-            crawlRec("404", paths);
-            expect(paths).toEqual([]);
+        it("throw dir_path does not exist", async () => {
+            try {
+                crawl({ "dirPath": "404", "returnedPathsType": "absolute" });
+            } catch {
+                expect(true);
+                return;
+            }
+
+            expect(false);
         });
     });
 });
