@@ -26,9 +26,7 @@
 
             <#if !messagesPerField?? || !(messagesPerField?is_hash)>   
                 throw new Error("You're not supposed to use messagesPerField.printIfExists in this page");
-            </#if>
-            
-            <#if messagesPerField??>
+            <#else>
                 <#list fieldNames as fieldName>
                     if(fieldName === "${fieldName}" ){
 
@@ -124,10 +122,8 @@
         "existsError": function (fieldName) {
 
             <#if !messagesPerField?? || !(messagesPerField?is_hash)>   
-                throw new Error("You're not supposed to use messagesPerField.printIfExists in this page");
-            </#if>
-
-            <#if messagesPerField??>
+                throw new Error("You're not supposed to use messagesPerField.existsError in this page");
+            <#else>
                 <#list fieldNames as fieldName>
                     if(fieldName === "${fieldName}" ){
 
@@ -212,9 +208,7 @@
 
             <#if !messagesPerField?? || !(messagesPerField?is_hash)>   
                 throw new Error("You're not supposed to use messagesPerField.get in this page");
-            </#if>
-
-            <#if messagesPerField??>
+            <#else>
                 <#list fieldNames as fieldName>
                     if(fieldName === "${fieldName}" ){
 
@@ -314,9 +308,7 @@
 
             <#if !messagesPerField?? || !(messagesPerField?is_hash)>   
                 throw new Error("You're not supposed to use messagesPerField.exists in this page");
-            </#if>
-
-            <#if messagesPerField??>
+            <#else>
                 <#list fieldNames as fieldName>
                     if(fieldName === "${fieldName}" ){
 
