@@ -34,7 +34,7 @@
                         <#if !messagesPerField.existsError??>
 
                             <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
-                            <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
+                            <#if ('${fieldName}' == 'username' || '${fieldName}' == 'password') && pageId != 'register.ftl' && pageId != 'register-user-profile.ftl'>
 
                                 <#assign doExistMessageForUsernameOrPassword = "">
 
@@ -71,7 +71,7 @@
                         <#else>
 
                             <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
-                            <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
+                            <#if ('${fieldName}' == 'username' || '${fieldName}' == 'password') && pageId != 'register.ftl' && pageId != 'register-user-profile.ftl'>
 
                                 <#assign doExistErrorOnUsernameOrPassword = "">
 
@@ -132,7 +132,7 @@
                         <#if !messagesPerField.existsError??>
 
                             <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
-                            <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
+                            <#if ('${fieldName}' == 'username' || '${fieldName}' == 'password') && pageId != 'register.ftl' && pageId != 'register-user-profile.ftl'>
 
                                 <#assign doExistMessageForUsernameOrPassword = "">
 
@@ -169,7 +169,7 @@
                         <#else>
 
                             <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
-                            <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
+                            <#if ('${fieldName}' == 'username' || '${fieldName}' == 'password') && pageId != 'register.ftl' && pageId != 'register-user-profile.ftl'>
 
                                 <#assign doExistErrorOnUsernameOrPassword = "">
 
@@ -218,7 +218,7 @@
                         <#if !messagesPerField.existsError??>
 
                             <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
-                            <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
+                            <#if ('${fieldName}' == 'username' || '${fieldName}' == 'password') && pageId != 'register.ftl' && pageId != 'register-user-profile.ftl'>
 
                                 <#assign doExistMessageForUsernameOrPassword = "">
 
@@ -259,7 +259,7 @@
                         <#else>
 
                             <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
-                            <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
+                            <#if ('${fieldName}' == 'username' || '${fieldName}' == 'password') && pageId != 'register.ftl' && pageId != 'register-user-profile.ftl'>
 
                                 <#assign doExistErrorOnUsernameOrPassword = "">
 
@@ -319,7 +319,7 @@
                         <#if !messagesPerField.existsError??>
 
                             <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
-                            <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
+                            <#if ('${fieldName}' == 'username' || '${fieldName}' == 'password') && pageId != 'register.ftl' && pageId != 'register-user-profile.ftl'>
 
                                 <#assign doExistMessageForUsernameOrPassword = "">
 
@@ -356,7 +356,7 @@
                         <#else>
 
                             <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
-                            <#if '${fieldName}' == 'username' || '${fieldName}' == 'password'>
+                            <#if ('${fieldName}' == 'username' || '${fieldName}' == 'password') && pageId != 'register.ftl' && pageId != 'register-user-profile.ftl'>
 
                                 <#assign doExistErrorOnUsernameOrPassword = "">
 

@@ -25,16 +25,7 @@ export function useFormValidation(params: {
     passwordValidators?: Validators;
     i18n: I18n;
 }) {
-    const {
-        kcContext,
-        passwordValidators = {
-            "length": {
-                "ignore.empty.value": true,
-                "min": "4"
-            }
-        },
-        i18n
-    } = params;
+    const { kcContext, passwordValidators = {}, i18n } = params;
 
     const attributesWithPassword = useMemo(
         () =>
@@ -211,7 +202,7 @@ function useGetErrors(params: {
         const { value: defaultValue, validators } = attributes.find(attribute => attribute.name === name)!;
 
         block: {
-            if (defaultValue !== value) {
+            if ((defaultValue ?? "") !== value) {
                 break block;
             }
 
