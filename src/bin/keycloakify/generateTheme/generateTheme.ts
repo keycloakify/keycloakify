@@ -11,6 +11,7 @@ import { assert } from "tsafe/assert";
 import { downloadKeycloakStaticResources } from "./downloadKeycloakStaticResources";
 import { readFieldNameUsage } from "./readFieldNameUsage";
 import { readExtraPagesNames } from "./readExtraPageNames";
+import { generateMessageProperties } from "./generateMessageProperties";
 
 export type BuildOptionsLike = BuildOptionsLike.Standalone | BuildOptionsLike.ExternalAssets;
 
@@ -171,6 +172,19 @@ export async function generateTheme(params: {
             fs.mkdirSync(themeDirPath, { "recursive": true });
 
             fs.writeFileSync(pathJoin(themeDirPath, pageId), Buffer.from(ftlCode, "utf8"));
+        });
+
+        generateMessageProperties({
+            themeSrcDirPath,
+            themeType
+        }).forEach(({ languageTag, propertiesFileSource }) => {
+            const messagesDirPath = pathJoin(themeDirPath, "messages");
+
+            fs.mkdirSync(pathJoin(themeDirPath, "messages"), { "recursive": true });
+
+            const propertiesFilePath = pathJoin(messagesDirPath, `messages_${languageTag}.properties`);
+
+            fs.writeFileSync(propertiesFilePath, Buffer.from(propertiesFileSource, "utf8"));
         });
 
         //TODO: Remove this block we left it for now only for backward compatibility
