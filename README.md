@@ -121,6 +121,14 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 # Changelog highlights
 
+## 7.15
+
+-   The i18n messages you defines in your theme are now also maid available to Keycloak.
+    In practice this mean that you can now customize the `kcContext.message.summary` that
+    display a general alert and the values returned by `kcContext.messagesPerField.get()` that
+    are used to display specific error on some field of the form.  
+    [See video](https://youtu.be/D6tZcemReTI)
+
 ## 7.14
 
 -   Deprecate the `extraPages` build option. Keycloakify is now able to analyze your code to detect extra pages.
