@@ -2,8 +2,8 @@ import { exec as execCallback } from "child_process";
 import { createHash } from "crypto";
 import { mkdir, readFile, stat, writeFile } from "fs/promises";
 import fetch, { type FetchOptions } from "make-fetch-happen";
-import { dirname as pathDirname, join as pathJoin } from "path";
-import { assert } from "tsafe";
+import { dirname as pathDirname, join as pathJoin, resolve as pathResolve, sep as pathSep } from "path";
+import { assert } from "tsafe/assert";
 import { promisify } from "util";
 import { getProjectRoot } from "./getProjectRoot";
 import { transformCodebase } from "./transformCodebase";
@@ -48,9 +48,28 @@ async function getNmpConfig() {
     return readNpmConfig().then(parseNpmConfig);
 }
 
-async function readNpmConfig() {
-    const { stdout } = await exec("npm config get", { encoding: "utf8" });
-    return stdout;
+function readNpmConfig(): Promise<string> {
+    return (async function callee(depth: number): Promise<string> {
+        const cwd = pathResolve(pathJoin(...[process.cwd(), ...Array(depth).fill("..")]));
+
+        let stdout: string;
+
+        try {
+            stdout = await exec("npm config get", { "encoding": "utf8", cwd }).then(({ stdout }) => stdout);
+        } catch (error) {
+            console.log(String(error), error);
+
+            if (String(error).includes("ENOWORKSPACES")) {
+                assert(cwd !== pathSep);
+
+                return callee(depth + 1);
+            }
+
+            throw error;
+        }
+
+        return stdout;
+    })(0);
 }
 
 function parseNpmConfig(stdout: string) {
