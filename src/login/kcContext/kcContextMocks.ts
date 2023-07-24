@@ -6,7 +6,7 @@ import { id } from "tsafe/id";
 import { assert, type Equals } from "tsafe/assert";
 import type { LoginThemePageId } from "keycloakify/bin/keycloakify/generateFtl";
 
-const PUBLIC_URL = (typeof process !== "object" ? undefined : process.env?.["PUBLIC_URL"]) ?? "/";
+const PUBLIC_URL = (typeof process !== "object" ? undefined : process.env?.["PUBLIC_URL"]) || "/";
 
 const attributes: Attribute[] = [
     {
