@@ -4,7 +4,7 @@ import { pathJoin } from "keycloakify/bin/tools/pathJoin";
 import { id } from "tsafe/id";
 import type { KcContext } from "./KcContext";
 
-const PUBLIC_URL = process.env["PUBLIC_URL"] ?? "/";
+const PUBLIC_URL = (typeof process !== "object" ? undefined : process.env?.["PUBLIC_URL"]) ?? "/";
 
 export const kcContextCommonMock: KcContext.Common = {
     "keycloakifyVersion": "0.0.0",
