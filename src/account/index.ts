@@ -4,6 +4,7 @@ export default Fallback;
 
 export { getKcContext } from "keycloakify/account/kcContext/getKcContext";
 export { createGetKcContext } from "keycloakify/account/kcContext/createGetKcContext";
+export type { AccountThemePageId as PageId } from "keycloakify/bin/keycloakify/generateFtl";
 export { createUseI18n } from "keycloakify/account/i18n/i18n";
 
 export type { PageProps } from "keycloakify/account/pages/PageProps";
