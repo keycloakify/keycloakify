@@ -46,7 +46,6 @@ export function generateStartKeycloakTestingContainer(params: {
                 `   --name ${containerName} \\`,
                 "   -e KEYCLOAK_ADMIN=admin \\",
                 "   -e KEYCLOAK_ADMIN_PASSWORD=admin \\",
-                "   -e JAVA_OPTS=-Dkeycloak.profile=preview \\",
                 ...[themeName, ...extraThemeNames].map(
                     themeName =>
                         `   -v "${pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", themeName).replace(
@@ -55,7 +54,7 @@ export function generateStartKeycloakTestingContainer(params: {
                         )}":"/opt/keycloak/themes/${themeName}":rw \\`
                 ),
                 `   -it quay.io/keycloak/keycloak:${keycloakVersion} \\`,
-                `   start-dev`,
+                `   start-dev --features=declarative-user-profile`,
                 ""
             ].join("\n"),
             "utf8"

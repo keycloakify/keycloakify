@@ -92,7 +92,7 @@ export async function main() {
     }
 
     // We want, however, to test in a container running the latest Keycloak version
-    const containerKeycloakVersion = "20.0.1";
+    const containerKeycloakVersion = "21.1.2";
 
     generateStartKeycloakTestingContainer({
         keycloakThemeBuildingDirPath: buildOptions.keycloakifyBuildDirPath,
