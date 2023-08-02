@@ -230,10 +230,7 @@ export async function generateTheme(params: {
 
         fs.writeFileSync(
             pathJoin(themeDirPath, "theme.properties"),
-            Buffer.from(
-                [`parent=${themeType === "account" ? "base" : "keycloak"}`, ...(buildOptions.extraThemeProperties ?? [])].join("\n\n"),
-                "utf8"
-            )
+            Buffer.from([`parent=keycloak`, ...(buildOptions.extraThemeProperties ?? [])].join("\n\n"), "utf8")
         );
     }
 
