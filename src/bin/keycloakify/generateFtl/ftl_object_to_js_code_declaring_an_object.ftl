@@ -457,7 +457,7 @@
                         <#-- https://github.com/keycloakify/keycloakify/issues/357 -->
                         key == "loginAction" && 
                         are_same_path(path, ["url"]) && 
-                        ["saml-post-form.ftl", "error.ftl", "info.ftl", "login-oauth-grant.ftl"]?seq_contains(pageId) &&
+                        ["saml-post-form.ftl", "error.ftl", "info.ftl", "login-oauth-grant.ftl", "logout-confirm.ftl"]?seq_contains(pageId) &&
                         !(auth?has_content && auth.showTryAnotherWayLink())
                     ) || (
                         <#-- https://github.com/keycloakify/keycloakify/issues/362 -->
