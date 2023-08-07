@@ -123,7 +123,7 @@ export default function LoginUpdatePassword(props: PageProps<Extract<KcContext, 
                                     getClassName("kcButtonLargeClass")
                                 )}
                                 type="submit"
-                                defaultValue={msgStr("doSubmit")}
+                                value={msgStr("doSubmit")}
                             />
                         )}
                     </div>
