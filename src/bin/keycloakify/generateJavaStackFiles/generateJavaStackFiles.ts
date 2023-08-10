@@ -184,7 +184,7 @@ export async function generateJavaStackFiles(params: {
             "srcDirPath": pathJoin(builtinKeycloakThemeTmpDirPath, "keycloak", "account"),
             "destDirPath": pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", accountV1Keycloak, "account"),
             "transformSourceCode": ({ sourceCode, filePath }) => {
-                if (pathBasename(filePath) !== "theme.properties") {
+                if (pathBasename(filePath) === "theme.properties") {
                     sourceCode = Buffer.from(sourceCode.toString("utf8").replace("parent=base", `parent=${accountV1}`), "utf8");
                     sourceCode = Buffer.from(
                         sourceCode.toString("utf8").replace("import=common/keycloak", `import=common/${accountV1Keycloak}`),
