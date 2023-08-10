@@ -12,6 +12,7 @@ import { downloadKeycloakStaticResources } from "./downloadKeycloakStaticResourc
 import { readFieldNameUsage } from "./readFieldNameUsage";
 import { readExtraPagesNames } from "./readExtraPageNames";
 import { generateMessageProperties } from "./generateMessageProperties";
+import { accountV1Keycloak } from "../generateJavaStackFiles/generateJavaStackFiles";
 
 export type BuildOptionsLike = BuildOptionsLike.Standalone | BuildOptionsLike.ExternalAssets;
 
@@ -230,7 +231,20 @@ export async function generateTheme(params: {
 
         fs.writeFileSync(
             pathJoin(themeDirPath, "theme.properties"),
-            Buffer.from([`parent=keycloak`, ...(buildOptions.extraThemeProperties ?? [])].join("\n\n"), "utf8")
+            Buffer.from(
+                [
+                    `parent=${(() => {
+                        switch (themeType) {
+                            case "login":
+                                return "keycloak";
+                            case "account":
+                                return accountV1Keycloak;
+                        }
+                    })()}`,
+                    ...(buildOptions.extraThemeProperties ?? [])
+                ].join("\n\n"),
+                "utf8"
+            )
         );
     }
 
