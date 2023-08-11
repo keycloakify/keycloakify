@@ -234,10 +234,6 @@ export const kcContextCommonMock: KcContext.Common = {
         "clientId": "myApp"
     },
     "scripts": [],
-    "message": {
-        "type": "success",
-        "summary": "This is a test message"
-    },
     "isAppInitiatedAction": false
 };
 
