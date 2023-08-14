@@ -71,8 +71,8 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
                                         const label = !realm.loginWithEmailAllowed
                                             ? "username"
                                             : realm.registrationEmailAsUsername
-                                                ? "email"
-                                                : "usernameOrEmail";
+                                            ? "email"
+                                            : "usernameOrEmail";
 
                                         const autoCompleteHelper: typeof label = label === "usernameOrEmail" ? "username" : label;
 
