@@ -145,7 +145,7 @@ export declare namespace KcContext {
             rememberMe?: string;
             password?: string;
         };
-        usernameEditDisabled: boolean;
+        usernameHidden?: boolean;
         social: {
             displayInfo: boolean;
             providers?: {

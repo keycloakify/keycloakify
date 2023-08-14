@@ -264,7 +264,7 @@ export const kcContextMocks = [
         "social": {
             "displayInfo": true
         },
-        "usernameEditDisabled": false,
+        "usernameHidden": false,
         "login": {},
         "registrationDisabled": false
     }),
