@@ -34,7 +34,7 @@ jobs:
     - uses: bahmutov/npm-install@v1
     - run: yarn build
     - run: yarn test
-    #- run: yarn test:keycloakify-starter
+    - run: yarn test:keycloakify-starter
 
   storybook:
     runs-on: ubuntu-latest
