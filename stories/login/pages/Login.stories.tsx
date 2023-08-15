@@ -74,8 +74,12 @@ export const WithPresetUsername = () => (
 export const WithImmutablePresetUsername = () => (
     <PageStory
         kcContext={{
-            login: { username: "max.mustermann@mail.com" },
-            usernameHidden: true
+            auth: {
+                attemptedUsername: "max.mustermann@mail.com",
+                showUsername: true
+            },
+            usernameHidden: true,
+            message: { type: "info", summary: "Please re-authenticate to continue" }
         }}
     />
 );
