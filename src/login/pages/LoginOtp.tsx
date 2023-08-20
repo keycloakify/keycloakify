@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { headInsert } from "keycloakify/tools/headInsert";
-import { pathJoin } from "keycloakify/bin/tools/pathJoin";
 import { clsx } from "keycloakify/tools/clsx";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
@@ -24,7 +23,7 @@ export default function LoginOtp(props: PageProps<Extract<KcContext, { pageId: "
 
         const { prLoaded, remove } = headInsert({
             "type": "javascript",
-            "src": pathJoin(kcContext.url.resourcesCommonPath, "node_modules/jquery/dist/jquery.min.js")
+            "src": `${kcContext.url.resourcesCommonPath}/node_modules/jquery/dist/jquery.min.js`
         });
 
         (async () => {

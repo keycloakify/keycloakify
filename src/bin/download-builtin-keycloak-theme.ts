@@ -4,6 +4,8 @@ import { downloadAndUnzip } from "./tools/downloadAndUnzip";
 import { promptKeycloakVersion } from "./promptKeycloakVersion";
 import { getLogger } from "./tools/logger";
 import { readBuildOptions } from "./keycloakify/BuildOptions";
+import * as child_process from "child_process";
+import * as fs from "fs";
 
 export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: string; destDirPath: string; isSilent: boolean }) {
     const { keycloakVersion, destDirPath } = params;
@@ -17,6 +19,67 @@ export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: st
             })
         )
     );
+
+    install_common_node_modules: {
+        const commonResourcesDirPath = pathJoin(destDirPath, "keycloak", "common", "resources");
+
+        if (!fs.existsSync(commonResourcesDirPath)) {
+            break install_common_node_modules;
+        }
+
+        if (!fs.existsSync(pathJoin(commonResourcesDirPath, "package.json"))) {
+            break install_common_node_modules;
+        }
+
+        if (fs.existsSync(pathJoin(commonResourcesDirPath, "node_modules"))) {
+            break install_common_node_modules;
+        }
+
+        console.log("npm install --omit=dev start", { keycloakVersion });
+
+        const start = Date.now();
+
+        child_process.execSync("npm install --omit=dev", {
+            "cwd": commonResourcesDirPath,
+            "stdio": "ignore"
+        });
+
+        console.log("npm install --omit=dev end", { keycloakVersion, "time": Date.now() - start });
+    }
+
+    install_and_move_to_common_resources_generated_in_keycloak_v2: {
+        const accountV2DirSrcDirPath = pathJoin(destDirPath, "keycloak.v2", "account", "src");
+
+        if (!fs.existsSync(accountV2DirSrcDirPath)) {
+            break install_and_move_to_common_resources_generated_in_keycloak_v2;
+        }
+
+        console.log("npm install start", { keycloakVersion });
+        const startInstall = Date.now();
+
+        child_process.execSync("npm install", { "cwd": accountV2DirSrcDirPath, "stdio": "ignore" });
+
+        console.log("npm install end", { keycloakVersion, "time": Date.now() - startInstall });
+
+        const packageJsonFilePath = pathJoin(accountV2DirSrcDirPath, "package.json");
+
+        const packageJsonRaw = fs.readFileSync(packageJsonFilePath);
+
+        const parsedPackageJson = JSON.parse(packageJsonRaw.toString("utf8"));
+
+        parsedPackageJson.scripts.build = parsedPackageJson.scripts.build.replace("npm run check-types", "true").replace("npm run babel", "true");
+
+        fs.writeFileSync(packageJsonFilePath, Buffer.from(JSON.stringify(parsedPackageJson, null, 2), "utf8"));
+
+        console.log("npm run build start", { keycloakVersion });
+        const start = Date.now();
+
+        child_process.execSync("npm run build", { "cwd": accountV2DirSrcDirPath, "stdio": "ignore" });
+
+        console.log("npm run build end", { keycloakVersion, "time": Date.now() - start });
+
+        fs.writeFileSync(packageJsonFilePath, packageJsonRaw);
+    }
 }
 
 async function main() {
