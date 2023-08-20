@@ -57,8 +57,6 @@ function readNpmConfig(): Promise<string> {
         try {
             stdout = await exec("npm config get", { "encoding": "utf8", cwd }).then(({ stdout }) => stdout);
         } catch (error) {
-            console.log(String(error), error);
-
             if (String(error).includes("ENOWORKSPACES")) {
                 assert(cwd !== pathSep);
 
