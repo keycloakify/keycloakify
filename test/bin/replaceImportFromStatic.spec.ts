@@ -35,10 +35,7 @@ describe("bin/js-transforms", () => {
     `;
     it("transforms standalone code properly", () => {
         const { fixedJsCode } = replaceImportsFromStaticInJsCode({
-            "jsCode": jsCodeUntransformed,
-            "buildOptions": {
-                "isStandalone": true
-            }
+            "jsCode": jsCodeUntransformed
         });
 
         const fixedJsCodeExpected = `
@@ -87,66 +84,6 @@ describe("bin/js-transforms", () => {
                 } [e] + ".chunk.css"
             }
 
-        `;
-
-        expect(isSameCode(fixedJsCode, fixedJsCodeExpected)).toBe(true);
-    });
-    it("transforms external app code properly", () => {
-        const { fixedJsCode } = replaceImportsFromStaticInJsCode({
-            "jsCode": jsCodeUntransformed,
-            "buildOptions": {
-                "isStandalone": false,
-                "urlOrigin": "https://demo-app.keycloakify.dev"
-            }
-        });
-
-        const fixedJsCodeExpected = `
-            function f() {
-                return ("kcContext" in window ? "https://demo-app.keycloakify.dev/" : a.p) + "static/js/" + ({}[e] || e) + "." + {
-                    3: "0664cdc0"
-                }[e] + ".chunk.js"
-            }
-
-            function sameAsF() {
-                return ("kcContext" in window ? "https://demo-app.keycloakify.dev/" : a.p) + "static/js/" + ({}[e] || e) + "." + {
-                    3: "0664cdc0"
-                }[e] + ".chunk.js"
-            }
-
-            __webpack_require__[(function (){
-                var pd= Object.getOwnPropertyDescriptor(__webpack_require__, "p");
-                if( pd === undefined || pd.configurable ){
-                    var p= "";
-                    Object.defineProperty(__webpack_require__, "p", {
-                        get: function() { return "kcContext" in window ? "https://demo-app.keycloakify.dev/" : p; },
-                        set: function (value){ p = value; }
-                    });
-                }
-                return "u";
-            })()] = function(e) {
-                return "static/js/" + e + "." + {
-                    147: "6c5cee76",
-                    787: "8da10fcf",
-                    922: "be170a73"
-                } [e] + ".chunk.js"
-            }
-
-            t[(function (){
-                var pd= Object.getOwnPropertyDescriptor(t, "p");
-                if( pd === undefined || pd.configurable ){
-                    var p= "";
-                    Object.defineProperty(t, "p", {
-                        get: function() { return "kcContext" in window ? "https://demo-app.keycloakify.dev/" : p; },
-                        set: function (value){ p = value; }
-                    });
-                }
-                return "miniCssF";
-            })()] = function(e) {
-                return "static/css/" + e + "." + {
-                    164:"dcfd7749",
-                    908:"67c9ed2c"
-                } [e] + ".chunk.css"
-            }
         `;
 
         expect(isSameCode(fixedJsCode, fixedJsCodeExpected)).toBe(true);
@@ -304,7 +241,6 @@ describe("bin/css-inline-transforms", () => {
             const { fixedCssCode } = replaceImportsInInlineCssCode({
                 cssCode,
                 "buildOptions": {
-                    "isStandalone": true,
                     "urlPathname": undefined
                 }
             });
@@ -340,53 +276,6 @@ describe("bin/css-inline-transforms", () => {
               font-weight: 700;
               font-display: swap;
               src: url(\${url.resourcesPath}/build/fonts/WorkSans/worksans-bold-webfont.woff2)
-                format("woff2");
-            }
-        `;
-
-            expect(isSameCode(fixedCssCode, fixedCssCodeExpected)).toBe(true);
-        });
-        it("transforms css for external app properly", () => {
-            const { fixedCssCode } = replaceImportsInInlineCssCode({
-                cssCode,
-                "buildOptions": {
-                    "isStandalone": false,
-                    "urlOrigin": "https://demo-app.keycloakify.dev",
-                    "urlPathname": undefined
-                }
-            });
-
-            const fixedCssCodeExpected = `
-            @font-face {
-              font-family: "Work Sans";
-              font-style: normal;
-              font-weight: 400;
-              font-display: swap;
-              src: url(https://demo-app.keycloakify.dev/fonts/WorkSans/worksans-regular-webfont.woff2)
-                format("woff2");
-            }
-            @font-face {
-              font-family: "Work Sans";
-              font-style: normal;
-              font-weight: 500;
-              font-display: swap;
-              src: url(https://demo-app.keycloakify.dev/fonts/WorkSans/worksans-medium-webfont.woff2)
-                format("woff2");
-            }
-            @font-face {
-              font-family: "Work Sans";
-              font-style: normal;
-              font-weight: 600;
-              font-display: swap;
-              src: url(https://demo-app.keycloakify.dev/fonts/WorkSans/worksans-semibold-webfont.woff2)
-                format("woff2");
-            }
-            @font-face {
-              font-family: "Work Sans";
-              font-style: normal;
-              font-weight: 700;
-              font-display: swap;
-              src: url(https://demo-app.keycloakify.dev/fonts/WorkSans/worksans-bold-webfont.woff2)
                 format("woff2");
             }
         `;
@@ -430,7 +319,6 @@ describe("bin/css-inline-transforms", () => {
             const { fixedCssCode } = replaceImportsInInlineCssCode({
                 cssCode,
                 "buildOptions": {
-                    "isStandalone": true,
                     "urlPathname": "/x/y/z/"
                 }
             });
@@ -466,53 +354,6 @@ describe("bin/css-inline-transforms", () => {
                   font-weight: 700;
                   font-display: swap;
                   src: url(\${url.resourcesPath}/build/fonts/WorkSans/worksans-bold-webfont.woff2)
-                    format("woff2");
-                }
-            `;
-
-            expect(isSameCode(fixedCssCode, fixedCssCodeExpected)).toBe(true);
-        });
-        it("transforms css for external app properly", () => {
-            const { fixedCssCode } = replaceImportsInInlineCssCode({
-                cssCode,
-                "buildOptions": {
-                    "isStandalone": false,
-                    "urlOrigin": "https://demo-app.keycloakify.dev",
-                    "urlPathname": "/x/y/z/"
-                }
-            });
-
-            const fixedCssCodeExpected = `
-                @font-face {
-                  font-family: "Work Sans";
-                  font-style: normal;
-                  font-weight: 400;
-                  font-display: swap;
-                  src: url(https://demo-app.keycloakify.dev/x/y/z/fonts/WorkSans/worksans-regular-webfont.woff2)
-                    format("woff2");
-                }
-                @font-face {
-                  font-family: "Work Sans";
-                  font-style: normal;
-                  font-weight: 500;
-                  font-display: swap;
-                  src: url(https://demo-app.keycloakify.dev/x/y/z/fonts/WorkSans/worksans-medium-webfont.woff2)
-                    format("woff2");
-                }
-                @font-face {
-                  font-family: "Work Sans";
-                  font-style: normal;
-                  font-weight: 600;
-                  font-display: swap;
-                  src: url(https://demo-app.keycloakify.dev/x/y/z/fonts/WorkSans/worksans-semibold-webfont.woff2)
-                    format("woff2");
-                }
-                @font-face {
-                  font-family: "Work Sans";
-                  font-style: normal;
-                  font-weight: 700;
-                  font-display: swap;
-                  src: url(https://demo-app.keycloakify.dev/x/y/z/fonts/WorkSans/worksans-bold-webfont.woff2)
                     format("woff2");
                 }
             `;

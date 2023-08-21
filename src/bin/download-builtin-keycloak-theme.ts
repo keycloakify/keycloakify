@@ -15,6 +15,7 @@ export async function downloadBuiltinKeycloakTheme(params: { projectDirPath: str
     console.log("Downloading Keycloak theme...", { keycloakVersion });
 
     await downloadAndUnzip({
+        "doUseCache": true,
         projectDirPath,
         destDirPath,
         "url": `https://github.com/keycloak/keycloak/archive/refs/tags/${keycloakVersion}.zip`,

@@ -10,7 +10,7 @@ import { unzip, zip } from "./unzip";
 
 const exec = promisify(execCallback);
 
-function hash(s: string) {
+function sha256(s: string) {
     return createHash("sha256").update(s).digest("hex");
 }
 
@@ -112,24 +112,35 @@ async function getFetchOptions(): Promise<Pick<FetchOptions, "proxy" | "noProxy"
     return { proxy, noProxy, strictSSL, cert, ca: ca.length === 0 ? undefined : ca };
 }
 
-export async function downloadAndUnzip(params: {
-    projectDirPath: string;
-    url: string;
-    destDirPath: string;
-    specificDirsToExtract?: string[];
-    preCacheTransform?: {
-        actionCacheId: string;
-        action: (params: { destDirPath: string }) => Promise<void>;
-    };
-}) {
-    const { projectDirPath, url, destDirPath, specificDirsToExtract, preCacheTransform } = params;
+export async function downloadAndUnzip(
+    params: {
+        url: string;
+        destDirPath: string;
+        specificDirsToExtract?: string[];
+        preCacheTransform?: {
+            actionCacheId: string;
+            action: (params: { destDirPath: string }) => Promise<void>;
+        };
+    } & (
+        | {
+              doUseCache: true;
+              projectDirPath: string;
+          }
+        | {
+              doUseCache: false;
+          }
+    )
+) {
+    const { url, destDirPath, specificDirsToExtract, preCacheTransform, ...rest } = params;
 
-    const downloadHash = hash(
+    const hash = sha256(
         JSON.stringify({ url }) + (preCacheTransform === undefined ? "" : `${preCacheTransform.actionCacheId}${preCacheTransform.action.toString()}`)
     ).substring(0, 15);
-    const cacheRoot = pathJoin(process.env.XDG_CACHE_HOME ?? pathJoin(projectDirPath, "node_modules", ".cache"), "keycloakify");
-    const zipFilePath = pathJoin(cacheRoot, `_${downloadHash}.zip`);
-    const extractDirPath = pathJoin(cacheRoot, `tmp_unzip_${downloadHash}`);
+    const cacheRoot = !rest.doUseCache
+        ? `tmp_${Math.random().toString().slice(2, 12)}`
+        : pathJoin(process.env.XDG_CACHE_HOME ?? pathJoin(rest.projectDirPath, "node_modules", ".cache"), "keycloakify");
+    const zipFilePath = pathJoin(cacheRoot, `_${hash}.zip`);
+    const extractDirPath = pathJoin(cacheRoot, `tmp_unzip_${hash}`);
 
     if (!(await exists(zipFilePath))) {
         const opts = await getFetchOptions();
@@ -167,4 +178,8 @@ export async function downloadAndUnzip(params: {
         "srcDirPath": extractDirPath,
         "destDirPath": destDirPath
     });
+
+    if (!rest.doUseCache) {
+        await rm(cacheRoot, { "recursive": true });
+    }
 }

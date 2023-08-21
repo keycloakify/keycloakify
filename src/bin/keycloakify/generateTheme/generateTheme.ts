@@ -13,39 +13,13 @@ import { readFieldNameUsage } from "./readFieldNameUsage";
 import { readExtraPagesNames } from "./readExtraPageNames";
 import { generateMessageProperties } from "./generateMessageProperties";
 
-export type BuildOptionsLike = BuildOptionsLike.Standalone | BuildOptionsLike.ExternalAssets;
-
-export namespace BuildOptionsLike {
-    export type Common = {
-        themeName: string;
-        extraThemeProperties: string[] | undefined;
-        themeVersion: string;
-        keycloakVersionDefaultAssets: string;
-    };
-
-    export type Standalone = Common & {
-        isStandalone: true;
-        urlPathname: string | undefined;
-    };
-
-    export type ExternalAssets = ExternalAssets.SameDomain | ExternalAssets.DifferentDomains;
-
-    export namespace ExternalAssets {
-        export type CommonExternalAssets = Common & {
-            isStandalone: false;
-        };
-
-        export type SameDomain = CommonExternalAssets & {
-            areAppAndKeycloakServerSharingSameDomain: true;
-        };
-
-        export type DifferentDomains = CommonExternalAssets & {
-            areAppAndKeycloakServerSharingSameDomain: false;
-            urlOrigin: string;
-            urlPathname: string | undefined;
-        };
-    }
-}
+export type BuildOptionsLike = {
+    themeName: string;
+    extraThemeProperties: string[] | undefined;
+    themeVersion: string;
+    keycloakVersionDefaultAssets: string;
+    urlPathname: string | undefined;
+};
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
@@ -85,17 +59,16 @@ export async function generateTheme(params: {
         copy_app_resources_to_theme_path: {
             const isFirstPass = themeType.indexOf(themeType) === 0;
 
-            if (!isFirstPass && !buildOptions.isStandalone) {
+            if (!isFirstPass) {
                 break copy_app_resources_to_theme_path;
             }
 
             transformCodebase({
-                "destDirPath": buildOptions.isStandalone ? pathJoin(themeDirPath, "resources", "build") : reactAppBuildDirPath,
+                "destDirPath": pathJoin(themeDirPath, "resources", "build"),
                 "srcDirPath": reactAppBuildDirPath,
                 "transformSourceCode": ({ filePath, sourceCode }) => {
                     //NOTE: Prevent cycles, excludes the folder we generated for debug in public/
                     if (
-                        buildOptions.isStandalone &&
                         isInside({
                             "dirPath": pathJoin(reactAppBuildDirPath, basenameOfKeycloakDirInPublicDir),
                             filePath
@@ -105,10 +78,6 @@ export async function generateTheme(params: {
                     }
 
                     if (/\.css?$/i.test(filePath)) {
-                        if (!buildOptions.isStandalone) {
-                            return undefined;
-                        }
-
                         const { cssGlobalsToDefine, fixedCssCode } = replaceImportsInCssCode({
                             "cssCode": sourceCode.toString("utf8")
                         });
@@ -128,19 +97,14 @@ export async function generateTheme(params: {
                     }
 
                     if (/\.js?$/i.test(filePath)) {
-                        if (!buildOptions.isStandalone && buildOptions.areAppAndKeycloakServerSharingSameDomain) {
-                            return undefined;
-                        }
-
                         const { fixedJsCode } = replaceImportsFromStaticInJsCode({
-                            "jsCode": sourceCode.toString("utf8"),
-                            buildOptions
+                            "jsCode": sourceCode.toString("utf8")
                         });
 
                         return { "modifiedSourceCode": Buffer.from(fixedJsCode, "utf8") };
                     }
 
-                    return buildOptions.isStandalone ? { "modifiedSourceCode": sourceCode } : undefined;
+                    return { "modifiedSourceCode": sourceCode };
                 }
             });
         }

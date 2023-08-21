@@ -12,7 +12,8 @@ export const sampleReactProjectDirPath = pathJoin(getProjectRoot(), "sample_reac
 async function setupSampleReactProject(destDir: string) {
     await downloadAndUnzip({
         "url": "https://github.com/keycloakify/keycloakify/releases/download/v0.0.1/sample_build_dir_and_package_json.zip",
-        "destDirPath": destDir
+        "destDirPath": destDir,
+        "doUseCache": false
     });
 }
 let parsedPackageJson: Record<string, unknown> = {};
@@ -51,17 +52,19 @@ describe("Sample Project", () => {
             await setupSampleReactProject(sampleReactProjectDirPath);
             await initializeEmailTheme();
 
+            const projectDirPath = process.cwd();
+
             const destDirPath = pathJoin(
                 readBuildOptions({
                     "processArgv": ["--silent"],
-                    "projectDirPath": process.cwd()
+                    projectDirPath
                 }).keycloakifyBuildDirPath,
                 "src",
                 "main",
                 "resources",
                 "theme"
             );
-            await downloadBuiltinKeycloakTheme({ destDirPath, keycloakVersion: "11.0.3", "isSilent": false });
+            await downloadBuiltinKeycloakTheme({ destDirPath, "keycloakVersion": "11.0.3", projectDirPath });
         },
         { timeout: 90000 }
     );
@@ -77,17 +80,19 @@ describe("Sample Project", () => {
             await setupSampleReactProject(pathJoin(sampleReactProjectDirPath, "custom_input"));
             await initializeEmailTheme();
 
+            const projectDirPath = process.cwd();
+
             const destDirPath = pathJoin(
                 readBuildOptions({
                     "processArgv": ["--silent"],
-                    "projectDirPath": process.cwd()
+                    projectDirPath
                 }).keycloakifyBuildDirPath,
                 "src",
                 "main",
                 "resources",
                 "theme"
             );
-            await downloadBuiltinKeycloakTheme({ destDirPath, "keycloakVersion": "11.0.3", "isSilent": false });
+            await downloadBuiltinKeycloakTheme({ destDirPath, "keycloakVersion": "11.0.3", projectDirPath });
         },
         { timeout: 90000 }
     );
