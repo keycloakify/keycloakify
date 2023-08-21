@@ -7,12 +7,7 @@ import { readBuildOptions } from "./keycloakify/BuildOptions";
 import * as child_process from "child_process";
 import * as fs from "fs";
 
-export async function downloadBuiltinKeycloakTheme(params: {
-    projectDirPath: string;
-    keycloakVersion: string;
-    destDirPath: string;
-    isSilent: boolean;
-}) {
+export async function downloadBuiltinKeycloakTheme(params: { projectDirPath: string; keycloakVersion: string; destDirPath: string }) {
     const { projectDirPath, keycloakVersion, destDirPath } = params;
 
     const start = Date.now();
@@ -98,8 +93,7 @@ async function main() {
     await downloadBuiltinKeycloakTheme({
         "projectDirPath": process.cwd(),
         keycloakVersion,
-        destDirPath,
-        "isSilent": buildOptions.isSilent
+        destDirPath
     });
 }
 

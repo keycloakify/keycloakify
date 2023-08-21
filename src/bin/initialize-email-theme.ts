@@ -38,8 +38,7 @@ export async function main() {
     await downloadBuiltinKeycloakTheme({
         projectDirPath,
         keycloakVersion,
-        "destDirPath": builtinKeycloakThemeTmpDirPath,
-        isSilent
+        "destDirPath": builtinKeycloakThemeTmpDirPath
     });
 
     transformCodebase({

@@ -19,7 +19,6 @@ export namespace BuildOptionsLike {
     export type Common = {
         themeName: string;
         extraThemeProperties: string[] | undefined;
-        isSilent: boolean;
         themeVersion: string;
         keycloakVersionDefaultAssets: string;
     };
@@ -207,7 +206,6 @@ export async function generateTheme(params: {
 
             await downloadKeycloakStaticResources({
                 projectDirPath,
-                "isSilent": buildOptions.isSilent,
                 "keycloakVersion": buildOptions.keycloakVersionDefaultAssets,
                 "themeDirPath": keycloakDirInPublicDir,
                 themeType
@@ -233,7 +231,6 @@ export async function generateTheme(params: {
 
         await downloadKeycloakStaticResources({
             projectDirPath,
-            "isSilent": buildOptions.isSilent,
             "keycloakVersion": buildOptions.keycloakVersionDefaultAssets,
             themeDirPath,
             themeType
