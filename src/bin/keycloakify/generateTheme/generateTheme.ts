@@ -51,6 +51,7 @@ export namespace BuildOptionsLike {
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
 export async function generateTheme(params: {
+    projectDirPath: string;
     reactAppBuildDirPath: string;
     keycloakThemeBuildingDirPath: string;
     themeSrcDirPath: string;
@@ -58,7 +59,15 @@ export async function generateTheme(params: {
     buildOptions: BuildOptionsLike;
     keycloakifyVersion: string;
 }): Promise<void> {
-    const { reactAppBuildDirPath, keycloakThemeBuildingDirPath, themeSrcDirPath, keycloakifySrcDirPath, buildOptions, keycloakifyVersion } = params;
+    const {
+        projectDirPath,
+        reactAppBuildDirPath,
+        keycloakThemeBuildingDirPath,
+        themeSrcDirPath,
+        keycloakifySrcDirPath,
+        buildOptions,
+        keycloakifyVersion
+    } = params;
 
     const getThemeDirPath = (themeType: ThemeType | "email") =>
         pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", buildOptions.themeName, themeType);
@@ -197,6 +206,7 @@ export async function generateTheme(params: {
             }
 
             await downloadKeycloakStaticResources({
+                projectDirPath,
                 "isSilent": buildOptions.isSilent,
                 "keycloakVersion": buildOptions.keycloakVersionDefaultAssets,
                 "themeDirPath": keycloakDirInPublicDir,
@@ -222,6 +232,7 @@ export async function generateTheme(params: {
         }
 
         await downloadKeycloakStaticResources({
+            projectDirPath,
             "isSilent": buildOptions.isSilent,
             "keycloakVersion": buildOptions.keycloakVersionDefaultAssets,
             themeDirPath,

@@ -24,6 +24,7 @@ import * as fs from "fs";
 
     for (const themeType of themeTypes) {
         await downloadKeycloakStaticResources({
+            projectDirPath,
             "isSilent": false,
             "keycloakVersion": buildOptions.keycloakVersionDefaultAssets,
             "themeType": themeType,

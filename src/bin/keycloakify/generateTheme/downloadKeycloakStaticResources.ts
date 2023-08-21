@@ -13,13 +13,14 @@ import * as crypto from "crypto";
 export async function downloadKeycloakStaticResources(
     // prettier-ignore
     params: {
+        projectDirPath: string;
         themeType: ThemeType;
         themeDirPath: string;
         isSilent: boolean;
         keycloakVersion: string;
     }
 ) {
-    const { themeType, isSilent, themeDirPath, keycloakVersion } = params;
+    const { projectDirPath, themeType, isSilent, themeDirPath, keycloakVersion } = params;
 
     const tmpDirPath = pathJoin(
         themeDirPath,
@@ -28,6 +29,7 @@ export async function downloadKeycloakStaticResources(
     );
 
     await downloadBuiltinKeycloakTheme({
+        projectDirPath,
         keycloakVersion,
         "destDirPath": tmpDirPath,
         isSilent
