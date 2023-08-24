@@ -12,6 +12,7 @@ import { downloadKeycloakStaticResources } from "./downloadKeycloakStaticResourc
 import { readFieldNameUsage } from "./readFieldNameUsage";
 import { readExtraPagesNames } from "./readExtraPageNames";
 import { generateMessageProperties } from "./generateMessageProperties";
+import { readStaticResourcesUsage } from "./readStaticResourcesUsage";
 
 export type BuildOptionsLike = {
     themeName: string;
@@ -172,7 +173,8 @@ export async function generateTheme(params: {
                 projectDirPath,
                 "keycloakVersion": buildOptions.keycloakVersionDefaultAssets,
                 "themeDirPath": keycloakDirInPublicDir,
-                themeType
+                themeType,
+                "usedResources": undefined
             });
 
             if (themeType !== themeTypes[0]) {
@@ -197,7 +199,12 @@ export async function generateTheme(params: {
             projectDirPath,
             "keycloakVersion": buildOptions.keycloakVersionDefaultAssets,
             themeDirPath,
-            themeType
+            themeType,
+            "usedResources": readStaticResourcesUsage({
+                keycloakifySrcDirPath,
+                themeSrcDirPath,
+                themeType
+            })
         });
 
         fs.writeFileSync(

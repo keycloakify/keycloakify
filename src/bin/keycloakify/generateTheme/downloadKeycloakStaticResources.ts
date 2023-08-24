@@ -17,9 +17,19 @@ export async function downloadKeycloakStaticResources(
         themeType: ThemeType;
         themeDirPath: string;
         keycloakVersion: string;
+        usedResources: {
+            resourcesCommonFilePaths: string[];
+            resourcesFilePaths: string[];
+        } | undefined
     }
 ) {
-    const { projectDirPath, themeType, themeDirPath, keycloakVersion } = params;
+    const { projectDirPath, themeType, themeDirPath, keycloakVersion, usedResources } = params;
+
+    console.log({
+        themeDirPath,
+        keycloakVersion,
+        usedResources
+    });
 
     const tmpDirPath = pathJoin(
         themeDirPath,
@@ -35,12 +45,32 @@ export async function downloadKeycloakStaticResources(
 
     transformCodebase({
         "srcDirPath": pathJoin(tmpDirPath, "keycloak", themeType, "resources"),
-        "destDirPath": pathJoin(themeDirPath, pathRelative(basenameOfKeycloakDirInPublicDir, resourcesDirPathRelativeToPublicDir))
+        "destDirPath": pathJoin(themeDirPath, pathRelative(basenameOfKeycloakDirInPublicDir, resourcesDirPathRelativeToPublicDir)),
+        "transformSourceCode":
+            usedResources === undefined
+                ? undefined
+                : ({ fileRelativePath, sourceCode }) => {
+                      if (!usedResources.resourcesFilePaths.includes(fileRelativePath)) {
+                          return undefined;
+                      }
+
+                      return { "modifiedSourceCode": sourceCode };
+                  }
     });
 
     transformCodebase({
         "srcDirPath": pathJoin(tmpDirPath, "keycloak", "common", "resources"),
-        "destDirPath": pathJoin(themeDirPath, pathRelative(basenameOfKeycloakDirInPublicDir, resourcesCommonDirPathRelativeToPublicDir))
+        "destDirPath": pathJoin(themeDirPath, pathRelative(basenameOfKeycloakDirInPublicDir, resourcesCommonDirPathRelativeToPublicDir)),
+        "transformSourceCode":
+            usedResources === undefined
+                ? undefined
+                : ({ fileRelativePath, sourceCode }) => {
+                      if (!usedResources.resourcesCommonFilePaths.includes(fileRelativePath)) {
+                          return undefined;
+                      }
+
+                      return { "modifiedSourceCode": sourceCode };
+                  }
     });
 
     fs.rmSync(tmpDirPath, { "recursive": true, "force": true });

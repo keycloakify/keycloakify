@@ -19,13 +19,11 @@ export function readStaticResourcesUsage(params: { keycloakifySrcDirPath: string
         for (const filePath of filePaths) {
             const rawSourceFile = fs.readFileSync(filePath).toString("utf8");
 
-            if (!rawSourceFile.includes("resourcesCommonPath")) {
+            if (!rawSourceFile.includes("resourcesCommonPath") && !rawSourceFile.includes("resourcesPath")) {
                 continue;
             }
 
-            if (!rawSourceFile.includes("resourcesPath")) {
-                continue;
-            }
+            console.log("=========>", filePath);
 
             const wrap = readPaths({ rawSourceFile });
 

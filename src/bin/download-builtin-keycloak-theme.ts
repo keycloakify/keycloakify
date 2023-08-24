@@ -12,8 +12,6 @@ export async function downloadBuiltinKeycloakTheme(params: { projectDirPath: str
 
     const start = Date.now();
 
-    console.log("Downloading Keycloak theme...", { keycloakVersion });
-
     await downloadAndUnzip({
         "doUseCache": true,
         projectDirPath,
@@ -21,7 +19,7 @@ export async function downloadBuiltinKeycloakTheme(params: { projectDirPath: str
         "url": `https://github.com/keycloak/keycloak/archive/refs/tags/${keycloakVersion}.zip`,
         "specificDirsToExtract": ["", "-community"].map(ext => `keycloak-${keycloakVersion}/themes/src/main/resources${ext}/theme`),
         "preCacheTransform": {
-            "actionCacheId": "Build Keycloak resources",
+            "actionCacheId": "npm install and build",
             "action": async ({ destDirPath }) => {
                 install_common_node_modules: {
                     const commonResourcesDirPath = pathJoin(destDirPath, "keycloak", "common", "resources");

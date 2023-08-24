@@ -3,7 +3,7 @@ import * as path from "path";
 import { crawl } from "./crawl";
 import { id } from "tsafe/id";
 
-type TransformSourceCode = (params: { sourceCode: Buffer; filePath: string }) =>
+type TransformSourceCode = (params: { sourceCode: Buffer; filePath: string; fileRelativePath: string }) =>
     | {
           modifiedSourceCode: Buffer;
           newFileName?: string;
@@ -20,26 +20,27 @@ export function transformCodebase(params: { srcDirPath: string; destDirPath: str
         }))
     } = params;
 
-    for (const file_relative_path of crawl({ "dirPath": srcDirPath, "returnedPathsType": "relative to dirPath" })) {
-        const filePath = path.join(srcDirPath, file_relative_path);
+    for (const fileRelativePath of crawl({ "dirPath": srcDirPath, "returnedPathsType": "relative to dirPath" })) {
+        const filePath = path.join(srcDirPath, fileRelativePath);
 
         const transformSourceCodeResult = transformSourceCode({
             "sourceCode": fs.readFileSync(filePath),
-            filePath
+            filePath,
+            fileRelativePath
         });
 
         if (transformSourceCodeResult === undefined) {
             continue;
         }
 
-        fs.mkdirSync(path.dirname(path.join(destDirPath, file_relative_path)), {
+        fs.mkdirSync(path.dirname(path.join(destDirPath, fileRelativePath)), {
             "recursive": true
         });
 
         const { newFileName, modifiedSourceCode } = transformSourceCodeResult;
 
         fs.writeFileSync(
-            path.join(path.dirname(path.join(destDirPath, file_relative_path)), newFileName ?? path.basename(file_relative_path)),
+            path.join(path.dirname(path.join(destDirPath, fileRelativePath)), newFileName ?? path.basename(fileRelativePath)),
             modifiedSourceCode
         );
     }

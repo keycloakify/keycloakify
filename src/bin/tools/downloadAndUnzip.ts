@@ -10,8 +10,46 @@ import { unzip, zip } from "./unzip";
 
 const exec = promisify(execCallback);
 
-function sha256(s: string) {
-    return createHash("sha256").update(s).digest("hex");
+function generateFileNameFromURL(params: {
+    url: string;
+    preCacheTransform:
+        | {
+              actionCacheId: string;
+              actionFootprint: string;
+          }
+        | undefined;
+}): string {
+    const { preCacheTransform } = params;
+
+    // Parse the URL
+    const url = new URL(params.url);
+
+    // Extract pathname and remove leading slashes
+    let fileName = url.pathname.replace(/^\//, "").replace(/\//g, "_");
+
+    // Optionally, add query parameters replacing special characters
+    if (url.search) {
+        fileName += url.search.replace(/[&=?]/g, "-");
+    }
+
+    // Replace any characters that are not valid in filenames
+    fileName = fileName.replace(/[^a-zA-Z0-9-_]/g, "");
+
+    // Trim or pad the fileName to a specific length
+    fileName = fileName.substring(0, 50);
+
+    add_pre_cache_transform: {
+        if (preCacheTransform === undefined) {
+            break add_pre_cache_transform;
+        }
+
+        // Sanitize actionCacheId the same way as other components
+        const sanitizedActionCacheId = preCacheTransform.actionCacheId.replace(/[^a-zA-Z0-9-_]/g, "_");
+
+        fileName += `_${sanitizedActionCacheId}_${createHash("sha256").update(preCacheTransform.actionFootprint).digest("hex").substring(0, 5)}`;
+    }
+
+    return fileName;
 }
 
 async function exists(path: string) {
@@ -133,14 +171,22 @@ export async function downloadAndUnzip(
 ) {
     const { url, destDirPath, specificDirsToExtract, preCacheTransform, ...rest } = params;
 
-    const hash = sha256(
-        JSON.stringify({ url }) + (preCacheTransform === undefined ? "" : `${preCacheTransform.actionCacheId}${preCacheTransform.action.toString()}`)
-    ).substring(0, 15);
+    const zipFileBasename = generateFileNameFromURL({
+        url,
+        "preCacheTransform":
+            preCacheTransform === undefined
+                ? undefined
+                : {
+                      "actionCacheId": preCacheTransform.actionCacheId,
+                      "actionFootprint": preCacheTransform.action.toString()
+                  }
+    });
+
     const cacheRoot = !rest.doUseCache
         ? `tmp_${Math.random().toString().slice(2, 12)}`
         : pathJoin(process.env.XDG_CACHE_HOME ?? pathJoin(rest.projectDirPath, "node_modules", ".cache"), "keycloakify");
-    const zipFilePath = pathJoin(cacheRoot, `_${hash}.zip`);
-    const extractDirPath = pathJoin(cacheRoot, `tmp_unzip_${hash}`);
+    const zipFilePath = pathJoin(cacheRoot, `${zipFileBasename}.zip`);
+    const extractDirPath = pathJoin(cacheRoot, `tmp_unzip_${zipFileBasename}`);
 
     if (!(await exists(zipFilePath))) {
         const opts = await getFetchOptions();
@@ -181,5 +227,7 @@ export async function downloadAndUnzip(
 
     if (!rest.doUseCache) {
         await rm(cacheRoot, { "recursive": true });
+    } else {
+        await rm(extractDirPath, { "recursive": true });
     }
 }

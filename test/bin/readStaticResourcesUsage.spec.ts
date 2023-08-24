@@ -7,7 +7,8 @@ describe("Ensure it's able to extract used Keycloak resources", () => {
         "resourcesCommonFilePaths": [
             "node_modules/patternfly/dist/css/patternfly.min.css",
             "node_modules/patternfly/dist/css/patternfly-additions.min.css",
-            "lib/zocial/zocial.css"
+            "lib/zocial/zocial.css",
+            "node_modules/jquery/dist/jquery.min.js"
         ],
         "resourcesFilePaths": ["css/login.css"]
     };
@@ -28,6 +29,12 @@ describe("Ensure it's able to extract used Keycloak resources", () => {
                 "htmlClassName": getClassName("kcHtmlClass"),
                 "bodyClassName": undefined
             });
+
+            const { prLoaded, remove } = headInsert({
+                "type": "javascript",
+                "src": \`\${kcContext.url.resourcesCommonPath}/node_modules/jquery/dist/jquery.min.js\`
+            });
+
             `
         });
 
@@ -50,6 +57,11 @@ describe("Ensure it's able to extract used Keycloak resources", () => {
                 ],
                 "htmlClassName": getClassName("kcHtmlClass"),
                 "bodyClassName": undefined
+            });
+
+            const { prLoaded, remove } = headInsert({
+                "type": "javascript",
+                "src": kcContext.url.resourcesCommonPath + "/node_modules/jquery/dist/jquery.min.js\"
             });
 
 
@@ -80,6 +92,11 @@ describe("Ensure it's able to extract used Keycloak resources", () => {
                 ],
                 "htmlClassName": getClassName("kcHtmlClass"),
                 "bodyClassName": undefined
+            });
+
+            const { prLoaded, remove } = headInsert({
+                "type": "javascript",
+                "src": path.join(kcContext.url.resourcesCommonPath, "/node_modules/jquery/dist/jquery.min.js")
             });
 
 

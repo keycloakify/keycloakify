@@ -27,7 +27,8 @@ import * as fs from "fs";
             projectDirPath,
             "keycloakVersion": buildOptions.keycloakVersionDefaultAssets,
             "themeType": themeType,
-            "themeDirPath": keycloakDirInPublicDir
+            "themeDirPath": keycloakDirInPublicDir,
+            "usedResources": undefined
         });
     }
 
