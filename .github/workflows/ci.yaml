@@ -74,7 +74,6 @@ jobs:
       id: step1
       with: 
         action_name: is_package_json_version_upgraded
-        branch: ${{ github.head_ref || github.ref }}
 
   create_github_release:
     runs-on: ubuntu-latest
