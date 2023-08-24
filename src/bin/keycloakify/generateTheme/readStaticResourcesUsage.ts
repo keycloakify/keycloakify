@@ -23,8 +23,6 @@ export function readStaticResourcesUsage(params: { keycloakifySrcDirPath: string
                 continue;
             }
 
-            console.log("=========>", filePath);
-
             const wrap = readPaths({ rawSourceFile });
 
             wrap.resourcesCommonFilePaths.forEach(filePath => resourcesCommonFilePaths.add(filePath));

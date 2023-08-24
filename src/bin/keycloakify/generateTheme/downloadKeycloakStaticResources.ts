@@ -25,12 +25,6 @@ export async function downloadKeycloakStaticResources(
 ) {
     const { projectDirPath, themeType, themeDirPath, keycloakVersion, usedResources } = params;
 
-    console.log({
-        themeDirPath,
-        keycloakVersion,
-        usedResources
-    });
-
     const tmpDirPath = pathJoin(
         themeDirPath,
         "..",
