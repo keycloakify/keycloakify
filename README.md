@@ -125,6 +125,62 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 # Changelog highlights
 
+## 5.0 (candidate)
+
+-   Much smaller .jar size. 70.2 MB -> 7.8 MB.  
+    Keycloakify now detects which of the static resources from the default theme are actually used by your theme and only include those in the .jar.
+-   Build time: The first build is slowed but the subsequent build are faster. Update your CI so that nodes_modules/.cache is not deleted between builds.
+
+### Breaking changes
+
+There are very few breaking changes in this major version.
+
+-   The [`--external-assets` build option has been removed](https://docs.keycloakify.dev/v/v7/build-options#external-assets-deprecated) it was a performance optimization that is no longer relevant now that
+    we have lazy loading.
+
+-   The `usePrepareTemplate` prototype has been changed, you can search and replace:
+
+`src/keycloak-theme/login/Template.tsx`
+
+```ts
+"stylesCommon": [
+    "node_modules/patternfly/dist/css/patternfly.min.css",
+    "node_modules/patternfly/dist/css/patternfly-additions.min.css",
+    "lib/zocial/zocial.css"
+],
+"styles": ["css/login.css"],
+```
+
+by
+
+```ts
+"styles": [
+    `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly.min.css`,
+    `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly-additions.min.css`,
+    `${url.resourcesCommonPath}/lib/zocial/zocial.css`,
+    `${url.resourcesPath}/css/login.css`
+],
+```
+
+and
+
+`src/keycloak-theme/account/Template.css`
+
+```ts
+"stylesCommon": ["node_modules/patternfly/dist/css/patternfly.min.css", "node_modules/patternfly/dist/css/patternfly-additions.min.css"],
+"styles": ["css/account.css"],
+```
+
+by
+
+```ts
+"styles": [
+    `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly.min.css`,
+    `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly-additions.min.css`,
+    `${url.resourcesPath}/css/account.css`
+],
+```
+
 ## 7.15
 
 -   The i18n messages you defines in your theme are now also maid available to Keycloak.
