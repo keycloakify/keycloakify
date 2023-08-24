@@ -132,10 +132,6 @@ export const kcContextCommonMock: KcContext.Common = {
         ],
         "currentLanguageTag": "en"
     },
-    "message": {
-        "type": "success",
-        "summary": "This is a test message"
-    },
     "features": {
         "authorization": true,
         "identityFederation": true,
