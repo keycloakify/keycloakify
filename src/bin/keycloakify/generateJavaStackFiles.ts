@@ -1,7 +1,6 @@
 import * as fs from "fs";
 import { join as pathJoin, dirname as pathDirname } from "path";
 import { assert } from "tsafe/assert";
-import { Reflect } from "tsafe/Reflect";
 import type { BuildOptions } from "./BuildOptions";
 import type { ThemeType } from "./generateFtl";
 
@@ -13,11 +12,7 @@ export type BuildOptionsLike = {
     themeVersion: string;
 };
 
-{
-    const buildOptions = Reflect<BuildOptions>();
-
-    assert<typeof buildOptions extends BuildOptionsLike ? true : false>();
-}
+assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
 export function generateJavaStackFiles(params: {
     keycloakThemeBuildingDirPath: string;

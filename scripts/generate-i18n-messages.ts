@@ -24,9 +24,9 @@ async function main() {
     fs.rmSync(tmpDirPath, { "recursive": true, "force": true });
 
     await downloadBuiltinKeycloakTheme({
+        "projectDirPath": getProjectRoot(),
         keycloakVersion,
-        "destDirPath": tmpDirPath,
-        isSilent
+        "destDirPath": tmpDirPath
     });
 
     type Dictionary = { [idiomId: string]: string };

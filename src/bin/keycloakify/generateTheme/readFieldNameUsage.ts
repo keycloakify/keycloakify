@@ -3,7 +3,6 @@ import { removeDuplicates } from "evt/tools/reducers/removeDuplicates";
 import { join as pathJoin } from "path";
 import * as fs from "fs";
 import type { ThemeType } from "../generateFtl";
-import { exclude } from "tsafe/exclude";
 
 /** Assumes the theme type exists */
 export function readFieldNameUsage(params: { keycloakifySrcDirPath: string; themeSrcDirPath: string; themeType: ThemeType }): string[] {
@@ -11,9 +10,7 @@ export function readFieldNameUsage(params: { keycloakifySrcDirPath: string; them
 
     const fieldNames: string[] = [];
 
-    for (const srcDirPath of ([pathJoin(keycloakifySrcDirPath, themeType), pathJoin(themeSrcDirPath, themeType)] as const).filter(
-        exclude(undefined)
-    )) {
+    for (const srcDirPath of [pathJoin(keycloakifySrcDirPath, themeType), pathJoin(themeSrcDirPath, themeType)]) {
         const filePaths = crawl({ "dirPath": srcDirPath, "returnedPathsType": "absolute" }).filter(filePath => /\.(ts|tsx|js|jsx)$/.test(filePath));
 
         for (const filePath of filePaths) {

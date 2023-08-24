@@ -1,18 +1,55 @@
 import { exec as execCallback } from "child_process";
 import { createHash } from "crypto";
-import { mkdir, readFile, stat, writeFile } from "fs/promises";
+import { mkdir, readFile, stat, writeFile, unlink, rm } from "fs/promises";
 import fetch, { type FetchOptions } from "make-fetch-happen";
 import { dirname as pathDirname, join as pathJoin, resolve as pathResolve, sep as pathSep } from "path";
 import { assert } from "tsafe/assert";
 import { promisify } from "util";
-import { getProjectRoot } from "./getProjectRoot";
 import { transformCodebase } from "./transformCodebase";
-import { unzip } from "./unzip";
+import { unzip, zip } from "./unzip";
 
 const exec = promisify(execCallback);
 
-function hash(s: string) {
-    return createHash("sha256").update(s).digest("hex");
+function generateFileNameFromURL(params: {
+    url: string;
+    preCacheTransform:
+        | {
+              actionCacheId: string;
+              actionFootprint: string;
+          }
+        | undefined;
+}): string {
+    const { preCacheTransform } = params;
+
+    // Parse the URL
+    const url = new URL(params.url);
+
+    // Extract pathname and remove leading slashes
+    let fileName = url.pathname.replace(/^\//, "").replace(/\//g, "_");
+
+    // Optionally, add query parameters replacing special characters
+    if (url.search) {
+        fileName += url.search.replace(/[&=?]/g, "-");
+    }
+
+    // Replace any characters that are not valid in filenames
+    fileName = fileName.replace(/[^a-zA-Z0-9-_]/g, "");
+
+    // Trim or pad the fileName to a specific length
+    fileName = fileName.substring(0, 50);
+
+    add_pre_cache_transform: {
+        if (preCacheTransform === undefined) {
+            break add_pre_cache_transform;
+        }
+
+        // Sanitize actionCacheId the same way as other components
+        const sanitizedActionCacheId = preCacheTransform.actionCacheId.replace(/[^a-zA-Z0-9-_]/g, "_");
+
+        fileName += `_${sanitizedActionCacheId}_${createHash("sha256").update(preCacheTransform.actionFootprint).digest("hex").substring(0, 5)}`;
+    }
+
+    return fileName;
 }
 
 async function exists(path: string) {
@@ -113,14 +150,43 @@ async function getFetchOptions(): Promise<Pick<FetchOptions, "proxy" | "noProxy"
     return { proxy, noProxy, strictSSL, cert, ca: ca.length === 0 ? undefined : ca };
 }
 
-export async function downloadAndUnzip(params: { url: string; destDirPath: string; pathOfDirToExtractInArchive?: string }) {
-    const { url, destDirPath, pathOfDirToExtractInArchive } = params;
+export async function downloadAndUnzip(
+    params: {
+        url: string;
+        destDirPath: string;
+        specificDirsToExtract?: string[];
+        preCacheTransform?: {
+            actionCacheId: string;
+            action: (params: { destDirPath: string }) => Promise<void>;
+        };
+    } & (
+        | {
+              doUseCache: true;
+              projectDirPath: string;
+          }
+        | {
+              doUseCache: false;
+          }
+    )
+) {
+    const { url, destDirPath, specificDirsToExtract, preCacheTransform, ...rest } = params;
 
-    const downloadHash = hash(JSON.stringify({ url })).substring(0, 15);
-    const projectRoot = getProjectRoot();
-    const cacheRoot = process.env.XDG_CACHE_HOME ?? pathJoin(projectRoot, "node_modules", ".cache");
-    const zipFilePath = pathJoin(cacheRoot, "keycloakify", "zip", `_${downloadHash}.zip`);
-    const extractDirPath = pathJoin(cacheRoot, "keycloakify", "unzip", `_${downloadHash}`);
+    const zipFileBasename = generateFileNameFromURL({
+        url,
+        "preCacheTransform":
+            preCacheTransform === undefined
+                ? undefined
+                : {
+                      "actionCacheId": preCacheTransform.actionCacheId,
+                      "actionFootprint": preCacheTransform.action.toString()
+                  }
+    });
+
+    const cacheRoot = !rest.doUseCache
+        ? `tmp_${Math.random().toString().slice(2, 12)}`
+        : pathJoin(process.env.XDG_CACHE_HOME ?? pathJoin(rest.projectDirPath, "node_modules", ".cache"), "keycloakify");
+    const zipFilePath = pathJoin(cacheRoot, `${zipFileBasename}.zip`);
+    const extractDirPath = pathJoin(cacheRoot, `tmp_unzip_${zipFileBasename}`);
 
     if (!(await exists(zipFilePath))) {
         const opts = await getFetchOptions();
@@ -136,12 +202,32 @@ export async function downloadAndUnzip(params: { url: string; destDirPath: strin
         response.body?.setMaxListeners(Number.MAX_VALUE);
         assert(typeof response.body !== "undefined" && response.body != null);
         await writeFile(zipFilePath, response.body);
+
+        if (specificDirsToExtract !== undefined || preCacheTransform !== undefined) {
+            await unzip(zipFilePath, extractDirPath, specificDirsToExtract);
+
+            await preCacheTransform?.action({
+                "destDirPath": extractDirPath
+            });
+
+            await unlink(zipFilePath);
+
+            await zip(extractDirPath, zipFilePath);
+
+            await rm(extractDirPath, { "recursive": true });
+        }
     }
 
-    await unzip(zipFilePath, extractDirPath, pathOfDirToExtractInArchive);
+    await unzip(zipFilePath, extractDirPath);
 
     transformCodebase({
         "srcDirPath": extractDirPath,
         "destDirPath": destDirPath
     });
+
+    if (!rest.doUseCache) {
+        await rm(cacheRoot, { "recursive": true });
+    } else {
+        await rm(extractDirPath, { "recursive": true });
+    }
 }

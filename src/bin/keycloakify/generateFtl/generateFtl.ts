@@ -13,39 +13,11 @@ export const themeTypes = ["login", "account"] as const;
 
 export type ThemeType = (typeof themeTypes)[number];
 
-export type BuildOptionsLike = BuildOptionsLike.Standalone | BuildOptionsLike.ExternalAssets;
-
-export namespace BuildOptionsLike {
-    export type Common = {
-        themeName: string;
-        themeVersion: string;
-    };
-
-    export type Standalone = Common & {
-        isStandalone: true;
-        urlPathname: string | undefined;
-    };
-
-    export type ExternalAssets = ExternalAssets.SameDomain | ExternalAssets.DifferentDomains;
-
-    export namespace ExternalAssets {
-        export type CommonExternalAssets = {
-            isStandalone: false;
-        };
-
-        export type SameDomain = Common &
-            CommonExternalAssets & {
-                areAppAndKeycloakServerSharingSameDomain: true;
-            };
-
-        export type DifferentDomains = Common &
-            CommonExternalAssets & {
-                areAppAndKeycloakServerSharingSameDomain: false;
-                urlOrigin: string;
-                urlPathname: string | undefined;
-            };
-    }
-}
+export type BuildOptionsLike = {
+    themeName: string;
+    themeVersion: string;
+    urlPathname: string | undefined;
+};
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
@@ -63,22 +35,23 @@ export function generateFtlFilesCodeFactory(params: {
     const $ = cheerio.load(indexHtmlCode);
 
     fix_imports_statements: {
-        if (!buildOptions.isStandalone && buildOptions.areAppAndKeycloakServerSharingSameDomain) {
-            break fix_imports_statements;
-        }
-
         $("script:not([src])").each((...[, element]) => {
-            const { fixedJsCode } = replaceImportsFromStaticInJsCode({
-                "jsCode": $(element).html()!,
-                buildOptions
-            });
+            const jsCode = $(element).html();
+
+            assert(jsCode !== null);
+
+            const { fixedJsCode } = replaceImportsFromStaticInJsCode({ jsCode });
 
             $(element).text(fixedJsCode);
         });
 
         $("style").each((...[, element]) => {
+            const cssCode = $(element).html();
+
+            assert(cssCode !== null);
+
             const { fixedCssCode } = replaceImportsInInlineCssCode({
-                "cssCode": $(element).html()!,
+                cssCode,
                 buildOptions
             });
 
@@ -100,9 +73,7 @@ export function generateFtlFilesCodeFactory(params: {
 
                 $(element).attr(
                     attrName,
-                    buildOptions.isStandalone
-                        ? href.replace(new RegExp(`^${(buildOptions.urlPathname ?? "/").replace(/\//g, "\\/")}`), "${url.resourcesPath}/build/")
-                        : href.replace(/^\//, `${buildOptions.urlOrigin}/`)
+                    href.replace(new RegExp(`^${(buildOptions.urlPathname ?? "/").replace(/\//g, "\\/")}`), "${url.resourcesPath}/build/")
                 );
             })
         );

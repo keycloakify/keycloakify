@@ -13,13 +13,23 @@ import * as crypto from "crypto";
 export async function downloadKeycloakStaticResources(
     // prettier-ignore
     params: {
+        projectDirPath: string;
         themeType: ThemeType;
         themeDirPath: string;
-        isSilent: boolean;
         keycloakVersion: string;
+        usedResources: {
+            resourcesCommonFilePaths: string[];
+            resourcesFilePaths: string[];
+        } | undefined
     }
 ) {
-    const { themeType, isSilent, themeDirPath, keycloakVersion } = params;
+    const { projectDirPath, themeType, themeDirPath, keycloakVersion, usedResources } = params;
+
+    console.log({
+        themeDirPath,
+        keycloakVersion,
+        usedResources
+    });
 
     const tmpDirPath = pathJoin(
         themeDirPath,
@@ -28,19 +38,39 @@ export async function downloadKeycloakStaticResources(
     );
 
     await downloadBuiltinKeycloakTheme({
+        projectDirPath,
         keycloakVersion,
-        "destDirPath": tmpDirPath,
-        isSilent
+        "destDirPath": tmpDirPath
     });
 
     transformCodebase({
         "srcDirPath": pathJoin(tmpDirPath, "keycloak", themeType, "resources"),
-        "destDirPath": pathJoin(themeDirPath, pathRelative(basenameOfKeycloakDirInPublicDir, resourcesDirPathRelativeToPublicDir))
+        "destDirPath": pathJoin(themeDirPath, pathRelative(basenameOfKeycloakDirInPublicDir, resourcesDirPathRelativeToPublicDir)),
+        "transformSourceCode":
+            usedResources === undefined
+                ? undefined
+                : ({ fileRelativePath, sourceCode }) => {
+                      if (!usedResources.resourcesFilePaths.includes(fileRelativePath)) {
+                          return undefined;
+                      }
+
+                      return { "modifiedSourceCode": sourceCode };
+                  }
     });
 
     transformCodebase({
         "srcDirPath": pathJoin(tmpDirPath, "keycloak", "common", "resources"),
-        "destDirPath": pathJoin(themeDirPath, pathRelative(basenameOfKeycloakDirInPublicDir, resourcesCommonDirPathRelativeToPublicDir))
+        "destDirPath": pathJoin(themeDirPath, pathRelative(basenameOfKeycloakDirInPublicDir, resourcesCommonDirPathRelativeToPublicDir)),
+        "transformSourceCode":
+            usedResources === undefined
+                ? undefined
+                : ({ fileRelativePath, sourceCode }) => {
+                      if (!usedResources.resourcesCommonFilePaths.includes(fileRelativePath)) {
+                          return undefined;
+                      }
+
+                      return { "modifiedSourceCode": sourceCode };
+                  }
     });
 
     fs.rmSync(tmpDirPath, { "recursive": true, "force": true });

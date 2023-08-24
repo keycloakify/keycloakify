@@ -1,20 +1,12 @@
 import * as crypto from "crypto";
 import type { BuildOptions } from "../BuildOptions";
 import { assert } from "tsafe/assert";
-import { is } from "tsafe/is";
-import { Reflect } from "tsafe/Reflect";
 
 export type BuildOptionsLike = {
     urlPathname: string | undefined;
 };
 
-{
-    const buildOptions = Reflect<BuildOptions>();
-
-    assert(!is<BuildOptions.ExternalAssets.CommonExternalAssets>(buildOptions));
-
-    assert<typeof buildOptions extends BuildOptionsLike ? true : false>();
-}
+assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
 export function replaceImportsInCssCode(params: { cssCode: string }): {
     fixedCssCode: string;

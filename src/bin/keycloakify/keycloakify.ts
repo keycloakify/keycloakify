@@ -30,6 +30,7 @@ export async function main() {
 
     for (const themeName of [buildOptions.themeName, ...buildOptions.extraThemeNames]) {
         await generateTheme({
+            projectDirPath,
             "keycloakThemeBuildingDirPath": buildOptions.keycloakifyBuildDirPath,
             themeSrcDirPath,
             "keycloakifySrcDirPath": pathJoin(keycloakifyDirPath, "src"),

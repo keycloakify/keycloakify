@@ -24,10 +24,11 @@ import * as fs from "fs";
 
     for (const themeType of themeTypes) {
         await downloadKeycloakStaticResources({
-            "isSilent": false,
+            projectDirPath,
             "keycloakVersion": buildOptions.keycloakVersionDefaultAssets,
             "themeType": themeType,
-            "themeDirPath": keycloakDirInPublicDir
+            "themeDirPath": keycloakDirInPublicDir,
+            "usedResources": undefined
         });
     }
 

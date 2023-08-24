@@ -31,13 +31,12 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
 
     const { isReady } = usePrepareTemplate({
         "doFetchDefaultThemeResources": doUseDefaultCss,
-        url,
-        "stylesCommon": [
-            "node_modules/patternfly/dist/css/patternfly.min.css",
-            "node_modules/patternfly/dist/css/patternfly-additions.min.css",
-            "lib/zocial/zocial.css"
+        "styles": [
+            `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly.min.css`,
+            `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly-additions.min.css`,
+            `${url.resourcesCommonPath}/lib/zocial/zocial.css`,
+            `${url.resourcesPath}/css/login.css`
         ],
-        "styles": ["css/login.css"],
         "htmlClassName": getClassName("kcHtmlClass"),
         "bodyClassName": undefined
     });

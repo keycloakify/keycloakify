@@ -10,15 +10,17 @@ import { getLogger } from "./tools/logger";
 import { getThemeSrcDirPath } from "./getSrcDirPath";
 
 export async function main() {
+    const projectDirPath = process.cwd();
+
     const { isSilent } = readBuildOptions({
-        "projectDirPath": process.cwd(),
+        projectDirPath,
         "processArgv": process.argv.slice(2)
     });
 
     const logger = getLogger({ isSilent });
 
     const { themeSrcDirPath } = getThemeSrcDirPath({
-        "projectDirPath": process.cwd()
+        projectDirPath
     });
 
     const emailThemeSrcDirPath = pathJoin(themeSrcDirPath, "email");
@@ -34,9 +36,9 @@ export async function main() {
     const builtinKeycloakThemeTmpDirPath = pathJoin(emailThemeSrcDirPath, "..", "tmp_xIdP3_builtin_keycloak_theme");
 
     await downloadBuiltinKeycloakTheme({
+        projectDirPath,
         keycloakVersion,
-        "destDirPath": builtinKeycloakThemeTmpDirPath,
-        isSilent
+        "destDirPath": builtinKeycloakThemeTmpDirPath
     });
 
     transformCodebase({
