@@ -125,7 +125,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 # Changelog highlights
 
-## 5.0 (candidate)
+## 8.0 (candidate)
 
 -   Much smaller .jar size. 70.2 MB -> 7.8 MB.  
     Keycloakify now detects which of the static resources from the default theme are actually used by your theme and only include those in the .jar.
@@ -186,10 +186,10 @@ by
 -   The i18n messages you defines in your theme are now also maid available to Keycloak.
     In practice this mean that you can now customize the `kcContext.message.summary` that
     display a general alert and the values returned by `kcContext.messagesPerField.get()` that
-    are used to display specific error on some field of the form.  
+    are used to display specific error on some field of the form.
     [See video](https://youtu.be/D6tZcemReTI)
 
-## 7.14
+## 7.14
 
 -   Deprecate the `extraPages` build option. Keycloakify is now able to analyze your code to detect extra pages.
 
