@@ -129,7 +129,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 -   Much smaller .jar size. 70.2 MB -> 7.8 MB.  
     Keycloakify now detects which of the static resources from the default theme are actually used by your theme and only include those in the .jar.
--   Build time: The first build is slowed but the subsequent build are faster. Update your CI so that nodes_modules/.cache is not deleted between builds.
+-   Build time: The first build is slowed but the subsequent build are faster. [Update your CI so that the cache is persisted across CI build](https://github.com/keycloakify/keycloakify-starter/commit/bc378d5afb67e796f520afbc348185f3e319d9d0).
 
 ### Breaking changes
 
