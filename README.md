@@ -125,7 +125,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 # Changelog highlights
 
-## 8.0 (candidate)
+## 8.0
 
 -   Much smaller .jar size. 70.2 MB -> 7.8 MB.  
     Keycloakify now detects which of the static resources from the default theme are actually used by your theme and only include those in the .jar.
