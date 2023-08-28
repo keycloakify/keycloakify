@@ -10,8 +10,6 @@ import * as fs from "fs";
 export async function downloadBuiltinKeycloakTheme(params: { projectDirPath: string; keycloakVersion: string; destDirPath: string }) {
     const { projectDirPath, keycloakVersion, destDirPath } = params;
 
-    const start = Date.now();
-
     await downloadAndUnzip({
         "doUseCache": true,
         projectDirPath,
@@ -72,8 +70,6 @@ export async function downloadBuiltinKeycloakTheme(params: { projectDirPath: str
             }
         }
     });
-
-    console.log("Downloaded Keycloak theme in", Date.now() - start, "ms");
 }
 
 async function main() {
