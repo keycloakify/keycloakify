@@ -17,7 +17,7 @@ export async function promptKeycloakVersion() {
         return { getLatestsSemVersionedTag };
     })();
 
-    console.log("Initialize the directory with email template from which keycloak version?");
+    console.log("Select Keycloak version?");
 
     const tags = [
         ...(await getLatestsSemVersionedTag({
