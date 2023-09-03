@@ -15,7 +15,6 @@ import { generateMessageProperties } from "./generateMessageProperties";
 import { readStaticResourcesUsage } from "./readStaticResourcesUsage";
 
 export type BuildOptionsLike = {
-    themeName: string;
     extraThemeProperties: string[] | undefined;
     themeVersion: string;
     loginThemeResourcesFromKeycloakVersion: string;
@@ -28,15 +27,16 @@ export type BuildOptionsLike = {
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
 export async function generateTheme(params: {
+    themeName: string;
     themeSrcDirPath: string;
     keycloakifySrcDirPath: string;
     buildOptions: BuildOptionsLike;
     keycloakifyVersion: string;
 }): Promise<void> {
-    const { themeSrcDirPath, keycloakifySrcDirPath, buildOptions, keycloakifyVersion } = params;
+    const { themeName, themeSrcDirPath, keycloakifySrcDirPath, buildOptions, keycloakifyVersion } = params;
 
     const getThemeDirPath = (themeType: ThemeType | "email") =>
-        pathJoin(buildOptions.keycloakifyBuildDirPath, "src", "main", "resources", "theme", buildOptions.themeName, themeType);
+        pathJoin(buildOptions.keycloakifyBuildDirPath, "src", "main", "resources", "theme", themeName, themeType);
 
     let allCssGlobalsToDefine: Record<string, string> = {};
 
@@ -106,6 +106,7 @@ export async function generateTheme(params: {
             generateFtlFilesCode_glob !== undefined
                 ? generateFtlFilesCode_glob
                 : generateFtlFilesCodeFactory({
+                      themeName,
                       "indexHtmlCode": fs.readFileSync(pathJoin(buildOptions.reactAppBuildDirPath, "index.html")).toString("utf8"),
                       "cssGlobalsToDefine": allCssGlobalsToDefine,
                       buildOptions,

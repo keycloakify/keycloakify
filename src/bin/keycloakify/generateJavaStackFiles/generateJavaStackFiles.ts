@@ -7,13 +7,12 @@ import { type ThemeType } from "../../constants";
 import { bringInAccountV1, accountV1 } from "./bringInAccountV1";
 
 export type BuildOptionsLike = {
-    themeName: string;
-    themeVariantNames: string[];
     groupId: string;
     artifactId: string;
     themeVersion: string;
     cacheDirPath: string;
     keycloakifyBuildDirPath: string;
+    themeNames: string[];
 };
 
 {
@@ -178,7 +177,7 @@ export async function generateJavaStackFiles(params: {
                                           "types": ["account"]
                                       }
                                   ]),
-                            ...[buildOptions.themeName, ...buildOptions.themeVariantNames]
+                            ...buildOptions.themeNames
                                 .map(themeName => [
                                     {
                                         "name": themeName,

@@ -8,8 +8,7 @@ import { getAbsoluteAndInOsFormatPath } from "../tools/getAbsoluteAndInOsFormatP
 export type BuildOptions = {
     isSilent: boolean;
     themeVersion: string;
-    themeName: string;
-    themeVariantNames: string[];
+    themeNames: string[];
     extraThemeProperties: string[] | undefined;
     groupId: string;
     artifactId: string;
@@ -42,30 +41,32 @@ export function readBuildOptions(params: { reactAppRootDirPath: string; processA
 
     const { name, keycloakify = {}, version, homepage } = parsedPackageJson;
 
-    const {
-        extraThemeProperties,
-        groupId,
-        artifactId,
-        doCreateJar,
-        loginThemeResourcesFromKeycloakVersion,
-        themeVariantNames = []
-    } = keycloakify ?? {};
+    const { extraThemeProperties, groupId, artifactId, doCreateJar, loginThemeResourcesFromKeycloakVersion } = keycloakify ?? {};
 
-    const themeName =
-        keycloakify.themeName ??
-        name
-            .replace(/^@(.*)/, "$1")
-            .split("/")
-            .join("-");
+    const themeNames = (() => {
+        if (keycloakify.themeName === undefined) {
+            return [
+                name
+                    .replace(/^@(.*)/, "$1")
+                    .split("/")
+                    .join("-")
+            ];
+        }
+
+        if (typeof keycloakify.themeName === "string") {
+            return [keycloakify.themeName];
+        }
+
+        return keycloakify.themeName;
+    })();
 
     return {
         reactAppRootDirPath,
-        themeName,
-        themeVariantNames,
+        themeNames,
         "doCreateJar": doCreateJar ?? true,
-        "artifactId": process.env.KEYCLOAKIFY_ARTIFACT_ID ?? artifactId ?? `${themeName}-keycloak-theme`,
+        "artifactId": process.env.KEYCLOAKIFY_ARTIFACT_ID ?? artifactId ?? `${themeNames[0]}-keycloak-theme`,
         "groupId": (() => {
-            const fallbackGroupId = `${themeName}.keycloak`;
+            const fallbackGroupId = `${themeNames[0]}.keycloak`;
 
             return (
                 process.env.KEYCLOAKIFY_GROUP_ID ??

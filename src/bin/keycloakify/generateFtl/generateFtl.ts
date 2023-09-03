@@ -11,7 +11,6 @@ import { assert } from "tsafe/assert";
 import type { ThemeType } from "../../constants";
 
 export type BuildOptionsLike = {
-    themeName: string;
     themeVersion: string;
     urlPathname: string | undefined;
 };
@@ -19,6 +18,7 @@ export type BuildOptionsLike = {
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
 export function generateFtlFilesCodeFactory(params: {
+    themeName: string;
     indexHtmlCode: string;
     //NOTE: Expected to be an empty object if external assets mode is enabled.
     cssGlobalsToDefine: Record<string, string>;
@@ -27,7 +27,7 @@ export function generateFtlFilesCodeFactory(params: {
     themeType: ThemeType;
     fieldNames: string[];
 }) {
-    const { cssGlobalsToDefine, indexHtmlCode, buildOptions, keycloakifyVersion, themeType, fieldNames } = params;
+    const { themeName, cssGlobalsToDefine, indexHtmlCode, buildOptions, keycloakifyVersion, themeType, fieldNames } = params;
 
     const $ = cheerio.load(indexHtmlCode);
 
@@ -101,7 +101,7 @@ export function generateFtlFilesCodeFactory(params: {
             .replace("KEYCLOAKIFY_VERSION_xEdKd3xEdr", keycloakifyVersion)
             .replace("KEYCLOAKIFY_THEME_VERSION_sIgKd3xEdr3dx", buildOptions.themeVersion)
             .replace("KEYCLOAKIFY_THEME_TYPE_dExKd3xEdr", themeType)
-            .replace("KEYCLOAKIFY_THEME_NAME_cXxKd3xEer", buildOptions.themeName),
+            .replace("KEYCLOAKIFY_THEME_NAME_cXxKd3xEer", themeName),
         "<!-- xIdLqMeOedErIdLsPdNdI9dSlxI -->": [
             "<#if scripts??>",
             "    <#list scripts as script>",

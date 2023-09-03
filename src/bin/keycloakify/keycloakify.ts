@@ -26,14 +26,12 @@ export async function main() {
 
     const { themeSrcDirPath } = getThemeSrcDirPath({ reactAppRootDirPath });
 
-    for (const themeName of [buildOptions.themeName, ...buildOptions.themeVariantNames]) {
+    for (const themeName of buildOptions.themeNames) {
         await generateTheme({
+            themeName,
             themeSrcDirPath,
             "keycloakifySrcDirPath": pathJoin(keycloakifyDirPath, "src"),
-            "buildOptions": {
-                ...buildOptions,
-                "themeName": themeName
-            },
+            buildOptions,
             "keycloakifyVersion": (() => {
                 const version = JSON.parse(fs.readFileSync(pathJoin(keycloakifyDirPath, "package.json")).toString("utf8"))["version"];
 
@@ -124,15 +122,15 @@ export async function main() {
             "- Log into the admin console 👉 http://localhost:8080/admin username: admin, password: admin 👈",
             `- Create a realm:                       Master         -> AddRealm   -> Name: myrealm`,
             `- Enable registration:                  Realm settings -> Login tab  -> User registration: on`,
-            `- Enable the Account theme (optional):  Realm settings -> Themes tab -> Account theme: ${buildOptions.themeName}`,
-            `                                        Clients        -> account    -> Login theme:   ${buildOptions.themeName}`,
-            `- Enable the email theme (optional):    Realm settings -> Themes tab -> Email theme:   ${buildOptions.themeName} (option will appear only if you have ran npx initialize-email-theme)`,
+            `- Enable the Account theme (optional):  Realm settings -> Themes tab -> Account theme: ${buildOptions.themeNames[0]}`,
+            `                                        Clients        -> account    -> Login theme:   ${buildOptions.themeNames[0]}`,
+            `- Enable the email theme (optional):    Realm settings -> Themes tab -> Email theme:   ${buildOptions.themeNames[0]} (option will appear only if you have ran npx initialize-email-theme)`,
             `- Create a client                       Clients        -> Create     -> Client ID:                       myclient`,
             `                                                                        Root URL:                        https://www.keycloak.org/app/`,
             `                                                                        Valid redirect URIs:             https://www.keycloak.org/app* http://localhost* (localhost is optional)`,
             `                                                                        Valid post logout redirect URIs: https://www.keycloak.org/app* http://localhost*`,
             `                                                                        Web origins:                     *`,
-            `                                                                        Login Theme:                     ${buildOptions.themeName}`,
+            `                                                                        Login Theme:                     ${buildOptions.themeNames[0]}`,
             `                                                                        Save (button at the bottom of the page)`,
             ``,
             `- Go to  👉  https://www.keycloak.org/app/ 👈 Click "Save" then "Sign in". You should see your login page`,
