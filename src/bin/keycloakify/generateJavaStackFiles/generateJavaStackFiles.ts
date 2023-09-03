@@ -195,7 +195,7 @@ export async function generateJavaStackFiles(params: {
             fs.cpSync(pathJoin(builtinKeycloakThemeTmpDirPath, "keycloak", "account", "resources", relativeFilePath), destFilePath);
         }
 
-        fs.rmdirSync(builtinKeycloakThemeTmpDirPath, { "recursive": true });
+        fs.rmSync(builtinKeycloakThemeTmpDirPath, { "recursive": true });
 
         fs.writeFileSync(
             pathJoin(accountV1DirPath, "theme.properties"),
