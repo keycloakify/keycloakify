@@ -9,7 +9,7 @@ export type BuildOptions = {
     isSilent: boolean;
     themeVersion: string;
     themeName: string;
-    extraThemeNames: string[];
+    themeVariantNames: string[];
     extraThemeProperties: string[] | undefined;
     groupId: string;
     artifactId: string;
@@ -48,7 +48,7 @@ export function readBuildOptions(params: { reactAppRootDirPath: string; processA
         artifactId,
         doCreateJar,
         loginThemeResourcesFromKeycloakVersion,
-        extraThemeNames = []
+        themeVariantNames = []
     } = keycloakify ?? {};
 
     const themeName =
@@ -61,7 +61,7 @@ export function readBuildOptions(params: { reactAppRootDirPath: string; processA
     return {
         reactAppRootDirPath,
         themeName,
-        extraThemeNames,
+        themeVariantNames,
         "doCreateJar": doCreateJar ?? true,
         "artifactId": process.env.KEYCLOAKIFY_ARTIFACT_ID ?? artifactId ?? `${themeName}-keycloak-theme`,
         "groupId": (() => {

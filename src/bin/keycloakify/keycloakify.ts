@@ -26,7 +26,7 @@ export async function main() {
 
     const { themeSrcDirPath } = getThemeSrcDirPath({ reactAppRootDirPath });
 
-    for (const themeName of [buildOptions.themeName, ...buildOptions.extraThemeNames]) {
+    for (const themeName of [buildOptions.themeName, ...buildOptions.themeVariantNames]) {
         await generateTheme({
             themeSrcDirPath,
             "keycloakifySrcDirPath": pathJoin(keycloakifyDirPath, "src"),

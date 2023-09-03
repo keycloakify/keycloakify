@@ -18,7 +18,7 @@ export type ParsedPackageJson = {
         reactAppBuildDirPath?: string;
         keycloakifyBuildDirPath?: string;
         themeName?: string;
-        extraThemeNames?: string[];
+        themeVariantNames?: string[];
     };
 };
 
@@ -37,7 +37,7 @@ export const zParsedPackageJson = z.object({
             "reactAppBuildDirPath": z.string().optional(),
             "keycloakifyBuildDirPath": z.string().optional(),
             "themeName": z.string().optional(),
-            "extraThemeNames": z.array(z.string()).optional()
+            "themeVariantNames": z.array(z.string()).optional()
         })
         .optional()
 });

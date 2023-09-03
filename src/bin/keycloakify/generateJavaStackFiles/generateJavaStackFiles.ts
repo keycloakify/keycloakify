@@ -8,7 +8,7 @@ import { bringInAccountV1, accountV1 } from "./bringInAccountV1";
 
 export type BuildOptionsLike = {
     themeName: string;
-    extraThemeNames: string[];
+    themeVariantNames: string[];
     groupId: string;
     artifactId: string;
     themeVersion: string;
@@ -178,7 +178,7 @@ export async function generateJavaStackFiles(params: {
                                           "types": ["account"]
                                       }
                                   ]),
-                            ...[buildOptions.themeName, ...buildOptions.extraThemeNames]
+                            ...[buildOptions.themeName, ...buildOptions.themeVariantNames]
                                 .map(themeName => [
                                     {
                                         "name": themeName,
@@ -190,7 +190,7 @@ export async function generateJavaStackFiles(params: {
                                         ? []
                                         : [
                                               {
-                                                  "name": `${themeName}_retrocompatible`,
+                                                  "name": `${themeName}_retrocompat`,
                                                   "types": ["account"]
                                               }
                                           ])
