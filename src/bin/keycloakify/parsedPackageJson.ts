@@ -16,7 +16,9 @@ export type ParsedPackageJson = {
         artifactId?: string;
         groupId?: string;
         bundler?: Bundler;
+        /** @deprecated: Use loginThemeDefaultResourcesFromKeycloakVersion instead */
         keycloakVersionDefaultAssets?: string;
+        loginThemeDefaultResourcesFromKeycloakVersion?: string;
         reactAppBuildDirPath?: string;
         keycloakifyBuildDirPath?: string;
         themeName?: string;
@@ -36,6 +38,7 @@ export const zParsedPackageJson = z.object({
             "groupId": z.string().optional(),
             "bundler": z.enum(bundlers).optional(),
             "keycloakVersionDefaultAssets": z.string().optional(),
+            "loginThemeDefaultResourcesFromKeycloakVersion": z.string().optional(),
             "reactAppBuildDirPath": z.string().optional(),
             "keycloakifyBuildDirPath": z.string().optional(),
             "themeName": z.string().optional(),

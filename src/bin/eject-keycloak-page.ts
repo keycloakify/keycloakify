@@ -2,14 +2,7 @@
 
 import { getProjectRoot } from "./tools/getProjectRoot";
 import cliSelect from "cli-select";
-import {
-    loginThemePageIds,
-    accountThemePageIds,
-    type LoginThemePageId,
-    type AccountThemePageId,
-    themeTypes,
-    type ThemeType
-} from "./keycloakify/generateFtl";
+import { loginThemePageIds, accountThemePageIds, type LoginThemePageId, type AccountThemePageId } from "./keycloakify/generateFtl";
 import { capitalize } from "tsafe/capitalize";
 import { readFile, writeFile } from "fs/promises";
 import { existsSync } from "fs";
@@ -17,6 +10,7 @@ import { join as pathJoin, relative as pathRelative } from "path";
 import { kebabCaseToCamelCase } from "./tools/kebabCaseToSnakeCase";
 import { assert, Equals } from "tsafe/assert";
 import { getThemeSrcDirPath } from "./getSrcDirPath";
+import { themeTypes, type ThemeType } from "./constants";
 
 (async () => {
     console.log("Select a theme type");

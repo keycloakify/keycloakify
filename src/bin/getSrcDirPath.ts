@@ -2,7 +2,7 @@ import * as fs from "fs";
 import { exclude } from "tsafe";
 import { crawl } from "./tools/crawl";
 import { join as pathJoin } from "path";
-import { themeTypes } from "./keycloakify/generateFtl";
+import { themeTypes } from "./constants";
 
 const themeSrcDirBasename = "keycloak-theme";
 

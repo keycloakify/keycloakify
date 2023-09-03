@@ -1,7 +1,7 @@
 import { crawl } from "../../tools/crawl";
 import { join as pathJoin } from "path";
 import * as fs from "fs";
-import type { ThemeType } from "../generateFtl";
+import type { ThemeType } from "../../constants";
 
 /** Assumes the theme type exists */
 export function readStaticResourcesUsage(params: { keycloakifySrcDirPath: string; themeSrcDirPath: string; themeType: ThemeType }): {

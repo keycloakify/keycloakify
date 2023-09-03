@@ -49,7 +49,8 @@ export async function main() {
         });
     }
 
-    const { jarFilePath } = generateJavaStackFiles({
+    const { jarFilePath } = await generateJavaStackFiles({
+        projectDirPath,
         "keycloakThemeBuildingDirPath": buildOptions.keycloakifyBuildDirPath,
         "implementedThemeTypes": (() => {
             const implementedThemeTypes = {

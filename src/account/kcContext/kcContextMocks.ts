@@ -1,18 +1,20 @@
 import "minimal-polyfills/Object.fromEntries";
-import { resourcesCommonDirPathRelativeToPublicDir, resourcesDirPathRelativeToPublicDir } from "keycloakify/bin/mockTestingResourcesPath";
+import { resources_common, keycloak_resources } from "keycloakify/bin/constants";
 import { pathJoin } from "keycloakify/bin/tools/pathJoin";
 import { id } from "tsafe/id";
 import type { KcContext } from "./KcContext";
 
 const PUBLIC_URL = (typeof process !== "object" ? undefined : process.env?.["PUBLIC_URL"]) || "/";
 
+const resourcesPath = pathJoin(PUBLIC_URL, keycloak_resources, "login", "resources");
+
 export const kcContextCommonMock: KcContext.Common = {
     "keycloakifyVersion": "0.0.0",
     "themeType": "account",
     "themeName": "my-theme-name",
     "url": {
-        "resourcesPath": pathJoin(PUBLIC_URL, resourcesDirPathRelativeToPublicDir),
-        "resourcesCommonPath": pathJoin(PUBLIC_URL, resourcesCommonDirPathRelativeToPublicDir),
+        resourcesPath,
+        "resourcesCommonPath": pathJoin(resourcesPath, resources_common),
         "resourceUrl": "#",
         "accountUrl": "#",
         "applicationsUrl": "#",

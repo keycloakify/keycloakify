@@ -3,11 +3,11 @@ import * as fs from "fs";
 import { join as pathJoin } from "path";
 import { replaceImportsFromStaticInJsCode } from "../replacers/replaceImportsFromStaticInJsCode";
 import { replaceImportsInCssCode } from "../replacers/replaceImportsInCssCode";
-import { generateFtlFilesCodeFactory, loginThemePageIds, accountThemePageIds, themeTypes, type ThemeType } from "../generateFtl";
-import { basenameOfKeycloakDirInPublicDir } from "../../mockTestingResourcesPath";
+import { generateFtlFilesCodeFactory, loginThemePageIds, accountThemePageIds } from "../generateFtl";
+import { themeTypes, type ThemeType, lastKeycloakVersionWithAccountV1, keycloak_resources } from "../../constants";
 import { isInside } from "../../tools/isInside";
 import type { BuildOptions } from "../BuildOptions";
-import { assert } from "tsafe/assert";
+import { assert, type Equals } from "tsafe/assert";
 import { downloadKeycloakStaticResources } from "./downloadKeycloakStaticResources";
 import { readFieldNameUsage } from "./readFieldNameUsage";
 import { readExtraPagesNames } from "./readExtraPageNames";
@@ -18,7 +18,7 @@ export type BuildOptionsLike = {
     themeName: string;
     extraThemeProperties: string[] | undefined;
     themeVersion: string;
-    keycloakVersionDefaultAssets: string;
+    loginThemeDefaultResourcesFromKeycloakVersion: string;
     urlPathname: string | undefined;
 };
 
@@ -71,7 +71,7 @@ export async function generateTheme(params: {
                     //NOTE: Prevent cycles, excludes the folder we generated for debug in public/
                     if (
                         isInside({
-                            "dirPath": pathJoin(reactAppBuildDirPath, basenameOfKeycloakDirInPublicDir),
+                            "dirPath": pathJoin(reactAppBuildDirPath, keycloak_resources),
                             filePath
                         })
                     ) {
@@ -160,44 +160,16 @@ export async function generateTheme(params: {
             fs.writeFileSync(propertiesFilePath, Buffer.from(propertiesFileSource, "utf8"));
         });
 
-        //TODO: Remove this block we left it for now only for backward compatibility
-        // we now have a separate script for this
-        copy_keycloak_resources_to_public: {
-            const keycloakDirInPublicDir = pathJoin(reactAppBuildDirPath, "..", "public", basenameOfKeycloakDirInPublicDir);
-
-            if (fs.existsSync(keycloakDirInPublicDir)) {
-                break copy_keycloak_resources_to_public;
-            }
-
-            await downloadKeycloakStaticResources({
-                projectDirPath,
-                "keycloakVersion": buildOptions.keycloakVersionDefaultAssets,
-                "themeDirPath": keycloakDirInPublicDir,
-                themeType,
-                "usedResources": undefined
-            });
-
-            if (themeType !== themeTypes[0]) {
-                break copy_keycloak_resources_to_public;
-            }
-
-            fs.writeFileSync(
-                pathJoin(keycloakDirInPublicDir, "README.txt"),
-                Buffer.from(
-                    // prettier-ignore
-                    [
-                        "This is just a test folder that helps develop",
-                        "the login and register page without having to run a Keycloak container"
-                    ].join(" ")
-                )
-            );
-
-            fs.writeFileSync(pathJoin(keycloakDirInPublicDir, ".gitignore"), Buffer.from("*", "utf8"));
-        }
-
         await downloadKeycloakStaticResources({
             projectDirPath,
-            "keycloakVersion": buildOptions.keycloakVersionDefaultAssets,
+            "keycloakVersion": (() => {
+                switch (themeType) {
+                    case "account":
+                        return lastKeycloakVersionWithAccountV1;
+                    case "login":
+                        return buildOptions.loginThemeDefaultResourcesFromKeycloakVersion;
+                }
+            })(),
             themeDirPath,
             themeType,
             "usedResources": readStaticResourcesUsage({
@@ -209,7 +181,21 @@ export async function generateTheme(params: {
 
         fs.writeFileSync(
             pathJoin(themeDirPath, "theme.properties"),
-            Buffer.from([`parent=keycloak`, ...(buildOptions.extraThemeProperties ?? [])].join("\n\n"), "utf8")
+            Buffer.from(
+                [
+                    `parent=${(() => {
+                        switch (themeType) {
+                            case "account":
+                                return "account-v1";
+                            case "login":
+                                return "keycloak";
+                        }
+                        assert<Equals<typeof themeType, never>>(false);
+                    })()}`,
+                    ...(buildOptions.extraThemeProperties ?? [])
+                ].join("\n\n"),
+                "utf8"
+            )
         );
     }
 

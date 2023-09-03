@@ -1,6 +1,7 @@
 import * as fs from "fs";
 import { join as pathJoin } from "path";
 import { assert } from "tsafe/assert";
+import { Reflect } from "tsafe/Reflect";
 import type { BuildOptions } from "./BuildOptions";
 
 export type BuildOptionsLike = {
@@ -8,7 +9,11 @@ export type BuildOptionsLike = {
     extraThemeNames: string[];
 };
 
-assert<BuildOptions extends BuildOptionsLike ? true : false>();
+{
+    const buildOptions = Reflect<BuildOptions>();
+
+    assert<typeof buildOptions extends BuildOptionsLike ? true : false>();
+}
 
 generateStartKeycloakTestingContainer.basename = "start_keycloak_testing_container.sh";
 

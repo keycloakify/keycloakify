@@ -1,13 +1,8 @@
 import { transformCodebase } from "../../tools/transformCodebase";
 import * as fs from "fs";
-import { join as pathJoin, relative as pathRelative } from "path";
-import type { ThemeType } from "../generateFtl";
+import { join as pathJoin } from "path";
 import { downloadBuiltinKeycloakTheme } from "../../download-builtin-keycloak-theme";
-import {
-    resourcesCommonDirPathRelativeToPublicDir,
-    resourcesDirPathRelativeToPublicDir,
-    basenameOfKeycloakDirInPublicDir
-} from "../../mockTestingResourcesPath";
+import { resources_common, type ThemeType } from "../../constants";
 import * as crypto from "crypto";
 
 export async function downloadKeycloakStaticResources(
@@ -37,9 +32,11 @@ export async function downloadKeycloakStaticResources(
         "destDirPath": tmpDirPath
     });
 
+    const resourcesPath = pathJoin(themeDirPath, themeType, "resources");
+
     transformCodebase({
         "srcDirPath": pathJoin(tmpDirPath, "keycloak", themeType, "resources"),
-        "destDirPath": pathJoin(themeDirPath, pathRelative(basenameOfKeycloakDirInPublicDir, resourcesDirPathRelativeToPublicDir)),
+        "destDirPath": resourcesPath,
         "transformSourceCode":
             usedResources === undefined
                 ? undefined
@@ -54,7 +51,7 @@ export async function downloadKeycloakStaticResources(
 
     transformCodebase({
         "srcDirPath": pathJoin(tmpDirPath, "keycloak", "common", "resources"),
-        "destDirPath": pathJoin(themeDirPath, pathRelative(basenameOfKeycloakDirInPublicDir, resourcesCommonDirPathRelativeToPublicDir)),
+        "destDirPath": pathJoin(resourcesPath, resources_common),
         "transformSourceCode":
             usedResources === undefined
                 ? undefined

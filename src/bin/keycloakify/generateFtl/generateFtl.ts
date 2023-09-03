@@ -8,10 +8,7 @@ import { objectKeys } from "tsafe/objectKeys";
 import { ftlValuesGlobalName } from "../ftlValuesGlobalName";
 import type { BuildOptions } from "../BuildOptions";
 import { assert } from "tsafe/assert";
-
-export const themeTypes = ["login", "account"] as const;
-
-export type ThemeType = (typeof themeTypes)[number];
+import type { ThemeType } from "../../constants";
 
 export type BuildOptionsLike = {
     themeName: string;

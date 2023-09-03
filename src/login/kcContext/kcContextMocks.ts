@@ -1,12 +1,10 @@
 import "minimal-polyfills/Object.fromEntries";
 import type { KcContext, Attribute } from "./KcContext";
-import { resourcesCommonDirPathRelativeToPublicDir, resourcesDirPathRelativeToPublicDir } from "keycloakify/bin/mockTestingResourcesPath";
+import { resources_common, keycloak_resources } from "keycloakify/bin/constants";
 import { pathJoin } from "keycloakify/bin/tools/pathJoin";
 import { id } from "tsafe/id";
 import { assert, type Equals } from "tsafe/assert";
 import type { LoginThemePageId } from "keycloakify/bin/keycloakify/generateFtl";
-
-const PUBLIC_URL = (typeof process !== "object" ? undefined : process.env?.["PUBLIC_URL"]) || "/";
 
 const attributes: Attribute[] = [
     {
@@ -102,14 +100,18 @@ const attributes: Attribute[] = [
 
 const attributesByName = Object.fromEntries(attributes.map(attribute => [attribute.name, attribute])) as any;
 
+const PUBLIC_URL = (typeof process !== "object" ? undefined : process.env?.["PUBLIC_URL"]) || "/";
+
+const resourcesPath = pathJoin(PUBLIC_URL, keycloak_resources, "login", "resources");
+
 export const kcContextCommonMock: KcContext.Common = {
     "keycloakifyVersion": "0.0.0",
     "themeType": "login",
     "themeName": "my-theme-name",
     "url": {
         "loginAction": "#",
-        "resourcesPath": pathJoin(PUBLIC_URL, resourcesDirPathRelativeToPublicDir),
-        "resourcesCommonPath": pathJoin(PUBLIC_URL, resourcesCommonDirPathRelativeToPublicDir),
+        resourcesPath,
+        "resourcesCommonPath": pathJoin(resourcesPath, resources_common),
         "loginRestartFlowUrl": "/auth/realms/myrealm/login-actions/restart?client_id=account&tab_id=HoAx28ja4xg",
         "loginUrl": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg"
     },

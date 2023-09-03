@@ -162,6 +162,7 @@ export async function downloadAndUnzip(
     } & (
         | {
               doUseCache: true;
+              // TODO: Get rid of this parameter, it's a pain to pass around
               projectDirPath: string;
           }
         | {
