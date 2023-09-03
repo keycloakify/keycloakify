@@ -17,7 +17,7 @@ export type BuildOptions = {
     groupId: string;
     artifactId: string;
     bundler: Bundler;
-    loginThemeDefaultResourcesFromKeycloakVersion: string;
+    loginThemeResourcesFromKeycloakVersion: string;
     /** Directory of your built react project. Defaults to {cwd}/build */
     reactAppBuildDirPath: string;
     /** Directory that keycloakify outputs to. Defaults to {cwd}/build_keycloak */
@@ -42,15 +42,7 @@ export function readBuildOptions(params: { projectDirPath: string; processArgv: 
 
     const { name, keycloakify = {}, version, homepage } = parsedPackageJson;
 
-    const {
-        extraThemeProperties,
-        groupId,
-        artifactId,
-        bundler,
-        keycloakVersionDefaultAssets,
-        loginThemeDefaultResourcesFromKeycloakVersion,
-        extraThemeNames = []
-    } = keycloakify ?? {};
+    const { extraThemeProperties, groupId, artifactId, bundler, loginThemeResourcesFromKeycloakVersion, extraThemeNames = [] } = keycloakify ?? {};
 
     const themeName =
         keycloakify.themeName ??
@@ -91,7 +83,7 @@ export function readBuildOptions(params: { projectDirPath: string; processArgv: 
         "themeVersion": process.env.KEYCLOAKIFY_THEME_VERSION ?? process.env.KEYCLOAKIFY_VERSION ?? version ?? "0.0.0",
         extraThemeProperties,
         "isSilent": isSilentCliParamProvided,
-        "loginThemeDefaultResourcesFromKeycloakVersion": loginThemeDefaultResourcesFromKeycloakVersion ?? keycloakVersionDefaultAssets ?? "11.0.3",
+        "loginThemeResourcesFromKeycloakVersion": loginThemeResourcesFromKeycloakVersion ?? "11.0.3",
         "reactAppBuildDirPath": (() => {
             let { reactAppBuildDirPath = undefined } = parsedPackageJson.keycloakify ?? {};
 

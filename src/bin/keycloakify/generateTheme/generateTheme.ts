@@ -18,7 +18,7 @@ export type BuildOptionsLike = {
     themeName: string;
     extraThemeProperties: string[] | undefined;
     themeVersion: string;
-    loginThemeDefaultResourcesFromKeycloakVersion: string;
+    loginThemeResourcesFromKeycloakVersion: string;
     urlPathname: string | undefined;
 };
 
@@ -167,7 +167,7 @@ export async function generateTheme(params: {
                     case "account":
                         return lastKeycloakVersionWithAccountV1;
                     case "login":
-                        return buildOptions.loginThemeDefaultResourcesFromKeycloakVersion;
+                        return buildOptions.loginThemeResourcesFromKeycloakVersion;
                 }
             })(),
             themeDirPath,

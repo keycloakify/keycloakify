@@ -38,7 +38,7 @@ import * as fs from "fs";
             "keycloakVersion": (() => {
                 switch (themeType) {
                     case "login":
-                        return buildOptions.loginThemeDefaultResourcesFromKeycloakVersion;
+                        return buildOptions.loginThemeResourcesFromKeycloakVersion;
                     case "account":
                         return lastKeycloakVersionWithAccountV1;
                 }
