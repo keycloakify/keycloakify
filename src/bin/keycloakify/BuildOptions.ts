@@ -1,7 +1,8 @@
 import { parse as urlParse } from "url";
 import { getParsedPackageJson } from "./parsedPackageJson";
-import { join as pathJoin, sep as pathSep } from "path";
+import { join as pathJoin } from "path";
 import parseArgv from "minimist";
+import { getAbsoluteAndInOsFormatPath } from "../tools/getAbsoluteAndInOsFormatPath";
 
 /** Consolidated build option gathered form CLI arguments and config in package.json */
 export type BuildOptions = {
@@ -14,17 +15,20 @@ export type BuildOptions = {
     artifactId: string;
     doCreateJar: boolean;
     loginThemeResourcesFromKeycloakVersion: string;
+    reactAppRootDirPath: string;
     /** Directory of your built react project. Defaults to {cwd}/build */
     reactAppBuildDirPath: string;
     /** Directory that keycloakify outputs to. Defaults to {cwd}/build_keycloak */
     keycloakifyBuildDirPath: string;
+    publicDirPath: string;
+    cacheDirPath: string;
     /** If your app is hosted under a subpath, it's the case in CRA if you have "homepage": "https://example.com/my-app" in your package.json
      * In this case the urlPathname will be "/my-app/" */
     urlPathname: string | undefined;
 };
 
-export function readBuildOptions(params: { projectDirPath: string; processArgv: string[] }): BuildOptions {
-    const { projectDirPath, processArgv } = params;
+export function readBuildOptions(params: { reactAppRootDirPath: string; processArgv: string[] }): BuildOptions {
+    const { reactAppRootDirPath, processArgv } = params;
 
     const { isSilentCliParamProvided } = (() => {
         const argv = parseArgv(processArgv);
@@ -34,7 +38,7 @@ export function readBuildOptions(params: { projectDirPath: string; processArgv: 
         };
     })();
 
-    const parsedPackageJson = getParsedPackageJson({ projectDirPath });
+    const parsedPackageJson = getParsedPackageJson({ reactAppRootDirPath });
 
     const { name, keycloakify = {}, version, homepage } = parsedPackageJson;
 
@@ -55,6 +59,7 @@ export function readBuildOptions(params: { projectDirPath: string; processArgv: 
             .join("-");
 
     return {
+        reactAppRootDirPath,
         themeName,
         extraThemeNames,
         "doCreateJar": doCreateJar ?? true,
@@ -78,40 +83,57 @@ export function readBuildOptions(params: { projectDirPath: string; processArgv: 
         extraThemeProperties,
         "isSilent": isSilentCliParamProvided,
         "loginThemeResourcesFromKeycloakVersion": loginThemeResourcesFromKeycloakVersion ?? "11.0.3",
+        "publicDirPath": (() => {
+            let { PUBLIC_DIR_PATH } = process.env;
+
+            if (PUBLIC_DIR_PATH !== undefined) {
+                return getAbsoluteAndInOsFormatPath({
+                    "pathIsh": PUBLIC_DIR_PATH,
+                    "cwd": reactAppRootDirPath
+                });
+            }
+
+            return pathJoin(reactAppRootDirPath, "public");
+        })(),
         "reactAppBuildDirPath": (() => {
-            let { reactAppBuildDirPath = undefined } = parsedPackageJson.keycloakify ?? {};
+            const { reactAppBuildDirPath } = parsedPackageJson.keycloakify ?? {};
 
-            if (reactAppBuildDirPath === undefined) {
-                return pathJoin(projectDirPath, "build");
+            if (reactAppBuildDirPath !== undefined) {
+                return getAbsoluteAndInOsFormatPath({
+                    "pathIsh": reactAppBuildDirPath,
+                    "cwd": reactAppRootDirPath
+                });
             }
 
-            if (pathSep === "\\") {
-                reactAppBuildDirPath = reactAppBuildDirPath.replace(/\//g, pathSep);
-            }
-
-            if (reactAppBuildDirPath.startsWith(`.${pathSep}`)) {
-                return pathJoin(projectDirPath, reactAppBuildDirPath);
-            }
-
-            return reactAppBuildDirPath;
+            return pathJoin(reactAppRootDirPath, "build");
         })(),
         "keycloakifyBuildDirPath": (() => {
-            let { keycloakifyBuildDirPath = undefined } = parsedPackageJson.keycloakify ?? {};
+            const { keycloakifyBuildDirPath } = parsedPackageJson.keycloakify ?? {};
 
-            if (keycloakifyBuildDirPath === undefined) {
-                return pathJoin(projectDirPath, "build_keycloak");
+            if (keycloakifyBuildDirPath !== undefined) {
+                return getAbsoluteAndInOsFormatPath({
+                    "pathIsh": keycloakifyBuildDirPath,
+                    "cwd": reactAppRootDirPath
+                });
             }
 
-            if (pathSep === "\\") {
-                keycloakifyBuildDirPath = keycloakifyBuildDirPath.replace(/\//g, pathSep);
-            }
-
-            if (keycloakifyBuildDirPath.startsWith(`.${pathSep}`)) {
-                return pathJoin(projectDirPath, keycloakifyBuildDirPath);
-            }
-
-            return keycloakifyBuildDirPath;
+            return pathJoin(reactAppRootDirPath, "build_keycloak");
         })(),
+        "cacheDirPath": pathJoin(
+            (() => {
+                let { XDG_CACHE_HOME } = process.env;
+
+                if (XDG_CACHE_HOME !== undefined) {
+                    return getAbsoluteAndInOsFormatPath({
+                        "pathIsh": XDG_CACHE_HOME,
+                        "cwd": reactAppRootDirPath
+                    });
+                }
+
+                return pathJoin(reactAppRootDirPath, "node_modules", ".cache");
+            })(),
+            "keycloakify"
+        ),
         "urlPathname": (() => {
             const { homepage } = parsedPackageJson;
 

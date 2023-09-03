@@ -20,31 +20,23 @@ export type BuildOptionsLike = {
     themeVersion: string;
     loginThemeResourcesFromKeycloakVersion: string;
     urlPathname: string | undefined;
+    keycloakifyBuildDirPath: string;
+    reactAppBuildDirPath: string;
+    cacheDirPath: string;
 };
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
 export async function generateTheme(params: {
-    projectDirPath: string;
-    reactAppBuildDirPath: string;
-    keycloakThemeBuildingDirPath: string;
     themeSrcDirPath: string;
     keycloakifySrcDirPath: string;
     buildOptions: BuildOptionsLike;
     keycloakifyVersion: string;
 }): Promise<void> {
-    const {
-        projectDirPath,
-        reactAppBuildDirPath,
-        keycloakThemeBuildingDirPath,
-        themeSrcDirPath,
-        keycloakifySrcDirPath,
-        buildOptions,
-        keycloakifyVersion
-    } = params;
+    const { themeSrcDirPath, keycloakifySrcDirPath, buildOptions, keycloakifyVersion } = params;
 
     const getThemeDirPath = (themeType: ThemeType | "email") =>
-        pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", buildOptions.themeName, themeType);
+        pathJoin(buildOptions.keycloakifyBuildDirPath, "src", "main", "resources", "theme", buildOptions.themeName, themeType);
 
     let allCssGlobalsToDefine: Record<string, string> = {};
 
@@ -66,12 +58,12 @@ export async function generateTheme(params: {
 
             transformCodebase({
                 "destDirPath": pathJoin(themeDirPath, "resources", "build"),
-                "srcDirPath": reactAppBuildDirPath,
+                "srcDirPath": buildOptions.reactAppBuildDirPath,
                 "transformSourceCode": ({ filePath, sourceCode }) => {
                     //NOTE: Prevent cycles, excludes the folder we generated for debug in public/
                     if (
                         isInside({
-                            "dirPath": pathJoin(reactAppBuildDirPath, keycloak_resources),
+                            "dirPath": pathJoin(buildOptions.reactAppBuildDirPath, keycloak_resources),
                             filePath
                         })
                     ) {
@@ -114,7 +106,7 @@ export async function generateTheme(params: {
             generateFtlFilesCode_glob !== undefined
                 ? generateFtlFilesCode_glob
                 : generateFtlFilesCodeFactory({
-                      "indexHtmlCode": fs.readFileSync(pathJoin(reactAppBuildDirPath, "index.html")).toString("utf8"),
+                      "indexHtmlCode": fs.readFileSync(pathJoin(buildOptions.reactAppBuildDirPath, "index.html")).toString("utf8"),
                       "cssGlobalsToDefine": allCssGlobalsToDefine,
                       buildOptions,
                       keycloakifyVersion,
@@ -161,7 +153,6 @@ export async function generateTheme(params: {
         });
 
         await downloadKeycloakStaticResources({
-            projectDirPath,
             "keycloakVersion": (() => {
                 switch (themeType) {
                     case "account":
@@ -176,7 +167,8 @@ export async function generateTheme(params: {
                 keycloakifySrcDirPath,
                 themeSrcDirPath,
                 themeType
-            })
+            }),
+            buildOptions
         });
 
         fs.writeFileSync(

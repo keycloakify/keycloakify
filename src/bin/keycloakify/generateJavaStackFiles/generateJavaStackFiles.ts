@@ -13,6 +13,7 @@ export type BuildOptionsLike = {
     groupId: string;
     artifactId: string;
     themeVersion: string;
+    cacheDirPath: string;
 };
 
 {
@@ -22,19 +23,13 @@ export type BuildOptionsLike = {
 }
 
 export async function generateJavaStackFiles(params: {
-    projectDirPath: string;
     keycloakThemeBuildingDirPath: string;
     implementedThemeTypes: Record<ThemeType | "email", boolean>;
     buildOptions: BuildOptionsLike;
 }): Promise<{
     jarFilePath: string;
 }> {
-    const {
-        projectDirPath,
-        buildOptions: { groupId, themeName, extraThemeNames, themeVersion, artifactId },
-        keycloakThemeBuildingDirPath,
-        implementedThemeTypes
-    } = params;
+    const { keycloakThemeBuildingDirPath, implementedThemeTypes, buildOptions } = params;
 
     {
         const { pomFileCode } = (function generatePomFileCode(): {
@@ -46,10 +41,10 @@ export async function generateJavaStackFiles(params: {
                 `	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"`,
                 `	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">`,
                 `	<modelVersion>4.0.0</modelVersion>`,
-                `	<groupId>${groupId}</groupId>`,
-                `	<artifactId>${artifactId}</artifactId>`,
-                `	<version>${themeVersion}</version>`,
-                `	<name>${artifactId}</name>`,
+                `	<groupId>${buildOptions.groupId}</groupId>`,
+                `	<artifactId>${buildOptions.artifactId}</artifactId>`,
+                `	<version>${buildOptions.themeVersion}</version>`,
+                `	<name>${buildOptions.artifactId}</name>`,
                 `	<description />`,
                 `	<packaging>jar</packaging>`,
                 `	<properties>`,
@@ -165,9 +160,9 @@ export async function generateJavaStackFiles(params: {
         const builtinKeycloakThemeTmpDirPath = pathJoin(keycloakThemeBuildingDirPath, "..", "tmp_yxdE2_builtin_keycloak_theme");
 
         await downloadBuiltinKeycloakTheme({
-            projectDirPath,
             "destDirPath": builtinKeycloakThemeTmpDirPath,
-            "keycloakVersion": lastKeycloakVersionWithAccountV1
+            "keycloakVersion": lastKeycloakVersionWithAccountV1,
+            buildOptions
         });
 
         const accountV1DirPath = pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", accountV1, "account");
@@ -249,7 +244,7 @@ export async function generateJavaStackFiles(params: {
                                 "name": accountV1,
                                 "types": ["account"]
                             },
-                            ...[themeName, ...extraThemeNames].map(themeName => ({
+                            ...[buildOptions.themeName, ...buildOptions.extraThemeNames].map(themeName => ({
                                 "name": themeName,
                                 "types": Object.entries(implementedThemeTypes)
                                     .filter(([, isImplemented]) => isImplemented)
@@ -266,6 +261,6 @@ export async function generateJavaStackFiles(params: {
     }
 
     return {
-        "jarFilePath": pathJoin(keycloakThemeBuildingDirPath, "target", `${artifactId}-${themeVersion}.jar`)
+        "jarFilePath": pathJoin(keycloakThemeBuildingDirPath, "target", `${buildOptions.artifactId}-${buildOptions.themeVersion}.jar`)
     };
 }

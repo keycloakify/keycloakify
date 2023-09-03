@@ -162,8 +162,7 @@ export async function downloadAndUnzip(
     } & (
         | {
               doUseCache: true;
-              // TODO: Get rid of this parameter, it's a pain to pass around
-              projectDirPath: string;
+              cacheDirPath: string;
           }
         | {
               doUseCache: false;
@@ -183,11 +182,10 @@ export async function downloadAndUnzip(
                   }
     });
 
-    const cacheRoot = !rest.doUseCache
-        ? `tmp_${Math.random().toString().slice(2, 12)}`
-        : pathJoin(process.env.XDG_CACHE_HOME ?? pathJoin(rest.projectDirPath, "node_modules", ".cache"), "keycloakify");
-    const zipFilePath = pathJoin(cacheRoot, `${zipFileBasename}.zip`);
-    const extractDirPath = pathJoin(cacheRoot, `tmp_unzip_${zipFileBasename}`);
+    const cacheDirPath = !rest.doUseCache ? `tmp_${Math.random().toString().slice(2, 12)}` : rest.cacheDirPath;
+
+    const zipFilePath = pathJoin(cacheDirPath, `${zipFileBasename}.zip`);
+    const extractDirPath = pathJoin(cacheDirPath, `tmp_unzip_${zipFileBasename}`);
 
     if (!(await exists(zipFilePath))) {
         const opts = await getFetchOptions();
@@ -227,7 +225,7 @@ export async function downloadAndUnzip(
     });
 
     if (!rest.doUseCache) {
-        await rm(cacheRoot, { "recursive": true });
+        await rm(cacheDirPath, { "recursive": true });
     } else {
         await rm(extractDirPath, { "recursive": true });
     }

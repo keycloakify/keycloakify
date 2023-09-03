@@ -7,10 +7,10 @@ import { themeTypes } from "./constants";
 const themeSrcDirBasename = "keycloak-theme";
 
 /** Can't catch error, if the directory isn't found, this function will just exit the process with an error message. */
-export function getThemeSrcDirPath(params: { projectDirPath: string }) {
-    const { projectDirPath } = params;
+export function getThemeSrcDirPath(params: { reactAppRootDirPath: string }) {
+    const { reactAppRootDirPath } = params;
 
-    const srcDirPath = pathJoin(projectDirPath, "src");
+    const srcDirPath = pathJoin(reactAppRootDirPath, "src");
 
     const themeSrcDirPath: string | undefined = crawl({ "dirPath": srcDirPath, "returnedPathsType": "relative to dirPath" })
         .map(fileRelativePath => {

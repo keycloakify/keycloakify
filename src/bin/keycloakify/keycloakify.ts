@@ -12,10 +12,10 @@ import { getProjectRoot } from "../tools/getProjectRoot";
 import { objectKeys } from "tsafe/objectKeys";
 
 export async function main() {
-    const projectDirPath = process.cwd();
+    const reactAppRootDirPath = process.cwd();
 
     const buildOptions = readBuildOptions({
-        projectDirPath,
+        reactAppRootDirPath,
         "processArgv": process.argv.slice(2)
     });
 
@@ -24,15 +24,12 @@ export async function main() {
 
     const keycloakifyDirPath = getProjectRoot();
 
-    const { themeSrcDirPath } = getThemeSrcDirPath({ projectDirPath });
+    const { themeSrcDirPath } = getThemeSrcDirPath({ reactAppRootDirPath });
 
     for (const themeName of [buildOptions.themeName, ...buildOptions.extraThemeNames]) {
         await generateTheme({
-            projectDirPath,
-            "keycloakThemeBuildingDirPath": buildOptions.keycloakifyBuildDirPath,
             themeSrcDirPath,
             "keycloakifySrcDirPath": pathJoin(keycloakifyDirPath, "src"),
-            "reactAppBuildDirPath": buildOptions.reactAppBuildDirPath,
             "buildOptions": {
                 ...buildOptions,
                 "themeName": themeName
@@ -48,7 +45,6 @@ export async function main() {
     }
 
     const { jarFilePath } = await generateJavaStackFiles({
-        projectDirPath,
         "keycloakThemeBuildingDirPath": buildOptions.keycloakifyBuildDirPath,
         "implementedThemeTypes": (() => {
             const implementedThemeTypes = {
@@ -89,7 +85,7 @@ export async function main() {
     logger.log(
         [
             "",
-            `✅ Your keycloak theme has been generated and bundled into .${pathSep}${pathRelative(projectDirPath, jarFilePath)} 🚀`,
+            `✅ Your keycloak theme has been generated and bundled into .${pathSep}${pathRelative(reactAppRootDirPath, jarFilePath)} 🚀`,
             `It is to be placed in "/opt/keycloak/providers" in the container running a quay.io/keycloak/keycloak Docker image.`,
             "",
             //TODO: Restore when we find a good Helm chart for Keycloak.
@@ -124,7 +120,7 @@ export async function main() {
             `To test your theme locally you can spin up a Keycloak ${containerKeycloakVersion} container image with the theme pre loaded by running:`,
             "",
             `👉 $ .${pathSep}${pathRelative(
-                projectDirPath,
+                reactAppRootDirPath,
                 pathJoin(buildOptions.keycloakifyBuildDirPath, generateStartKeycloakTestingContainer.basename)
             )} 👈`,
             "",

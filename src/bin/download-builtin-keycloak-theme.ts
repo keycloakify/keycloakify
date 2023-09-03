@@ -4,15 +4,23 @@ import { downloadAndUnzip } from "./tools/downloadAndUnzip";
 import { promptKeycloakVersion } from "./promptKeycloakVersion";
 import { getLogger } from "./tools/logger";
 import { readBuildOptions } from "./keycloakify/BuildOptions";
+import { assert } from "tsafe/assert";
+import type { BuildOptions } from "./keycloakify/BuildOptions";
 import * as child_process from "child_process";
 import * as fs from "fs";
 
-export async function downloadBuiltinKeycloakTheme(params: { projectDirPath: string; keycloakVersion: string; destDirPath: string }) {
-    const { projectDirPath, keycloakVersion, destDirPath } = params;
+export type BuildOptionsLike = {
+    cacheDirPath: string;
+};
+
+assert<BuildOptions extends BuildOptionsLike ? true : false>();
+
+export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: string; destDirPath: string; buildOptions: BuildOptionsLike }) {
+    const { keycloakVersion, destDirPath, buildOptions } = params;
 
     await downloadAndUnzip({
         "doUseCache": true,
-        projectDirPath,
+        "cacheDirPath": buildOptions.cacheDirPath,
         destDirPath,
         "url": `https://github.com/keycloak/keycloak/archive/refs/tags/${keycloakVersion}.zip`,
         "specificDirsToExtract": ["", "-community"].map(ext => `keycloak-${keycloakVersion}/themes/src/main/resources${ext}/theme`),
@@ -74,7 +82,7 @@ export async function downloadBuiltinKeycloakTheme(params: { projectDirPath: str
 
 async function main() {
     const buildOptions = readBuildOptions({
-        "projectDirPath": process.cwd(),
+        "reactAppRootDirPath": process.cwd(),
         "processArgv": process.argv.slice(2)
     });
 
@@ -86,9 +94,9 @@ async function main() {
     logger.log(`Downloading builtins theme of Keycloak ${keycloakVersion} here ${destDirPath}`);
 
     await downloadBuiltinKeycloakTheme({
-        "projectDirPath": process.cwd(),
         keycloakVersion,
-        destDirPath
+        destDirPath,
+        buildOptions
     });
 }
 

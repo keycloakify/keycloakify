@@ -45,11 +45,11 @@ export const zParsedPackageJson = z.object({
 assert<Equals<ReturnType<(typeof zParsedPackageJson)["parse"]>, ParsedPackageJson>>();
 
 let parsedPackageJson: undefined | ReturnType<(typeof zParsedPackageJson)["parse"]>;
-export function getParsedPackageJson(params: { projectDirPath: string }) {
-    const { projectDirPath } = params;
+export function getParsedPackageJson(params: { reactAppRootDirPath: string }) {
+    const { reactAppRootDirPath } = params;
     if (parsedPackageJson) {
         return parsedPackageJson;
     }
-    parsedPackageJson = zParsedPackageJson.parse(JSON.parse(fs.readFileSync(pathJoin(projectDirPath, "package.json")).toString("utf8")));
+    parsedPackageJson = zParsedPackageJson.parse(JSON.parse(fs.readFileSync(pathJoin(reactAppRootDirPath, "package.json")).toString("utf8")));
     return parsedPackageJson;
 }

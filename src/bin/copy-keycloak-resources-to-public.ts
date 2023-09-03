@@ -1,40 +1,23 @@
 #!/usr/bin/env node
 
 import { downloadKeycloakStaticResources } from "./keycloakify/generateTheme/downloadKeycloakStaticResources";
-import { join as pathJoin, relative as pathRelative, isAbsolute as pathIsAbsolute } from "path";
+import { join as pathJoin, relative as pathRelative } from "path";
 import { readBuildOptions } from "./keycloakify/BuildOptions";
 import { themeTypes, keycloak_resources, lastKeycloakVersionWithAccountV1 } from "./constants";
 import * as fs from "fs";
 
 (async () => {
-    const cwd = process.cwd();
-
-    const projectDirPath = cwd;
-
-    const publicDirPath = (() => {
-        from_env_var: {
-            const value = process.env["PUBLIC_DIR_PATH"];
-
-            if (value === undefined) {
-                break from_env_var;
-            }
-
-            return pathIsAbsolute(value) ? value : pathJoin(cwd, value);
-        }
-
-        return pathJoin(projectDirPath, "public");
-    })();
+    const reactAppRootDirPath = process.cwd();
 
     const buildOptions = readBuildOptions({
-        "processArgv": process.argv.slice(2),
-        "projectDirPath": process.cwd()
+        reactAppRootDirPath,
+        "processArgv": process.argv.slice(2)
     });
 
-    const reservedDirPath = pathJoin(publicDirPath, keycloak_resources);
+    const reservedDirPath = pathJoin(buildOptions.publicDirPath, keycloak_resources);
 
     for (const themeType of themeTypes) {
         await downloadKeycloakStaticResources({
-            projectDirPath,
             "keycloakVersion": (() => {
                 switch (themeType) {
                     case "login":
@@ -45,7 +28,8 @@ import * as fs from "fs";
             })(),
             themeType,
             "themeDirPath": reservedDirPath,
-            "usedResources": undefined
+            "usedResources": undefined,
+            buildOptions
         });
     }
 
@@ -60,7 +44,7 @@ import * as fs from "fs";
         )
     );
 
-    fs.writeFileSync(pathJoin(publicDirPath, "keycloak-resources", ".gitignore"), Buffer.from("*", "utf8"));
+    fs.writeFileSync(pathJoin(buildOptions.publicDirPath, "keycloak-resources", ".gitignore"), Buffer.from("*", "utf8"));
 
-    console.log(`${pathRelative(projectDirPath, reservedDirPath)} directory created.`);
+    console.log(`${pathRelative(reactAppRootDirPath, reservedDirPath)} directory created.`);
 })();

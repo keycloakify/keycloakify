@@ -15,6 +15,8 @@ import { themeTypes, type ThemeType } from "./constants";
 (async () => {
     console.log("Select a theme type");
 
+    const reactAppRootDirPath = process.cwd();
+
     const { value: themeType } = await cliSelect<ThemeType>({
         "values": [...themeTypes]
     }).catch(() => {
@@ -43,7 +45,7 @@ import { themeTypes, type ThemeType } from "./constants";
 
     const pageBasename = capitalize(kebabCaseToCamelCase(pageId)).replace(/ftl$/, "tsx");
 
-    const { themeSrcDirPath } = getThemeSrcDirPath({ "projectDirPath": process.cwd() });
+    const { themeSrcDirPath } = getThemeSrcDirPath({ reactAppRootDirPath });
 
     const targetFilePath = pathJoin(themeSrcDirPath, themeType, "pages", pageBasename);
 

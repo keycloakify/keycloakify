@@ -3,22 +3,30 @@ import * as fs from "fs";
 import { join as pathJoin } from "path";
 import { downloadBuiltinKeycloakTheme } from "../../download-builtin-keycloak-theme";
 import { resources_common, type ThemeType } from "../../constants";
+import { BuildOptions } from "../BuildOptions";
+import { assert } from "tsafe/assert";
 import * as crypto from "crypto";
+
+export type BuildOptionsLike = {
+    cacheDirPath: string;
+};
+
+assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
 export async function downloadKeycloakStaticResources(
     // prettier-ignore
     params: {
-        projectDirPath: string;
         themeType: ThemeType;
         themeDirPath: string;
         keycloakVersion: string;
         usedResources: {
             resourcesCommonFilePaths: string[];
             resourcesFilePaths: string[];
-        } | undefined
+        } | undefined;
+        buildOptions: BuildOptionsLike;
     }
 ) {
-    const { projectDirPath, themeType, themeDirPath, keycloakVersion, usedResources } = params;
+    const { themeType, themeDirPath, keycloakVersion, usedResources, buildOptions } = params;
 
     const tmpDirPath = pathJoin(
         themeDirPath,
@@ -27,9 +35,9 @@ export async function downloadKeycloakStaticResources(
     );
 
     await downloadBuiltinKeycloakTheme({
-        projectDirPath,
         keycloakVersion,
-        "destDirPath": tmpDirPath
+        "destDirPath": tmpDirPath,
+        buildOptions
     });
 
     const resourcesPath = pathJoin(themeDirPath, themeType, "resources");
