@@ -6,9 +6,7 @@ import { generateStartKeycloakTestingContainer } from "./generateStartKeycloakTe
 import * as fs from "fs";
 import { readBuildOptions } from "./BuildOptions";
 import { getLogger } from "../tools/logger";
-import jar from "../tools/jar";
 import { assert } from "tsafe/assert";
-import { Equals } from "tsafe";
 import { getThemeSrcDirPath } from "../getSrcDirPath";
 import { getProjectRoot } from "../tools/getProjectRoot";
 import { objectKeys } from "tsafe/objectKeys";
@@ -71,26 +69,12 @@ export async function main() {
         buildOptions
     });
 
-    switch (buildOptions.bundler) {
-        case "none":
-            logger.log("😱 Skipping bundling step, there will be no jar");
-            break;
-        case "keycloakify":
-            logger.log("🫶 Let keycloakify do its thang");
-            await jar({
-                "rootPath": buildOptions.keycloakifyBuildDirPath,
-                "version": buildOptions.themeVersion,
-                "groupId": buildOptions.groupId,
-                "artifactId": buildOptions.artifactId,
-                "targetPath": jarFilePath
-            });
-            break;
-        case "mvn":
-            logger.log("🫙 Run maven to deliver a jar");
-            child_process.execSync("mvn package", { "cwd": buildOptions.keycloakifyBuildDirPath });
-            break;
-        default:
-            assert<Equals<typeof buildOptions.bundler, never>>(false);
+    create_jar: {
+        if (!buildOptions.doCreateJar) {
+            break create_jar;
+        }
+
+        child_process.execSync("mvn package", { "cwd": buildOptions.keycloakifyBuildDirPath });
     }
 
     // We want, however, to test in a container running the latest Keycloak version

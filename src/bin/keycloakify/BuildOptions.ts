@@ -1,9 +1,5 @@
-import { assert } from "tsafe/assert";
-import { id } from "tsafe/id";
 import { parse as urlParse } from "url";
-import { typeGuard } from "tsafe/typeGuard";
-import { symToStr } from "tsafe/symToStr";
-import { bundlers, getParsedPackageJson, type Bundler } from "./parsedPackageJson";
+import { getParsedPackageJson } from "./parsedPackageJson";
 import { join as pathJoin, sep as pathSep } from "path";
 import parseArgv from "minimist";
 
@@ -16,7 +12,7 @@ export type BuildOptions = {
     extraThemeProperties: string[] | undefined;
     groupId: string;
     artifactId: string;
-    bundler: Bundler;
+    doCreateJar: boolean;
     loginThemeResourcesFromKeycloakVersion: string;
     /** Directory of your built react project. Defaults to {cwd}/build */
     reactAppBuildDirPath: string;
@@ -42,7 +38,14 @@ export function readBuildOptions(params: { projectDirPath: string; processArgv: 
 
     const { name, keycloakify = {}, version, homepage } = parsedPackageJson;
 
-    const { extraThemeProperties, groupId, artifactId, bundler, loginThemeResourcesFromKeycloakVersion, extraThemeNames = [] } = keycloakify ?? {};
+    const {
+        extraThemeProperties,
+        groupId,
+        artifactId,
+        doCreateJar,
+        loginThemeResourcesFromKeycloakVersion,
+        extraThemeNames = []
+    } = keycloakify ?? {};
 
     const themeName =
         keycloakify.themeName ??
@@ -54,16 +57,7 @@ export function readBuildOptions(params: { projectDirPath: string; processArgv: 
     return {
         themeName,
         extraThemeNames,
-        "bundler": (() => {
-            const { KEYCLOAKIFY_BUNDLER } = process.env;
-
-            assert(
-                typeGuard<Bundler | undefined>(KEYCLOAKIFY_BUNDLER, [undefined, ...id<readonly string[]>(bundlers)].includes(KEYCLOAKIFY_BUNDLER)),
-                `${symToStr({ KEYCLOAKIFY_BUNDLER })} should be one of ${bundlers.join(", ")}`
-            );
-
-            return KEYCLOAKIFY_BUNDLER ?? bundler ?? "keycloakify";
-        })(),
+        "doCreateJar": doCreateJar ?? true,
         "artifactId": process.env.KEYCLOAKIFY_ARTIFACT_ID ?? artifactId ?? `${themeName}-keycloak-theme`,
         "groupId": (() => {
             const fallbackGroupId = `${themeName}.keycloak`;

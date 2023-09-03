@@ -4,8 +4,6 @@ import type { Equals } from "tsafe";
 import { z } from "zod";
 import { pathJoin } from "../tools/pathJoin";
 
-export const bundlers = ["mvn", "keycloakify", "none"] as const;
-export type Bundler = (typeof bundlers)[number];
 export type ParsedPackageJson = {
     name: string;
     version?: string;
@@ -15,7 +13,7 @@ export type ParsedPackageJson = {
         areAppAndKeycloakServerSharingSameDomain?: boolean;
         artifactId?: string;
         groupId?: string;
-        bundler?: Bundler;
+        doCreateJar?: boolean;
         loginThemeResourcesFromKeycloakVersion?: string;
         reactAppBuildDirPath?: string;
         keycloakifyBuildDirPath?: string;
@@ -34,7 +32,7 @@ export const zParsedPackageJson = z.object({
             "areAppAndKeycloakServerSharingSameDomain": z.boolean().optional(),
             "artifactId": z.string().optional(),
             "groupId": z.string().optional(),
-            "bundler": z.enum(bundlers).optional(),
+            "doCreateJar": z.boolean().optional(),
             "loginThemeResourcesFromKeycloakVersion": z.string().optional(),
             "reactAppBuildDirPath": z.string().optional(),
             "keycloakifyBuildDirPath": z.string().optional(),
