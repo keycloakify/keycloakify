@@ -3,9 +3,8 @@ import { join as pathJoin, dirname as pathDirname } from "path";
 import { assert } from "tsafe/assert";
 import { Reflect } from "tsafe/Reflect";
 import type { BuildOptions } from "../BuildOptions";
-import { type ThemeType, resources_common, lastKeycloakVersionWithAccountV1 } from "../../constants";
-import { downloadBuiltinKeycloakTheme } from "../../download-builtin-keycloak-theme";
-import { transformCodebase } from "../../tools/transformCodebase";
+import { type ThemeType } from "../../constants";
+import { bringInAccountV1, accountV1 } from "./bringInAccountV1";
 
 export type BuildOptionsLike = {
     themeName: string;
@@ -14,6 +13,7 @@ export type BuildOptionsLike = {
     artifactId: string;
     themeVersion: string;
     cacheDirPath: string;
+    keycloakifyBuildDirPath: string;
 };
 
 {
@@ -23,13 +23,12 @@ export type BuildOptionsLike = {
 }
 
 export async function generateJavaStackFiles(params: {
-    keycloakThemeBuildingDirPath: string;
     implementedThemeTypes: Record<ThemeType | "email", boolean>;
     buildOptions: BuildOptionsLike;
 }): Promise<{
     jarFilePath: string;
 }> {
-    const { keycloakThemeBuildingDirPath, implementedThemeTypes, buildOptions } = params;
+    const { implementedThemeTypes, buildOptions } = params;
 
     {
         const { pomFileCode } = (function generatePomFileCode(): {
@@ -151,84 +150,15 @@ export async function generateJavaStackFiles(params: {
             return { pomFileCode };
         })();
 
-        fs.writeFileSync(pathJoin(keycloakThemeBuildingDirPath, "pom.xml"), Buffer.from(pomFileCode, "utf8"));
+        fs.writeFileSync(pathJoin(buildOptions.keycloakifyBuildDirPath, "pom.xml"), Buffer.from(pomFileCode, "utf8"));
     }
 
-    const accountV1 = "account-v1";
-
-    {
-        const builtinKeycloakThemeTmpDirPath = pathJoin(keycloakThemeBuildingDirPath, "..", "tmp_yxdE2_builtin_keycloak_theme");
-
-        await downloadBuiltinKeycloakTheme({
-            "destDirPath": builtinKeycloakThemeTmpDirPath,
-            "keycloakVersion": lastKeycloakVersionWithAccountV1,
-            buildOptions
-        });
-
-        const accountV1DirPath = pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", accountV1, "account");
-
-        transformCodebase({
-            "srcDirPath": pathJoin(builtinKeycloakThemeTmpDirPath, "base", "account"),
-            "destDirPath": accountV1DirPath
-        });
-
-        const commonResourceFilePaths = [
-            "node_modules/patternfly/dist/css/patternfly.min.css",
-            "node_modules/patternfly/dist/css/patternfly-additions.min.css"
-        ];
-
-        for (const relativeFilePath of commonResourceFilePaths.map(path => pathJoin(...path.split("/")))) {
-            const destFilePath = pathJoin(accountV1DirPath, "resources", resources_common, relativeFilePath);
-
-            fs.mkdirSync(pathDirname(destFilePath), { "recursive": true });
-
-            fs.cpSync(pathJoin(builtinKeycloakThemeTmpDirPath, "keycloak", "common", "resources", relativeFilePath), destFilePath);
-        }
-
-        const resourceFilePaths = ["css/account.css"];
-
-        for (const relativeFilePath of resourceFilePaths.map(path => pathJoin(...path.split("/")))) {
-            const destFilePath = pathJoin(accountV1DirPath, "resources", relativeFilePath);
-
-            fs.mkdirSync(pathDirname(destFilePath), { "recursive": true });
-
-            fs.cpSync(pathJoin(builtinKeycloakThemeTmpDirPath, "keycloak", "account", "resources", relativeFilePath), destFilePath);
-        }
-
-        fs.rmSync(builtinKeycloakThemeTmpDirPath, { "recursive": true });
-
-        fs.writeFileSync(
-            pathJoin(accountV1DirPath, "theme.properties"),
-            Buffer.from(
-                [
-                    "accountResourceProvider=org.keycloak.services.resources.account.AccountFormService",
-                    "",
-                    "locales=ar,ca,cs,da,de,en,es,fr,fi,hu,it,ja,lt,nl,no,pl,pt-BR,ru,sk,sv,tr,zh-CN",
-                    "",
-                    "styles=" + [...resourceFilePaths, ...commonResourceFilePaths.map(path => `resources_common/${path}`)].join(" "),
-                    "",
-                    "##### css classes for form buttons",
-                    "# main class used for all buttons",
-                    "kcButtonClass=btn",
-                    "# classes defining priority of the button - primary or default (there is typically only one priority button for the form)",
-                    "kcButtonPrimaryClass=btn-primary",
-                    "kcButtonDefaultClass=btn-default",
-                    "# classes defining size of the button",
-                    "kcButtonLargeClass=btn-lg",
-                    ""
-                ].join("\n"),
-                "utf8"
-            )
-        );
+    if (implementedThemeTypes.account) {
+        await bringInAccountV1({ buildOptions });
     }
 
-    transformCodebase({
-        "srcDirPath": pathJoin(__dirname, "account-v1-java"),
-        "destDirPath": pathJoin(keycloakThemeBuildingDirPath, "src", "main", "java", "org", "keycloak")
-    });
-
     {
-        const themeManifestFilePath = pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "META-INF", "keycloak-themes.json");
+        const themeManifestFilePath = pathJoin(buildOptions.keycloakifyBuildDirPath, "src", "main", "resources", "META-INF", "keycloak-themes.json");
 
         try {
             fs.mkdirSync(pathDirname(themeManifestFilePath));
@@ -240,16 +170,32 @@ export async function generateJavaStackFiles(params: {
                 JSON.stringify(
                     {
                         "themes": [
-                            {
-                                "name": accountV1,
-                                "types": ["account"]
-                            },
-                            ...[buildOptions.themeName, ...buildOptions.extraThemeNames].map(themeName => ({
-                                "name": themeName,
-                                "types": Object.entries(implementedThemeTypes)
-                                    .filter(([, isImplemented]) => isImplemented)
-                                    .map(([themeType]) => themeType)
-                            }))
+                            ...(!implementedThemeTypes.account
+                                ? []
+                                : [
+                                      {
+                                          "name": accountV1,
+                                          "types": ["account"]
+                                      }
+                                  ]),
+                            ...[buildOptions.themeName, ...buildOptions.extraThemeNames]
+                                .map(themeName => [
+                                    {
+                                        "name": themeName,
+                                        "types": Object.entries(implementedThemeTypes)
+                                            .filter(([, isImplemented]) => isImplemented)
+                                            .map(([themeType]) => themeType)
+                                    },
+                                    ...(!implementedThemeTypes.account
+                                        ? []
+                                        : [
+                                              {
+                                                  "name": `${themeName}_retrocompatible`,
+                                                  "types": ["account"]
+                                              }
+                                          ])
+                                ])
+                                .flat()
                         ]
                     },
                     null,
@@ -261,6 +207,6 @@ export async function generateJavaStackFiles(params: {
     }
 
     return {
-        "jarFilePath": pathJoin(keycloakThemeBuildingDirPath, "target", `${buildOptions.artifactId}-${buildOptions.themeVersion}.jar`)
+        "jarFilePath": pathJoin(buildOptions.keycloakifyBuildDirPath, "target", `${buildOptions.artifactId}-${buildOptions.themeVersion}.jar`)
     };
 }

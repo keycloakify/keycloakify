@@ -45,7 +45,6 @@ export async function main() {
     }
 
     const { jarFilePath } = await generateJavaStackFiles({
-        "keycloakThemeBuildingDirPath": buildOptions.keycloakifyBuildDirPath,
         "implementedThemeTypes": (() => {
             const implementedThemeTypes = {
                 "login": false,
@@ -65,11 +64,7 @@ export async function main() {
         buildOptions
     });
 
-    create_jar: {
-        if (!buildOptions.doCreateJar) {
-            break create_jar;
-        }
-
+    if (buildOptions.doCreateJar) {
         child_process.execSync("mvn package", { "cwd": buildOptions.keycloakifyBuildDirPath });
     }
 
@@ -77,7 +72,6 @@ export async function main() {
     const containerKeycloakVersion = "21.1.2";
 
     generateStartKeycloakTestingContainer({
-        keycloakThemeBuildingDirPath: buildOptions.keycloakifyBuildDirPath,
         "keycloakVersion": containerKeycloakVersion,
         buildOptions
     });
