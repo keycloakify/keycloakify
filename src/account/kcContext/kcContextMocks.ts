@@ -6,7 +6,7 @@ import type { KcContext } from "./KcContext";
 
 const PUBLIC_URL = (typeof process !== "object" ? undefined : process.env?.["PUBLIC_URL"]) || "/";
 
-const resourcesPath = pathJoin(PUBLIC_URL, keycloak_resources, "login", "resources");
+const resourcesPath = pathJoin(PUBLIC_URL, keycloak_resources, "account", "resources");
 
 export const kcContextCommonMock: KcContext.Common = {
     "keycloakifyVersion": "0.0.0",
