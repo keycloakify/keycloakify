@@ -30,7 +30,6 @@ export async function downloadKeycloakStaticResources(
 
     const tmpDirPath = pathJoin(
         themeDirPath,
-        "..",
         `tmp_suLeKsxId_${crypto.createHash("sha256").update(`${themeType}-${keycloakVersion}`).digest("hex").slice(0, 8)}`
     );
 

@@ -1,6 +1,6 @@
 import { transformCodebase } from "../../tools/transformCodebase";
 import * as fs from "fs";
-import { join as pathJoin, basename as pathBasename } from "path";
+import { join as pathJoin, basename as pathBasename, resolve as pathResolve } from "path";
 import { replaceImportsFromStaticInJsCode } from "../replacers/replaceImportsFromStaticInJsCode";
 import { replaceImportsInCssCode } from "../replacers/replaceImportsInCssCode";
 import { generateFtlFilesCodeFactory, loginThemePageIds, accountThemePageIds } from "../generateFtl";
@@ -36,7 +36,7 @@ export async function generateTheme(params: {
 }): Promise<void> {
     const { themeName, themeSrcDirPath, keycloakifySrcDirPath, buildOptions, keycloakifyVersion } = params;
 
-    const getThemeDirPath = (params: { themeType: ThemeType | "email"; isRetrocompat?: true }) => {
+    const getThemeTypeDirPath = (params: { themeType: ThemeType | "email"; isRetrocompat?: true }) => {
         const { themeType, isRetrocompat = false } = params;
         return pathJoin(
             buildOptions.keycloakifyBuildDirPath,
@@ -58,7 +58,7 @@ export async function generateTheme(params: {
             continue;
         }
 
-        const themeDirPath = getThemeDirPath({ themeType });
+        const themeTypeDirPath = getThemeTypeDirPath({ themeType });
 
         copy_app_resources_to_theme_path: {
             const isFirstPass = themeType.indexOf(themeType) === 0;
@@ -68,7 +68,7 @@ export async function generateTheme(params: {
             }
 
             transformCodebase({
-                "destDirPath": pathJoin(themeDirPath, "resources", "build"),
+                "destDirPath": pathJoin(themeTypeDirPath, "resources", "build"),
                 "srcDirPath": buildOptions.reactAppBuildDirPath,
                 "transformSourceCode": ({ filePath, sourceCode }) => {
                     //NOTE: Prevent cycles, excludes the folder we generated for debug in public/
@@ -146,18 +146,18 @@ export async function generateTheme(params: {
         ].forEach(pageId => {
             const { ftlCode } = generateFtlFilesCode({ pageId });
 
-            fs.mkdirSync(themeDirPath, { "recursive": true });
+            fs.mkdirSync(themeTypeDirPath, { "recursive": true });
 
-            fs.writeFileSync(pathJoin(themeDirPath, pageId), Buffer.from(ftlCode, "utf8"));
+            fs.writeFileSync(pathJoin(themeTypeDirPath, pageId), Buffer.from(ftlCode, "utf8"));
         });
 
         generateMessageProperties({
             themeSrcDirPath,
             themeType
         }).forEach(({ languageTag, propertiesFileSource }) => {
-            const messagesDirPath = pathJoin(themeDirPath, "messages");
+            const messagesDirPath = pathJoin(themeTypeDirPath, "messages");
 
-            fs.mkdirSync(pathJoin(themeDirPath, "messages"), { "recursive": true });
+            fs.mkdirSync(pathJoin(themeTypeDirPath, "messages"), { "recursive": true });
 
             const propertiesFilePath = pathJoin(messagesDirPath, `messages_${languageTag}.properties`);
 
@@ -173,7 +173,7 @@ export async function generateTheme(params: {
                         return buildOptions.loginThemeResourcesFromKeycloakVersion;
                 }
             })(),
-            themeDirPath,
+            "themeDirPath": pathResolve(pathJoin(themeTypeDirPath, "..")),
             themeType,
             "usedResources": readStaticResourcesUsage({
                 keycloakifySrcDirPath,
@@ -184,7 +184,7 @@ export async function generateTheme(params: {
         });
 
         fs.writeFileSync(
-            pathJoin(themeDirPath, "theme.properties"),
+            pathJoin(themeTypeDirPath, "theme.properties"),
             Buffer.from(
                 [
                     `parent=${(() => {
@@ -204,8 +204,8 @@ export async function generateTheme(params: {
 
         if (themeType === "account" && buildOptions.doBuildRetrocompatAccountTheme) {
             transformCodebase({
-                "srcDirPath": themeDirPath,
-                "destDirPath": getThemeDirPath({ themeType, "isRetrocompat": true }),
+                "srcDirPath": themeTypeDirPath,
+                "destDirPath": getThemeTypeDirPath({ themeType, "isRetrocompat": true }),
                 "transformSourceCode": ({ filePath, sourceCode }) => {
                     if (pathBasename(filePath) === "theme.properties") {
                         return {
@@ -228,7 +228,7 @@ export async function generateTheme(params: {
 
         transformCodebase({
             "srcDirPath": emailThemeSrcDirPath,
-            "destDirPath": getThemeDirPath({ "themeType": "email" })
+            "destDirPath": getThemeTypeDirPath({ "themeType": "email" })
         });
     }
 }
