@@ -3,7 +3,7 @@ import { join as pathJoin, dirname as pathDirname } from "path";
 import { assert } from "tsafe/assert";
 import { Reflect } from "tsafe/Reflect";
 import type { BuildOptions } from "../BuildOptions";
-import { resources_common, lastKeycloakVersionWithAccountV1 } from "../../constants";
+import { resources_common, lastKeycloakVersionWithAccountV1, accountV1 } from "../../constants";
 import { downloadBuiltinKeycloakTheme } from "../../download-builtin-keycloak-theme";
 import { transformCodebase } from "../../tools/transformCodebase";
 
@@ -17,8 +17,6 @@ export type BuildOptionsLike = {
 
     assert<typeof buildOptions extends BuildOptionsLike ? true : false>();
 }
-
-export const accountV1 = "account-v1";
 
 export async function bringInAccountV1(params: { buildOptions: BuildOptionsLike }) {
     const { buildOptions } = params;

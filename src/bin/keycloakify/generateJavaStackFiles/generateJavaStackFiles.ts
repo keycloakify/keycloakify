@@ -3,8 +3,8 @@ import { join as pathJoin, dirname as pathDirname } from "path";
 import { assert } from "tsafe/assert";
 import { Reflect } from "tsafe/Reflect";
 import type { BuildOptions } from "../BuildOptions";
-import { type ThemeType } from "../../constants";
-import { bringInAccountV1, accountV1 } from "./bringInAccountV1";
+import { type ThemeType, retrocompatPostfix, accountV1 } from "../../constants";
+import { bringInAccountV1 } from "./bringInAccountV1";
 
 export type BuildOptionsLike = {
     groupId: string;
@@ -189,7 +189,7 @@ export async function generateJavaStackFiles(params: {
                                         ? []
                                         : [
                                               {
-                                                  "name": `${themeName}_retrocompat`,
+                                                  "name": `${themeName}${retrocompatPostfix}`,
                                                   "types": ["account"]
                                               }
                                           ])
