@@ -24,7 +24,7 @@ vi.mock("keycloakify/bin/keycloakify/parsed-package-json", async () => ({
 
 vi.mock("keycloakify/bin/promptKeycloakVersion", async () => ({
     ...((await vi.importActual("keycloakify/bin/promptKeycloakVersion")) as Record<string, unknown>),
-    promptKeycloakVersion: () => ({ keycloakVersion: "11.0.3" })
+    promptKeycloakVersion: () => ({ "keycloakVersion": "11.0.3" })
 }));
 
 const nativeCwd = process.cwd;
@@ -52,19 +52,25 @@ describe("Sample Project", () => {
             await setupSampleReactProject(sampleReactProjectDirPath);
             await initializeEmailTheme();
 
-            const projectDirPath = process.cwd();
+            const reactAppRootDirPath = process.cwd();
 
             const destDirPath = pathJoin(
                 readBuildOptions({
                     "processArgv": ["--silent"],
-                    projectDirPath
+                    reactAppRootDirPath
                 }).keycloakifyBuildDirPath,
                 "src",
                 "main",
                 "resources",
                 "theme"
             );
-            await downloadBuiltinKeycloakTheme({ destDirPath, "keycloakVersion": "11.0.3", projectDirPath });
+            await downloadBuiltinKeycloakTheme({
+                destDirPath,
+                "keycloakVersion": "11.0.3",
+                "buildOptions": {
+                    "cacheDirPath": pathJoin(reactAppRootDirPath, "node_modules", ".cache", "keycloakify")
+                }
+            });
         },
         { timeout: 90000 }
     );
@@ -80,19 +86,25 @@ describe("Sample Project", () => {
             await setupSampleReactProject(pathJoin(sampleReactProjectDirPath, "custom_input"));
             await initializeEmailTheme();
 
-            const projectDirPath = process.cwd();
+            const reactAppRootDirPath = process.cwd();
 
             const destDirPath = pathJoin(
                 readBuildOptions({
                     "processArgv": ["--silent"],
-                    projectDirPath
+                    reactAppRootDirPath
                 }).keycloakifyBuildDirPath,
                 "src",
                 "main",
                 "resources",
                 "theme"
             );
-            await downloadBuiltinKeycloakTheme({ destDirPath, "keycloakVersion": "11.0.3", projectDirPath });
+            await downloadBuiltinKeycloakTheme({
+                destDirPath,
+                "keycloakVersion": "11.0.3",
+                buildOptions: {
+                    "cacheDirPath": pathJoin(reactAppRootDirPath, "node_modules", ".cache", "keycloakify")
+                }
+            });
         },
         { timeout: 90000 }
     );
