@@ -21,6 +21,7 @@ export type TemplateProps<KcContext extends KcContext.Common, I18nExtended exten
 };
 
 export type ClassKey =
+    | "kcBodyClass"
     | "kcHtmlClass"
     | "kcLoginClass"
     | "kcHeaderClass"
