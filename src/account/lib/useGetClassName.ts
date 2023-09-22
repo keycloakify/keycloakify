@@ -3,6 +3,7 @@ import type { ClassKey } from "keycloakify/account/TemplateProps";
 
 export const { useGetClassName } = createUseClassName<ClassKey>({
     "defaultClasses": {
+        "kcHtmlClass": undefined,
         "kcBodyClass": undefined,
         "kcButtonClass": "btn",
         "kcButtonPrimaryClass": "btn-primary",

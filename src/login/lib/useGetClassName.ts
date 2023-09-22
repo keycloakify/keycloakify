@@ -3,6 +3,7 @@ import type { ClassKey } from "keycloakify/login/TemplateProps";
 
 export const { useGetClassName } = createUseClassName<ClassKey>({
     "defaultClasses": {
+        "kcBodyClass": undefined,
         "kcHtmlClass": "login-pf",
         "kcLoginClass": "login-pf-page",
         "kcContentWrapperClass": "row",
