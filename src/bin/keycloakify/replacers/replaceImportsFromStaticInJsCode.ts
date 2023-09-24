@@ -16,18 +16,25 @@ export function replaceImportsFromStaticInJsCode(params: { jsCode: string }): { 
     const { jsCode } = params;
 
     const getReplaceArgs = (language: "js" | "css"): Parameters<typeof String.prototype.replace> => [
-        new RegExp(`([a-zA-Z_]+)\\.([a-zA-Z]+)=function\\(([a-zA-Z]+)\\){return"static\\/${language}\\/"`, "g"),
-        (...[, n, u, e]) => `
-			${n}[(function(){
-                var pd= Object.getOwnPropertyDescriptor(${n}, "p");
+        new RegExp(`([a-zA-Z_]+)\\.([a-zA-Z]+)=(function\\(([a-z]+)\\){return|([a-z]+)=>)"static\\/${language}\\/"`, "g"),
+        (...[, n, u, matchedFunction, eForFunction]) => {
+            const isArrowFunction = matchedFunction.includes("=>");
+            const e = isArrowFunction ? matchedFunction.replace("=>", "").trim() : eForFunction;
+
+            return `
+            ${n}[(function(){
+                var pd = Object.getOwnPropertyDescriptor(${n}, "p");
                 if( pd === undefined || pd.configurable ){
                     Object.defineProperty(${n}, "p", {
                         get: function() { return window.${ftlValuesGlobalName}.url.resourcesPath; },
-                        set: function (){}
+                        set: function() {}
                     });
                 }
-				return "${u}";
-			})()] = function(${e}) { return "${true ? "/build/" : ""}static/${language}/"`
+                return "${u}";
+            })()] = ${isArrowFunction ? `${e} =>` : `function(${e}) { return `} "/build/static/${language}/"`
+                .replace(/\s+/g, " ")
+                .trim();
+        }
     ];
 
     const fixedJsCode = jsCode
