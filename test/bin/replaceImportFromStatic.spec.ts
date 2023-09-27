@@ -32,6 +32,10 @@ describe("bin/js-transforms", () => {
                 908:"67c9ed2c"
             }[e]+".chunk.css"
         }
+        
+        n.u=e=>"static/js/"+e+"."+{69:"4f205f87",128:"49264537",453:"b2fed72e",482:"f0106901"}[e]+".chunk.js"
+        
+        t.miniCssF=e=>"static/css/"+e+"."+{164:"dcfd7749",908:"67c9ed2c"}[e]+".chunk.css"
     `;
     it("transforms standalone code properly", () => {
         const { fixedJsCode } = replaceImportsFromStaticInJsCode({
@@ -52,11 +56,11 @@ describe("bin/js-transforms", () => {
             }
 
             __webpack_require__[(function (){
-                var pd= Object.getOwnPropertyDescriptor(__webpack_require__, "p");
+                var pd = Object.getOwnPropertyDescriptor(__webpack_require__, "p");
                 if( pd === undefined || pd.configurable ){
                     Object.defineProperty(__webpack_require__, "p", {
                         get: function() { return window.kcContext.url.resourcesPath; },
-                        set: function (){}
+                        set: function() {}
                     });
                 }
                 return "u";
@@ -69,11 +73,11 @@ describe("bin/js-transforms", () => {
             }
 
             t[(function (){
-                var pd= Object.getOwnPropertyDescriptor(t, "p");
+                var pd = Object.getOwnPropertyDescriptor(t, "p");
                 if( pd === undefined || pd.configurable ){
                     Object.defineProperty(t, "p", {
                         get: function() { return window.kcContext.url.resourcesPath; },
-                        set: function (){}
+                        set: function() {}
                     });
                 }
                 return "miniCssF";
@@ -83,7 +87,28 @@ describe("bin/js-transforms", () => {
                     908:"67c9ed2c"
                 } [e] + ".chunk.css"
             }
-
+            
+            n[(function(){
+                var pd = Object.getOwnPropertyDescriptor(n, "p");
+                if( pd === undefined || pd.configurable ){
+                    Object.defineProperty(n, "p", {
+                        get: function() { return window.kcContext.url.resourcesPath; },
+                        set: function() {}
+                    });
+                }
+                return "u";
+            })()] = e => "/build/static/js/"+e+"."+{69:"4f205f87",128:"49264537",453:"b2fed72e",482:"f0106901"}[e]+".chunk.js"
+        
+            t[(function(){
+                var pd = Object.getOwnPropertyDescriptor(t, "p");
+                if( pd === undefined || pd.configurable ){
+                    Object.defineProperty(t, "p", {
+                        get: function() { return window.kcContext.url.resourcesPath; },
+                        set: function() {}
+                    });
+                }
+                return "miniCssF";
+            })()] = e => "/build/static/css/"+e+"."+{164:"dcfd7749",908:"67c9ed2c"}[e]+".chunk.css"
         `;
 
         expect(isSameCode(fixedJsCode, fixedJsCodeExpected)).toBe(true);
