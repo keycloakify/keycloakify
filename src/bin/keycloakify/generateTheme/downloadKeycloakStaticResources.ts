@@ -1,6 +1,6 @@
 import { transformCodebase } from "../../tools/transformCodebase";
 import * as fs from "fs";
-import { join as pathJoin, relative as pathRelative } from "path";
+import { join as pathJoin, relative as pathRelative, dirname as pathDirname } from "path";
 import type { ThemeType } from "../generateFtl";
 import { downloadBuiltinKeycloakTheme } from "../../download-builtin-keycloak-theme";
 import {
@@ -9,6 +9,7 @@ import {
     basenameOfKeycloakDirInPublicDir
 } from "../../mockTestingResourcesPath";
 import * as crypto from "crypto";
+import { assert } from "tsafe/assert";
 
 export async function downloadKeycloakStaticResources(
     // prettier-ignore
@@ -23,7 +24,32 @@ export async function downloadKeycloakStaticResources(
         } | undefined
     }
 ) {
-    const { projectDirPath, themeType, themeDirPath, keycloakVersion, usedResources } = params;
+    const { projectDirPath, themeType, themeDirPath, keycloakVersion } = params;
+
+    // NOTE: Hack for 427
+    const usedResources = (() => {
+        const { usedResources } = params;
+
+        if (usedResources === undefined) {
+            return undefined;
+        }
+
+        assert(usedResources !== undefined);
+
+        return {
+            "resourcesCommonDirPaths": usedResources.resourcesCommonFilePaths.map(filePath => {
+                {
+                    const splitArg = "/dist/";
+
+                    if (filePath.includes(splitArg)) {
+                        return filePath.split(splitArg)[0] + splitArg;
+                    }
+                }
+
+                return pathDirname(filePath);
+            })
+        };
+    })();
 
     const tmpDirPath = pathJoin(
         themeDirPath,
@@ -39,17 +65,7 @@ export async function downloadKeycloakStaticResources(
 
     transformCodebase({
         "srcDirPath": pathJoin(tmpDirPath, "keycloak", themeType, "resources"),
-        "destDirPath": pathJoin(themeDirPath, pathRelative(basenameOfKeycloakDirInPublicDir, resourcesDirPathRelativeToPublicDir)),
-        "transformSourceCode":
-            usedResources === undefined
-                ? undefined
-                : ({ fileRelativePath, sourceCode }) => {
-                      if (!usedResources.resourcesFilePaths.includes(fileRelativePath)) {
-                          return undefined;
-                      }
-
-                      return { "modifiedSourceCode": sourceCode };
-                  }
+        "destDirPath": pathJoin(themeDirPath, pathRelative(basenameOfKeycloakDirInPublicDir, resourcesDirPathRelativeToPublicDir))
     });
 
     transformCodebase({
@@ -59,7 +75,7 @@ export async function downloadKeycloakStaticResources(
             usedResources === undefined
                 ? undefined
                 : ({ fileRelativePath, sourceCode }) => {
-                      if (!usedResources.resourcesCommonFilePaths.includes(fileRelativePath)) {
+                      if (usedResources.resourcesCommonDirPaths.find(dirPath => fileRelativePath.startsWith(dirPath)) === undefined) {
                           return undefined;
                       }
 
