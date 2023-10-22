@@ -1,5 +1,5 @@
 import { crawl } from "../../tools/crawl";
-import { join as pathJoin } from "path";
+import { join as pathJoin, sep as pathSep } from "path";
 import * as fs from "fs";
 import type { ThemeType } from "../generateFtl";
 
@@ -74,10 +74,14 @@ export function readPaths(params: { rawSourceFile: string }): {
         }
     }
 
-    const removePrefixSlash = (filePath: string) => (filePath.startsWith("/") ? filePath.slice(1) : filePath);
+    const normalizePath = (filePath: string) => {
+        filePath = filePath.startsWith("/") ? filePath.slice(1) : filePath;
+        filePath = filePath.replace(/\//g, pathSep);
+        return filePath;
+    };
 
     return {
-        "resourcesCommonFilePaths": Array.from(resourcesCommonFilePaths).map(removePrefixSlash),
-        "resourcesFilePaths": Array.from(resourcesFilePaths).map(removePrefixSlash)
+        "resourcesCommonFilePaths": Array.from(resourcesCommonFilePaths).map(normalizePath),
+        "resourcesFilePaths": Array.from(resourcesFilePaths).map(normalizePath)
     };
 }
