@@ -20,7 +20,6 @@ export async function downloadKeycloakStaticResources(
         keycloakVersion: string;
         usedResources: {
             resourcesCommonFilePaths: string[];
-            resourcesFilePaths: string[];
         } | undefined
     }
 ) {

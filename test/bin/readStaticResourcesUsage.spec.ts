@@ -9,8 +9,7 @@ describe("Ensure it's able to extract used Keycloak resources", () => {
             "node_modules/patternfly/dist/css/patternfly-additions.min.css",
             "lib/zocial/zocial.css",
             "node_modules/jquery/dist/jquery.min.js"
-        ],
-        "resourcesFilePaths": ["css/login.css"]
+        ]
     };
 
     it("works with coding style n°1", () => {
