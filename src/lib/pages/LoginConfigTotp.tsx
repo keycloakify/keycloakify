@@ -2,7 +2,7 @@ import React from "react";
 import { clsx } from "../tools/clsx";
 import type { PageProps } from "../KcProps";
 import type { KcContextBase } from "../getKcContext";
-import type { I18nBase } from "../i18n";
+import type { I18nBase, MessageKeyBase } from "../i18n";
 
 export default function LoginConfigTotp(props: PageProps<Extract<KcContextBase, { pageId: "login-config-totp.ftl" }>, I18nBase>) {
     const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
@@ -29,7 +29,7 @@ export default function LoginConfigTotp(props: PageProps<Extract<KcContextBase, 
 
                             <ul id="kc-totp-supported-apps">
                                 {totp.policy.supportedApplications.map(app => (
-                                    <li>{app}</li>
+                                    <li>{msg(app as MessageKeyBase)}</li>
                                 ))}
                             </ul>
                         </li>
