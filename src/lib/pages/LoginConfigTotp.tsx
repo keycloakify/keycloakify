@@ -29,7 +29,7 @@ export default function LoginConfigTotp(props: PageProps<Extract<KcContextBase, 
 
                             <ul id="kc-totp-supported-apps">
                                 {totp.policy.supportedApplications.map(app => (
-                                    <li>{ msg(app as MessageKeyBase) == undefined? app : msg(app as MessageKeyBase) }</li>
+                                    <li>{msg(app as MessageKeyBase)}</li>
                                 ))}
                             </ul>
                         </li>
