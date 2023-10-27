@@ -133,7 +133,7 @@ jobs:
         if [ "$IS_PRE_RELEASE" = "true" ]; then
             EXTRA_ARGS="--tag next"
         fi
-        npm publish $EXTRA_ARGS
+        npm publish $EXTRA_ARGS --tag previous
       env:
         NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
         VERSION: ${{ needs.check_if_version_upgraded.outputs.to_version }}
