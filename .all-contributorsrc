@@ -177,6 +177,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "celinepelletier",
+      "name": "Céline Pelletier",
+      "avatar_url": "https://avatars.githubusercontent.com/u/82821620?v=4",
+      "profile": "https://github.com/celinepelletier",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
