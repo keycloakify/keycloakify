@@ -45,6 +45,7 @@ export const { useGetClassName } = createUseClassName<ClassKey>({
         "kcInputClass": "form-control",
         "kcInputErrorMessageClass": "pf-c-form__helper-text pf-m-error required kc-feedback-text",
         "kcInputWrapperClass": "col-xs-12 col-sm-12 col-md-12 col-lg-12",
+        "kcFormButtonsWrapperClass": undefined,
         "kcFormOptionsClass": "col-xs-12 col-sm-12 col-md-12 col-lg-12",
         "kcFormButtonsClass": "col-xs-12 col-sm-12 col-md-12 col-lg-12",
         "kcFormSettingClass": "login-pf-settings",

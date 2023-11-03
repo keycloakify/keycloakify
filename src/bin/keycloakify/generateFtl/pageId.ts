@@ -10,6 +10,8 @@ export const loginThemePageIds = [
     "login-reset-password.ftl",
     "login-verify-email.ftl",
     "terms.ftl",
+    "login-oauth2-device-verify-user-code.ftl",
+    "login-oauth-grant.ftl",
     "login-otp.ftl",
     "login-update-profile.ftl",
     "login-update-password.ftl",
