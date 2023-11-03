@@ -18,6 +18,8 @@ export type KcContext =
     | KcContext.LoginResetPassword
     | KcContext.LoginVerifyEmail
     | KcContext.Terms
+    | KcContext.LoginDeviceVerifyUserCode
+    | KcContext.LoginOauthGrant
     | KcContext.LoginOtp
     | KcContext.LoginUsername
     | KcContext.WebauthnAuthenticate
@@ -239,6 +241,27 @@ export declare namespace KcContext {
 
     export type Terms = Common & {
         pageId: "terms.ftl";
+    };
+
+    export type LoginDeviceVerifyUserCode = Common & {
+        pageId: "login-oauth2-device-verify-user-code.ftl";
+        url: {
+            oauth2DeviceVerificationAction: string;
+        };
+    };
+
+    export type LoginOauthGrant = Common & {
+        pageId: "login-oauth-grant.ftl";
+        oauth: {
+            code: string;
+            client: string;
+            clientScopesRequested: {
+                consentScreenText: string;
+            }[];
+        };
+        url: {
+            oauthAction: string;
+        };
     };
 
     export type LoginOtp = Common & {
