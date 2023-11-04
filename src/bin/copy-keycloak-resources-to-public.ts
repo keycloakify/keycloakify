@@ -45,5 +45,19 @@ import * as fs from "fs";
 
     fs.writeFileSync(pathJoin(keycloakDirInPublicDir, ".gitignore"), Buffer.from("*", "utf8"));
 
+    const buildDirPath = pathJoin(projectDirPath, "build");
+
+    if (process.platform === "win32" && !fs.existsSync(buildDirPath)) {
+        fs.mkdirSync(buildDirPath);
+    }
+
+    try {
+        fs.symlinkSync(buildDirPath, pathJoin(keycloakDirInPublicDir, "resources", "build"));
+    } catch (error) {
+        if (process.platform !== "win32") {
+            throw error;
+        }
+    }
+
     console.log(`${pathRelative(projectDirPath, keycloakDirInPublicDir)} directory created.`);
 })();
