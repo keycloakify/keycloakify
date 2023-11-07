@@ -21,4 +21,13 @@ const meta: ComponentMeta<any> = {
 
 export default meta;
 
-export const Default = () => <PageStory />;
+export const Default = () => (
+    <PageStory
+        kcContext={{
+            message: {
+                summary: "This is the server message",
+                type: "info"
+            }
+        }}
+    />
+);
