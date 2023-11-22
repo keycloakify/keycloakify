@@ -39,6 +39,7 @@ export type KcContext =
 
 export declare namespace KcContext {
     export type Common = {
+        themeVersion: string;
         keycloakifyVersion: string;
         themeType: "login";
         themeName: string;

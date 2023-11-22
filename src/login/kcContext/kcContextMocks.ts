@@ -103,6 +103,7 @@ const attributes: Attribute[] = [
 const attributesByName = Object.fromEntries(attributes.map(attribute => [attribute.name, attribute])) as any;
 
 export const kcContextCommonMock: KcContext.Common = {
+    "themeVersion": "0.0.0",
     "keycloakifyVersion": "0.0.0",
     "themeType": "login",
     "themeName": "my-theme-name",
