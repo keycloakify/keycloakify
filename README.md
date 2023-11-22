@@ -49,11 +49,10 @@
 > We are working on a solution. [Follow progress](https://github.com/keycloakify/keycloakify/issues/389).  
 > **Login and email themes are not affected**.  
 > UPDATE: [The PR](https://github.com/keycloak/keycloak/pull/22317) that should future proof Keycloakify account themes has been
-> merged into Keycloak! 🥳 Credit to @xgp. We are now waiting for a new Keycloak release to be published.  
-
+> merged into Keycloak! 🥳 Credit to @xgp. We are now waiting for a new Keycloak release to be published.
 
 Keycloakify is fully compatible with Keycloak, starting from version 11 and is anticipated to maintain compatibility with all future versions.  
-You can update your Keycloak, your Keycloakify generated theme won't break. (Well except for Keycloak 22's Account theme obviously but this was hopefully a one time debacle)   
+You can update your Keycloak, your Keycloakify generated theme won't break. (Well except for Keycloak 22's Account theme obviously but this was hopefully a one time debacle)  
 To understand the basis of my confidence in this, you can [visit this discussion thread where I've explained in detail](https://github.com/keycloakify/keycloakify/discussions/346#discussioncomment-5889791).
 
 ## Sponsor 👼
