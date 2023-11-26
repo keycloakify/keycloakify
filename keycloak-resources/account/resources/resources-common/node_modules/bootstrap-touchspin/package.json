@@ -1,0 +1,53 @@
+{
+  "name": "bootstrap-touchspin",
+  "title": "Bootstrap Touchspin",
+  "description": "A mobile and touch friendly input spinner component for Bootstrap 3.",
+  "author": {
+    "name": "István Ujj-Mészáros",
+    "url": "https://github.com/istvan-ujjmeszaros"
+  },
+  "main": "dist/jquery.bootstrap-touchspin.js",
+  "contributors": [
+    {
+      "name": "István Ujj-Mészáros",
+      "url": "https://github.com/istvan-ujjmeszaros"
+    },
+    {
+      "name": "Stefan Bauer",
+      "url": "https://github.com/sba"
+    },
+    {
+      "name": "Duy Anh Nguyen",
+      "url": "https://github.com/aduyng"
+    },
+    {
+      "name": "Emanuele Rampichini",
+      "url": "https://github.com/lele85"
+    },
+    {
+      "name": "Eliak",
+      "url": "https://github.com/Eliak"
+    },
+    {
+      "name": "amid2887",
+      "url": "https://github.com/amid2887"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/istvan-ujjmeszaros/bootstrap-touchspin.git"
+  },
+  "homepage": "http://www.virtuosoft.eu/code/bootstrap-touchspin/",
+  "version": "3.1.1",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-cli": "~0.1.13",
+    "grunt-contrib-jshint": "~0.8.0",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-uglify": "~0.3.2",
+    "grunt-contrib-cssmin": "~0.9.0"
+  },
+  "scripts": {
+    "test": "grunt travis --verbose"
+  }
+}

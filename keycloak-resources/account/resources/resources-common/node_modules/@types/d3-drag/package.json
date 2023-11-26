@@ -1,0 +1,41 @@
+{
+    "name": "@types/d3-drag",
+    "version": "1.2.5",
+    "description": "TypeScript definitions for D3JS d3-drag module",
+    "license": "MIT",
+    "contributors": [
+        {
+            "name": "Tom Wanzek",
+            "url": "https://github.com/tomwanzek",
+            "githubUsername": "tomwanzek"
+        },
+        {
+            "name": "Alex Ford",
+            "url": "https://github.com/gustavderdrache",
+            "githubUsername": "gustavderdrache"
+        },
+        {
+            "name": "Boris Yankov",
+            "url": "https://github.com/borisyankov",
+            "githubUsername": "borisyankov"
+        },
+        {
+            "name": "Nathan Bierema",
+            "url": "https://github.com/Methuselah96",
+            "githubUsername": "Methuselah96"
+        }
+    ],
+    "main": "",
+    "types": "index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "directory": "types/d3-drag"
+    },
+    "scripts": {},
+    "dependencies": {
+        "@types/d3-selection": "^1"
+    },
+    "typesPublisherContentHash": "5a720db904c003be82bed71ead495e3c5247e5b6f6556236d615afcc0ecd40ed",
+    "typeScriptVersion": "3.2"
+}

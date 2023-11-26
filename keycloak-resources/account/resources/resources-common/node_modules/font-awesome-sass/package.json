@@ -1,0 +1,19 @@
+{
+  "name": "font-awesome-sass",
+  "version": "4.7.0",
+  "description": "Font-Awesome Sass",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FortAwesome/font-awesome-sass.git"
+  },
+  "author": "FortAwesome",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/FortAwesome/font-awesome-sass/issues"
+  },
+  "homepage": "https://github.com/FortAwesome/font-awesome-sass#readme"
+}

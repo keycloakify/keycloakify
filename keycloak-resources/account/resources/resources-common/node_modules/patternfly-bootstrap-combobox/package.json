@@ -1,0 +1,12 @@
+{
+  "name": "patternfly-bootstrap-combobox",
+  "version": "1.1.7",
+  "author": "Red Hat",
+  "license": "Apache-2.0",
+  "description": "This is a fork of danielfarrell/bootstrap-combobox v1.1.6 used for NPM packaging",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/patternfly/patternfly-bootstrap-combobox.git"
+  },
+  "homepage": "https://github.com/patternfly/patternfly-bootstrap-combobox"
+}

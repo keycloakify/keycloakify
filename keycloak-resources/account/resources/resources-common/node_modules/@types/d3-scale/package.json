@@ -1,0 +1,37 @@
+{
+    "name": "@types/d3-scale",
+    "version": "1.0.17",
+    "description": "TypeScript definitions for D3JS d3-scale module",
+    "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/d3-scale",
+    "license": "MIT",
+    "contributors": [
+        {
+            "name": "Tom Wanzek",
+            "url": "https://github.com/tomwanzek",
+            "githubUsername": "tomwanzek"
+        },
+        {
+            "name": "Alex Ford",
+            "url": "https://github.com/gustavderdrache",
+            "githubUsername": "gustavderdrache"
+        },
+        {
+            "name": "Boris Yankov",
+            "url": "https://github.com/borisyankov",
+            "githubUsername": "borisyankov"
+        }
+    ],
+    "main": "",
+    "types": "index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "directory": "types/d3-scale"
+    },
+    "scripts": {},
+    "dependencies": {
+        "@types/d3-time": "^1"
+    },
+    "typesPublisherContentHash": "447985267a559a12ec1f94caafd2b132ff6f1ff1e11896ed200f6f80de7c605e",
+    "typeScriptVersion": "3.6"
+}

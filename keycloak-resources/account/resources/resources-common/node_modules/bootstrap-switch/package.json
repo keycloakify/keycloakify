@@ -1,0 +1,89 @@
+{
+  "name": "bootstrap-switch",
+  "description": "Turn checkboxes and radio buttons into toggle switches.",
+  "version": "3.3.4",
+  "keywords": [
+    "bootstrap",
+    "switch",
+    "javascript",
+    "js"
+  ],
+  "homepage": "https://bttstrp.github.io/bootstrap-switch",
+  "author": "Mattia Larentis <mattia@larentis.eu> (http://larentis.eu)",
+  "contributors": [
+    "Emanuele Marchi <emanuele@lostcrew.it> (http://lostcrew.it)",
+    "Peter Stein (http://www.bdmdesign.org)"
+  ],
+  "main": "dist/js/bootstrap-switch.js",
+  "peerDependencies": {
+    "bootstrap": "^3.1.1",
+    "jquery": ">=1.9.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Bttstrp/bootstrap-switch.git"
+  },
+  "bugs": "https://github.com/Bttstrp/bootstrap-switch/issues",
+  "license": "Apache-2.0",
+  "readmeFilename": "README.md",
+  "devDependencies": {
+    "babel-cli": "^6.22.2",
+    "babel-polyfill": "^6.22.0",
+    "babel-preset-babili": "^0.0.10",
+    "babel-preset-env": "^1.1.8",
+    "babel-preset-stage-2": "^6.22.0",
+    "bootstrap": "^3.3.7",
+    "harp": "^0.23.0",
+    "headr": "0.0.4",
+    "jasmine": "^2.5.3",
+    "jasmine-core": "^2.5.2",
+    "jquery": "^1.12.4",
+    "karma": "^1.4.1",
+    "karma-babel-preprocessor": "^6.0.1",
+    "karma-cli": "^1.0.1",
+    "karma-firefox-launcher": "^1.0.0",
+    "karma-jasmine": "^1.1.0",
+    "karma-phantomjs-launcher": "^1.0.2",
+    "less": "^2.7.2",
+    "less-plugin-clean-css": "^1.5.0",
+    "npm-run-all": "^4.0.1",
+    "standard": "^8.6.0",
+    "wintersmith": "^2.3.6"
+  },
+  "scripts": {
+    "js:lint": "standard src/js/**/*.js",
+    "js:test": "mkdir -p test && babel -d test src/js && karma start karma.conf.js",
+    "js:build:dir": "mkdir -p dist/js",
+    "js:build:base": "babel -o dist/js/bootstrap-switch.js src/js/bootstrap-switch.js",
+    "js:build:min": "NODE_ENV=production babel -o dist/js/bootstrap-switch.min.js src/js/bootstrap-switch.js",
+    "js:build:banner": "headr dist/js/bootstrap-switch.js -o dist/js/bootstrap-switch.js --version --homepage --author --license && headr dist/js/bootstrap-switch.min.js -o dist/js/bootstrap-switch.min.js --version --homepage --author --license",
+    "js:build": "npm-run-all js:build:dir -p js:build:base js:build:min -s js:build:banner",
+    "js": "run-s js:lint js:test js:build",
+    "css:build:base": "lessc src/less/bootstrap2/build.less dist/css/bootstrap2/bootstrap-switch.css && lessc src/less/bootstrap3/build.less dist/css/bootstrap3/bootstrap-switch.css",
+    "css:build:min": "lessc --clean-css='--advanced' src/less/bootstrap2/build.less dist/css/bootstrap2/bootstrap-switch.min.css && lessc --clean-css='--advanced' src/less/bootstrap3/build.less dist/css/bootstrap3/bootstrap-switch.min.css",
+    "css:build:banner": "headr dist/css/bootstrap2/bootstrap-switch.css -o dist/css/bootstrap2/bootstrap-switch.css --version --homepage --author --license && headr dist/css/bootstrap2/bootstrap-switch.min.css -o dist/css/bootstrap2/bootstrap-switch.min.css --version --homepage --author --license && headr dist/css/bootstrap3/bootstrap-switch.css -o dist/css/bootstrap3/bootstrap-switch.css --version --homepage --author --license && headr dist/css/bootstrap3/bootstrap-switch.min.css -o dist/css/bootstrap3/bootstrap-switch.min.css --version --homepage --author --license",
+    "css:build": "npm-run-all css:build:base css:build:min -p css:build:banner",
+    "css": "run-p css:build",
+    "docs:build": "harp compile src/docs docs",
+    "docs": "run-p docs:build",
+    "publish-docs": "git subtree push --prefix docs origin gh-pages",
+    "clean": "rm -rf dist",
+    "lint": "run-p js:lint",
+    "test": "run-p js:test",
+    "build": "run-p *:build",
+    "prepublish": "run-s clean lint test build",
+    "start": "run-s prepublish"
+  },
+  "npmName": "bootstrap-switch",
+  "npmFileMap": [
+    {
+      "basePath": "/dist/",
+      "files": [
+        "*.js",
+        "css/bootstrap3/*.css",
+        "css/bootstrap2/*.css"
+      ]
+    }
+  ],
+  "dependencies": {}
+}

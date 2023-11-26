@@ -1,0 +1,46 @@
+{
+    "name": "@types/c3",
+    "version": "0.6.4",
+    "description": "TypeScript definitions for C3js",
+    "license": "MIT",
+    "contributors": [
+        {
+            "name": "Marc Climent",
+            "url": "https://github.com/mcliment",
+            "githubUsername": "mcliment"
+        },
+        {
+            "name": "Gerin Jacob",
+            "url": "https://github.com/gerinjacob",
+            "githubUsername": "gerinjacob"
+        },
+        {
+            "name": "Bernd Hacker",
+            "url": "https://github.com/denyo",
+            "githubUsername": "denyo"
+        },
+        {
+            "name": "Dzmitry Shyndzin",
+            "url": "https://github.com/dmitryshindin",
+            "githubUsername": "dmitryshindin"
+        },
+        {
+            "name": "Tim Niemueller",
+            "url": "https://github.com/timn",
+            "githubUsername": "timn"
+        }
+    ],
+    "main": "",
+    "types": "index",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "directory": "types/c3"
+    },
+    "scripts": {},
+    "dependencies": {
+        "@types/d3": "^4"
+    },
+    "typesPublisherContentHash": "fe3729442d39e79b6e8fff8ca24536b059b47c2dbcb085fd8a160c732c3dacac",
+    "typeScriptVersion": "2.3"
+}

@@ -1,0 +1,44 @@
+{
+    "name": "@types/d3-selection",
+    "version": "1.4.3",
+    "description": "TypeScript definitions for D3JS d3-selection module",
+    "license": "MIT",
+    "contributors": [
+        {
+            "name": "Tom Wanzek",
+            "url": "https://github.com/tomwanzek",
+            "githubUsername": "tomwanzek"
+        },
+        {
+            "name": "Alex Ford",
+            "url": "https://github.com/gustavderdrache",
+            "githubUsername": "gustavderdrache"
+        },
+        {
+            "name": "Boris Yankov",
+            "url": "https://github.com/borisyankov",
+            "githubUsername": "borisyankov"
+        },
+        {
+            "name": "denisname",
+            "url": "https://github.com/denisname",
+            "githubUsername": "denisname"
+        },
+        {
+            "name": "Nathan Bierema",
+            "url": "https://github.com/Methuselah96",
+            "githubUsername": "Methuselah96"
+        }
+    ],
+    "main": "",
+    "types": "index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "directory": "types/d3-selection"
+    },
+    "scripts": {},
+    "dependencies": {},
+    "typesPublisherContentHash": "4bec9eeb42974a7dfab0b8f949df97306859bc1a7cd29f0aeb97cc1566d630c9",
+    "typeScriptVersion": "3.2"
+}

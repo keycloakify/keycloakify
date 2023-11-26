@@ -1,0 +1,38 @@
+{
+    "name": "@types/d3-queue",
+    "version": "3.0.8",
+    "description": "TypeScript definitions for D3JS d3-queue module",
+    "license": "MIT",
+    "contributors": [
+        {
+            "name": "Tom Wanzek",
+            "url": "https://github.com/tomwanzek",
+            "githubUsername": "tomwanzek"
+        },
+        {
+            "name": "Alex Ford",
+            "url": "https://github.com/gustavderdrache",
+            "githubUsername": "gustavderdrache"
+        },
+        {
+            "name": "Boris Yankov",
+            "url": "https://github.com/borisyankov",
+            "githubUsername": "borisyankov"
+        },
+        {
+            "name": "denisname",
+            "url": "https://github.com/denisname",
+            "githubUsername": "denisname"
+        }
+    ],
+    "main": "",
+    "types": "index",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+    },
+    "scripts": {},
+    "dependencies": {},
+    "typesPublisherContentHash": "182d948ea058d550c54d5c7f3f201ef90b768c2aa1b1fe276ad354f8925e15b7",
+    "typeScriptVersion": "2.0"
+}

@@ -1,0 +1,46 @@
+{
+    "name": "@types/d3-interpolate",
+    "version": "1.4.2",
+    "description": "TypeScript definitions for D3JS d3-interpolate module",
+    "license": "MIT",
+    "contributors": [
+        {
+            "name": "Tom Wanzek",
+            "url": "https://github.com/tomwanzek",
+            "githubUsername": "tomwanzek"
+        },
+        {
+            "name": "Alex Ford",
+            "url": "https://github.com/gustavderdrache",
+            "githubUsername": "gustavderdrache"
+        },
+        {
+            "name": "Boris Yankov",
+            "url": "https://github.com/borisyankov",
+            "githubUsername": "borisyankov"
+        },
+        {
+            "name": "denisname",
+            "url": "https://github.com/denisname",
+            "githubUsername": "denisname"
+        },
+        {
+            "name": "Nathan Bierema",
+            "url": "https://github.com/Methuselah96",
+            "githubUsername": "Methuselah96"
+        }
+    ],
+    "main": "",
+    "types": "index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "directory": "types/d3-interpolate"
+    },
+    "scripts": {},
+    "dependencies": {
+        "@types/d3-color": "^1"
+    },
+    "typesPublisherContentHash": "f9c99f31f2c51b5a61886d5d876b93ee19364914515acdcc8c3c1158cc9099bb",
+    "typeScriptVersion": "3.2"
+}

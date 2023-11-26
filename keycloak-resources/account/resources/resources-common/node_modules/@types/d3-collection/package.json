@@ -1,0 +1,34 @@
+{
+    "name": "@types/d3-collection",
+    "version": "1.0.10",
+    "description": "TypeScript definitions for D3JS d3-collection module",
+    "license": "MIT",
+    "contributors": [
+        {
+            "name": "Tom Wanzek",
+            "url": "https://github.com/tomwanzek",
+            "githubUsername": "tomwanzek"
+        },
+        {
+            "name": "Alex Ford",
+            "url": "https://github.com/gustavderdrache",
+            "githubUsername": "gustavderdrache"
+        },
+        {
+            "name": "Boris Yankov",
+            "url": "https://github.com/borisyankov",
+            "githubUsername": "borisyankov"
+        }
+    ],
+    "main": "",
+    "types": "index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "directory": "types/d3-collection"
+    },
+    "scripts": {},
+    "dependencies": {},
+    "typesPublisherContentHash": "f2becbefd216f0bf1a7ca0c259314a02857447360e7a2f8aa8cb78b2b0c63ea3",
+    "typeScriptVersion": "3.2"
+}
