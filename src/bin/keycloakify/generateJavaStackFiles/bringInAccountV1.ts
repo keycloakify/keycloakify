@@ -65,7 +65,7 @@ export async function bringInAccountV1(params: { buildOptions: BuildOptionsLike 
         pathJoin(accountV1DirPath, "theme.properties"),
         Buffer.from(
             [
-                "accountResourceProvider=org.keycloak.services.resources.account.AccountFormService",
+                "accountResourceProvider=account-v1",
                 "",
                 "locales=ar,ca,cs,da,de,en,es,fr,fi,hu,it,ja,lt,nl,no,pl,pt-BR,ru,sk,sv,tr,zh-CN",
                 "",

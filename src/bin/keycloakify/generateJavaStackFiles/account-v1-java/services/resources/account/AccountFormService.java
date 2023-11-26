@@ -127,16 +127,6 @@ import org.keycloak.utils.CredentialHelper;
 public class AccountFormService extends AbstractSecuredLocalService
     implements AccountResourceProvider {
 
-  public static final String THEME_NAME = "account-v1";
-
-  @Override
-  public boolean useWithTheme(Theme theme) {
-    log.infof("Attempt to use with theme %s", theme.getName());
-    return ((!Strings.isNullOrEmpty(theme.getName()) && THEME_NAME.equals(theme.getName()))
-        || (!Strings.isNullOrEmpty(theme.getParentName())
-            && THEME_NAME.equals(theme.getParentName())));
-  }
-
   @Override
   public Object getResource() {
     return this;
@@ -466,10 +456,10 @@ public class AccountFormService extends AbstractSecuredLocalService
         .event(EventType.UPDATE_PROFILE)
         .client(auth.getClient())
         .user(auth.getUser())
-        .detail(Details.CONTEXT, UserProfileContext.ACCOUNT_OLD.name());
+        .detail(Details.CONTEXT, "ACCOUNT_OLD");
 
     UserProfileProvider profileProvider = session.getProvider(UserProfileProvider.class);
-    UserProfile profile = profileProvider.create(UserProfileContext.ACCOUNT_OLD, formData, user);
+    UserProfile profile = profileProvider.create(UserProfileContext.ACCOUNT, formData, user);
 
     try {
       // backward compatibility with old account console where attributes are not removed if missing

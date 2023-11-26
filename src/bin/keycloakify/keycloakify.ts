@@ -66,8 +66,7 @@ export async function main() {
         child_process.execSync("mvn package", { "cwd": buildOptions.keycloakifyBuildDirPath });
     }
 
-    // We want, however, to test in a container running the latest Keycloak version
-    const containerKeycloakVersion = "21.1.2";
+    const containerKeycloakVersion = "23.0.0";
 
     generateStartKeycloakTestingContainer({
         "keycloakVersion": containerKeycloakVersion,

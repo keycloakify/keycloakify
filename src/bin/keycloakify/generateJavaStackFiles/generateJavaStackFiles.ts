@@ -48,7 +48,7 @@ export async function generateJavaStackFiles(params: {
                 `	<properties>`,
                 `	    <java.version>17</java.version>`,
                 `	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>`,
-                `	    <keycloak.version>999.0.0-SNAPSHOT</keycloak.version>`,
+                `	    <keycloak.version>23.0.0</keycloak.version>`,
                 `	    <guava.version>32.0.0-jre</guava.version>`,
                 `	    <lombok.version>1.18.28</lombok.version>`,
                 `	    <auto-service.version>1.1.1</auto-service.version>`,
