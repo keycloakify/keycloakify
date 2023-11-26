@@ -158,6 +158,34 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "zavoloklom",
+      "name": "Sergey Kupletsky",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4151869?v=4",
+      "profile": "https://github.com/zavoloklom",
+      "contributions": [
+        "test",
+        "code"
+      ]
+    },
+    {
+      "login": "rome-user",
+      "name": "rome-user",
+      "avatar_url": "https://avatars.githubusercontent.com/u/114131048?v=4",
+      "profile": "https://github.com/rome-user",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "celinepelletier",
+      "name": "Céline Pelletier",
+      "avatar_url": "https://avatars.githubusercontent.com/u/82821620?v=4",
+      "profile": "https://github.com/celinepelletier",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -165,5 +193,6 @@
   "repoType": "github",
   "repoHost": "https://github.com",
   "projectName": "keycloakify",
-  "projectOwner": "keycloakify"
+  "projectOwner": "keycloakify",
+  "commitType": "docs"
 }

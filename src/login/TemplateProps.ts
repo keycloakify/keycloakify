@@ -94,4 +94,5 @@ export type ClassKey =
     | "kcSelectOTPListItemClass"
     | "kcAuthenticatorOtpCircleClass"
     | "kcSelectOTPItemHeadingClass"
-    | "kcFormOptionsWrapperClass";
+    | "kcFormOptionsWrapperClass"
+    | "kcFormButtonsWrapperClass";

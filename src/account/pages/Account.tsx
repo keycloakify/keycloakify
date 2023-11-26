@@ -51,7 +51,7 @@ export default function Account(props: PageProps<Extract<KcContext, { pageId: "a
                                 id="username"
                                 name="username"
                                 disabled={!realm.editUsernameAllowed}
-                                value={account.username ?? ""}
+                                defaultValue={account.username ?? ""}
                             />
                         </div>
                     </div>
@@ -66,7 +66,7 @@ export default function Account(props: PageProps<Extract<KcContext, { pageId: "a
                     </div>
 
                     <div className="col-sm-10 col-md-10">
-                        <input type="text" className="form-control" id="email" name="email" autoFocus value={account.email ?? ""} />
+                        <input type="text" className="form-control" id="email" name="email" autoFocus defaultValue={account.email ?? ""} />
                     </div>
                 </div>
 
@@ -79,7 +79,7 @@ export default function Account(props: PageProps<Extract<KcContext, { pageId: "a
                     </div>
 
                     <div className="col-sm-10 col-md-10">
-                        <input type="text" className="form-control" id="firstName" name="firstName" value={account.firstName ?? ""} />
+                        <input type="text" className="form-control" id="firstName" name="firstName" defaultValue={account.firstName ?? ""} />
                     </div>
                 </div>
 
@@ -92,7 +92,7 @@ export default function Account(props: PageProps<Extract<KcContext, { pageId: "a
                     </div>
 
                     <div className="col-sm-10 col-md-10">
-                        <input type="text" className="form-control" id="lastName" name="lastName" value={account.lastName ?? ""} />
+                        <input type="text" className="form-control" id="lastName" name="lastName" defaultValue={account.lastName ?? ""} />
                     </div>
                 </div>
 

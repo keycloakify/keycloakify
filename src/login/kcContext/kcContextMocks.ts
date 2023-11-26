@@ -105,6 +105,7 @@ const PUBLIC_URL = (typeof process !== "object" ? undefined : process.env?.["PUB
 const resourcesPath = pathJoin(PUBLIC_URL, keycloak_resources, "login", "resources");
 
 export const kcContextCommonMock: KcContext.Common = {
+    "themeVersion": "0.0.0",
     "keycloakifyVersion": "0.0.0",
     "themeType": "login",
     "themeName": "my-theme-name",
@@ -242,7 +243,9 @@ export const kcContextCommonMock: KcContext.Common = {
 const loginUrl = {
     ...kcContextCommonMock.url,
     "loginResetCredentialsUrl": "/auth/realms/myrealm/login-actions/reset-credentials?client_id=account&tab_id=HoAx28ja4xg",
-    "registrationUrl": "/auth/realms/myrealm/login-actions/registration?client_id=account&tab_id=HoAx28ja4xg"
+    "registrationUrl": "/auth/realms/myrealm/login-actions/registration?client_id=account&tab_id=HoAx28ja4xg",
+    "oauth2DeviceVerificationAction": "/auth/realms/myrealm/device",
+    "oauthAction": "/auth/realms/myrealm/login-actions/consent?client_id=account&tab_id=HoAx28ja4xg"
 };
 
 export const kcContextMocks = [
@@ -345,6 +348,25 @@ export const kcContextMocks = [
     id<KcContext.Terms>({
         ...kcContextCommonMock,
         "pageId": "terms.ftl"
+    }),
+    id<KcContext.LoginDeviceVerifyUserCode>({
+        ...kcContextCommonMock,
+        "pageId": "login-oauth2-device-verify-user-code.ftl",
+        url: loginUrl
+    }),
+    id<KcContext.LoginOauthGrant>({
+        ...kcContextCommonMock,
+        "pageId": "login-oauth-grant.ftl",
+        oauth: {
+            code: "5-1N4CIzfi1aprIQjmylI-9e3spLCWW9i5d-GDcs-Sw",
+            clientScopesRequested: [
+                { consentScreenText: "${profileScopeConsentText}" },
+                { consentScreenText: "${rolesScopeConsentText}" },
+                { consentScreenText: "${emailScopeConsentText}" }
+            ],
+            client: "account"
+        },
+        url: loginUrl
     }),
     id<KcContext.LoginOtp>({
         ...kcContextCommonMock,

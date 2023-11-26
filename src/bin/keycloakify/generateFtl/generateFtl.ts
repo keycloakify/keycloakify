@@ -121,6 +121,27 @@ export function generateFtlFilesCodeFactory(params: {
         ].join("\n")
     );
 
+    // Remove part of the document marked as ignored.
+    {
+        const startTags = $('meta[name="keycloakify-ignore-start"]');
+
+        startTags.each((...[, startTag]) => {
+            const $startTag = $(startTag);
+            const $endTag = $startTag.nextAll('meta[name="keycloakify-ignore-end"]').first();
+
+            if ($endTag.length) {
+                let currentNode = $startTag.next();
+                while (currentNode.length && !currentNode.is($endTag)) {
+                    currentNode.remove();
+                    currentNode = $startTag.next();
+                }
+
+                $startTag.remove();
+                $endTag.remove();
+            }
+        });
+    }
+
     const partiallyFixedIndexHtmlCode = $.html();
 
     function generateFtlFilesCode(params: { pageId: string }): {

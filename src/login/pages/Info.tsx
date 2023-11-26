@@ -8,7 +8,10 @@ export default function Info(props: PageProps<Extract<KcContext, { pageId: "info
 
     const { msgStr, msg } = i18n;
 
-    assert(kcContext.message !== undefined);
+    assert(
+        kcContext.message !== undefined,
+        "No message in kcContext.message, there will always be a message in production context, add it in your mock"
+    );
 
     const { messageHeader, message, requiredActions, skipLink, pageRedirectUri, actionUri, client } = kcContext;
 

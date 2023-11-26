@@ -23,24 +23,21 @@ export function usePrepareTemplate(params: {
         const removeArray: (() => void)[] = [];
 
         (async () => {
-            const prLoadedArray: Promise<void>[] = [];
-
-            styles.reverse().forEach(href => {
+            for (const style of [...styles].reverse()) {
                 const { prLoaded, remove } = headInsert({
                     "type": "css",
                     "position": "prepend",
-                    href
+                    "href": style
                 });
 
                 removeArray.push(remove);
 
-                prLoadedArray.push(prLoaded);
-            });
+                // TODO: Find a way to do that in parallel (without breaking the order)
+                await prLoaded;
 
-            await Promise.all(prLoadedArray);
-
-            if (isUnmounted) {
-                return;
+                if (isUnmounted) {
+                    return;
+                }
             }
 
             setReady();

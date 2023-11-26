@@ -2,7 +2,7 @@ import React from "react";
 import type { ComponentMeta } from "@storybook/react";
 import { createPageStory } from "../createPageStory";
 
-const pageId = "info.ftl";
+const pageId = "login-oauth-grant.ftl";
 
 const { PageStory } = createPageStory({ pageId });
 
@@ -21,13 +21,4 @@ const meta: ComponentMeta<any> = {
 
 export default meta;
 
-export const Default = () => (
-    <PageStory
-        kcContext={{
-            message: {
-                summary: "This is the server message",
-                type: "info"
-            }
-        }}
-    />
-);
+export const Default = () => <PageStory />;

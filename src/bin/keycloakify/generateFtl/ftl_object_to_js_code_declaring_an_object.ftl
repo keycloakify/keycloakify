@@ -478,6 +478,12 @@
                         "error.ftl" == pageId &&
                         are_same_path(path, ["realm"]) &&
                         !["name", "displayName", "displayNameHtml", "internationalizationEnabled", "registrationEmailAsUsername" ]?seq_contains(key)
+                    ) || (
+                        "applications.ftl" == pageId &&
+                        are_same_path(path, ["applications", "applications", "*", "client", "realm"])
+                    ) || (
+                        "applications.ftl" == pageId &&
+                        "masterAdminClient" == key
                     )
                 >
                     <#local out_seq += ["/*If you need '" + key + "' on " + pageId + ", please submit an issue to the Keycloakify repo*/"]>

@@ -4,7 +4,7 @@ import { crawl } from "./tools/crawl";
 import { join as pathJoin } from "path";
 import { themeTypes } from "./constants";
 
-const themeSrcDirBasename = "keycloak-theme";
+const themeSrcDirBasenames = ["keycloak-theme", "keycloak_theme"];
 
 /** Can't catch error, if the directory isn't found, this function will just exit the process with an error message. */
 export function getThemeSrcDirPath(params: { reactAppRootDirPath: string }) {
@@ -14,13 +14,13 @@ export function getThemeSrcDirPath(params: { reactAppRootDirPath: string }) {
 
     const themeSrcDirPath: string | undefined = crawl({ "dirPath": srcDirPath, "returnedPathsType": "relative to dirPath" })
         .map(fileRelativePath => {
-            const split = fileRelativePath.split(themeSrcDirBasename);
-
-            if (split.length !== 2) {
-                return undefined;
+            for (const themeSrcDirBasename of themeSrcDirBasenames) {
+                const split = fileRelativePath.split(themeSrcDirBasename);
+                if (split.length === 2) {
+                    return pathJoin(srcDirPath, split[0] + themeSrcDirBasename);
+                }
             }
-
-            return pathJoin(srcDirPath, split[0] + themeSrcDirBasename);
+            return undefined;
         })
         .filter(exclude(undefined))[0];
 
@@ -38,7 +38,7 @@ export function getThemeSrcDirPath(params: { reactAppRootDirPath: string }) {
     console.error(
         [
             "Can't locate your theme source directory. It should be either: ",
-            "src/ or src/keycloak-theme.",
+            "src/ or src/keycloak-theme or src/keycloak_theme.",
             "Example in the starter: https://github.com/keycloakify/keycloakify-starter/tree/main/src/keycloak-theme"
         ].join("\n")
     );
