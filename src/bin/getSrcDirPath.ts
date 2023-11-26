@@ -2,15 +2,15 @@ import * as fs from "fs";
 import { exclude } from "tsafe";
 import { crawl } from "./tools/crawl";
 import { join as pathJoin } from "path";
-import { themeTypes } from "./keycloakify/generateFtl";
+import { themeTypes } from "./constants";
 
 const themeSrcDirBasenames = ["keycloak-theme", "keycloak_theme"];
 
 /** Can't catch error, if the directory isn't found, this function will just exit the process with an error message. */
-export function getThemeSrcDirPath(params: { projectDirPath: string }) {
-    const { projectDirPath } = params;
+export function getThemeSrcDirPath(params: { reactAppRootDirPath: string }) {
+    const { reactAppRootDirPath } = params;
 
-    const srcDirPath = pathJoin(projectDirPath, "src");
+    const srcDirPath = pathJoin(reactAppRootDirPath, "src");
 
     const themeSrcDirPath: string | undefined = crawl({ "dirPath": srcDirPath, "returnedPathsType": "relative to dirPath" })
         .map(fileRelativePath => {

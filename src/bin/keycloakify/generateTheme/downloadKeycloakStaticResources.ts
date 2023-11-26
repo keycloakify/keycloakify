@@ -1,80 +1,69 @@
 import { transformCodebase } from "../../tools/transformCodebase";
 import * as fs from "fs";
-import { join as pathJoin, relative as pathRelative, dirname as pathDirname } from "path";
-import type { ThemeType } from "../generateFtl";
+import { join as pathJoin } from "path";
 import { downloadBuiltinKeycloakTheme } from "../../download-builtin-keycloak-theme";
-import {
-    resourcesCommonDirPathRelativeToPublicDir,
-    resourcesDirPathRelativeToPublicDir,
-    basenameOfKeycloakDirInPublicDir
-} from "../../mockTestingResourcesPath";
-import * as crypto from "crypto";
+import { resources_common, type ThemeType } from "../../constants";
+import { BuildOptions } from "../BuildOptions";
 import { assert } from "tsafe/assert";
+import * as crypto from "crypto";
+
+export type BuildOptionsLike = {
+    cacheDirPath: string;
+};
+
+assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
 export async function downloadKeycloakStaticResources(
     // prettier-ignore
     params: {
-        projectDirPath: string;
         themeType: ThemeType;
         themeDirPath: string;
         keycloakVersion: string;
         usedResources: {
             resourcesCommonFilePaths: string[];
-        } | undefined
+            resourcesFilePaths: string[];
+        } | undefined;
+        buildOptions: BuildOptionsLike;
     }
 ) {
-    const { projectDirPath, themeType, themeDirPath, keycloakVersion } = params;
-
-    // NOTE: Hack for 427
-    const usedResources = (() => {
-        const { usedResources } = params;
-
-        if (usedResources === undefined) {
-            return undefined;
-        }
-
-        assert(usedResources !== undefined);
-
-        return {
-            "resourcesCommonDirPaths": usedResources.resourcesCommonFilePaths.map(filePath => {
-                {
-                    const splitArg = "/dist/";
-
-                    if (filePath.includes(splitArg)) {
-                        return filePath.split(splitArg)[0] + splitArg;
-                    }
-                }
-
-                return pathDirname(filePath);
-            })
-        };
-    })();
+    const { themeType, themeDirPath, keycloakVersion, usedResources, buildOptions } = params;
 
     const tmpDirPath = pathJoin(
         themeDirPath,
-        "..",
         `tmp_suLeKsxId_${crypto.createHash("sha256").update(`${themeType}-${keycloakVersion}`).digest("hex").slice(0, 8)}`
     );
 
     await downloadBuiltinKeycloakTheme({
-        projectDirPath,
         keycloakVersion,
-        "destDirPath": tmpDirPath
+        "destDirPath": tmpDirPath,
+        buildOptions
     });
+
+    const resourcesPath = pathJoin(themeDirPath, themeType, "resources");
 
     transformCodebase({
         "srcDirPath": pathJoin(tmpDirPath, "keycloak", themeType, "resources"),
-        "destDirPath": pathJoin(themeDirPath, pathRelative(basenameOfKeycloakDirInPublicDir, resourcesDirPathRelativeToPublicDir))
-    });
-
-    transformCodebase({
-        "srcDirPath": pathJoin(tmpDirPath, "keycloak", "common", "resources"),
-        "destDirPath": pathJoin(themeDirPath, pathRelative(basenameOfKeycloakDirInPublicDir, resourcesCommonDirPathRelativeToPublicDir)),
+        "destDirPath": resourcesPath,
         "transformSourceCode":
             usedResources === undefined
                 ? undefined
                 : ({ fileRelativePath, sourceCode }) => {
-                      if (usedResources.resourcesCommonDirPaths.find(dirPath => fileRelativePath.startsWith(dirPath)) === undefined) {
+                      if (!usedResources.resourcesFilePaths.includes(fileRelativePath)) {
+                          return undefined;
+                      }
+
+                      return { "modifiedSourceCode": sourceCode };
+                  }
+    });
+
+    transformCodebase({
+        "srcDirPath": pathJoin(tmpDirPath, "keycloak", "common", "resources"),
+        "destDirPath": pathJoin(resourcesPath, resources_common),
+        "transformSourceCode":
+            usedResources === undefined
+                ? undefined
+                : ({ fileRelativePath, sourceCode }) => {
+                      if (!usedResources.resourcesCommonFilePaths.includes(fileRelativePath)) {
                           return undefined;
                       }
 

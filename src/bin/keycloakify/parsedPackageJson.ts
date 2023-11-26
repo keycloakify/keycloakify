@@ -4,8 +4,6 @@ import type { Equals } from "tsafe";
 import { z } from "zod";
 import { pathJoin } from "../tools/pathJoin";
 
-export const bundlers = ["mvn", "keycloakify", "none"] as const;
-export type Bundler = (typeof bundlers)[number];
 export type ParsedPackageJson = {
     name: string;
     version?: string;
@@ -15,12 +13,12 @@ export type ParsedPackageJson = {
         areAppAndKeycloakServerSharingSameDomain?: boolean;
         artifactId?: string;
         groupId?: string;
-        bundler?: Bundler;
-        keycloakVersionDefaultAssets?: string;
+        doCreateJar?: boolean;
+        loginThemeResourcesFromKeycloakVersion?: string;
         reactAppBuildDirPath?: string;
         keycloakifyBuildDirPath?: string;
-        themeName?: string;
-        extraThemeNames?: string[];
+        themeName?: string | string[];
+        doBuildRetrocompatAccountTheme?: boolean;
     };
 };
 
@@ -34,12 +32,12 @@ export const zParsedPackageJson = z.object({
             "areAppAndKeycloakServerSharingSameDomain": z.boolean().optional(),
             "artifactId": z.string().optional(),
             "groupId": z.string().optional(),
-            "bundler": z.enum(bundlers).optional(),
-            "keycloakVersionDefaultAssets": z.string().optional(),
+            "doCreateJar": z.boolean().optional(),
+            "loginThemeResourcesFromKeycloakVersion": z.string().optional(),
             "reactAppBuildDirPath": z.string().optional(),
             "keycloakifyBuildDirPath": z.string().optional(),
-            "themeName": z.string().optional(),
-            "extraThemeNames": z.array(z.string()).optional()
+            "themeName": z.union([z.string(), z.array(z.string())]).optional(),
+            "doBuildRetrocompatAccountTheme": z.boolean().optional()
         })
         .optional()
 });
@@ -47,11 +45,11 @@ export const zParsedPackageJson = z.object({
 assert<Equals<ReturnType<(typeof zParsedPackageJson)["parse"]>, ParsedPackageJson>>();
 
 let parsedPackageJson: undefined | ReturnType<(typeof zParsedPackageJson)["parse"]>;
-export function getParsedPackageJson(params: { projectDirPath: string }) {
-    const { projectDirPath } = params;
+export function getParsedPackageJson(params: { reactAppRootDirPath: string }) {
+    const { reactAppRootDirPath } = params;
     if (parsedPackageJson) {
         return parsedPackageJson;
     }
-    parsedPackageJson = zParsedPackageJson.parse(JSON.parse(fs.readFileSync(pathJoin(projectDirPath, "package.json")).toString("utf8")));
+    parsedPackageJson = zParsedPackageJson.parse(JSON.parse(fs.readFileSync(pathJoin(reactAppRootDirPath, "package.json")).toString("utf8")));
     return parsedPackageJson;
 }

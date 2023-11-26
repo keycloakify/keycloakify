@@ -1,6 +1,7 @@
-import type { AccountThemePageId, ThemeType } from "keycloakify/bin/keycloakify/generateFtl";
+import type { AccountThemePageId } from "keycloakify/bin/keycloakify/generateFtl";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
+import { type ThemeType } from "keycloakify/bin/constants";
 
 export type KcContext = KcContext.Password | KcContext.Account;
 
