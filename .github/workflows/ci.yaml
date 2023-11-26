@@ -3,7 +3,9 @@ on:
   push:
     branches:
       - main
-      - v*
+      - v5
+      - v6
+      - v7
   pull_request:
     branches:
       - main
