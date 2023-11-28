@@ -84,9 +84,4 @@ export async function bringInAccountV1(params: { buildOptions: BuildOptionsLike 
             "utf8"
         )
     );
-
-    transformCodebase({
-        "srcDirPath": pathJoin(__dirname, "account-v1-java"),
-        "destDirPath": pathJoin(buildOptions.keycloakifyBuildDirPath, "src", "main", "java", "org", "keycloak")
-    });
 }

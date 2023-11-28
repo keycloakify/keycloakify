@@ -63,13 +63,14 @@ export async function main() {
     });
 
     if (buildOptions.doCreateJar) {
-        child_process.execSync("mvn package", { "cwd": buildOptions.keycloakifyBuildDirPath });
+        child_process.execSync("mvn clean install", { "cwd": buildOptions.keycloakifyBuildDirPath });
     }
 
     const containerKeycloakVersion = "23.0.0";
 
     generateStartKeycloakTestingContainer({
         "keycloakVersion": containerKeycloakVersion,
+        jarFilePath,
         buildOptions
     });
 
