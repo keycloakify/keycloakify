@@ -1,29 +1,31 @@
 import { transformCodebase } from "../../tools/transformCodebase";
 import * as fs from "fs";
-import { join as pathJoin, relative as pathRelative, dirname as pathDirname } from "path";
-import type { ThemeType } from "../generateFtl";
+import { join as pathJoin, dirname as pathDirname } from "path";
 import { downloadBuiltinKeycloakTheme } from "../../download-builtin-keycloak-theme";
-import {
-    resourcesCommonDirPathRelativeToPublicDir,
-    resourcesDirPathRelativeToPublicDir,
-    basenameOfKeycloakDirInPublicDir
-} from "../../mockTestingResourcesPath";
-import * as crypto from "crypto";
+import { resources_common, type ThemeType } from "../../constants";
+import { BuildOptions } from "../BuildOptions";
 import { assert } from "tsafe/assert";
+import * as crypto from "crypto";
+
+export type BuildOptionsLike = {
+    cacheDirPath: string;
+};
+
+assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
 export async function downloadKeycloakStaticResources(
     // prettier-ignore
     params: {
-        projectDirPath: string;
         themeType: ThemeType;
         themeDirPath: string;
         keycloakVersion: string;
         usedResources: {
             resourcesCommonFilePaths: string[];
-        } | undefined
+        } | undefined;
+        buildOptions: BuildOptionsLike;
     }
 ) {
-    const { projectDirPath, themeType, themeDirPath, keycloakVersion } = params;
+    const { themeType, themeDirPath, keycloakVersion, buildOptions } = params;
 
     // NOTE: Hack for 427
     const usedResources = (() => {
@@ -52,24 +54,25 @@ export async function downloadKeycloakStaticResources(
 
     const tmpDirPath = pathJoin(
         themeDirPath,
-        "..",
         `tmp_suLeKsxId_${crypto.createHash("sha256").update(`${themeType}-${keycloakVersion}`).digest("hex").slice(0, 8)}`
     );
 
     await downloadBuiltinKeycloakTheme({
-        projectDirPath,
         keycloakVersion,
-        "destDirPath": tmpDirPath
+        "destDirPath": tmpDirPath,
+        buildOptions
     });
+
+    const resourcesPath = pathJoin(themeDirPath, themeType, "resources");
 
     transformCodebase({
         "srcDirPath": pathJoin(tmpDirPath, "keycloak", themeType, "resources"),
-        "destDirPath": pathJoin(themeDirPath, pathRelative(basenameOfKeycloakDirInPublicDir, resourcesDirPathRelativeToPublicDir))
+        "destDirPath": resourcesPath
     });
 
     transformCodebase({
         "srcDirPath": pathJoin(tmpDirPath, "keycloak", "common", "resources"),
-        "destDirPath": pathJoin(themeDirPath, pathRelative(basenameOfKeycloakDirInPublicDir, resourcesCommonDirPathRelativeToPublicDir)),
+        "destDirPath": pathJoin(resourcesPath, resources_common),
         "transformSourceCode":
             usedResources === undefined
                 ? undefined

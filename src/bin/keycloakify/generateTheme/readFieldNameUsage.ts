@@ -2,7 +2,7 @@ import { crawl } from "../../tools/crawl";
 import { removeDuplicates } from "evt/tools/reducers/removeDuplicates";
 import { join as pathJoin } from "path";
 import * as fs from "fs";
-import type { ThemeType } from "../generateFtl";
+import type { ThemeType } from "../../constants";
 
 /** Assumes the theme type exists */
 export function readFieldNameUsage(params: { keycloakifySrcDirPath: string; themeSrcDirPath: string; themeType: ThemeType }): string[] {

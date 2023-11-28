@@ -2,38 +2,39 @@
 
 import { downloadKeycloakStaticResources } from "./keycloakify/generateTheme/downloadKeycloakStaticResources";
 import { join as pathJoin, relative as pathRelative } from "path";
-import { basenameOfKeycloakDirInPublicDir } from "./mockTestingResourcesPath";
 import { readBuildOptions } from "./keycloakify/BuildOptions";
-import { themeTypes } from "./keycloakify/generateFtl";
+import { themeTypes, keycloak_resources, lastKeycloakVersionWithAccountV1 } from "./constants";
 import * as fs from "fs";
 
 (async () => {
-    const projectDirPath = process.cwd();
+    const reactAppRootDirPath = process.cwd();
 
     const buildOptions = readBuildOptions({
-        "processArgv": process.argv.slice(2),
-        "projectDirPath": process.cwd()
+        reactAppRootDirPath,
+        "processArgv": process.argv.slice(2)
     });
 
-    const keycloakDirInPublicDir = pathJoin(process.env["PUBLIC_DIR_PATH"] || pathJoin(projectDirPath, "public"), basenameOfKeycloakDirInPublicDir);
-
-    if (fs.existsSync(keycloakDirInPublicDir)) {
-        console.log(`${pathRelative(projectDirPath, keycloakDirInPublicDir)} already exists.`);
-        return;
-    }
+    const reservedDirPath = pathJoin(buildOptions.publicDirPath, keycloak_resources);
 
     for (const themeType of themeTypes) {
         await downloadKeycloakStaticResources({
-            projectDirPath,
-            "keycloakVersion": buildOptions.keycloakVersionDefaultAssets,
-            "themeType": themeType,
-            "themeDirPath": keycloakDirInPublicDir,
-            "usedResources": undefined
+            "keycloakVersion": (() => {
+                switch (themeType) {
+                    case "login":
+                        return buildOptions.loginThemeResourcesFromKeycloakVersion;
+                    case "account":
+                        return lastKeycloakVersionWithAccountV1;
+                }
+            })(),
+            themeType,
+            "themeDirPath": reservedDirPath,
+            "usedResources": undefined,
+            buildOptions
         });
     }
 
     fs.writeFileSync(
-        pathJoin(keycloakDirInPublicDir, "README.txt"),
+        pathJoin(reservedDirPath, "README.txt"),
         Buffer.from(
             // prettier-ignore
             [
@@ -43,7 +44,7 @@ import * as fs from "fs";
         )
     );
 
-    fs.writeFileSync(pathJoin(keycloakDirInPublicDir, ".gitignore"), Buffer.from("*", "utf8"));
+    fs.writeFileSync(pathJoin(buildOptions.publicDirPath, "keycloak-resources", ".gitignore"), Buffer.from("*", "utf8"));
 
-    console.log(`${pathRelative(projectDirPath, keycloakDirInPublicDir)} directory created.`);
+    console.log(`${pathRelative(reactAppRootDirPath, reservedDirPath)} directory created.`);
 })();

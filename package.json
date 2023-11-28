@@ -1,6 +1,6 @@
 {
     "name": "keycloakify",
-    "version": "8.4.1",
+    "version": "9.0.0-rc.1",
     "description": "Create Keycloak themes using React",
     "repository": {
         "type": "git",
@@ -13,7 +13,7 @@
         "build": "rimraf dist/ && tsc -p src/bin && tsc -p src && tsc-alias -p src/tsconfig.json && yarn grant-exec-perms && yarn copy-files dist/ && cp -r src dist/",
         "generate:json-schema": "ts-node scripts/generate-json-schema.ts",
         "grant-exec-perms": "node dist/bin/tools/grant-exec-perms.js",
-        "copy-files": "copyfiles -u 1 src/**/*.ftl",
+        "copy-files": "copyfiles -u 1 src/**/*.ftl src/**/*.java",
         "test": "yarn test:types && vitest run",
         "test:keycloakify-starter": "ts-node scripts/test-keycloakify-starter",
         "test:types": "tsc -p test/tsconfig.json --noEmit",

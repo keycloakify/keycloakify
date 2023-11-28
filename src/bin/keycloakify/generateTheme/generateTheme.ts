@@ -1,13 +1,13 @@
 import { transformCodebase } from "../../tools/transformCodebase";
 import * as fs from "fs";
-import { join as pathJoin } from "path";
+import { join as pathJoin, basename as pathBasename, resolve as pathResolve } from "path";
 import { replaceImportsFromStaticInJsCode } from "../replacers/replaceImportsFromStaticInJsCode";
 import { replaceImportsInCssCode } from "../replacers/replaceImportsInCssCode";
-import { generateFtlFilesCodeFactory, loginThemePageIds, accountThemePageIds, themeTypes, type ThemeType } from "../generateFtl";
-import { basenameOfKeycloakDirInPublicDir } from "../../mockTestingResourcesPath";
+import { generateFtlFilesCodeFactory, loginThemePageIds, accountThemePageIds } from "../generateFtl";
+import { themeTypes, type ThemeType, lastKeycloakVersionWithAccountV1, keycloak_resources, retrocompatPostfix, accountV1 } from "../../constants";
 import { isInside } from "../../tools/isInside";
 import type { BuildOptions } from "../BuildOptions";
-import { assert } from "tsafe/assert";
+import { assert, type Equals } from "tsafe/assert";
 import { downloadKeycloakStaticResources } from "./downloadKeycloakStaticResources";
 import { readFieldNameUsage } from "./readFieldNameUsage";
 import { readExtraPagesNames } from "./readExtraPageNames";
@@ -15,36 +15,39 @@ import { generateMessageProperties } from "./generateMessageProperties";
 import { readStaticResourcesUsage } from "./readStaticResourcesUsage";
 
 export type BuildOptionsLike = {
-    themeName: string;
     extraThemeProperties: string[] | undefined;
     themeVersion: string;
-    keycloakVersionDefaultAssets: string;
+    loginThemeResourcesFromKeycloakVersion: string;
     urlPathname: string | undefined;
+    keycloakifyBuildDirPath: string;
+    reactAppBuildDirPath: string;
+    cacheDirPath: string;
+    doBuildRetrocompatAccountTheme: boolean;
 };
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
 export async function generateTheme(params: {
-    projectDirPath: string;
-    reactAppBuildDirPath: string;
-    keycloakThemeBuildingDirPath: string;
+    themeName: string;
     themeSrcDirPath: string;
     keycloakifySrcDirPath: string;
     buildOptions: BuildOptionsLike;
     keycloakifyVersion: string;
 }): Promise<void> {
-    const {
-        projectDirPath,
-        reactAppBuildDirPath,
-        keycloakThemeBuildingDirPath,
-        themeSrcDirPath,
-        keycloakifySrcDirPath,
-        buildOptions,
-        keycloakifyVersion
-    } = params;
+    const { themeName, themeSrcDirPath, keycloakifySrcDirPath, buildOptions, keycloakifyVersion } = params;
 
-    const getThemeDirPath = (themeType: ThemeType | "email") =>
-        pathJoin(keycloakThemeBuildingDirPath, "src", "main", "resources", "theme", buildOptions.themeName, themeType);
+    const getThemeTypeDirPath = (params: { themeType: ThemeType | "email"; isRetrocompat?: true }) => {
+        const { themeType, isRetrocompat = false } = params;
+        return pathJoin(
+            buildOptions.keycloakifyBuildDirPath,
+            "src",
+            "main",
+            "resources",
+            "theme",
+            `${themeName}${isRetrocompat ? retrocompatPostfix : ""}`,
+            themeType
+        );
+    };
 
     let allCssGlobalsToDefine: Record<string, string> = {};
 
@@ -55,7 +58,7 @@ export async function generateTheme(params: {
             continue;
         }
 
-        const themeDirPath = getThemeDirPath(themeType);
+        const themeTypeDirPath = getThemeTypeDirPath({ themeType });
 
         copy_app_resources_to_theme_path: {
             const isFirstPass = themeType.indexOf(themeType) === 0;
@@ -65,13 +68,13 @@ export async function generateTheme(params: {
             }
 
             transformCodebase({
-                "destDirPath": pathJoin(themeDirPath, "resources", "build"),
-                "srcDirPath": reactAppBuildDirPath,
+                "destDirPath": pathJoin(themeTypeDirPath, "resources", "build"),
+                "srcDirPath": buildOptions.reactAppBuildDirPath,
                 "transformSourceCode": ({ filePath, sourceCode }) => {
                     //NOTE: Prevent cycles, excludes the folder we generated for debug in public/
                     if (
                         isInside({
-                            "dirPath": pathJoin(reactAppBuildDirPath, basenameOfKeycloakDirInPublicDir),
+                            "dirPath": pathJoin(buildOptions.reactAppBuildDirPath, keycloak_resources),
                             filePath
                         })
                     ) {
@@ -114,7 +117,8 @@ export async function generateTheme(params: {
             generateFtlFilesCode_glob !== undefined
                 ? generateFtlFilesCode_glob
                 : generateFtlFilesCodeFactory({
-                      "indexHtmlCode": fs.readFileSync(pathJoin(reactAppBuildDirPath, "index.html")).toString("utf8"),
+                      themeName,
+                      "indexHtmlCode": fs.readFileSync(pathJoin(buildOptions.reactAppBuildDirPath, "index.html")).toString("utf8"),
                       "cssGlobalsToDefine": allCssGlobalsToDefine,
                       buildOptions,
                       keycloakifyVersion,
@@ -142,75 +146,77 @@ export async function generateTheme(params: {
         ].forEach(pageId => {
             const { ftlCode } = generateFtlFilesCode({ pageId });
 
-            fs.mkdirSync(themeDirPath, { "recursive": true });
+            fs.mkdirSync(themeTypeDirPath, { "recursive": true });
 
-            fs.writeFileSync(pathJoin(themeDirPath, pageId), Buffer.from(ftlCode, "utf8"));
+            fs.writeFileSync(pathJoin(themeTypeDirPath, pageId), Buffer.from(ftlCode, "utf8"));
         });
 
         generateMessageProperties({
             themeSrcDirPath,
             themeType
         }).forEach(({ languageTag, propertiesFileSource }) => {
-            const messagesDirPath = pathJoin(themeDirPath, "messages");
+            const messagesDirPath = pathJoin(themeTypeDirPath, "messages");
 
-            fs.mkdirSync(pathJoin(themeDirPath, "messages"), { "recursive": true });
+            fs.mkdirSync(pathJoin(themeTypeDirPath, "messages"), { "recursive": true });
 
             const propertiesFilePath = pathJoin(messagesDirPath, `messages_${languageTag}.properties`);
 
             fs.writeFileSync(propertiesFilePath, Buffer.from(propertiesFileSource, "utf8"));
         });
 
-        //TODO: Remove this block we left it for now only for backward compatibility
-        // we now have a separate script for this
-        copy_keycloak_resources_to_public: {
-            const keycloakDirInPublicDir = pathJoin(reactAppBuildDirPath, "..", "public", basenameOfKeycloakDirInPublicDir);
-
-            if (fs.existsSync(keycloakDirInPublicDir)) {
-                break copy_keycloak_resources_to_public;
-            }
-
-            await downloadKeycloakStaticResources({
-                projectDirPath,
-                "keycloakVersion": buildOptions.keycloakVersionDefaultAssets,
-                "themeDirPath": keycloakDirInPublicDir,
-                themeType,
-                "usedResources": undefined
-            });
-
-            if (themeType !== themeTypes[0]) {
-                break copy_keycloak_resources_to_public;
-            }
-
-            fs.writeFileSync(
-                pathJoin(keycloakDirInPublicDir, "README.txt"),
-                Buffer.from(
-                    // prettier-ignore
-                    [
-                        "This is just a test folder that helps develop",
-                        "the login and register page without having to run a Keycloak container"
-                    ].join(" ")
-                )
-            );
-
-            fs.writeFileSync(pathJoin(keycloakDirInPublicDir, ".gitignore"), Buffer.from("*", "utf8"));
-        }
-
         await downloadKeycloakStaticResources({
-            projectDirPath,
-            "keycloakVersion": buildOptions.keycloakVersionDefaultAssets,
-            themeDirPath,
+            "keycloakVersion": (() => {
+                switch (themeType) {
+                    case "account":
+                        return lastKeycloakVersionWithAccountV1;
+                    case "login":
+                        return buildOptions.loginThemeResourcesFromKeycloakVersion;
+                }
+            })(),
+            "themeDirPath": pathResolve(pathJoin(themeTypeDirPath, "..")),
             themeType,
             "usedResources": readStaticResourcesUsage({
                 keycloakifySrcDirPath,
                 themeSrcDirPath,
                 themeType
-            })
+            }),
+            buildOptions
         });
 
         fs.writeFileSync(
-            pathJoin(themeDirPath, "theme.properties"),
-            Buffer.from([`parent=keycloak`, ...(buildOptions.extraThemeProperties ?? [])].join("\n\n"), "utf8")
+            pathJoin(themeTypeDirPath, "theme.properties"),
+            Buffer.from(
+                [
+                    `parent=${(() => {
+                        switch (themeType) {
+                            case "account":
+                                return accountV1;
+                            case "login":
+                                return "keycloak";
+                        }
+                        assert<Equals<typeof themeType, never>>(false);
+                    })()}`,
+                    ...(buildOptions.extraThemeProperties ?? [])
+                ].join("\n\n"),
+                "utf8"
+            )
         );
+
+        if (themeType === "account" && buildOptions.doBuildRetrocompatAccountTheme) {
+            transformCodebase({
+                "srcDirPath": themeTypeDirPath,
+                "destDirPath": getThemeTypeDirPath({ themeType, "isRetrocompat": true }),
+                "transformSourceCode": ({ filePath, sourceCode }) => {
+                    if (pathBasename(filePath) === "theme.properties") {
+                        return {
+                            "modifiedSourceCode": Buffer.from(sourceCode.toString("utf8").replace(`parent=${accountV1}`, "parent=keycloak"), "utf8")
+                        };
+                    }
+
+                    return { "modifiedSourceCode": sourceCode };
+                }
+            });
+        }
     }
 
     email: {
@@ -222,7 +228,7 @@ export async function generateTheme(params: {
 
         transformCodebase({
             "srcDirPath": emailThemeSrcDirPath,
-            "destDirPath": getThemeDirPath("email")
+            "destDirPath": getThemeTypeDirPath({ "themeType": "email" })
         });
     }
 }

@@ -6,18 +6,16 @@ import { generateStartKeycloakTestingContainer } from "./generateStartKeycloakTe
 import * as fs from "fs";
 import { readBuildOptions } from "./BuildOptions";
 import { getLogger } from "../tools/logger";
-import jar from "../tools/jar";
 import { assert } from "tsafe/assert";
-import { Equals } from "tsafe";
 import { getThemeSrcDirPath } from "../getSrcDirPath";
 import { getProjectRoot } from "../tools/getProjectRoot";
 import { objectKeys } from "tsafe/objectKeys";
 
 export async function main() {
-    const projectDirPath = process.cwd();
+    const reactAppRootDirPath = process.cwd();
 
     const buildOptions = readBuildOptions({
-        projectDirPath,
+        reactAppRootDirPath,
         "processArgv": process.argv.slice(2)
     });
 
@@ -26,19 +24,14 @@ export async function main() {
 
     const keycloakifyDirPath = getProjectRoot();
 
-    const { themeSrcDirPath } = getThemeSrcDirPath({ projectDirPath });
+    const { themeSrcDirPath } = getThemeSrcDirPath({ reactAppRootDirPath });
 
-    for (const themeName of [buildOptions.themeName, ...buildOptions.extraThemeNames]) {
+    for (const themeName of buildOptions.themeNames) {
         await generateTheme({
-            projectDirPath,
-            "keycloakThemeBuildingDirPath": buildOptions.keycloakifyBuildDirPath,
+            themeName,
             themeSrcDirPath,
             "keycloakifySrcDirPath": pathJoin(keycloakifyDirPath, "src"),
-            "reactAppBuildDirPath": buildOptions.reactAppBuildDirPath,
-            "buildOptions": {
-                ...buildOptions,
-                "themeName": themeName
-            },
+            buildOptions,
             "keycloakifyVersion": (() => {
                 const version = JSON.parse(fs.readFileSync(pathJoin(keycloakifyDirPath, "package.json")).toString("utf8"))["version"];
 
@@ -49,8 +42,7 @@ export async function main() {
         });
     }
 
-    const { jarFilePath } = generateJavaStackFiles({
-        "keycloakThemeBuildingDirPath": buildOptions.keycloakifyBuildDirPath,
+    const { jarFilePath } = await generateJavaStackFiles({
         "implementedThemeTypes": (() => {
             const implementedThemeTypes = {
                 "login": false,
@@ -70,43 +62,28 @@ export async function main() {
         buildOptions
     });
 
-    switch (buildOptions.bundler) {
-        case "none":
-            logger.log("😱 Skipping bundling step, there will be no jar");
-            break;
-        case "keycloakify":
-            logger.log("🫶 Let keycloakify do its thang");
-            await jar({
-                "rootPath": buildOptions.keycloakifyBuildDirPath,
-                "version": buildOptions.themeVersion,
-                "groupId": buildOptions.groupId,
-                "artifactId": buildOptions.artifactId,
-                "targetPath": jarFilePath
-            });
-            break;
-        case "mvn":
-            logger.log("🫙 Run maven to deliver a jar");
-            child_process.execSync("mvn package", { "cwd": buildOptions.keycloakifyBuildDirPath });
-            break;
-        default:
-            assert<Equals<typeof buildOptions.bundler, never>>(false);
+    if (buildOptions.doCreateJar) {
+        child_process.execSync("mvn clean install", { "cwd": buildOptions.keycloakifyBuildDirPath });
     }
 
-    // We want, however, to test in a container running the latest Keycloak version
-    const containerKeycloakVersion = "21.1.2";
+    const containerKeycloakVersion = "23.0.0";
 
     generateStartKeycloakTestingContainer({
-        keycloakThemeBuildingDirPath: buildOptions.keycloakifyBuildDirPath,
         "keycloakVersion": containerKeycloakVersion,
+        jarFilePath,
         buildOptions
     });
 
     logger.log(
         [
             "",
-            `✅ Your keycloak theme has been generated and bundled into .${pathSep}${pathRelative(projectDirPath, jarFilePath)} 🚀`,
-            `It is to be placed in "/opt/keycloak/providers" in the container running a quay.io/keycloak/keycloak Docker image.`,
-            "",
+            ...(!buildOptions.doCreateJar
+                ? []
+                : [
+                      `✅ Your keycloak theme has been generated and bundled into .${pathSep}${pathRelative(reactAppRootDirPath, jarFilePath)} 🚀`,
+                      `It is to be placed in "/opt/keycloak/providers" in the container running a quay.io/keycloak/keycloak Docker image.`,
+                      ""
+                  ]),
             //TODO: Restore when we find a good Helm chart for Keycloak.
             //"Using Helm (https://github.com/codecentric/helm-charts), edit to reflect:",
             "",
@@ -139,7 +116,7 @@ export async function main() {
             `To test your theme locally you can spin up a Keycloak ${containerKeycloakVersion} container image with the theme pre loaded by running:`,
             "",
             `👉 $ .${pathSep}${pathRelative(
-                projectDirPath,
+                reactAppRootDirPath,
                 pathJoin(buildOptions.keycloakifyBuildDirPath, generateStartKeycloakTestingContainer.basename)
             )} 👈`,
             "",
@@ -149,15 +126,15 @@ export async function main() {
             "- Log into the admin console 👉 http://localhost:8080/admin username: admin, password: admin 👈",
             `- Create a realm:                       Master         -> AddRealm   -> Name: myrealm`,
             `- Enable registration:                  Realm settings -> Login tab  -> User registration: on`,
-            `- Enable the Account theme (optional):  Realm settings -> Themes tab -> Account theme: ${buildOptions.themeName}`,
-            `                                        Clients        -> account    -> Login theme:   ${buildOptions.themeName}`,
-            `- Enable the email theme (optional):    Realm settings -> Themes tab -> Email theme:   ${buildOptions.themeName} (option will appear only if you have ran npx initialize-email-theme)`,
+            `- Enable the Account theme (optional):  Realm settings -> Themes tab -> Account theme: ${buildOptions.themeNames[0]}`,
+            `                                        Clients        -> account    -> Login theme:   ${buildOptions.themeNames[0]}`,
+            `- Enable the email theme (optional):    Realm settings -> Themes tab -> Email theme:   ${buildOptions.themeNames[0]} (option will appear only if you have ran npx initialize-email-theme)`,
             `- Create a client                       Clients        -> Create     -> Client ID:                       myclient`,
             `                                                                        Root URL:                        https://www.keycloak.org/app/`,
             `                                                                        Valid redirect URIs:             https://www.keycloak.org/app* http://localhost* (localhost is optional)`,
             `                                                                        Valid post logout redirect URIs: https://www.keycloak.org/app* http://localhost*`,
             `                                                                        Web origins:                     *`,
-            `                                                                        Login Theme:                     ${buildOptions.themeName}`,
+            `                                                                        Login Theme:                     ${buildOptions.themeNames[0]}`,
             `                                                                        Save (button at the bottom of the page)`,
             ``,
             `- Go to  👉  https://www.keycloak.org/app/ 👈 Click "Save" then "Sign in". You should see your login page`,

@@ -1,4 +1,4 @@
-import type { ThemeType } from "../generateFtl";
+import type { ThemeType } from "../../constants";
 import { crawl } from "../../tools/crawl";
 import { join as pathJoin } from "path";
 import { readFileSync } from "fs";
