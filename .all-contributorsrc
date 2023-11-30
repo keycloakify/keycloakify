@@ -195,6 +195,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "BlackVoid",
+      "name": "Felix Gustavsson",
+      "avatar_url": "https://avatars.githubusercontent.com/u/673720?v=4",
+      "profile": "https://github.com/BlackVoid",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
