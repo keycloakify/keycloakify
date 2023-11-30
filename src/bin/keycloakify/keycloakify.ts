@@ -1,6 +1,6 @@
 import { generateTheme } from "./generateTheme";
 import { generateJavaStackFiles } from "./generateJavaStackFiles";
-import { join as pathJoin, relative as pathRelative, basename as pathBasename, sep as pathSep } from "path";
+import { join as pathJoin, relative as pathRelative, basename as pathBasename, dirname as pathDirname, sep as pathSep } from "path";
 import * as child_process from "child_process";
 import { generateStartKeycloakTestingContainer } from "./generateStartKeycloakTestingContainer";
 import * as fs from "fs";
@@ -64,6 +64,8 @@ export async function main() {
 
     if (buildOptions.doCreateJar) {
         child_process.execSync("mvn clean install", { "cwd": buildOptions.keycloakifyBuildDirPath });
+
+        fs.unlinkSync(pathJoin(pathDirname(jarFilePath), "original-" + pathBasename(jarFilePath)));
     }
 
     const containerKeycloakVersion = "23.0.0";
