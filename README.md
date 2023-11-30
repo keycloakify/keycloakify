@@ -109,6 +109,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/celinepelletier"><img src="https://avatars.githubusercontent.com/u/82821620?v=4?s=100" width="100px;" alt="Céline Pelletier"/><br /><sub><b>Céline Pelletier</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=celinepelletier" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/xgp"><img src="https://avatars.githubusercontent.com/u/244253?v=4?s=100" width="100px;" alt="Garth"/><br /><sub><b>Garth</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=xgp" title="Code">💻</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/BlackVoid"><img src="https://avatars.githubusercontent.com/u/673720?v=4?s=100" width="100px;" alt="Felix Gustavsson"/><br /><sub><b>Felix Gustavsson</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=BlackVoid" title="Code">💻</a></td>
+    </tr>
   </tbody>
 </table>
 
