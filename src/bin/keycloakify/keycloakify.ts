@@ -65,7 +65,10 @@ export async function main() {
     if (buildOptions.doCreateJar) {
         child_process.execSync("mvn clean install", { "cwd": buildOptions.keycloakifyBuildDirPath });
 
-        fs.unlinkSync(pathJoin(pathDirname(jarFilePath), "original-" + pathBasename(jarFilePath)));
+        fs.renameSync(
+            pathJoin(pathDirname(jarFilePath), "original-" + pathBasename(jarFilePath)),
+            pathJoin(pathDirname(jarFilePath), "retrocompat-" + pathBasename(jarFilePath))
+        );
     }
 
     const containerKeycloakVersion = "23.0.0";
