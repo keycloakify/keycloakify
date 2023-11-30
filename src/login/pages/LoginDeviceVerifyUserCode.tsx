@@ -1,12 +1,11 @@
 import { clsx } from "keycloakify/tools/clsx";
-import Template from "../Template";
 import { I18n } from "../i18n";
 import { KcContext } from "../kcContext";
 import { useGetClassName } from "../lib/useGetClassName";
 import { PageProps } from "./PageProps";
 
 export default function LoginOauthGrant(props: PageProps<Extract<KcContext, { pageId: "login-oauth2-device-verify-user-code.ftl" }>, I18n>) {
-    const { kcContext, i18n, doUseDefaultCss, classes } = props;
+    const { kcContext, i18n, doUseDefaultCss, classes, Template } = props;
     const { url } = kcContext;
 
     const { msg, msgStr } = i18n;
