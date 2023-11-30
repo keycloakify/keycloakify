@@ -234,7 +234,8 @@ export const kcContextCommonMock: KcContext.Common = {
         "showTryAnotherWayLink": false
     },
     "client": {
-        "clientId": "myApp"
+        "clientId": "myApp",
+        "attributes": {}
     },
     "scripts": [],
     "isAppInitiatedAction": false
@@ -314,7 +315,8 @@ export const kcContextMocks = [
         "actionUri": "#",
         "client": {
             "clientId": "myApp",
-            "baseUrl": "#"
+            "baseUrl": "#",
+            "attributes": {}
         }
     }),
     id<KcContext.Error>({
@@ -322,7 +324,8 @@ export const kcContextMocks = [
         "pageId": "error.ftl",
         "client": {
             "clientId": "myApp",
-            "baseUrl": "#"
+            "baseUrl": "#",
+            "attributes": {}
         },
         "message": {
             "type": "error",
@@ -496,7 +499,8 @@ export const kcContextMocks = [
         },
         "client": {
             "clientId": "myApp",
-            "baseUrl": "#"
+            "baseUrl": "#",
+            "attributes": {}
         },
         "logoutConfirm": { "code": "123", skipLink: false }
     }),
