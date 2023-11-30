@@ -82,6 +82,7 @@ export declare namespace KcContext {
             clientId: string;
             name?: string;
             description?: string;
+            attributes: Record<string, string>;
         };
         isAppInitiatedAction: boolean;
         messagesPerField: {
