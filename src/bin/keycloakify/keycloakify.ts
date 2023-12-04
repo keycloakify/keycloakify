@@ -65,9 +65,21 @@ export async function main() {
     if (buildOptions.doCreateJar) {
         child_process.execSync("mvn clean install", { "cwd": buildOptions.keycloakifyBuildDirPath });
 
-        fs.renameSync(
-            pathJoin(pathDirname(jarFilePath), "original-" + pathBasename(jarFilePath)),
-            pathJoin(pathDirname(jarFilePath), "retrocompat-" + pathBasename(jarFilePath))
+        const jarDirPath = pathDirname(jarFilePath);
+        const retrocompatJarFilePath = pathJoin(jarDirPath, "retrocompat-" + pathBasename(jarFilePath));
+
+        fs.renameSync(pathJoin(jarDirPath, "original-" + pathBasename(jarFilePath)), retrocompatJarFilePath);
+
+        fs.writeFileSync(
+            pathJoin(jarDirPath, "README.md"),
+            Buffer.from(
+                [
+                    `- The ${jarFilePath} is to be used in Keycloak 23 and up.  `,
+                    `- The ${retrocompatJarFilePath} is to be used in Keycloak 21 and below.`,
+                    `  Note that Keycloak 22 is only supported for login and email theme but not for account themes.  `
+                ].join("\n"),
+                "utf8"
+            )
         );
     }
 
