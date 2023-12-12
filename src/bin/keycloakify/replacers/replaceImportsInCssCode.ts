@@ -16,7 +16,7 @@ export function replaceImportsInCssCode(params: { cssCode: string }): {
 
     const cssGlobalsToDefine: Record<string, string> = {};
 
-    new Set(cssCode.match(/url\(["']?\/[^/][^)"']+["']?\)[^;}]*/g) ?? []).forEach(
+    new Set(cssCode.match(/url\(["']?\/[^/][^)"']+["']?\)[^;}]*?/g) ?? []).forEach(
         match => (cssGlobalsToDefine["url" + crypto.createHash("sha256").update(match).digest("hex").substring(0, 15)] = match)
     );
 
