@@ -124,7 +124,7 @@ describe("bin/css-transforms", () => {
                 }
     
                 .my-div2 {
-                    background: url(/logo192.png) no-repeat center center;
+                    background: url(/logo192.png) repeat center center;
                 }
     
                 .my-div {
@@ -135,11 +135,11 @@ describe("bin/css-transforms", () => {
 
         const fixedCssCodeExpected = `
             .my-div {
-                background: var(--url1f9ef5a892c104c);
+                background: var(--urla882a969fd39473) no-repeat center center;
             }
     
             .my-div2 {
-                background: var(--url1f9ef5a892c104c);
+                background: var(--urla882a969fd39473) repeat center center;
             }
     
             .my-div {
@@ -150,7 +150,7 @@ describe("bin/css-transforms", () => {
         expect(isSameCode(fixedCssCode, fixedCssCodeExpected)).toBe(true);
 
         const cssGlobalsToDefineExpected = {
-            "url1f9ef5a892c104c": "url(/logo192.png) no-repeat center center",
+            "urla882a969fd39473": "url(/logo192.png)",
             "urldd75cab58377c19": "url(/static/media/something.svg)"
         };
 
@@ -165,7 +165,7 @@ describe("bin/css-transforms", () => {
 
         const cssCodeToPrependInHeadExpected = `
             :root {
-                --url1f9ef5a892c104c: url(\${url.resourcesPath}/build/logo192.png) no-repeat center center;
+                --urla882a969fd39473: url(\${url.resourcesPath}/build/logo192.png);
                 --urldd75cab58377c19: url(\${url.resourcesPath}/build/static/media/something.svg);
             }
         `;
@@ -191,11 +191,11 @@ describe("bin/css-transforms", () => {
 
         const fixedCssCodeExpected = `
             .my-div {
-                background: var(--urlf8277cddaa2be78);
+                background: var(--url749a3139386b2c8) no-repeat center center;
             }
     
             .my-div2 {
-                background: var(--urlf8277cddaa2be78);
+                background: var(--url749a3139386b2c8) no-repeat center center;
             }
     
             .my-div {
@@ -206,7 +206,7 @@ describe("bin/css-transforms", () => {
         expect(isSameCode(fixedCssCode, fixedCssCodeExpected)).toBe(true);
 
         const cssGlobalsToDefineExpected = {
-            "urlf8277cddaa2be78": "url(/x/y/z/logo192.png) no-repeat center center",
+            "url749a3139386b2c8": "url(/x/y/z/logo192.png)",
             "url8bdc0887b97ac9a": "url(/x/y/z/static/media/something.svg)"
         };
 
@@ -221,7 +221,7 @@ describe("bin/css-transforms", () => {
 
         const cssCodeToPrependInHeadExpected = `
             :root {
-                --urlf8277cddaa2be78: url(\${url.resourcesPath}/build/logo192.png) no-repeat center center;
+                --url749a3139386b2c8: url(\${url.resourcesPath}/build/logo192.png);
                 --url8bdc0887b97ac9a: url(\${url.resourcesPath}/build/static/media/something.svg);
             }
         `;

@@ -67,9 +67,6 @@ describe("Ensure it's able to extract used Keycloak resources", () => {
              `
         });
 
-        console.log(paths);
-        console.log(expectedPaths);
-
         expect(same(paths, expectedPaths)).toBe(true);
     });
 
