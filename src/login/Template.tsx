@@ -45,6 +45,8 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
         return null;
     }
 
+    document.title = i18n.msgStr("loginTitle", kcContext.realm.displayName);
+
     return (
         <div className={getClassName("kcLoginClass")}>
             <div id="kc-header" className={getClassName("kcHeaderClass")}>
