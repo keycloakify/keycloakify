@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { clsx } from "keycloakify/tools/clsx";
 import { UserProfileFormFields } from "./shared/UserProfileFormFields";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
@@ -124,7 +124,4 @@ export default function RegisterUserProfile(props: PageProps<Extract<KcContext, 
             </form>
         </Template>
     );
-}
-function useEffect(arg0: () => (() => void) | undefined, arg1: (string | boolean | string[] | undefined)[]) {
-    throw new Error("Function not implemented.");
 }
