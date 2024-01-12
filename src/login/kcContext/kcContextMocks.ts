@@ -440,6 +440,23 @@ export const kcContextMocks = [
         },
         "login": {}
     }),
+    id<KcContext.WebauthnRegister>({
+        ...kcContextCommonMock,
+        "pageId": "webauthn-register.ftl",
+        "challenge": "",
+        "rpId": "",
+        "createTimeout": 0,
+        "attestationConveyancePrefrence": "",
+        "authenticatorAttachment": "",
+        "excludeCredentialsId": "",
+        "signatureAlgorithms": [],
+        "isSetRetry": "",
+        "rpEntityName": "",
+        "userid": "",
+        "username": "",
+        "requireResidentKey": "",
+        "userVerificationRequirement": ""
+    }),
     id<KcContext.LoginUpdatePassword>({
         ...kcContextCommonMock,
         "pageId": "login-update-password.ftl",
