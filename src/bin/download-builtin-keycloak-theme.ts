@@ -55,7 +55,9 @@ export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: st
                         break install_and_move_to_common_resources_generated_in_keycloak_v2;
                     }
 
-                    child_process.execSync("npm install", { "cwd": accountV2DirSrcDirPath, "stdio": "ignore" });
+                    const packageManager = fs.existsSync(pathJoin(accountV2DirSrcDirPath, "pnpm-lock.yaml")) ? "pnpm" : "npm";
+
+                    child_process.execSync(`${packageManager} install`, { "cwd": accountV2DirSrcDirPath, "stdio": "ignore" });
 
                     const packageJsonFilePath = pathJoin(accountV2DirSrcDirPath, "package.json");
 
@@ -64,12 +66,12 @@ export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: st
                     const parsedPackageJson = JSON.parse(packageJsonRaw.toString("utf8"));
 
                     parsedPackageJson.scripts.build = parsedPackageJson.scripts.build
-                        .replace("npm run check-types", "true")
-                        .replace("npm run babel", "true");
+                        .replace(`${packageManager} run check-types`, "true")
+                        .replace(`${packageManager} run babel`, "true");
 
                     fs.writeFileSync(packageJsonFilePath, Buffer.from(JSON.stringify(parsedPackageJson, null, 2), "utf8"));
 
-                    child_process.execSync("npm run build", { "cwd": accountV2DirSrcDirPath, "stdio": "ignore" });
+                    child_process.execSync(`${packageManager} run build`, { "cwd": accountV2DirSrcDirPath, "stdio": "ignore" });
 
                     fs.writeFileSync(packageJsonFilePath, packageJsonRaw);
 
