@@ -57,6 +57,15 @@ export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: st
 
                     const packageManager = fs.existsSync(pathJoin(accountV2DirSrcDirPath, "pnpm-lock.yaml")) ? "pnpm" : "npm";
 
+                    if (packageManager === "pnpm") {
+                        try {
+                            child_process.execSync(`which pnpm`);
+                        } catch {
+                            console.log(`Installing pnpm globally`);
+                            child_process.execSync(`npm install -g pnpm`);
+                        }
+                    }
+
                     child_process.execSync(`${packageManager} install`, { "cwd": accountV2DirSrcDirPath, "stdio": "ignore" });
 
                     const packageJsonFilePath = pathJoin(accountV2DirSrcDirPath, "package.json");
