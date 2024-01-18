@@ -124,7 +124,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 # Changelog highlights
 
-## v9.0
+## 9.0
 
 Bring back support for account themes in Keycloak v23 and up! [See issue](https://github.com/keycloakify/keycloakify/issues/389).
 
@@ -257,79 +257,79 @@ Checkout [the migration guide](https://docs.keycloakify.dev/v5-to-v6)
 
 Fix `login-verify-email.ftl` page. [Before](https://user-images.githubusercontent.com/6702424/177436014-0bad22c4-5bfb-45bb-8fc9-dad65143cd0c.png) - [After](https://user-images.githubusercontent.com/6702424/177435797-ec5d7db3-84cf-49cb-8efc-3427a81f744e.png)
 
-## v5.6.0
+## 5.6.0
 
 Add support for `login-config-totp.ftl` page [#127](https://github.com/keycloakify/keycloakify/pull/127).
 
-## v5.3.0
+## 5.3.0
 
 Rename `keycloak_theme_email` to `keycloak_email`.  
 If you already had a `keycloak_theme_email` you should rename it `keycloak_email`.
 
-## v5.0.0
+## 5.0.0
 
 [Migration guide](https://github.com/garronej/keycloakify-demo-app/blob/a5b6a50f24bc25e082931f5ad9ebf47492acd12a/src/index.tsx#L46-L63)  
 New i18n system.  
 Import of terms and services have changed. [See example](https://github.com/garronej/keycloakify-demo-app/blob/a5b6a50f24bc25e082931f5ad9ebf47492acd12a/src/index.tsx#L46-L63).
 
-## v4.10.0
+## 4.10.0
 
 Add `login-idp-link-email.ftl` page [See PR](https://github.com/keycloakify/keycloakify/pull/92).
 
-## v4.8.0
+## 4.8.0
 
 [Email template customization.](#email-template-customization)
 
-## v4.7.4
+## 4.7.4
 
 **M1 Mac** support (for testing locally with a dockerized Keycloak).
 
-## v4.7.2
+## 4.7.2
 
 > WARNING: This is broken.  
 > Testing with local Keycloak container working with M1 Mac. Thanks to [@eduardosanzb](https://github.com/keycloakify/keycloakify/issues/43#issuecomment-975699658).  
 > Be aware: When running M1s you are testing with Keycloak v15 else the local container spun will be a Keycloak v16.1.0.
 
-## v4.7.0
+## 4.7.0
 
 Register with user profile enabled: Out of the box `options` validator support.  
 [Example](https://user-images.githubusercontent.com/6702424/158911163-81e6bbe8-feb0-4dc8-abff-de199d7a678e.mov)
 
-## v4.6.0
+## 4.6.0
 
 `tss-react` and `powerhooks` are no longer peer dependencies of `keycloakify`.
 After updating Keycloakify you can remove `tss-react` and `powerhooks` from your dependencies if you don't use them explicitly.
 
-## v4.5.3
+## 4.5.3
 
 There is a new recommended way to setup highly customized theme. See [here](https://github.com/garronej/keycloakify-demo-app/blob/look_and_feel/src/KcApp/KcApp.tsx).  
 Unlike with [the previous recommended method](https://github.com/garronej/keycloakify-demo-app/blob/a51660578bea15fb3e506b8a2b78e1056c6d68bb/src/KcApp/KcApp.tsx),
 with this new method your theme wont break on minor Keycloakify update.
 
-## v4.3.0
+## 4.3.0
 
 Feature [`login-update-password.ftl`](https://user-images.githubusercontent.com/6702424/147517600-6191cf72-93dd-437b-a35c-47180142063e.png).  
 Every time a page is added it's a breaking change for non CSS-only theme.  
 Change [this](https://github.com/garronej/keycloakify-demo-app/blob/df664c13c77ce3c53ac7df0622d94d04e76d3f9f/src/KcApp/KcApp.tsx#L17) and [this](https://github.com/garronej/keycloakify-demo-app/blob/df664c13c77ce3c53ac7df0622d94d04e76d3f9f/src/KcApp/KcApp.tsx#L37) to update.
 
-## v4
+## 4
 
 -   Out of the box [frontend form validation](#user-profile-and-frontend-form-validation) 🥳
 -   Improvements (and breaking changes in `import { useKcMessage } from "keycloakify"`.
 
-## v3
+## 3
 
 No breaking changes except that `@emotion/react`, [`tss-react`](https://www.npmjs.com/package/tss-react) and [`powerhooks`](https://www.npmjs.com/package/powerhooks) are now `peerDependencies` instead of being just dependencies.  
 It's important to avoid problem when using `keycloakify` alongside [`mui`](https://mui.com) and
 [when passing params from the app to the login page](https://github.com/keycloakify/keycloakify#implement-context-persistence-optional).
 
-## v2.5
+## 2.5
 
 -   Feature [Use advanced message](https://github.com/keycloakify/keycloakify/blob/59f106bf9e210b63b190826da2bf5f75fc8b7644/src/lib/i18n/useKcMessage.tsx#L53-L66)
     and [`messagesPerFields`](https://github.com/keycloakify/keycloakify/blob/59f106bf9e210b63b190826da2bf5f75fc8b7644/src/lib/getKcContext/KcContextBase.ts#L70-L75) (implementation [here](https://github.com/keycloakify/keycloakify/blob/59f106bf9e210b63b190826da2bf5f75fc8b7644/src/bin/build-keycloak-theme/generateFtl/common.ftl#L130-L189))
 -   Test container now uses Keycloak version `15.0.2`.
 
-## v2
+## 2
 
 -   It's now possible to implement custom `.ftl` pages.
 -   Support for Keycloak plugins that introduce non standard ftl values.
