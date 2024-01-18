@@ -113,6 +113,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/BlackVoid"><img src="https://avatars.githubusercontent.com/u/673720?v=4?s=100" width="100px;" alt="Felix Gustavsson"/><br /><sub><b>Felix Gustavsson</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=BlackVoid" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://m-siemens.de/"><img src="https://avatars.githubusercontent.com/u/1873922?v=4?s=100" width="100px;" alt="Markus Siemens"/><br /><sub><b>Markus Siemens</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=msiemens" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/law108000"><img src="https://avatars.githubusercontent.com/u/8112024?v=4?s=100" width="100px;" alt="Rlok"/><br /><sub><b>Rlok</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=law108000" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Moulyy"><img src="https://avatars.githubusercontent.com/u/115405804?v=4?s=100" width="100px;" alt="Moulyy"/><br /><sub><b>Moulyy</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=Moulyy" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
