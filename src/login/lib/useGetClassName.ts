@@ -67,6 +67,7 @@ export const { useGetClassName } = createUseClassName<ClassKey>({
 
         // css classes for input
         "kcInputLargeClass": "input-lg",
+        "kcInputGroup": "pf-c-input-group",
 
         // css classes for form accessability
         "kcSrOnlyClass": "sr-only",
