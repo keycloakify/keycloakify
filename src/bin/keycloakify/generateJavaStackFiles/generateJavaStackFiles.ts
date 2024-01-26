@@ -3,7 +3,7 @@ import { join as pathJoin, dirname as pathDirname } from "path";
 import { assert } from "tsafe/assert";
 import { Reflect } from "tsafe/Reflect";
 import type { BuildOptions } from "../BuildOptions";
-import { type ThemeType, retrocompatPostfix, accountV1 } from "../../constants";
+import { type ThemeType, accountV1 } from "../../constants";
 import { bringInAccountV1 } from "./bringInAccountV1";
 
 export type BuildOptionsLike = {
@@ -13,7 +13,6 @@ export type BuildOptionsLike = {
     cacheDirPath: string;
     keycloakifyBuildDirPath: string;
     themeNames: string[];
-    doBuildRetrocompatAccountTheme: boolean;
 };
 
 {
@@ -114,15 +113,7 @@ export async function generateJavaStackFiles(params: {
                                         "types": Object.entries(implementedThemeTypes)
                                             .filter(([, isImplemented]) => isImplemented)
                                             .map(([themeType]) => themeType)
-                                    },
-                                    ...(!implementedThemeTypes.account || !buildOptions.doBuildRetrocompatAccountTheme
-                                        ? []
-                                        : [
-                                              {
-                                                  "name": `${themeName}${retrocompatPostfix}`,
-                                                  "types": ["account"]
-                                              }
-                                          ])
+                                    }
                                 ])
                                 .flat()
                         ]
