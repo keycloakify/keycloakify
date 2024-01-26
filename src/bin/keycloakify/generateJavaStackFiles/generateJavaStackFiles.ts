@@ -13,6 +13,7 @@ export type BuildOptionsLike = {
     cacheDirPath: string;
     keycloakifyBuildDirPath: string;
     themeNames: string[];
+    doBuildRetrocompatAccountTheme: boolean;
 };
 
 {
@@ -114,7 +115,7 @@ export async function generateJavaStackFiles(params: {
                                             .filter(([, isImplemented]) => isImplemented)
                                             .map(([themeType]) => themeType)
                                     },
-                                    ...(!implementedThemeTypes.account
+                                    ...(!implementedThemeTypes.account || !buildOptions.doBuildRetrocompatAccountTheme
                                         ? []
                                         : [
                                               {

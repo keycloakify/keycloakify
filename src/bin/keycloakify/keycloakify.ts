@@ -75,7 +75,7 @@ export async function main() {
             Buffer.from(
                 [
                     `- The ${jarFilePath} is to be used in Keycloak 23 and up.  `,
-                    `- The ${retrocompatJarFilePath} is to be used in Keycloak 21 and below.`,
+                    `- The ${retrocompatJarFilePath} is to be used in Keycloak 22 and below.`,
                     `  Note that Keycloak 22 is only supported for login and email theme but not for account themes.  `
                 ].join("\n"),
                 "utf8"
