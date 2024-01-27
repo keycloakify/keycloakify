@@ -1,18 +1,32 @@
 import { ftlValuesGlobalName } from "../ftlValuesGlobalName";
 
-export function replaceImportsFromStaticInJsCode(params: { jsCode: string }): { fixedJsCode: string } {
-    /* 
-	NOTE:
+export function replaceImportsFromStaticInJsCode(params: { jsCode: string; bundler: "vite" | "webpack" }): { fixedJsCode: string } {
+    const { jsCode } = params;
 
-	When we have urlOrigin defined it means that 
-	we are building with --external-assets
-	so we have to make sur that the fixed js code will run 
-	inside and outside keycloak.
+    const { fixedJsCode } = (() => {
+        switch (params.bundler) {
+            case "vite":
+                return replaceImportsFromStaticInJsCode_vite({ jsCode });
+            case "webpack":
+                return replaceImportsFromStaticInJsCode_webpack({ jsCode });
+        }
+    })();
 
-	When urlOrigin isn't defined we can assume the fixedJsCode
-	will always run in keycloak context.
-	*/
+    return { fixedJsCode };
+}
 
+export function replaceImportsFromStaticInJsCode_vite(params: { jsCode: string }): { fixedJsCode: string } {
+    const { jsCode } = params;
+
+    const fixedJsCode = jsCode.replace(
+        /\.viteFileDeps = \[(.*)\]/g,
+        (...args) => `.viteFileDeps = [${args[1]}].map(viteFileDep => window.kcContext.url.resourcesPath.substring(1) + "/build/" + viteFileDep)`
+    );
+
+    return { fixedJsCode };
+}
+
+export function replaceImportsFromStaticInJsCode_webpack(params: { jsCode: string }): { fixedJsCode: string } {
     const { jsCode } = params;
 
     const getReplaceArgs = (language: "js" | "css"): Parameters<typeof String.prototype.replace> => [

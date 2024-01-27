@@ -37,7 +37,7 @@ export function generateFtlFilesCodeFactory(params: {
 
             assert(jsCode !== null);
 
-            const { fixedJsCode } = replaceImportsFromStaticInJsCode({ jsCode });
+            const { fixedJsCode } = replaceImportsFromStaticInJsCode({ jsCode, "bundler": "vite" });
 
             $(element).text(fixedJsCode);
         });

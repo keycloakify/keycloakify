@@ -10,7 +10,7 @@
     "types": "dist/index.d.ts",
     "scripts": {
         "prepare": "yarn generate-i18n-messages",
-        "build": "rimraf dist/ && tsc -p src/bin && tsc -p src && tsc-alias -p src/tsconfig.json && yarn grant-exec-perms && yarn copy-files dist/ && cp -r src dist/",
+        "build": "rimraf dist/ && tsc -p src/bin && tsc -p src && tsc -p src/vite-plugin && tsc-alias -p src/tsconfig.json && yarn grant-exec-perms && yarn copy-files dist/ && cp -r src dist/",
         "generate:json-schema": "ts-node scripts/generate-json-schema.ts",
         "grant-exec-perms": "node dist/bin/tools/grant-exec-perms.js",
         "copy-files": "copyfiles -u 1 src/**/*.ftl src/**/*.java",
@@ -105,7 +105,8 @@
         "tss-react": "^4.8.2",
         "typescript": "^4.9.1-beta",
         "vitest": "^0.29.8",
-        "zod-to-json-schema": "^3.20.4"
+        "zod-to-json-schema": "^3.20.4",
+        "vite": "^5.0.12"
     },
     "dependencies": {
         "@babel/generator": "^7.22.9",

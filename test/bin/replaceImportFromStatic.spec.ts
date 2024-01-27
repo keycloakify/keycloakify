@@ -7,7 +7,38 @@ import { expect, it, describe } from "vitest";
 import { isSameCode } from "../tools/isSameCode";
 
 describe("bin/js-transforms", () => {
-    const jsCodeUntransformed = `
+    // Vite
+    {
+        const jsCodeUntransformed = `
+            function __vite__mapDeps(indexes) {
+                if (!__vite__mapDeps.viteFileDeps) {
+                    __vite__mapDeps.viteFileDeps = ["assets/Login-dJpPRzM4.js", "assets/index-XwzrZ5Gu.js"]
+                }
+                return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
+            }
+        `;
+        it("Correctly replace import path in Vite dist/static/xxx.js files", () => {
+            const { fixedJsCode } = replaceImportsFromStaticInJsCode({
+                "jsCode": jsCodeUntransformed,
+                "bundler": "vite"
+            });
+
+            const fixedJsCodeExpected = `
+                function __vite__mapDeps(indexes) {
+                    if (!__vite__mapDeps.viteFileDeps) {
+                        __vite__mapDeps.viteFileDeps = ["assets/Login-dJpPRzM4.js", "assets/index-XwzrZ5Gu.js"].map(viteFileDep => window.kcContext.url.resourcesPath.substring(1) + "/build/" + viteFileDep)
+                    }
+                    return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
+                }
+            `;
+
+            expect(isSameCode(fixedJsCode, fixedJsCodeExpected)).toBe(true);
+        });
+    }
+
+    // Webpack
+    {
+        const jsCodeUntransformed = `
         function f() {
             return a.p+"static/js/" + ({}[e] || e) + "." + {
                 3: "0664cdc0"
@@ -37,12 +68,13 @@ describe("bin/js-transforms", () => {
         
         t.miniCssF=e=>"static/css/"+e+"."+{164:"dcfd7749",908:"67c9ed2c"}[e]+".chunk.css"
     `;
-    it("transforms standalone code properly", () => {
-        const { fixedJsCode } = replaceImportsFromStaticInJsCode({
-            "jsCode": jsCodeUntransformed
-        });
+        it("Correctly replace import path in Webpack build/static/js/xxx.js files", () => {
+            const { fixedJsCode } = replaceImportsFromStaticInJsCode({
+                "jsCode": jsCodeUntransformed,
+                "bundler": "webpack"
+            });
 
-        const fixedJsCodeExpected = `
+            const fixedJsCodeExpected = `
             function f() {
                 return window.kcContext.url.resourcesPath + "/build/static/js/" + ({}[e] || e) + "." + {
                     3: "0664cdc0"
@@ -111,8 +143,9 @@ describe("bin/js-transforms", () => {
             })()] = e => "/build/static/css/"+e+"."+{164:"dcfd7749",908:"67c9ed2c"}[e]+".chunk.css"
         `;
 
-        expect(isSameCode(fixedJsCode, fixedJsCodeExpected)).toBe(true);
-    });
+            expect(isSameCode(fixedJsCode, fixedJsCodeExpected)).toBe(true);
+        });
+    }
 });
 
 describe("bin/css-transforms", () => {

@@ -1,0 +1,12 @@
+{
+    "extends": "../../tsproject.json",
+    "compilerOptions": {
+        "module": "CommonJS",
+        "target": "ES5",
+        "esModuleInterop": true,
+        "lib": ["es2015", "ES2019.Object"],
+        "outDir": "../../dist/vite-plugin",
+        "rootDir": ".",
+        "skipLibCheck": true
+    }
+}

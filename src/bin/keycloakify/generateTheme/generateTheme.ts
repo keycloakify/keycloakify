@@ -93,7 +93,8 @@ export async function generateTheme(params: {
 
                     if (/\.js?$/i.test(filePath)) {
                         const { fixedJsCode } = replaceImportsFromStaticInJsCode({
-                            "jsCode": sourceCode.toString("utf8")
+                            "jsCode": sourceCode.toString("utf8"),
+                            "bundler": "vite"
                         });
 
                         return { "modifiedSourceCode": Buffer.from(fixedJsCode, "utf8") };

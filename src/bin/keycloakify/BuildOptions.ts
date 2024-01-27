@@ -3,6 +3,7 @@ import { getParsedPackageJson } from "./parsedPackageJson";
 import { join as pathJoin } from "path";
 import parseArgv from "minimist";
 import { getAbsoluteAndInOsFormatPath } from "../tools/getAbsoluteAndInOsFormatPath";
+import * as fs from "fs";
 
 /** Consolidated build option gathered form CLI arguments and config in package.json */
 export type BuildOptions = {
@@ -15,7 +16,6 @@ export type BuildOptions = {
     doCreateJar: boolean;
     loginThemeResourcesFromKeycloakVersion: string;
     reactAppRootDirPath: string;
-    /** Directory of your built react project. Defaults to {cwd}/build */
     reactAppBuildDirPath: string;
     /** Directory that keycloakify outputs to. Defaults to {cwd}/build_keycloak */
     keycloakifyBuildDirPath: string;
@@ -106,7 +106,17 @@ export function readBuildOptions(params: { reactAppRootDirPath: string; processA
                 });
             }
 
-            return pathJoin(reactAppRootDirPath, "build");
+            for (const name of ["build", "dist"]) {
+                const out = pathJoin(reactAppRootDirPath, name);
+
+                if (!fs.existsSync(out)) {
+                    continue;
+                }
+
+                return out;
+            }
+
+            throw new Error("Please use the reactAppBuildDirPath option to specify the build directory of your react app");
         })(),
         "keycloakifyBuildDirPath": (() => {
             const { keycloakifyBuildDirPath } = parsedPackageJson.keycloakify ?? {};

@@ -14,7 +14,7 @@
         "jsx": "react-jsx",
         "allowSyntheticDefaultImports": true
     },
-    "exclude": ["./bin"],
+    "exclude": ["./bin", "./vite-plugin"],
     "references": [
         {
             "path": "./bin"
