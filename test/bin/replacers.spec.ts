@@ -321,6 +321,46 @@ describe("js replacer - webpack", () => {
 
         expect(isSameCode(fixedJsCode, fixedJsCodeExpected)).toBe(true);
     });
+
+    it("replaceImportsInJsCode_webpack - 2", () => {
+        const before = `"__esModule",{value:!0})}`;
+        const after = `function(){if("undefined"`;
+
+        const jsCodeUntransformed = `${before},n.p="/foo-bar/",${after}`;
+
+        const { fixedJsCode } = replaceImportsInJsCode_webpack({
+            "jsCode": jsCodeUntransformed,
+            "buildOptions": {
+                "reactAppBuildDirPath": "/Users/someone/github/keycloakify-starter/build",
+                "assetsDirPath": "/Users/someone/github/keycloakify-starter/dist/build/static",
+                "urlPathname": "/foo-bar/"
+            }
+        });
+
+        const fixedJsCodeExpected = `${before},n.p="/",${after}`;
+
+        expect(isSameCode(fixedJsCode, fixedJsCodeExpected)).toBe(true);
+    });
+
+    it("replaceImportsInJsCode_webpack - 3", () => {
+        const before = `"__esModule",{value:!0})}`;
+        const after = `function(){if("undefined"`;
+
+        const jsCodeUntransformed = `${before},n.p="/foo/bar/",${after}`;
+
+        const { fixedJsCode } = replaceImportsInJsCode_webpack({
+            "jsCode": jsCodeUntransformed,
+            "buildOptions": {
+                "reactAppBuildDirPath": "/Users/someone/github/keycloakify-starter/build",
+                "assetsDirPath": "/Users/someone/github/keycloakify-starter/dist/build/static",
+                "urlPathname": "/foo/bar/"
+            }
+        });
+
+        const fixedJsCodeExpected = `${before},n.p="/",${after}`;
+
+        expect(isSameCode(fixedJsCode, fixedJsCodeExpected)).toBe(true);
+    });
 });
 
 describe("css replacer", () => {

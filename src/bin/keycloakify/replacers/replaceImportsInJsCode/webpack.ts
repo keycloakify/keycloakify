@@ -21,20 +21,18 @@ export function replaceImportsInJsCode_webpack(params: { jsCode: string; buildOp
 
     let fixedJsCode = jsCode;
 
-    // "__esModule",{value:!0})},n.p="/",function(){if("undefined"  -> n.p="/abcde12345/"
-
-    // d={NODE_ENV:"production",PUBLIC_URL:"/abcde12345",WDS_SOCKET_HOST
-    // d={NODE_ENV:"production",PUBLIC_URL:"",WDS_SOCKET_HOST
-    // ->
-    // PUBLIC_URL:"${window.${nameOfTheGlobal}.url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}"`
-
     if (buildOptions.urlPathname !== undefined) {
+        // "__esModule",{value:!0})},n.p="/foo-bar/",function(){if("undefined"  -> ... n.p="/" ...
         fixedJsCode = fixedJsCode.replace(
             new RegExp(`,([a-zA-Z]\\.[a-zA-Z])="${replaceAll(buildOptions.urlPathname, "/", "\\/")}",`, "g"),
             (...[, assignTo]) => `,${assignTo}="/",`
         );
     }
 
+    // d={NODE_ENV:"production",PUBLIC_URL:"/abcde12345",WDS_SOCKET_HOST
+    // d={NODE_ENV:"production",PUBLIC_URL:"",WDS_SOCKET_HOST
+    // ->
+    // PUBLIC_URL:`${window.kcContext.url.resourcesPath}/build"`
     fixedJsCode = fixedJsCode.replace(
         new RegExp(
             `NODE_ENV:"production",PUBLIC_URL:"${
