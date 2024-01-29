@@ -361,6 +361,40 @@ describe("js replacer - webpack", () => {
 
         expect(isSameCode(fixedJsCode, fixedJsCodeExpected)).toBe(true);
     });
+
+    it("replaceImportsInJsCode_webpack - 4", () => {
+        const jsCodeUntransformed = `d={NODE_ENV:"production",PUBLIC_URL:"",WDS_SOCKET_HOST`;
+
+        const { fixedJsCode } = replaceImportsInJsCode_webpack({
+            "jsCode": jsCodeUntransformed,
+            "buildOptions": {
+                "reactAppBuildDirPath": "/Users/someone/github/keycloakify-starter/build",
+                "assetsDirPath": "/Users/someone/github/keycloakify-starter/dist/build/static",
+                "urlPathname": undefined
+            }
+        });
+
+        const fixedJsCodeExpected = `d={NODE_ENV:"production",PUBLIC_URL:window.${nameOfTheGlobal}.url.resourcesPath+"/${basenameOfTheKeycloakifyResourcesDir}",WDS_SOCKET_HOST`;
+
+        expect(isSameCode(fixedJsCode, fixedJsCodeExpected)).toBe(true);
+    });
+
+    it("replaceImportsInJsCode_webpack - 5", () => {
+        const jsCodeUntransformed = `d={NODE_ENV:"production",PUBLIC_URL:"/foo-bar",WDS_SOCKET_HOST`;
+
+        const { fixedJsCode } = replaceImportsInJsCode_webpack({
+            "jsCode": jsCodeUntransformed,
+            "buildOptions": {
+                "reactAppBuildDirPath": "/Users/someone/github/keycloakify-starter/build",
+                "assetsDirPath": "/Users/someone/github/keycloakify-starter/dist/build/static",
+                "urlPathname": "/foo-bar/"
+            }
+        });
+
+        const fixedJsCodeExpected = `d={NODE_ENV:"production",PUBLIC_URL:window.${nameOfTheGlobal}.url.resourcesPath+"/${basenameOfTheKeycloakifyResourcesDir}",WDS_SOCKET_HOST`;
+
+        expect(isSameCode(fixedJsCode, fixedJsCodeExpected)).toBe(true);
+    });
 });
 
 describe("css replacer", () => {

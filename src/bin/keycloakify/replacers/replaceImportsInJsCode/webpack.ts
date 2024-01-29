@@ -29,18 +29,18 @@ export function replaceImportsInJsCode_webpack(params: { jsCode: string; buildOp
         );
     }
 
-    // d={NODE_ENV:"production",PUBLIC_URL:"/abcde12345",WDS_SOCKET_HOST
+    // d={NODE_ENV:"production",PUBLIC_URL:"/foo-bar",WDS_SOCKET_HOST
     // d={NODE_ENV:"production",PUBLIC_URL:"",WDS_SOCKET_HOST
     // ->
-    // PUBLIC_URL:`${window.kcContext.url.resourcesPath}/build"`
+    // ... PUBLIC_URL:window.kcContext.url.resourcesPath+"/build" ...
     fixedJsCode = fixedJsCode.replace(
         new RegExp(
             `NODE_ENV:"production",PUBLIC_URL:"${
                 buildOptions.urlPathname !== undefined ? replaceAll(buildOptions.urlPathname.slice(0, -1), "/", "\\/") : ""
-            }",`,
+            }"`,
             "g"
         ),
-        `NODE_ENV:"production",PUBLIC_URL: window.${nameOfTheGlobal}.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}",`
+        `NODE_ENV:"production",PUBLIC_URL:window.${nameOfTheGlobal}.url.resourcesPath+"/${basenameOfTheKeycloakifyResourcesDir}"`
     );
 
     // Example: "static/ or "foo/bar/"
