@@ -1,7 +1,7 @@
 import { nameOfTheGlobal, basenameOfTheKeycloakifyResourcesDir } from "../../../constants";
 import { assert } from "tsafe/assert";
 import type { BuildOptions } from "../../BuildOptions";
-import { relative as pathRelative, sep as pathSep } from "path";
+import * as nodePath from "path";
 import { replaceAll } from "../../../tools/String.prototype.replaceAll";
 
 export type BuildOptionsLike = {
@@ -12,8 +12,12 @@ export type BuildOptionsLike = {
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
-export function replaceImportsInJsCode_webpack(params: { jsCode: string; buildOptions: BuildOptionsLike }): { fixedJsCode: string } {
-    const { jsCode, buildOptions } = params;
+export function replaceImportsInJsCode_webpack(params: { jsCode: string; buildOptions: BuildOptionsLike; systemType?: "posix" | "win32" }): {
+    fixedJsCode: string;
+} {
+    const { jsCode, buildOptions, systemType = nodePath.sep === "/" ? "posix" : "win32" } = params;
+
+    const { relative: pathRelative, sep: pathSep } = nodePath[systemType];
 
     let fixedJsCode = jsCode;
 

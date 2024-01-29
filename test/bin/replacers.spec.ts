@@ -6,7 +6,7 @@ import { expect, it, describe } from "vitest";
 import { isSameCode } from "../tools/isSameCode";
 import { basenameOfTheKeycloakifyResourcesDir, nameOfTheGlobal } from "keycloakify/bin/constants";
 
-describe("bin/js-transforms - vite", () => {
+describe("js replacer - vite", () => {
     it("replaceImportsInJsCode_vite - 1", () => {
         const before = `Uv="modulepreload",`;
         const after = `,Wc={},`;
@@ -207,7 +207,7 @@ describe("bin/js-transforms - vite", () => {
     });
 });
 
-describe("bin/js-transforms - webpack", () => {
+describe("js replacer - webpack", () => {
     const jsCodeUntransformed = `
         function f() {
             return a.p+"static/js/" + ({}[e] || e) + "." + {
@@ -317,7 +317,7 @@ describe("bin/js-transforms - webpack", () => {
     });
 });
 
-describe("bin/css-transforms", () => {
+describe("css replacer", () => {
     it("transforms absolute urls to css globals properly with no urlPathname", () => {
         const { fixedCssCode, cssGlobalsToDefine } = replaceImportsInCssCode({
             "cssCode": `
@@ -432,7 +432,7 @@ describe("bin/css-transforms", () => {
     });
 });
 
-describe("bin/css-inline-transforms", () => {
+describe("inline css replacer", () => {
     describe("no url pathName", () => {
         const cssCode = `
         @font-face {
