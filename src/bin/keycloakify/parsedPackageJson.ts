@@ -10,7 +10,6 @@ export type ParsedPackageJson = {
     homepage?: string;
     keycloakify?: {
         extraThemeProperties?: string[];
-        areAppAndKeycloakServerSharingSameDomain?: boolean;
         artifactId?: string;
         groupId?: string;
         doCreateJar?: boolean;
@@ -18,7 +17,6 @@ export type ParsedPackageJson = {
         reactAppBuildDirPath?: string;
         keycloakifyBuildDirPath?: string;
         themeName?: string | string[];
-        doBuildRetrocompatAccountTheme?: boolean;
     };
 };
 
@@ -29,22 +27,20 @@ export const zParsedPackageJson = z.object({
     "keycloakify": z
         .object({
             "extraThemeProperties": z.array(z.string()).optional(),
-            "areAppAndKeycloakServerSharingSameDomain": z.boolean().optional(),
             "artifactId": z.string().optional(),
             "groupId": z.string().optional(),
             "doCreateJar": z.boolean().optional(),
             "loginThemeResourcesFromKeycloakVersion": z.string().optional(),
             "reactAppBuildDirPath": z.string().optional(),
             "keycloakifyBuildDirPath": z.string().optional(),
-            "themeName": z.union([z.string(), z.array(z.string())]).optional(),
-            "doBuildRetrocompatAccountTheme": z.boolean().optional()
+            "themeName": z.union([z.string(), z.array(z.string())]).optional()
         })
         .optional()
 });
 
 assert<Equals<ReturnType<(typeof zParsedPackageJson)["parse"]>, ParsedPackageJson>>();
 
-let parsedPackageJson: undefined | ReturnType<(typeof zParsedPackageJson)["parse"]>;
+let parsedPackageJson: undefined | ParsedPackageJson;
 export function getParsedPackageJson(params: { reactAppRootDirPath: string }) {
     const { reactAppRootDirPath } = params;
     if (parsedPackageJson) {

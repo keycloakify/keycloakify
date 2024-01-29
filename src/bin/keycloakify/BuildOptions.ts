@@ -24,6 +24,8 @@ export type BuildOptions = {
     /** If your app is hosted under a subpath, it's the case in CRA if you have "homepage": "https://example.com/my-app" in your package.json
      * In this case the urlPathname will be "/my-app/" */
     urlPathname: string | undefined;
+    assetsDirPath: string;
+    bundler: "vite" | "webpack";
 };
 
 export function readBuildOptions(params: { reactAppRootDirPath: string; processArgv: string[] }): BuildOptions {

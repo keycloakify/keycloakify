@@ -1,0 +1,94 @@
+import { nameOfTheGlobal, basenameOfTheKeycloakifyResourcesDir } from "../../../constants";
+import { assert } from "tsafe/assert";
+import type { BuildOptions } from "../../BuildOptions";
+import { relative as pathRelative, sep as pathSep } from "path";
+import { replaceAll } from "../../../tools/String.prototype.replaceAll";
+
+export type BuildOptionsLike = {
+    reactAppBuildDirPath: string;
+    assetsDirPath: string;
+    urlPathname: string | undefined;
+};
+
+assert<BuildOptions extends BuildOptionsLike ? true : false>();
+
+export function replaceImportsInJsCode_webpack(params: { jsCode: string; buildOptions: BuildOptionsLike }): { fixedJsCode: string } {
+    const { jsCode, buildOptions } = params;
+
+    let fixedJsCode = jsCode;
+
+    // "__esModule",{value:!0})},n.p="/",function(){if("undefined"  -> n.p="/abcde12345/"
+
+    // d={NODE_ENV:"production",PUBLIC_URL:"/abcde12345",WDS_SOCKET_HOST
+    // d={NODE_ENV:"production",PUBLIC_URL:"",WDS_SOCKET_HOST
+    // ->
+    // PUBLIC_URL:"${window.${nameOfTheGlobal}.url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}"`
+
+    if (buildOptions.urlPathname !== undefined) {
+        fixedJsCode = fixedJsCode.replace(
+            new RegExp(`,([a-zA-Z]\\.[a-zA-Z])="${replaceAll(buildOptions.urlPathname, "/", "\\/")}",`, "g"),
+            (...[, assignTo]) => `,${assignTo}="/",`
+        );
+    }
+
+    fixedJsCode = fixedJsCode.replace(
+        new RegExp(
+            `NODE_ENV:"production",PUBLIC_URL:"${
+                buildOptions.urlPathname !== undefined ? replaceAll(buildOptions.urlPathname.slice(0, -1), "/", "\\/") : ""
+            }",`,
+            "g"
+        ),
+        `NODE_ENV:"production",PUBLIC_URL: window.${nameOfTheGlobal}.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}",`
+    );
+
+    // Example: "static/ or "foo/bar/"
+    const staticDir = (() => {
+        let out = pathRelative(buildOptions.reactAppBuildDirPath, buildOptions.assetsDirPath);
+
+        out = replaceAll(out, pathSep, "/") + "/";
+
+        if (out === "/") {
+            throw new Error(`The assetsDirPath must be a subdirectory of reactAppBuildDirPath`);
+        }
+
+        return out;
+    })();
+
+    const getReplaceArgs = (language: "js" | "css"): Parameters<typeof String.prototype.replace> => [
+        new RegExp(`([a-zA-Z_]+)\\.([a-zA-Z]+)=(function\\(([a-z]+)\\){return|([a-z]+)=>)"${staticDir.replace(/\//g, "\\/")}${language}\\/"`, "g"),
+        (...[, n, u, matchedFunction, eForFunction]) => {
+            const isArrowFunction = matchedFunction.includes("=>");
+            const e = isArrowFunction ? matchedFunction.replace("=>", "").trim() : eForFunction;
+
+            return `
+            ${n}[(function(){
+                var pd = Object.getOwnPropertyDescriptor(${n}, "p");
+                if( pd === undefined || pd.configurable ){
+                    Object.defineProperty(${n}, "p", {
+                        get: function() { return window.${nameOfTheGlobal}.url.resourcesPath; },
+                        set: function() {}
+                    });
+                }
+                return "${u}";
+            })()] = ${isArrowFunction ? `${e} =>` : `function(${e}) { return `} "/${basenameOfTheKeycloakifyResourcesDir}/${staticDir}${language}/"`
+                .replace(/\s+/g, " ")
+                .trim();
+        }
+    ];
+
+    fixedJsCode = fixedJsCode
+        .replace(...getReplaceArgs("js"))
+        .replace(...getReplaceArgs("css"))
+        .replace(
+            new RegExp(`[a-zA-Z]+\\.[a-zA-Z]+\\+"${staticDir.replace(/\//g, "\\/")}"`, "g"),
+            `window.${nameOfTheGlobal}.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/${staticDir}`
+        )
+        //TODO: Write a test case for this
+        .replace(
+            /".chunk.css",([a-zA-Z])+=[a-zA-Z]+\.[a-zA-Z]+\+([a-zA-Z]+),/,
+            (...[, group1, group2]) =>
+                `".chunk.css",${group1} = window.${nameOfTheGlobal}.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/" + ${group2},`
+        );
+
+    return { fixedJsCode };
+}

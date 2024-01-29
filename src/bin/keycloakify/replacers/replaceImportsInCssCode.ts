@@ -1,6 +1,7 @@
 import * as crypto from "crypto";
 import type { BuildOptions } from "../BuildOptions";
 import { assert } from "tsafe/assert";
+import { basenameOfTheKeycloakifyResourcesDir } from "../../constants";
 
 export type BuildOptionsLike = {
     urlPathname: string | undefined;
@@ -45,7 +46,7 @@ export function generateCssCodeToDefineGlobals(params: { cssGlobalsToDefine: Rec
                         `--${cssVariableName}:`,
                         cssGlobalsToDefine[cssVariableName].replace(
                             new RegExp(`url\\(${(buildOptions.urlPathname ?? "/").replace(/\//g, "\\/")}`, "g"),
-                            "url(${url.resourcesPath}/build/"
+                            `url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/`
                         )
                     ].join(" ")
                 )

@@ -4,7 +4,14 @@ import { join as pathJoin, resolve as pathResolve } from "path";
 import { replaceImportsFromStaticInJsCode } from "../replacers/replaceImportsFromStaticInJsCode";
 import { replaceImportsInCssCode } from "../replacers/replaceImportsInCssCode";
 import { generateFtlFilesCodeFactory, loginThemePageIds, accountThemePageIds } from "../generateFtl";
-import { themeTypes, type ThemeType, lastKeycloakVersionWithAccountV1, keycloak_resources, accountV1 } from "../../constants";
+import {
+    themeTypes,
+    type ThemeType,
+    lastKeycloakVersionWithAccountV1,
+    keycloak_resources,
+    accountV1ThemeName,
+    basenameOfTheKeycloakifyResourcesDir
+} from "../../constants";
 import { isInside } from "../../tools/isInside";
 import type { BuildOptions } from "../BuildOptions";
 import { assert, type Equals } from "tsafe/assert";
@@ -18,7 +25,6 @@ export type BuildOptionsLike = {
     extraThemeProperties: string[] | undefined;
     themeVersion: string;
     loginThemeResourcesFromKeycloakVersion: string;
-    urlPathname: string | undefined;
     keycloakifyBuildDirPath: string;
     reactAppBuildDirPath: string;
     cacheDirPath: string;
@@ -59,7 +65,7 @@ export async function generateTheme(params: {
             }
 
             transformCodebase({
-                "destDirPath": pathJoin(themeTypeDirPath, "resources", "build"),
+                "destDirPath": pathJoin(themeTypeDirPath, "resources", basenameOfTheKeycloakifyResourcesDir),
                 "srcDirPath": buildOptions.reactAppBuildDirPath,
                 "transformSourceCode": ({ filePath, sourceCode }) => {
                     //NOTE: Prevent cycles, excludes the folder we generated for debug in public/
@@ -182,7 +188,7 @@ export async function generateTheme(params: {
                     `parent=${(() => {
                         switch (themeType) {
                             case "account":
-                                return accountV1;
+                                return accountV1ThemeName;
                             case "login":
                                 return "keycloak";
                         }

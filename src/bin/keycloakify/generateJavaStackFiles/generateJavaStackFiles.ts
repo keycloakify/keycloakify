@@ -3,7 +3,7 @@ import { join as pathJoin, dirname as pathDirname } from "path";
 import { assert } from "tsafe/assert";
 import { Reflect } from "tsafe/Reflect";
 import type { BuildOptions } from "../BuildOptions";
-import { type ThemeType, accountV1 } from "../../constants";
+import { type ThemeType, accountV1ThemeName } from "../../constants";
 import { bringInAccountV1 } from "./bringInAccountV1";
 
 export type BuildOptionsLike = {
@@ -102,7 +102,7 @@ export async function generateJavaStackFiles(params: {
                                 ? []
                                 : [
                                       {
-                                          "name": accountV1,
+                                          "name": accountV1ThemeName,
                                           "types": ["account"]
                                       }
                                   ]),

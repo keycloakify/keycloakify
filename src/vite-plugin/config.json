@@ -1,0 +1,232 @@
+{
+    "plugins": [
+        {
+            "name": "vite:build-metadata"
+        },
+        {
+            "name": "vite:watch-package-data"
+        },
+        {
+            "name": "vite:pre-alias"
+        },
+        {
+            "name": "alias"
+        },
+        {
+            "name": "vite:react-babel",
+            "enforce": "pre"
+        },
+        {
+            "name": "vite:react-refresh",
+            "enforce": "pre"
+        },
+        {
+            "name": "vite:modulepreload-polyfill"
+        },
+        {
+            "name": "vite:resolve"
+        },
+        {
+            "name": "vite:html-inline-proxy"
+        },
+        {
+            "name": "vite:css"
+        },
+        {
+            "name": "vite:esbuild"
+        },
+        {
+            "name": "vite:json"
+        },
+        {
+            "name": "vite:wasm-helper"
+        },
+        {
+            "name": "vite:worker"
+        },
+        {
+            "name": "vite:asset"
+        },
+        {
+            "name": "vite-plugin-commonjs"
+        },
+        {
+            "name": "keycloakify"
+        },
+        {
+            "name": "vite:wasm-fallback"
+        },
+        {
+            "name": "vite:define"
+        },
+        {
+            "name": "vite:css-post"
+        },
+        {
+            "name": "vite:build-html"
+        },
+        {
+            "name": "vite:worker-import-meta-url"
+        },
+        {
+            "name": "vite:asset-import-meta-url"
+        },
+        {
+            "name": "vite:force-systemjs-wrap-complete"
+        },
+        {
+            "name": "commonjs",
+            "version": "25.0.7"
+        },
+        {
+            "name": "vite:data-uri"
+        },
+        {
+            "name": "vite:dynamic-import-vars"
+        },
+        {
+            "name": "vite:import-glob"
+        },
+        {
+            "name": "vite:build-import-analysis"
+        },
+        {
+            "name": "vite:esbuild-transpile"
+        },
+        {
+            "name": "vite:terser"
+        },
+        {
+            "name": "vite:reporter"
+        },
+        {
+            "name": "vite:load-fallback"
+        }
+    ],
+    "optimizeDeps": {
+        "disabled": "build",
+        "esbuildOptions": {
+            "preserveSymlinks": false,
+            "jsx": "automatic",
+            "plugins": [
+                {
+                    "name": "vite-plugin-commonjs:pre-bundle"
+                }
+            ]
+        },
+        "include": ["react", "react/jsx-dev-runtime", "react/jsx-runtime"]
+    },
+    "build": {
+        "target": ["es2020", "edge88", "firefox78", "chrome87", "safari14"],
+        "cssTarget": ["es2020", "edge88", "firefox78", "chrome87", "safari14"],
+        "outDir": "dist",
+        "assetsDir": "assets",
+        "assetsInlineLimit": 4096,
+        "cssCodeSplit": true,
+        "sourcemap": false,
+        "rollupOptions": {},
+        "minify": "esbuild",
+        "terserOptions": {},
+        "write": true,
+        "emptyOutDir": null,
+        "copyPublicDir": true,
+        "manifest": false,
+        "lib": false,
+        "ssr": false,
+        "ssrManifest": false,
+        "ssrEmitAssets": false,
+        "reportCompressedSize": true,
+        "chunkSizeWarningLimit": 500,
+        "watch": null,
+        "commonjsOptions": {
+            "include": [{}],
+            "extensions": [".js", ".cjs"]
+        },
+        "dynamicImportVarsOptions": {
+            "warnOnError": true,
+            "exclude": [{}]
+        },
+        "modulePreload": {
+            "polyfill": true
+        },
+        "cssMinify": true
+    },
+    "esbuild": {
+        "jsxDev": false,
+        "jsx": "automatic"
+    },
+    "resolve": {
+        "mainFields": ["browser", "module", "jsnext:main", "jsnext"],
+        "conditions": [],
+        "extensions": [".mjs", ".js", ".mts", ".ts", ".jsx", ".tsx", ".json"],
+        "dedupe": ["react", "react-dom"],
+        "preserveSymlinks": false,
+        "alias": [
+            {
+                "find": {},
+                "replacement": "/@fs/Users/joseph/github/keycloakify-starter/node_modules/vite/dist/client/env.mjs"
+            },
+            {
+                "find": {},
+                "replacement": "/@fs/Users/joseph/github/keycloakify-starter/node_modules/vite/dist/client/client.mjs"
+            }
+        ]
+    },
+    "configFile": "/Users/joseph/github/keycloakify-starter/vite.config.ts",
+    "configFileDependencies": ["/Users/joseph/github/keycloakify-starter/vite.config.ts"],
+    "inlineConfig": {
+        "optimizeDeps": {},
+        "build": {}
+    },
+    "root": "/Users/joseph/github/keycloakify-starter",
+    "base": "/",
+    "rawBase": "/",
+    "publicDir": "/Users/joseph/github/keycloakify-starter/public",
+    "cacheDir": "/Users/joseph/github/keycloakify-starter/node_modules/.vite",
+    "command": "build",
+    "mode": "production",
+    "ssr": {
+        "target": "node",
+        "optimizeDeps": {
+            "disabled": true,
+            "esbuildOptions": {
+                "preserveSymlinks": false
+            }
+        }
+    },
+    "isWorker": false,
+    "mainConfig": null,
+    "isProduction": true,
+    "css": {},
+    "server": {
+        "preTransformRequests": true,
+        "middlewareMode": false,
+        "fs": {
+            "strict": true,
+            "allow": ["/Users/joseph/github/keycloakify-starter"],
+            "deny": [".env", ".env.*", "*.{crt,pem}"],
+            "cachedChecks": false
+        }
+    },
+    "preview": {},
+    "envDir": "/Users/joseph/github/keycloakify-starter",
+    "env": {
+        "BASE_URL": "/",
+        "MODE": "production",
+        "DEV": false,
+        "PROD": true
+    },
+    "logger": {
+        "hasWarned": false
+    },
+    "packageCache": {},
+    "worker": {
+        "format": "iife",
+        "rollupOptions": {}
+    },
+    "appType": "spa",
+    "experimental": {
+        "importGlobRestoreExtension": false,
+        "hmrPartialAccept": false
+    }
+}

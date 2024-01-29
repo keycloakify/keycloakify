@@ -1,5 +1,6 @@
 import type { BuildOptions } from "../BuildOptions";
 import { assert } from "tsafe/assert";
+import { basenameOfTheKeycloakifyResourcesDir } from "../../constants";
 
 export type BuildOptionsLike = {
     urlPathname: string | undefined;
@@ -16,7 +17,7 @@ export function replaceImportsInInlineCssCode(params: { cssCode: string; buildOp
         buildOptions.urlPathname === undefined
             ? /url\(["']?\/([^/][^)"']+)["']?\)/g
             : new RegExp(`url\\(["']?${buildOptions.urlPathname}([^)"']+)["']?\\)`, "g"),
-        (...[, group]) => `url(\${url.resourcesPath}/build/${group})`
+        (...[, group]) => `url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/${group})`
     );
 
     return { fixedCssCode };
