@@ -1,4 +1,5 @@
 import { replaceImportsInJsCode_vite } from "keycloakify/bin/keycloakify/replacers/replaceImportsInJsCode/vite";
+import { replaceImportsInJsCode_webpack } from "keycloakify/bin/keycloakify/replacers/replaceImportsInJsCode/webpack";
 import { generateCssCodeToDefineGlobals, replaceImportsInCssCode } from "keycloakify/bin/keycloakify/replacers/replaceImportsInCssCode";
 import { replaceImportsInInlineCssCode } from "keycloakify/bin/keycloakify/replacers/replaceImportsInInlineCssCode";
 import { same } from "evt/tools/inDepth/same";
@@ -208,40 +209,45 @@ describe("js replacer - vite", () => {
 });
 
 describe("js replacer - webpack", () => {
-    const jsCodeUntransformed = `
-        function f() {
-            return a.p+"static/js/" + ({}[e] || e) + "." + {
-                3: "0664cdc0"
-            }[e] + ".chunk.js"
-        }
+    it("replaceImportsInJsCode_webpack - 1", () => {
+        const jsCodeUntransformed = `
+            function f() {
+                return a.p+"static/js/" + ({}[e] || e) + "." + {
+                    3: "0664cdc0"
+                }[e] + ".chunk.js"
+            }
         
-        function sameAsF() {
-            return a.p+"static/js/" + ({}[e] || e) + "." + {
-                3: "0664cdc0"
-            }[e] + ".chunk.js"
-        }
+            function sameAsF() {
+                return a.p+"static/js/" + ({}[e] || e) + "." + {
+                    3: "0664cdc0"
+                }[e] + ".chunk.js"
+            }
 
-        __webpack_require__.u=function(e){return"static/js/" + e + "." + {
-                147: "6c5cee76",
-                787: "8da10fcf",
-                922: "be170a73"
-            } [e] + ".chunk.js"
-        }
+            __webpack_require__.u=function(e){return"static/js/" + e + "." + {
+                    147: "6c5cee76",
+                    787: "8da10fcf",
+                    922: "be170a73"
+                } [e] + ".chunk.js"
+            }
 
-        t.miniCssF=function(e){return"static/css/"+e+"."+{
-                164:"dcfd7749",
-                908:"67c9ed2c"
-            }[e]+".chunk.css"
-        }
+            t.miniCssF=function(e){return"static/css/"+e+"."+{
+                    164:"dcfd7749",
+                    908:"67c9ed2c"
+                }[e]+".chunk.css"
+            }
         
-        n.u=e=>"static/js/"+e+"."+{69:"4f205f87",128:"49264537",453:"b2fed72e",482:"f0106901"}[e]+".chunk.js"
+            n.u=e=>"static/js/"+e+"."+{69:"4f205f87",128:"49264537",453:"b2fed72e",482:"f0106901"}[e]+".chunk.js"
         
-        t.miniCssF=e=>"static/css/"+e+"."+{164:"dcfd7749",908:"67c9ed2c"}[e]+".chunk.css"
-    `;
-    it("Correctly replace import path in Webpack build/static/js/xxx.js files", () => {
-        const { fixedJsCode } = replaceImportsFromStaticInJsCode({
+            t.miniCssF=e=>"static/css/"+e+"."+{164:"dcfd7749",908:"67c9ed2c"}[e]+".chunk.css"
+        `;
+
+        const { fixedJsCode } = replaceImportsInJsCode_webpack({
             "jsCode": jsCodeUntransformed,
-            "bundler": "webpack"
+            "buildOptions": {
+                "reactAppBuildDirPath": "/Users/someone/github/keycloakify-starter/build",
+                "assetsDirPath": "/Users/someone/github/keycloakify-starter/dist/build/static",
+                "urlPathname": undefined
+            }
         });
 
         const fixedJsCodeExpected = `
