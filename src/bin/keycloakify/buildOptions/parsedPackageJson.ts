@@ -41,7 +41,7 @@ const zParsedPackageJson = z.object({
 assert<Equals<ReturnType<(typeof zParsedPackageJson)["parse"]>, ParsedPackageJson>>();
 
 let parsedPackageJson: undefined | ParsedPackageJson;
-export function getParsedPackageJson(params: { reactAppRootDirPath: string }) {
+export function readParsedPackageJson(params: { reactAppRootDirPath: string }) {
     const { reactAppRootDirPath } = params;
     if (parsedPackageJson) {
         return parsedPackageJson;

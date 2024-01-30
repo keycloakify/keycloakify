@@ -1,10 +1,11 @@
 import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path";
-import { getParsedPackageJson } from "../bin/keycloakify/parsedPackageJson";
+import { readParsedPackageJson } from "../bin/keycloakify/buildOptions/parsedPackageJson";
 import type { Plugin } from "vite";
 import { assert } from "tsafe/assert";
 import * as fs from "fs";
 import { resolvedViteConfigJsonBasename, nameOfTheGlobal, basenameOfTheKeycloakifyResourcesDir } from "../bin/constants";
-import { type ResolvedViteConfig, getKeycloakifyBuildDirPath } from "../bin/keycloakify/resolvedViteConfig";
+import type { ResolvedViteConfig } from "../bin/keycloakify/buildOptions/resolvedViteConfig";
+import { getKeycloakifyBuildDirPath } from "../bin/keycloakify/buildOptions/getKeycloakifyBuildDirPath";
 import { replaceAll } from "../bin/tools/String.prototype.replaceAll";
 import { id } from "tsafe/id";
 
@@ -35,7 +36,7 @@ export function keycloakify(): Plugin {
             })();
 
             const { keycloakifyBuildDirPath } = getKeycloakifyBuildDirPath({
-                "parsedPackageJson_keycloakify_keycloakifyBuildDirPath": getParsedPackageJson({ reactAppRootDirPath }).keycloakify
+                "parsedPackageJson_keycloakify_keycloakifyBuildDirPath": readParsedPackageJson({ reactAppRootDirPath }).keycloakify
                     ?.keycloakifyBuildDirPath,
                 reactAppRootDirPath,
                 "bundler": "vite"

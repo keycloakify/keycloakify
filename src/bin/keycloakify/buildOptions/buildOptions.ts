@@ -1,9 +1,10 @@
 import { parse as urlParse } from "url";
-import { getParsedPackageJson } from "./parsedPackageJson";
+import { readParsedPackageJson } from "./parsedPackageJson";
 import { join as pathJoin } from "path";
 import parseArgv from "minimist";
 import { getAbsoluteAndInOsFormatPath } from "../../tools/getAbsoluteAndInOsFormatPath";
-import { readResolvedViteConfig, getKeycloakifyBuildDirPath } from "./resolvedViteConfig";
+import { readResolvedViteConfig } from "./resolvedViteConfig";
+import { getKeycloakifyBuildDirPath } from "./getKeycloakifyBuildDirPath";
 
 /** Consolidated build option gathered form CLI arguments and config in package.json */
 export type BuildOptions = {
@@ -31,7 +32,7 @@ export type BuildOptions = {
 export function readBuildOptions(params: { reactAppRootDirPath: string; processArgv: string[] }): BuildOptions {
     const { reactAppRootDirPath, processArgv } = params;
 
-    const parsedPackageJson = getParsedPackageJson({ reactAppRootDirPath });
+    const parsedPackageJson = readParsedPackageJson({ reactAppRootDirPath });
 
     const { resolvedViteConfig } =
         readResolvedViteConfig({
@@ -61,7 +62,25 @@ export function readBuildOptions(params: { reactAppRootDirPath: string; processA
         reactAppRootDirPath,
         "bundler": resolvedViteConfig !== undefined ? "vite" : "webpack"
     });
-    //const keycloakifyBuildDirPath = keycloakifyBuildDirPath_vite ?? pathJoin(reactAppRootDirPath, "build_keycloak");
+
+    const reactAppBuildDirPath = (() => {
+        webpack: {
+            if (resolvedViteConfig !== undefined) {
+                break webpack;
+            }
+
+            if (parsedPackageJson.keycloakify?.reactAppBuildDirPath !== undefined) {
+                return getAbsoluteAndInOsFormatPath({
+                    "pathIsh": parsedPackageJson.keycloakify?.reactAppBuildDirPath,
+                    "cwd": reactAppRootDirPath
+                });
+            }
+
+            return pathJoin(reactAppRootDirPath, "build");
+        }
+
+        return pathJoin(reactAppRootDirPath, resolvedViteConfig.buildDir);
+    })();
 
     return {
         "bundler": resolvedViteConfig !== undefined ? "vite" : "webpack",
@@ -92,43 +111,31 @@ export function readBuildOptions(params: { reactAppRootDirPath: string; processA
         "doCreateJar": parsedPackageJson.keycloakify?.doCreateJar ?? true,
         "loginThemeResourcesFromKeycloakVersion": parsedPackageJson.keycloakify?.loginThemeResourcesFromKeycloakVersion ?? "11.0.3",
         reactAppRootDirPath,
-        "reactAppBuildDirPath": (() => {
-            if (resolvedViteConfig !== undefined) {
-                return pathJoin(reactAppRootDirPath, resolvedViteConfig.buildDir);
-            }
-
-            if (parsedPackageJson.keycloakify?.reactAppBuildDirPath !== undefined) {
-                return getAbsoluteAndInOsFormatPath({
-                    "pathIsh": parsedPackageJson.keycloakify?.reactAppBuildDirPath,
-                    "cwd": reactAppRootDirPath
-                });
-            }
-
-            return pathJoin(reactAppRootDirPath, "build");
-        })(),
-
-        "publicDirPath": (() => {
-            if (resolvedViteConfig !== undefined) {
-                return resolvedViteConfig.publicDirPath;
-            }
-
-            if (process.env.PUBLIC_DIR_PATH !== undefined) {
-                return getAbsoluteAndInOsFormatPath({
-                    "pathIsh": process.env.PUBLIC_DIR_PATH,
-                    "cwd": reactAppRootDirPath
-                });
-            }
-
-            return pathJoin(reactAppRootDirPath, "public");
-        })(),
+        reactAppBuildDirPath,
         keycloakifyBuildDirPath,
+        "publicDirPath": (() => {
+            webpack: {
+                if (resolvedViteConfig !== undefined) {
+                    break webpack;
+                }
+
+                if (process.env.PUBLIC_DIR_PATH !== undefined) {
+                    return getAbsoluteAndInOsFormatPath({
+                        "pathIsh": process.env.PUBLIC_DIR_PATH,
+                        "cwd": reactAppRootDirPath
+                    });
+                }
+
+                return pathJoin(reactAppRootDirPath, "public");
+            }
+
+            return pathJoin(reactAppRootDirPath, resolvedViteConfig.publicDir);
+        })(),
         "cacheDirPath": pathJoin(
             (() => {
-                let { XDG_CACHE_HOME } = process.env;
-
-                if (XDG_CACHE_HOME !== undefined) {
+                if (process.env.XDG_CACHE_HOME !== undefined) {
                     return getAbsoluteAndInOsFormatPath({
-                        "pathIsh": XDG_CACHE_HOME,
+                        "pathIsh": process.env.XDG_CACHE_HOME,
                         "cwd": reactAppRootDirPath
                     });
                 }
@@ -138,20 +145,39 @@ export function readBuildOptions(params: { reactAppRootDirPath: string; processA
             "keycloakify"
         ),
         "urlPathname": (() => {
-            const { homepage } = parsedPackageJson;
+            webpack: {
+                if (resolvedViteConfig !== undefined) {
+                    break webpack;
+                }
 
-            let url: URL | undefined = undefined;
+                const { homepage } = parsedPackageJson;
 
-            if (homepage !== undefined) {
-                url = new URL(homepage);
+                let url: URL | undefined = undefined;
+
+                if (homepage !== undefined) {
+                    url = new URL(homepage);
+                }
+
+                if (url === undefined) {
+                    return undefined;
+                }
+
+                const out = url.pathname.replace(/([^/])$/, "$1/");
+                return out === "/" ? undefined : out;
             }
 
-            if (url === undefined) {
-                return undefined;
+            return resolvedViteConfig.urlPathname;
+        })(),
+        "assetsDirPath": (() => {
+            webpack: {
+                if (resolvedViteConfig !== undefined) {
+                    break webpack;
+                }
+
+                return pathJoin(reactAppBuildDirPath, "static");
             }
 
-            const out = url.pathname.replace(/([^/])$/, "$1/");
-            return out === "/" ? undefined : out;
+            return pathJoin(reactAppBuildDirPath, resolvedViteConfig.assetsDir);
         })()
     };
 }
