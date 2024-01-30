@@ -2,7 +2,7 @@ import * as fs from "fs";
 import { assert } from "tsafe";
 import type { Equals } from "tsafe";
 import { z } from "zod";
-import { pathJoin } from "../tools/pathJoin";
+import { join as pathJoin } from "path";
 
 export type ParsedPackageJson = {
     name: string;

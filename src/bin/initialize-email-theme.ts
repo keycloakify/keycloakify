@@ -4,10 +4,10 @@ import { downloadBuiltinKeycloakTheme } from "./download-builtin-keycloak-theme"
 import { join as pathJoin, relative as pathRelative } from "path";
 import { transformCodebase } from "./tools/transformCodebase";
 import { promptKeycloakVersion } from "./promptKeycloakVersion";
-import { readBuildOptions } from "./keycloakify/BuildOptions";
+import { readBuildOptions } from "./keycloakify/buildOptions2";
 import * as fs from "fs";
 import { getLogger } from "./tools/logger";
-import { getThemeSrcDirPath } from "./getSrcDirPath";
+import { getThemeSrcDirPath } from "./getThemeSrcDirPath";
 
 export async function main() {
     const reactAppRootDirPath = process.cwd();

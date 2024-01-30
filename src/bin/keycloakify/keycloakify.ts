@@ -4,10 +4,10 @@ import { join as pathJoin, relative as pathRelative, basename as pathBasename, d
 import * as child_process from "child_process";
 import { generateStartKeycloakTestingContainer } from "./generateStartKeycloakTestingContainer";
 import * as fs from "fs";
-import { readBuildOptions } from "./BuildOptions";
+import { readBuildOptions } from "./buildOptions2";
 import { getLogger } from "../tools/logger";
 import { assert } from "tsafe/assert";
-import { getThemeSrcDirPath } from "../getSrcDirPath";
+import { getThemeSrcDirPath } from "../getThemeSrcDirPath";
 import { getProjectRoot } from "../tools/getProjectRoot";
 import { objectKeys } from "tsafe/objectKeys";
 

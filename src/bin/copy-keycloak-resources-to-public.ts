@@ -2,7 +2,7 @@
 
 import { downloadKeycloakStaticResources } from "./keycloakify/generateTheme/downloadKeycloakStaticResources";
 import { join as pathJoin, relative as pathRelative } from "path";
-import { readBuildOptions } from "./keycloakify/BuildOptions";
+import { readBuildOptions } from "./keycloakify/buildOptions2";
 import { themeTypes, keycloak_resources, lastKeycloakVersionWithAccountV1 } from "./constants";
 import * as fs from "fs";
 

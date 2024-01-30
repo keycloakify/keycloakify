@@ -3,7 +3,7 @@ import * as fs from "fs";
 import { join as pathJoin, dirname as pathDirname } from "path";
 import { downloadBuiltinKeycloakTheme } from "../../download-builtin-keycloak-theme";
 import { resources_common, type ThemeType } from "../../constants";
-import { BuildOptions } from "../BuildOptions";
+import { BuildOptions } from "../buildOptions2";
 import { assert } from "tsafe/assert";
 import * as crypto from "crypto";
 

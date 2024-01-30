@@ -1,5 +1,5 @@
 import * as crypto from "crypto";
-import type { BuildOptions } from "../BuildOptions";
+import type { BuildOptions } from "../buildOptions2";
 import { assert } from "tsafe/assert";
 import { basenameOfTheKeycloakifyResourcesDir } from "../../constants";
 

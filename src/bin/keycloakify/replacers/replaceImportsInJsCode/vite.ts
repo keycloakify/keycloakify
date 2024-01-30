@@ -1,6 +1,6 @@
 import { nameOfTheGlobal, basenameOfTheKeycloakifyResourcesDir } from "../../../constants";
 import { assert } from "tsafe/assert";
-import type { BuildOptions } from "../../BuildOptions";
+import type { BuildOptions } from "../../buildOptions2";
 import * as nodePath from "path";
 import { replaceAll } from "../../../tools/String.prototype.replaceAll";
 

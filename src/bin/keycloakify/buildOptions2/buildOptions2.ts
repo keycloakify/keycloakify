@@ -2,7 +2,7 @@ import { parse as urlParse } from "url";
 import { getParsedPackageJson } from "./parsedPackageJson";
 import { join as pathJoin } from "path";
 import parseArgv from "minimist";
-import { getAbsoluteAndInOsFormatPath } from "../tools/getAbsoluteAndInOsFormatPath";
+import { getAbsoluteAndInOsFormatPath } from "../../tools/getAbsoluteAndInOsFormatPath";
 import { readResolvedViteConfig, getKeycloakifyBuildDirPath } from "./resolvedViteConfig";
 
 /** Consolidated build option gathered form CLI arguments and config in package.json */

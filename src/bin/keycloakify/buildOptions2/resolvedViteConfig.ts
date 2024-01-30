@@ -2,10 +2,10 @@ import * as fs from "fs";
 import { assert } from "tsafe";
 import type { Equals } from "tsafe";
 import { z } from "zod";
-import { pathJoin } from "../tools/pathJoin";
-import { resolvedViteConfigJsonBasename } from "../constants";
-import type { OptionalIfCanBeUndefined } from "../tools/OptionalIfCanBeUndefined";
-import { getAbsoluteAndInOsFormatPath } from "../tools/getAbsoluteAndInOsFormatPath";
+import { join as pathJoin } from "path";
+import { resolvedViteConfigJsonBasename } from "../../constants";
+import type { OptionalIfCanBeUndefined } from "../../tools/OptionalIfCanBeUndefined";
+import { getAbsoluteAndInOsFormatPath } from "../../tools/getAbsoluteAndInOsFormatPath";
 
 export type ResolvedViteConfig = {
     buildDir: string;
