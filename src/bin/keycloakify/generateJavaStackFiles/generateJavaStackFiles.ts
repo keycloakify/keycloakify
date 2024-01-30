@@ -6,7 +6,7 @@ import type { BuildOptions } from "../buildOptions";
 import { type ThemeType, accountV1ThemeName } from "../../constants";
 import { bringInAccountV1 } from "./bringInAccountV1";
 
-export type BuildOptionsLike = {
+type BuildOptionsLike = {
     groupId: string;
     artifactId: string;
     themeVersion: string;

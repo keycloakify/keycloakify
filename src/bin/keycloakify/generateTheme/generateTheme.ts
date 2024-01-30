@@ -1,7 +1,7 @@
 import { transformCodebase } from "../../tools/transformCodebase";
 import * as fs from "fs";
 import { join as pathJoin, resolve as pathResolve } from "path";
-import { replaceImportsFromStaticInJsCode } from "../replacers/replaceImportsFromStaticInJsCode";
+import { replaceImportsInJsCode } from "../replacers/replaceImportsInJsCode";
 import { replaceImportsInCssCode } from "../replacers/replaceImportsInCssCode";
 import { generateFtlFilesCodeFactory, loginThemePageIds, accountThemePageIds } from "../generateFtl";
 import {
@@ -22,12 +22,15 @@ import { generateMessageProperties } from "./generateMessageProperties";
 import { readStaticResourcesUsage } from "./readStaticResourcesUsage";
 
 export type BuildOptionsLike = {
+    bundler: "vite" | "webpack";
     extraThemeProperties: string[] | undefined;
     themeVersion: string;
     loginThemeResourcesFromKeycloakVersion: string;
     keycloakifyBuildDirPath: string;
     reactAppBuildDirPath: string;
     cacheDirPath: string;
+    assetsDirPath: string;
+    urlPathname: string | undefined;
 };
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
@@ -98,9 +101,9 @@ export async function generateTheme(params: {
                     }
 
                     if (/\.js?$/i.test(filePath)) {
-                        const { fixedJsCode } = replaceImportsFromStaticInJsCode({
+                        const { fixedJsCode } = replaceImportsInJsCode({
                             "jsCode": sourceCode.toString("utf8"),
-                            "bundler": "vite"
+                            buildOptions
                         });
 
                         return { "modifiedSourceCode": Buffer.from(fixedJsCode, "utf8") };

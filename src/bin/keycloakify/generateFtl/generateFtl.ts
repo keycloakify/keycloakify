@@ -1,5 +1,5 @@
 import cheerio from "cheerio";
-import { replaceImportsFromStaticInJsCode } from "../replacers/replaceImportsFromStaticInJsCode";
+import { replaceImportsInJsCode } from "../replacers/replaceImportsInJsCode";
 import { generateCssCodeToDefineGlobals } from "../replacers/replaceImportsInCssCode";
 import { replaceImportsInInlineCssCode } from "../replacers/replaceImportsInInlineCssCode";
 import * as fs from "fs";
@@ -10,8 +10,11 @@ import { assert } from "tsafe/assert";
 import { type ThemeType, nameOfTheGlobal, basenameOfTheKeycloakifyResourcesDir } from "../../constants";
 
 export type BuildOptionsLike = {
+    bundler: "vite" | "webpack";
     themeVersion: string;
     urlPathname: string | undefined;
+    reactAppBuildDirPath: string;
+    assetsDirPath: string;
 };
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
@@ -35,7 +38,7 @@ export function generateFtlFilesCodeFactory(params: {
 
             assert(jsCode !== null);
 
-            const { fixedJsCode } = replaceImportsFromStaticInJsCode({ jsCode, "bundler": "vite" });
+            const { fixedJsCode } = replaceImportsInJsCode({ jsCode, buildOptions });
 
             $(element).text(fixedJsCode);
         });

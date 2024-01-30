@@ -7,7 +7,7 @@ import { resources_common, lastKeycloakVersionWithAccountV1, accountV1ThemeName 
 import { downloadBuiltinKeycloakTheme } from "../../download-builtin-keycloak-theme";
 import { transformCodebase } from "../../tools/transformCodebase";
 
-export type BuildOptionsLike = {
+type BuildOptionsLike = {
     keycloakifyBuildDirPath: string;
     cacheDirPath: string;
 };
