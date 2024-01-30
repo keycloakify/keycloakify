@@ -2,7 +2,7 @@ import * as fs from "fs";
 import { join as pathJoin, dirname as pathDirname } from "path";
 import { assert } from "tsafe/assert";
 import { Reflect } from "tsafe/Reflect";
-import type { BuildOptions } from "../buildOptions2";
+import type { BuildOptions } from "../buildOptions";
 import { type ThemeType, accountV1ThemeName } from "../../constants";
 import { bringInAccountV1 } from "./bringInAccountV1";
 

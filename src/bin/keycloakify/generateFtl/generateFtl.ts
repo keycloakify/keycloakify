@@ -5,7 +5,7 @@ import { replaceImportsInInlineCssCode } from "../replacers/replaceImportsInInli
 import * as fs from "fs";
 import { join as pathJoin } from "path";
 import { objectKeys } from "tsafe/objectKeys";
-import type { BuildOptions } from "../buildOptions2";
+import type { BuildOptions } from "../buildOptions";
 import { assert } from "tsafe/assert";
 import { type ThemeType, nameOfTheGlobal, basenameOfTheKeycloakifyResourcesDir } from "../../constants";
 

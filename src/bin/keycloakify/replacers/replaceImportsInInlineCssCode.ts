@@ -1,4 +1,4 @@
-import type { BuildOptions } from "../buildOptions2";
+import type { BuildOptions } from "../buildOptions";
 import { assert } from "tsafe/assert";
 import { basenameOfTheKeycloakifyResourcesDir } from "../../constants";
 

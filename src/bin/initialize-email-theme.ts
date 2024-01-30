@@ -4,7 +4,7 @@ import { downloadBuiltinKeycloakTheme } from "./download-builtin-keycloak-theme"
 import { join as pathJoin, relative as pathRelative } from "path";
 import { transformCodebase } from "./tools/transformCodebase";
 import { promptKeycloakVersion } from "./promptKeycloakVersion";
-import { readBuildOptions } from "./keycloakify/buildOptions2";
+import { readBuildOptions } from "./keycloakify/buildOptions";
 import * as fs from "fs";
 import { getLogger } from "./tools/logger";
 import { getThemeSrcDirPath } from "./getThemeSrcDirPath";

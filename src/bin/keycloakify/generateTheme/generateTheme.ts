@@ -13,7 +13,7 @@ import {
     basenameOfTheKeycloakifyResourcesDir
 } from "../../constants";
 import { isInside } from "../../tools/isInside";
-import type { BuildOptions } from "../buildOptions2";
+import type { BuildOptions } from "../buildOptions";
 import { assert, type Equals } from "tsafe/assert";
 import { downloadKeycloakStaticResources } from "./downloadKeycloakStaticResources";
 import { readFieldNameUsage } from "./readFieldNameUsage";

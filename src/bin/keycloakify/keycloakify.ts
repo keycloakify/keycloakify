@@ -4,7 +4,7 @@ import { join as pathJoin, relative as pathRelative, basename as pathBasename, d
 import * as child_process from "child_process";
 import { generateStartKeycloakTestingContainer } from "./generateStartKeycloakTestingContainer";
 import * as fs from "fs";
-import { readBuildOptions } from "./buildOptions2";
+import { readBuildOptions } from "./buildOptions";
 import { getLogger } from "../tools/logger";
 import { assert } from "tsafe/assert";
 import { getThemeSrcDirPath } from "../getThemeSrcDirPath";

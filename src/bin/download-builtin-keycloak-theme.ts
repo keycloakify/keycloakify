@@ -3,7 +3,7 @@ import { join as pathJoin } from "path";
 import { downloadAndUnzip } from "./tools/downloadAndUnzip";
 import { promptKeycloakVersion } from "./promptKeycloakVersion";
 import { getLogger } from "./tools/logger";
-import { readBuildOptions, type BuildOptions } from "./keycloakify/buildOptions2";
+import { readBuildOptions, type BuildOptions } from "./keycloakify/buildOptions";
 import { assert } from "tsafe/assert";
 import * as child_process from "child_process";
 import * as fs from "fs";

@@ -2,7 +2,7 @@ import * as fs from "fs";
 import { join as pathJoin, relative as pathRelative, basename as pathBasename } from "path";
 import { assert } from "tsafe/assert";
 import { Reflect } from "tsafe/Reflect";
-import type { BuildOptions } from "./buildOptions2";
+import type { BuildOptions } from "./buildOptions";
 
 export type BuildOptionsLike = {
     keycloakifyBuildDirPath: string;
