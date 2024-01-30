@@ -3,8 +3,8 @@ import { getParsedPackageJson } from "../bin/keycloakify/parsedPackageJson";
 import type { Plugin } from "vite";
 import { assert } from "tsafe/assert";
 import * as fs from "fs";
-import { keycloakifyViteConfigJsonBasename, nameOfTheGlobal, basenameOfTheKeycloakifyResourcesDir } from "../bin/constants";
-import { type ParsedKeycloakifyViteConfig, getKeycloakifyBuildDirPath } from "../bin/keycloakify/parsedKeycloakifyViteConfig";
+import { resolvedViteConfigJsonBasename, nameOfTheGlobal, basenameOfTheKeycloakifyResourcesDir } from "../bin/constants";
+import { type ResolvedViteConfig, getKeycloakifyBuildDirPath } from "../bin/keycloakify/resolvedViteConfig";
 import { replaceAll } from "../bin/tools/String.prototype.replaceAll";
 import { id } from "tsafe/id";
 
@@ -46,10 +46,10 @@ export function keycloakify(): Plugin {
             }
 
             fs.writeFileSync(
-                pathJoin(keycloakifyBuildDirPath, keycloakifyViteConfigJsonBasename),
+                pathJoin(keycloakifyBuildDirPath, resolvedViteConfigJsonBasename),
                 Buffer.from(
                     JSON.stringify(
-                        id<ParsedKeycloakifyViteConfig>({
+                        id<ResolvedViteConfig>({
                             "publicDir": pathRelative(reactAppRootDirPath, resolvedConfig.publicDir),
                             "assetsDir": resolvedConfig.build.assetsDir,
                             "buildDir": resolvedConfig.build.outDir,

@@ -3,8 +3,7 @@ import { getParsedPackageJson } from "./parsedPackageJson";
 import { join as pathJoin } from "path";
 import parseArgv from "minimist";
 import { getAbsoluteAndInOsFormatPath } from "../tools/getAbsoluteAndInOsFormatPath";
-import * as fs from "fs";
-import { getParsedKeycloakifyViteConfig, getKeycloakifyBuildDirPath } from "./parsedKeycloakifyViteConfig";
+import { readResolvedViteConfig, getKeycloakifyBuildDirPath } from "./resolvedViteConfig";
 
 /** Consolidated build option gathered form CLI arguments and config in package.json */
 export type BuildOptions = {
@@ -34,8 +33,8 @@ export function readBuildOptions(params: { reactAppRootDirPath: string; processA
 
     const parsedPackageJson = getParsedPackageJson({ reactAppRootDirPath });
 
-    const { parsedKeycloakifyViteConfig } =
-        getParsedKeycloakifyViteConfig({
+    const { resolvedViteConfig } =
+        readResolvedViteConfig({
             "parsedPackageJson_keycloakify_keycloakifyBuildDirPath": parsedPackageJson.keycloakify?.keycloakifyBuildDirPath,
             reactAppRootDirPath
         }) ?? {};
@@ -60,12 +59,12 @@ export function readBuildOptions(params: { reactAppRootDirPath: string; processA
     const { keycloakifyBuildDirPath } = getKeycloakifyBuildDirPath({
         "parsedPackageJson_keycloakify_keycloakifyBuildDirPath": parsedPackageJson.keycloakify?.keycloakifyBuildDirPath,
         reactAppRootDirPath,
-        "bundler": parsedKeycloakifyViteConfig !== undefined ? "vite" : "webpack"
+        "bundler": resolvedViteConfig !== undefined ? "vite" : "webpack"
     });
     //const keycloakifyBuildDirPath = keycloakifyBuildDirPath_vite ?? pathJoin(reactAppRootDirPath, "build_keycloak");
 
     return {
-        "bundler": parsedKeycloakifyViteConfig !== undefined ? "vite" : "webpack",
+        "bundler": resolvedViteConfig !== undefined ? "vite" : "webpack",
         "isSilent": (() => {
             const argv = parseArgv(processArgv);
 
@@ -94,8 +93,8 @@ export function readBuildOptions(params: { reactAppRootDirPath: string; processA
         "loginThemeResourcesFromKeycloakVersion": parsedPackageJson.keycloakify?.loginThemeResourcesFromKeycloakVersion ?? "11.0.3",
         reactAppRootDirPath,
         "reactAppBuildDirPath": (() => {
-            if (parsedKeycloakifyViteConfig !== undefined) {
-                return pathJoin(reactAppRootDirPath, parsedKeycloakifyViteConfig.buildDir);
+            if (resolvedViteConfig !== undefined) {
+                return pathJoin(reactAppRootDirPath, resolvedViteConfig.buildDir);
             }
 
             if (parsedPackageJson.keycloakify?.reactAppBuildDirPath !== undefined) {
@@ -109,8 +108,8 @@ export function readBuildOptions(params: { reactAppRootDirPath: string; processA
         })(),
 
         "publicDirPath": (() => {
-            if (parsedKeycloakifyViteConfig !== undefined) {
-                return parsedKeycloakifyViteConfig.publicDirPath;
+            if (resolvedViteConfig !== undefined) {
+                return resolvedViteConfig.publicDirPath;
             }
 
             if (process.env.PUBLIC_DIR_PATH !== undefined) {

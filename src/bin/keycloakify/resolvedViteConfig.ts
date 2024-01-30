@@ -3,18 +3,18 @@ import { assert } from "tsafe";
 import type { Equals } from "tsafe";
 import { z } from "zod";
 import { pathJoin } from "../tools/pathJoin";
-import { keycloakifyViteConfigJsonBasename } from "../constants";
+import { resolvedViteConfigJsonBasename } from "../constants";
 import type { OptionalIfCanBeUndefined } from "../tools/OptionalIfCanBeUndefined";
 import { getAbsoluteAndInOsFormatPath } from "../tools/getAbsoluteAndInOsFormatPath";
 
-export type ParsedKeycloakifyViteConfig = {
+export type ResolvedViteConfig = {
     buildDir: string;
     publicDir: string;
     assetsDir: string;
     urlPathname: string | undefined;
 };
 
-const zParsedKeycloakifyViteConfig = z.object({
+const zResolvedViteConfig = z.object({
     "buildDir": z.string(),
     "publicDir": z.string(),
     "assetsDir": z.string(),
@@ -22,18 +22,18 @@ const zParsedKeycloakifyViteConfig = z.object({
 });
 
 {
-    type Got = ReturnType<(typeof zParsedKeycloakifyViteConfig)["parse"]>;
-    type Expected = OptionalIfCanBeUndefined<ParsedKeycloakifyViteConfig>;
+    type Got = ReturnType<(typeof zResolvedViteConfig)["parse"]>;
+    type Expected = OptionalIfCanBeUndefined<ResolvedViteConfig>;
 
     assert<Equals<Got, Expected>>();
 }
 
-export function getParsedKeycloakifyViteConfig(params: {
+export function readResolvedViteConfig(params: {
     reactAppRootDirPath: string;
     parsedPackageJson_keycloakify_keycloakifyBuildDirPath: string | undefined;
 }):
     | {
-          parsedKeycloakifyViteConfig: ParsedKeycloakifyViteConfig;
+          resolvedViteConfig: ResolvedViteConfig;
       }
     | undefined {
     const { reactAppRootDirPath, parsedPackageJson_keycloakify_keycloakifyBuildDirPath } = params;
@@ -50,23 +50,23 @@ export function getParsedKeycloakifyViteConfig(params: {
         "bundler": "vite"
     });
 
-    const parsedKeycloakifyViteConfig = (() => {
-        const keycloakifyViteConfigJsonFilePath = pathJoin(keycloakifyBuildDirPath, keycloakifyViteConfigJsonBasename);
+    const resolvedViteConfig = (() => {
+        const resolvedViteConfigJsonFilePath = pathJoin(keycloakifyBuildDirPath, resolvedViteConfigJsonBasename);
 
-        if (!fs.existsSync(keycloakifyViteConfigJsonFilePath)) {
+        if (!fs.existsSync(resolvedViteConfigJsonFilePath)) {
             throw new Error("Missing Keycloakify Vite plugin output.");
         }
 
-        let out: ParsedKeycloakifyViteConfig;
+        let out: ResolvedViteConfig;
 
         try {
-            out = JSON.parse(fs.readFileSync(keycloakifyViteConfigJsonFilePath).toString("utf8"));
+            out = JSON.parse(fs.readFileSync(resolvedViteConfigJsonFilePath).toString("utf8"));
         } catch {
             throw new Error("The output of the Keycloakify Vite plugin is not a valid JSON.");
         }
 
         try {
-            const zodParseReturn = zParsedKeycloakifyViteConfig.parse(out);
+            const zodParseReturn = zResolvedViteConfig.parse(out);
 
             // So that objectKeys from tsafe return the expected result no matter what.
             Object.keys(zodParseReturn)
@@ -81,7 +81,7 @@ export function getParsedKeycloakifyViteConfig(params: {
         return out;
     })();
 
-    return { parsedKeycloakifyViteConfig };
+    return { resolvedViteConfig };
 }
 
 export function getKeycloakifyBuildDirPath(params: {
