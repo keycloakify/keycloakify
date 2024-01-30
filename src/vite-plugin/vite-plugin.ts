@@ -1,69 +1,45 @@
-import { join as pathJoin, sep as pathSep } from "path";
+import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path";
 import { getParsedPackageJson } from "../bin/keycloakify/parsedPackageJson";
 import type { Plugin } from "vite";
 import { assert } from "tsafe/assert";
-import { getAbsoluteAndInOsFormatPath } from "../bin/tools/getAbsoluteAndInOsFormatPath";
 import * as fs from "fs";
 import { keycloakifyViteConfigJsonBasename, nameOfTheGlobal, basenameOfTheKeycloakifyResourcesDir } from "../bin/constants";
-import type { ParsedKeycloakifyViteConfig } from "../bin/keycloakify/parsedKeycloakifyViteConfig";
+import { type ParsedKeycloakifyViteConfig, getKeycloakifyBuildDirPath } from "../bin/keycloakify/parsedKeycloakifyViteConfig";
 import { replaceAll } from "../bin/tools/String.prototype.replaceAll";
+import { id } from "tsafe/id";
 
 export function keycloakify(): Plugin {
-    let keycloakifyViteConfig: ParsedKeycloakifyViteConfig | undefined = undefined;
+    let reactAppRootDirPath: string | undefined = undefined;
+    let urlPathname: string | undefined = undefined;
 
     return {
         "name": "keycloakify",
         "configResolved": resolvedConfig => {
-            const reactAppRootDirPath = resolvedConfig.root;
-            const reactAppBuildDirPath = pathJoin(reactAppRootDirPath, resolvedConfig.build.outDir);
+            reactAppRootDirPath = resolvedConfig.root;
+            urlPathname = (() => {
+                let out = resolvedConfig.env.BASE_URL;
 
-            keycloakifyViteConfig = {
-                reactAppRootDirPath,
-                "publicDirPath": resolvedConfig.publicDir,
-                "assetsDirPath": pathJoin(reactAppBuildDirPath, resolvedConfig.build.assetsDir),
-                reactAppBuildDirPath,
-                "urlPathname": (() => {
-                    let out = resolvedConfig.env.BASE_URL;
-
-                    if (out === undefined) {
-                        return undefined;
-                    }
-
-                    if (!out.startsWith("/")) {
-                        out = "/" + out;
-                    }
-
-                    if (!out.endsWith("/")) {
-                        out += "/";
-                    }
-
-                    return out;
-                })()
-            };
-
-            const parsedPackageJson = getParsedPackageJson({ reactAppRootDirPath });
-
-            if (parsedPackageJson.keycloakify?.reactAppBuildDirPath !== undefined) {
-                throw new Error(
-                    [
-                        "Please do not use the keycloakify.reactAppBuildDirPath option in your package.json.",
-                        "In Vite setups it's inferred automatically from the vite config."
-                    ].join(" ")
-                );
-            }
-
-            const keycloakifyBuildDirPath = (() => {
-                const { keycloakifyBuildDirPath } = parsedPackageJson.keycloakify ?? {};
-
-                if (keycloakifyBuildDirPath !== undefined) {
-                    return getAbsoluteAndInOsFormatPath({
-                        "pathIsh": keycloakifyBuildDirPath,
-                        "cwd": reactAppRootDirPath
-                    });
+                if (out === undefined) {
+                    return undefined;
                 }
 
-                return pathJoin(reactAppRootDirPath, "build_keycloak");
+                if (!out.startsWith("/")) {
+                    out = "/" + out;
+                }
+
+                if (!out.endsWith("/")) {
+                    out += "/";
+                }
+
+                return out;
             })();
+
+            const { keycloakifyBuildDirPath } = getKeycloakifyBuildDirPath({
+                "parsedPackageJson_keycloakify_keycloakifyBuildDirPath": getParsedPackageJson({ reactAppRootDirPath }).keycloakify
+                    ?.keycloakifyBuildDirPath,
+                reactAppRootDirPath,
+                "bundler": "vite"
+            });
 
             if (!fs.existsSync(keycloakifyBuildDirPath)) {
                 fs.mkdirSync(keycloakifyBuildDirPath);
@@ -71,17 +47,29 @@ export function keycloakify(): Plugin {
 
             fs.writeFileSync(
                 pathJoin(keycloakifyBuildDirPath, keycloakifyViteConfigJsonBasename),
-                Buffer.from(JSON.stringify(keycloakifyViteConfig, null, 2), "utf8")
+                Buffer.from(
+                    JSON.stringify(
+                        id<ParsedKeycloakifyViteConfig>({
+                            "publicDir": pathRelative(reactAppRootDirPath, resolvedConfig.publicDir),
+                            "assetsDir": resolvedConfig.build.assetsDir,
+                            "buildDir": resolvedConfig.build.outDir,
+                            urlPathname
+                        }),
+                        null,
+                        2
+                    ),
+                    "utf8"
+                )
             );
         },
         "transform": (code, id) => {
-            assert(keycloakifyViteConfig !== undefined);
+            assert(reactAppRootDirPath !== undefined);
 
             let transformedCode: string | undefined = undefined;
 
             replace_import_meta_env_base_url_in_source_code: {
                 {
-                    const isWithinSourceDirectory = id.startsWith(pathJoin(keycloakifyViteConfig.publicDirPath, "src") + pathSep);
+                    const isWithinSourceDirectory = id.startsWith(pathJoin(reactAppRootDirPath, "src") + pathSep);
 
                     if (!isWithinSourceDirectory) {
                         break replace_import_meta_env_base_url_in_source_code;
@@ -110,18 +98,20 @@ export function keycloakify(): Plugin {
                     [
                         `(`,
                         `(${windowToken}.${nameOfTheGlobal} === undefined || import.meta.env.MODE === "development") ?`,
-                        `    "${keycloakifyViteConfig.urlPathname ?? "/"}" :`,
+                        `    "${urlPathname ?? "/"}" :`,
                         `    \`\${${windowToken}.${nameOfTheGlobal}.url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/\``,
                         `)`
                     ].join("")
                 );
             }
 
-            if (transformedCode !== undefined) {
-                return {
-                    "code": transformedCode
-                };
+            if (transformedCode === undefined) {
+                return;
             }
+
+            return {
+                "code": transformedCode
+            };
         }
     };
 }

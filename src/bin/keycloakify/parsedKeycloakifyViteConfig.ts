@@ -5,20 +5,19 @@ import { z } from "zod";
 import { pathJoin } from "../tools/pathJoin";
 import { keycloakifyViteConfigJsonBasename } from "../constants";
 import type { OptionalIfCanBeUndefined } from "../tools/OptionalIfCanBeUndefined";
+import { getAbsoluteAndInOsFormatPath } from "../tools/getAbsoluteAndInOsFormatPath";
 
 export type ParsedKeycloakifyViteConfig = {
-    reactAppRootDirPath: string;
-    publicDirPath: string;
-    assetsDirPath: string;
-    reactAppBuildDirPath: string;
+    buildDir: string;
+    publicDir: string;
+    assetsDir: string;
     urlPathname: string | undefined;
 };
 
-export const zParsedKeycloakifyViteConfig = z.object({
-    "reactAppRootDirPath": z.string(),
-    "publicDirPath": z.string(),
-    "assetsDirPath": z.string(),
-    "reactAppBuildDirPath": z.string(),
+const zParsedKeycloakifyViteConfig = z.object({
+    "buildDir": z.string(),
+    "publicDir": z.string(),
+    "assetsDir": z.string(),
     "urlPathname": z.string().optional()
 });
 
@@ -29,20 +28,33 @@ export const zParsedKeycloakifyViteConfig = z.object({
     assert<Equals<Got, Expected>>();
 }
 
-let cache: { parsedKeycloakifyViteConfig: ParsedKeycloakifyViteConfig | undefined } | undefined = undefined;
+export function getParsedKeycloakifyViteConfig(params: {
+    reactAppRootDirPath: string;
+    parsedPackageJson_keycloakify_keycloakifyBuildDirPath: string | undefined;
+}):
+    | {
+          parsedKeycloakifyViteConfig: ParsedKeycloakifyViteConfig;
+      }
+    | undefined {
+    const { reactAppRootDirPath, parsedPackageJson_keycloakify_keycloakifyBuildDirPath } = params;
 
-export function getParsedKeycloakifyViteConfig(params: { keycloakifyBuildDirPath: string }): ParsedKeycloakifyViteConfig | undefined {
-    const { keycloakifyBuildDirPath } = params;
+    const viteConfigTsFilePath = pathJoin(reactAppRootDirPath, "vite.config.ts");
 
-    if (cache !== undefined) {
-        return cache.parsedKeycloakifyViteConfig;
+    if (!fs.existsSync(viteConfigTsFilePath)) {
+        return undefined;
     }
+
+    const { keycloakifyBuildDirPath } = getKeycloakifyBuildDirPath({
+        reactAppRootDirPath,
+        parsedPackageJson_keycloakify_keycloakifyBuildDirPath,
+        "bundler": "vite"
+    });
 
     const parsedKeycloakifyViteConfig = (() => {
         const keycloakifyViteConfigJsonFilePath = pathJoin(keycloakifyBuildDirPath, keycloakifyViteConfigJsonBasename);
 
         if (!fs.existsSync(keycloakifyViteConfigJsonFilePath)) {
-            return undefined;
+            throw new Error("Missing Keycloakify Vite plugin output.");
         }
 
         let out: ParsedKeycloakifyViteConfig;
@@ -69,11 +81,36 @@ export function getParsedKeycloakifyViteConfig(params: { keycloakifyBuildDirPath
         return out;
     })();
 
-    if (parsedKeycloakifyViteConfig === undefined && fs.existsSync(pathJoin(keycloakifyBuildDirPath, "vite.config.ts"))) {
-        throw new Error("Make sure you have enabled the Keycloakiy plugin in your vite.config.ts");
-    }
+    return { parsedKeycloakifyViteConfig };
+}
 
-    cache = { parsedKeycloakifyViteConfig };
+export function getKeycloakifyBuildDirPath(params: {
+    reactAppRootDirPath: string;
+    parsedPackageJson_keycloakify_keycloakifyBuildDirPath: string | undefined;
+    bundler: "vite" | "webpack";
+}) {
+    const { reactAppRootDirPath, parsedPackageJson_keycloakify_keycloakifyBuildDirPath, bundler } = params;
 
-    return parsedKeycloakifyViteConfig;
+    const keycloakifyBuildDirPath = (() => {
+        if (parsedPackageJson_keycloakify_keycloakifyBuildDirPath !== undefined) {
+            getAbsoluteAndInOsFormatPath({
+                "pathIsh": parsedPackageJson_keycloakify_keycloakifyBuildDirPath,
+                "cwd": reactAppRootDirPath
+            });
+        }
+
+        return pathJoin(
+            reactAppRootDirPath,
+            `${(() => {
+                switch (bundler) {
+                    case "vite":
+                        return "dist";
+                    case "webpack":
+                        return "build";
+                }
+            })()}_keycloak`
+        );
+    })();
+
+    return { keycloakifyBuildDirPath };
 }

@@ -20,7 +20,7 @@ export type ParsedPackageJson = {
     };
 };
 
-export const zParsedPackageJson = z.object({
+const zParsedPackageJson = z.object({
     "name": z.string(),
     "version": z.string().optional(),
     "homepage": z.string().optional(),
