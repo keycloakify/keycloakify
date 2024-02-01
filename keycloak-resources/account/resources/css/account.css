@@ -29,7 +29,7 @@ header .navbar {
 
 .navbar-pf .navbar-utility {
 	right: 20px;
-    top: -34px;
+    top: -34px !important;
     font-size: 12px;
 }
 
