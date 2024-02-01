@@ -125,17 +125,6 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 # Changelog highlights
 
-## 9.2
-
-Remove the `<your theme name>_retrocompat` option in the account theme dropdown and the `doBuildRetrocompatAccountTheme` build option.  
-`<your theme name>_retrocompat` was useless because `<rout theme name>` works fine even on older Keycloak version.
-
-What you have to remember is that:
-
--   If you have no account theme: You can use the `retrocompat_*.jar` it will work on any Keycloak version.
--   If you have an Account theme: Use `retrocompat_*.jar` only if your Keycloak is in a version prior to 23.  
-    Keycloak 22 is not supported (Only login themes works in Keycloak 22).
-
 ## 9.0
 
 Bring back support for account themes in Keycloak v23 and up! [See issue](https://github.com/keycloakify/keycloakify/issues/389).

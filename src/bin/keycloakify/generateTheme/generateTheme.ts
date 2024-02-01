@@ -1,10 +1,10 @@
 import { transformCodebase } from "../../tools/transformCodebase";
 import * as fs from "fs";
-import { join as pathJoin, resolve as pathResolve } from "path";
+import { join as pathJoin, basename as pathBasename, resolve as pathResolve } from "path";
 import { replaceImportsFromStaticInJsCode } from "../replacers/replaceImportsFromStaticInJsCode";
 import { replaceImportsInCssCode } from "../replacers/replaceImportsInCssCode";
 import { generateFtlFilesCodeFactory, loginThemePageIds, accountThemePageIds } from "../generateFtl";
-import { themeTypes, type ThemeType, lastKeycloakVersionWithAccountV1, keycloak_resources, accountV1 } from "../../constants";
+import { themeTypes, type ThemeType, lastKeycloakVersionWithAccountV1, keycloak_resources, retrocompatPostfix, accountV1 } from "../../constants";
 import { isInside } from "../../tools/isInside";
 import type { BuildOptions } from "../BuildOptions";
 import { assert, type Equals } from "tsafe/assert";
@@ -22,6 +22,7 @@ export type BuildOptionsLike = {
     keycloakifyBuildDirPath: string;
     reactAppBuildDirPath: string;
     cacheDirPath: string;
+    doBuildRetrocompatAccountTheme: boolean;
 };
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
@@ -35,9 +36,17 @@ export async function generateTheme(params: {
 }): Promise<void> {
     const { themeName, themeSrcDirPath, keycloakifySrcDirPath, buildOptions, keycloakifyVersion } = params;
 
-    const getThemeTypeDirPath = (params: { themeType: ThemeType | "email" }) => {
-        const { themeType } = params;
-        return pathJoin(buildOptions.keycloakifyBuildDirPath, "src", "main", "resources", "theme", themeName, themeType);
+    const getThemeTypeDirPath = (params: { themeType: ThemeType | "email"; isRetrocompat?: true }) => {
+        const { themeType, isRetrocompat = false } = params;
+        return pathJoin(
+            buildOptions.keycloakifyBuildDirPath,
+            "src",
+            "main",
+            "resources",
+            "theme",
+            `${themeName}${isRetrocompat ? retrocompatPostfix : ""}`,
+            themeType
+        );
     };
 
     let allCssGlobalsToDefine: Record<string, string> = {};
@@ -192,6 +201,22 @@ export async function generateTheme(params: {
                 "utf8"
             )
         );
+
+        if (themeType === "account" && buildOptions.doBuildRetrocompatAccountTheme) {
+            transformCodebase({
+                "srcDirPath": themeTypeDirPath,
+                "destDirPath": getThemeTypeDirPath({ themeType, "isRetrocompat": true }),
+                "transformSourceCode": ({ filePath, sourceCode }) => {
+                    if (pathBasename(filePath) === "theme.properties") {
+                        return {
+                            "modifiedSourceCode": Buffer.from(sourceCode.toString("utf8").replace(`parent=${accountV1}`, "parent=keycloak"), "utf8")
+                        };
+                    }
+
+                    return { "modifiedSourceCode": sourceCode };
+                }
+            });
+        }
     }
 
     email: {

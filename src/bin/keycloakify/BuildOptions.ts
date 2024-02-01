@@ -24,6 +24,7 @@ export type BuildOptions = {
     /** If your app is hosted under a subpath, it's the case in CRA if you have "homepage": "https://example.com/my-app" in your package.json
      * In this case the urlPathname will be "/my-app/" */
     urlPathname: string | undefined;
+    doBuildRetrocompatAccountTheme: boolean;
 };
 
 export function readBuildOptions(params: { reactAppRootDirPath: string; processArgv: string[] }): BuildOptions {
@@ -150,6 +151,7 @@ export function readBuildOptions(params: { reactAppRootDirPath: string; processA
 
             const out = url.pathname.replace(/([^/])$/, "$1/");
             return out === "/" ? undefined : out;
-        })()
+        })(),
+        "doBuildRetrocompatAccountTheme": parsedPackageJson.keycloakify?.doBuildRetrocompatAccountTheme ?? true
     };
 }
