@@ -94,7 +94,7 @@ export const { useGetClassName } = createUseClassName<ClassKey>({
         "kcAuthenticatorWebAuthnPasswordlessClass": "fa fa-key list-view-pf-icon-lg",
 
         //css classes for the OTP Login Form
-        "kcSelectOTPListClass": "card-pf card-pf-view card-pf-view-select card-pf-view-single-select",
+        "kcSelectOTPListClass": "card-pf card-pf-view card-pf-view-select card-pf-view-single-select col-xs-12",
         "kcSelectOTPListItemClass": "card-pf-body card-pf-top-element",
         "kcAuthenticatorOtpCircleClass": "fa fa-mobile card-pf-icon-circle",
         "kcSelectOTPItemHeadingClass": "card-pf-title text-center",
