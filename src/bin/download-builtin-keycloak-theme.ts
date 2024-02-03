@@ -26,6 +26,51 @@ export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: st
         "preCacheTransform": {
             "actionCacheId": "npm install and build",
             "action": async ({ destDirPath }) => {
+                fix_account_css: {
+                    const accountCssFilePath = pathJoin(destDirPath, "keycloak", "account", "resources", "css", "account.css");
+
+                    if (!fs.existsSync(accountCssFilePath)) {
+                        break fix_account_css;
+                    }
+
+                    fs.writeFileSync(
+                        accountCssFilePath,
+                        Buffer.from(fs.readFileSync(accountCssFilePath).toString("utf8").replace("top: -34px;", "top: -34px !important;"), "utf8")
+                    );
+                }
+
+                fix_account_topt: {
+                    const totpFtlFilePath = pathJoin(destDirPath, "base", "account", "totp.ftl");
+
+                    if (!fs.existsSync(totpFtlFilePath)) {
+                        break fix_account_topt;
+                    }
+
+                    fs.writeFileSync(
+                        totpFtlFilePath,
+                        Buffer.from(
+                            fs
+                                .readFileSync(totpFtlFilePath)
+                                .toString("utf8")
+                                .replace(
+                                    [
+                                        "                <#list totp.policy.supportedApplications as app>",
+                                        "                    <li>${app}</li>",
+                                        "                </#list>"
+                                    ].join("\n"),
+                                    [
+                                        "                <#if totp.policy.supportedApplications?has_content>",
+                                        "                    <#list totp.policy.supportedApplications as app>",
+                                        "                        <li>${app}</li>",
+                                        "                    </#list>",
+                                        "                </#if>"
+                                    ].join("\n")
+                                ),
+                            "utf8"
+                        )
+                    );
+                }
+
                 install_common_node_modules: {
                     const commonResourcesDirPath = pathJoin(destDirPath, "keycloak", "common", "resources");
 

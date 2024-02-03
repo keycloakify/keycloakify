@@ -38,7 +38,22 @@ export async function bringInAccountV1(params: { buildOptions: BuildOptionsLike 
 
     const commonResourceFilePaths = [
         "node_modules/patternfly/dist/css/patternfly.min.css",
-        "node_modules/patternfly/dist/css/patternfly-additions.min.css"
+        "node_modules/patternfly/dist/css/patternfly-additions.min.css",
+        "node_modules/patternfly/dist/css/patternfly-additions.min.css",
+        ...[
+            "OpenSans-Light-webfont.woff2",
+            "OpenSans-Regular-webfont.woff2",
+            "OpenSans-Bold-webfont.woff2",
+            "OpenSans-Semibold-webfont.woff2",
+            "OpenSans-Bold-webfont.woff",
+            "OpenSans-Light-webfont.woff",
+            "OpenSans-Regular-webfont.woff",
+            "OpenSans-Semibold-webfont.woff",
+            "OpenSans-Regular-webfont.ttf",
+            "OpenSans-Light-webfont.ttf",
+            "OpenSans-Semibold-webfont.ttf",
+            "OpenSans-Bold-webfont.ttf"
+        ].map(path => `node_modules/patternfly/dist/fonts/${path}`)
     ];
 
     for (const relativeFilePath of commonResourceFilePaths.map(path => pathJoin(...path.split("/")))) {
@@ -49,7 +64,7 @@ export async function bringInAccountV1(params: { buildOptions: BuildOptionsLike 
         fs.cpSync(pathJoin(builtinKeycloakThemeTmpDirPath, "keycloak", "common", "resources", relativeFilePath), destFilePath);
     }
 
-    const resourceFilePaths = ["css/account.css"];
+    const resourceFilePaths = ["css/account.css", "img/icon-sidebar-active.png", "img/logo.png"];
 
     for (const relativeFilePath of resourceFilePaths.map(path => pathJoin(...path.split("/")))) {
         const destFilePath = pathJoin(accountV1DirPath, "resources", relativeFilePath);
@@ -69,7 +84,7 @@ export async function bringInAccountV1(params: { buildOptions: BuildOptionsLike 
                 "",
                 "locales=ar,ca,cs,da,de,en,es,fr,fi,hu,it,ja,lt,nl,no,pl,pt-BR,ru,sk,sv,tr,zh-CN",
                 "",
-                "styles=" + [...resourceFilePaths, ...commonResourceFilePaths.map(path => `resources_common/${path}`)].join(" "),
+                "styles=" + [...resourceFilePaths, ...commonResourceFilePaths.map(path => `resources-common/${path}`)].join(" "),
                 "",
                 "##### css classes for form buttons",
                 "# main class used for all buttons",
