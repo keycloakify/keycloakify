@@ -27,6 +27,7 @@ export type BuildOptions = {
      * In this case the urlPathname will be "/my-app/" */
     urlPathname: string | undefined;
     assetsDirPath: string;
+    doBuildRetrocompatAccountTheme: boolean;
 };
 
 export function readBuildOptions(params: { reactAppRootDirPath: string; processArgv: string[] }): BuildOptions {
@@ -178,6 +179,7 @@ export function readBuildOptions(params: { reactAppRootDirPath: string; processA
             }
 
             return pathJoin(reactAppBuildDirPath, resolvedViteConfig.assetsDir);
-        })()
+        })(),
+        "doBuildRetrocompatAccountTheme": parsedPackageJson.keycloakify?.doBuildRetrocompatAccountTheme ?? true
     };
 }

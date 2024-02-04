@@ -17,6 +17,7 @@ export type ParsedPackageJson = {
         reactAppBuildDirPath?: string;
         keycloakifyBuildDirPath?: string;
         themeName?: string | string[];
+        doBuildRetrocompatAccountTheme?: boolean;
     };
 };
 
@@ -33,7 +34,8 @@ const zParsedPackageJson = z.object({
             "loginThemeResourcesFromKeycloakVersion": z.string().optional(),
             "reactAppBuildDirPath": z.string().optional(),
             "keycloakifyBuildDirPath": z.string().optional(),
-            "themeName": z.union([z.string(), z.array(z.string())]).optional()
+            "themeName": z.union([z.string(), z.array(z.string())]).optional(),
+            "doBuildRetrocompatAccountTheme": z.boolean().optional()
         })
         .optional()
 });
