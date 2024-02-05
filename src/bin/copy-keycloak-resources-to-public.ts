@@ -28,7 +28,6 @@ import * as fs from "fs";
             })(),
             themeType,
             "themeDirPath": reservedDirPath,
-            "usedResources": undefined,
             buildOptions
         });
     }
@@ -44,7 +43,7 @@ import * as fs from "fs";
         )
     );
 
-    fs.writeFileSync(pathJoin(buildOptions.publicDirPath, "keycloak-resources", ".gitignore"), Buffer.from("*", "utf8"));
+    fs.writeFileSync(pathJoin(buildOptions.publicDirPath, keycloak_resources, ".gitignore"), Buffer.from("*", "utf8"));
 
     console.log(`${pathRelative(reactAppRootDirPath, reservedDirPath)} directory created.`);
 })();

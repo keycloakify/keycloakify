@@ -7,6 +7,9 @@ import { readBuildOptions, type BuildOptions } from "./keycloakify/buildOptions"
 import { assert } from "tsafe/assert";
 import * as child_process from "child_process";
 import * as fs from "fs";
+import { rmSync } from "./tools/fs.rmSync";
+import { lastKeycloakVersionWithAccountV1 } from "./constants";
+import { transformCodebase } from "./tools/transformCodebase";
 
 export type BuildOptionsLike = {
     cacheDirPath: string;
@@ -26,51 +29,6 @@ export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: st
         "preCacheTransform": {
             "actionCacheId": "npm install and build",
             "action": async ({ destDirPath }) => {
-                fix_account_css: {
-                    const accountCssFilePath = pathJoin(destDirPath, "keycloak", "account", "resources", "css", "account.css");
-
-                    if (!fs.existsSync(accountCssFilePath)) {
-                        break fix_account_css;
-                    }
-
-                    fs.writeFileSync(
-                        accountCssFilePath,
-                        Buffer.from(fs.readFileSync(accountCssFilePath).toString("utf8").replace("top: -34px;", "top: -34px !important;"), "utf8")
-                    );
-                }
-
-                fix_account_topt: {
-                    const totpFtlFilePath = pathJoin(destDirPath, "base", "account", "totp.ftl");
-
-                    if (!fs.existsSync(totpFtlFilePath)) {
-                        break fix_account_topt;
-                    }
-
-                    fs.writeFileSync(
-                        totpFtlFilePath,
-                        Buffer.from(
-                            fs
-                                .readFileSync(totpFtlFilePath)
-                                .toString("utf8")
-                                .replace(
-                                    [
-                                        "                <#list totp.policy.supportedApplications as app>",
-                                        "                    <li>${app}</li>",
-                                        "                </#list>"
-                                    ].join("\n"),
-                                    [
-                                        "                <#if totp.policy.supportedApplications?has_content>",
-                                        "                    <#list totp.policy.supportedApplications as app>",
-                                        "                        <li>${app}</li>",
-                                        "                    </#list>",
-                                        "                </#if>"
-                                    ].join("\n")
-                                ),
-                            "utf8"
-                        )
-                    );
-                }
-
                 install_common_node_modules: {
                     const commonResourcesDirPath = pathJoin(destDirPath, "keycloak", "common", "resources");
 
@@ -128,7 +86,98 @@ export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: st
 
                     fs.writeFileSync(packageJsonFilePath, packageJsonRaw);
 
-                    fs.rmSync(pathJoin(accountV2DirSrcDirPath, "node_modules"), { "recursive": true });
+                    rmSync(pathJoin(accountV2DirSrcDirPath, "node_modules"), { "recursive": true });
+                }
+
+                last_account_v1_transformations: {
+                    if (lastKeycloakVersionWithAccountV1 !== keycloakVersion) {
+                        break last_account_v1_transformations;
+                    }
+
+                    {
+                        const accountCssFilePath = pathJoin(destDirPath, "keycloak", "account", "resources", "css", "account.css");
+
+                        fs.writeFileSync(
+                            accountCssFilePath,
+                            Buffer.from(fs.readFileSync(accountCssFilePath).toString("utf8").replace("top: -34px;", "top: -34px !important;"), "utf8")
+                        );
+                    }
+
+                    {
+                        const totpFtlFilePath = pathJoin(destDirPath, "base", "account", "totp.ftl");
+
+                        fs.writeFileSync(
+                            totpFtlFilePath,
+                            Buffer.from(
+                                fs
+                                    .readFileSync(totpFtlFilePath)
+                                    .toString("utf8")
+                                    .replace(
+                                        [
+                                            "                <#list totp.policy.supportedApplications as app>",
+                                            "                    <li>${app}</li>",
+                                            "                </#list>"
+                                        ].join("\n"),
+                                        [
+                                            "                <#if totp.policy.supportedApplications?has_content>",
+                                            "                    <#list totp.policy.supportedApplications as app>",
+                                            "                        <li>${app}</li>",
+                                            "                    </#list>",
+                                            "                </#if>"
+                                        ].join("\n")
+                                    ),
+                                "utf8"
+                            )
+                        );
+                    }
+
+                    // Note, this is an optimization for reducing the size of the jar
+                    {
+                        const defaultThemeCommonResourcesDirPath = pathJoin(destDirPath, "keycloak", "common", "resources");
+
+                        const usedCommonResourceRelativeFilePaths = [
+                            ...["patternfly.min.css", "patternfly-additions.min.css", "patternfly-additions.min.css"].map(fileBasename =>
+                                pathJoin("node_modules", "patternfly", "dist", "css", fileBasename)
+                            ),
+                            ...[
+                                "OpenSans-Light-webfont.woff2",
+                                "OpenSans-Regular-webfont.woff2",
+                                "OpenSans-Bold-webfont.woff2",
+                                "OpenSans-Semibold-webfont.woff2",
+                                "OpenSans-Bold-webfont.woff",
+                                "OpenSans-Light-webfont.woff",
+                                "OpenSans-Regular-webfont.woff",
+                                "OpenSans-Semibold-webfont.woff",
+                                "OpenSans-Regular-webfont.ttf",
+                                "OpenSans-Light-webfont.ttf",
+                                "OpenSans-Semibold-webfont.ttf",
+                                "OpenSans-Bold-webfont.ttf"
+                            ].map(fileBasename => pathJoin("node_modules", "patternfly", "dist", "fonts", fileBasename))
+                        ];
+
+                        transformCodebase({
+                            "srcDirPath": defaultThemeCommonResourcesDirPath,
+                            "destDirPath": defaultThemeCommonResourcesDirPath,
+                            "transformSourceCode": ({ sourceCode, fileRelativePath }) => {
+                                if (!usedCommonResourceRelativeFilePaths.includes(fileRelativePath)) {
+                                    return undefined;
+                                }
+
+                                return { "modifiedSourceCode": sourceCode };
+                            }
+                        });
+                    }
+
+                    // Other optimization: Remove AngularJS
+                    {
+                        const nodeModuleDirPath = pathJoin(destDirPath, "keycloak", "common", "resources", "node_modules");
+
+                        fs.readdirSync(nodeModuleDirPath)
+                            .filter(basename => basename.startsWith("angular"))
+                            .map(basename => pathJoin(nodeModuleDirPath, basename))
+                            .filter(dirPath => fs.statSync(dirPath).isDirectory())
+                            .forEach(dirPath => rmSync(dirPath, { "recursive": true }));
+                    }
                 }
             }
         }

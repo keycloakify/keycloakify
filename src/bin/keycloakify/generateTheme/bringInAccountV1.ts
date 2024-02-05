@@ -1,11 +1,12 @@
 import * as fs from "fs";
-import { join as pathJoin, dirname as pathDirname } from "path";
+import { join as pathJoin } from "path";
 import { assert } from "tsafe/assert";
 import { Reflect } from "tsafe/Reflect";
 import type { BuildOptions } from "../buildOptions";
 import { resources_common, lastKeycloakVersionWithAccountV1, accountV1ThemeName } from "../../constants";
 import { downloadBuiltinKeycloakTheme } from "../../download-builtin-keycloak-theme";
 import { transformCodebase } from "../../tools/transformCodebase";
+import { rmSync } from "../../tools/fs.rmSync";
 
 type BuildOptionsLike = {
     keycloakifyBuildDirPath: string;
@@ -36,45 +37,17 @@ export async function bringInAccountV1(params: { buildOptions: BuildOptionsLike 
         "destDirPath": accountV1DirPath
     });
 
-    const commonResourceFilePaths = [
-        "node_modules/patternfly/dist/css/patternfly.min.css",
-        "node_modules/patternfly/dist/css/patternfly-additions.min.css",
-        "node_modules/patternfly/dist/css/patternfly-additions.min.css",
-        ...[
-            "OpenSans-Light-webfont.woff2",
-            "OpenSans-Regular-webfont.woff2",
-            "OpenSans-Bold-webfont.woff2",
-            "OpenSans-Semibold-webfont.woff2",
-            "OpenSans-Bold-webfont.woff",
-            "OpenSans-Light-webfont.woff",
-            "OpenSans-Regular-webfont.woff",
-            "OpenSans-Semibold-webfont.woff",
-            "OpenSans-Regular-webfont.ttf",
-            "OpenSans-Light-webfont.ttf",
-            "OpenSans-Semibold-webfont.ttf",
-            "OpenSans-Bold-webfont.ttf"
-        ].map(path => `node_modules/patternfly/dist/fonts/${path}`)
-    ];
+    transformCodebase({
+        "srcDirPath": pathJoin(builtinKeycloakThemeTmpDirPath, "keycloak", "account", "resources"),
+        "destDirPath": pathJoin(accountV1DirPath, "resources")
+    });
 
-    for (const relativeFilePath of commonResourceFilePaths.map(path => pathJoin(...path.split("/")))) {
-        const destFilePath = pathJoin(accountV1DirPath, "resources", resources_common, relativeFilePath);
+    transformCodebase({
+        "srcDirPath": pathJoin(builtinKeycloakThemeTmpDirPath, "keycloak", "common", "resources"),
+        "destDirPath": pathJoin(accountV1DirPath, "resources", resources_common)
+    });
 
-        fs.mkdirSync(pathDirname(destFilePath), { "recursive": true });
-
-        fs.cpSync(pathJoin(builtinKeycloakThemeTmpDirPath, "keycloak", "common", "resources", relativeFilePath), destFilePath);
-    }
-
-    const resourceFilePaths = ["css/account.css", "img/icon-sidebar-active.png", "img/logo.png"];
-
-    for (const relativeFilePath of resourceFilePaths.map(path => pathJoin(...path.split("/")))) {
-        const destFilePath = pathJoin(accountV1DirPath, "resources", relativeFilePath);
-
-        fs.mkdirSync(pathDirname(destFilePath), { "recursive": true });
-
-        fs.cpSync(pathJoin(builtinKeycloakThemeTmpDirPath, "keycloak", "account", "resources", relativeFilePath), destFilePath);
-    }
-
-    fs.rmSync(builtinKeycloakThemeTmpDirPath, { "recursive": true });
+    rmSync(builtinKeycloakThemeTmpDirPath, { "recursive": true });
 
     fs.writeFileSync(
         pathJoin(accountV1DirPath, "theme.properties"),
@@ -84,7 +57,15 @@ export async function bringInAccountV1(params: { buildOptions: BuildOptionsLike 
                 "",
                 "locales=ar,ca,cs,da,de,en,es,fr,fi,hu,it,ja,lt,nl,no,pl,pt-BR,ru,sk,sv,tr,zh-CN",
                 "",
-                "styles=" + [...resourceFilePaths, ...commonResourceFilePaths.map(path => `resources-common/${path}`)].join(" "),
+                "styles=" +
+                    [
+                        "css/account.css",
+                        "img/icon-sidebar-active.png",
+                        "img/logo.png",
+                        ...["patternfly.min.css", "patternfly-additions.min.css", "patternfly-additions.min.css"].map(
+                            fileBasename => `${resources_common}/node_modules/patternfly/dist/css/${fileBasename}`
+                        )
+                    ].join(" "),
                 "",
                 "##### css classes for form buttons",
                 "# main class used for all buttons",

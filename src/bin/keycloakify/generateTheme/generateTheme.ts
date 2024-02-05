@@ -1,11 +1,10 @@
 import { transformCodebase } from "../../tools/transformCodebase";
 import * as fs from "fs";
-import { join as pathJoin, basename as pathBasename, resolve as pathResolve } from "path";
+import { join as pathJoin, basename as pathBasename, resolve as pathResolve, dirname as pathDirname } from "path";
 import { replaceImportsInJsCode } from "../replacers/replaceImportsInJsCode";
 import { replaceImportsInCssCode } from "../replacers/replaceImportsInCssCode";
 import { generateFtlFilesCodeFactory, loginThemePageIds, accountThemePageIds } from "../generateFtl";
 import {
-    themeTypes,
     type ThemeType,
     lastKeycloakVersionWithAccountV1,
     keycloak_resources,
@@ -20,7 +19,7 @@ import { downloadKeycloakStaticResources } from "./downloadKeycloakStaticResourc
 import { readFieldNameUsage } from "./readFieldNameUsage";
 import { readExtraPagesNames } from "./readExtraPageNames";
 import { generateMessageProperties } from "./generateMessageProperties";
-import { readStaticResourcesUsage } from "./readStaticResourcesUsage";
+import { bringInAccountV1 } from "./bringInAccountV1";
 
 export type BuildOptionsLike = {
     bundler: "vite" | "webpack";
@@ -33,6 +32,7 @@ export type BuildOptionsLike = {
     assetsDirPath: string;
     urlPathname: string | undefined;
     doBuildRetrocompatAccountTheme: boolean;
+    themeNames: string[];
 };
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
@@ -59,27 +59,47 @@ export async function generateTheme(params: {
         );
     };
 
-    let allCssGlobalsToDefine: Record<string, string> = {};
+    const cssGlobalsToDefine: Record<string, string> = {};
 
-    for (const themeType of themeTypes) {
+    const implementedThemeTypes: Record<ThemeType | "email", boolean> = {
+        "login": false,
+        "account": false,
+        "email": false
+    };
+
+    for (const themeType of ["login", "account"] as const) {
         if (!fs.existsSync(pathJoin(themeSrcDirPath, themeType))) {
             continue;
         }
 
+        implementedThemeTypes[themeType] = true;
+
         const themeTypeDirPath = getThemeTypeDirPath({ themeType });
 
-        copy_app_resources_to_theme_path: {
-            const isFirstPass = themeType.indexOf(themeType) === 0;
+        apply_replacers_and_move_to_theme_resources: {
+            if (themeType === "account" && implementedThemeTypes.login) {
+                // NOTE: We prevend doing it twice, it has been done for the login theme.
 
-            if (!isFirstPass) {
-                break copy_app_resources_to_theme_path;
+                transformCodebase({
+                    "srcDirPath": pathJoin(
+                        getThemeTypeDirPath({
+                            "themeType": "login"
+                        }),
+                        "resources",
+                        basenameOfTheKeycloakifyResourcesDir
+                    ),
+                    "destDirPath": pathJoin(themeTypeDirPath, "resources", basenameOfTheKeycloakifyResourcesDir)
+                });
+
+                break apply_replacers_and_move_to_theme_resources;
             }
 
             transformCodebase({
-                "destDirPath": pathJoin(themeTypeDirPath, "resources", basenameOfTheKeycloakifyResourcesDir),
                 "srcDirPath": buildOptions.reactAppBuildDirPath,
+                "destDirPath": pathJoin(themeTypeDirPath, "resources", basenameOfTheKeycloakifyResourcesDir),
                 "transformSourceCode": ({ filePath, sourceCode }) => {
                     //NOTE: Prevent cycles, excludes the folder we generated for debug in public/
+                    // This should not happen if users follow the new instruction setup but we keep it for retrocompatibility.
                     if (
                         isInside({
                             "dirPath": pathJoin(buildOptions.reactAppBuildDirPath, keycloak_resources),
@@ -90,20 +110,13 @@ export async function generateTheme(params: {
                     }
 
                     if (/\.css?$/i.test(filePath)) {
-                        const { cssGlobalsToDefine, fixedCssCode } = replaceImportsInCssCode({
+                        const { cssGlobalsToDefine: cssGlobalsToDefineForThisFile, fixedCssCode } = replaceImportsInCssCode({
                             "cssCode": sourceCode.toString("utf8")
                         });
 
-                        register_css_variables: {
-                            if (!isFirstPass) {
-                                break register_css_variables;
-                            }
-
-                            allCssGlobalsToDefine = {
-                                ...allCssGlobalsToDefine,
-                                ...cssGlobalsToDefine
-                            };
-                        }
+                        Object.entries(cssGlobalsToDefineForThisFile).forEach(([key, value]) => {
+                            cssGlobalsToDefine[key] = value;
+                        });
 
                         return { "modifiedSourceCode": Buffer.from(fixedCssCode, "utf8") };
                     }
@@ -125,7 +138,7 @@ export async function generateTheme(params: {
         const { generateFtlFilesCode } = generateFtlFilesCodeFactory({
             themeName,
             "indexHtmlCode": fs.readFileSync(pathJoin(buildOptions.reactAppBuildDirPath, "index.html")).toString("utf8"),
-            "cssGlobalsToDefine": allCssGlobalsToDefine,
+            cssGlobalsToDefine,
             buildOptions,
             keycloakifyVersion,
             themeType,
@@ -181,11 +194,6 @@ export async function generateTheme(params: {
             })(),
             "themeDirPath": pathResolve(pathJoin(themeTypeDirPath, "..")),
             themeType,
-            "usedResources": readStaticResourcesUsage({
-                keycloakifySrcDirPath,
-                themeSrcDirPath,
-                themeType
-            }),
             buildOptions
         });
 
@@ -235,9 +243,82 @@ export async function generateTheme(params: {
             break email;
         }
 
+        implementedThemeTypes.email = true;
+
         transformCodebase({
             "srcDirPath": emailThemeSrcDirPath,
             "destDirPath": getThemeTypeDirPath({ "themeType": "email" })
         });
+    }
+
+    const parsedKeycloakThemeJson: { themes: { name: string; types: string[] }[] } = { "themes": [] };
+
+    buildOptions.themeNames.forEach(themeName =>
+        parsedKeycloakThemeJson.themes.push({
+            "name": themeName,
+            "types": Object.entries(implementedThemeTypes)
+                .filter(([, isImplemented]) => isImplemented)
+                .map(([themeType]) => themeType)
+        })
+    );
+
+    account_specific_extra_work: {
+        if (!implementedThemeTypes.account) {
+            break account_specific_extra_work;
+        }
+
+        await bringInAccountV1({ buildOptions });
+
+        parsedKeycloakThemeJson.themes.push({
+            "name": accountV1ThemeName,
+            "types": ["account"]
+        });
+
+        add_retrocompat_account_theme: {
+            if (!buildOptions.doBuildRetrocompatAccountTheme) {
+                break add_retrocompat_account_theme;
+            }
+
+            transformCodebase({
+                "srcDirPath": getThemeTypeDirPath({ "themeType": "account" }),
+                "destDirPath": getThemeTypeDirPath({ "themeType": "account", "isRetrocompat": true }),
+                "transformSourceCode": ({ filePath, sourceCode }) => {
+                    if (pathBasename(filePath) === "theme.properties") {
+                        return {
+                            "modifiedSourceCode": Buffer.from(
+                                sourceCode.toString("utf8").replace(`parent=${accountV1ThemeName}`, "parent=keycloak"),
+                                "utf8"
+                            )
+                        };
+                    }
+
+                    return { "modifiedSourceCode": sourceCode };
+                }
+            });
+
+            buildOptions.themeNames.forEach(themeName =>
+                parsedKeycloakThemeJson.themes.push({
+                    "name": `${themeName}${retrocompatPostfix}`,
+                    "types": ["account"]
+                })
+            );
+        }
+    }
+
+    {
+        const keycloakThemeJsonFilePath = pathJoin(
+            buildOptions.keycloakifyBuildDirPath,
+            "src",
+            "main",
+            "resources",
+            "META-INF",
+            "keycloak-themes.json"
+        );
+
+        try {
+            fs.mkdirSync(pathDirname(keycloakThemeJsonFilePath));
+        } catch {}
+
+        fs.writeFileSync(keycloakThemeJsonFilePath, Buffer.from(JSON.stringify(parsedKeycloakThemeJson, null, 2), "utf8"));
     }
 }

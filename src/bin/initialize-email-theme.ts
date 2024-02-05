@@ -8,6 +8,7 @@ import { readBuildOptions } from "./keycloakify/buildOptions";
 import * as fs from "fs";
 import { getLogger } from "./tools/logger";
 import { getThemeSrcDirPath } from "./getThemeSrcDirPath";
+import { rmSync } from "./tools/fs.rmSync";
 
 export async function main() {
     const reactAppRootDirPath = process.cwd();
@@ -54,7 +55,7 @@ export async function main() {
 
     logger.log(`${pathRelative(process.cwd(), emailThemeSrcDirPath)} ready to be customized, feel free to remove every file you do not customize`);
 
-    fs.rmSync(builtinKeycloakThemeTmpDirPath, { "recursive": true, "force": true });
+    rmSync(builtinKeycloakThemeTmpDirPath, { "recursive": true, "force": true });
 }
 
 if (require.main === module) {

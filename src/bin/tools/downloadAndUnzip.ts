@@ -1,12 +1,13 @@
 import { exec as execCallback } from "child_process";
 import { createHash } from "crypto";
-import { mkdir, readFile, stat, writeFile, unlink, rm } from "fs/promises";
+import { mkdir, readFile, stat, writeFile, unlink } from "fs/promises";
 import fetch, { type FetchOptions } from "make-fetch-happen";
 import { dirname as pathDirname, join as pathJoin, resolve as pathResolve, sep as pathSep } from "path";
 import { assert } from "tsafe/assert";
 import { promisify } from "util";
 import { transformCodebase } from "./transformCodebase";
 import { unzip, zip } from "./unzip";
+import { rm } from "../tools/fs.rm";
 
 const exec = promisify(execCallback);
 
