@@ -3,18 +3,21 @@ import { readParsedPackageJson } from "../bin/keycloakify/buildOptions/parsedPac
 import type { Plugin } from "vite";
 import { assert } from "tsafe/assert";
 import * as fs from "fs";
-import { resolvedViteConfigJsonBasename, nameOfTheGlobal, basenameOfTheKeycloakifyResourcesDir } from "../bin/constants";
+import { resolvedViteConfigJsonBasename, nameOfTheGlobal, basenameOfTheKeycloakifyResourcesDir, keycloak_resources } from "../bin/constants";
 import type { ResolvedViteConfig } from "../bin/keycloakify/buildOptions/resolvedViteConfig";
 import { getKeycloakifyBuildDirPath } from "../bin/keycloakify/buildOptions/getKeycloakifyBuildDirPath";
 import { replaceAll } from "../bin/tools/String.prototype.replaceAll";
 import { id } from "tsafe/id";
+import { rm } from "../bin/tools/fs.rm";
 
 export function keycloakify(): Plugin {
     let reactAppRootDirPath: string | undefined = undefined;
     let urlPathname: string | undefined = undefined;
+    let buildDirPath: string | undefined = undefined;
 
     return {
         "name": "keycloakify",
+        "apply": "build",
         "configResolved": resolvedConfig => {
             reactAppRootDirPath = resolvedConfig.root;
             urlPathname = (() => {
@@ -34,6 +37,8 @@ export function keycloakify(): Plugin {
 
                 return out;
             })();
+
+            buildDirPath = pathJoin(reactAppRootDirPath, resolvedConfig.build.outDir);
 
             const { keycloakifyBuildDirPath } = getKeycloakifyBuildDirPath({
                 "parsedPackageJson_keycloakify_keycloakifyBuildDirPath": readParsedPackageJson({ reactAppRootDirPath }).keycloakify
@@ -113,6 +118,11 @@ export function keycloakify(): Plugin {
             return {
                 "code": transformedCode
             };
+        },
+        "buildEnd": async () => {
+            assert(buildDirPath !== undefined);
+
+            await rm(pathJoin(buildDirPath, keycloak_resources), { "recursive": true, "force": true });
         }
     };
 }
