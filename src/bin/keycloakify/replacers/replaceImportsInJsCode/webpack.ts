@@ -82,7 +82,7 @@ export function replaceImportsInJsCode_webpack(params: { jsCode: string; buildOp
         .replace(...getReplaceArgs("js"))
         .replace(...getReplaceArgs("css"))
         .replace(
-            new RegExp(`[a-zA-Z]+\\.[a-zA-Z]+\\+"${staticDir.replace(/\//g, "\\/")}"`, "g"),
+            new RegExp(`[a-zA-Z]+\\.[a-zA-Z]+\\+"${staticDir.replace(/\//g, "\\/")}`, "g"),
             `window.${nameOfTheGlobal}.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/${staticDir}`
         )
         //TODO: Write a test case for this

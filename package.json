@@ -14,7 +14,7 @@
         "generate:json-schema": "ts-node scripts/generate-json-schema.ts",
         "grant-exec-perms": "node dist/bin/tools/grant-exec-perms.js",
         "copy-files": "copyfiles -u 1 src/**/*.ftl src/**/*.java",
-        "test": "echo 'yarn test:types && vitest run'",
+        "test": "yarn test:types && vitest run",
         "test:keycloakify-starter": "ts-node scripts/test-keycloakify-starter",
         "test:types": "tsc -p test/tsconfig.json --noEmit",
         "_format": "prettier '**/*.{ts,tsx,json,md}'",
