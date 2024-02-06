@@ -84,12 +84,6 @@ export function replaceImportsInJsCode_webpack(params: { jsCode: string; buildOp
         .replace(
             new RegExp(`[a-zA-Z]+\\.[a-zA-Z]+\\+"${staticDir.replace(/\//g, "\\/")}`, "g"),
             `window.${nameOfTheGlobal}.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/${staticDir}`
-        )
-        //TODO: Write a test case for this
-        .replace(
-            /".chunk.css",([a-zA-Z])+=[a-zA-Z]+\.[a-zA-Z]+\+([a-zA-Z]+),/,
-            (...[, group1, group2]) =>
-                `".chunk.css",${group1} = window.${nameOfTheGlobal}.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/" + ${group2},`
         );
 
     return { fixedJsCode };
