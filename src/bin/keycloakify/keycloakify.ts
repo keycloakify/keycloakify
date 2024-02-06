@@ -84,8 +84,6 @@ export async function main() {
             ...(!buildOptions.doCreateJar
                 ? []
                 : [`✅ Your keycloak theme has been generated and bundled into .${pathSep}${pathRelative(reactAppRootDirPath, jarFilePath)} 🚀`]),
-            //TODO: Restore when we find a good Helm chart for Keycloak.
-            //"Using Helm (https://github.com/codecentric/helm-charts), edit to reflect:",
             "",
             `To test your theme locally you can spin up a Keycloak ${containerKeycloakVersion} container image with the theme pre loaded by running:`,
             "",
