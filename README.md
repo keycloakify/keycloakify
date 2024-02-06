@@ -114,6 +114,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://m-siemens.de/"><img src="https://avatars.githubusercontent.com/u/1873922?v=4?s=100" width="100px;" alt="Markus Siemens"/><br /><sub><b>Markus Siemens</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=msiemens" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/law108000"><img src="https://avatars.githubusercontent.com/u/8112024?v=4?s=100" width="100px;" alt="Rlok"/><br /><sub><b>Rlok</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=law108000" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Moulyy"><img src="https://avatars.githubusercontent.com/u/115405804?v=4?s=100" width="100px;" alt="Moulyy"/><br /><sub><b>Moulyy</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=Moulyy" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/giorgoslytos"><img src="https://avatars.githubusercontent.com/u/50946162?v=4?s=100" width="100px;" alt="giorgoslytos"/><br /><sub><b>giorgoslytos</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=giorgoslytos" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
@@ -124,17 +125,6 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 # Changelog highlights
-
-## 9.2
-
-Remove the `<your theme name>_retrocompat` option in the account theme dropdown and the `doBuildRetrocompatAccountTheme` build option.  
-`<your theme name>_retrocompat` was useless because `<rout theme name>` works fine even on older Keycloak version.
-
-What you have to remember is that:
-
--   If you have no account theme: You can use the `retrocompat_*.jar` it will work on any Keycloak version.
--   If you have an Account theme: Use `retrocompat_*.jar` only if your Keycloak is in a version prior to 23.  
-    Keycloak 22 is not supported (Only login themes works in Keycloak 22).
 
 ## 9.0
 
