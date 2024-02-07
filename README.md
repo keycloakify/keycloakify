@@ -43,6 +43,10 @@
 
 Keycloakify is fully compatible with Keycloak 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, [~~22~~](https://github.com/keycloakify/keycloakify/issues/389#issuecomment-1822509763), **23** [and up](https://github.com/keycloakify/keycloakify/discussions/346#discussioncomment-5889791)!
 
+> 📣 I've observed that a few people have unstarred the project recently.  
+> I'm concerned that I may have inadvertently introduced some misinformation in the documentation, leading to frustration.  
+> If you're having a negative experience, [please let me know so I can resolve the issue](https://github.com/keycloakify/keycloakify/discussions/507).
+
 ## Sponsor 👼
 
 We are exclusively sponsored by [Cloud IAM](https://cloud-iam.com/?mtm_campaign=keycloakify-deal&mtm_source=keycloakify-github), a French company offering Keycloak as a service.  
@@ -128,7 +132,8 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 ## 9.0
 
-Bring back support for account themes in Keycloak v23 and up! [See issue](https://github.com/keycloakify/keycloakify/issues/389).
+Bring back support for account themes in Keycloak v23 and up! [See issue](https://github.com/keycloakify/keycloakify/issues/389).  
+[Read the migration guide](https://docs.keycloakify.dev/migration-guides/v8-greater-than-v9).
 
 ### Breaking changes
 
