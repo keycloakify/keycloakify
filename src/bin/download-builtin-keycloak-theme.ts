@@ -50,43 +50,94 @@ export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: st
                     });
                 }
 
-                install_and_move_to_common_resources_generated_in_keycloak_v2: {
-                    const accountV2DirSrcDirPath = pathJoin(destDirPath, "keycloak.v2", "account", "src");
+                remove_keycloak_v2: {
+                    const keycloakV2DirPath = pathJoin(destDirPath, "keycloak.v2");
 
-                    if (!fs.existsSync(accountV2DirSrcDirPath)) {
-                        break install_and_move_to_common_resources_generated_in_keycloak_v2;
+                    if (!fs.existsSync(keycloakV2DirPath)) {
+                        break remove_keycloak_v2;
                     }
 
-                    const packageManager = fs.existsSync(pathJoin(accountV2DirSrcDirPath, "pnpm-lock.yaml")) ? "pnpm" : "npm";
+                    rmSync(keycloakV2DirPath, { "recursive": true });
+                }
 
-                    if (packageManager === "pnpm") {
-                        try {
-                            child_process.execSync(`which pnpm`);
-                        } catch {
-                            console.log(`Installing pnpm globally`);
-                            child_process.execSync(`npm install -g pnpm`);
+                // Note, this is an optimization for reducing the size of the jar
+                remove_unused_node_modules: {
+                    const pathOfNodeModules = pathJoin(destDirPath, "keycloak", "common", "resources", "node_modules");
+
+                    if (!fs.existsSync(pathOfNodeModules)) {
+                        break remove_unused_node_modules;
+                    }
+
+                    const toDeletePerfixes = [
+                        "angular",
+                        "bootstrap",
+                        "rcue",
+                        "font-awesome",
+                        "ng-file-upload",
+                        pathJoin("patternfly", "dist", "sass"),
+                        pathJoin("patternfly", "dist", "less"),
+                        pathJoin("patternfly", "dist", "js"),
+                        "d3",
+                        pathJoin("jquery", "src"),
+                        "c3",
+                        "core-js",
+                        "eonasdan-bootstrap-datetimepicker",
+                        "moment",
+                        "react",
+                        "patternfly-bootstrap-treeview",
+                        "popper.js",
+                        "tippy.js",
+                        "jquery-match-height",
+                        "google-code-prettify",
+                        "patternfly-bootstrap-combobox",
+                        "focus-trap",
+                        "tabbable",
+                        "scheduler",
+                        "@types",
+                        "datatables.net",
+                        "datatables.net-colreorder",
+                        "tslib",
+                        "prop-types",
+                        "file-selector",
+                        "datatables.net-colreorder-bs",
+                        "object-assign",
+                        "warning",
+                        "js-tokens",
+                        "loose-envify",
+                        "prop-types-extra",
+                        "attr-accept",
+                        "datatables.net-select",
+                        "drmonty-datatables-colvis",
+                        "datatables.net-bs",
+                        pathJoin("@patternfly", "react"),
+                        pathJoin("@patternfly", "patternfly", "docs")
+                    ];
+
+                    transformCodebase({
+                        "srcDirPath": pathOfNodeModules,
+                        "destDirPath": pathOfNodeModules,
+                        "transformSourceCode": ({ sourceCode, fileRelativePath }) => {
+                            if (fileRelativePath.endsWith(".map")) {
+                                return undefined;
+                            }
+
+                            if (toDeletePerfixes.find(prefix => fileRelativePath.startsWith(prefix)) !== undefined) {
+                                return undefined;
+                            }
+
+                            if (fileRelativePath.startsWith(pathJoin("patternfly", "dist", "fonts"))) {
+                                if (
+                                    !fileRelativePath.endsWith(".woff2") &&
+                                    !fileRelativePath.endsWith(".woff") &&
+                                    !fileRelativePath.endsWith(".ttf")
+                                ) {
+                                    return undefined;
+                                }
+                            }
+
+                            return { "modifiedSourceCode": sourceCode };
                         }
-                    }
-
-                    child_process.execSync(`${packageManager} install`, { "cwd": accountV2DirSrcDirPath, "stdio": "ignore" });
-
-                    const packageJsonFilePath = pathJoin(accountV2DirSrcDirPath, "package.json");
-
-                    const packageJsonRaw = fs.readFileSync(packageJsonFilePath);
-
-                    const parsedPackageJson = JSON.parse(packageJsonRaw.toString("utf8"));
-
-                    parsedPackageJson.scripts.build = parsedPackageJson.scripts.build
-                        .replace(`${packageManager} run check-types`, "true")
-                        .replace(`${packageManager} run babel`, "true");
-
-                    fs.writeFileSync(packageJsonFilePath, Buffer.from(JSON.stringify(parsedPackageJson, null, 2), "utf8"));
-
-                    child_process.execSync(`${packageManager} run build`, { "cwd": accountV2DirSrcDirPath, "stdio": "ignore" });
-
-                    fs.writeFileSync(packageJsonFilePath, packageJsonRaw);
-
-                    rmSync(pathJoin(accountV2DirSrcDirPath, "node_modules"), { "recursive": true });
+                    });
                 }
 
                 last_account_v1_transformations: {
@@ -133,11 +184,11 @@ export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: st
 
                     // Note, this is an optimization for reducing the size of the jar
                     {
-                        const defaultThemeCommonResourcesDirPath = pathJoin(destDirPath, "keycloak", "common", "resources");
+                        const nodeModulesDirPath = pathJoin(destDirPath, "keycloak", "common", "resources");
 
                         const usedCommonResourceRelativeFilePaths = [
                             ...["patternfly.min.css", "patternfly-additions.min.css", "patternfly-additions.min.css"].map(fileBasename =>
-                                pathJoin("node_modules", "patternfly", "dist", "css", fileBasename)
+                                pathJoin("patternfly", "dist", "css", fileBasename)
                             ),
                             ...[
                                 "OpenSans-Light-webfont.woff2",
@@ -152,12 +203,12 @@ export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: st
                                 "OpenSans-Light-webfont.ttf",
                                 "OpenSans-Semibold-webfont.ttf",
                                 "OpenSans-Bold-webfont.ttf"
-                            ].map(fileBasename => pathJoin("node_modules", "patternfly", "dist", "fonts", fileBasename))
+                            ].map(fileBasename => pathJoin("patternfly", "dist", "fonts", fileBasename))
                         ];
 
                         transformCodebase({
-                            "srcDirPath": defaultThemeCommonResourcesDirPath,
-                            "destDirPath": defaultThemeCommonResourcesDirPath,
+                            "srcDirPath": nodeModulesDirPath,
+                            "destDirPath": nodeModulesDirPath,
                             "transformSourceCode": ({ sourceCode, fileRelativePath }) => {
                                 if (!usedCommonResourceRelativeFilePaths.includes(fileRelativePath)) {
                                     return undefined;
@@ -166,17 +217,6 @@ export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: st
                                 return { "modifiedSourceCode": sourceCode };
                             }
                         });
-                    }
-
-                    // Other optimization: Remove AngularJS
-                    {
-                        const nodeModuleDirPath = pathJoin(destDirPath, "keycloak", "common", "resources", "node_modules");
-
-                        fs.readdirSync(nodeModuleDirPath)
-                            .filter(basename => basename.startsWith("angular"))
-                            .map(basename => pathJoin(nodeModuleDirPath, basename))
-                            .filter(dirPath => fs.statSync(dirPath).isDirectory())
-                            .forEach(dirPath => rmSync(dirPath, { "recursive": true }));
                     }
                 }
             }
