@@ -2,12 +2,13 @@ import { exec as execCallback } from "child_process";
 import { createHash } from "crypto";
 import { mkdir, readFile, stat, writeFile, unlink } from "fs/promises";
 import fetch, { type FetchOptions } from "make-fetch-happen";
-import { dirname as pathDirname, join as pathJoin, resolve as pathResolve, sep as pathSep } from "path";
+import { dirname as pathDirname, join as pathJoin, resolve as pathResolve, sep as pathSep, basename as pathBasename } from "path";
 import { assert } from "tsafe/assert";
 import { promisify } from "util";
 import { transformCodebase } from "./transformCodebase";
 import { unzip, zip } from "./unzip";
 import { rm } from "../tools/fs.rm";
+import * as child_process from "child_process";
 
 const exec = promisify(execCallback);
 
@@ -188,10 +189,31 @@ export async function downloadAndUnzip(
     const zipFilePath = pathJoin(cacheDirPath, `${zipFileBasename}.zip`);
     const extractDirPath = pathJoin(cacheDirPath, `tmp_unzip_${zipFileBasename}`);
 
-    if (!(await exists(zipFilePath))) {
+    download_zip_and_transform: {
+        if (await exists(zipFilePath)) {
+            break download_zip_and_transform;
+        }
+
         const opts = await getFetchOptions();
-        const response = await fetch(url, opts);
+
+        const { response, isFromRemoteCache } = await (async () => {
+            const response = await fetch(`https://github.com/keycloakify/keycloakify/releases/download/v0.0.1/${pathBasename(zipFilePath)}`, opts);
+
+            if (response.status === 200) {
+                return {
+                    response,
+                    "isFromRemoteCache": true
+                };
+            }
+
+            return {
+                "response": await fetch(url, opts),
+                "isFromRemoteCache": false
+            };
+        })();
+
         await mkdir(pathDirname(zipFilePath), { "recursive": true });
+
         /**
          * The correct way to fix this is to upgrade node-fetch beyond 3.2.5
          * (see https://github.com/node-fetch/node-fetch/issues/1295#issuecomment-1144061991.)
@@ -201,26 +223,62 @@ export async function downloadAndUnzip(
          */
         response.body?.setMaxListeners(Number.MAX_VALUE);
         assert(typeof response.body !== "undefined" && response.body != null);
+
         await writeFile(zipFilePath, response.body);
 
-        if (specificDirsToExtract !== undefined || preCacheTransform !== undefined) {
-            await unzip(zipFilePath, extractDirPath, specificDirsToExtract);
+        if (isFromRemoteCache) {
+            break download_zip_and_transform;
+        }
 
-            try {
-                await preCacheTransform?.action({
-                    "destDirPath": extractDirPath
-                });
-            } catch (error) {
-                await Promise.all([rm(extractDirPath, { "recursive": true }), unlink(zipFilePath)]);
+        if (specificDirsToExtract === undefined && preCacheTransform === undefined) {
+            break download_zip_and_transform;
+        }
 
-                throw error;
+        await unzip(zipFilePath, extractDirPath, specificDirsToExtract);
+
+        try {
+            await preCacheTransform?.action({
+                "destDirPath": extractDirPath
+            });
+        } catch (error) {
+            await Promise.all([rm(extractDirPath, { "recursive": true }), unlink(zipFilePath)]);
+
+            throw error;
+        }
+
+        await unlink(zipFilePath);
+
+        await zip(extractDirPath, zipFilePath);
+
+        await rm(extractDirPath, { "recursive": true });
+
+        upload_to_remot_cache_if_admin: {
+            const githubToken = process.env["KEYCLOAKIFY_ADMIN_GITHUB_PERSONAL_ACCESS_TOKEN"];
+
+            if (githubToken === undefined) {
+                break upload_to_remot_cache_if_admin;
             }
 
-            await unlink(zipFilePath);
+            console.log("uploading to remote cache");
 
-            await zip(extractDirPath, zipFilePath);
+            try {
+                child_process.execSync(`which putasset`);
+            } catch {
+                child_process.execSync(`npm install -g putasset`);
+            }
 
-            await rm(extractDirPath, { "recursive": true });
+            child_process.execFileSync("putasset", [
+                "--owner",
+                "keycloakify",
+                "--repo",
+                "keycloakify",
+                "--tag",
+                "v0.0.1",
+                "--filename",
+                zipFilePath,
+                "--token",
+                githubToken
+            ]);
         }
     }
 
