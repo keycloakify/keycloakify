@@ -7,10 +7,7 @@ import { themeTypes, keycloak_resources, lastKeycloakVersionWithAccountV1 } from
 import * as fs from "fs";
 
 (async () => {
-    const reactAppRootDirPath = process.cwd();
-
     const buildOptions = readBuildOptions({
-        reactAppRootDirPath,
         "processArgv": process.argv.slice(2)
     });
 
@@ -45,5 +42,5 @@ import * as fs from "fs";
 
     fs.writeFileSync(pathJoin(buildOptions.publicDirPath, keycloak_resources, ".gitignore"), Buffer.from("*", "utf8"));
 
-    console.log(`${pathRelative(reactAppRootDirPath, reservedDirPath)} directory created.`);
+    console.log(`${pathRelative(buildOptions.reactAppRootDirPath, reservedDirPath)} directory created.`);
 })();

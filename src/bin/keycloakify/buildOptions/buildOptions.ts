@@ -30,8 +30,23 @@ export type BuildOptions = {
     doBuildRetrocompatAccountTheme: boolean;
 };
 
-export function readBuildOptions(params: { reactAppRootDirPath: string; processArgv: string[] }): BuildOptions {
-    const { reactAppRootDirPath, processArgv } = params;
+export function readBuildOptions(params: { processArgv: string[] }): BuildOptions {
+    const { processArgv } = params;
+
+    const argv = parseArgv(processArgv);
+
+    const reactAppRootDirPath = (() => {
+        const arg = argv["project"] ?? argv["p"];
+
+        if (typeof arg !== "string") {
+            return process.cwd();
+        }
+
+        return getAbsoluteAndInOsFormatPath({
+            "pathIsh": arg,
+            "cwd": process.cwd()
+        });
+    })();
 
     const parsedPackageJson = readParsedPackageJson({ reactAppRootDirPath });
 
@@ -85,11 +100,7 @@ export function readBuildOptions(params: { reactAppRootDirPath: string; processA
 
     return {
         "bundler": resolvedViteConfig !== undefined ? "vite" : "webpack",
-        "isSilent": (() => {
-            const argv = parseArgv(processArgv);
-
-            return typeof argv["silent"] === "boolean" ? argv["silent"] : false;
-        })(),
+        "isSilent": typeof argv["silent"] === "boolean" ? argv["silent"] : false,
         "themeVersion": process.env.KEYCLOAKIFY_THEME_VERSION ?? parsedPackageJson.version ?? "0.0.0",
         themeNames,
         "extraThemeProperties": parsedPackageJson.keycloakify?.extraThemeProperties,

@@ -226,7 +226,6 @@ export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: st
 
 async function main() {
     const buildOptions = readBuildOptions({
-        "reactAppRootDirPath": process.cwd(),
         "processArgv": process.argv.slice(2)
     });
 

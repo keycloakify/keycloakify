@@ -11,17 +11,14 @@ import { getThemeSrcDirPath } from "./getThemeSrcDirPath";
 import { rmSync } from "./tools/fs.rmSync";
 
 export async function main() {
-    const reactAppRootDirPath = process.cwd();
-
     const buildOptions = readBuildOptions({
-        reactAppRootDirPath,
         "processArgv": process.argv.slice(2)
     });
 
     const logger = getLogger({ "isSilent": buildOptions.isSilent });
 
     const { themeSrcDirPath } = getThemeSrcDirPath({
-        reactAppRootDirPath
+        "reactAppRootDirPath": buildOptions.reactAppRootDirPath
     });
 
     const emailThemeSrcDirPath = pathJoin(themeSrcDirPath, "email");

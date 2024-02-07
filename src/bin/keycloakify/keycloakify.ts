@@ -11,10 +11,7 @@ import { getThemeSrcDirPath } from "../getThemeSrcDirPath";
 import { getProjectRoot } from "../tools/getProjectRoot";
 
 export async function main() {
-    const reactAppRootDirPath = process.cwd();
-
     const buildOptions = readBuildOptions({
-        reactAppRootDirPath,
         "processArgv": process.argv.slice(2)
     });
 
@@ -23,7 +20,7 @@ export async function main() {
 
     const keycloakifyDirPath = getProjectRoot();
 
-    const { themeSrcDirPath } = getThemeSrcDirPath({ reactAppRootDirPath });
+    const { themeSrcDirPath } = getThemeSrcDirPath({ "reactAppRootDirPath": buildOptions.reactAppRootDirPath });
 
     for (const themeName of buildOptions.themeNames) {
         await generateTheme({
@@ -83,12 +80,17 @@ export async function main() {
             "",
             ...(!buildOptions.doCreateJar
                 ? []
-                : [`✅ Your keycloak theme has been generated and bundled into .${pathSep}${pathRelative(reactAppRootDirPath, jarFilePath)} 🚀`]),
+                : [
+                      `✅ Your keycloak theme has been generated and bundled into .${pathSep}${pathRelative(
+                          buildOptions.reactAppRootDirPath,
+                          jarFilePath
+                      )} 🚀`
+                  ]),
             "",
             `To test your theme locally you can spin up a Keycloak ${containerKeycloakVersion} container image with the theme pre loaded by running:`,
             "",
             `👉 $ .${pathSep}${pathRelative(
-                reactAppRootDirPath,
+                buildOptions.reactAppRootDirPath,
                 pathJoin(buildOptions.keycloakifyBuildDirPath, generateStartKeycloakTestingContainer.basename)
             )} 👈`,
             ``,
