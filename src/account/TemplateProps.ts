@@ -11,4 +11,11 @@ export type TemplateProps<KcContext extends KcContext.Common, I18nExtended exten
     children: ReactNode;
 };
 
-export type ClassKey = "kcHtmlClass" | "kcBodyClass" | "kcButtonClass" | "kcButtonPrimaryClass" | "kcButtonLargeClass" | "kcButtonDefaultClass";
+export type ClassKey =
+    | "kcHtmlClass"
+    | "kcBodyClass"
+    | "kcButtonClass"
+    | "kcButtonPrimaryClass"
+    | "kcButtonLargeClass"
+    | "kcButtonDefaultClass"
+    | "kcContentWrapperClass";

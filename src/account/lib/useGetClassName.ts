@@ -6,6 +6,7 @@ export const { useGetClassName } = createUseClassName<ClassKey>({
         "kcHtmlClass": undefined,
         "kcBodyClass": undefined,
         "kcButtonClass": "btn",
+        "kcContentWrapperClass": "row",
         "kcButtonPrimaryClass": "btn-primary",
         "kcButtonLargeClass": "btn-lg",
         "kcButtonDefaultClass": "btn-default"

@@ -3,7 +3,7 @@ import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
 import { type ThemeType } from "keycloakify/bin/constants";
 
-export type KcContext = KcContext.Password | KcContext.Account;
+export type KcContext = KcContext.Password | KcContext.Account | KcContext.Sessions;
 
 export declare namespace KcContext {
     export type Common = {
@@ -90,6 +90,15 @@ export declare namespace KcContext {
             lastName?: string;
             username?: string;
         };
+        sessions: {
+            sessions: {
+                ipAddress: string;
+                started?: any;
+                lastAccess?: any;
+                expires?: any;
+                clients: string[];
+            }[];
+        };
     };
 
     export type Password = Common & {
@@ -108,6 +117,20 @@ export declare namespace KcContext {
         realm: {
             registrationEmailAsUsername: boolean;
             editUsernameAllowed: boolean;
+        };
+        stateChecker: string;
+    };
+
+    export type Sessions = Common & {
+        pageId: "sessions.ftl";
+        sessions: {
+            sessions: {
+                ipAddress: string;
+                started?: any;
+                lastAccess?: any;
+                expires?: any;
+                clients: string[];
+            }[];
         };
         stateChecker: string;
     };

@@ -147,6 +147,17 @@ export const kcContextCommonMock: KcContext.Common = {
         "lastName": "doe",
         "email": "john.doe@code.gouv.fr",
         "username": "doe_j"
+    },
+    "sessions": {
+        "sessions": [
+            {
+                "ipAddress": "127.0.0.1",
+                "started": new Date().toString(),
+                "lastAccess": new Date().toString(),
+                "expires": new Date().toString(),
+                "clients": ["Chrome", "Firefox"]
+            }
+        ]
     }
 };
 
@@ -171,6 +182,23 @@ export const kcContextMocks: KcContext[] = [
             ...kcContextCommonMock.realm,
             "registrationEmailAsUsername": true,
             "editUsernameAllowed": true
+        },
+        "stateChecker": ""
+    }),
+    id<KcContext.Sessions>({
+        ...kcContextCommonMock,
+        "pageId": "sessions.ftl",
+        sessions: {
+            sessions: [
+                {
+                    ...kcContextCommonMock.sessions,
+                    ipAddress: "127.0.0.1",
+                    started: new Date().toString(),
+                    lastAccess: new Date().toString(),
+                    expires: new Date().toString(),
+                    clients: ["Chrome", "Firefox"]
+                }
+            ]
         },
         "stateChecker": ""
     })

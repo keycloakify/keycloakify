@@ -6,6 +6,7 @@ import { assert, type Equals } from "tsafe/assert";
 
 const Password = lazy(() => import("keycloakify/account/pages/Password"));
 const Account = lazy(() => import("keycloakify/account/pages/Account"));
+const Sessions = lazy(() => import("keycloakify/account/pages/Sessions"));
 
 export default function Fallback(props: PageProps<KcContext, I18n>) {
     const { kcContext, ...rest } = props;
@@ -16,6 +17,8 @@ export default function Fallback(props: PageProps<KcContext, I18n>) {
                 switch (kcContext.pageId) {
                     case "password.ftl":
                         return <Password kcContext={kcContext} {...rest} />;
+                    case "sessions.ftl":
+                        return <Sessions kcContext={kcContext} {...rest} />;
                     case "account.ftl":
                         return <Account kcContext={kcContext} {...rest} />;
                 }
