@@ -17,7 +17,7 @@ const isSilent = true;
 const logger = getLogger({ isSilent });
 
 async function main() {
-    const keycloakVersion = "23.0.4";
+    const keycloakVersion = "11.0.3";
 
     const tmpDirPath = pathJoin(getProjectRoot(), "tmp_xImOef9dOd44");
 

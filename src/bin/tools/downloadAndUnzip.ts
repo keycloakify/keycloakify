@@ -267,18 +267,22 @@ export async function downloadAndUnzip(
                 child_process.execSync(`npm install -g putasset`);
             }
 
-            child_process.execFileSync("putasset", [
-                "--owner",
-                "keycloakify",
-                "--repo",
-                "keycloakify",
-                "--tag",
-                "v0.0.1",
-                "--filename",
-                zipFilePath,
-                "--token",
-                githubToken
-            ]);
+            try {
+                child_process.execFileSync("putasset", [
+                    "--owner",
+                    "keycloakify",
+                    "--repo",
+                    "keycloakify",
+                    "--tag",
+                    "v0.0.1",
+                    "--filename",
+                    zipFilePath,
+                    "--token",
+                    githubToken
+                ]);
+            } catch {
+                console.log("upload failed, asset probably already exists in remote cache");
+            }
         }
     }
 
