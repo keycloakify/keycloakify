@@ -206,9 +206,15 @@ export async function downloadAndUnzip(
         if (specificDirsToExtract !== undefined || preCacheTransform !== undefined) {
             await unzip(zipFilePath, extractDirPath, specificDirsToExtract);
 
-            await preCacheTransform?.action({
-                "destDirPath": extractDirPath
-            });
+            try {
+                await preCacheTransform?.action({
+                    "destDirPath": extractDirPath
+                });
+            } catch (error) {
+                await Promise.all([rm(extractDirPath, { "recursive": true }), unlink(zipFilePath)]);
+
+                throw error;
+            }
 
             await unlink(zipFilePath);
 

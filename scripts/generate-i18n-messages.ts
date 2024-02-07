@@ -5,6 +5,7 @@ import { crawl } from "../src/bin/tools/crawl";
 import { downloadBuiltinKeycloakTheme } from "../src/bin/download-builtin-keycloak-theme";
 import { getProjectRoot } from "../src/bin/tools/getProjectRoot";
 import { getLogger } from "../src/bin/tools/logger";
+import { rmSync } from "../src/bin/tools/fs.rmSync";
 
 // NOTE: To run without argument when we want to generate src/i18n/generated_kcMessages files,
 // update the version array for generating for newer version.
@@ -22,6 +23,10 @@ async function main() {
     const tmpDirPath = pathJoin(getProjectRoot(), "tmp_xImOef9dOd44");
 
     fs.rmSync(tmpDirPath, { "recursive": true, "force": true });
+
+    fs.mkdirSync(tmpDirPath);
+
+    fs.writeFileSync(pathJoin(tmpDirPath, ".gitignore"), Buffer.from("/*\n!.gitignore\n", "utf8"));
 
     await downloadBuiltinKeycloakTheme({
         keycloakVersion,

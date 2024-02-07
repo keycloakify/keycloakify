@@ -1,11 +1,10 @@
-/// <reference types="vitest" />
-import { defineConfig } from "vite";
-import path from "path";
+import { defineConfig } from "vitest/config";
+import { resolve as pathResolve } from "path";
 
 export default defineConfig({
     "test": {
         "alias": {
-            "keycloakify": path.resolve(__dirname, "./src")
+            "keycloakify": pathResolve(__dirname, "./src")
         },
         "watchExclude": ["**/node_modules/**", "**/dist/**", "**/sample_react_project/**"]
     }

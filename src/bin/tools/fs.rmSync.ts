@@ -1,14 +1,15 @@
 import * as fs from "fs";
 import { join as pathJoin } from "path";
-import { NpmModuleVersion } from "./NpmModuleVersion";
+import { SemVer } from "./SemVer";
 
 /**
  * Polyfill of fs.rmSync(dirPath, { "recursive": true })
  * For older version of Node
  */
 export function rmSync(dirPath: string, options: { recursive: true; force?: true }) {
-    if (NpmModuleVersion.compare(NpmModuleVersion.parse(process.version), NpmModuleVersion.parse("14.14.0")) > 0) {
+    if (SemVer.compare(SemVer.parse(process.version), SemVer.parse("14.14.0")) > 0) {
         fs.rmSync(dirPath, options);
+        return;
     }
 
     const { force = true } = options;
