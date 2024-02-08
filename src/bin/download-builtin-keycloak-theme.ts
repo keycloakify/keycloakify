@@ -62,9 +62,9 @@ export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: st
 
                 // Note, this is an optimization for reducing the size of the jar
                 remove_unused_node_modules: {
-                    const pathOfNodeModules = pathJoin(destDirPath, "keycloak", "common", "resources", "node_modules");
+                    const nodeModuleDirPath = pathJoin(destDirPath, "keycloak", "common", "resources", "node_modules");
 
-                    if (!fs.existsSync(pathOfNodeModules)) {
+                    if (!fs.existsSync(nodeModuleDirPath)) {
                         break remove_unused_node_modules;
                     }
 
@@ -114,8 +114,8 @@ export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: st
                     ];
 
                     transformCodebase({
-                        "srcDirPath": pathOfNodeModules,
-                        "destDirPath": pathOfNodeModules,
+                        "srcDirPath": nodeModuleDirPath,
+                        "destDirPath": nodeModuleDirPath,
                         "transformSourceCode": ({ sourceCode, fileRelativePath }) => {
                             if (fileRelativePath.endsWith(".map")) {
                                 return undefined;
@@ -133,6 +133,33 @@ export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: st
                                 ) {
                                     return undefined;
                                 }
+                            }
+
+                            return { "modifiedSourceCode": sourceCode };
+                        }
+                    });
+                }
+
+                // Just like node_modules
+                remove_unused_lib: {
+                    const libDirPath = pathJoin(destDirPath, "keycloak", "common", "resources", "lib");
+
+                    if (!fs.existsSync(libDirPath)) {
+                        break remove_unused_lib;
+                    }
+
+                    const toDeletePerfixes = ["ui-ace", "filesaver", "fileupload", "angular", "ui-ace", "pficon"];
+
+                    transformCodebase({
+                        "srcDirPath": libDirPath,
+                        "destDirPath": libDirPath,
+                        "transformSourceCode": ({ sourceCode, fileRelativePath }) => {
+                            if (fileRelativePath.endsWith(".map")) {
+                                return undefined;
+                            }
+
+                            if (toDeletePerfixes.find(prefix => fileRelativePath.startsWith(prefix)) !== undefined) {
+                                return undefined;
                             }
 
                             return { "modifiedSourceCode": sourceCode };
@@ -187,34 +214,20 @@ export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: st
                     {
                         const nodeModulesDirPath = pathJoin(destDirPath, "keycloak", "common", "resources", "node_modules");
 
-                        const usedCommonResourceRelativeFilePaths = [
+                        const toKeepPrefixes = [
                             ...["patternfly.min.css", "patternfly-additions.min.css", "patternfly-additions.min.css"].map(fileBasename =>
                                 pathJoin("patternfly", "dist", "css", fileBasename)
                             ),
-                            ...[
-                                "OpenSans-Light-webfont.woff2",
-                                "OpenSans-Regular-webfont.woff2",
-                                "OpenSans-Bold-webfont.woff2",
-                                "OpenSans-Semibold-webfont.woff2",
-                                "OpenSans-Bold-webfont.woff",
-                                "OpenSans-Light-webfont.woff",
-                                "OpenSans-Regular-webfont.woff",
-                                "OpenSans-Semibold-webfont.woff",
-                                "OpenSans-Regular-webfont.ttf",
-                                "OpenSans-Light-webfont.ttf",
-                                "OpenSans-Semibold-webfont.ttf",
-                                "OpenSans-Bold-webfont.ttf"
-                            ].map(fileBasename => pathJoin("patternfly", "dist", "fonts", fileBasename))
+                            pathJoin("patternfly", "dist", "fonts")
                         ];
 
                         transformCodebase({
                             "srcDirPath": nodeModulesDirPath,
                             "destDirPath": nodeModulesDirPath,
                             "transformSourceCode": ({ sourceCode, fileRelativePath }) => {
-                                if (!usedCommonResourceRelativeFilePaths.includes(fileRelativePath)) {
+                                if (toKeepPrefixes.find(prefix => fileRelativePath.startsWith(prefix)) === undefined) {
                                     return undefined;
                                 }
-
                                 return { "modifiedSourceCode": sourceCode };
                             }
                         });
