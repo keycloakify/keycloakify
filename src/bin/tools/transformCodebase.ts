@@ -17,13 +17,14 @@ type TransformSourceCode = (params: { sourceCode: Buffer; filePath: string; file
  * */
 export function transformCodebase(params: { srcDirPath: string; destDirPath: string; transformSourceCode?: TransformSourceCode }) {
     const { srcDirPath, transformSourceCode } = params;
-    let { destDirPath } = params;
 
-    const isTargetSameAsSource = path.relative(srcDirPath, destDirPath) === "";
+    const isTargetSameAsSource = path.relative(srcDirPath, params.destDirPath) === "";
 
-    if (isTargetSameAsSource) {
-        destDirPath = path.join(srcDirPath, "..", "tmp_xOsPdkPsTdzPs34sOkHs");
-    }
+    const destDirPath = isTargetSameAsSource ? path.join(srcDirPath, "..", "tmp_xOsPdkPsTdzPs34sOkHs") : params.destDirPath;
+
+    fs.mkdirSync(destDirPath, {
+        "recursive": true
+    });
 
     for (const fileRelativePath of crawl({ "dirPath": srcDirPath, "returnedPathsType": "relative to dirPath" })) {
         const filePath = path.join(srcDirPath, fileRelativePath);

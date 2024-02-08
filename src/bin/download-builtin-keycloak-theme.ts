@@ -182,9 +182,10 @@ export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: st
                         );
                     }
 
-                    // Note, this is an optimization for reducing the size of the jar
+                    // Note, this is an optimization for reducing the size of the jar,
+                    // For this version we know exactly which resources are used.
                     {
-                        const nodeModulesDirPath = pathJoin(destDirPath, "keycloak", "common", "resources");
+                        const nodeModulesDirPath = pathJoin(destDirPath, "keycloak", "common", "resources", "node_modules");
 
                         const usedCommonResourceRelativeFilePaths = [
                             ...["patternfly.min.css", "patternfly-additions.min.css", "patternfly-additions.min.css"].map(fileBasename =>
