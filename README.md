@@ -43,6 +43,10 @@
 
 Keycloakify is fully compatible with Keycloak 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, [~~22~~](https://github.com/keycloakify/keycloakify/issues/389#issuecomment-1822509763), **23** [and up](https://github.com/keycloakify/keycloakify/discussions/346#discussioncomment-5889791)!
 
+> 📣 I've observed that a few people have unstarred the project recently.  
+> I'm concerned that I may have inadvertently introduced some misinformation in the documentation, leading to frustration.  
+> If you're having a negative experience, [please let me know so I can resolve the issue](https://github.com/keycloakify/keycloakify/discussions/507).
+
 ## Sponsor 👼
 
 We are exclusively sponsored by [Cloud IAM](https://cloud-iam.com/?mtm_campaign=keycloakify-deal&mtm_source=keycloakify-github), a French company offering Keycloak as a service.  
@@ -114,6 +118,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://m-siemens.de/"><img src="https://avatars.githubusercontent.com/u/1873922?v=4?s=100" width="100px;" alt="Markus Siemens"/><br /><sub><b>Markus Siemens</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=msiemens" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/law108000"><img src="https://avatars.githubusercontent.com/u/8112024?v=4?s=100" width="100px;" alt="Rlok"/><br /><sub><b>Rlok</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=law108000" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Moulyy"><img src="https://avatars.githubusercontent.com/u/115405804?v=4?s=100" width="100px;" alt="Moulyy"/><br /><sub><b>Moulyy</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=Moulyy" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/giorgoslytos"><img src="https://avatars.githubusercontent.com/u/50946162?v=4?s=100" width="100px;" alt="giorgoslytos"/><br /><sub><b>giorgoslytos</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=giorgoslytos" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
@@ -127,7 +132,8 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 ## 9.0
 
-Bring back support for account themes in Keycloak v23 and up! [See issue](https://github.com/keycloakify/keycloakify/issues/389).
+Bring back support for account themes in Keycloak v23 and up! [See issue](https://github.com/keycloakify/keycloakify/issues/389).  
+[Read the migration guide](https://docs.keycloakify.dev/migration-guides/v8-greater-than-v9).
 
 ### Breaking changes
 
