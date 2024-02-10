@@ -1,5 +1,6 @@
 import type { DeepPartial } from "keycloakify/tools/DeepPartial";
 import { deepAssign } from "keycloakify/tools/deepAssign";
+import { isStorybook } from "keycloakify/lib/isStorybook";
 import type { ExtendKcContext } from "./getKcContextFromWindow";
 import { getKcContextFromWindow } from "./getKcContextFromWindow";
 import { symToStr } from "tsafe/symToStr";
@@ -25,7 +26,13 @@ export function createGetKcContext<KcContextExtension extends { pageId: string }
         if (mockPageId !== undefined && realKcContext === undefined) {
             //TODO maybe trow if no mock fo custom page
 
-            console.log(`%cKeycloakify: ${symToStr({ mockPageId })} set to ${mockPageId}.`, "background: red; color: yellow; font-size: medium");
+            warn_that_mock_is_enbaled: {
+                if (isStorybook) {
+                    break warn_that_mock_is_enbaled;
+                }
+
+                console.log(`%cKeycloakify: ${symToStr({ mockPageId })} set to ${mockPageId}.`, "background: red; color: yellow; font-size: medium");
+            }
 
             const kcContextDefaultMock = kcContextMocks.find(({ pageId }) => pageId === mockPageId);
 
