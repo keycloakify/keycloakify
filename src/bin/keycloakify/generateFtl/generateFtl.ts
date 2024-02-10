@@ -7,7 +7,7 @@ import { join as pathJoin } from "path";
 import { objectKeys } from "tsafe/objectKeys";
 import type { BuildOptions } from "../buildOptions";
 import { assert } from "tsafe/assert";
-import { type ThemeType, nameOfTheGlobal, basenameOfTheKeycloakifyResourcesDir } from "../../constants";
+import { type ThemeType, nameOfTheGlobal, basenameOfTheKeycloakifyResourcesDir, resources_common } from "../../constants";
 
 export type BuildOptionsLike = {
     bundler: "vite" | "webpack";
@@ -105,7 +105,8 @@ export function generateFtlFilesCodeFactory(params: {
             .replace("KEYCLOAKIFY_VERSION_xEdKd3xEdr", keycloakifyVersion)
             .replace("KEYCLOAKIFY_THEME_VERSION_sIgKd3xEdr3dx", buildOptions.themeVersion)
             .replace("KEYCLOAKIFY_THEME_TYPE_dExKd3xEdr", themeType)
-            .replace("KEYCLOAKIFY_THEME_NAME_cXxKd3xEer", themeName),
+            .replace("KEYCLOAKIFY_THEME_NAME_cXxKd3xEer", themeName)
+            .replace("RESOURCES_COMMON_cLsLsMrtDkpVv", resources_common),
         "<!-- xIdLqMeOedErIdLsPdNdI9dSlxI -->": [
             "<#if scripts??>",
             "    <#list scripts as script>",

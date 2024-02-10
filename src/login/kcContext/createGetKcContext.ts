@@ -8,7 +8,6 @@ import { assert } from "tsafe/assert";
 import type { ExtendKcContext } from "./getKcContextFromWindow";
 import { getKcContextFromWindow } from "./getKcContextFromWindow";
 import { symToStr } from "tsafe/symToStr";
-import { resources_common } from "keycloakify/bin/constants";
 
 export function createGetKcContext<KcContextExtension extends { pageId: string } = never>(params?: {
     mockData?: readonly DeepPartial<ExtendKcContext<KcContextExtension>>[];
@@ -145,8 +144,6 @@ export function createGetKcContext<KcContextExtension extends { pageId: string }
         if (realKcContext.themeType !== "login") {
             return { "kcContext": undefined as any };
         }
-
-        realKcContext.url.resourcesCommonPath = `${realKcContext.url.resourcesPath}/${resources_common}`;
 
         return { "kcContext": realKcContext as any };
     }

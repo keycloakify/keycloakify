@@ -3,7 +3,6 @@ import { deepAssign } from "keycloakify/tools/deepAssign";
 import type { ExtendKcContext } from "./getKcContextFromWindow";
 import { getKcContextFromWindow } from "./getKcContextFromWindow";
 import { symToStr } from "tsafe/symToStr";
-import { resources_common } from "keycloakify/bin/constants";
 import { kcContextMocks, kcContextCommonMock } from "keycloakify/account/kcContext/kcContextMocks";
 
 export function createGetKcContext<KcContextExtension extends { pageId: string } = never>(params?: {
@@ -86,8 +85,6 @@ export function createGetKcContext<KcContextExtension extends { pageId: string }
         if (realKcContext.themeType !== "account") {
             return { "kcContext": undefined as any };
         }
-
-        realKcContext.url.resourcesCommonPath = `${realKcContext.url.resourcesPath}/${resources_common}`;
 
         return { "kcContext": realKcContext as any };
     }
