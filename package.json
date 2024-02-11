@@ -119,7 +119,6 @@
         "make-fetch-happen": "^11.0.3",
         "minimal-polyfills": "^2.2.2",
         "minimist": "^1.2.6",
-        "path-browserify": "^1.0.1",
         "react-markdown": "^5.0.3",
         "recast": "^0.23.3",
         "rfc4648": "^1.5.2",
