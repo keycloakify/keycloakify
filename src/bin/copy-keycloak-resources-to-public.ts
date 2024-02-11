@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { downloadKeycloakStaticResources } from "./keycloakify/generateTheme/downloadKeycloakStaticResources";
-import { join as pathJoin, relative as pathRelative } from "path";
+import { join as pathJoin } from "path";
 import { readBuildOptions } from "./keycloakify/buildOptions";
 import { themeTypes, keycloak_resources, lastKeycloakVersionWithAccountV1 } from "./constants";
 import * as fs from "fs";
@@ -41,6 +41,4 @@ import * as fs from "fs";
     );
 
     fs.writeFileSync(pathJoin(buildOptions.publicDirPath, keycloak_resources, ".gitignore"), Buffer.from("*", "utf8"));
-
-    console.log(`${pathRelative(buildOptions.reactAppRootDirPath, reservedDirPath)} directory created.`);
 })();
