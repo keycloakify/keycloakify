@@ -11,11 +11,14 @@ import { kebabCaseToCamelCase } from "./tools/kebabCaseToSnakeCase";
 import { assert, Equals } from "tsafe/assert";
 import { getThemeSrcDirPath } from "./getThemeSrcDirPath";
 import { themeTypes, type ThemeType } from "./constants";
+import { getReactAppRootDirPath } from "./keycloakify/buildOptions/getReactAppRootDirPath";
 
 (async () => {
     console.log("Select a theme type");
 
-    const reactAppRootDirPath = process.cwd();
+    const { reactAppRootDirPath } = getReactAppRootDirPath({
+        "processArgv": process.argv.slice(2)
+    });
 
     const { value: themeType } = await cliSelect<ThemeType>({
         "values": [...themeTypes]

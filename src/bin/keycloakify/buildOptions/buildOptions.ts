@@ -4,7 +4,9 @@ import { join as pathJoin } from "path";
 import parseArgv from "minimist";
 import { getAbsoluteAndInOsFormatPath } from "../../tools/getAbsoluteAndInOsFormatPath";
 import { readResolvedViteConfig } from "./resolvedViteConfig";
-import { getKeycloakifyBuildDirPath } from "./getKeycloakifyBuildDirPath";
+import * as fs from "fs";
+import { getCacheDirPath } from "./getCacheDirPath";
+import { getReactAppRootDirPath } from "./getReactAppRootDirPath";
 
 /** Consolidated build option gathered form CLI arguments and config in package.json */
 export type BuildOptions = {
@@ -33,28 +35,17 @@ export type BuildOptions = {
 export function readBuildOptions(params: { processArgv: string[] }): BuildOptions {
     const { processArgv } = params;
 
-    const argv = parseArgv(processArgv);
+    const { reactAppRootDirPath } = getReactAppRootDirPath({ processArgv });
 
-    const reactAppRootDirPath = (() => {
-        const arg = argv["project"] ?? argv["p"];
+    const { cacheDirPath } = getCacheDirPath({ reactAppRootDirPath });
 
-        if (typeof arg !== "string") {
-            return process.cwd();
-        }
+    const { resolvedViteConfig } = readResolvedViteConfig({ cacheDirPath });
 
-        return getAbsoluteAndInOsFormatPath({
-            "pathIsh": arg,
-            "cwd": process.cwd()
-        });
-    })();
+    if (resolvedViteConfig === undefined && fs.existsSync(pathJoin(reactAppRootDirPath, "vite.config.ts"))) {
+        throw new Error("Keycloakify's Vite plugin output not found");
+    }
 
     const parsedPackageJson = readParsedPackageJson({ reactAppRootDirPath });
-
-    const { resolvedViteConfig } =
-        readResolvedViteConfig({
-            "parsedPackageJson_keycloakify_keycloakifyBuildDirPath": parsedPackageJson.keycloakify?.keycloakifyBuildDirPath,
-            reactAppRootDirPath
-        }) ?? {};
 
     const themeNames = (() => {
         if (parsedPackageJson.keycloakify?.themeName === undefined) {
@@ -72,12 +63,6 @@ export function readBuildOptions(params: { processArgv: string[] }): BuildOption
 
         return parsedPackageJson.keycloakify.themeName;
     })();
-
-    const { keycloakifyBuildDirPath } = getKeycloakifyBuildDirPath({
-        "parsedPackageJson_keycloakify_keycloakifyBuildDirPath": parsedPackageJson.keycloakify?.keycloakifyBuildDirPath,
-        reactAppRootDirPath,
-        "bundler": resolvedViteConfig !== undefined ? "vite" : "webpack"
-    });
 
     const reactAppBuildDirPath = (() => {
         webpack: {
@@ -97,6 +82,8 @@ export function readBuildOptions(params: { processArgv: string[] }): BuildOption
 
         return pathJoin(reactAppRootDirPath, resolvedViteConfig.buildDir);
     })();
+
+    const argv = parseArgv(processArgv);
 
     return {
         "bundler": resolvedViteConfig !== undefined ? "vite" : "webpack",
@@ -124,7 +111,16 @@ export function readBuildOptions(params: { processArgv: string[] }): BuildOption
         "loginThemeResourcesFromKeycloakVersion": parsedPackageJson.keycloakify?.loginThemeResourcesFromKeycloakVersion ?? "11.0.3",
         reactAppRootDirPath,
         reactAppBuildDirPath,
-        keycloakifyBuildDirPath,
+        "keycloakifyBuildDirPath": (() => {
+            if (parsedPackageJson.keycloakify?.keycloakifyBuildDirPath !== undefined) {
+                return getAbsoluteAndInOsFormatPath({
+                    "pathIsh": parsedPackageJson.keycloakify?.keycloakifyBuildDirPath,
+                    "cwd": reactAppRootDirPath
+                });
+            }
+
+            return resolvedViteConfig?.buildDir === undefined ? "build_keycloak" : `${resolvedViteConfig.buildDir}_keycloak`;
+        })(),
         "publicDirPath": (() => {
             webpack: {
                 if (resolvedViteConfig !== undefined) {
@@ -143,19 +139,7 @@ export function readBuildOptions(params: { processArgv: string[] }): BuildOption
 
             return pathJoin(reactAppRootDirPath, resolvedViteConfig.publicDir);
         })(),
-        "cacheDirPath": pathJoin(
-            (() => {
-                if (process.env.XDG_CACHE_HOME !== undefined) {
-                    return getAbsoluteAndInOsFormatPath({
-                        "pathIsh": process.env.XDG_CACHE_HOME,
-                        "cwd": reactAppRootDirPath
-                    });
-                }
-
-                return pathJoin(reactAppRootDirPath, "node_modules", ".cache");
-            })(),
-            "keycloakify"
-        ),
+        cacheDirPath,
         "urlPathname": (() => {
             webpack: {
                 if (resolvedViteConfig !== undefined) {

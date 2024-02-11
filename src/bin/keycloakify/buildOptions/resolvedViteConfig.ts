@@ -5,7 +5,6 @@ import { z } from "zod";
 import { join as pathJoin } from "path";
 import { resolvedViteConfigJsonBasename } from "../../constants";
 import type { OptionalIfCanBeUndefined } from "../../tools/OptionalIfCanBeUndefined";
-import { getKeycloakifyBuildDirPath } from "./getKeycloakifyBuildDirPath";
 
 export type ResolvedViteConfig = {
     buildDir: string;
@@ -28,31 +27,18 @@ const zResolvedViteConfig = z.object({
     assert<Equals<Got, Expected>>();
 }
 
-export function readResolvedViteConfig(params: {
-    reactAppRootDirPath: string;
-    parsedPackageJson_keycloakify_keycloakifyBuildDirPath: string | undefined;
-}):
-    | {
-          resolvedViteConfig: ResolvedViteConfig;
-      }
-    | undefined {
-    const { reactAppRootDirPath, parsedPackageJson_keycloakify_keycloakifyBuildDirPath } = params;
+export function readResolvedViteConfig(params: { cacheDirPath: string }): {
+    resolvedViteConfig: ResolvedViteConfig | undefined;
+} {
+    const { cacheDirPath } = params;
 
-    const viteConfigTsFilePath = pathJoin(reactAppRootDirPath, "vite.config.ts");
+    const resolvedViteConfigJsonFilePath = pathJoin(cacheDirPath, resolvedViteConfigJsonBasename);
 
-    if (!fs.existsSync(viteConfigTsFilePath)) {
-        return undefined;
+    if (!fs.existsSync(resolvedViteConfigJsonFilePath)) {
+        return { "resolvedViteConfig": undefined };
     }
 
-    const { keycloakifyBuildDirPath } = getKeycloakifyBuildDirPath({
-        reactAppRootDirPath,
-        parsedPackageJson_keycloakify_keycloakifyBuildDirPath,
-        "bundler": "vite"
-    });
-
     const resolvedViteConfig = (() => {
-        const resolvedViteConfigJsonFilePath = pathJoin(keycloakifyBuildDirPath, resolvedViteConfigJsonBasename);
-
         if (!fs.existsSync(resolvedViteConfigJsonFilePath)) {
             throw new Error("Missing Keycloakify Vite plugin output.");
         }

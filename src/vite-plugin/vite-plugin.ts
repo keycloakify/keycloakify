@@ -1,11 +1,10 @@
 import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path";
-import { readParsedPackageJson } from "../bin/keycloakify/buildOptions/parsedPackageJson";
 import type { Plugin } from "vite";
 import { assert } from "tsafe/assert";
 import * as fs from "fs";
 import { resolvedViteConfigJsonBasename, nameOfTheGlobal, basenameOfTheKeycloakifyResourcesDir, keycloak_resources } from "../bin/constants";
 import type { ResolvedViteConfig } from "../bin/keycloakify/buildOptions/resolvedViteConfig";
-import { getKeycloakifyBuildDirPath } from "../bin/keycloakify/buildOptions/getKeycloakifyBuildDirPath";
+import { getCacheDirPath } from "../bin/keycloakify/buildOptions/getCacheDirPath";
 import { replaceAll } from "../bin/tools/String.prototype.replaceAll";
 import { id } from "tsafe/id";
 import { rm } from "../bin/tools/fs.rm";
@@ -40,19 +39,16 @@ export function keycloakify(): Plugin {
 
             buildDirPath = pathJoin(reactAppRootDirPath, resolvedConfig.build.outDir);
 
-            const { keycloakifyBuildDirPath } = getKeycloakifyBuildDirPath({
-                "parsedPackageJson_keycloakify_keycloakifyBuildDirPath": readParsedPackageJson({ reactAppRootDirPath }).keycloakify
-                    ?.keycloakifyBuildDirPath,
-                reactAppRootDirPath,
-                "bundler": "vite"
+            const { cacheDirPath } = getCacheDirPath({
+                reactAppRootDirPath
             });
 
-            if (!fs.existsSync(keycloakifyBuildDirPath)) {
-                fs.mkdirSync(keycloakifyBuildDirPath);
+            if (!fs.existsSync(cacheDirPath)) {
+                fs.mkdirSync(cacheDirPath);
             }
 
             fs.writeFileSync(
-                pathJoin(keycloakifyBuildDirPath, resolvedViteConfigJsonBasename),
+                pathJoin(cacheDirPath, resolvedViteConfigJsonBasename),
                 Buffer.from(
                     JSON.stringify(
                         id<ResolvedViteConfig>({
