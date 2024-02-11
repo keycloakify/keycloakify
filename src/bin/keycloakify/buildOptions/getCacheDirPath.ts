@@ -1,8 +1,11 @@
 import { join as pathJoin } from "path";
 import { getAbsoluteAndInOsFormatPath } from "../../tools/getAbsoluteAndInOsFormatPath";
+import { getNpmWorkspaceRootDirPath } from "./getNpmWorkspaceRootDirPath";
 
 export function getCacheDirPath(params: { reactAppRootDirPath: string }) {
     const { reactAppRootDirPath } = params;
+
+    const { npmWorkspaceRootDirPath } = getNpmWorkspaceRootDirPath({ reactAppRootDirPath });
 
     const cacheDirPath = pathJoin(
         (() => {
@@ -13,8 +16,7 @@ export function getCacheDirPath(params: { reactAppRootDirPath: string }) {
                 });
             }
 
-            // TODO: Recursively look up
-            return pathJoin(reactAppRootDirPath, "node_modules", ".cache");
+            return pathJoin(npmWorkspaceRootDirPath, "node_modules", ".cache");
         })(),
         "keycloakify"
     );

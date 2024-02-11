@@ -11,6 +11,7 @@ import { rmSync } from "../../tools/fs.rmSync";
 type BuildOptionsLike = {
     keycloakifyBuildDirPath: string;
     cacheDirPath: string;
+    npmWorkspaceRootDirPath: string;
 };
 
 {

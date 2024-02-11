@@ -7,6 +7,7 @@ import { readResolvedViteConfig } from "./resolvedViteConfig";
 import * as fs from "fs";
 import { getCacheDirPath } from "./getCacheDirPath";
 import { getReactAppRootDirPath } from "./getReactAppRootDirPath";
+import { getNpmWorkspaceRootDirPath } from "./getNpmWorkspaceRootDirPath";
 
 /** Consolidated build option gathered form CLI arguments and config in package.json */
 export type BuildOptions = {
@@ -30,6 +31,7 @@ export type BuildOptions = {
     urlPathname: string | undefined;
     assetsDirPath: string;
     doBuildRetrocompatAccountTheme: boolean;
+    npmWorkspaceRootDirPath: string;
 };
 
 export function readBuildOptions(params: { processArgv: string[] }): BuildOptions {
@@ -84,6 +86,8 @@ export function readBuildOptions(params: { processArgv: string[] }): BuildOption
     })();
 
     const argv = parseArgv(processArgv);
+
+    const { npmWorkspaceRootDirPath } = getNpmWorkspaceRootDirPath({ reactAppRootDirPath });
 
     return {
         "bundler": resolvedViteConfig !== undefined ? "vite" : "webpack",
@@ -175,6 +179,7 @@ export function readBuildOptions(params: { processArgv: string[] }): BuildOption
 
             return pathJoin(reactAppBuildDirPath, resolvedViteConfig.assetsDir);
         })(),
-        "doBuildRetrocompatAccountTheme": parsedPackageJson.keycloakify?.doBuildRetrocompatAccountTheme ?? true
+        "doBuildRetrocompatAccountTheme": parsedPackageJson.keycloakify?.doBuildRetrocompatAccountTheme ?? true,
+        npmWorkspaceRootDirPath
     };
 }

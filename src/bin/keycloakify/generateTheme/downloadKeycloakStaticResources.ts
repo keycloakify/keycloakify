@@ -9,6 +9,7 @@ import { rmSync } from "../../tools/fs.rmSync";
 
 export type BuildOptionsLike = {
     cacheDirPath: string;
+    npmWorkspaceRootDirPath: string;
 };
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();

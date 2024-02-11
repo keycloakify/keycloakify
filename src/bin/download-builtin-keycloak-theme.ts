@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { join as pathJoin } from "path";
-import { downloadAndUnzip } from "./tools/downloadAndUnzip";
+import { downloadAndUnzip } from "./downloadAndUnzip";
 import { promptKeycloakVersion } from "./promptKeycloakVersion";
 import { getLogger } from "./tools/logger";
 import { readBuildOptions, type BuildOptions } from "./keycloakify/buildOptions";
@@ -13,6 +13,7 @@ import { transformCodebase } from "./tools/transformCodebase";
 
 export type BuildOptionsLike = {
     cacheDirPath: string;
+    npmWorkspaceRootDirPath: string;
 };
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
@@ -21,11 +22,10 @@ export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: st
     const { keycloakVersion, destDirPath, buildOptions } = params;
 
     await downloadAndUnzip({
-        "doUseCache": true,
-        "cacheDirPath": buildOptions.cacheDirPath,
         destDirPath,
         "url": `https://github.com/keycloak/keycloak/archive/refs/tags/${keycloakVersion}.zip`,
         "specificDirsToExtract": ["", "-community"].map(ext => `keycloak-${keycloakVersion}/themes/src/main/resources${ext}/theme`),
+        buildOptions,
         "preCacheTransform": {
             "actionCacheId": "npm install and build",
             "action": async ({ destDirPath }) => {

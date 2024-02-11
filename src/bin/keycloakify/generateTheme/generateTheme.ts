@@ -33,6 +33,7 @@ export type BuildOptionsLike = {
     urlPathname: string | undefined;
     doBuildRetrocompatAccountTheme: boolean;
     themeNames: string[];
+    npmWorkspaceRootDirPath: string;
 };
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
