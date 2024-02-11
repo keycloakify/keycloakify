@@ -14,11 +14,13 @@ export function keycloakify(): Plugin {
     let reactAppRootDirPath: string | undefined = undefined;
     let urlPathname: string | undefined = undefined;
     let buildDirPath: string | undefined = undefined;
+    let command: "build" | "serve" | undefined = undefined;
 
     return {
         "name": "keycloakify",
-        "apply": "build",
         "configResolved": async resolvedConfig => {
+            command = resolvedConfig.command;
+
             reactAppRootDirPath = resolvedConfig.root;
             urlPathname = (() => {
                 let out = resolvedConfig.env.BASE_URL;
@@ -70,6 +72,12 @@ export function keycloakify(): Plugin {
             });
         },
         "transform": (code, id) => {
+            assert(command !== undefined);
+
+            if (command !== "build") {
+                return;
+            }
+
             assert(reactAppRootDirPath !== undefined);
 
             let transformedCode: string | undefined = undefined;
@@ -121,6 +129,12 @@ export function keycloakify(): Plugin {
             };
         },
         "buildEnd": async () => {
+            assert(command !== undefined);
+
+            if (command !== "build") {
+                return;
+            }
+
             assert(buildDirPath !== undefined);
 
             await rm(pathJoin(buildDirPath, keycloak_resources), { "recursive": true, "force": true });
