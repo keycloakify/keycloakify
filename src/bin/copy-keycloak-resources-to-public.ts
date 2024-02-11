@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { downloadKeycloakStaticResources, type BuildOptionsLike } from "./keycloakify/generateTheme/downloadKeycloakStaticResources";
-import { join as pathJoin } from "path";
+import { join as pathJoin, relative as pathRelative } from "path";
 import { readBuildOptions } from "./keycloakify/buildOptions";
 import { themeTypes, keycloak_resources, lastKeycloakVersionWithAccountV1 } from "./constants";
 import { readThisNpmProjectVersion } from "./tools/readThisNpmProjectVersion";
@@ -19,6 +19,7 @@ export async function copyKeycloakResourcesToPublic(params: { processArgv: strin
     const keycloakifyBuildinfoFilePath = pathJoin(destDirPath, "keycloakify.buildinfo");
 
     const { keycloakifyBuildinfoRaw } = generateKeycloakifyBuildinfoRaw({
+        destDirPath,
         "keycloakifyVersion": readThisNpmProjectVersion(),
         buildOptions
     });
@@ -72,12 +73,13 @@ export async function copyKeycloakResourcesToPublic(params: { processArgv: strin
 }
 
 export function generateKeycloakifyBuildinfoRaw(params: {
+    destDirPath: string;
     keycloakifyVersion: string;
     buildOptions: BuildOptionsLike & {
         loginThemeResourcesFromKeycloakVersion: string;
     };
 }) {
-    const { keycloakifyVersion, buildOptions } = params;
+    const { destDirPath, keycloakifyVersion, buildOptions } = params;
 
     const { cacheDirPath, npmWorkspaceRootDirPath, loginThemeResourcesFromKeycloakVersion, ...rest } = buildOptions;
 
@@ -88,8 +90,8 @@ export function generateKeycloakifyBuildinfoRaw(params: {
             keycloakifyVersion,
             "buildOptions": {
                 loginThemeResourcesFromKeycloakVersion,
-                cacheDirPath,
-                npmWorkspaceRootDirPath
+                "cacheDirPath": pathRelative(destDirPath, cacheDirPath),
+                "npmWorkspaceRootDirPath": pathRelative(destDirPath, npmWorkspaceRootDirPath)
             }
         },
         null,
