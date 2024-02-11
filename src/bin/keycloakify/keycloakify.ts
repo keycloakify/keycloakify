@@ -6,9 +6,9 @@ import { generateStartKeycloakTestingContainer } from "./generateStartKeycloakTe
 import * as fs from "fs";
 import { readBuildOptions } from "./buildOptions";
 import { getLogger } from "../tools/logger";
-import { assert } from "tsafe/assert";
 import { getThemeSrcDirPath } from "../getThemeSrcDirPath";
-import { getProjectRoot } from "../tools/getProjectRoot";
+import { getThisCodebaseRootDirPath } from "../tools/getThisCodebaseRootDirPath";
+import { readThisNpmProjectVersion } from "../tools/readThisNpmProjectVersion";
 
 export async function main() {
     const buildOptions = readBuildOptions({
@@ -18,23 +18,15 @@ export async function main() {
     const logger = getLogger({ "isSilent": buildOptions.isSilent });
     logger.log("🔏 Building the keycloak theme...⌚");
 
-    const keycloakifyDirPath = getProjectRoot();
-
     const { themeSrcDirPath } = getThemeSrcDirPath({ "reactAppRootDirPath": buildOptions.reactAppRootDirPath });
 
     for (const themeName of buildOptions.themeNames) {
         await generateTheme({
             themeName,
             themeSrcDirPath,
-            "keycloakifySrcDirPath": pathJoin(keycloakifyDirPath, "src"),
-            buildOptions,
-            "keycloakifyVersion": (() => {
-                const version = JSON.parse(fs.readFileSync(pathJoin(keycloakifyDirPath, "package.json")).toString("utf8"))["version"];
-
-                assert(typeof version === "string");
-
-                return version;
-            })()
+            "keycloakifySrcDirPath": pathJoin(getThisCodebaseRootDirPath(), "src"),
+            "keycloakifyVersion": readThisNpmProjectVersion(),
+            buildOptions
         });
     }
 

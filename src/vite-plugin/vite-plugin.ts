@@ -8,6 +8,7 @@ import { getCacheDirPath } from "../bin/keycloakify/buildOptions/getCacheDirPath
 import { replaceAll } from "../bin/tools/String.prototype.replaceAll";
 import { id } from "tsafe/id";
 import { rm } from "../bin/tools/fs.rm";
+import { copyKeycloakResourcesToPublic } from "../bin/copy-keycloak-resources-to-public";
 
 export function keycloakify(): Plugin {
     let reactAppRootDirPath: string | undefined = undefined;
@@ -17,7 +18,7 @@ export function keycloakify(): Plugin {
     return {
         "name": "keycloakify",
         "apply": "build",
-        "configResolved": resolvedConfig => {
+        "configResolved": async resolvedConfig => {
             reactAppRootDirPath = resolvedConfig.root;
             urlPathname = (() => {
                 let out = resolvedConfig.env.BASE_URL;
@@ -63,6 +64,10 @@ export function keycloakify(): Plugin {
                     "utf8"
                 )
             );
+
+            await copyKeycloakResourcesToPublic({
+                "processArgv": ["--project", reactAppRootDirPath]
+            });
         },
         "transform": (code, id) => {
             assert(reactAppRootDirPath !== undefined);

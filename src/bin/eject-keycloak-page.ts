@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { getProjectRoot } from "./tools/getProjectRoot";
+import { getThisCodebaseRootDirPath } from "./tools/getThisCodebaseRootDirPath";
 import cliSelect from "cli-select";
 import { loginThemePageIds, accountThemePageIds, type LoginThemePageId, type AccountThemePageId } from "./keycloakify/generateFtl";
 import { capitalize } from "tsafe/capitalize";
@@ -58,7 +58,7 @@ import { getReactAppRootDirPath } from "./keycloakify/buildOptions/getReactAppRo
         process.exit(-1);
     }
 
-    await writeFile(targetFilePath, await readFile(pathJoin(getProjectRoot(), "src", themeType, "pages", pageBasename)));
+    await writeFile(targetFilePath, await readFile(pathJoin(getThisCodebaseRootDirPath(), "src", themeType, "pages", pageBasename)));
 
     console.log(`${pathRelative(process.cwd(), targetFilePath)} created`);
 })();
