@@ -30,19 +30,23 @@ export async function downloadAndUnzip(params: {
 }) {
     const { url, destDirPath, specificDirsToExtract, preCacheTransform, buildOptions } = params;
 
-    const zipFileBasename = generateFileNameFromURL({
-        url,
-        "preCacheTransform":
-            preCacheTransform === undefined
-                ? undefined
-                : {
-                      "actionCacheId": preCacheTransform.actionCacheId,
-                      "actionFootprint": preCacheTransform.action.toString()
-                  }
-    });
+    const { extractDirPath, zipFilePath } = (() => {
+        const zipFileBasenameWithoutExt = generateFileNameFromURL({
+            url,
+            "preCacheTransform":
+                preCacheTransform === undefined
+                    ? undefined
+                    : {
+                          "actionCacheId": preCacheTransform.actionCacheId,
+                          "actionFootprint": preCacheTransform.action.toString()
+                      }
+        });
 
-    const zipFilePath = pathJoin(buildOptions.cacheDirPath, `${zipFileBasename}.zip`);
-    const extractDirPath = pathJoin(buildOptions.cacheDirPath, `tmp_unzip_${zipFileBasename}`);
+        const zipFilePath = pathJoin(buildOptions.cacheDirPath, `${zipFileBasenameWithoutExt}.zip`);
+        const extractDirPath = pathJoin(buildOptions.cacheDirPath, `tmp_unzip_${zipFileBasenameWithoutExt}`);
+
+        return { zipFilePath, extractDirPath };
+    })();
 
     download_zip_and_transform: {
         if (await existsAsync(zipFilePath)) {
