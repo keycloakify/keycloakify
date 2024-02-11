@@ -45,7 +45,7 @@ export function keycloakify(): Plugin {
             });
 
             if (!fs.existsSync(cacheDirPath)) {
-                fs.mkdirSync(cacheDirPath);
+                fs.mkdirSync(cacheDirPath, { "recursive": true });
             }
 
             fs.writeFileSync(
