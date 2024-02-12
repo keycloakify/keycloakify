@@ -1,3 +1,1 @@
-import { BASE_URL } from "./BASE_URL";
-
-export const isStorybook = BASE_URL.startsWith(".");
+export const isStorybook = Object.keys(window).find(key => key.startsWith("__STORYBOOK")) !== undefined;
