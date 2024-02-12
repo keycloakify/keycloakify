@@ -59,7 +59,7 @@ export async function main() {
         );
     }
 
-    const containerKeycloakVersion = "23.0.0";
+    const containerKeycloakVersion = "23.0.6";
 
     generateStartKeycloakTestingContainer({
         "keycloakVersion": containerKeycloakVersion,
