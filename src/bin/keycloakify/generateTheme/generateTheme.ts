@@ -20,6 +20,7 @@ import { readFieldNameUsage } from "./readFieldNameUsage";
 import { readExtraPagesNames } from "./readExtraPageNames";
 import { generateMessageProperties } from "./generateMessageProperties";
 import { bringInAccountV1 } from "./bringInAccountV1";
+import { rmSync } from "../../tools/fs.rmSync";
 
 export type BuildOptionsLike = {
     bundler: "vite" | "webpack";
@@ -78,6 +79,11 @@ export async function generateTheme(params: {
         const themeTypeDirPath = getThemeTypeDirPath({ themeType });
 
         apply_replacers_and_move_to_theme_resources: {
+            const destDirPath = pathJoin(themeTypeDirPath, "resources", basenameOfTheKeycloakifyResourcesDir);
+
+            // NOTE: Prevent accumulation of files in the assets dir, as names are hashed they pile up.
+            rmSync(destDirPath, { "recursive": true, "force": true });
+
             if (themeType === "account" && implementedThemeTypes.login) {
                 // NOTE: We prevend doing it twice, it has been done for the login theme.
 
@@ -89,7 +95,7 @@ export async function generateTheme(params: {
                         "resources",
                         basenameOfTheKeycloakifyResourcesDir
                     ),
-                    "destDirPath": pathJoin(themeTypeDirPath, "resources", basenameOfTheKeycloakifyResourcesDir)
+                    destDirPath
                 });
 
                 break apply_replacers_and_move_to_theme_resources;
@@ -97,7 +103,7 @@ export async function generateTheme(params: {
 
             transformCodebase({
                 "srcDirPath": buildOptions.reactAppBuildDirPath,
-                "destDirPath": pathJoin(themeTypeDirPath, "resources", basenameOfTheKeycloakifyResourcesDir),
+                destDirPath,
                 "transformSourceCode": ({ filePath, sourceCode }) => {
                     //NOTE: Prevent cycles, excludes the folder we generated for debug in public/
                     // This should not happen if users follow the new instruction setup but we keep it for retrocompatibility.
