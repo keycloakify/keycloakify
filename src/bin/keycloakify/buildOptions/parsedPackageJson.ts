@@ -2,7 +2,7 @@ import * as fs from "fs";
 import { assert } from "tsafe";
 import type { Equals } from "tsafe";
 import { z } from "zod";
-import { pathJoin } from "../tools/pathJoin";
+import { join as pathJoin } from "path";
 
 export type ParsedPackageJson = {
     name: string;
@@ -10,7 +10,6 @@ export type ParsedPackageJson = {
     homepage?: string;
     keycloakify?: {
         extraThemeProperties?: string[];
-        areAppAndKeycloakServerSharingSameDomain?: boolean;
         artifactId?: string;
         groupId?: string;
         doCreateJar?: boolean;
@@ -22,14 +21,13 @@ export type ParsedPackageJson = {
     };
 };
 
-export const zParsedPackageJson = z.object({
+const zParsedPackageJson = z.object({
     "name": z.string(),
     "version": z.string().optional(),
     "homepage": z.string().optional(),
     "keycloakify": z
         .object({
             "extraThemeProperties": z.array(z.string()).optional(),
-            "areAppAndKeycloakServerSharingSameDomain": z.boolean().optional(),
             "artifactId": z.string().optional(),
             "groupId": z.string().optional(),
             "doCreateJar": z.boolean().optional(),
@@ -44,8 +42,8 @@ export const zParsedPackageJson = z.object({
 
 assert<Equals<ReturnType<(typeof zParsedPackageJson)["parse"]>, ParsedPackageJson>>();
 
-let parsedPackageJson: undefined | ReturnType<(typeof zParsedPackageJson)["parse"]>;
-export function getParsedPackageJson(params: { reactAppRootDirPath: string }) {
+let parsedPackageJson: undefined | ParsedPackageJson;
+export function readParsedPackageJson(params: { reactAppRootDirPath: string }) {
     const { reactAppRootDirPath } = params;
     if (parsedPackageJson) {
         return parsedPackageJson;

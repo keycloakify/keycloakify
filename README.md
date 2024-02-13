@@ -132,8 +132,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 ## 9.0
 
-Bring back support for account themes in Keycloak v23 and up! [See issue](https://github.com/keycloakify/keycloakify/issues/389).  
-[Read the migration guide](https://docs.keycloakify.dev/migration-guides/v8-greater-than-v9).
+Bring back support for account themes in Keycloak v23 and up! [See issue](https://github.com/keycloakify/keycloakify/issues/389).
 
 ### Breaking changes
 

@@ -1,16 +1,19 @@
 #!/usr/bin/env node
 import { join as pathJoin } from "path";
-import { downloadAndUnzip } from "./tools/downloadAndUnzip";
+import { downloadAndUnzip } from "./downloadAndUnzip";
 import { promptKeycloakVersion } from "./promptKeycloakVersion";
 import { getLogger } from "./tools/logger";
-import { readBuildOptions } from "./keycloakify/BuildOptions";
+import { readBuildOptions, type BuildOptions } from "./keycloakify/buildOptions";
 import { assert } from "tsafe/assert";
-import type { BuildOptions } from "./keycloakify/BuildOptions";
 import * as child_process from "child_process";
 import * as fs from "fs";
+import { rmSync } from "./tools/fs.rmSync";
+import { lastKeycloakVersionWithAccountV1 } from "./constants";
+import { transformCodebase } from "./tools/transformCodebase";
 
 export type BuildOptionsLike = {
     cacheDirPath: string;
+    npmWorkspaceRootDirPath: string;
 };
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
@@ -19,59 +22,13 @@ export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: st
     const { keycloakVersion, destDirPath, buildOptions } = params;
 
     await downloadAndUnzip({
-        "doUseCache": true,
-        "cacheDirPath": buildOptions.cacheDirPath,
         destDirPath,
         "url": `https://github.com/keycloak/keycloak/archive/refs/tags/${keycloakVersion}.zip`,
         "specificDirsToExtract": ["", "-community"].map(ext => `keycloak-${keycloakVersion}/themes/src/main/resources${ext}/theme`),
+        buildOptions,
         "preCacheTransform": {
             "actionCacheId": "npm install and build",
             "action": async ({ destDirPath }) => {
-                fix_account_css: {
-                    const accountCssFilePath = pathJoin(destDirPath, "keycloak", "account", "resources", "css", "account.css");
-
-                    if (!fs.existsSync(accountCssFilePath)) {
-                        break fix_account_css;
-                    }
-
-                    fs.writeFileSync(
-                        accountCssFilePath,
-                        Buffer.from(fs.readFileSync(accountCssFilePath).toString("utf8").replace("top: -34px;", "top: -34px !important;"), "utf8")
-                    );
-                }
-
-                fix_account_topt: {
-                    const totpFtlFilePath = pathJoin(destDirPath, "base", "account", "totp.ftl");
-
-                    if (!fs.existsSync(totpFtlFilePath)) {
-                        break fix_account_topt;
-                    }
-
-                    fs.writeFileSync(
-                        totpFtlFilePath,
-                        Buffer.from(
-                            fs
-                                .readFileSync(totpFtlFilePath)
-                                .toString("utf8")
-                                .replace(
-                                    [
-                                        "                <#list totp.policy.supportedApplications as app>",
-                                        "                    <li>${app}</li>",
-                                        "                </#list>"
-                                    ].join("\n"),
-                                    [
-                                        "                <#if totp.policy.supportedApplications?has_content>",
-                                        "                    <#list totp.policy.supportedApplications as app>",
-                                        "                        <li>${app}</li>",
-                                        "                    </#list>",
-                                        "                </#if>"
-                                    ].join("\n")
-                                ),
-                            "utf8"
-                        )
-                    );
-                }
-
                 install_common_node_modules: {
                     const commonResourcesDirPath = pathJoin(destDirPath, "keycloak", "common", "resources");
 
@@ -93,43 +50,188 @@ export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: st
                     });
                 }
 
-                install_and_move_to_common_resources_generated_in_keycloak_v2: {
-                    const accountV2DirSrcDirPath = pathJoin(destDirPath, "keycloak.v2", "account", "src");
+                remove_keycloak_v2: {
+                    const keycloakV2DirPath = pathJoin(destDirPath, "keycloak.v2");
 
-                    if (!fs.existsSync(accountV2DirSrcDirPath)) {
-                        break install_and_move_to_common_resources_generated_in_keycloak_v2;
+                    if (!fs.existsSync(keycloakV2DirPath)) {
+                        break remove_keycloak_v2;
                     }
 
-                    const packageManager = fs.existsSync(pathJoin(accountV2DirSrcDirPath, "pnpm-lock.yaml")) ? "pnpm" : "npm";
+                    rmSync(keycloakV2DirPath, { "recursive": true });
+                }
 
-                    if (packageManager === "pnpm") {
-                        try {
-                            child_process.execSync(`which pnpm`);
-                        } catch {
-                            console.log(`Installing pnpm globally`);
-                            child_process.execSync(`npm install -g pnpm`);
+                // Note, this is an optimization for reducing the size of the jar
+                remove_unused_node_modules: {
+                    const nodeModuleDirPath = pathJoin(destDirPath, "keycloak", "common", "resources", "node_modules");
+
+                    if (!fs.existsSync(nodeModuleDirPath)) {
+                        break remove_unused_node_modules;
+                    }
+
+                    const toDeletePerfixes = [
+                        "angular",
+                        "bootstrap",
+                        "rcue",
+                        "font-awesome",
+                        "ng-file-upload",
+                        pathJoin("patternfly", "dist", "sass"),
+                        pathJoin("patternfly", "dist", "less"),
+                        pathJoin("patternfly", "dist", "js"),
+                        "d3",
+                        pathJoin("jquery", "src"),
+                        "c3",
+                        "core-js",
+                        "eonasdan-bootstrap-datetimepicker",
+                        "moment",
+                        "react",
+                        "patternfly-bootstrap-treeview",
+                        "popper.js",
+                        "tippy.js",
+                        "jquery-match-height",
+                        "google-code-prettify",
+                        "patternfly-bootstrap-combobox",
+                        "focus-trap",
+                        "tabbable",
+                        "scheduler",
+                        "@types",
+                        "datatables.net",
+                        "datatables.net-colreorder",
+                        "tslib",
+                        "prop-types",
+                        "file-selector",
+                        "datatables.net-colreorder-bs",
+                        "object-assign",
+                        "warning",
+                        "js-tokens",
+                        "loose-envify",
+                        "prop-types-extra",
+                        "attr-accept",
+                        "datatables.net-select",
+                        "drmonty-datatables-colvis",
+                        "datatables.net-bs",
+                        pathJoin("@patternfly", "react"),
+                        pathJoin("@patternfly", "patternfly", "docs")
+                    ];
+
+                    transformCodebase({
+                        "srcDirPath": nodeModuleDirPath,
+                        "destDirPath": nodeModuleDirPath,
+                        "transformSourceCode": ({ sourceCode, fileRelativePath }) => {
+                            if (fileRelativePath.endsWith(".map")) {
+                                return undefined;
+                            }
+
+                            if (toDeletePerfixes.find(prefix => fileRelativePath.startsWith(prefix)) !== undefined) {
+                                return undefined;
+                            }
+
+                            if (fileRelativePath.startsWith(pathJoin("patternfly", "dist", "fonts"))) {
+                                if (
+                                    !fileRelativePath.endsWith(".woff2") &&
+                                    !fileRelativePath.endsWith(".woff") &&
+                                    !fileRelativePath.endsWith(".ttf")
+                                ) {
+                                    return undefined;
+                                }
+                            }
+
+                            return { "modifiedSourceCode": sourceCode };
                         }
+                    });
+                }
+
+                // Just like node_modules
+                remove_unused_lib: {
+                    const libDirPath = pathJoin(destDirPath, "keycloak", "common", "resources", "lib");
+
+                    if (!fs.existsSync(libDirPath)) {
+                        break remove_unused_lib;
                     }
 
-                    child_process.execSync(`${packageManager} install`, { "cwd": accountV2DirSrcDirPath, "stdio": "ignore" });
+                    const toDeletePerfixes = ["ui-ace", "filesaver", "fileupload", "angular", "ui-ace", "pficon"];
 
-                    const packageJsonFilePath = pathJoin(accountV2DirSrcDirPath, "package.json");
+                    transformCodebase({
+                        "srcDirPath": libDirPath,
+                        "destDirPath": libDirPath,
+                        "transformSourceCode": ({ sourceCode, fileRelativePath }) => {
+                            if (fileRelativePath.endsWith(".map")) {
+                                return undefined;
+                            }
 
-                    const packageJsonRaw = fs.readFileSync(packageJsonFilePath);
+                            if (toDeletePerfixes.find(prefix => fileRelativePath.startsWith(prefix)) !== undefined) {
+                                return undefined;
+                            }
 
-                    const parsedPackageJson = JSON.parse(packageJsonRaw.toString("utf8"));
+                            return { "modifiedSourceCode": sourceCode };
+                        }
+                    });
+                }
 
-                    parsedPackageJson.scripts.build = parsedPackageJson.scripts.build
-                        .replace(`${packageManager} run check-types`, "true")
-                        .replace(`${packageManager} run babel`, "true");
+                last_account_v1_transformations: {
+                    if (lastKeycloakVersionWithAccountV1 !== keycloakVersion) {
+                        break last_account_v1_transformations;
+                    }
 
-                    fs.writeFileSync(packageJsonFilePath, Buffer.from(JSON.stringify(parsedPackageJson, null, 2), "utf8"));
+                    {
+                        const accountCssFilePath = pathJoin(destDirPath, "keycloak", "account", "resources", "css", "account.css");
 
-                    child_process.execSync(`${packageManager} run build`, { "cwd": accountV2DirSrcDirPath, "stdio": "ignore" });
+                        fs.writeFileSync(
+                            accountCssFilePath,
+                            Buffer.from(fs.readFileSync(accountCssFilePath).toString("utf8").replace("top: -34px;", "top: -34px !important;"), "utf8")
+                        );
+                    }
 
-                    fs.writeFileSync(packageJsonFilePath, packageJsonRaw);
+                    {
+                        const totpFtlFilePath = pathJoin(destDirPath, "base", "account", "totp.ftl");
 
-                    fs.rmSync(pathJoin(accountV2DirSrcDirPath, "node_modules"), { "recursive": true });
+                        fs.writeFileSync(
+                            totpFtlFilePath,
+                            Buffer.from(
+                                fs
+                                    .readFileSync(totpFtlFilePath)
+                                    .toString("utf8")
+                                    .replace(
+                                        [
+                                            "                <#list totp.policy.supportedApplications as app>",
+                                            "                    <li>${app}</li>",
+                                            "                </#list>"
+                                        ].join("\n"),
+                                        [
+                                            "                <#if totp.policy.supportedApplications?has_content>",
+                                            "                    <#list totp.policy.supportedApplications as app>",
+                                            "                        <li>${app}</li>",
+                                            "                    </#list>",
+                                            "                </#if>"
+                                        ].join("\n")
+                                    ),
+                                "utf8"
+                            )
+                        );
+                    }
+
+                    // Note, this is an optimization for reducing the size of the jar,
+                    // For this version we know exactly which resources are used.
+                    {
+                        const nodeModulesDirPath = pathJoin(destDirPath, "keycloak", "common", "resources", "node_modules");
+
+                        const toKeepPrefixes = [
+                            ...["patternfly.min.css", "patternfly-additions.min.css", "patternfly-additions.min.css"].map(fileBasename =>
+                                pathJoin("patternfly", "dist", "css", fileBasename)
+                            ),
+                            pathJoin("patternfly", "dist", "fonts")
+                        ];
+
+                        transformCodebase({
+                            "srcDirPath": nodeModulesDirPath,
+                            "destDirPath": nodeModulesDirPath,
+                            "transformSourceCode": ({ sourceCode, fileRelativePath }) => {
+                                if (toKeepPrefixes.find(prefix => fileRelativePath.startsWith(prefix)) === undefined) {
+                                    return undefined;
+                                }
+                                return { "modifiedSourceCode": sourceCode };
+                            }
+                        });
+                    }
                 }
             }
         }
@@ -138,7 +240,6 @@ export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: st
 
 async function main() {
     const buildOptions = readBuildOptions({
-        "reactAppRootDirPath": process.cwd(),
         "processArgv": process.argv.slice(2)
     });
 

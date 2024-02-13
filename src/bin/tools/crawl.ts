@@ -1,17 +1,17 @@
 import * as fs from "fs";
-import * as path from "path";
+import { join as pathJoin, relative as pathRelative } from "path";
 
-const crawlRec = (dir_path: string, paths: string[]) => {
-    for (const file_name of fs.readdirSync(dir_path)) {
-        const file_path = path.join(dir_path, file_name);
+const crawlRec = (dirPath: string, filePaths: string[]) => {
+    for (const basename of fs.readdirSync(dirPath)) {
+        const fileOrDirPath = pathJoin(dirPath, basename);
 
-        if (fs.lstatSync(file_path).isDirectory()) {
-            crawlRec(file_path, paths);
+        if (fs.lstatSync(fileOrDirPath).isDirectory()) {
+            crawlRec(fileOrDirPath, filePaths);
 
             continue;
         }
 
-        paths.push(file_path);
+        filePaths.push(fileOrDirPath);
     }
 };
 
@@ -27,6 +27,6 @@ export function crawl(params: { dirPath: string; returnedPathsType: "absolute" |
         case "absolute":
             return filePaths;
         case "relative to dirPath":
-            return filePaths.map(filePath => path.relative(dirPath, filePath));
+            return filePaths.map(filePath => pathRelative(dirPath, filePath));
     }
 }

@@ -7,6 +7,8 @@ export function getAbsoluteAndInOsFormatPath(params: { pathIsh: string; cwd: str
 
     pathOut = pathOut.replace(/\//g, pathSep);
 
+    pathOut = pathOut.endsWith(pathSep) ? pathOut.slice(0, -1) : pathOut;
+
     if (!pathIsAbsolute(pathOut)) {
         pathOut = pathJoin(cwd, pathOut);
     }

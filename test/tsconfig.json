@@ -4,20 +4,17 @@
         "target": "es5",
         "lib": ["es2015", "DOM", "ES2019.Object"],
         "esModuleInterop": true,
-        "declaration": true,
-        "outDir": "../dist_test",
-        "sourceMap": true,
-        "newLine": "LF",
         "noUnusedLocals": true,
         "noUnusedParameters": true,
-        "incremental": false,
         "strict": true,
         "downlevelIteration": true,
         "jsx": "react-jsx",
         "noFallthroughCasesInSwitch": true,
         "paths": {
             "keycloakify/*": ["../src/*"]
-        }
+        },
+        // https://github.com/vitejs/vite/issues/15112#issuecomment-1823908010
+        "skipLibCheck": true
     },
     "include": ["../src", "."]
 }

@@ -2,14 +2,13 @@ import type { KcContext, Attribute } from "./KcContext";
 import { kcContextMocks, kcContextCommonMock } from "./kcContextMocks";
 import type { DeepPartial } from "keycloakify/tools/DeepPartial";
 import { deepAssign } from "keycloakify/tools/deepAssign";
+import { isStorybook } from "keycloakify/lib/isStorybook";
 import { id } from "tsafe/id";
 import { exclude } from "tsafe/exclude";
 import { assert } from "tsafe/assert";
 import type { ExtendKcContext } from "./getKcContextFromWindow";
 import { getKcContextFromWindow } from "./getKcContextFromWindow";
-import { pathJoin } from "keycloakify/bin/tools/pathJoin";
 import { symToStr } from "tsafe/symToStr";
-import { resources_common } from "keycloakify/bin/constants";
 
 export function createGetKcContext<KcContextExtension extends { pageId: string } = never>(params?: {
     mockData?: readonly DeepPartial<ExtendKcContext<KcContextExtension>>[];
@@ -31,7 +30,13 @@ export function createGetKcContext<KcContextExtension extends { pageId: string }
         if (mockPageId !== undefined && realKcContext === undefined) {
             //TODO maybe trow if no mock fo custom page
 
-            console.log(`%cKeycloakify: ${symToStr({ mockPageId })} set to ${mockPageId}.`, "background: red; color: yellow; font-size: medium");
+            warn_that_mock_is_enbaled: {
+                if (isStorybook) {
+                    break warn_that_mock_is_enbaled;
+                }
+
+                console.log(`%cKeycloakify: ${symToStr({ mockPageId })} set to ${mockPageId}.`, "background: red; color: yellow; font-size: medium");
+            }
 
             const kcContextDefaultMock = kcContextMocks.find(({ pageId }) => pageId === mockPageId);
 
@@ -146,8 +151,6 @@ export function createGetKcContext<KcContextExtension extends { pageId: string }
         if (realKcContext.themeType !== "login") {
             return { "kcContext": undefined as any };
         }
-
-        realKcContext.url.resourcesCommonPath = pathJoin(realKcContext.url.resourcesPath, resources_common);
 
         return { "kcContext": realKcContext as any };
     }

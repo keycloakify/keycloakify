@@ -36,6 +36,10 @@ export declare namespace keycloak_js {
 }
 
 /**
+ * @deprecated: This will be removed in the next major version.
+ * If you use this, please copy paste the code into your project.
+ * Better yet migrate away from keycloak-js and use https://docs.oidc-spa.dev instead.
+ *
  * NOTE: This is just a slightly modified version of the default adapter in keycloak-js
  * The goal here is just to be able to inject search param in url before keycloak redirect.
  * Our use case for it is to pass over the login screen the states of useGlobalState

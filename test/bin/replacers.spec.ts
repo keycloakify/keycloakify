@@ -1,45 +1,253 @@
-import { replaceImportsFromStaticInJsCode } from "keycloakify/bin/keycloakify/replacers/replaceImportsFromStaticInJsCode";
+import { replaceImportsInJsCode_vite } from "keycloakify/bin/keycloakify/replacers/replaceImportsInJsCode/vite";
+import { replaceImportsInJsCode_webpack } from "keycloakify/bin/keycloakify/replacers/replaceImportsInJsCode/webpack";
 import { generateCssCodeToDefineGlobals, replaceImportsInCssCode } from "keycloakify/bin/keycloakify/replacers/replaceImportsInCssCode";
 import { replaceImportsInInlineCssCode } from "keycloakify/bin/keycloakify/replacers/replaceImportsInInlineCssCode";
 import { same } from "evt/tools/inDepth/same";
 import { expect, it, describe } from "vitest";
-
 import { isSameCode } from "../tools/isSameCode";
+import { basenameOfTheKeycloakifyResourcesDir, nameOfTheGlobal } from "keycloakify/bin/constants";
 
-describe("bin/js-transforms", () => {
-    const jsCodeUntransformed = `
-        function f() {
-            return a.p+"static/js/" + ({}[e] || e) + "." + {
-                3: "0664cdc0"
-            }[e] + ".chunk.js"
-        }
-        
-        function sameAsF() {
-            return a.p+"static/js/" + ({}[e] || e) + "." + {
-                3: "0664cdc0"
-            }[e] + ".chunk.js"
-        }
+describe("js replacer - vite", () => {
+    it("replaceImportsInJsCode_vite - 1", () => {
+        const before = `Uv="modulepreload",`;
+        const after = `,Wc={},`;
+        const jsCodeUntransformed = `${before}Hv=function(e){return"/foo-bar-baz/"+e}${after}`;
 
-        __webpack_require__.u=function(e){return"static/js/" + e + "." + {
-                147: "6c5cee76",
-                787: "8da10fcf",
-                922: "be170a73"
-            } [e] + ".chunk.js"
-        }
+        const { fixedJsCode } = replaceImportsInJsCode_vite({
+            "jsCode": jsCodeUntransformed,
+            "basenameOfAssetsFiles": [],
+            "buildOptions": {
+                "reactAppBuildDirPath": "/Users/someone/github/keycloakify-starter/dist/",
+                "assetsDirPath": "/Users/someone/github/keycloakify-starter/dist/assets/",
+                "urlPathname": "/foo-bar-baz/"
+            }
+        });
 
-        t.miniCssF=function(e){return"static/css/"+e+"."+{
-                164:"dcfd7749",
-                908:"67c9ed2c"
-            }[e]+".chunk.css"
+        const fixedJsCodeExpected = `${before}Hv=function(e){return"/"+e}${after}`;
+
+        expect(isSameCode(fixedJsCode, fixedJsCodeExpected)).toBe(true);
+    });
+
+    it("replaceImportsInJsCode_vite - 2", () => {
+        const before = `Uv="modulepreload",`;
+        const after = `,Wc={},`;
+        const jsCodeUntransformed = `${before}Hv=function(e){return"/foo/bar/baz/"+e}${after}`;
+
+        const { fixedJsCode } = replaceImportsInJsCode_vite({
+            "jsCode": jsCodeUntransformed,
+            "basenameOfAssetsFiles": [],
+            "buildOptions": {
+                "reactAppBuildDirPath": "/Users/someone/github/keycloakify-starter/dist/",
+                "assetsDirPath": "/Users/someone/github/keycloakify-starter/dist/assets/",
+                "urlPathname": "/foo/bar/baz/"
+            }
+        });
+
+        const fixedJsCodeExpected = `${before}Hv=function(e){return"/"+e}${after}`;
+
+        expect(isSameCode(fixedJsCode, fixedJsCodeExpected)).toBe(true);
+    });
+
+    it("replaceImportsInJsCode_vite - 3", () => {
+        const jsCodeUntransformed = `
+            S="/assets/keycloakify-logo-mqjydaoZ.png",H=(()=>{
+
+            function __vite__mapDeps(indexes) {
+                if (!__vite__mapDeps.viteFileDeps) {
+                    __vite__mapDeps.viteFileDeps = ["assets/Login-dJpPRzM4.js", "assets/index-XwzrZ5Gu.js"]
+                }
+                return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
+            }
+        `;
+
+        for (const { reactAppBuildDirPath, assetsDirPath, systemType } of [
+            {
+                "systemType": "posix",
+                "reactAppBuildDirPath": "/Users/someone/github/keycloakify-starter/dist",
+                "assetsDirPath": "/Users/someone/github/keycloakify-starter/dist/assets"
+            },
+            {
+                "systemType": "win32",
+                "reactAppBuildDirPath": "C:\\\\Users\\someone\\github\\keycloakify-starter\\dist",
+                "assetsDirPath": "C:\\\\Users\\someone\\github\\keycloakify-starter\\dist\\assets"
+            }
+        ] as const) {
+            const { fixedJsCode } = replaceImportsInJsCode_vite({
+                "jsCode": jsCodeUntransformed,
+                "basenameOfAssetsFiles": ["Login-dJpPRzM4.js", "index-XwzrZ5Gu.js", "keycloakify-logo-mqjydaoZ.png"],
+                "buildOptions": {
+                    reactAppBuildDirPath,
+                    assetsDirPath,
+                    "urlPathname": undefined
+                },
+                systemType
+            });
+
+            const fixedJsCodeExpected = `
+                    S=(window.${nameOfTheGlobal}.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/assets/keycloakify-logo-mqjydaoZ.png"),H=(()=>{
+
+                    function __vite__mapDeps(indexes) {
+                        if (!__vite__mapDeps.viteFileDeps) {
+                            __vite__mapDeps.viteFileDeps = [
+                                (window.${nameOfTheGlobal}.url.resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/assets/Login-dJpPRzM4.js"), 
+                                (window.${nameOfTheGlobal}.url.resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/assets/index-XwzrZ5Gu.js")
+                            ]
+                        }
+                        return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
+                    }
+                `;
+
+            expect(isSameCode(fixedJsCode, fixedJsCodeExpected)).toBe(true);
         }
+    });
+
+    it("replaceImportsInJsCode_vite - 4", () => {
+        const jsCodeUntransformed = `
+            S="/foo/bar/keycloakify-logo-mqjydaoZ.png",H=(()=>{
+
+            function __vite__mapDeps(indexes) {
+                if (!__vite__mapDeps.viteFileDeps) {
+                    __vite__mapDeps.viteFileDeps = ["foo/bar/Login-dJpPRzM4.js", "foo/bar/index-XwzrZ5Gu.js"]
+                }
+                return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
+            }
+        `;
+
+        for (const { reactAppBuildDirPath, assetsDirPath, systemType } of [
+            {
+                "systemType": "posix",
+                "reactAppBuildDirPath": "/Users/someone/github/keycloakify-starter/dist",
+                "assetsDirPath": "/Users/someone/github/keycloakify-starter/dist/foo/bar"
+            },
+            {
+                "systemType": "win32",
+                "reactAppBuildDirPath": "C:\\\\Users\\someone\\github\\keycloakify-starter\\dist",
+                "assetsDirPath": "C:\\\\Users\\someone\\github\\keycloakify-starter\\dist\\foo\\bar"
+            }
+        ] as const) {
+            const { fixedJsCode } = replaceImportsInJsCode_vite({
+                "jsCode": jsCodeUntransformed,
+                "basenameOfAssetsFiles": ["Login-dJpPRzM4.js", "index-XwzrZ5Gu.js", "keycloakify-logo-mqjydaoZ.png"],
+                "buildOptions": {
+                    reactAppBuildDirPath,
+                    assetsDirPath,
+                    "urlPathname": undefined
+                },
+                systemType
+            });
+
+            const fixedJsCodeExpected = `
+                    S=(window.${nameOfTheGlobal}.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/foo/bar/keycloakify-logo-mqjydaoZ.png"),H=(()=>{
+
+                    function __vite__mapDeps(indexes) {
+                        if (!__vite__mapDeps.viteFileDeps) {
+                            __vite__mapDeps.viteFileDeps = [
+                                (window.${nameOfTheGlobal}.url.resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/foo/bar/Login-dJpPRzM4.js"), 
+                                (window.${nameOfTheGlobal}.url.resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/foo/bar/index-XwzrZ5Gu.js")
+                            ]
+                        }
+                        return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
+                    }
+                `;
+
+            expect(isSameCode(fixedJsCode, fixedJsCodeExpected)).toBe(true);
+        }
+    });
+
+    it("replaceImportsInJsCode_vite - 5", () => {
+        const jsCodeUntransformed = `
+            S="/foo-bar-baz/assets/keycloakify-logo-mqjydaoZ.png",H=(()=>{
+
+            function __vite__mapDeps(indexes) {
+                if (!__vite__mapDeps.viteFileDeps) {
+                    __vite__mapDeps.viteFileDeps = ["assets/Login-dJpPRzM4.js", "assets/index-XwzrZ5Gu.js"]
+                }
+                return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
+            }
+        `;
+
+        for (const { reactAppBuildDirPath, assetsDirPath, systemType } of [
+            {
+                "systemType": "posix",
+                "reactAppBuildDirPath": "/Users/someone/github/keycloakify-starter/dist",
+                "assetsDirPath": "/Users/someone/github/keycloakify-starter/dist/assets"
+            },
+            {
+                "systemType": "win32",
+                "reactAppBuildDirPath": "C:\\\\Users\\someone\\github\\keycloakify-starter\\dist",
+                "assetsDirPath": "C:\\\\Users\\someone\\github\\keycloakify-starter\\dist\\assets"
+            }
+        ] as const) {
+            const { fixedJsCode } = replaceImportsInJsCode_vite({
+                "jsCode": jsCodeUntransformed,
+                "basenameOfAssetsFiles": ["Login-dJpPRzM4.js", "index-XwzrZ5Gu.js", "keycloakify-logo-mqjydaoZ.png"],
+                "buildOptions": {
+                    reactAppBuildDirPath,
+                    assetsDirPath,
+                    "urlPathname": "/foo-bar-baz/"
+                },
+                systemType
+            });
+
+            const fixedJsCodeExpected = `
+                    S=(window.${nameOfTheGlobal}.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/assets/keycloakify-logo-mqjydaoZ.png"),H=(()=>{
+
+                    function __vite__mapDeps(indexes) {
+                        if (!__vite__mapDeps.viteFileDeps) {
+                            __vite__mapDeps.viteFileDeps = [
+                                (window.${nameOfTheGlobal}.url.resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/assets/Login-dJpPRzM4.js"), 
+                                (window.${nameOfTheGlobal}.url.resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/assets/index-XwzrZ5Gu.js")
+                            ]
+                        }
+                        return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
+                    }
+                `;
+
+            expect(isSameCode(fixedJsCode, fixedJsCodeExpected)).toBe(true);
+        }
+    });
+});
+
+describe("js replacer - webpack", () => {
+    it("replaceImportsInJsCode_webpack - 1", () => {
+        const jsCodeUntransformed = `
+            function f() {
+                return a.p+"static/js/" + ({}[e] || e) + "." + {
+                    3: "0664cdc0"
+                }[e] + ".chunk.js"
+            }
         
-        n.u=e=>"static/js/"+e+"."+{69:"4f205f87",128:"49264537",453:"b2fed72e",482:"f0106901"}[e]+".chunk.js"
+            function sameAsF() {
+                return a.p+"static/js/" + ({}[e] || e) + "." + {
+                    3: "0664cdc0"
+                }[e] + ".chunk.js"
+            }
+
+            __webpack_require__.u=function(e){return"static/js/" + e + "." + {
+                    147: "6c5cee76",
+                    787: "8da10fcf",
+                    922: "be170a73"
+                } [e] + ".chunk.js"
+            }
+
+            t.miniCssF=function(e){return"static/css/"+e+"."+{
+                    164:"dcfd7749",
+                    908:"67c9ed2c"
+                }[e]+".chunk.css"
+            }
         
-        t.miniCssF=e=>"static/css/"+e+"."+{164:"dcfd7749",908:"67c9ed2c"}[e]+".chunk.css"
-    `;
-    it("transforms standalone code properly", () => {
-        const { fixedJsCode } = replaceImportsFromStaticInJsCode({
-            "jsCode": jsCodeUntransformed
+            n.u=e=>"static/js/"+e+"."+{69:"4f205f87",128:"49264537",453:"b2fed72e",482:"f0106901"}[e]+".chunk.js"
+        
+            t.miniCssF=e=>"static/css/"+e+"."+{164:"dcfd7749",908:"67c9ed2c"}[e]+".chunk.css"
+        `;
+
+        const { fixedJsCode } = replaceImportsInJsCode_webpack({
+            "jsCode": jsCodeUntransformed,
+            "buildOptions": {
+                "reactAppBuildDirPath": "/Users/someone/github/keycloakify-starter/build",
+                "assetsDirPath": "/Users/someone/github/keycloakify-starter/build/static",
+                "urlPathname": undefined
+            }
         });
 
         const fixedJsCodeExpected = `
@@ -113,9 +321,49 @@ describe("bin/js-transforms", () => {
 
         expect(isSameCode(fixedJsCode, fixedJsCodeExpected)).toBe(true);
     });
+
+    it("replaceImportsInJsCode_webpack - 2", () => {
+        const before = `"__esModule",{value:!0})}`;
+        const after = `function(){if("undefined"`;
+
+        const jsCodeUntransformed = `${before},n.p="/foo-bar/",${after}`;
+
+        const { fixedJsCode } = replaceImportsInJsCode_webpack({
+            "jsCode": jsCodeUntransformed,
+            "buildOptions": {
+                "reactAppBuildDirPath": "/Users/someone/github/keycloakify-starter/build",
+                "assetsDirPath": "/Users/someone/github/keycloakify-starter/build/static",
+                "urlPathname": "/foo-bar/"
+            }
+        });
+
+        const fixedJsCodeExpected = `${before},n.p="/",${after}`;
+
+        expect(isSameCode(fixedJsCode, fixedJsCodeExpected)).toBe(true);
+    });
+
+    it("replaceImportsInJsCode_webpack - 3", () => {
+        const before = `"__esModule",{value:!0})}`;
+        const after = `function(){if("undefined"`;
+
+        const jsCodeUntransformed = `${before},n.p="/foo/bar/",${after}`;
+
+        const { fixedJsCode } = replaceImportsInJsCode_webpack({
+            "jsCode": jsCodeUntransformed,
+            "buildOptions": {
+                "reactAppBuildDirPath": "/Users/someone/github/keycloakify-starter/build",
+                "assetsDirPath": "/Users/someone/github/keycloakify-starter/dist/build/static",
+                "urlPathname": "/foo/bar/"
+            }
+        });
+
+        const fixedJsCodeExpected = `${before},n.p="/",${after}`;
+
+        expect(isSameCode(fixedJsCode, fixedJsCodeExpected)).toBe(true);
+    });
 });
 
-describe("bin/css-transforms", () => {
+describe("css replacer", () => {
     it("transforms absolute urls to css globals properly with no urlPathname", () => {
         const { fixedCssCode, cssGlobalsToDefine } = replaceImportsInCssCode({
             "cssCode": `
@@ -230,7 +478,7 @@ describe("bin/css-transforms", () => {
     });
 });
 
-describe("bin/css-inline-transforms", () => {
+describe("inline css replacer", () => {
     describe("no url pathName", () => {
         const cssCode = `
         @font-face {

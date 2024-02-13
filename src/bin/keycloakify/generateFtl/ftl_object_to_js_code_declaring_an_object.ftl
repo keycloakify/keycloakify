@@ -408,6 +408,14 @@
     out["themeName"] = "KEYCLOAKIFY_THEME_NAME_cXxKd3xEer";
     out["pageId"] = "${pageId}";
 
+    try {
+
+        out["url"]["resourcesCommonPath"] = out["url"]["resourcesPath"] + "/" + "RESOURCES_COMMON_cLsLsMrtDkpVv";
+
+    } catch(error) {
+
+    }
+
     return out;
 
 })()
