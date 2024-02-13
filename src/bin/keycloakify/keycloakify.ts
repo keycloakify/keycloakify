@@ -67,6 +67,8 @@ export async function main() {
         buildOptions
     });
 
+    fs.writeFileSync(pathJoin(buildOptions.keycloakifyBuildDirPath, ".gitignore"), Buffer.from("*", "utf8"));
+
     logger.log(
         [
             "",
