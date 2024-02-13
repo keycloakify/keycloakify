@@ -132,7 +132,12 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 ## 9.4
 
-**Vite Support 🎉**
+**Vite Support! 🎉**
+
+-   [The starter is now a Vite project](https://github.com/keycloakify/keycloakify-starter).
+    The Webpack based starter is accessible [here](https://github.com/keycloakify/keycloakify-starter-cra).
+-   CRA (Webpack) remains supported for the forseable future.
+-   If you have a CRA Keycloakify theme that you wish to migrate to Vite checkout [this migration guide](https://docs.keycloakify.dev/migration-guides/cra-greater-than-vite).
 
 ## 9.0
 
