@@ -1,39 +1,39 @@
 import { listTagsFactory } from "./listTags";
 import type { Octokit } from "@octokit/rest";
-import { NpmModuleVersion } from "../NpmModuleVersion";
+import { SemVer } from "../SemVer";
 
 export function getLatestsSemVersionedTagFactory(params: { octokit: Octokit }) {
     const { octokit } = params;
 
-    async function getLatestsSemVersionedTag(params: { owner: string; repo: string; doIgnoreBeta: boolean; count: number }): Promise<
+    async function getLatestsSemVersionedTag(params: { owner: string; repo: string; count: number }): Promise<
         {
             tag: string;
-            version: NpmModuleVersion;
+            version: SemVer;
         }[]
     > {
-        const { owner, repo, doIgnoreBeta, count } = params;
+        const { owner, repo, count } = params;
 
-        const semVersionedTags: { tag: string; version: NpmModuleVersion }[] = [];
+        const semVersionedTags: { tag: string; version: SemVer }[] = [];
 
         const { listTags } = listTagsFactory({ octokit });
 
         for await (const tag of listTags({ owner, repo })) {
-            let version: NpmModuleVersion;
+            let version: SemVer;
 
             try {
-                version = NpmModuleVersion.parse(tag.replace(/^[vV]?/, ""));
+                version = SemVer.parse(tag.replace(/^[vV]?/, ""));
             } catch {
                 continue;
             }
 
-            if (doIgnoreBeta && version.betaPreRelease !== undefined) {
+            if (version.rc !== undefined) {
                 continue;
             }
 
             semVersionedTags.push({ tag, version });
         }
 
-        return semVersionedTags.sort(({ version: vX }, { version: vY }) => NpmModuleVersion.compare(vY, vX)).slice(0, count);
+        return semVersionedTags.sort(({ version: vX }, { version: vY }) => SemVer.compare(vY, vX)).slice(0, count);
     }
 
     return { getLatestsSemVersionedTag };

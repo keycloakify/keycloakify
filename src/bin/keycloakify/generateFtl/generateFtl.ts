@@ -1,18 +1,20 @@
 import cheerio from "cheerio";
-import { replaceImportsFromStaticInJsCode } from "../replacers/replaceImportsFromStaticInJsCode";
+import { replaceImportsInJsCode } from "../replacers/replaceImportsInJsCode";
 import { generateCssCodeToDefineGlobals } from "../replacers/replaceImportsInCssCode";
 import { replaceImportsInInlineCssCode } from "../replacers/replaceImportsInInlineCssCode";
 import * as fs from "fs";
 import { join as pathJoin } from "path";
 import { objectKeys } from "tsafe/objectKeys";
-import { ftlValuesGlobalName } from "../ftlValuesGlobalName";
-import type { BuildOptions } from "../BuildOptions";
+import type { BuildOptions } from "../buildOptions";
 import { assert } from "tsafe/assert";
-import type { ThemeType } from "../../constants";
+import { type ThemeType, nameOfTheGlobal, basenameOfTheKeycloakifyResourcesDir, resources_common } from "../../constants";
 
 export type BuildOptionsLike = {
+    bundler: "vite" | "webpack";
     themeVersion: string;
     urlPathname: string | undefined;
+    reactAppBuildDirPath: string;
+    assetsDirPath: string;
 };
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
@@ -20,7 +22,6 @@ assert<BuildOptions extends BuildOptionsLike ? true : false>();
 export function generateFtlFilesCodeFactory(params: {
     themeName: string;
     indexHtmlCode: string;
-    //NOTE: Expected to be an empty object if external assets mode is enabled.
     cssGlobalsToDefine: Record<string, string>;
     buildOptions: BuildOptionsLike;
     keycloakifyVersion: string;
@@ -37,7 +38,7 @@ export function generateFtlFilesCodeFactory(params: {
 
             assert(jsCode !== null);
 
-            const { fixedJsCode } = replaceImportsFromStaticInJsCode({ jsCode });
+            const { fixedJsCode } = replaceImportsInJsCode({ jsCode, buildOptions });
 
             $(element).text(fixedJsCode);
         });
@@ -70,7 +71,10 @@ export function generateFtlFilesCodeFactory(params: {
 
                 $(element).attr(
                     attrName,
-                    href.replace(new RegExp(`^${(buildOptions.urlPathname ?? "/").replace(/\//g, "\\/")}`), "${url.resourcesPath}/build/")
+                    href.replace(
+                        new RegExp(`^${(buildOptions.urlPathname ?? "/").replace(/\//g, "\\/")}`),
+                        `\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/`
+                    )
                 );
             })
         );
@@ -101,7 +105,8 @@ export function generateFtlFilesCodeFactory(params: {
             .replace("KEYCLOAKIFY_VERSION_xEdKd3xEdr", keycloakifyVersion)
             .replace("KEYCLOAKIFY_THEME_VERSION_sIgKd3xEdr3dx", buildOptions.themeVersion)
             .replace("KEYCLOAKIFY_THEME_TYPE_dExKd3xEdr", themeType)
-            .replace("KEYCLOAKIFY_THEME_NAME_cXxKd3xEer", themeName),
+            .replace("KEYCLOAKIFY_THEME_NAME_cXxKd3xEer", themeName)
+            .replace("RESOURCES_COMMON_cLsLsMrtDkpVv", resources_common),
         "<!-- xIdLqMeOedErIdLsPdNdI9dSlxI -->": [
             "<#if scripts??>",
             "    <#list scripts as script>",
@@ -114,7 +119,7 @@ export function generateFtlFilesCodeFactory(params: {
     $("head").prepend(
         [
             "<script>",
-            `    window.${ftlValuesGlobalName}= ${objectKeys(replaceValueBySearchValue)[0]};`,
+            `    window.${nameOfTheGlobal}= ${objectKeys(replaceValueBySearchValue)[0]};`,
             "</script>",
             "",
             objectKeys(replaceValueBySearchValue)[1]

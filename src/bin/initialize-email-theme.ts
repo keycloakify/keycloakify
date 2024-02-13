@@ -4,23 +4,21 @@ import { downloadBuiltinKeycloakTheme } from "./download-builtin-keycloak-theme"
 import { join as pathJoin, relative as pathRelative } from "path";
 import { transformCodebase } from "./tools/transformCodebase";
 import { promptKeycloakVersion } from "./promptKeycloakVersion";
-import { readBuildOptions } from "./keycloakify/BuildOptions";
+import { readBuildOptions } from "./keycloakify/buildOptions";
 import * as fs from "fs";
 import { getLogger } from "./tools/logger";
-import { getThemeSrcDirPath } from "./getSrcDirPath";
+import { getThemeSrcDirPath } from "./getThemeSrcDirPath";
+import { rmSync } from "./tools/fs.rmSync";
 
 export async function main() {
-    const reactAppRootDirPath = process.cwd();
-
     const buildOptions = readBuildOptions({
-        reactAppRootDirPath,
         "processArgv": process.argv.slice(2)
     });
 
     const logger = getLogger({ "isSilent": buildOptions.isSilent });
 
     const { themeSrcDirPath } = getThemeSrcDirPath({
-        reactAppRootDirPath
+        "reactAppRootDirPath": buildOptions.reactAppRootDirPath
     });
 
     const emailThemeSrcDirPath = pathJoin(themeSrcDirPath, "email");
@@ -54,7 +52,7 @@ export async function main() {
 
     logger.log(`${pathRelative(process.cwd(), emailThemeSrcDirPath)} ready to be customized, feel free to remove every file you do not customize`);
 
-    fs.rmSync(builtinKeycloakThemeTmpDirPath, { "recursive": true, "force": true });
+    rmSync(builtinKeycloakThemeTmpDirPath, { "recursive": true, "force": true });
 }
 
 if (require.main === module) {

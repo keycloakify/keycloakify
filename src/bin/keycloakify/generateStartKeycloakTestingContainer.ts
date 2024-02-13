@@ -2,7 +2,7 @@ import * as fs from "fs";
 import { join as pathJoin, relative as pathRelative, basename as pathBasename } from "path";
 import { assert } from "tsafe/assert";
 import { Reflect } from "tsafe/Reflect";
-import type { BuildOptions } from "./BuildOptions";
+import type { BuildOptions } from "./buildOptions";
 
 export type BuildOptionsLike = {
     keycloakifyBuildDirPath: string;
@@ -30,7 +30,6 @@ export function generateStartKeycloakTestingContainer(params: { jarFilePath: str
         Buffer.from(
             [
                 "#!/usr/bin/env bash",
-                `# If you want to test with Keycloak version prior to 23 use the retrocompat-${pathBasename(jarFilePath)}`,
                 "",
                 `docker rm ${containerName} || true`,
                 "",

@@ -1,66 +1,42 @@
 import { generateTheme } from "./generateTheme";
-import { generateJavaStackFiles } from "./generateJavaStackFiles";
+import { generatePom } from "./generatePom";
 import { join as pathJoin, relative as pathRelative, basename as pathBasename, dirname as pathDirname, sep as pathSep } from "path";
 import * as child_process from "child_process";
 import { generateStartKeycloakTestingContainer } from "./generateStartKeycloakTestingContainer";
 import * as fs from "fs";
-import { readBuildOptions } from "./BuildOptions";
+import { readBuildOptions } from "./buildOptions";
 import { getLogger } from "../tools/logger";
-import { assert } from "tsafe/assert";
-import { getThemeSrcDirPath } from "../getSrcDirPath";
-import { getProjectRoot } from "../tools/getProjectRoot";
-import { objectKeys } from "tsafe/objectKeys";
+import { getThemeSrcDirPath } from "../getThemeSrcDirPath";
+import { getThisCodebaseRootDirPath } from "../tools/getThisCodebaseRootDirPath";
+import { readThisNpmProjectVersion } from "../tools/readThisNpmProjectVersion";
 
 export async function main() {
-    const reactAppRootDirPath = process.cwd();
-
     const buildOptions = readBuildOptions({
-        reactAppRootDirPath,
         "processArgv": process.argv.slice(2)
     });
 
     const logger = getLogger({ "isSilent": buildOptions.isSilent });
     logger.log("🔏 Building the keycloak theme...⌚");
 
-    const keycloakifyDirPath = getProjectRoot();
-
-    const { themeSrcDirPath } = getThemeSrcDirPath({ reactAppRootDirPath });
+    const { themeSrcDirPath } = getThemeSrcDirPath({ "reactAppRootDirPath": buildOptions.reactAppRootDirPath });
 
     for (const themeName of buildOptions.themeNames) {
         await generateTheme({
             themeName,
             themeSrcDirPath,
-            "keycloakifySrcDirPath": pathJoin(keycloakifyDirPath, "src"),
-            buildOptions,
-            "keycloakifyVersion": (() => {
-                const version = JSON.parse(fs.readFileSync(pathJoin(keycloakifyDirPath, "package.json")).toString("utf8"))["version"];
-
-                assert(typeof version === "string");
-
-                return version;
-            })()
+            "keycloakifySrcDirPath": pathJoin(getThisCodebaseRootDirPath(), "src"),
+            "keycloakifyVersion": readThisNpmProjectVersion(),
+            buildOptions
         });
     }
 
-    const { jarFilePath } = await generateJavaStackFiles({
-        "implementedThemeTypes": (() => {
-            const implementedThemeTypes = {
-                "login": false,
-                "account": false,
-                "email": false
-            };
+    {
+        const { pomFileCode } = generatePom({ buildOptions });
 
-            for (const themeType of objectKeys(implementedThemeTypes)) {
-                if (!fs.existsSync(pathJoin(themeSrcDirPath, themeType))) {
-                    continue;
-                }
-                implementedThemeTypes[themeType] = true;
-            }
+        fs.writeFileSync(pathJoin(buildOptions.keycloakifyBuildDirPath, "pom.xml"), Buffer.from(pomFileCode, "utf8"));
+    }
 
-            return implementedThemeTypes;
-        })(),
-        buildOptions
-    });
+    const jarFilePath = pathJoin(buildOptions.keycloakifyBuildDirPath, "target", `${buildOptions.artifactId}-${buildOptions.themeVersion}.jar`);
 
     if (buildOptions.doCreateJar) {
         child_process.execSync("mvn clean install", { "cwd": buildOptions.keycloakifyBuildDirPath });
@@ -83,7 +59,7 @@ export async function main() {
         );
     }
 
-    const containerKeycloakVersion = "23.0.0";
+    const containerKeycloakVersion = "23.0.6";
 
     generateStartKeycloakTestingContainer({
         "keycloakVersion": containerKeycloakVersion,
@@ -91,53 +67,26 @@ export async function main() {
         buildOptions
     });
 
+    fs.writeFileSync(pathJoin(buildOptions.keycloakifyBuildDirPath, ".gitignore"), Buffer.from("*", "utf8"));
+
     logger.log(
         [
             "",
             ...(!buildOptions.doCreateJar
                 ? []
                 : [
-                      `✅ Your keycloak theme has been generated and bundled into .${pathSep}${pathRelative(reactAppRootDirPath, jarFilePath)} 🚀`,
-                      `It is to be placed in "/opt/keycloak/providers" in the container running a quay.io/keycloak/keycloak Docker image.`,
-                      ""
+                      `✅ Your keycloak theme has been generated and bundled into .${pathSep}${pathRelative(
+                          buildOptions.reactAppRootDirPath,
+                          jarFilePath
+                      )} 🚀`
                   ]),
-            //TODO: Restore when we find a good Helm chart for Keycloak.
-            //"Using Helm (https://github.com/codecentric/helm-charts), edit to reflect:",
-            "",
-            "value.yaml: ",
-            "    extraInitContainers: |",
-            "        - name: realm-ext-provider",
-            "          image: curlimages/curl",
-            "          imagePullPolicy: IfNotPresent",
-            "          command:",
-            "            - sh",
-            "          args:",
-            "            - -c",
-            `            - curl -L -f -S -o /extensions/${pathBasename(jarFilePath)} https://AN.URL.FOR/${pathBasename(jarFilePath)}`,
-            "          volumeMounts:",
-            "            - name: extensions",
-            "              mountPath: /extensions",
-            "        ",
-            "        extraVolumeMounts: |",
-            "            - name: extensions",
-            "              mountPath: /opt/keycloak/providers",
-            "    extraEnv: |",
-            "    - name: KEYCLOAK_USER",
-            "      value: admin",
-            "    - name: KEYCLOAK_PASSWORD",
-            "      value: xxxxxxxxx",
-            "    - name: JAVA_OPTS",
-            "      value: -Dkeycloak.profile=preview",
-            "",
             "",
             `To test your theme locally you can spin up a Keycloak ${containerKeycloakVersion} container image with the theme pre loaded by running:`,
             "",
             `👉 $ .${pathSep}${pathRelative(
-                reactAppRootDirPath,
+                buildOptions.reactAppRootDirPath,
                 pathJoin(buildOptions.keycloakifyBuildDirPath, generateStartKeycloakTestingContainer.basename)
             )} 👈`,
-            "",
-            `Test with different Keycloak versions by editing the .sh file. see available versions here: https://quay.io/repository/keycloak/keycloak?tab=tags`,
             ``,
             `Once your container is up and running: `,
             "- Log into the admin console 👉 http://localhost:8080/admin username: admin, password: admin 👈",

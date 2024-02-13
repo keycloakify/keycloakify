@@ -14,9 +14,6 @@
     <a href="https://github.com/garronej/keycloakify/blob/main/LICENSE">
       <img src="https://img.shields.io/npm/l/keycloakify">
     </a>
-    <a href="https://github.com/keycloakify/keycloakify/blob/729503fe31a155a823f46dd66ad4ff34ca274e0a/tsconfig.json#L14">
-        <img src="https://camo.githubusercontent.com/0f9fcc0ac1b8617ad4989364f60f78b2d6b32985ad6a508f215f14d8f897b8d3/68747470733a2f2f62616467656e2e6e65742f62616467652f547970655363726970742f7374726963742532302546302539462539322541412f626c7565">
-    </a>
     <a href="https://github.com/thomasdarimont/awesome-keycloak">
         <img src="https://awesome.re/mentioned-badge.svg"/>
     </a>
@@ -42,10 +39,6 @@
 </p>
 
 Keycloakify is fully compatible with Keycloak 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, [~~22~~](https://github.com/keycloakify/keycloakify/issues/389#issuecomment-1822509763), **23** [and up](https://github.com/keycloakify/keycloakify/discussions/346#discussioncomment-5889791)!
-
-> 📣 I've observed that a few people have unstarred the project recently.  
-> I'm concerned that I may have inadvertently introduced some misinformation in the documentation, leading to frustration.  
-> If you're having a negative experience, [please let me know so I can resolve the issue](https://github.com/keycloakify/keycloakify/discussions/507).
 
 ## Sponsor 👼
 
@@ -130,10 +123,18 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 # Changelog highlights
 
+## 9.4
+
+**Vite Support! 🎉**
+
+-   [The starter is now a Vite project](https://github.com/keycloakify/keycloakify-starter).
+    The Webpack based starter is accessible [here](https://github.com/keycloakify/keycloakify-starter-cra).
+-   CRA (Webpack) remains supported for the forseable future.
+-   If you have a CRA Keycloakify theme that you wish to migrate to Vite checkout [this migration guide](https://docs.keycloakify.dev/migration-guides/cra-greater-than-vite).
+
 ## 9.0
 
-Bring back support for account themes in Keycloak v23 and up! [See issue](https://github.com/keycloakify/keycloakify/issues/389).  
-[Read the migration guide](https://docs.keycloakify.dev/migration-guides/v8-greater-than-v9).
+Bring back support for account themes in Keycloak v23 and up! [See issue](https://github.com/keycloakify/keycloakify/issues/389).
 
 ### Breaking changes
 

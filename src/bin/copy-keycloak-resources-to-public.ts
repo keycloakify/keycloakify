@@ -1,20 +1,44 @@
 #!/usr/bin/env node
 
-import { downloadKeycloakStaticResources } from "./keycloakify/generateTheme/downloadKeycloakStaticResources";
+import { downloadKeycloakStaticResources, type BuildOptionsLike } from "./keycloakify/generateTheme/downloadKeycloakStaticResources";
 import { join as pathJoin, relative as pathRelative } from "path";
-import { readBuildOptions } from "./keycloakify/BuildOptions";
+import { readBuildOptions } from "./keycloakify/buildOptions";
 import { themeTypes, keycloak_resources, lastKeycloakVersionWithAccountV1 } from "./constants";
+import { readThisNpmProjectVersion } from "./tools/readThisNpmProjectVersion";
+import { assert, type Equals } from "tsafe/assert";
 import * as fs from "fs";
+import { rmSync } from "./tools/fs.rmSync";
 
-(async () => {
-    const reactAppRootDirPath = process.cwd();
+export async function copyKeycloakResourcesToPublic(params: { processArgv: string[] }) {
+    const { processArgv } = params;
 
-    const buildOptions = readBuildOptions({
-        reactAppRootDirPath,
-        "processArgv": process.argv.slice(2)
+    const buildOptions = readBuildOptions({ processArgv });
+
+    const destDirPath = pathJoin(buildOptions.publicDirPath, keycloak_resources);
+
+    const keycloakifyBuildinfoFilePath = pathJoin(destDirPath, "keycloakify.buildinfo");
+
+    const { keycloakifyBuildinfoRaw } = generateKeycloakifyBuildinfoRaw({
+        destDirPath,
+        "keycloakifyVersion": readThisNpmProjectVersion(),
+        buildOptions
     });
 
-    const reservedDirPath = pathJoin(buildOptions.publicDirPath, keycloak_resources);
+    skip_if_already_done: {
+        if (!fs.existsSync(keycloakifyBuildinfoFilePath)) {
+            break skip_if_already_done;
+        }
+
+        const keycloakifyBuildinfoRaw_previousRun = fs.readFileSync(keycloakifyBuildinfoFilePath).toString("utf8");
+
+        if (keycloakifyBuildinfoRaw_previousRun !== keycloakifyBuildinfoRaw) {
+            break skip_if_already_done;
+        }
+
+        return;
+    }
+
+    rmSync(destDirPath, { "force": true, "recursive": true });
 
     for (const themeType of themeTypes) {
         await downloadKeycloakStaticResources({
@@ -27,14 +51,13 @@ import * as fs from "fs";
                 }
             })(),
             themeType,
-            "themeDirPath": reservedDirPath,
-            "usedResources": undefined,
+            "themeDirPath": destDirPath,
             buildOptions
         });
     }
 
     fs.writeFileSync(
-        pathJoin(reservedDirPath, "README.txt"),
+        pathJoin(destDirPath, "README.txt"),
         Buffer.from(
             // prettier-ignore
             [
@@ -44,7 +67,46 @@ import * as fs from "fs";
         )
     );
 
-    fs.writeFileSync(pathJoin(buildOptions.publicDirPath, "keycloak-resources", ".gitignore"), Buffer.from("*", "utf8"));
+    fs.writeFileSync(pathJoin(buildOptions.publicDirPath, keycloak_resources, ".gitignore"), Buffer.from("*", "utf8"));
 
-    console.log(`${pathRelative(reactAppRootDirPath, reservedDirPath)} directory created.`);
-})();
+    fs.writeFileSync(keycloakifyBuildinfoFilePath, Buffer.from(keycloakifyBuildinfoRaw, "utf8"));
+}
+
+export function generateKeycloakifyBuildinfoRaw(params: {
+    destDirPath: string;
+    keycloakifyVersion: string;
+    buildOptions: BuildOptionsLike & {
+        loginThemeResourcesFromKeycloakVersion: string;
+    };
+}) {
+    const { destDirPath, keycloakifyVersion, buildOptions } = params;
+
+    const { cacheDirPath, npmWorkspaceRootDirPath, loginThemeResourcesFromKeycloakVersion, ...rest } = buildOptions;
+
+    assert<Equals<typeof rest, {}>>(true);
+
+    const keycloakifyBuildinfoRaw = JSON.stringify(
+        {
+            keycloakifyVersion,
+            "buildOptions": {
+                loginThemeResourcesFromKeycloakVersion,
+                "cacheDirPath": pathRelative(destDirPath, cacheDirPath),
+                "npmWorkspaceRootDirPath": pathRelative(destDirPath, npmWorkspaceRootDirPath)
+            }
+        },
+        null,
+        2
+    );
+
+    return { keycloakifyBuildinfoRaw };
+}
+
+async function main() {
+    await copyKeycloakResourcesToPublic({
+        "processArgv": process.argv.slice(2)
+    });
+}
+
+if (require.main === module) {
+    main();
+}

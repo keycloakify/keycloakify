@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { getProjectRoot } from "./tools/getProjectRoot";
+import { getThisCodebaseRootDirPath } from "./tools/getThisCodebaseRootDirPath";
 import cliSelect from "cli-select";
 import { loginThemePageIds, accountThemePageIds, type LoginThemePageId, type AccountThemePageId } from "./keycloakify/generateFtl";
 import { capitalize } from "tsafe/capitalize";
@@ -9,13 +9,16 @@ import { existsSync } from "fs";
 import { join as pathJoin, relative as pathRelative } from "path";
 import { kebabCaseToCamelCase } from "./tools/kebabCaseToSnakeCase";
 import { assert, Equals } from "tsafe/assert";
-import { getThemeSrcDirPath } from "./getSrcDirPath";
+import { getThemeSrcDirPath } from "./getThemeSrcDirPath";
 import { themeTypes, type ThemeType } from "./constants";
+import { getReactAppRootDirPath } from "./keycloakify/buildOptions/getReactAppRootDirPath";
 
 (async () => {
     console.log("Select a theme type");
 
-    const reactAppRootDirPath = process.cwd();
+    const { reactAppRootDirPath } = getReactAppRootDirPath({
+        "processArgv": process.argv.slice(2)
+    });
 
     const { value: themeType } = await cliSelect<ThemeType>({
         "values": [...themeTypes]
@@ -55,7 +58,7 @@ import { themeTypes, type ThemeType } from "./constants";
         process.exit(-1);
     }
 
-    await writeFile(targetFilePath, await readFile(pathJoin(getProjectRoot(), "src", themeType, "pages", pageBasename)));
+    await writeFile(targetFilePath, await readFile(pathJoin(getThisCodebaseRootDirPath(), "src", themeType, "pages", pageBasename)));
 
     console.log(`${pathRelative(process.cwd(), targetFilePath)} created`);
 })();
