@@ -130,6 +130,10 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 # Changelog highlights
 
+## 9.4
+
+**Vite Support 🎉**
+
 ## 9.0
 
 Bring back support for account themes in Keycloak v23 and up! [See issue](https://github.com/keycloakify/keycloakify/issues/389).
