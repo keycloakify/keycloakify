@@ -7,6 +7,7 @@ import { assert, type Equals } from "tsafe/assert";
 const Password = lazy(() => import("keycloakify/account/pages/Password"));
 const Account = lazy(() => import("keycloakify/account/pages/Account"));
 const Sessions = lazy(() => import("keycloakify/account/pages/Sessions"));
+const Totp = lazy(() => import("keycloakify/account/pages/Totp"));
 
 export default function Fallback(props: PageProps<KcContext, I18n>) {
     const { kcContext, ...rest } = props;
@@ -21,6 +22,8 @@ export default function Fallback(props: PageProps<KcContext, I18n>) {
                         return <Sessions kcContext={kcContext} {...rest} />;
                     case "account.ftl":
                         return <Account kcContext={kcContext} {...rest} />;
+                    case "totp.ftl":
+                        return <Totp kcContext={kcContext} {...rest} />;
                 }
                 assert<Equals<typeof kcContext, never>>(false);
             })()}

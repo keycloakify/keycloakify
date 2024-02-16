@@ -3,7 +3,7 @@ import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
 import { type ThemeType } from "keycloakify/bin/constants";
 
-export type KcContext = KcContext.Password | KcContext.Account | KcContext.Sessions;
+export type KcContext = KcContext.Password | KcContext.Account | KcContext.Sessions | KcContext.Totp;
 
 export declare namespace KcContext {
     export type Common = {
@@ -131,6 +131,49 @@ export declare namespace KcContext {
                 expires?: any;
                 clients: string[];
             }[];
+        };
+        stateChecker: string;
+    };
+
+    export type Totp = Common & {
+        pageId: "totp.ftl";
+        totp: {
+            totpSecretEncoded: string;
+            qrUrl: string;
+            policy: {
+                algorithm: "HmacSHA1" | "HmacSHA256" | "HmacSHA512";
+                digits: number;
+                lookAheadWindow: number;
+            } & (
+                | {
+                      type: "totp";
+                      period: number;
+                  }
+                | {
+                      type: "hotp";
+                      initialCounter: number;
+                  }
+            );
+            supportedApplications: string[];
+            totpSecretQrCode: string;
+            manualUrl: string;
+            totpSecret: string;
+            otpCredentials: { id: string; userLabel: string }[];
+        };
+        url: {
+            accountUrl: string;
+            passwordUrl: string;
+            totpUrl: string;
+            socialUrl: string;
+            sessionsUrl: string;
+            applicationsUrl: string;
+            logUrl: string;
+            resourceUrl: string;
+            resourcesCommonPath: string;
+            resourcesPath: string;
+            /** @deprecated, not present in recent keycloak version apparently, use kcContext.referrer instead */
+            referrerURI?: string;
+            getLogoutUrl: () => string;
         };
         stateChecker: string;
     };

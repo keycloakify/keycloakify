@@ -23,10 +23,4 @@ export default meta;
 
 export const Default = () => <PageStory />;
 
-export const WithMessage = () => (
-    <PageStory
-        kcContext={{
-            message: { type: "success", summary: "This is a test message" }
-        }}
-    />
-);
+export const WithMessage = () => <PageStory kcContext={{}} />;
