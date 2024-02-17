@@ -6,6 +6,7 @@ on:
       - v5
       - v6
       - v7
+      - v8
   pull_request:
     branches:
       - main
