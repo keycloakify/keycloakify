@@ -455,9 +455,10 @@
                         <#-- https://github.com/keycloakify/keycloakify/issues/91#issue-1212319466 (reports with error.ftl and Kc18) -->
                         <#-- https://github.com/keycloakify/keycloakify/issues/109#issuecomment-1134610163 -->
                         <#-- https://github.com/keycloakify/keycloakify/issues/357 -->
+                        <#-- https://github.com/keycloakify/keycloakify/discussions/406#discussioncomment-7514787 -->
                         key == "loginAction" && 
                         are_same_path(path, ["url"]) && 
-                        ["saml-post-form.ftl", "error.ftl", "info.ftl", "login-oauth-grant.ftl", "logout-confirm.ftl"]?seq_contains(pageId) &&
+                        ["saml-post-form.ftl", "error.ftl", "info.ftl", "login-oauth-grant.ftl", "logout-confirm.ftl", "login-oauth2-device-verify-user-code.ftl"]?seq_contains(pageId) &&
                         !(auth?has_content && auth.showTryAnotherWayLink())
                     ) || (
                         <#-- https://github.com/keycloakify/keycloakify/issues/362 -->
@@ -490,14 +491,19 @@
                     <#continue>
                 </#if>
 
-                <#if pageId == "register.ftl" && key == "attemptedUsername" && are_same_path(path, ["auth"])>
+                <#-- https://github.com/keycloakify/keycloakify/discussions/406 -->
+                <#if (
+                    ["register.ftl", "info.ftl", "login.ftl", "login-update-password.ftl", "login-oauth2-device-verify-user-code.ftl"]?seq_contains(pageId) && 
+                    key == "attemptedUsername" && are_same_path(path, ["auth"])
+                )>
                     <#attempt>
                         <#-- https://github.com/keycloak/keycloak/blob/3a2bf0c04bcde185e497aaa32d0bb7ab7520cf4a/themes/src/main/resources/theme/base/login/template.ftl#L63 -->
-                        <#-- https://github.com/keycloakify/keycloakify/discussions/406 -->
                         <#if !(auth?has_content && auth.showUsername() && !auth.showResetCredentials())>
+                            <#local out_seq += ["/*If you need '" + key + "' on " + pageId + ", please submit an issue to the Keycloakify repo*/"]>
                             <#continue>
                         </#if>
                     <#recover>
+                        <#local out_seq += ["/*Testing if attemptedUsername should be skipped throwed an exception */"]>
                     </#attempt>
                 </#if>
                 
