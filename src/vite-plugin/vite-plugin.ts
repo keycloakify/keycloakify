@@ -25,7 +25,7 @@ export function keycloakify() {
             urlPathname = (() => {
                 let out = resolvedConfig.env.BASE_URL;
 
-                if (out.startsWith(".") && command === "build") {
+                if (out.startsWith(".") && command === "build" && resolvedConfig.envPrefix?.includes("STORYBOOK_") !== true) {
                     throw new Error(
                         [
                             `BASE_URL=${out} is not supported By Keycloakify. Use an absolute URL instead.`,
