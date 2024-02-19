@@ -138,6 +138,7 @@ export declare namespace KcContext {
     export type Totp = Common & {
         pageId: "totp.ftl";
         totp: {
+            enabled: boolean;
             totpSecretEncoded: string;
             qrUrl: string;
             policy: {

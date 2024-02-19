@@ -204,6 +204,7 @@ export const kcContextMocks: KcContext[] = [
         ...kcContextCommonMock,
         "pageId": "totp.ftl",
         totp: {
+            enabled: true,
             totpSecretEncoded: "KVVF G2BY N4YX S6LB IUYT K2LH IFYE 4SBV",
             qrUrl: "#",
             totpSecretQrCode:
