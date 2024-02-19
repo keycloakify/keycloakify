@@ -8,6 +8,7 @@ const Password = lazy(() => import("keycloakify/account/pages/Password"));
 const Account = lazy(() => import("keycloakify/account/pages/Account"));
 const Sessions = lazy(() => import("keycloakify/account/pages/Sessions"));
 const Totp = lazy(() => import("keycloakify/account/pages/Totp"));
+const Applications = lazy(() => import("keycloakify/account/pages/Applications"));
 
 export default function Fallback(props: PageProps<KcContext, I18n>) {
     const { kcContext, ...rest } = props;
@@ -24,6 +25,8 @@ export default function Fallback(props: PageProps<KcContext, I18n>) {
                         return <Account kcContext={kcContext} {...rest} />;
                     case "totp.ftl":
                         return <Totp kcContext={kcContext} {...rest} />;
+                    case "applications.ftl":
+                        return <Applications kcContext={kcContext} {...rest} />;
                 }
                 assert<Equals<typeof kcContext, never>>(false);
             })()}

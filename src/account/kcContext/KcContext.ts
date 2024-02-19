@@ -3,7 +3,7 @@ import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
 import { type ThemeType } from "keycloakify/bin/constants";
 
-export type KcContext = KcContext.Password | KcContext.Account | KcContext.Sessions | KcContext.Totp;
+export type KcContext = KcContext.Password | KcContext.Account | KcContext.Sessions | KcContext.Totp | KcContext.Applications;
 
 export declare namespace KcContext {
     export type Common = {
@@ -179,6 +179,71 @@ export declare namespace KcContext {
             getLogoutUrl: () => string;
         };
         stateChecker: string;
+    };
+
+    export type Applications = Common & {
+        pageId: "applications.ftl";
+        features: {
+            log: boolean;
+            identityFederation: boolean;
+            authorization: boolean;
+            passwordUpdateSupported: boolean;
+        };
+        stateChecker: string;
+        applications: {
+            applications: {
+                realmRolesAvailable: { name: string; description: string }[];
+                resourceRolesAvailable: Record<
+                    string,
+                    {
+                        roleName: string;
+                        roleDescription: string;
+                        clientName: string;
+                        clientId: string;
+                    }[]
+                >;
+                additionalGrants: string[];
+                clientScopesGranted: string[];
+                effectiveUrl?: string;
+                client: {
+                    consentScreenText: string;
+                    surrogateAuthRequired: boolean;
+                    bearerOnly: boolean;
+                    id: string;
+                    protocolMappersStream: Record<string, unknown>;
+                    includeInTokenScope: boolean;
+                    redirectUris: string[];
+                    fullScopeAllowed: boolean;
+                    registeredNodes: Record<string, unknown>;
+                    enabled: boolean;
+                    clientAuthenticatorType: string;
+                    realmScopeMappingsStream: Record<string, unknown>;
+                    scopeMappingsStream: Record<string, unknown>;
+                    displayOnConsentScreen: boolean;
+                    clientId: string;
+                    rootUrl: string;
+                    authenticationFlowBindingOverrides: Record<string, unknown>;
+                    standardFlowEnabled: boolean;
+                    attributes: Record<string, unknown>;
+                    publicClient: boolean;
+                    alwaysDisplayInConsole: boolean;
+                    consentRequired: boolean;
+                    notBefore: string;
+                    rolesStream: Record<string, unknown>;
+                    protocol: string;
+                    dynamicScope: boolean;
+                    directAccessGrantsEnabled: boolean;
+                    name: string;
+                    serviceAccountsEnabled: boolean;
+                    frontchannelLogout: boolean;
+                    nodeReRegistrationTimeout: string;
+                    implicitFlowEnabled: boolean;
+                    baseUrl: string;
+                    webOrigins: string[];
+                    realm: Record<string, unknown>;
+                };
+            }[];
+        };
     };
 }
 

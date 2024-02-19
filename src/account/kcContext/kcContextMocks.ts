@@ -198,7 +198,7 @@ export const kcContextMocks: KcContext[] = [
                 }
             ]
         },
-        "stateChecker": ""
+        "stateChecker": "g6WB1FaYnKotTkiy7ZrlxvFztSqS0U8jvHsOOOb2z4g"
     }),
     id<KcContext.Totp>({
         ...kcContextCommonMock,
