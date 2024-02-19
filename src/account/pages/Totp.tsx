@@ -3,6 +3,7 @@ import type { PageProps } from "keycloakify/account/pages/PageProps";
 import { useGetClassName } from "keycloakify/account/lib/useGetClassName";
 import type { KcContext } from "../kcContext";
 import type { I18n } from "../i18n";
+import { MessageKey } from "keycloakify/account/i18n/i18n";
 
 export default function Totp(props: PageProps<Extract<KcContext, { pageId: "totp.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
@@ -11,7 +12,7 @@ export default function Totp(props: PageProps<Extract<KcContext, { pageId: "totp
         classes
     });
 
-    const { url, isAppInitiatedAction, totp, mode, messagesPerField } = kcContext;
+    const { totp, mode, messagesPerField } = kcContext;
 
     const { msg, msgStr } = i18n;
 
@@ -24,13 +25,21 @@ export default function Totp(props: PageProps<Extract<KcContext, { pageId: "totp
     return (
         <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} active="totp">
             <>
+                <div className="row">
+                    <div className="col-md-10">
+                        <h2>{msg("changePasswordHtmlTitle")}</h2>
+                    </div>
+                    <div className="col-md-2 subtitle">
+                        <span className="subtitle">{msg("allFieldsRequired")}</span>
+                    </div>
+                </div>
                 <ol id="kc-totp-settings">
                     <li>
-                        <p>{msg("loginTotpStep1")}</p>
+                        <p>{msg("totpStep1")}</p>
 
                         <ul id="kc-totp-supported-apps">
                             {totp.supportedApplications.map(app => (
-                                <li>{msg(app as MessageKey)}</li>
+                                <li key={app}>{msg(app as MessageKey)}</li>
                             ))}
                         </ul>
                     </li>
@@ -38,36 +47,36 @@ export default function Totp(props: PageProps<Extract<KcContext, { pageId: "totp
                     {mode && mode == "manual" ? (
                         <>
                             <li>
-                                <p>{msg("loginTotpManualStep2")}</p>
+                                <p>{msg("totpManualStep2")}</p>
                                 <p>
                                     <span id="kc-totp-secret-key">{totp.totpSecretEncoded}</span>
                                 </p>
                                 <p>
                                     <a href={totp.qrUrl} id="mode-barcode">
-                                        {msg("loginTotpScanBarcode")}
+                                        {msg("totpScanBarcode")}
                                     </a>
                                 </p>
                             </li>
                             <li>
-                                <p>{msg("loginTotpManualStep3")}</p>
+                                <p>{msg("totpManualStep3")}</p>
                                 <p>
                                     <ul>
                                         <li id="kc-totp-type">
-                                            {msg("loginTotpType")}: {msg(`loginTotp.${totp.policy.type}`)}
+                                            {msg("totpType")}: {msg(`totp.${totp.policy.type}`)}
                                         </li>
                                         <li id="kc-totp-algorithm">
-                                            {msg("loginTotpAlgorithm")}: {algToKeyUriAlg?.[totp.policy.algorithm] ?? totp.policy.algorithm}
+                                            {msg("totpAlgorithm")}: {algToKeyUriAlg?.[totp.policy.algorithm] ?? totp.policy.algorithm}
                                         </li>
                                         <li id="kc-totp-digits">
-                                            {msg("loginTotpDigits")}: {totp.policy.digits}
+                                            {msg("totpDigits")}: {totp.policy.digits}
                                         </li>
                                         {totp.policy.type === "totp" ? (
                                             <li id="kc-totp-period">
-                                                {msg("loginTotpInterval")}: {totp.policy.period}
+                                                {msg("totpInterval")}: {totp.policy.period}
                                             </li>
                                         ) : (
                                             <li id="kc-totp-counter">
-                                                {msg("loginTotpCounter")}: {totp.policy.initialCounter}
+                                                {msg("totpCounter")}: {totp.policy.initialCounter}
                                             </li>
                                         )}
                                     </ul>
@@ -76,31 +85,32 @@ export default function Totp(props: PageProps<Extract<KcContext, { pageId: "totp
                         </>
                     ) : (
                         <li>
-                            <p>{msg("loginTotpStep2")}</p>
+                            <p>{msg("totpStep2")}</p>
                             <img id="kc-totp-secret-qr-code" src={`data:image/png;base64, ${totp.totpSecretQrCode}`} alt="Figure: Barcode" />
                             <br />
                             <p>
                                 <a href={totp.manualUrl} id="mode-manual">
-                                    {msg("loginTotpUnableToScan")}
+                                    {msg("totpUnableToScan")}
                                 </a>
                             </p>
                         </li>
                     )}
                     <li>
-                        <p>{msg("loginTotpStep3")}</p>
-                        <p>{msg("loginTotpStep3DeviceName")}</p>
+                        <p>{msg("totpStep3")}</p>
+                        <p>{msg("totpStep3DeviceName")}</p>
                     </li>
                 </ol>
+                {/* <form action={url.loginAction} className={getClassName("kcFormClass")} id="kc-totp-settings-form" method="post"> */}
 
-                <form action={url.loginAction} className={getClassName("kcFormClass")} id="kc-totp-settings-form" method="post">
+                <form className={getClassName("kcFormClass")} id="kc-totp-settings-form" method="post">
                     <div className={getClassName("kcFormGroupClass")}>
-                        <div className={getClassName("kcInputWrapperClass")}>
-                            <label htmlFor="totp" className={getClassName("kcLabelClass")}>
+                        <div className="col-sm-2 col-md-2">
+                            <label htmlFor="totp" className="control-label">
                                 {msg("authenticatorCode")}
                             </label>{" "}
                             <span className="required">*</span>
                         </div>
-                        <div className={getClassName("kcInputWrapperClass")}>
+                        <div className="col-sm-10 col-md-10">
                             <input
                                 type="text"
                                 id="totp"
@@ -121,13 +131,13 @@ export default function Totp(props: PageProps<Extract<KcContext, { pageId: "totp
                     </div>
 
                     <div className={getClassName("kcFormGroupClass")}>
-                        <div className={getClassName("kcInputWrapperClass")}>
+                        <div className="col-sm-2 col-md-2">
                             <label htmlFor="userLabel" className={getClassName("kcLabelClass")}>
-                                {msg("loginTotpDeviceName")}
+                                {msg("totpDeviceName")}
                             </label>{" "}
                             {totp.otpCredentials.length >= 1 && <span className="required">*</span>}
                         </div>
-                        <div className={getClassName("kcInputWrapperClass")}>
+                        <div className="col-sm-10 col-md-10">
                             <input
                                 type="text"
                                 id="userLabel"
@@ -144,41 +154,28 @@ export default function Totp(props: PageProps<Extract<KcContext, { pageId: "totp
                         </div>
                     </div>
 
-                    {isAppInitiatedAction ? (
-                        <>
-                            <input
-                                type="submit"
-                                className={clsx(
-                                    getClassName("kcButtonClass"),
-                                    getClassName("kcButtonPrimaryClass"),
-                                    getClassName("kcButtonLargeClass")
-                                )}
-                                id="saveTOTPBtn"
-                                value={msgStr("doSubmit")}
-                            />
-                            <button
-                                type="submit"
-                                className={clsx(
-                                    getClassName("kcButtonClass"),
-                                    getClassName("kcButtonDefaultClass"),
-                                    getClassName("kcButtonLargeClass"),
-                                    getClassName("kcButtonLargeClass")
-                                )}
-                                id="cancelTOTPBtn"
-                                name="cancel-aia"
-                                value="true"
-                            >
-                                {msg("doCancel")}
-                            </button>
-                        </>
-                    ) : (
+                    <div className="text-right kcFormGroupClass">
                         <input
                             type="submit"
                             className={clsx(getClassName("kcButtonClass"), getClassName("kcButtonPrimaryClass"), getClassName("kcButtonLargeClass"))}
                             id="saveTOTPBtn"
-                            value={msgStr("doSubmit")}
+                            value={msgStr("doSave")}
                         />
-                    )}
+                        <button
+                            type="submit"
+                            className={clsx(
+                                getClassName("kcButtonClass"),
+                                getClassName("kcButtonDefaultClass"),
+                                getClassName("kcButtonLargeClass"),
+                                getClassName("kcButtonLargeClass")
+                            )}
+                            id="cancelTOTPBtn"
+                            name="cancel-aia"
+                            value="true"
+                        >
+                            {msg("doCancel")}
+                        </button>
+                    </div>
                 </form>
             </>
         </Template>

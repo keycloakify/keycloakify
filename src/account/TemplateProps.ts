@@ -18,4 +18,10 @@ export type ClassKey =
     | "kcButtonPrimaryClass"
     | "kcButtonLargeClass"
     | "kcButtonDefaultClass"
-    | "kcContentWrapperClass";
+    | "kcContentWrapperClass"
+    | "kcFormClass"
+    | "kcFormGroupClass"
+    | "kcInputWrapperClass"
+    | "kcLabelClass"
+    | "kcInputClass"
+    | "kcInputErrorMessageClass";

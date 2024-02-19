@@ -160,6 +160,8 @@ export declare namespace KcContext {
             totpSecret: string;
             otpCredentials: { id: string; userLabel: string }[];
         };
+        mode?: "qr" | "manual" | undefined | null;
+        isAppInitiatedAction: boolean;
         url: {
             accountUrl: string;
             passwordUrl: string;

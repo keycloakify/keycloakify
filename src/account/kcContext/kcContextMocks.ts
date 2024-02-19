@@ -211,7 +211,7 @@ export const kcContextMocks: KcContext[] = [
             manualUrl: "#",
             totpSecret: "G4nsI8lQagRMUchH8jEG",
             otpCredentials: [],
-            supportedApplications: ["FreeOTP", "Google Authenticator"],
+            supportedApplications: ["totpAppFreeOTPName", "totpAppMicrosoftAuthenticatorName", "totpAppGoogleName"],
             policy: {
                 algorithm: "HmacSHA1",
                 digits: 6,
@@ -220,6 +220,8 @@ export const kcContextMocks: KcContext[] = [
                 period: 30
             }
         },
+        mode: "qr",
+        isAppInitiatedAction: false,
         "stateChecker": ""
     })
 ];
