@@ -84,7 +84,7 @@ export declare namespace KcContext {
             description?: string;
             attributes: Record<string, string>;
         };
-        isAppInitiatedAction: boolean;
+        isAppInitiatedAction?: boolean;
         messagesPerField: {
             /**
              * Return text if message for given field exists. Useful eg. to add css styles for fields with message.
