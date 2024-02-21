@@ -3,7 +3,7 @@ import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
 import { type ThemeType } from "keycloakify/bin/constants";
 
-export type KcContext = KcContext.Password | KcContext.Account | KcContext.Sessions | KcContext.Totp | KcContext.Applications;
+export type KcContext = KcContext.Password | KcContext.Account | KcContext.Sessions | KcContext.Totp | KcContext.Applications | KcContext.Log;
 
 export declare namespace KcContext {
     export type Common = {
@@ -242,6 +242,19 @@ export declare namespace KcContext {
                     webOrigins: string[];
                     realm: Record<string, unknown>;
                 };
+            }[];
+        };
+    };
+
+    export type Log = Common & {
+        pageId: "log.ftl";
+        log: {
+            events: {
+                date: string | number | Date;
+                event: string;
+                ipAddress: string;
+                client: any;
+                details: any[];
             }[];
         };
     };
