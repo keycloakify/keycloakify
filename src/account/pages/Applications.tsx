@@ -76,7 +76,7 @@ export default function Applications(props: PageProps<Extract<KcContext, { pageI
                                                         <span key={clientRole.roleName}>
                                                             {clientRole.roleDescription
                                                                 ? advancedMsg(clientRole.roleDescription)
-                                                                : advancedMsg(clientRole.roleName)}
+                                                                : advancedMsg(clientRole.roleName)}{" "}
                                                             {msg("inResource")}{" "}
                                                             <strong>
                                                                 {clientRole.clientName ? advancedMsg(clientRole.clientName) : clientRole.clientId}
