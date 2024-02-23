@@ -1,5 +1,5 @@
 {
-  "keycloakifyVersion": "9.5.0-rc.0",
+  "keycloakifyVersion": "9.5.0-rc.1",
   "buildOptions": {
     "loginThemeResourcesFromKeycloakVersion": "11.0.3",
     "cacheDirPath": "../../../node_modules/.cache/keycloakify",
