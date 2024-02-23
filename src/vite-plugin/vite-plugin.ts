@@ -19,11 +19,11 @@ import type { BuildOptions } from "../bin/keycloakify/buildOptions";
 import type { UserProvidedBuildOptions } from "../bin/keycloakify/buildOptions/UserProvidedBuildOptions";
 
 export type Params = UserProvidedBuildOptions & {
-    postBuildScript?: (buildOptions: Omit<BuildOptions, "bundler">) => Promise<void>;
+    postBuild?: (buildOptions: Omit<BuildOptions, "bundler">) => Promise<void>;
 };
 
-export function keycloakify(params: Params) {
-    const { postBuildScript, ...userProvidedBuildOptions } = params;
+export function keycloakify(params?: Params) {
+    const { postBuild, ...userProvidedBuildOptions } = params ?? {};
 
     let reactAppRootDirPath: string | undefined = undefined;
     let urlPathname: string | undefined = undefined;
@@ -40,13 +40,13 @@ export function keycloakify(params: Params) {
                     break run_post_build_script;
                 }
 
-                if (params.postBuildScript === undefined) {
+                if (postBuild === undefined) {
                     process.exit(0);
                 }
 
                 const buildOptions: BuildOptions = JSON.parse(buildOptionJson);
 
-                await params.postBuildScript(buildOptions);
+                await postBuild(buildOptions);
 
                 process.exit(0);
             }
