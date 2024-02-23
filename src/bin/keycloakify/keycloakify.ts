@@ -9,6 +9,7 @@ import { getLogger } from "../tools/logger";
 import { getThemeSrcDirPath } from "../getThemeSrcDirPath";
 import { getThisCodebaseRootDirPath } from "../tools/getThisCodebaseRootDirPath";
 import { readThisNpmProjectVersion } from "../tools/readThisNpmProjectVersion";
+import { keycloakifyBuildOptionsForPostPostBuildScriptEnvName } from "../constants";
 
 export async function main() {
     const buildOptions = readBuildOptions({
@@ -36,9 +37,30 @@ export async function main() {
         fs.writeFileSync(pathJoin(buildOptions.keycloakifyBuildDirPath, "pom.xml"), Buffer.from(pomFileCode, "utf8"));
     }
 
+    const containerKeycloakVersion = "23.0.6";
+
     const jarFilePath = pathJoin(buildOptions.keycloakifyBuildDirPath, "target", `${buildOptions.artifactId}-${buildOptions.themeVersion}.jar`);
 
-    if (buildOptions.doCreateJar) {
+    generateStartKeycloakTestingContainer({
+        "keycloakVersion": containerKeycloakVersion,
+        jarFilePath,
+        buildOptions
+    });
+
+    fs.writeFileSync(pathJoin(buildOptions.keycloakifyBuildDirPath, ".gitignore"), Buffer.from("*", "utf8"));
+
+    child_process.execSync("npx vite", {
+        "env": {
+            ...process.env,
+            [keycloakifyBuildOptionsForPostPostBuildScriptEnvName]: JSON.stringify(buildOptions)
+        }
+    });
+
+    create_jar: {
+        if (!buildOptions.doCreateJar) {
+            break create_jar;
+        }
+
         child_process.execSync("mvn clean install", { "cwd": buildOptions.keycloakifyBuildDirPath });
 
         const jarDirPath = pathDirname(jarFilePath);
@@ -58,16 +80,6 @@ export async function main() {
             )
         );
     }
-
-    const containerKeycloakVersion = "23.0.6";
-
-    generateStartKeycloakTestingContainer({
-        "keycloakVersion": containerKeycloakVersion,
-        jarFilePath,
-        buildOptions
-    });
-
-    fs.writeFileSync(pathJoin(buildOptions.keycloakifyBuildDirPath, ".gitignore"), Buffer.from("*", "utf8"));
 
     logger.log(
         [

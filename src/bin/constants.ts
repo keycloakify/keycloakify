@@ -10,3 +10,5 @@ export const retrocompatPostfix = "_retrocompat";
 export const accountV1ThemeName = "account-v1";
 
 export type ThemeType = (typeof themeTypes)[number];
+
+export const keycloakifyBuildOptionsForPostPostBuildScriptEnvName = "KEYCLOAKIFY_BUILD_OPTIONS_POST_POST_BUILD_SCRIPT";

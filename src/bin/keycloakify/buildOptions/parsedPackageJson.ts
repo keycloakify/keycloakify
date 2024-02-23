@@ -3,41 +3,20 @@ import { assert } from "tsafe";
 import type { Equals } from "tsafe";
 import { z } from "zod";
 import { join as pathJoin } from "path";
+import { type UserProvidedBuildOptions, zUserProvidedBuildOptions } from "./UserProvidedBuildOptions";
 
 export type ParsedPackageJson = {
     name: string;
     version?: string;
     homepage?: string;
-    keycloakify?: {
-        extraThemeProperties?: string[];
-        artifactId?: string;
-        groupId?: string;
-        doCreateJar?: boolean;
-        loginThemeResourcesFromKeycloakVersion?: string;
-        reactAppBuildDirPath?: string;
-        keycloakifyBuildDirPath?: string;
-        themeName?: string | string[];
-        doBuildRetrocompatAccountTheme?: boolean;
-    };
+    keycloakify?: UserProvidedBuildOptions;
 };
 
 const zParsedPackageJson = z.object({
     "name": z.string(),
     "version": z.string().optional(),
     "homepage": z.string().optional(),
-    "keycloakify": z
-        .object({
-            "extraThemeProperties": z.array(z.string()).optional(),
-            "artifactId": z.string().optional(),
-            "groupId": z.string().optional(),
-            "doCreateJar": z.boolean().optional(),
-            "loginThemeResourcesFromKeycloakVersion": z.string().optional(),
-            "reactAppBuildDirPath": z.string().optional(),
-            "keycloakifyBuildDirPath": z.string().optional(),
-            "themeName": z.union([z.string(), z.array(z.string())]).optional(),
-            "doBuildRetrocompatAccountTheme": z.boolean().optional()
-        })
-        .optional()
+    "keycloakify": zUserProvidedBuildOptions.optional()
 });
 
 assert<Equals<ReturnType<(typeof zParsedPackageJson)["parse"]>, ParsedPackageJson>>();

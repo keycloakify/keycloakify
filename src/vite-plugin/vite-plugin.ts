@@ -1,7 +1,13 @@
 import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path";
 import type { Plugin } from "vite";
 import * as fs from "fs";
-import { resolvedViteConfigJsonBasename, nameOfTheGlobal, basenameOfTheKeycloakifyResourcesDir, keycloak_resources } from "../bin/constants";
+import {
+    resolvedViteConfigJsonBasename,
+    nameOfTheGlobal,
+    basenameOfTheKeycloakifyResourcesDir,
+    keycloak_resources,
+    keycloakifyBuildOptionsForPostPostBuildScriptEnvName
+} from "../bin/constants";
 import type { ResolvedViteConfig } from "../bin/keycloakify/buildOptions/resolvedViteConfig";
 import { getCacheDirPath } from "../bin/keycloakify/buildOptions/getCacheDirPath";
 import { replaceAll } from "../bin/tools/String.prototype.replaceAll";
@@ -9,8 +15,16 @@ import { id } from "tsafe/id";
 import { rm } from "../bin/tools/fs.rm";
 import { copyKeycloakResourcesToPublic } from "../bin/copy-keycloak-resources-to-public";
 import { assert } from "tsafe/assert";
+import type { BuildOptions } from "../bin/keycloakify/buildOptions";
+import type { UserProvidedBuildOptions } from "../bin/keycloakify/buildOptions/UserProvidedBuildOptions";
 
-export function keycloakify() {
+export type Params = UserProvidedBuildOptions & {
+    postBuildScript?: (buildOptions: Omit<BuildOptions, "bundler">) => Promise<void>;
+};
+
+export function keycloakify(params: Params) {
+    const { postBuildScript, ...userProvidedBuildOptions } = params;
+
     let reactAppRootDirPath: string | undefined = undefined;
     let urlPathname: string | undefined = undefined;
     let buildDirPath: string | undefined = undefined;
@@ -19,6 +33,24 @@ export function keycloakify() {
     const plugin = {
         "name": "keycloakify" as const,
         "configResolved": async resolvedConfig => {
+            run_post_build_script: {
+                const buildOptionJson = process.env[keycloakifyBuildOptionsForPostPostBuildScriptEnvName];
+
+                if (buildOptionJson === undefined) {
+                    break run_post_build_script;
+                }
+
+                if (params.postBuildScript === undefined) {
+                    process.exit(0);
+                }
+
+                const buildOptions: BuildOptions = JSON.parse(buildOptionJson);
+
+                await params.postBuildScript(buildOptions);
+
+                process.exit(0);
+            }
+
             command = resolvedConfig.command;
 
             reactAppRootDirPath = resolvedConfig.root;
@@ -67,7 +99,8 @@ export function keycloakify() {
                             "publicDir": pathRelative(reactAppRootDirPath, resolvedConfig.publicDir),
                             "assetsDir": resolvedConfig.build.assetsDir,
                             "buildDir": resolvedConfig.build.outDir,
-                            urlPathname
+                            urlPathname,
+                            userProvidedBuildOptions
                         }),
                         null,
                         2
