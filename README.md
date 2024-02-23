@@ -123,6 +123,11 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 # Changelog highlights
 
+## 9.5
+
+-   Post build hook: You can now apply custom transformation to your theme files. [Learn more](https://docs.keycloakify.dev/build-options#postbuild-hook).
+-   You can now specify your option in the Keycloakify's Vite plugin instead in the package.json. [See example](https://docs.keycloakify.dev/build-options#themename).
+
 ## 9.4
 
 **Vite Support! 🎉**
