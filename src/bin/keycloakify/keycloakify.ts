@@ -50,6 +50,7 @@ export async function main() {
     fs.writeFileSync(pathJoin(buildOptions.keycloakifyBuildDirPath, ".gitignore"), Buffer.from("*", "utf8"));
 
     child_process.execSync("npx vite", {
+        "cwd": buildOptions.reactAppRootDirPath,
         "env": {
             ...process.env,
             [keycloakifyBuildOptionsForPostPostBuildScriptEnvName]: JSON.stringify(buildOptions)
