@@ -128,7 +128,10 @@ export function readBuildOptions(params: { processArgv: string[] }): BuildOption
                 });
             }
 
-            return resolvedViteConfig?.buildDir === undefined ? "build_keycloak" : `${resolvedViteConfig.buildDir}_keycloak`;
+            return pathJoin(
+                reactAppRootDirPath,
+                resolvedViteConfig?.buildDir === undefined ? "build_keycloak" : `${resolvedViteConfig.buildDir}_keycloak`
+            );
         })(),
         "publicDirPath": (() => {
             webpack: {
