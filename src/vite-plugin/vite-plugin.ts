@@ -10,13 +10,13 @@ import {
 } from "../bin/constants";
 import type { ResolvedViteConfig } from "../bin/keycloakify/buildOptions/resolvedViteConfig";
 import { getCacheDirPath } from "../bin/keycloakify/buildOptions/getCacheDirPath";
-import { replaceAll } from "../bin/tools/String.prototype.replaceAll";
 import { id } from "tsafe/id";
 import { rm } from "../bin/tools/fs.rm";
 import { copyKeycloakResourcesToPublic } from "../bin/copy-keycloak-resources-to-public";
 import { assert } from "tsafe/assert";
 import type { BuildOptions } from "../bin/keycloakify/buildOptions";
 import type { UserProvidedBuildOptions } from "../bin/keycloakify/buildOptions/UserProvidedBuildOptions";
+import MagicString from "magic-string";
 
 export type Params = UserProvidedBuildOptions & {
     postBuild?: (buildOptions: Omit<BuildOptions, "bundler">) => Promise<void>;
@@ -29,10 +29,13 @@ export function keycloakify(params?: Params) {
     let urlPathname: string | undefined = undefined;
     let buildDirPath: string | undefined = undefined;
     let command: "build" | "serve" | undefined = undefined;
+    let shouldGenerateSourcemap: boolean | undefined = undefined;
 
     const plugin = {
         "name": "keycloakify" as const,
         "configResolved": async resolvedConfig => {
+            shouldGenerateSourcemap = resolvedConfig.build.sourcemap !== false;
+
             run_post_build_script: {
                 const buildOptionJson = process.env[keycloakifyBuildOptionsForPostPostBuildScriptEnvName];
 
@@ -115,6 +118,7 @@ export function keycloakify(params?: Params) {
         },
         "transform": (code, id) => {
             assert(command !== undefined);
+            assert(shouldGenerateSourcemap !== undefined);
 
             if (command !== "build") {
                 return;
@@ -122,49 +126,53 @@ export function keycloakify(params?: Params) {
 
             assert(reactAppRootDirPath !== undefined);
 
-            let transformedCode: string | undefined = undefined;
+            {
+                const isWithinSourceDirectory = id.startsWith(pathJoin(reactAppRootDirPath, "src") + pathSep);
 
-            replace_import_meta_env_base_url_in_source_code: {
-                {
-                    const isWithinSourceDirectory = id.startsWith(pathJoin(reactAppRootDirPath, "src") + pathSep);
-
-                    if (!isWithinSourceDirectory) {
-                        break replace_import_meta_env_base_url_in_source_code;
-                    }
+                if (!isWithinSourceDirectory) {
+                    return;
                 }
-
-                {
-                    const isJavascriptFile = id.endsWith(".js") || id.endsWith(".jsx");
-                    const isTypeScriptFile = id.endsWith(".ts") || id.endsWith(".tsx");
-
-                    if (!isTypeScriptFile && !isJavascriptFile) {
-                        break replace_import_meta_env_base_url_in_source_code;
-                    }
-                }
-
-                if (transformedCode === undefined) {
-                    transformedCode = code;
-                }
-
-                transformedCode = replaceAll(
-                    transformedCode,
-                    "import.meta.env.BASE_URL",
-                    [
-                        `(`,
-                        `(window.${nameOfTheGlobal} === undefined || import.meta.env.MODE === "development")?`,
-                        `"${urlPathname ?? "/"}":`,
-                        `(window.${nameOfTheGlobal}.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/")`,
-                        `)`
-                    ].join("")
-                );
             }
 
-            if (transformedCode === undefined) {
+            {
+                const isJavascriptFile = id.endsWith(".js") || id.endsWith(".jsx");
+                const isTypeScriptFile = id.endsWith(".ts") || id.endsWith(".tsx");
+
+                if (!isTypeScriptFile && !isJavascriptFile) {
+                    return;
+                }
+            }
+
+            const transformedCode = new MagicString(code);
+
+            transformedCode.replaceAll(
+                /import\.meta\.env(?:(?:\.BASE_URL)|(?:\["BASE_URL"\]))/g,
+                [
+                    `(`,
+                    `(window.${nameOfTheGlobal} === undefined || import.meta.env.MODE === "development")?`,
+                    `"${urlPathname ?? "/"}":`,
+                    `(window.${nameOfTheGlobal}.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/")`,
+                    `)`
+                ].join("")
+            );
+
+            if (!transformedCode.hasChanged()) {
                 return;
             }
 
+            if (!shouldGenerateSourcemap) {
+                return transformedCode.toString();
+            }
+
+            const map = transformedCode.generateMap({
+                "source": id,
+                "includeContent": true,
+                "hires": true
+            });
+
             return {
-                "code": transformedCode
+                "code": transformedCode.toString(),
+                "map": map.toString()
             };
         },
         "closeBundle": async () => {
