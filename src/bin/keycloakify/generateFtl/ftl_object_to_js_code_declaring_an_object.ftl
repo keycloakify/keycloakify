@@ -408,6 +408,14 @@
     out["themeName"] = "KEYCLOAKIFY_THEME_NAME_cXxKd3xEer";
     out["pageId"] = "${pageId}";
 
+    try {
+
+        out["url"]["resourcesCommonPath"] = out["url"]["resourcesPath"] + "/" + "RESOURCES_COMMON_cLsLsMrtDkpVv";
+
+    } catch(error) {
+
+    }
+
     return out;
 
 })()
@@ -423,7 +431,7 @@
         <#if isHash>
 
             <#if path?size gt 10>
-                <#return "ABORT: Too many recursive calls">
+                <#return "ABORT: Too many recursive calls, path: " + path?join(".")>
             </#if>
 
             <#local keys = "">
@@ -481,13 +489,14 @@
                         !["name", "displayName", "displayNameHtml", "internationalizationEnabled", "registrationEmailAsUsername" ]?seq_contains(key)
                     ) || (
                         "applications.ftl" == pageId &&
-                        are_same_path(path, ["applications", "applications", "*", "client", "realm"])
-                    ) || (
-                        "applications.ftl" == pageId &&
-                        "masterAdminClient" == key
+                        is_subpath(path, ["applications", "applications"]) &&
+                        ( 
+                            key == "realm" || 
+                            key == "container" 
+                        )
                     )
                 >
-                    <#local out_seq += ["/*If you need '" + key + "' on " + pageId + ", please submit an issue to the Keycloakify repo*/"]>
+                    <#local out_seq += ["/*If you need '" + path?join(".") + "." + key + "' on " + pageId + ", please submit an issue to the Keycloakify repo*/"]>
                     <#continue>
                 </#if>
 
@@ -656,9 +665,9 @@
         <#return "ABORT: Couldn't convert into string non hash, non method, non boolean, non enumerable object">
 
 </#function>
-<#function are_same_path path searchedPath>
+<#function is_subpath path searchedPath>
 
-    <#if path?size != searchedPath?size>
+    <#if path?size < searchedPath?size>
         <#return false>
     </#if>
 
@@ -666,7 +675,13 @@
 
     <#list path as property>
 
+        <#if i == searchedPath?size >
+            <#continue>
+        </#if>
+
         <#local searchedProperty=searchedPath[i]>
+
+        <#local i+= 1>
 
         <#if searchedProperty?is_string && searchedProperty == "*">
             <#continue>
@@ -684,11 +699,13 @@
             <#return false>
         </#if>
 
-        <#local i+= 1>
-
     </#list>
 
     <#return true>
 
+</#function>
+
+<#function are_same_path path searchedPath>
+    <#return path?size == searchedPath?size && is_subpath(path, searchedPath)>
 </#function>
 </script>
