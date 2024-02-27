@@ -244,6 +244,17 @@ export declare namespace KcContext {
 
     export type Terms = Common & {
         pageId: "terms.ftl";
+        //NOTE: Optional because maybe it wasn't defined in older keycloak versions.
+        user?: {
+            id: string;
+            username: string;
+            attributes: Record<string, string[]>;
+            email: string;
+            emailVerified: boolean;
+            firstName?: string;
+            lastName?: string;
+            markedForEviction?: boolean;
+        };
     };
 
     export type LoginDeviceVerifyUserCode = Common & {
