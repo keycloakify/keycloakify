@@ -231,7 +231,7 @@ export async function generateTheme(params: {
                     if (pathBasename(filePath) === "theme.properties") {
                         return {
                             "modifiedSourceCode": Buffer.from(
-                                sourceCode.toString("utf8").replace(`parent=${accountV1ThemeName}`, "parent=keycloak"),
+                                sourceCode.toString("utf8").replace(`parent=${accountV1ThemeName}`, "parent=keycloak.v2"),
                                 "utf8"
                             )
                         };
