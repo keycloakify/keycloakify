@@ -181,34 +181,6 @@ export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: st
                         );
                     }
 
-                    {
-                        const totpFtlFilePath = pathJoin(destDirPath, "base", "account", "totp.ftl");
-
-                        fs.writeFileSync(
-                            totpFtlFilePath,
-                            Buffer.from(
-                                fs
-                                    .readFileSync(totpFtlFilePath)
-                                    .toString("utf8")
-                                    .replace(
-                                        [
-                                            "                <#list totp.policy.supportedApplications as app>",
-                                            "                    <li>${app}</li>",
-                                            "                </#list>"
-                                        ].join("\n"),
-                                        [
-                                            "                <#if totp.policy.supportedApplications?has_content>",
-                                            "                    <#list totp.policy.supportedApplications as app>",
-                                            "                        <li>${app}</li>",
-                                            "                    </#list>",
-                                            "                </#if>"
-                                        ].join("\n")
-                                    ),
-                                "utf8"
-                            )
-                        );
-                    }
-
                     // Note, this is an optimization for reducing the size of the jar,
                     // For this version we know exactly which resources are used.
                     {
