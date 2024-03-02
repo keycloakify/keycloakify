@@ -47,10 +47,15 @@ export function readBuildOptions(params: { processArgv: string[] }): BuildOption
         throw new Error("Keycloakify's Vite plugin output not found");
     }
 
-    const parsedPackageJson = readParsedPackageJson({ reactAppRootDirPath });
+    const { keycloakify: userProvidedBuildOptionsFromPackageJson, ...parsedPackageJson } = readParsedPackageJson({ reactAppRootDirPath });
+
+    const userProvidedBuildOptions = {
+        ...userProvidedBuildOptionsFromPackageJson,
+        ...resolvedViteConfig?.userProvidedBuildOptions
+    };
 
     const themeNames = (() => {
-        if (parsedPackageJson.keycloakify?.themeName === undefined) {
+        if (userProvidedBuildOptions.themeName === undefined) {
             return [
                 parsedPackageJson.name
                     .replace(/^@(.*)/, "$1")
@@ -59,11 +64,11 @@ export function readBuildOptions(params: { processArgv: string[] }): BuildOption
             ];
         }
 
-        if (typeof parsedPackageJson.keycloakify.themeName === "string") {
-            return [parsedPackageJson.keycloakify.themeName];
+        if (typeof userProvidedBuildOptions.themeName === "string") {
+            return [userProvidedBuildOptions.themeName];
         }
 
-        return parsedPackageJson.keycloakify.themeName;
+        return userProvidedBuildOptions.themeName;
     })();
 
     const reactAppBuildDirPath = (() => {
@@ -72,9 +77,9 @@ export function readBuildOptions(params: { processArgv: string[] }): BuildOption
                 break webpack;
             }
 
-            if (parsedPackageJson.keycloakify?.reactAppBuildDirPath !== undefined) {
+            if (userProvidedBuildOptions.reactAppBuildDirPath !== undefined) {
                 return getAbsoluteAndInOsFormatPath({
-                    "pathIsh": parsedPackageJson.keycloakify?.reactAppBuildDirPath,
+                    "pathIsh": userProvidedBuildOptions.reactAppBuildDirPath,
                     "cwd": reactAppRootDirPath
                 });
             }
@@ -94,13 +99,13 @@ export function readBuildOptions(params: { processArgv: string[] }): BuildOption
         "isSilent": typeof argv["silent"] === "boolean" ? argv["silent"] : false,
         "themeVersion": process.env.KEYCLOAKIFY_THEME_VERSION ?? parsedPackageJson.version ?? "0.0.0",
         themeNames,
-        "extraThemeProperties": parsedPackageJson.keycloakify?.extraThemeProperties,
+        "extraThemeProperties": userProvidedBuildOptions.extraThemeProperties,
         "groupId": (() => {
             const fallbackGroupId = `${themeNames[0]}.keycloak`;
 
             return (
                 process.env.KEYCLOAKIFY_GROUP_ID ??
-                parsedPackageJson.keycloakify?.groupId ??
+                userProvidedBuildOptions.groupId ??
                 (parsedPackageJson.homepage === undefined
                     ? fallbackGroupId
                     : urlParse(parsedPackageJson.homepage)
@@ -110,20 +115,23 @@ export function readBuildOptions(params: { processArgv: string[] }): BuildOption
                           .join(".") ?? fallbackGroupId) + ".keycloak"
             );
         })(),
-        "artifactId": process.env.KEYCLOAKIFY_ARTIFACT_ID ?? parsedPackageJson.keycloakify?.artifactId ?? `${themeNames[0]}-keycloak-theme`,
-        "doCreateJar": parsedPackageJson.keycloakify?.doCreateJar ?? true,
-        "loginThemeResourcesFromKeycloakVersion": parsedPackageJson.keycloakify?.loginThemeResourcesFromKeycloakVersion ?? "11.0.3",
+        "artifactId": process.env.KEYCLOAKIFY_ARTIFACT_ID ?? userProvidedBuildOptions.artifactId ?? `${themeNames[0]}-keycloak-theme`,
+        "doCreateJar": userProvidedBuildOptions.doCreateJar ?? true,
+        "loginThemeResourcesFromKeycloakVersion": userProvidedBuildOptions.loginThemeResourcesFromKeycloakVersion ?? "11.0.3",
         reactAppRootDirPath,
         reactAppBuildDirPath,
         "keycloakifyBuildDirPath": (() => {
-            if (parsedPackageJson.keycloakify?.keycloakifyBuildDirPath !== undefined) {
+            if (userProvidedBuildOptions.keycloakifyBuildDirPath !== undefined) {
                 return getAbsoluteAndInOsFormatPath({
-                    "pathIsh": parsedPackageJson.keycloakify?.keycloakifyBuildDirPath,
+                    "pathIsh": userProvidedBuildOptions.keycloakifyBuildDirPath,
                     "cwd": reactAppRootDirPath
                 });
             }
 
-            return resolvedViteConfig?.buildDir === undefined ? "build_keycloak" : `${resolvedViteConfig.buildDir}_keycloak`;
+            return pathJoin(
+                reactAppRootDirPath,
+                resolvedViteConfig?.buildDir === undefined ? "build_keycloak" : `${resolvedViteConfig.buildDir}_keycloak`
+            );
         })(),
         "publicDirPath": (() => {
             webpack: {
@@ -179,7 +187,7 @@ export function readBuildOptions(params: { processArgv: string[] }): BuildOption
 
             return pathJoin(reactAppBuildDirPath, resolvedViteConfig.assetsDir);
         })(),
-        "doBuildRetrocompatAccountTheme": parsedPackageJson.keycloakify?.doBuildRetrocompatAccountTheme ?? true,
+        "doBuildRetrocompatAccountTheme": userProvidedBuildOptions.doBuildRetrocompatAccountTheme ?? true,
         npmWorkspaceRootDirPath
     };
 }

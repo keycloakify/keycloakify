@@ -84,7 +84,7 @@ export declare namespace KcContext {
             description?: string;
             attributes: Record<string, string>;
         };
-        isAppInitiatedAction: boolean;
+        isAppInitiatedAction?: boolean;
         messagesPerField: {
             /**
              * Return text if message for given field exists. Useful eg. to add css styles for fields with message.
@@ -116,6 +116,7 @@ export declare namespace KcContext {
              */
             exists: (fieldName: string) => boolean;
         };
+        properties: Record<string, string | undefined>;
     };
 
     export type SamlPostForm = Common & {
@@ -244,6 +245,17 @@ export declare namespace KcContext {
 
     export type Terms = Common & {
         pageId: "terms.ftl";
+        //NOTE: Optional because maybe it wasn't defined in older keycloak versions.
+        user?: {
+            id: string;
+            username: string;
+            attributes: Record<string, string[]>;
+            email: string;
+            emailVerified: boolean;
+            firstName?: string;
+            lastName?: string;
+            markedForEviction?: boolean;
+        };
     };
 
     export type LoginDeviceVerifyUserCode = Common & {

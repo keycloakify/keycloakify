@@ -12,8 +12,9 @@ import { symToStr } from "tsafe/symToStr";
 
 export function createGetKcContext<KcContextExtension extends { pageId: string } = never>(params?: {
     mockData?: readonly DeepPartial<ExtendKcContext<KcContextExtension>>[];
+    mockProperties?: Record<string, string>;
 }) {
-    const { mockData } = params ?? {};
+    const { mockData, mockProperties } = params ?? {};
 
     function getKcContext<PageId extends ExtendKcContext<KcContextExtension>["pageId"] | undefined = undefined>(params?: {
         mockPageId?: PageId;
@@ -139,6 +140,13 @@ export function createGetKcContext<KcContextExtension extends { pageId: string }
                             id<KcContext.RegisterUserProfile>(kcContext).profile.attributesByName[name] = partialAttribute as any;
                         });
                 }
+            }
+
+            if (mockProperties !== undefined) {
+                deepAssign({
+                    "target": kcContext.properties,
+                    "source": mockProperties
+                });
             }
 
             return { kcContext };

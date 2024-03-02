@@ -40,7 +40,7 @@
 
 Keycloakify is fully compatible with Keycloak 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, [~~22~~](https://github.com/keycloakify/keycloakify/issues/389#issuecomment-1822509763), **23** [and up](https://github.com/keycloakify/keycloakify/discussions/346#discussioncomment-5889791)!
 
-## Sponsor 👼
+## Sponsor
 
 We are exclusively sponsored by [Cloud IAM](https://cloud-iam.com/?mtm_campaign=keycloakify-deal&mtm_source=keycloakify-github), a French company offering Keycloak as a service.  
 Their dedicated support helps us continue the development and maintenance of this project.
@@ -122,6 +122,11 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 # Changelog highlights
+
+## 9.5
+
+-   Post build hook: You can now apply custom transformation to your theme files. [Learn more](https://docs.keycloakify.dev/build-options#postbuild-hook).
+-   You can now specify your option in the Keycloakify's Vite plugin instead in the package.json. [See example](https://docs.keycloakify.dev/build-options#themename).
 
 ## 9.4
 

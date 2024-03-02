@@ -90,6 +90,7 @@ export declare namespace KcContext {
             lastName?: string;
             username?: string;
         };
+        properties: Record<string, string | undefined>;
         sessions: {
             sessions: {
                 ipAddress: string;

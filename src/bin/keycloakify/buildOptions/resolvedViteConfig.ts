@@ -5,19 +5,22 @@ import { z } from "zod";
 import { join as pathJoin } from "path";
 import { resolvedViteConfigJsonBasename } from "../../constants";
 import type { OptionalIfCanBeUndefined } from "../../tools/OptionalIfCanBeUndefined";
+import { UserProvidedBuildOptions, zUserProvidedBuildOptions } from "./UserProvidedBuildOptions";
 
 export type ResolvedViteConfig = {
     buildDir: string;
     publicDir: string;
     assetsDir: string;
     urlPathname: string | undefined;
+    userProvidedBuildOptions: UserProvidedBuildOptions;
 };
 
 const zResolvedViteConfig = z.object({
     "buildDir": z.string(),
     "publicDir": z.string(),
     "assetsDir": z.string(),
-    "urlPathname": z.string().optional()
+    "urlPathname": z.string().optional(),
+    "userProvidedBuildOptions": zUserProvidedBuildOptions
 });
 
 {

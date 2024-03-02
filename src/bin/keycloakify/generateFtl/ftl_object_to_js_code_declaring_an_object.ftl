@@ -431,7 +431,7 @@
         <#if isHash>
 
             <#if path?size gt 10>
-                <#return "ABORT: Too many recursive calls">
+                <#return "ABORT: Too many recursive calls, path: " + path?join(".")>
             </#if>
 
             <#local keys = "">
@@ -463,9 +463,10 @@
                         <#-- https://github.com/keycloakify/keycloakify/issues/91#issue-1212319466 (reports with error.ftl and Kc18) -->
                         <#-- https://github.com/keycloakify/keycloakify/issues/109#issuecomment-1134610163 -->
                         <#-- https://github.com/keycloakify/keycloakify/issues/357 -->
+                        <#-- https://github.com/keycloakify/keycloakify/discussions/406#discussioncomment-7514787 -->
                         key == "loginAction" && 
                         are_same_path(path, ["url"]) && 
-                        ["saml-post-form.ftl", "error.ftl", "info.ftl", "login-oauth-grant.ftl", "logout-confirm.ftl"]?seq_contains(pageId) &&
+                        ["saml-post-form.ftl", "error.ftl", "info.ftl", "login-oauth-grant.ftl", "logout-confirm.ftl", "login-oauth2-device-verify-user-code.ftl"]?seq_contains(pageId) &&
                         !(auth?has_content && auth.showTryAnotherWayLink())
                     ) || (
                         <#-- https://github.com/keycloakify/keycloakify/issues/362 -->
@@ -488,24 +489,33 @@
                         !["name", "displayName", "displayNameHtml", "internationalizationEnabled", "registrationEmailAsUsername" ]?seq_contains(key)
                     ) || (
                         "applications.ftl" == pageId &&
-                        are_same_path(path, ["applications", "applications", "*", "client", "realm"])
+                        is_subpath(path, ["applications", "applications"]) &&
+                        ( 
+                            key == "realm" || 
+                            key == "container" 
+                        )
                     ) || (
-                        "applications.ftl" == pageId &&
-                        "masterAdminClient" == key
+                        are_same_path(path, ["user"]) &&
+                        key == "delegateForUpdate"
                     )
                 >
-                    <#local out_seq += ["/*If you need '" + key + "' on " + pageId + ", please submit an issue to the Keycloakify repo*/"]>
+                    <#local out_seq += ["/*If you need '" + path?join(".") + "." + key + "' on " + pageId + ", please submit an issue to the Keycloakify repo*/"]>
                     <#continue>
                 </#if>
 
-                <#if pageId == "register.ftl" && key == "attemptedUsername" && are_same_path(path, ["auth"])>
+                <#-- https://github.com/keycloakify/keycloakify/discussions/406 -->
+                <#if (
+                    ["register.ftl", "info.ftl", "login.ftl", "login-update-password.ftl", "login-oauth2-device-verify-user-code.ftl"]?seq_contains(pageId) && 
+                    key == "attemptedUsername" && are_same_path(path, ["auth"])
+                )>
                     <#attempt>
                         <#-- https://github.com/keycloak/keycloak/blob/3a2bf0c04bcde185e497aaa32d0bb7ab7520cf4a/themes/src/main/resources/theme/base/login/template.ftl#L63 -->
-                        <#-- https://github.com/keycloakify/keycloakify/discussions/406 -->
                         <#if !(auth?has_content && auth.showUsername() && !auth.showResetCredentials())>
+                            <#local out_seq += ["/*If you need '" + key + "' on " + pageId + ", please submit an issue to the Keycloakify repo*/"]>
                             <#continue>
                         </#if>
                     <#recover>
+                        <#local out_seq += ["/*Testing if attemptedUsername should be skipped throwed an exception */"]>
                     </#attempt>
                 </#if>
                 
@@ -658,9 +668,9 @@
         <#return "ABORT: Couldn't convert into string non hash, non method, non boolean, non enumerable object">
 
 </#function>
-<#function are_same_path path searchedPath>
+<#function is_subpath path searchedPath>
 
-    <#if path?size != searchedPath?size>
+    <#if path?size < searchedPath?size>
         <#return false>
     </#if>
 
@@ -668,7 +678,13 @@
 
     <#list path as property>
 
+        <#if i == searchedPath?size >
+            <#continue>
+        </#if>
+
         <#local searchedProperty=searchedPath[i]>
+
+        <#local i+= 1>
 
         <#if searchedProperty?is_string && searchedProperty == "*">
             <#continue>
@@ -686,11 +702,13 @@
             <#return false>
         </#if>
 
-        <#local i+= 1>
-
     </#list>
 
     <#return true>
 
+</#function>
+
+<#function are_same_path path searchedPath>
+    <#return path?size == searchedPath?size && is_subpath(path, searchedPath)>
 </#function>
 </script>
