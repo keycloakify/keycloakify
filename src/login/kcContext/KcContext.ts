@@ -116,6 +116,7 @@ export declare namespace KcContext {
              */
             exists: (fieldName: string) => boolean;
         };
+        properties: Record<string, string | undefined>;
     };
 
     export type SamlPostForm = Common & {

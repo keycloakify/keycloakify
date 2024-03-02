@@ -145,7 +145,8 @@ export const kcContextCommonMock: KcContext.Common = {
         "lastName": "doe",
         "email": "john.doe@code.gouv.fr",
         "username": "doe_j"
-    }
+    },
+    "properties": {}
 };
 
 export const kcContextMocks: KcContext[] = [

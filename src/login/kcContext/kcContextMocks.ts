@@ -236,7 +236,8 @@ export const kcContextCommonMock: KcContext.Common = {
         "attributes": {}
     },
     "scripts": [],
-    "isAppInitiatedAction": false
+    "isAppInitiatedAction": false,
+    "properties": {}
 };
 
 const loginUrl = {
