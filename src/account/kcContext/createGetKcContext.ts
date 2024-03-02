@@ -8,8 +8,9 @@ import { kcContextMocks, kcContextCommonMock } from "keycloakify/account/kcConte
 
 export function createGetKcContext<KcContextExtension extends { pageId: string } = never>(params?: {
     mockData?: readonly DeepPartial<ExtendKcContext<KcContextExtension>>[];
+    mockProperties?: Record<string, string>;
 }) {
-    const { mockData } = params ?? {};
+    const { mockData, mockProperties } = params ?? {};
 
     function getKcContext<PageId extends ExtendKcContext<KcContextExtension>["pageId"] | undefined = undefined>(params?: {
         mockPageId?: PageId;
@@ -79,6 +80,13 @@ export function createGetKcContext<KcContextExtension extends { pageId: string }
                 deepAssign({
                     "target": kcContext,
                     "source": partialKcContextCustomMock
+                });
+            }
+
+            if (mockProperties !== undefined) {
+                deepAssign({
+                    "target": kcContext.properties,
+                    "source": mockProperties
                 });
             }
 
