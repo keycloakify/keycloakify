@@ -63,12 +63,12 @@ Their dedicated support helps us continue the development and maintenance of thi
 </div>
 
 <p align="center">
-    <i>Checkout <a href="https://cloud-iam.com/?mtm_campaign=keycloakify-deal&mtm_source=keycloakify-github">Cloud IAM</a> and use promo code <code>keycloakify5</code></i>
+    <i>Checkout <a href="https://cloud-iam.com/?mtm_campaign=keycloakify-deal&mtm_source=keycloakify-github">Cloud-IAM</a> and use promo code <code>keycloakify5</code></i>
     <br/>
     <i>5% of your annual subscription will be donated to us, and you'll get 5% off too.</i>
 </p>
 
-Thank you, [Cloud IAM](https://cloud-iam.com/?mtm_campaign=keycloakify-deal&mtm_source=keycloakify-github), for your support!
+Thank you, [Cloud-IAM](https://cloud-iam.com/?mtm_campaign=keycloakify-deal&mtm_source=keycloakify-github), for your support!
 
 ## Contributors ✨
 
