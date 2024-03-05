@@ -49,13 +49,19 @@ export async function main() {
 
     fs.writeFileSync(pathJoin(buildOptions.keycloakifyBuildDirPath, ".gitignore"), Buffer.from("*", "utf8"));
 
-    child_process.execSync("npx vite", {
-        "cwd": buildOptions.reactAppRootDirPath,
-        "env": {
-            ...process.env,
-            [keycloakifyBuildOptionsForPostPostBuildScriptEnvName]: JSON.stringify(buildOptions)
+    run_post_build_script: {
+        if (buildOptions.bundler !== "vite") {
+            break run_post_build_script;
         }
-    });
+
+        child_process.execSync("npx vite", {
+            "cwd": buildOptions.reactAppRootDirPath,
+            "env": {
+                ...process.env,
+                [keycloakifyBuildOptionsForPostPostBuildScriptEnvName]: JSON.stringify(buildOptions)
+            }
+        });
+    }
 
     create_jar: {
         if (!buildOptions.doCreateJar) {
