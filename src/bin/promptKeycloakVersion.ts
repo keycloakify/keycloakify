@@ -27,6 +27,7 @@ export async function promptKeycloakVersion() {
             "repo": "keycloak"
         }).then(arr => arr.map(({ tag }) => tag))),
         lastKeycloakVersionWithAccountV1,
+        "19.0.1",
         "11.0.3"
     ];
 

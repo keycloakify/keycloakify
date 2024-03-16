@@ -50,6 +50,49 @@ export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: st
                     });
                 }
 
+                install_and_move_to_common_resources_generated_in_keycloak_v2: {
+                    if (!fs.readFileSync(pathJoin(destDirPath, "keycloak", "login", "theme.properties")).toString("utf8").includes("web_modules")) {
+                        break install_and_move_to_common_resources_generated_in_keycloak_v2;
+                    }
+
+                    const accountV2DirSrcDirPath = pathJoin(destDirPath, "keycloak.v2", "account", "src");
+
+                    if (!fs.existsSync(accountV2DirSrcDirPath)) {
+                        break install_and_move_to_common_resources_generated_in_keycloak_v2;
+                    }
+
+                    const packageManager = fs.existsSync(pathJoin(accountV2DirSrcDirPath, "pnpm-lock.yaml")) ? "pnpm" : "npm";
+
+                    if (packageManager === "pnpm") {
+                        try {
+                            child_process.execSync(`which pnpm`);
+                        } catch {
+                            console.log(`Installing pnpm globally`);
+                            child_process.execSync(`npm install -g pnpm`);
+                        }
+                    }
+
+                    child_process.execSync(`${packageManager} install`, { "cwd": accountV2DirSrcDirPath, "stdio": "ignore" });
+
+                    const packageJsonFilePath = pathJoin(accountV2DirSrcDirPath, "package.json");
+
+                    const packageJsonRaw = fs.readFileSync(packageJsonFilePath);
+
+                    const parsedPackageJson = JSON.parse(packageJsonRaw.toString("utf8"));
+
+                    parsedPackageJson.scripts.build = parsedPackageJson.scripts.build
+                        .replace(`${packageManager} run check-types`, "true")
+                        .replace(`${packageManager} run babel`, "true");
+
+                    fs.writeFileSync(packageJsonFilePath, Buffer.from(JSON.stringify(parsedPackageJson, null, 2), "utf8"));
+
+                    child_process.execSync(`${packageManager} run build`, { "cwd": accountV2DirSrcDirPath, "stdio": "ignore" });
+
+                    fs.writeFileSync(packageJsonFilePath, packageJsonRaw);
+
+                    fs.rmSync(pathJoin(accountV2DirSrcDirPath, "node_modules"), { "recursive": true });
+                }
+
                 remove_keycloak_v2: {
                     const keycloakV2DirPath = pathJoin(destDirPath, "keycloak.v2");
 
