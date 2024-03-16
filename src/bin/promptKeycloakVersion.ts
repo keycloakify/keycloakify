@@ -22,7 +22,7 @@ export async function promptKeycloakVersion() {
 
     const tags = [
         ...(await getLatestsSemVersionedTag({
-            "count": 10,
+            "count": 15,
             "owner": "keycloak",
             "repo": "keycloak"
         }).then(arr => arr.map(({ tag }) => tag))),
