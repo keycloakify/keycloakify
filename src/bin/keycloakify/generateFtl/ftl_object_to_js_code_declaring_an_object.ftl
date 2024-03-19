@@ -497,6 +497,10 @@
                     ) || (
                         are_same_path(path, ["user"]) &&
                         key == "delegateForUpdate"
+                    ) || (
+                        <#-- Security audit forwarded by Garth (Gmail) -->
+                        are_same_path(path, ["client", "attributes"]) &&
+                        key == "saml.signing.private.key"
                     )
                 >
                     <#local out_seq += ["/*If you need '" + path?join(".") + "." + key + "' on " + pageId + ", please submit an issue to the Keycloakify repo*/"]>
