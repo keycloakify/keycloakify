@@ -3,6 +3,7 @@ export const loginThemePageIds = [
     "login-username.ftl",
     "login-password.ftl",
     "webauthn-authenticate.ftl",
+    "webauthn-register.ftl",
     "register.ftl",
     "register-user-profile.ftl",
     "info.ftl",
