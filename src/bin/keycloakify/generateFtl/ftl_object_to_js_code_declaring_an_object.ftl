@@ -501,6 +501,10 @@
                         <#-- Security audit forwarded by Garth (Gmail) -->
                         are_same_path(path, ["client", "attributes"]) &&
                         key == "saml.signing.private.key"
+                    ) || (
+                        <#-- See: https://github.com/keycloakify/keycloakify/issues/534 -->
+                        are_same_path(path, ["login"]) &&
+                        key == "password"
                     )
                 >
                     <#local out_seq += ["/*If you need '" + path?join(".") + "." + key + "' on " + pageId + ", please submit an issue to the Keycloakify repo*/"]>
