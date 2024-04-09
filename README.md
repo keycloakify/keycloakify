@@ -40,6 +40,9 @@
 
 Keycloakify is fully compatible with Keycloak 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, [~~22~~](https://github.com/keycloakify/keycloakify/issues/389#issuecomment-1822509763), **23** [and up](https://github.com/keycloakify/keycloakify/discussions/346#discussioncomment-5889791)!
 
+> NOTE: Keycloak 24 introduces [important changes](https://www.keycloak.org/docs/latest/upgrading/index.html#changes-to-freemarker-templates-to-render-pages-based-on-the-user-profile-and-realm).  
+> We're actively working on incorporating them into Keycloakify.
+
 ## Sponsor
 
 We are exclusively sponsored by [Cloud IAM](https://cloud-iam.com/?mtm_campaign=keycloakify-deal&mtm_source=keycloakify-github), a French company offering Keycloak as a service.  
