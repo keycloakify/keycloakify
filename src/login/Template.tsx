@@ -38,14 +38,14 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
             `${url.resourcesPath}/css/login.css`
         ],
         "htmlClassName": getClassName("kcHtmlClass"),
-        "bodyClassName": getClassName("kcBodyClass")
+        "bodyClassName": getClassName("kcBodyClass"),
+        "htmlLangProperty": locale?.currentLanguageTag,
+        "documentTitle": i18n.msgStr("loginTitle", kcContext.realm.displayName)
     });
 
     if (!isReady) {
         return null;
     }
-
-    document.title = i18n.msgStr("loginTitle", kcContext.realm.displayName);
 
     return (
         <div className={getClassName("kcLoginClass")}>
