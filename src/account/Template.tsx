@@ -23,7 +23,9 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
             `${url.resourcesPath}/css/account.css`
         ],
         "htmlClassName": getClassName("kcHtmlClass"),
-        "bodyClassName": clsx("admin-console", "user", getClassName("kcBodyClass"))
+        "bodyClassName": clsx("admin-console", "user", getClassName("kcBodyClass")),
+        "htmlLangProperty": locale?.currentLanguageTag,
+        "documentTitle": i18n.msgStr("accountManagementTitle")
     });
 
     if (!isReady) {
