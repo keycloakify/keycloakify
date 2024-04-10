@@ -40,5 +40,5 @@ export const BASE_URL = (() => {
         return BASE_URL === "" ? "/" : `${BASE_URL}/`;
     }
 
-    throw new Error("Bundler not supported");
+    return "/";
 })();
