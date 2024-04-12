@@ -50,6 +50,19 @@ export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: st
                     });
                 }
 
+                repatriate_common_resources_from_base_login_theme: {
+                    const baseLoginThemeResourceDir = pathJoin(destDirPath, "base", "login", "resources");
+
+                    if (!fs.existsSync(baseLoginThemeResourceDir)) {
+                        break repatriate_common_resources_from_base_login_theme;
+                    }
+
+                    transformCodebase({
+                        "srcDirPath": baseLoginThemeResourceDir,
+                        "destDirPath": pathJoin(destDirPath, "keycloak", "login", "resources")
+                    });
+                }
+
                 install_and_move_to_common_resources_generated_in_keycloak_v2: {
                     if (!fs.readFileSync(pathJoin(destDirPath, "keycloak", "login", "theme.properties")).toString("utf8").includes("web_modules")) {
                         break install_and_move_to_common_resources_generated_in_keycloak_v2;
@@ -191,7 +204,7 @@ export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: st
                         break remove_unused_lib;
                     }
 
-                    const toDeletePerfixes = ["ui-ace", "filesaver", "fileupload", "angular", "ui-ace", "pficon"];
+                    const toDeletePerfixes = ["ui-ace", "filesaver", "fileupload", "angular", "ui-ace"];
 
                     transformCodebase({
                         "srcDirPath": libDirPath,
