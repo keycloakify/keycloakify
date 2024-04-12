@@ -4,17 +4,27 @@ import { clsx } from "keycloakify/tools/clsx";
 import { assert } from "tsafe/assert";
 
 export function usePrepareTemplate(params: {
-    doFetchDefaultThemeResources: boolean;
-    styles?: string[];
-    scripts?: string[];
+    styles: string[];
+    scripts: {
+        isModule: boolean;
+        source:
+            | {
+                  type: "url";
+                  src: string;
+              }
+            | {
+                  type: "inline";
+                  code: string;
+              };
+    }[];
     htmlClassName: string | undefined;
     bodyClassName: string | undefined;
-    htmlLangProperty?: string | undefined;
-    documentTitle?: string;
+    htmlLangProperty: string | undefined;
+    documentTitle: string | undefined;
 }) {
-    const { doFetchDefaultThemeResources, styles = [], scripts = [], htmlClassName, bodyClassName, htmlLangProperty, documentTitle } = params;
+    const { styles, scripts, htmlClassName, bodyClassName, htmlLangProperty, documentTitle } = params;
 
-    const [isReady, setReady] = useReducer(() => true, !doFetchDefaultThemeResources);
+    const [isReady, setReady] = useReducer(() => true, styles.length === 0 && scripts.length === 0);
 
     useEffect(() => {
         if (htmlLangProperty === undefined) {
@@ -35,10 +45,6 @@ export function usePrepareTemplate(params: {
     }, [documentTitle]);
 
     useEffect(() => {
-        if (!doFetchDefaultThemeResources) {
-            return;
-        }
-
         let isUnmounted = false;
 
         const removeArray: (() => void)[] = [];
@@ -64,10 +70,10 @@ export function usePrepareTemplate(params: {
             setReady();
         })();
 
-        scripts.forEach(src => {
+        scripts.forEach(script => {
             const { remove } = headInsert({
                 "type": "javascript",
-                src
+                ...script
             });
 
             removeArray.push(remove);

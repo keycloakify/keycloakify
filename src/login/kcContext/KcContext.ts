@@ -50,6 +50,7 @@ export declare namespace KcContext {
             resourcesCommonPath: string;
             loginRestartFlowUrl: string;
             loginUrl: string;
+            ssoLoginInOtherTabsUrl: string;
         };
         realm: {
             name: string;
@@ -117,6 +118,11 @@ export declare namespace KcContext {
             exists: (fieldName: string) => boolean;
         };
         properties: Record<string, string | undefined>;
+        authenticationSession?: {
+            authSessionId: string;
+            tabId: string;
+            ssoLoginInOtherTabsUrl: string;
+        };
     };
 
     export type SamlPostForm = Common & {

@@ -16,12 +16,14 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
     const { locale, url, features, realm, message, referrer } = kcContext;
 
     const { isReady } = usePrepareTemplate({
-        "doFetchDefaultThemeResources": doUseDefaultCss,
-        "styles": [
-            `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly.min.css`,
-            `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly-additions.min.css`,
-            `${url.resourcesPath}/css/account.css`
-        ],
+        "styles": !doUseDefaultCss
+            ? []
+            : [
+                  `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly.min.css`,
+                  `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly-additions.min.css`,
+                  `${url.resourcesPath}/css/account.css`
+              ],
+        "scripts": [],
         "htmlClassName": getClassName("kcHtmlClass"),
         "bodyClassName": clsx("admin-console", "user", getClassName("kcBodyClass")),
         "htmlLangProperty": locale?.currentLanguageTag,
