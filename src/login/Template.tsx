@@ -27,15 +27,45 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
 
     const { msg, changeLocale, labelBySupportedLanguageTag, currentLanguageTag } = i18n;
 
-    const { realm, locale, auth, url, message, isAppInitiatedAction } = kcContext;
+    const { realm, locale, auth, url, message, isAppInitiatedAction, authenticationSession } = kcContext;
 
     const { isReady } = usePrepareTemplate({
-        "doFetchDefaultThemeResources": doUseDefaultCss,
-        "styles": [
-            `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly.min.css`,
-            `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly-additions.min.css`,
-            `${url.resourcesCommonPath}/lib/zocial/zocial.css`,
-            `${url.resourcesPath}/css/login.css`
+        "styles": !doUseDefaultCss
+            ? []
+            : [
+                  `${url.resourcesCommonPath}/node_modules/@patternfly/patternfly/patternfly.min.css`,
+                  `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly.min.css`,
+                  `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly-additions.min.css`,
+                  `${url.resourcesCommonPath}/lib/pficon/pficon.css`,
+                  `${url.resourcesPath}/css/login.css`
+              ],
+        "scripts": [
+            {
+                "isModule": true,
+                "source": {
+                    "type": "url",
+                    "src": `${url.resourcesPath}/js/menu-button-links.js`
+                }
+            },
+            ...(authenticationSession === undefined
+                ? []
+                : [
+                      {
+                          "isModule": true,
+                          "source": {
+                              "type": "inline" as const,
+                              "code": [
+                                  `import { checkCookiesAndSetTimer } from "${url.resourcesPath}/js/authChecker.js";`,
+                                  ``,
+                                  `checkCookiesAndSetTimer(`,
+                                  `  "${authenticationSession.authSessionId}",`,
+                                  `  "${authenticationSession.tabId}",`,
+                                  `  "${url.ssoLoginInOtherTabsUrl}"`,
+                                  `);`
+                              ].join("\n")
+                          }
+                      }
+                  ])
         ],
         "htmlClassName": getClassName("kcHtmlClass"),
         "bodyClassName": getClassName("kcBodyClass"),

@@ -112,7 +112,8 @@ export const kcContextCommonMock: KcContext.Common = {
         resourcesPath,
         "resourcesCommonPath": `${resourcesPath}/${resources_common}`,
         "loginRestartFlowUrl": "/auth/realms/myrealm/login-actions/restart?client_id=account&tab_id=HoAx28ja4xg",
-        "loginUrl": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg"
+        "loginUrl": "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg",
+        "ssoLoginInOtherTabsUrl": "/auth/realms/myrealm/login-actions/switch?client_id=account&tab_id=HoAx28ja4xg"
     },
     "realm": {
         "name": "myrealm",

@@ -10,7 +10,16 @@ export function headInsert(
           }
         | {
               type: "javascript";
-              src: string;
+              isModule: boolean;
+              source:
+                  | {
+                        type: "url";
+                        src: string;
+                    }
+                  | {
+                        type: "inline";
+                        code: string;
+                    };
           }
 ): { remove: () => void; prLoaded: Promise<void> } {
     const htmlElement = document.createElement(
@@ -35,14 +44,19 @@ export function headInsert(
                 case "css":
                     return {
                         "href": params.href,
-                        "type": "text/css",
-                        "rel": "stylesheet",
-                        "media": "screen,print"
+                        "rel": "stylesheet"
                     };
                 case "javascript":
                     return {
-                        "src": params.src,
-                        "type": "text/javascript"
+                        ...(() => {
+                            switch (params.source.type) {
+                                case "inline":
+                                    return { "textContent": params.source.code };
+                                case "url":
+                                    return { "src": params.source.src };
+                            }
+                        })(),
+                        "type": params.isModule ? "module" : "text/javascript"
                     };
             }
         })()
