@@ -11,10 +11,10 @@ export type TemplateProps<KcContext extends KcContext.Common, I18nExtended exten
     displayInfo?: boolean;
     displayMessage?: boolean;
     displayRequiredFields?: boolean;
-    displayWide?: boolean;
     showAnotherWayIfPresent?: boolean;
     headerNode: ReactNode;
     showUsernameNode?: ReactNode;
+    socialProvidersNode?: ReactNode;
     infoNode?: ReactNode;
 
     children: ReactNode;
@@ -27,6 +27,9 @@ export type ClassKey =
     | "kcInfoAreaWrapperClass"
     | "kcFormButtonsWrapperClass"
     | "kcFormOptionsWrapperClass"
+    | "kcLocaleDropDownClass"
+    | "kcLocaleListItemClass"
+    | "kcContentWrapperClass"
     | "kcLogoIdP-facebook"
     | "kcAuthenticatorOTPClass"
     | "kcLogoIdP-bitbucket"

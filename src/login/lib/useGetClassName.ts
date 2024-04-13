@@ -9,6 +9,9 @@ export const { useGetClassName } = createUseClassName<ClassKey>({
         "kcInfoAreaWrapperClass": undefined,
         "kcFormButtonsWrapperClass": undefined,
         "kcFormOptionsWrapperClass": undefined,
+        "kcLocaleDropDownClass": undefined,
+        "kcLocaleListItemClass": undefined,
+        "kcContentWrapperClass": undefined,
 
         "kcLogoIdP-facebook": "fa fa-facebook",
         "kcAuthenticatorOTPClass": "fa fa-mobile list-view-pf-icon-lg",
