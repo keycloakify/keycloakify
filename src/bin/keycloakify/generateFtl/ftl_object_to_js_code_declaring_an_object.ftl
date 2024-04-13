@@ -79,47 +79,61 @@
             </#if>
 
         },
-        "existsError": function (fieldName) {
+        "existsError": function (){
 
-            <#if !messagesPerField?? || !(messagesPerField?is_hash)>   
-                throw new Error("You're not supposed to use messagesPerField.printIfExists in this page");
-            <#else>
-                <#list fieldNames as fieldName>
-                    if(fieldName === "${fieldName}" ){
+            function existsError_singleFieldName(fieldName) {
 
-                        <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
-                        <#if ('${fieldName}' == 'username' || '${fieldName}' == 'password') && pageId != 'register.ftl' && pageId != 'register-user-profile.ftl'>
+                <#if !messagesPerField?? || !(messagesPerField?is_hash)>   
+                    throw new Error("You're not supposed to use messagesPerField.printIfExists in this page");
+                <#else>
+                    <#list fieldNames as fieldName>
+                        if(fieldName === "${fieldName}" ){
 
-                            <#assign doExistErrorOnUsernameOrPassword = "">
+                            <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
+                            <#if ('${fieldName}' == 'username' || '${fieldName}' == 'password') && pageId != 'register.ftl' && pageId != 'register-user-profile.ftl'>
 
-                            <#attempt>
-                                <#assign doExistErrorOnUsernameOrPassword = messagesPerField.existsError('username', 'password')>
-                            <#recover>
-                                <#assign doExistErrorOnUsernameOrPassword = true>
-                            </#attempt>
+                                <#assign doExistErrorOnUsernameOrPassword = "">
 
-                            return <#if doExistErrorOnUsernameOrPassword>true<#else>false</#if>;
+                                <#attempt>
+                                    <#assign doExistErrorOnUsernameOrPassword = messagesPerField.existsError('username', 'password')>
+                                <#recover>
+                                    <#assign doExistErrorOnUsernameOrPassword = true>
+                                </#attempt>
 
-                        <#else>
+                                return <#if doExistErrorOnUsernameOrPassword>true<#else>false</#if>;
 
-                            <#assign doExistErrorMessageForField = "">
+                            <#else>
 
-                            <#attempt>
-                                <#assign doExistErrorMessageForField = messagesPerField.existsError('${fieldName}')>
-                            <#recover>
-                                <#assign doExistErrorMessageForField = true>
-                            </#attempt>
+                                <#assign doExistErrorMessageForField = "">
 
-                            return <#if doExistErrorMessageForField>true<#else>false</#if>;
+                                <#attempt>
+                                    <#assign doExistErrorMessageForField = messagesPerField.existsError('${fieldName}')>
+                                <#recover>
+                                    <#assign doExistErrorMessageForField = true>
+                                </#attempt>
 
-                        </#if>
+                                return <#if doExistErrorMessageForField>true<#else>false</#if>;
 
-                    }
-                </#list>
+                            </#if>
 
-                throw new Error(fieldName + "is probably runtime generated, see: https://docs.keycloakify.dev/limitations#field-names-cant-be-runtime-generated");
+                        }
+                    </#list>
 
-            </#if>
+                    throw new Error(fieldName + "is probably runtime generated, see: https://docs.keycloakify.dev/limitations#field-names-cant-be-runtime-generated");
+
+                </#if>
+
+            }
+
+            for( let i = 0; i < arguments.length; i++ ){
+
+                if( existsError_singleFieldName(arguments[i]) ){
+                    return true;
+                }
+
+            }
+
+            return false;
 
         },
         "get": function (fieldName) {
@@ -218,6 +232,19 @@
 
                 throw new Error(fieldName + "is probably runtime generated, see: https://docs.keycloakify.dev/limitations#field-names-cant-be-runtime-generated");
             </#if>
+
+        },
+        "getFirstError": function () {
+
+            for( let i = 0; i < arguments.length; i++ ){
+
+                const fieldName = arguments[i];
+
+                if( out.messagesPerField.existsError(fieldName) ){
+                    return out.messagesPerField.get(fieldName);
+                }
+
+            }
 
         }
     };
