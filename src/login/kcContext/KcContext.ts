@@ -101,7 +101,7 @@ export declare namespace KcContext {
              * @param fields
              * @return boolean
              */
-            existsError: (fieldName: string) => boolean;
+            existsError: (fieldName: string, ...otherFiledNames: string[]) => boolean;
             /**
              * Get message for given field.
              *
@@ -116,6 +116,8 @@ export declare namespace KcContext {
              * @return boolean
              */
             exists: (fieldName: string) => boolean;
+
+            getFirstError: (...fieldNames: string[]) => string;
         };
         properties: Record<string, string | undefined>;
         authenticationSession?: {
@@ -165,6 +167,7 @@ export declare namespace KcContext {
                 alias: string;
                 providerId: string;
                 displayName: string;
+                iconClasses?: string;
             }[];
         };
     };
