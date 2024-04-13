@@ -30,30 +30,19 @@
                 <#list fieldNames as fieldName>
                     if(fieldName === "${fieldName}" ){
 
-                        <#-- https://github.com/keycloakify/keycloakify/pull/359 Compat with Keycloak prior v12 -->
-                        <#if !messagesPerField.existsError??>
+                        <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
+                        <#if ('${fieldName}' == 'username' || '${fieldName}' == 'password') && pageId != 'register.ftl' && pageId != 'register-user-profile.ftl'>
 
-                            <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
-                            <#if ('${fieldName}' == 'username' || '${fieldName}' == 'password') && pageId != 'register.ftl' && pageId != 'register-user-profile.ftl'>
+                            <#assign doExistErrorOnUsernameOrPassword = "">
 
-                                <#assign doExistMessageForUsernameOrPassword = "">
+                            <#attempt>
+                                <#assign doExistErrorOnUsernameOrPassword = messagesPerField.existsError('username', 'password')>
+                            <#recover>
+                                <#assign doExistErrorOnUsernameOrPassword = true>
+                            </#attempt>
 
-                                <#attempt>
-                                    <#assign doExistMessageForUsernameOrPassword = messagesPerField.exists('username')>
-                                <#recover>
-                                    <#assign doExistMessageForUsernameOrPassword = true>
-                                </#attempt>
-
-                                <#if !doExistMessageForUsernameOrPassword>
-                                    <#attempt>
-                                        <#assign doExistMessageForUsernameOrPassword = messagesPerField.exists('password')>
-                                    <#recover>
-                                        <#assign doExistMessageForUsernameOrPassword = true>
-                                    </#attempt>
-                                </#if>
-
-                                return <#if doExistMessageForUsernameOrPassword>text<#else>undefined</#if>;
-
+                            <#if doExistErrorOnUsernameOrPassword>
+                                return text;
                             <#else>
 
                                 <#assign doExistMessageForField = "">
@@ -70,48 +59,18 @@
 
                         <#else>
 
-                            <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
-                            <#if ('${fieldName}' == 'username' || '${fieldName}' == 'password') && pageId != 'register.ftl' && pageId != 'register-user-profile.ftl'>
+                            <#assign doExistMessageForField = "">
 
-                                <#assign doExistErrorOnUsernameOrPassword = "">
+                            <#attempt>
+                                <#assign doExistMessageForField = messagesPerField.exists('${fieldName}')>
+                            <#recover>
+                                <#assign doExistMessageForField = true>
+                            </#attempt>
 
-                                <#attempt>
-                                    <#assign doExistErrorOnUsernameOrPassword = messagesPerField.existsError('username', 'password')>
-                                <#recover>
-                                    <#assign doExistErrorOnUsernameOrPassword = true>
-                                </#attempt>
-
-                                <#if doExistErrorOnUsernameOrPassword>
-                                    return text;
-                                <#else>
-
-                                    <#assign doExistMessageForField = "">
-
-                                    <#attempt>
-                                        <#assign doExistMessageForField = messagesPerField.exists('${fieldName}')>
-                                    <#recover>
-                                        <#assign doExistMessageForField = true>
-                                    </#attempt>
-
-                                    return <#if doExistMessageForField>text<#else>undefined</#if>;
-
-                                </#if>
-
-                            <#else>
-
-                                <#assign doExistMessageForField = "">
-
-                                <#attempt>
-                                    <#assign doExistMessageForField = messagesPerField.exists('${fieldName}')>
-                                <#recover>
-                                    <#assign doExistMessageForField = true>
-                                </#attempt>
-
-                                return <#if doExistMessageForField>text<#else>undefined</#if>;
-
-                            </#if>
+                            return <#if doExistMessageForField>text<#else>undefined</#if>;
 
                         </#if>
+
 
                     }
                 </#list>
@@ -128,72 +87,30 @@
                 <#list fieldNames as fieldName>
                     if(fieldName === "${fieldName}" ){
 
-                        <#-- https://github.com/keycloakify/keycloakify/pull/359 Compat with Keycloak prior v12 -->
-                        <#if !messagesPerField.existsError??>
+                        <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
+                        <#if ('${fieldName}' == 'username' || '${fieldName}' == 'password') && pageId != 'register.ftl' && pageId != 'register-user-profile.ftl'>
 
-                            <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
-                            <#if ('${fieldName}' == 'username' || '${fieldName}' == 'password') && pageId != 'register.ftl' && pageId != 'register-user-profile.ftl'>
+                            <#assign doExistErrorOnUsernameOrPassword = "">
 
-                                <#assign doExistMessageForUsernameOrPassword = "">
+                            <#attempt>
+                                <#assign doExistErrorOnUsernameOrPassword = messagesPerField.existsError('username', 'password')>
+                            <#recover>
+                                <#assign doExistErrorOnUsernameOrPassword = true>
+                            </#attempt>
 
-                                <#attempt>
-                                    <#assign doExistMessageForUsernameOrPassword = messagesPerField.exists('username')>
-                                <#recover>
-                                    <#assign doExistMessageForUsernameOrPassword = true>
-                                </#attempt>
-
-                                <#if !doExistMessageForUsernameOrPassword>
-                                    <#attempt>
-                                        <#assign doExistMessageForUsernameOrPassword = messagesPerField.exists('password')>
-                                    <#recover>
-                                        <#assign doExistMessageForUsernameOrPassword = true>
-                                    </#attempt>
-                                </#if>
-
-                                return <#if doExistMessageForUsernameOrPassword>true<#else>false</#if>;
-
-                            <#else>
-
-                                <#assign doExistMessageForField = "">
-
-                                <#attempt>
-                                    <#assign doExistMessageForField = messagesPerField.exists('${fieldName}')>
-                                <#recover>
-                                    <#assign doExistMessageForField = true>
-                                </#attempt>
-
-                                return <#if doExistMessageForField>true<#else>false</#if>;
-
-                            </#if>
+                            return <#if doExistErrorOnUsernameOrPassword>true<#else>false</#if>;
 
                         <#else>
 
-                            <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
-                            <#if ('${fieldName}' == 'username' || '${fieldName}' == 'password') && pageId != 'register.ftl' && pageId != 'register-user-profile.ftl'>
+                            <#assign doExistErrorMessageForField = "">
 
-                                <#assign doExistErrorOnUsernameOrPassword = "">
+                            <#attempt>
+                                <#assign doExistErrorMessageForField = messagesPerField.existsError('${fieldName}')>
+                            <#recover>
+                                <#assign doExistErrorMessageForField = true>
+                            </#attempt>
 
-                                <#attempt>
-                                    <#assign doExistErrorOnUsernameOrPassword = messagesPerField.existsError('username', 'password')>
-                                <#recover>
-                                    <#assign doExistErrorOnUsernameOrPassword = true>
-                                </#attempt>
-
-                                return <#if doExistErrorOnUsernameOrPassword>true<#else>false</#if>;
-
-                            <#else>
-
-                                <#assign doExistErrorMessageForField = "">
-
-                                <#attempt>
-                                    <#assign doExistErrorMessageForField = messagesPerField.existsError('${fieldName}')>
-                                <#recover>
-                                    <#assign doExistErrorMessageForField = true>
-                                </#attempt>
-
-                                return <#if doExistErrorMessageForField>true<#else>false</#if>;
-
-                            </#if>
+                            return <#if doExistErrorMessageForField>true<#else>false</#if>;
 
                         </#if>
 
@@ -214,88 +131,42 @@
                 <#list fieldNames as fieldName>
                     if(fieldName === "${fieldName}" ){
 
-                        <#-- https://github.com/keycloakify/keycloakify/pull/359 Compat with Keycloak prior v12 -->
-                        <#if !messagesPerField.existsError??>
+                        <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
+                        <#if ('${fieldName}' == 'username' || '${fieldName}' == 'password') && pageId != 'register.ftl' && pageId != 'register-user-profile.ftl'>
 
-                            <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
-                            <#if ('${fieldName}' == 'username' || '${fieldName}' == 'password') && pageId != 'register.ftl' && pageId != 'register-user-profile.ftl'>
+                            <#assign doExistErrorOnUsernameOrPassword = "">
 
-                                <#assign doExistMessageForUsernameOrPassword = "">
+                            <#attempt>
+                                <#assign doExistErrorOnUsernameOrPassword = messagesPerField.existsError('username', 'password')>
+                            <#recover>
+                                <#assign doExistErrorOnUsernameOrPassword = true>
+                            </#attempt>
+
+                            <#if doExistErrorOnUsernameOrPassword>
 
                                 <#attempt>
-                                    <#assign doExistMessageForUsernameOrPassword = messagesPerField.exists('username')>
+                                    return "${kcSanitize(msg('invalidUserMessage'))?no_esc}";
                                 <#recover>
-                                    <#assign doExistMessageForUsernameOrPassword = true>
+                                    return "Invalid username or password.";
                                 </#attempt>
-
-                                <#if !doExistMessageForUsernameOrPassword>
-                                    <#attempt>
-                                        <#assign doExistMessageForUsernameOrPassword = messagesPerField.exists('password')>
-                                    <#recover>
-                                        <#assign doExistMessageForUsernameOrPassword = true>
-                                    </#attempt>
-                                </#if>
-
-                                <#if !doExistMessageForUsernameOrPassword>
-                                    return "";
-                                <#else>
-                                    <#attempt>
-                                        return "${kcSanitize(msg('invalidUserMessage'))?no_esc}";
-                                    <#recover>
-                                        return "Invalid username or password.";
-                                    </#attempt>
-                                </#if>
 
                             <#else>
 
                                 <#attempt>
                                     return "${messagesPerField.get('${fieldName}')?no_esc}";
                                 <#recover>
-                                    return "invalid field";
+                                    return "";
                                 </#attempt>
 
                             </#if>
 
                         <#else>
 
-                            <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
-                            <#if ('${fieldName}' == 'username' || '${fieldName}' == 'password') && pageId != 'register.ftl' && pageId != 'register-user-profile.ftl'>
-
-                                <#assign doExistErrorOnUsernameOrPassword = "">
-
-                                <#attempt>
-                                    <#assign doExistErrorOnUsernameOrPassword = messagesPerField.existsError('username', 'password')>
-                                <#recover>
-                                    <#assign doExistErrorOnUsernameOrPassword = true>
-                                </#attempt>
-
-                                <#if doExistErrorOnUsernameOrPassword>
-
-                                    <#attempt>
-                                        return "${kcSanitize(msg('invalidUserMessage'))?no_esc}";
-                                    <#recover>
-                                        return "Invalid username or password.";
-                                    </#attempt>
-
-                                <#else>
-
-                                    <#attempt>
-                                        return "${messagesPerField.get('${fieldName}')?no_esc}";
-                                    <#recover>
-                                        return "";
-                                    </#attempt>
-
-                                </#if>
-
-                            <#else>
-
-                                <#attempt>
-                                    return "${messagesPerField.get('${fieldName}')?no_esc}";
-                                <#recover>
-                                    return "invalid field";
-                                </#attempt>
-
-                            </#if>
+                            <#attempt>
+                                return "${messagesPerField.get('${fieldName}')?no_esc}";
+                            <#recover>
+                                return "invalid field";
+                            </#attempt>
 
                         </#if>
 
@@ -315,72 +186,30 @@
                 <#list fieldNames as fieldName>
                     if(fieldName === "${fieldName}" ){
 
-                        <#-- https://github.com/keycloakify/keycloakify/pull/359 Compat with Keycloak prior v12 -->
-                        <#if !messagesPerField.existsError??>
+                        <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
+                        <#if ('${fieldName}' == 'username' || '${fieldName}' == 'password') && pageId != 'register.ftl' && pageId != 'register-user-profile.ftl'>
 
-                            <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
-                            <#if ('${fieldName}' == 'username' || '${fieldName}' == 'password') && pageId != 'register.ftl' && pageId != 'register-user-profile.ftl'>
+                            <#assign doExistErrorOnUsernameOrPassword = "">
 
-                                <#assign doExistMessageForUsernameOrPassword = "">
+                            <#attempt>
+                                <#assign doExistErrorOnUsernameOrPassword = messagesPerField.existsError('username', 'password')>
+                            <#recover>
+                                <#assign doExistErrorOnUsernameOrPassword = true>
+                            </#attempt>
 
-                                <#attempt>
-                                    <#assign doExistMessageForUsernameOrPassword = messagesPerField.exists('username')>
-                                <#recover>
-                                    <#assign doExistMessageForUsernameOrPassword = true>
-                                </#attempt>
-
-                                <#if !doExistMessageForUsernameOrPassword>
-                                    <#attempt>
-                                        <#assign doExistMessageForUsernameOrPassword = messagesPerField.exists('password')>
-                                    <#recover>
-                                        <#assign doExistMessageForUsernameOrPassword = true>
-                                    </#attempt>
-                                </#if>
-
-                                return <#if doExistMessageForUsernameOrPassword>true<#else>false</#if>;
-
-                            <#else>
-
-                                <#assign doExistMessageForField = "">
-
-                                <#attempt>
-                                    <#assign doExistMessageForField = messagesPerField.exists('${fieldName}')>
-                                <#recover>
-                                    <#assign doExistMessageForField = true>
-                                </#attempt>
-
-                                return <#if doExistMessageForField>true<#else>false</#if>;
-
-                            </#if>
+                            return <#if doExistErrorOnUsernameOrPassword>true<#else>false</#if>;
 
                         <#else>
 
-                            <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
-                            <#if ('${fieldName}' == 'username' || '${fieldName}' == 'password') && pageId != 'register.ftl' && pageId != 'register-user-profile.ftl'>
+                            <#assign doExistErrorMessageForField = "">
 
-                                <#assign doExistErrorOnUsernameOrPassword = "">
+                            <#attempt>
+                                <#assign doExistErrorMessageForField = messagesPerField.exists('${fieldName}')>
+                            <#recover>
+                                <#assign doExistErrorMessageForField = true>
+                            </#attempt>
 
-                                <#attempt>
-                                    <#assign doExistErrorOnUsernameOrPassword = messagesPerField.existsError('username', 'password')>
-                                <#recover>
-                                    <#assign doExistErrorOnUsernameOrPassword = true>
-                                </#attempt>
-
-                                return <#if doExistErrorOnUsernameOrPassword>true<#else>false</#if>;
-
-                            <#else>
-
-                                <#assign doExistErrorMessageForField = "">
-
-                                <#attempt>
-                                    <#assign doExistErrorMessageForField = messagesPerField.exists('${fieldName}')>
-                                <#recover>
-                                    <#assign doExistErrorMessageForField = true>
-                                </#attempt>
-
-                                return <#if doExistErrorMessageForField>true<#else>false</#if>;
-
-                            </#if>
+                            return <#if doExistErrorMessageForField>true<#else>false</#if>;
 
                         </#if>
 
