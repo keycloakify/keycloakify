@@ -26,7 +26,7 @@ export function getNpmWorkspaceRootDirPath(params: { reactAppRootDirPath: string
         const cwd = pathResolve(pathJoin(...[reactAppRootDirPath, ...Array(depth).fill("..")]));
 
         try {
-            child_process.execSync("npm config get", { cwd: cwd });
+            child_process.execSync("npm config get", { cwd, "stdio": ["pipe", "pipe", "pipe"] });
         } catch (error) {
             if (String(error).includes("ENOWORKSPACES")) {
                 assert(cwd !== pathSep, "NPM workspace not found");
