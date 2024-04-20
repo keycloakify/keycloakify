@@ -21,8 +21,8 @@ export function useFormValidation(params: {
         passwordRequired?: boolean;
         realm: { registrationEmailAsUsername: boolean };
     };
-    /** NOTE: Try to avoid passing a new ref every render for better performances. */
     passwordValidators?: Validators;
+    //TODO: Add a param that enable not to use password confirmation
     i18n: I18n;
 }) {
     const { kcContext, passwordValidators = {}, i18n } = params;
@@ -48,8 +48,10 @@ export function useFormValidation(params: {
                                             "readOnly": false,
                                             "validators": passwordValidators,
                                             "annotations": {},
-                                            "groupAnnotations": {},
-                                            "autocomplete": "new-password"
+                                            "autocomplete": "new-password",
+                                            "html5DataAnnotations": {},
+                                            // NOTE: Compat with Keycloak version prior to 24
+                                            ...({ "groupAnnotations": {} } as {})
                                         }),
                                         id<Attribute>({
                                             "name": "password-confirm",
@@ -65,15 +67,17 @@ export function useFormValidation(params: {
                                                 }
                                             },
                                             "annotations": {},
-                                            "groupAnnotations": {},
-                                            "autocomplete": "new-password"
+                                            "html5DataAnnotations": {},
+                                            "autocomplete": "new-password",
+                                            // NOTE: Compat with Keycloak version prior to 24
+                                            ...({ "groupAnnotations": {} } as {})
                                         })
                                     ])
                           ],
                           []
                       );
                   })(),
-        [kcContext, passwordValidators]
+        [kcContext, JSON.stringify(passwordValidators)]
     );
 
     const { getErrors } = useGetErrors({
