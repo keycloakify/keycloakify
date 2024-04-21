@@ -361,6 +361,10 @@
                         <#-- See: https://github.com/keycloakify/keycloakify/issues/534 -->
                         are_same_path(path, ["login"]) &&
                         key == "password"
+                    ) || (
+                        <#-- Remove realmAttributes added by https://github.com/jcputney/keycloak-theme-additional-info-extension for peace of mind. -->
+                        are_same_path(path, []) &&
+                        key == "realmAttributes"
                     )
                 >
                     <#local out_seq += ["/*If you need '" + path?join(".") + "." + key + "' on " + pageId + ", please submit an issue to the Keycloakify repo*/"]>

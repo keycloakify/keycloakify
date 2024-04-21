@@ -38,6 +38,8 @@ export type KcContext =
     | KcContext.SelectAuthenticator
     | KcContext.SamlPostForm;
 
+assert<KcContext["themeType"] extends ThemeType ? true : false>();
+
 export declare namespace KcContext {
     export type Common = {
         themeVersion: string;
@@ -172,7 +174,8 @@ export declare namespace KcContext {
         };
     };
 
-    export type Register = RegisterUserProfile.CommonWithLegacy & {
+    /*
+    export type Register_legacy = RegisterUserProfile.CommonWithLegacy & {
         pageId: "register.ftl";
         register: {
             formData: {
@@ -184,35 +187,44 @@ export declare namespace KcContext {
             };
         };
     };
+    */
 
-    export type RegisterUserProfile = RegisterUserProfile.CommonWithLegacy & {
-        pageId: "register-user-profile.ftl";
+    export type Register = Common & {
+        pageId: "register.ftl";
         profile: {
-            context: "REGISTRATION_PROFILE";
             attributes: Attribute[];
             attributesByName: Record<string, Attribute>;
+            html5DataAnnotations: Record<string, string>;
         };
+        /**
+         * Theses values are added by: https://github.com/jcputney/keycloak-theme-additional-info-extension
+         * A Keycloak Java extension used as dependency in Keycloakify.
+         */
+        passwordPolicies?: PasswordPolicies;
     };
 
-    export namespace RegisterUserProfile {
-        export type CommonWithLegacy = Common & {
-            url: {
-                registrationAction: string;
-            };
-            passwordRequired: boolean;
-            recaptchaRequired: boolean;
-            recaptchaSiteKey?: string;
-            social: {
-                displayInfo: boolean;
-                providers?: {
-                    loginUrl: string;
-                    alias: string;
-                    providerId: string;
-                    displayName: string;
-                }[];
-            };
+    export type RegisterUserProfile = Common & {
+        pageId: "register-user-profile.ftl";
+        profile: {
+            attributes: LegacyAttribute[];
+            attributesByName: Record<string, LegacyAttribute>;
         };
-    }
+        url: {
+            registrationAction: string;
+        };
+        passwordRequired: boolean;
+        recaptchaRequired: boolean;
+        recaptchaSiteKey?: string;
+        social: {
+            displayInfo: boolean;
+            providers?: {
+                loginUrl: string;
+                alias: string;
+                providerId: string;
+                displayName: string;
+            }[];
+        };
+    };
 
     export type Info = Common & {
         pageId: "info.ftl";
@@ -456,8 +468,8 @@ export declare namespace KcContext {
     export type UpdateUserProfile = Common & {
         pageId: "update-user-profile.ftl";
         profile: {
-            attributes: Attribute[];
-            attributesByName: Record<string, Attribute>;
+            attributes: LegacyAttribute[];
+            attributesByName: Record<string, LegacyAttribute>;
         };
     };
 
@@ -465,8 +477,8 @@ export declare namespace KcContext {
         pageId: "idp-review-user-profile.ftl";
         profile: {
             context: "IDP_REVIEW";
-            attributes: Attribute[];
-            attributesByName: Record<string, Attribute>;
+            attributes: LegacyAttribute[];
+            attributesByName: Record<string, LegacyAttribute>;
         };
     };
 
@@ -516,13 +528,24 @@ export type Attribute = {
     displayName?: string;
     required: boolean;
     value?: string;
-    group?: string;
-    groupDisplayHeader?: string;
-    groupDisplayDescription?: string;
+    values?: string[];
+    group?: {
+        html5DataAnnotations: Record<string, string>;
+        displayHeader?: string;
+        name: string;
+        displayDescription?: string;
+    };
+    html5DataAnnotations: Record<string, string>;
     readOnly: boolean;
     validators: Validators;
     annotations: Record<string, string>;
-    groupAnnotations: Record<string, string>;
+    multivalued?: boolean;
+    /**
+     * NOTE: This is not a Keycloak attribute, it's a Keycloakify addition.
+     * usecase is to enable to hide the password confirmation if the theme is configured like that.
+     * SEE: https://github.com/keycloakify/keycloakify/issues/238#issuecomment-1874605774
+     */
+    hidden?: boolean;
     autocomplete?:
         | "on"
         | "off"
@@ -578,6 +601,13 @@ export type Attribute = {
         | "impp"
         | "url"
         | "photo";
+};
+
+export type LegacyAttribute = Omit<Attribute, "group" | "html5DataAnnotations"> & {
+    group: string;
+    groupDisplayHeader?: string;
+    groupDisplayDescription?: string;
+    groupAnnotations: Record<string, string>;
 };
 
 export type Validators = Partial<{
@@ -639,4 +669,23 @@ export declare namespace Validators {
     assert<Equals<OnlyInExpected, never>>();
 }
 
-assert<KcContext["themeType"] extends ThemeType ? true : false>();
+export type PasswordPolicies = {
+    /** The minimum length of the password */
+    length?: number;
+    /** The minimum number of digits required in the password */
+    digits?: number;
+    /** The minimum number of lowercase characters required in the password */
+    lowerCase?: number;
+    /** The minimum number of uppercase characters required in the password */
+    upperCase?: number;
+    /** The minimum number of special characters required in the password */
+    specialChars?: number;
+    /** Whether the password can contain the username */
+    notUsername?: boolean;
+    /** Whether the password can contain the email address */
+    notEmail?: boolean;
+    /** The number of previous passwords that cannot be reused */
+    passwordHistory?: number;
+    /** The number of days before the password expires */
+    forceExpiredPasswordChange?: number;
+};
