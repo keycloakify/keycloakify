@@ -637,6 +637,7 @@ export type Validators = Partial<{
             shouldBe: "equal" | "different";
         };
     options: Validators.Options;
+    multivalued: Validators.DoIgnoreEmpty & Validators.Range;
 }>;
 
 export declare namespace Validators {
