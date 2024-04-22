@@ -624,12 +624,6 @@ export type Validators = Partial<{
     "person-name-prohibited-characters": Validators.DoIgnoreEmpty & Validators.ErrorMessage;
     uri: Validators.DoIgnoreEmpty;
     "username-prohibited-characters": Validators.DoIgnoreEmpty & Validators.ErrorMessage;
-    /** Made up validator that only exists in Keycloakify */
-    _compareToOther: Validators.DoIgnoreEmpty &
-        Validators.ErrorMessage & {
-            name: string;
-            shouldBe: "equal" | "different";
-        };
     options: Validators.Options;
     multivalued: Validators.DoIgnoreEmpty & Validators.Range;
 }>;
