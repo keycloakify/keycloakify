@@ -58,7 +58,6 @@ export type KcContextLike = {
 
 export type ParamsOfUseUserProfileForm = {
     kcContext: KcContextLike;
-    passwordValidators?: Validators;
     i18n: I18n;
     passwordConfirmationDisabled?: boolean;
 };
@@ -74,7 +73,7 @@ export type ReturnTypeOfUseUserProfileForm = {
  * artificial password related attributes only if kcContext.passwordRequired === true
  */
 export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTypeOfUseUserProfileForm {
-    const { kcContext, passwordValidators = {}, i18n, passwordConfirmationDisabled = false } = params;
+    const { kcContext, i18n, passwordConfirmationDisabled = false } = params;
 
     const attributesWithPassword = useMemo(() => {
         const attributesWithPassword: Attribute[] = [];
@@ -95,7 +94,7 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                         "displayName": id<`\${${MessageKey}}`>("${password}"),
                         "required": true,
                         "readOnly": false,
-                        "validators": passwordValidators,
+                        "validators": {},
                         "annotations": {},
                         "autocomplete": "new-password",
                         "html5DataAnnotations": {},
@@ -282,7 +281,7 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
 
 /** Expect to be used in a component wrapped within a <I18nProvider> */
 function useGetErrors(params: {
-    kcContext: Pick<KcContextLike, "messagesPerField">;
+    kcContext: Pick<KcContextLike, "messagesPerField" | "passwordPolicies">;
     attributes: {
         name: string;
         validators: Validators;
@@ -294,7 +293,7 @@ function useGetErrors(params: {
 }) {
     const { kcContext, attributes, i18n } = params;
 
-    const { messagesPerField } = kcContext;
+    const { messagesPerField, passwordPolicies } = kcContext;
 
     const { msg, msgStr, advancedMsg, advancedMsgStr } = i18n;
 
@@ -345,6 +344,206 @@ function useGetErrors(params: {
             }
 
             const errors: FormFieldError[] = [];
+
+            check_password_policies: {
+                if (name !== "password") {
+                    break check_password_policies;
+                }
+
+                if (passwordPolicies === undefined) {
+                    break check_password_policies;
+                }
+
+                check_password_policy_x: {
+                    const policyName = "length";
+
+                    const policy = passwordPolicies[policyName];
+
+                    if (policy === undefined) {
+                        break check_password_policy_x;
+                    }
+
+                    const minLength = parseInt(policy);
+
+                    assert(!isNaN(minLength));
+
+                    if (value.length >= minLength) {
+                        break check_password_policy_x;
+                    }
+
+                    const msgArgs = ["invalidPasswordMinLengthMessage", `${minLength}`] as const;
+
+                    errors.push({
+                        "validatorName": undefined,
+                        "errorMessage": <Fragment key={errors.length}>{msg(...msgArgs)}</Fragment>,
+                        "errorMessageStr": msgStr(...msgArgs)
+                    });
+                }
+
+                check_password_policy_x: {
+                    const policyName = "digits";
+
+                    const policy = passwordPolicies[policyName];
+
+                    if (policy === undefined) {
+                        break check_password_policy_x;
+                    }
+
+                    const minNumberOfDigits = parseInt(policy);
+
+                    assert(!isNaN(minNumberOfDigits));
+
+                    if (value.split("").filter(char => !isNaN(parseInt(char))).length >= minNumberOfDigits) {
+                        break check_password_policy_x;
+                    }
+
+                    const msgArgs = ["invalidPasswordMinDigitsMessage", `${minNumberOfDigits}`] as const;
+
+                    errors.push({
+                        "validatorName": undefined,
+                        "errorMessage": <Fragment key={errors.length}>{msg(...msgArgs)}</Fragment>,
+                        "errorMessageStr": msgStr(...msgArgs)
+                    });
+                }
+
+                check_password_policy_x: {
+                    const policyName = "lowerCase";
+
+                    const policy = passwordPolicies[policyName];
+
+                    if (policy === undefined) {
+                        break check_password_policy_x;
+                    }
+
+                    const minNumberOfLowerCaseChar = parseInt(policy);
+
+                    assert(!isNaN(minNumberOfLowerCaseChar));
+
+                    if (
+                        value.split("").filter(char => char === char.toLowerCase() && char !== char.toUpperCase()).length >= minNumberOfLowerCaseChar
+                    ) {
+                        break check_password_policy_x;
+                    }
+
+                    const msgArgs = ["invalidPasswordMinLowerCaseCharsMessage", `${minNumberOfLowerCaseChar}`] as const;
+
+                    errors.push({
+                        "validatorName": undefined,
+                        "errorMessage": <Fragment key={errors.length}>{msg(...msgArgs)}</Fragment>,
+                        "errorMessageStr": msgStr(...msgArgs)
+                    });
+                }
+
+                check_password_policy_x: {
+                    const policyName = "upperCase";
+
+                    const policy = passwordPolicies[policyName];
+
+                    if (policy === undefined) {
+                        break check_password_policy_x;
+                    }
+
+                    const minNumberOfUpperCaseChar = parseInt(policy);
+
+                    assert(!isNaN(minNumberOfUpperCaseChar));
+
+                    if (
+                        value.split("").filter(char => char === char.toUpperCase() && char !== char.toLowerCase()).length >= minNumberOfUpperCaseChar
+                    ) {
+                        break check_password_policy_x;
+                    }
+
+                    const msgArgs = ["invalidPasswordMinUpperCaseCharsMessage", `${minNumberOfUpperCaseChar}`] as const;
+
+                    errors.push({
+                        "validatorName": undefined,
+                        "errorMessage": <Fragment key={errors.length}>{msg(...msgArgs)}</Fragment>,
+                        "errorMessageStr": msgStr(...msgArgs)
+                    });
+                }
+
+                check_password_policy_x: {
+                    const policyName = "specialChars";
+
+                    const policy = passwordPolicies[policyName];
+
+                    if (policy === undefined) {
+                        break check_password_policy_x;
+                    }
+
+                    const minNumberOfSpecialChar = parseInt(policy);
+
+                    assert(!isNaN(minNumberOfSpecialChar));
+
+                    if (value.split("").filter(char => !char.match(/[a-zA-Z0-9]/)).length >= minNumberOfSpecialChar) {
+                        break check_password_policy_x;
+                    }
+
+                    const msgArgs = ["invalidPasswordMinSpecialCharsMessage", `${minNumberOfSpecialChar}`] as const;
+
+                    errors.push({
+                        "validatorName": undefined,
+                        "errorMessage": <Fragment key={errors.length}>{msg(...msgArgs)}</Fragment>,
+                        "errorMessageStr": msgStr(...msgArgs)
+                    });
+                }
+
+                check_password_policy_x: {
+                    const policyName = "notUsername";
+
+                    const notUsername = passwordPolicies[policyName];
+
+                    if (!notUsername) {
+                        break check_password_policy_x;
+                    }
+
+                    const usernameFieldValue = fieldValues.find(fieldValue => fieldValue.name === "username");
+
+                    if (usernameFieldValue === undefined) {
+                        break check_password_policy_x;
+                    }
+
+                    if (value !== usernameFieldValue.value) {
+                        break check_password_policy_x;
+                    }
+
+                    const msgArgs = ["invalidPasswordNotUsernameMessage"] as const;
+
+                    errors.push({
+                        "validatorName": undefined,
+                        "errorMessage": <Fragment key={errors.length}>{msg(...msgArgs)}</Fragment>,
+                        "errorMessageStr": msgStr(...msgArgs)
+                    });
+                }
+
+                check_password_policy_x: {
+                    const policyName = "notEmail";
+
+                    const notEmail = passwordPolicies[policyName];
+
+                    if (!notEmail) {
+                        break check_password_policy_x;
+                    }
+
+                    const emailFieldValue = fieldValues.find(fieldValue => fieldValue.name === "email");
+
+                    if (emailFieldValue === undefined) {
+                        break check_password_policy_x;
+                    }
+
+                    if (value !== emailFieldValue.value) {
+                        break check_password_policy_x;
+                    }
+
+                    const msgArgs = ["invalidPasswordNotEmailMessage"] as const;
+
+                    errors.push({
+                        "validatorName": undefined,
+                        "errorMessage": <Fragment key={errors.length}>{msg(...msgArgs)}</Fragment>,
+                        "errorMessageStr": msgStr(...msgArgs)
+                    });
+                }
+            }
 
             password_confirm_matches_password: {
                 if (name !== "password-confirm") {
