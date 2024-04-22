@@ -660,21 +660,17 @@ export declare namespace Validators {
 
 export type PasswordPolicies = {
     /** The minimum length of the password */
-    length?: number;
+    length?: `${number}`;
     /** The minimum number of digits required in the password */
-    digits?: number;
+    digits?: `${number}`;
     /** The minimum number of lowercase characters required in the password */
-    lowerCase?: number;
+    lowerCase?: `${number}`;
     /** The minimum number of uppercase characters required in the password */
-    upperCase?: number;
+    upperCase?: `${number}`;
     /** The minimum number of special characters required in the password */
-    specialChars?: number;
-    /** Whether the password can contain the username */
+    specialChars?: `${number}`;
+    /** Whether the password can be the username */
     notUsername?: boolean;
-    /** Whether the password can contain the email address */
+    /** Whether the password can be the email address */
     notEmail?: boolean;
-    /** The number of previous passwords that cannot be reused */
-    passwordHistory?: number;
-    /** The number of days before the password expires */
-    forceExpiredPasswordChange?: number;
 };
