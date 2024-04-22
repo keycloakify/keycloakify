@@ -540,12 +540,6 @@ export type Attribute = {
     validators: Validators;
     annotations: Record<string, string>;
     multivalued?: boolean;
-    /**
-     * NOTE: This is not a Keycloak attribute, it's a Keycloakify addition.
-     * usecase is to enable to hide the password confirmation if the theme is configured like that.
-     * SEE: https://github.com/keycloakify/keycloakify/issues/238#issuecomment-1874605774
-     */
-    hidden?: boolean;
     autocomplete?:
         | "on"
         | "off"

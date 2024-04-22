@@ -56,14 +56,14 @@ export type KcContextLike = {
     passwordPolicies?: PasswordPolicies;
 };
 
-export type ParamsOfUseProfileAttributeForm = {
+export type ParamsOfUseUserProfileForm = {
     kcContext: KcContextLike;
     passwordValidators?: Validators;
     requirePasswordConfirmation?: boolean;
     i18n: I18n;
 };
 
-export type ReturnTypeOfUseProfileAttributeForm = {
+export type ReturnTypeOfUseUserProfileForm = {
     formState: FormState;
     dispatchFormAction: Dispatch<FormAction>;
     attributesWithPassword: Attribute[];
@@ -73,8 +73,8 @@ export type ReturnTypeOfUseProfileAttributeForm = {
  * NOTE: The attributesWithPassword returned is actually augmented with
  * artificial password related attributes only if kcContext.passwordRequired === true
  */
-export function useUserProfileForm(params: ParamsOfUseProfileAttributeForm): ReturnTypeOfUseProfileAttributeForm {
-    const { kcContext, passwordValidators = {}, requirePasswordConfirmation = true, i18n } = params;
+export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTypeOfUseUserProfileForm {
+    const { kcContext, passwordValidators = {}, i18n } = params;
 
     const attributesWithPassword = useMemo(() => {
         const attributesWithPassword: Attribute[] = [];
@@ -118,7 +118,6 @@ export function useUserProfileForm(params: ParamsOfUseProfileAttributeForm): Ret
                         "annotations": {},
                         "html5DataAnnotations": {},
                         "autocomplete": "new-password",
-                        "hidden": !requirePasswordConfirmation,
                         // NOTE: Compat with Keycloak version prior to 24
                         ...({ "groupAnnotations": {} } as {})
                     }
