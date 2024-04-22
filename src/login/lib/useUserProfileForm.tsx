@@ -59,8 +59,8 @@ export type KcContextLike = {
 export type ParamsOfUseUserProfileForm = {
     kcContext: KcContextLike;
     passwordValidators?: Validators;
-    requirePasswordConfirmation?: boolean;
     i18n: I18n;
+    passwordConfirmationDisabled?: boolean;
 };
 
 export type ReturnTypeOfUseUserProfileForm = {
@@ -74,7 +74,7 @@ export type ReturnTypeOfUseUserProfileForm = {
  * artificial password related attributes only if kcContext.passwordRequired === true
  */
 export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTypeOfUseUserProfileForm {
-    const { kcContext, passwordValidators = {}, i18n } = params;
+    const { kcContext, passwordValidators = {}, i18n, passwordConfirmationDisabled = false } = params;
 
     const attributesWithPassword = useMemo(() => {
         const attributesWithPassword: Attribute[] = [];
@@ -107,14 +107,7 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                         "displayName": id<`\${${MessageKey}}`>("${passwordConfirm}"),
                         "required": true,
                         "readOnly": false,
-                        "validators": {
-                            "_compareToOther": {
-                                "name": "password",
-                                "ignore.empty.value": true,
-                                "shouldBe": "equal",
-                                "error-message": id<`\${${MessageKey}}`>("${invalidPasswordConfirmMessage}")
-                            }
-                        },
+                        "validators": {},
                         "annotations": {},
                         "html5DataAnnotations": {},
                         "autocomplete": "new-password",
@@ -142,7 +135,7 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
     type State = FormFieldState_internal[];
 
     const [state, dispatchFormAction] = useReducer(
-        (state: State, params: FormAction): State => {
+        function reducer(state: State, params: FormAction): State {
             if (params.action === "add value to multi-valued attribute") {
                 const formFieldStates = state.filter(({ name }) => name === params.name);
 
@@ -170,6 +163,23 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                     formFieldState.hasLostFocusAtLeastOnce = true;
                     return state;
                 case "update value":
+                    update_password_confirm: {
+                        if (params.name !== "password") {
+                            break update_password_confirm;
+                        }
+
+                        if (!passwordConfirmationDisabled) {
+                            break update_password_confirm;
+                        }
+
+                        state = reducer(state, {
+                            "action": "update value",
+                            "name": "password-confirm",
+                            "index": 0,
+                            "newValue": params.newValue
+                        });
+                    }
+
                     formFieldState.value = params.newValue;
                     formFieldState.errors = getErrors({
                         "name": params.name,
@@ -336,6 +346,28 @@ function useGetErrors(params: {
 
             const errors: FormFieldError[] = [];
 
+            password_confirm_matches_password: {
+                if (name !== "password-confirm") {
+                    break password_confirm_matches_password;
+                }
+
+                const passwordFieldValue = fieldValues.find(fieldValue => fieldValue.name === "password");
+
+                assert(passwordFieldValue !== undefined);
+
+                if (passwordFieldValue.value === value) {
+                    break password_confirm_matches_password;
+                }
+
+                const msgArgs = ["invalidPasswordConfirmMessage"] as const;
+
+                errors.push({
+                    "validatorName": undefined,
+                    "errorMessage": <Fragment key={errors.length}>{msg(...msgArgs)}</Fragment>,
+                    "errorMessageStr": msgStr(...msgArgs)
+                });
+            }
+
             const { validators } = attribute;
 
             required_field: {
@@ -390,62 +422,6 @@ function useGetErrors(params: {
                         validatorName
                     });
                 }
-            }
-
-            validator_x: {
-                const validatorName = "_compareToOther";
-
-                const validator = validators[validatorName];
-
-                if (validator === undefined) {
-                    break validator_x;
-                }
-
-                const { "ignore.empty.value": ignoreEmptyValue = false, name: otherName, shouldBe, "error-message": errorMessageKey } = validator;
-
-                if (ignoreEmptyValue && value === "") {
-                    break validator_x;
-                }
-
-                const otherFieldValue = fieldValues.find(fieldValue => fieldValue.name === otherName);
-
-                assert(otherFieldValue !== undefined);
-
-                const isValid = (() => {
-                    switch (shouldBe) {
-                        case "different":
-                            return otherFieldValue.value !== value;
-                        case "equal":
-                            return otherFieldValue.value === value;
-                    }
-                })();
-
-                if (isValid) {
-                    break validator_x;
-                }
-
-                const msgArg = [
-                    errorMessageKey ??
-                        id<MessageKey>(
-                            (() => {
-                                switch (shouldBe) {
-                                    case "equal":
-                                        return "shouldBeEqual";
-                                    case "different":
-                                        return "shouldBeDifferent";
-                                }
-                            })()
-                        ),
-                    otherName,
-                    name,
-                    shouldBe
-                ] as const;
-
-                errors.push({
-                    validatorName,
-                    "errorMessage": <Fragment key={errors.length}>{advancedMsg(...msgArg)}</Fragment>,
-                    "errorMessageStr": advancedMsgStr(...msgArg)
-                });
             }
 
             validator_x: {
