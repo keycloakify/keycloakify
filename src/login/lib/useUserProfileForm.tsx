@@ -5,10 +5,10 @@ import type { MessageKey } from "keycloakify/login/i18n/i18n";
 import type { Attribute, Validators } from "keycloakify/login/kcContext/KcContext";
 import { useConstCallback } from "keycloakify/tools/useConstCallback";
 import { emailRegexp } from "keycloakify/tools/emailRegExp";
-import type { KcContext } from "../kcContext";
-import type { I18n } from "../i18n";
+import type { KcContext, PasswordPolicies } from "keycloakify/login/kcContext/KcContext";
 import type { Param0 } from "tsafe";
 import { assert, type Equals } from "tsafe/assert";
+import type { I18n } from "../i18n";
 
 export type FormFieldError = {
     errorMessage: JSX.Element;
@@ -46,21 +46,24 @@ export type FormAction =
           name: string;
       };
 
-export type ParamsOfUseFromValidation = {
-    kcContext: {
-        messagesPerField: Pick<KcContext.Common["messagesPerField"], "existsError" | "get">;
-        profile: {
-            attributes: Attribute[];
-        };
-        passwordRequired?: boolean;
-        realm: { registrationEmailAsUsername: boolean };
+export type KcContextLike = {
+    messagesPerField: Pick<KcContext.Common["messagesPerField"], "existsError" | "get">;
+    profile: {
+        attributes: Attribute[];
     };
+    passwordRequired?: boolean;
+    realm: { registrationEmailAsUsername: boolean };
+    passwordPolicies?: PasswordPolicies;
+};
+
+export type ParamsOfUseProfileAttributeForm = {
+    kcContext: KcContextLike;
     passwordValidators?: Validators;
     requirePasswordConfirmation?: boolean;
     i18n: I18n;
 };
 
-export type ReturnTypeOfUseFormValidation = {
+export type ReturnTypeOfUseProfileAttributeForm = {
     formState: FormState;
     dispatchFormAction: Dispatch<FormAction>;
     attributesWithPassword: Attribute[];
@@ -70,7 +73,7 @@ export type ReturnTypeOfUseFormValidation = {
  * NOTE: The attributesWithPassword returned is actually augmented with
  * artificial password related attributes only if kcContext.passwordRequired === true
  */
-export function useFormValidation(params: ParamsOfUseFromValidation): ReturnTypeOfUseFormValidation {
+export function useUserProfileForm(params: ParamsOfUseProfileAttributeForm): ReturnTypeOfUseProfileAttributeForm {
     const { kcContext, passwordValidators = {}, requirePasswordConfirmation = true, i18n } = params;
 
     const attributesWithPassword = useMemo(() => {
@@ -189,7 +192,27 @@ export function useFormValidation(params: ParamsOfUseFromValidation): ReturnType
                             break handle_multi_valued_attribute;
                         }
 
-                        const values = attribute.values ?? [attribute.value ?? ""];
+                        const values = attribute.values ?? [""];
+
+                        apply_validator_min_range: {
+                            const validator = attribute.validators.multivalued;
+
+                            if (validator === undefined) {
+                                break apply_validator_min_range;
+                            }
+
+                            const { min: minStr } = validator;
+
+                            if (minStr === undefined) {
+                                break apply_validator_min_range;
+                            }
+
+                            const min = parseInt(minStr);
+
+                            for (let index = values.length; index < min; index++) {
+                                values.push("");
+                            }
+                        }
 
                         for (let index = 0; index < values.length; index++) {
                             initialFormFieldValues.push({
@@ -250,9 +273,7 @@ export function useFormValidation(params: ParamsOfUseFromValidation): ReturnType
 
 /** Expect to be used in a component wrapped within a <I18nProvider> */
 function useGetErrors(params: {
-    kcContext: {
-        messagesPerField: Pick<KcContext.Common["messagesPerField"], "existsError" | "get">;
-    };
+    kcContext: Pick<KcContextLike, "messagesPerField">;
     attributes: {
         name: string;
         validators: Validators;
