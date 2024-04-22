@@ -1,12 +1,13 @@
 import { useEffect, Fragment } from "react";
 import type { ClassKey } from "keycloakify/login/TemplateProps";
 import { clsx } from "keycloakify/tools/clsx";
-import { useFormValidation } from "keycloakify/login/lib/useFormValidation";
-import type { Attribute } from "keycloakify/login/kcContext/KcContext";
+import { useProfileAttributeForm, type KcContextLike } from "keycloakify/login/lib/useProfileAttributeForm";
+import type { Attribute, LegacyAttribute } from "keycloakify/login/kcContext/KcContext";
 import type { I18n } from "../../i18n";
+import { assert } from "tsafe/assert";
 
 export type UserProfileFormFieldsProps = {
-    kcContext: Parameters<typeof useFormValidation>[0]["kcContext"];
+    kcContext: KcContextLike;
     i18n: I18n;
     getClassName: (classKey: ClassKey) => string;
     onIsFormSubmittableValueChange: (isFormSubmittable: boolean) => void;
@@ -23,23 +24,23 @@ export function UserProfileFormFields(props: UserProfileFormFieldsProps) {
         formValidationState: { fieldStateByAttributeName, isFormSubmittable },
         formValidationDispatch,
         attributesWithPassword
-    } = useFormValidation({
+    } = useProfileAttributeForm({
         kcContext,
         i18n
+        // NOTE: Uncomment the following line if you don't want for force the user to enter the password twice.
+        //"requirePasswordConfirmation": false
     });
 
     useEffect(() => {
         onIsFormSubmittableValueChange(isFormSubmittable);
     }, [isFormSubmittable]);
 
-    let currentGroup = "";
+    let currentGroupName = "";
 
     return (
         <>
             {attributesWithPassword.map((attribute, i) => {
-                const { group = "", groupDisplayHeader = "", groupDisplayDescription = "" } = attribute;
-
-                const { value, displayableErrors } = fieldStateByAttributeName[attribute.name];
+                const { displayableErrors, value } = fieldStateByAttributeName[attribute.name];
 
                 const formGroupClassName = clsx(
                     getClassName("kcFormGroupClass"),
@@ -48,22 +49,88 @@ export function UserProfileFormFields(props: UserProfileFormFieldsProps) {
 
                 return (
                     <Fragment key={i}>
-                        {group !== currentGroup && (currentGroup = group) !== "" && (
-                            <div className={formGroupClassName}>
-                                <div className={getClassName("kcContentWrapperClass")}>
-                                    <label id={`header-${group}`} className={getClassName("kcFormGroupHeader")}>
-                                        {advancedMsg(groupDisplayHeader) || currentGroup}
-                                    </label>
-                                </div>
-                                {groupDisplayDescription !== "" && (
-                                    <div className={getClassName("kcLabelWrapperClass")}>
-                                        <label id={`description-${group}`} className={getClassName("kcLabelClass")}>
-                                            {advancedMsg(groupDisplayDescription)}
-                                        </label>
-                                    </div>
-                                )}
-                            </div>
-                        )}
+                        {(() => {
+                            keycloak_prior_to_24: {
+                                if (attribute.html5DataAnnotations !== undefined) {
+                                    break keycloak_prior_to_24;
+                                }
+
+                                const { group = "", groupDisplayHeader = "", groupDisplayDescription = "" } = attribute as any as LegacyAttribute;
+
+                                return (
+                                    group !== currentGroupName &&
+                                    (currentGroupName = group) !== "" && (
+                                        <div className={formGroupClassName}>
+                                            <div className={getClassName("kcContentWrapperClass")}>
+                                                <label id={`header-${group}`} className={getClassName("kcFormGroupHeader")}>
+                                                    {advancedMsg(groupDisplayHeader) || currentGroupName}
+                                                </label>
+                                            </div>
+                                            {groupDisplayDescription !== "" && (
+                                                <div className={getClassName("kcLabelWrapperClass")}>
+                                                    <label id={`description-${group}`} className={getClassName("kcLabelClass")}>
+                                                        {advancedMsg(groupDisplayDescription)}
+                                                    </label>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )
+                                );
+                            }
+
+                            if (attribute.group?.name !== currentGroupName) {
+                                currentGroupName = attribute.group?.name ?? "";
+
+                                if (currentGroupName !== "") {
+                                    assert(attribute.group !== undefined);
+
+                                    return (
+                                        <div
+                                            className={getClassName("kcFormGroupClass")}
+                                            {...Object.fromEntries(
+                                                Object.entries(attribute.group.html5DataAnnotations).map(([key, value]) => [`data-${key}`, value])
+                                            )}
+                                        >
+                                            {(() => {
+                                                const groupDisplayHeader = attribute.group.displayHeader ?? "";
+                                                const groupHeaderText =
+                                                    groupDisplayHeader !== "" ? advancedMsg(groupDisplayHeader) : attribute.group.name;
+
+                                                return (
+                                                    <div className={getClassName("kcContentWrapperClass")}>
+                                                        <label id={`header-${attribute.group.name}`} className={getClassName("kcFormGroupHeader")}>
+                                                            {groupHeaderText}
+                                                        </label>
+                                                    </div>
+                                                );
+                                            })()}
+                                            {(() => {
+                                                const groupDisplayDescription = attribute.group.displayDescription ?? "";
+
+                                                if (groupDisplayDescription !== "") {
+                                                    const groupDescriptionText = advancedMsg(groupDisplayDescription);
+
+                                                    return (
+                                                        <div className={getClassName("kcLabelWrapperClass")}>
+                                                            <label
+                                                                id={`description-${attribute.group.name}`}
+                                                                className={getClassName("kcLabelClass")}
+                                                            >
+                                                                {groupDescriptionText}
+                                                            </label>
+                                                        </div>
+                                                    );
+                                                }
+
+                                                return null;
+                                            })()}
+                                        </div>
+                                    );
+                                }
+                            }
+
+                            return null;
+                        })()}
 
                         {BeforeField && <BeforeField attribute={attribute} />}
 
