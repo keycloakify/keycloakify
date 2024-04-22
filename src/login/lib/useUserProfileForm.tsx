@@ -6,7 +6,6 @@ import type { Attribute, Validators } from "keycloakify/login/kcContext/KcContex
 import { useConstCallback } from "keycloakify/tools/useConstCallback";
 import { emailRegexp } from "keycloakify/tools/emailRegExp";
 import type { KcContext, PasswordPolicies } from "keycloakify/login/kcContext/KcContext";
-import type { Param0 } from "tsafe";
 import { assert, type Equals } from "tsafe/assert";
 import type { I18n } from "../i18n";
 
@@ -22,6 +21,7 @@ export type FormFieldState = {
     index: number;
     value: string;
     displayableError: FormFieldError[];
+    attribute: Attribute;
 };
 
 export type FormState = {
@@ -65,7 +65,6 @@ export type ParamsOfUseUserProfileForm = {
 export type ReturnTypeOfUseUserProfileForm = {
     formState: FormState;
     dispatchFormAction: Dispatch<FormAction>;
-    attributesWithPassword: Attribute[];
 };
 
 /**
@@ -147,7 +146,8 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                         "index": formFieldStates.length,
                         "fieldValues": state
                     }),
-                    "hasLostFocusAtLeastOnce": false
+                    "hasLostFocusAtLeastOnce": false,
+                    "attribute": formFieldStates[0].attribute
                 });
 
                 return state;
@@ -192,7 +192,7 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
         },
         useMemo(function getInitialState(): State {
             const initialFormFieldValues = (() => {
-                const initialFormFieldValues: Param0<typeof getErrors>["fieldValues"] = [];
+                const initialFormFieldValues: { name: string; index: number; value: string; attribute: Attribute }[] = [];
 
                 for (const attribute of attributesWithPassword) {
                     handle_multi_valued_attribute: {
@@ -226,7 +226,8 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                             initialFormFieldValues.push({
                                 "name": attribute.name,
                                 index,
-                                "value": values[index]
+                                "value": values[index],
+                                attribute
                             });
                         }
 
@@ -236,23 +237,25 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                     initialFormFieldValues.push({
                         "name": attribute.name,
                         "index": 0,
-                        "value": attribute.value ?? ""
+                        "value": attribute.value ?? "",
+                        attribute
                     });
                 }
 
                 return initialFormFieldValues;
             })();
 
-            const initialState: State = initialFormFieldValues.map(({ name, index, value }) => ({
+            const initialState: State = initialFormFieldValues.map(({ name, index, value, attribute }) => ({
                 name,
                 index,
                 value,
                 "errors": getErrors({
-                    "name": name,
+                    name,
                     index,
                     "fieldValues": initialFormFieldValues
                 }),
-                "hasLostFocusAtLeastOnce": false
+                "hasLostFocusAtLeastOnce": false,
+                attribute
             }));
 
             return initialState;
@@ -261,11 +264,12 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
 
     const formState: FormState = useMemo(
         () => ({
-            "formFieldStates": state.map(({ name, index, value, errors, hasLostFocusAtLeastOnce }) => ({
+            "formFieldStates": state.map(({ name, index, value, errors, hasLostFocusAtLeastOnce, attribute }) => ({
                 name,
                 index,
                 value,
-                "displayableError": hasLostFocusAtLeastOnce ? errors : []
+                "displayableError": hasLostFocusAtLeastOnce ? errors : [],
+                attribute
             })),
             "isFormSubmittable": state.every(({ errors }) => errors.length === 0)
         }),
@@ -274,8 +278,7 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
 
     return {
         formState,
-        dispatchFormAction,
-        attributesWithPassword
+        dispatchFormAction
     };
 }
 
