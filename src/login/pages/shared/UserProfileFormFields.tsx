@@ -1,7 +1,13 @@
 import { useEffect, Fragment } from "react";
 import type { ClassKey } from "keycloakify/login/TemplateProps";
 import { clsx } from "keycloakify/tools/clsx";
-import { useProfileAttributeForm, type KcContextLike } from "keycloakify/login/lib/useProfileAttributeForm";
+import {
+    useUserProfileForm,
+    type KcContextLike,
+    type FormAction,
+    type FormFieldError,
+    FormFieldState
+} from "keycloakify/login/lib/useUserProfileForm";
 import type { Attribute, LegacyAttribute } from "keycloakify/login/kcContext/KcContext";
 import type { I18n } from "../../i18n";
 import { assert } from "tsafe/assert";
@@ -11,9 +17,21 @@ export type UserProfileFormFieldsProps = {
     i18n: I18n;
     getClassName: (classKey: ClassKey) => string;
     onIsFormSubmittableValueChange: (isFormSubmittable: boolean) => void;
-    BeforeField?: (props: { attribute: Attribute }) => JSX.Element | null;
-    AfterField?: (props: { attribute: Attribute }) => JSX.Element | null;
+    BeforeField?: (props: BeforeAfterFieldProps) => JSX.Element | null;
+    AfterField?: (props: BeforeAfterFieldProps) => JSX.Element | null;
 };
+
+type BeforeAfterFieldProps = {
+    attribute: Attribute;
+    index: number;
+    value: string;
+    dispatchFormAction: React.Dispatch<FormAction>;
+    formFieldErrors: FormFieldError[];
+    i18n: I18n;
+};
+
+// NOTE: Enabled by default but it's a UX best practice to set it to false.
+const doMakeUserConfirmPassword = true;
 
 export function UserProfileFormFields(props: UserProfileFormFieldsProps) {
     const { kcContext, onIsFormSubmittableValueChange, i18n, getClassName, BeforeField, AfterField } = props;
@@ -21,14 +39,12 @@ export function UserProfileFormFields(props: UserProfileFormFieldsProps) {
     const { advancedMsg, msg } = i18n;
 
     const {
-        formValidationState: { fieldStateByAttributeName, isFormSubmittable },
-        formValidationDispatch,
-        attributesWithPassword
-    } = useProfileAttributeForm({
+        formState: { formFieldStates, isFormSubmittable },
+        dispatchFormAction
+    } = useUserProfileForm({
         kcContext,
-        i18n
-        // NOTE: Uncomment the following line if you don't want for force the user to enter the password twice.
-        //"requirePasswordConfirmation": false
+        i18n,
+        doMakeUserConfirmPassword
     });
 
     useEffect(() => {
@@ -39,16 +55,14 @@ export function UserProfileFormFields(props: UserProfileFormFieldsProps) {
 
     return (
         <>
-            {attributesWithPassword.map((attribute, i) => {
-                const { displayableErrors, value } = fieldStateByAttributeName[attribute.name];
-
+            {formFieldStates.map(({ index, value, attribute, displayableErrors }) => {
                 const formGroupClassName = clsx(
                     getClassName("kcFormGroupClass"),
                     displayableErrors.length !== 0 && getClassName("kcFormGroupErrorClass")
                 );
 
                 return (
-                    <Fragment key={i}>
+                    <Fragment key={`${attribute.name}-${index}`}>
                         {(() => {
                             keycloak_prior_to_24: {
                                 if (attribute.html5DataAnnotations !== undefined) {
@@ -132,9 +146,23 @@ export function UserProfileFormFields(props: UserProfileFormFieldsProps) {
                             return null;
                         })()}
 
-                        {BeforeField && <BeforeField attribute={attribute} />}
+                        {BeforeField && (
+                            <BeforeField
+                                attribute={attribute}
+                                index={index}
+                                value={value}
+                                dispatchFormAction={dispatchFormAction}
+                                formFieldErrors={displayableErrors}
+                                i18n={i18n}
+                            />
+                        )}
 
-                        <div className={formGroupClassName}>
+                        <div
+                            className={formGroupClassName}
+                            style={{
+                                "display": attribute.name === "password-confirm" && !doMakeUserConfirmPassword ? "none" : undefined
+                            }}
+                        >
                             <div className={getClassName("kcLabelWrapperClass")}>
                                 <label htmlFor={attribute.name} className={getClassName("kcLabelClass")}>
                                     {advancedMsg(attribute.displayName ?? "")}
@@ -142,7 +170,80 @@ export function UserProfileFormFields(props: UserProfileFormFieldsProps) {
                                 {attribute.required && <>*</>}
                             </div>
                             <div className={getClassName("kcInputWrapperClass")}>
+                                {attribute.annotations.inputHelperTextBefore !== undefined && index === 0 && (
+                                    <div
+                                        className={getClassName("kcInputHelperTextBeforeClass")}
+                                        id={`form-help-text-before-${attribute.name}`}
+                                        aria-live="polite"
+                                    >
+                                        {advancedMsg(attribute.annotations.inputHelperTextBefore)}
+                                    </div>
+                                )}
+                                <InputFiledByType
+                                    attribute={attribute}
+                                    index={index}
+                                    value={value}
+                                    formValidationDispatch={dispatchFormAction}
+                                    getClassName={getClassName}
+                                    i18n={i18n}
+                                />
+                                {attribute.multivalued && (
+                                    <AddRemoveButtonsMultiValuedAttribute
+                                        formFieldStates={formFieldStates}
+                                        attribute={attribute}
+                                        index={index}
+                                        dispatchFormAction={dispatchFormAction}
+                                        i18n={i18n}
+                                    />
+                                )}
+                                {displayableErrors.length !== 0 && (
+                                    <span
+                                        id={`input-error-${attribute.name}${index === 0 ? "" : `-${index + 1}`}`}
+                                        className={getClassName("kcInputErrorMessageClass")}
+                                        style={{
+                                            "position": displayableErrors.length === 1 ? "absolute" : undefined
+                                        }}
+                                        aria-live="polite"
+                                    >
+                                        {displayableErrors.map(({ errorMessage }, i, arr) => (
+                                            <>
+                                                <span key={i}>{errorMessage}</span>
+                                                {arr.length - 1 !== i && <br />}
+                                            </>
+                                        ))}
+                                    </span>
+                                )}
+                                {attribute.annotations.inputHelperTextAfter !== undefined && index === 0 && (
+                                    <div
+                                        className={getClassName("kcInputHelperTextAfterClass")}
+                                        id={`form-help-text-before-${attribute.name}`}
+                                        aria-live="polite"
+                                    >
+                                        {advancedMsg(attribute.annotations.inputHelperTextAfter)}
+                                    </div>
+                                )}
+
+                                {AfterField && (
+                                    <AfterField
+                                        attribute={attribute}
+                                        index={index}
+                                        value={value}
+                                        dispatchFormAction={dispatchFormAction}
+                                        formFieldErrors={displayableErrors}
+                                        i18n={i18n}
+                                    />
+                                )}
+                                {/* 
+                        TODO: 
+
+                        	<#list profile.html5DataAnnotations?keys as key>
+		                        <script type="module" src="${url.resourcesPath}/js/${key}.js"></script>
+	                        </#list>
+
+                        */}
+
                                 {(() => {
+                                    /*
                                     const { options } = attribute.validators;
 
                                     if (options !== undefined) {
@@ -212,33 +313,179 @@ export function UserProfileFormFields(props: UserProfileFormFieldsProps) {
                                             autoComplete={attribute.autocomplete}
                                         />
                                     );
+                                    */
                                 })()}
-                                {displayableErrors.length !== 0 &&
-                                    (() => {
-                                        const divId = `input-error-${attribute.name}`;
-
-                                        return (
-                                            <>
-                                                <style>{`#${divId} > span: { display: block; }`}</style>
-                                                <span
-                                                    id={divId}
-                                                    className={getClassName("kcInputErrorMessageClass")}
-                                                    style={{
-                                                        "position": displayableErrors.length === 1 ? "absolute" : undefined
-                                                    }}
-                                                    aria-live="polite"
-                                                >
-                                                    {displayableErrors.map(({ errorMessage }) => errorMessage)}
-                                                </span>
-                                            </>
-                                        );
-                                    })()}
                             </div>
                         </div>
-                        {AfterField && <AfterField attribute={attribute} />}
                     </Fragment>
                 );
             })}
         </>
     );
+}
+
+function AddRemoveButtonsMultiValuedAttribute(props: {
+    formFieldStates: FormFieldState[];
+    attribute: Attribute;
+    index: number;
+    dispatchFormAction: React.Dispatch<
+        Extract<FormAction, { action: "add value to multi-valued attribute" | "remove value from multi-valued attribute" }>
+    >;
+    i18n: I18n;
+}) {
+    const { formFieldStates, attribute, index, dispatchFormAction, i18n } = props;
+
+    const { msg } = i18n;
+
+    const currentCount = formFieldStates.filter(({ attribute: attribute_i }) => attribute_i.name === attribute.name).length;
+
+    const hasRemove = (() => {
+        if (currentCount === 1) {
+            return false;
+        }
+
+        const minCount = (() => {
+            const { multivalued } = attribute.validators;
+
+            if (multivalued === undefined) {
+                return undefined;
+            }
+
+            const minStr = multivalued.min;
+
+            if (minStr === undefined) {
+                return undefined;
+            }
+
+            return parseInt(minStr);
+        })();
+
+        if (minCount === undefined) {
+            return true;
+        }
+
+        if (currentCount === minCount) {
+            return false;
+        }
+
+        return true;
+    })();
+
+    const hasAdd = (() => {
+        if (index + 1 !== currentCount) {
+            return false;
+        }
+
+        const maxCount = (() => {
+            const { multivalued } = attribute.validators;
+
+            if (multivalued === undefined) {
+                return undefined;
+            }
+
+            const maxStr = multivalued.max;
+
+            if (maxStr === undefined) {
+                return undefined;
+            }
+
+            return parseInt(maxStr);
+        })();
+
+        if (maxCount === undefined) {
+            return false;
+        }
+
+        if (currentCount === maxCount) {
+            return false;
+        }
+
+        return true;
+    })();
+
+    return (
+        <>
+            {hasRemove && (
+                <button
+                    id={`kc-remove-${attribute.name}-${index + 1}`}
+                    type="button"
+                    className="pf-c-button pf-m-inline pf-m-link"
+                    onClick={() =>
+                        dispatchFormAction({
+                            "action": "remove value from multi-valued attribute",
+                            "name": attribute.name,
+                            index
+                        })
+                    }
+                >
+                    {msg("remove")}
+                    {hasRemove ? <>&nbsp;|&nbsp;</> : null}
+                </button>
+            )}
+            {hasAdd && (
+                <button
+                    id="kc-add-titles-1"
+                    type="button"
+                    className="pf-c-button pf-m-inline pf-m-link"
+                    onClick={() =>
+                        dispatchFormAction({
+                            "action": "add value to multi-valued attribute",
+                            "name": attribute.name
+                        })
+                    }
+                >
+                    {msg("add value")}
+                </button>
+            )}
+        </>
+    );
+}
+
+function InputFiledByType(props: {
+    attribute: Attribute;
+    index: number;
+    value: string;
+    formValidationDispatch: React.Dispatch<FormAction>;
+    getClassName: UserProfileFormFieldsProps["getClassName"];
+    i18n: I18n;
+}) {
+    const { attribute, formValidationDispatch, getClassName, i18n } = props;
+
+    /*
+    <#macro inputFieldByType attribute>
+	<#switch attribute.annotations.inputType!''>
+	<#case 'textarea'>
+		<@textareaTag attribute=attribute/>
+		<#break>
+	<#case 'select'>
+	<#case 'multiselect'>
+		<@selectTag attribute=attribute/>
+		<#break>
+	<#case 'select-radiobuttons'>
+	<#case 'multiselect-checkboxes'>
+		<@inputTagSelects attribute=attribute/>
+		<#break>
+	<#default>
+		<#if attribute.multivalued && attribute.values?has_content>
+			<#list attribute.values as value>
+				<@inputTag attribute=attribute value=value!''/>
+			</#list>
+		<#else>
+			<@inputTag attribute=attribute value=attribute.value!''/>
+		</#if>
+	</#switch>
+    </#macro>
+    */
+
+    switch (attribute.annotations.inputType) {
+        case "textarea":
+            return <textareaTag {...props} />;
+        case "select":
+        case "multiselect":
+            return <selectTag {...props} />;
+        case "select-radiobuttons":
+        case "multiselect-checkboxes":
+            return <inputTagSelects {...props} />;
+        default:
+    }
 }

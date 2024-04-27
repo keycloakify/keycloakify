@@ -20,7 +20,7 @@ export type FormFieldState = {
     /** The index is always 0 for non multi-valued fields */
     index: number;
     value: string;
-    displayableError: FormFieldError[];
+    displayableErrors: FormFieldError[];
     attribute: Attribute;
 };
 
@@ -44,6 +44,11 @@ export type FormAction =
     | {
           action: "add value to multi-valued attribute";
           name: string;
+      }
+    | {
+          action: "remove value from multi-valued attribute";
+          name: string;
+          index: number;
       };
 
 export type KcContextLike = {
@@ -59,7 +64,7 @@ export type KcContextLike = {
 export type ParamsOfUseUserProfileForm = {
     kcContext: KcContextLike;
     i18n: I18n;
-    passwordConfirmationDisabled?: boolean;
+    doMakeUserConfirmPassword: boolean;
 };
 
 export type ReturnTypeOfUseUserProfileForm = {
@@ -72,7 +77,7 @@ export type ReturnTypeOfUseUserProfileForm = {
  * artificial password related attributes only if kcContext.passwordRequired === true
  */
 export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTypeOfUseUserProfileForm {
-    const { kcContext, i18n, passwordConfirmationDisabled = false } = params;
+    const { kcContext, i18n, doMakeUserConfirmPassword } = params;
 
     const attributesWithPassword = useMemo(() => {
         const attributesWithPassword: Attribute[] = [];
@@ -125,26 +130,28 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
         i18n
     });
 
-    type FormFieldState_internal = Omit<FormFieldState, "displayableError"> & {
+    type FormFieldState_internal = Omit<FormFieldState, "displayableErrors"> & {
         errors: FormFieldError[];
         hasLostFocusAtLeastOnce: boolean;
     };
 
-    type State = FormFieldState_internal[];
+    type State = {
+        formFieldStates: FormFieldState_internal[];
+    };
 
     const [state, dispatchFormAction] = useReducer(
         function reducer(state: State, params: FormAction): State {
             if (params.action === "add value to multi-valued attribute") {
-                const formFieldStates = state.filter(({ name }) => name === params.name);
+                const formFieldStates = state.formFieldStates.filter(({ name }) => name === params.name);
 
-                state.splice(state.indexOf(formFieldStates[formFieldStates.length - 1]) + 1, 0, {
+                state.formFieldStates.splice(state.formFieldStates.indexOf(formFieldStates[formFieldStates.length - 1]) + 1, 0, {
                     "index": formFieldStates.length,
                     "name": params.name,
                     "value": "",
                     "errors": getErrors({
                         "name": params.name,
                         "index": formFieldStates.length,
-                        "fieldValues": state
+                        "fieldValues": state.formFieldStates
                     }),
                     "hasLostFocusAtLeastOnce": false,
                     "attribute": formFieldStates[0].attribute
@@ -153,7 +160,7 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                 return state;
             }
 
-            const formFieldState = state.find(({ name, index }) => name === params.name && index === params.index);
+            const formFieldState = state.formFieldStates.find(({ name, index }) => name === params.name && index === params.index);
 
             assert(formFieldState !== undefined);
 
@@ -167,7 +174,7 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                             break update_password_confirm;
                         }
 
-                        if (!passwordConfirmationDisabled) {
+                        if (doMakeUserConfirmPassword) {
                             break update_password_confirm;
                         }
 
@@ -183,8 +190,11 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                     formFieldState.errors = getErrors({
                         "name": params.name,
                         "index": params.index,
-                        "fieldValues": state
+                        "fieldValues": state.formFieldStates
                     });
+                    return state;
+                case "remove value from multi-valued attribute":
+                    state.formFieldStates.splice(state.formFieldStates.indexOf(formFieldState), 1);
                     return state;
             }
 
@@ -245,18 +255,20 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                 return initialFormFieldValues;
             })();
 
-            const initialState: State = initialFormFieldValues.map(({ name, index, value, attribute }) => ({
-                name,
-                index,
-                value,
-                "errors": getErrors({
+            const initialState: State = {
+                "formFieldStates": initialFormFieldValues.map(({ name, index, value, attribute }) => ({
                     name,
                     index,
-                    "fieldValues": initialFormFieldValues
-                }),
-                "hasLostFocusAtLeastOnce": false,
-                attribute
-            }));
+                    value,
+                    "errors": getErrors({
+                        name,
+                        index,
+                        "fieldValues": initialFormFieldValues
+                    }),
+                    "hasLostFocusAtLeastOnce": false,
+                    attribute
+                }))
+            };
 
             return initialState;
         }, [])
@@ -264,14 +276,14 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
 
     const formState: FormState = useMemo(
         () => ({
-            "formFieldStates": state.map(({ name, index, value, errors, hasLostFocusAtLeastOnce, attribute }) => ({
+            "formFieldStates": state.formFieldStates.map(({ name, index, value, errors, hasLostFocusAtLeastOnce, attribute }) => ({
                 name,
                 index,
                 value,
-                "displayableError": hasLostFocusAtLeastOnce ? errors : [],
+                "displayableErrors": hasLostFocusAtLeastOnce ? errors : [],
                 attribute
             })),
-            "isFormSubmittable": state.every(({ errors }) => errors.length === 0)
+            "isFormSubmittable": state.formFieldStates.every(({ errors }) => errors.length === 0)
         }),
         [state]
     );
