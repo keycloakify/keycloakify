@@ -80,7 +80,6 @@ export function UserProfileFormFields(props: UserProfileFormFieldsProps) {
                                 i18n={i18n}
                             />
                         )}
-
                         <div
                             className={formGroupClassName}
                             style={{
@@ -121,21 +120,12 @@ export function UserProfileFormFields(props: UserProfileFormFieldsProps) {
                                     />
                                 )}
                                 {displayableErrors.length !== 0 && (
-                                    <span
-                                        id={`input-error-${attribute.name}${index === 0 ? "" : `-${index + 1}`}`}
-                                        className={getClassName("kcInputErrorMessageClass")}
-                                        style={{
-                                            "position": displayableErrors.length === 1 ? "absolute" : undefined
-                                        }}
-                                        aria-live="polite"
-                                    >
-                                        {displayableErrors.map(({ errorMessage }, i, arr) => (
-                                            <>
-                                                <span key={i}>{errorMessage}</span>
-                                                {arr.length - 1 !== i && <br />}
-                                            </>
-                                        ))}
-                                    </span>
+                                    <FieldErrors
+                                        attribute={attribute}
+                                        index={index}
+                                        getClassName={getClassName}
+                                        displayableErrors={displayableErrors}
+                                    />
                                 )}
                                 {attribute.annotations.inputHelperTextAfter !== undefined && index === 0 && (
                                     <div
@@ -336,6 +326,33 @@ function GroupLabel(props: {
     }
 
     return null;
+}
+
+function FieldErrors(props: {
+    attribute: Attribute;
+    index: number;
+    getClassName: UserProfileFormFieldsProps["getClassName"];
+    displayableErrors: FormFieldError[];
+}) {
+    const { attribute, index, getClassName, displayableErrors } = props;
+
+    return (
+        <span
+            id={`input-error-${attribute.name}${index === 0 ? "" : `-${index + 1}`}`}
+            className={getClassName("kcInputErrorMessageClass")}
+            style={{
+                "position": displayableErrors.length === 1 ? "absolute" : undefined
+            }}
+            aria-live="polite"
+        >
+            {displayableErrors.map(({ errorMessage }, i, arr) => (
+                <>
+                    <span key={i}>{errorMessage}</span>
+                    {arr.length - 1 !== i && <br />}
+                </>
+            ))}
+        </span>
+    );
 }
 
 function AddRemoveButtonsMultiValuedAttribute(props: {
