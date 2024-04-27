@@ -1,4 +1,4 @@
-import { useEffect, Fragment } from "react";
+import { useEffect, useState, Fragment } from "react";
 import type { ClassKey } from "keycloakify/login/TemplateProps";
 import { clsx } from "keycloakify/tools/clsx";
 import {
@@ -51,7 +51,7 @@ export function UserProfileFormFields(props: UserProfileFormFieldsProps) {
         onIsFormSubmittableValueChange(isFormSubmittable);
     }, [isFormSubmittable]);
 
-    let currentGroupName = "";
+    const groupNameRef = { "current": "" };
 
     return (
         <>
@@ -63,90 +63,14 @@ export function UserProfileFormFields(props: UserProfileFormFieldsProps) {
 
                 return (
                     <Fragment key={`${attribute.name}-${index}`}>
-                        {(() => {
-                            keycloak_prior_to_24: {
-                                if (attribute.html5DataAnnotations !== undefined) {
-                                    break keycloak_prior_to_24;
-                                }
-
-                                const { group = "", groupDisplayHeader = "", groupDisplayDescription = "" } = attribute as any as LegacyAttribute;
-
-                                return (
-                                    group !== currentGroupName &&
-                                    (currentGroupName = group) !== "" && (
-                                        <div className={formGroupClassName}>
-                                            <div className={getClassName("kcContentWrapperClass")}>
-                                                <label id={`header-${group}`} className={getClassName("kcFormGroupHeader")}>
-                                                    {advancedMsg(groupDisplayHeader) || currentGroupName}
-                                                </label>
-                                            </div>
-                                            {groupDisplayDescription !== "" && (
-                                                <div className={getClassName("kcLabelWrapperClass")}>
-                                                    <label id={`description-${group}`} className={getClassName("kcLabelClass")}>
-                                                        {advancedMsg(groupDisplayDescription)}
-                                                    </label>
-                                                </div>
-                                            )}
-                                        </div>
-                                    )
-                                );
-                            }
-
-                            if (attribute.group?.name !== currentGroupName) {
-                                currentGroupName = attribute.group?.name ?? "";
-
-                                if (currentGroupName !== "") {
-                                    assert(attribute.group !== undefined);
-
-                                    return (
-                                        <div
-                                            className={getClassName("kcFormGroupClass")}
-                                            {...Object.fromEntries(
-                                                Object.entries(attribute.group.html5DataAnnotations).map(([key, value]) => [`data-${key}`, value])
-                                            )}
-                                        >
-                                            {(() => {
-                                                const groupDisplayHeader = attribute.group.displayHeader ?? "";
-                                                const groupHeaderText =
-                                                    groupDisplayHeader !== "" ? advancedMsg(groupDisplayHeader) : attribute.group.name;
-
-                                                return (
-                                                    <div className={getClassName("kcContentWrapperClass")}>
-                                                        <label id={`header-${attribute.group.name}`} className={getClassName("kcFormGroupHeader")}>
-                                                            {groupHeaderText}
-                                                        </label>
-                                                    </div>
-                                                );
-                                            })()}
-                                            {(() => {
-                                                const groupDisplayDescription = attribute.group.displayDescription ?? "";
-
-                                                if (groupDisplayDescription !== "") {
-                                                    const groupDescriptionText = advancedMsg(groupDisplayDescription);
-
-                                                    return (
-                                                        <div className={getClassName("kcLabelWrapperClass")}>
-                                                            <label
-                                                                id={`description-${attribute.group.name}`}
-                                                                className={getClassName("kcLabelClass")}
-                                                            >
-                                                                {groupDescriptionText}
-                                                            </label>
-                                                        </div>
-                                                    );
-                                                }
-
-                                                return null;
-                                            })()}
-                                        </div>
-                                    );
-                                }
-                            }
-
-                            return null;
-                        })()}
-
-                        {BeforeField && (
+                        <GroupLabel
+                            attribute={attribute}
+                            getClassName={getClassName}
+                            i18n={i18n}
+                            groupNameRef={groupNameRef}
+                            formGroupClassName={formGroupClassName}
+                        />
+                        {BeforeField !== undefined && (
                             <BeforeField
                                 attribute={attribute}
                                 index={index}
@@ -223,7 +147,7 @@ export function UserProfileFormFields(props: UserProfileFormFieldsProps) {
                                     </div>
                                 )}
 
-                                {AfterField && (
+                                {AfterField !== undefined && (
                                     <AfterField
                                         attribute={attribute}
                                         index={index}
@@ -322,6 +246,96 @@ export function UserProfileFormFields(props: UserProfileFormFieldsProps) {
             })}
         </>
     );
+}
+
+function GroupLabel(props: {
+    attribute: Attribute;
+    getClassName: UserProfileFormFieldsProps["getClassName"];
+    i18n: I18n;
+    groupNameRef: {
+        current: string;
+    };
+    formGroupClassName: string;
+}) {
+    const { attribute, getClassName, i18n, groupNameRef, formGroupClassName } = props;
+
+    const { advancedMsg } = i18n;
+
+    keycloak_prior_to_24: {
+        if (attribute.html5DataAnnotations !== undefined) {
+            break keycloak_prior_to_24;
+        }
+
+        const { group = "", groupDisplayHeader = "", groupDisplayDescription = "" } = attribute as any as LegacyAttribute;
+
+        return (
+            <>
+                {group !== groupNameRef.current && (groupNameRef.current = group) !== "" && (
+                    <div className={formGroupClassName}>
+                        <div className={getClassName("kcContentWrapperClass")}>
+                            <label id={`header-${group}`} className={getClassName("kcFormGroupHeader")}>
+                                {advancedMsg(groupDisplayHeader) || groupNameRef.current}
+                            </label>
+                        </div>
+                        {groupDisplayDescription !== "" && (
+                            <div className={getClassName("kcLabelWrapperClass")}>
+                                <label id={`description-${group}`} className={getClassName("kcLabelClass")}>
+                                    {advancedMsg(groupDisplayDescription)}
+                                </label>
+                            </div>
+                        )}
+                    </div>
+                )}
+            </>
+        );
+    }
+
+    if (attribute.group?.name !== groupNameRef.current) {
+        groupNameRef.current = attribute.group?.name ?? "";
+
+        if (groupNameRef.current !== "") {
+            assert(attribute.group !== undefined);
+
+            return (
+                <div
+                    className={getClassName("kcFormGroupClass")}
+                    {...Object.fromEntries(Object.entries(attribute.group.html5DataAnnotations).map(([key, value]) => [`data-${key}`, value]))}
+                >
+                    {(() => {
+                        const groupDisplayHeader = attribute.group.displayHeader ?? "";
+                        const groupHeaderText = groupDisplayHeader !== "" ? advancedMsg(groupDisplayHeader) : attribute.group.name;
+
+                        return (
+                            <div className={getClassName("kcContentWrapperClass")}>
+                                <label id={`header-${attribute.group.name}`} className={getClassName("kcFormGroupHeader")}>
+                                    {groupHeaderText}
+                                </label>
+                            </div>
+                        );
+                    })()}
+                    {(() => {
+                        const groupDisplayDescription = attribute.group.displayDescription ?? "";
+
+                        if (groupDisplayDescription !== "") {
+                            const groupDescriptionText = advancedMsg(groupDisplayDescription);
+
+                            return (
+                                <div className={getClassName("kcLabelWrapperClass")}>
+                                    <label id={`description-${attribute.group.name}`} className={getClassName("kcLabelClass")}>
+                                        {groupDescriptionText}
+                                    </label>
+                                </div>
+                            );
+                        }
+
+                        return null;
+                    })()}
+                </div>
+            );
+        }
+    }
+
+    return null;
 }
 
 function AddRemoveButtonsMultiValuedAttribute(props: {
