@@ -1,4 +1,4 @@
-import { useEffect, useState, Fragment } from "react";
+import { useEffect, Fragment } from "react";
 import type { ClassKey } from "keycloakify/login/TemplateProps";
 import { clsx } from "keycloakify/tools/clsx";
 import {
@@ -36,7 +36,7 @@ const doMakeUserConfirmPassword = true;
 export function UserProfileFormFields(props: UserProfileFormFieldsProps) {
     const { kcContext, onIsFormSubmittableValueChange, i18n, getClassName, BeforeField, AfterField } = props;
 
-    const { advancedMsg, msg } = i18n;
+    const { advancedMsg } = i18n;
 
     const {
         formState: { formFieldStates, isFormSubmittable },
@@ -82,9 +82,7 @@ export function UserProfileFormFields(props: UserProfileFormFieldsProps) {
                         )}
                         <div
                             className={formGroupClassName}
-                            style={{
-                                "display": attribute.name === "password-confirm" && !doMakeUserConfirmPassword ? "none" : undefined
-                            }}
+                            style={{ "display": attribute.name === "password-confirm" && !doMakeUserConfirmPassword ? "none" : undefined }}
                         >
                             <div className={getClassName("kcLabelWrapperClass")}>
                                 <label htmlFor={attribute.name} className={getClassName("kcLabelClass")}>
@@ -155,80 +153,6 @@ export function UserProfileFormFields(props: UserProfileFormFieldsProps) {
 	                        </#list>
 
                         */}
-
-                                {(() => {
-                                    /*
-                                    const { options } = attribute.validators;
-
-                                    if (options !== undefined) {
-                                        return (
-                                            <select
-                                                id={attribute.name}
-                                                name={attribute.name}
-                                                onChange={event =>
-                                                    formValidationDispatch({
-                                                        "action": "update value",
-                                                        "name": attribute.name,
-                                                        "newValue": event.target.value
-                                                    })
-                                                }
-                                                onBlur={() =>
-                                                    formValidationDispatch({
-                                                        "action": "focus lost",
-                                                        "name": attribute.name
-                                                    })
-                                                }
-                                                value={value}
-                                            >
-                                                <>
-                                                    <option value="" selected disabled hidden>
-                                                        {msg("selectAnOption")}
-                                                    </option>
-                                                    {options.options.map(option => (
-                                                        <option key={option} value={option}>
-                                                            {option}
-                                                        </option>
-                                                    ))}
-                                                </>
-                                            </select>
-                                        );
-                                    }
-
-                                    return (
-                                        <input
-                                            type={(() => {
-                                                switch (attribute.name) {
-                                                    case "password-confirm":
-                                                    case "password":
-                                                        return "password";
-                                                    default:
-                                                        return "text";
-                                                }
-                                            })()}
-                                            id={attribute.name}
-                                            name={attribute.name}
-                                            value={value}
-                                            onChange={event =>
-                                                formValidationDispatch({
-                                                    "action": "update value",
-                                                    "name": attribute.name,
-                                                    "newValue": event.target.value
-                                                })
-                                            }
-                                            onBlur={() =>
-                                                formValidationDispatch({
-                                                    "action": "focus lost",
-                                                    "name": attribute.name
-                                                })
-                                            }
-                                            className={getClassName("kcInputClass")}
-                                            aria-invalid={displayableErrors.length !== 0}
-                                            disabled={attribute.readOnly}
-                                            autoComplete={attribute.autocomplete}
-                                        />
-                                    );
-                                    */
-                                })()}
                             </div>
                         </div>
                     </Fragment>
@@ -465,22 +389,25 @@ function AddRemoveButtonsMultiValuedAttribute(props: {
                         })
                     }
                 >
-                    {msg("add value")}
+                    {msg("addValue")}
                 </button>
             )}
         </>
     );
 }
 
-function InputFiledByType(props: {
+type PropsOfInputFiledByType = {
     attribute: Attribute;
     index: number;
     value: string;
+    displayableErrors: FormFieldError[];
     formValidationDispatch: React.Dispatch<FormAction>;
     getClassName: UserProfileFormFieldsProps["getClassName"];
     i18n: I18n;
-}) {
-    const { attribute, formValidationDispatch, getClassName, i18n } = props;
+};
+
+function InputFiledByType(props: PropsOfInputFiledByType) {
+    const { attribute } = props;
 
     /*
     <#macro inputFieldByType attribute>
@@ -510,13 +437,47 @@ function InputFiledByType(props: {
 
     switch (attribute.annotations.inputType) {
         case "textarea":
-            return <textareaTag {...props} />;
+            return <TextareaTag {...props} />;
         case "select":
         case "multiselect":
-            return <selectTag {...props} />;
+            return <SelectTag {...props} />;
         case "select-radiobuttons":
         case "multiselect-checkboxes":
-            return <inputTagSelects {...props} />;
+            return <InputTagSelects {...props} />;
         default:
+            return <InputTag {...props} />;
     }
+}
+
+function TextareaTag(props: PropsOfInputFiledByType) {
+    const { attribute, index, value, formValidationDispatch, getClassName, displayableErrors } = props;
+
+    return (
+        <textarea
+            id={`${attribute.name}-${index === 0 ? "" : index + 1}`}
+            name={attribute.name}
+            className={getClassName("kcInputClass")}
+            aria-invalid={displayableErrors.length !== 0}
+            disabled={attribute.readOnly}
+            cols={attribute.annotations.inputTypeCols === undefined ? undefined : parseInt(attribute.annotations.inputTypeCols)}
+            rows={attribute.annotations.inputTypeRows === undefined ? undefined : parseInt(attribute.annotations.inputTypeRows)}
+            maxLength={attribute.annotations.inputTypeMaxlength === undefined ? undefined : parseInt(attribute.annotations.inputTypeMaxlength)}
+            value={value}
+            onChange={event =>
+                formValidationDispatch({
+                    "action": "update value",
+                    "name": attribute.name,
+                    index,
+                    "newValue": event.target.value
+                })
+            }
+            onBlur={() =>
+                formValidationDispatch({
+                    "action": "focus lost",
+                    "name": attribute.name,
+                    index
+                })
+            }
+        />
+    );
 }
