@@ -538,7 +538,17 @@ export type Attribute = {
     html5DataAnnotations: Record<string, string>;
     readOnly: boolean;
     validators: Validators;
-    annotations: Record<string, string>;
+    annotations: {
+        inputType?: string;
+        inputTypeSize?: `${number}`;
+        inputOptionsFromValidation?: string;
+        inputOptionLabels?: Record<string, string | undefined>;
+        inputOptionLabelsI18nPrefix?: string;
+        inputTypeCols?: `${number}`;
+        inputTypeRows?: `${number}`;
+        inputTypeMaxlength?: `${number}`;
+        inputHelperTextBefore?: string;
+    };
     multivalued?: boolean;
     autocomplete?:
         | "on"

@@ -214,7 +214,7 @@ const keycloakifyExtraMessages = {
         "notAValidOption": "Not a valid option",
         "selectAnOption": "Select an option",
         "remove": "Remove",
-        "add value": "Add value"
+        "addValue": "Add value"
     },
     "fr": {
         /* spell-checker: disable */
@@ -229,7 +229,7 @@ const keycloakifyExtraMessages = {
         "doLogout": "Se déconnecter",
         "selectAnOption": "Sélectionner une option",
         "remove": "Supprimer",
-        "add value": "Ajouter une valeur"
+        "addValue": "Ajouter une valeur"
         /* spell-checker: enable */
     }
 };
