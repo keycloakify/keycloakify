@@ -69,7 +69,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
         "htmlClassName": getClassName("kcHtmlClass"),
         "bodyClassName": getClassName("kcBodyClass"),
         "htmlLangProperty": locale?.currentLanguageTag,
-        "documentTitle": i18n.msgStr("loginTitle", kcContext.realm.displayName)
+        "documentTitle": msgStr("loginTitle", kcContext.realm.displayName)
     });
 
     if (!isReady) {

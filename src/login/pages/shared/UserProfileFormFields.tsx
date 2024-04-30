@@ -449,6 +449,128 @@ function InputFiledByType(props: PropsOfInputFiledByType) {
     }
 }
 
+function InputTagSelects(props: PropsOfInputFiledByType) {
+    /*
+<#macro inputTagSelects attribute>
+	<#if attribute.annotations.inputType=='select-radiobuttons'>
+		<#assign inputType='radio'>
+		<#assign classDiv=properties.kcInputClassRadio!>
+		<#assign classInput=properties.kcInputClassRadioInput!>
+		<#assign classLabel=properties.kcInputClassRadioLabel!>
+	<#else>
+		<#assign inputType='checkbox'>
+		<#assign classDiv=properties.kcInputClassCheckbox!>
+		<#assign classInput=properties.kcInputClassCheckboxInput!>
+		<#assign classLabel=properties.kcInputClassCheckboxLabel!>
+	</#if>
+
+	<#if attribute.annotations.inputOptionsFromValidation?? && attribute.validators[attribute.annotations.inputOptionsFromValidation]?? && attribute.validators[attribute.annotations.inputOptionsFromValidation].options??>
+		<#assign options=attribute.validators[attribute.annotations.inputOptionsFromValidation].options>
+	<#elseif attribute.validators.options?? && attribute.validators.options.options??>
+		<#assign options=attribute.validators.options.options>
+	<#else>
+		<#assign options=[]>
+	</#if>
+
+	<#list options as option>
+		<div class="${classDiv}">
+			<input type="${inputType}" id="${attribute.name}-${option}" name="${attribute.name}" value="${option}" class="${classInput}"
+				aria-invalid="<#if messagesPerField.existsError('${attribute.name}')>true</#if>"
+				<#if attribute.readOnly>disabled</#if>
+				<#if attribute.values?seq_contains(option)>checked</#if>
+			/>
+			<label for="${attribute.name}-${option}" class="${classLabel}<#if attribute.readOnly> ${properties.kcInputClassRadioCheckboxLabelDisabled!}</#if>"><@selectOptionLabelText attribute=attribute option=option/></label>
+		</div>
+	</#list>
+</#macro>
+    */
+
+    const { attribute, formValidationDispatch, getClassName, index } = props;
+
+    const { advancedMsg } = props.i18n;
+
+    const { classDiv, classInput, classLabel, inputType } =
+        attribute.annotations.inputType === "select-radiobuttons"
+            ? {
+                  "inputType": "radio",
+                  "classDiv": getClassName("kcInputClassRadio"),
+                  "classInput": getClassName("kcInputClassRadioInput"),
+                  "classLabel": getClassName("kcInputClassRadioLabel")
+              }
+            : {
+                  "inputType": "checkbox",
+                  "classDiv": getClassName("kcInputClassCheckbox"),
+                  "classInput": getClassName("kcInputClassCheckboxInput"),
+                  "classLabel": getClassName("kcInputClassCheckboxLabel")
+              };
+
+    const options = (() => {
+        walk: {
+            const { inputOptionsFromValidation } = attribute.annotations;
+
+            assert(typeof inputOptionsFromValidation === "string");
+
+            if (inputOptionsFromValidation === undefined) {
+                break walk;
+            }
+
+            const validator = (attribute.validators as Record<string, { options?: string[] }>)[inputOptionsFromValidation];
+
+            if (validator === undefined) {
+                break walk;
+            }
+
+            if (validator.options === undefined) {
+                break walk;
+            }
+
+            return validator.options;
+        }
+
+        return attribute.validators.options?.options ?? [];
+    })();
+
+    return (
+        <>
+            {options.map(option => (
+                <div key={option} className={classDiv}>
+                    <input
+                        type={inputType}
+                        id={`${attribute.name}-${option}-${index === 0 ? "" : index + 1}`}
+                        name={attribute.name}
+                        value={option}
+                        className={classInput}
+                        aria-invalid={props.displayableErrors.length !== 0}
+                        disabled={attribute.readOnly}
+                        checked={props.value === option}
+                        onChange={() =>
+                            formValidationDispatch({
+                                "action": "update value",
+                                "name": attribute.name,
+                                "index": props.index,
+                                "newValue": option
+                            })
+                        }
+                        onBlur={() =>
+                            formValidationDispatch({
+                                "action": "focus lost",
+                                "name": attribute.name,
+                                "index": props.index
+                            })
+                        }
+                    />
+                    <label
+                        htmlFor={`${attribute.name}-${option}`}
+                        className={`${classLabel}${attribute.readOnly ? ` ${getClassName("kcInputClassRadioCheckboxLabelDisabled")}` : ""}`}
+                    >
+                        {advancedMsg(option)}
+                    </label>
+                </div>
+            ))}
+        </>
+    );
+}
+
 function TextareaTag(props: PropsOfInputFiledByType) {
     const { attribute, index, value, formValidationDispatch, getClassName, displayableErrors } = props;
 
@@ -479,5 +601,88 @@ function TextareaTag(props: PropsOfInputFiledByType) {
                 })
             }
         />
+    );
+}
+
+function SelectTag(props: PropsOfInputFiledByType) {
+    const { attribute, index, value, formValidationDispatch, getClassName, displayableErrors, i18n } = props;
+
+    const { advancedMsg } = i18n;
+
+    const isMultiple = attribute.annotations.inputType === "multiselect";
+
+    return (
+        <select
+            id={`${attribute.name}-${index === 0 ? "" : index + 1}`}
+            name={attribute.name}
+            className={getClassName("kcInputClass")}
+            aria-invalid={displayableErrors.length !== 0}
+            disabled={attribute.readOnly}
+            multiple={isMultiple}
+            size={attribute.annotations.inputTypeSize === undefined ? undefined : parseInt(attribute.annotations.inputTypeSize)}
+            value={value}
+            onChange={event =>
+                formValidationDispatch({
+                    "action": "update value",
+                    "name": attribute.name,
+                    index,
+                    "newValue": event.target.value
+                })
+            }
+            onBlur={() =>
+                formValidationDispatch({
+                    "action": "focus lost",
+                    "name": attribute.name,
+                    index
+                })
+            }
+        >
+            {attribute.annotations.inputType === "select" && <option value=""></option>}
+            {(() => {
+                const options = (() => {
+                    walk: {
+                        const { inputOptionsFromValidation } = attribute.annotations;
+
+                        assert(typeof inputOptionsFromValidation === "string");
+
+                        if (inputOptionsFromValidation === undefined) {
+                            break walk;
+                        }
+
+                        const validator = (attribute.validators as Record<string, { options?: string[] }>)[inputOptionsFromValidation];
+
+                        if (validator === undefined) {
+                            break walk;
+                        }
+
+                        if (validator.options === undefined) {
+                            break walk;
+                        }
+
+                        return validator.options;
+                    }
+
+                    return attribute.validators.options?.options ?? [];
+                })();
+
+                return options.map(option => (
+                    <option key={option} value={option} selected={value === option}>
+                        {(() => {
+                            if (attribute.annotations.inputOptionLabels !== undefined) {
+                                const { inputOptionLabels } = attribute.annotations;
+
+                                return advancedMsg(inputOptionLabels[option] ?? option);
+                            }
+
+                            if (attribute.annotations.inputOptionLabelsI18nPrefix !== undefined) {
+                                return advancedMsg(`${attribute.annotations.inputOptionLabelsI18nPrefix}.${option}`);
+                            }
+
+                            return option;
+                        })()}
+                    </option>
+                ));
+            })()}
+        </select>
     );
 }
