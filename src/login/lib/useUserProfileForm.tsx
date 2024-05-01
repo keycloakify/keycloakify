@@ -12,17 +12,28 @@ import type { I18n } from "../i18n";
 export type FormFieldError = {
     errorMessage: JSX.Element;
     errorMessageStr: string;
+    // TODO: This is not enough, we should be able to tell
+    // if it's a server side error, a validator error or a password policy error.
     validatorName: keyof Validators | undefined;
+    fieldIndex: number | undefined;
 };
 
-export type FormFieldState = {
-    name: string;
-    /** The index is always 0 for non multi-valued fields */
-    index: number;
-    value: string;
-    displayableErrors: FormFieldError[];
-    attribute: Attribute;
-};
+export type FormFieldState = FormFieldState.Simple | FormFieldState.MultiValued;
+
+export namespace FormFieldState {
+    export type Common = {
+        attribute: Attribute;
+        displayableErrors: FormFieldError[];
+    };
+
+    export type Simple = Common & {
+        value: string;
+    };
+
+    export type MultiValued = Common & {
+        values: string[];
+    };
+}
 
 export type FormState = {
     isFormSubmittable: boolean;
@@ -31,24 +42,23 @@ export type FormState = {
 
 export type FormAction =
     | {
-          action: "update value";
+          action: "update";
           name: string;
-          index: number;
-          newValue: string;
+          value: string;
+      }
+    | {
+          action: "update multi-valued";
+          name: string;
+          values: string[];
       }
     | {
           action: "focus lost";
           name: string;
-          index: number;
       }
     | {
-          action: "add value to multi-valued attribute";
+          action: "multi-valued text input focus lost";
           name: string;
-      }
-    | {
-          action: "remove value from multi-valued attribute";
-          name: string;
-          index: number;
+          fieldIndex: number;
       };
 
 export type KcContextLike = {
@@ -71,6 +81,30 @@ export type ReturnTypeOfUseUserProfileForm = {
     formState: FormState;
     dispatchFormAction: Dispatch<FormAction>;
 };
+
+namespace internal {
+    export type FormFieldState = FormFieldState.Simple | FormFieldState.MultiValued;
+
+    export namespace FormFieldState {
+        export type Common = {
+            attribute: Attribute;
+            errors: FormFieldError[];
+            hasLostFocusAtLeastOnce: boolean | boolean[];
+        };
+
+        export type Simple = Common & {
+            value: string;
+        };
+
+        export type MultiValued = Common & {
+            values: string[];
+        };
+    }
+
+    export type State = {
+        formFieldStates: FormFieldState[];
+    };
+}
 
 /**
  * NOTE: The attributesWithPassword returned is actually augmented with
@@ -126,21 +160,11 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
 
     const { getErrors } = useGetErrors({
         kcContext,
-        "attributes": attributesWithPassword,
         i18n
     });
 
-    type FormFieldState_internal = Omit<FormFieldState, "displayableErrors"> & {
-        errors: FormFieldError[];
-        hasLostFocusAtLeastOnce: boolean;
-    };
-
-    type State = {
-        formFieldStates: FormFieldState_internal[];
-    };
-
     const [state, dispatchFormAction] = useReducer(
-        function reducer(state: State, params: FormAction): State {
+        function reducer(state: internal.State, params: FormAction): internal.State {
             if (params.action === "add value to multi-valued attribute") {
                 const formFieldStates = state.formFieldStates.filter(({ name }) => name === params.name);
 
@@ -200,9 +224,9 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
 
             assert<Equals<typeof params, never>>(false);
         },
-        useMemo(function getInitialState(): State {
+        useMemo(function getInitialState(): internal.State {
             const initialFormFieldValues = (() => {
-                const initialFormFieldValues: { name: string; index: number; value: string; attribute: Attribute }[] = [];
+                const initialFormFieldValues: ({ attribute: Attribute } & ({ value: string } | { values: string[] }))[] = [];
 
                 for (const attribute of attributesWithPassword) {
                     handle_multi_valued_attribute: {
@@ -213,6 +237,14 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                         const values = attribute.values ?? [""];
 
                         apply_validator_min_range: {
+                            if (attribute.annotations.inputType === "multiselect") {
+                                break apply_validator_min_range;
+                            }
+
+                            if (attribute.annotations.inputType === "multiselect-checkboxes") {
+                                break apply_validator_min_range;
+                            }
+
                             const validator = attribute.validators.multivalued;
 
                             if (validator === undefined) {
@@ -232,21 +264,15 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                             }
                         }
 
-                        for (let index = 0; index < values.length; index++) {
-                            initialFormFieldValues.push({
-                                "name": attribute.name,
-                                index,
-                                "value": values[index],
-                                attribute
-                            });
-                        }
+                        initialFormFieldValues.push({
+                            attribute,
+                            values
+                        });
 
                         continue;
                     }
 
                     initialFormFieldValues.push({
-                        "name": attribute.name,
-                        "index": 0,
                         "value": attribute.value ?? "",
                         attribute
                     });
@@ -255,18 +281,15 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                 return initialFormFieldValues;
             })();
 
-            const initialState: State = {
-                "formFieldStates": initialFormFieldValues.map(({ name, index, value, attribute }) => ({
-                    name,
-                    index,
-                    value,
+            const initialState: internal.State = {
+                "formFieldStates": initialFormFieldValues.map(({ attribute, ...valueOrValuesWrap }) => ({
+                    attribute,
                     "errors": getErrors({
-                        name,
-                        index,
+                        "attributeName": attribute.name,
                         "fieldValues": initialFormFieldValues
                     }),
-                    "hasLostFocusAtLeastOnce": false,
-                    attribute
+                    "hasLostFocusAtLeastOnce": "values" in valueOrValuesWrap ? valueOrValuesWrap.values.map(() => false) : false,
+                    ...valueOrValuesWrap
                 }))
             };
 
@@ -276,12 +299,22 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
 
     const formState: FormState = useMemo(
         () => ({
-            "formFieldStates": state.formFieldStates.map(({ name, index, value, errors, hasLostFocusAtLeastOnce, attribute }) => ({
-                name,
-                index,
-                value,
-                "displayableErrors": hasLostFocusAtLeastOnce ? errors : [],
-                attribute
+            "formFieldStates": state.formFieldStates.map(({ errors, hasLostFocusAtLeastOnce, attribute, ...valueOrValuesWrap }) => ({
+                "displayableErrors":
+                    typeof hasLostFocusAtLeastOnce === "boolean"
+                        ? hasLostFocusAtLeastOnce
+                            ? errors
+                            : []
+                        : errors.filter(error => {
+                              //TODO
+
+                              // TODO: The errors from server should be always displayed.
+                              // even before focus lost.
+
+                              return true;
+                          }),
+                attribute,
+                ...valueOrValuesWrap
             })),
             "isFormSubmittable": state.formFieldStates.every(({ errors }) => errors.length === 0)
         }),
@@ -294,51 +327,55 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
     };
 }
 
-/** Expect to be used in a component wrapped within a <I18nProvider> */
-function useGetErrors(params: {
-    kcContext: Pick<KcContextLike, "messagesPerField" | "passwordPolicies">;
-    attributes: {
-        name: string;
-        validators: Validators;
-        value?: string;
-        values?: string[];
-        required?: boolean;
-    }[];
-    i18n: I18n;
-}) {
-    const { kcContext, attributes, i18n } = params;
+function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField" | "passwordPolicies">; i18n: I18n }) {
+    const { kcContext, i18n } = params;
 
     const { messagesPerField, passwordPolicies } = kcContext;
 
     const { msg, msgStr, advancedMsg, advancedMsgStr } = i18n;
 
     const getErrors = useConstCallback(
-        (params: { name: string; index: number; fieldValues: { name: string; index: number; value: string }[] }): FormFieldError[] => {
-            const { name, index, fieldValues } = params;
+        (params: {
+            attributeName: string;
+            fieldValues: ({ attribute: Attribute } & ({ value: string } | { values: string[] }))[];
+        }): FormFieldError[] => {
+            const { attributeName, fieldValues } = params;
 
-            const value = (() => {
-                const fieldValue = fieldValues.find(fieldValue => fieldValue.name === name && fieldValue.index === index);
+            const fieldValue = fieldValues.find(({ attribute }) => attribute.name === attributeName);
 
-                assert(fieldValue !== undefined);
+            assert(fieldValue !== undefined);
 
-                return fieldValue.value;
-            })();
-
-            const attribute = attributes.find(attribute => attribute.name === name);
+            const { attribute } = fieldValue;
 
             assert(attribute !== undefined);
 
             server_side_error: {
-                const defaultValue = (attribute.values !== undefined ? attribute.values[index] : attribute.value) ?? "";
+                if (attribute.multivalued) {
+                    const defaultValues = attribute.values ?? [""];
 
-                if (defaultValue !== value) {
-                    break server_side_error;
+                    assert("values" in fieldValue);
+
+                    const { values } = fieldValue;
+
+                    if (JSON.stringify(defaultValues) !== JSON.stringify(values.slice(0, defaultValues.length))) {
+                        break server_side_error;
+                    }
+                } else {
+                    const defaultValue = attribute.value ?? "";
+
+                    assert("value" in fieldValue);
+
+                    const { value } = fieldValue;
+
+                    if (defaultValue !== value) {
+                        break server_side_error;
+                    }
                 }
 
                 let doesErrorExist: boolean;
 
                 try {
-                    doesErrorExist = messagesPerField.existsError(name);
+                    doesErrorExist = messagesPerField.existsError(attributeName);
                 } catch {
                     break server_side_error;
                 }
@@ -347,21 +384,119 @@ function useGetErrors(params: {
                     break server_side_error;
                 }
 
-                const errorMessageStr = messagesPerField.get(name);
+                const errorMessageStr = messagesPerField.get(attributeName);
 
                 return [
                     {
                         "validatorName": undefined,
                         errorMessageStr,
-                        "errorMessage": <span key={0}>{errorMessageStr}</span>
+                        "errorMessage": <span key={0}>{errorMessageStr}</span>,
+                        "fieldIndex": undefined
                     }
                 ];
             }
 
+            handle_multi_valued_text_input: {
+                if (!attribute.multivalued) {
+                    break handle_multi_valued_text_input;
+                }
+
+                if (attribute.annotations.inputType === "multiselect") {
+                    break handle_multi_valued_text_input;
+                }
+
+                if (attribute.annotations.inputType === "multiselect-checkboxes") {
+                    break handle_multi_valued_text_input;
+                }
+
+                assert("values" in fieldValue);
+
+                const { values } = fieldValue;
+
+                return values
+                    .map((value, index) => {
+                        const errors = getErrors({
+                            attributeName,
+                            "fieldValues": fieldValues.map(fieldValue => {
+                                if (fieldValue.attribute.name === attributeName) {
+                                    return {
+                                        "attribute": {
+                                            ...attribute,
+                                            "annotations": {
+                                                ...attribute.annotations,
+                                                "inputType": undefined
+                                            }
+                                        },
+                                        value
+                                    };
+                                }
+
+                                return fieldValue;
+                            })
+                        });
+
+                        return errors.map((error): FormFieldError => ({ ...error, "fieldIndex": index }));
+                    })
+                    .reduce((acc, errors) => [...acc, ...errors], []);
+            }
+
+            handle_multi_select_or_checkbox: {
+                if (!attribute.multivalued) {
+                    break handle_multi_select_or_checkbox;
+                }
+
+                if (attribute.annotations.inputType !== "multiselect" && attribute.annotations.inputType !== "multiselect-checkboxes") {
+                    break handle_multi_select_or_checkbox;
+                }
+
+                const validatorName = "multivalued";
+
+                const validator = attribute.validators[validatorName];
+
+                if (validator === undefined) {
+                    return [];
+                }
+
+                const { min: minStr } = validator;
+
+                const min = minStr === undefined ? 0 : parseInt(minStr);
+
+                assert(!isNaN(min));
+
+                const { max: maxStr } = validator;
+
+                const max = maxStr === undefined ? Infinity : parseInt(maxStr);
+
+                assert(!isNaN(max));
+
+                assert("values" in fieldValue);
+
+                const { values } = fieldValue;
+
+                if (min <= values.length && values.length <= max) {
+                    return [];
+                }
+
+                const msgArgs = ["error-invalid-multivalued-size", `${min}`, `${max}`] as const;
+
+                return [
+                    {
+                        "errorMessage": <Fragment key={0}>{msg(...msgArgs)}</Fragment>,
+                        "errorMessageStr": msgStr(...msgArgs),
+                        validatorName,
+                        "fieldIndex": undefined
+                    }
+                ];
+            }
+
+            assert("value" in fieldValue);
+
+            const { value } = fieldValue;
+
             const errors: FormFieldError[] = [];
 
             check_password_policies: {
-                if (name !== "password") {
+                if (attributeName !== "password") {
                     break check_password_policies;
                 }
 
@@ -390,8 +525,9 @@ function useGetErrors(params: {
 
                     errors.push({
                         "validatorName": undefined,
-                        "errorMessage": <Fragment key={errors.length}>{msg(...msgArgs)}</Fragment>,
-                        "errorMessageStr": msgStr(...msgArgs)
+                        "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
+                        "errorMessageStr": msgStr(...msgArgs),
+                        "fieldIndex": undefined
                     });
                 }
 
@@ -416,8 +552,9 @@ function useGetErrors(params: {
 
                     errors.push({
                         "validatorName": undefined,
-                        "errorMessage": <Fragment key={errors.length}>{msg(...msgArgs)}</Fragment>,
-                        "errorMessageStr": msgStr(...msgArgs)
+                        "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
+                        "errorMessageStr": msgStr(...msgArgs),
+                        "fieldIndex": undefined
                     });
                 }
 
@@ -444,8 +581,9 @@ function useGetErrors(params: {
 
                     errors.push({
                         "validatorName": undefined,
-                        "errorMessage": <Fragment key={errors.length}>{msg(...msgArgs)}</Fragment>,
-                        "errorMessageStr": msgStr(...msgArgs)
+                        "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
+                        "errorMessageStr": msgStr(...msgArgs),
+                        "fieldIndex": undefined
                     });
                 }
 
@@ -472,8 +610,9 @@ function useGetErrors(params: {
 
                     errors.push({
                         "validatorName": undefined,
-                        "errorMessage": <Fragment key={errors.length}>{msg(...msgArgs)}</Fragment>,
-                        "errorMessageStr": msgStr(...msgArgs)
+                        "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
+                        "errorMessageStr": msgStr(...msgArgs),
+                        "fieldIndex": undefined
                     });
                 }
 
@@ -498,8 +637,9 @@ function useGetErrors(params: {
 
                     errors.push({
                         "validatorName": undefined,
-                        "errorMessage": <Fragment key={errors.length}>{msg(...msgArgs)}</Fragment>,
-                        "errorMessageStr": msgStr(...msgArgs)
+                        "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
+                        "errorMessageStr": msgStr(...msgArgs),
+                        "fieldIndex": undefined
                     });
                 }
 
@@ -512,11 +652,13 @@ function useGetErrors(params: {
                         break check_password_policy_x;
                     }
 
-                    const usernameFieldValue = fieldValues.find(fieldValue => fieldValue.name === "username");
+                    const usernameFieldValue = fieldValues.find(fieldValue => fieldValue.attribute.name === "username");
 
                     if (usernameFieldValue === undefined) {
                         break check_password_policy_x;
                     }
+
+                    assert("value" in usernameFieldValue);
 
                     if (value !== usernameFieldValue.value) {
                         break check_password_policy_x;
@@ -526,8 +668,9 @@ function useGetErrors(params: {
 
                     errors.push({
                         "validatorName": undefined,
-                        "errorMessage": <Fragment key={errors.length}>{msg(...msgArgs)}</Fragment>,
-                        "errorMessageStr": msgStr(...msgArgs)
+                        "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
+                        "errorMessageStr": msgStr(...msgArgs),
+                        "fieldIndex": undefined
                     });
                 }
 
@@ -540,11 +683,13 @@ function useGetErrors(params: {
                         break check_password_policy_x;
                     }
 
-                    const emailFieldValue = fieldValues.find(fieldValue => fieldValue.name === "email");
+                    const emailFieldValue = fieldValues.find(fieldValue => fieldValue.attribute.name === "email");
 
                     if (emailFieldValue === undefined) {
                         break check_password_policy_x;
                     }
+
+                    assert("value" in emailFieldValue);
 
                     if (value !== emailFieldValue.value) {
                         break check_password_policy_x;
@@ -554,20 +699,23 @@ function useGetErrors(params: {
 
                     errors.push({
                         "validatorName": undefined,
-                        "errorMessage": <Fragment key={errors.length}>{msg(...msgArgs)}</Fragment>,
-                        "errorMessageStr": msgStr(...msgArgs)
+                        "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
+                        "errorMessageStr": msgStr(...msgArgs),
+                        "fieldIndex": undefined
                     });
                 }
             }
 
             password_confirm_matches_password: {
-                if (name !== "password-confirm") {
+                if (attributeName !== "password-confirm") {
                     break password_confirm_matches_password;
                 }
 
-                const passwordFieldValue = fieldValues.find(fieldValue => fieldValue.name === "password");
+                const passwordFieldValue = fieldValues.find(fieldValue => fieldValue.attribute.name === "password");
 
                 assert(passwordFieldValue !== undefined);
+
+                assert("value" in passwordFieldValue);
 
                 if (passwordFieldValue.value === value) {
                     break password_confirm_matches_password;
@@ -577,8 +725,9 @@ function useGetErrors(params: {
 
                 errors.push({
                     "validatorName": undefined,
-                    "errorMessage": <Fragment key={errors.length}>{msg(...msgArgs)}</Fragment>,
-                    "errorMessageStr": msgStr(...msgArgs)
+                    "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
+                    "errorMessageStr": msgStr(...msgArgs),
+                    "fieldIndex": undefined
                 });
             }
 
@@ -597,8 +746,9 @@ function useGetErrors(params: {
 
                 errors.push({
                     "validatorName": undefined,
-                    "errorMessage": <Fragment key={errors.length}>{msg(...msgArgs)}</Fragment>,
-                    "errorMessageStr": msgStr(...msgArgs)
+                    "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
+                    "errorMessageStr": msgStr(...msgArgs),
+                    "fieldIndex": undefined
                 });
             }
 
@@ -621,9 +771,10 @@ function useGetErrors(params: {
                     const msgArgs = ["error-invalid-length-too-long", max] as const;
 
                     errors.push({
-                        "errorMessage": <Fragment key={errors.length}>{msg(...msgArgs)}</Fragment>,
+                        "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
                         "errorMessageStr": msgStr(...msgArgs),
-                        validatorName
+                        validatorName,
+                        "fieldIndex": undefined
                     });
                 }
 
@@ -631,9 +782,10 @@ function useGetErrors(params: {
                     const msgArgs = ["error-invalid-length-too-short", min] as const;
 
                     errors.push({
-                        "errorMessage": <Fragment key={errors.length}>{msg(...msgArgs)}</Fragment>,
+                        "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
                         "errorMessageStr": msgStr(...msgArgs),
-                        validatorName
+                        validatorName,
+                        "fieldIndex": undefined
                     });
                 }
             }
@@ -661,8 +813,9 @@ function useGetErrors(params: {
 
                 errors.push({
                     validatorName,
-                    "errorMessage": <Fragment key={errors.length}>{advancedMsg(...msgArgs)}</Fragment>,
-                    "errorMessageStr": advancedMsgStr(...msgArgs)
+                    "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{advancedMsg(...msgArgs)}</Fragment>,
+                    "errorMessageStr": advancedMsgStr(...msgArgs),
+                    "fieldIndex": undefined
                 });
             }
 
@@ -693,8 +846,9 @@ function useGetErrors(params: {
 
                 errors.push({
                     validatorName,
-                    "errorMessage": <Fragment key={errors.length}>{msg(...msgArgs)}</Fragment>,
-                    "errorMessageStr": msgStr(...msgArgs)
+                    "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
+                    "errorMessageStr": msgStr(...msgArgs),
+                    "fieldIndex": undefined
                 });
             }
 
@@ -720,8 +874,9 @@ function useGetErrors(params: {
 
                     errors.push({
                         validatorName,
-                        "errorMessage": <Fragment key={errors.length}>{msg(...msgArgs)}</Fragment>,
-                        "errorMessageStr": msgStr(...msgArgs)
+                        "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
+                        "errorMessageStr": msgStr(...msgArgs),
+                        "fieldIndex": undefined
                     });
 
                     break validator_x;
@@ -732,8 +887,9 @@ function useGetErrors(params: {
 
                     errors.push({
                         validatorName,
-                        "errorMessage": <Fragment key={errors.length}>{msg(...msgArgs)}</Fragment>,
-                        "errorMessageStr": msgStr(...msgArgs)
+                        "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
+                        "errorMessageStr": msgStr(...msgArgs),
+                        "fieldIndex": undefined
                     });
 
                     break validator_x;
@@ -744,8 +900,9 @@ function useGetErrors(params: {
 
                     errors.push({
                         validatorName,
-                        "errorMessage": <Fragment key={errors.length}>{msg(...msgArgs)}</Fragment>,
-                        "errorMessageStr": msgStr(...msgArgs)
+                        "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
+                        "errorMessageStr": msgStr(...msgArgs),
+                        "fieldIndex": undefined
                     });
 
                     break validator_x;
@@ -773,8 +930,9 @@ function useGetErrors(params: {
 
                 errors.push({
                     validatorName,
-                    "errorMessage": <Fragment key={errors.length}>{advancedMsg(...msgArgs)}</Fragment>,
-                    "errorMessageStr": advancedMsgStr(...msgArgs)
+                    "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{advancedMsg(...msgArgs)}</Fragment>,
+                    "errorMessageStr": advancedMsgStr(...msgArgs),
+                    "fieldIndex": undefined
                 });
             }
 
