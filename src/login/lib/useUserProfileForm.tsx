@@ -12,11 +12,32 @@ import type { I18n } from "../i18n";
 export type FormFieldError = {
     errorMessage: JSX.Element;
     errorMessageStr: string;
-    // TODO: This is not enough, we should be able to tell
-    // if it's a server side error, a validator error or a password policy error.
-    validatorName: keyof Validators | undefined;
+    source: FormFieldError.Source;
     fieldIndex: number | undefined;
 };
+
+export namespace FormFieldError {
+    export type Source = Source.Validator | Source.PasswordPolicy | Source.Server | Source.Other;
+
+    export namespace Source {
+        export type Validator = {
+            type: "validator";
+            name: keyof Validators;
+        };
+        export type PasswordPolicy = {
+            type: "passwordPolicy";
+            name: keyof PasswordPolicies;
+        };
+        export type Server = {
+            type: "server";
+        };
+
+        export type Other = {
+            type: "other";
+            rule: "passwordConfirmMatchesPassword" | "requiredField";
+        };
+    }
+}
 
 export type FormFieldState = FormFieldState.Simple | FormFieldState.MultiValued;
 
@@ -299,23 +320,67 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
 
     const formState: FormState = useMemo(
         () => ({
-            "formFieldStates": state.formFieldStates.map(({ errors, hasLostFocusAtLeastOnce, attribute, ...valueOrValuesWrap }) => ({
-                "displayableErrors":
-                    typeof hasLostFocusAtLeastOnce === "boolean"
-                        ? hasLostFocusAtLeastOnce
-                            ? errors
-                            : []
-                        : errors.filter(error => {
-                              //TODO
+            "formFieldStates": state.formFieldStates.map(
+                ({ errors, hasLostFocusAtLeastOnce: hasLostFocusAtLeastOnceOrArr, attribute, ...valueOrValuesWrap }) => ({
+                    "displayableErrors": errors.filter(error => {
+                        const hasLostFocusAtLeastOnce =
+                            typeof hasLostFocusAtLeastOnceOrArr === "boolean"
+                                ? hasLostFocusAtLeastOnceOrArr
+                                : error.fieldIndex !== undefined
+                                ? hasLostFocusAtLeastOnceOrArr[error.fieldIndex]
+                                : hasLostFocusAtLeastOnceOrArr[hasLostFocusAtLeastOnceOrArr.length - 1];
 
-                              // TODO: The errors from server should be always displayed.
-                              // even before focus lost.
-
-                              return true;
-                          }),
-                attribute,
-                ...valueOrValuesWrap
-            })),
+                        switch (error.source.type) {
+                            case "server":
+                                return true;
+                            case "other":
+                                switch (error.source.rule) {
+                                    case "requiredField":
+                                        return hasLostFocusAtLeastOnce;
+                                    case "passwordConfirmMatchesPassword":
+                                        return hasLostFocusAtLeastOnce;
+                                }
+                                assert<Equals<typeof error.source.rule, never>>(false);
+                            case "passwordPolicy":
+                                switch (error.source.name) {
+                                    case "length":
+                                        return hasLostFocusAtLeastOnce;
+                                    case "digits":
+                                        return hasLostFocusAtLeastOnce;
+                                    case "lowerCase":
+                                        return hasLostFocusAtLeastOnce;
+                                    case "upperCase":
+                                        return hasLostFocusAtLeastOnce;
+                                    case "specialChars":
+                                        return hasLostFocusAtLeastOnce;
+                                    case "notUsername":
+                                        return true;
+                                    case "notEmail":
+                                        return true;
+                                }
+                                assert<Equals<typeof error.source, never>>(false);
+                            case "validator":
+                                switch (error.source.name) {
+                                    case "length":
+                                        return hasLostFocusAtLeastOnce;
+                                    case "pattern":
+                                        return hasLostFocusAtLeastOnce;
+                                    case "email":
+                                        return hasLostFocusAtLeastOnce;
+                                    case "integer":
+                                        return hasLostFocusAtLeastOnce;
+                                    case "multivalued":
+                                        return hasLostFocusAtLeastOnce;
+                                    case "options":
+                                        return hasLostFocusAtLeastOnce;
+                                }
+                                assert<Equals<typeof error.source, never>>(false);
+                        }
+                    }),
+                    attribute,
+                    ...valueOrValuesWrap
+                })
+            ),
             "isFormSubmittable": state.formFieldStates.every(({ errors }) => errors.length === 0)
         }),
         [state]
@@ -388,34 +453,36 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
 
                 return [
                     {
-                        "validatorName": undefined,
                         errorMessageStr,
                         "errorMessage": <span key={0}>{errorMessageStr}</span>,
-                        "fieldIndex": undefined
+                        "fieldIndex": undefined,
+                        "source": {
+                            "type": "server"
+                        }
                     }
                 ];
             }
 
-            handle_multi_valued_text_input: {
+            handle_multi_valued_multi_fields: {
                 if (!attribute.multivalued) {
-                    break handle_multi_valued_text_input;
+                    break handle_multi_valued_multi_fields;
                 }
 
                 if (attribute.annotations.inputType === "multiselect") {
-                    break handle_multi_valued_text_input;
+                    break handle_multi_valued_multi_fields;
                 }
 
                 if (attribute.annotations.inputType === "multiselect-checkboxes") {
-                    break handle_multi_valued_text_input;
+                    break handle_multi_valued_multi_fields;
                 }
 
                 assert("values" in fieldValue);
 
                 const { values } = fieldValue;
 
-                return values
+                const errors = values
                     .map((value, index) => {
-                        const errors = getErrors({
+                        const specificValueErrors = getErrors({
                             attributeName,
                             "fieldValues": fieldValues.map(fieldValue => {
                                 if (fieldValue.attribute.name === attributeName) {
@@ -435,18 +502,50 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                             })
                         });
 
-                        return errors.map((error): FormFieldError => ({ ...error, "fieldIndex": index }));
+                        return specificValueErrors
+                            .filter(error => {
+                                if (error.source.type === "other" && error.source.rule === "requiredField") {
+                                    return false;
+                                }
+
+                                return true;
+                            })
+                            .map((error): FormFieldError => ({ ...error, "fieldIndex": index }));
                     })
                     .reduce((acc, errors) => [...acc, ...errors], []);
+
+                required_field: {
+                    if (!attribute.required) {
+                        break required_field;
+                    }
+
+                    if (values.find(value => value !== "") !== undefined) {
+                        break required_field;
+                    }
+
+                    const msgArgs = ["error-user-attribute-required"] as const;
+
+                    errors.push({
+                        "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
+                        "errorMessageStr": msgStr(...msgArgs),
+                        "fieldIndex": undefined,
+                        "source": {
+                            "type": "other",
+                            "rule": "requiredField"
+                        }
+                    });
+                }
+
+                return errors;
             }
 
-            handle_multi_select_or_checkbox: {
+            handle_multi_select_single_field: {
                 if (!attribute.multivalued) {
-                    break handle_multi_select_or_checkbox;
+                    break handle_multi_select_single_field;
                 }
 
                 if (attribute.annotations.inputType !== "multiselect" && attribute.annotations.inputType !== "multiselect-checkboxes") {
-                    break handle_multi_select_or_checkbox;
+                    break handle_multi_select_single_field;
                 }
 
                 const validatorName = "multivalued";
@@ -483,8 +582,11 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     {
                         "errorMessage": <Fragment key={0}>{msg(...msgArgs)}</Fragment>,
                         "errorMessageStr": msgStr(...msgArgs),
-                        validatorName,
-                        "fieldIndex": undefined
+                        "fieldIndex": undefined,
+                        "source": {
+                            "type": "validator",
+                            "name": validatorName
+                        }
                     }
                 ];
             }
@@ -524,10 +626,13 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     const msgArgs = ["invalidPasswordMinLengthMessage", `${minLength}`] as const;
 
                     errors.push({
-                        "validatorName": undefined,
                         "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
                         "errorMessageStr": msgStr(...msgArgs),
-                        "fieldIndex": undefined
+                        "fieldIndex": undefined,
+                        "source": {
+                            "type": "passwordPolicy",
+                            "name": policyName
+                        }
                     });
                 }
 
@@ -551,10 +656,13 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     const msgArgs = ["invalidPasswordMinDigitsMessage", `${minNumberOfDigits}`] as const;
 
                     errors.push({
-                        "validatorName": undefined,
                         "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
                         "errorMessageStr": msgStr(...msgArgs),
-                        "fieldIndex": undefined
+                        "fieldIndex": undefined,
+                        "source": {
+                            "type": "passwordPolicy",
+                            "name": policyName
+                        }
                     });
                 }
 
@@ -580,10 +688,13 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     const msgArgs = ["invalidPasswordMinLowerCaseCharsMessage", `${minNumberOfLowerCaseChar}`] as const;
 
                     errors.push({
-                        "validatorName": undefined,
                         "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
                         "errorMessageStr": msgStr(...msgArgs),
-                        "fieldIndex": undefined
+                        "fieldIndex": undefined,
+                        "source": {
+                            "type": "passwordPolicy",
+                            "name": policyName
+                        }
                     });
                 }
 
@@ -609,10 +720,13 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     const msgArgs = ["invalidPasswordMinUpperCaseCharsMessage", `${minNumberOfUpperCaseChar}`] as const;
 
                     errors.push({
-                        "validatorName": undefined,
                         "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
                         "errorMessageStr": msgStr(...msgArgs),
-                        "fieldIndex": undefined
+                        "fieldIndex": undefined,
+                        "source": {
+                            "type": "passwordPolicy",
+                            "name": policyName
+                        }
                     });
                 }
 
@@ -636,10 +750,13 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     const msgArgs = ["invalidPasswordMinSpecialCharsMessage", `${minNumberOfSpecialChar}`] as const;
 
                     errors.push({
-                        "validatorName": undefined,
                         "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
                         "errorMessageStr": msgStr(...msgArgs),
-                        "fieldIndex": undefined
+                        "fieldIndex": undefined,
+                        "source": {
+                            "type": "passwordPolicy",
+                            "name": policyName
+                        }
                     });
                 }
 
@@ -667,10 +784,13 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     const msgArgs = ["invalidPasswordNotUsernameMessage"] as const;
 
                     errors.push({
-                        "validatorName": undefined,
                         "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
                         "errorMessageStr": msgStr(...msgArgs),
-                        "fieldIndex": undefined
+                        "fieldIndex": undefined,
+                        "source": {
+                            "type": "passwordPolicy",
+                            "name": policyName
+                        }
                     });
                 }
 
@@ -698,10 +818,13 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     const msgArgs = ["invalidPasswordNotEmailMessage"] as const;
 
                     errors.push({
-                        "validatorName": undefined,
                         "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
                         "errorMessageStr": msgStr(...msgArgs),
-                        "fieldIndex": undefined
+                        "fieldIndex": undefined,
+                        "source": {
+                            "type": "passwordPolicy",
+                            "name": policyName
+                        }
                     });
                 }
             }
@@ -724,10 +847,13 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                 const msgArgs = ["invalidPasswordConfirmMessage"] as const;
 
                 errors.push({
-                    "validatorName": undefined,
                     "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
                     "errorMessageStr": msgStr(...msgArgs),
-                    "fieldIndex": undefined
+                    "fieldIndex": undefined,
+                    "source": {
+                        "type": "other",
+                        "rule": "passwordConfirmMatchesPassword"
+                    }
                 });
             }
 
@@ -745,10 +871,13 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                 const msgArgs = ["error-user-attribute-required"] as const;
 
                 errors.push({
-                    "validatorName": undefined,
                     "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
                     "errorMessageStr": msgStr(...msgArgs),
-                    "fieldIndex": undefined
+                    "fieldIndex": undefined,
+                    "source": {
+                        "type": "other",
+                        "rule": "requiredField"
+                    }
                 });
             }
 
@@ -767,14 +896,19 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     break validator_x;
                 }
 
+                const source: FormFieldError.Source = {
+                    "type": "validator",
+                    "name": validatorName
+                };
+
                 if (max !== undefined && value.length > parseInt(max)) {
                     const msgArgs = ["error-invalid-length-too-long", max] as const;
 
                     errors.push({
                         "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
                         "errorMessageStr": msgStr(...msgArgs),
-                        validatorName,
-                        "fieldIndex": undefined
+                        "fieldIndex": undefined,
+                        source
                     });
                 }
 
@@ -784,8 +918,8 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     errors.push({
                         "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
                         "errorMessageStr": msgStr(...msgArgs),
-                        validatorName,
-                        "fieldIndex": undefined
+                        "fieldIndex": undefined,
+                        source
                     });
                 }
             }
@@ -812,16 +946,22 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                 const msgArgs = [errorMessageKey ?? id<MessageKey>("shouldMatchPattern"), pattern] as const;
 
                 errors.push({
-                    validatorName,
                     "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{advancedMsg(...msgArgs)}</Fragment>,
                     "errorMessageStr": advancedMsgStr(...msgArgs),
-                    "fieldIndex": undefined
+                    "fieldIndex": undefined,
+                    "source": {
+                        "type": "validator",
+                        "name": validatorName
+                    }
                 });
             }
 
             validator_x: {
-                if ([...errors].reverse()[0]?.validatorName === "pattern") {
-                    break validator_x;
+                {
+                    const lastError = errors[errors.length - 1];
+                    if (lastError !== undefined && lastError.source.type === "validator" && lastError.source.name === "pattern") {
+                        break validator_x;
+                    }
                 }
 
                 const validatorName = "email";
@@ -845,10 +985,13 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                 const msgArgs = [id<MessageKey>("invalidEmailMessage")] as const;
 
                 errors.push({
-                    validatorName,
                     "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
                     "errorMessageStr": msgStr(...msgArgs),
-                    "fieldIndex": undefined
+                    "fieldIndex": undefined,
+                    "source": {
+                        "type": "validator",
+                        "name": validatorName
+                    }
                 });
             }
 
@@ -869,14 +1012,19 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
 
                 const intValue = parseInt(value);
 
+                const source: FormFieldError.Source = {
+                    "type": "validator",
+                    "name": validatorName
+                };
+
                 if (isNaN(intValue)) {
                     const msgArgs = ["mustBeAnInteger"] as const;
 
                     errors.push({
-                        validatorName,
                         "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
                         "errorMessageStr": msgStr(...msgArgs),
-                        "fieldIndex": undefined
+                        "fieldIndex": undefined,
+                        source
                     });
 
                     break validator_x;
@@ -886,10 +1034,10 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     const msgArgs = ["error-number-out-of-range-too-big", max] as const;
 
                     errors.push({
-                        validatorName,
                         "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
                         "errorMessageStr": msgStr(...msgArgs),
-                        "fieldIndex": undefined
+                        "fieldIndex": undefined,
+                        source
                     });
 
                     break validator_x;
@@ -899,10 +1047,10 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     const msgArgs = ["error-number-out-of-range-too-small", min] as const;
 
                     errors.push({
-                        validatorName,
                         "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
                         "errorMessageStr": msgStr(...msgArgs),
-                        "fieldIndex": undefined
+                        "fieldIndex": undefined,
+                        source
                     });
 
                     break validator_x;
@@ -929,14 +1077,17 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                 const msgArgs = [id<MessageKey>("notAValidOption")] as const;
 
                 errors.push({
-                    validatorName,
                     "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{advancedMsg(...msgArgs)}</Fragment>,
                     "errorMessageStr": advancedMsgStr(...msgArgs),
-                    "fieldIndex": undefined
+                    "fieldIndex": undefined,
+                    "source": {
+                        "type": "validator",
+                        "name": validatorName
+                    }
                 });
             }
 
-            //TODO: Implement missing validators.
+            //TODO: Implement missing validators. See Validators type definition.
 
             return errors;
         }

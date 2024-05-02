@@ -616,26 +616,28 @@ export type LegacyAttribute = Omit<Attribute, "group" | "html5DataAnnotations"> 
 
 export type Validators = Partial<{
     length: Validators.DoIgnoreEmpty & Validators.Range;
-    double: Validators.DoIgnoreEmpty & Validators.Range;
     integer: Validators.DoIgnoreEmpty & Validators.Range;
     email: Validators.DoIgnoreEmpty;
+    pattern: Validators.DoIgnoreEmpty & Validators.ErrorMessage & { pattern: string };
+    options: Validators.Options;
+    multivalued: Validators.DoIgnoreEmpty & Validators.Range;
+    // NOTE: Following are the validators for which we don't implement client side validation yet
+    // or for which the validation can't be performed on the client side.
+    /*
+    double: Validators.DoIgnoreEmpty & Validators.Range;
     "up-immutable-attribute": {};
     "up-attribute-required-by-metadata-value": {};
     "up-username-has-value": {};
     "up-duplicate-username": {};
     "up-username-mutation": {};
     "up-email-exists-as-username": {};
-    "up-blank-attribute-value": Validators.ErrorMessage & {
-        "fail-on-null": boolean;
-    };
+    "up-blank-attribute-value": Validators.ErrorMessage & { "fail-on-null": boolean; };
     "up-duplicate-email": {};
     "local-date": Validators.DoIgnoreEmpty;
-    pattern: Validators.DoIgnoreEmpty & Validators.ErrorMessage & { pattern: string };
     "person-name-prohibited-characters": Validators.DoIgnoreEmpty & Validators.ErrorMessage;
     uri: Validators.DoIgnoreEmpty;
     "username-prohibited-characters": Validators.DoIgnoreEmpty & Validators.ErrorMessage;
-    options: Validators.Options;
-    multivalued: Validators.DoIgnoreEmpty & Validators.Range;
+    */
 }>;
 
 export declare namespace Validators {
