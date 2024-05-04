@@ -186,64 +186,65 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
 
     const [state, dispatchFormAction] = useReducer(
         function reducer(state: internal.State, params: FormAction): internal.State {
-            if (params.action === "add value to multi-valued attribute") {
-                const formFieldStates = state.formFieldStates.filter(({ name }) => name === params.name);
-
-                state.formFieldStates.splice(state.formFieldStates.indexOf(formFieldStates[formFieldStates.length - 1]) + 1, 0, {
-                    "index": formFieldStates.length,
-                    "name": params.name,
-                    "value": "",
-                    "errors": getErrors({
-                        "name": params.name,
-                        "index": formFieldStates.length,
-                        "fieldValues": state.formFieldStates
-                    }),
-                    "hasLostFocusAtLeastOnce": false,
-                    "attribute": formFieldStates[0].attribute
-                });
-
-                return state;
-            }
-
-            const formFieldState = state.formFieldStates.find(({ name, index }) => name === params.name && index === params.index);
+            const formFieldState = state.formFieldStates.find(({ attribute }) => attribute.name === params.name);
 
             assert(formFieldState !== undefined);
 
-            switch (params.action) {
-                case "focus lost":
-                    formFieldState.hasLostFocusAtLeastOnce = true;
-                    return state;
-                case "update value":
-                    update_password_confirm: {
-                        if (params.name !== "password") {
-                            break update_password_confirm;
-                        }
+            (() => {
+                switch (params.action) {
+                    case "update":
+                    case "update multi-valued":
+                        (() => {
+                            switch (params.action) {
+                                case "update":
+                                    assert("value" in formFieldState);
+                                    formFieldState.value = params.value;
+                                    return;
+                                case "update multi-valued":
+                                    assert("values" in formFieldState);
+                                    formFieldState.values = params.values;
+                                    return;
+                            }
+                            assert<Equals<typeof params, never>>(false);
+                        })();
 
-                        if (doMakeUserConfirmPassword) {
-                            break update_password_confirm;
-                        }
-
-                        state = reducer(state, {
-                            "action": "update value",
-                            "name": "password-confirm",
-                            "index": 0,
-                            "newValue": params.newValue
+                        formFieldState.errors = getErrors({
+                            "attributeName": params.name,
+                            "fieldValues": state.formFieldStates
                         });
-                    }
 
-                    formFieldState.value = params.newValue;
-                    formFieldState.errors = getErrors({
-                        "name": params.name,
-                        "index": params.index,
-                        "fieldValues": state.formFieldStates
-                    });
-                    return state;
-                case "remove value from multi-valued attribute":
-                    state.formFieldStates.splice(state.formFieldStates.indexOf(formFieldState), 1);
-                    return state;
-            }
+                        update_password_confirm: {
+                            if (doMakeUserConfirmPassword) {
+                                break update_password_confirm;
+                            }
 
-            assert<Equals<typeof params, never>>(false);
+                            if (params.name !== "password") {
+                                break update_password_confirm;
+                            }
+
+                            assert(params.action === "update");
+
+                            state = reducer(state, {
+                                "action": "update",
+                                "name": "password-confirm",
+                                "value": params.value
+                            });
+                        }
+
+                        return;
+                    case "focus lost":
+                        assert(typeof formFieldState.hasLostFocusAtLeastOnce === "boolean");
+                        formFieldState.hasLostFocusAtLeastOnce = true;
+                        return;
+                    case "multi-valued text input focus lost":
+                        assert(formFieldState.hasLostFocusAtLeastOnce instanceof Array);
+                        formFieldState.hasLostFocusAtLeastOnce[params.fieldIndex] = true;
+                        return;
+                }
+                assert<Equals<typeof params, never>>(false);
+            })();
+
+            return state;
         },
         useMemo(function getInitialState(): internal.State {
             const initialFormFieldValues = (() => {
