@@ -215,11 +215,7 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                         const values = attribute.values ?? [""];
 
                         apply_validator_min_range: {
-                            if (attribute.annotations.inputType === "multiselect") {
-                                break apply_validator_min_range;
-                            }
-
-                            if (attribute.annotations.inputType === "multiselect-checkboxes") {
+                            if (attribute.annotations.inputType?.startsWith("multiselect")) {
                                 break apply_validator_min_range;
                             }
 
@@ -422,11 +418,7 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     break handle_multi_valued_multi_fields;
                 }
 
-                if (attribute.annotations.inputType === "multiselect") {
-                    break handle_multi_valued_multi_fields;
-                }
-
-                if (attribute.annotations.inputType === "multiselect-checkboxes") {
+                if (attribute.annotations.inputType?.startsWith("multiselect")) {
                     break handle_multi_valued_multi_fields;
                 }
 
@@ -498,7 +490,7 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     break handle_multi_valued_single_field;
                 }
 
-                if (attribute.annotations.inputType !== "multiselect" && attribute.annotations.inputType !== "multiselect-checkboxes") {
+                if (!attribute.annotations.inputType?.startsWith("multiselect")) {
                     break handle_multi_valued_single_field;
                 }
 
