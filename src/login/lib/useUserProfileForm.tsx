@@ -520,7 +520,7 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                         break required_field;
                     }
 
-                    if (values.find(value => value !== "") !== undefined) {
+                    if (values.every(value => value !== "")) {
                         break required_field;
                     }
 
