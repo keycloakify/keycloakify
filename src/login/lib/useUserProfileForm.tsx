@@ -39,22 +39,11 @@ export namespace FormFieldError {
     }
 }
 
-export type FormFieldState = FormFieldState.Simple | FormFieldState.MultiValued;
-
-export namespace FormFieldState {
-    export type Common = {
-        attribute: Attribute;
-        displayableErrors: FormFieldError[];
-    };
-
-    export type Simple = Common & {
-        value: string;
-    };
-
-    export type MultiValued = Common & {
-        values: string[];
-    };
-}
+export type FormFieldState = {
+    attribute: Attribute;
+    displayableErrors: FormFieldError[];
+    valueOrValues: string | string[];
+};
 
 export type FormState = {
     isFormSubmittable: boolean;
@@ -65,21 +54,12 @@ export type FormAction =
     | {
           action: "update";
           name: string;
-          value: string;
-      }
-    | {
-          action: "update multi-valued";
-          name: string;
-          values: string[];
+          valueOrValues: string | string[];
       }
     | {
           action: "focus lost";
           name: string;
-      }
-    | {
-          action: "multi-valued text input focus lost";
-          name: string;
-          fieldIndex: number;
+          fieldIndex: number | undefined;
       };
 
 export type KcContextLike = {
@@ -104,23 +84,12 @@ export type ReturnTypeOfUseUserProfileForm = {
 };
 
 namespace internal {
-    export type FormFieldState = FormFieldState.Simple | FormFieldState.MultiValued;
-
-    export namespace FormFieldState {
-        export type Common = {
-            attribute: Attribute;
-            errors: FormFieldError[];
-            hasLostFocusAtLeastOnce: boolean | boolean[];
-        };
-
-        export type Simple = Common & {
-            value: string;
-        };
-
-        export type MultiValued = Common & {
-            values: string[];
-        };
-    }
+    export type FormFieldState = {
+        attribute: Attribute;
+        errors: FormFieldError[];
+        hasLostFocusAtLeastOnce: boolean | boolean[];
+        valueOrValues: string | string[];
+    };
 
     export type State = {
         formFieldStates: FormFieldState[];
@@ -193,24 +162,11 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
             (() => {
                 switch (params.action) {
                     case "update":
-                    case "update multi-valued":
-                        (() => {
-                            switch (params.action) {
-                                case "update":
-                                    assert("value" in formFieldState);
-                                    formFieldState.value = params.value;
-                                    return;
-                                case "update multi-valued":
-                                    assert("values" in formFieldState);
-                                    formFieldState.values = params.values;
-                                    return;
-                            }
-                            assert<Equals<typeof params, never>>(false);
-                        })();
+                        formFieldState.valueOrValues = params.valueOrValues;
 
                         formFieldState.errors = getErrors({
                             "attributeName": params.name,
-                            "fieldValues": state.formFieldStates
+                            "formFieldStates": state.formFieldStates
                         });
 
                         update_password_confirm: {
@@ -222,23 +178,23 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                                 break update_password_confirm;
                             }
 
-                            assert(params.action === "update");
-
                             state = reducer(state, {
                                 "action": "update",
                                 "name": "password-confirm",
-                                "value": params.value
+                                "valueOrValues": params.valueOrValues
                             });
                         }
 
                         return;
                     case "focus lost":
-                        assert(typeof formFieldState.hasLostFocusAtLeastOnce === "boolean");
+                        if (formFieldState.hasLostFocusAtLeastOnce instanceof Array) {
+                            const { fieldIndex } = params;
+                            assert(fieldIndex !== undefined);
+                            formFieldState.hasLostFocusAtLeastOnce[fieldIndex] = true;
+                            return;
+                        }
+
                         formFieldState.hasLostFocusAtLeastOnce = true;
-                        return;
-                    case "multi-valued text input focus lost":
-                        assert(formFieldState.hasLostFocusAtLeastOnce instanceof Array);
-                        formFieldState.hasLostFocusAtLeastOnce[params.fieldIndex] = true;
                         return;
                 }
                 assert<Equals<typeof params, never>>(false);
@@ -247,8 +203,8 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
             return state;
         },
         useMemo(function getInitialState(): internal.State {
-            const initialFormFieldValues = (() => {
-                const initialFormFieldValues: ({ attribute: Attribute } & ({ value: string } | { values: string[] }))[] = [];
+            const initialFormFieldState = (() => {
+                const out: { attribute: Attribute; valueOrValues: string | string[] }[] = [];
 
                 for (const attribute of attributesWithPassword) {
                     handle_multi_valued_attribute: {
@@ -286,32 +242,32 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                             }
                         }
 
-                        initialFormFieldValues.push({
+                        out.push({
                             attribute,
-                            values
+                            "valueOrValues": values
                         });
 
                         continue;
                     }
 
-                    initialFormFieldValues.push({
-                        "value": attribute.value ?? "",
-                        attribute
+                    out.push({
+                        attribute,
+                        "valueOrValues": attribute.value ?? ""
                     });
                 }
 
-                return initialFormFieldValues;
+                return out;
             })();
 
             const initialState: internal.State = {
-                "formFieldStates": initialFormFieldValues.map(({ attribute, ...valueOrValuesWrap }) => ({
+                "formFieldStates": initialFormFieldState.map(({ attribute, valueOrValues }) => ({
                     attribute,
                     "errors": getErrors({
                         "attributeName": attribute.name,
-                        "fieldValues": initialFormFieldValues
+                        "formFieldStates": initialFormFieldState
                     }),
-                    "hasLostFocusAtLeastOnce": "values" in valueOrValuesWrap ? valueOrValuesWrap.values.map(() => false) : false,
-                    ...valueOrValuesWrap
+                    "hasLostFocusAtLeastOnce": valueOrValues instanceof Array ? valueOrValues.map(() => false) : false,
+                    "valueOrValues": valueOrValues
                 }))
             };
 
@@ -401,17 +357,14 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
     const { msg, msgStr, advancedMsg, advancedMsgStr } = i18n;
 
     const getErrors = useConstCallback(
-        (params: {
-            attributeName: string;
-            fieldValues: ({ attribute: Attribute } & ({ value: string } | { values: string[] }))[];
-        }): FormFieldError[] => {
-            const { attributeName, fieldValues } = params;
+        (params: { attributeName: string; formFieldStates: { attribute: Attribute; valueOrValues: string | string[] }[] }): FormFieldError[] => {
+            const { attributeName, formFieldStates } = params;
 
-            const fieldValue = fieldValues.find(({ attribute }) => attribute.name === attributeName);
+            const formFieldState = formFieldStates.find(({ attribute }) => attribute.name === attributeName);
 
-            assert(fieldValue !== undefined);
+            assert(formFieldState !== undefined);
 
-            const { attribute } = fieldValue;
+            const { attribute } = formFieldState;
 
             assert(attribute !== undefined);
 
@@ -419,9 +372,9 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                 if (attribute.multivalued) {
                     const defaultValues = attribute.values ?? [""];
 
-                    assert("values" in fieldValue);
+                    assert(formFieldState.valueOrValues instanceof Array);
 
-                    const { values } = fieldValue;
+                    const values = formFieldState.valueOrValues;
 
                     if (JSON.stringify(defaultValues) !== JSON.stringify(values.slice(0, defaultValues.length))) {
                         break server_side_error;
@@ -429,9 +382,9 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                 } else {
                     const defaultValue = attribute.value ?? "";
 
-                    assert("value" in fieldValue);
+                    assert(typeof formFieldState.valueOrValues === "string");
 
-                    const { value } = fieldValue;
+                    const value = formFieldState.valueOrValues;
 
                     if (defaultValue !== value) {
                         break server_side_error;
@@ -477,16 +430,16 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     break handle_multi_valued_multi_fields;
                 }
 
-                assert("values" in fieldValue);
+                assert(formFieldState.valueOrValues instanceof Array);
 
-                const { values } = fieldValue;
+                const values = formFieldState.valueOrValues;
 
                 const errors = values
                     .map((value, index) => {
                         const specificValueErrors = getErrors({
                             attributeName,
-                            "fieldValues": fieldValues.map(fieldValue => {
-                                if (fieldValue.attribute.name === attributeName) {
+                            "formFieldStates": formFieldStates.map(formFieldState => {
+                                if (formFieldState.attribute.name === attributeName) {
                                     return {
                                         "attribute": {
                                             ...attribute,
@@ -495,11 +448,11 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                                                 "inputType": undefined
                                             }
                                         },
-                                        value
+                                        "valueOrValues": value
                                     };
                                 }
 
-                                return fieldValue;
+                                return formFieldState;
                             })
                         });
 
@@ -569,9 +522,9 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
 
                 assert(!isNaN(max));
 
-                assert("values" in fieldValue);
+                assert(formFieldState.valueOrValues instanceof Array);
 
-                const { values } = fieldValue;
+                const values = formFieldState.valueOrValues;
 
                 if (min <= values.length && values.length <= max) {
                     return [];
@@ -592,9 +545,9 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                 ];
             }
 
-            assert("value" in fieldValue);
+            assert(typeof formFieldState.valueOrValues === "string");
 
-            const { value } = fieldValue;
+            const value = formFieldState.valueOrValues;
 
             const errors: FormFieldError[] = [];
 
@@ -770,16 +723,20 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                         break check_password_policy_x;
                     }
 
-                    const usernameFieldValue = fieldValues.find(fieldValue => fieldValue.attribute.name === "username");
+                    const usernameFormFieldState = formFieldStates.find(formFieldState => formFieldState.attribute.name === "username");
 
-                    if (usernameFieldValue === undefined) {
+                    if (usernameFormFieldState === undefined) {
                         break check_password_policy_x;
                     }
 
-                    assert("value" in usernameFieldValue);
+                    assert(typeof usernameFormFieldState.valueOrValues === "string");
 
-                    if (value !== usernameFieldValue.value) {
-                        break check_password_policy_x;
+                    {
+                        const usernameValue = usernameFormFieldState.valueOrValues;
+
+                        if (value !== usernameValue) {
+                            break check_password_policy_x;
+                        }
                     }
 
                     const msgArgs = ["invalidPasswordNotUsernameMessage"] as const;
@@ -804,16 +761,20 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                         break check_password_policy_x;
                     }
 
-                    const emailFieldValue = fieldValues.find(fieldValue => fieldValue.attribute.name === "email");
+                    const emailFormFieldState = formFieldStates.find(formFieldState => formFieldState.attribute.name === "email");
 
-                    if (emailFieldValue === undefined) {
+                    if (emailFormFieldState === undefined) {
                         break check_password_policy_x;
                     }
 
-                    assert("value" in emailFieldValue);
+                    assert(typeof emailFormFieldState.valueOrValues === "string");
 
-                    if (value !== emailFieldValue.value) {
-                        break check_password_policy_x;
+                    {
+                        const emailValue = emailFormFieldState.valueOrValues;
+
+                        if (value !== emailValue) {
+                            break check_password_policy_x;
+                        }
                     }
 
                     const msgArgs = ["invalidPasswordNotEmailMessage"] as const;
@@ -835,14 +796,18 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     break password_confirm_matches_password;
                 }
 
-                const passwordFieldValue = fieldValues.find(fieldValue => fieldValue.attribute.name === "password");
+                const passwordFormFieldState = formFieldStates.find(formFieldState => formFieldState.attribute.name === "password");
 
-                assert(passwordFieldValue !== undefined);
+                assert(passwordFormFieldState !== undefined);
 
-                assert("value" in passwordFieldValue);
+                assert(typeof passwordFormFieldState.valueOrValues === "string");
 
-                if (passwordFieldValue.value === value) {
-                    break password_confirm_matches_password;
+                {
+                    const passwordValue = passwordFormFieldState.valueOrValues;
+
+                    if (value === passwordValue) {
+                        break password_confirm_matches_password;
+                    }
                 }
 
                 const msgArgs = ["invalidPasswordConfirmMessage"] as const;
