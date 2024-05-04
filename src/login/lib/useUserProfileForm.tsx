@@ -493,13 +493,13 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                 return errors;
             }
 
-            handle_multi_select_single_field: {
+            handle_multi_valued_single_field: {
                 if (!attribute.multivalued) {
-                    break handle_multi_select_single_field;
+                    break handle_multi_valued_single_field;
                 }
 
                 if (attribute.annotations.inputType !== "multiselect" && attribute.annotations.inputType !== "multiselect-checkboxes") {
-                    break handle_multi_select_single_field;
+                    break handle_multi_valued_single_field;
                 }
 
                 const validatorName = "multivalued";
@@ -512,7 +512,7 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
 
                 const { min: minStr } = validator;
 
-                const min = minStr === undefined ? 0 : parseInt(minStr);
+                const min = minStr !== undefined ? parseInt(minStr) : attribute.required ? 1 : 0;
 
                 assert(!isNaN(min));
 
