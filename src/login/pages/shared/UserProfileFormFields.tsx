@@ -405,7 +405,8 @@ function InputTag(props: PropsOfInputFiledByType & { fieldIndex: number | undefi
                 max={attribute.annotations.inputTypeMax}
                 min={attribute.annotations.inputTypeMin}
                 step={attribute.annotations.inputTypeStep}
-                //{...Object.fromEntries(Object.entries(props.attribute.html5DataAnnotations).map(([key, value]) => [`data-${key}`, value])}
+                // NOTE: The `?? {}` is for backward compatibility with Keycloak prior to 24
+                {...Object.fromEntries(Object.entries(attribute.html5DataAnnotations ?? {}).map(([key, value]) => [`data-${key}`, value]))}
                 onChange={event =>
                     formValidationDispatch({
                         "action": "update",
