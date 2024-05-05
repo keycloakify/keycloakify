@@ -548,6 +548,13 @@ export type Attribute = {
         inputTypeRows?: `${number}`;
         inputTypeMaxlength?: `${number}`;
         inputHelperTextBefore?: string;
+        inputHelperTextAfter?: string;
+        inputTypePlaceholder?: string;
+        inputTypePattern?: string;
+        inputTypeMinlength?: `${number}`;
+        inputTypeMax?: string;
+        inputTypeMin?: string;
+        inputTypeStep?: string;
     };
     multivalued?: boolean;
     autocomplete?:
