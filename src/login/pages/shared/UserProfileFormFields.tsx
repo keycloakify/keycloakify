@@ -6,7 +6,7 @@ import {
     type KcContextLike,
     type FormAction,
     type FormFieldError,
-    FormFieldState
+    type FormFieldState
 } from "keycloakify/login/lib/useUserProfileForm";
 import type { Attribute, LegacyAttribute } from "keycloakify/login/kcContext/KcContext";
 import type { I18n } from "../../i18n";
@@ -23,11 +23,10 @@ export type UserProfileFormFieldsProps = {
 
 type BeforeAfterFieldProps = {
     attribute: Attribute;
-    index: number;
-    value: string;
     dispatchFormAction: React.Dispatch<FormAction>;
-    formFieldErrors: FormFieldError[];
+    displayableErrors: FormFieldError[];
     i18n: I18n;
+    valueOrValues: string | string[];
 };
 
 // NOTE: Enabled by default but it's a UX best practice to set it to false.
@@ -55,14 +54,14 @@ export function UserProfileFormFields(props: UserProfileFormFieldsProps) {
 
     return (
         <>
-            {formFieldStates.map(({ index, value, attribute, displayableErrors }) => {
+            {formFieldStates.map(({ attribute, displayableErrors, valueOrValues }) => {
                 const formGroupClassName = clsx(
                     getClassName("kcFormGroupClass"),
                     displayableErrors.length !== 0 && getClassName("kcFormGroupErrorClass")
                 );
 
                 return (
-                    <Fragment key={`${attribute.name}-${index}`}>
+                    <Fragment key={attribute.name}>
                         <GroupLabel
                             attribute={attribute}
                             getClassName={getClassName}
@@ -73,11 +72,10 @@ export function UserProfileFormFields(props: UserProfileFormFieldsProps) {
                         {BeforeField !== undefined && (
                             <BeforeField
                                 attribute={attribute}
-                                index={index}
-                                value={value}
                                 dispatchFormAction={dispatchFormAction}
-                                formFieldErrors={displayableErrors}
+                                displayableErrors={displayableErrors}
                                 i18n={i18n}
+                                valueOrValues={valueOrValues}
                             />
                         )}
                         <div
@@ -91,7 +89,7 @@ export function UserProfileFormFields(props: UserProfileFormFieldsProps) {
                                 {attribute.required && <>*</>}
                             </div>
                             <div className={getClassName("kcInputWrapperClass")}>
-                                {attribute.annotations.inputHelperTextBefore !== undefined && index === 0 && (
+                                {attribute.annotations.inputHelperTextBefore !== undefined && (
                                     <div
                                         className={getClassName("kcInputHelperTextBeforeClass")}
                                         id={`form-help-text-before-${attribute.name}`}
@@ -108,7 +106,8 @@ export function UserProfileFormFields(props: UserProfileFormFieldsProps) {
                                     getClassName={getClassName}
                                     i18n={i18n}
                                 />
-                                {attribute.multivalued && (
+
+                                {/*attribute.multivalued && (
                                     <AddRemoveButtonsMultiValuedAttribute
                                         formFieldStates={formFieldStates}
                                         attribute={attribute}
@@ -116,19 +115,19 @@ export function UserProfileFormFields(props: UserProfileFormFieldsProps) {
                                         dispatchFormAction={dispatchFormAction}
                                         i18n={i18n}
                                     />
-                                )}
+                                )*/}
                                 {displayableErrors.length !== 0 && (
                                     <FieldErrors
                                         attribute={attribute}
-                                        index={index}
                                         getClassName={getClassName}
                                         displayableErrors={displayableErrors}
+                                        fieldIndex={undefined}
                                     />
                                 )}
-                                {attribute.annotations.inputHelperTextAfter !== undefined && index === 0 && (
+                                {attribute.annotations.inputHelperTextAfter !== undefined && (
                                     <div
                                         className={getClassName("kcInputHelperTextAfterClass")}
-                                        id={`form-help-text-before-${attribute.name}`}
+                                        id={`form-help-text-after-${attribute.name}`}
                                         aria-live="polite"
                                     >
                                         {advancedMsg(attribute.annotations.inputHelperTextAfter)}
@@ -138,11 +137,10 @@ export function UserProfileFormFields(props: UserProfileFormFieldsProps) {
                                 {AfterField !== undefined && (
                                     <AfterField
                                         attribute={attribute}
-                                        index={index}
-                                        value={value}
                                         dispatchFormAction={dispatchFormAction}
-                                        formFieldErrors={displayableErrors}
+                                        displayableErrors={displayableErrors}
                                         i18n={i18n}
+                                        valueOrValues={valueOrValues}
                                     />
                                 )}
                                 {/* 
@@ -254,27 +252,29 @@ function GroupLabel(props: {
 
 function FieldErrors(props: {
     attribute: Attribute;
-    index: number;
     getClassName: UserProfileFormFieldsProps["getClassName"];
     displayableErrors: FormFieldError[];
+    fieldIndex: number | undefined;
 }) {
-    const { attribute, index, getClassName, displayableErrors } = props;
+    const { attribute, getClassName, displayableErrors, fieldIndex } = props;
 
     return (
         <span
-            id={`input-error-${attribute.name}${index === 0 ? "" : `-${index + 1}`}`}
+            id={`input-error-${attribute.name}${fieldIndex === undefined ? "" : `-${fieldIndex}`}`}
             className={getClassName("kcInputErrorMessageClass")}
             style={{
                 "position": displayableErrors.length === 1 ? "absolute" : undefined
             }}
             aria-live="polite"
         >
-            {displayableErrors.map(({ errorMessage }, i, arr) => (
-                <>
-                    <span key={i}>{errorMessage}</span>
-                    {arr.length - 1 !== i && <br />}
-                </>
-            ))}
+            {displayableErrors
+                .filter(error => error.fieldIndex === fieldIndex)
+                .map(({ errorMessage }, i, arr) => (
+                    <>
+                        <span key={i}>{errorMessage}</span>
+                        {arr.length - 1 !== i && <br />}
+                    </>
+                ))}
         </span>
     );
 }
@@ -398,8 +398,7 @@ function AddRemoveButtonsMultiValuedAttribute(props: {
 
 type PropsOfInputFiledByType = {
     attribute: Attribute;
-    index: number;
-    value: string;
+    valueOrValues: string | string[];
     displayableErrors: FormFieldError[];
     formValidationDispatch: React.Dispatch<FormAction>;
     getClassName: UserProfileFormFieldsProps["getClassName"];
@@ -407,7 +406,7 @@ type PropsOfInputFiledByType = {
 };
 
 function InputFiledByType(props: PropsOfInputFiledByType) {
-    const { attribute } = props;
+    const { attribute, valueOrValues } = props;
 
     /*
     <#macro inputFieldByType attribute>
@@ -445,8 +444,22 @@ function InputFiledByType(props: PropsOfInputFiledByType) {
         case "multiselect-checkboxes":
             return <InputTagSelects {...props} />;
         default:
-            return <InputTag {...props} />;
+            if (valueOrValues instanceof Array) {
+                return (
+                    <>
+                        {valueOrValues.map((...[, i]) => (
+                            <InputTag key={i} {...props} fieldIndex={i} />
+                        ))}
+                    </>
+                );
+            }
+
+            return <InputTag {...props} fieldIndex={undefined} />;
     }
+}
+
+function InputTag(props: PropsOfInputFiledByType & { fieldIndex: number | undefined }) {
+    return null;
 }
 
 function InputTagSelects(props: PropsOfInputFiledByType) {
@@ -485,30 +498,36 @@ function InputTagSelects(props: PropsOfInputFiledByType) {
 </#macro>
     */
 
-    const { attribute, formValidationDispatch, getClassName, index } = props;
+    const { attribute, formValidationDispatch, getClassName, valueOrValues } = props;
 
     const { advancedMsg } = props.i18n;
 
-    const { classDiv, classInput, classLabel, inputType } =
-        attribute.annotations.inputType === "select-radiobuttons"
-            ? {
-                  "inputType": "radio",
-                  "classDiv": getClassName("kcInputClassRadio"),
-                  "classInput": getClassName("kcInputClassRadioInput"),
-                  "classLabel": getClassName("kcInputClassRadioLabel")
-              }
-            : {
-                  "inputType": "checkbox",
-                  "classDiv": getClassName("kcInputClassCheckbox"),
-                  "classInput": getClassName("kcInputClassCheckboxInput"),
-                  "classLabel": getClassName("kcInputClassCheckboxLabel")
-              };
+    const { classDiv, classInput, classLabel, inputType } = (() => {
+        const { inputType } = attribute.annotations;
+
+        assert(inputType === "select-radiobuttons" || inputType === "multiselect-checkboxes");
+
+        switch (inputType) {
+            case "select-radiobuttons":
+                return {
+                    "inputType": "radio",
+                    "classDiv": getClassName("kcInputClassRadio"),
+                    "classInput": getClassName("kcInputClassRadioInput"),
+                    "classLabel": getClassName("kcInputClassRadioLabel")
+                };
+            case "multiselect-checkboxes":
+                return {
+                    "inputType": "checkbox",
+                    "classDiv": getClassName("kcInputClassCheckbox"),
+                    "classInput": getClassName("kcInputClassCheckboxInput"),
+                    "classLabel": getClassName("kcInputClassCheckboxLabel")
+                };
+        }
+    })();
 
     const options = (() => {
         walk: {
             const { inputOptionsFromValidation } = attribute.annotations;
-
-            assert(typeof inputOptionsFromValidation === "string");
 
             if (inputOptionsFromValidation === undefined) {
                 break walk;
@@ -536,26 +555,41 @@ function InputTagSelects(props: PropsOfInputFiledByType) {
                 <div key={option} className={classDiv}>
                     <input
                         type={inputType}
-                        id={`${attribute.name}-${option}-${index === 0 ? "" : index + 1}`}
+                        id={`${attribute.name}-${option}`}
                         name={attribute.name}
                         value={option}
                         className={classInput}
                         aria-invalid={props.displayableErrors.length !== 0}
                         disabled={attribute.readOnly}
-                        checked={props.value === option}
-                        onChange={() =>
+                        checked={valueOrValues.includes(option)}
+                        onChange={event =>
                             formValidationDispatch({
-                                "action": "update value",
+                                "action": "update",
                                 "name": attribute.name,
-                                "index": props.index,
-                                "newValue": option
+                                "valueOrValues": (() => {
+                                    const isChecked = event.target.checked;
+
+                                    if (valueOrValues instanceof Array) {
+                                        const newValues = [...valueOrValues];
+
+                                        if (isChecked) {
+                                            newValues.push(option);
+                                        } else {
+                                            newValues.splice(newValues.indexOf(option), 1);
+                                        }
+
+                                        return newValues;
+                                    }
+
+                                    return event.target.checked ? option : "";
+                                })()
                             })
                         }
                         onBlur={() =>
                             formValidationDispatch({
                                 "action": "focus lost",
                                 "name": attribute.name,
-                                "index": props.index
+                                "fieldIndex": undefined
                             })
                         }
                     />
@@ -572,11 +606,15 @@ function InputTagSelects(props: PropsOfInputFiledByType) {
 }
 
 function TextareaTag(props: PropsOfInputFiledByType) {
-    const { attribute, index, value, formValidationDispatch, getClassName, displayableErrors } = props;
+    const { attribute, formValidationDispatch, getClassName, displayableErrors, valueOrValues } = props;
+
+    assert(typeof valueOrValues === "string");
+
+    const value = valueOrValues;
 
     return (
         <textarea
-            id={`${attribute.name}-${index === 0 ? "" : index + 1}`}
+            id={attribute.name}
             name={attribute.name}
             className={getClassName("kcInputClass")}
             aria-invalid={displayableErrors.length !== 0}
@@ -587,17 +625,16 @@ function TextareaTag(props: PropsOfInputFiledByType) {
             value={value}
             onChange={event =>
                 formValidationDispatch({
-                    "action": "update value",
+                    "action": "update",
                     "name": attribute.name,
-                    index,
-                    "newValue": event.target.value
+                    "valueOrValues": event.target.value
                 })
             }
             onBlur={() =>
                 formValidationDispatch({
                     "action": "focus lost",
                     "name": attribute.name,
-                    index
+                    "fieldIndex": undefined
                 })
             }
         />
@@ -605,7 +642,7 @@ function TextareaTag(props: PropsOfInputFiledByType) {
 }
 
 function SelectTag(props: PropsOfInputFiledByType) {
-    const { attribute, index, value, formValidationDispatch, getClassName, displayableErrors, i18n } = props;
+    const { attribute, formValidationDispatch, getClassName, displayableErrors, i18n, valueOrValues } = props;
 
     const { advancedMsg } = i18n;
 
@@ -613,31 +650,36 @@ function SelectTag(props: PropsOfInputFiledByType) {
 
     return (
         <select
-            id={`${attribute.name}-${index === 0 ? "" : index + 1}`}
+            id={attribute.name}
             name={attribute.name}
             className={getClassName("kcInputClass")}
             aria-invalid={displayableErrors.length !== 0}
             disabled={attribute.readOnly}
             multiple={isMultiple}
             size={attribute.annotations.inputTypeSize === undefined ? undefined : parseInt(attribute.annotations.inputTypeSize)}
-            value={value}
+            value={valueOrValues}
             onChange={event =>
                 formValidationDispatch({
-                    "action": "update value",
+                    "action": "update",
                     "name": attribute.name,
-                    index,
-                    "newValue": event.target.value
+                    "valueOrValues": (() => {
+                        if (isMultiple) {
+                            return Array.from(event.target.selectedOptions).map(option => option.value);
+                        }
+
+                        return event.target.value;
+                    })()
                 })
             }
             onBlur={() =>
                 formValidationDispatch({
                     "action": "focus lost",
                     "name": attribute.name,
-                    index
+                    "fieldIndex": undefined
                 })
             }
         >
-            {attribute.annotations.inputType === "select" && <option value=""></option>}
+            {!isMultiple && <option value=""></option>}
             {(() => {
                 const options = (() => {
                     walk: {
@@ -666,7 +708,7 @@ function SelectTag(props: PropsOfInputFiledByType) {
                 })();
 
                 return options.map(option => (
-                    <option key={option} value={option} selected={value === option}>
+                    <option key={option} value={option}>
                         {(() => {
                             if (attribute.annotations.inputOptionLabels !== undefined) {
                                 const { inputOptionLabels } = attribute.annotations;
