@@ -1,13 +1,7 @@
 import { useEffect, Fragment } from "react";
 import type { ClassKey } from "keycloakify/login/TemplateProps";
 import { clsx } from "keycloakify/tools/clsx";
-import {
-    useUserProfileForm,
-    type KcContextLike,
-    type FormAction,
-    type FormFieldError,
-    type FormFieldState
-} from "keycloakify/login/lib/useUserProfileForm";
+import { useUserProfileForm, type KcContextLike, type FormAction, type FormFieldError } from "keycloakify/login/lib/useUserProfileForm";
 import type { Attribute, LegacyAttribute } from "keycloakify/login/kcContext/KcContext";
 import type { I18n } from "../../i18n";
 import { assert } from "tsafe/assert";
@@ -100,30 +94,18 @@ export function UserProfileFormFields(props: UserProfileFormFieldsProps) {
                                 )}
                                 <InputFiledByType
                                     attribute={attribute}
-                                    index={index}
-                                    value={value}
+                                    valueOrValues={valueOrValues}
+                                    displayableErrors={displayableErrors}
                                     formValidationDispatch={dispatchFormAction}
                                     getClassName={getClassName}
                                     i18n={i18n}
                                 />
-
-                                {/*attribute.multivalued && (
-                                    <AddRemoveButtonsMultiValuedAttribute
-                                        formFieldStates={formFieldStates}
-                                        attribute={attribute}
-                                        index={index}
-                                        dispatchFormAction={dispatchFormAction}
-                                        i18n={i18n}
-                                    />
-                                )*/}
-                                {displayableErrors.length !== 0 && (
-                                    <FieldErrors
-                                        attribute={attribute}
-                                        getClassName={getClassName}
-                                        displayableErrors={displayableErrors}
-                                        fieldIndex={undefined}
-                                    />
-                                )}
+                                <FieldErrors
+                                    attribute={attribute}
+                                    getClassName={getClassName}
+                                    displayableErrors={displayableErrors}
+                                    fieldIndex={undefined}
+                                />
                                 {attribute.annotations.inputHelperTextAfter !== undefined && (
                                     <div
                                         className={getClassName("kcInputHelperTextAfterClass")}
@@ -256,7 +238,13 @@ function FieldErrors(props: {
     displayableErrors: FormFieldError[];
     fieldIndex: number | undefined;
 }) {
-    const { attribute, getClassName, displayableErrors, fieldIndex } = props;
+    const { attribute, getClassName, fieldIndex } = props;
+
+    const displayableErrors = props.displayableErrors.filter(error => error.fieldIndex === fieldIndex);
+
+    if (displayableErrors.length === 0) {
+        return null;
+    }
 
     return (
         <span
@@ -279,123 +267,6 @@ function FieldErrors(props: {
     );
 }
 
-function AddRemoveButtonsMultiValuedAttribute(props: {
-    formFieldStates: FormFieldState[];
-    attribute: Attribute;
-    index: number;
-    dispatchFormAction: React.Dispatch<
-        Extract<FormAction, { action: "add value to multi-valued attribute" | "remove value from multi-valued attribute" }>
-    >;
-    i18n: I18n;
-}) {
-    const { formFieldStates, attribute, index, dispatchFormAction, i18n } = props;
-
-    const { msg } = i18n;
-
-    const currentCount = formFieldStates.filter(({ attribute: attribute_i }) => attribute_i.name === attribute.name).length;
-
-    const hasRemove = (() => {
-        if (currentCount === 1) {
-            return false;
-        }
-
-        const minCount = (() => {
-            const { multivalued } = attribute.validators;
-
-            if (multivalued === undefined) {
-                return undefined;
-            }
-
-            const minStr = multivalued.min;
-
-            if (minStr === undefined) {
-                return undefined;
-            }
-
-            return parseInt(minStr);
-        })();
-
-        if (minCount === undefined) {
-            return true;
-        }
-
-        if (currentCount === minCount) {
-            return false;
-        }
-
-        return true;
-    })();
-
-    const hasAdd = (() => {
-        if (index + 1 !== currentCount) {
-            return false;
-        }
-
-        const maxCount = (() => {
-            const { multivalued } = attribute.validators;
-
-            if (multivalued === undefined) {
-                return undefined;
-            }
-
-            const maxStr = multivalued.max;
-
-            if (maxStr === undefined) {
-                return undefined;
-            }
-
-            return parseInt(maxStr);
-        })();
-
-        if (maxCount === undefined) {
-            return false;
-        }
-
-        if (currentCount === maxCount) {
-            return false;
-        }
-
-        return true;
-    })();
-
-    return (
-        <>
-            {hasRemove && (
-                <button
-                    id={`kc-remove-${attribute.name}-${index + 1}`}
-                    type="button"
-                    className="pf-c-button pf-m-inline pf-m-link"
-                    onClick={() =>
-                        dispatchFormAction({
-                            "action": "remove value from multi-valued attribute",
-                            "name": attribute.name,
-                            index
-                        })
-                    }
-                >
-                    {msg("remove")}
-                    {hasRemove ? <>&nbsp;|&nbsp;</> : null}
-                </button>
-            )}
-            {hasAdd && (
-                <button
-                    id="kc-add-titles-1"
-                    type="button"
-                    className="pf-c-button pf-m-inline pf-m-link"
-                    onClick={() =>
-                        dispatchFormAction({
-                            "action": "add value to multi-valued attribute",
-                            "name": attribute.name
-                        })
-                    }
-                >
-                    {msg("addValue")}
-                </button>
-            )}
-        </>
-    );
-}
-
 type PropsOfInputFiledByType = {
     attribute: Attribute;
     valueOrValues: string | string[];
@@ -410,27 +281,27 @@ function InputFiledByType(props: PropsOfInputFiledByType) {
 
     /*
     <#macro inputFieldByType attribute>
-	<#switch attribute.annotations.inputType!''>
-	<#case 'textarea'>
-		<@textareaTag attribute=attribute/>
-		<#break>
-	<#case 'select'>
-	<#case 'multiselect'>
-		<@selectTag attribute=attribute/>
-		<#break>
-	<#case 'select-radiobuttons'>
-	<#case 'multiselect-checkboxes'>
-		<@inputTagSelects attribute=attribute/>
-		<#break>
-	<#default>
-		<#if attribute.multivalued && attribute.values?has_content>
-			<#list attribute.values as value>
-				<@inputTag attribute=attribute value=value!''/>
-			</#list>
-		<#else>
-			<@inputTag attribute=attribute value=attribute.value!''/>
-		</#if>
-	</#switch>
+    <#switch attribute.annotations.inputType!''>
+    <#case 'textarea'>
+        <@textareaTag attribute=attribute/>
+        <#break>
+    <#case 'select'>
+    <#case 'multiselect'>
+        <@selectTag attribute=attribute/>
+        <#break>
+    <#case 'select-radiobuttons'>
+    <#case 'multiselect-checkboxes'>
+        <@inputTagSelects attribute=attribute/>
+        <#break>
+    <#default>
+        <#if attribute.multivalued && attribute.values?has_content>
+            <#list attribute.values as value>
+                <@inputTag attribute=attribute value=value!''/>
+            </#list>
+        <#else>
+            <@inputTag attribute=attribute value=attribute.value!''/>
+        </#if>
+    </#switch>
     </#macro>
     */
 
@@ -459,42 +330,289 @@ function InputFiledByType(props: PropsOfInputFiledByType) {
 }
 
 function InputTag(props: PropsOfInputFiledByType & { fieldIndex: number | undefined }) {
-    return null;
+    /*
+    <#macro inputTag attribute value>
+    <input type="<@inputTagType attribute=attribute/>" id="${attribute.name}" name="${attribute.name}" value="${(value!'')}" class="${properties.kcInputClass!}"
+        aria-invalid="<#if messagesPerField.existsError('${attribute.name}')>true</#if>"
+        <#if attribute.readOnly>disabled</#if>
+        <#if attribute.autocomplete??>autocomplete="${attribute.autocomplete}"</#if>
+        <#if attribute.annotations.inputTypePlaceholder??>placeholder="${attribute.annotations.inputTypePlaceholder}"</#if>
+        <#if attribute.annotations.inputTypePattern??>pattern="${attribute.annotations.inputTypePattern}"</#if>
+        <#if attribute.annotations.inputTypeSize??>size="${attribute.annotations.inputTypeSize}"</#if>
+        <#if attribute.annotations.inputTypeMaxlength??>maxlength="${attribute.annotations.inputTypeMaxlength}"</#if>
+        <#if attribute.annotations.inputTypeMinlength??>minlength="${attribute.annotations.inputTypeMinlength}"</#if>
+        <#if attribute.annotations.inputTypeMax??>max="${attribute.annotations.inputTypeMax}"</#if>
+        <#if attribute.annotations.inputTypeMin??>min="${attribute.annotations.inputTypeMin}"</#if>
+        <#if attribute.annotations.inputTypeStep??>step="${attribute.annotations.inputTypeStep}"</#if>
+        <#if attribute.annotations.inputTypeStep??>step="${attribute.annotations.inputTypeStep}"</#if>
+        <#list attribute.html5DataAnnotations as key, value>
+            data-${key}="${value}"
+        </#list>
+    />
+    </#macro>
+
+    <#macro inputTagType attribute>
+    <#compress>
+    <#if attribute.annotations.inputType??>
+        <#if attribute.annotations.inputType?starts_with("html5-")>
+            ${attribute.annotations.inputType[6..]}
+        <#else>
+            ${attribute.annotations.inputType}
+        </#if>
+    <#else>
+    text
+    </#if>
+    </#compress>
+    </#macro>
+
+    */
+
+    const { attribute, fieldIndex, getClassName, formValidationDispatch, valueOrValues, i18n, displayableErrors } = props;
+
+    return (
+        <>
+            <input
+                type={(() => {
+                    const { inputType } = attribute.annotations;
+
+                    if (inputType?.startsWith("html5-")) {
+                        return inputType.slice(6);
+                    }
+
+                    return inputType ?? "text";
+                })()}
+                id={attribute.name}
+                name={attribute.name}
+                value={(() => {
+                    if (fieldIndex !== undefined) {
+                        assert(valueOrValues instanceof Array);
+                        return valueOrValues[fieldIndex];
+                    }
+
+                    assert(typeof valueOrValues === "string");
+
+                    return valueOrValues;
+                })()}
+                className={getClassName("kcInputClass")}
+                aria-invalid={displayableErrors.find(error => error.fieldIndex === fieldIndex) !== undefined}
+                disabled={attribute.readOnly}
+                autoComplete={attribute.autocomplete}
+                placeholder={attribute.annotations.inputTypePlaceholder}
+                pattern={attribute.annotations.inputTypePattern}
+                size={attribute.annotations.inputTypeSize === undefined ? undefined : parseInt(attribute.annotations.inputTypeSize)}
+                maxLength={attribute.annotations.inputTypeMaxlength === undefined ? undefined : parseInt(attribute.annotations.inputTypeMaxlength)}
+                minLength={attribute.annotations.inputTypeMinlength === undefined ? undefined : parseInt(attribute.annotations.inputTypeMinlength)}
+                max={attribute.annotations.inputTypeMax}
+                min={attribute.annotations.inputTypeMin}
+                step={attribute.annotations.inputTypeStep}
+                //{...Object.fromEntries(Object.entries(props.attribute.html5DataAnnotations).map(([key, value]) => [`data-${key}`, value])}
+                onChange={event =>
+                    formValidationDispatch({
+                        "action": "update",
+                        "name": attribute.name,
+                        "valueOrValues": (() => {
+                            if (fieldIndex !== undefined) {
+                                assert(valueOrValues instanceof Array);
+
+                                return valueOrValues.map((value, i) => {
+                                    if (i === fieldIndex) {
+                                        return event.target.value;
+                                    }
+
+                                    return value;
+                                });
+                            }
+
+                            return event.target.value;
+                        })()
+                    })
+                }
+                onBlur={() =>
+                    props.formValidationDispatch({
+                        "action": "focus lost",
+                        "name": attribute.name,
+                        "fieldIndex": fieldIndex
+                    })
+                }
+            />
+            {(() => {
+                if (fieldIndex === undefined) {
+                    return null;
+                }
+
+                assert(valueOrValues instanceof Array);
+
+                const values = valueOrValues;
+
+                return (
+                    <>
+                        <FieldErrors
+                            attribute={attribute}
+                            getClassName={getClassName}
+                            displayableErrors={displayableErrors}
+                            fieldIndex={fieldIndex}
+                        />
+                        <AddRemoveButtonsMultiValuedAttribute
+                            attribute={attribute}
+                            values={values}
+                            fieldIndex={fieldIndex}
+                            dispatchFormAction={formValidationDispatch}
+                            i18n={i18n}
+                        />
+                    </>
+                );
+            })()}
+        </>
+    );
+}
+
+function AddRemoveButtonsMultiValuedAttribute(props: {
+    attribute: Attribute;
+    values: string[];
+    fieldIndex: number;
+    dispatchFormAction: React.Dispatch<Extract<FormAction, { action: "update" }>>;
+    i18n: I18n;
+}) {
+    const { attribute, values, fieldIndex, dispatchFormAction, i18n } = props;
+
+    const { msg } = i18n;
+
+    const hasRemove = (() => {
+        if (values.length === 1) {
+            return false;
+        }
+
+        const minCount = (() => {
+            const { multivalued } = attribute.validators;
+
+            if (multivalued === undefined) {
+                return undefined;
+            }
+
+            const minStr = multivalued.min;
+
+            if (minStr === undefined) {
+                return undefined;
+            }
+
+            return parseInt(minStr);
+        })();
+
+        if (minCount === undefined) {
+            return true;
+        }
+
+        if (values.length === minCount) {
+            return false;
+        }
+
+        return true;
+    })();
+
+    const hasAdd = (() => {
+        if (fieldIndex + 1 !== values.length) {
+            return false;
+        }
+
+        const maxCount = (() => {
+            const { multivalued } = attribute.validators;
+
+            if (multivalued === undefined) {
+                return undefined;
+            }
+
+            const maxStr = multivalued.max;
+
+            if (maxStr === undefined) {
+                return undefined;
+            }
+
+            return parseInt(maxStr);
+        })();
+
+        if (maxCount === undefined) {
+            return false;
+        }
+
+        if (values.length === maxCount) {
+            return false;
+        }
+
+        return true;
+    })();
+
+    return (
+        <>
+            {hasRemove && (
+                <button
+                    id={`kc-remove-${attribute.name}-${fieldIndex + 1}`}
+                    type="button"
+                    className="pf-c-button pf-m-inline pf-m-link"
+                    onClick={() =>
+                        dispatchFormAction({
+                            "action": "update",
+                            "name": attribute.name,
+                            "valueOrValues": values.filter((_, i) => i !== fieldIndex)
+                        })
+                    }
+                >
+                    {msg("remove")}
+                    {hasRemove ? <>&nbsp;|&nbsp;</> : null}
+                </button>
+            )}
+            {hasAdd && (
+                <button
+                    id="kc-add-titles-1"
+                    type="button"
+                    className="pf-c-button pf-m-inline pf-m-link"
+                    onClick={() =>
+                        dispatchFormAction({
+                            "action": "update",
+                            "name": attribute.name,
+                            "valueOrValues": [...values, ""]
+                        })
+                    }
+                >
+                    {msg("addValue")}
+                </button>
+            )}
+        </>
+    );
 }
 
 function InputTagSelects(props: PropsOfInputFiledByType) {
     /*
 <#macro inputTagSelects attribute>
-	<#if attribute.annotations.inputType=='select-radiobuttons'>
-		<#assign inputType='radio'>
-		<#assign classDiv=properties.kcInputClassRadio!>
-		<#assign classInput=properties.kcInputClassRadioInput!>
-		<#assign classLabel=properties.kcInputClassRadioLabel!>
-	<#else>
-		<#assign inputType='checkbox'>
-		<#assign classDiv=properties.kcInputClassCheckbox!>
-		<#assign classInput=properties.kcInputClassCheckboxInput!>
-		<#assign classLabel=properties.kcInputClassCheckboxLabel!>
-	</#if>
+    <#if attribute.annotations.inputType=='select-radiobuttons'>
+        <#assign inputType='radio'>
+        <#assign classDiv=properties.kcInputClassRadio!>
+        <#assign classInput=properties.kcInputClassRadioInput!>
+        <#assign classLabel=properties.kcInputClassRadioLabel!>
+    <#else>
+        <#assign inputType='checkbox'>
+        <#assign classDiv=properties.kcInputClassCheckbox!>
+        <#assign classInput=properties.kcInputClassCheckboxInput!>
+        <#assign classLabel=properties.kcInputClassCheckboxLabel!>
+    </#if>
 
-	<#if attribute.annotations.inputOptionsFromValidation?? && attribute.validators[attribute.annotations.inputOptionsFromValidation]?? && attribute.validators[attribute.annotations.inputOptionsFromValidation].options??>
-		<#assign options=attribute.validators[attribute.annotations.inputOptionsFromValidation].options>
-	<#elseif attribute.validators.options?? && attribute.validators.options.options??>
-		<#assign options=attribute.validators.options.options>
-	<#else>
-		<#assign options=[]>
-	</#if>
+    <#if attribute.annotations.inputOptionsFromValidation?? && attribute.validators[attribute.annotations.inputOptionsFromValidation]?? && attribute.validators[attribute.annotations.inputOptionsFromValidation].options??>
+        <#assign options=attribute.validators[attribute.annotations.inputOptionsFromValidation].options>
+    <#elseif attribute.validators.options?? && attribute.validators.options.options??>
+        <#assign options=attribute.validators.options.options>
+    <#else>
+        <#assign options=[]>
+    </#if>
 
-	<#list options as option>
-		<div class="${classDiv}">
-			<input type="${inputType}" id="${attribute.name}-${option}" name="${attribute.name}" value="${option}" class="${classInput}"
-				aria-invalid="<#if messagesPerField.existsError('${attribute.name}')>true</#if>"
-				<#if attribute.readOnly>disabled</#if>
-				<#if attribute.values?seq_contains(option)>checked</#if>
-			/>
-			<label for="${attribute.name}-${option}" class="${classLabel}<#if attribute.readOnly> ${properties.kcInputClassRadioCheckboxLabelDisabled!}</#if>"><@selectOptionLabelText attribute=attribute option=option/></label>
-		</div>
-	</#list>
+    <#list options as option>
+        <div class="${classDiv}">
+            <input type="${inputType}" id="${attribute.name}-${option}" name="${attribute.name}" value="${option}" class="${classInput}"
+                aria-invalid="<#if messagesPerField.existsError('${attribute.name}')>true</#if>"
+                <#if attribute.readOnly>disabled</#if>
+                <#if attribute.values?seq_contains(option)>checked</#if>
+            />
+            <label for="${attribute.name}-${option}" class="${classLabel}<#if attribute.readOnly> ${properties.kcInputClassRadioCheckboxLabelDisabled!}</#if>"><@selectOptionLabelText attribute=attribute option=option/></label>
+        </div>
+    </#list>
 </#macro>
     */
 
