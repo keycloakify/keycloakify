@@ -403,15 +403,36 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
 
             const { attribute } = formFieldState;
 
+            const valueOrValues = (() => {
+                let { valueOrValues } = formFieldState;
+
+                unFormat_number: {
+                    // NOTE: The `?? {}` is for compat with Keycloak version prior to 24
+                    const { kcNumberUnFormat } = attribute.html5DataAnnotations ?? {};
+
+                    if (kcNumberUnFormat === undefined) {
+                        break unFormat_number;
+                    }
+
+                    if (valueOrValues instanceof Array) {
+                        valueOrValues = valueOrValues.map(value => formatNumber(value, kcNumberUnFormat));
+                    } else {
+                        valueOrValues = formatNumber(valueOrValues, kcNumberUnFormat);
+                    }
+                }
+
+                return valueOrValues;
+            })();
+
             assert(attribute !== undefined);
 
             server_side_error: {
                 if (attribute.multivalued) {
                     const defaultValues = attribute.values ?? [""];
 
-                    assert(formFieldState.valueOrValues instanceof Array);
+                    assert(valueOrValues instanceof Array);
 
-                    const values = formFieldState.valueOrValues;
+                    const values = valueOrValues;
 
                     if (JSON.stringify(defaultValues) !== JSON.stringify(values.slice(0, defaultValues.length))) {
                         break server_side_error;
@@ -419,9 +440,9 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                 } else {
                     const defaultValue = attribute.value ?? "";
 
-                    assert(typeof formFieldState.valueOrValues === "string");
+                    assert(typeof valueOrValues === "string");
 
-                    const value = formFieldState.valueOrValues;
+                    const value = valueOrValues;
 
                     if (defaultValue !== value) {
                         break server_side_error;
@@ -463,25 +484,27 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     break handle_multi_valued_multi_fields;
                 }
 
-                assert(formFieldState.valueOrValues instanceof Array);
+                assert(valueOrValues instanceof Array);
 
-                const values = formFieldState.valueOrValues;
+                const values = valueOrValues;
 
                 const errors = values
-                    .map((value, index) => {
+                    .map((...[, index]) => {
                         const specificValueErrors = getErrors({
                             attributeName,
                             "formFieldStates": formFieldStates.map(formFieldState => {
                                 if (formFieldState.attribute.name === attributeName) {
+                                    assert(formFieldState.valueOrValues instanceof Array);
                                     return {
                                         "attribute": {
                                             ...attribute,
                                             "annotations": {
                                                 ...attribute.annotations,
                                                 "inputType": undefined
-                                            }
+                                            },
+                                            "multivalued": false
                                         },
-                                        "valueOrValues": value
+                                        "valueOrValues": formFieldState.valueOrValues[index]
                                     };
                                 }
 
@@ -555,9 +578,9 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
 
                 assert(!isNaN(max));
 
-                assert(formFieldState.valueOrValues instanceof Array);
+                assert(valueOrValues instanceof Array);
 
-                const values = formFieldState.valueOrValues;
+                const values = valueOrValues;
 
                 if (min <= values.length && values.length <= max) {
                     return [];
@@ -578,9 +601,9 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                 ];
             }
 
-            assert(typeof formFieldState.valueOrValues === "string");
+            assert(typeof valueOrValues === "string");
 
-            const value = formFieldState.valueOrValues;
+            const value = valueOrValues;
 
             const errors: FormFieldError[] = [];
 
@@ -762,14 +785,27 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                         break check_password_policy_x;
                     }
 
-                    assert(typeof usernameFormFieldState.valueOrValues === "string");
+                    const usernameValue = (() => {
+                        let { valueOrValues } = usernameFormFieldState;
 
-                    {
-                        const usernameValue = usernameFormFieldState.valueOrValues;
+                        assert(typeof valueOrValues === "string");
 
-                        if (value !== usernameValue) {
-                            break check_password_policy_x;
+                        unFormat_number: {
+                            // NOTE: The `?? {}` is for compat with Keycloak version prior to 24
+                            const { kcNumberUnFormat } = attribute.html5DataAnnotations ?? {};
+
+                            if (kcNumberUnFormat === undefined) {
+                                break unFormat_number;
+                            }
+
+                            valueOrValues = formatNumber(valueOrValues, kcNumberUnFormat);
                         }
+
+                        return valueOrValues;
+                    })();
+
+                    if (value !== usernameValue) {
+                        break check_password_policy_x;
                     }
 
                     const msgArgs = ["invalidPasswordNotUsernameMessage"] as const;

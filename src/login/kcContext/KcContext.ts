@@ -537,6 +537,7 @@ export type Attribute = {
     };
     html5DataAnnotations: {
         kcNumberFormat?: string;
+        kcNumberUnFormat?: string;
     };
     readOnly: boolean;
     validators: Validators;
