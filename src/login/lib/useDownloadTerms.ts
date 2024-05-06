@@ -14,6 +14,7 @@ export type KcContextLike = {
     locale?: {
         currentLanguageTag: string;
     };
+    termsAcceptanceRequired?: boolean;
 };
 
 assert<KcContext extends KcContextLike ? true : false>();
@@ -38,12 +39,10 @@ export function useDownloadTerms(params: {
     })();
 
     useEffect(() => {
-        if (kcContext.pageId !== "terms.ftl") {
-            return;
+        if (kcContext.pageId === "terms.ftl" || kcContext.termsAcceptanceRequired) {
+            downloadTermMarkdownMemoized(kcContext.locale?.currentLanguageTag ?? fallbackLanguageTag).then(
+                thermMarkdown => (evtTermMarkdown.state = thermMarkdown)
+            );
         }
-
-        downloadTermMarkdownMemoized(kcContext.locale?.currentLanguageTag ?? fallbackLanguageTag).then(
-            thermMarkdown => (evtTermMarkdown.state = thermMarkdown)
-        );
     }, []);
 }
