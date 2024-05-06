@@ -201,6 +201,12 @@ export declare namespace KcContext {
          * A Keycloak Java extension used as dependency in Keycloakify.
          */
         passwordPolicies?: PasswordPolicies;
+        url: {
+            registrationAction: string;
+        };
+        passwordRequired: boolean;
+        recaptchaRequired: boolean;
+        recaptchaSiteKey?: string;
     };
 
     export type RegisterUserProfile = Common & {
@@ -215,15 +221,6 @@ export declare namespace KcContext {
         passwordRequired: boolean;
         recaptchaRequired: boolean;
         recaptchaSiteKey?: string;
-        social: {
-            displayInfo: boolean;
-            providers?: {
-                loginUrl: string;
-                alias: string;
-                providerId: string;
-                displayName: string;
-            }[];
-        };
     };
 
     export type Info = Common & {
