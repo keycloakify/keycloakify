@@ -5,10 +5,10 @@ export function createUseClassName<ClassKey extends string>(params: { defaultCla
     const { defaultClasses } = params;
 
     function useGetClassName(params: { doUseDefaultCss: boolean; classes: Partial<Record<ClassKey, string>> | undefined }) {
-        const { classes } = params;
+        const { classes, doUseDefaultCss } = params;
 
         const getClassName = useConstCallback((classKey: ClassKey): string => {
-            return clsx(classKey, defaultClasses[classKey], classes?.[classKey]);
+            return clsx(classKey, doUseDefaultCss ? defaultClasses[classKey] : undefined, classes?.[classKey]);
         });
 
         return { getClassName };
