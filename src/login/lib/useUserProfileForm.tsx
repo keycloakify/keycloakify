@@ -68,7 +68,7 @@ export type KcContextLike = {
     messagesPerField: Pick<KcContext.Common["messagesPerField"], "existsError" | "get">;
     profile: {
         attributes: Attribute[];
-        html5DataAnnotations: Record<string, string>;
+        html5DataAnnotations?: Record<string, string>;
     };
     passwordRequired: boolean;
     realm: { registrationEmailAsUsername: boolean };
@@ -107,8 +107,7 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
 
     usePrepareTemplate({
         "styles": [],
-        // NOTE: The ?? {} is for compat with Keycloak version prior to 24
-        "scripts": Object.keys(kcContext.profile.html5DataAnnotations ?? {})
+        "scripts": Object.keys(kcContext.profile?.html5DataAnnotations ?? {})
             .filter(key => key !== "kcMultivalued" && key !== "kcNumberFormat") // NOTE: Keycloakify handles it.
             .map(key => ({
                 "isModule": true,
@@ -126,7 +125,69 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
     const attributesWithPassword = useMemo(() => {
         const attributesWithPassword: Attribute[] = [];
 
-        for (const attribute of kcContext.profile.attributes) {
+        const attributes = (() => {
+            retrocompat_patch: {
+                if ("profile" in kcContext && "attributes" in kcContext.profile && kcContext.profile.attributes.length !== 0) {
+                    break retrocompat_patch;
+                }
+
+                kcContext.profile = {
+                    "attributes": (["firstName", "lastName", "email", "username"] as const)
+                        .filter(name => (name !== "username" ? true : !kcContext.realm.registrationEmailAsUsername))
+                        .map(name =>
+                            id<Attribute>({
+                                "name": name,
+                                "displayName": id<`\${${MessageKey}}`>(`\${${name}}`),
+                                "required": true,
+                                "value": (kcContext as any).register.formData[name] ?? "",
+                                "html5DataAnnotations": {},
+                                "readOnly": false,
+                                "validators": {},
+                                "annotations": {},
+                                "autocomplete": (() => {
+                                    switch (name) {
+                                        case "email":
+                                            return "email";
+                                        case "username":
+                                            return "username";
+                                        default:
+                                            return undefined;
+                                    }
+                                })()
+                            })
+                        ),
+                    "html5DataAnnotations": {}
+                };
+            }
+
+            return kcContext.profile.attributes;
+        })();
+
+        for (const attribute_pre_group_patch of attributes) {
+            const attribute = (() => {
+                if (typeof attribute_pre_group_patch.group === "string" && attribute_pre_group_patch.group !== "") {
+                    const { group, groupDisplayHeader, groupDisplayDescription, groupAnnotations, ...rest } =
+                        attribute_pre_group_patch as Attribute & {
+                            group: string;
+                            groupDisplayHeader?: string;
+                            groupDisplayDescription?: string;
+                            groupAnnotations: Record<string, string>;
+                        };
+
+                    return id<Attribute>({
+                        ...rest,
+                        "group": {
+                            "name": group,
+                            "displayHeader": groupDisplayHeader,
+                            "displayDescription": groupDisplayDescription,
+                            "html5DataAnnotations": {}
+                        }
+                    });
+                }
+
+                return attribute_pre_group_patch;
+            })();
+
             attributesWithPassword.push(attribute);
 
             add_password_and_password_confirm: {
@@ -191,7 +252,6 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                         apply_formatters: {
                             const { attribute } = formFieldState;
 
-                            // NOTE: The `?? {}` is for compat with Keycloak version prior to 24
                             const { kcNumberFormat } = attribute.html5DataAnnotations ?? {};
 
                             if (kcNumberFormat === undefined) {
@@ -407,7 +467,6 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                 let { valueOrValues } = formFieldState;
 
                 unFormat_number: {
-                    // NOTE: The `?? {}` is for compat with Keycloak version prior to 24
                     const { kcNumberUnFormat } = attribute.html5DataAnnotations ?? {};
 
                     if (kcNumberUnFormat === undefined) {
@@ -791,7 +850,6 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                         assert(typeof valueOrValues === "string");
 
                         unFormat_number: {
-                            // NOTE: The `?? {}` is for compat with Keycloak version prior to 24
                             const { kcNumberUnFormat } = attribute.html5DataAnnotations ?? {};
 
                             if (kcNumberUnFormat === undefined) {

@@ -193,7 +193,7 @@ export declare namespace KcContext {
         profile: {
             attributes: Attribute[];
             attributesByName: Record<string, Attribute>;
-            html5DataAnnotations: Record<string, string>;
+            html5DataAnnotations?: Record<string, string>;
         };
         url: {
             registrationAction: string;
@@ -450,8 +450,8 @@ export declare namespace KcContext {
     export type UpdateUserProfile = Common & {
         pageId: "update-user-profile.ftl";
         profile: {
-            attributes: LegacyAttribute[];
-            attributesByName: Record<string, LegacyAttribute>;
+            attributes: Attribute[];
+            attributesByName: Record<string, Attribute>;
         };
     };
 
@@ -459,8 +459,8 @@ export declare namespace KcContext {
         pageId: "idp-review-user-profile.ftl";
         profile: {
             context: "IDP_REVIEW";
-            attributes: LegacyAttribute[];
-            attributesByName: Record<string, LegacyAttribute>;
+            attributes: Attribute[];
+            attributesByName: Record<string, Attribute>;
         };
     };
 
@@ -517,7 +517,7 @@ export type Attribute = {
         name: string;
         displayDescription?: string;
     };
-    html5DataAnnotations: {
+    html5DataAnnotations?: {
         kcNumberFormat?: string;
         kcNumberUnFormat?: string;
     };
@@ -597,13 +597,6 @@ export type Attribute = {
         | "impp"
         | "url"
         | "photo";
-};
-
-export type LegacyAttribute = Omit<Attribute, "group" | "html5DataAnnotations"> & {
-    group: string;
-    groupDisplayHeader?: string;
-    groupDisplayDescription?: string;
-    groupAnnotations: Record<string, string>;
 };
 
 export type Validators = Partial<{

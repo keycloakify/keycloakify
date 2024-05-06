@@ -1,8 +1,7 @@
 import { useEffect, Fragment } from "react";
 import type { ClassKey } from "keycloakify/login/TemplateProps";
-import { clsx } from "keycloakify/tools/clsx";
 import { useUserProfileForm, type KcContextLike, type FormAction, type FormFieldError } from "keycloakify/login/lib/useUserProfileForm";
-import type { Attribute, LegacyAttribute } from "keycloakify/login/kcContext/KcContext";
+import type { Attribute } from "keycloakify/login/kcContext/KcContext";
 import { assert } from "tsafe/assert";
 import type { I18n } from "./i18n";
 
@@ -49,20 +48,9 @@ export default function UserProfileFormFields(props: UserProfileFormFieldsProps)
     return (
         <>
             {formFieldStates.map(({ attribute, displayableErrors, valueOrValues }) => {
-                const formGroupClassName = clsx(
-                    getClassName("kcFormGroupClass"),
-                    displayableErrors.length !== 0 && getClassName("kcFormGroupErrorClass")
-                );
-
                 return (
                     <Fragment key={attribute.name}>
-                        <GroupLabel
-                            attribute={attribute}
-                            getClassName={getClassName}
-                            i18n={i18n}
-                            groupNameRef={groupNameRef}
-                            formGroupClassName={formGroupClassName}
-                        />
+                        <GroupLabel attribute={attribute} getClassName={getClassName} i18n={i18n} groupNameRef={groupNameRef} />
                         {BeforeField !== undefined && (
                             <BeforeField
                                 attribute={attribute}
@@ -73,7 +61,7 @@ export default function UserProfileFormFields(props: UserProfileFormFieldsProps)
                             />
                         )}
                         <div
-                            className={formGroupClassName}
+                            className={getClassName("kcFormGroupClass")}
                             style={{ "display": attribute.name === "password-confirm" && !doMakeUserConfirmPassword ? "none" : undefined }}
                         >
                             <div className={getClassName("kcLabelWrapperClass")}>
@@ -142,40 +130,10 @@ function GroupLabel(props: {
     groupNameRef: {
         current: string;
     };
-    formGroupClassName: string;
 }) {
-    const { attribute, getClassName, i18n, groupNameRef, formGroupClassName } = props;
+    const { attribute, getClassName, i18n, groupNameRef } = props;
 
     const { advancedMsg } = i18n;
-
-    keycloak_prior_to_24: {
-        if (attribute.html5DataAnnotations !== undefined) {
-            break keycloak_prior_to_24;
-        }
-
-        const { group = "", groupDisplayHeader = "", groupDisplayDescription = "" } = attribute as any as LegacyAttribute;
-
-        return (
-            <>
-                {group !== groupNameRef.current && (groupNameRef.current = group) !== "" && (
-                    <div className={formGroupClassName}>
-                        <div className={getClassName("kcContentWrapperClass")}>
-                            <label id={`header-${group}`} className={getClassName("kcFormGroupHeader")}>
-                                {advancedMsg(groupDisplayHeader) || groupNameRef.current}
-                            </label>
-                        </div>
-                        {groupDisplayDescription !== "" && (
-                            <div className={getClassName("kcLabelWrapperClass")}>
-                                <label id={`description-${group}`} className={getClassName("kcLabelClass")}>
-                                    {advancedMsg(groupDisplayDescription)}
-                                </label>
-                            </div>
-                        )}
-                    </div>
-                )}
-            </>
-        );
-    }
 
     if (attribute.group?.name !== groupNameRef.current) {
         groupNameRef.current = attribute.group?.name ?? "";
