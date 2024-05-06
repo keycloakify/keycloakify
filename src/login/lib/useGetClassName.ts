@@ -12,6 +12,7 @@ export const { useGetClassName } = createUseClassName<ClassKey>({
         "kcLocaleDropDownClass": undefined,
         "kcLocaleListItemClass": undefined,
         "kcContentWrapperClass": undefined,
+        "kcCheckboxInputClass": undefined,
 
         "kcLogoIdP-facebook": "fa fa-facebook",
         "kcAuthenticatorOTPClass": "fa fa-mobile list-view-pf-icon-lg",

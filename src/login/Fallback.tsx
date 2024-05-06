@@ -3,10 +3,12 @@ import type { PageProps } from "keycloakify/login/pages/PageProps";
 import { assert, type Equals } from "tsafe/assert";
 import type { I18n } from "./i18n";
 import type { KcContext } from "./kcContext";
+import type { LazyOrNot } from "keycloakify/tools/LazyOrNot";
+import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFormFields";
+import type { TermsAcceptanceProps } from "keycloakify/login/TermsAcceptance";
 
 const Login = lazy(() => import("keycloakify/login/pages/Login"));
 const Register = lazy(() => import("keycloakify/login/pages/Register"));
-const RegisterUserProfile = lazy(() => import("keycloakify/login/pages/RegisterUserProfile"));
 const Info = lazy(() => import("keycloakify/login/pages/Info"));
 const Error = lazy(() => import("keycloakify/login/pages/Error"));
 const LoginResetPassword = lazy(() => import("keycloakify/login/pages/LoginResetPassword"));
@@ -31,7 +33,12 @@ const UpdateEmail = lazy(() => import("keycloakify/login/pages/UpdateEmail"));
 const SelectAuthenticator = lazy(() => import("keycloakify/login/pages/SelectAuthenticator"));
 const SamlPostForm = lazy(() => import("keycloakify/login/pages/SamlPostForm"));
 
-export default function Fallback(props: PageProps<KcContext, I18n>) {
+type FallbackProps = PageProps<KcContext, I18n> & {
+    UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
+    TermsAcceptance: LazyOrNot<(props: TermsAcceptanceProps) => JSX.Element | null>;
+};
+
+export default function Fallback(props: FallbackProps) {
     const { kcContext, ...rest } = props;
 
     return (
@@ -41,9 +48,8 @@ export default function Fallback(props: PageProps<KcContext, I18n>) {
                     case "login.ftl":
                         return <Login kcContext={kcContext} {...rest} />;
                     case "register.ftl":
-                        return <Register kcContext={kcContext} {...rest} />;
                     case "register-user-profile.ftl":
-                        return <RegisterUserProfile kcContext={kcContext} {...rest} />;
+                        return <Register kcContext={kcContext} {...rest} />;
                     case "info.ftl":
                         return <Info kcContext={kcContext} {...rest} />;
                     case "error.ftl":

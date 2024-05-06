@@ -3,8 +3,8 @@ import type { ClassKey } from "keycloakify/login/TemplateProps";
 import { clsx } from "keycloakify/tools/clsx";
 import { useUserProfileForm, type KcContextLike, type FormAction, type FormFieldError } from "keycloakify/login/lib/useUserProfileForm";
 import type { Attribute, LegacyAttribute } from "keycloakify/login/kcContext/KcContext";
-import type { I18n } from "../../i18n";
 import { assert } from "tsafe/assert";
+import type { I18n } from "./i18n";
 
 export type UserProfileFormFieldsProps = {
     kcContext: KcContextLike;
@@ -26,7 +26,7 @@ type BeforeAfterFieldProps = {
 // NOTE: Enabled by default but it's a UX best practice to set it to false.
 const doMakeUserConfirmPassword = true;
 
-export function UserProfileFormFields(props: UserProfileFormFieldsProps) {
+export default function UserProfileFormFields(props: UserProfileFormFieldsProps) {
     const { kcContext, onIsFormSubmittableValueChange, i18n, getClassName, BeforeField, AfterField } = props;
 
     const { advancedMsg } = i18n;
@@ -260,7 +260,7 @@ function FieldErrors(props: {
     );
 }
 
-type PropsOfInputFiledByType = {
+type InputFiledByTypeProps = {
     attribute: Attribute;
     valueOrValues: string | string[];
     displayableErrors: FormFieldError[];
@@ -269,7 +269,7 @@ type PropsOfInputFiledByType = {
     i18n: I18n;
 };
 
-function InputFiledByType(props: PropsOfInputFiledByType) {
+function InputFiledByType(props: InputFiledByTypeProps) {
     const { attribute, valueOrValues } = props;
 
     switch (attribute.annotations.inputType) {
@@ -296,7 +296,7 @@ function InputFiledByType(props: PropsOfInputFiledByType) {
     }
 }
 
-function InputTag(props: PropsOfInputFiledByType & { fieldIndex: number | undefined }) {
+function InputTag(props: InputFiledByTypeProps & { fieldIndex: number | undefined }) {
     const { attribute, fieldIndex, getClassName, formValidationDispatch, valueOrValues, i18n, displayableErrors } = props;
 
     return (
@@ -511,7 +511,7 @@ function AddRemoveButtonsMultiValuedAttribute(props: {
     );
 }
 
-function InputTagSelects(props: PropsOfInputFiledByType) {
+function InputTagSelects(props: InputFiledByTypeProps) {
     const { attribute, formValidationDispatch, getClassName, valueOrValues } = props;
 
     const { advancedMsg } = props.i18n;
@@ -619,7 +619,7 @@ function InputTagSelects(props: PropsOfInputFiledByType) {
     );
 }
 
-function TextareaTag(props: PropsOfInputFiledByType) {
+function TextareaTag(props: InputFiledByTypeProps) {
     const { attribute, formValidationDispatch, getClassName, displayableErrors, valueOrValues } = props;
 
     assert(typeof valueOrValues === "string");
@@ -655,7 +655,7 @@ function TextareaTag(props: PropsOfInputFiledByType) {
     );
 }
 
-function SelectTag(props: PropsOfInputFiledByType) {
+function SelectTag(props: InputFiledByTypeProps) {
     const { attribute, formValidationDispatch, getClassName, displayableErrors, i18n, valueOrValues } = props;
 
     const { advancedMsg } = i18n;
