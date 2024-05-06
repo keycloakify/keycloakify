@@ -5,7 +5,7 @@ import { evtTermMarkdown } from "keycloakify/login/lib/useDownloadTerms";
 import type { KcContext } from "keycloakify/login/kcContext/KcContext";
 import type { I18n } from "./i18n";
 
-export type PropsOfTermsAcceptance = {
+export type TermsAcceptanceProps = {
     kcContext: KcContextLike;
     i18n: I18n;
     getClassName: (classKey: ClassKey) => string;
@@ -16,7 +16,7 @@ type KcContextLike = {
     messagesPerField: Pick<KcContext.Common["messagesPerField"], "existsError" | "get">;
 };
 
-export function TermsAcceptance(props: PropsOfTermsAcceptance) {
+export function TermsAcceptance(props: TermsAcceptanceProps) {
     const {
         kcContext: { termsAcceptanceRequired = false }
     } = props;
@@ -28,7 +28,7 @@ export function TermsAcceptance(props: PropsOfTermsAcceptance) {
     return <TermsAcceptanceEnabled {...props} />;
 }
 
-export function TermsAcceptanceEnabled(props: PropsOfTermsAcceptance) {
+export function TermsAcceptanceEnabled(props: TermsAcceptanceProps) {
     const {
         i18n,
         getClassName,

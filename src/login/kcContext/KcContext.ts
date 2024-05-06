@@ -13,7 +13,6 @@ type ExtractAfterStartingWith<Prefix extends string, StrEnum> = StrEnum extends 
 export type KcContext =
     | KcContext.Login
     | KcContext.Register
-    | KcContext.RegisterUserProfile
     | KcContext.Info
     | KcContext.Error
     | KcContext.LoginResetPassword
@@ -190,37 +189,23 @@ export declare namespace KcContext {
     */
 
     export type Register = Common & {
-        pageId: "register.ftl";
+        pageId: "register.ftl" | "register-user-profile.ftl";
         profile: {
             attributes: Attribute[];
             attributesByName: Record<string, Attribute>;
             html5DataAnnotations: Record<string, string>;
         };
+        url: {
+            registrationAction: string;
+        };
+        passwordRequired: boolean;
+        recaptchaRequired: boolean;
+        recaptchaSiteKey?: string;
         /**
          * Theses values are added by: https://github.com/jcputney/keycloak-theme-additional-info-extension
          * A Keycloak Java extension used as dependency in Keycloakify.
          */
         passwordPolicies?: PasswordPolicies;
-        url: {
-            registrationAction: string;
-        };
-        passwordRequired: boolean;
-        recaptchaRequired: boolean;
-        recaptchaSiteKey?: string;
-    };
-
-    export type RegisterUserProfile = Common & {
-        pageId: "register-user-profile.ftl";
-        profile: {
-            attributes: LegacyAttribute[];
-            attributesByName: Record<string, LegacyAttribute>;
-        };
-        url: {
-            registrationAction: string;
-        };
-        passwordRequired: boolean;
-        recaptchaRequired: boolean;
-        recaptchaSiteKey?: string;
     };
 
     export type Info = Common & {

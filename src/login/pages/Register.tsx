@@ -5,15 +5,15 @@ import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import type { KcContext } from "../kcContext";
 import type { I18n } from "../i18n";
 import type { LazyOrNot } from "keycloakify/tools/LazyOrNot";
-import type { PropsOfUserProfileFormFields } from "keycloakify/login/UserProfileFormFields";
-import type { PropsOfTermsAcceptance } from "../TermsAcceptance";
+import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFormFields";
+import type { TermsAcceptanceProps } from "../TermsAcceptance";
 
-type Props = PageProps<Extract<KcContext, { pageId: "register.ftl" }>, I18n> & {
-    UserProfileFormFields: LazyOrNot<(props: PropsOfUserProfileFormFields) => JSX.Element>;
-    TermsAcceptance: LazyOrNot<(props: PropsOfTermsAcceptance) => JSX.Element | null>;
+export type PropsOfRegister = PageProps<Extract<KcContext, { pageId: "register.ftl" | "register-user-profile.ftl" }>, I18n> & {
+    UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
+    TermsAcceptance: LazyOrNot<(props: TermsAcceptanceProps) => JSX.Element | null>;
 };
 
-export default function Register(props: Props) {
+export default function Register(props: PropsOfRegister) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes, UserProfileFormFields, TermsAcceptance } = props;
 
     const { getClassName } = useGetClassName({

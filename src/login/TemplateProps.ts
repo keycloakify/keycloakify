@@ -27,6 +27,7 @@ export type ClassKey =
     | "kcInfoAreaWrapperClass"
     | "kcFormButtonsWrapperClass"
     | "kcFormOptionsWrapperClass"
+    | "kcCheckboxInputClass"
     | "kcLocaleDropDownClass"
     | "kcLocaleListItemClass"
     | "kcContentWrapperClass"
