@@ -70,7 +70,7 @@ export type KcContextLike = {
         attributes: Attribute[];
         html5DataAnnotations: Record<string, string>;
     };
-    passwordRequired?: boolean;
+    passwordRequired: boolean;
     realm: { registrationEmailAsUsername: boolean };
     passwordPolicies?: PasswordPolicies;
     url: {
@@ -102,10 +102,6 @@ namespace internal {
     };
 }
 
-/**
- * NOTE: The attributesWithPassword returned is actually augmented with
- * artificial password related attributes only if kcContext.passwordRequired === true
- */
 export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTypeOfUseUserProfileForm {
     const { kcContext, i18n, doMakeUserConfirmPassword } = params;
 
@@ -134,6 +130,10 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
             attributesWithPassword.push(attribute);
 
             add_password_and_password_confirm: {
+                if (!kcContext.passwordRequired) {
+                    break add_password_and_password_confirm;
+                }
+
                 if (attribute.name !== (kcContext.realm.registrationEmailAsUsername ? "email" : "username")) {
                     // NOTE: We want to add password and password-confirm after the field that identifies the user.
                     // It's either email or username.
