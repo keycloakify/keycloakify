@@ -8,6 +8,8 @@ import { emailRegexp } from "keycloakify/tools/emailRegExp";
 import type { KcContext, PasswordPolicies } from "keycloakify/login/kcContext/KcContext";
 import { assert, type Equals } from "tsafe/assert";
 import type { I18n } from "../i18n";
+import { formatNumber } from "keycloakify/tools/formatNumber";
+import { usePrepareTemplate } from "keycloakify/lib/usePrepareTemplate";
 
 export type FormFieldError = {
     errorMessage: JSX.Element;
@@ -66,10 +68,14 @@ export type KcContextLike = {
     messagesPerField: Pick<KcContext.Common["messagesPerField"], "existsError" | "get">;
     profile: {
         attributes: Attribute[];
+        html5DataAnnotations: Record<string, string>;
     };
     passwordRequired?: boolean;
     realm: { registrationEmailAsUsername: boolean };
     passwordPolicies?: PasswordPolicies;
+    url: {
+        resourcesPath: string;
+    };
 };
 
 export type ParamsOfUseUserProfileForm = {
@@ -102,6 +108,24 @@ namespace internal {
  */
 export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTypeOfUseUserProfileForm {
     const { kcContext, i18n, doMakeUserConfirmPassword } = params;
+
+    usePrepareTemplate({
+        "styles": [],
+        // NOTE: The ?? {} is for compat with Keycloak version prior to 24
+        "scripts": Object.keys(kcContext.profile.html5DataAnnotations ?? {})
+            .filter(key => key !== "kcMultivalued" && key !== "kcNumberFormat") // NOTE: Keycloakify handles it.
+            .map(key => ({
+                "isModule": true,
+                "source": {
+                    "type": "url",
+                    "src": `${kcContext.url.resourcesPath}/js/${key}.js`
+                }
+            })),
+        "htmlClassName": undefined,
+        "bodyClassName": undefined,
+        "htmlLangProperty": undefined,
+        "documentTitle": undefined
+    });
 
     const attributesWithPassword = useMemo(() => {
         const attributesWithPassword: Attribute[] = [];
@@ -163,6 +187,23 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                 switch (params.action) {
                     case "update":
                         formFieldState.valueOrValues = params.valueOrValues;
+
+                        apply_formatters: {
+                            const { attribute } = formFieldState;
+
+                            // NOTE: The `?? {}` is for compat with Keycloak version prior to 24
+                            const { kcNumberFormat } = attribute.html5DataAnnotations ?? {};
+
+                            if (kcNumberFormat === undefined) {
+                                break apply_formatters;
+                            }
+
+                            if (formFieldState.valueOrValues instanceof Array) {
+                                formFieldState.valueOrValues = formFieldState.valueOrValues.map(value => formatNumber(value, kcNumberFormat));
+                            } else {
+                                formFieldState.valueOrValues = formatNumber(formFieldState.valueOrValues, kcNumberFormat);
+                            }
+                        }
 
                         formFieldState.errors = getErrors({
                             "attributeName": params.name,

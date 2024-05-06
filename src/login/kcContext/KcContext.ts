@@ -535,7 +535,9 @@ export type Attribute = {
         name: string;
         displayDescription?: string;
     };
-    html5DataAnnotations: Record<string, string>;
+    html5DataAnnotations: {
+        kcNumberFormat?: string;
+    };
     readOnly: boolean;
     validators: Validators;
     annotations: {
