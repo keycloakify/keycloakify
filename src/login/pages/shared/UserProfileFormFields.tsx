@@ -125,14 +125,7 @@ export function UserProfileFormFields(props: UserProfileFormFieldsProps) {
                                         valueOrValues={valueOrValues}
                                     />
                                 )}
-                                {/* 
-                        TODO: 
-
-                        	<#list profile.html5DataAnnotations?keys as key>
-		                        <script type="module" src="${url.resourcesPath}/js/${key}.js"></script>
-	                        </#list>
-
-                        */}
+                                {/* NOTE: Downloading of html5DataAnnotations scripts is done in the useUserProfileForm hook */}
                             </div>
                         </div>
                     </Fragment>
@@ -279,32 +272,6 @@ type PropsOfInputFiledByType = {
 function InputFiledByType(props: PropsOfInputFiledByType) {
     const { attribute, valueOrValues } = props;
 
-    /*
-    <#macro inputFieldByType attribute>
-    <#switch attribute.annotations.inputType!''>
-    <#case 'textarea'>
-        <@textareaTag attribute=attribute/>
-        <#break>
-    <#case 'select'>
-    <#case 'multiselect'>
-        <@selectTag attribute=attribute/>
-        <#break>
-    <#case 'select-radiobuttons'>
-    <#case 'multiselect-checkboxes'>
-        <@inputTagSelects attribute=attribute/>
-        <#break>
-    <#default>
-        <#if attribute.multivalued && attribute.values?has_content>
-            <#list attribute.values as value>
-                <@inputTag attribute=attribute value=value!''/>
-            </#list>
-        <#else>
-            <@inputTag attribute=attribute value=attribute.value!''/>
-        </#if>
-    </#switch>
-    </#macro>
-    */
-
     switch (attribute.annotations.inputType) {
         case "textarea":
             return <TextareaTag {...props} />;
@@ -330,43 +297,6 @@ function InputFiledByType(props: PropsOfInputFiledByType) {
 }
 
 function InputTag(props: PropsOfInputFiledByType & { fieldIndex: number | undefined }) {
-    /*
-    <#macro inputTag attribute value>
-    <input type="<@inputTagType attribute=attribute/>" id="${attribute.name}" name="${attribute.name}" value="${(value!'')}" class="${properties.kcInputClass!}"
-        aria-invalid="<#if messagesPerField.existsError('${attribute.name}')>true</#if>"
-        <#if attribute.readOnly>disabled</#if>
-        <#if attribute.autocomplete??>autocomplete="${attribute.autocomplete}"</#if>
-        <#if attribute.annotations.inputTypePlaceholder??>placeholder="${attribute.annotations.inputTypePlaceholder}"</#if>
-        <#if attribute.annotations.inputTypePattern??>pattern="${attribute.annotations.inputTypePattern}"</#if>
-        <#if attribute.annotations.inputTypeSize??>size="${attribute.annotations.inputTypeSize}"</#if>
-        <#if attribute.annotations.inputTypeMaxlength??>maxlength="${attribute.annotations.inputTypeMaxlength}"</#if>
-        <#if attribute.annotations.inputTypeMinlength??>minlength="${attribute.annotations.inputTypeMinlength}"</#if>
-        <#if attribute.annotations.inputTypeMax??>max="${attribute.annotations.inputTypeMax}"</#if>
-        <#if attribute.annotations.inputTypeMin??>min="${attribute.annotations.inputTypeMin}"</#if>
-        <#if attribute.annotations.inputTypeStep??>step="${attribute.annotations.inputTypeStep}"</#if>
-        <#if attribute.annotations.inputTypeStep??>step="${attribute.annotations.inputTypeStep}"</#if>
-        <#list attribute.html5DataAnnotations as key, value>
-            data-${key}="${value}"
-        </#list>
-    />
-    </#macro>
-
-    <#macro inputTagType attribute>
-    <#compress>
-    <#if attribute.annotations.inputType??>
-        <#if attribute.annotations.inputType?starts_with("html5-")>
-            ${attribute.annotations.inputType[6..]}
-        <#else>
-            ${attribute.annotations.inputType}
-        </#if>
-    <#else>
-    text
-    </#if>
-    </#compress>
-    </#macro>
-
-    */
-
     const { attribute, fieldIndex, getClassName, formValidationDispatch, valueOrValues, i18n, displayableErrors } = props;
 
     return (
@@ -582,41 +512,6 @@ function AddRemoveButtonsMultiValuedAttribute(props: {
 }
 
 function InputTagSelects(props: PropsOfInputFiledByType) {
-    /*
-<#macro inputTagSelects attribute>
-    <#if attribute.annotations.inputType=='select-radiobuttons'>
-        <#assign inputType='radio'>
-        <#assign classDiv=properties.kcInputClassRadio!>
-        <#assign classInput=properties.kcInputClassRadioInput!>
-        <#assign classLabel=properties.kcInputClassRadioLabel!>
-    <#else>
-        <#assign inputType='checkbox'>
-        <#assign classDiv=properties.kcInputClassCheckbox!>
-        <#assign classInput=properties.kcInputClassCheckboxInput!>
-        <#assign classLabel=properties.kcInputClassCheckboxLabel!>
-    </#if>
-
-    <#if attribute.annotations.inputOptionsFromValidation?? && attribute.validators[attribute.annotations.inputOptionsFromValidation]?? && attribute.validators[attribute.annotations.inputOptionsFromValidation].options??>
-        <#assign options=attribute.validators[attribute.annotations.inputOptionsFromValidation].options>
-    <#elseif attribute.validators.options?? && attribute.validators.options.options??>
-        <#assign options=attribute.validators.options.options>
-    <#else>
-        <#assign options=[]>
-    </#if>
-
-    <#list options as option>
-        <div class="${classDiv}">
-            <input type="${inputType}" id="${attribute.name}-${option}" name="${attribute.name}" value="${option}" class="${classInput}"
-                aria-invalid="<#if messagesPerField.existsError('${attribute.name}')>true</#if>"
-                <#if attribute.readOnly>disabled</#if>
-                <#if attribute.values?seq_contains(option)>checked</#if>
-            />
-            <label for="${attribute.name}-${option}" class="${classLabel}<#if attribute.readOnly> ${properties.kcInputClassRadioCheckboxLabelDisabled!}</#if>"><@selectOptionLabelText attribute=attribute option=option/></label>
-        </div>
-    </#list>
-</#macro>
-    */
-
     const { attribute, formValidationDispatch, getClassName, valueOrValues } = props;
 
     const { advancedMsg } = props.i18n;
