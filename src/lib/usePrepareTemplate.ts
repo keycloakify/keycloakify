@@ -81,8 +81,6 @@ export function usePrepareTemplate(params: {
             return;
         }
 
-        let isUnmounted = false;
-
         const removeArray: (() => void)[] = [];
 
         scripts.forEach(script => {
@@ -95,7 +93,6 @@ export function usePrepareTemplate(params: {
         });
 
         return () => {
-            isUnmounted = true;
             removeArray.forEach(remove => remove());
         };
     }, [isReady]);
