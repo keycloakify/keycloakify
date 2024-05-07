@@ -254,7 +254,7 @@ function InputFiledByType(props: InputFiledByTypeProps) {
 
             if (attribute.name === "password" || attribute.name === "password-confirm") {
                 return (
-                    <PasswordWrapper getClassName={props.getClassName} i18n={props.i18n} attributeName={attribute.name}>
+                    <PasswordWrapper getClassName={props.getClassName} i18n={props.i18n} passwordInputId={attribute.name}>
                         {inputNode}
                     </PasswordWrapper>
                 );
@@ -265,20 +265,15 @@ function InputFiledByType(props: InputFiledByTypeProps) {
     }
 }
 
-function PasswordWrapper(props: {
-    getClassName: UserProfileFormFieldsProps["getClassName"];
-    i18n: I18n;
-    attributeName: "password" | "password-confirm";
-    children: JSX.Element;
-}) {
-    const { getClassName, i18n, attributeName, children } = props;
+function PasswordWrapper(props: { getClassName: (classKey: ClassKey) => string; i18n: I18n; passwordInputId: string; children: JSX.Element }) {
+    const { getClassName, i18n, passwordInputId, children } = props;
 
     const { msgStr } = i18n;
 
     const [isPasswordRevealed, toggleIsPasswordRevealed] = useReducer((isPasswordRevealed: boolean) => !isPasswordRevealed, false);
 
     useEffect(() => {
-        const passwordInputElement = document.getElementById(attributeName);
+        const passwordInputElement = document.getElementById(passwordInputId);
 
         assert(passwordInputElement instanceof HTMLInputElement);
 
@@ -292,7 +287,7 @@ function PasswordWrapper(props: {
                 type="button"
                 className={getClassName("kcFormPasswordVisibilityButtonClass")}
                 aria-label={msgStr(isPasswordRevealed ? "hidePassword" : "showPassword")}
-                aria-controls={attributeName}
+                aria-controls={passwordInputId}
                 onClick={toggleIsPasswordRevealed}
             >
                 <i
