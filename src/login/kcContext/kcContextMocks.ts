@@ -421,7 +421,8 @@ export const kcContextMocks = [
                     "context": "REGISTRATION_PROFILE" as const,
                     attributes,
                     attributesByName
-                }
+                },
+                "scripts": [...registerCommon.scripts, "https://www.google.com/recaptcha/api.js"]
             })
         ];
     })(),
