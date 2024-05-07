@@ -4,7 +4,6 @@ import { generateCssCodeToDefineGlobals } from "../replacers/replaceImportsInCss
 import { replaceImportsInInlineCssCode } from "../replacers/replaceImportsInInlineCssCode";
 import * as fs from "fs";
 import { join as pathJoin } from "path";
-import { objectKeys } from "tsafe/objectKeys";
 import type { BuildOptions } from "../buildOptions";
 import { assert } from "tsafe/assert";
 import { type ThemeType, nameOfTheGlobal, basenameOfTheKeycloakifyResourcesDir, resources_common } from "../../constants";
@@ -96,35 +95,20 @@ export function generateFtlFilesCodeFactory(params: {
     }
 
     //FTL is no valid html, we can't insert with cheerio, we put placeholder for injecting later.
-    const replaceValueBySearchValue = {
-        '{ "x": "vIdLqMeOed9sdLdIdOxdK0d" }': fs
-            .readFileSync(pathJoin(__dirname, "ftl_object_to_js_code_declaring_an_object.ftl"))
-            .toString("utf8")
-            .match(/^<script>const _=((?:.|\n)+)<\/script>[\n]?$/)![1]
-            .replace("FIELD_NAMES_eKsIY4ZsZ4xeM", fieldNames.map(name => `"${name}"`).join(", "))
-            .replace("KEYCLOAKIFY_VERSION_xEdKd3xEdr", keycloakifyVersion)
-            .replace("KEYCLOAKIFY_THEME_VERSION_sIgKd3xEdr3dx", buildOptions.themeVersion)
-            .replace("KEYCLOAKIFY_THEME_TYPE_dExKd3xEdr", themeType)
-            .replace("KEYCLOAKIFY_THEME_NAME_cXxKd3xEer", themeName)
-            .replace("RESOURCES_COMMON_cLsLsMrtDkpVv", resources_common),
-        "<!-- xIdLqMeOedErIdLsPdNdI9dSlxI -->": [
-            "<#if scripts??>",
-            "    <#list scripts as script>",
-            '        <script src="${script}" type="text/javascript"></script>',
-            "    </#list>",
-            "</#if>"
-        ].join("\n")
-    };
+    const ftlObjectToJsCodeDeclaringAnObject = fs
+        .readFileSync(pathJoin(__dirname, "ftl_object_to_js_code_declaring_an_object.ftl"))
+        .toString("utf8")
+        .match(/^<script>const _=((?:.|\n)+)<\/script>[\n]?$/)![1]
+        .replace("FIELD_NAMES_eKsIY4ZsZ4xeM", fieldNames.map(name => `"${name}"`).join(", "))
+        .replace("KEYCLOAKIFY_VERSION_xEdKd3xEdr", keycloakifyVersion)
+        .replace("KEYCLOAKIFY_THEME_VERSION_sIgKd3xEdr3dx", buildOptions.themeVersion)
+        .replace("KEYCLOAKIFY_THEME_TYPE_dExKd3xEdr", themeType)
+        .replace("KEYCLOAKIFY_THEME_NAME_cXxKd3xEer", themeName)
+        .replace("RESOURCES_COMMON_cLsLsMrtDkpVv", resources_common);
 
-    $("head").prepend(
-        [
-            "<script>",
-            `    window.${nameOfTheGlobal}= ${objectKeys(replaceValueBySearchValue)[0]};`,
-            "</script>",
-            "",
-            objectKeys(replaceValueBySearchValue)[1]
-        ].join("\n")
-    );
+    const ftlObjectToJsCodeDeclaringAnObjectPlaceholder = '{ "x": "vIdLqMeOed9sdLdIdOxdK0d" }';
+
+    $("head").prepend(["<script>", `    window.${nameOfTheGlobal}= ${ftlObjectToJsCodeDeclaringAnObjectPlaceholder};`, "</script>"].join("\n"));
 
     // Remove part of the document marked as ignored.
     {
@@ -159,7 +143,7 @@ export function generateFtlFilesCodeFactory(params: {
         let ftlCode = $.html();
 
         Object.entries({
-            ...replaceValueBySearchValue,
+            [ftlObjectToJsCodeDeclaringAnObjectPlaceholder]: ftlObjectToJsCodeDeclaringAnObject,
             "PAGE_ID_xIgLsPgGId9D8e": pageId
         }).map(([searchValue, replaceValue]) => (ftlCode = ftlCode.replace(searchValue, replaceValue)));
 

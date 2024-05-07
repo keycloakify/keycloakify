@@ -26,7 +26,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
 
     const { msg, msgStr, changeLocale, labelBySupportedLanguageTag, currentLanguageTag } = i18n;
 
-    const { realm, locale, auth, url, message, isAppInitiatedAction, authenticationSession } = kcContext;
+    const { realm, locale, auth, url, message, isAppInitiatedAction, authenticationSession, scripts } = kcContext;
 
     const { isReady } = usePrepareTemplate({
         "styles": !doUseDefaultCss
@@ -64,7 +64,17 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                               ].join("\n")
                           }
                       }
-                  ])
+                  ]),
+            ...scripts.map(
+                script =>
+                    ({
+                        "isModule": false,
+                        "source": {
+                            "type": "url",
+                            "src": script
+                        }
+                    } as const)
+            )
         ],
         "htmlClassName": getClassName("kcHtmlClass"),
         "bodyClassName": getClassName("kcBodyClass"),

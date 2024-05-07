@@ -70,6 +70,21 @@ export function usePrepareTemplate(params: {
             setReady();
         })();
 
+        return () => {
+            isUnmounted = true;
+            removeArray.forEach(remove => remove());
+        };
+    }, []);
+
+    useEffect(() => {
+        if (!isReady) {
+            return;
+        }
+
+        let isUnmounted = false;
+
+        const removeArray: (() => void)[] = [];
+
         scripts.forEach(script => {
             const { remove } = headInsert({
                 "type": "javascript",
@@ -83,7 +98,7 @@ export function usePrepareTemplate(params: {
             isUnmounted = true;
             removeArray.forEach(remove => remove());
         };
-    }, []);
+    }, [isReady]);
 
     useSetClassName({
         "target": "html",
