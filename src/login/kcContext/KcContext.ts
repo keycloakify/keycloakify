@@ -173,21 +173,6 @@ export declare namespace KcContext {
         };
     };
 
-    /*
-    export type Register_legacy = RegisterUserProfile.CommonWithLegacy & {
-        pageId: "register.ftl";
-        register: {
-            formData: {
-                firstName?: string;
-                displayName?: string;
-                lastName?: string;
-                email?: string;
-                username?: string;
-            };
-        };
-    };
-    */
-
     export type Register = Common & {
         pageId: "register.ftl" | "register-user-profile.ftl";
         profile: {
