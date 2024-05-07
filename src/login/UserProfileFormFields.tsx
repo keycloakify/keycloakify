@@ -1,4 +1,4 @@
-import { useEffect, Fragment } from "react";
+import { useEffect, useReducer, Fragment } from "react";
 import type { ClassKey } from "keycloakify/login/TemplateProps";
 import { useUserProfileForm, type KcContextLike, type FormAction, type FormFieldError } from "keycloakify/login/lib/useUserProfileForm";
 import type { Attribute } from "keycloakify/login/kcContext/KcContext";
@@ -239,7 +239,7 @@ function InputFiledByType(props: InputFiledByTypeProps) {
         case "select-radiobuttons":
         case "multiselect-checkboxes":
             return <InputTagSelects {...props} />;
-        default:
+        default: {
             if (valueOrValues instanceof Array) {
                 return (
                     <>
@@ -250,8 +250,58 @@ function InputFiledByType(props: InputFiledByTypeProps) {
                 );
             }
 
-            return <InputTag {...props} fieldIndex={undefined} />;
+            const inputNode = <InputTag {...props} fieldIndex={undefined} />;
+
+            if (attribute.name === "password" || attribute.name === "password-confirm") {
+                return (
+                    <PasswordWrapper getClassName={props.getClassName} i18n={props.i18n} attributeName={attribute.name}>
+                        {inputNode}
+                    </PasswordWrapper>
+                );
+            }
+
+            return inputNode;
+        }
     }
+}
+
+function PasswordWrapper(props: {
+    getClassName: UserProfileFormFieldsProps["getClassName"];
+    i18n: I18n;
+    attributeName: "password" | "password-confirm";
+    children: JSX.Element;
+}) {
+    const { getClassName, i18n, attributeName, children } = props;
+
+    const { msgStr } = i18n;
+
+    const [isPasswordRevealed, toggleIsPasswordRevealed] = useReducer((isPasswordRevealed: boolean) => !isPasswordRevealed, false);
+
+    useEffect(() => {
+        const passwordInputElement = document.getElementById(attributeName);
+
+        assert(passwordInputElement instanceof HTMLInputElement);
+
+        passwordInputElement.type = isPasswordRevealed ? "text" : "password";
+    }, [isPasswordRevealed]);
+
+    return (
+        <div className={getClassName("kcInputGroup")}>
+            {children}
+            <button
+                type="button"
+                className={getClassName("kcFormPasswordVisibilityButtonClass")}
+                aria-label={msgStr(isPasswordRevealed ? "hidePassword" : "showPassword")}
+                aria-controls={attributeName}
+                onClick={toggleIsPasswordRevealed}
+            >
+                <i
+                    className={getClassName(isPasswordRevealed ? "kcFormPasswordVisibilityIconHide" : "kcFormPasswordVisibilityIconShow")}
+                    aria-hidden
+                />
+            </button>
+        </div>
+    );
 }
 
 function InputTag(props: InputFiledByTypeProps & { fieldIndex: number | undefined }) {
