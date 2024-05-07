@@ -157,7 +157,7 @@ export declare namespace KcContext {
         registrationDisabled: boolean;
         login: {
             username?: string;
-            rememberMe?: string;
+            rememberMe?: string; // "on" | undefined
             password?: string;
         };
         usernameHidden?: boolean;
