@@ -494,12 +494,6 @@ export declare namespace KcContext {
     export type DeleteCredential = Common & {
         pageId: "delete-credential.ftl";
         credentialLabel: string;
-        /*
-        credential: {
-            id: string;
-            userLabel: string;
-        };
-        */
     };
 }
 
