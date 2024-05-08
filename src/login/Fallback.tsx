@@ -27,7 +27,6 @@ const LoginPageExpired = lazy(() => import("keycloakify/login/pages/LoginPageExp
 const LoginIdpLinkEmail = lazy(() => import("keycloakify/login/pages/LoginIdpLinkEmail"));
 const LoginConfigTotp = lazy(() => import("keycloakify/login/pages/LoginConfigTotp"));
 const LogoutConfirm = lazy(() => import("keycloakify/login/pages/LogoutConfirm"));
-const UpdateUserProfile = lazy(() => import("keycloakify/login/pages/UpdateUserProfile"));
 const IdpReviewUserProfile = lazy(() => import("keycloakify/login/pages/IdpReviewUserProfile"));
 const UpdateEmail = lazy(() => import("keycloakify/login/pages/UpdateEmail"));
 const SelectAuthenticator = lazy(() => import("keycloakify/login/pages/SelectAuthenticator"));
@@ -75,6 +74,7 @@ export default function Fallback(props: FallbackProps) {
                     case "login-update-password.ftl":
                         return <LoginUpdatePassword kcContext={kcContext} {...rest} />;
                     case "login-update-profile.ftl":
+                    case "update-user-profile.ftl":
                         return <LoginUpdateProfile kcContext={kcContext} {...rest} />;
                     case "login-idp-link-confirm.ftl":
                         return <LoginIdpLinkConfirm kcContext={kcContext} {...rest} />;
@@ -86,8 +86,6 @@ export default function Fallback(props: FallbackProps) {
                         return <LoginConfigTotp kcContext={kcContext} {...rest} />;
                     case "logout-confirm.ftl":
                         return <LogoutConfirm kcContext={kcContext} {...rest} />;
-                    case "update-user-profile.ftl":
-                        return <UpdateUserProfile kcContext={kcContext} {...rest} />;
                     case "idp-review-user-profile.ftl":
                         return <IdpReviewUserProfile kcContext={kcContext} {...rest} />;
                     case "update-email.ftl":

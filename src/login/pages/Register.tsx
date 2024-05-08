@@ -8,12 +8,12 @@ import type { LazyOrNot } from "keycloakify/tools/LazyOrNot";
 import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFormFields";
 import type { TermsAcceptanceProps } from "../TermsAcceptance";
 
-export type PropsOfRegister = PageProps<Extract<KcContext, { pageId: "register.ftl" | "register-user-profile.ftl" }>, I18n> & {
+type RegisterProps = PageProps<Extract<KcContext, { pageId: "register.ftl" | "register-user-profile.ftl" }>, I18n> & {
     UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
     TermsAcceptance: LazyOrNot<(props: TermsAcceptanceProps) => JSX.Element | null>;
 };
 
-export default function Register(props: PropsOfRegister) {
+export default function Register(props: RegisterProps) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes, UserProfileFormFields, TermsAcceptance } = props;
 
     const { getClassName } = useGetClassName({
