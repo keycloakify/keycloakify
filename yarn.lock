@@ -6201,6 +6201,15 @@ evt@^2.4.18:
     run-exclusive "^2.2.18"
     tsafe "^1.6.0"
 
+evt@^2.5.7:
+  version "2.5.7"
+  resolved "https://registry.yarnpkg.com/evt/-/evt-2.5.7.tgz#55c5f8ff910f4b7531bfac91e963d4cb3231f253"
+  integrity sha512-dr7Wd16ry5F8WNU1xXLKpFpO3HsoAGg8zC48e08vDdzMzGWCP9/QFGt1PQptEEDh8SwYP3EL8M+d/Gb0kgUp6g==
+  dependencies:
+    minimal-polyfills "^2.2.3"
+    run-exclusive "^2.2.19"
+    tsafe "^1.6.6"
+
 exec-sh@^0.3.2:
   version "0.3.6"
   resolved "https://registry.yarnpkg.com/exec-sh/-/exec-sh-0.3.6.tgz#ff264f9e325519a60cb5e273692943483cca63bc"
@@ -8701,6 +8710,11 @@ minimal-polyfills@^2.2.1, minimal-polyfills@^2.2.2:
   resolved "https://registry.yarnpkg.com/minimal-polyfills/-/minimal-polyfills-2.2.2.tgz#6b06a004acce420eb91cf94698f5e6e7f2518378"
   integrity sha512-eEOUq/LH/DbLWihrxUP050Wi7H/N/I2dQT98Ep6SqOpmIbk4sXOI4wqalve66QoZa+6oljbZWU6I6T4dehQGmw==
 
+minimal-polyfills@^2.2.3:
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/minimal-polyfills/-/minimal-polyfills-2.2.3.tgz#22af58de16807b325f29b83ca38ffb83e75ec3f4"
+  integrity sha512-oxdmJ9cL+xV72h0xYxp4tP2d5/fTBpP45H8DIOn9pASuF8a3IYTf+25fMGDYGiWW+MFsuog6KD6nfmhZJQ+uUw==
+
 minimalistic-assert@^1.0.0, minimalistic-assert@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/minimalistic-assert/-/minimalistic-assert-1.0.1.tgz#2e194de044626d4a10e7f7fbc00ce73e83e4d5c7"
@@ -10579,6 +10593,13 @@ run-exclusive@^2.2.18:
   dependencies:
     minimal-polyfills "^2.2.1"
 
+run-exclusive@^2.2.19:
+  version "2.2.19"
+  resolved "https://registry.yarnpkg.com/run-exclusive/-/run-exclusive-2.2.19.tgz#37a2fb6e3671f8ae0d63521ebd1865fc796cf307"
+  integrity sha512-K3mdoAi7tjJ/qT7Flj90L7QyPozwUaAG+CVhkdDje4HLKXUYC3N/Jzkau3flHVDLQVhiHBtcimVodMjN9egYbA==
+  dependencies:
+    minimal-polyfills "^2.2.3"
+
 run-parallel@^1.1.9:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/run-parallel/-/run-parallel-1.2.0.tgz#66d1368da7bdf921eb9d95bd1a9229e7f21a43ee"
@@ -11698,6 +11719,11 @@ tsafe@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-1.6.0.tgz#48a9bd0a4c43df43d289bdfc1d89f0d7fffbd612"
   integrity sha512-wlUeRBnyN3EN2chXznpLm7vBEvJLEOziDU+MN6NRlD99AkwmXgtChNQhp+V97VyRa3Bp05IaL4Cocsc7JlyEUg==
+
+tsafe@^1.6.6:
+  version "1.6.6"
+  resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-1.6.6.tgz#fd93e64d6eb13ef83ed1650669cc24bad4f5df9f"
+  integrity sha512-gzkapsdbMNwBnTIjgO758GujLCj031IgHK/PKr2mrmkCSJMhSOR5FeOuSxKLMUoYc0vAA4RGEYYbjt/v6afD3g==
 
 tsc-alias@^1.8.3:
   version "1.8.5"

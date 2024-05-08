@@ -115,7 +115,7 @@
         "@octokit/rest": "^18.12.0",
         "cheerio": "^1.0.0-rc.5",
         "cli-select": "^1.1.2",
-        "evt": "^2.4.18",
+        "evt": "^2.5.7",
         "make-fetch-happen": "^11.0.3",
         "minimal-polyfills": "^2.2.2",
         "minimist": "^1.2.6",
