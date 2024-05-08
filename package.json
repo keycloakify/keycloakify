@@ -65,7 +65,7 @@
     ],
     "homepage": "https://www.keycloakify.dev",
     "peerDependencies": {
-        "react": "^16.8.0 || ^17.0.0 || ^18.0.0"
+        "react": "*"
     },
     "devDependencies": {
         "@babel/core": "^7.0.0",
