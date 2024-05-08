@@ -1,146 +1,72 @@
+import { useState } from "react";
 import { clsx } from "keycloakify/tools/clsx";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import type { KcContext } from "../kcContext";
 import type { I18n } from "../i18n";
+import type { LazyOrNot } from "keycloakify/tools/LazyOrNot";
+import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFormFields";
 
-export default function LoginUpdateProfile(props: PageProps<Extract<KcContext, { pageId: "login-update-profile.ftl" }>, I18n>) {
-    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
+type LoginUpdateProfileProps = PageProps<Extract<KcContext, { pageId: "login-update-profile.ftl" | "update-user-profile.ftl" }>, I18n> & {
+    UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
+};
+
+export default function LoginUpdateProfile(props: LoginUpdateProfileProps) {
+    const { kcContext, i18n, doUseDefaultCss, Template, classes, UserProfileFormFields } = props;
 
     const { getClassName } = useGetClassName({
         doUseDefaultCss,
         classes
     });
 
+    const { url, messagesPerField, isAppInitiatedAction } = kcContext;
+
     const { msg, msgStr } = i18n;
 
-    const { url, user, messagesPerField, isAppInitiatedAction } = kcContext;
+    const [isFormSubmittable, setIsFormSubmittable] = useState(false);
 
     return (
         <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} headerNode={msg("loginProfileTitle")}>
             <form id="kc-update-profile-form" className={getClassName("kcFormClass")} action={url.loginAction} method="post">
-                {user.editUsernameAllowed && (
-                    <div
-                        className={clsx(
-                            getClassName("kcFormGroupClass"),
-                            messagesPerField.printIfExists("username", getClassName("kcFormGroupErrorClass"))
-                        )}
-                    >
-                        <div className={getClassName("kcLabelWrapperClass")}>
-                            <label htmlFor="username" className={getClassName("kcLabelClass")}>
-                                {msg("username")}
-                            </label>
-                        </div>
-                        <div className={getClassName("kcInputWrapperClass")}>
-                            <input
-                                type="text"
-                                id="username"
-                                name="username"
-                                defaultValue={user.username ?? ""}
-                                className={getClassName("kcInputClass")}
-                            />
-                        </div>
-                    </div>
-                )}
-
-                <div
-                    className={clsx(getClassName("kcFormGroupClass"), messagesPerField.printIfExists("email", getClassName("kcFormGroupErrorClass")))}
-                >
-                    <div className={getClassName("kcLabelWrapperClass")}>
-                        <label htmlFor="email" className={getClassName("kcLabelClass")}>
-                            {msg("email")}
-                        </label>
-                    </div>
-                    <div className={getClassName("kcInputWrapperClass")}>
-                        <input type="text" id="email" name="email" defaultValue={user.email ?? ""} className={getClassName("kcInputClass")} />
-                    </div>
-                </div>
-
-                <div
-                    className={clsx(
-                        getClassName("kcFormGroupClass"),
-                        messagesPerField.printIfExists("firstName", getClassName("kcFormGroupErrorClass"))
-                    )}
-                >
-                    <div className={getClassName("kcLabelWrapperClass")}>
-                        <label htmlFor="firstName" className={getClassName("kcLabelClass")}>
-                            {msg("firstName")}
-                        </label>
-                    </div>
-                    <div className={getClassName("kcInputWrapperClass")}>
-                        <input
-                            type="text"
-                            id="firstName"
-                            name="firstName"
-                            defaultValue={user.firstName ?? ""}
-                            className={getClassName("kcInputClass")}
-                        />
-                    </div>
-                </div>
-
-                <div
-                    className={clsx(
-                        getClassName("kcFormGroupClass"),
-                        messagesPerField.printIfExists("lastName", getClassName("kcFormGroupErrorClass"))
-                    )}
-                >
-                    <div className={getClassName("kcLabelWrapperClass")}>
-                        <label htmlFor="lastName" className={getClassName("kcLabelClass")}>
-                            {msg("lastName")}
-                        </label>
-                    </div>
-                    <div className={getClassName("kcInputWrapperClass")}>
-                        <input
-                            type="text"
-                            id="lastName"
-                            name="lastName"
-                            defaultValue={user.lastName ?? ""}
-                            className={getClassName("kcInputClass")}
-                        />
-                    </div>
-                </div>
-
+                <UserProfileFormFields
+                    {...{
+                        kcContext,
+                        i18n,
+                        getClassName,
+                        messagesPerField
+                    }}
+                    onIsFormSubmittableValueChange={setIsFormSubmittable}
+                />
                 <div className={getClassName("kcFormGroupClass")}>
                     <div id="kc-form-options" className={getClassName("kcFormOptionsClass")}>
                         <div className={getClassName("kcFormOptionsWrapperClass")} />
                     </div>
-
                     <div id="kc-form-buttons" className={getClassName("kcFormButtonsClass")}>
-                        {isAppInitiatedAction ? (
-                            <>
-                                <input
-                                    className={clsx(
-                                        getClassName("kcButtonClass"),
-                                        getClassName("kcButtonPrimaryClass"),
-                                        getClassName("kcButtonLargeClass")
-                                    )}
-                                    type="submit"
-                                    defaultValue={msgStr("doSubmit")}
-                                />
-                                <button
-                                    className={clsx(
-                                        getClassName("kcButtonClass"),
-                                        getClassName("kcButtonDefaultClass"),
-                                        getClassName("kcButtonLargeClass")
-                                    )}
-                                    type="submit"
-                                    name="cancel-aia"
-                                    value="true"
-                                >
-                                    {msg("doCancel")}
-                                </button>
-                            </>
-                        ) : (
-                            <input
+                        <input
+                            disabled={!isFormSubmittable}
+                            className={clsx(
+                                getClassName("kcButtonClass"),
+                                getClassName("kcButtonPrimaryClass"),
+                                !isAppInitiatedAction && getClassName("kcButtonBlockClass"),
+                                getClassName("kcButtonLargeClass")
+                            )}
+                            type="submit"
+                            value={msgStr("doSubmit")}
+                        />
+                        {isAppInitiatedAction && (
+                            <button
                                 className={clsx(
                                     getClassName("kcButtonClass"),
-                                    getClassName("kcButtonPrimaryClass"),
-                                    getClassName("kcButtonBlockClass"),
+                                    getClassName("kcButtonDefaultClass"),
                                     getClassName("kcButtonLargeClass")
                                 )}
                                 type="submit"
-                                defaultValue={msgStr("doSubmit")}
-                            />
+                                name="cancel-aia"
+                                value="true"
+                                formNoValidate
+                            >
+                                {msg("doCancel")}
+                            </button>
                         )}
                     </div>
                 </div>

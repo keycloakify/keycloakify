@@ -31,7 +31,6 @@ export type KcContext =
     | KcContext.LoginPageExpired
     | KcContext.LoginConfigTotp
     | KcContext.LogoutConfirm
-    | KcContext.UpdateUserProfile
     | KcContext.IdpReviewUserProfile
     | KcContext.UpdateEmail
     | KcContext.SelectAuthenticator
@@ -362,17 +361,6 @@ export declare namespace KcContext {
         username: string;
     };
 
-    export type LoginUpdateProfile = Common & {
-        pageId: "login-update-profile.ftl";
-        user: {
-            editUsernameAllowed: boolean;
-            username?: string;
-            email?: string;
-            firstName?: string;
-            lastName?: string;
-        };
-    };
-
     export type LoginIdpLinkConfirm = Common & {
         pageId: "login-idp-link-confirm.ftl";
         idpAlias: string;
@@ -432,13 +420,26 @@ export declare namespace KcContext {
         };
     };
 
-    export type UpdateUserProfile = Common & {
-        pageId: "update-user-profile.ftl";
+    export type LoginUpdateProfile = Common & {
+        pageId: "login-update-profile.ftl" | "update-user-profile.ftl";
         profile: {
             attributes: Attribute[];
             attributesByName: Record<string, Attribute>;
         };
     };
+
+    /*
+    export type LoginUpdateProfile = Common & {
+        pageId: "login-update-profile.ftl";
+        user: {
+            editUsernameAllowed: boolean;
+            username?: string;
+            email?: string;
+            firstName?: string;
+            lastName?: string;
+        };
+    };
+    */
 
     export type IdpReviewUserProfile = Common & {
         pageId: "idp-review-user-profile.ftl";
