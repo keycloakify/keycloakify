@@ -70,7 +70,7 @@ export type KcContextLike = {
         attributes: Attribute[];
         html5DataAnnotations?: Record<string, string>;
     };
-    passwordRequired: boolean;
+    passwordRequired?: boolean;
     realm: { registrationEmailAsUsername: boolean };
     passwordPolicies?: PasswordPolicies;
     url: {
@@ -122,255 +122,287 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
         "documentTitle": undefined
     });
 
-    const attributesWithPassword = useMemo(() => {
-        const attributesWithPassword: Attribute[] = [];
-
-        const attributes = (() => {
-            retrocompat_patch: {
-                if ("profile" in kcContext && "attributes" in kcContext.profile && kcContext.profile.attributes.length !== 0) {
-                    break retrocompat_patch;
-                }
-
-                kcContext.profile = {
-                    "attributes": (["firstName", "lastName", "email", "username"] as const)
-                        .filter(name => (name !== "username" ? true : !kcContext.realm.registrationEmailAsUsername))
-                        .map(name =>
-                            id<Attribute>({
-                                "name": name,
-                                "displayName": id<`\${${MessageKey}}`>(`\${${name}}`),
-                                "required": true,
-                                "value": (kcContext as any).register.formData[name] ?? "",
-                                "html5DataAnnotations": {},
-                                "readOnly": false,
-                                "validators": {},
-                                "annotations": {},
-                                "autocomplete": (() => {
-                                    switch (name) {
-                                        case "email":
-                                            return "email";
-                                        case "username":
-                                            return "username";
-                                        default:
-                                            return undefined;
-                                    }
-                                })()
-                            })
-                        ),
-                    "html5DataAnnotations": {}
-                };
-            }
-
-            return kcContext.profile.attributes;
-        })();
-
-        for (const attribute_pre_group_patch of attributes) {
-            const attribute = (() => {
-                if (typeof attribute_pre_group_patch.group === "string" && attribute_pre_group_patch.group !== "") {
-                    const { group, groupDisplayHeader, groupDisplayDescription, groupAnnotations, ...rest } =
-                        attribute_pre_group_patch as Attribute & {
-                            group: string;
-                            groupDisplayHeader?: string;
-                            groupDisplayDescription?: string;
-                            groupAnnotations: Record<string, string>;
-                        };
-
-                    return id<Attribute>({
-                        ...rest,
-                        "group": {
-                            "name": group,
-                            "displayHeader": groupDisplayHeader,
-                            "displayDescription": groupDisplayDescription,
-                            "html5DataAnnotations": {}
-                        }
-                    });
-                }
-
-                return attribute_pre_group_patch;
-            })();
-
-            attributesWithPassword.push(attribute);
-
-            add_password_and_password_confirm: {
-                if (!kcContext.passwordRequired) {
-                    break add_password_and_password_confirm;
-                }
-
-                if (attribute.name !== (kcContext.realm.registrationEmailAsUsername ? "email" : "username")) {
-                    // NOTE: We want to add password and password-confirm after the field that identifies the user.
-                    // It's either email or username.
-                    break add_password_and_password_confirm;
-                }
-
-                attributesWithPassword.push(
-                    {
-                        "name": "password",
-                        "displayName": id<`\${${MessageKey}}`>("${password}"),
-                        "required": true,
-                        "readOnly": false,
-                        "validators": {},
-                        "annotations": {},
-                        "autocomplete": "new-password",
-                        "html5DataAnnotations": {},
-                        // NOTE: Compat with Keycloak version prior to 24
-                        ...({ "groupAnnotations": {} } as {})
-                    },
-                    {
-                        "name": "password-confirm",
-                        "displayName": id<`\${${MessageKey}}`>("${passwordConfirm}"),
-                        "required": true,
-                        "readOnly": false,
-                        "validators": {},
-                        "annotations": {},
-                        "html5DataAnnotations": {},
-                        "autocomplete": "new-password",
-                        // NOTE: Compat with Keycloak version prior to 24
-                        ...({ "groupAnnotations": {} } as {})
-                    }
-                );
-            }
-        }
-
-        return attributesWithPassword;
-    }, []);
-
     const { getErrors } = useGetErrors({
         kcContext,
         i18n
     });
 
-    const [state, dispatchFormAction] = useReducer(
-        function reducer(state: internal.State, params: FormAction): internal.State {
-            const formFieldState = state.formFieldStates.find(({ attribute }) => attribute.name === params.name);
+    const initialState = useMemo((): internal.State => {
+        // NOTE: We don't use te kcContext.profile.attributes directly because
+        // they don't includes the password and password confirm fields and we want to add them.
+        // Also, we want to polyfill the attributes for older Keycloak version before User Profile was introduced.
+        // Finally we want to patch the changes made by Keycloak on the attributes format so we have an homogeneous
+        // attributes format to work with.
+        const syntheticAttributes = (() => {
+            const syntheticAttributes: Attribute[] = [];
 
-            assert(formFieldState !== undefined);
+            const attributes = (() => {
+                retrocompat_patch: {
+                    if ("profile" in kcContext && "attributes" in kcContext.profile && kcContext.profile.attributes.length !== 0) {
+                        break retrocompat_patch;
+                    }
 
-            (() => {
-                switch (params.action) {
-                    case "update":
-                        formFieldState.valueOrValues = params.valueOrValues;
+                    if ("register" in kcContext && kcContext.register instanceof Object && "formData" in kcContext.register) {
+                        //NOTE: Handle legacy register.ftl page
+                        return (["firstName", "lastName", "email", "username"] as const)
+                            .filter(name => (name !== "username" ? true : !kcContext.realm.registrationEmailAsUsername))
+                            .map(name =>
+                                id<Attribute>({
+                                    "name": name,
+                                    "displayName": id<`\${${MessageKey}}`>(`\${${name}}`),
+                                    "required": true,
+                                    "value": (kcContext as any).register.formData[name] ?? "",
+                                    "html5DataAnnotations": {},
+                                    "readOnly": false,
+                                    "validators": {},
+                                    "annotations": {},
+                                    "autocomplete": (() => {
+                                        switch (name) {
+                                            case "email":
+                                                return "email";
+                                            case "username":
+                                                return "username";
+                                            default:
+                                                return undefined;
+                                        }
+                                    })()
+                                })
+                            );
+                    }
 
-                        apply_formatters: {
-                            const { attribute } = formFieldState;
+                    if ("user" in kcContext && kcContext.user instanceof Object) {
+                        //NOTE: Handle legacy login-update-profile.ftl
+                        return (["username", "email", "firstName", "lastName"] as const)
+                            .filter(name => (name !== "username" ? true : (kcContext as any).user.editUsernameAllowed))
+                            .map(name =>
+                                id<Attribute>({
+                                    "name": name,
+                                    "displayName": id<`\${${MessageKey}}`>(`\${${name}}`),
+                                    "required": true,
+                                    "value": (kcContext as any).user[name] ?? "",
+                                    "html5DataAnnotations": {},
+                                    "readOnly": false,
+                                    "validators": {},
+                                    "annotations": {},
+                                    "autocomplete": (() => {
+                                        switch (name) {
+                                            case "email":
+                                                return "email";
+                                            case "username":
+                                                return "username";
+                                            default:
+                                                return undefined;
+                                        }
+                                    })()
+                                })
+                            );
+                    }
 
-                            const { kcNumberFormat } = attribute.html5DataAnnotations ?? {};
-
-                            if (kcNumberFormat === undefined) {
-                                break apply_formatters;
-                            }
-
-                            if (formFieldState.valueOrValues instanceof Array) {
-                                formFieldState.valueOrValues = formFieldState.valueOrValues.map(value => formatNumber(value, kcNumberFormat));
-                            } else {
-                                formFieldState.valueOrValues = formatNumber(formFieldState.valueOrValues, kcNumberFormat);
-                            }
-                        }
-
-                        formFieldState.errors = getErrors({
-                            "attributeName": params.name,
-                            "formFieldStates": state.formFieldStates
-                        });
-
-                        update_password_confirm: {
-                            if (doMakeUserConfirmPassword) {
-                                break update_password_confirm;
-                            }
-
-                            if (params.name !== "password") {
-                                break update_password_confirm;
-                            }
-
-                            state = reducer(state, {
-                                "action": "update",
-                                "name": "password-confirm",
-                                "valueOrValues": params.valueOrValues
-                            });
-                        }
-
-                        return;
-                    case "focus lost":
-                        if (formFieldState.hasLostFocusAtLeastOnce instanceof Array) {
-                            const { fieldIndex } = params;
-                            assert(fieldIndex !== undefined);
-                            formFieldState.hasLostFocusAtLeastOnce[fieldIndex] = true;
-                            return;
-                        }
-
-                        formFieldState.hasLostFocusAtLeastOnce = true;
-                        return;
+                    assert(false, "Unable to mock user profile from the current kcContext");
                 }
-                assert<Equals<typeof params, never>>(false);
+
+                return kcContext.profile.attributes.map(attribute_pre_group_patch => {
+                    if (typeof attribute_pre_group_patch.group === "string" && attribute_pre_group_patch.group !== "") {
+                        const { group, groupDisplayHeader, groupDisplayDescription, groupAnnotations, ...rest } =
+                            attribute_pre_group_patch as Attribute & {
+                                group: string;
+                                groupDisplayHeader?: string;
+                                groupDisplayDescription?: string;
+                                groupAnnotations: Record<string, string>;
+                            };
+
+                        return id<Attribute>({
+                            ...rest,
+                            "group": {
+                                "name": group,
+                                "displayHeader": groupDisplayHeader,
+                                "displayDescription": groupDisplayDescription,
+                                "html5DataAnnotations": {}
+                            }
+                        });
+                    }
+
+                    return attribute_pre_group_patch;
+                });
             })();
 
-            return state;
-        },
-        useMemo(function getInitialState(): internal.State {
-            const initialFormFieldState = (() => {
-                const out: { attribute: Attribute; valueOrValues: string | string[] }[] = [];
+            for (const attribute of attributes) {
+                syntheticAttributes.push(attribute);
 
-                for (const attribute of attributesWithPassword) {
-                    handle_multi_valued_attribute: {
-                        if (!attribute.multivalued) {
-                            break handle_multi_valued_attribute;
+                add_password_and_password_confirm: {
+                    if (!kcContext.passwordRequired) {
+                        break add_password_and_password_confirm;
+                    }
+
+                    if (attribute.name !== (kcContext.realm.registrationEmailAsUsername ? "email" : "username")) {
+                        // NOTE: We want to add password and password-confirm after the field that identifies the user.
+                        // It's either email or username.
+                        break add_password_and_password_confirm;
+                    }
+
+                    syntheticAttributes.push(
+                        {
+                            "name": "password",
+                            "displayName": id<`\${${MessageKey}}`>("${password}"),
+                            "required": true,
+                            "readOnly": false,
+                            "validators": {},
+                            "annotations": {},
+                            "autocomplete": "new-password",
+                            "html5DataAnnotations": {},
+                            // NOTE: Compat with Keycloak version prior to 24
+                            ...({ "groupAnnotations": {} } as {})
+                        },
+                        {
+                            "name": "password-confirm",
+                            "displayName": id<`\${${MessageKey}}`>("${passwordConfirm}"),
+                            "required": true,
+                            "readOnly": false,
+                            "validators": {},
+                            "annotations": {},
+                            "html5DataAnnotations": {},
+                            "autocomplete": "new-password",
+                            // NOTE: Compat with Keycloak version prior to 24
+                            ...({ "groupAnnotations": {} } as {})
+                        }
+                    );
+                }
+            }
+
+            return syntheticAttributes;
+        })();
+
+        const initialFormFieldState = (() => {
+            const out: { attribute: Attribute; valueOrValues: string | string[] }[] = [];
+
+            for (const attribute of syntheticAttributes) {
+                handle_multi_valued_attribute: {
+                    if (!attribute.multivalued) {
+                        break handle_multi_valued_attribute;
+                    }
+
+                    const values = attribute.values ?? [""];
+
+                    apply_validator_min_range: {
+                        if (attribute.annotations.inputType?.startsWith("multiselect")) {
+                            break apply_validator_min_range;
                         }
 
-                        const values = attribute.values ?? [""];
+                        const validator = attribute.validators.multivalued;
 
-                        apply_validator_min_range: {
-                            if (attribute.annotations.inputType?.startsWith("multiselect")) {
-                                break apply_validator_min_range;
-                            }
-
-                            const validator = attribute.validators.multivalued;
-
-                            if (validator === undefined) {
-                                break apply_validator_min_range;
-                            }
-
-                            const { min: minStr } = validator;
-
-                            if (minStr === undefined) {
-                                break apply_validator_min_range;
-                            }
-
-                            const min = parseInt(minStr);
-
-                            for (let index = values.length; index < min; index++) {
-                                values.push("");
-                            }
+                        if (validator === undefined) {
+                            break apply_validator_min_range;
                         }
 
-                        out.push({
-                            attribute,
-                            "valueOrValues": values
-                        });
+                        const { min: minStr } = validator;
 
-                        continue;
+                        if (minStr === undefined) {
+                            break apply_validator_min_range;
+                        }
+
+                        const min = parseInt(minStr);
+
+                        for (let index = values.length; index < min; index++) {
+                            values.push("");
+                        }
                     }
 
                     out.push({
                         attribute,
-                        "valueOrValues": attribute.value ?? ""
+                        "valueOrValues": values
                     });
+
+                    continue;
                 }
 
-                return out;
-            })();
-
-            const initialState: internal.State = {
-                "formFieldStates": initialFormFieldState.map(({ attribute, valueOrValues }) => ({
+                out.push({
                     attribute,
-                    "errors": getErrors({
-                        "attributeName": attribute.name,
-                        "formFieldStates": initialFormFieldState
-                    }),
-                    "hasLostFocusAtLeastOnce": valueOrValues instanceof Array ? valueOrValues.map(() => false) : false,
-                    "valueOrValues": valueOrValues
-                }))
-            };
+                    "valueOrValues": attribute.value ?? ""
+                });
+            }
 
-            return initialState;
-        }, [])
-    );
+            return out;
+        })();
+
+        const initialState: internal.State = {
+            "formFieldStates": initialFormFieldState.map(({ attribute, valueOrValues }) => ({
+                attribute,
+                "errors": getErrors({
+                    "attributeName": attribute.name,
+                    "formFieldStates": initialFormFieldState
+                }),
+                "hasLostFocusAtLeastOnce": valueOrValues instanceof Array ? valueOrValues.map(() => false) : false,
+                "valueOrValues": valueOrValues
+            }))
+        };
+
+        return initialState;
+    }, []);
+
+    const [state, dispatchFormAction] = useReducer(function reducer(state: internal.State, params: FormAction): internal.State {
+        const formFieldState = state.formFieldStates.find(({ attribute }) => attribute.name === params.name);
+
+        assert(formFieldState !== undefined);
+
+        (() => {
+            switch (params.action) {
+                case "update":
+                    formFieldState.valueOrValues = params.valueOrValues;
+
+                    apply_formatters: {
+                        const { attribute } = formFieldState;
+
+                        const { kcNumberFormat } = attribute.html5DataAnnotations ?? {};
+
+                        if (kcNumberFormat === undefined) {
+                            break apply_formatters;
+                        }
+
+                        if (formFieldState.valueOrValues instanceof Array) {
+                            formFieldState.valueOrValues = formFieldState.valueOrValues.map(value => formatNumber(value, kcNumberFormat));
+                        } else {
+                            formFieldState.valueOrValues = formatNumber(formFieldState.valueOrValues, kcNumberFormat);
+                        }
+                    }
+
+                    formFieldState.errors = getErrors({
+                        "attributeName": params.name,
+                        "formFieldStates": state.formFieldStates
+                    });
+
+                    update_password_confirm: {
+                        if (doMakeUserConfirmPassword) {
+                            break update_password_confirm;
+                        }
+
+                        if (params.name !== "password") {
+                            break update_password_confirm;
+                        }
+
+                        state = reducer(state, {
+                            "action": "update",
+                            "name": "password-confirm",
+                            "valueOrValues": params.valueOrValues
+                        });
+                    }
+
+                    return;
+                case "focus lost":
+                    if (formFieldState.hasLostFocusAtLeastOnce instanceof Array) {
+                        const { fieldIndex } = params;
+                        assert(fieldIndex !== undefined);
+                        formFieldState.hasLostFocusAtLeastOnce[fieldIndex] = true;
+                        return;
+                    }
+
+                    formFieldState.hasLostFocusAtLeastOnce = true;
+                    return;
+            }
+            assert<Equals<typeof params, never>>(false);
+        })();
+
+        return state;
+    }, initialState);
 
     const formState: FormState = useMemo(
         () => ({
