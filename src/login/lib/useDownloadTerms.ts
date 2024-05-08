@@ -5,9 +5,10 @@ import { useConst } from "keycloakify/tools/useConst";
 import { useConstCallback } from "keycloakify/tools/useConstCallback";
 import { assert } from "tsafe/assert";
 import { Evt } from "evt";
+import { useRerenderOnStateChange } from "evt/hooks/useRerenderOnStateChange";
 import { KcContext } from "../kcContext";
 
-export const evtTermMarkdown = Evt.create<string | undefined>(undefined);
+const evtTermsMarkdown = Evt.create<string | undefined>(undefined);
 
 export type KcContextLike = {
     pageId: string;
@@ -41,8 +42,16 @@ export function useDownloadTerms(params: {
     useEffect(() => {
         if (kcContext.pageId === "terms.ftl" || kcContext.termsAcceptanceRequired) {
             downloadTermMarkdownMemoized(kcContext.locale?.currentLanguageTag ?? fallbackLanguageTag).then(
-                thermMarkdown => (evtTermMarkdown.state = thermMarkdown)
+                thermMarkdown => (evtTermsMarkdown.state = thermMarkdown)
             );
         }
     }, []);
+}
+
+export function useTermsMarkdown() {
+    useRerenderOnStateChange(evtTermsMarkdown);
+
+    const termsMarkdown = evtTermsMarkdown.state;
+
+    return { termsMarkdown };
 }

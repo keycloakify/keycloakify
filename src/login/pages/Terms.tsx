@@ -1,9 +1,8 @@
 import { clsx } from "keycloakify/tools/clsx";
-import { useRerenderOnStateChange } from "evt/hooks";
 import { Markdown } from "keycloakify/tools/Markdown";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
-import { evtTermMarkdown } from "keycloakify/login/lib/useDownloadTerms";
+import { useTermsMarkdown } from "keycloakify/login/lib/useDownloadTerms";
 import type { KcContext } from "../kcContext";
 import type { I18n } from "../i18n";
 
@@ -17,20 +16,18 @@ export default function Terms(props: PageProps<Extract<KcContext, { pageId: "ter
 
     const { msg, msgStr } = i18n;
 
-    useRerenderOnStateChange(evtTermMarkdown);
-
     const { url } = kcContext;
 
-    const termMarkdown = evtTermMarkdown.state;
+    const { termsMarkdown } = useTermsMarkdown();
 
-    if (termMarkdown === undefined) {
+    if (termsMarkdown === undefined) {
         return null;
     }
 
     return (
         <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} displayMessage={false} headerNode={msg("termsTitle")}>
             <div id="kc-terms-text">
-                <Markdown>{termMarkdown}</Markdown>
+                <Markdown>{termsMarkdown}</Markdown>
             </div>
             <form className="form-actions" action={url.loginAction} method="POST">
                 <input
