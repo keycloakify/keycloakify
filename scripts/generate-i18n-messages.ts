@@ -17,7 +17,7 @@ const isSilent = true;
 const logger = getLogger({ isSilent });
 
 async function main() {
-    const keycloakVersion = "24.0.2";
+    const keycloakVersion = "24.0.4";
 
     const thisCodebaseRootDirPath = getThisCodebaseRootDirPath();
 
