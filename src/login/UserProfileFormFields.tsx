@@ -338,7 +338,6 @@ function InputTag(props: InputFiledByTypeProps & { fieldIndex: number | undefine
                 max={attribute.annotations.inputTypeMax}
                 min={attribute.annotations.inputTypeMin}
                 step={attribute.annotations.inputTypeStep}
-                // NOTE: The `?? {}` is for backward compatibility with Keycloak prior to 24
                 {...Object.fromEntries(Object.entries(attribute.html5DataAnnotations ?? {}).map(([key, value]) => [`data-${key}`, value]))}
                 onChange={event =>
                     formValidationDispatch({

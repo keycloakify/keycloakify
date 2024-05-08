@@ -175,11 +175,7 @@ export declare namespace KcContext {
 
     export type Register = Common & {
         pageId: "register.ftl" | "register-user-profile.ftl";
-        profile: {
-            attributes: Attribute[];
-            attributesByName: Record<string, Attribute>;
-            html5DataAnnotations?: Record<string, string>;
-        };
+        profile: UserProfile;
         url: {
             registrationAction: string;
         };
@@ -423,39 +419,17 @@ export declare namespace KcContext {
 
     export type LoginUpdateProfile = Common & {
         pageId: "login-update-profile.ftl" | "update-user-profile.ftl";
-        profile: {
-            attributes: Attribute[];
-            attributesByName: Record<string, Attribute>;
-        };
+        profile: UserProfile;
     };
-
-    /*
-    export type LoginUpdateProfile = Common & {
-        pageId: "login-update-profile.ftl";
-        user: {
-            editUsernameAllowed: boolean;
-            username?: string;
-            email?: string;
-            firstName?: string;
-            lastName?: string;
-        };
-    };
-    */
 
     export type IdpReviewUserProfile = Common & {
         pageId: "idp-review-user-profile.ftl";
-        profile: {
-            context: "IDP_REVIEW";
-            attributes: Attribute[];
-            attributesByName: Record<string, Attribute>;
-        };
+        profile: UserProfile;
     };
 
     export type UpdateEmail = Common & {
         pageId: "update-email.ftl";
-        email: {
-            value?: string;
-        };
+        profile: UserProfile;
     };
 
     export type SelectAuthenticator = Common & {
@@ -496,6 +470,12 @@ export declare namespace KcContext {
         credentialLabel: string;
     };
 }
+
+export type UserProfile = {
+    attributes: Attribute[];
+    attributesByName: Record<string, Attribute>;
+    html5DataAnnotations?: Record<string, string>;
+};
 
 export type Attribute = {
     name: string;

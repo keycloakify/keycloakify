@@ -151,7 +151,7 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                                     "name": name,
                                     "displayName": id<`\${${MessageKey}}`>(`\${${name}}`),
                                     "required": true,
-                                    "value": (kcContext as any).register.formData[name] ?? "",
+                                    "value": (kcContext.register as any).formData[name] ?? "",
                                     "html5DataAnnotations": {},
                                     "readOnly": false,
                                     "validators": {},
@@ -173,7 +173,7 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                     if ("user" in kcContext && kcContext.user instanceof Object) {
                         //NOTE: Handle legacy login-update-profile.ftl
                         return (["username", "email", "firstName", "lastName"] as const)
-                            .filter(name => (name !== "username" ? true : (kcContext as any).user.editUsernameAllowed))
+                            .filter(name => (name !== "username" ? true : (kcContext.user as any).editUsernameAllowed))
                             .map(name =>
                                 id<Attribute>({
                                     "name": name,
@@ -196,6 +196,23 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                                     })()
                                 })
                             );
+                    }
+
+                    if ("email" in kcContext && kcContext.email instanceof Object) {
+                        //NOTE: Handle legacy update-email.ftl
+                        return [
+                            id<Attribute>({
+                                "name": "email",
+                                "displayName": id<`\${${MessageKey}}`>(`\${email}`),
+                                "required": true,
+                                "value": (kcContext.email as any).value ?? "",
+                                "html5DataAnnotations": {},
+                                "readOnly": false,
+                                "validators": {},
+                                "annotations": {},
+                                "autocomplete": "email"
+                            })
+                        ];
                     }
 
                     assert(false, "Unable to mock user profile from the current kcContext");
