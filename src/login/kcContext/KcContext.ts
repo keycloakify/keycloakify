@@ -34,7 +34,8 @@ export type KcContext =
     | KcContext.IdpReviewUserProfile
     | KcContext.UpdateEmail
     | KcContext.SelectAuthenticator
-    | KcContext.SamlPostForm;
+    | KcContext.SamlPostForm
+    | KcContext.DeleteCredential;
 
 assert<KcContext["themeType"] extends ThemeType ? true : false>();
 
@@ -489,6 +490,17 @@ export declare namespace KcContext {
                 | "kcAuthenticatorWebAuthnPasswordlessClass";
         };
     }
+
+    export type DeleteCredential = Common & {
+        pageId: "delete-credential.ftl";
+        credentialLabel: string;
+        /*
+        credential: {
+            id: string;
+            userLabel: string;
+        };
+        */
+    };
 }
 
 export type Attribute = {
