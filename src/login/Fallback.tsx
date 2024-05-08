@@ -5,7 +5,6 @@ import type { I18n } from "./i18n";
 import type { KcContext } from "./kcContext";
 import type { LazyOrNot } from "keycloakify/tools/LazyOrNot";
 import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFormFields";
-import type { TermsAcceptanceProps } from "keycloakify/login/TermsAcceptance";
 
 const Login = lazy(() => import("keycloakify/login/pages/Login"));
 const Register = lazy(() => import("keycloakify/login/pages/Register"));
@@ -35,7 +34,6 @@ const DeleteCredential = lazy(() => import("keycloakify/login/pages/DeleteCreden
 
 type FallbackProps = PageProps<KcContext, I18n> & {
     UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
-    TermsAcceptance: LazyOrNot<(props: TermsAcceptanceProps) => JSX.Element | null>;
 };
 
 export default function Fallback(props: FallbackProps) {

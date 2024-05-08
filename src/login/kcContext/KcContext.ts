@@ -187,6 +187,7 @@ export declare namespace KcContext {
          * A Keycloak Java extension used as dependency in Keycloakify.
          */
         passwordPolicies?: PasswordPolicies;
+        termsAcceptanceRequired?: boolean;
     };
 
     export type Info = Common & {
