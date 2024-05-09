@@ -1,30 +1,17 @@
 import { useReducer, useEffect } from "react";
-import { headInsert } from "keycloakify/tools/headInsert";
 import { clsx } from "keycloakify/tools/clsx";
 import { assert } from "tsafe/assert";
+import { useInsertScriptTags, type ScriptTag } from "keycloakify/tools/useInsertScriptTags";
 
 export function usePrepareTemplate(params: {
-    styles: string[];
-    scripts: {
-        isModule: boolean;
-        source:
-            | {
-                  type: "url";
-                  src: string;
-              }
-            | {
-                  type: "inline";
-                  code: string;
-              };
-    }[];
+    styleSheetHrefs: string[];
+    scriptTags: ScriptTag[];
     htmlClassName: string | undefined;
     bodyClassName: string | undefined;
     htmlLangProperty: string | undefined;
     documentTitle: string | undefined;
 }) {
-    const { styles, scripts, htmlClassName, bodyClassName, htmlLangProperty, documentTitle } = params;
-
-    const [isReady, setReady] = useReducer(() => true, styles.length === 0 && scripts.length === 0);
+    const { styleSheetHrefs, scriptTags, htmlClassName, bodyClassName, htmlLangProperty, documentTitle } = params;
 
     useEffect(() => {
         if (htmlLangProperty === undefined) {
@@ -44,58 +31,10 @@ export function usePrepareTemplate(params: {
         document.title = documentTitle;
     }, [documentTitle]);
 
-    useEffect(() => {
-        let isUnmounted = false;
+    const { areAllStyleSheetsLoaded } = useInsertLinkTags({ "hrefs": styleSheetHrefs });
 
-        const removeArray: (() => void)[] = [];
-
-        (async () => {
-            for (const style of [...styles].reverse()) {
-                const { prLoaded, remove } = headInsert({
-                    "type": "css",
-                    "position": "prepend",
-                    "href": style
-                });
-
-                removeArray.push(remove);
-
-                // TODO: Find a way to do that in parallel (without breaking the order)
-                await prLoaded;
-
-                if (isUnmounted) {
-                    return;
-                }
-            }
-
-            setReady();
-        })();
-
-        return () => {
-            isUnmounted = true;
-            removeArray.forEach(remove => remove());
-        };
-    }, []);
-
-    useEffect(() => {
-        if (!isReady) {
-            return;
-        }
-
-        const removeArray: (() => void)[] = [];
-
-        scripts.forEach(script => {
-            const { remove } = headInsert({
-                "type": "javascript",
-                ...script
-            });
-
-            removeArray.push(remove);
-        });
-
-        return () => {
-            removeArray.forEach(remove => remove());
-        };
-    }, [isReady]);
+    // NOTE: We want to load the script after the page have been fully rendered.
+    useInsertScriptTags({ "scriptTags": !areAllStyleSheetsLoaded ? [] : scriptTags });
 
     useSetClassName({
         "target": "html",
@@ -107,7 +46,7 @@ export function usePrepareTemplate(params: {
         "className": bodyClassName
     });
 
-    return { isReady };
+    return { areAllStyleSheetsLoaded };
 }
 
 function useSetClassName(params: { target: "html" | "body"; className: string | undefined }) {
@@ -128,4 +67,54 @@ function useSetClassName(params: { target: "html" | "body"; className: string | 
             htmlClassList.remove(...tokens);
         };
     }, [className]);
+}
+
+const hrefByPrLoaded = new Map<string, Promise<void>>();
+
+/** NOTE: The hrefs can't changes. There should be only one one call on this. */
+function useInsertLinkTags(params: { hrefs: string[] }) {
+    const { hrefs } = params;
+
+    const [areAllStyleSheetsLoaded, setAllStyleSheetLoaded] = useReducer(() => true, hrefs.length === 0);
+
+    useEffect(() => {
+        let isActive = true;
+
+        let lastMountedHtmlElement: HTMLLinkElement | undefined = undefined;
+
+        for (const href of hrefs) {
+            if (hrefByPrLoaded.has(href)) {
+                continue;
+            }
+
+            const htmlElement = document.createElement("link");
+
+            hrefByPrLoaded.set(href, new Promise<void>(resolve => htmlElement.addEventListener("load", () => resolve())));
+
+            htmlElement.rel = "stylesheet";
+
+            htmlElement.href = href;
+
+            if (lastMountedHtmlElement !== undefined) {
+                lastMountedHtmlElement.insertAdjacentElement("afterend", htmlElement);
+            } else {
+                document.head.prepend(htmlElement);
+            }
+
+            lastMountedHtmlElement = htmlElement;
+        }
+
+        Promise.all(Array.from(hrefByPrLoaded.values())).then(() => {
+            if (!isActive) {
+                return;
+            }
+            setAllStyleSheetLoaded();
+        });
+
+        return () => {
+            isActive = false;
+        };
+    }, []);
+
+    return { areAllStyleSheetsLoaded };
 }
