@@ -235,7 +235,7 @@ export default function WebauthnAuthenticate(props: PageProps<Extract<KcContext,
                             type="button"
                             onClick={() => {
                                 assert("webAuthnAuthenticate" in window);
-                                assert(window.webAuthnAuthenticate instanceof Function);
+                                assert(typeof window.webAuthnAuthenticate === "function");
                                 window.webAuthnAuthenticate();
                             }}
                             autoFocus

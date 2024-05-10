@@ -19,6 +19,7 @@ const LoginOtp = lazy(() => import("keycloakify/login/pages/LoginOtp"));
 const LoginPassword = lazy(() => import("keycloakify/login/pages/LoginPassword"));
 const LoginUsername = lazy(() => import("keycloakify/login/pages/LoginUsername"));
 const WebauthnAuthenticate = lazy(() => import("keycloakify/login/pages/WebauthnAuthenticate"));
+const WebauthnRegister = lazy(() => import("keycloakify/login/pages/WebauthnRegister"));
 const LoginUpdatePassword = lazy(() => import("keycloakify/login/pages/LoginUpdatePassword"));
 const LoginUpdateProfile = lazy(() => import("keycloakify/login/pages/LoginUpdateProfile"));
 const LoginIdpLinkConfirm = lazy(() => import("keycloakify/login/pages/LoginIdpLinkConfirm"));
@@ -70,6 +71,8 @@ export default function Fallback(props: FallbackProps) {
                         return <LoginPassword kcContext={kcContext} {...rest} />;
                     case "webauthn-authenticate.ftl":
                         return <WebauthnAuthenticate kcContext={kcContext} {...rest} />;
+                    case "webauthn-register.ftl":
+                        return <WebauthnRegister kcContext={kcContext} {...rest} />;
                     case "login-update-password.ftl":
                         return <LoginUpdatePassword kcContext={kcContext} {...rest} />;
                     case "login-update-profile.ftl":
