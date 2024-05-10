@@ -37,7 +37,8 @@ export type KcContext =
     | KcContext.SelectAuthenticator
     | KcContext.SamlPostForm
     | KcContext.DeleteCredential
-    | KcContext.Code;
+    | KcContext.Code
+    | KcContext.DeleteAccountConfirm;
 
 assert<KcContext["themeType"] extends ThemeType ? true : false>();
 
@@ -506,6 +507,11 @@ export declare namespace KcContext {
             code?: string;
             error?: string;
         };
+    };
+
+    export type DeleteAccountConfirm = Common & {
+        pageId: "delete-account-confirm.ftl";
+        triggered_from_aia: boolean;
     };
 }
 
