@@ -24,26 +24,36 @@ export default function Info(props: PageProps<Extract<KcContext, { pageId: "info
             <div id="kc-info-message">
                 <p className="instruction">
                     {message.summary}
-
-                    {requiredActions !== undefined && (
-                        <b>{requiredActions.map(requiredAction => msgStr(`requiredAction.${requiredAction}` as const)).join(",")}</b>
-                    )}
+                    {requiredActions && <b>{requiredActions.map(requiredAction => msgStr(`requiredAction.${requiredAction}` as const)).join(",")}</b>}
                 </p>
-                {!skipLink && pageRedirectUri !== undefined ? (
-                    <p>
-                        <a href={pageRedirectUri}>{msg("backToApplication")}</a>
-                    </p>
-                ) : actionUri !== undefined ? (
-                    <p>
-                        <a href={actionUri}>{msg("proceedWithAction")}</a>
-                    </p>
-                ) : (
-                    client.baseUrl !== undefined && (
-                        <p>
-                            <a href={client.baseUrl}>{msg("backToApplication")}</a>
-                        </p>
-                    )
-                )}
+                {(() => {
+                    if (skipLink) {
+                        return null;
+                    }
+
+                    if (pageRedirectUri) {
+                        return (
+                            <p>
+                                <a href={pageRedirectUri}>{msg("backToApplication")}</a>
+                            </p>
+                        );
+                    }
+                    if (actionUri) {
+                        return (
+                            <p>
+                                <a href={actionUri}>{msg("proceedWithAction")}</a>
+                            </p>
+                        );
+                    }
+
+                    if (client.baseUrl) {
+                        return (
+                            <p>
+                                <a href={client.baseUrl}>{msg("backToApplication")}</a>
+                            </p>
+                        );
+                    }
+                })()}
             </div>
         </Template>
     );
