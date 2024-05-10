@@ -1,4 +1,6 @@
-import { useEffect } from "react";
+import { useCallback } from "react";
+import { useConst } from "keycloakify/tools/useConst";
+import { assert } from "tsafe/assert";
 
 export type ScriptTag = ScriptTag.TextContent | ScriptTag.Src;
 
@@ -8,56 +10,76 @@ export namespace ScriptTag {
     };
 
     export type TextContent = Common & {
-        isModule: boolean;
-        sourceType: "textContent";
-        id: string;
         textContent: string;
     };
     export type Src = Common & {
-        isModule: boolean;
-        sourceType: "src";
         src: string;
     };
 }
 
-// NOTE: Loaded scripts cannot be unloaded so we need to keep track of them
-// to avoid loading them multiple times.
-const loadedScripts = new Set<string>();
+export function createUseInsertScriptTags() {
+    let areScriptsInserted = false;
 
-export function useInsertScriptTags(params: { scriptTags: ScriptTag[] }) {
-    const { scriptTags } = params;
+    function useInsertScriptTags(params: { scriptTags: ScriptTag[] }) {
+        const { scriptTags } = params;
 
-    useEffect(() => {
-        for (const scriptTag of scriptTags) {
-            const scriptId = (() => {
-                switch (scriptTag.sourceType) {
-                    case "src":
-                        return scriptTag.src;
-                    case "textContent":
-                        return scriptTag.textContent;
+        const currentScriptTagsRef = useConst(() => ({ "current": scriptTags }));
+
+        currentScriptTagsRef.current = scriptTags;
+
+        const insertScriptTags = useCallback(() => {
+            {
+                const getFingerprint = (scriptTags: ScriptTag[]) =>
+                    scriptTags
+                        .map((scriptTag): string => {
+                            if ("textContent" in scriptTag) {
+                                return scriptTag.textContent;
+                            }
+                            if ("src" in scriptTag) {
+                                return scriptTag.src;
+                            }
+                            assert(false);
+                        })
+                        .join("---");
+
+                if (getFingerprint(scriptTags) !== getFingerprint(currentScriptTagsRef.current)) {
+                    // NOTE: We can't unload script, in storybook if we switch from one page to another
+                    // and the scripts have changed we must reload.
+                    window.location.reload();
+
+                    return;
                 }
-            })();
-
-            if (loadedScripts.has(scriptId)) {
-                continue;
             }
 
-            const htmlElement = document.createElement("script");
-
-            htmlElement.type = scriptTag.type;
-
-            switch (scriptTag.sourceType) {
-                case "src":
-                    htmlElement.src = scriptTag.src;
-                    break;
-                case "textContent":
-                    htmlElement.textContent = scriptTag.textContent;
-                    break;
+            if (areScriptsInserted) {
+                return;
             }
 
-            document.head.appendChild(htmlElement);
+            scriptTags.forEach(scriptTag => {
+                const htmlElement = document.createElement("script");
 
-            loadedScripts.add(scriptId);
-        }
-    });
+                htmlElement.type = scriptTag.type;
+
+                (() => {
+                    if ("textContent" in scriptTag) {
+                        htmlElement.textContent = scriptTag.textContent;
+                        return;
+                    }
+                    if ("src" in scriptTag) {
+                        htmlElement.src = scriptTag.src;
+                        return;
+                    }
+                    assert(false);
+                })();
+
+                document.head.appendChild(htmlElement);
+            });
+
+            areScriptsInserted = true;
+        }, []);
+
+        return { insertScriptTags };
+    }
+
+    return { useInsertScriptTags };
 }

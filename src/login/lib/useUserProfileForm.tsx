@@ -1,5 +1,5 @@
 import "keycloakify/tools/Array.prototype.every";
-import { useMemo, useReducer, Fragment, type Dispatch } from "react";
+import { useMemo, useReducer, useEffect, Fragment, type Dispatch } from "react";
 import { id } from "tsafe/id";
 import type { MessageKey } from "keycloakify/login/i18n/i18n";
 import type { Attribute, Validators } from "keycloakify/login/kcContext/KcContext";
@@ -7,9 +7,9 @@ import { useConstCallback } from "keycloakify/tools/useConstCallback";
 import { emailRegexp } from "keycloakify/tools/emailRegExp";
 import type { KcContext, PasswordPolicies } from "keycloakify/login/kcContext/KcContext";
 import { assert, type Equals } from "tsafe/assert";
-import type { I18n } from "../i18n";
 import { formatNumber } from "keycloakify/tools/formatNumber";
-import { usePrepareTemplate } from "keycloakify/lib/usePrepareTemplate";
+import { createUseInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
+import type { I18n } from "../i18n";
 
 export type FormFieldError = {
     errorMessage: JSX.Element;
@@ -102,25 +102,23 @@ namespace internal {
     };
 }
 
+const { useInsertScriptTags } = createUseInsertScriptTags();
+
 export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTypeOfUseUserProfileForm {
     const { kcContext, i18n, doMakeUserConfirmPassword } = params;
 
-    usePrepareTemplate({
-        "styles": [],
-        "scripts": Object.keys(kcContext.profile?.html5DataAnnotations ?? {})
+    const { insertScriptTags } = useInsertScriptTags({
+        "scriptTags": Object.keys(kcContext.profile?.html5DataAnnotations ?? {})
             .filter(key => key !== "kcMultivalued" && key !== "kcNumberFormat") // NOTE: Keycloakify handles it.
             .map(key => ({
-                "isModule": true,
-                "source": {
-                    "type": "url",
-                    "src": `${kcContext.url.resourcesPath}/js/${key}.js`
-                }
-            })),
-        "htmlClassName": undefined,
-        "bodyClassName": undefined,
-        "htmlLangProperty": undefined,
-        "documentTitle": undefined
+                "type": "module",
+                "src": `${kcContext.url.resourcesPath}/js/${key}.js`
+            }))
     });
+
+    useEffect(() => {
+        insertScriptTags();
+    }, []);
 
     const { getErrors } = useGetErrors({
         kcContext,
