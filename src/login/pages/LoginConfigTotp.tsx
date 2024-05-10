@@ -17,6 +17,8 @@ export default function LoginConfigTotp(props: PageProps<Extract<KcContext, { pa
 
     const { msg, msgStr } = i18n;
 
+    // NOTE: We should edit the ftl_object_to_js_code_declaring_an_object.ftl
+    // so that we have access to getAlgorithmKey()
     const algToKeyUriAlg: Record<(typeof kcContext)["totp"]["policy"]["algorithm"], string> = {
         "HmacSHA1": "SHA1",
         "HmacSHA256": "SHA256",
@@ -37,7 +39,7 @@ export default function LoginConfigTotp(props: PageProps<Extract<KcContext, { pa
                         </ul>
                     </li>
 
-                    {mode && mode == "manual" ? (
+                    {mode == "manual" ? (
                         <>
                             <li>
                                 <p>{msg("loginTotpManualStep2")}</p>
@@ -146,6 +148,10 @@ export default function LoginConfigTotp(props: PageProps<Extract<KcContext, { pa
                         </div>
                     </div>
 
+                    <div className={getClassName("kcFormGroupClass")}>
+                        <LogoutOtherSessions {...{ getClassName, i18n }} />
+                    </div>
+
                     {isAppInitiatedAction ? (
                         <>
                             <input
@@ -184,5 +190,24 @@ export default function LoginConfigTotp(props: PageProps<Extract<KcContext, { pa
                 </form>
             </>
         </Template>
+    );
+}
+
+function LogoutOtherSessions(props: { getClassName: ReturnType<typeof useGetClassName>["getClassName"]; i18n: I18n }) {
+    const { getClassName, i18n } = props;
+
+    const { msg } = i18n;
+
+    return (
+        <div id="kc-form-options" className={getClassName("kcFormOptionsClass")}>
+            <div className={getClassName("kcFormOptionsWrapperClass")}>
+                <div className="checkbox">
+                    <label>
+                        <input type="checkbox" id="logout-sessions" name="logout-sessions" value="on" defaultChecked={true} />
+                        {msg("logoutOtherSessions")}
+                    </label>
+                </div>
+            </div>
+        </div>
     );
 }
