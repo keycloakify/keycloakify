@@ -5,7 +5,6 @@ import type { PageProps } from "keycloakify/login/pages/PageProps";
 import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import type { KcContext } from "../kcContext";
 import type { I18n } from "../i18n";
-import type { ClassKey } from "keycloakify/login/TemplateProps";
 
 export default function Login(props: PageProps<Extract<KcContext, { pageId: "login.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
@@ -194,7 +193,12 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
     );
 }
 
-function PasswordWrapper(props: { getClassName: (classKey: ClassKey) => string; i18n: I18n; passwordInputId: string; children: JSX.Element }) {
+function PasswordWrapper(props: {
+    getClassName: ReturnType<typeof useGetClassName>["getClassName"];
+    i18n: I18n;
+    passwordInputId: string;
+    children: JSX.Element;
+}) {
     const { getClassName, i18n, passwordInputId, children } = props;
 
     const { msgStr } = i18n;
