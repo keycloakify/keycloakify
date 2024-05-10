@@ -1,10 +1,16 @@
+import { useEffect } from "react";
 import { assert } from "keycloakify/tools/assert";
 import { clsx } from "keycloakify/tools/clsx";
-import { usePrepareTemplate } from "keycloakify/lib/usePrepareTemplate";
 import { type TemplateProps } from "keycloakify/login/TemplateProps";
 import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
+import { createUseInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
+import { createUseInsertLinkTags } from "keycloakify/tools/useInsertLinkTags";
+import { useSetClassName } from "keycloakify/tools/useSetClassName";
 import type { KcContext } from "./kcContext";
 import type { I18n } from "./i18n";
+
+const { useInsertLinkTags } = createUseInsertLinkTags();
+const { useInsertScriptTags } = createUseInsertScriptTags();
 
 export default function Template(props: TemplateProps<KcContext, I18n>) {
     const {
@@ -28,8 +34,34 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
 
     const { realm, locale, auth, url, message, isAppInitiatedAction, authenticationSession, scripts } = kcContext;
 
-    const { areAllStyleSheetsLoaded } = usePrepareTemplate({
-        "styleSheetHrefs": !doUseDefaultCss
+    useEffect(() => {
+        document.title = msgStr("loginTitle", kcContext.realm.displayName);
+    }, []);
+
+    useSetClassName({
+        "qualifiedName": "html",
+        "className": getClassName("kcHtmlClass")
+    });
+
+    useSetClassName({
+        "qualifiedName": "body",
+        "className": getClassName("kcBodyClass")
+    });
+
+    useEffect(() => {
+        const { currentLanguageTag } = locale ?? {};
+
+        if (currentLanguageTag === undefined) {
+            return;
+        }
+
+        const html = document.querySelector("html");
+        assert(html !== null);
+        html.lang = currentLanguageTag;
+    }, []);
+
+    const { areAllStyleSheetsLoaded } = useInsertLinkTags({
+        "hrefs": !doUseDefaultCss
             ? []
             : [
                   `${url.resourcesCommonPath}/node_modules/@patternfly/patternfly/patternfly.min.css`,
@@ -37,7 +69,10 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                   `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly-additions.min.css`,
                   `${url.resourcesCommonPath}/lib/pficon/pficon.css`,
                   `${url.resourcesPath}/css/login.css`
-              ],
+              ]
+    });
+
+    const { insertScriptTags } = useInsertScriptTags({
         "scriptTags": [
             {
                 "type": "module",
@@ -66,12 +101,14 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                         "src": script
                     } as const)
             )
-        ],
-        "htmlClassName": getClassName("kcHtmlClass"),
-        "bodyClassName": getClassName("kcBodyClass"),
-        "htmlLangProperty": locale?.currentLanguageTag,
-        "documentTitle": msgStr("loginTitle", kcContext.realm.displayName)
+        ]
     });
+
+    useEffect(() => {
+        if (areAllStyleSheetsLoaded) {
+            insertScriptTags();
+        }
+    }, [areAllStyleSheetsLoaded]);
 
     if (!areAllStyleSheetsLoaded) {
         return null;
