@@ -23,6 +23,7 @@ export type KcContext =
     | KcContext.LoginOtp
     | KcContext.LoginUsername
     | KcContext.WebauthnAuthenticate
+    | KcContext.WebauthnRegister
     | KcContext.LoginPassword
     | KcContext.LoginUpdatePassword
     | KcContext.LoginUpdateProfile
@@ -361,6 +362,24 @@ export declare namespace KcContext {
             createdAt: string;
         };
     }
+
+    export type WebauthnRegister = Common & {
+        pageId: "webauthn-register.ftl";
+        challenge: string;
+        userid: string;
+        username: string;
+        signatureAlgorithms: string[];
+        rpEntityName: string;
+        rpId: string;
+        attestationConveyancePreference: string;
+        authenticatorAttachment: string;
+        requireResidentKey: string;
+        userVerificationRequirement: string;
+        createTimeout: string;
+        excludeCredentialIds: string;
+        isSetRetry?: boolean;
+        isAppInitiatedAction?: boolean;
+    };
 
     export type LoginUpdatePassword = Common & {
         pageId: "login-update-password.ftl";
