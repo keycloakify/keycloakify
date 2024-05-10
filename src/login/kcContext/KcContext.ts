@@ -340,6 +340,14 @@ export declare namespace KcContext {
             displayInfo: boolean;
         };
         login: {};
+        realm: {
+            password: boolean;
+            registrationAllowed: boolean;
+        };
+        registrationDisabled?: boolean;
+        url: {
+            registrationUrl?: string;
+        };
     };
 
     export namespace WebauthnAuthenticate {
@@ -347,7 +355,7 @@ export declare namespace KcContext {
             credentialId: string;
             transports: {
                 iconClass: string;
-                displayNameProperties: MessageKey[];
+                displayNameProperties?: MessageKey[];
             };
             label: string;
             createdAt: string;
