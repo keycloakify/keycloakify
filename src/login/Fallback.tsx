@@ -13,7 +13,7 @@ const Error = lazy(() => import("keycloakify/login/pages/Error"));
 const LoginResetPassword = lazy(() => import("keycloakify/login/pages/LoginResetPassword"));
 const LoginVerifyEmail = lazy(() => import("keycloakify/login/pages/LoginVerifyEmail"));
 const Terms = lazy(() => import("keycloakify/login/pages/Terms"));
-const LoginDeviceVerifyUserCode = lazy(() => import("keycloakify/login/pages/LoginOauth2DeviceVerifyUserCode"));
+const LoginOauth2DeviceVerifyUserCode = lazy(() => import("keycloakify/login/pages/LoginOauth2DeviceVerifyUserCode"));
 const LoginOauthGrant = lazy(() => import("keycloakify/login/pages/LoginOauthGrant"));
 const LoginOtp = lazy(() => import("keycloakify/login/pages/LoginOtp"));
 const LoginPassword = lazy(() => import("keycloakify/login/pages/LoginPassword"));
@@ -63,7 +63,7 @@ export default function Fallback(props: FallbackProps) {
                     case "terms.ftl":
                         return <Terms kcContext={kcContext} {...rest} />;
                     case "login-oauth2-device-verify-user-code.ftl":
-                        return <LoginDeviceVerifyUserCode kcContext={kcContext} {...rest} />;
+                        return <LoginOauth2DeviceVerifyUserCode kcContext={kcContext} {...rest} />;
                     case "login-oauth-grant.ftl":
                         return <LoginOauthGrant kcContext={kcContext} {...rest} />;
                     case "login-otp.ftl":
