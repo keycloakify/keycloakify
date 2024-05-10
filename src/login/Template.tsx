@@ -28,8 +28,8 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
 
     const { realm, locale, auth, url, message, isAppInitiatedAction, authenticationSession, scripts } = kcContext;
 
-    const { isReady } = usePrepareTemplate({
-        "styles": !doUseDefaultCss
+    const { areAllStyleSheetsLoaded } = usePrepareTemplate({
+        "styleSheetHrefs": !doUseDefaultCss
             ? []
             : [
                   `${url.resourcesCommonPath}/node_modules/@patternfly/patternfly/patternfly.min.css`,
@@ -38,41 +38,32 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                   `${url.resourcesCommonPath}/lib/pficon/pficon.css`,
                   `${url.resourcesPath}/css/login.css`
               ],
-        "scripts": [
+        "scriptTags": [
             {
-                "isModule": true,
-                "source": {
-                    "type": "url",
-                    "src": `${url.resourcesPath}/js/menu-button-links.js`
-                }
+                "type": "module",
+                "src": `${url.resourcesPath}/js/menu-button-links.js`
             },
             ...(authenticationSession === undefined
                 ? []
                 : [
                       {
-                          "isModule": true,
-                          "source": {
-                              "type": "inline" as const,
-                              "code": [
-                                  `import { checkCookiesAndSetTimer } from "${url.resourcesPath}/js/authChecker.js";`,
-                                  ``,
-                                  `checkCookiesAndSetTimer(`,
-                                  `  "${authenticationSession.authSessionId}",`,
-                                  `  "${authenticationSession.tabId}",`,
-                                  `  "${url.ssoLoginInOtherTabsUrl}"`,
-                                  `);`
-                              ].join("\n")
-                          }
-                      }
+                          "type": "module",
+                          "textContent": [
+                              `import { checkCookiesAndSetTimer } from "${url.resourcesPath}/js/authChecker.js";`,
+                              ``,
+                              `checkCookiesAndSetTimer(`,
+                              `  "${authenticationSession.authSessionId}",`,
+                              `  "${authenticationSession.tabId}",`,
+                              `  "${url.ssoLoginInOtherTabsUrl}"`,
+                              `);`
+                          ].join("\n")
+                      } as const
                   ]),
             ...scripts.map(
                 script =>
                     ({
-                        "isModule": false,
-                        "source": {
-                            "type": "url",
-                            "src": script
-                        }
+                        "type": "text/javascript",
+                        "src": script
                     } as const)
             )
         ],
@@ -82,7 +73,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
         "documentTitle": msgStr("loginTitle", kcContext.realm.displayName)
     });
 
-    if (!isReady) {
+    if (!areAllStyleSheetsLoaded) {
         return null;
     }
 
