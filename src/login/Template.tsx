@@ -21,6 +21,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
         showUsernameNode = null,
         socialProvidersNode = null,
         infoNode = null,
+        documentTitle,
         kcContext,
         i18n,
         doUseDefaultCss,
@@ -35,7 +36,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
     const { realm, locale, auth, url, message, isAppInitiatedAction, authenticationSession, scripts } = kcContext;
 
     useEffect(() => {
-        document.title = msgStr("loginTitle", kcContext.realm.displayName);
+        document.title = documentTitle ?? msgStr("loginTitle", kcContext.realm.displayName);
     }, []);
 
     useSetClassName({

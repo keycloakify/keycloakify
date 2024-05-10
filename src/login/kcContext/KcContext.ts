@@ -38,7 +38,8 @@ export type KcContext =
     | KcContext.SamlPostForm
     | KcContext.DeleteCredential
     | KcContext.Code
-    | KcContext.DeleteAccountConfirm;
+    | KcContext.DeleteAccountConfirm
+    | KcContext.FrontchannelLogout;
 
 assert<KcContext["themeType"] extends ThemeType ? true : false>();
 
@@ -513,6 +514,17 @@ export declare namespace KcContext {
     export type DeleteAccountConfirm = Common & {
         pageId: "delete-account-confirm.ftl";
         triggered_from_aia: boolean;
+    };
+
+    export type FrontchannelLogout = Common & {
+        pageId: "frontchannel-logout.ftl";
+        logout: {
+            clients: {
+                name: string;
+                frontChannelLogoutUrl: string;
+            }[];
+            logoutRedirectUri?: string;
+        };
     };
 }
 

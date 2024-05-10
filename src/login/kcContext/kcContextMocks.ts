@@ -678,6 +678,23 @@ export const kcContextMocks = [
     id<KcContext.LoginPageExpired>({
         ...kcContextCommonMock,
         pageId: "login-page-expired.ftl"
+    }),
+
+    id<KcContext.FrontchannelLogout>({
+        ...kcContextCommonMock,
+        pageId: "frontchannel-logout.ftl",
+        "logout": {
+            "clients": [
+                {
+                    "name": "myApp",
+                    "frontChannelLogoutUrl": "#"
+                },
+                {
+                    "name": "myApp2",
+                    "frontChannelLogoutUrl": "#"
+                }
+            ]
+        }
     })
 ];
 
