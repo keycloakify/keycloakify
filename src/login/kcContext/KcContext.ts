@@ -273,7 +273,11 @@ export declare namespace KcContext {
     export type LoginOtp = Common & {
         pageId: "login-otp.ftl";
         otpLogin: {
-            userOtpCredentials: { id: string; userLabel: string }[];
+            userOtpCredentials: {
+                id: string;
+                userLabel: string;
+            }[];
+            selectedCredentialId?: string;
         };
     };
 
