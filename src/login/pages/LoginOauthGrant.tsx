@@ -18,17 +18,53 @@ export default function LoginOauthGrant(props: PageProps<Extract<KcContext, { pa
     return (
         <Template
             {...{ kcContext, i18n, doUseDefaultCss, classes }}
-            headerNode={msg("oauthGrantTitle", client.name ? advancedMsgStr(client.name) : client.clientId)}
+            bodyClassName="oauth"
+            headerNode={
+                <>
+                    {client.attributes.logoUri && <img src={client.attributes.logoUri} />}
+                    <p>{client.name ? msg("oauthGrantTitle", advancedMsgStr(client.name)) : msg("oauthGrantTitle", client.clientId)}</p>
+                </>
+            }
         >
             <div id="kc-oauth" className="content-area">
                 <h3>{msg("oauthGrantRequest")}</h3>
                 <ul>
                     {oauth.clientScopesRequested.map(clientScope => (
                         <li key={clientScope.consentScreenText}>
-                            <span>{advancedMsg(clientScope.consentScreenText)}</span>
+                            <span>
+                                {advancedMsg(clientScope.consentScreenText)}
+                                {clientScope.dynamicScopeParameter && (
+                                    <>
+                                        : <b>{clientScope.dynamicScopeParameter}</b>
+                                    </>
+                                )}
+                            </span>
                         </li>
                     ))}
                 </ul>
+
+                {client.attributes.policyUri ||
+                    (client.attributes.tosUri && (
+                        <h3>
+                            {client.name ? msg("oauthGrantInformation", advancedMsgStr(client.name)) : msg("oauthGrantInformation", client.clientId)}
+                            {client.attributes.tosUri && (
+                                <>
+                                    {msg("oauthGrantReview")}
+                                    <a href={client.attributes.tosUri} target="_blank">
+                                        {msg("oauthGrantTos")}
+                                    </a>
+                                </>
+                            )}
+                            {client.attributes.policyUri && (
+                                <>
+                                    {msg("oauthGrantReview")}
+                                    <a href={client.attributes.policyUri} target="_blank">
+                                        {msg("oauthGrantPolicy")}
+                                    </a>
+                                </>
+                            )}
+                        </h3>
+                    ))}
 
                 <form className="form-actions" action={url.oauthAction} method="POST">
                     <input type="hidden" name="code" value={oauth.code} />

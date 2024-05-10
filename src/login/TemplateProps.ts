@@ -17,6 +17,7 @@ export type TemplateProps<KcContext extends KcContext.Common, I18nExtended exten
     socialProvidersNode?: ReactNode;
     infoNode?: ReactNode;
     documentTitle?: string;
+    bodyClassName?: string;
 
     children: ReactNode;
 };

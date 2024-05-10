@@ -22,6 +22,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
         socialProvidersNode = null,
         infoNode = null,
         documentTitle,
+        bodyClassName,
         kcContext,
         i18n,
         doUseDefaultCss,
@@ -46,7 +47,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
 
     useSetClassName({
         "qualifiedName": "body",
-        "className": getClassName("kcBodyClass")
+        "className": bodyClassName ?? getClassName("kcBodyClass")
     });
 
     useEffect(() => {

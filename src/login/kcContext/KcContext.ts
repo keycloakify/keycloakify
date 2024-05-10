@@ -262,6 +262,7 @@ export declare namespace KcContext {
             client: string;
             clientScopesRequested: {
                 consentScreenText: string;
+                dynamicScopeParameter?: string;
             }[];
         };
         url: {
