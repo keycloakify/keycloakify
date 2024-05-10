@@ -10,7 +10,7 @@ export default function LoginPageExpired(props: PageProps<Extract<KcContext, { p
     const { msg } = i18n;
 
     return (
-        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} displayMessage={false} headerNode={msg("pageExpiredTitle")}>
+        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} headerNode={msg("pageExpiredTitle")}>
             <p id="instruction1" className="instruction">
                 {msg("pageExpiredMsg1")}
                 <a id="loginRestartLink" href={url.loginRestartFlowUrl}>
