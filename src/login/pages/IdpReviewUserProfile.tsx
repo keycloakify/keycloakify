@@ -1,13 +1,18 @@
 import { useState } from "react";
 import { clsx } from "keycloakify/tools/clsx";
-import { UserProfileFormFields } from "keycloakify/login/pages/shared/UserProfileFormFields";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
+import type { LazyOrNot } from "keycloakify/tools/LazyOrNot";
+import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFormFields";
 import type { KcContext } from "../kcContext";
 import type { I18n } from "../i18n";
 
-export default function IdpReviewUserProfile(props: PageProps<Extract<KcContext, { pageId: "idp-review-user-profile.ftl" }>, I18n>) {
-    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
+type IdpReviewUserProfileProps = PageProps<Extract<KcContext, { pageId: "idp-review-user-profile.ftl" }>, I18n> & {
+    UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
+};
+
+export default function IdpReviewUserProfile(props: IdpReviewUserProfileProps) {
+    const { kcContext, i18n, doUseDefaultCss, Template, classes, UserProfileFormFields } = props;
 
     const { getClassName } = useGetClassName({
         doUseDefaultCss,
@@ -16,12 +21,17 @@ export default function IdpReviewUserProfile(props: PageProps<Extract<KcContext,
 
     const { msg, msgStr } = i18n;
 
-    const { url } = kcContext;
+    const { url, messagesPerField } = kcContext;
 
     const [isFomSubmittable, setIsFomSubmittable] = useState(false);
 
     return (
-        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} headerNode={msg("loginIdpReviewProfileTitle")}>
+        <Template
+            {...{ kcContext, i18n, doUseDefaultCss, classes }}
+            displayMessage={messagesPerField.exists("global")}
+            displayRequiredFields={true}
+            headerNode={msg("loginIdpReviewProfileTitle")}
+        >
             <form id="kc-idp-review-profile-form" className={getClassName("kcFormClass")} action={url.loginAction} method="post">
                 <UserProfileFormFields
                     kcContext={kcContext}
