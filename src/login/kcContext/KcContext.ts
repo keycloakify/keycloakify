@@ -211,6 +211,7 @@ export declare namespace KcContext {
             baseUrl?: string;
         };
         message: NonNullable<Common["message"]>;
+        skipLink?: boolean;
     };
 
     export type LoginResetPassword = Common & {
