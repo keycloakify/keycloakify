@@ -33,6 +33,7 @@ const SelectAuthenticator = lazy(() => import("keycloakify/login/pages/SelectAut
 const SamlPostForm = lazy(() => import("keycloakify/login/pages/SamlPostForm"));
 const DeleteCredential = lazy(() => import("keycloakify/login/pages/DeleteCredential"));
 const Code = lazy(() => import("keycloakify/login/pages/Code"));
+const DeleteAccountConfirm = lazy(() => import("keycloakify/login/pages/DeleteAccountConfirm"));
 
 type FallbackProps = PageProps<KcContext, I18n> & {
     UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
@@ -101,6 +102,8 @@ export default function Fallback(props: FallbackProps) {
                         return <DeleteCredential kcContext={kcContext} {...rest} />;
                     case "code.ftl":
                         return <Code kcContext={kcContext} {...rest} />;
+                    case "delete-account-confirm.ftl":
+                        return <DeleteAccountConfirm kcContext={kcContext} {...rest} />;
                 }
                 assert<Equals<typeof kcContext, never>>(false);
             })()}
