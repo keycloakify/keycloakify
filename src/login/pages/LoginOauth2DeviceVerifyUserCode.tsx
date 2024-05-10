@@ -4,7 +4,9 @@ import { KcContext } from "../kcContext";
 import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import { PageProps } from "./PageProps";
 
-export default function LoginOauthGrant(props: PageProps<Extract<KcContext, { pageId: "login-oauth2-device-verify-user-code.ftl" }>, I18n>) {
+export default function LoginOauth2DeviceVerifyUserCode(
+    props: PageProps<Extract<KcContext, { pageId: "login-oauth2-device-verify-user-code.ftl" }>, I18n>
+) {
     const { kcContext, i18n, doUseDefaultCss, classes, Template } = props;
     const { url } = kcContext;
 
