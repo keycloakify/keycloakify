@@ -43,8 +43,8 @@ export function createUseInsertScriptTags() {
                         .join("---");
 
                 if (getFingerprint(scriptTags) !== getFingerprint(currentScriptTagsRef.current)) {
-                    // NOTE: We can't unload script, in storybook if we switch from one page to another
-                    // and the scripts have changed we must reload.
+                    // NOTE: This is for when the scripts imported in the Template have changed switching
+                    // from one page to another in storybook.
                     window.location.reload();
 
                     return;
@@ -56,6 +56,27 @@ export function createUseInsertScriptTags() {
             }
 
             scriptTags.forEach(scriptTag => {
+                // NOTE: Avoid loading same script twice. (Like jQuery for example)
+                {
+                    const scripts = document.getElementsByTagName("script");
+                    for (let i = 0; i < scripts.length; i++) {
+                        const script = scripts[i];
+                        if ("textContent" in scriptTag) {
+                            if (script.textContent === scriptTag.textContent) {
+                                return;
+                            }
+                            continue;
+                        }
+                        if ("src" in scriptTag) {
+                            if (script.getAttribute("src") === scriptTag.src) {
+                                return;
+                            }
+                            continue;
+                        }
+                        assert(false);
+                    }
+                }
+
                 const htmlElement = document.createElement("script");
 
                 htmlElement.type = scriptTag.type;
