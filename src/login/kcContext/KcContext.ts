@@ -329,9 +329,6 @@ export declare namespace KcContext {
         social: {
             displayInfo: boolean;
         };
-        login: {
-            password?: string;
-        };
     };
 
     export type WebauthnAuthenticate = Common & {
