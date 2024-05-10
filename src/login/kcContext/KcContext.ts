@@ -36,7 +36,8 @@ export type KcContext =
     | KcContext.UpdateEmail
     | KcContext.SelectAuthenticator
     | KcContext.SamlPostForm
-    | KcContext.DeleteCredential;
+    | KcContext.DeleteCredential
+    | KcContext.Code;
 
 assert<KcContext["themeType"] extends ThemeType ? true : false>();
 
@@ -496,6 +497,15 @@ export declare namespace KcContext {
     export type DeleteCredential = Common & {
         pageId: "delete-credential.ftl";
         credentialLabel: string;
+    };
+
+    export type Code = Common & {
+        pageId: "code.ftl";
+        code: {
+            success: boolean;
+            code?: string;
+            error?: string;
+        };
     };
 }
 
