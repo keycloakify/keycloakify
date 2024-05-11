@@ -32,7 +32,8 @@ export const loginThemePageIds = [
     "frontchannel-logout.ftl",
     "login-recovery-authn-code-config.ftl",
     "login-recovery-authn-code-input.ftl",
-    "login-reset-otp.ftl"
+    "login-reset-otp.ftl",
+    "login-x509-info.ftl"
 ] as const;
 
 export const accountThemePageIds = [
