@@ -40,7 +40,8 @@ export type KcContext =
     | KcContext.Code
     | KcContext.DeleteAccountConfirm
     | KcContext.FrontchannelLogout
-    | KcContext.LoginRecoveryAuthnCodeConfig;
+    | KcContext.LoginRecoveryAuthnCodeConfig
+    | KcContext.LoginRecoveryAuthnCodeInput;
 
 assert<KcContext["themeType"] extends ThemeType ? true : false>();
 
@@ -535,8 +536,12 @@ export declare namespace KcContext {
         recoveryAuthnCodesConfigBean: {
             generatedRecoveryAuthnCodesList: string[];
             generatedRecoveryAuthnCodesAsString: string;
-            generatedAt: string;
+            generatedAt: number;
         };
+    };
+
+    export type LoginRecoveryAuthnCodeInput = Common & {
+        pageId: "login-recovery-authn-code-input.ftl";
     };
 }
 
