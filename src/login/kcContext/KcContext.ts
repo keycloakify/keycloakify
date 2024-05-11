@@ -382,7 +382,7 @@ export declare namespace KcContext {
         authenticatorAttachment: string;
         requireResidentKey: string;
         userVerificationRequirement: string;
-        createTimeout: string;
+        createTimeout: number;
         excludeCredentialIds: string;
         isSetRetry?: boolean;
         isAppInitiatedAction?: boolean;

@@ -9,22 +9,15 @@ import { BASE_URL } from "keycloakify/lib/BASE_URL";
 const attributes: Attribute[] = [
     {
         "validators": {
-            "username-prohibited-characters": {
-                "ignore.empty.value": true
-            },
-            "up-username-has-value": {},
             "length": {
                 "ignore.empty.value": true,
                 "min": "3",
                 "max": "255"
-            },
-            "up-duplicate-username": {},
-            "up-username-mutation": {}
+            }
         },
         "displayName": "${username}",
         "annotations": {},
         "required": true,
-        "groupAnnotations": {},
         "autocomplete": "username",
         "readOnly": false,
         "name": "username",
@@ -32,16 +25,10 @@ const attributes: Attribute[] = [
     },
     {
         "validators": {
-            "up-email-exists-as-username": {},
             "length": {
                 "max": "255",
                 "ignore.empty.value": true
             },
-            "up-blank-attribute-value": {
-                "error-message": "missingEmailMessage",
-                "fail-on-null": false
-            },
-            "up-duplicate-email": {},
             "email": {
                 "ignore.empty.value": true
             },
@@ -53,7 +40,6 @@ const attributes: Attribute[] = [
         "displayName": "${email}",
         "annotations": {},
         "required": true,
-        "groupAnnotations": {},
         "autocomplete": "email",
         "readOnly": false,
         "name": "email"
@@ -63,17 +49,11 @@ const attributes: Attribute[] = [
             "length": {
                 "max": "255",
                 "ignore.empty.value": true
-            },
-            "person-name-prohibited-characters": {
-                "ignore.empty.value": true
-            },
-            "up-immutable-attribute": {},
-            "up-attribute-required-by-metadata-value": {}
+            }
         },
         "displayName": "${firstName}",
         "annotations": {},
         "required": true,
-        "groupAnnotations": {},
         "readOnly": false,
         "name": "firstName"
     },
@@ -82,17 +62,11 @@ const attributes: Attribute[] = [
             "length": {
                 "max": "255",
                 "ignore.empty.value": true
-            },
-            "person-name-prohibited-characters": {
-                "ignore.empty.value": true
-            },
-            "up-immutable-attribute": {},
-            "up-attribute-required-by-metadata-value": {}
+            }
         },
         "displayName": "${lastName}",
         "annotations": {},
         "required": true,
-        "groupAnnotations": {},
         "readOnly": false,
         "name": "lastName"
     }
@@ -127,8 +101,9 @@ export const kcContextCommonMock: KcContext.Common = {
             return undefined;
         },
         "existsError": () => false,
-        "get": key => `Fake error for ${key}`,
-        "exists": () => false
+        "get": fieldName => `Fake error for ${fieldName}`,
+        "exists": () => false,
+        "getFirstError": fieldName => `Fake error for ${fieldName}`
     },
     "locale": {
         "supported": [
@@ -238,126 +213,7 @@ export const kcContextCommonMock: KcContext.Common = {
     },
     "scripts": [],
     "isAppInitiatedAction": false,
-    "properties": {
-        "kcLogoIdP-facebook": "fa fa-facebook",
-        "parent": "keycloak",
-        "kcAuthenticatorOTPClass": "fa fa-mobile list-view-pf-icon-lg",
-        "kcLogoIdP-bitbucket": "fa fa-bitbucket",
-        "kcAuthenticatorWebAuthnClass": "fa fa-key list-view-pf-icon-lg",
-        "kcWebAuthnDefaultIcon": "pficon pficon-key",
-        "kcLogoIdP-stackoverflow": "fa fa-stack-overflow",
-        "kcSelectAuthListItemClass": "pf-l-stack__item select-auth-box-parent pf-l-split",
-        "kcLogoIdP-microsoft": "fa fa-windows",
-        "kcLocaleItemClass": "pf-c-dropdown__menu-item",
-        "kcLoginOTPListItemHeaderClass": "pf-c-tile__header",
-        "kcLoginOTPListItemIconBodyClass": "pf-c-tile__icon",
-        "kcInputHelperTextAfterClass": "pf-c-form__helper-text pf-c-form__helper-text-after",
-        "kcFormClass": "form-horizontal",
-        "kcSelectAuthListClass": "pf-l-stack select-auth-container",
-        "kcInputClassRadioCheckboxLabelDisabled": "pf-m-disabled",
-        "kcSelectAuthListItemIconClass": "pf-l-split__item select-auth-box-icon",
-        "kcRecoveryCodesWarning": "kc-recovery-codes-warning",
-        "kcFormSettingClass": "login-pf-settings",
-        "kcWebAuthnBLE": "fa fa-bluetooth-b",
-        "kcInputWrapperClass": "col-xs-12 col-sm-12 col-md-12 col-lg-12",
-        "kcSelectAuthListItemArrowIconClass": "fa fa-angle-right fa-lg",
-        "meta": "viewport==width=device-width,initial-scale=1",
-        "styles": "css/login.css css/tile.css",
-        "kcFeedbackAreaClass": "col-md-12",
-        "kcLogoIdP-google": "fa fa-google",
-        "kcCheckLabelClass": "pf-c-check__label",
-        "kcSelectAuthListItemFillClass": "pf-l-split__item pf-m-fill",
-        "kcAuthenticatorDefaultClass": "fa fa-list list-view-pf-icon-lg",
-        "kcLogoIdP-gitlab": "fa fa-gitlab",
-        "kcFormAreaClass": "col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2",
-        "kcFormButtonsClass": "col-xs-12 col-sm-12 col-md-12 col-lg-12",
-        "kcInputClassRadioLabel": "pf-c-radio__label",
-        "kcAuthenticatorWebAuthnPasswordlessClass": "fa fa-key list-view-pf-icon-lg",
-        "kcSelectAuthListItemHeadingClass": "pf-l-stack__item select-auth-box-headline pf-c-title",
-        "kcInfoAreaClass": "col-xs-12 col-sm-4 col-md-4 col-lg-5 details",
-        "kcLogoLink": "http://www.keycloak.org",
-        "kcContainerClass": "container-fluid",
-        "kcSelectAuthListItemTitle": "select-auth-box-paragraph",
-        "kcHtmlClass": "login-pf",
-        "kcLoginOTPListItemTitleClass": "pf-c-tile__title",
-        "locales": "ca,cs,da,de,en,es,fr,fi,hu,it,ja,lt,nl,no,pl,pt-BR,ru,sk,sv,tr,zh-CN",
-        "serviceTitle": "CodeGouv",
-        "kcLogoIdP-openshift-v4": "pf-icon pf-icon-openshift",
-        "kcWebAuthnUnknownIcon": "pficon pficon-key unknown-transport-class",
-        "kcFormSocialAccountNameClass": "kc-social-provider-name",
-        "kcLogoIdP-openshift-v3": "pf-icon pf-icon-openshift",
-        "kcLoginOTPListInputClass": "pf-c-tile__input",
-        "kcWebAuthnUSB": "fa fa-usb",
-        "kcInputClassRadio": "pf-c-radio",
-        "kcWebAuthnKeyIcon": "pficon pficon-key",
-        "kcFeedbackInfoIcon": "fa fa-fw fa-info-circle",
-        "kcCommonLogoIdP": "kc-social-provider-logo kc-social-gray",
-        "stylesCommon":
-            "web_modules/@patternfly/react-core/dist/styles/base.css web_modules/@patternfly/react-core/dist/styles/app.css node_modules/patternfly/dist/css/patternfly.min.css node_modules/patternfly/dist/css/patternfly-additions.min.css lib/pficon/pficon.css",
-        "kcRecoveryCodesActions": "kc-recovery-codes-actions",
-        "kcFormGroupHeader": "pf-c-form__group",
-        "kcFormSocialAccountSectionClass": "kc-social-section kc-social-gray",
-        "kcLogoIdP-instagram": "fa fa-instagram",
-        "kcAlertClass": "pf-c-alert pf-m-inline",
-        "kcHeaderClass": "login-pf-page-header",
-        "kcLabelWrapperClass": "col-xs-12 col-sm-12 col-md-12 col-lg-12",
-        "kcFormSocialAccountLinkClass": "pf-c-login__main-footer-links-item-link",
-        "kcLocaleMainClass": "pf-c-dropdown",
-        "kcTextareaClass": "form-control",
-        "kcButtonBlockClass": "pf-m-block",
-        "kcButtonClass": "pf-c-button",
-        "kcWebAuthnNFC": "fa fa-wifi",
-        "kcLocaleClass": "col-xs-12 col-sm-1",
-        "kcInputClassCheckboxInput": "pf-c-check__input",
-        "kcFeedbackErrorIcon": "fa fa-fw fa-exclamation-circle",
-        "kcInputLargeClass": "input-lg",
-        "kcInputErrorMessageClass": "pf-c-form__helper-text pf-m-error required kc-feedback-text",
-        "kcRecoveryCodesList": "kc-recovery-codes-list",
-        "kcFormSocialAccountListClass": "pf-c-login__main-footer-links kc-social-links",
-        "kcAlertTitleClass": "pf-c-alert__title kc-feedback-text",
-        "kcAuthenticatorPasswordClass": "fa fa-unlock list-view-pf-icon-lg",
-        "kcCheckInputClass": "pf-c-check__input",
-        "kcLogoIdP-linkedin": "fa fa-linkedin",
-        "kcLogoIdP-twitter": "fa fa-twitter",
-        "kcFeedbackWarningIcon": "fa fa-fw fa-exclamation-triangle",
-        "kcResetFlowIcon": "pficon pficon-arrow fa",
-        "kcSelectAuthListItemIconPropertyClass": "fa-2x select-auth-box-icon-properties",
-        "kcFeedbackSuccessIcon": "fa fa-fw fa-check-circle",
-        "kcLoginOTPListClass": "pf-c-tile",
-        "kcSrOnlyClass": "sr-only",
-        "kcFormSocialAccountListGridClass": "pf-l-grid kc-social-grid",
-        "kcButtonDefaultClass": "btn-default",
-        "kcFormGroupErrorClass": "has-error",
-        "kcSelectAuthListItemDescriptionClass": "pf-l-stack__item select-auth-box-desc",
-        "kcSelectAuthListItemBodyClass": "pf-l-split__item pf-l-stack",
-        "import": "common/keycloak",
-        "kcWebAuthnInternal": "pficon pficon-key",
-        "kcSelectAuthListItemArrowClass": "pf-l-split__item select-auth-box-arrow",
-        "kcCheckClass": "pf-c-check",
-        "kcContentClass": "col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3",
-        "kcLogoClass": "login-pf-brand",
-        "kcLoginOTPListItemIconClass": "fa fa-mobile",
-        "kcLoginClass": "login-pf-page",
-        "kcSignUpClass": "login-pf-signup",
-        "kcButtonLargeClass": "btn-lg",
-        "kcFormCardClass": "card-pf",
-        "kcLocaleListClass": "pf-c-dropdown__menu pf-m-align-right",
-        "kcInputClass": "pf-c-form-control",
-        "kcFormGroupClass": "form-group",
-        "kcLogoIdP-paypal": "fa fa-paypal",
-        "kcInputClassCheckbox": "pf-c-check",
-        "kcRecoveryCodesConfirmation": "kc-recovery-codes-confirmation",
-        "kcInputClassRadioInput": "pf-c-radio__input",
-        "kcFormSocialAccountListButtonClass": "pf-c-button pf-m-control pf-m-block kc-social-item kc-social-gray",
-        "kcInputClassCheckboxLabel": "pf-c-check__label",
-        "kcFormOptionsClass": "col-xs-12 col-sm-12 col-md-12 col-lg-12",
-        "kcFormHeaderClass": "login-pf-header",
-        "kcFormSocialAccountGridItem": "pf-l-grid__item",
-        "kcButtonPrimaryClass": "pf-m-primary",
-        "kcInputHelperTextBeforeClass": "pf-c-form__helper-text pf-c-form__helper-text-before",
-        "kcLogoIdP-github": "fa fa-github",
-        "kcLabelClass": "pf-c-form__label pf-c-form__label-text"
-    }
+    "properties": {}
 };
 
 const loginUrl = {
@@ -389,43 +245,25 @@ export const kcContextMocks = [
         "login": {},
         "registrationDisabled": false
     }),
-    ...(() => {
-        const registerCommon: KcContext.RegisterUserProfile.CommonWithLegacy = {
-            ...kcContextCommonMock,
-            "url": {
-                ...loginUrl,
-                "registrationAction":
-                    "http://localhost:8080/auth/realms/myrealm/login-actions/registration?session_code=gwZdUeO7pbYpFTRxiIxRg_QtzMbtFTKrNu6XW_f8asM&execution=12146ce0-b139-4bbd-b25b-0eccfee6577e&client_id=account&tab_id=uS8lYfebLa0"
-            },
-            "scripts": [],
-            "isAppInitiatedAction": false,
-            "passwordRequired": true,
-            "recaptchaRequired": false,
-            "social": {
-                "displayInfo": true
-            }
-        };
-
-        return [
-            id<KcContext.Register>({
-                "pageId": "register.ftl",
-                ...registerCommon,
-                "register": {
-                    "formData": {}
-                }
-            }),
-            id<KcContext.RegisterUserProfile>({
-                "pageId": "register-user-profile.ftl",
-                ...registerCommon,
-                "profile": {
-                    "context": "REGISTRATION_PROFILE" as const,
-                    attributes,
-                    attributesByName
-                },
-                "scripts": [...registerCommon.scripts, "https://www.google.com/recaptcha/api.js"]
-            })
-        ];
-    })(),
+    id<KcContext.Register>({
+        ...kcContextCommonMock,
+        "url": {
+            ...loginUrl,
+            "registrationAction":
+                "http://localhost:8080/auth/realms/myrealm/login-actions/registration?session_code=gwZdUeO7pbYpFTRxiIxRg_QtzMbtFTKrNu6XW_f8asM&execution=12146ce0-b139-4bbd-b25b-0eccfee6577e&client_id=account&tab_id=uS8lYfebLa0"
+        },
+        "isAppInitiatedAction": false,
+        "passwordRequired": true,
+        "recaptchaRequired": false,
+        "pageId": "register.ftl",
+        "profile": {
+            attributes,
+            attributesByName
+        },
+        "scripts": [
+            //"https://www.google.com/recaptcha/api.js"
+        ]
+    }),
     id<KcContext.Info>({
         ...kcContextCommonMock,
         "pageId": "info.ftl",
@@ -457,9 +295,11 @@ export const kcContextMocks = [
         "pageId": "login-reset-password.ftl",
         "realm": {
             ...kcContextCommonMock.realm,
-            "loginWithEmailAllowed": false
+            "loginWithEmailAllowed": false,
+            "duplicateEmailsAllowed": false
         },
-        url: loginUrl
+        "url": loginUrl,
+        "auth": {}
     }),
     id<KcContext.LoginVerifyEmail>({
         ...kcContextCommonMock,
@@ -536,8 +376,7 @@ export const kcContextMocks = [
         },
         "social": {
             "displayInfo": false
-        },
-        "login": {}
+        }
     }),
     id<KcContext.WebauthnAuthenticate>({
         ...kcContextCommonMock,
@@ -547,7 +386,9 @@ export const kcContextMocks = [
             "authenticators": []
         },
         "realm": {
-            ...kcContextCommonMock.realm
+            ...kcContextCommonMock.realm,
+            "password": true,
+            "registrationAllowed": true
         },
         "challenge": "",
         "userVerification": "not specified",
@@ -562,18 +403,14 @@ export const kcContextMocks = [
     }),
     id<KcContext.LoginUpdatePassword>({
         ...kcContextCommonMock,
-        "pageId": "login-update-password.ftl",
-        "username": "anUsername"
+        "pageId": "login-update-password.ftl"
     }),
     id<KcContext.LoginUpdateProfile>({
         ...kcContextCommonMock,
         "pageId": "login-update-profile.ftl",
-        "user": {
-            "editUsernameAllowed": true,
-            "username": "anUsername",
-            "email": "foo@example.com",
-            "firstName": "aFirstName",
-            "lastName": "aLastName"
+        "profile": {
+            attributes,
+            attributesByName
         }
     }),
     id<KcContext.LoginIdpLinkConfirm>({
@@ -592,21 +429,21 @@ export const kcContextMocks = [
     id<KcContext.LoginConfigTotp>({
         ...kcContextCommonMock,
         "pageId": "login-config-totp.ftl",
-        totp: {
-            totpSecretEncoded: "KVVF G2BY N4YX S6LB IUYT K2LH IFYE 4SBV",
-            qrUrl: "#",
-            totpSecretQrCode:
+        "totp": {
+            "totpSecretEncoded": "KVVF G2BY N4YX S6LB IUYT K2LH IFYE 4SBV",
+            "qrUrl": "#",
+            "totpSecretQrCode":
                 "iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2AQAAAADNaUdlAAACM0lEQVR4Xu3OIZJgOQwDUDFd2UxiurLAVnnbHw4YGDKtSiWOn4Gxf81//7r/+q8b4HfLGBZDK9d85NmNR+sB42sXvOYrN5P1DcgYYFTGfOlbzE8gzwy3euweGizw7cfdl34/GRhlkxjKNV+5AebPXPORX1JuB9x8ZfbyyD2y1krWAKsbMq1HnqQDaLfa77p4+MqvzEGSqvSAD/2IHW2yHaigR9tX3m8dDIYGcNf3f+gDpVBZbZU77zyJ6Rlcy+qoTMG887KAPD9hsh6a1Sv3gJUHGHUAxSMzj7zqDDe7Phmt2eG+8UsMxjRGm816MAO+8VMl1R1jGHOrZB/5Zo/WXAPgxixm9Mo96vDGrM1eOto8c4Ax4wF437mifOXlpiPzCnN7Y9l95NnEMxgMY9AAGA8fucH14Y1aVb6N/cqrmyh0BVht7k1e+bU8LK0Cg5vmVq9c5vHIjOfqxDIfeTraNVTwewa4wVe+SW5N+uP1qACeudUZbqGOfA6VZV750Noq2Xx3kpveV44ZelSV1V7KFHzkWyVrrlUwG0Pl9pWnoy3vsQoME6vKI69i5osVgwWzHT7zjmJtMcNUSVn1oYMd7ZodbgowZl45VG0uVuLPUr1yc79uaQBag/mqR34xhlWyHm1prplHboCWdZ4TeZjsK8+dI+jbz1C5hl65mcpgB5dhcj8+dGO+0Ko68+lD37JDD83dpDLzzK+TrQyaVwGj6pUboGV+7+AyN8An/pf84/7rv/4/1l4OCc/1BYMAAAAASUVORK5CYII=",
-            manualUrl: "#",
-            totpSecret: "G4nsI8lQagRMUchH8jEG",
-            otpCredentials: [],
-            supportedApplications: ["FreeOTP", "Google Authenticator"],
-            policy: {
-                algorithm: "HmacSHA1",
-                digits: 6,
-                lookAheadWindow: 1,
-                type: "totp",
-                period: 30
+            "manualUrl": "#",
+            "totpSecret": "G4nsI8lQagRMUchH8jEG",
+            "otpCredentials": [],
+            "supportedApplications": ["FreeOTP", "Google Authenticator"],
+            "policy": {
+                "algorithm": "HmacSHA1",
+                "digits": 6,
+                "lookAheadWindow": 1,
+                "type": "totp",
+                "period": 30
             }
         }
     }),
@@ -624,19 +461,10 @@ export const kcContextMocks = [
         },
         "logoutConfirm": { "code": "123", skipLink: false }
     }),
-    id<KcContext.UpdateUserProfile>({
-        ...kcContextCommonMock,
-        "pageId": "update-user-profile.ftl",
-        "profile": {
-            attributes,
-            attributesByName
-        }
-    }),
     id<KcContext.IdpReviewUserProfile>({
         ...kcContextCommonMock,
         "pageId": "idp-review-user-profile.ftl",
         "profile": {
-            context: "IDP_REVIEW",
             attributes,
             attributesByName
         }
@@ -644,8 +472,9 @@ export const kcContextMocks = [
     id<KcContext.UpdateEmail>({
         ...kcContextCommonMock,
         "pageId": "update-email.ftl",
-        "email": {
-            value: "email@example.com"
+        "profile": {
+            attributes,
+            attributesByName
         }
     }),
     id<KcContext.SelectAuthenticator>({
@@ -695,6 +524,95 @@ export const kcContextMocks = [
                 }
             ]
         }
+    }),
+    id<KcContext.WebauthnRegister>({
+        "pageId": "webauthn-register.ftl",
+        ...kcContextCommonMock,
+        "challenge": "random-challenge-string",
+        "userid": "user123",
+        "username": "johndoe",
+        "signatureAlgorithms": ["ES256", "RS256"],
+        "rpEntityName": "Example Corp",
+        "rpId": "example.com",
+        "attestationConveyancePreference": "direct",
+        "authenticatorAttachment": "platform",
+        "requireResidentKey": "required",
+        "userVerificationRequirement": "preferred",
+        "createTimeout": 60000,
+        "excludeCredentialIds": "credId123,credId456",
+        "isSetRetry": false,
+        "isAppInitiatedAction": true
+    }),
+    id<KcContext.DeleteCredential>({
+        "pageId": "delete-credential.ftl",
+        ...kcContextCommonMock,
+        "credentialLabel": "myCredential"
+    }),
+    id<KcContext.Code>({
+        "pageId": "code.ftl",
+        ...kcContextCommonMock,
+        "code": {
+            "success": true,
+            "code": "123456"
+        }
+    }),
+    id<KcContext.DeleteAccountConfirm>({
+        "pageId": "delete-account-confirm.ftl",
+        ...kcContextCommonMock,
+        "triggered_from_aia": true
+    }),
+    id<KcContext.LoginRecoveryAuthnCodeConfig>({
+        "pageId": "login-recovery-authn-code-config.ftl",
+        ...kcContextCommonMock,
+        "recoveryAuthnCodesConfigBean": {
+            "generatedRecoveryAuthnCodesList": ["code123", "code456", "code789"],
+            "generatedRecoveryAuthnCodesAsString": "code123, code456, code789",
+            "generatedAt": new Date().getTime()
+        }
+    }),
+    id<KcContext.LoginRecoveryAuthnCodeInput>({
+        "pageId": "login-recovery-authn-code-input.ftl",
+        ...kcContextCommonMock,
+        "recoveryAuthnCodesInputBean": {
+            "codeNumber": 1234
+        }
+    }),
+    id<KcContext.LoginResetOtp>({
+        "pageId": "login-reset-otp.ftl",
+        ...kcContextCommonMock,
+        "configuredOtpCredentials": {
+            "userOtpCredentials": [
+                {
+                    "id": "otpId1",
+                    "userLabel": "OTP Device 1"
+                },
+                {
+                    "id": "otpId2",
+                    "userLabel": "OTP Device 2"
+                },
+                {
+                    "id": "otpId3",
+                    "userLabel": "Backup OTP"
+                }
+            ],
+            "selectedCredentialId": "otpId2"
+        }
+    }),
+    id<KcContext.LoginX509Info>({
+        "pageId": "login-x509-info.ftl",
+        ...kcContextCommonMock,
+        "x509": {
+            "formData": {
+                "subjectDN": "CN=John Doe, O=Example Corp, C=US",
+                "isUserEnabled": true,
+                "username": "johndoe"
+            }
+        }
+    }),
+    id<KcContext.WebauthnError>({
+        "pageId": "webauthn-error.ftl",
+        ...kcContextCommonMock,
+        "isAppInitiatedAction": true
     })
 ];
 
