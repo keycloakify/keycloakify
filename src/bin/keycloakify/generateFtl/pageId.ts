@@ -31,7 +31,8 @@ export const loginThemePageIds = [
     "delete-account-confirm.ftl",
     "frontchannel-logout.ftl",
     "login-recovery-authn-code-config.ftl",
-    "login-recovery-authn-code-input.ftl"
+    "login-recovery-authn-code-input.ftl",
+    "login-reset-otp.ftl"
 ] as const;
 
 export const accountThemePageIds = ["password.ftl", "account.ftl", "sessions.ftl", "totp.ftl", "applications.ftl", "log.ftl"] as const;

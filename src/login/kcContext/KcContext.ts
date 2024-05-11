@@ -41,7 +41,8 @@ export type KcContext =
     | KcContext.DeleteAccountConfirm
     | KcContext.FrontchannelLogout
     | KcContext.LoginRecoveryAuthnCodeConfig
-    | KcContext.LoginRecoveryAuthnCodeInput;
+    | KcContext.LoginRecoveryAuthnCodeInput
+    | KcContext.LoginResetOtp;
 
 assert<KcContext["themeType"] extends ThemeType ? true : false>();
 
@@ -544,6 +545,17 @@ export declare namespace KcContext {
         pageId: "login-recovery-authn-code-input.ftl";
         recoveryAuthnCodesInputBean: {
             codeNumber: number;
+        };
+    };
+
+    export type LoginResetOtp = Common & {
+        pageId: "login-reset-otp.ftl";
+        configuredOtpCredentials: {
+            userOtpCredentials: {
+                id: string;
+                userLabel: string;
+            }[];
+            selectedCredentialId: string;
         };
     };
 }

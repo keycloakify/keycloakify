@@ -37,6 +37,7 @@ const DeleteAccountConfirm = lazy(() => import("keycloakify/login/pages/DeleteAc
 const FrontchannelLogout = lazy(() => import("keycloakify/login/pages/FrontchannelLogout"));
 const LoginRecoveryAuthnCodeConfig = lazy(() => import("keycloakify/login/pages/LoginRecoveryAuthnCodeConfig"));
 const LoginRecoveryAuthnCodeInput = lazy(() => import("keycloakify/login/pages/LoginRecoveryAuthnCodeInput"));
+const LoginResetOtp = lazy(() => import("keycloakify/login/pages/LoginResetOtp"));
 
 type FallbackProps = PageProps<KcContext, I18n> & {
     UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
@@ -113,6 +114,8 @@ export default function Fallback(props: FallbackProps) {
                         return <LoginRecoveryAuthnCodeConfig kcContext={kcContext} {...rest} />;
                     case "login-recovery-authn-code-input.ftl":
                         return <LoginRecoveryAuthnCodeInput kcContext={kcContext} {...rest} />;
+                    case "login-reset-otp.ftl":
+                        return <LoginResetOtp kcContext={kcContext} {...rest} />;
                 }
                 assert<Equals<typeof kcContext, never>>(false);
             })()}
