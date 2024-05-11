@@ -86,25 +86,17 @@ export function createGetKcContext<KcContextExtension extends { pageId: string }
                     "source": partialKcContextCustomMock
                 });
 
-                if (
-                    partialKcContextCustomMock.pageId === "register-user-profile.ftl" ||
-                    partialKcContextCustomMock.pageId === "update-user-profile.ftl" ||
-                    partialKcContextCustomMock.pageId === "idp-review-user-profile.ftl"
-                ) {
-                    assert(
-                        kcContextDefaultMock?.pageId === "register-user-profile.ftl" ||
-                            kcContextDefaultMock?.pageId === "update-user-profile.ftl" ||
-                            kcContextDefaultMock?.pageId === "idp-review-user-profile.ftl"
-                    );
+                if ("profile" in partialKcContextCustomMock) {
+                    assert(kcContextDefaultMock !== undefined && "profile" in kcContextDefaultMock);
 
                     const { attributes } = kcContextDefaultMock.profile;
 
-                    id<KcContext.RegisterUserProfile>(kcContext).profile.attributes = [];
-                    id<KcContext.RegisterUserProfile>(kcContext).profile.attributesByName = {};
+                    id<KcContext.Register>(kcContext).profile.attributes = [];
+                    id<KcContext.Register>(kcContext).profile.attributesByName = {};
 
-                    const partialAttributes = [
-                        ...((partialKcContextCustomMock as DeepPartial<KcContext.RegisterUserProfile>).profile?.attributes ?? [])
-                    ].filter(exclude(undefined));
+                    const partialAttributes = [...((partialKcContextCustomMock as DeepPartial<KcContext.Register>).profile?.attributes ?? [])].filter(
+                        exclude(undefined)
+                    );
 
                     attributes.forEach(attribute => {
                         const partialAttribute = partialAttributes.find(({ name }) => name === attribute.name);
@@ -125,8 +117,8 @@ export function createGetKcContext<KcContextExtension extends { pageId: string }
                             });
                         }
 
-                        id<KcContext.RegisterUserProfile>(kcContext).profile.attributes.push(augmentedAttribute);
-                        id<KcContext.RegisterUserProfile>(kcContext).profile.attributesByName[augmentedAttribute.name] = augmentedAttribute;
+                        id<KcContext.Register>(kcContext).profile.attributes.push(augmentedAttribute);
+                        id<KcContext.Register>(kcContext).profile.attributesByName[augmentedAttribute.name] = augmentedAttribute;
                     });
 
                     partialAttributes
@@ -136,8 +128,8 @@ export function createGetKcContext<KcContextExtension extends { pageId: string }
 
                             assert(name !== undefined, "If you define a mock attribute it must have at least a name");
 
-                            id<KcContext.RegisterUserProfile>(kcContext).profile.attributes.push(partialAttribute as any);
-                            id<KcContext.RegisterUserProfile>(kcContext).profile.attributesByName[name] = partialAttribute as any;
+                            id<KcContext.Register>(kcContext).profile.attributes.push(partialAttribute as any);
+                            id<KcContext.Register>(kcContext).profile.attributesByName[name] = partialAttribute as any;
                         });
                 }
             }
