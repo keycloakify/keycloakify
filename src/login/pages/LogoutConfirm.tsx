@@ -17,7 +17,7 @@ export default function LogoutConfirm(props: PageProps<Extract<KcContext, { page
     const { msg, msgStr } = i18n;
 
     return (
-        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} displayMessage={false} headerNode={msg("logoutConfirmTitle")}>
+        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} headerNode={msg("logoutConfirmTitle")}>
             <div id="kc-logout-confirm" className="content-area">
                 <p className="instruction">{msg("logoutConfirmHeader")}</p>
                 <form className="form-actions" action={url.logoutConfirmAction} method="POST">
@@ -46,7 +46,7 @@ export default function LogoutConfirm(props: PageProps<Extract<KcContext, { page
                 <div id="kc-info-message">
                     {!logoutConfirm.skipLink && client.baseUrl && (
                         <p>
-                            <a href={client.baseUrl} dangerouslySetInnerHTML={{ __html: msgStr("backToApplication") }} />
+                            <a href={client.baseUrl}>{msg("backToApplication")}</a>
                         </p>
                     )}
                 </div>
