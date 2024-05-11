@@ -1,6 +1,6 @@
 import { transformCodebase } from "../../tools/transformCodebase";
 import * as fs from "fs";
-import { join as pathJoin, basename as pathBasename, resolve as pathResolve, dirname as pathDirname } from "path";
+import { join as pathJoin, resolve as pathResolve, dirname as pathDirname } from "path";
 import { replaceImportsInJsCode } from "../replacers/replaceImportsInJsCode";
 import { replaceImportsInCssCode } from "../replacers/replaceImportsInCssCode";
 import { generateFtlFilesCodeFactory, loginThemePageIds, accountThemePageIds } from "../generateFtl";
@@ -8,7 +8,6 @@ import {
     type ThemeType,
     lastKeycloakVersionWithAccountV1,
     keycloak_resources,
-    retrocompatPostfix,
     accountV1ThemeName,
     basenameOfTheKeycloakifyResourcesDir
 } from "../../constants";
@@ -32,7 +31,6 @@ export type BuildOptionsLike = {
     cacheDirPath: string;
     assetsDirPath: string;
     urlPathname: string | undefined;
-    doBuildRetrocompatAccountTheme: boolean;
     themeNames: string[];
     npmWorkspaceRootDirPath: string;
 };
@@ -48,17 +46,9 @@ export async function generateTheme(params: {
 }): Promise<void> {
     const { themeName, themeSrcDirPath, keycloakifySrcDirPath, buildOptions, keycloakifyVersion } = params;
 
-    const getThemeTypeDirPath = (params: { themeType: ThemeType | "email"; isRetrocompat?: true }) => {
-        const { themeType, isRetrocompat = false } = params;
-        return pathJoin(
-            buildOptions.keycloakifyBuildDirPath,
-            "src",
-            "main",
-            "resources",
-            "theme",
-            `${themeName}${isRetrocompat ? retrocompatPostfix : ""}`,
-            themeType
-        );
+    const getThemeTypeDirPath = (params: { themeType: ThemeType | "email" }) => {
+        const { themeType } = params;
+        return pathJoin(buildOptions.keycloakifyBuildDirPath, "src", "main", "resources", "theme", themeName, themeType);
     };
 
     const cssGlobalsToDefine: Record<string, string> = {};
@@ -222,25 +212,6 @@ export async function generateTheme(params: {
                 "utf8"
             )
         );
-
-        if (themeType === "account" && buildOptions.doBuildRetrocompatAccountTheme) {
-            transformCodebase({
-                "srcDirPath": themeTypeDirPath,
-                "destDirPath": getThemeTypeDirPath({ themeType, "isRetrocompat": true }),
-                "transformSourceCode": ({ filePath, sourceCode }) => {
-                    if (pathBasename(filePath) === "theme.properties") {
-                        return {
-                            "modifiedSourceCode": Buffer.from(
-                                sourceCode.toString("utf8").replace(`parent=${accountV1ThemeName}`, "parent=keycloak"),
-                                "utf8"
-                            )
-                        };
-                    }
-
-                    return { "modifiedSourceCode": sourceCode };
-                }
-            });
-        }
     }
 
     email: {
@@ -280,36 +251,6 @@ export async function generateTheme(params: {
             "name": accountV1ThemeName,
             "types": ["account"]
         });
-
-        add_retrocompat_account_theme: {
-            if (!buildOptions.doBuildRetrocompatAccountTheme) {
-                break add_retrocompat_account_theme;
-            }
-
-            transformCodebase({
-                "srcDirPath": getThemeTypeDirPath({ "themeType": "account" }),
-                "destDirPath": getThemeTypeDirPath({ "themeType": "account", "isRetrocompat": true }),
-                "transformSourceCode": ({ filePath, sourceCode }) => {
-                    if (pathBasename(filePath) === "theme.properties") {
-                        return {
-                            "modifiedSourceCode": Buffer.from(
-                                sourceCode.toString("utf8").replace(`parent=${accountV1ThemeName}`, "parent=keycloak"),
-                                "utf8"
-                            )
-                        };
-                    }
-
-                    return { "modifiedSourceCode": sourceCode };
-                }
-            });
-
-            buildOptions.themeNames.forEach(themeName =>
-                parsedKeycloakThemeJson.themes.push({
-                    "name": `${themeName}${retrocompatPostfix}`,
-                    "types": ["account"]
-                })
-            );
-        }
     }
 
     {

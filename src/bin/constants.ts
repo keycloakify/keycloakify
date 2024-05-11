@@ -6,7 +6,6 @@ export const resolvedViteConfigJsonBasename = "vite.json";
 export const basenameOfTheKeycloakifyResourcesDir = "build";
 
 export const themeTypes = ["login", "account"] as const;
-export const retrocompatPostfix = "_retrocompat";
 export const accountV1ThemeName = "account-v1";
 
 export type ThemeType = (typeof themeTypes)[number];
