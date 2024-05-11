@@ -542,6 +542,9 @@ export declare namespace KcContext {
 
     export type LoginRecoveryAuthnCodeInput = Common & {
         pageId: "login-recovery-authn-code-input.ftl";
+        recoveryAuthnCodesInputBean: {
+            codeNumber: number;
+        };
     };
 }
 
