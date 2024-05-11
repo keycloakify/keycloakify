@@ -42,7 +42,8 @@ export type KcContext =
     | KcContext.FrontchannelLogout
     | KcContext.LoginRecoveryAuthnCodeConfig
     | KcContext.LoginRecoveryAuthnCodeInput
-    | KcContext.LoginResetOtp;
+    | KcContext.LoginResetOtp
+    | KcContext.LoginX509Info;
 
 assert<KcContext["themeType"] extends ThemeType ? true : false>();
 
@@ -551,6 +552,17 @@ export declare namespace KcContext {
                 userLabel: string;
             }[];
             selectedCredentialId: string;
+        };
+    };
+
+    export type LoginX509Info = Common & {
+        pageId: "login-x509-info.ftl";
+        x509: {
+            formData: {
+                subjectDN?: string;
+                isUserEnabled?: boolean;
+                username?: string;
+            };
         };
     };
 }
