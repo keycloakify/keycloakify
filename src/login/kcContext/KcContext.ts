@@ -222,9 +222,13 @@ export declare namespace KcContext {
         pageId: "login-reset-password.ftl";
         realm: {
             loginWithEmailAllowed: boolean;
+            duplicateEmailsAllowed: boolean;
         };
         url: {
             loginResetCredentialsUrl: string;
+        };
+        auth: {
+            attemptedUsername?: string;
         };
     };
 
