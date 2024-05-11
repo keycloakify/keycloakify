@@ -332,9 +332,13 @@ function InputTag(props: InputFiledByTypeProps & { fieldIndex: number | undefine
                 autoComplete={attribute.autocomplete}
                 placeholder={attribute.annotations.inputTypePlaceholder}
                 pattern={attribute.annotations.inputTypePattern}
-                size={attribute.annotations.inputTypeSize === undefined ? undefined : parseInt(attribute.annotations.inputTypeSize)}
-                maxLength={attribute.annotations.inputTypeMaxlength === undefined ? undefined : parseInt(attribute.annotations.inputTypeMaxlength)}
-                minLength={attribute.annotations.inputTypeMinlength === undefined ? undefined : parseInt(attribute.annotations.inputTypeMinlength)}
+                size={attribute.annotations.inputTypeSize === undefined ? undefined : parseInt(`${attribute.annotations.inputTypeSize}`)}
+                maxLength={
+                    attribute.annotations.inputTypeMaxlength === undefined ? undefined : parseInt(`${attribute.annotations.inputTypeMaxlength}`)
+                }
+                minLength={
+                    attribute.annotations.inputTypeMinlength === undefined ? undefined : parseInt(`${attribute.annotations.inputTypeMinlength}`)
+                }
                 max={attribute.annotations.inputTypeMax}
                 min={attribute.annotations.inputTypeMin}
                 step={attribute.annotations.inputTypeStep}
@@ -428,7 +432,7 @@ function AddRemoveButtonsMultiValuedAttribute(props: {
                 return undefined;
             }
 
-            return parseInt(minStr);
+            return parseInt(`${minStr}`);
         })();
 
         if (minCount === undefined) {
@@ -460,7 +464,7 @@ function AddRemoveButtonsMultiValuedAttribute(props: {
                 return undefined;
             }
 
-            return parseInt(maxStr);
+            return parseInt(`${maxStr}`);
         })();
 
         if (maxCount === undefined) {
@@ -635,9 +639,9 @@ function TextareaTag(props: InputFiledByTypeProps) {
             className={getClassName("kcInputClass")}
             aria-invalid={displayableErrors.length !== 0}
             disabled={attribute.readOnly}
-            cols={attribute.annotations.inputTypeCols === undefined ? undefined : parseInt(attribute.annotations.inputTypeCols)}
-            rows={attribute.annotations.inputTypeRows === undefined ? undefined : parseInt(attribute.annotations.inputTypeRows)}
-            maxLength={attribute.annotations.inputTypeMaxlength === undefined ? undefined : parseInt(attribute.annotations.inputTypeMaxlength)}
+            cols={attribute.annotations.inputTypeCols === undefined ? undefined : parseInt(`${attribute.annotations.inputTypeCols}`)}
+            rows={attribute.annotations.inputTypeRows === undefined ? undefined : parseInt(`${attribute.annotations.inputTypeRows}`)}
+            maxLength={attribute.annotations.inputTypeMaxlength === undefined ? undefined : parseInt(`${attribute.annotations.inputTypeMaxlength}`)}
             value={value}
             onChange={event =>
                 formValidationDispatch({
@@ -672,7 +676,7 @@ function SelectTag(props: InputFiledByTypeProps) {
             aria-invalid={displayableErrors.length !== 0}
             disabled={attribute.readOnly}
             multiple={isMultiple}
-            size={attribute.annotations.inputTypeSize === undefined ? undefined : parseInt(attribute.annotations.inputTypeSize)}
+            size={attribute.annotations.inputTypeSize === undefined ? undefined : parseInt(`${attribute.annotations.inputTypeSize}`)}
             value={valueOrValues}
             onChange={event =>
                 formValidationDispatch({

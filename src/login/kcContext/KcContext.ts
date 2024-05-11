@@ -556,18 +556,18 @@ export type Attribute = {
     validators: Validators;
     annotations: {
         inputType?: string;
-        inputTypeSize?: `${number}`;
+        inputTypeSize?: `${number}` | number;
         inputOptionsFromValidation?: string;
         inputOptionLabels?: Record<string, string | undefined>;
         inputOptionLabelsI18nPrefix?: string;
-        inputTypeCols?: `${number}`;
-        inputTypeRows?: `${number}`;
-        inputTypeMaxlength?: `${number}`;
+        inputTypeCols?: `${number}` | number;
+        inputTypeRows?: `${number}` | number;
+        inputTypeMaxlength?: `${number}` | number;
         inputHelperTextBefore?: string;
         inputHelperTextAfter?: string;
         inputTypePlaceholder?: string;
         inputTypePattern?: string;
-        inputTypeMinlength?: `${number}`;
+        inputTypeMinlength?: `${number}` | number;
         inputTypeMax?: string;
         inputTypeMin?: string;
         inputTypeStep?: string;
@@ -666,9 +666,8 @@ export declare namespace Validators {
     };
 
     export type Range = {
-        /** "0", "1", "2"... yeah I know, don't tell me */
-        min?: `${number}`;
-        max?: `${number}`;
+        min?: `${number}` | number;
+        max?: `${number}` | number;
     };
     export type Options = {
         options: string[];
@@ -688,15 +687,15 @@ export declare namespace Validators {
 
 export type PasswordPolicies = {
     /** The minimum length of the password */
-    length?: `${number}`;
+    length?: number;
     /** The minimum number of digits required in the password */
-    digits?: `${number}`;
+    digits?: number;
     /** The minimum number of lowercase characters required in the password */
-    lowerCase?: `${number}`;
+    lowerCase?: number;
     /** The minimum number of uppercase characters required in the password */
-    upperCase?: `${number}`;
+    upperCase?: number;
     /** The minimum number of special characters required in the password */
-    specialChars?: `${number}`;
+    specialChars?: number;
     /** Whether the password can be the username */
     notUsername?: boolean;
     /** Whether the password can be the email address */

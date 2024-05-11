@@ -528,12 +528,23 @@
             <#return '"' + object?datetime?iso_utc + '"'>
         </#if>
 
+        <#local isNumber = "">
+        <#attempt>
+            <#local isNumber = object?is_number>
+        <#recover>
+            <#return "ABORT: Can't test if it's a number">
+        </#attempt>
+
+        <#if isNumber>
+            <#return object?c>
+        </#if>
+
         <#attempt>
             <#return '"' + object?js_string + '"'>;
         <#recover>
         </#attempt>
 
-        <#return "ABORT: Couldn't convert into string non hash, non method, non boolean, non enumerable object">
+        <#return "ABORT: Couldn't convert into string non hash, non method, non boolean, non number, non enumerable object">
 
 </#function>
 <#function is_subpath path searchedPath>

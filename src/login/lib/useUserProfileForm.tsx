@@ -315,7 +315,7 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                             break apply_validator_min_range;
                         }
 
-                        const min = parseInt(minStr);
+                        const min = parseInt(`${minStr}`);
 
                         for (let index = values.length; index < min; index++) {
                             values.push("");
@@ -674,13 +674,13 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
 
                 const { min: minStr } = validator;
 
-                const min = minStr !== undefined ? parseInt(minStr) : attribute.required ? 1 : 0;
+                const min = minStr !== undefined ? parseInt(`${minStr}`) : attribute.required ? 1 : 0;
 
                 assert(!isNaN(min));
 
                 const { max: maxStr } = validator;
 
-                const max = maxStr === undefined ? Infinity : parseInt(maxStr);
+                const max = maxStr === undefined ? Infinity : parseInt(`${maxStr}`);
 
                 assert(!isNaN(max));
 
@@ -731,9 +731,7 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                         break check_password_policy_x;
                     }
 
-                    const minLength = parseInt(policy);
-
-                    assert(!isNaN(minLength));
+                    const minLength = policy;
 
                     if (value.length >= minLength) {
                         break check_password_policy_x;
@@ -761,9 +759,7 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                         break check_password_policy_x;
                     }
 
-                    const minNumberOfDigits = parseInt(policy);
-
-                    assert(!isNaN(minNumberOfDigits));
+                    const minNumberOfDigits = policy;
 
                     if (value.split("").filter(char => !isNaN(parseInt(char))).length >= minNumberOfDigits) {
                         break check_password_policy_x;
@@ -791,9 +787,7 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                         break check_password_policy_x;
                     }
 
-                    const minNumberOfLowerCaseChar = parseInt(policy);
-
-                    assert(!isNaN(minNumberOfLowerCaseChar));
+                    const minNumberOfLowerCaseChar = policy;
 
                     if (
                         value.split("").filter(char => char === char.toLowerCase() && char !== char.toUpperCase()).length >= minNumberOfLowerCaseChar
@@ -823,9 +817,7 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                         break check_password_policy_x;
                     }
 
-                    const minNumberOfUpperCaseChar = parseInt(policy);
-
-                    assert(!isNaN(minNumberOfUpperCaseChar));
+                    const minNumberOfUpperCaseChar = policy;
 
                     if (
                         value.split("").filter(char => char === char.toUpperCase() && char !== char.toLowerCase()).length >= minNumberOfUpperCaseChar
@@ -855,9 +847,7 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                         break check_password_policy_x;
                     }
 
-                    const minNumberOfSpecialChar = parseInt(policy);
-
-                    assert(!isNaN(minNumberOfSpecialChar));
+                    const minNumberOfSpecialChar = policy;
 
                     if (value.split("").filter(char => !char.match(/[a-zA-Z0-9]/)).length >= minNumberOfSpecialChar) {
                         break check_password_policy_x;
@@ -1041,8 +1031,8 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     "name": validatorName
                 };
 
-                if (max !== undefined && value.length > parseInt(max)) {
-                    const msgArgs = ["error-invalid-length-too-long", max] as const;
+                if (max !== undefined && value.length > parseInt(`${max}`)) {
+                    const msgArgs = ["error-invalid-length-too-long", `${max}`] as const;
 
                     errors.push({
                         "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
@@ -1052,8 +1042,8 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     });
                 }
 
-                if (min !== undefined && value.length < parseInt(min)) {
-                    const msgArgs = ["error-invalid-length-too-short", min] as const;
+                if (min !== undefined && value.length < parseInt(`${min}`)) {
+                    const msgArgs = ["error-invalid-length-too-short", `${min}`] as const;
 
                     errors.push({
                         "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
@@ -1170,8 +1160,8 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     break validator_x;
                 }
 
-                if (max !== undefined && intValue > parseInt(max)) {
-                    const msgArgs = ["error-number-out-of-range-too-big", max] as const;
+                if (max !== undefined && intValue > parseInt(`${max}`)) {
+                    const msgArgs = ["error-number-out-of-range-too-big", `${max}`] as const;
 
                     errors.push({
                         "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
@@ -1183,8 +1173,8 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     break validator_x;
                 }
 
-                if (min !== undefined && intValue < parseInt(min)) {
-                    const msgArgs = ["error-number-out-of-range-too-small", min] as const;
+                if (min !== undefined && intValue < parseInt(`${min}`)) {
+                    const msgArgs = ["error-number-out-of-range-too-small", `${min}`] as const;
 
                     errors.push({
                         "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
