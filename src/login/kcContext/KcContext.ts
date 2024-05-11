@@ -396,7 +396,6 @@ export declare namespace KcContext {
 
     export type LoginUpdatePassword = Common & {
         pageId: "login-update-password.ftl";
-        username: string;
     };
 
     export type LoginIdpLinkConfirm = Common & {
