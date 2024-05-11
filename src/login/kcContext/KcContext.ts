@@ -39,7 +39,8 @@ export type KcContext =
     | KcContext.DeleteCredential
     | KcContext.Code
     | KcContext.DeleteAccountConfirm
-    | KcContext.FrontchannelLogout;
+    | KcContext.FrontchannelLogout
+    | KcContext.LoginRecoveryAuthnCodeConfig;
 
 assert<KcContext["themeType"] extends ThemeType ? true : false>();
 
@@ -526,6 +527,15 @@ export declare namespace KcContext {
                 frontChannelLogoutUrl: string;
             }[];
             logoutRedirectUri?: string;
+        };
+    };
+
+    export type LoginRecoveryAuthnCodeConfig = Common & {
+        pageId: "login-recovery-authn-code-config.ftl";
+        recoveryAuthnCodesConfigBean: {
+            generatedRecoveryAuthnCodesList: string[];
+            generatedRecoveryAuthnCodesAsString: string;
+            generatedAt: string;
         };
     };
 }
