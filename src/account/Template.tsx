@@ -1,36 +1,61 @@
+import { useEffect } from "react";
 import { clsx } from "keycloakify/tools/clsx";
-import { usePrepareTemplate } from "keycloakify/lib/usePrepareTemplate";
 import { type TemplateProps } from "keycloakify/account/TemplateProps";
 import { useGetClassName } from "keycloakify/account/lib/useGetClassName";
+import { createUseInsertLinkTags } from "keycloakify/tools/useInsertLinkTags";
+import { useSetClassName } from "keycloakify/tools/useSetClassName";
 import type { KcContext } from "./kcContext";
 import type { I18n } from "./i18n";
 import { assert } from "keycloakify/tools/assert";
+
+const { useInsertLinkTags } = createUseInsertLinkTags();
 
 export default function Template(props: TemplateProps<KcContext, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, active, classes, children } = props;
 
     const { getClassName } = useGetClassName({ doUseDefaultCss, classes });
 
-    const { msg, changeLocale, labelBySupportedLanguageTag, currentLanguageTag } = i18n;
+    const { msg, msgStr, changeLocale, labelBySupportedLanguageTag, currentLanguageTag } = i18n;
 
     const { locale, url, features, realm, message, referrer } = kcContext;
 
-    const { isReady } = usePrepareTemplate({
-        "styles": !doUseDefaultCss
+    useEffect(() => {
+        document.title = msgStr("accountManagementTitle");
+    }, []);
+
+    useSetClassName({
+        "qualifiedName": "html",
+        "className": getClassName("kcHtmlClass")
+    });
+
+    useSetClassName({
+        "qualifiedName": "body",
+        "className": clsx("admin-console", "user", getClassName("kcBodyClass"))
+    });
+
+    useEffect(() => {
+        const { currentLanguageTag } = locale ?? {};
+
+        if (currentLanguageTag === undefined) {
+            return;
+        }
+
+        const html = document.querySelector("html");
+        assert(html !== null);
+        html.lang = currentLanguageTag;
+    }, []);
+
+    const { areAllStyleSheetsLoaded } = useInsertLinkTags({
+        "hrefs": !doUseDefaultCss
             ? []
             : [
                   `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly.min.css`,
                   `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly-additions.min.css`,
                   `${url.resourcesPath}/css/account.css`
-              ],
-        "scripts": [],
-        "htmlClassName": getClassName("kcHtmlClass"),
-        "bodyClassName": clsx("admin-console", "user", getClassName("kcBodyClass")),
-        "htmlLangProperty": locale?.currentLanguageTag,
-        "documentTitle": i18n.msgStr("accountManagementTitle")
+              ]
     });
 
-    if (!isReady) {
+    if (!areAllStyleSheetsLoaded) {
         return null;
     }
 
