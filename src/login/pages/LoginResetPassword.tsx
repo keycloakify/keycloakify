@@ -12,16 +12,17 @@ export default function LoginResetPassword(props: PageProps<Extract<KcContext, {
         classes
     });
 
-    const { url, realm, auth } = kcContext;
+    const { url, realm, auth, messagesPerField } = kcContext;
 
     const { msg, msgStr } = i18n;
 
     return (
         <Template
             {...{ kcContext, i18n, doUseDefaultCss, classes }}
-            displayMessage={false}
+            displayInfo
+            displayMessage={!messagesPerField.existsError("username")}
+            infoNode={realm.duplicateEmailsAllowed ? msg("emailInstructionUsername") : msg("emailInstruction")}
             headerNode={msg("emailForgotTitle")}
-            infoNode={msg("emailInstruction")}
         >
             <form id="kc-reset-password-form" className={getClassName("kcFormClass")} action={url.loginAction} method="post">
                 <div className={getClassName("kcFormGroupClass")}>
@@ -41,8 +42,14 @@ export default function LoginResetPassword(props: PageProps<Extract<KcContext, {
                             name="username"
                             className={getClassName("kcInputClass")}
                             autoFocus
-                            defaultValue={auth !== undefined && auth.showUsername ? auth.attemptedUsername : undefined}
+                            defaultValue={auth.attemptedUsername ?? ""}
+                            aria-invalid={messagesPerField.existsError("username")}
                         />
+                        {messagesPerField.existsError("username") && (
+                            <span id="input-error-username" className={getClassName("kcInputErrorMessageClass")} aria-live="polite">
+                                {messagesPerField.get("username")}
+                            </span>
+                        )}
                     </div>
                 </div>
                 <div className={clsx(getClassName("kcFormGroupClass"), getClassName("kcFormSettingClass"))}>
