@@ -43,7 +43,8 @@ export type KcContext =
     | KcContext.LoginRecoveryAuthnCodeConfig
     | KcContext.LoginRecoveryAuthnCodeInput
     | KcContext.LoginResetOtp
-    | KcContext.LoginX509Info;
+    | KcContext.LoginX509Info
+    | KcContext.WebauthnError;
 
 assert<KcContext["themeType"] extends ThemeType ? true : false>();
 
@@ -564,6 +565,11 @@ export declare namespace KcContext {
                 username?: string;
             };
         };
+    };
+
+    export type WebauthnError = Common & {
+        pageId: "webauthn-error.ftl";
+        isAppInitiatedAction?: boolean;
     };
 }
 
