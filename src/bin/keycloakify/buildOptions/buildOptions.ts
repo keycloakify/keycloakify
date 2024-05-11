@@ -30,7 +30,6 @@ export type BuildOptions = {
      * In this case the urlPathname will be "/my-app/" */
     urlPathname: string | undefined;
     assetsDirPath: string;
-    doBuildRetrocompatAccountTheme: boolean;
     npmWorkspaceRootDirPath: string;
 };
 
@@ -187,7 +186,6 @@ export function readBuildOptions(params: { processArgv: string[] }): BuildOption
 
             return pathJoin(reactAppBuildDirPath, resolvedViteConfig.assetsDir);
         })(),
-        "doBuildRetrocompatAccountTheme": userProvidedBuildOptions.doBuildRetrocompatAccountTheme ?? true,
         npmWorkspaceRootDirPath
     };
 }
