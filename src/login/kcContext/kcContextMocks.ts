@@ -473,8 +473,10 @@ export const kcContextMocks = [
         ...kcContextCommonMock,
         "pageId": "update-email.ftl",
         "profile": {
-            attributes,
-            attributesByName
+            "attributes": attributes.filter(attribute => attribute.name === "email"),
+            "attributesByName": Object.fromEntries(
+                attributes.filter(attribute => attribute.name === "email").map(attribute => [attribute.name, attribute])
+            )
         }
     }),
     id<KcContext.SelectAuthenticator>({
