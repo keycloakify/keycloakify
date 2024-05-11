@@ -37,7 +37,7 @@ export async function main() {
         fs.writeFileSync(pathJoin(buildOptions.keycloakifyBuildDirPath, "pom.xml"), Buffer.from(pomFileCode, "utf8"));
     }
 
-    const containerKeycloakVersion = "23.0.6";
+    const containerKeycloakVersion = "24.0.4";
 
     const jarFilePath = pathJoin(buildOptions.keycloakifyBuildDirPath, "target", `${buildOptions.artifactId}-${buildOptions.themeVersion}.jar`);
 
