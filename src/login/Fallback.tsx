@@ -39,6 +39,7 @@ const LoginRecoveryAuthnCodeConfig = lazy(() => import("keycloakify/login/pages/
 const LoginRecoveryAuthnCodeInput = lazy(() => import("keycloakify/login/pages/LoginRecoveryAuthnCodeInput"));
 const LoginResetOtp = lazy(() => import("keycloakify/login/pages/LoginResetOtp"));
 const LoginX509Info = lazy(() => import("keycloakify/login/pages/LoginX509Info"));
+const WebauthnError = lazy(() => import("keycloakify/login/pages/WebauthnError"));
 
 type FallbackProps = PageProps<KcContext, I18n> & {
     UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
@@ -119,6 +120,8 @@ export default function Fallback(props: FallbackProps) {
                         return <LoginResetOtp kcContext={kcContext} {...rest} />;
                     case "login-x509-info.ftl":
                         return <LoginX509Info kcContext={kcContext} {...rest} />;
+                    case "webauthn-error.ftl":
+                        return <WebauthnError kcContext={kcContext} {...rest} />;
                 }
                 assert<Equals<typeof kcContext, never>>(false);
             })()}

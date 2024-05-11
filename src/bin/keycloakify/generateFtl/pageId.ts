@@ -33,7 +33,8 @@ export const loginThemePageIds = [
     "login-recovery-authn-code-config.ftl",
     "login-recovery-authn-code-input.ftl",
     "login-reset-otp.ftl",
-    "login-x509-info.ftl"
+    "login-x509-info.ftl",
+    "webauthn-error.ftl"
 ] as const;
 
 export const accountThemePageIds = [
