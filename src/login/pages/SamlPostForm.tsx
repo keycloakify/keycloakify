@@ -26,7 +26,7 @@ export default function SamlPostForm(props: PageProps<Extract<KcContext, { pageI
         htmlFormElement.submit();
     }, [htmlFormElement]);
     return (
-        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} displayMessage={false} headerNode={msg("saml.post-form.title")}>
+        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} headerNode={msg("saml.post-form.title")}>
             <p>{msg("saml.post-form.message")}</p>
             <form name="saml-post-binding" method="post" action={samlPost.url} ref={setHtmlFormElement}>
                 {samlPost.SAMLRequest && <input type="hidden" name="SAMLRequest" value={samlPost.SAMLRequest} />}
