@@ -307,15 +307,7 @@ export declare namespace KcContext {
             rememberMe?: string;
         };
         usernameHidden?: boolean;
-        social: {
-            displayInfo: boolean;
-            providers?: {
-                loginUrl: string;
-                alias: string;
-                providerId: string;
-                displayName: string;
-            }[];
-        };
+        social: Login["social"];
     };
 
     export type LoginPassword = Common & {
