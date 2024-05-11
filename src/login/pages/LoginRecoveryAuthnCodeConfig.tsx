@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { clsx } from "keycloakify/tools/clsx";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
@@ -19,7 +20,7 @@ export default function LoginRecoveryAuthnCodeConfig(props: PageProps<Extract<Kc
 
     const { msg, msgStr } = i18n;
 
-    useInsertScriptTags({
+    const { insertScriptTags } = useInsertScriptTags({
         "scriptTags": [
             {
                 "type": "text/javascript",
@@ -138,6 +139,10 @@ export default function LoginRecoveryAuthnCodeConfig(props: PageProps<Extract<Kc
             }
         ]
     });
+
+    useEffect(() => {
+        insertScriptTags();
+    }, []);
 
     return (
         <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} headerNode={msg("recovery-code-config-header")}>
