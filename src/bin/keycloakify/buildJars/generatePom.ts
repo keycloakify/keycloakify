@@ -1,6 +1,6 @@
 import { assert } from "tsafe/assert";
 import { Reflect } from "tsafe/Reflect";
-import type { BuildOptions } from "./buildOptions";
+import type { BuildOptions } from "../buildOptions";
 
 type BuildOptionsLike = {
     groupId: string;

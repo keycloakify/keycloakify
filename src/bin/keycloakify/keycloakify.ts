@@ -10,7 +10,6 @@ import { getThisCodebaseRootDirPath } from "../tools/getThisCodebaseRootDirPath"
 import { readThisNpmProjectVersion } from "../tools/readThisNpmProjectVersion";
 import { keycloakifyBuildOptionsForPostPostBuildScriptEnvName } from "../constants";
 import { buildJars } from "./buildJars";
-import { generateThemeVariations } from "./generateThemeVariants";
 
 export async function main() {
     const buildOptions = readBuildOptions({
@@ -30,24 +29,12 @@ export async function main() {
         fs.writeFileSync(pathJoin(buildOptions.keycloakifyBuildDirPath, ".gitignore"), Buffer.from("*", "utf8"));
     }
 
-    const [themeName, ...themeVariantNames] = buildOptions.themeNames;
-
     const { implementedThemeTypes } = await generateTheme({
-        themeName,
         themeSrcDirPath,
         "keycloakifySrcDirPath": pathJoin(getThisCodebaseRootDirPath(), "src"),
         "keycloakifyVersion": readThisNpmProjectVersion(),
         buildOptions
     });
-
-    for (const themeVariantName of themeVariantNames) {
-        generateThemeVariations({
-            themeName,
-            themeVariantName,
-            implementedThemeTypes,
-            buildOptions
-        });
-    }
 
     run_post_build_script: {
         if (buildOptions.bundler !== "vite") {
