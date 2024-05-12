@@ -1,4 +1,4 @@
-import type { ThemeType } from "../constants";
+import type { ThemeType } from "../../constants";
 
 export function generateThemeVariations(params: {
     themeName: string;
