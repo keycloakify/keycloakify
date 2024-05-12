@@ -1,22 +1,12 @@
-import { type ThemeType } from "../../constants";
 import { join as pathJoin } from "path";
 import type { BuildOptions } from "../buildOptions";
 import { assert } from "tsafe/assert";
-import { generateSrcMainResources } from "./generateSrcMainResources";
+import { generateSrcMainResources, type BuildOptionsLike as BuildOptionsLike_generateSrcMainResources } from "./generateSrcMainResources";
 import { generateThemeVariations } from "./generateThemeVariants";
 
-export type BuildOptionsLike = {
-    bundler: "vite" | "webpack";
-    themeNames: string[];
-    extraThemeProperties: string[] | undefined;
-    themeVersion: string;
-    loginThemeResourcesFromKeycloakVersion: string;
+export type BuildOptionsLike = BuildOptionsLike_generateSrcMainResources & {
     keycloakifyBuildDirPath: string;
-    reactAppBuildDirPath: string;
-    cacheDirPath: string;
-    assetsDirPath: string;
-    urlPathname: string | undefined;
-    npmWorkspaceRootDirPath: string;
+    themeNames: string[];
 };
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
@@ -26,14 +16,16 @@ export async function generateTheme(params: {
     keycloakifySrcDirPath: string;
     buildOptions: BuildOptionsLike;
     keycloakifyVersion: string;
-}): Promise<{ implementedThemeTypes: Record<ThemeType | "email", boolean> }> {
+}): Promise<{ doesImplementAccountTheme: boolean }> {
     const { themeSrcDirPath, keycloakifySrcDirPath, buildOptions, keycloakifyVersion } = params;
 
     const [themeName, ...themeVariantNames] = buildOptions.themeNames;
 
-    const { implementedThemeTypes } = await generateSrcMainResources({
+    const srcMainResourcesDirPath = pathJoin(buildOptions.keycloakifyBuildDirPath, "src", "main", "resources");
+
+    const { doesImplementAccountTheme } = await generateSrcMainResources({
         themeName,
-        "srcMainResourcesDirPath": pathJoin(buildOptions.keycloakifyBuildDirPath, "src", "main", "resources"),
+        srcMainResourcesDirPath,
         themeSrcDirPath,
         keycloakifySrcDirPath,
         keycloakifyVersion,
@@ -44,10 +36,9 @@ export async function generateTheme(params: {
         generateThemeVariations({
             themeName,
             themeVariantName,
-            implementedThemeTypes,
-            buildOptions
+            srcMainResourcesDirPath
         });
     }
 
-    return { implementedThemeTypes };
+    return { doesImplementAccountTheme };
 }

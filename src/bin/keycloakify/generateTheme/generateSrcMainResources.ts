@@ -42,7 +42,7 @@ export async function generateSrcMainResources(params: {
     buildOptions: BuildOptionsLike;
     keycloakifyVersion: string;
     srcMainResourcesDirPath: string;
-}): Promise<{ implementedThemeTypes: Record<ThemeType | "email", boolean> }> {
+}): Promise<{ doesImplementAccountTheme: boolean }> {
     const { themeName, themeSrcDirPath, keycloakifySrcDirPath, buildOptions, keycloakifyVersion, srcMainResourcesDirPath } = params;
 
     const getThemeTypeDirPath = (params: { themeType: ThemeType | "email" }) => {
@@ -263,5 +263,5 @@ export async function generateSrcMainResources(params: {
         fs.writeFileSync(keycloakThemeJsonFilePath, Buffer.from(JSON.stringify(parsedKeycloakThemeJson, null, 2), "utf8"));
     }
 
-    return { implementedThemeTypes };
+    return { "doesImplementAccountTheme": implementedThemeTypes.account };
 }

@@ -5,12 +5,12 @@ import { getKeycloakVersionRangeForJar } from "./getKeycloakVersionRangeForJar";
 import { buildJar } from "./buildJar";
 
 export async function buildJars(params: {
-    doImplementAccountTheme: boolean;
+    doesImplementAccountTheme: boolean;
     buildOptions: {
         keycloakifyBuildDirPath: string;
     };
 }): Promise<{ lastJarFileBasename: string }> {
-    const { doImplementAccountTheme, buildOptions } = params;
+    const { doesImplementAccountTheme, buildOptions } = params;
 
     let lastJarFileBasename: string | undefined = undefined;
 
@@ -20,7 +20,7 @@ export async function buildJars(params: {
                 keycloakThemeAdditionalInfoExtensionVersions
                     .map(keycloakThemeAdditionalInfoExtensionVersion => {
                         const keycloakVersionRange = getKeycloakVersionRangeForJar({
-                            doImplementAccountTheme,
+                            doesImplementAccountTheme,
                             keycloakAccountV1Version,
                             keycloakThemeAdditionalInfoExtensionVersion
                         });
