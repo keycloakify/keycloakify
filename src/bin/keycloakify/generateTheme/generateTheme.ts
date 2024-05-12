@@ -31,7 +31,6 @@ export type BuildOptionsLike = {
     cacheDirPath: string;
     assetsDirPath: string;
     urlPathname: string | undefined;
-    themeNames: string[];
     npmWorkspaceRootDirPath: string;
 };
 
@@ -43,7 +42,7 @@ export async function generateTheme(params: {
     keycloakifySrcDirPath: string;
     buildOptions: BuildOptionsLike;
     keycloakifyVersion: string;
-}): Promise<void> {
+}): Promise<{ implementedThemeTypes: Record<ThemeType | "email", boolean> }> {
     const { themeName, themeSrcDirPath, keycloakifySrcDirPath, buildOptions, keycloakifyVersion } = params;
 
     const getThemeTypeDirPath = (params: { themeType: ThemeType | "email" }) => {
@@ -231,14 +230,12 @@ export async function generateTheme(params: {
 
     const parsedKeycloakThemeJson: { themes: { name: string; types: string[] }[] } = { "themes": [] };
 
-    buildOptions.themeNames.forEach(themeName =>
-        parsedKeycloakThemeJson.themes.push({
-            "name": themeName,
-            "types": Object.entries(implementedThemeTypes)
-                .filter(([, isImplemented]) => isImplemented)
-                .map(([themeType]) => themeType)
-        })
-    );
+    parsedKeycloakThemeJson.themes.push({
+        "name": themeName,
+        "types": Object.entries(implementedThemeTypes)
+            .filter(([, isImplemented]) => isImplemented)
+            .map(([themeType]) => themeType)
+    });
 
     account_specific_extra_work: {
         if (!implementedThemeTypes.account) {
@@ -269,4 +266,6 @@ export async function generateTheme(params: {
 
         fs.writeFileSync(keycloakThemeJsonFilePath, Buffer.from(JSON.stringify(parsedKeycloakThemeJson, null, 2), "utf8"));
     }
+
+    return { implementedThemeTypes };
 }
