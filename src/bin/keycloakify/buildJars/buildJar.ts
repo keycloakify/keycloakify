@@ -1,11 +1,11 @@
 import { assert, type Equals } from "tsafe/assert";
 import { exclude } from "tsafe/exclude";
-import type { KeycloakAccountV1Versions, KeycloakThemeAdditionalInfoExtensionVersions } from "./extensionVersions";
+import type { KeycloakAccountV1Version, KeycloakThemeAdditionalInfoExtensionVersion } from "./extensionVersions";
 
 export async function buildJar(params: {
     jarFileBasename: string;
-    keycloakAccountV1Version: KeycloakAccountV1Versions;
-    keycloakThemeAdditionalInfoExtensionVersion: KeycloakThemeAdditionalInfoExtensionVersions;
+    keycloakAccountV1Version: KeycloakAccountV1Version;
+    keycloakThemeAdditionalInfoExtensionVersion: KeycloakThemeAdditionalInfoExtensionVersion;
     buildOptions: {
         keycloakifyBuildDirPath: string;
     };

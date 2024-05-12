@@ -1,12 +1,12 @@
 import { assert } from "tsafe/assert";
 import { Reflect } from "tsafe/Reflect";
 import type { BuildOptions } from "../buildOptions";
+import type { KeycloakAccountV1Version, KeycloakThemeAdditionalInfoExtensionVersion } from "./extensionVersions";
 
 type BuildOptionsLike = {
     groupId: string;
     artifactId: string;
     themeVersion: string;
-    keycloakifyBuildDirPath: string;
 };
 
 {
@@ -15,8 +15,13 @@ type BuildOptionsLike = {
     assert<typeof buildOptions extends BuildOptionsLike ? true : false>();
 }
 
-export function generatePom(params: { buildOptions: BuildOptionsLike }) {
-    const { buildOptions } = params;
+export function generatePom(params: {
+    keycloakAccountV1Version: KeycloakAccountV1Version;
+    keycloakThemeAdditionalInfoExtensionVersion: KeycloakThemeAdditionalInfoExtensionVersion;
+
+    buildOptions: BuildOptionsLike;
+}) {
+    const { keycloakAccountV1Version, keycloakThemeAdditionalInfoExtensionVersion, buildOptions } = params;
 
     const { pomFileCode } = (function generatePomFileCode(): {
         pomFileCode: string;
@@ -36,31 +41,48 @@ export function generatePom(params: { buildOptions: BuildOptionsLike }) {
             `  <properties>`,
             `    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>`,
             `  </properties>`,
-            `  <build>`,
-            `    <plugins>`,
-            `      <plugin>`,
-            `        <groupId>org.apache.maven.plugins</groupId>`,
-            `        <artifactId>maven-shade-plugin</artifactId>`,
-            `	     <version>3.5.1</version>`,
-            `        <executions>`,
-            `          <execution>`,
-            `            <phase>package</phase>`,
-            `            <goals>`,
-            `              <goal>shade</goal>`,
-            `            </goals>`,
-            `          </execution>`,
-            `        </executions>`,
-            `      </plugin>`,
-            `    </plugins>`,
-            `  </build>`,
-            `  <dependencies>`,
-            `    <dependency>`,
-            `      <groupId>io.phasetwo.keycloak</groupId>`,
-            `      <artifactId>keycloak-account-v1</artifactId>`,
-            `      <version>0.1</version>`,
-            `    </dependency>`,
-            `  </dependencies>`,
-            `</project>`
+            ...(keycloakAccountV1Version !== null && keycloakThemeAdditionalInfoExtensionVersion !== null
+                ? [
+                      `  <build>`,
+                      `    <plugins>`,
+                      `      <plugin>`,
+                      `        <groupId>org.apache.maven.plugins</groupId>`,
+                      `        <artifactId>maven-shade-plugin</artifactId>`,
+                      `	     <version>3.5.1</version>`,
+                      `        <executions>`,
+                      `          <execution>`,
+                      `            <phase>package</phase>`,
+                      `            <goals>`,
+                      `              <goal>shade</goal>`,
+                      `            </goals>`,
+                      `          </execution>`,
+                      `        </executions>`,
+                      `      </plugin>`,
+                      `    </plugins>`,
+                      `  </build>`,
+                      `  <dependencies>`,
+                      ...(keycloakAccountV1Version !== null
+                          ? [
+                                `    <dependency>`,
+                                `      <groupId>io.phasetwo.keycloak</groupId>`,
+                                `      <artifactId>keycloak-account-v1</artifactId>`,
+                                `      <version>${keycloakAccountV1Version}</version>`,
+                                `    </dependency>`
+                            ]
+                          : []),
+                      ...(keycloakThemeAdditionalInfoExtensionVersion !== null
+                          ? [
+                                `    <dependency>`,
+                                `      <groupId>dev.jcputney</groupId>`,
+                                `      <artifactId>keycloak-theme-additional-info-extension</artifactId>`,
+                                `      <version>${keycloakThemeAdditionalInfoExtensionVersion}</version>`,
+                                `    </dependency>`
+                            ]
+                          : []),
+                      `  </dependencies>`,
+                      `</project>`
+                  ]
+                : [])
         ].join("\n");
 
         return { pomFileCode };
