@@ -22,27 +22,31 @@ export async function main() {
 
     const { themeSrcDirPath } = getThemeSrcDirPath({ "reactAppRootDirPath": buildOptions.reactAppRootDirPath });
 
-    fs.writeFileSync(pathJoin(buildOptions.keycloakifyBuildDirPath, ".gitignore"), Buffer.from("*", "utf8"));
-
     {
-        const [themeName, ...themeVariantNames] = buildOptions.themeNames;
+        if (!fs.existsSync(buildOptions.keycloakifyBuildDirPath)) {
+            fs.mkdirSync(buildOptions.keycloakifyBuildDirPath, { "recursive": true });
+        }
 
-        const { implementedThemeTypes } = await generateTheme({
+        fs.writeFileSync(pathJoin(buildOptions.keycloakifyBuildDirPath, ".gitignore"), Buffer.from("*", "utf8"));
+    }
+
+    const [themeName, ...themeVariantNames] = buildOptions.themeNames;
+
+    const { implementedThemeTypes } = await generateTheme({
+        themeName,
+        themeSrcDirPath,
+        "keycloakifySrcDirPath": pathJoin(getThisCodebaseRootDirPath(), "src"),
+        "keycloakifyVersion": readThisNpmProjectVersion(),
+        buildOptions
+    });
+
+    for (const themeVariantName of themeVariantNames) {
+        generateThemeVariations({
             themeName,
-            themeSrcDirPath,
-            "keycloakifySrcDirPath": pathJoin(getThisCodebaseRootDirPath(), "src"),
-            "keycloakifyVersion": readThisNpmProjectVersion(),
+            themeVariantName,
+            implementedThemeTypes,
             buildOptions
         });
-
-        for (const themeVariantName of themeVariantNames) {
-            generateThemeVariations({
-                themeName,
-                themeVariantName,
-                implementedThemeTypes,
-                buildOptions
-            });
-        }
     }
 
     run_post_build_script: {
