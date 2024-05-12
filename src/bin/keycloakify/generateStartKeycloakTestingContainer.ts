@@ -17,10 +17,11 @@ export type BuildOptionsLike = {
 generateStartKeycloakTestingContainer.basename = "start_keycloak_testing_container.sh";
 
 const containerName = "keycloak-testing-container";
+const keycloakVersion = "24.0.4";
 
 /** Files for being able to run a hot reload keycloak container */
-export function generateStartKeycloakTestingContainer(params: { jarFilePath: string; keycloakVersion: string; buildOptions: BuildOptionsLike }) {
-    const { jarFilePath, keycloakVersion, buildOptions } = params;
+export function generateStartKeycloakTestingContainer(params: { jarFilePath: string; buildOptions: BuildOptionsLike }) {
+    const { jarFilePath, buildOptions } = params;
 
     const themeRelativeDirPath = pathJoin("src", "main", "resources", "theme");
     const themeDirPath = pathJoin(buildOptions.keycloakifyBuildDirPath, themeRelativeDirPath);

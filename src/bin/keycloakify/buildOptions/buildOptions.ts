@@ -18,7 +18,6 @@ export type BuildOptions = {
     extraThemeProperties: string[] | undefined;
     groupId: string;
     artifactId: string;
-    doCreateJar: boolean;
     loginThemeResourcesFromKeycloakVersion: string;
     reactAppRootDirPath: string;
     reactAppBuildDirPath: string;
@@ -115,7 +114,6 @@ export function readBuildOptions(params: { processArgv: string[] }): BuildOption
             );
         })(),
         "artifactId": process.env.KEYCLOAKIFY_ARTIFACT_ID ?? userProvidedBuildOptions.artifactId ?? `${themeNames[0]}-keycloak-theme`,
-        "doCreateJar": userProvidedBuildOptions.doCreateJar ?? true,
         "loginThemeResourcesFromKeycloakVersion": userProvidedBuildOptions.loginThemeResourcesFromKeycloakVersion ?? "24.0.4",
         reactAppRootDirPath,
         reactAppBuildDirPath,

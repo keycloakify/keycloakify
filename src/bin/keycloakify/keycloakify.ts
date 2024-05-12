@@ -10,6 +10,8 @@ import { getThemeSrcDirPath } from "../getThemeSrcDirPath";
 import { getThisCodebaseRootDirPath } from "../tools/getThisCodebaseRootDirPath";
 import { readThisNpmProjectVersion } from "../tools/readThisNpmProjectVersion";
 import { keycloakifyBuildOptionsForPostPostBuildScriptEnvName } from "../constants";
+import { buildJars } from "./buildJars";
+import { generateThemeVariations } from "./generateThemeVariants";
 
 export async function main() {
     const buildOptions = readBuildOptions({
@@ -21,12 +23,21 @@ export async function main() {
 
     const { themeSrcDirPath } = getThemeSrcDirPath({ "reactAppRootDirPath": buildOptions.reactAppRootDirPath });
 
-    for (const themeName of buildOptions.themeNames) {
-        await generateTheme({
+    const [themeName, ...themeVariantNames] = buildOptions.themeNames;
+
+    const { implementedThemeTypes } = await generateTheme({
+        themeName,
+        themeSrcDirPath,
+        "keycloakifySrcDirPath": pathJoin(getThisCodebaseRootDirPath(), "src"),
+        "keycloakifyVersion": readThisNpmProjectVersion(),
+        buildOptions
+    });
+
+    for (const themeVariantName of themeVariantNames) {
+        generateThemeVariations({
             themeName,
-            themeSrcDirPath,
-            "keycloakifySrcDirPath": pathJoin(getThisCodebaseRootDirPath(), "src"),
-            "keycloakifyVersion": readThisNpmProjectVersion(),
+            themeVariantName,
+            implementedThemeTypes,
             buildOptions
         });
     }
@@ -36,16 +47,6 @@ export async function main() {
 
         fs.writeFileSync(pathJoin(buildOptions.keycloakifyBuildDirPath, "pom.xml"), Buffer.from(pomFileCode, "utf8"));
     }
-
-    const containerKeycloakVersion = "24.0.4";
-
-    const jarFilePath = pathJoin(buildOptions.keycloakifyBuildDirPath, "target", `${buildOptions.artifactId}-${buildOptions.themeVersion}.jar`);
-
-    generateStartKeycloakTestingContainer({
-        "keycloakVersion": containerKeycloakVersion,
-        jarFilePath,
-        buildOptions
-    });
 
     fs.writeFileSync(pathJoin(buildOptions.keycloakifyBuildDirPath, ".gitignore"), Buffer.from("*", "utf8"));
 
@@ -63,27 +64,24 @@ export async function main() {
         });
     }
 
-    create_jar: {
-        if (!buildOptions.doCreateJar) {
-            break create_jar;
-        }
+    const { lastJarFileBasename } = await buildJars({
+        "doImplementAccountTheme": implementedThemeTypes.account,
+        buildOptions
+    });
 
-        child_process.execSync("mvn clean install", { "cwd": buildOptions.keycloakifyBuildDirPath });
-    }
+    generateStartKeycloakTestingContainer({
+        "jarFilePath": pathJoin(buildOptions.keycloakifyBuildDirPath, lastJarFileBasename),
+        buildOptions
+    });
 
     logger.log(
         [
+            `✅ Your keycloak theme has been generated and bundled into .${pathSep}${pathJoin(
+                pathRelative(buildOptions.reactAppRootDirPath, buildOptions.keycloakifyBuildDirPath),
+                "keycloak-theme-for-kc-*.jar"
+            )}`,
             "",
-            ...(!buildOptions.doCreateJar
-                ? []
-                : [
-                      `✅ Your keycloak theme has been generated and bundled into .${pathSep}${pathRelative(
-                          buildOptions.reactAppRootDirPath,
-                          jarFilePath
-                      )} 🚀`
-                  ]),
-            "",
-            `To test your theme locally you can spin up a Keycloak ${containerKeycloakVersion} container image with the theme pre loaded by running:`,
+            `To test your theme locally you can spin up a Keycloak container image with the theme pre loaded by running:`,
             "",
             `👉 $ .${pathSep}${pathRelative(
                 buildOptions.reactAppRootDirPath,
