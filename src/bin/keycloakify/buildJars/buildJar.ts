@@ -10,6 +10,12 @@ export async function buildJar(params: {
         keycloakifyBuildDirPath: string;
     };
 }): Promise<void> {
+    {
+        const { pomFileCode } = generatePom({ buildOptions });
+
+        fs.writeFileSync(pathJoin(buildOptions.keycloakifyBuildDirPath, "pom.xml"), Buffer.from(pomFileCode, "utf8"));
+    }
+
     child_process.execSync("mvn clean install", { "cwd": buildOptions.keycloakifyBuildDirPath });
     // TODO: Implement
 }

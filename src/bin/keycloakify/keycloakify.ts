@@ -1,5 +1,4 @@
 import { generateTheme } from "./generateTheme";
-import { generatePom } from "./generatePom";
 import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path";
 import * as child_process from "child_process";
 import { generateStartKeycloakTestingContainer } from "./generateStartKeycloakTestingContainer";
@@ -23,32 +22,28 @@ export async function main() {
 
     const { themeSrcDirPath } = getThemeSrcDirPath({ "reactAppRootDirPath": buildOptions.reactAppRootDirPath });
 
-    const [themeName, ...themeVariantNames] = buildOptions.themeNames;
-
-    const { implementedThemeTypes } = await generateTheme({
-        themeName,
-        themeSrcDirPath,
-        "keycloakifySrcDirPath": pathJoin(getThisCodebaseRootDirPath(), "src"),
-        "keycloakifyVersion": readThisNpmProjectVersion(),
-        buildOptions
-    });
-
-    for (const themeVariantName of themeVariantNames) {
-        generateThemeVariations({
-            themeName,
-            themeVariantName,
-            implementedThemeTypes,
-            buildOptions
-        });
-    }
+    fs.writeFileSync(pathJoin(buildOptions.keycloakifyBuildDirPath, ".gitignore"), Buffer.from("*", "utf8"));
 
     {
-        const { pomFileCode } = generatePom({ buildOptions });
+        const [themeName, ...themeVariantNames] = buildOptions.themeNames;
 
-        fs.writeFileSync(pathJoin(buildOptions.keycloakifyBuildDirPath, "pom.xml"), Buffer.from(pomFileCode, "utf8"));
+        const { implementedThemeTypes } = await generateTheme({
+            themeName,
+            themeSrcDirPath,
+            "keycloakifySrcDirPath": pathJoin(getThisCodebaseRootDirPath(), "src"),
+            "keycloakifyVersion": readThisNpmProjectVersion(),
+            buildOptions
+        });
+
+        for (const themeVariantName of themeVariantNames) {
+            generateThemeVariations({
+                themeName,
+                themeVariantName,
+                implementedThemeTypes,
+                buildOptions
+            });
+        }
     }
-
-    fs.writeFileSync(pathJoin(buildOptions.keycloakifyBuildDirPath, ".gitignore"), Buffer.from("*", "utf8"));
 
     run_post_build_script: {
         if (buildOptions.bundler !== "vite") {
