@@ -1,24 +1,18 @@
 import { assert } from "tsafe/assert";
-import { Reflect } from "tsafe/Reflect";
 import type { BuildOptions } from "../buildOptions";
 import type { KeycloakAccountV1Version, KeycloakThemeAdditionalInfoExtensionVersion } from "./extensionVersions";
 
-type BuildOptionsLike = {
+export type BuildOptionsLike = {
     groupId: string;
     artifactId: string;
     themeVersion: string;
 };
 
-{
-    const buildOptions = Reflect<BuildOptions>();
-
-    assert<typeof buildOptions extends BuildOptionsLike ? true : false>();
-}
+assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
 export function generatePom(params: {
     keycloakAccountV1Version: KeycloakAccountV1Version;
     keycloakThemeAdditionalInfoExtensionVersion: KeycloakThemeAdditionalInfoExtensionVersion;
-
     buildOptions: BuildOptionsLike;
 }) {
     const { keycloakAccountV1Version, keycloakThemeAdditionalInfoExtensionVersion, buildOptions } = params;

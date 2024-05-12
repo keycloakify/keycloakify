@@ -1,18 +1,13 @@
 import * as fs from "fs";
 import { join as pathJoin, relative as pathRelative, basename as pathBasename } from "path";
 import { assert } from "tsafe/assert";
-import { Reflect } from "tsafe/Reflect";
 import type { BuildOptions } from "./buildOptions";
 
 export type BuildOptionsLike = {
     keycloakifyBuildDirPath: string;
 };
 
-{
-    const buildOptions = Reflect<BuildOptions>();
-
-    assert<typeof buildOptions extends BuildOptionsLike ? true : false>();
-}
+assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
 generateStartKeycloakTestingContainer.basename = "start_keycloak_testing_container.sh";
 

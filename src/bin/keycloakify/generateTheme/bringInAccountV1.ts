@@ -1,7 +1,6 @@
 import * as fs from "fs";
 import { join as pathJoin } from "path";
 import { assert } from "tsafe/assert";
-import { Reflect } from "tsafe/Reflect";
 import type { BuildOptions } from "../buildOptions";
 import { resources_common, lastKeycloakVersionWithAccountV1, accountV1ThemeName } from "../../constants";
 import { downloadBuiltinKeycloakTheme } from "../../download-builtin-keycloak-theme";
@@ -13,11 +12,7 @@ type BuildOptionsLike = {
     npmWorkspaceRootDirPath: string;
 };
 
-{
-    const buildOptions = Reflect<BuildOptions>();
-
-    assert<typeof buildOptions extends BuildOptionsLike ? true : false>();
-}
+assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
 export async function bringInAccountV1(params: { buildOptions: BuildOptionsLike; srcMainResourcesDirPath: string }) {
     const { buildOptions, srcMainResourcesDirPath } = params;
