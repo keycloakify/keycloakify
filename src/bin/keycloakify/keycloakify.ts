@@ -29,7 +29,7 @@ export async function main() {
         fs.writeFileSync(pathJoin(buildOptions.keycloakifyBuildDirPath, ".gitignore"), Buffer.from("*", "utf8"));
     }
 
-    const { implementedThemeTypes } = await generateTheme({
+    const { doesImplementAccountTheme } = await generateTheme({
         themeSrcDirPath,
         "keycloakifySrcDirPath": pathJoin(getThisCodebaseRootDirPath(), "src"),
         "keycloakifyVersion": readThisNpmProjectVersion(),
@@ -51,7 +51,7 @@ export async function main() {
     }
 
     const { lastJarFileBasename } = await buildJars({
-        "doImplementAccountTheme": implementedThemeTypes.account,
+        doesImplementAccountTheme,
         buildOptions
     });
 
