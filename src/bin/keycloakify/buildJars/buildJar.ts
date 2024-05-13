@@ -29,13 +29,12 @@ export async function buildJar(params: {
 
     const keycloakifyBuildTmpDirPath = pathJoin(buildOptions.keycloakifyBuildDirPath, "..", jarFileBasename.replace(".jar", ""));
 
-    {
-        if (!existsSync(buildOptions.keycloakifyBuildDirPath)) {
-            await fs.mkdir(buildOptions.keycloakifyBuildDirPath, { "recursive": true });
-        }
-
-        await fs.writeFile(pathJoin(buildOptions.keycloakifyBuildDirPath, ".gitignore"), Buffer.from("*", "utf8"));
+    if (existsSync(keycloakifyBuildTmpDirPath)) {
+        await fs.rm(keycloakifyBuildTmpDirPath, { "recursive": true });
     }
+
+    await fs.mkdir(keycloakifyBuildTmpDirPath, { "recursive": true });
+    await fs.writeFile(pathJoin(keycloakifyBuildTmpDirPath, ".gitignore"), Buffer.from("*", "utf8"));
 
     const srcMainResourcesRelativeDirPath = pathJoin("src", "main", "resources");
 
@@ -43,10 +42,10 @@ export async function buildJar(params: {
         const keycloakThemesJsonFilePath = pathJoin(srcMainResourcesRelativeDirPath, "META-INF", "keycloak-themes.json");
 
         const themePropertiesFilePathSet = new Set(
-            ...buildOptions.themeNames.map(themeName => pathJoin(srcMainResourcesRelativeDirPath, "themes", themeName, "account", "theme.properties"))
+            ...buildOptions.themeNames.map(themeName => pathJoin(srcMainResourcesRelativeDirPath, "theme", themeName, "account", "theme.properties"))
         );
 
-        const accountV1RelativeDirPath = pathJoin(srcMainResourcesRelativeDirPath, "themes", accountV1ThemeName);
+        const accountV1RelativeDirPath = pathJoin(srcMainResourcesRelativeDirPath, "theme", accountV1ThemeName);
 
         transformCodebase({
             "srcDirPath": buildOptions.keycloakifyBuildDirPath,
@@ -108,7 +107,14 @@ export async function buildJar(params: {
 
         (["register.ftl", "login-update-profile.ftl"] as const).forEach(pageId =>
             buildOptions.themeNames.map(themeName => {
-                const ftlFilePath = pathJoin(srcMainResourcesRelativeDirPath, "themes", themeName, "login", pageId);
+                const ftlFilePath = pathJoin(
+                    buildOptions.keycloakifyBuildDirPath,
+                    srcMainResourcesRelativeDirPath,
+                    "theme",
+                    themeName,
+                    "login",
+                    pageId
+                );
 
                 const ftlFileContent = readFileSync(ftlFilePath).toString("utf8");
 
@@ -123,7 +129,7 @@ export async function buildJar(params: {
                 })();
 
                 const modifiedFtlFileContent = ftlFileContent.replace(
-                    `out["pageId"] = "${pageId}";`,
+                    `out["pageId"] = "\${pageId}";`,
                     `out["pageId"] = "${pageId}"; out["realPageId"] = "${realPageId}";`
                 );
 
