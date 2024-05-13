@@ -36,8 +36,6 @@ export function readFieldNameUsage(params: { keycloakifySrcDirPath: string; them
                             return p1;
                         })
                         .map(part => {
-                            console.log(part);
-
                             return part
                                 .split(",")
                                 .map(a => a.trim())
