@@ -17,14 +17,6 @@ export default function LoginConfigTotp(props: PageProps<Extract<KcContext, { pa
 
     const { msg, msgStr } = i18n;
 
-    // NOTE: We should edit the ftl_object_to_js_code_declaring_an_object.ftl
-    // so that we have access to getAlgorithmKey()
-    const algToKeyUriAlg: Record<(typeof kcContext)["totp"]["policy"]["algorithm"], string> = {
-        "HmacSHA1": "SHA1",
-        "HmacSHA256": "SHA256",
-        "HmacSHA512": "SHA512"
-    };
-
     return (
         <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} headerNode={msg("loginTotpTitle")}>
             <>
@@ -60,7 +52,7 @@ export default function LoginConfigTotp(props: PageProps<Extract<KcContext, { pa
                                             {msg("loginTotpType")}: {msg(`loginTotp.${totp.policy.type}`)}
                                         </li>
                                         <li id="kc-totp-algorithm">
-                                            {msg("loginTotpAlgorithm")}: {algToKeyUriAlg?.[totp.policy.algorithm] ?? totp.policy.algorithm}
+                                            {msg("loginTotpAlgorithm")}: {totp.policy.getAlgorithmKey()}
                                         </li>
                                         <li id="kc-totp-digits">
                                             {msg("loginTotpDigits")}: {totp.policy.digits}

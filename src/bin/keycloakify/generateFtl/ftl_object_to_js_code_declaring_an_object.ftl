@@ -254,6 +254,17 @@
             <#attempt>
                 return "${url.getLogoutUrl()}";
             <#recover>
+                throw new Error("Failed to invoke url.getLogoutUrl() in the FreeMarker template");
+            </#attempt>
+        };
+    </#if>
+
+    <#if pageId === "login-config-totp.ftl">
+        out["totp"]["policy"]["getAlgorithmKey"] = function () {
+            <#attempt>
+                return "${totp.policy.getAlgorithmKey()}";
+            <#recover>
+                throw new Error("Failed to invoke totp.policy.getAlgorithmKey() in the FreeMarker template");
             </#attempt>
         };
     </#if>
