@@ -73,10 +73,10 @@ export function generatePom(params: {
                                 `    </dependency>`
                             ]
                           : []),
-                      `  </dependencies>`,
-                      `</project>`
+                      `  </dependencies>`
                   ]
-                : [])
+                : []),
+            `</project>`
         ].join("\n");
 
         return { pomFileCode };
