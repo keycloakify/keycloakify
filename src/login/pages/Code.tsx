@@ -24,7 +24,7 @@ export default function Code(props: PageProps<Extract<KcContext, { pageId: "code
                 {code.success ? (
                     <>
                         <p>{msg("copyCodeInstruction")}</p>
-                        <input id="code" className={getClassName("kcTextareaClass")} value={code.code} />
+                        <input id="code" className={getClassName("kcTextareaClass")} defaultValue={code.code} />
                     </>
                 ) : (
                     <p id="error">{code.error}</p>

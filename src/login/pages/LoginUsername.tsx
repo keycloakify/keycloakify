@@ -101,7 +101,7 @@ export default function LoginUsername(props: PageProps<Extract<KcContext, { page
                                         id="username"
                                         className={getClassName("kcInputClass")}
                                         name="username"
-                                        value={login.username ?? ""}
+                                        defaultValue={login.username ?? ""}
                                         type="text"
                                         autoFocus
                                         autoComplete="off"
