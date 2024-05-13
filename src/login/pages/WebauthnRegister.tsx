@@ -275,7 +275,7 @@ function LogoutOtherSessions(props: { i18n: I18n; getClassName: ReturnType<typeo
             <div className={getClassName("kcFormOptionsWrapperClass")}>
                 <div className="checkbox">
                     <label>
-                        <input type="checkbox" id="logout-sessions" name="logout-sessions" value="on" checked />
+                        <input type="checkbox" id="logout-sessions" name="logout-sessions" value="on" defaultChecked={true} />
                         {msg("logoutOtherSessions")}
                     </label>
                 </div>
