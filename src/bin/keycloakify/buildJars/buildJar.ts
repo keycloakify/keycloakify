@@ -107,14 +107,7 @@ export async function buildJar(params: {
 
         (["register.ftl", "login-update-profile.ftl"] as const).forEach(pageId =>
             buildOptions.themeNames.map(themeName => {
-                const ftlFilePath = pathJoin(
-                    buildOptions.keycloakifyBuildDirPath,
-                    srcMainResourcesRelativeDirPath,
-                    "theme",
-                    themeName,
-                    "login",
-                    pageId
-                );
+                const ftlFilePath = pathJoin(keycloakifyBuildTmpDirPath, srcMainResourcesRelativeDirPath, "theme", themeName, "login", pageId);
 
                 const ftlFileContent = readFileSync(ftlFilePath).toString("utf8");
 
@@ -147,12 +140,24 @@ export async function buildJar(params: {
             keycloakThemeAdditionalInfoExtensionVersion
         });
 
-        await fs.writeFile(pathJoin(buildOptions.keycloakifyBuildDirPath, "pom.xml"), Buffer.from(pomFileCode, "utf8"));
+        await fs.writeFile(pathJoin(keycloakifyBuildTmpDirPath, "pom.xml"), Buffer.from(pomFileCode, "utf8"));
     }
 
     await new Promise<void>((resolve, reject) =>
         child_process.exec("mvn clean install", { "cwd": keycloakifyBuildTmpDirPath }, error => {
             if (error !== null) {
+                console.error(
+                    `Build jar failed: ${JSON.stringify(
+                        {
+                            jarFileBasename,
+                            keycloakAccountV1Version,
+                            keycloakThemeAdditionalInfoExtensionVersion
+                        },
+                        null,
+                        2
+                    )}`
+                );
+
                 reject(error);
                 return;
             }
