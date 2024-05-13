@@ -85,7 +85,7 @@ export default function Register(props: RegisterProps) {
 function TermsAcceptance(props: {
     i18n: I18n;
     getClassName: ReturnType<typeof useGetClassName>["getClassName"];
-    messagesPerField: Pick<KcContext.Common["messagesPerField"], "existsError" | "get">;
+    messagesPerField: Pick<KcContext["messagesPerField"], "existsError" | "get">;
 }) {
     const { i18n, getClassName, messagesPerField } = props;
 
