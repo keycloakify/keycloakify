@@ -5,8 +5,8 @@ import { useI18n } from "./i18n";
 import { useDownloadTerms } from "../../dist/login/lib/useDownloadTerms";
 import tos_en_url from "./tos_en.md";
 import tos_fr_url from "./tos_fr.md";
-
-const DefaultTemplate = lazy(() => import("../../dist/login/Template"));
+import Template from "../../dist/login/Template";
+import UserProfileFormFields from "../../dist/login/UserProfileFormFields";
 
 export default function KcApp(props: { kcContext: KcContext }) {
     const { kcContext } = props;
@@ -42,7 +42,7 @@ export default function KcApp(props: { kcContext: KcContext }) {
             {(() => {
                 switch (kcContext.pageId) {
                     default:
-                        return <Fallback {...{ kcContext, i18n }} Template={DefaultTemplate} doUseDefaultCss={true} />;
+                        return <Fallback {...{ kcContext, i18n, Template, UserProfileFormFields }} doUseDefaultCss={true} />;
                 }
             })()}
         </Suspense>
