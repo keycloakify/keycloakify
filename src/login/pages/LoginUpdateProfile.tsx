@@ -7,7 +7,7 @@ import type { I18n } from "../i18n";
 import type { LazyOrNot } from "keycloakify/tools/LazyOrNot";
 import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFormFields";
 
-type LoginUpdateProfileProps = PageProps<Extract<KcContext, { pageId: "login-update-profile.ftl" | "update-user-profile.ftl" }>, I18n> & {
+type LoginUpdateProfileProps = PageProps<Extract<KcContext, { pageId: "login-update-profile.ftl" }>, I18n> & {
     UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
 };
 

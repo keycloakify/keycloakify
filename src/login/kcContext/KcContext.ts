@@ -183,7 +183,7 @@ export declare namespace KcContext {
     };
 
     export type Register = Common & {
-        pageId: "register.ftl" | "register-user-profile.ftl";
+        pageId: "register.ftl";
         profile: UserProfile;
         url: {
             registrationAction: string;
@@ -452,7 +452,7 @@ export declare namespace KcContext {
     };
 
     export type LoginUpdateProfile = Common & {
-        pageId: "login-update-profile.ftl" | "update-user-profile.ftl";
+        pageId: "login-update-profile.ftl";
         profile: UserProfile;
     };
 
