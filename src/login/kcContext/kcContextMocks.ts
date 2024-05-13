@@ -443,7 +443,8 @@ export const kcContextMocks = [
                 "digits": 6,
                 "lookAheadWindow": 1,
                 "type": "totp",
-                "period": 30
+                "period": 30,
+                "getAlgorithmKey": () => "SHA1"
             }
         }
     }),
