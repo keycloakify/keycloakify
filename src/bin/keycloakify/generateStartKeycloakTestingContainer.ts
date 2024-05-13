@@ -51,7 +51,7 @@ export function generateStartKeycloakTestingContainer(params: { jarFilePath: str
                             )}":"/opt/keycloak/themes/${themeName}":rw \\`
                     ),
                 `   -it quay.io/keycloak/keycloak:${keycloakVersion} \\`,
-                `   start-dev --features=declarative-user-profile`,
+                `   start-dev`,
                 ""
             ].join("\n"),
             "utf8"
