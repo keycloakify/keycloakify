@@ -9,7 +9,7 @@ import { Markdown } from "keycloakify/tools/Markdown";
 import type { KcContext } from "../kcContext";
 import type { I18n } from "../i18n";
 
-type RegisterProps = PageProps<Extract<KcContext, { pageId: "register.ftl" | "register-user-profile.ftl" }>, I18n> & {
+type RegisterProps = PageProps<Extract<KcContext, { pageId: "register.ftl" }>, I18n> & {
     UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
 };
 

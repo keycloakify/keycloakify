@@ -55,7 +55,6 @@ export default function Fallback(props: FallbackProps) {
                     case "login.ftl":
                         return <Login kcContext={kcContext} {...rest} />;
                     case "register.ftl":
-                    case "register-user-profile.ftl":
                         return <Register kcContext={kcContext} {...rest} />;
                     case "info.ftl":
                         return <Info kcContext={kcContext} {...rest} />;
@@ -84,7 +83,6 @@ export default function Fallback(props: FallbackProps) {
                     case "login-update-password.ftl":
                         return <LoginUpdatePassword kcContext={kcContext} {...rest} />;
                     case "login-update-profile.ftl":
-                    case "update-user-profile.ftl":
                         return <LoginUpdateProfile kcContext={kcContext} {...rest} />;
                     case "login-idp-link-confirm.ftl":
                         return <LoginIdpLinkConfirm kcContext={kcContext} {...rest} />;

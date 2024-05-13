@@ -1,12 +1,12 @@
-import { assert } from "tsafe/assert";
+import { assert, type Equals } from "tsafe/assert";
 import type { KeycloakAccountV1Version, KeycloakThemeAdditionalInfoExtensionVersion } from "./extensionVersions";
-import { join as pathJoin } from "path";
+import { join as pathJoin, dirname as pathDirname } from "path";
 import { transformCodebase } from "../../tools/transformCodebase";
 import type { BuildOptions } from "../buildOptions";
 import * as fs from "fs/promises";
 import { accountV1ThemeName } from "../../constants";
 import { generatePom, BuildOptionsLike as BuildOptionsLike_generatePom } from "./generatePom";
-import { existsSync } from "fs";
+import { existsSync, readFileSync } from "fs";
 import { isInside } from "../../tools/isInside";
 import child_process from "child_process";
 
@@ -37,9 +37,9 @@ export async function buildJar(params: {
         await fs.writeFile(pathJoin(buildOptions.keycloakifyBuildDirPath, ".gitignore"), Buffer.from("*", "utf8"));
     }
 
-    {
-        const srcMainResourcesRelativeDirPath = pathJoin("src", "main", "resources");
+    const srcMainResourcesRelativeDirPath = pathJoin("src", "main", "resources");
 
+    {
         const keycloakThemesJsonFilePath = pathJoin(srcMainResourcesRelativeDirPath, "META-INF", "keycloak-themes.json");
 
         const themePropertiesFilePathSet = new Set(
@@ -85,6 +85,53 @@ export async function buildJar(params: {
                           return { "modifiedSourceCode": sourceCode };
                       }
         });
+    }
+
+    route_legacy_pages: {
+        // NOTE: If there's no account theme there is no special target for keycloak 24 and up so we create
+        // the pages anyway. If there is an account pages, since we know that account-v1 is only support keycloak
+        // 24 in version 0.4 and up, we can safely break the route for legacy pages.
+        const doBreak: boolean = (() => {
+            switch (keycloakAccountV1Version) {
+                case null:
+                    return false;
+                case "0.3":
+                    return false;
+                default:
+                    return true;
+            }
+        })();
+
+        if (doBreak) {
+            break route_legacy_pages;
+        }
+
+        (["register.ftl", "login-update-profile.ftl"] as const).forEach(pageId =>
+            buildOptions.themeNames.map(themeName => {
+                const ftlFilePath = pathJoin(srcMainResourcesRelativeDirPath, "themes", themeName, "login", pageId);
+
+                const ftlFileContent = readFileSync(ftlFilePath).toString("utf8");
+
+                const realPageId = (() => {
+                    switch (pageId) {
+                        case "register.ftl":
+                            return "register-user-profile.ftl";
+                        case "login-update-profile.ftl":
+                            return "update-user-profile.ftl";
+                    }
+                    assert<Equals<typeof pageId, never>>(false);
+                })();
+
+                const modifiedFtlFileContent = ftlFileContent.replace(
+                    `out["pageId"] = "${pageId}";`,
+                    `out["pageId"] = "${pageId}"; out["realPageId"] = "${realPageId}";`
+                );
+
+                assert(modifiedFtlFileContent !== ftlFileContent);
+
+                fs.writeFile(pathJoin(pathDirname(ftlFilePath), realPageId), Buffer.from(modifiedFtlFileContent, "utf8"));
+            })
+        );
     }
 
     {
