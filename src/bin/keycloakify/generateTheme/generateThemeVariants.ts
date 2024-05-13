@@ -10,7 +10,7 @@ export function generateThemeVariations(params: { themeName: string; themeVarian
 
     transformCodebase({
         "srcDirPath": mainThemeDirPath,
-        "destDirPath": pathJoin(mainThemeDirPath, themeVariantName),
+        "destDirPath": pathJoin(mainThemeDirPath, "..", themeVariantName),
         "transformSourceCode": ({ fileRelativePath, sourceCode }) => {
             if (pathExtname(fileRelativePath) === ".ftl" && fileRelativePath.split(pathSep).length === 2) {
                 const modifiedSourceCode = Buffer.from(
