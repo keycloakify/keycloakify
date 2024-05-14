@@ -57,6 +57,7 @@ export async function main() {
 
     generateStartKeycloakTestingContainer({
         "jarFilePath": pathJoin(buildOptions.keycloakifyBuildDirPath, lastJarFileBasename),
+        doesImplementAccountTheme,
         buildOptions
     });
 

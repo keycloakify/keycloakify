@@ -2,9 +2,11 @@ import * as fs from "fs";
 import { join as pathJoin, relative as pathRelative, basename as pathBasename } from "path";
 import { assert } from "tsafe/assert";
 import type { BuildOptions } from "./buildOptions";
+import { accountV1ThemeName } from "../constants";
 
 export type BuildOptionsLike = {
     keycloakifyBuildDirPath: string;
+    themeNames: string[];
 };
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
@@ -15,11 +17,14 @@ const containerName = "keycloak-testing-container";
 const keycloakVersion = "24.0.4";
 
 /** Files for being able to run a hot reload keycloak container */
-export function generateStartKeycloakTestingContainer(params: { jarFilePath: string; buildOptions: BuildOptionsLike }) {
-    const { jarFilePath, buildOptions } = params;
+export function generateStartKeycloakTestingContainer(params: {
+    jarFilePath: string;
+    doesImplementAccountTheme: boolean;
+    buildOptions: BuildOptionsLike;
+}) {
+    const { jarFilePath, doesImplementAccountTheme, buildOptions } = params;
 
     const themeRelativeDirPath = pathJoin("src", "main", "resources", "theme");
-    const themeDirPath = pathJoin(buildOptions.keycloakifyBuildDirPath, themeRelativeDirPath);
 
     fs.writeFileSync(
         pathJoin(buildOptions.keycloakifyBuildDirPath, generateStartKeycloakTestingContainer.basename),
@@ -40,16 +45,10 @@ export function generateStartKeycloakTestingContainer(params: { jarFilePath: str
                     "$(pwd)",
                     pathRelative(buildOptions.keycloakifyBuildDirPath, jarFilePath)
                 )}":"/opt/keycloak/providers/${pathBasename(jarFilePath)}" \\`,
-                ...fs
-                    .readdirSync(themeDirPath)
-                    .filter(name => fs.lstatSync(pathJoin(themeDirPath, name)).isDirectory())
-                    .map(
-                        themeName =>
-                            `   -v "${pathJoin("$(pwd)", themeRelativeDirPath, themeName).replace(
-                                /\\/g,
-                                "/"
-                            )}":"/opt/keycloak/themes/${themeName}":rw \\`
-                    ),
+                [...(doesImplementAccountTheme ? [accountV1ThemeName] : []), ...buildOptions.themeNames].map(
+                    themeName =>
+                        `   -v "${pathJoin("$(pwd)", themeRelativeDirPath, themeName).replace(/\\/g, "/")}":"/opt/keycloak/themes/${themeName}":rw \\`
+                ),
                 `   -it quay.io/keycloak/keycloak:${keycloakVersion} \\`,
                 `   start-dev`,
                 ""
