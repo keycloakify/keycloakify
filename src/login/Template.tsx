@@ -32,7 +32,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
 
     const { getClassName } = useGetClassName({ doUseDefaultCss, classes });
 
-    const { msg, msgStr, changeLocale, labelBySupportedLanguageTag, currentLanguageTag } = i18n;
+    const { msg, msgStr, getChangeLocalUrl, labelBySupportedLanguageTag, currentLanguageTag } = i18n;
 
     const { realm, locale, auth, url, message, isAppInitiatedAction, authenticationSession, scripts } = kcContext;
 
@@ -126,31 +126,17 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
 
             <div className={getClassName("kcFormCardClass")}>
                 <header className={getClassName("kcFormHeaderClass")}>
-                    {realm.internationalizationEnabled && (assert(locale !== undefined), true) && locale.supported.length > 1 && (
+                    {realm.internationalizationEnabled && (assert(locale !== undefined), locale.supported.length > 1) && (
                         <div className={getClassName("kcLocaleMainClass")} id="kc-locale">
                             <div id="kc-locale-wrapper" className={getClassName("kcLocaleWrapperClass")}>
                                 <div id="kc-locale-dropdown" className={clsx("menu-button-links", getClassName("kcLocaleDropDownClass"))}>
                                     {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                                    <a href="#" id="kc-current-locale-link">
-                                        {labelBySupportedLanguageTag[currentLanguageTag]}
-                                    </a>
-                                    <ul>
-                                        {locale.supported.map(({ languageTag }) => (
-                                            <li key={languageTag} className="kc-dropdown-item">
-                                                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                                                <a href="#" onClick={() => changeLocale(languageTag)}>
-                                                    {labelBySupportedLanguageTag[languageTag]}
-                                                </a>
-                                            </li>
-                                        ))}
-                                    </ul>
-
                                     <button
                                         tabIndex={1}
                                         id="kc-current-locale-link"
                                         aria-label={msgStr("languages" as any)}
-                                        aria-haspopup={true}
-                                        aria-expanded={false}
+                                        aria-haspopup="true"
+                                        aria-expanded="false"
                                         aria-controls="language-switch1"
                                     >
                                         {labelBySupportedLanguageTag[currentLanguageTag]}
@@ -165,13 +151,11 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                                     >
                                         {locale.supported.map(({ languageTag }, i) => (
                                             <li key={languageTag} className={getClassName("kcLocaleListItemClass")} role="none">
-                                                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                                                 <a
                                                     role="menuitem"
-                                                    id={`language-${i}`}
+                                                    id={`language-${i + 1}`}
                                                     className={getClassName("kcLocaleItemClass")}
-                                                    href="#"
-                                                    onClick={() => changeLocale(languageTag)}
+                                                    href={getChangeLocalUrl(languageTag)}
                                                 >
                                                     {labelBySupportedLanguageTag[languageTag]}
                                                 </a>

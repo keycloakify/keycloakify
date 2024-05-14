@@ -15,7 +15,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
 
     const { getClassName } = useGetClassName({ doUseDefaultCss, classes });
 
-    const { msg, msgStr, changeLocale, labelBySupportedLanguageTag, currentLanguageTag } = i18n;
+    const { msg, msgStr, getChangeLocalUrl, labelBySupportedLanguageTag, currentLanguageTag } = i18n;
 
     const { locale, url, features, realm, message, referrer } = kcContext;
 
@@ -81,10 +81,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                                             <ul>
                                                 {locale.supported.map(({ languageTag }) => (
                                                     <li key={languageTag} className="kc-dropdown-item">
-                                                        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                                                        <a href="#" onClick={() => changeLocale(languageTag)}>
-                                                            {labelBySupportedLanguageTag[languageTag]}
-                                                        </a>
+                                                        <a href={getChangeLocalUrl(languageTag)}>{labelBySupportedLanguageTag[languageTag]}</a>
                                                     </li>
                                                 ))}
                                             </ul>
