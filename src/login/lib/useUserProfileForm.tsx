@@ -354,15 +354,15 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
         return initialState;
     }, []);
 
-    const [state, dispatchFormAction] = useReducer(function reducer(state: internal.State, params: FormAction): internal.State {
-        const formFieldState = state.formFieldStates.find(({ attribute }) => attribute.name === params.name);
+    const [state, dispatchFormAction] = useReducer(function reducer(state: internal.State, formAction: FormAction): internal.State {
+        const formFieldState = state.formFieldStates.find(({ attribute }) => attribute.name === formAction.name);
 
         assert(formFieldState !== undefined);
 
         (() => {
-            switch (params.action) {
+            switch (formAction.action) {
                 case "update":
-                    formFieldState.valueOrValues = params.valueOrValues;
+                    formFieldState.valueOrValues = formAction.valueOrValues;
 
                     apply_formatters: {
                         const { attribute } = formFieldState;
@@ -381,7 +381,7 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                     }
 
                     formFieldState.errors = getErrors({
-                        "attributeName": params.name,
+                        "attributeName": formAction.name,
                         "formFieldStates": state.formFieldStates
                     });
 
@@ -390,21 +390,21 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                             break update_password_confirm;
                         }
 
-                        if (params.name !== "password") {
+                        if (formAction.name !== "password") {
                             break update_password_confirm;
                         }
 
                         state = reducer(state, {
                             "action": "update",
                             "name": "password-confirm",
-                            "valueOrValues": params.valueOrValues
+                            "valueOrValues": formAction.valueOrValues
                         });
                     }
 
                     return;
                 case "focus lost":
                     if (formFieldState.hasLostFocusAtLeastOnce instanceof Array) {
-                        const { fieldIndex } = params;
+                        const { fieldIndex } = formAction;
                         assert(fieldIndex !== undefined);
                         formFieldState.hasLostFocusAtLeastOnce[fieldIndex] = true;
                         return;
@@ -413,10 +413,10 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                     formFieldState.hasLostFocusAtLeastOnce = true;
                     return;
             }
-            assert<Equals<typeof params, never>>(false);
+            assert<Equals<typeof formAction, never>>(false);
         })();
 
-        return state;
+        return { ...state };
     }, initialState);
 
     const formState: FormState = useMemo(
