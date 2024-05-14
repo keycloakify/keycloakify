@@ -201,18 +201,15 @@ function FieldErrors(props: {
         <span
             id={`input-error-${attribute.name}${fieldIndex === undefined ? "" : `-${fieldIndex}`}`}
             className={getClassName("kcInputErrorMessageClass")}
-            style={{
-                "position": displayableErrors.length === 1 ? "absolute" : undefined
-            }}
             aria-live="polite"
         >
             {displayableErrors
                 .filter(error => error.fieldIndex === fieldIndex)
                 .map(({ errorMessage }, i, arr) => (
-                    <>
+                    <Fragment key={i}>
                         <span key={i}>{errorMessage}</span>
                         {arr.length - 1 !== i && <br />}
-                    </>
+                    </Fragment>
                 ))}
         </span>
     );
