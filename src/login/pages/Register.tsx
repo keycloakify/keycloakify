@@ -28,7 +28,7 @@ export default function Register(props: RegisterProps) {
     const [isFormSubmittable, setIsFormSubmittable] = useState(false);
 
     return (
-        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} headerNode={msg("registerTitle")}>
+        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} headerNode={msg("registerTitle")} displayRequiredFields>
             <form id="kc-register-form" className={getClassName("kcFormClass")} action={url.registrationAction} method="post">
                 <UserProfileFormFields
                     {...{
