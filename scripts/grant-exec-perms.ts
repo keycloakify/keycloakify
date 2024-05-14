@@ -1,10 +1,9 @@
-import { getThisCodebaseRootDirPath } from "./getThisCodebaseRootDirPath";
 import { join as pathJoin } from "path";
 import { constants } from "fs";
 import { chmod, stat } from "fs/promises";
 
 (async () => {
-    const thisCodebaseRootDirPath = getThisCodebaseRootDirPath();
+    const thisCodebaseRootDirPath = pathJoin(__dirname, "..");
 
     const { bin } = await import(pathJoin(thisCodebaseRootDirPath, "package.json"));
 
