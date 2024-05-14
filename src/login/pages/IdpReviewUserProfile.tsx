@@ -29,7 +29,7 @@ export default function IdpReviewUserProfile(props: IdpReviewUserProfileProps) {
         <Template
             {...{ kcContext, i18n, doUseDefaultCss, classes }}
             displayMessage={messagesPerField.exists("global")}
-            displayRequiredFields={true}
+            displayRequiredFields
             headerNode={msg("loginIdpReviewProfileTitle")}
         >
             <form id="kc-idp-review-profile-form" className={getClassName("kcFormClass")} action={url.loginAction} method="post">

@@ -29,7 +29,7 @@ export default function UpdateEmail(props: UpdateEmailProps) {
         <Template
             {...{ kcContext, i18n, doUseDefaultCss, classes }}
             displayMessage={messagesPerField.exists("global")}
-            displayRequiredFields={true}
+            displayRequiredFields
             headerNode={msg("updateEmailTitle")}
         >
             <form id="kc-update-email-form" className={getClassName("kcFormClass")} action={url.loginAction} method="post">

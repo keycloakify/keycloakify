@@ -26,7 +26,7 @@ export default function LoginUpdateProfile(props: LoginUpdateProfileProps) {
     const [isFormSubmittable, setIsFormSubmittable] = useState(false);
 
     return (
-        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} headerNode={msg("loginProfileTitle")}>
+        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} displayRequiredFields headerNode={msg("loginProfileTitle")}>
             <form id="kc-update-profile-form" className={getClassName("kcFormClass")} action={url.loginAction} method="post">
                 <UserProfileFormFields
                     {...{
