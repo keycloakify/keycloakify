@@ -164,21 +164,6 @@ export declare namespace KcContext {
         };
         mode?: "qr" | "manual" | undefined | null;
         isAppInitiatedAction: boolean;
-        url: {
-            accountUrl: string;
-            passwordUrl: string;
-            totpUrl: string;
-            socialUrl: string;
-            sessionsUrl: string;
-            applicationsUrl: string;
-            logUrl: string;
-            resourceUrl: string;
-            resourcesCommonPath: string;
-            resourcesPath: string;
-            /** @deprecated, not present in recent keycloak version apparently, use kcContext.referrer instead */
-            referrerURI?: string;
-            getLogoutUrl: () => string;
-        };
         stateChecker: string;
     };
 

@@ -249,26 +249,6 @@
         }
     };
 
-    <#if account??>
-        out["url"]["getLogoutUrl"] = function () {
-            <#attempt>
-                return "${url.getLogoutUrl()}";
-            <#recover>
-                throw new Error("Failed to invoke url.getLogoutUrl() in the FreeMarker template");
-            </#attempt>
-        };
-    </#if>
-
-    <#if pageId === "login-config-totp.ftl">
-        out["totp"]["policy"]["getAlgorithmKey"] = function () {
-            <#attempt>
-                return "${totp.policy.getAlgorithmKey()}";
-            <#recover>
-                throw new Error("Failed to invoke totp.policy.getAlgorithmKey() in the FreeMarker template");
-            </#attempt>
-        };
-    </#if>
-
     out["keycloakifyVersion"] = "KEYCLOAKIFY_VERSION_xEdKd3xEdr";
     out["themeVersion"] = "KEYCLOAKIFY_THEME_VERSION_sIgKd3xEdr3dx";
     out["themeType"] = "KEYCLOAKIFY_THEME_TYPE_dExKd3xEdr";
@@ -468,6 +448,26 @@
                 <#recover>
                     <#return "ABORT: Couldn't evaluate auth.showTryAnotherWayLink()">
                 </#attempt>
+            </#if>
+
+            <#if are_same_path(path, ["url", "getLogoutUrl"])>
+                <#local returnValue = "">
+                <#attempt>
+                    <#local returnValue = auth.getLogoutUrl()>
+                <#recover>
+                    <#return "ABORT: Couldn't evaluate url.getLogoutUrl()">
+                </#attempt>
+                <#return 'function(){ return "' + returnValue + '"; }'>
+            </#if>
+
+            <#if are_same_path(path, ["totp", "policy", "getAlgorithmKey"])>
+                <#local returnValue = "">
+                <#attempt>
+                    <#local returnValue = totp.policy.getAlgorithmKey()>
+                <#recover>
+                    <#return "ABORT: Couldn't evaluate totp.policy.getAlgorithmKey()">
+                </#attempt>
+                <#return 'function(){ return "' + returnValue + '"; }'>
             </#if>
 
             <#return "ABORT: It's a method">
