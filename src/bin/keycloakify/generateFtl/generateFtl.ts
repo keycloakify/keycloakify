@@ -108,7 +108,7 @@ export function generateFtlFilesCodeFactory(params: {
 
     const ftlObjectToJsCodeDeclaringAnObjectPlaceholder = '{ "x": "vIdLqMeOed9sdLdIdOxdK0d" }';
 
-    $("head").prepend(["<script>", `    window.${nameOfTheGlobal}= ${ftlObjectToJsCodeDeclaringAnObjectPlaceholder};`, "</script>"].join("\n"));
+    $("head").prepend(`<script>\nwindow.${nameOfTheGlobal}=${ftlObjectToJsCodeDeclaringAnObjectPlaceholder}</script>`);
 
     // Remove part of the document marked as ignored.
     {
