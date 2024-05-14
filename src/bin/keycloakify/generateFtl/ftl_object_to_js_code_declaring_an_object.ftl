@@ -453,7 +453,7 @@
             <#if are_same_path(path, ["url", "getLogoutUrl"])>
                 <#local returnValue = "">
                 <#attempt>
-                    <#local returnValue = auth.getLogoutUrl()>
+                    <#local returnValue = url.getLogoutUrl()>
                 <#recover>
                     <#return "ABORT: Couldn't evaluate url.getLogoutUrl()">
                 </#attempt>
