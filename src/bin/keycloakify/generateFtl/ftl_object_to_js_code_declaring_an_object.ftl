@@ -60,7 +60,7 @@ out["messagesPerField"]= {
         function existsError_singleFieldName(fieldName) {
             <#if !messagesPerField?? || !(messagesPerField?is_hash)>   
                 throw new Error("You're not supposed to use messagesPerField.printIfExists in this page");
-            <#elske>
+            <#else>
                 <#list fieldNames as fieldName>
                     if(fieldName === "${fieldName}" ){
                         <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
