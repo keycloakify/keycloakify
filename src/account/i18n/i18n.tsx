@@ -28,11 +28,10 @@ export type GenericI18n<MessageKey extends string> = {
      */
     currentLanguageTag: string;
     /**
-     * To call when the user switch language.
-     * This will cause the page to be reloaded,
-     * on next load currentLanguageTag === newLanguageTag
+     * Redirect to this url to change the language.
+     * After reload currentLanguageTag === newLanguageTag
      */
-    changeLocale: (newLanguageTag: string) => never;
+    getChangeLocalUrl: (newLanguageTag: string) => string;
     /**
      * e.g. "en" => "English", "fr" => "Français", ...
      *
@@ -104,7 +103,7 @@ export function createUseI18n<ExtraMessageKey extends string = never>(extraMessa
                         } as any
                     }),
                     currentLanguageTag,
-                    "changeLocale": newLanguageTag => {
+                    "getChangeLocalUrl": newLanguageTag => {
                         const { locale } = kcContext;
 
                         assert(locale !== undefined, "Internationalization not enabled");
@@ -113,9 +112,7 @@ export function createUseI18n<ExtraMessageKey extends string = never>(extraMessa
 
                         assert(targetSupportedLocale !== undefined, `${newLanguageTag} need to be enabled in Keycloak admin`);
 
-                        window.location.href = targetSupportedLocale.url;
-
-                        assert(false, "never");
+                        return targetSupportedLocale.url;
                     },
                     "labelBySupportedLanguageTag": Object.fromEntries(
                         (kcContext.locale?.supported ?? []).map(({ languageTag, label }) => [languageTag, label])
