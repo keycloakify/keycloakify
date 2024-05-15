@@ -1,5 +1,5 @@
 import { assert } from "tsafe/assert";
-import type { BuildOptions } from "../buildOptions";
+import type { BuildOptions } from "../../shared/buildOptions";
 import type { KeycloakAccountV1Version, KeycloakThemeAdditionalInfoExtensionVersion } from "./extensionVersions";
 
 export type BuildOptionsLike = {

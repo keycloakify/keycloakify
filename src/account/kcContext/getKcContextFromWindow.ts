@@ -1,5 +1,5 @@
 import type { AndByDiscriminatingKey } from "keycloakify/tools/AndByDiscriminatingKey";
-import { nameOfTheGlobal } from "keycloakify/bin/constants";
+import { nameOfTheGlobal } from "keycloakify/bin/shared/constants";
 import type { KcContext } from "./KcContext";
 
 export type ExtendKcContext<KcContextExtension extends { pageId: string }> = [KcContextExtension] extends [never]

@@ -3,18 +3,19 @@ import * as fs from "fs";
 import { join as pathJoin, resolve as pathResolve, dirname as pathDirname } from "path";
 import { replaceImportsInJsCode } from "../replacers/replaceImportsInJsCode";
 import { replaceImportsInCssCode } from "../replacers/replaceImportsInCssCode";
-import { generateFtlFilesCodeFactory, loginThemePageIds, accountThemePageIds } from "../generateFtl";
+import { generateFtlFilesCodeFactory } from "../generateFtl";
+import { loginThemePageIds, accountThemePageIds } from "../../shared/pageIds";
 import {
     type ThemeType,
     lastKeycloakVersionWithAccountV1,
     keycloak_resources,
     accountV1ThemeName,
     basenameOfTheKeycloakifyResourcesDir
-} from "../../constants";
+} from "../../shared/constants";
 import { isInside } from "../../tools/isInside";
-import type { BuildOptions } from "../buildOptions";
+import type { BuildOptions } from "../../shared/buildOptions";
 import { assert, type Equals } from "tsafe/assert";
-import { downloadKeycloakStaticResources } from "./downloadKeycloakStaticResources";
+import { downloadKeycloakStaticResources } from "../../shared/downloadKeycloakStaticResources";
 import { readFieldNameUsage } from "./readFieldNameUsage";
 import { readExtraPagesNames } from "./readExtraPageNames";
 import { generateMessageProperties } from "./generateMessageProperties";

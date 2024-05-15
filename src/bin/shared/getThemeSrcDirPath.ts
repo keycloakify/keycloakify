@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import { exclude } from "tsafe";
-import { crawl } from "./tools/crawl";
+import { crawl } from "../tools/crawl";
 import { join as pathJoin } from "path";
 import { themeTypes } from "./constants";
 

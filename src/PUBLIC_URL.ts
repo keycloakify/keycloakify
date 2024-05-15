@@ -1,4 +1,4 @@
-import { nameOfTheGlobal, basenameOfTheKeycloakifyResourcesDir } from "keycloakify/bin/constants";
+import { nameOfTheGlobal, basenameOfTheKeycloakifyResourcesDir } from "keycloakify/bin/shared/constants";
 import { assert } from "tsafe/assert";
 
 /**

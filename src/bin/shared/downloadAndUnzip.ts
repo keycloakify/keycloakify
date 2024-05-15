@@ -3,13 +3,13 @@ import { mkdir, writeFile, unlink } from "fs/promises";
 import fetch from "make-fetch-happen";
 import { dirname as pathDirname, join as pathJoin, basename as pathBasename } from "path";
 import { assert } from "tsafe/assert";
-import { transformCodebase } from "./tools/transformCodebase";
-import { unzip, zip } from "./tools/unzip";
-import { rm } from "./tools/fs.rm";
+import { transformCodebase } from "../tools/transformCodebase";
+import { unzip, zip } from "../tools/unzip";
+import { rm } from "../tools/fs.rm";
 import * as child_process from "child_process";
-import { existsAsync } from "./tools/fs.existsAsync";
-import type { BuildOptions } from "./keycloakify/buildOptions";
-import { getProxyFetchOptions } from "./tools/fetchProxyOptions";
+import { existsAsync } from "../tools/fs.existsAsync";
+import type { BuildOptions } from "./buildOptions";
+import { getProxyFetchOptions } from "../tools/fetchProxyOptions";
 
 export type BuildOptionsLike = {
     cacheDirPath: string;

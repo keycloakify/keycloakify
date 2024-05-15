@@ -1,4 +1,4 @@
-import { getLatestsSemVersionedTagFactory } from "./tools/octokit-addons/getLatestsSemVersionedTag";
+import { getLatestsSemVersionedTagFactory } from "../tools/octokit-addons/getLatestsSemVersionedTag";
 import { Octokit } from "@octokit/rest";
 import cliSelect from "cli-select";
 import { lastKeycloakVersionWithAccountV1 } from "./constants";

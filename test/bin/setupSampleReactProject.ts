@@ -1,4 +1,4 @@
-import { downloadAndUnzip } from "keycloakify/bin/downloadAndUnzip";
+import { downloadAndUnzip } from "keycloakify/bin/shared/downloadAndUnzip";
 import { join as pathJoin } from "path";
 import { getThisCodebaseRootDirPath } from "keycloakify/bin/tools/getThisCodebaseRootDirPath";
 

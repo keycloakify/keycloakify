@@ -1,13 +1,12 @@
 import { parse as urlParse } from "url";
 import { readParsedPackageJson } from "./parsedPackageJson";
 import { join as pathJoin } from "path";
-import parseArgv from "minimist";
 import { getAbsoluteAndInOsFormatPath } from "../../tools/getAbsoluteAndInOsFormatPath";
-import { readResolvedViteConfig } from "./resolvedViteConfig";
-import * as fs from "fs";
+import { getResolvedViteConfig } from "./resolvedViteConfig";
 import { getCacheDirPath } from "./getCacheDirPath";
 import { getReactAppRootDirPath } from "./getReactAppRootDirPath";
 import { getNpmWorkspaceRootDirPath } from "./getNpmWorkspaceRootDirPath";
+import type { CliCommandOptions } from "../../main";
 
 /** Consolidated build option gathered form CLI arguments and config in package.json */
 export type BuildOptions = {
@@ -32,18 +31,17 @@ export type BuildOptions = {
     npmWorkspaceRootDirPath: string;
 };
 
-export function readBuildOptions(params: { processArgv: string[] }): BuildOptions {
-    const { processArgv } = params;
+export function readBuildOptions(params: { cliCommandOptions: CliCommandOptions }): BuildOptions {
+    const { cliCommandOptions } = params;
 
-    const { reactAppRootDirPath } = getReactAppRootDirPath({ processArgv });
+    const { reactAppRootDirPath } = getReactAppRootDirPath({ cliCommandOptions });
 
     const { cacheDirPath } = getCacheDirPath({ reactAppRootDirPath });
 
-    const { resolvedViteConfig } = readResolvedViteConfig({ cacheDirPath });
-
-    if (resolvedViteConfig === undefined && fs.existsSync(pathJoin(reactAppRootDirPath, "vite.config.ts"))) {
-        throw new Error("Keycloakify's Vite plugin output not found");
-    }
+    const { resolvedViteConfig } = getResolvedViteConfig({
+        cacheDirPath,
+        reactAppRootDirPath
+    });
 
     const { keycloakify: userProvidedBuildOptionsFromPackageJson, ...parsedPackageJson } = readParsedPackageJson({ reactAppRootDirPath });
 
@@ -88,13 +86,11 @@ export function readBuildOptions(params: { processArgv: string[] }): BuildOption
         return pathJoin(reactAppRootDirPath, resolvedViteConfig.buildDir);
     })();
 
-    const argv = parseArgv(processArgv);
-
     const { npmWorkspaceRootDirPath } = getNpmWorkspaceRootDirPath({ reactAppRootDirPath });
 
     return {
         "bundler": resolvedViteConfig !== undefined ? "vite" : "webpack",
-        "isSilent": typeof argv["silent"] === "boolean" ? argv["silent"] : false,
+        "isSilent": cliCommandOptions.isSilent,
         "themeVersion": process.env.KEYCLOAKIFY_THEME_VERSION ?? parsedPackageJson.version ?? "0.0.0",
         themeNames,
         "extraThemeProperties": userProvidedBuildOptions.extraThemeProperties,

@@ -1,5 +1,5 @@
 import { join as pathJoin } from "path";
-import type { BuildOptions } from "../buildOptions";
+import type { BuildOptions } from "../../shared/buildOptions";
 import { assert } from "tsafe/assert";
 import { generateSrcMainResources, type BuildOptionsLike as BuildOptionsLike_generateSrcMainResources } from "./generateSrcMainResources";
 import { generateThemeVariations } from "./generateThemeVariants";

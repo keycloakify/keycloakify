@@ -1,8 +1,8 @@
 import * as fs from "fs";
 import { join as pathJoin, relative as pathRelative, basename as pathBasename } from "path";
 import { assert } from "tsafe/assert";
-import type { BuildOptions } from "./buildOptions";
-import { accountV1ThemeName } from "../constants";
+import type { BuildOptions } from "../shared/buildOptions";
+import { accountV1ThemeName } from "../shared/constants";
 
 export type BuildOptionsLike = {
     keycloakifyBuildDirPath: string;

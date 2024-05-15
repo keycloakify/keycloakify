@@ -1,6 +1,6 @@
-import type { BuildOptions } from "../buildOptions";
+import type { BuildOptions } from "../../shared/buildOptions";
 import { assert } from "tsafe/assert";
-import { basenameOfTheKeycloakifyResourcesDir } from "../../constants";
+import { basenameOfTheKeycloakifyResourcesDir } from "../../shared/constants";
 
 export type BuildOptionsLike = {
     urlPathname: string | undefined;

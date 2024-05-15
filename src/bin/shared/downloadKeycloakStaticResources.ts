@@ -1,11 +1,11 @@
-import { transformCodebase } from "../../tools/transformCodebase";
+import { transformCodebase } from "../tools/transformCodebase";
 import { join as pathJoin } from "path";
-import { downloadBuiltinKeycloakTheme } from "../../download-builtin-keycloak-theme";
-import { resources_common, type ThemeType } from "../../constants";
-import { BuildOptions } from "../buildOptions";
+import { downloadBuiltinKeycloakTheme } from "./downloadBuiltinKeycloakTheme";
+import { resources_common, type ThemeType } from "./constants";
+import type { BuildOptions } from "./buildOptions";
 import { assert } from "tsafe/assert";
 import * as crypto from "crypto";
-import { rmSync } from "../../tools/fs.rmSync";
+import { rmSync } from "../tools/fs.rmSync";
 
 export type BuildOptionsLike = {
     cacheDirPath: string;

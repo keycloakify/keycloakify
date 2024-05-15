@@ -1,9 +1,9 @@
 import * as fs from "fs";
 import { join as pathJoin } from "path";
 import { assert } from "tsafe/assert";
-import type { BuildOptions } from "../buildOptions";
-import { resources_common, lastKeycloakVersionWithAccountV1, accountV1ThemeName } from "../../constants";
-import { downloadBuiltinKeycloakTheme } from "../../download-builtin-keycloak-theme";
+import type { BuildOptions } from "../../shared/buildOptions";
+import { resources_common, lastKeycloakVersionWithAccountV1, accountV1ThemeName } from "../../shared/constants";
+import { downloadBuiltinKeycloakTheme } from "../../shared/downloadBuiltinKeycloakTheme";
 import { transformCodebase } from "../../tools/transformCodebase";
 import { rmSync } from "../../tools/fs.rmSync";
 

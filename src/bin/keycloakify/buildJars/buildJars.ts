@@ -3,7 +3,7 @@ import { exclude } from "tsafe/exclude";
 import { keycloakAccountV1Versions, keycloakThemeAdditionalInfoExtensionVersions } from "./extensionVersions";
 import { getKeycloakVersionRangeForJar } from "./getKeycloakVersionRangeForJar";
 import { buildJar, BuildOptionsLike as BuildOptionsLike_buildJar } from "./buildJar";
-import type { BuildOptions } from "../buildOptions";
+import type { BuildOptions } from "../../shared/buildOptions";
 
 export type BuildOptionsLike = BuildOptionsLike_buildJar & {
     keycloakifyBuildDirPath: string;

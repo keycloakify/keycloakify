@@ -1,5 +1,5 @@
 import { assert } from "tsafe/assert";
-import type { BuildOptions } from "../../buildOptions";
+import type { BuildOptions } from "../../../shared/buildOptions";
 import { replaceImportsInJsCode_vite } from "./vite";
 import { replaceImportsInJsCode_webpack } from "./webpack";
 import * as fs from "fs";

@@ -1,5 +1,5 @@
 import "minimal-polyfills/Object.fromEntries";
-import { resources_common, keycloak_resources } from "keycloakify/bin/constants";
+import { resources_common, keycloak_resources } from "keycloakify/bin/shared/constants";
 import { id } from "tsafe/id";
 import type { KcContext } from "./KcContext";
 import { BASE_URL } from "keycloakify/lib/BASE_URL";

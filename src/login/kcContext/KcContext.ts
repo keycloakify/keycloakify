@@ -1,5 +1,5 @@
-import type { LoginThemePageId } from "keycloakify/bin/keycloakify/generateFtl";
-import { type ThemeType } from "keycloakify/bin/constants";
+import type { LoginThemePageId } from "keycloakify/bin/shared/pageIds";
+import { type ThemeType } from "keycloakify/bin/shared/constants";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
 import type { MessageKey } from "../i18n/i18n";

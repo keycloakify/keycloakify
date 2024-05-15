@@ -1,19 +1,18 @@
-#!/usr/bin/env node
-
-import { downloadBuiltinKeycloakTheme } from "./download-builtin-keycloak-theme";
+import { downloadBuiltinKeycloakTheme } from "./shared/downloadBuiltinKeycloakTheme";
 import { join as pathJoin, relative as pathRelative } from "path";
 import { transformCodebase } from "./tools/transformCodebase";
-import { promptKeycloakVersion } from "./promptKeycloakVersion";
-import { readBuildOptions } from "./keycloakify/buildOptions";
+import { promptKeycloakVersion } from "./shared/promptKeycloakVersion";
+import { readBuildOptions } from "./shared/buildOptions";
 import * as fs from "fs";
 import { getLogger } from "./tools/logger";
-import { getThemeSrcDirPath } from "./getThemeSrcDirPath";
+import { getThemeSrcDirPath } from "./shared/getThemeSrcDirPath";
 import { rmSync } from "./tools/fs.rmSync";
+import type { CliCommandOptions } from "./main";
 
-export async function main() {
-    const buildOptions = readBuildOptions({
-        "processArgv": process.argv.slice(2)
-    });
+export async function command(params: { cliCommandOptions: CliCommandOptions }) {
+    const { cliCommandOptions } = params;
+
+    const buildOptions = readBuildOptions({ cliCommandOptions });
 
     const logger = getLogger({ "isSilent": buildOptions.isSilent });
 
@@ -53,8 +52,4 @@ export async function main() {
     logger.log(`${pathRelative(process.cwd(), emailThemeSrcDirPath)} ready to be customized, feel free to remove every file you do not customize`);
 
     rmSync(builtinKeycloakThemeTmpDirPath, { "recursive": true, "force": true });
-}
-
-if (require.main === module) {
-    main();
 }

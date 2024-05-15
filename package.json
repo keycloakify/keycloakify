@@ -28,11 +28,7 @@
         "build-storybook": "yarn build && yarn copy-keycloak-resources-to-storybook-static && build-storybook"
     },
     "bin": {
-        "copy-keycloak-resources-to-public": "dist/bin/copy-keycloak-resources-to-public.js",
-        "download-builtin-keycloak-theme": "dist/bin/download-builtin-keycloak-theme.js",
-        "eject-keycloak-page": "dist/bin/eject-keycloak-page.js",
-        "initialize-email-theme": "dist/bin/initialize-email-theme.js",
-        "keycloakify": "dist/bin/keycloakify/index.js"
+        "keycloakify": "dist/bin/main.js"
     },
     "lint-staged": {
         "*.{ts,tsx,json,md}": [
@@ -124,6 +120,7 @@
         "yauzl": "^2.10.0",
         "yazl": "^2.5.1",
         "zod": "^3.17.10",
-        "magic-string": "^0.30.7"
+        "magic-string": "^0.30.7",
+        "termost": "^0.12.0"
     }
 }

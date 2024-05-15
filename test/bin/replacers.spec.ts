@@ -5,7 +5,7 @@ import { replaceImportsInInlineCssCode } from "keycloakify/bin/keycloakify/repla
 import { same } from "evt/tools/inDepth/same";
 import { expect, it, describe } from "vitest";
 import { isSameCode } from "../tools/isSameCode";
-import { basenameOfTheKeycloakifyResourcesDir, nameOfTheGlobal } from "keycloakify/bin/constants";
+import { basenameOfTheKeycloakifyResourcesDir, nameOfTheGlobal } from "keycloakify/bin/shared/constants";
 
 describe("js replacer - vite", () => {
     it("replaceImportsInJsCode_vite - 1", () => {

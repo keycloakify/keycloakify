@@ -2,23 +2,26 @@
 
 import { getThisCodebaseRootDirPath } from "./tools/getThisCodebaseRootDirPath";
 import cliSelect from "cli-select";
-import { loginThemePageIds, accountThemePageIds, type LoginThemePageId, type AccountThemePageId } from "./keycloakify/generateFtl";
+import { loginThemePageIds, accountThemePageIds, type LoginThemePageId, type AccountThemePageId } from "./shared/pageIds";
 import { capitalize } from "tsafe/capitalize";
 import { readFile, writeFile } from "fs/promises";
 import { existsSync } from "fs";
 import { join as pathJoin, relative as pathRelative } from "path";
 import { kebabCaseToCamelCase } from "./tools/kebabCaseToSnakeCase";
 import { assert, Equals } from "tsafe/assert";
-import { getThemeSrcDirPath } from "./getThemeSrcDirPath";
-import { themeTypes, type ThemeType } from "./constants";
-import { getReactAppRootDirPath } from "./keycloakify/buildOptions/getReactAppRootDirPath";
+import { getThemeSrcDirPath } from "./shared/getThemeSrcDirPath";
+import { themeTypes, type ThemeType } from "./shared/constants";
+import type { CliCommandOptions } from "./main";
+import { readBuildOptions } from "./shared/buildOptions";
 
-(async () => {
-    console.log("Select a theme type");
+export async function command(params: { cliCommandOptions: CliCommandOptions }) {
+    const { cliCommandOptions } = params;
 
-    const { reactAppRootDirPath } = getReactAppRootDirPath({
-        "processArgv": process.argv.slice(2)
+    const buildOptions = readBuildOptions({
+        cliCommandOptions
     });
+
+    console.log("Select a theme type");
 
     const { value: themeType } = await cliSelect<ThemeType>({
         "values": [...themeTypes]
@@ -48,7 +51,7 @@ import { getReactAppRootDirPath } from "./keycloakify/buildOptions/getReactAppRo
 
     const pageBasename = capitalize(kebabCaseToCamelCase(pageId)).replace(/ftl$/, "tsx");
 
-    const { themeSrcDirPath } = getThemeSrcDirPath({ reactAppRootDirPath });
+    const { themeSrcDirPath } = getThemeSrcDirPath({ "reactAppRootDirPath": buildOptions.reactAppRootDirPath });
 
     const targetFilePath = pathJoin(themeSrcDirPath, themeType, "pages", pageBasename);
 
@@ -61,4 +64,4 @@ import { getReactAppRootDirPath } from "./keycloakify/buildOptions/getReactAppRo
     await writeFile(targetFilePath, await readFile(pathJoin(getThisCodebaseRootDirPath(), "src", themeType, "pages", pageBasename)));
 
     console.log(`${pathRelative(process.cwd(), targetFilePath)} created`);
-})();
+}

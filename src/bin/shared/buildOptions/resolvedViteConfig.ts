@@ -3,9 +3,10 @@ import { assert } from "tsafe";
 import type { Equals } from "tsafe";
 import { z } from "zod";
 import { join as pathJoin } from "path";
-import { resolvedViteConfigJsonBasename } from "../../constants";
 import type { OptionalIfCanBeUndefined } from "../../tools/OptionalIfCanBeUndefined";
 import { UserProvidedBuildOptions, zUserProvidedBuildOptions } from "./UserProvidedBuildOptions";
+import * as child_process from "child_process";
+import { vitePluginSubScriptEnvNames } from "../constants";
 
 export type ResolvedViteConfig = {
     buildDir: string;
@@ -30,16 +31,24 @@ const zResolvedViteConfig = z.object({
     assert<Equals<Got, Expected>>();
 }
 
-export function readResolvedViteConfig(params: { cacheDirPath: string }): {
+export function getResolvedViteConfig(params: { cacheDirPath: string; reactAppRootDirPath: string }): {
     resolvedViteConfig: ResolvedViteConfig | undefined;
 } {
-    const { cacheDirPath } = params;
+    const { cacheDirPath, reactAppRootDirPath } = params;
 
-    const resolvedViteConfigJsonFilePath = pathJoin(cacheDirPath, resolvedViteConfigJsonBasename);
+    const resolvedViteConfigJsonFilePath = pathJoin(cacheDirPath, "vite.json");
 
-    if (!fs.existsSync(resolvedViteConfigJsonFilePath)) {
+    if (fs.readdirSync(reactAppRootDirPath).find(fileBasename => fileBasename.startsWith("vite.config")) === undefined) {
         return { "resolvedViteConfig": undefined };
     }
+
+    child_process.execSync("npx vite", {
+        "cwd": reactAppRootDirPath,
+        "env": {
+            ...process.env,
+            [vitePluginSubScriptEnvNames.createResolvedViteConfig]: resolvedViteConfigJsonFilePath
+        }
+    });
 
     const resolvedViteConfig = (() => {
         if (!fs.existsSync(resolvedViteConfigJsonFilePath)) {

@@ -3,18 +3,19 @@ import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path
 import * as child_process from "child_process";
 import { generateStartKeycloakTestingContainer } from "./generateStartKeycloakTestingContainer";
 import * as fs from "fs";
-import { readBuildOptions } from "./buildOptions";
+import { readBuildOptions } from "../shared/buildOptions";
 import { getLogger } from "../tools/logger";
-import { getThemeSrcDirPath } from "../getThemeSrcDirPath";
+import { getThemeSrcDirPath } from "../shared/getThemeSrcDirPath";
 import { getThisCodebaseRootDirPath } from "../tools/getThisCodebaseRootDirPath";
 import { readThisNpmProjectVersion } from "../tools/readThisNpmProjectVersion";
-import { keycloakifyBuildOptionsForPostPostBuildScriptEnvName } from "../constants";
+import { vitePluginSubScriptEnvNames } from "../shared/constants";
 import { buildJars } from "./buildJars";
+import type { CliCommandOptions } from "../main";
 
-export async function main() {
-    const buildOptions = readBuildOptions({
-        "processArgv": process.argv.slice(2)
-    });
+export async function command(params: { cliCommandOptions: CliCommandOptions }) {
+    const { cliCommandOptions } = params;
+
+    const buildOptions = readBuildOptions({ cliCommandOptions });
 
     const logger = getLogger({ "isSilent": buildOptions.isSilent });
     logger.log("🔏 Building the keycloak theme...⌚");
@@ -45,7 +46,7 @@ export async function main() {
             "cwd": buildOptions.reactAppRootDirPath,
             "env": {
                 ...process.env,
-                [keycloakifyBuildOptionsForPostPostBuildScriptEnvName]: JSON.stringify(buildOptions)
+                [vitePluginSubScriptEnvNames.runPostBuildScript]: JSON.stringify(buildOptions)
             }
         });
     }

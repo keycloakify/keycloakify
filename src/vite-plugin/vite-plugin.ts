@@ -1,21 +1,12 @@
-import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path";
+import { join as pathJoin, relative as pathRelative, sep as pathSep, dirname as pathDirname } from "path";
 import type { Plugin } from "vite";
 import * as fs from "fs";
-import {
-    resolvedViteConfigJsonBasename,
-    nameOfTheGlobal,
-    basenameOfTheKeycloakifyResourcesDir,
-    keycloak_resources,
-    keycloakifyBuildOptionsForPostPostBuildScriptEnvName
-} from "../bin/constants";
-import type { ResolvedViteConfig } from "../bin/keycloakify/buildOptions/resolvedViteConfig";
-import { getCacheDirPath } from "../bin/keycloakify/buildOptions/getCacheDirPath";
+import { nameOfTheGlobal, basenameOfTheKeycloakifyResourcesDir, keycloak_resources, vitePluginSubScriptEnvNames } from "../bin/shared/constants";
 import { id } from "tsafe/id";
 import { rm } from "../bin/tools/fs.rm";
-import { copyKeycloakResourcesToPublic } from "../bin/copy-keycloak-resources-to-public";
+import { copyKeycloakResourcesToPublic } from "../bin/shared/copyKeycloakResourcesToPublic";
 import { assert } from "tsafe/assert";
-import type { BuildOptions } from "../bin/keycloakify/buildOptions";
-import type { UserProvidedBuildOptions } from "../bin/keycloakify/buildOptions/UserProvidedBuildOptions";
+import { readBuildOptions, type BuildOptions, type UserProvidedBuildOptions, type ResolvedViteConfig } from "../bin/shared/buildOptions";
 import MagicString from "magic-string";
 
 export type Params = UserProvidedBuildOptions & {
@@ -36,20 +27,14 @@ export function keycloakify(params?: Params) {
         "configResolved": async resolvedConfig => {
             shouldGenerateSourcemap = resolvedConfig.build.sourcemap !== false;
 
-            run_post_build_script: {
-                const buildOptionJson = process.env[keycloakifyBuildOptionsForPostPostBuildScriptEnvName];
+            run_post_build_script_case: {
+                const postBuildArgJson = process.env[vitePluginSubScriptEnvNames.runPostBuildScript];
 
-                if (buildOptionJson === undefined) {
-                    break run_post_build_script;
+                if (postBuildArgJson === undefined) {
+                    break run_post_build_script_case;
                 }
 
-                if (postBuild === undefined) {
-                    process.exit(0);
-                }
-
-                const buildOptions: BuildOptions = JSON.parse(buildOptionJson);
-
-                await postBuild(buildOptions);
+                await postBuild?.(JSON.parse(postBuildArgJson));
 
                 process.exit(0);
             }
@@ -86,34 +71,49 @@ export function keycloakify(params?: Params) {
 
             buildDirPath = pathJoin(reactAppRootDirPath, resolvedConfig.build.outDir);
 
-            const { cacheDirPath } = getCacheDirPath({
-                reactAppRootDirPath
-            });
+            create_resolved_vite_config_case: {
+                const resolvedViteConfigJsonFilePath = process.env[vitePluginSubScriptEnvNames.createResolvedViteConfig];
 
-            if (!fs.existsSync(cacheDirPath)) {
-                fs.mkdirSync(cacheDirPath, { "recursive": true });
+                if (resolvedViteConfigJsonFilePath === undefined) {
+                    break create_resolved_vite_config_case;
+                }
+
+                {
+                    const dirPath = pathDirname(resolvedViteConfigJsonFilePath);
+
+                    if (!fs.existsSync(dirPath)) {
+                        fs.mkdirSync(dirPath, { "recursive": true });
+                    }
+                }
+
+                fs.writeFileSync(
+                    resolvedViteConfigJsonFilePath,
+                    Buffer.from(
+                        JSON.stringify(
+                            id<ResolvedViteConfig>({
+                                "publicDir": pathRelative(reactAppRootDirPath, resolvedConfig.publicDir),
+                                "assetsDir": resolvedConfig.build.assetsDir,
+                                "buildDir": resolvedConfig.build.outDir,
+                                urlPathname,
+                                userProvidedBuildOptions
+                            }),
+                            null,
+                            2
+                        ),
+                        "utf8"
+                    )
+                );
+
+                process.exit(0);
             }
 
-            fs.writeFileSync(
-                pathJoin(cacheDirPath, resolvedViteConfigJsonBasename),
-                Buffer.from(
-                    JSON.stringify(
-                        id<ResolvedViteConfig>({
-                            "publicDir": pathRelative(reactAppRootDirPath, resolvedConfig.publicDir),
-                            "assetsDir": resolvedConfig.build.assetsDir,
-                            "buildDir": resolvedConfig.build.outDir,
-                            urlPathname,
-                            userProvidedBuildOptions
-                        }),
-                        null,
-                        2
-                    ),
-                    "utf8"
-                )
-            );
-
             await copyKeycloakResourcesToPublic({
-                "processArgv": ["--project", reactAppRootDirPath]
+                "buildOptions": readBuildOptions({
+                    "cliCommandOptions": {
+                        "isSilent": true,
+                        reactAppRootDirPath
+                    }
+                })
             });
         },
         "transform": (code, id) => {

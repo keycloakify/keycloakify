@@ -4,9 +4,9 @@ import { generateCssCodeToDefineGlobals } from "../replacers/replaceImportsInCss
 import { replaceImportsInInlineCssCode } from "../replacers/replaceImportsInInlineCssCode";
 import * as fs from "fs";
 import { join as pathJoin } from "path";
-import type { BuildOptions } from "../buildOptions";
+import type { BuildOptions } from "../../shared/buildOptions";
 import { assert } from "tsafe/assert";
-import { type ThemeType, nameOfTheGlobal, basenameOfTheKeycloakifyResourcesDir, resources_common } from "../../constants";
+import { type ThemeType, nameOfTheGlobal, basenameOfTheKeycloakifyResourcesDir, resources_common } from "../../shared/constants";
 
 export type BuildOptionsLike = {
     bundler: "vite" | "webpack";
