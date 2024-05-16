@@ -43,7 +43,7 @@ export async function generateSrcMainResources(params: {
     buildOptions: BuildOptionsLike;
     keycloakifyVersion: string;
     srcMainResourcesDirPath: string;
-}): Promise<{ doesImplementAccountTheme: boolean }> {
+}): Promise<void> {
     const { themeName, themeSrcDirPath, keycloakifySrcDirPath, buildOptions, keycloakifyVersion, srcMainResourcesDirPath } = params;
 
     const getThemeTypeDirPath = (params: { themeType: ThemeType | "email" }) => {
@@ -75,7 +75,7 @@ export async function generateSrcMainResources(params: {
             rmSync(destDirPath, { "recursive": true, "force": true });
 
             if (themeType === "account" && implementedThemeTypes.login) {
-                // NOTE: We prevend doing it twice, it has been done for the login theme.
+                // NOTE: We prevent doing it twice, it has been done for the login theme.
 
                 transformCodebase({
                     "srcDirPath": pathJoin(
@@ -263,6 +263,4 @@ export async function generateSrcMainResources(params: {
 
         fs.writeFileSync(keycloakThemeJsonFilePath, Buffer.from(JSON.stringify(parsedKeycloakThemeJson, null, 2), "utf8"));
     }
-
-    return { "doesImplementAccountTheme": implementedThemeTypes.account };
 }

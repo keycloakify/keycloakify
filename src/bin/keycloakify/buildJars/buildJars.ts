@@ -4,6 +4,7 @@ import { keycloakAccountV1Versions, keycloakThemeAdditionalInfoExtensionVersions
 import { getKeycloakVersionRangeForJar } from "./getKeycloakVersionRangeForJar";
 import { buildJar, BuildOptionsLike as BuildOptionsLike_buildJar } from "./buildJar";
 import type { BuildOptions } from "../../shared/buildOptions";
+import { getJarFileBasename } from "./getJarFileBasename";
 
 export type BuildOptionsLike = BuildOptionsLike_buildJar & {
     keycloakifyBuildDirPath: string;
@@ -11,13 +12,8 @@ export type BuildOptionsLike = BuildOptionsLike_buildJar & {
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
-export async function buildJars(params: {
-    doesImplementAccountTheme: boolean;
-    buildOptions: BuildOptionsLike;
-}): Promise<{ lastJarFileBasename: string }> {
+export async function buildJars(params: { doesImplementAccountTheme: boolean; buildOptions: BuildOptionsLike }): Promise<void> {
     const { doesImplementAccountTheme, buildOptions } = params;
-
-    let lastJarFileBasename: string | undefined = undefined;
 
     await Promise.all(
         keycloakAccountV1Versions
@@ -38,11 +34,12 @@ export async function buildJars(params: {
                     })
                     .filter(exclude(undefined))
                     .map(({ keycloakThemeAdditionalInfoExtensionVersion, keycloakVersionRange }) => {
-                        const jarFileBasename = `keycloak-theme-for-kc-${keycloakVersionRange}.jar`;
+                        const { jarFileBasename } = getJarFileBasename({ keycloakVersionRange });
 
-                        lastJarFileBasename = jarFileBasename;
-
-                        return { keycloakThemeAdditionalInfoExtensionVersion, jarFileBasename };
+                        return {
+                            keycloakThemeAdditionalInfoExtensionVersion,
+                            jarFileBasename
+                        };
                     })
                     .map(({ keycloakThemeAdditionalInfoExtensionVersion, jarFileBasename }) =>
                         buildJar({
@@ -55,8 +52,4 @@ export async function buildJars(params: {
             )
             .flat()
     );
-
-    assert(lastJarFileBasename !== undefined);
-
-    return { lastJarFileBasename };
 }

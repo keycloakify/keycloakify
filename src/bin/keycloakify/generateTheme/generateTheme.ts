@@ -16,14 +16,14 @@ export async function generateTheme(params: {
     keycloakifySrcDirPath: string;
     buildOptions: BuildOptionsLike;
     keycloakifyVersion: string;
-}): Promise<{ doesImplementAccountTheme: boolean }> {
+}): Promise<void> {
     const { themeSrcDirPath, keycloakifySrcDirPath, buildOptions, keycloakifyVersion } = params;
 
     const [themeName, ...themeVariantNames] = buildOptions.themeNames;
 
     const srcMainResourcesDirPath = pathJoin(buildOptions.keycloakifyBuildDirPath, "src", "main", "resources");
 
-    const { doesImplementAccountTheme } = await generateSrcMainResources({
+    await generateSrcMainResources({
         themeName,
         srcMainResourcesDirPath,
         themeSrcDirPath,
@@ -39,6 +39,4 @@ export async function generateTheme(params: {
             srcMainResourcesDirPath
         });
     }
-
-    return { doesImplementAccountTheme };
 }

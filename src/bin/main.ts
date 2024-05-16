@@ -87,6 +87,18 @@ program
         }
     });
 
+program
+    .command({
+        "name": "start-keycloak-container",
+        "description": "Spin up a Keycloak container with the theme preloaded and the realm pre configured."
+    })
+    .task({
+        "handler": async cliCommandOptions => {
+            const { command } = await import("./start-keycloak-container");
+            return command({ cliCommandOptions });
+        }
+    });
+
 // Fallback to build command if no command is provided
 {
     const [, , ...rest] = process.argv;
