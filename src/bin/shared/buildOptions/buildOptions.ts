@@ -3,7 +3,7 @@ import { readParsedPackageJson } from "./parsedPackageJson";
 import { join as pathJoin } from "path";
 import { getAbsoluteAndInOsFormatPath } from "../../tools/getAbsoluteAndInOsFormatPath";
 import { getResolvedViteConfig } from "./resolvedViteConfig";
-import { getNpmWorkspaceRootDirPath } from "./getNpmWorkspaceRootDirPath";
+import { getNpmWorkspaceRootDirPath } from "../../tools/getNpmWorkspaceRootDirPath";
 import type { CliCommandOptions } from "../../main";
 
 /** Consolidated build option gathered form CLI arguments and config in package.json */
@@ -150,8 +150,6 @@ export function readBuildOptions(params: { cliCommandOptions: CliCommandOptions 
             return pathJoin(reactAppRootDirPath, resolvedViteConfig.publicDir);
         })(),
         "cacheDirPath": (() => {
-            const { npmWorkspaceRootDirPath } = getNpmWorkspaceRootDirPath({ reactAppRootDirPath });
-
             const cacheDirPath = pathJoin(
                 (() => {
                     if (process.env.XDG_CACHE_HOME !== undefined) {
