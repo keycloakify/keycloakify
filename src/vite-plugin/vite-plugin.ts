@@ -47,7 +47,7 @@ export function keycloakify(params?: Params) {
                 if (out.startsWith(".") && command === "build" && resolvedConfig.envPrefix?.includes("STORYBOOK_") !== true) {
                     throw new Error(
                         [
-                            `BASE_URL=${out} is not supported By Keycloakify. Use an absolute URL instead.`,
+                            `BASE_URL=${out} is not supported By Keycloakify. Use an absolute path instead.`,
                             `If this is a problem, please open an issue at https://github.com/keycloakify/keycloakify/issues/new`
                         ].join("\n")
                     );
