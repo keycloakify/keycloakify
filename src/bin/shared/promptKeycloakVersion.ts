@@ -2,6 +2,7 @@ import { getLatestsSemVersionedTagFactory } from "../tools/octokit-addons/getLat
 import { Octokit } from "@octokit/rest";
 import cliSelect from "cli-select";
 import { lastKeycloakVersionWithAccountV1 } from "./constants";
+import { SemVer } from "../tools/SemVer";
 
 export async function promptKeycloakVersion() {
     const { getLatestsSemVersionedTag } = (() => {
@@ -18,32 +19,45 @@ export async function promptKeycloakVersion() {
         return { getLatestsSemVersionedTag };
     })();
 
-    console.log("Select Keycloak version?");
+    console.log("Select Keycloak version");
 
-    const tags = [
-        ...(await getLatestsSemVersionedTag({
-            "count": 15,
+    const semVersionedTagByMajor = new Map<number, { tag: string; version: SemVer }>();
+
+    (
+        await getLatestsSemVersionedTag({
+            "count": 50,
             "owner": "keycloak",
             "repo": "keycloak"
-        }).then(arr => arr.map(({ tag }) => tag))),
-        lastKeycloakVersionWithAccountV1,
-        "19.0.1",
-        "11.0.3"
-    ];
+        })
+    ).forEach(semVersionedTag => {
+        const currentSemVersionedTag = semVersionedTagByMajor.get(semVersionedTag.version.major);
 
-    if (process.env["GITHUB_ACTIONS"] === "true") {
-        return { "keycloakVersion": tags[0] };
-    }
+        if (currentSemVersionedTag !== undefined && SemVer.compare(semVersionedTag.version, currentSemVersionedTag.version) === -1) {
+            return;
+        }
 
-    const { value: keycloakVersion } = await cliSelect<string>({
-        "values": tags
+        semVersionedTagByMajor.set(semVersionedTag.version.major, semVersionedTag);
+    });
+
+    const lastMajorVersions = Array.from(semVersionedTagByMajor.values()).map(({ tag: version }) => {
+        let out = version;
+
+        if (version === lastKeycloakVersionWithAccountV1) {
+            out += " (last version with account v1 built in)";
+        }
+
+        return out;
+    });
+
+    const { value } = await cliSelect<string>({
+        "values": lastMajorVersions
     }).catch(() => {
         console.log("Aborting");
 
         process.exit(-1);
     });
 
-    console.log(keycloakVersion);
+    const keycloakVersion = value.split(" ")[0];
 
     return { keycloakVersion };
 }
