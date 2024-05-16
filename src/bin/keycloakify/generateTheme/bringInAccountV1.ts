@@ -10,14 +10,15 @@ import { rmSync } from "../../tools/fs.rmSync";
 type BuildOptionsLike = {
     cacheDirPath: string;
     npmWorkspaceRootDirPath: string;
+    keycloakifyBuildDirPath: string;
 };
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
-export async function bringInAccountV1(params: { buildOptions: BuildOptionsLike; srcMainResourcesDirPath: string }) {
-    const { buildOptions, srcMainResourcesDirPath } = params;
+export async function bringInAccountV1(params: { buildOptions: BuildOptionsLike }) {
+    const { buildOptions } = params;
 
-    const builtinKeycloakThemeTmpDirPath = pathJoin(srcMainResourcesDirPath, "..", "tmp_yxdE2_builtin_keycloak_theme");
+    const builtinKeycloakThemeTmpDirPath = pathJoin(buildOptions.cacheDirPath, "tmp_yxdE2_builtin_keycloak_theme");
 
     await downloadBuiltinKeycloakTheme({
         "destDirPath": builtinKeycloakThemeTmpDirPath,
@@ -25,7 +26,7 @@ export async function bringInAccountV1(params: { buildOptions: BuildOptionsLike;
         buildOptions
     });
 
-    const accountV1DirPath = pathJoin(srcMainResourcesDirPath, "theme", accountV1ThemeName, "account");
+    const accountV1DirPath = pathJoin(buildOptions.keycloakifyBuildDirPath, "src", "main", "resources", "theme", accountV1ThemeName, "account");
 
     transformCodebase({
         "srcDirPath": pathJoin(builtinKeycloakThemeTmpDirPath, "base", "account"),

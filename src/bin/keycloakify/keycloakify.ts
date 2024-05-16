@@ -41,6 +41,9 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         });
     }
 
+    // TODO: find from META-INF/keycloak-themes.json
+    const doesImplementAccountTheme = true;
+
     await buildJars({
         doesImplementAccountTheme,
         buildOptions

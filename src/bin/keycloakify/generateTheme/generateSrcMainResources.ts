@@ -35,22 +35,19 @@ export type BuildOptionsLike = {
     urlPathname: string | undefined;
     npmWorkspaceRootDirPath: string;
     reactAppRootDirPath: string;
+    keycloakifyBuildDirPath: string;
 };
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
-export async function generateSrcMainResources(params: {
-    themeName: string;
-    buildOptions: BuildOptionsLike;
-    srcMainResourcesDirPath: string;
-}): Promise<void> {
-    const { themeName, buildOptions, srcMainResourcesDirPath } = params;
+export async function generateSrcMainResources(params: { themeName: string; buildOptions: BuildOptionsLike }): Promise<void> {
+    const { themeName, buildOptions } = params;
 
     const { themeSrcDirPath } = getThemeSrcDirPath({ "reactAppRootDirPath": buildOptions.reactAppRootDirPath });
 
     const getThemeTypeDirPath = (params: { themeType: ThemeType | "email" }) => {
         const { themeType } = params;
-        return pathJoin(srcMainResourcesDirPath, "theme", themeName, themeType);
+        return pathJoin(buildOptions.keycloakifyBuildDirPath, "src", "main", "resources", "theme", themeName, themeType);
     };
 
     const cssGlobalsToDefine: Record<string, string> = {};
@@ -245,7 +242,6 @@ export async function generateSrcMainResources(params: {
         }
 
         await bringInAccountV1({
-            srcMainResourcesDirPath,
             buildOptions
         });
 
@@ -256,7 +252,14 @@ export async function generateSrcMainResources(params: {
     }
 
     {
-        const keycloakThemeJsonFilePath = pathJoin(srcMainResourcesDirPath, "META-INF", "keycloak-themes.json");
+        const keycloakThemeJsonFilePath = pathJoin(
+            buildOptions.keycloakifyBuildDirPath,
+            "src",
+            "main",
+            "resources",
+            "META-INF",
+            "keycloak-themes.json"
+        );
 
         try {
             fs.mkdirSync(pathDirname(keycloakThemeJsonFilePath));

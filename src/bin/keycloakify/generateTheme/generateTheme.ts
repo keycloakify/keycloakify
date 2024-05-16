@@ -1,4 +1,3 @@
-import { join as pathJoin } from "path";
 import type { BuildOptions } from "../../shared/buildOptions";
 import { assert } from "tsafe/assert";
 import { generateSrcMainResources, type BuildOptionsLike as BuildOptionsLike_generateSrcMainResources } from "./generateSrcMainResources";
@@ -16,11 +15,8 @@ export async function generateTheme(params: { buildOptions: BuildOptionsLike }):
 
     const [themeName, ...themeVariantNames] = buildOptions.themeNames;
 
-    const srcMainResourcesDirPath = pathJoin(buildOptions.keycloakifyBuildDirPath, "src", "main", "resources");
-
     await generateSrcMainResources({
         themeName,
-        srcMainResourcesDirPath,
         buildOptions
     });
 
@@ -28,7 +24,7 @@ export async function generateTheme(params: { buildOptions: BuildOptionsLike }):
         generateThemeVariations({
             themeName,
             themeVariantName,
-            srcMainResourcesDirPath
+            buildOptions
         });
     }
 }
