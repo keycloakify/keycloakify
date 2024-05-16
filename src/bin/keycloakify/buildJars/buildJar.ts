@@ -33,16 +33,14 @@ export async function buildJar(params: {
 
     rmSync(keycloakifyBuildTmpDirPath, { "recursive": true, "force": true });
 
-    const srcMainResourcesRelativeDirPath = pathJoin("src", "main", "resources");
-
     {
-        const keycloakThemesJsonFilePath = pathJoin(srcMainResourcesRelativeDirPath, "META-INF", "keycloak-themes.json");
+        const keycloakThemesJsonFilePath = pathJoin("src", "main", "resources", "META-INF", "keycloak-themes.json");
 
         const themePropertiesFilePathSet = new Set(
-            ...buildOptions.themeNames.map(themeName => pathJoin(srcMainResourcesRelativeDirPath, "theme", themeName, "account", "theme.properties"))
+            ...buildOptions.themeNames.map(themeName => pathJoin("src", "main", "resources", "theme", themeName, "account", "theme.properties"))
         );
 
-        const accountV1RelativeDirPath = pathJoin(srcMainResourcesRelativeDirPath, "theme", accountV1ThemeName);
+        const accountV1RelativeDirPath = pathJoin("src", "main", "resources", "theme", accountV1ThemeName);
 
         transformCodebase({
             "srcDirPath": buildOptions.keycloakifyBuildDirPath,
@@ -104,7 +102,7 @@ export async function buildJar(params: {
 
         (["register.ftl", "login-update-profile.ftl"] as const).forEach(pageId =>
             buildOptions.themeNames.map(themeName => {
-                const ftlFilePath = pathJoin(keycloakifyBuildTmpDirPath, srcMainResourcesRelativeDirPath, "theme", themeName, "login", pageId);
+                const ftlFilePath = pathJoin(keycloakifyBuildTmpDirPath, "src", "main", "resources", "theme", themeName, "login", pageId);
 
                 const ftlFileContent = readFileSync(ftlFilePath).toString("utf8");
 
