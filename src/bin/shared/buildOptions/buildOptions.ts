@@ -3,8 +3,6 @@ import { readParsedPackageJson } from "./parsedPackageJson";
 import { join as pathJoin } from "path";
 import { getAbsoluteAndInOsFormatPath } from "../../tools/getAbsoluteAndInOsFormatPath";
 import { getResolvedViteConfig } from "./resolvedViteConfig";
-import { getCacheDirPath } from "./getCacheDirPath";
-import { getReactAppRootDirPath } from "./getReactAppRootDirPath";
 import { getNpmWorkspaceRootDirPath } from "./getNpmWorkspaceRootDirPath";
 import type { CliCommandOptions } from "../../main";
 
@@ -35,12 +33,18 @@ export type BuildOptions = {
 export function readBuildOptions(params: { cliCommandOptions: CliCommandOptions }): BuildOptions {
     const { cliCommandOptions } = params;
 
-    const { reactAppRootDirPath } = getReactAppRootDirPath({ cliCommandOptions });
+    const reactAppRootDirPath = (() => {
+        if (cliCommandOptions.reactAppRootDirPath === undefined) {
+            return process.cwd();
+        }
 
-    const { cacheDirPath } = getCacheDirPath({ reactAppRootDirPath });
+        return getAbsoluteAndInOsFormatPath({
+            "pathIsh": cliCommandOptions.reactAppRootDirPath,
+            "cwd": process.cwd()
+        });
+    })();
 
     const { resolvedViteConfig } = getResolvedViteConfig({
-        cacheDirPath,
         reactAppRootDirPath
     });
 
@@ -145,7 +149,25 @@ export function readBuildOptions(params: { cliCommandOptions: CliCommandOptions 
 
             return pathJoin(reactAppRootDirPath, resolvedViteConfig.publicDir);
         })(),
-        cacheDirPath,
+        "cacheDirPath": (() => {
+            const { npmWorkspaceRootDirPath } = getNpmWorkspaceRootDirPath({ reactAppRootDirPath });
+
+            const cacheDirPath = pathJoin(
+                (() => {
+                    if (process.env.XDG_CACHE_HOME !== undefined) {
+                        return getAbsoluteAndInOsFormatPath({
+                            "pathIsh": process.env.XDG_CACHE_HOME,
+                            "cwd": reactAppRootDirPath
+                        });
+                    }
+
+                    return pathJoin(npmWorkspaceRootDirPath, "node_modules", ".cache");
+                })(),
+                "keycloakify"
+            );
+
+            return cacheDirPath;
+        })(),
         "urlPathname": (() => {
             webpack: {
                 if (resolvedViteConfig !== undefined) {
