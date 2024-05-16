@@ -40,7 +40,10 @@ export type BuildOptionsLike = {
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
-export async function generateSrcMainResources(params: { themeName: string; buildOptions: BuildOptionsLike }): Promise<void> {
+export async function generateSrcMainResourcesForMainTheme(params: { 
+    themeName: string; 
+    buildOptions: BuildOptionsLike 
+}): Promise<void> {
     const { themeName, buildOptions } = params;
 
     const { themeSrcDirPath } = getThemeSrcDirPath({ "reactAppRootDirPath": buildOptions.reactAppRootDirPath });

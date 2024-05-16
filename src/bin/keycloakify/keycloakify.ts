@@ -1,4 +1,4 @@
-import { generateTheme } from "./generateTheme";
+import { generateSrcMainResources } from "./generateSrcMainResources";
 import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path";
 import * as child_process from "child_process";
 import * as fs from "fs";
@@ -25,7 +25,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         fs.writeFileSync(pathJoin(buildOptions.keycloakifyBuildDirPath, ".gitignore"), Buffer.from("*", "utf8"));
     }
 
-    await generateTheme({ buildOptions });
+    await generateSrcMainResources({ buildOptions });
 
     run_post_build_script: {
         if (buildOptions.bundler !== "vite") {
@@ -41,13 +41,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         });
     }
 
-    // TODO: find from META-INF/keycloak-themes.json
-    const doesImplementAccountTheme = true;
-
-    await buildJars({
-        doesImplementAccountTheme,
-        buildOptions
-    });
+    await buildJars({ buildOptions });
 
     logger.log(
         `✅ Your keycloak theme has been generated and bundled into .${pathSep}${pathJoin(

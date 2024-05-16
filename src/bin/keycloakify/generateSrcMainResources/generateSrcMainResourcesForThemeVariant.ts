@@ -10,7 +10,7 @@ export type BuildOptionsLike = {
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
-export function generateThemeVariations(params: { themeName: string; themeVariantName: string; buildOptions: BuildOptionsLike }) {
+export function generateSrcMainResourcesForThemeVariant(params: { themeName: string; themeVariantName: string; buildOptions: BuildOptionsLike }) {
     const { themeName, themeVariantName, buildOptions } = params;
 
     const mainThemeDirPath = pathJoin(buildOptions.keycloakifyBuildDirPath, "src", "main", "resources", "theme", themeName);

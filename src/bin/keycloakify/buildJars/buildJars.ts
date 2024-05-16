@@ -12,8 +12,11 @@ export type BuildOptionsLike = BuildOptionsLike_buildJar & {
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
-export async function buildJars(params: { doesImplementAccountTheme: boolean; buildOptions: BuildOptionsLike }): Promise<void> {
-    const { doesImplementAccountTheme, buildOptions } = params;
+export async function buildJars(params: { buildOptions: BuildOptionsLike }): Promise<void> {
+    const { buildOptions } = params;
+
+    // TODO:
+    const doesImplementAccountTheme= ;
 
     await Promise.all(
         keycloakAccountV1Versions
