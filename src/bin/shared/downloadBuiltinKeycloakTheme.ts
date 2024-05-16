@@ -5,7 +5,7 @@ import { assert } from "tsafe/assert";
 import * as child_process from "child_process";
 import * as fs from "fs";
 import { rmSync } from "../tools/fs.rmSync";
-import { lastKeycloakVersionWithAccountV1 } from "./constants";
+import { lastKeycloakVersionWithAccountV1 } from "../shared/constants";
 import { transformCodebase } from "../tools/transformCodebase";
 
 export type BuildOptionsLike = {
