@@ -4,9 +4,6 @@ import * as child_process from "child_process";
 import * as fs from "fs";
 import { readBuildOptions } from "../shared/buildOptions";
 import { getLogger } from "../tools/logger";
-import { getThemeSrcDirPath } from "../shared/getThemeSrcDirPath";
-import { getThisCodebaseRootDirPath } from "../tools/getThisCodebaseRootDirPath";
-import { readThisNpmProjectVersion } from "../tools/readThisNpmProjectVersion";
 import { vitePluginSubScriptEnvNames } from "../shared/constants";
 import { buildJars } from "./buildJars";
 import type { CliCommandOptions } from "../main";
@@ -20,8 +17,6 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     logger.log("🔏 Building the keycloak theme...⌚");
 
-    const { themeSrcDirPath } = getThemeSrcDirPath({ "reactAppRootDirPath": buildOptions.reactAppRootDirPath });
-
     {
         if (!fs.existsSync(buildOptions.keycloakifyBuildDirPath)) {
             fs.mkdirSync(buildOptions.keycloakifyBuildDirPath, { "recursive": true });
@@ -30,12 +25,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         fs.writeFileSync(pathJoin(buildOptions.keycloakifyBuildDirPath, ".gitignore"), Buffer.from("*", "utf8"));
     }
 
-    await generateTheme({
-        themeSrcDirPath,
-        "keycloakifySrcDirPath": pathJoin(getThisCodebaseRootDirPath(), "src"),
-        "keycloakifyVersion": readThisNpmProjectVersion(),
-        buildOptions
-    });
+    await generateTheme({ buildOptions });
 
     run_post_build_script: {
         if (buildOptions.bundler !== "vite") {

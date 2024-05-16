@@ -2,14 +2,15 @@ import { crawl } from "../../tools/crawl";
 import { join as pathJoin } from "path";
 import * as fs from "fs";
 import type { ThemeType } from "../../shared/constants";
+import { getThisCodebaseRootDirPath } from "../../tools/getThisCodebaseRootDirPath";
 
 /** Assumes the theme type exists */
-export function readFieldNameUsage(params: { keycloakifySrcDirPath: string; themeSrcDirPath: string; themeType: ThemeType }): string[] {
-    const { keycloakifySrcDirPath, themeSrcDirPath, themeType } = params;
+export function readFieldNameUsage(params: { themeSrcDirPath: string; themeType: ThemeType }): string[] {
+    const { themeSrcDirPath, themeType } = params;
 
     const fieldNames = new Set<string>();
 
-    for (const srcDirPath of [pathJoin(keycloakifySrcDirPath, themeType), pathJoin(themeSrcDirPath, themeType)]) {
+    for (const srcDirPath of [pathJoin(getThisCodebaseRootDirPath(), "src", themeType), pathJoin(themeSrcDirPath, themeType)]) {
         const filePaths = crawl({ "dirPath": srcDirPath, "returnedPathsType": "absolute" }).filter(filePath => /\.(ts|tsx|js|jsx)$/.test(filePath));
 
         for (const filePath of filePaths) {

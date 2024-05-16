@@ -11,13 +11,8 @@ export type BuildOptionsLike = BuildOptionsLike_generateSrcMainResources & {
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
-export async function generateTheme(params: {
-    themeSrcDirPath: string;
-    keycloakifySrcDirPath: string;
-    buildOptions: BuildOptionsLike;
-    keycloakifyVersion: string;
-}): Promise<void> {
-    const { themeSrcDirPath, keycloakifySrcDirPath, buildOptions, keycloakifyVersion } = params;
+export async function generateTheme(params: { buildOptions: BuildOptionsLike }): Promise<void> {
+    const { buildOptions } = params;
 
     const [themeName, ...themeVariantNames] = buildOptions.themeNames;
 
@@ -26,9 +21,6 @@ export async function generateTheme(params: {
     await generateSrcMainResources({
         themeName,
         srcMainResourcesDirPath,
-        themeSrcDirPath,
-        keycloakifySrcDirPath,
-        keycloakifyVersion,
         buildOptions
     });
 
