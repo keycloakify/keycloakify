@@ -91,15 +91,6 @@ export declare namespace KcContext {
             username?: string;
         };
         properties: Record<string, string | undefined>;
-        sessions: {
-            sessions: {
-                ipAddress: string;
-                started?: any;
-                lastAccess?: any;
-                expires?: any;
-                clients: string[];
-            }[];
-        };
     };
 
     export type Password = Common & {
@@ -126,11 +117,12 @@ export declare namespace KcContext {
         pageId: "sessions.ftl";
         sessions: {
             sessions: {
-                ipAddress: string;
-                started?: any;
-                lastAccess?: any;
-                expires?: any;
+                expires: string;
                 clients: string[];
+                ipAddress: string;
+                started: string;
+                lastAccess: string;
+                id: string;
             }[];
         };
         stateChecker: string;
@@ -193,12 +185,21 @@ export declare namespace KcContext {
         stateChecker: string;
         applications: {
             applications: {
-                realmRolesAvailable: { name: string; description: string }[];
+                realmRolesAvailable: {
+                    name: string;
+                    description: string;
+                    compositesStream?: Record<string, unknown>;
+                    clientRole?: boolean;
+                    composite?: boolean;
+                    id?: string;
+                    containerId?: string;
+                    attributes?: Record<string, unknown>;
+                }[];
                 resourceRolesAvailable: Record<
                     string,
                     {
                         roleName: string;
-                        roleDescription: string;
+                        roleDescription?: string;
                         clientName: string;
                         clientId: string;
                     }[]
@@ -207,41 +208,44 @@ export declare namespace KcContext {
                 clientScopesGranted: string[];
                 effectiveUrl?: string;
                 client: {
-                    consentScreenText: string;
-                    surrogateAuthRequired: boolean;
-                    bearerOnly: boolean;
-                    id: string;
-                    protocolMappersStream: Record<string, unknown>;
-                    includeInTokenScope: boolean;
-                    redirectUris: string[];
-                    fullScopeAllowed: boolean;
-                    registeredNodes: Record<string, unknown>;
-                    enabled: boolean;
-                    clientAuthenticatorType: string;
-                    realmScopeMappingsStream: Record<string, unknown>;
-                    scopeMappingsStream: Record<string, unknown>;
-                    displayOnConsentScreen: boolean;
-                    clientId: string;
-                    rootUrl: string;
-                    authenticationFlowBindingOverrides: Record<string, unknown>;
-                    standardFlowEnabled: boolean;
-                    attributes: Record<string, unknown>;
-                    publicClient: boolean;
                     alwaysDisplayInConsole: boolean;
+                    attributes: Record<string, unknown>;
+                    authenticationFlowBindingOverrides: Record<string, unknown>;
+                    baseUrl?: string;
+                    bearerOnly: boolean;
+                    clientAuthenticatorType: string;
+                    clientId: string;
                     consentRequired: boolean;
-                    notBefore: string;
-                    rolesStream: Record<string, unknown>;
-                    protocol: string;
-                    dynamicScope: boolean;
+                    consentScreenText: string;
+                    description: string;
                     directAccessGrantsEnabled: boolean;
-                    name: string;
-                    serviceAccountsEnabled: boolean;
+                    displayOnConsentScreen: boolean;
+                    dynamicScope: boolean;
+                    enabled: boolean;
                     frontchannelLogout: boolean;
-                    nodeReRegistrationTimeout: string;
+                    fullScopeAllowed: boolean;
+                    id: string;
                     implicitFlowEnabled: boolean;
-                    baseUrl: string;
-                    webOrigins: string[];
+                    includeInTokenScope: boolean;
+                    managementUrl: string;
+                    name?: string;
+                    nodeReRegistrationTimeout: string;
+                    notBefore: string;
+                    protocol: string;
+                    protocolMappersStream: Record<string, unknown>;
+                    publicClient: boolean;
                     realm: Record<string, unknown>;
+                    realmScopeMappingsStream: Record<string, unknown>;
+                    redirectUris: string[];
+                    registeredNodes: Record<string, unknown>;
+                    rolesStream: Record<string, unknown>;
+                    rootUrl?: string;
+                    scopeMappingsStream: Record<string, unknown>;
+                    secret: string;
+                    serviceAccountsEnabled: boolean;
+                    standardFlowEnabled: boolean;
+                    surrogateAuthRequired: boolean;
+                    webOrigins: string[];
                 };
             }[];
         };
@@ -254,8 +258,8 @@ export declare namespace KcContext {
                 date: string | number | Date;
                 event: string;
                 ipAddress: string;
-                client: any;
-                details: any[];
+                client: string;
+                details: { value: string; key: string }[];
             }[];
         };
     };

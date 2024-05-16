@@ -156,17 +156,6 @@ export const kcContextCommonMock: KcContext.Common = {
             "css/account.css img/icon-sidebar-active.png img/logo.png resources-common/node_modules/patternfly/dist/css/patternfly.min.css resources-common/node_modules/patternfly/dist/css/patternfly-additions.min.css resources-common/node_modules/patternfly/dist/css/patternfly-additions.min.css",
         "kcButtonClass": "btn",
         "kcButtonDefaultClass": "btn-default"
-    },
-    "sessions": {
-        "sessions": [
-            {
-                "ipAddress": "127.0.0.1",
-                "started": new Date().toString(),
-                "lastAccess": new Date().toString(),
-                "expires": new Date().toString(),
-                "clients": ["Chrome", "Firefox"]
-            }
-        ]
     }
 };
 
@@ -200,12 +189,12 @@ export const kcContextMocks: KcContext[] = [
         "sessions": {
             "sessions": [
                 {
-                    ...kcContextCommonMock.sessions,
                     "ipAddress": "127.0.0.1",
                     "started": new Date().toString(),
                     "lastAccess": new Date().toString(),
                     "expires": new Date().toString(),
-                    "clients": ["Chrome", "Firefox"]
+                    "clients": ["Chrome", "Firefox"],
+                    "id": "f8951177-817d-4a70-9c02-86d3c170fe51"
                 }
             ]
         },
@@ -246,7 +235,7 @@ export const kcContextMocks: KcContext[] = [
                     "event": "login",
                     "ipAddress": "172.17.0.1",
                     "client": "security-admin-console",
-                    "details": ["auth_method = openid-connect, username = admin"]
+                    "details": [{ key: "openid-connect", value: "admin" }]
                 }
             ]
         }
