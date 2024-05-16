@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 
 import { termost } from "termost";
+import * as child_process from "child_process";
 
 export type CliCommandOptions = {
     isSilent: boolean;
     reactAppRootDirPath: string | undefined;
 };
 
-const program = termost<CliCommandOptions>("keycloakify");
+const program = termost<CliCommandOptions>("Keycloak theme builder");
 
 program
     .option({
@@ -77,7 +78,7 @@ program
         "description": [
             "Copy Keycloak default theme resources to the public directory.",
             "This command is meant to be explicitly used in Webpack projects only."
-        ].join("\n")
+        ].join(" ")
     })
     .task({
         "handler": async cliCommandOptions => {
@@ -85,3 +86,14 @@ program
             return command({ cliCommandOptions });
         }
     });
+
+// Fallback to build command if no command is provided
+{
+    const [, , ...rest] = process.argv;
+
+    if (rest.length === 0 || !rest[0].startsWith("-")) {
+        child_process.spawnSync("npx", ["keycloakify", "build", ...rest], {
+            "stdio": "inherit"
+        });
+    }
+}

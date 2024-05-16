@@ -19,6 +19,7 @@ export type BuildOptions = {
     artifactId: string;
     loginThemeResourcesFromKeycloakVersion: string;
     reactAppRootDirPath: string;
+    // TODO: Remove from vite type
     reactAppBuildDirPath: string;
     /** Directory that keycloakify outputs to. Defaults to {cwd}/build_keycloak */
     keycloakifyBuildDirPath: string;
