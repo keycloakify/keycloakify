@@ -61,10 +61,10 @@ export default function Applications(props: PageProps<Extract<KcContext, { pageI
 
                                     <td>
                                         {!isArrayWithEmptyObject(application.realmRolesAvailable) &&
-                                            application.realmRolesAvailable.map(role => (
+                                            application.realmRolesAvailable.map((role, index) => (
                                                 <span key={role.name}>
                                                     {role.description ? advancedMsg(role.description) : advancedMsg(role.name)}
-                                                    {role !== application.realmRolesAvailable[application.realmRolesAvailable.length - 1] && ", "}
+                                                    {index < application.realmRolesAvailable.length - 1 && ", "}
                                                 </span>
                                             ))}
                                         {!isArrayWithEmptyObject(application.realmRolesAvailable) && application.resourceRolesAvailable && ", "}
