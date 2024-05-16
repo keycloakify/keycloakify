@@ -1,10 +1,13 @@
 import { parse as urlParse } from "url";
-import { readParsedPackageJson } from "./parsedPackageJson";
 import { join as pathJoin } from "path";
-import { getAbsoluteAndInOsFormatPath } from "../../tools/getAbsoluteAndInOsFormatPath";
-import { getResolvedViteConfig } from "./resolvedViteConfig";
-import { getNpmWorkspaceRootDirPath } from "../../tools/getNpmWorkspaceRootDirPath";
-import type { CliCommandOptions } from "../../main";
+import { getAbsoluteAndInOsFormatPath } from "../tools/getAbsoluteAndInOsFormatPath";
+import { getNpmWorkspaceRootDirPath } from "../tools/getNpmWorkspaceRootDirPath";
+import type { CliCommandOptions } from "../main";
+import { z } from "zod";
+import * as fs from "fs";
+import { assert } from "tsafe";
+import * as child_process from "child_process";
+import { vitePluginSubScriptEnvNames } from "./constants";
 
 /** Consolidated build option gathered form CLI arguments and config in package.json */
 export type BuildOptions = {
@@ -30,6 +33,23 @@ export type BuildOptions = {
     npmWorkspaceRootDirPath: string;
 };
 
+export type UserProvidedBuildOptions = {
+    extraThemeProperties?: string[];
+    artifactId?: string;
+    groupId?: string;
+    loginThemeResourcesFromKeycloakVersion?: string;
+    keycloakifyBuildDirPath?: string;
+    themeName?: string | string[];
+};
+
+export type ResolvedViteConfig = {
+    buildDir: string;
+    publicDir: string;
+    assetsDir: string;
+    urlPathname: string | undefined;
+    userProvidedBuildOptions: UserProvidedBuildOptions;
+};
+
 export function readBuildOptions(params: { cliCommandOptions: CliCommandOptions }): BuildOptions {
     const { cliCommandOptions } = params;
 
@@ -44,14 +64,67 @@ export function readBuildOptions(params: { cliCommandOptions: CliCommandOptions 
         });
     })();
 
-    const { resolvedViteConfig } = getResolvedViteConfig({
-        reactAppRootDirPath
-    });
+    const { resolvedViteConfig } = (() => {
+        if (fs.readdirSync(reactAppRootDirPath).find(fileBasename => fileBasename.startsWith("vite.config")) === undefined) {
+            return { "resolvedViteConfig": undefined };
+        }
 
-    const { keycloakify: userProvidedBuildOptionsFromPackageJson, ...parsedPackageJson } = readParsedPackageJson({ reactAppRootDirPath });
+        const output = child_process
+            .execSync("npx vite", {
+                "cwd": reactAppRootDirPath,
+                "env": {
+                    ...process.env,
+                    [vitePluginSubScriptEnvNames.resolveViteConfig]: "true"
+                }
+            })
+            .toString("utf8");
 
-    const userProvidedBuildOptions = {
-        ...userProvidedBuildOptionsFromPackageJson,
+        assert(output.includes(vitePluginSubScriptEnvNames.resolveViteConfig), "Seems like the Keycloakify's Vite plugin is not installed.");
+
+        const resolvedViteConfigStr = output.split(vitePluginSubScriptEnvNames.resolveViteConfig).reverse()[0];
+
+        const resolvedViteConfig: ResolvedViteConfig = JSON.parse(resolvedViteConfigStr);
+
+        return { resolvedViteConfig };
+    })();
+
+    const parsedPackageJson = (() => {
+        type ParsedPackageJson = {
+            name: string;
+            version?: string;
+            homepage?: string;
+            keycloakify?: UserProvidedBuildOptions & { reactAppBuildDirPath?: string };
+        };
+
+        const zParsedPackageJson = z.object({
+            "name": z.string(),
+            "version": z.string().optional(),
+            "homepage": z.string().optional(),
+            "keycloakify": z
+                .object({
+                    "extraThemeProperties": z.array(z.string()).optional(),
+                    "artifactId": z.string().optional(),
+                    "groupId": z.string().optional(),
+                    "loginThemeResourcesFromKeycloakVersion": z.string().optional(),
+                    "reactAppBuildDirPath": z.string().optional(),
+                    "keycloakifyBuildDirPath": z.string().optional(),
+                    "themeName": z.union([z.string(), z.array(z.string())]).optional()
+                })
+                .optional()
+        });
+
+        {
+            type Got = ReturnType<(typeof zParsedPackageJson)["parse"]>;
+            type Expected = ParsedPackageJson;
+            assert<Got extends Expected ? true : false>();
+            assert<Expected extends Got ? true : false>();
+        }
+
+        return zParsedPackageJson.parse(JSON.parse(fs.readFileSync(pathJoin(reactAppRootDirPath, "package.json")).toString("utf8")));
+    })();
+
+    const userProvidedBuildOptions: UserProvidedBuildOptions = {
+        ...parsedPackageJson.keycloakify,
         ...resolvedViteConfig?.userProvidedBuildOptions
     };
 
@@ -78,9 +151,9 @@ export function readBuildOptions(params: { cliCommandOptions: CliCommandOptions 
                 break webpack;
             }
 
-            if (userProvidedBuildOptions.reactAppBuildDirPath !== undefined) {
+            if (parsedPackageJson.keycloakify?.reactAppBuildDirPath !== undefined) {
                 return getAbsoluteAndInOsFormatPath({
-                    "pathIsh": userProvidedBuildOptions.reactAppBuildDirPath,
+                    "pathIsh": parsedPackageJson.keycloakify.reactAppBuildDirPath,
                     "cwd": reactAppRootDirPath
                 });
             }
