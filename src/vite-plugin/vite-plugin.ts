@@ -1,6 +1,5 @@
-import { join as pathJoin, relative as pathRelative, sep as pathSep, dirname as pathDirname } from "path";
+import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path";
 import type { Plugin } from "vite";
-import * as fs from "fs";
 import { nameOfTheGlobal, basenameOfTheKeycloakifyResourcesDir, keycloak_resources, vitePluginSubScriptEnvNames } from "../bin/shared/constants";
 import { id } from "tsafe/id";
 import { rm } from "../bin/tools/fs.rm";
@@ -71,36 +70,24 @@ export function keycloakify(params?: Params) {
 
             buildDirPath = pathJoin(reactAppRootDirPath, resolvedConfig.build.outDir);
 
-            create_resolved_vite_config_case: {
-                const resolvedViteConfigJsonFilePath = process.env[vitePluginSubScriptEnvNames.createResolvedViteConfig];
+            resolve_vite_config_case: {
+                const envValue = process.env[vitePluginSubScriptEnvNames.resolveViteConfig];
 
-                if (resolvedViteConfigJsonFilePath === undefined) {
-                    break create_resolved_vite_config_case;
+                if (envValue === undefined) {
+                    break resolve_vite_config_case;
                 }
 
-                {
-                    const dirPath = pathDirname(resolvedViteConfigJsonFilePath);
+                console.log(vitePluginSubScriptEnvNames.resolveViteConfig);
 
-                    if (!fs.existsSync(dirPath)) {
-                        fs.mkdirSync(dirPath, { "recursive": true });
-                    }
-                }
-
-                fs.writeFileSync(
-                    resolvedViteConfigJsonFilePath,
-                    Buffer.from(
-                        JSON.stringify(
-                            id<ResolvedViteConfig>({
-                                "publicDir": pathRelative(reactAppRootDirPath, resolvedConfig.publicDir),
-                                "assetsDir": resolvedConfig.build.assetsDir,
-                                "buildDir": resolvedConfig.build.outDir,
-                                urlPathname,
-                                userProvidedBuildOptions
-                            }),
-                            null,
-                            2
-                        ),
-                        "utf8"
+                console.log(
+                    JSON.stringify(
+                        id<ResolvedViteConfig>({
+                            "publicDir": pathRelative(reactAppRootDirPath, resolvedConfig.publicDir),
+                            "assetsDir": resolvedConfig.build.assetsDir,
+                            "buildDir": resolvedConfig.build.outDir,
+                            urlPathname,
+                            userProvidedBuildOptions
+                        })
                     )
                 );
 

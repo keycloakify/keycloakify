@@ -11,5 +11,5 @@ export type ThemeType = (typeof themeTypes)[number];
 
 export const vitePluginSubScriptEnvNames = {
     "runPostBuildScript": "KEYCLOAKIFY_RUN_POST_BUILD_SCRIPT",
-    "createResolvedViteConfig": "KEYCLOAKIFY_CREATE_RESOLVED_VITE_CONFIG"
-};
+    "resolveViteConfig": "KEYCLOAKIFY_RESOLVE_VITE_CONFIG"
+} as const;
