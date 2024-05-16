@@ -12,12 +12,9 @@ export default function Sessions(props: PageProps<Extract<KcContext, { pageId: "
         classes
     });
 
-    console.log({ kcContext });
     const { url, stateChecker, sessions } = kcContext;
 
     const { msg } = i18n;
-    console.log({ sdf: kcContext.locale?.supported });
-    console.log({ asdf: "asdf" });
     return (
         <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} active="sessions">
             <div className={getClassName("kcContentWrapperClass")}>

@@ -7,6 +7,7 @@ import { MessageKey } from "keycloakify/account/i18n/i18n";
 
 export default function Totp(props: PageProps<Extract<KcContext, { pageId: "totp.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
+
     const { getClassName } = useGetClassName({
         doUseDefaultCss,
         classes
@@ -78,7 +79,7 @@ export default function Totp(props: PageProps<Extract<KcContext, { pageId: "totp
                                 <p>{msg("totpStep1")}</p>
 
                                 <ul id="kc-totp-supported-apps">
-                                    {totp.supportedApplications.map(app => (
+                                    {totp.supportedApplications?.map(app => (
                                         <li key={app}>{msg(app as MessageKey)}</li>
                                     ))}
                                 </ul>
@@ -99,28 +100,26 @@ export default function Totp(props: PageProps<Extract<KcContext, { pageId: "totp
                                     </li>
                                     <li>
                                         <p>{msg("totpManualStep3")}</p>
-                                        <p>
-                                            <ul>
-                                                <li id="kc-totp-type">
-                                                    {msg("totpType")}: {msg(`totp.${totp.policy.type}`)}
+                                        <ul>
+                                            <li id="kc-totp-type">
+                                                {msg("totpType")}: {msg(`totp.${totp.policy.type}`)}
+                                            </li>
+                                            <li id="kc-totp-algorithm">
+                                                {msg("totpAlgorithm")}: {algToKeyUriAlg?.[totp.policy.algorithm] ?? totp.policy.algorithm}
+                                            </li>
+                                            <li id="kc-totp-digits">
+                                                {msg("totpDigits")}: {totp.policy.digits}
+                                            </li>
+                                            {totp.policy.type === "totp" ? (
+                                                <li id="kc-totp-period">
+                                                    {msg("totpInterval")}: {totp.policy.period}
                                                 </li>
-                                                <li id="kc-totp-algorithm">
-                                                    {msg("totpAlgorithm")}: {algToKeyUriAlg?.[totp.policy.algorithm] ?? totp.policy.algorithm}
+                                            ) : (
+                                                <li id="kc-totp-counter">
+                                                    {msg("totpCounter")}: {totp.policy.initialCounter}
                                                 </li>
-                                                <li id="kc-totp-digits">
-                                                    {msg("totpDigits")}: {totp.policy.digits}
-                                                </li>
-                                                {totp.policy.type === "totp" ? (
-                                                    <li id="kc-totp-period">
-                                                        {msg("totpInterval")}: {totp.policy.period}
-                                                    </li>
-                                                ) : (
-                                                    <li id="kc-totp-counter">
-                                                        {msg("totpCounter")}: {totp.policy.initialCounter}
-                                                    </li>
-                                                )}
-                                            </ul>
-                                        </p>
+                                            )}
+                                        </ul>
                                     </li>
                                 </>
                             ) : (
