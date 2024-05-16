@@ -27,6 +27,7 @@ export declare namespace KcContext {
             sessionsUrl: string;
             applicationsUrl: string;
             logUrl: string;
+            logoutUrl: string;
             resourceUrl: string;
             resourcesCommonPath: string;
             resourcesPath: string;

@@ -17,6 +17,7 @@ export const kcContextCommonMock: KcContext.Common = {
         "resourceUrl": "#",
         "accountUrl": "#",
         "applicationsUrl": "#",
+        "logoutUrl": "#",
         "getLogoutUrl": () => "#",
         "logUrl": "#",
         "passwordUrl": "#",
