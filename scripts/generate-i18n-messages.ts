@@ -5,6 +5,7 @@ import { crawl } from "../src/bin/tools/crawl";
 import { downloadBuiltinKeycloakTheme } from "../src/bin/shared/downloadBuiltinKeycloakTheme";
 import { getThisCodebaseRootDirPath } from "../src/bin/tools/getThisCodebaseRootDirPath";
 import { getLogger } from "../src/bin/tools/logger";
+import { rmSync } from "../src/bin/tools/fs.rmSync";
 
 // NOTE: To run without argument when we want to generate src/i18n/generated_kcMessages files,
 // update the version array for generating for newer version.
@@ -23,7 +24,7 @@ async function main() {
 
     const tmpDirPath = pathJoin(thisCodebaseRootDirPath, "tmp_xImOef9dOd44");
 
-    fs.rmSync(tmpDirPath, { "recursive": true, "force": true });
+    rmSync(tmpDirPath, { "recursive": true, "force": true });
 
     fs.mkdirSync(tmpDirPath);
 
@@ -66,7 +67,7 @@ async function main() {
         });
     }
 
-    fs.rmSync(tmpDirPath, { recursive: true, force: true });
+    rmSync(tmpDirPath, { "recursive": true });
 
     Object.keys(record).forEach(themeType => {
         const recordForPageType = record[themeType];

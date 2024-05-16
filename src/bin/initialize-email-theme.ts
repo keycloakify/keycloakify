@@ -30,7 +30,9 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     const { keycloakVersion } = await promptKeycloakVersion();
 
-    const builtinKeycloakThemeTmpDirPath = pathJoin(emailThemeSrcDirPath, "..", "tmp_xIdP3_builtin_keycloak_theme");
+    const builtinKeycloakThemeTmpDirPath = pathJoin(buildOptions.cacheDirPath, "initialize-email-theme_tmp");
+
+    rmSync(builtinKeycloakThemeTmpDirPath, { "recursive": true, "force": true });
 
     await downloadBuiltinKeycloakTheme({
         keycloakVersion,
@@ -51,5 +53,5 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     logger.log(`${pathRelative(process.cwd(), emailThemeSrcDirPath)} ready to be customized, feel free to remove every file you do not customize`);
 
-    rmSync(builtinKeycloakThemeTmpDirPath, { "recursive": true, "force": true });
+    rmSync(builtinKeycloakThemeTmpDirPath, { "recursive": true });
 }

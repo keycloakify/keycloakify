@@ -18,7 +18,7 @@ assert<BuildOptions extends BuildOptionsLike ? true : false>();
 export async function bringInAccountV1(params: { buildOptions: BuildOptionsLike }) {
     const { buildOptions } = params;
 
-    const builtinKeycloakThemeTmpDirPath = pathJoin(buildOptions.cacheDirPath, "tmp_yxdE2_builtin_keycloak_theme");
+    const builtinKeycloakThemeTmpDirPath = pathJoin(buildOptions.cacheDirPath, "bringInAccountV1_tmp");
 
     await downloadBuiltinKeycloakTheme({
         "destDirPath": builtinKeycloakThemeTmpDirPath,

@@ -23,8 +23,8 @@ export async function downloadKeycloakStaticResources(params: {
     const { themeType, themeDirPath, keycloakVersion, buildOptions } = params;
 
     const tmpDirPath = pathJoin(
-        themeDirPath,
-        `tmp_suLeKsxId_${crypto.createHash("sha256").update(`${themeType}-${keycloakVersion}`).digest("hex").slice(0, 8)}`
+        buildOptions.cacheDirPath,
+        `downloadKeycloakStaticResources_tmp_${crypto.createHash("sha256").update(`${themeType}-${keycloakVersion}`).digest("hex").slice(0, 8)}`
     );
 
     await downloadBuiltinKeycloakTheme({
@@ -45,5 +45,5 @@ export async function downloadKeycloakStaticResources(params: {
         "destDirPath": pathJoin(resourcesPath, resources_common)
     });
 
-    rmSync(tmpDirPath, { "recursive": true, "force": true });
+    rmSync(tmpDirPath, { "recursive": true });
 }

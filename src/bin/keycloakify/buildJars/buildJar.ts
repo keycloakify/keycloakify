@@ -6,15 +6,17 @@ import type { BuildOptions } from "../../shared/buildOptions";
 import * as fs from "fs/promises";
 import { accountV1ThemeName } from "../../shared/constants";
 import { generatePom, BuildOptionsLike as BuildOptionsLike_generatePom } from "./generatePom";
-import { existsSync, readFileSync } from "fs";
+import { readFileSync } from "fs";
 import { isInside } from "../../tools/isInside";
 import child_process from "child_process";
+import { rmSync } from "../../tools/fs.rmSync";
 
 export type BuildOptionsLike = BuildOptionsLike_generatePom & {
     keycloakifyBuildDirPath: string;
     themeNames: string[];
     artifactId: string;
     themeVersion: string;
+    cacheDirPath: string;
 };
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
@@ -27,14 +29,9 @@ export async function buildJar(params: {
 }): Promise<void> {
     const { jarFileBasename, keycloakAccountV1Version, keycloakThemeAdditionalInfoExtensionVersion, buildOptions } = params;
 
-    const keycloakifyBuildTmpDirPath = pathJoin(buildOptions.keycloakifyBuildDirPath, "..", jarFileBasename.replace(".jar", ""));
+    const keycloakifyBuildTmpDirPath = pathJoin(buildOptions.cacheDirPath, jarFileBasename.replace(".jar", ""));
 
-    if (existsSync(keycloakifyBuildTmpDirPath)) {
-        await fs.rm(keycloakifyBuildTmpDirPath, { "recursive": true });
-    }
-
-    await fs.mkdir(keycloakifyBuildTmpDirPath, { "recursive": true });
-    await fs.writeFile(pathJoin(keycloakifyBuildTmpDirPath, ".gitignore"), Buffer.from("*", "utf8"));
+    rmSync(keycloakifyBuildTmpDirPath, { "recursive": true, "force": true });
 
     const srcMainResourcesRelativeDirPath = pathJoin("src", "main", "resources");
 
@@ -170,5 +167,5 @@ export async function buildJar(params: {
         pathJoin(buildOptions.keycloakifyBuildDirPath, jarFileBasename)
     );
 
-    await fs.rm(keycloakifyBuildTmpDirPath, { "recursive": true });
+    rmSync(keycloakifyBuildTmpDirPath, { "recursive": true });
 }
