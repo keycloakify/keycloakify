@@ -20,7 +20,9 @@ import { readFieldNameUsage } from "./readFieldNameUsage";
 import { readExtraPagesNames } from "./readExtraPageNames";
 import { generateMessageProperties } from "./generateMessageProperties";
 import { bringInAccountV1 } from "./bringInAccountV1";
+import { getThemeSrcDirPath } from "../../shared/getThemeSrcDirPath";
 import { rmSync } from "../../tools/fs.rmSync";
+import { readThisNpmProjectVersion } from "../../tools/readThisNpmProjectVersion";
 
 export type BuildOptionsLike = {
     bundler: "vite" | "webpack";
@@ -32,19 +34,19 @@ export type BuildOptionsLike = {
     assetsDirPath: string;
     urlPathname: string | undefined;
     npmWorkspaceRootDirPath: string;
+    reactAppRootDirPath: string;
 };
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
 export async function generateSrcMainResources(params: {
     themeName: string;
-    themeSrcDirPath: string;
-    keycloakifySrcDirPath: string;
     buildOptions: BuildOptionsLike;
-    keycloakifyVersion: string;
     srcMainResourcesDirPath: string;
 }): Promise<void> {
-    const { themeName, themeSrcDirPath, keycloakifySrcDirPath, buildOptions, keycloakifyVersion, srcMainResourcesDirPath } = params;
+    const { themeName, buildOptions, srcMainResourcesDirPath } = params;
+
+    const { themeSrcDirPath } = getThemeSrcDirPath({ "reactAppRootDirPath": buildOptions.reactAppRootDirPath });
 
     const getThemeTypeDirPath = (params: { themeType: ThemeType | "email" }) => {
         const { themeType } = params;
@@ -137,10 +139,9 @@ export async function generateSrcMainResources(params: {
             "indexHtmlCode": fs.readFileSync(pathJoin(buildOptions.reactAppBuildDirPath, "index.html")).toString("utf8"),
             cssGlobalsToDefine,
             buildOptions,
-            keycloakifyVersion,
+            "keycloakifyVersion": readThisNpmProjectVersion(),
             themeType,
             "fieldNames": readFieldNameUsage({
-                keycloakifySrcDirPath,
                 themeSrcDirPath,
                 themeType
             })

@@ -27,13 +27,15 @@ export function keycloakify(params?: Params) {
             shouldGenerateSourcemap = resolvedConfig.build.sourcemap !== false;
 
             run_post_build_script_case: {
-                const postBuildArgJson = process.env[vitePluginSubScriptEnvNames.runPostBuildScript];
+                const envValue = process.env[vitePluginSubScriptEnvNames.runPostBuildScript];
 
-                if (postBuildArgJson === undefined) {
+                if (envValue === undefined) {
                     break run_post_build_script_case;
                 }
 
-                await postBuild?.(JSON.parse(postBuildArgJson));
+                const buildOptions = JSON.parse(envValue) as BuildOptions;
+
+                await postBuild?.(buildOptions);
 
                 process.exit(0);
             }
