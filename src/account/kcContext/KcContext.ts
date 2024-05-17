@@ -3,7 +3,14 @@ import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
 import { type ThemeType } from "keycloakify/bin/constants";
 
-export type KcContext = KcContext.Password | KcContext.Account | KcContext.Sessions | KcContext.Totp | KcContext.Applications | KcContext.Log;
+export type KcContext =
+    | KcContext.Password
+    | KcContext.Account
+    | KcContext.Sessions
+    | KcContext.Totp
+    | KcContext.Applications
+    | KcContext.Log
+    | KcContext.FederatedIdentity;
 
 export declare namespace KcContext {
     export type Common = {
@@ -262,6 +269,20 @@ export declare namespace KcContext {
                 client: string;
                 details: { value: string; key: string }[];
             }[];
+        };
+    };
+
+    export type FederatedIdentity = Common & {
+        pageId: "federatedIdentity.ftl";
+        stateChecker: string;
+        federatedIdentity: {
+            identities: {
+                providerId: string;
+                displayName: string;
+                userName: string;
+                connected: boolean;
+            }[];
+            removeLinkPossible: boolean;
         };
     };
 }

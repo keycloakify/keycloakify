@@ -3,6 +3,7 @@ import type { PageProps } from "keycloakify/account/pages/PageProps";
 import type { I18n } from "keycloakify/account/i18n";
 import type { KcContext } from "./kcContext";
 import { assert, type Equals } from "tsafe/assert";
+import FederatedIdentity from "./pages/FederatedIdentity";
 
 const Password = lazy(() => import("keycloakify/account/pages/Password"));
 const Account = lazy(() => import("keycloakify/account/pages/Account"));
@@ -30,6 +31,8 @@ export default function Fallback(props: PageProps<KcContext, I18n>) {
                         return <Applications kcContext={kcContext} {...rest} />;
                     case "log.ftl":
                         return <Log kcContext={kcContext} {...rest} />;
+                    case "federatedIdentity.ftl":
+                        return <FederatedIdentity kcContext={kcContext} {...rest} />;
                 }
                 assert<Equals<typeof kcContext, never>>(false);
             })()}

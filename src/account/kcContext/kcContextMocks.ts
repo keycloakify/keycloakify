@@ -240,5 +240,21 @@ export const kcContextMocks: KcContext[] = [
                 }
             ]
         }
+    }),
+    id<KcContext.FederatedIdentity>({
+        ...kcContextCommonMock,
+        "stateChecker": "",
+        "pageId": "federatedIdentity.ftl",
+        "federatedIdentity": {
+            "identities": [
+                {
+                    "providerId": "keycloak-oidc",
+                    "displayName": "keycloak-oidc",
+                    "userName": "John",
+                    "connected": true
+                }
+            ],
+            "removeLinkPossible": true
+        }
     })
 ];
