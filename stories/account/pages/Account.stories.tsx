@@ -1,24 +1,19 @@
 import React from "react";
-import type { ComponentMeta } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 import { createPageStory } from "../createPageStory";
 
 const pageId = "account.ftl";
 
 const { PageStory } = createPageStory({ pageId });
 
-const meta: ComponentMeta<any> = {
-    title: `account/${pageId}`,
-    component: PageStory,
-    parameters: {
-        viewMode: "story",
-        previewTabs: {
-            "storybook/docs/panel": {
-                hidden: true
-            }
-        }
-    }
-};
-
+const meta = {
+    title: "account/Account",
+    component: PageStory
+} satisfies Meta<typeof PageStory>;
 export default meta;
 
-export const Default = () => <PageStory />;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+    render: () => <PageStory />
+};
