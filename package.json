@@ -11,7 +11,6 @@
     "scripts": {
         "prepare": "yarn generate-i18n-messages",
         "build": "tsc -p src/bin && tsc -p src && tsc -p src/vite-plugin && tsc-alias -p src/tsconfig.json && yarn grant-exec-perms && yarn run copy-files && cp -r src dist/",
-        "generate:json-schema": "ts-node scripts/generate-json-schema.ts",
         "grant-exec-perms": "ts-node --skipProject scripts/grant-exec-perms.ts",
         "copy-files": "copyfiles -u 1 'src/**/*.ftl' dist/",
         "test": "yarn test:types && vitest run",
