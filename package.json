@@ -11,6 +11,7 @@
     "scripts": {
         "prepare": "yarn generate-i18n-messages",
         "build": "tsc -p src/bin && tsc -p src && tsc -p src/vite-plugin && tsc-alias -p src/tsconfig.json && yarn grant-exec-perms && yarn run copy-files && cp -r src dist/",
+        "watch": "chokidar './src/**/*' -c 'yarn build'",
         "grant-exec-perms": "ts-node --skipProject scripts/grant-exec-perms.ts",
         "copy-files": "copyfiles -u 1 'src/**/*.ftl' dist/",
         "test": "yarn test:types && vitest run",
@@ -21,7 +22,7 @@
         "format:check": "yarn _format --list-different",
         "generate-i18n-messages": "ts-node --skipProject scripts/generate-i18n-messages.ts",
         "link-in-app": "ts-node --skipProject scripts/link-in-app.ts",
-        "link-in-starter": "yarn link-in-app keycloakify-starter",
+        "link-in-starter": "ts-node --skipProject scripts/link-in-app.ts keycloakify-starter && yarn watch",
         "copy-keycloak-resources-to-storybook-static": "PUBLIC_DIR_PATH=.storybook/static node dist/bin/copy-keycloak-resources-to-public.js",
         "storybook": "yarn build && yarn copy-keycloak-resources-to-storybook-static && start-storybook -p 6006",
         "build-storybook": "yarn build && yarn copy-keycloak-resources-to-storybook-static && build-storybook"
@@ -81,6 +82,7 @@
         "@types/react-dom": "^18.0.11",
         "@types/yauzl": "^2.10.0",
         "@types/yazl": "^2.4.2",
+        "chokidar-cli": "^3.0.0",
         "concurrently": "^8.0.1",
         "copyfiles": "^2.4.1",
         "eslint-plugin-storybook": "^0.6.7",
@@ -97,9 +99,9 @@
         "tsc-alias": "^1.8.3",
         "tss-react": "^4.8.2",
         "typescript": "^5.4.5",
+        "vite": "^5.0.12",
         "vitest": "^0.29.8",
-        "zod-to-json-schema": "^3.20.4",
-        "vite": "^5.0.12"
+        "zod-to-json-schema": "^3.20.4"
     },
     "dependencies": {
         "@babel/generator": "^7.22.9",
@@ -109,17 +111,17 @@
         "cheerio": "^1.0.0-rc.5",
         "cli-select": "^1.1.2",
         "evt": "^2.5.7",
+        "magic-string": "^0.30.7",
         "make-fetch-happen": "^11.0.3",
         "minimal-polyfills": "^2.2.2",
         "minimist": "^1.2.6",
         "react-markdown": "^5.0.3",
         "recast": "^0.23.3",
         "rfc4648": "^1.5.2",
+        "termost": "^0.12.0",
         "tsafe": "^1.6.0",
         "yauzl": "^2.10.0",
         "yazl": "^2.5.1",
-        "zod": "^3.17.10",
-        "magic-string": "^0.30.7",
-        "termost": "^0.12.0"
+        "zod": "^3.17.10"
     }
 }
