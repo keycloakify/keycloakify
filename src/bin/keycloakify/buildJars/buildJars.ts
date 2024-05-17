@@ -5,6 +5,8 @@ import { getKeycloakVersionRangeForJar } from "./getKeycloakVersionRangeForJar";
 import { buildJar, BuildOptionsLike as BuildOptionsLike_buildJar } from "./buildJar";
 import type { BuildOptions } from "../../shared/buildOptions";
 import { getJarFileBasename } from "./getJarFileBasename";
+import { readMetaInfKeycloakThemes } from "../../shared/metaInfKeycloakThemes";
+import { accountV1ThemeName } from "../../shared/constants";
 
 export type BuildOptionsLike = BuildOptionsLike_buildJar & {
     keycloakifyBuildDirPath: string;
@@ -15,8 +17,9 @@ assert<BuildOptions extends BuildOptionsLike ? true : false>();
 export async function buildJars(params: { buildOptions: BuildOptionsLike }): Promise<void> {
     const { buildOptions } = params;
 
-    // TODO:
-    const doesImplementAccountTheme= ;
+    const doesImplementAccountTheme = readMetaInfKeycloakThemes({
+        "keycloakifyBuildDirPath": buildOptions.keycloakifyBuildDirPath
+    }).themes.some(({ name }) => name === accountV1ThemeName);
 
     await Promise.all(
         keycloakAccountV1Versions

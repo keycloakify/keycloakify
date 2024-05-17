@@ -1,6 +1,6 @@
 import { transformCodebase } from "../../tools/transformCodebase";
 import * as fs from "fs";
-import { join as pathJoin, resolve as pathResolve, dirname as pathDirname } from "path";
+import { join as pathJoin, resolve as pathResolve } from "path";
 import { replaceImportsInJsCode } from "../replacers/replaceImportsInJsCode";
 import { replaceImportsInCssCode } from "../replacers/replaceImportsInCssCode";
 import { generateFtlFilesCodeFactory } from "../generateFtl";
@@ -23,6 +23,8 @@ import { bringInAccountV1 } from "./bringInAccountV1";
 import { getThemeSrcDirPath } from "../../shared/getThemeSrcDirPath";
 import { rmSync } from "../../tools/fs.rmSync";
 import { readThisNpmProjectVersion } from "../../tools/readThisNpmProjectVersion";
+import { writeMetaInfKeycloakThemes, type MetaInfKeycloakTheme } from "../../shared/metaInfKeycloakThemes";
+import { objectEntries } from "tsafe/objectEntries";
 
 export type BuildOptionsLike = {
     bundler: "vite" | "webpack";
@@ -40,10 +42,7 @@ export type BuildOptionsLike = {
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
-export async function generateSrcMainResourcesForMainTheme(params: { 
-    themeName: string; 
-    buildOptions: BuildOptionsLike 
-}): Promise<void> {
+export async function generateSrcMainResourcesForMainTheme(params: { themeName: string; buildOptions: BuildOptionsLike }): Promise<void> {
     const { themeName, buildOptions } = params;
 
     const { themeSrcDirPath } = getThemeSrcDirPath({ "reactAppRootDirPath": buildOptions.reactAppRootDirPath });
@@ -230,44 +229,32 @@ export async function generateSrcMainResourcesForMainTheme(params: {
         });
     }
 
-    const parsedKeycloakThemeJson: { themes: { name: string; types: string[] }[] } = { "themes": [] };
-
-    parsedKeycloakThemeJson.themes.push({
-        "name": themeName,
-        "types": Object.entries(implementedThemeTypes)
-            .filter(([, isImplemented]) => isImplemented)
-            .map(([themeType]) => themeType)
-    });
-
-    account_specific_extra_work: {
-        if (!implementedThemeTypes.account) {
-            break account_specific_extra_work;
-        }
-
+    if (implementedThemeTypes.account) {
         await bringInAccountV1({
             buildOptions
-        });
-
-        parsedKeycloakThemeJson.themes.push({
-            "name": accountV1ThemeName,
-            "types": ["account"]
         });
     }
 
     {
-        const keycloakThemeJsonFilePath = pathJoin(
-            buildOptions.keycloakifyBuildDirPath,
-            "src",
-            "main",
-            "resources",
-            "META-INF",
-            "keycloak-themes.json"
-        );
+        const metaInfKeycloakThemes: MetaInfKeycloakTheme = { "themes": [] };
 
-        try {
-            fs.mkdirSync(pathDirname(keycloakThemeJsonFilePath));
-        } catch {}
+        metaInfKeycloakThemes.themes.push({
+            "name": themeName,
+            "types": objectEntries(implementedThemeTypes)
+                .filter(([, isImplemented]) => isImplemented)
+                .map(([themeType]) => themeType)
+        });
 
-        fs.writeFileSync(keycloakThemeJsonFilePath, Buffer.from(JSON.stringify(parsedKeycloakThemeJson, null, 2), "utf8"));
+        if (implementedThemeTypes.account) {
+            metaInfKeycloakThemes.themes.push({
+                "name": accountV1ThemeName,
+                "types": ["account"]
+            });
+        }
+
+        writeMetaInfKeycloakThemes({
+            "keycloakifyBuildDirPath": buildOptions.keycloakifyBuildDirPath,
+            metaInfKeycloakThemes
+        });
     }
 }

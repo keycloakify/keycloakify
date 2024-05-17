@@ -10,6 +10,7 @@ import { readFileSync } from "fs";
 import { isInside } from "../../tools/isInside";
 import child_process from "child_process";
 import { rmSync } from "../../tools/fs.rmSync";
+import { getMetaInfKeycloakThemesJsonPath } from "../../shared/metaInfKeycloakThemes";
 
 export type BuildOptionsLike = BuildOptionsLike_generatePom & {
     keycloakifyBuildDirPath: string;
@@ -34,7 +35,7 @@ export async function buildJar(params: {
     rmSync(keycloakifyBuildTmpDirPath, { "recursive": true, "force": true });
 
     {
-        const keycloakThemesJsonFilePath = pathJoin("src", "main", "resources", "META-INF", "keycloak-themes.json");
+        const keycloakThemesJsonFilePath = getMetaInfKeycloakThemesJsonPath({ "keycloakifyBuildDirPath": "" });
 
         const themePropertiesFilePathSet = new Set(
             ...buildOptions.themeNames.map(themeName => pathJoin("src", "main", "resources", "theme", themeName, "account", "theme.properties"))

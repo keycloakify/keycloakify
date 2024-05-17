@@ -1,8 +1,8 @@
 import { join as pathJoin, extname as pathExtname, sep as pathSep } from "path";
 import { transformCodebase } from "../../tools/transformCodebase";
 import type { BuildOptions } from "../../shared/buildOptions";
+import { readMetaInfKeycloakThemes, writeMetaInfKeycloakThemes } from "../../shared/metaInfKeycloakThemes";
 import { assert } from "tsafe/assert";
-import * as fs from "fs";
 
 export type BuildOptionsLike = {
     keycloakifyBuildDirPath: string;
@@ -37,28 +37,20 @@ export function generateSrcMainResourcesForThemeVariant(params: { themeName: str
     });
 
     {
-        const keycloakThemeJsonFilePath = pathJoin(
-            buildOptions.keycloakifyBuildDirPath,
-            "src",
-            "main",
-            "resources",
-            "META-INF",
-            "keycloak-themes.json"
-        );
+        const updatedMetaInfKeycloakThemes = readMetaInfKeycloakThemes({ "keycloakifyBuildDirPath": buildOptions.keycloakifyBuildDirPath });
 
-        const modifiedParsedJson = JSON.parse(fs.readFileSync(keycloakThemeJsonFilePath).toString("utf8")) as {
-            themes: { name: string; types: string[] }[];
-        };
-
-        modifiedParsedJson.themes.push({
+        updatedMetaInfKeycloakThemes.themes.push({
             "name": themeVariantName,
             "types": (() => {
-                const theme = modifiedParsedJson.themes.find(({ name }) => name === themeName);
+                const theme = updatedMetaInfKeycloakThemes.themes.find(({ name }) => name === themeName);
                 assert(theme !== undefined);
                 return theme.types;
             })()
         });
 
-        fs.writeFileSync(keycloakThemeJsonFilePath, Buffer.from(JSON.stringify(modifiedParsedJson, null, 2), "utf8"));
+        writeMetaInfKeycloakThemes({
+            "keycloakifyBuildDirPath": buildOptions.keycloakifyBuildDirPath,
+            "metaInfKeycloakThemes": updatedMetaInfKeycloakThemes
+        });
     }
 }
