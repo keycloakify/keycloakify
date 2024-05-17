@@ -14,7 +14,9 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     const { log } = getLogger({ "isSilent": buildOptions.isSilent });
 
-    const { keycloakVersion } = await promptKeycloakVersion();
+    const { keycloakVersion } = await promptKeycloakVersion({
+        "startingFromMajor": undefined
+    });
 
     const destDirPath = pathJoin(buildOptions.keycloakifyBuildDirPath, "src", "main", "resources", "theme");
 

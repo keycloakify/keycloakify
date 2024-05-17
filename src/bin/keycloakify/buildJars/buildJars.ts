@@ -4,7 +4,7 @@ import { keycloakAccountV1Versions, keycloakThemeAdditionalInfoExtensionVersions
 import { getKeycloakVersionRangeForJar } from "./getKeycloakVersionRangeForJar";
 import { buildJar, BuildOptionsLike as BuildOptionsLike_buildJar } from "./buildJar";
 import type { BuildOptions } from "../../shared/buildOptions";
-import { getJarFileBasename } from "./getJarFileBasename";
+import { getJarFileBasename } from "../../shared/getJarFileBasename";
 import { readMetaInfKeycloakThemes } from "../../shared/metaInfKeycloakThemes";
 import { accountV1ThemeName } from "../../shared/constants";
 

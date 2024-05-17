@@ -28,7 +28,9 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         process.exit(-1);
     }
 
-    const { keycloakVersion } = await promptKeycloakVersion();
+    const { keycloakVersion } = await promptKeycloakVersion({
+        "startingFromMajor": 17
+    });
 
     const builtinKeycloakThemeTmpDirPath = pathJoin(buildOptions.cacheDirPath, "initialize-email-theme_tmp");
 

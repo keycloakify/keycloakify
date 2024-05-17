@@ -1,6 +1,9 @@
 import type { BuildOptions } from "../../shared/buildOptions";
 import { assert } from "tsafe/assert";
-import { generateSrcMainResourcesForMainTheme, type BuildOptionsLike as BuildOptionsLike_generateSrcMainResourcesForMainTheme } from "./generateSrcMainResourcesForMainTheme";
+import {
+    generateSrcMainResourcesForMainTheme,
+    type BuildOptionsLike as BuildOptionsLike_generateSrcMainResourcesForMainTheme
+} from "./generateSrcMainResourcesForMainTheme";
 import { generateSrcMainResourcesForThemeVariant } from "./generateSrcMainResourcesForThemeVariant";
 
 export type BuildOptionsLike = BuildOptionsLike_generateSrcMainResourcesForMainTheme & {

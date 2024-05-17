@@ -4,7 +4,9 @@ import cliSelect from "cli-select";
 import { lastKeycloakVersionWithAccountV1 } from "./constants";
 import { SemVer } from "../tools/SemVer";
 
-export async function promptKeycloakVersion() {
+export async function promptKeycloakVersion(params: { startingFromMajor: number | undefined }) {
+    const { startingFromMajor } = params;
+
     const { getLatestsSemVersionedTag } = (() => {
         const { octokit } = (() => {
             const githubToken = process.env.GITHUB_TOKEN;
@@ -30,6 +32,10 @@ export async function promptKeycloakVersion() {
             "repo": "keycloak"
         })
     ).forEach(semVersionedTag => {
+        if (startingFromMajor !== undefined && semVersionedTag.version.major < startingFromMajor) {
+            return;
+        }
+
         const currentSemVersionedTag = semVersionedTagByMajor.get(semVersionedTag.version.major);
 
         if (currentSemVersionedTag !== undefined && SemVer.compare(semVersionedTag.version, currentSemVersionedTag.version) === -1) {

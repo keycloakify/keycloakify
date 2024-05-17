@@ -1,4 +1,4 @@
-import type { KeycloakVersionRange } from "./getKeycloakVersionRangeForJar";
+import type { KeycloakVersionRange } from "./KeycloakVersionRange";
 
 export function getJarFileBasename(params: { keycloakVersionRange: KeycloakVersionRange }) {
     const { keycloakVersionRange } = params;
