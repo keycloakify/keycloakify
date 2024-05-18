@@ -66,10 +66,12 @@ program
     })
     .task({
         skip,
-        "handler": async cliCommandOptions => {
-            const { command } = await import("./keycloakify");
-            await runAndLogErrors(() => command({ cliCommandOptions }));
-        }
+        "handler": cliCommandOptions =>
+            runAndLogErrors(async () => {
+                const { command } = await import("./keycloakify");
+
+                await runAndLogErrors(() => command({ cliCommandOptions }));
+            })
     });
 
 program
@@ -79,10 +81,12 @@ program
     })
     .task({
         skip,
-        "handler": async cliCommandOptions => {
-            const { command } = await import("./download-builtin-keycloak-theme");
-            await runAndLogErrors(() => command({ cliCommandOptions }));
-        }
+        "handler": cliCommandOptions =>
+            runAndLogErrors(async () => {
+                const { command } = await import("./download-builtin-keycloak-theme");
+
+                await runAndLogErrors(() => command({ cliCommandOptions }));
+            })
     });
 
 program
@@ -92,10 +96,12 @@ program
     })
     .task({
         skip,
-        "handler": async cliCommandOptions => {
-            const { command } = await import("./eject-keycloak-page");
-            await runAndLogErrors(() => command({ cliCommandOptions }));
-        }
+        "handler": cliCommandOptions =>
+            runAndLogErrors(async () => {
+                const { command } = await import("./eject-keycloak-page");
+
+                await runAndLogErrors(() => command({ cliCommandOptions }));
+            })
     });
 
 program
@@ -105,10 +111,12 @@ program
     })
     .task({
         skip,
-        "handler": async cliCommandOptions => {
-            const { command } = await import("./initialize-email-theme");
-            await runAndLogErrors(() => command({ cliCommandOptions }));
-        }
+        "handler": cliCommandOptions =>
+            runAndLogErrors(async () => {
+                const { command } = await import("./initialize-email-theme");
+
+                await runAndLogErrors(() => command({ cliCommandOptions }));
+            })
     });
 
 program
@@ -118,10 +126,12 @@ program
     })
     .task({
         skip,
-        "handler": async cliCommandOptions => {
-            const { command } = await import("./start-keycloak-container");
-            await runAndLogErrors(() => command({ cliCommandOptions }));
-        }
+        "handler": cliCommandOptions =>
+            runAndLogErrors(async () => {
+                const { command } = await import("./start-keycloak-container");
+
+                await runAndLogErrors(() => command({ cliCommandOptions }));
+            })
     });
 
 program
@@ -131,10 +141,12 @@ program
     })
     .task({
         skip,
-        "handler": async cliCommandOptions => {
-            const { command } = await import("./copy-keycloak-resources-to-public");
-            await runAndLogErrors(() => command({ cliCommandOptions }));
-        }
+        "handler": cliCommandOptions =>
+            runAndLogErrors(async () => {
+                const { command } = await import("./copy-keycloak-resources-to-public");
+
+                await runAndLogErrors(() => command({ cliCommandOptions }));
+            })
     });
 
 // Fallback to build command if no command is provided
