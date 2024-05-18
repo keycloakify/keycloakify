@@ -65,9 +65,33 @@ program
     });
 
 program
-    .command({
+    .command<{ port: number; keycloakVersion: string | undefined }>({
         "name": "start-keycloak",
         "description": "Spin up a pre configured Docker image of Keycloak to test your theme."
+    })
+    .option({
+        "key": "port",
+        "name": (() => {
+            const name = "port";
+
+            optionsKeys.push(name);
+
+            return name;
+        })(),
+        "description": "Keycloak server port.",
+        "defaultValue": 8080
+    })
+    .option({
+        "key": "keycloakVersion",
+        "name": (() => {
+            const name = "keycloak-version";
+
+            optionsKeys.push(name);
+
+            return name;
+        })(),
+        "description": "Use a specific version of Keycloak.",
+        "defaultValue": undefined
     })
     .task({
         skip,

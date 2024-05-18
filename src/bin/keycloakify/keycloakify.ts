@@ -11,15 +11,15 @@ import { readThisNpmPackageVersion } from "../tools/readThisNpmPackageVersion";
 import * as os from "os";
 
 export async function command(params: { cliCommandOptions: CliCommandOptions }) {
-    check_if_maven_is_installed: {
+    exit_if_maven_not_installed: {
         let commandOutput: Buffer | undefined = undefined;
 
         try {
-            commandOutput = child_process.execSync("mvn --version");
+            commandOutput = child_process.execSync("mvn --version", { "stdio": ["ignore", "pipe", "ignore"] });
         } catch {}
 
         if (!commandOutput?.toString("utf8").includes("Apache Maven")) {
-            break check_if_maven_is_installed;
+            break exit_if_maven_not_installed;
         }
 
         const installationCommand = (() => {
