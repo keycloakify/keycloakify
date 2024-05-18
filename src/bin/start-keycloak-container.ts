@@ -117,6 +117,8 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         child_process.execSync(`docker rm ${containerName}`, { "stdio": "ignore" });
     } catch {}
 
+    console.log("up");
+
     const child = child_process.spawn(
         "docker",
         [
@@ -125,10 +127,10 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             ...["--name", containerName],
             ...["-e", "KEYCLOAK_ADMIN=admin"],
             ...["-e", "KEYCLOAK_ADMIN_PASSWORD=admin"],
-            ...["-v", `"${pathJoin(buildOptions.keycloakifyBuildDirPath, jarFileBasename)}":"/opt/keycloak/providers/keycloak-theme.jar"`],
+            ...["-v", `${pathJoin(buildOptions.keycloakifyBuildDirPath, jarFileBasename)}:/opt/keycloak/providers/keycloak-theme.jar`],
             ...(keycloakMajorNumber <= 20 ? ["-e", "JAVA_OPTS=-Dkeycloak.profile=preview"] : []),
-            ...mountTargets.map(({ localPath, containerPath }) => ["-v", `"${localPath}":"${containerPath}":rw`]).flat(),
-            ...["-it", `quay.io/keycloak/keycloak:${keycloakVersion}`],
+            ...mountTargets.map(({ localPath, containerPath }) => ["-v", `${localPath}:${containerPath}:rw`]).flat(),
+            `quay.io/keycloak/keycloak:${keycloakVersion}`,
             "start-dev",
             ...(21 <= keycloakMajorNumber && keycloakMajorNumber < 24 ? ["--features=declarative-user-profile"] : [])
         ],
@@ -137,7 +139,9 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         }
     );
 
-    child.stdout.on("data", data => console.log(data.toString("utf8")));
+    child.stdout.on("data", data => process.stdout.write(data));
 
-    child.stderr.on("data", data => console.error(data.toString("utf8")));
+    child.stderr.on("data", data => process.stderr.write(data));
+
+    child.on("exit", process.exit);
 }
