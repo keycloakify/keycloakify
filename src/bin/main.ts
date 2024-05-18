@@ -62,6 +62,21 @@ program
 
 program
     .command({
+        "name": "start-keycloak",
+        "description": "Spin up a pre configured Docker image of Keycloak to test your theme."
+    })
+    .task({
+        skip,
+        "handler": cliCommandOptions =>
+            runAndLogErrors(async () => {
+                const { command } = await import("./start-keycloak");
+
+                await runAndLogErrors(() => command({ cliCommandOptions }));
+            })
+    });
+
+program
+    .command({
         "name": "download-builtin-keycloak-theme",
         "description": "Download the built-in Keycloak theme."
     })
@@ -100,21 +115,6 @@ program
         "handler": cliCommandOptions =>
             runAndLogErrors(async () => {
                 const { command } = await import("./initialize-email-theme");
-
-                await runAndLogErrors(() => command({ cliCommandOptions }));
-            })
-    });
-
-program
-    .command({
-        "name": "start-keycloak-container",
-        "description": "Spin up a Keycloak container with the theme preloaded and the realm pre configured."
-    })
-    .task({
-        skip,
-        "handler": cliCommandOptions =>
-            runAndLogErrors(async () => {
-                const { command } = await import("./start-keycloak-container");
 
                 await runAndLogErrors(() => command({ cliCommandOptions }));
             })
