@@ -7,7 +7,7 @@ export type CliCommandOptions = {
     reactAppRootDirPath: string | undefined;
 };
 
-const program = termost<CliCommandOptions>("Keycloak theme builder");
+const program = termost<CliCommandOptions>("Keycloakify CLI");
 
 const optionsKeys: string[] = [];
 
@@ -21,7 +21,11 @@ program.option({
 
         return { long, short };
     })(),
-    "description": "https://docs.keycloakify.dev/build-options#project-or-p-cli-option",
+    "description": [
+        `For monorepos, path to the keycloakify project.`,
+        "Example: `npx keycloakify build --project packages/keycloak-theme`",
+        "https://docs.keycloakify.dev/build-options#project-or-p-cli-option"
+    ].join(" "),
     "defaultValue": undefined
 });
 
