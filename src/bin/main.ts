@@ -10,19 +10,45 @@ export type CliCommandOptions = {
 
 const program = termost<CliCommandOptions>("Keycloak theme builder");
 
+const optionsKeys: string[] = [];
+
 program
     .option({
         "key": "reactAppRootDirPath",
-        "name": { "long": "project", "short": "p" },
+        "name": (() => {
+            const long = "project";
+            const short = "p";
+
+            optionsKeys.push(long, short);
+
+            return { long, short };
+        })(),
         "description": "https://docs.keycloakify.dev/build-options#project-or-p-cli-option",
         "defaultValue": undefined
     })
     .option({
         "key": "isSilent",
-        "name": "silent",
+        "name": (() => {
+            const name = "silent";
+
+            optionsKeys.push(name);
+
+            return name;
+        })(),
         "description": "https://docs.keycloakify.dev/build-options#silent",
         "defaultValue": false
     });
+
+function skip(_context: any, argv: { options: Record<string, unknown> }) {
+    const unrecognizedOptionKey = Object.keys(argv.options).find(key => !optionsKeys.includes(key));
+
+    if (unrecognizedOptionKey !== undefined) {
+        console.error(`keycloakify: Unrecognized option: ${unrecognizedOptionKey.length === 1 ? "-" : "--"}${unrecognizedOptionKey}`);
+        process.exit(1);
+    }
+
+    return false;
+}
 
 program
     .command({
@@ -30,6 +56,7 @@ program
         "description": "Build the theme (default subcommand)."
     })
     .task({
+        skip,
         "handler": async cliCommandOptions => {
             const { command } = await import("./keycloakify");
             return command({ cliCommandOptions });
@@ -42,6 +69,7 @@ program
         "description": "Download the built-in Keycloak theme."
     })
     .task({
+        skip,
         "handler": async cliCommandOptions => {
             const { command } = await import("./download-builtin-keycloak-theme");
             return command({ cliCommandOptions });
@@ -54,6 +82,7 @@ program
         "description": "Eject a Keycloak page."
     })
     .task({
+        skip,
         "handler": async cliCommandOptions => {
             const { command } = await import("./eject-keycloak-page");
             return command({ cliCommandOptions });
@@ -66,6 +95,7 @@ program
         "description": "Initialize an email theme."
     })
     .task({
+        skip,
         "handler": async cliCommandOptions => {
             const { command } = await import("./initialize-email-theme");
             return command({ cliCommandOptions });
@@ -81,6 +111,7 @@ program
         ].join(" ")
     })
     .task({
+        skip,
         "handler": async cliCommandOptions => {
             const { command } = await import("./copy-keycloak-resources-to-public");
             return command({ cliCommandOptions });
@@ -93,6 +124,7 @@ program
         "description": "Spin up a Keycloak container with the theme preloaded and the realm pre configured."
     })
     .task({
+        skip,
         "handler": async cliCommandOptions => {
             const { command } = await import("./start-keycloak-container");
             return command({ cliCommandOptions });
@@ -103,9 +135,11 @@ program
 {
     const [, , ...rest] = process.argv;
 
-    if (rest.length === 0 || !rest[0].startsWith("-")) {
-        child_process.spawnSync("npx", ["keycloakify", "build", ...rest], {
+    if (rest.length === 0 || (rest[0].startsWith("-") && rest[0] !== "--help" && rest[0] !== "-h")) {
+        const { status } = child_process.spawnSync("npx", ["keycloakify", "build", ...rest], {
             "stdio": "inherit"
         });
+
+        process.exit(status ?? 1);
     }
 }
