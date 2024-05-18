@@ -2,7 +2,7 @@ import { getLatestsSemVersionedTagFactory } from "../tools/octokit-addons/getLat
 import { Octokit } from "@octokit/rest";
 import cliSelect from "cli-select";
 import { SemVer } from "../tools/SemVer";
-import { join as pathJoin } from "path";
+import { join as pathJoin, dirname as pathDirname } from "path";
 import * as fs from "fs";
 import type { ReturnType } from "tsafe";
 import { id } from "tsafe/id";
@@ -54,6 +54,14 @@ export async function promptKeycloakVersion(params: { startingFromMajor: number 
             "owner": "keycloak",
             "repo": "keycloak"
         });
+
+        {
+            const dirPath = pathDirname(cacheFilePath);
+
+            if (!fs.existsSync(dirPath)) {
+                fs.mkdirSync(dirPath, { "recursive": true });
+            }
+        }
 
         fs.writeFileSync(
             cacheFilePath,
