@@ -113,22 +113,6 @@ program
 
 program
     .command({
-        "name": "copy-keycloak-resources-to-public",
-        "description": [
-            "Copy Keycloak default theme resources to the public directory.",
-            "This command is meant to be explicitly used in Webpack projects only."
-        ].join(" ")
-    })
-    .task({
-        skip,
-        "handler": async cliCommandOptions => {
-            const { command } = await import("./copy-keycloak-resources-to-public");
-            await runAndLogErrors(() => command({ cliCommandOptions }));
-        }
-    });
-
-program
-    .command({
         "name": "start-keycloak-container",
         "description": "Spin up a Keycloak container with the theme preloaded and the realm pre configured."
     })
@@ -136,6 +120,19 @@ program
         skip,
         "handler": async cliCommandOptions => {
             const { command } = await import("./start-keycloak-container");
+            await runAndLogErrors(() => command({ cliCommandOptions }));
+        }
+    });
+
+program
+    .command({
+        "name": "copy-keycloak-resources-to-public",
+        "description": "(Webpack/Create-React-App only) Copy Keycloak default theme resources to the public directory."
+    })
+    .task({
+        skip,
+        "handler": async cliCommandOptions => {
+            const { command } = await import("./copy-keycloak-resources-to-public");
             await runAndLogErrors(() => command({ cliCommandOptions }));
         }
     });
