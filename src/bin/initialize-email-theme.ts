@@ -32,7 +32,8 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     const { keycloakVersion } = await promptKeycloakVersion({
         // NOTE: This is arbitrary
-        "startingFromMajor": 17
+        "startingFromMajor": 17,
+        "cacheDirPath": buildOptions.cacheDirPath
     });
 
     const builtinKeycloakThemeTmpDirPath = pathJoin(buildOptions.cacheDirPath, "initialize-email-theme_tmp");

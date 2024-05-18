@@ -17,7 +17,8 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     console.log("Select the Keycloak version from which you want to download the builtins theme:");
 
     const { keycloakVersion } = await promptKeycloakVersion({
-        "startingFromMajor": undefined
+        "startingFromMajor": undefined,
+        "cacheDirPath": buildOptions.cacheDirPath
     });
 
     const destDirPath = pathJoin(buildOptions.keycloakifyBuildDirPath, "src", "main", "resources", "theme");

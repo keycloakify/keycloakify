@@ -29,7 +29,8 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         keycloakMajorNumber: number;
     }> {
         const { keycloakVersion } = await promptKeycloakVersion({
-            "startingFromMajor": 17
+            "startingFromMajor": 17,
+            "cacheDirPath": buildOptions.cacheDirPath
         });
 
         const keycloakMajorNumber = SemVer.parse(keycloakVersion).major;

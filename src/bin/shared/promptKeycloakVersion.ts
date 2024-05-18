@@ -2,9 +2,13 @@ import { getLatestsSemVersionedTagFactory } from "../tools/octokit-addons/getLat
 import { Octokit } from "@octokit/rest";
 import cliSelect from "cli-select";
 import { SemVer } from "../tools/SemVer";
+import { join as pathJoin } from "path";
+import * as fs from "fs";
+import type { ReturnType } from "tsafe";
+import { id } from "tsafe/id";
 
-export async function promptKeycloakVersion(params: { startingFromMajor: number | undefined }) {
-    const { startingFromMajor } = params;
+export async function promptKeycloakVersion(params: { startingFromMajor: number | undefined; cacheDirPath: string }) {
+    const { startingFromMajor, cacheDirPath } = params;
 
     const { getLatestsSemVersionedTag } = (() => {
         const { octokit } = (() => {
@@ -22,13 +26,51 @@ export async function promptKeycloakVersion(params: { startingFromMajor: number 
 
     const semVersionedTagByMajor = new Map<number, { tag: string; version: SemVer }>();
 
-    (
-        await getLatestsSemVersionedTag({
+    const semVersionedTags = await (async () => {
+        const cacheFilePath = pathJoin(cacheDirPath, "keycloak-versions.json");
+
+        type Cache = {
+            time: number;
+            semVersionedTags: ReturnType<typeof getLatestsSemVersionedTag>;
+        };
+
+        use_cache: {
+            if (!fs.existsSync(cacheFilePath)) {
+                break use_cache;
+            }
+
+            const cache: Cache = JSON.parse(fs.readFileSync(cacheFilePath).toString("utf8"));
+
+            if (Date.now() - cache.time > 3_600_000) {
+                fs.unlinkSync(cacheFilePath);
+                break use_cache;
+            }
+
+            return cache.semVersionedTags;
+        }
+
+        const semVersionedTags = await getLatestsSemVersionedTag({
             "count": 50,
             "owner": "keycloak",
             "repo": "keycloak"
-        })
-    ).forEach(semVersionedTag => {
+        });
+
+        fs.writeFileSync(
+            cacheFilePath,
+            JSON.stringify(
+                id<Cache>({
+                    "time": Date.now(),
+                    semVersionedTags
+                }),
+                null,
+                2
+            )
+        );
+
+        return semVersionedTags;
+    })();
+
+    semVersionedTags.forEach(semVersionedTag => {
         if (startingFromMajor !== undefined && semVersionedTag.version.major < startingFromMajor) {
             return;
         }
