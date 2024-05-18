@@ -54,6 +54,10 @@ export async function copyKeycloakResourcesToPublic(params: { buildOptions: Buil
 
     rmSync(destDirPath, { "force": true, "recursive": true });
 
+    fs.mkdirSync(destDirPath, { "recursive": true });
+
+    fs.writeFileSync(pathJoin(destDirPath, ".gitignore"), Buffer.from("*", "utf8"));
+
     for (const themeType of themeTypes) {
         await downloadKeycloakStaticResources({
             "keycloakVersion": (() => {
@@ -76,12 +80,11 @@ export async function copyKeycloakResourcesToPublic(params: { buildOptions: Buil
             // prettier-ignore
             [
                 "This is just a test folder that helps develop",
-                "the login and register page without having to run a Keycloak container"
+                "the login and register page without having to run a Keycloak container\n",
+                "This directory will be automatically excluded from the final build."
             ].join(" ")
         )
     );
-
-    fs.writeFileSync(pathJoin(buildOptions.publicDirPath, keycloak_resources, ".gitignore"), Buffer.from("*", "utf8"));
 
     fs.writeFileSync(keycloakifyBuildinfoFilePath, Buffer.from(keycloakifyBuildinfoRaw, "utf8"));
 }
