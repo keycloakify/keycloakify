@@ -119,8 +119,6 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         child_process.execSync(`docker rm ${containerName}`, { "stdio": "ignore" });
     } catch {}
 
-    console.log("up");
-
     const child = child_process.spawn(
         "docker",
         [
