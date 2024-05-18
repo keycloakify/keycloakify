@@ -8,9 +8,38 @@ import { buildJars } from "./buildJars";
 import type { CliCommandOptions } from "../main";
 import chalk from "chalk";
 import { readThisNpmPackageVersion } from "../tools/readThisNpmPackageVersion";
+import * as os from "os";
 
 export async function command(params: { cliCommandOptions: CliCommandOptions }) {
     const { cliCommandOptions } = params;
+
+    check_if_maven_is_installed: {
+        let commandOutput: Buffer | undefined = undefined;
+
+        try {
+            commandOutput = child_process.execSync("mvn --version");
+        } catch {}
+
+        if (!commandOutput?.toString("utf8").includes("Apache Maven")) {
+            break check_if_maven_is_installed;
+        }
+
+        const installationCommand = (() => {
+            switch (os.platform()) {
+                case "darwin":
+                    return "brew install nvm";
+                case "win32":
+                    return "choco install nvm";
+                case "linux":
+                default:
+                    return "sudo apt-get install nvm";
+            }
+        })();
+
+        console.log(`${chalk.red("Apache Maven required.")} Install it with \`${chalk.bold(installationCommand)}\` (for example)`);
+
+        process.exit(1);
+    }
 
     const buildOptions = readBuildOptions({ cliCommandOptions });
 
