@@ -89,8 +89,6 @@ export async function promptKeycloakVersion(params: { startingFromMajor: number 
     const { value } = await cliSelect<string>({
         "values": lastMajorVersions
     }).catch(() => {
-        console.log("Aborting");
-
         process.exit(-1);
     });
 
