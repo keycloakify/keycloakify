@@ -35,10 +35,12 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         const keycloakMajorNumber = SemVer.parse(keycloakVersion).major;
 
         if (doesImplementAccountTheme && keycloakMajorNumber === 22) {
-            console.log([
-                "Unfortunately, Keycloakify themes that implements an account theme do not work on Keycloak 22",
-                "Please select any other Keycloak version"
-            ]);
+            console.log(
+                [
+                    "Unfortunately, Keycloakify themes that implements an account theme do not work on Keycloak 22",
+                    "Please select any other Keycloak version"
+                ].join(" ")
+            );
             return getKeycloakMajor();
         }
 
