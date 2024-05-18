@@ -14,6 +14,8 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     const { log } = getLogger({ "isSilent": buildOptions.isSilent });
 
+    console.log("Select the Keycloak version from which you want to download the builtins theme:");
+
     const { keycloakVersion } = await promptKeycloakVersion({
         "startingFromMajor": undefined
     });

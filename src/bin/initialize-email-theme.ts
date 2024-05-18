@@ -28,7 +28,10 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         process.exit(-1);
     }
 
+    console.log("Initialize with the base email theme from which version of Keycloak?");
+
     const { keycloakVersion } = await promptKeycloakVersion({
+        // NOTE: This is arbitrary
         "startingFromMajor": 17
     });
 

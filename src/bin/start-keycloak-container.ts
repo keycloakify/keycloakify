@@ -22,6 +22,8 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     const doesImplementAccountTheme = metaInfKeycloakThemes.themes.some(({ name }) => name === accountV1ThemeName);
 
+    console.log("On which version of Keycloak do you want to test your theme?");
+
     const { keycloakVersion, keycloakMajorNumber } = await (async function getKeycloakMajor(): Promise<{
         keycloakVersion: string;
         keycloakMajorNumber: number;
