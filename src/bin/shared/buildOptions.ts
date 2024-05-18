@@ -12,7 +12,6 @@ import { vitePluginSubScriptEnvNames } from "./constants";
 /** Consolidated build option gathered form CLI arguments and config in package.json */
 export type BuildOptions = {
     bundler: "vite" | "webpack";
-    isSilent: boolean;
     themeVersion: string;
     themeNames: string[];
     extraThemeProperties: string[] | undefined;
@@ -168,7 +167,6 @@ export function readBuildOptions(params: { cliCommandOptions: CliCommandOptions 
 
     return {
         "bundler": resolvedViteConfig !== undefined ? "vite" : "webpack",
-        "isSilent": cliCommandOptions.isSilent,
         "themeVersion": process.env.KEYCLOAKIFY_THEME_VERSION ?? parsedPackageJson.version ?? "0.0.0",
         themeNames,
         "extraThemeProperties": userProvidedBuildOptions.extraThemeProperties,

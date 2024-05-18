@@ -99,7 +99,6 @@ export function keycloakify(params?: Params) {
             await copyKeycloakResourcesToPublic({
                 "buildOptions": readBuildOptions({
                     "cliCommandOptions": {
-                        "isSilent": true,
                         reactAppRootDirPath
                     }
                 })

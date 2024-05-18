@@ -4,7 +4,6 @@ import { termost } from "termost";
 import * as child_process from "child_process";
 
 export type CliCommandOptions = {
-    isSilent: boolean;
     reactAppRootDirPath: string | undefined;
 };
 
@@ -12,32 +11,19 @@ const program = termost<CliCommandOptions>("Keycloak theme builder");
 
 const optionsKeys: string[] = [];
 
-program
-    .option({
-        "key": "reactAppRootDirPath",
-        "name": (() => {
-            const long = "project";
-            const short = "p";
+program.option({
+    "key": "reactAppRootDirPath",
+    "name": (() => {
+        const long = "project";
+        const short = "p";
 
-            optionsKeys.push(long, short);
+        optionsKeys.push(long, short);
 
-            return { long, short };
-        })(),
-        "description": "https://docs.keycloakify.dev/build-options#project-or-p-cli-option",
-        "defaultValue": undefined
-    })
-    .option({
-        "key": "isSilent",
-        "name": (() => {
-            const name = "silent";
-
-            optionsKeys.push(name);
-
-            return name;
-        })(),
-        "description": "https://docs.keycloakify.dev/build-options#silent",
-        "defaultValue": false
-    });
+        return { long, short };
+    })(),
+    "description": "https://docs.keycloakify.dev/build-options#project-or-p-cli-option",
+    "defaultValue": undefined
+});
 
 function skip(_context: any, argv: { options: Record<string, unknown> }) {
     const unrecognizedOptionKey = Object.keys(argv.options).find(key => !optionsKeys.includes(key));
