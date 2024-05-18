@@ -228,7 +228,7 @@ export function readBuildOptions(params: { cliCommandOptions: CliCommandOptions 
                     if (process.env.XDG_CACHE_HOME !== undefined) {
                         return getAbsoluteAndInOsFormatPath({
                             "pathIsh": process.env.XDG_CACHE_HOME,
-                            "cwd": reactAppRootDirPath
+                            "cwd": process.cwd()
                         });
                     }
 
