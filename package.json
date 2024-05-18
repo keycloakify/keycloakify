@@ -107,7 +107,7 @@
         "@babel/generator": "^7.22.9",
         "@babel/parser": "^7.22.7",
         "@babel/types": "^7.22.5",
-        "@octokit/rest": "^18.12.0",
+        "@octokit/rest": "^20.1.1",
         "cheerio": "^1.0.0-rc.5",
         "cli-select": "^1.1.2",
         "evt": "^2.5.7",
