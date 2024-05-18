@@ -11,8 +11,6 @@ import { readThisNpmPackageVersion } from "../tools/readThisNpmPackageVersion";
 import * as os from "os";
 
 export async function command(params: { cliCommandOptions: CliCommandOptions }) {
-    const { cliCommandOptions } = params;
-
     check_if_maven_is_installed: {
         let commandOutput: Buffer | undefined = undefined;
 
@@ -40,6 +38,8 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
         process.exit(1);
     }
+
+    const { cliCommandOptions } = params;
 
     const buildOptions = readBuildOptions({ cliCommandOptions });
 

@@ -13,6 +13,45 @@ import * as child_process from "child_process";
 import chalk from "chalk";
 
 export async function command(params: { cliCommandOptions: CliCommandOptions }) {
+    check_if_docker_installed: {
+        let commandOutput: Buffer | undefined = undefined;
+
+        try {
+            commandOutput = child_process.execSync("docker --version");
+        } catch {}
+
+        if (!commandOutput?.toString("utf8").includes("Docker")) {
+            break check_if_docker_installed;
+        }
+
+        console.log(
+            [
+                `${chalk.red("Docker required.")}`,
+                `Install it with Docker Desktop: ${chalk.bold.underline("https://www.docker.com/products/docker-desktop/")}`,
+                `(or any other way)`
+            ].join(" ")
+        );
+
+        process.exit(1);
+    }
+
+    check_if_docker_is_running: {
+        let isDockerRunning: boolean;
+
+        try {
+            child_process.execSync("docker info");
+            isDockerRunning = true;
+        } catch {
+            isDockerRunning = false;
+        }
+
+        if (isDockerRunning) {
+            break check_if_docker_is_running;
+        }
+
+        console.log([`${chalk.red("Docker daemon is not running.")}`, `Please start Docker Desktop and try again.`].join(" "));
+    }
+
     const { cliCommandOptions } = params;
 
     const buildOptions = readBuildOptions({ cliCommandOptions });
