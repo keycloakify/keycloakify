@@ -56,7 +56,8 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         fs.writeFileSync(themePropertyFilePath, Buffer.from(`parent=base\n${fs.readFileSync(themePropertyFilePath).toString("utf8")}`, "utf8"));
     }
 
-    logger.log(`${pathRelative(process.cwd(), emailThemeSrcDirPath)} ready to be customized, feel free to remove every file you do not customize`);
+    logger.log(`The \`${pathJoin(".", pathRelative(process.cwd(), emailThemeSrcDirPath))}\` directory have been created`);
+    logger.log("You can delete any file you don't modify.");
 
     rmSync(builtinKeycloakThemeTmpDirPath, { "recursive": true });
 }
