@@ -4,7 +4,6 @@ import { getThisCodebaseRootDirPath } from "./tools/getThisCodebaseRootDirPath";
 import cliSelect from "cli-select";
 import { loginThemePageIds, accountThemePageIds, type LoginThemePageId, type AccountThemePageId } from "./shared/pageIds";
 import { capitalize } from "tsafe/capitalize";
-import { readFile, writeFile } from "fs/promises";
 import * as fs from "fs";
 import { join as pathJoin, relative as pathRelative, dirname as pathDirname } from "path";
 import { kebabCaseToCamelCase } from "./tools/kebabCaseToSnakeCase";
@@ -21,7 +20,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         cliCommandOptions
     });
 
-    console.log("Select a theme type");
+    console.log("Theme type:");
 
     const { value: themeType } = await cliSelect<ThemeType>({
         "values": [...themeTypes]
@@ -31,7 +30,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         process.exit(-1);
     });
 
-    console.log("Select a page you would like to eject");
+    console.log("Select the page you want to customize:");
 
     const { value: pageId } = await cliSelect<LoginThemePageId | AccountThemePageId>({
         "values": (() => {
@@ -49,11 +48,11 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         process.exit(-1);
     });
 
-    const pageBasename = capitalize(kebabCaseToCamelCase(pageId)).replace(/ftl$/, "tsx");
+    const componentPageBasename = capitalize(kebabCaseToCamelCase(pageId)).replace(/ftl$/, "tsx");
 
     const { themeSrcDirPath } = getThemeSrcDirPath({ "reactAppRootDirPath": buildOptions.reactAppRootDirPath });
 
-    const targetFilePath = pathJoin(themeSrcDirPath, themeType, "pages", pageBasename);
+    const targetFilePath = pathJoin(themeSrcDirPath, themeType, "pages", componentPageBasename);
 
     if (fs.existsSync(targetFilePath)) {
         console.log(`${pageId} is already ejected, ${pathRelative(process.cwd(), targetFilePath)} already exists`);
@@ -69,7 +68,53 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         }
     }
 
-    await writeFile(targetFilePath, await readFile(pathJoin(getThisCodebaseRootDirPath(), "src", themeType, "pages", pageBasename)));
+    const componentPageContent = fs
+        .readFileSync(pathJoin(getThisCodebaseRootDirPath(), "src", themeType, "pages", componentPageBasename))
+        .toString("utf8");
 
-    console.log(`${pathRelative(process.cwd(), targetFilePath)} created`);
+    fs.writeFileSync(targetFilePath, Buffer.from(componentPageContent, "utf8"));
+
+    const userProfileFormFieldComponentName = "UserProfileFormFields";
+
+    console.log(
+        [
+            ``,
+            `\`${pathJoin(".", pathRelative(process.cwd(), targetFilePath))}\` copy pasted from the Keycloakify source code into your project.`,
+            ``,
+            `You now need to update your page router:`,
+            ``,
+            `\`${pathJoin(".", pathRelative(process.cwd(), themeSrcDirPath), themeType, "KcApp.tsx")}\`:`,
+            "```",
+            `// ...`,
+            ``,
+            `+const ${componentPageBasename.replace(/.tsx$/, "")} = lazy(() => import("./pages/${componentPageBasename}"));`,
+            ``,
+            ` export default function KcApp(props: { kcContext: KcContext; }) {`,
+            ``,
+            `     // ...`,
+            ``,
+            `     return (`,
+            `         <Suspense>`,
+            `             {(() => {`,
+            `                 switch (kcContext.pageId) {`,
+            `                     // ...`,
+            `                     case "${pageId}": return (`,
+            `+                        <Login`,
+            `+                            {...{ kcContext, i18n, classes }}`,
+            `+                            Template={Template}`,
+            ...(!componentPageContent.includes(userProfileFormFieldComponentName)
+                ? []
+                : [`+                            ${userProfileFormFieldComponentName}={${userProfileFormFieldComponentName}}`]),
+            `+                            doUseDefaultCss={true}`,
+            `+                        />`,
+            `+                    );`,
+            `                     default: return <Fallback /* .. */ />;`,
+            `                 }`,
+            `             })()}`,
+            `         </Suspense>`,
+            `     );`,
+            ` }`,
+            "```"
+        ].join("\n")
+    );
 }
