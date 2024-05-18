@@ -50,6 +50,15 @@ function skip(_context: any, argv: { options: Record<string, unknown> }) {
     return false;
 }
 
+async function runAndLogErrors(fn: () => Promise<void>) {
+    try {
+        await fn();
+    } catch (error) {
+        console.error(error);
+        process.exit(1);
+    }
+}
+
 program
     .command({
         "name": "build",
@@ -59,7 +68,7 @@ program
         skip,
         "handler": async cliCommandOptions => {
             const { command } = await import("./keycloakify");
-            return command({ cliCommandOptions });
+            await runAndLogErrors(() => command({ cliCommandOptions }));
         }
     });
 
@@ -72,7 +81,7 @@ program
         skip,
         "handler": async cliCommandOptions => {
             const { command } = await import("./download-builtin-keycloak-theme");
-            return command({ cliCommandOptions });
+            await runAndLogErrors(() => command({ cliCommandOptions }));
         }
     });
 
@@ -85,7 +94,7 @@ program
         skip,
         "handler": async cliCommandOptions => {
             const { command } = await import("./eject-keycloak-page");
-            return command({ cliCommandOptions });
+            await runAndLogErrors(() => command({ cliCommandOptions }));
         }
     });
 
@@ -98,7 +107,7 @@ program
         skip,
         "handler": async cliCommandOptions => {
             const { command } = await import("./initialize-email-theme");
-            return command({ cliCommandOptions });
+            await runAndLogErrors(() => command({ cliCommandOptions }));
         }
     });
 
@@ -114,7 +123,7 @@ program
         skip,
         "handler": async cliCommandOptions => {
             const { command } = await import("./copy-keycloak-resources-to-public");
-            return command({ cliCommandOptions });
+            await runAndLogErrors(() => command({ cliCommandOptions }));
         }
     });
 
@@ -127,7 +136,7 @@ program
         skip,
         "handler": async cliCommandOptions => {
             const { command } = await import("./start-keycloak-container");
-            return command({ cliCommandOptions });
+            await runAndLogErrors(() => command({ cliCommandOptions }));
         }
     });
 
