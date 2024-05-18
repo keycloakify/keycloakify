@@ -4,7 +4,6 @@ import { transformCodebase } from "./tools/transformCodebase";
 import { promptKeycloakVersion } from "./shared/promptKeycloakVersion";
 import { readBuildOptions } from "./shared/buildOptions";
 import * as fs from "fs";
-import { getLogger } from "./tools/logger";
 import { getThemeSrcDirPath } from "./shared/getThemeSrcDirPath";
 import { rmSync } from "./tools/fs.rmSync";
 import type { CliCommandOptions } from "./main";
@@ -14,8 +13,6 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     const buildOptions = readBuildOptions({ cliCommandOptions });
 
-    const logger = getLogger({ "isSilent": buildOptions.isSilent });
-
     const { themeSrcDirPath } = getThemeSrcDirPath({
         "reactAppRootDirPath": buildOptions.reactAppRootDirPath
     });
@@ -23,7 +20,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     const emailThemeSrcDirPath = pathJoin(themeSrcDirPath, "email");
 
     if (fs.existsSync(emailThemeSrcDirPath)) {
-        logger.warn(`There is already a ${pathRelative(process.cwd(), emailThemeSrcDirPath)} directory in your project. Aborting.`);
+        console.warn(`There is already a ${pathRelative(process.cwd(), emailThemeSrcDirPath)} directory in your project. Aborting.`);
 
         process.exit(-1);
     }
@@ -57,8 +54,8 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         fs.writeFileSync(themePropertyFilePath, Buffer.from(`parent=base\n${fs.readFileSync(themePropertyFilePath).toString("utf8")}`, "utf8"));
     }
 
-    logger.log(`The \`${pathJoin(".", pathRelative(process.cwd(), emailThemeSrcDirPath))}\` directory have been created.`);
-    logger.log("You can delete any file you don't modify.");
+    console.log(`The \`${pathJoin(".", pathRelative(process.cwd(), emailThemeSrcDirPath))}\` directory have been created.`);
+    console.log("You can delete any file you don't modify.");
 
     rmSync(builtinKeycloakThemeTmpDirPath, { "recursive": true });
 }

@@ -22,7 +22,7 @@ import { generateMessageProperties } from "./generateMessageProperties";
 import { bringInAccountV1 } from "./bringInAccountV1";
 import { getThemeSrcDirPath } from "../../shared/getThemeSrcDirPath";
 import { rmSync } from "../../tools/fs.rmSync";
-import { readThisNpmProjectVersion } from "../../tools/readThisNpmProjectVersion";
+import { readThisNpmPackageVersion } from "../../tools/readThisNpmPackageVersion";
 import { writeMetaInfKeycloakThemes, type MetaInfKeycloakTheme } from "../../shared/metaInfKeycloakThemes";
 import { objectEntries } from "tsafe/objectEntries";
 
@@ -138,7 +138,7 @@ export async function generateSrcMainResourcesForMainTheme(params: { themeName: 
             "indexHtmlCode": fs.readFileSync(pathJoin(buildOptions.reactAppBuildDirPath, "index.html")).toString("utf8"),
             cssGlobalsToDefine,
             buildOptions,
-            "keycloakifyVersion": readThisNpmProjectVersion(),
+            "keycloakifyVersion": readThisNpmPackageVersion(),
             themeType,
             "fieldNames": readFieldNameUsage({
                 themeSrcDirPath,

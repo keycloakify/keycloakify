@@ -4,7 +4,7 @@ import {
 } from "./downloadKeycloakStaticResources";
 import { join as pathJoin, relative as pathRelative } from "path";
 import { themeTypes, keycloak_resources, lastKeycloakVersionWithAccountV1 } from "../shared/constants";
-import { readThisNpmProjectVersion } from "../tools/readThisNpmProjectVersion";
+import { readThisNpmPackageVersion } from "../tools/readThisNpmPackageVersion";
 import { assert } from "tsafe/assert";
 import * as fs from "fs";
 import { rmSync } from "../tools/fs.rmSync";
@@ -27,9 +27,9 @@ export async function copyKeycloakResourcesToPublic(params: { buildOptions: Buil
     const keycloakifyBuildinfoRaw = JSON.stringify(
         {
             destDirPath,
-            "keycloakifyVersion": readThisNpmProjectVersion(),
+            "keycloakifyVersion": readThisNpmPackageVersion(),
             "buildOptions": {
-                "loginThemeResourcesFromKeycloakVersion": readThisNpmProjectVersion(),
+                "loginThemeResourcesFromKeycloakVersion": readThisNpmPackageVersion(),
                 "cacheDirPath": pathRelative(destDirPath, buildOptions.cacheDirPath),
                 "npmWorkspaceRootDirPath": pathRelative(destDirPath, buildOptions.npmWorkspaceRootDirPath)
             }

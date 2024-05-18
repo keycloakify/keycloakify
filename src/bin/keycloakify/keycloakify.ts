@@ -3,19 +3,25 @@ import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path
 import * as child_process from "child_process";
 import * as fs from "fs";
 import { readBuildOptions } from "../shared/buildOptions";
-import { getLogger } from "../tools/logger";
 import { vitePluginSubScriptEnvNames } from "../shared/constants";
 import { buildJars } from "./buildJars";
 import type { CliCommandOptions } from "../main";
+import chalk from "chalk";
+import { readThisNpmPackageVersion } from "../tools/readThisNpmPackageVersion";
 
 export async function command(params: { cliCommandOptions: CliCommandOptions }) {
     const { cliCommandOptions } = params;
 
     const buildOptions = readBuildOptions({ cliCommandOptions });
 
-    const logger = getLogger({ "isSilent": buildOptions.isSilent });
+    console.log(
+        [
+            chalk.cyan(`keycloakify v${readThisNpmPackageVersion()}`),
+            chalk.green(`Building the keycloak theme in .${pathSep}${pathRelative(process.cwd(), buildOptions.keycloakifyBuildDirPath)} ...`)
+        ].join(" ")
+    );
 
-    logger.log("🔏 Building the keycloak theme...⌚");
+    const startTime = Date.now();
 
     {
         if (!fs.existsSync(buildOptions.keycloakifyBuildDirPath)) {
@@ -43,10 +49,5 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     await buildJars({ buildOptions });
 
-    logger.log(
-        `✅ Your keycloak theme has been generated and bundled into .${pathSep}${pathJoin(
-            pathRelative(process.cwd(), buildOptions.keycloakifyBuildDirPath),
-            "keycloak-theme-for-kc-*.jar"
-        )}`
-    );
+    console.log(chalk.green(`✓ built in ${((Date.now() - startTime) / 1000).toFixed(2)}s`));
 }
