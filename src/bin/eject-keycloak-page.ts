@@ -5,8 +5,8 @@ import cliSelect from "cli-select";
 import { loginThemePageIds, accountThemePageIds, type LoginThemePageId, type AccountThemePageId } from "./shared/pageIds";
 import { capitalize } from "tsafe/capitalize";
 import { readFile, writeFile } from "fs/promises";
-import { existsSync } from "fs";
-import { join as pathJoin, relative as pathRelative } from "path";
+import * as fs from "fs";
+import { join as pathJoin, relative as pathRelative, dirname as pathDirname } from "path";
 import { kebabCaseToCamelCase } from "./tools/kebabCaseToSnakeCase";
 import { assert, Equals } from "tsafe/assert";
 import { getThemeSrcDirPath } from "./shared/getThemeSrcDirPath";
@@ -55,10 +55,18 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     const targetFilePath = pathJoin(themeSrcDirPath, themeType, "pages", pageBasename);
 
-    if (existsSync(targetFilePath)) {
+    if (fs.existsSync(targetFilePath)) {
         console.log(`${pageId} is already ejected, ${pathRelative(process.cwd(), targetFilePath)} already exists`);
 
         process.exit(-1);
+    }
+
+    {
+        const targetDirPath = pathDirname(targetFilePath);
+
+        if (!fs.existsSync(targetDirPath)) {
+            fs.mkdirSync(targetDirPath, { "recursive": true });
+        }
     }
 
     await writeFile(targetFilePath, await readFile(pathJoin(getThisCodebaseRootDirPath(), "src", themeType, "pages", pageBasename)));
