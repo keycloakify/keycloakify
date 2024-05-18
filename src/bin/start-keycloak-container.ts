@@ -10,6 +10,7 @@ import { assert, type Equals } from "tsafe/assert";
 import * as fs from "fs";
 import { join as pathJoin, posix as pathPosix } from "path";
 import * as child_process from "child_process";
+import chalk from "chalk";
 
 export async function command(params: { cliCommandOptions: CliCommandOptions }) {
     const { cliCommandOptions } = params;
@@ -120,11 +121,13 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         child_process.execSync(`docker rm ${containerName}`, { "stdio": "ignore" });
     } catch {}
 
+    const externalPort = 8080;
+
     const child = child_process.spawn(
         "docker",
         [
             "run",
-            ...["-p", "8080:8080"],
+            ...["-p", `${externalPort}:8080`],
             ...["--name", containerName],
             ...["-e", "KEYCLOAK_ADMIN=admin"],
             ...["-e", "KEYCLOAK_ADMIN_PASSWORD=admin"],
@@ -143,6 +146,30 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     child.stdout.on("data", data => process.stdout.write(data));
 
     child.stderr.on("data", data => process.stderr.write(data));
+
+    {
+        const handler = async (data: Buffer) => {
+            if (!data.toString("utf8").includes("Listening on: http://0.0.0.0:8080")) {
+                return;
+            }
+
+            child.stdout.off("data", handler);
+
+            await new Promise(resolve => setTimeout(resolve, 1_000));
+
+            console.log(
+                [
+                    "",
+                    "",
+                    `${chalk.green("Your theme is accessible at:")}`,
+                    `${chalk.green("➜")} ${chalk.cyan.bold("https://test.keycloakify.dev/")}`,
+                    ""
+                ].join("\n")
+            );
+        };
+
+        child.stdout.on("data", handler);
+    }
 
     child.on("exit", process.exit);
 }
