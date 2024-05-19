@@ -95,7 +95,7 @@
         "@types/yauzl": "^2.10.0",
         "@types/yazl": "^2.4.2",
         "@vercel/ncc": "^0.38.1",
-        "chalk": "4.1.2",
+        "chalk": "^5.3.0",
         "cheerio": "^1.0.0-rc.5",
         "chokidar-cli": "^3.0.0",
         "cli-select": "^1.1.2",
@@ -103,7 +103,7 @@
         "husky": "^4.3.8",
         "lint-staged": "^11.0.0",
         "magic-string": "^0.30.7",
-        "make-fetch-happen": "^11.0.3",
+        "make-fetch-happen": "^13.0.1",
         "patch-package": "^8.0.0",
         "powerhooks": "^0.26.7",
         "prettier": "^2.3.0",
@@ -122,7 +122,6 @@
         "vitest": "^0.29.8",
         "yauzl": "^2.10.0",
         "yazl": "^2.5.1",
-        "zod": "^3.17.10",
-        "zod-to-json-schema": "^3.20.4"
+        "zod": "^3.17.10"
     }
 }
