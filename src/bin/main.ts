@@ -8,11 +8,19 @@ export type CliCommandOptions = {
     reactAppRootDirPath: string | undefined;
 };
 
-const program = termost<CliCommandOptions>({
-    "name": "keycloakify",
-    "description": "Keycloakify CLI",
-    "version": readThisNpmPackageVersion()
-});
+const program = termost<CliCommandOptions>(
+    {
+        "name": "keycloakify",
+        "description": "Keycloakify CLI",
+        "version": readThisNpmPackageVersion()
+    },
+    {
+        "onException": error => {
+            console.error(error);
+            process.exit(1);
+        }
+    }
+);
 
 const optionsKeys: string[] = [];
 
@@ -45,15 +53,6 @@ function skip(_context: any, argv: { options: Record<string, unknown> }) {
     return false;
 }
 
-async function runAndLogErrors(fn: () => Promise<void>) {
-    try {
-        await fn();
-    } catch (error) {
-        console.error(error);
-        process.exit(1);
-    }
-}
-
 program
     .command({
         "name": "build",
@@ -61,12 +60,11 @@ program
     })
     .task({
         skip,
-        "handler": cliCommandOptions =>
-            runAndLogErrors(async () => {
-                const { command } = await import("./keycloakify/index");
+        "handler": async cliCommandOptions => {
+            const { command } = await import("./keycloakify");
 
-                await runAndLogErrors(() => command({ cliCommandOptions }));
-            })
+            await command({ cliCommandOptions });
+        }
     });
 
 program
@@ -100,12 +98,11 @@ program
     })
     .task({
         skip,
-        "handler": cliCommandOptions =>
-            runAndLogErrors(async () => {
-                const { command } = await import("./start-keycloak");
+        "handler": async cliCommandOptions => {
+            const { command } = await import("./start-keycloak");
 
-                await runAndLogErrors(() => command({ cliCommandOptions }));
-            })
+            await command({ cliCommandOptions });
+        }
     });
 
 program
@@ -115,12 +112,11 @@ program
     })
     .task({
         skip,
-        "handler": cliCommandOptions =>
-            runAndLogErrors(async () => {
-                const { command } = await import("./download-builtin-keycloak-theme");
+        "handler": async cliCommandOptions => {
+            const { command } = await import("./download-builtin-keycloak-theme");
 
-                await runAndLogErrors(() => command({ cliCommandOptions }));
-            })
+            await command({ cliCommandOptions });
+        }
     });
 
 program
@@ -130,12 +126,11 @@ program
     })
     .task({
         skip,
-        "handler": cliCommandOptions =>
-            runAndLogErrors(async () => {
-                const { command } = await import("./eject-keycloak-page");
+        "handler": async cliCommandOptions => {
+            const { command } = await import("./eject-keycloak-page");
 
-                await runAndLogErrors(() => command({ cliCommandOptions }));
-            })
+            await command({ cliCommandOptions });
+        }
     });
 
 program
@@ -145,12 +140,11 @@ program
     })
     .task({
         skip,
-        "handler": cliCommandOptions =>
-            runAndLogErrors(async () => {
-                const { command } = await import("./initialize-email-theme");
+        "handler": async cliCommandOptions => {
+            const { command } = await import("./initialize-email-theme");
 
-                await runAndLogErrors(() => command({ cliCommandOptions }));
-            })
+            await command({ cliCommandOptions });
+        }
     });
 
 program
@@ -160,12 +154,11 @@ program
     })
     .task({
         skip,
-        "handler": cliCommandOptions =>
-            runAndLogErrors(async () => {
-                const { command } = await import("./copy-keycloak-resources-to-public");
+        "handler": async cliCommandOptions => {
+            const { command } = await import("./copy-keycloak-resources-to-public");
 
-                await runAndLogErrors(() => command({ cliCommandOptions }));
-            })
+            await command({ cliCommandOptions });
+        }
     });
 
 // Fallback to build command if no command is provided
