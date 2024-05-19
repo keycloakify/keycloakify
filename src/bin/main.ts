@@ -1,13 +1,18 @@
 #!/usr/bin/env node
 
 import { termost } from "termost";
+import { readThisNpmPackageVersion } from "./tools/readThisNpmPackageVersion";
 import * as child_process from "child_process";
 
 export type CliCommandOptions = {
     reactAppRootDirPath: string | undefined;
 };
 
-const program = termost<CliCommandOptions>("Keycloakify CLI");
+const program = termost<CliCommandOptions>({
+    "name": "keycloakify",
+    "description": "Keycloakify CLI",
+    "version": readThisNpmPackageVersion()
+});
 
 const optionsKeys: string[] = [];
 
@@ -58,7 +63,7 @@ program
         skip,
         "handler": cliCommandOptions =>
             runAndLogErrors(async () => {
-                const { command } = await import("./keycloakify");
+                const { command } = await import("./keycloakify/index");
 
                 await runAndLogErrors(() => command({ cliCommandOptions }));
             })

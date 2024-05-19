@@ -2,14 +2,20 @@
 
 import { getThisCodebaseRootDirPath } from "./tools/getThisCodebaseRootDirPath";
 import cliSelect from "cli-select";
-import { loginThemePageIds, accountThemePageIds, type LoginThemePageId, type AccountThemePageId } from "./shared/pageIds";
+import {
+    loginThemePageIds,
+    accountThemePageIds,
+    type LoginThemePageId,
+    type AccountThemePageId,
+    themeTypes,
+    type ThemeType
+} from "./shared/constants";
 import { capitalize } from "tsafe/capitalize";
 import * as fs from "fs";
 import { join as pathJoin, relative as pathRelative, dirname as pathDirname } from "path";
 import { kebabCaseToCamelCase } from "./tools/kebabCaseToSnakeCase";
 import { assert, Equals } from "tsafe/assert";
 import { getThemeSrcDirPath } from "./shared/getThemeSrcDirPath";
-import { themeTypes, type ThemeType } from "./shared/constants";
 import type { CliCommandOptions } from "./main";
 import { readBuildOptions } from "./shared/buildOptions";
 

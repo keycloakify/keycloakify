@@ -1,9 +1,8 @@
 import "minimal-polyfills/Object.fromEntries";
 import type { KcContext, Attribute } from "./KcContext";
-import { resources_common, keycloak_resources } from "keycloakify/bin/shared/constants";
+import { resources_common, keycloak_resources, type LoginThemePageId } from "keycloakify/bin/shared/constants";
 import { id } from "tsafe/id";
 import { assert, type Equals } from "tsafe/assert";
-import type { LoginThemePageId } from "keycloakify/bin/shared/pageIds";
 import { BASE_URL } from "keycloakify/lib/BASE_URL";
 
 const attributes: Attribute[] = [

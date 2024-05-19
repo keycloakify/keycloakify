@@ -4,13 +4,14 @@ import { join as pathJoin, resolve as pathResolve } from "path";
 import { replaceImportsInJsCode } from "../replacers/replaceImportsInJsCode";
 import { replaceImportsInCssCode } from "../replacers/replaceImportsInCssCode";
 import { generateFtlFilesCodeFactory } from "../generateFtl";
-import { loginThemePageIds, accountThemePageIds } from "../../shared/pageIds";
 import {
     type ThemeType,
     lastKeycloakVersionWithAccountV1,
     keycloak_resources,
     accountV1ThemeName,
-    basenameOfTheKeycloakifyResourcesDir
+    basenameOfTheKeycloakifyResourcesDir,
+    loginThemePageIds,
+    accountThemePageIds
 } from "../../shared/constants";
 import { isInside } from "../../tools/isInside";
 import type { BuildOptions } from "../../shared/buildOptions";

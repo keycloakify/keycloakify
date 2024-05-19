@@ -4,7 +4,6 @@ import { join as pathJoin, relative as pathRelative, dirname as pathDirname, sep
 import { crawl } from "../src/bin/tools/crawl";
 import { downloadBuiltinKeycloakTheme } from "../src/bin/shared/downloadBuiltinKeycloakTheme";
 import { getThisCodebaseRootDirPath } from "../src/bin/tools/getThisCodebaseRootDirPath";
-import { getLogger } from "../src/bin/tools/logger";
 import { rmSync } from "../src/bin/tools/fs.rmSync";
 
 // NOTE: To run without argument when we want to generate src/i18n/generated_kcMessages files,
@@ -12,10 +11,6 @@ import { rmSync } from "../src/bin/tools/fs.rmSync";
 
 //@ts-ignore
 const propertiesParser = require("properties-parser");
-
-const isSilent = true;
-
-const logger = getLogger({ isSilent });
 
 async function main() {
     const keycloakVersion = "24.0.4";
@@ -106,7 +101,7 @@ async function main() {
                 )
             );
 
-            logger.log(`${filePath} wrote`);
+            //console.log(`${filePath} wrote`);
         });
 
         fs.writeFileSync(

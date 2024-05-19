@@ -1,10 +1,9 @@
 import { crawl } from "../../tools/crawl";
-import { accountThemePageIds, loginThemePageIds } from "../../shared/pageIds";
 import { id } from "tsafe/id";
 import { removeDuplicates } from "evt/tools/reducers/removeDuplicates";
 import * as fs from "fs";
 import { join as pathJoin } from "path";
-import type { ThemeType } from "../../shared/constants";
+import { type ThemeType, accountThemePageIds, loginThemePageIds } from "../../shared/constants";
 
 export function readExtraPagesNames(params: { themeSrcDirPath: string; themeType: ThemeType }): string[] {
     const { themeSrcDirPath, themeType } = params;
