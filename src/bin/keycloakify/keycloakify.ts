@@ -18,19 +18,19 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             commandOutput = child_process.execSync("mvn --version", { "stdio": ["ignore", "pipe", "ignore"] });
         } catch {}
 
-        if (!commandOutput?.toString("utf8").includes("Apache Maven")) {
+        if (commandOutput?.toString("utf8").includes("Apache Maven")) {
             break exit_if_maven_not_installed;
         }
 
         const installationCommand = (() => {
             switch (os.platform()) {
                 case "darwin":
-                    return "brew install nvm";
+                    return "brew install mvn";
                 case "win32":
-                    return "choco install nvm";
+                    return "choco install mvn";
                 case "linux":
                 default:
-                    return "sudo apt-get install nvm";
+                    return "sudo apt-get install mvn";
             }
         })();
 
