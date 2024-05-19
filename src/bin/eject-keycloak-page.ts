@@ -18,6 +18,7 @@ import { assert, Equals } from "tsafe/assert";
 import { getThemeSrcDirPath } from "./shared/getThemeSrcDirPath";
 import type { CliCommandOptions } from "./main";
 import { readBuildOptions } from "./shared/buildOptions";
+import chalk from "chalk";
 
 export async function command(params: { cliCommandOptions: CliCommandOptions }) {
     const { cliCommandOptions } = params;
@@ -26,17 +27,17 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         cliCommandOptions
     });
 
-    console.log("Theme type:");
+    console.log(chalk.cyan("Theme type:"));
 
     const { value: themeType } = await cliSelect<ThemeType>({
         "values": [...themeTypes]
     }).catch(() => {
-        console.log("Aborting");
-
         process.exit(-1);
     });
 
-    console.log("Select the page you want to customize:");
+    console.log(`→ ${themeType}`);
+
+    console.log(chalk.cyan("Select the page you want to customize:"));
 
     const { value: pageId } = await cliSelect<LoginThemePageId | AccountThemePageId>({
         "values": (() => {
@@ -49,10 +50,10 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             assert<Equals<typeof themeType, never>>(false);
         })()
     }).catch(() => {
-        console.log("Aborting");
-
         process.exit(-1);
     });
+
+    console.log(`→ ${pageId}`);
 
     const componentPageBasename = capitalize(kebabCaseToCamelCase(pageId)).replace(/ftl$/, "tsx");
 
@@ -85,42 +86,54 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     console.log(
         [
             ``,
-            `\`${pathJoin(".", pathRelative(process.cwd(), targetFilePath))}\` copy pasted from the Keycloakify source code into your project.`,
+            `${chalk.green("✓")} ${chalk.bold(
+                pathJoin(".", pathRelative(process.cwd(), targetFilePath))
+            )} copy pasted from the Keycloakify source code into your project`,
             ``,
             `You now need to update your page router:`,
             ``,
-            `\`${pathJoin(".", pathRelative(process.cwd(), themeSrcDirPath), themeType, "KcApp.tsx")}\`:`,
-            "```",
+            `${chalk.bold(pathJoin(".", pathRelative(process.cwd(), themeSrcDirPath), themeType, "KcApp.tsx"))}:`,
+            chalk.grey("```"),
             `// ...`,
             ``,
-            `+const ${componentPageBasename.replace(/.tsx$/, "")} = lazy(() => import("./pages/${componentPageBasename}"));`,
-            ``,
-            ` export default function KcApp(props: { kcContext: KcContext; }) {`,
-            ``,
-            `     // ...`,
-            ``,
-            `     return (`,
-            `         <Suspense>`,
-            `             {(() => {`,
-            `                 switch (kcContext.pageId) {`,
-            `                     // ...`,
-            `                     case "${pageId}": return (`,
-            `+                        <Login`,
-            `+                            {...{ kcContext, i18n, classes }}`,
-            `+                            Template={Template}`,
-            ...(!componentPageContent.includes(userProfileFormFieldComponentName)
-                ? []
-                : [`+                            ${userProfileFormFieldComponentName}={${userProfileFormFieldComponentName}}`]),
-            `+                            doUseDefaultCss={true}`,
-            `+                        />`,
-            `+                    );`,
-            `                     default: return <Fallback /* .. */ />;`,
-            `                 }`,
-            `             })()}`,
-            `         </Suspense>`,
-            `     );`,
-            ` }`,
-            "```"
+            chalk.green(`+const ${componentPageBasename.replace(/.tsx$/, "")} = lazy(() => import("./pages/${componentPageBasename}"));`),
+            ...[
+                ``,
+                ` export default function KcApp(props: { kcContext: KcContext; }) {`,
+                ``,
+                `     // ...`,
+                ``,
+                `     return (`,
+                `         <Suspense>`,
+                `             {(() => {`,
+                `                 switch (kcContext.pageId) {`,
+                `                     // ...`,
+                `+                    case "${pageId}": return (`,
+                `+                        <Login`,
+                `+                            {...{ kcContext, i18n, classes }}`,
+                `+                            Template={Template}`,
+                ...(!componentPageContent.includes(userProfileFormFieldComponentName)
+                    ? []
+                    : [`+                            ${userProfileFormFieldComponentName}={${userProfileFormFieldComponentName}}`]),
+                `+                            doUseDefaultCss={true}`,
+                `+                        />`,
+                `+                    );`,
+                `                     default: return <Fallback /* .. */ />;`,
+                `                 }`,
+                `             })()}`,
+                `         </Suspense>`,
+                `     );`,
+                ` }`
+            ].map(line => {
+                if (line.startsWith("+")) {
+                    return chalk.green(line);
+                }
+                if (line.startsWith("-")) {
+                    return chalk.red(line);
+                }
+                return chalk.grey(line);
+            }),
+            chalk.grey("```")
         ].join("\n")
     );
 }
