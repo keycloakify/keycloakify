@@ -37,15 +37,7 @@ transformCodebase({
 
 fs.rmSync(join("dist", "ncc_out"), { "recursive": true });
 
-{
-    const before = fs.readFileSync(join("dist", "bin", "main.js")).toString("utf8");
-
-    const after = before.replace(`var buffer = new Buffer(toRead);`, `var buffer = Buffer.allocUnsafe(toRead);`);
-
-    assert(after !== before);
-
-    fs.writeFileSync(join("dist", "bin", "main.js"), Buffer.from(after, "utf8"));
-}
+patchDeprecatedBufferApiUsage(join("dist", "bin", "main.js"));
 
 fs.chmodSync(
     join("dist", "bin", "main.js"),
@@ -77,8 +69,20 @@ transformCodebase({
 
 fs.rmSync(join("dist", "ncc_out"), { "recursive": true });
 
+patchDeprecatedBufferApiUsage(join("dist", "vite-plugin", "index.js"));
+
 function run(command: string) {
     console.log(`$ ${command}`);
 
     child_process.execSync(command, { "stdio": "inherit" });
+}
+
+function patchDeprecatedBufferApiUsage(filePath: string) {
+    const before = fs.readFileSync(filePath).toString("utf8");
+
+    const after = before.replace(`var buffer = new Buffer(toRead);`, `var buffer = Buffer.allocUnsafe(toRead);`);
+
+    assert(after !== before);
+
+    fs.writeFileSync(filePath, Buffer.from(after, "utf8"));
 }
