@@ -7,6 +7,7 @@ import { join as pathJoin } from "path";
 import type { BuildOptions } from "../../shared/buildOptions";
 import { assert } from "tsafe/assert";
 import { type ThemeType, nameOfTheGlobal, basenameOfTheKeycloakifyResourcesDir, resources_common } from "../../shared/constants";
+import { getThisCodebaseRootDirPath } from "../../tools/getThisCodebaseRootDirPath";
 
 export type BuildOptionsLike = {
     bundler: "vite" | "webpack";
@@ -96,7 +97,9 @@ export function generateFtlFilesCodeFactory(params: {
 
     //FTL is no valid html, we can't insert with cheerio, we put placeholder for injecting later.
     const ftlObjectToJsCodeDeclaringAnObject = fs
-        .readFileSync(pathJoin(__dirname, "ftl_object_to_js_code_declaring_an_object.ftl"))
+        .readFileSync(
+            pathJoin(getThisCodebaseRootDirPath(), "src", "bin", "keycloakify", "generateFtl", "ftl_object_to_js_code_declaring_an_object.ftl")
+        )
         .toString("utf8")
         .match(/^<script>const _=((?:.|\n)+)<\/script>[\n]?$/)![1]
         .replace("FIELD_NAMES_eKsIY4ZsZ4xeM", fieldNames.map(name => `"${name}"`).join(", "))

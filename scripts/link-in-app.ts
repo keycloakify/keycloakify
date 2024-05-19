@@ -37,7 +37,11 @@ fs.writeFileSync(
     )
 );
 
-fs.cpSync(pathJoin(rootDirPath, "src"), pathJoin(rootDirPath, "dist", "src"), { "recursive": true });
+const destSrcDirPath = pathJoin(rootDirPath, "dist", "src");
+
+fs.rmSync(destSrcDirPath, { "recursive": true, "force": true });
+
+fs.cpSync(pathJoin(rootDirPath, "src"), destSrcDirPath, { "recursive": true });
 
 const commonThirdPartyDeps = (() => {
     // For example [ "@emotion" ] it's more convenient than
