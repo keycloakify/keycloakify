@@ -51,14 +51,15 @@
         "dist/vite-plugin/index.js"
     ],
     "keywords": [
-        "bluehats",
         "keycloak",
         "react",
         "theme",
         "FreeMarker",
         "ftl",
         "login",
-        "register"
+        "register",
+        "account",
+        "bluehats"
     ],
     "homepage": "https://www.keycloakify.dev",
     "peerDependencies": {
