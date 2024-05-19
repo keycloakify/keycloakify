@@ -13,8 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ !github.event.created && github.repository != 'garronej/ts-ci' }}
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
     - uses: bahmutov/npm-install@v1
     - name: If this step fails run 'yarn format' then commit again.
       run: yarn format:check
@@ -27,8 +27,8 @@ jobs:
         os: [ ubuntu-latest ]
     name: Test with Node v${{ matrix.node }} on ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node }}
     - uses: bahmutov/npm-install@v1
@@ -41,8 +41,8 @@ jobs:
     if: github.event_name == 'push'
     needs: test
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
       with:
         node-version: '18'
     - uses: bahmutov/npm-install@v1
@@ -105,10 +105,10 @@ jobs:
       - create_github_release
       - check_if_version_upgraded
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         ref: ${{ github.ref }}
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@v4
       with:
         registry-url: https://registry.npmjs.org/
     - uses: bahmutov/npm-install@v1
