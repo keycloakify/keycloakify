@@ -37,6 +37,16 @@ transformCodebase({
 
 fs.rmSync(join("dist", "ncc_out"), { "recursive": true });
 
+{
+    const before = fs.readFileSync(join("dist", "bin", "main.js")).toString("utf8");
+
+    const after = before.replace(`var buffer = new Buffer(toRead);`, `var buffer = Buffer.allocUnsafe(toRead);`);
+
+    assert(after !== before);
+
+    fs.writeFileSync(join("dist", "bin", "main.js"), Buffer.from(after, "utf8"));
+}
+
 fs.chmodSync(
     join("dist", "bin", "main.js"),
     fs.statSync(join("dist", "bin", "main.js")).mode | fs.constants.S_IXUSR | fs.constants.S_IXGRP | fs.constants.S_IXOTH
