@@ -80,7 +80,10 @@ function run(command: string) {
 function patchDeprecatedBufferApiUsage(filePath: string) {
     const before = fs.readFileSync(filePath).toString("utf8");
 
-    const after = before.replace(`var buffer = new Buffer(toRead);`, `var buffer = Buffer.allocUnsafe(toRead);`);
+    const after = before.replace(
+        `var buffer = new Buffer(toRead);`,
+        `var buffer = Buffer.allocUnsafe ? Buffer.allocUnsafe(toRead) : new Buffer(toRead);`
+    );
 
     assert(after !== before);
 
