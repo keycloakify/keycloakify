@@ -116,11 +116,11 @@ export async function downloadAndUnzip(params: {
 
         await rm(extractDirPath, { "recursive": true });
 
-        upload_to_remot_cache_if_admin: {
+        upload_to_remote_cache_if_admin: {
             const githubToken = process.env["KEYCLOAKIFY_ADMIN_GITHUB_PERSONAL_ACCESS_TOKEN"];
 
             if (!githubToken) {
-                break upload_to_remot_cache_if_admin;
+                break upload_to_remote_cache_if_admin;
             }
 
             console.log("uploading to remote cache");
