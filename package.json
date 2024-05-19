@@ -7,7 +7,7 @@
         "url": "git://github.com/keycloakify/keycloakify.git"
     },
     "scripts": {
-        "prepare": "ts-node --skipProject scripts/generate-i18n-messages.ts",
+        "prepare": "ts-node --skipProject scripts/generate-i18n-messages.ts && patch-package",
         "build": "ts-node --skipProject scripts/build.ts",
         "watch": "chokidar './src/**/*' -c 'yarn build'",
         "test": "yarn test:types && vitest run",
