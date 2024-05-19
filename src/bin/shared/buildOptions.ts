@@ -163,7 +163,10 @@ export function readBuildOptions(params: { cliCommandOptions: CliCommandOptions 
         return pathJoin(reactAppRootDirPath, resolvedViteConfig.buildDir);
     })();
 
-    const { npmWorkspaceRootDirPath } = getNpmWorkspaceRootDirPath({ reactAppRootDirPath });
+    const { npmWorkspaceRootDirPath } = getNpmWorkspaceRootDirPath({
+        reactAppRootDirPath,
+        "dependencyExpected": "keycloakify"
+    });
 
     return {
         "bundler": resolvedViteConfig !== undefined ? "vite" : "webpack",
