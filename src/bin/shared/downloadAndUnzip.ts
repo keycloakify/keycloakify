@@ -119,7 +119,7 @@ export async function downloadAndUnzip(params: {
         upload_to_remot_cache_if_admin: {
             const githubToken = process.env["KEYCLOAKIFY_ADMIN_GITHUB_PERSONAL_ACCESS_TOKEN"];
 
-            if (githubToken === undefined) {
+            if (!githubToken) {
                 break upload_to_remot_cache_if_admin;
             }
 
