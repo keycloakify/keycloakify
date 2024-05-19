@@ -48,7 +48,7 @@
         "dist/bin/shared/constants.js.map",
         "!dist/vite-plugin/",
         "dist/vite-plugin/index.d.ts",
-        "dist/vite-plugin/index.ts"
+        "dist/vite-plugin/index.js"
     ],
     "keywords": [
         "bluehats",
