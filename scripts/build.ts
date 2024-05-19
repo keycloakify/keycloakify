@@ -3,6 +3,11 @@ import * as fs from "fs";
 import { join } from "path";
 import { assert } from "tsafe/assert";
 import { transformCodebase } from "../src/bin/tools/transformCodebase";
+import chalk from "chalk";
+
+console.log(chalk.cyan("Building Keycloakify..."));
+
+const startTime = Date.now();
 
 if (fs.existsSync(join("dist", "bin", "main.original.js"))) {
     fs.renameSync(join("dist", "bin", "main.original.js"), join("dist", "bin", "main.js"));
@@ -71,8 +76,10 @@ fs.rmSync(join("dist", "ncc_out"), { "recursive": true });
 
 patchDeprecatedBufferApiUsage(join("dist", "vite-plugin", "index.js"));
 
+console.log(chalk.green(`✓ built in ${((Date.now() - startTime) / 1000).toFixed(2)}s`));
+
 function run(command: string) {
-    console.log(`$ ${command}`);
+    console.log(chalk.grey(`$ ${command}`));
 
     child_process.execSync(command, { "stdio": "inherit" });
 }

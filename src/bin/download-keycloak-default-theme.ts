@@ -1,7 +1,7 @@
 import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path";
 import { promptKeycloakVersion } from "./shared/promptKeycloakVersion";
 import { readBuildOptions } from "./shared/buildOptions";
-import { downloadBuiltinKeycloakTheme } from "./shared/downloadBuiltinKeycloakTheme";
+import { downloadKeycloakDefaultTheme } from "./shared/downloadKeycloakDefaultTheme";
 import type { CliCommandOptions } from "./main";
 import chalk from "chalk";
 
@@ -27,7 +27,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         `Downloading builtins theme of Keycloak ${keycloakVersion} here ${chalk.bold(`.${pathSep}${pathRelative(process.cwd(), destDirPath)}`)}`
     );
 
-    await downloadBuiltinKeycloakTheme({
+    await downloadKeycloakDefaultTheme({
         keycloakVersion,
         destDirPath,
         buildOptions

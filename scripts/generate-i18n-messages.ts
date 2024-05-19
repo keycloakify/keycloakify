@@ -2,7 +2,7 @@ import "minimal-polyfills/Object.fromEntries";
 import * as fs from "fs";
 import { join as pathJoin, relative as pathRelative, dirname as pathDirname, sep as pathSep } from "path";
 import { crawl } from "../src/bin/tools/crawl";
-import { downloadBuiltinKeycloakTheme } from "../src/bin/shared/downloadBuiltinKeycloakTheme";
+import { downloadKeycloakDefaultTheme } from "../src/bin/shared/downloadKeycloakDefaultTheme";
 import { getThisCodebaseRootDirPath } from "../src/bin/tools/getThisCodebaseRootDirPath";
 import { rmSync } from "../src/bin/tools/fs.rmSync";
 
@@ -25,7 +25,7 @@ async function main() {
 
     fs.writeFileSync(pathJoin(tmpDirPath, ".gitignore"), Buffer.from("/*\n!.gitignore\n", "utf8"));
 
-    await downloadBuiltinKeycloakTheme({
+    await downloadKeycloakDefaultTheme({
         keycloakVersion,
         "destDirPath": tmpDirPath,
         "buildOptions": {

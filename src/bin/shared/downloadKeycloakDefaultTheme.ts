@@ -5,7 +5,7 @@ import { assert } from "tsafe/assert";
 import * as child_process from "child_process";
 import * as fs from "fs";
 import { rmSync } from "../tools/fs.rmSync";
-import { lastKeycloakVersionWithAccountV1 } from "../shared/constants";
+import { lastKeycloakVersionWithAccountV1 } from "./constants";
 import { transformCodebase } from "../tools/transformCodebase";
 
 export type BuildOptionsLike = {
@@ -15,7 +15,7 @@ export type BuildOptionsLike = {
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
-export async function downloadBuiltinKeycloakTheme(params: { keycloakVersion: string; destDirPath: string; buildOptions: BuildOptionsLike }) {
+export async function downloadKeycloakDefaultTheme(params: { keycloakVersion: string; destDirPath: string; buildOptions: BuildOptionsLike }) {
     const { keycloakVersion, destDirPath, buildOptions } = params;
 
     await downloadAndUnzip({

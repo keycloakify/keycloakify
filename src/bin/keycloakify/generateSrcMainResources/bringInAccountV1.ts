@@ -3,7 +3,7 @@ import { join as pathJoin } from "path";
 import { assert } from "tsafe/assert";
 import type { BuildOptions } from "../../shared/buildOptions";
 import { resources_common, lastKeycloakVersionWithAccountV1, accountV1ThemeName } from "../../shared/constants";
-import { downloadBuiltinKeycloakTheme } from "../../shared/downloadBuiltinKeycloakTheme";
+import { downloadKeycloakDefaultTheme } from "../../shared/downloadKeycloakDefaultTheme";
 import { transformCodebase } from "../../tools/transformCodebase";
 import { rmSync } from "../../tools/fs.rmSync";
 
@@ -20,7 +20,7 @@ export async function bringInAccountV1(params: { buildOptions: BuildOptionsLike 
 
     const builtinKeycloakThemeTmpDirPath = pathJoin(buildOptions.cacheDirPath, "bringInAccountV1_tmp");
 
-    await downloadBuiltinKeycloakTheme({
+    await downloadKeycloakDefaultTheme({
         "destDirPath": builtinKeycloakThemeTmpDirPath,
         "keycloakVersion": lastKeycloakVersionWithAccountV1,
         buildOptions

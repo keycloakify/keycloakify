@@ -1,4 +1,4 @@
-import { downloadBuiltinKeycloakTheme } from "./shared/downloadBuiltinKeycloakTheme";
+import { downloadKeycloakDefaultTheme } from "./shared/downloadKeycloakDefaultTheme";
 import { join as pathJoin, relative as pathRelative } from "path";
 import { transformCodebase } from "./tools/transformCodebase";
 import { promptKeycloakVersion } from "./shared/promptKeycloakVersion";
@@ -37,7 +37,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     rmSync(builtinKeycloakThemeTmpDirPath, { "recursive": true, "force": true });
 
-    await downloadBuiltinKeycloakTheme({
+    await downloadKeycloakDefaultTheme({
         keycloakVersion,
         "destDirPath": builtinKeycloakThemeTmpDirPath,
         buildOptions

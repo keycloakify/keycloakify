@@ -1,6 +1,6 @@
 import { transformCodebase } from "../tools/transformCodebase";
 import { join as pathJoin } from "path";
-import { downloadBuiltinKeycloakTheme } from "./downloadBuiltinKeycloakTheme";
+import { downloadKeycloakDefaultTheme } from "./downloadKeycloakDefaultTheme";
 import { resources_common, type ThemeType } from "./constants";
 import type { BuildOptions } from "./buildOptions";
 import { assert } from "tsafe/assert";
@@ -27,7 +27,7 @@ export async function downloadKeycloakStaticResources(params: {
         `downloadKeycloakStaticResources_tmp_${crypto.createHash("sha256").update(`${themeType}-${keycloakVersion}`).digest("hex").slice(0, 8)}`
     );
 
-    await downloadBuiltinKeycloakTheme({
+    await downloadKeycloakDefaultTheme({
         keycloakVersion,
         "destDirPath": tmpDirPath,
         buildOptions

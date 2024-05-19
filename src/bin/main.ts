@@ -107,13 +107,13 @@ program
 
 program
     .command({
-        "name": "download-builtin-keycloak-theme",
+        "name": "download-keycloak-default-theme",
         "description": "Download the built-in Keycloak theme."
     })
     .task({
         skip,
         "handler": async cliCommandOptions => {
-            const { command } = await import("./download-builtin-keycloak-theme");
+            const { command } = await import("./download-keycloak-default-theme");
 
             await command({ cliCommandOptions });
         }
@@ -121,13 +121,13 @@ program
 
 program
     .command({
-        "name": "eject-keycloak-page",
+        "name": "eject-page",
         "description": "Eject a Keycloak page."
     })
     .task({
         skip,
         "handler": async cliCommandOptions => {
-            const { command } = await import("./eject-keycloak-page");
+            const { command } = await import("./eject-page");
 
             await command({ cliCommandOptions });
         }
