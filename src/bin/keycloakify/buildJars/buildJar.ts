@@ -10,7 +10,8 @@ import { readFileSync } from "fs";
 import { isInside } from "../../tools/isInside";
 import child_process from "child_process";
 import { rmSync } from "../../tools/fs.rmSync";
-import { getMetaInfKeycloakThemesJsonPath } from "../../shared/metaInfKeycloakThemes";
+import { getMetaInfKeycloakThemesJsonFilePath } from "../../shared/metaInfKeycloakThemes";
+import type { Param0 } from "tsafe";
 
 export type BuildOptionsLike = BuildOptionsLike_generatePom & {
     keycloakifyBuildDirPath: string;
@@ -35,50 +36,98 @@ export async function buildJar(params: {
     rmSync(keycloakifyBuildTmpDirPath, { "recursive": true, "force": true });
 
     {
-        const keycloakThemesJsonFilePath = getMetaInfKeycloakThemesJsonPath({ "keycloakifyBuildDirPath": "" });
+        const metaInfKeycloakThemesJsonRelativePath = getMetaInfKeycloakThemesJsonFilePath({ "keycloakifyBuildDirPath": "" });
 
-        const themePropertiesFilePathSet = new Set(
-            ...buildOptions.themeNames.map(themeName => pathJoin("src", "main", "resources", "theme", themeName, "account", "theme.properties"))
-        );
+        const { transformCodebase_common } = (() => {
+            const includingAccountV1ThemeNames = [...buildOptions.themeNames, accountV1ThemeName];
 
-        const accountV1RelativeDirPath = pathJoin("src", "main", "resources", "theme", accountV1ThemeName);
+            const transformCodebase_common: Param0<typeof transformCodebase>["transformSourceCode"] = ({ fileRelativePath, sourceCode }) => {
+                if (metaInfKeycloakThemesJsonRelativePath === fileRelativePath) {
+                    return { "modifiedSourceCode": sourceCode };
+                }
+
+                for (const themeName of includingAccountV1ThemeNames) {
+                    if (isInside({ "dirPath": pathJoin("src", "main", "resources", "theme", themeName), "filePath": fileRelativePath })) {
+                        return { "modifiedSourceCode": sourceCode };
+                    }
+                }
+
+                return undefined;
+            };
+
+            return { transformCodebase_common };
+        })();
+
+        const { transformCodebase_patchForUsingBuiltinAccountV1 } = (() => {
+            if (keycloakAccountV1Version !== null) {
+                return { "transformCodebase_patchForUsingBuiltinAccountV1": undefined };
+            }
+
+            const themePropertiesFileRelativePathSet = new Set(
+                ...buildOptions.themeNames.map(themeName => pathJoin("src", "main", "resources", "theme", themeName, "account", "theme.properties"))
+            );
+
+            const accountV1RelativeDirPath = pathJoin("src", "main", "resources", "theme", accountV1ThemeName);
+
+            const transformCodebase_patchForUsingBuiltinAccountV1: Param0<typeof transformCodebase>["transformSourceCode"] = ({
+                fileRelativePath,
+                sourceCode
+            }) => {
+                if (isInside({ "dirPath": accountV1RelativeDirPath, "filePath": fileRelativePath })) {
+                    return undefined;
+                }
+
+                if (fileRelativePath === metaInfKeycloakThemesJsonRelativePath) {
+                    const keycloakThemesJsonParsed = JSON.parse(sourceCode.toString("utf8")) as {
+                        themes: { name: string; types: string[] }[];
+                    };
+
+                    keycloakThemesJsonParsed.themes = keycloakThemesJsonParsed.themes.filter(({ name }) => name !== accountV1ThemeName);
+
+                    return { "modifiedSourceCode": Buffer.from(JSON.stringify(keycloakThemesJsonParsed, null, 2), "utf8") };
+                }
+
+                if (themePropertiesFileRelativePathSet.has(fileRelativePath)) {
+                    const modifiedSourceCode = Buffer.from(
+                        sourceCode.toString("utf8").replace(`parent=${accountV1ThemeName}`, "parent=keycloak"),
+                        "utf8"
+                    );
+
+                    // assert modifiedSourceCode !== sourceCode
+                    assert(Buffer.compare(modifiedSourceCode, sourceCode) !== 0);
+
+                    return { modifiedSourceCode };
+                }
+
+                return { "modifiedSourceCode": sourceCode };
+            };
+
+            return { transformCodebase_patchForUsingBuiltinAccountV1 };
+        })();
 
         transformCodebase({
             "srcDirPath": buildOptions.keycloakifyBuildDirPath,
             "destDirPath": keycloakifyBuildTmpDirPath,
-            "transformSourceCode":
-                keycloakAccountV1Version !== null
-                    ? undefined
-                    : ({ fileRelativePath, sourceCode }) => {
-                          if (fileRelativePath === keycloakThemesJsonFilePath) {
-                              const keycloakThemesJsonParsed = JSON.parse(sourceCode.toString("utf8")) as {
-                                  themes: { name: string; types: string[] }[];
-                              };
+            "transformSourceCode": params => {
+                const resultCommon = transformCodebase_common(params);
 
-                              keycloakThemesJsonParsed.themes = keycloakThemesJsonParsed.themes.filter(({ name }) => name !== accountV1ThemeName);
+                if (resultCommon === undefined) {
+                    return undefined;
+                }
 
-                              return { "modifiedSourceCode": Buffer.from(JSON.stringify(keycloakThemesJsonParsed, null, 2), "utf8") };
-                          }
+                if (transformCodebase_patchForUsingBuiltinAccountV1 === undefined) {
+                    return resultCommon;
+                }
 
-                          if (isInside({ "dirPath": "target", "filePath": fileRelativePath })) {
-                              return undefined;
-                          }
+                const { modifiedSourceCode, newFileName } = resultCommon;
 
-                          if (isInside({ "dirPath": accountV1RelativeDirPath, "filePath": fileRelativePath })) {
-                              return undefined;
-                          }
+                assert(newFileName === undefined);
 
-                          if (themePropertiesFilePathSet.has(fileRelativePath)) {
-                              return {
-                                  "modifiedSourceCode": Buffer.from(
-                                      sourceCode.toString("utf8").replace(`parent=${accountV1ThemeName}`, "parent=keycloak"),
-                                      "utf8"
-                                  )
-                              };
-                          }
-
-                          return { "modifiedSourceCode": sourceCode };
-                      }
+                return transformCodebase_patchForUsingBuiltinAccountV1?.({
+                    ...params,
+                    "sourceCode": modifiedSourceCode
+                });
+            }
         });
     }
 
