@@ -6,7 +6,7 @@ export type MetaInfKeycloakTheme = {
     themes: { name: string; types: (ThemeType | "email")[] }[];
 };
 
-export function getMetaInfKeycloakThemesJsonPath(params: { keycloakifyBuildDirPath: string }) {
+export function getMetaInfKeycloakThemesJsonFilePath(params: { keycloakifyBuildDirPath: string }) {
     const { keycloakifyBuildDirPath } = params;
 
     return pathJoin(keycloakifyBuildDirPath, "src", "main", "resources", "META-INF", "keycloak-themes.json");
@@ -15,13 +15,13 @@ export function getMetaInfKeycloakThemesJsonPath(params: { keycloakifyBuildDirPa
 export function readMetaInfKeycloakThemes(params: { keycloakifyBuildDirPath: string }): MetaInfKeycloakTheme {
     const { keycloakifyBuildDirPath } = params;
 
-    return JSON.parse(fs.readFileSync(getMetaInfKeycloakThemesJsonPath({ keycloakifyBuildDirPath })).toString("utf8")) as MetaInfKeycloakTheme;
+    return JSON.parse(fs.readFileSync(getMetaInfKeycloakThemesJsonFilePath({ keycloakifyBuildDirPath })).toString("utf8")) as MetaInfKeycloakTheme;
 }
 
 export function writeMetaInfKeycloakThemes(params: { keycloakifyBuildDirPath: string; metaInfKeycloakThemes: MetaInfKeycloakTheme }) {
     const { keycloakifyBuildDirPath, metaInfKeycloakThemes } = params;
 
-    const metaInfKeycloakThemesJsonPath = getMetaInfKeycloakThemesJsonPath({ keycloakifyBuildDirPath });
+    const metaInfKeycloakThemesJsonPath = getMetaInfKeycloakThemesJsonFilePath({ keycloakifyBuildDirPath });
 
     {
         const dirPath = pathDirname(metaInfKeycloakThemesJsonPath);
