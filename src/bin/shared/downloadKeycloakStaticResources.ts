@@ -24,26 +24,30 @@ export async function downloadKeycloakStaticResources(params: {
 
     const tmpDirPath = pathJoin(
         buildOptions.cacheDirPath,
-        `downloadKeycloakStaticResources_tmp_${crypto.createHash("sha256").update(`${themeType}-${keycloakVersion}`).digest("hex").slice(0, 8)}`
+        `downloadKeycloakStaticResources_tmp_${crypto
+            .createHash("sha256")
+            .update(`${themeType}-${keycloakVersion}`)
+            .digest("hex")
+            .slice(0, 8)}`
     );
 
     await downloadKeycloakDefaultTheme({
         keycloakVersion,
-        "destDirPath": tmpDirPath,
+        destDirPath: tmpDirPath,
         buildOptions
     });
 
     const resourcesPath = pathJoin(themeDirPath, themeType, "resources");
 
     transformCodebase({
-        "srcDirPath": pathJoin(tmpDirPath, "keycloak", themeType, "resources"),
-        "destDirPath": resourcesPath
+        srcDirPath: pathJoin(tmpDirPath, "keycloak", themeType, "resources"),
+        destDirPath: resourcesPath
     });
 
     transformCodebase({
-        "srcDirPath": pathJoin(tmpDirPath, "keycloak", "common", "resources"),
-        "destDirPath": pathJoin(resourcesPath, resources_common)
+        srcDirPath: pathJoin(tmpDirPath, "keycloak", "common", "resources"),
+        destDirPath: pathJoin(resourcesPath, resources_common)
     });
 
-    rmSync(tmpDirPath, { "recursive": true });
+    rmSync(tmpDirPath, { recursive: true });
 }

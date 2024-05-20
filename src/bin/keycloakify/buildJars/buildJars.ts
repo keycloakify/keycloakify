@@ -1,6 +1,9 @@
 import { assert } from "tsafe/assert";
 import { exclude } from "tsafe/exclude";
-import { keycloakAccountV1Versions, keycloakThemeAdditionalInfoExtensionVersions } from "./extensionVersions";
+import {
+    keycloakAccountV1Versions,
+    keycloakThemeAdditionalInfoExtensionVersions
+} from "./extensionVersions";
 import { getKeycloakVersionRangeForJar } from "./getKeycloakVersionRangeForJar";
 import { buildJar, BuildOptionsLike as BuildOptionsLike_buildJar } from "./buildJar";
 import type { BuildOptions } from "../../shared/buildOptions";
@@ -14,11 +17,13 @@ export type BuildOptionsLike = BuildOptionsLike_buildJar & {
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
-export async function buildJars(params: { buildOptions: BuildOptionsLike }): Promise<void> {
+export async function buildJars(params: {
+    buildOptions: BuildOptionsLike;
+}): Promise<void> {
     const { buildOptions } = params;
 
     const doesImplementAccountTheme = readMetaInfKeycloakThemes({
-        "keycloakifyBuildDirPath": buildOptions.keycloakifyBuildDirPath
+        keycloakifyBuildDirPath: buildOptions.keycloakifyBuildDirPath
     }).themes.some(({ name }) => name === accountV1ThemeName);
 
     await Promise.all(
@@ -36,24 +41,38 @@ export async function buildJars(params: { buildOptions: BuildOptionsLike }): Pro
                             return undefined;
                         }
 
-                        return { keycloakThemeAdditionalInfoExtensionVersion, keycloakVersionRange };
-                    })
-                    .filter(exclude(undefined))
-                    .map(({ keycloakThemeAdditionalInfoExtensionVersion, keycloakVersionRange }) => {
-                        const { jarFileBasename } = getJarFileBasename({ keycloakVersionRange });
-
                         return {
                             keycloakThemeAdditionalInfoExtensionVersion,
-                            jarFileBasename
+                            keycloakVersionRange
                         };
                     })
-                    .map(({ keycloakThemeAdditionalInfoExtensionVersion, jarFileBasename }) =>
-                        buildJar({
-                            jarFileBasename,
-                            keycloakAccountV1Version,
+                    .filter(exclude(undefined))
+                    .map(
+                        ({
                             keycloakThemeAdditionalInfoExtensionVersion,
-                            buildOptions
-                        })
+                            keycloakVersionRange
+                        }) => {
+                            const { jarFileBasename } = getJarFileBasename({
+                                keycloakVersionRange
+                            });
+
+                            return {
+                                keycloakThemeAdditionalInfoExtensionVersion,
+                                jarFileBasename
+                            };
+                        }
+                    )
+                    .map(
+                        ({
+                            keycloakThemeAdditionalInfoExtensionVersion,
+                            jarFileBasename
+                        }) =>
+                            buildJar({
+                                jarFileBasename,
+                                keycloakAccountV1Version,
+                                keycloakThemeAdditionalInfoExtensionVersion,
+                                buildOptions
+                            })
                     )
             )
             .flat()

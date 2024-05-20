@@ -19,12 +19,18 @@ export default function DeleteAccountConfirm(props: PageProps<Extract<KcContext,
     return (
         <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} headerNode={msg("deleteAccountConfirm")}>
             <form action={url.loginAction} className="form-vertical" method="post">
-                <div className="alert alert-warning" style={{ "marginTop": "0", "marginBottom": "30px" }}>
+                <div className="alert alert-warning" style={{ marginTop: "0", marginBottom: "30px" }}>
                     <span className="pficon pficon-warning-triangle-o"></span>
                     {msg("irreversibleAction")}
                 </div>
                 <p>{msg("deletingImplies")}</p>
-                <ul style={{ "color": "#72767b", "listStyle": "disc", "listStylePosition": "inside" }}>
+                <ul
+                    style={{
+                        color: "#72767b",
+                        listStyle: "disc",
+                        listStylePosition: "inside"
+                    }}
+                >
                     <li>{msg("loggingOutImmediately")}</li>
                     <li>{msg("errasingData")}</li>
                 </ul>
@@ -38,7 +44,7 @@ export default function DeleteAccountConfirm(props: PageProps<Extract<KcContext,
                     {triggered_from_aia && (
                         <button
                             className={clsx(getClassName("kcButtonClass"), getClassName("kcButtonDefaultClass"), getClassName("kcButtonLargeClass"))}
-                            style={{ "marginLeft": "calc(100% - 220px)" }}
+                            style={{ marginLeft: "calc(100% - 220px)" }}
                             type="submit"
                             name="cancel-aia"
                             value="true"

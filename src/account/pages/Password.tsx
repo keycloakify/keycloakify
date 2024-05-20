@@ -10,9 +10,9 @@ export default function Password(props: PageProps<Extract<KcContext, { pageId: "
 
     const { getClassName } = useGetClassName({
         doUseDefaultCss,
-        "classes": {
+        classes: {
             ...classes,
-            "kcBodyClass": clsx(classes?.kcBodyClass, "password")
+            kcBodyClass: clsx(classes?.kcBodyClass, "password")
         }
     });
 
@@ -57,18 +57,18 @@ export default function Password(props: PageProps<Extract<KcContext, { pageId: "
             {...{
                 kcContext: {
                     ...kcContext,
-                    "message": (() => {
+                    message: (() => {
                         if (newPasswordError !== "") {
                             return {
-                                "type": "error",
-                                "summary": newPasswordError
+                                type: "error",
+                                summary: newPasswordError
                             };
                         }
 
                         if (newPasswordConfirmError !== "") {
                             return {
-                                "type": "error",
-                                "summary": newPasswordConfirmError
+                                type: "error",
+                                summary: newPasswordConfirmError
                             };
                         }
 
@@ -98,7 +98,7 @@ export default function Password(props: PageProps<Extract<KcContext, { pageId: "
                     value={account.username ?? ""}
                     autoComplete="username"
                     readOnly
-                    style={{ "display": "none" }}
+                    style={{ display: "none" }}
                 />
 
                 {password.passwordSet && (

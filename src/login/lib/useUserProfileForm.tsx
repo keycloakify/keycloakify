@@ -108,11 +108,11 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
     const { kcContext, i18n, doMakeUserConfirmPassword } = params;
 
     const { insertScriptTags } = useInsertScriptTags({
-        "scriptTags": Object.keys(kcContext.profile?.html5DataAnnotations ?? {})
+        scriptTags: Object.keys(kcContext.profile?.html5DataAnnotations ?? {})
             .filter(key => key !== "kcMultivalued" && key !== "kcNumberFormat") // NOTE: Keycloakify handles it.
             .map(key => ({
-                "type": "module",
-                "src": `${kcContext.url.resourcesPath}/js/${key}.js`
+                type: "module",
+                src: `${kcContext.url.resourcesPath}/js/${key}.js`
             }))
     });
 
@@ -146,15 +146,15 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                             .filter(name => (name !== "username" ? true : !kcContext.realm.registrationEmailAsUsername))
                             .map(name =>
                                 id<Attribute>({
-                                    "name": name,
-                                    "displayName": id<`\${${MessageKey}}`>(`\${${name}}`),
-                                    "required": true,
-                                    "value": (kcContext.register as any).formData[name] ?? "",
-                                    "html5DataAnnotations": {},
-                                    "readOnly": false,
-                                    "validators": {},
-                                    "annotations": {},
-                                    "autocomplete": (() => {
+                                    name: name,
+                                    displayName: id<`\${${MessageKey}}`>(`\${${name}}`),
+                                    required: true,
+                                    value: (kcContext.register as any).formData[name] ?? "",
+                                    html5DataAnnotations: {},
+                                    readOnly: false,
+                                    validators: {},
+                                    annotations: {},
+                                    autocomplete: (() => {
                                         switch (name) {
                                             case "email":
                                                 return "email";
@@ -174,15 +174,15 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                             .filter(name => (name !== "username" ? true : (kcContext.user as any).editUsernameAllowed))
                             .map(name =>
                                 id<Attribute>({
-                                    "name": name,
-                                    "displayName": id<`\${${MessageKey}}`>(`\${${name}}`),
-                                    "required": true,
-                                    "value": (kcContext as any).user[name] ?? "",
-                                    "html5DataAnnotations": {},
-                                    "readOnly": false,
-                                    "validators": {},
-                                    "annotations": {},
-                                    "autocomplete": (() => {
+                                    name: name,
+                                    displayName: id<`\${${MessageKey}}`>(`\${${name}}`),
+                                    required: true,
+                                    value: (kcContext as any).user[name] ?? "",
+                                    html5DataAnnotations: {},
+                                    readOnly: false,
+                                    validators: {},
+                                    annotations: {},
+                                    autocomplete: (() => {
                                         switch (name) {
                                             case "email":
                                                 return "email";
@@ -200,15 +200,15 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                         //NOTE: Handle legacy update-email.ftl
                         return [
                             id<Attribute>({
-                                "name": "email",
-                                "displayName": id<`\${${MessageKey}}`>(`\${email}`),
-                                "required": true,
-                                "value": (kcContext.email as any).value ?? "",
-                                "html5DataAnnotations": {},
-                                "readOnly": false,
-                                "validators": {},
-                                "annotations": {},
-                                "autocomplete": "email"
+                                name: "email",
+                                displayName: id<`\${${MessageKey}}`>(`\${email}`),
+                                required: true,
+                                value: (kcContext.email as any).value ?? "",
+                                html5DataAnnotations: {},
+                                readOnly: false,
+                                validators: {},
+                                annotations: {},
+                                autocomplete: "email"
                             })
                         ];
                     }
@@ -228,11 +228,11 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
 
                         return id<Attribute>({
                             ...rest,
-                            "group": {
-                                "name": group,
-                                "displayHeader": groupDisplayHeader,
-                                "displayDescription": groupDisplayDescription,
-                                "html5DataAnnotations": {}
+                            group: {
+                                name: group,
+                                displayHeader: groupDisplayHeader,
+                                displayDescription: groupDisplayDescription,
+                                html5DataAnnotations: {}
                             }
                         });
                     }
@@ -257,28 +257,28 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
 
                     syntheticAttributes.push(
                         {
-                            "name": "password",
-                            "displayName": id<`\${${MessageKey}}`>("${password}"),
-                            "required": true,
-                            "readOnly": false,
-                            "validators": {},
-                            "annotations": {},
-                            "autocomplete": "new-password",
-                            "html5DataAnnotations": {},
+                            name: "password",
+                            displayName: id<`\${${MessageKey}}`>("${password}"),
+                            required: true,
+                            readOnly: false,
+                            validators: {},
+                            annotations: {},
+                            autocomplete: "new-password",
+                            html5DataAnnotations: {},
                             // NOTE: Compat with Keycloak version prior to 24
-                            ...({ "groupAnnotations": {} } as {})
+                            ...({ groupAnnotations: {} } as {})
                         },
                         {
-                            "name": "password-confirm",
-                            "displayName": id<`\${${MessageKey}}`>("${passwordConfirm}"),
-                            "required": true,
-                            "readOnly": false,
-                            "validators": {},
-                            "annotations": {},
-                            "html5DataAnnotations": {},
-                            "autocomplete": "new-password",
+                            name: "password-confirm",
+                            displayName: id<`\${${MessageKey}}`>("${passwordConfirm}"),
+                            required: true,
+                            readOnly: false,
+                            validators: {},
+                            annotations: {},
+                            html5DataAnnotations: {},
+                            autocomplete: "new-password",
                             // NOTE: Compat with Keycloak version prior to 24
-                            ...({ "groupAnnotations": {} } as {})
+                            ...({ groupAnnotations: {} } as {})
                         }
                     );
                 }
@@ -288,7 +288,10 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
         })();
 
         const initialFormFieldState = (() => {
-            const out: { attribute: Attribute; valueOrValues: string | string[] }[] = [];
+            const out: {
+                attribute: Attribute;
+                valueOrValues: string | string[];
+            }[] = [];
 
             for (const attribute of syntheticAttributes) {
                 handle_multi_valued_attribute: {
@@ -324,7 +327,7 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
 
                     out.push({
                         attribute,
-                        "valueOrValues": values
+                        valueOrValues: values
                     });
 
                     continue;
@@ -332,7 +335,7 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
 
                 out.push({
                     attribute,
-                    "valueOrValues": attribute.value ?? ""
+                    valueOrValues: attribute.value ?? ""
                 });
             }
 
@@ -340,14 +343,14 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
         })();
 
         const initialState: internal.State = {
-            "formFieldStates": initialFormFieldState.map(({ attribute, valueOrValues }) => ({
+            formFieldStates: initialFormFieldState.map(({ attribute, valueOrValues }) => ({
                 attribute,
-                "errors": getErrors({
-                    "attributeName": attribute.name,
-                    "formFieldStates": initialFormFieldState
+                errors: getErrors({
+                    attributeName: attribute.name,
+                    formFieldStates: initialFormFieldState
                 }),
-                "hasLostFocusAtLeastOnce": valueOrValues instanceof Array ? valueOrValues.map(() => false) : false,
-                "valueOrValues": valueOrValues
+                hasLostFocusAtLeastOnce: valueOrValues instanceof Array ? valueOrValues.map(() => false) : false,
+                valueOrValues: valueOrValues
             }))
         };
 
@@ -381,8 +384,8 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                     }
 
                     formFieldState.errors = getErrors({
-                        "attributeName": formAction.name,
-                        "formFieldStates": state.formFieldStates
+                        attributeName: formAction.name,
+                        formFieldStates: state.formFieldStates
                     });
 
                     update_password_confirm: {
@@ -395,9 +398,9 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                         }
 
                         state = reducer(state, {
-                            "action": "update",
-                            "name": "password-confirm",
-                            "valueOrValues": formAction.valueOrValues
+                            action: "update",
+                            name: "password-confirm",
+                            valueOrValues: formAction.valueOrValues
                         });
                     }
 
@@ -421,9 +424,9 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
 
     const formState: FormState = useMemo(
         () => ({
-            "formFieldStates": state.formFieldStates.map(
+            formFieldStates: state.formFieldStates.map(
                 ({ errors, hasLostFocusAtLeastOnce: hasLostFocusAtLeastOnceOrArr, attribute, ...valueOrValuesWrap }) => ({
-                    "displayableErrors": errors.filter(error => {
+                    displayableErrors: errors.filter(error => {
                         const hasLostFocusAtLeastOnce =
                             typeof hasLostFocusAtLeastOnceOrArr === "boolean"
                                 ? hasLostFocusAtLeastOnceOrArr
@@ -482,7 +485,7 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                     ...valueOrValuesWrap
                 })
             ),
-            "isFormSubmittable": state.formFieldStates.every(({ errors }) => errors.length === 0)
+            isFormSubmittable: state.formFieldStates.every(({ errors }) => errors.length === 0)
         }),
         [state]
     );
@@ -501,7 +504,13 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
     const { msg, msgStr, advancedMsg, advancedMsgStr } = i18n;
 
     const getErrors = useConstCallback(
-        (params: { attributeName: string; formFieldStates: { attribute: Attribute; valueOrValues: string | string[] }[] }): FormFieldError[] => {
+        (params: {
+            attributeName: string;
+            formFieldStates: {
+                attribute: Attribute;
+                valueOrValues: string | string[];
+            }[];
+        }): FormFieldError[] => {
             const { attributeName, formFieldStates } = params;
 
             const formFieldState = formFieldStates.find(({ attribute }) => attribute.name === attributeName);
@@ -572,10 +581,10 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                 return [
                     {
                         errorMessageStr,
-                        "errorMessage": <span key={0}>{errorMessageStr}</span>,
-                        "fieldIndex": undefined,
-                        "source": {
-                            "type": "server"
+                        errorMessage: <span key={0}>{errorMessageStr}</span>,
+                        fieldIndex: undefined,
+                        source: {
+                            type: "server"
                         }
                     }
                 ];
@@ -598,19 +607,19 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     .map((...[, index]) => {
                         const specificValueErrors = getErrors({
                             attributeName,
-                            "formFieldStates": formFieldStates.map(formFieldState => {
+                            formFieldStates: formFieldStates.map(formFieldState => {
                                 if (formFieldState.attribute.name === attributeName) {
                                     assert(formFieldState.valueOrValues instanceof Array);
                                     return {
-                                        "attribute": {
+                                        attribute: {
                                             ...attribute,
-                                            "annotations": {
+                                            annotations: {
                                                 ...attribute.annotations,
-                                                "inputType": undefined
+                                                inputType: undefined
                                             },
-                                            "multivalued": false
+                                            multivalued: false
                                         },
-                                        "valueOrValues": formFieldState.valueOrValues[index]
+                                        valueOrValues: formFieldState.valueOrValues[index]
                                     };
                                 }
 
@@ -626,7 +635,12 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
 
                                 return true;
                             })
-                            .map((error): FormFieldError => ({ ...error, "fieldIndex": index }));
+                            .map(
+                                (error): FormFieldError => ({
+                                    ...error,
+                                    fieldIndex: index
+                                })
+                            );
                     })
                     .reduce((acc, errors) => [...acc, ...errors], []);
 
@@ -642,12 +656,12 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     const msgArgs = ["error-user-attribute-required"] as const;
 
                     errors.push({
-                        "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
-                        "errorMessageStr": msgStr(...msgArgs),
-                        "fieldIndex": undefined,
-                        "source": {
-                            "type": "other",
-                            "rule": "requiredField"
+                        errorMessage: <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
+                        errorMessageStr: msgStr(...msgArgs),
+                        fieldIndex: undefined,
+                        source: {
+                            type: "other",
+                            rule: "requiredField"
                         }
                     });
                 }
@@ -696,12 +710,12 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
 
                 return [
                     {
-                        "errorMessage": <Fragment key={0}>{msg(...msgArgs)}</Fragment>,
-                        "errorMessageStr": msgStr(...msgArgs),
-                        "fieldIndex": undefined,
-                        "source": {
-                            "type": "validator",
-                            "name": validatorName
+                        errorMessage: <Fragment key={0}>{msg(...msgArgs)}</Fragment>,
+                        errorMessageStr: msgStr(...msgArgs),
+                        fieldIndex: undefined,
+                        source: {
+                            type: "validator",
+                            name: validatorName
                         }
                     }
                 ];
@@ -740,12 +754,12 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     const msgArgs = ["invalidPasswordMinLengthMessage", `${minLength}`] as const;
 
                     errors.push({
-                        "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
-                        "errorMessageStr": msgStr(...msgArgs),
-                        "fieldIndex": undefined,
-                        "source": {
-                            "type": "passwordPolicy",
-                            "name": policyName
+                        errorMessage: <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
+                        errorMessageStr: msgStr(...msgArgs),
+                        fieldIndex: undefined,
+                        source: {
+                            type: "passwordPolicy",
+                            name: policyName
                         }
                     });
                 }
@@ -768,12 +782,12 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     const msgArgs = ["invalidPasswordMinDigitsMessage", `${minNumberOfDigits}`] as const;
 
                     errors.push({
-                        "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
-                        "errorMessageStr": msgStr(...msgArgs),
-                        "fieldIndex": undefined,
-                        "source": {
-                            "type": "passwordPolicy",
-                            "name": policyName
+                        errorMessage: <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
+                        errorMessageStr: msgStr(...msgArgs),
+                        fieldIndex: undefined,
+                        source: {
+                            type: "passwordPolicy",
+                            name: policyName
                         }
                     });
                 }
@@ -798,12 +812,12 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     const msgArgs = ["invalidPasswordMinLowerCaseCharsMessage", `${minNumberOfLowerCaseChar}`] as const;
 
                     errors.push({
-                        "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
-                        "errorMessageStr": msgStr(...msgArgs),
-                        "fieldIndex": undefined,
-                        "source": {
-                            "type": "passwordPolicy",
-                            "name": policyName
+                        errorMessage: <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
+                        errorMessageStr: msgStr(...msgArgs),
+                        fieldIndex: undefined,
+                        source: {
+                            type: "passwordPolicy",
+                            name: policyName
                         }
                     });
                 }
@@ -828,12 +842,12 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     const msgArgs = ["invalidPasswordMinUpperCaseCharsMessage", `${minNumberOfUpperCaseChar}`] as const;
 
                     errors.push({
-                        "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
-                        "errorMessageStr": msgStr(...msgArgs),
-                        "fieldIndex": undefined,
-                        "source": {
-                            "type": "passwordPolicy",
-                            "name": policyName
+                        errorMessage: <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
+                        errorMessageStr: msgStr(...msgArgs),
+                        fieldIndex: undefined,
+                        source: {
+                            type: "passwordPolicy",
+                            name: policyName
                         }
                     });
                 }
@@ -856,12 +870,12 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     const msgArgs = ["invalidPasswordMinSpecialCharsMessage", `${minNumberOfSpecialChar}`] as const;
 
                     errors.push({
-                        "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
-                        "errorMessageStr": msgStr(...msgArgs),
-                        "fieldIndex": undefined,
-                        "source": {
-                            "type": "passwordPolicy",
-                            "name": policyName
+                        errorMessage: <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
+                        errorMessageStr: msgStr(...msgArgs),
+                        fieldIndex: undefined,
+                        source: {
+                            type: "passwordPolicy",
+                            name: policyName
                         }
                     });
                 }
@@ -906,12 +920,12 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     const msgArgs = ["invalidPasswordNotUsernameMessage"] as const;
 
                     errors.push({
-                        "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
-                        "errorMessageStr": msgStr(...msgArgs),
-                        "fieldIndex": undefined,
-                        "source": {
-                            "type": "passwordPolicy",
-                            "name": policyName
+                        errorMessage: <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
+                        errorMessageStr: msgStr(...msgArgs),
+                        fieldIndex: undefined,
+                        source: {
+                            type: "passwordPolicy",
+                            name: policyName
                         }
                     });
                 }
@@ -944,12 +958,12 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     const msgArgs = ["invalidPasswordNotEmailMessage"] as const;
 
                     errors.push({
-                        "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
-                        "errorMessageStr": msgStr(...msgArgs),
-                        "fieldIndex": undefined,
-                        "source": {
-                            "type": "passwordPolicy",
-                            "name": policyName
+                        errorMessage: <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
+                        errorMessageStr: msgStr(...msgArgs),
+                        fieldIndex: undefined,
+                        source: {
+                            type: "passwordPolicy",
+                            name: policyName
                         }
                     });
                 }
@@ -977,12 +991,12 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                 const msgArgs = ["invalidPasswordConfirmMessage"] as const;
 
                 errors.push({
-                    "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
-                    "errorMessageStr": msgStr(...msgArgs),
-                    "fieldIndex": undefined,
-                    "source": {
-                        "type": "other",
-                        "rule": "passwordConfirmMatchesPassword"
+                    errorMessage: <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
+                    errorMessageStr: msgStr(...msgArgs),
+                    fieldIndex: undefined,
+                    source: {
+                        type: "other",
+                        rule: "passwordConfirmMatchesPassword"
                     }
                 });
             }
@@ -1001,12 +1015,12 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                 const msgArgs = ["error-user-attribute-required"] as const;
 
                 errors.push({
-                    "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
-                    "errorMessageStr": msgStr(...msgArgs),
-                    "fieldIndex": undefined,
-                    "source": {
-                        "type": "other",
-                        "rule": "requiredField"
+                    errorMessage: <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
+                    errorMessageStr: msgStr(...msgArgs),
+                    fieldIndex: undefined,
+                    source: {
+                        type: "other",
+                        rule: "requiredField"
                     }
                 });
             }
@@ -1027,17 +1041,17 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                 }
 
                 const source: FormFieldError.Source = {
-                    "type": "validator",
-                    "name": validatorName
+                    type: "validator",
+                    name: validatorName
                 };
 
                 if (max && value.length > parseInt(`${max}`)) {
                     const msgArgs = ["error-invalid-length-too-long", `${max}`] as const;
 
                     errors.push({
-                        "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
-                        "errorMessageStr": msgStr(...msgArgs),
-                        "fieldIndex": undefined,
+                        errorMessage: <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
+                        errorMessageStr: msgStr(...msgArgs),
+                        fieldIndex: undefined,
                         source
                     });
                 }
@@ -1046,9 +1060,9 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     const msgArgs = ["error-invalid-length-too-short", `${min}`] as const;
 
                     errors.push({
-                        "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
-                        "errorMessageStr": msgStr(...msgArgs),
-                        "fieldIndex": undefined,
+                        errorMessage: <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
+                        errorMessageStr: msgStr(...msgArgs),
+                        fieldIndex: undefined,
                         source
                     });
                 }
@@ -1076,12 +1090,12 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                 const msgArgs = [errorMessageKey ?? id<MessageKey>("shouldMatchPattern"), pattern] as const;
 
                 errors.push({
-                    "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{advancedMsg(...msgArgs)}</Fragment>,
-                    "errorMessageStr": advancedMsgStr(...msgArgs),
-                    "fieldIndex": undefined,
-                    "source": {
-                        "type": "validator",
-                        "name": validatorName
+                    errorMessage: <Fragment key={`${attributeName}-${errors.length}`}>{advancedMsg(...msgArgs)}</Fragment>,
+                    errorMessageStr: advancedMsgStr(...msgArgs),
+                    fieldIndex: undefined,
+                    source: {
+                        type: "validator",
+                        name: validatorName
                     }
                 });
             }
@@ -1115,12 +1129,12 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                 const msgArgs = [id<MessageKey>("invalidEmailMessage")] as const;
 
                 errors.push({
-                    "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
-                    "errorMessageStr": msgStr(...msgArgs),
-                    "fieldIndex": undefined,
-                    "source": {
-                        "type": "validator",
-                        "name": validatorName
+                    errorMessage: <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
+                    errorMessageStr: msgStr(...msgArgs),
+                    fieldIndex: undefined,
+                    source: {
+                        type: "validator",
+                        name: validatorName
                     }
                 });
             }
@@ -1143,17 +1157,17 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                 const intValue = parseInt(value);
 
                 const source: FormFieldError.Source = {
-                    "type": "validator",
-                    "name": validatorName
+                    type: "validator",
+                    name: validatorName
                 };
 
                 if (isNaN(intValue)) {
                     const msgArgs = ["mustBeAnInteger"] as const;
 
                     errors.push({
-                        "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
-                        "errorMessageStr": msgStr(...msgArgs),
-                        "fieldIndex": undefined,
+                        errorMessage: <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
+                        errorMessageStr: msgStr(...msgArgs),
+                        fieldIndex: undefined,
                         source
                     });
 
@@ -1164,9 +1178,9 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     const msgArgs = ["error-number-out-of-range-too-big", `${max}`] as const;
 
                     errors.push({
-                        "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
-                        "errorMessageStr": msgStr(...msgArgs),
-                        "fieldIndex": undefined,
+                        errorMessage: <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
+                        errorMessageStr: msgStr(...msgArgs),
+                        fieldIndex: undefined,
                         source
                     });
 
@@ -1177,9 +1191,9 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     const msgArgs = ["error-number-out-of-range-too-small", `${min}`] as const;
 
                     errors.push({
-                        "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
-                        "errorMessageStr": msgStr(...msgArgs),
-                        "fieldIndex": undefined,
+                        errorMessage: <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
+                        errorMessageStr: msgStr(...msgArgs),
+                        fieldIndex: undefined,
                         source
                     });
 
@@ -1207,12 +1221,12 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                 const msgArgs = [id<MessageKey>("notAValidOption")] as const;
 
                 errors.push({
-                    "errorMessage": <Fragment key={`${attributeName}-${errors.length}`}>{advancedMsg(...msgArgs)}</Fragment>,
-                    "errorMessageStr": advancedMsgStr(...msgArgs),
-                    "fieldIndex": undefined,
-                    "source": {
-                        "type": "validator",
-                        "name": validatorName
+                    errorMessage: <Fragment key={`${attributeName}-${errors.length}`}>{advancedMsg(...msgArgs)}</Fragment>,
+                    errorMessageStr: advancedMsgStr(...msgArgs),
+                    fieldIndex: undefined,
+                    source: {
+                        type: "validator",
+                        name: validatorName
                     }
                 });
             }

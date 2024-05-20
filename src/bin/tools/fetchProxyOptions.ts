@@ -11,7 +11,10 @@ function ensureSingleOrNone<T>(arg0: T | T[]) {
     if (!Array.isArray(arg0)) return arg0;
     if (arg0.length === 0) return undefined;
     if (arg0.length === 1) return arg0[0];
-    throw new Error("Illegal configuration, expected a single value but found multiple: " + arg0.map(String).join(", "));
+    throw new Error(
+        "Illegal configuration, expected a single value but found multiple: " +
+            arg0.map(String).join(", ")
+    );
 }
 
 type NPMConfig = Record<string, string | string[]>;
@@ -24,10 +27,15 @@ async function getNmpConfig(params: { npmWorkspaceRootDirPath: string }) {
 
     const exec = promisify(execCallback);
 
-    const stdout = await exec("npm config get", { "encoding": "utf8", "cwd": npmWorkspaceRootDirPath }).then(({ stdout }) => stdout);
+    const stdout = await exec("npm config get", {
+        encoding: "utf8",
+        cwd: npmWorkspaceRootDirPath
+    }).then(({ stdout }) => stdout);
 
     const npmConfigReducer = (cfg: NPMConfig, [key, value]: [string, string]) =>
-        key in cfg ? { ...cfg, [key]: [...ensureArray(cfg[key]), value] } : { ...cfg, [key]: value };
+        key in cfg
+            ? { ...cfg, [key]: [...ensureArray(cfg[key]), value] }
+            : { ...cfg, [key]: value };
 
     return stdout
         .split("\n")
@@ -37,9 +45,14 @@ async function getNmpConfig(params: { npmWorkspaceRootDirPath: string }) {
         .reduce(npmConfigReducer, {} as NPMConfig);
 }
 
-export type ProxyFetchOptions = Pick<FetchOptions, "proxy" | "noProxy" | "strictSSL" | "cert" | "ca">;
+export type ProxyFetchOptions = Pick<
+    FetchOptions,
+    "proxy" | "noProxy" | "strictSSL" | "cert" | "ca"
+>;
 
-export async function getProxyFetchOptions(params: { npmWorkspaceRootDirPath: string }): Promise<ProxyFetchOptions> {
+export async function getProxyFetchOptions(params: {
+    npmWorkspaceRootDirPath: string;
+}): Promise<ProxyFetchOptions> {
     const { npmWorkspaceRootDirPath } = params;
 
     const cfg = await getNmpConfig({ npmWorkspaceRootDirPath });
@@ -60,14 +73,24 @@ export async function getProxyFetchOptions(params: { npmWorkspaceRootDirPath: st
         ca.push(
             ...(await (async () => {
                 function chunks<T>(arr: T[], size: number = 2) {
-                    return arr.map((_, i) => i % size == 0 && arr.slice(i, i + size)).filter(Boolean) as T[][];
+                    return arr
+                        .map((_, i) => i % size == 0 && arr.slice(i, i + size))
+                        .filter(Boolean) as T[][];
                 }
 
                 const cafileContent = await readFile(cafile, "utf-8");
-                return chunks(cafileContent.split(/(-----END CERTIFICATE-----)/), 2).map(ca => ca.join("").replace(/^\n/, "").replace(/\n/g, "\\n"));
+                return chunks(cafileContent.split(/(-----END CERTIFICATE-----)/), 2).map(
+                    ca => ca.join("").replace(/^\n/, "").replace(/\n/g, "\\n")
+                );
             })())
         );
     }
 
-    return { proxy, noProxy, strictSSL, cert, "ca": ca.length === 0 ? undefined : ca };
+    return {
+        proxy,
+        noProxy,
+        strictSSL,
+        cert,
+        ca: ca.length === 0 ? undefined : ca
+    };
 }

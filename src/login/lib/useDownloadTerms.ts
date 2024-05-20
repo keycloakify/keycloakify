@@ -33,7 +33,9 @@ export function useDownloadTerms(params: {
         const downloadTermMarkdownConst = useConstCallback(downloadTermMarkdown);
 
         const downloadTermMarkdownMemoized = useConst(() =>
-            memoize((currentLanguageTag: string) => downloadTermMarkdownConst({ currentLanguageTag }))
+            memoize((currentLanguageTag: string) =>
+                downloadTermMarkdownConst({ currentLanguageTag })
+            )
         );
 
         return { downloadTermMarkdownMemoized };
@@ -41,9 +43,9 @@ export function useDownloadTerms(params: {
 
     useEffect(() => {
         if (kcContext.pageId === "terms.ftl" || kcContext.termsAcceptanceRequired) {
-            downloadTermMarkdownMemoized(kcContext.locale?.currentLanguageTag ?? fallbackLanguageTag).then(
-                thermMarkdown => (evtTermsMarkdown.state = thermMarkdown)
-            );
+            downloadTermMarkdownMemoized(
+                kcContext.locale?.currentLanguageTag ?? fallbackLanguageTag
+            ).then(thermMarkdown => (evtTermsMarkdown.state = thermMarkdown));
         }
     }, []);
 }

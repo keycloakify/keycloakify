@@ -15,7 +15,9 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         let commandOutput: Buffer | undefined = undefined;
 
         try {
-            commandOutput = child_process.execSync("mvn --version", { "stdio": ["ignore", "pipe", "ignore"] });
+            commandOutput = child_process.execSync("mvn --version", {
+                stdio: ["ignore", "pipe", "ignore"]
+            });
         } catch {}
 
         if (commandOutput?.toString("utf8").includes("Apache Maven")) {
@@ -34,7 +36,11 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             }
         })();
 
-        console.log(`${chalk.red("Apache Maven required.")} Install it with \`${chalk.bold(installationCommand)}\` (for example)`);
+        console.log(
+            `${chalk.red("Apache Maven required.")} Install it with \`${chalk.bold(
+                installationCommand
+            )}\` (for example)`
+        );
 
         process.exit(1);
     }
@@ -46,7 +52,12 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     console.log(
         [
             chalk.cyan(`keycloakify v${readThisNpmPackageVersion()}`),
-            chalk.green(`Building the keycloak theme in .${pathSep}${pathRelative(process.cwd(), buildOptions.keycloakifyBuildDirPath)} ...`)
+            chalk.green(
+                `Building the keycloak theme in .${pathSep}${pathRelative(
+                    process.cwd(),
+                    buildOptions.keycloakifyBuildDirPath
+                )} ...`
+            )
         ].join(" ")
     );
 
@@ -54,10 +65,15 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     {
         if (!fs.existsSync(buildOptions.keycloakifyBuildDirPath)) {
-            fs.mkdirSync(buildOptions.keycloakifyBuildDirPath, { "recursive": true });
+            fs.mkdirSync(buildOptions.keycloakifyBuildDirPath, {
+                recursive: true
+            });
         }
 
-        fs.writeFileSync(pathJoin(buildOptions.keycloakifyBuildDirPath, ".gitignore"), Buffer.from("*", "utf8"));
+        fs.writeFileSync(
+            pathJoin(buildOptions.keycloakifyBuildDirPath, ".gitignore"),
+            Buffer.from("*", "utf8")
+        );
     }
 
     await generateSrcMainResources({ buildOptions });
@@ -68,10 +84,11 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         }
 
         child_process.execSync("npx vite", {
-            "cwd": buildOptions.reactAppRootDirPath,
-            "env": {
+            cwd: buildOptions.reactAppRootDirPath,
+            env: {
                 ...process.env,
-                [vitePluginSubScriptEnvNames.runPostBuildScript]: JSON.stringify(buildOptions)
+                [vitePluginSubScriptEnvNames.runPostBuildScript]:
+                    JSON.stringify(buildOptions)
             }
         });
     }
@@ -84,5 +101,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         await buildJars({ buildOptions });
     }
 
-    console.log(chalk.green(`✓ built in ${((Date.now() - startTime) / 1000).toFixed(2)}s`));
+    console.log(
+        chalk.green(`✓ built in ${((Date.now() - startTime) / 1000).toFixed(2)}s`)
+    );
 }

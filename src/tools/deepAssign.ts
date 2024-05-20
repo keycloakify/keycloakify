@@ -3,7 +3,10 @@ import { is } from "tsafe/is";
 import { deepClone } from "./deepClone";
 
 //Warning: Be mindful that because of array this is not idempotent.
-export function deepAssign(params: { target: Record<string, unknown>; source: Record<string, unknown> }) {
+export function deepAssign(params: {
+    target: Record<string, unknown>;
+    source: Record<string, unknown>;
+}) {
     const { target } = params;
 
     const source = deepClone(params.source);
@@ -11,12 +14,16 @@ export function deepAssign(params: { target: Record<string, unknown>; source: Re
     Object.keys(source).forEach(key => {
         var dereferencedSource = source[key];
 
-        if (target[key] === undefined || dereferencedSource instanceof Function || !(dereferencedSource instanceof Object)) {
+        if (
+            target[key] === undefined ||
+            dereferencedSource instanceof Function ||
+            !(dereferencedSource instanceof Object)
+        ) {
             Object.defineProperty(target, key, {
-                "enumerable": true,
-                "writable": true,
-                "configurable": true,
-                "value": dereferencedSource
+                enumerable: true,
+                writable: true,
+                configurable: true,
+                value: dereferencedSource
             });
 
             return;
@@ -37,8 +44,8 @@ export function deepAssign(params: { target: Record<string, unknown>; source: Re
         assert(is<Record<string, unknown>>(dereferencedSource));
 
         deepAssign({
-            "target": dereferencedTarget,
-            "source": dereferencedSource
+            target: dereferencedTarget,
+            source: dereferencedSource
         });
     });
 }

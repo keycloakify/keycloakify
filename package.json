@@ -107,7 +107,7 @@
         "make-fetch-happen": "^11.0.3",
         "patch-package": "^8.0.0",
         "powerhooks": "^1.0.10",
-        "prettier": "^2.3.0",
+        "prettier": "^3.2.5",
         "properties-parser": "^0.3.1",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",

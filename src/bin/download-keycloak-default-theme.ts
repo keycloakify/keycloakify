@@ -12,22 +12,39 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         cliCommandOptions
     });
 
-    console.log(chalk.cyan("Select the Keycloak version from which you want to download the builtins theme:"));
+    console.log(
+        chalk.cyan(
+            "Select the Keycloak version from which you want to download the builtins theme:"
+        )
+    );
 
     const { keycloakVersion } = await promptKeycloakVersion({
-        "startingFromMajor": undefined,
-        "cacheDirPath": buildOptions.cacheDirPath
+        startingFromMajor: undefined,
+        cacheDirPath: buildOptions.cacheDirPath
     });
 
     console.log(`→ ${keycloakVersion}`);
 
-    const destDirPath = pathJoin(buildOptions.keycloakifyBuildDirPath, "src", "main", "resources", "theme");
+    const destDirPath = pathJoin(
+        buildOptions.keycloakifyBuildDirPath,
+        "src",
+        "main",
+        "resources",
+        "theme"
+    );
 
     console.log(
         [
             `Downloading builtins theme of Keycloak ${keycloakVersion} here:`,
-            `- ${chalk.bold(`.${pathSep}${pathJoin(pathRelative(process.cwd(), destDirPath), "base")}`)}`,
-            `- ${chalk.bold(`.${pathSep}${pathJoin(pathRelative(process.cwd(), destDirPath), "keycloak")}`)}`
+            `- ${chalk.bold(
+                `.${pathSep}${pathJoin(pathRelative(process.cwd(), destDirPath), "base")}`
+            )}`,
+            `- ${chalk.bold(
+                `.${pathSep}${pathJoin(
+                    pathRelative(process.cwd(), destDirPath),
+                    "keycloak"
+                )}`
+            )}`
         ].join("\n")
     );
 

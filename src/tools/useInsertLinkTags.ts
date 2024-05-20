@@ -13,14 +13,20 @@ export function createUseInsertLinkTags() {
     function useInsertLinkTags(params: { hrefs: string[] }) {
         const { hrefs } = params;
 
-        const [areAllStyleSheetsLoaded, setAllStyleSheetLoaded] = useReducer(() => true, hrefs.length === 0);
+        const [areAllStyleSheetsLoaded, setAllStyleSheetLoaded] = useReducer(
+            () => true,
+            hrefs.length === 0
+        );
 
         useEffect(() => {
             let isActive = true;
 
             mount_link_tags: {
                 if (linkTagsContext !== undefined) {
-                    if (JSON.stringify(linkTagsContext.styleSheetHrefs) === JSON.stringify(hrefs)) {
+                    if (
+                        JSON.stringify(linkTagsContext.styleSheetHrefs) ===
+                        JSON.stringify(hrefs)
+                    ) {
                         break mount_link_tags;
                     }
 
@@ -37,14 +43,21 @@ export function createUseInsertLinkTags() {
                 for (const href of hrefs) {
                     const htmlElement = document.createElement("link");
 
-                    prs.push(new Promise<void>(resolve => htmlElement.addEventListener("load", () => resolve())));
+                    prs.push(
+                        new Promise<void>(resolve =>
+                            htmlElement.addEventListener("load", () => resolve())
+                        )
+                    );
 
                     htmlElement.rel = "stylesheet";
 
                     htmlElement.href = href;
 
                     if (lastMountedHtmlElement !== undefined) {
-                        lastMountedHtmlElement.insertAdjacentElement("afterend", htmlElement);
+                        lastMountedHtmlElement.insertAdjacentElement(
+                            "afterend",
+                            htmlElement
+                        );
                     } else {
                         document.head.prepend(htmlElement);
                     }
@@ -57,9 +70,9 @@ export function createUseInsertLinkTags() {
                 }
 
                 linkTagsContext = {
-                    "styleSheetHrefs": hrefs,
-                    "prAreAllStyleSheetsLoaded": Promise.all(prs).then(() => undefined),
-                    "remove": () => removeFns.forEach(fn => fn())
+                    styleSheetHrefs: hrefs,
+                    prAreAllStyleSheetsLoaded: Promise.all(prs).then(() => undefined),
+                    remove: () => removeFns.forEach(fn => fn())
                 };
             }
 

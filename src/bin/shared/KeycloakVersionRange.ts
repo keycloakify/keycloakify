@@ -1,4 +1,6 @@
-export type KeycloakVersionRange = KeycloakVersionRange.WithAccountTheme | KeycloakVersionRange.WithoutAccountTheme;
+export type KeycloakVersionRange =
+    | KeycloakVersionRange.WithAccountTheme
+    | KeycloakVersionRange.WithoutAccountTheme;
 
 export namespace KeycloakVersionRange {
     export type WithoutAccountTheme = "21-and-below" | "22-and-above";

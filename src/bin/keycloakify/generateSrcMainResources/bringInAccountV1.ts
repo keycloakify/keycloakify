@@ -2,7 +2,11 @@ import * as fs from "fs";
 import { join as pathJoin } from "path";
 import { assert } from "tsafe/assert";
 import type { BuildOptions } from "../../shared/buildOptions";
-import { resources_common, lastKeycloakVersionWithAccountV1, accountV1ThemeName } from "../../shared/constants";
+import {
+    resources_common,
+    lastKeycloakVersionWithAccountV1,
+    accountV1ThemeName
+} from "../../shared/constants";
 import { downloadKeycloakDefaultTheme } from "../../shared/downloadKeycloakDefaultTheme";
 import { transformCodebase } from "../../tools/transformCodebase";
 import { rmSync } from "../../tools/fs.rmSync";
@@ -18,32 +22,53 @@ assert<BuildOptions extends BuildOptionsLike ? true : false>();
 export async function bringInAccountV1(params: { buildOptions: BuildOptionsLike }) {
     const { buildOptions } = params;
 
-    const builtinKeycloakThemeTmpDirPath = pathJoin(buildOptions.cacheDirPath, "bringInAccountV1_tmp");
+    const builtinKeycloakThemeTmpDirPath = pathJoin(
+        buildOptions.cacheDirPath,
+        "bringInAccountV1_tmp"
+    );
 
     await downloadKeycloakDefaultTheme({
-        "destDirPath": builtinKeycloakThemeTmpDirPath,
-        "keycloakVersion": lastKeycloakVersionWithAccountV1,
+        destDirPath: builtinKeycloakThemeTmpDirPath,
+        keycloakVersion: lastKeycloakVersionWithAccountV1,
         buildOptions
     });
 
-    const accountV1DirPath = pathJoin(buildOptions.keycloakifyBuildDirPath, "src", "main", "resources", "theme", accountV1ThemeName, "account");
+    const accountV1DirPath = pathJoin(
+        buildOptions.keycloakifyBuildDirPath,
+        "src",
+        "main",
+        "resources",
+        "theme",
+        accountV1ThemeName,
+        "account"
+    );
 
     transformCodebase({
-        "srcDirPath": pathJoin(builtinKeycloakThemeTmpDirPath, "base", "account"),
-        "destDirPath": accountV1DirPath
+        srcDirPath: pathJoin(builtinKeycloakThemeTmpDirPath, "base", "account"),
+        destDirPath: accountV1DirPath
     });
 
     transformCodebase({
-        "srcDirPath": pathJoin(builtinKeycloakThemeTmpDirPath, "keycloak", "account", "resources"),
-        "destDirPath": pathJoin(accountV1DirPath, "resources")
+        srcDirPath: pathJoin(
+            builtinKeycloakThemeTmpDirPath,
+            "keycloak",
+            "account",
+            "resources"
+        ),
+        destDirPath: pathJoin(accountV1DirPath, "resources")
     });
 
     transformCodebase({
-        "srcDirPath": pathJoin(builtinKeycloakThemeTmpDirPath, "keycloak", "common", "resources"),
-        "destDirPath": pathJoin(accountV1DirPath, "resources", resources_common)
+        srcDirPath: pathJoin(
+            builtinKeycloakThemeTmpDirPath,
+            "keycloak",
+            "common",
+            "resources"
+        ),
+        destDirPath: pathJoin(accountV1DirPath, "resources", resources_common)
     });
 
-    rmSync(builtinKeycloakThemeTmpDirPath, { "recursive": true });
+    rmSync(builtinKeycloakThemeTmpDirPath, { recursive: true });
 
     fs.writeFileSync(
         pathJoin(accountV1DirPath, "theme.properties"),
@@ -58,8 +83,13 @@ export async function bringInAccountV1(params: { buildOptions: BuildOptionsLike 
                         "css/account.css",
                         "img/icon-sidebar-active.png",
                         "img/logo.png",
-                        ...["patternfly.min.css", "patternfly-additions.min.css", "patternfly-additions.min.css"].map(
-                            fileBasename => `${resources_common}/node_modules/patternfly/dist/css/${fileBasename}`
+                        ...[
+                            "patternfly.min.css",
+                            "patternfly-additions.min.css",
+                            "patternfly-additions.min.css"
+                        ].map(
+                            fileBasename =>
+                                `${resources_common}/node_modules/patternfly/dist/css/${fileBasename}`
                         )
                     ].join(" "),
                 "",

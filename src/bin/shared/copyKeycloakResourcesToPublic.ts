@@ -3,7 +3,11 @@ import {
     type BuildOptionsLike as BuildOptionsLike_downloadKeycloakStaticResources
 } from "./downloadKeycloakStaticResources";
 import { join as pathJoin, relative as pathRelative } from "path";
-import { themeTypes, keycloak_resources, lastKeycloakVersionWithAccountV1 } from "../shared/constants";
+import {
+    themeTypes,
+    keycloak_resources,
+    lastKeycloakVersionWithAccountV1
+} from "../shared/constants";
 import { readThisNpmPackageVersion } from "../tools/readThisNpmPackageVersion";
 import { assert } from "tsafe/assert";
 import * as fs from "fs";
@@ -17,7 +21,9 @@ export type BuildOptionsLike = BuildOptionsLike_downloadKeycloakStaticResources 
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
-export async function copyKeycloakResourcesToPublic(params: { buildOptions: BuildOptionsLike }) {
+export async function copyKeycloakResourcesToPublic(params: {
+    buildOptions: BuildOptionsLike;
+}) {
     const { buildOptions } = params;
 
     const destDirPath = pathJoin(buildOptions.publicDirPath, keycloak_resources);
@@ -27,11 +33,14 @@ export async function copyKeycloakResourcesToPublic(params: { buildOptions: Buil
     const keycloakifyBuildinfoRaw = JSON.stringify(
         {
             destDirPath,
-            "keycloakifyVersion": readThisNpmPackageVersion(),
-            "buildOptions": {
-                "loginThemeResourcesFromKeycloakVersion": readThisNpmPackageVersion(),
-                "cacheDirPath": pathRelative(destDirPath, buildOptions.cacheDirPath),
-                "npmWorkspaceRootDirPath": pathRelative(destDirPath, buildOptions.npmWorkspaceRootDirPath)
+            keycloakifyVersion: readThisNpmPackageVersion(),
+            buildOptions: {
+                loginThemeResourcesFromKeycloakVersion: readThisNpmPackageVersion(),
+                cacheDirPath: pathRelative(destDirPath, buildOptions.cacheDirPath),
+                npmWorkspaceRootDirPath: pathRelative(
+                    destDirPath,
+                    buildOptions.npmWorkspaceRootDirPath
+                )
             }
         },
         null,
@@ -43,7 +52,9 @@ export async function copyKeycloakResourcesToPublic(params: { buildOptions: Buil
             break skip_if_already_done;
         }
 
-        const keycloakifyBuildinfoRaw_previousRun = fs.readFileSync(keycloakifyBuildinfoFilePath).toString("utf8");
+        const keycloakifyBuildinfoRaw_previousRun = fs
+            .readFileSync(keycloakifyBuildinfoFilePath)
+            .toString("utf8");
 
         if (keycloakifyBuildinfoRaw_previousRun !== keycloakifyBuildinfoRaw) {
             break skip_if_already_done;
@@ -52,15 +63,15 @@ export async function copyKeycloakResourcesToPublic(params: { buildOptions: Buil
         return;
     }
 
-    rmSync(destDirPath, { "force": true, "recursive": true });
+    rmSync(destDirPath, { force: true, recursive: true });
 
-    fs.mkdirSync(destDirPath, { "recursive": true });
+    fs.mkdirSync(destDirPath, { recursive: true });
 
     fs.writeFileSync(pathJoin(destDirPath, ".gitignore"), Buffer.from("*", "utf8"));
 
     for (const themeType of themeTypes) {
         await downloadKeycloakStaticResources({
-            "keycloakVersion": (() => {
+            keycloakVersion: (() => {
                 switch (themeType) {
                     case "login":
                         return buildOptions.loginThemeResourcesFromKeycloakVersion;
@@ -69,7 +80,7 @@ export async function copyKeycloakResourcesToPublic(params: { buildOptions: Buil
                 }
             })(),
             themeType,
-            "themeDirPath": destDirPath,
+            themeDirPath: destDirPath,
             buildOptions
         });
     }
@@ -86,5 +97,8 @@ export async function copyKeycloakResourcesToPublic(params: { buildOptions: Buil
         )
     );
 
-    fs.writeFileSync(keycloakifyBuildinfoFilePath, Buffer.from(keycloakifyBuildinfoRaw, "utf8"));
+    fs.writeFileSync(
+        keycloakifyBuildinfoFilePath,
+        Buffer.from(keycloakifyBuildinfoRaw, "utf8")
+    );
 }

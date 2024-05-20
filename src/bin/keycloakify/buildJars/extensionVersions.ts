@@ -13,4 +13,5 @@ export const keycloakThemeAdditionalInfoExtensionVersions = [null, "1.1.5"] as c
  * https://central.sonatype.com/artifact/dev.jcputney/keycloak-theme-additional-info-extension
  * https://github.com/jcputney/keycloak-theme-additional-info-extension
  * */
-export type KeycloakThemeAdditionalInfoExtensionVersion = (typeof keycloakThemeAdditionalInfoExtensionVersions)[number];
+export type KeycloakThemeAdditionalInfoExtensionVersion =
+    (typeof keycloakThemeAdditionalInfoExtensionVersions)[number];

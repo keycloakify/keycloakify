@@ -1,6 +1,9 @@
 import { assert } from "tsafe/assert";
 import type { BuildOptions } from "../../shared/buildOptions";
-import type { KeycloakAccountV1Version, KeycloakThemeAdditionalInfoExtensionVersion } from "./extensionVersions";
+import type {
+    KeycloakAccountV1Version,
+    KeycloakThemeAdditionalInfoExtensionVersion
+} from "./extensionVersions";
 
 export type BuildOptionsLike = {
     groupId: string;
@@ -15,7 +18,11 @@ export function generatePom(params: {
     keycloakThemeAdditionalInfoExtensionVersion: KeycloakThemeAdditionalInfoExtensionVersion;
     buildOptions: BuildOptionsLike;
 }) {
-    const { keycloakAccountV1Version, keycloakThemeAdditionalInfoExtensionVersion, buildOptions } = params;
+    const {
+        keycloakAccountV1Version,
+        keycloakThemeAdditionalInfoExtensionVersion,
+        buildOptions
+    } = params;
 
     const { pomFileCode } = (function generatePomFileCode(): {
         pomFileCode: string;
@@ -35,7 +42,8 @@ export function generatePom(params: {
             `  <properties>`,
             `    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>`,
             `  </properties>`,
-            ...(keycloakAccountV1Version !== null && keycloakThemeAdditionalInfoExtensionVersion !== null
+            ...(keycloakAccountV1Version !== null &&
+            keycloakThemeAdditionalInfoExtensionVersion !== null
                 ? [
                       `  <build>`,
                       `    <plugins>`,

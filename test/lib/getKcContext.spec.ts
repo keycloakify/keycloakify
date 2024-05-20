@@ -4,12 +4,21 @@ import type { KcContext } from "keycloakify/login/kcContext";
 import { same } from "evt/tools/inDepth";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
-import { kcContextMocks, kcContextCommonMock } from "keycloakify/login/kcContext/kcContextMocks";
+import {
+    kcContextMocks,
+    kcContextCommonMock
+} from "keycloakify/login/kcContext/kcContextMocks";
 import { deepClone } from "keycloakify/tools/deepClone";
 import { expect, it, describe } from "vitest";
 
 describe("getKcContext", () => {
-    const authorizedMailDomains = ["example.com", "another-example.com", "*.yet-another-example.com", "*.example.com", "hello-world.com"];
+    const authorizedMailDomains = [
+        "example.com",
+        "another-example.com",
+        "*.yet-another-example.com",
+        "*.example.com",
+        "hello-world.com"
+    ];
 
     const displayName = "this is an overwritten common value";
 
@@ -33,26 +42,28 @@ describe("getKcContext", () => {
               aNonStandardValue2: string;
           };
 
-    const getKcContextProxy = (params: { mockPageId: ExtendKcContext<KcContextExtension>["pageId"] }) => {
+    const getKcContextProxy = (params: {
+        mockPageId: ExtendKcContext<KcContextExtension>["pageId"];
+    }) => {
         const { mockPageId } = params;
 
         const { kcContext } = getKcContext<KcContextExtension>({
             mockPageId,
-            "mockData": [
+            mockData: [
                 {
-                    "pageId": "login.ftl",
-                    "realm": { displayName }
+                    pageId: "login.ftl",
+                    realm: { displayName }
                 },
                 {
-                    "pageId": "info.ftl",
+                    pageId: "info.ftl",
                     aNonStandardValue1
                 },
                 {
-                    "pageId": "register.ftl",
+                    pageId: "register.ftl",
                     authorizedMailDomains
                 },
                 {
-                    "pageId": "my-extra-page-2.ftl",
+                    pageId: "my-extra-page-2.ftl",
                     aNonStandardValue2
                 }
             ]
@@ -63,7 +74,7 @@ describe("getKcContext", () => {
     it("has proper API for login.ftl", () => {
         const pageId = "login.ftl";
 
-        const { kcContext } = getKcContextProxy({ "mockPageId": pageId });
+        const { kcContext } = getKcContextProxy({ mockPageId: pageId });
 
         assert(kcContext?.pageId === pageId);
 
@@ -74,7 +85,11 @@ describe("getKcContext", () => {
                 //NOTE: deepClone for printIfExists or other functions...
                 deepClone(kcContext),
                 (() => {
-                    const mock = deepClone(kcContextMocks.find(({ pageId: pageId_i }) => pageId_i === pageId)!);
+                    const mock = deepClone(
+                        kcContextMocks.find(
+                            ({ pageId: pageId_i }) => pageId_i === pageId
+                        )!
+                    );
 
                     mock.realm.displayName = displayName;
 
@@ -87,7 +102,7 @@ describe("getKcContext", () => {
     it("has a proper API for info.ftl", () => {
         const pageId = "info.ftl";
 
-        const { kcContext } = getKcContextProxy({ "mockPageId": pageId });
+        const { kcContext } = getKcContextProxy({ mockPageId: pageId });
 
         assert(kcContext?.pageId === pageId);
 
@@ -106,7 +121,11 @@ describe("getKcContext", () => {
             same(
                 deepClone(kcContext),
                 (() => {
-                    const mock = deepClone(kcContextMocks.find(({ pageId: pageId_i }) => pageId_i === pageId)!);
+                    const mock = deepClone(
+                        kcContextMocks.find(
+                            ({ pageId: pageId_i }) => pageId_i === pageId
+                        )!
+                    );
 
                     Object.assign(mock, { aNonStandardValue1 });
 
@@ -118,7 +137,7 @@ describe("getKcContext", () => {
     it("has a proper API for register.ftl", () => {
         const pageId = "register.ftl";
 
-        const { kcContext } = getKcContextProxy({ "mockPageId": pageId });
+        const { kcContext } = getKcContextProxy({ mockPageId: pageId });
 
         assert(kcContext?.pageId === pageId);
 
@@ -137,7 +156,11 @@ describe("getKcContext", () => {
             same(
                 deepClone(kcContext),
                 (() => {
-                    const mock = deepClone(kcContextMocks.find(({ pageId: pageId_i }) => pageId_i === pageId)!);
+                    const mock = deepClone(
+                        kcContextMocks.find(
+                            ({ pageId: pageId_i }) => pageId_i === pageId
+                        )!
+                    );
 
                     Object.assign(mock, { authorizedMailDomains });
 
@@ -149,7 +172,7 @@ describe("getKcContext", () => {
     it("has a proper API for my-extra-page-2.ftl", () => {
         const pageId = "my-extra-page-2.ftl";
 
-        const { kcContext } = getKcContextProxy({ "mockPageId": pageId });
+        const { kcContext } = getKcContextProxy({ mockPageId: pageId });
 
         assert(kcContext?.pageId === pageId);
 
@@ -183,7 +206,7 @@ describe("getKcContext", () => {
 
         console.log("We expect a warning here =>");
 
-        const { kcContext } = getKcContextProxy({ "mockPageId": pageId });
+        const { kcContext } = getKcContextProxy({ mockPageId: pageId });
 
         assert(kcContext?.pageId === pageId);
 
@@ -206,12 +229,19 @@ describe("getKcContext", () => {
         const pageId = "login.ftl";
 
         const { kcContext } = getKcContext({
-            "mockPageId": pageId
+            mockPageId: pageId
         });
 
         assert<Equals<typeof kcContext, KcContext | undefined>>();
 
-        assert(same(deepClone(kcContext), deepClone(kcContextMocks.find(({ pageId: pageId_i }) => pageId_i === pageId)!)));
+        assert(
+            same(
+                deepClone(kcContext),
+                deepClone(
+                    kcContextMocks.find(({ pageId: pageId_i }) => pageId_i === pageId)!
+                )
+            )
+        );
     });
     it("returns undefined when no mock is specified", () => {
         const { kcContext } = getKcContext();

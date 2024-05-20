@@ -49,7 +49,9 @@ export type ResolvedViteConfig = {
     userProvidedBuildOptions: UserProvidedBuildOptions;
 };
 
-export function readBuildOptions(params: { cliCommandOptions: CliCommandOptions }): BuildOptions {
+export function readBuildOptions(params: {
+    cliCommandOptions: CliCommandOptions;
+}): BuildOptions {
     const { cliCommandOptions } = params;
 
     const reactAppRootDirPath = (() => {
@@ -58,29 +60,39 @@ export function readBuildOptions(params: { cliCommandOptions: CliCommandOptions 
         }
 
         return getAbsoluteAndInOsFormatPath({
-            "pathIsh": cliCommandOptions.reactAppRootDirPath,
-            "cwd": process.cwd()
+            pathIsh: cliCommandOptions.reactAppRootDirPath,
+            cwd: process.cwd()
         });
     })();
 
     const { resolvedViteConfig } = (() => {
-        if (fs.readdirSync(reactAppRootDirPath).find(fileBasename => fileBasename.startsWith("vite.config")) === undefined) {
-            return { "resolvedViteConfig": undefined };
+        if (
+            fs
+                .readdirSync(reactAppRootDirPath)
+                .find(fileBasename => fileBasename.startsWith("vite.config")) ===
+            undefined
+        ) {
+            return { resolvedViteConfig: undefined };
         }
 
         const output = child_process
             .execSync("npx vite", {
-                "cwd": reactAppRootDirPath,
-                "env": {
+                cwd: reactAppRootDirPath,
+                env: {
                     ...process.env,
                     [vitePluginSubScriptEnvNames.resolveViteConfig]: "true"
                 }
             })
             .toString("utf8");
 
-        assert(output.includes(vitePluginSubScriptEnvNames.resolveViteConfig), "Seems like the Keycloakify's Vite plugin is not installed.");
+        assert(
+            output.includes(vitePluginSubScriptEnvNames.resolveViteConfig),
+            "Seems like the Keycloakify's Vite plugin is not installed."
+        );
 
-        const resolvedViteConfigStr = output.split(vitePluginSubScriptEnvNames.resolveViteConfig).reverse()[0];
+        const resolvedViteConfigStr = output
+            .split(vitePluginSubScriptEnvNames.resolveViteConfig)
+            .reverse()[0];
 
         const resolvedViteConfig: ResolvedViteConfig = JSON.parse(resolvedViteConfigStr);
 
@@ -92,22 +104,24 @@ export function readBuildOptions(params: { cliCommandOptions: CliCommandOptions 
             name: string;
             version?: string;
             homepage?: string;
-            keycloakify?: UserProvidedBuildOptions & { reactAppBuildDirPath?: string };
+            keycloakify?: UserProvidedBuildOptions & {
+                reactAppBuildDirPath?: string;
+            };
         };
 
         const zParsedPackageJson = z.object({
-            "name": z.string(),
-            "version": z.string().optional(),
-            "homepage": z.string().optional(),
-            "keycloakify": z
+            name: z.string(),
+            version: z.string().optional(),
+            homepage: z.string().optional(),
+            keycloakify: z
                 .object({
-                    "extraThemeProperties": z.array(z.string()).optional(),
-                    "artifactId": z.string().optional(),
-                    "groupId": z.string().optional(),
-                    "loginThemeResourcesFromKeycloakVersion": z.string().optional(),
-                    "reactAppBuildDirPath": z.string().optional(),
-                    "keycloakifyBuildDirPath": z.string().optional(),
-                    "themeName": z.union([z.string(), z.array(z.string())]).optional()
+                    extraThemeProperties: z.array(z.string()).optional(),
+                    artifactId: z.string().optional(),
+                    groupId: z.string().optional(),
+                    loginThemeResourcesFromKeycloakVersion: z.string().optional(),
+                    reactAppBuildDirPath: z.string().optional(),
+                    keycloakifyBuildDirPath: z.string().optional(),
+                    themeName: z.union([z.string(), z.array(z.string())]).optional()
                 })
                 .optional()
         });
@@ -119,7 +133,13 @@ export function readBuildOptions(params: { cliCommandOptions: CliCommandOptions 
             assert<Expected extends Got ? true : false>();
         }
 
-        return zParsedPackageJson.parse(JSON.parse(fs.readFileSync(pathJoin(reactAppRootDirPath, "package.json")).toString("utf8")));
+        return zParsedPackageJson.parse(
+            JSON.parse(
+                fs
+                    .readFileSync(pathJoin(reactAppRootDirPath, "package.json"))
+                    .toString("utf8")
+            )
+        );
     })();
 
     const userProvidedBuildOptions: UserProvidedBuildOptions = {
@@ -152,8 +172,8 @@ export function readBuildOptions(params: { cliCommandOptions: CliCommandOptions 
 
             if (parsedPackageJson.keycloakify?.reactAppBuildDirPath !== undefined) {
                 return getAbsoluteAndInOsFormatPath({
-                    "pathIsh": parsedPackageJson.keycloakify.reactAppBuildDirPath,
-                    "cwd": reactAppRootDirPath
+                    pathIsh: parsedPackageJson.keycloakify.reactAppBuildDirPath,
+                    cwd: reactAppRootDirPath
                 });
             }
 
@@ -165,15 +185,16 @@ export function readBuildOptions(params: { cliCommandOptions: CliCommandOptions 
 
     const { npmWorkspaceRootDirPath } = getNpmWorkspaceRootDirPath({
         reactAppRootDirPath,
-        "dependencyExpected": "keycloakify"
+        dependencyExpected: "keycloakify"
     });
 
     return {
-        "bundler": resolvedViteConfig !== undefined ? "vite" : "webpack",
-        "themeVersion": process.env.KEYCLOAKIFY_THEME_VERSION ?? parsedPackageJson.version ?? "0.0.0",
+        bundler: resolvedViteConfig !== undefined ? "vite" : "webpack",
+        themeVersion:
+            process.env.KEYCLOAKIFY_THEME_VERSION ?? parsedPackageJson.version ?? "0.0.0",
         themeNames,
-        "extraThemeProperties": userProvidedBuildOptions.extraThemeProperties,
-        "groupId": (() => {
+        extraThemeProperties: userProvidedBuildOptions.extraThemeProperties,
+        groupId: (() => {
             const fallbackGroupId = `${themeNames[0]}.keycloak`;
 
             return (
@@ -188,24 +209,30 @@ export function readBuildOptions(params: { cliCommandOptions: CliCommandOptions 
                           .join(".") ?? fallbackGroupId) + ".keycloak"
             );
         })(),
-        "artifactId": process.env.KEYCLOAKIFY_ARTIFACT_ID ?? userProvidedBuildOptions.artifactId ?? `${themeNames[0]}-keycloak-theme`,
-        "loginThemeResourcesFromKeycloakVersion": userProvidedBuildOptions.loginThemeResourcesFromKeycloakVersion ?? "24.0.4",
+        artifactId:
+            process.env.KEYCLOAKIFY_ARTIFACT_ID ??
+            userProvidedBuildOptions.artifactId ??
+            `${themeNames[0]}-keycloak-theme`,
+        loginThemeResourcesFromKeycloakVersion:
+            userProvidedBuildOptions.loginThemeResourcesFromKeycloakVersion ?? "24.0.4",
         reactAppRootDirPath,
         reactAppBuildDirPath,
-        "keycloakifyBuildDirPath": (() => {
+        keycloakifyBuildDirPath: (() => {
             if (userProvidedBuildOptions.keycloakifyBuildDirPath !== undefined) {
                 return getAbsoluteAndInOsFormatPath({
-                    "pathIsh": userProvidedBuildOptions.keycloakifyBuildDirPath,
-                    "cwd": reactAppRootDirPath
+                    pathIsh: userProvidedBuildOptions.keycloakifyBuildDirPath,
+                    cwd: reactAppRootDirPath
                 });
             }
 
             return pathJoin(
                 reactAppRootDirPath,
-                resolvedViteConfig?.buildDir === undefined ? "build_keycloak" : `${resolvedViteConfig.buildDir}_keycloak`
+                resolvedViteConfig?.buildDir === undefined
+                    ? "build_keycloak"
+                    : `${resolvedViteConfig.buildDir}_keycloak`
             );
         })(),
-        "publicDirPath": (() => {
+        publicDirPath: (() => {
             webpack: {
                 if (resolvedViteConfig !== undefined) {
                     break webpack;
@@ -213,8 +240,8 @@ export function readBuildOptions(params: { cliCommandOptions: CliCommandOptions 
 
                 if (process.env.PUBLIC_DIR_PATH !== undefined) {
                     return getAbsoluteAndInOsFormatPath({
-                        "pathIsh": process.env.PUBLIC_DIR_PATH,
-                        "cwd": reactAppRootDirPath
+                        pathIsh: process.env.PUBLIC_DIR_PATH,
+                        cwd: reactAppRootDirPath
                     });
                 }
 
@@ -223,13 +250,13 @@ export function readBuildOptions(params: { cliCommandOptions: CliCommandOptions 
 
             return pathJoin(reactAppRootDirPath, resolvedViteConfig.publicDir);
         })(),
-        "cacheDirPath": (() => {
+        cacheDirPath: (() => {
             const cacheDirPath = pathJoin(
                 (() => {
                     if (process.env.XDG_CACHE_HOME !== undefined) {
                         return getAbsoluteAndInOsFormatPath({
-                            "pathIsh": process.env.XDG_CACHE_HOME,
-                            "cwd": process.cwd()
+                            pathIsh: process.env.XDG_CACHE_HOME,
+                            cwd: process.cwd()
                         });
                     }
 
@@ -240,7 +267,7 @@ export function readBuildOptions(params: { cliCommandOptions: CliCommandOptions 
 
             return cacheDirPath;
         })(),
-        "urlPathname": (() => {
+        urlPathname: (() => {
             webpack: {
                 if (resolvedViteConfig !== undefined) {
                     break webpack;
@@ -264,7 +291,7 @@ export function readBuildOptions(params: { cliCommandOptions: CliCommandOptions 
 
             return resolvedViteConfig.urlPathname;
         })(),
-        "assetsDirPath": (() => {
+        assetsDirPath: (() => {
             webpack: {
                 if (resolvedViteConfig !== undefined) {
                     break webpack;

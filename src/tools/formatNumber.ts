@@ -11,7 +11,10 @@ export const formatNumber = (input: string, format: string): string => {
     }
 
     // calculate the maximum size of the given pattern based on the sum of the expected digits
-    const maxSize = digitPattern.reduce((total, p) => total + parseInt(p.replace("{", "").replace("}", "")), 0);
+    const maxSize = digitPattern.reduce(
+        (total, p) => total + parseInt(p.replace("{", "").replace("}", "")),
+        0
+    );
 
     // keep only digits
     let rawValue = input.replace(/\D+/g, "");

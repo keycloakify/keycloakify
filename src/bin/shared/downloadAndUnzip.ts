@@ -28,22 +28,29 @@ export async function downloadAndUnzip(params: {
     };
     buildOptions: BuildOptionsLike;
 }) {
-    const { url, destDirPath, specificDirsToExtract, preCacheTransform, buildOptions } = params;
+    const { url, destDirPath, specificDirsToExtract, preCacheTransform, buildOptions } =
+        params;
 
     const { extractDirPath, zipFilePath } = (() => {
         const zipFileBasenameWithoutExt = generateFileNameFromURL({
             url,
-            "preCacheTransform":
+            preCacheTransform:
                 preCacheTransform === undefined
                     ? undefined
                     : {
-                          "actionCacheId": preCacheTransform.actionCacheId,
-                          "actionFootprint": preCacheTransform.action.toString()
+                          actionCacheId: preCacheTransform.actionCacheId,
+                          actionFootprint: preCacheTransform.action.toString()
                       }
         });
 
-        const zipFilePath = pathJoin(buildOptions.cacheDirPath, `${zipFileBasenameWithoutExt}.zip`);
-        const extractDirPath = pathJoin(buildOptions.cacheDirPath, `tmp_unzip_${zipFileBasenameWithoutExt}`);
+        const zipFilePath = pathJoin(
+            buildOptions.cacheDirPath,
+            `${zipFileBasenameWithoutExt}.zip`
+        );
+        const extractDirPath = pathJoin(
+            buildOptions.cacheDirPath,
+            `tmp_unzip_${zipFileBasenameWithoutExt}`
+        );
 
         return { zipFilePath, extractDirPath };
     })();
@@ -55,28 +62,30 @@ export async function downloadAndUnzip(params: {
 
         const { response, isFromRemoteCache } = await (async () => {
             const proxyFetchOptions = await getProxyFetchOptions({
-                "npmWorkspaceRootDirPath": buildOptions.npmWorkspaceRootDirPath
+                npmWorkspaceRootDirPath: buildOptions.npmWorkspaceRootDirPath
             });
 
             const response = await fetch(
-                `https://github.com/keycloakify/keycloakify/releases/download/v0.0.1/${pathBasename(zipFilePath)}`,
+                `https://github.com/keycloakify/keycloakify/releases/download/v0.0.1/${pathBasename(
+                    zipFilePath
+                )}`,
                 proxyFetchOptions
             );
 
             if (response.status === 200) {
                 return {
                     response,
-                    "isFromRemoteCache": true
+                    isFromRemoteCache: true
                 };
             }
 
             return {
-                "response": await fetch(url, proxyFetchOptions),
-                "isFromRemoteCache": false
+                response: await fetch(url, proxyFetchOptions),
+                isFromRemoteCache: false
             };
         })();
 
-        await mkdir(pathDirname(zipFilePath), { "recursive": true });
+        await mkdir(pathDirname(zipFilePath), { recursive: true });
 
         /**
          * The correct way to fix this is to upgrade node-fetch beyond 3.2.5
@@ -102,10 +111,13 @@ export async function downloadAndUnzip(params: {
 
         try {
             await preCacheTransform?.action({
-                "destDirPath": extractDirPath
+                destDirPath: extractDirPath
             });
         } catch (error) {
-            await Promise.all([rm(extractDirPath, { "recursive": true }), unlink(zipFilePath)]);
+            await Promise.all([
+                rm(extractDirPath, { recursive: true }),
+                unlink(zipFilePath)
+            ]);
 
             throw error;
         }
@@ -114,10 +126,11 @@ export async function downloadAndUnzip(params: {
 
         await zip(extractDirPath, zipFilePath);
 
-        await rm(extractDirPath, { "recursive": true });
+        await rm(extractDirPath, { recursive: true });
 
         upload_to_remote_cache_if_admin: {
-            const githubToken = process.env["KEYCLOAKIFY_ADMIN_GITHUB_PERSONAL_ACCESS_TOKEN"];
+            const githubToken =
+                process.env["KEYCLOAKIFY_ADMIN_GITHUB_PERSONAL_ACCESS_TOKEN"];
 
             if (!githubToken) {
                 break upload_to_remote_cache_if_admin;
@@ -145,7 +158,9 @@ export async function downloadAndUnzip(params: {
                     githubToken
                 ]);
             } catch {
-                console.log("upload failed, asset probably already exists in remote cache");
+                console.log(
+                    "upload failed, asset probably already exists in remote cache"
+                );
             }
         }
     }
@@ -153,11 +168,11 @@ export async function downloadAndUnzip(params: {
     await unzip(zipFilePath, extractDirPath);
 
     transformCodebase({
-        "srcDirPath": extractDirPath,
-        "destDirPath": destDirPath
+        srcDirPath: extractDirPath,
+        destDirPath: destDirPath
     });
 
-    await rm(extractDirPath, { "recursive": true });
+    await rm(extractDirPath, { recursive: true });
 }
 
 function generateFileNameFromURL(params: {
@@ -194,9 +209,15 @@ function generateFileNameFromURL(params: {
         }
 
         // Sanitize actionCacheId the same way as other components
-        const sanitizedActionCacheId = preCacheTransform.actionCacheId.replace(/[^a-zA-Z0-9-_]/g, "_");
+        const sanitizedActionCacheId = preCacheTransform.actionCacheId.replace(
+            /[^a-zA-Z0-9-_]/g,
+            "_"
+        );
 
-        fileName += `_${sanitizedActionCacheId}_${createHash("sha256").update(preCacheTransform.actionFootprint).digest("hex").substring(0, 5)}`;
+        fileName += `_${sanitizedActionCacheId}_${createHash("sha256")
+            .update(preCacheTransform.actionFootprint)
+            .digest("hex")
+            .substring(0, 5)}`;
     }
 
     return fileName;

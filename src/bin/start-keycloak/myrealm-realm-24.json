@@ -407,7 +407,11 @@
     "otpPolicyLookAheadWindow": 1,
     "otpPolicyPeriod": 30,
     "otpPolicyCodeReusable": false,
-    "otpSupportedApplications": ["totpAppFreeOTPName", "totpAppGoogleName", "totpAppMicrosoftAuthenticatorName"],
+    "otpSupportedApplications": [
+        "totpAppFreeOTPName",
+        "totpAppGoogleName",
+        "totpAppMicrosoftAuthenticatorName"
+    ],
     "localizationTexts": {},
     "webAuthnPolicyRpEntityName": "keycloak",
     "webAuthnPolicySignatureAlgorithms": ["ES256"],
@@ -520,7 +524,12 @@
             "fullScopeAllowed": false,
             "nodeReRegistrationTimeout": 0,
             "defaultClientScopes": ["web-origins", "acr", "profile", "roles", "email"],
-            "optionalClientScopes": ["address", "phone", "offline_access", "microprofile-jwt"]
+            "optionalClientScopes": [
+                "address",
+                "phone",
+                "offline_access",
+                "microprofile-jwt"
+            ]
         },
         {
             "id": "bb874a19-9a92-4504-a7c0-d32ef6f3d266",
@@ -562,7 +571,12 @@
                 }
             ],
             "defaultClientScopes": ["web-origins", "acr", "profile", "roles", "email"],
-            "optionalClientScopes": ["address", "phone", "offline_access", "microprofile-jwt"]
+            "optionalClientScopes": [
+                "address",
+                "phone",
+                "offline_access",
+                "microprofile-jwt"
+            ]
         },
         {
             "id": "e19ed660-ca30-4266-be25-7ac226994f0f",
@@ -589,7 +603,12 @@
             "fullScopeAllowed": false,
             "nodeReRegistrationTimeout": 0,
             "defaultClientScopes": ["web-origins", "acr", "profile", "roles", "email"],
-            "optionalClientScopes": ["address", "phone", "offline_access", "microprofile-jwt"]
+            "optionalClientScopes": [
+                "address",
+                "phone",
+                "offline_access",
+                "microprofile-jwt"
+            ]
         },
         {
             "id": "2c000747-ea5b-4226-82a3-1fc32bc8a079",
@@ -616,7 +635,12 @@
             "fullScopeAllowed": false,
             "nodeReRegistrationTimeout": 0,
             "defaultClientScopes": ["web-origins", "acr", "profile", "roles", "email"],
-            "optionalClientScopes": ["address", "phone", "offline_access", "microprofile-jwt"]
+            "optionalClientScopes": [
+                "address",
+                "phone",
+                "offline_access",
+                "microprofile-jwt"
+            ]
         },
         {
             "id": "5dfb0d1a-2ab1-480f-8bab-81502f762ac0",
@@ -761,7 +785,12 @@
                 }
             ],
             "defaultClientScopes": ["web-origins", "acr", "profile", "roles", "email"],
-            "optionalClientScopes": ["address", "phone", "offline_access", "microprofile-jwt"]
+            "optionalClientScopes": [
+                "address",
+                "phone",
+                "offline_access",
+                "microprofile-jwt"
+            ]
         },
         {
             "id": "8efd01a0-40cd-487d-818b-fa2b096170e0",
@@ -788,7 +817,12 @@
             "fullScopeAllowed": false,
             "nodeReRegistrationTimeout": 0,
             "defaultClientScopes": ["web-origins", "acr", "profile", "roles", "email"],
-            "optionalClientScopes": ["address", "phone", "offline_access", "microprofile-jwt"]
+            "optionalClientScopes": [
+                "address",
+                "phone",
+                "offline_access",
+                "microprofile-jwt"
+            ]
         },
         {
             "id": "199b2e1b-2cdd-4d8b-8816-4a5c79741658",
@@ -838,7 +872,12 @@
                 }
             ],
             "defaultClientScopes": ["web-origins", "acr", "profile", "roles", "email"],
-            "optionalClientScopes": ["address", "phone", "offline_access", "microprofile-jwt"]
+            "optionalClientScopes": [
+                "address",
+                "phone",
+                "offline_access",
+                "microprofile-jwt"
+            ]
         }
     ],
     "clientScopes": [
@@ -1379,8 +1418,20 @@
             ]
         }
     ],
-    "defaultDefaultClientScopes": ["role_list", "profile", "email", "roles", "web-origins", "acr"],
-    "defaultOptionalClientScopes": ["offline_access", "address", "phone", "microprofile-jwt"],
+    "defaultDefaultClientScopes": [
+        "role_list",
+        "profile",
+        "email",
+        "roles",
+        "web-origins",
+        "acr"
+    ],
+    "defaultOptionalClientScopes": [
+        "offline_access",
+        "address",
+        "phone",
+        "microprofile-jwt"
+    ],
     "browserSecurityHeaders": {
         "contentSecurityPolicyReportOnly": "",
         "xContentTypeOptions": "nosniff",
@@ -1575,7 +1626,19 @@
         ]
     },
     "internationalizationEnabled": true,
-    "supportedLocales": ["ar", "de", "fi", "el", "ja", "en", "fa", "it", "fr", "ca", "es"],
+    "supportedLocales": [
+        "ar",
+        "de",
+        "fi",
+        "el",
+        "ja",
+        "en",
+        "fa",
+        "it",
+        "fr",
+        "ca",
+        "es"
+    ],
     "defaultLocale": "en",
     "authenticationFlows": [
         {

@@ -22,7 +22,11 @@ async function pathExists(path: string) {
 
 // Handlings of non posix path is not implemented correctly
 // it work by coincidence. Don't have the time to fix but it should be fixed.
-export async function unzip(file: string, targetFolder: string, specificDirsToExtract?: string[]) {
+export async function unzip(
+    file: string,
+    targetFolder: string,
+    specificDirsToExtract?: string[]
+) {
     specificDirsToExtract = specificDirsToExtract?.map(dirPath => {
         if (!dirPath.endsWith("/") || !dirPath.endsWith("\\")) {
             dirPath += "/";
@@ -49,7 +53,9 @@ export async function unzip(file: string, targetFolder: string, specificDirsToEx
 
             zipfile.on("entry", async entry => {
                 if (specificDirsToExtract !== undefined) {
-                    const dirPath = specificDirsToExtract.find(dirPath => entry.fileName.startsWith(dirPath));
+                    const dirPath = specificDirsToExtract.find(dirPath =>
+                        entry.fileName.startsWith(dirPath)
+                    );
 
                     // Skip files outside of the unzipSubPath
                     if (dirPath === undefined) {
@@ -85,7 +91,9 @@ export async function unzip(file: string, targetFolder: string, specificDirsToEx
                         return;
                     }
 
-                    await fsp.mkdir(path.dirname(target), { "recursive": true });
+                    await fsp.mkdir(path.dirname(target), {
+                        recursive: true
+                    });
 
                     await pipeline(readStream, fs.createWriteStream(target));
 

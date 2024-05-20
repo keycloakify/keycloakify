@@ -12,7 +12,9 @@ export type BuildOptionsLike = BuildOptionsLike_generateSrcMainResourcesForMainT
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
-export async function generateSrcMainResources(params: { buildOptions: BuildOptionsLike }): Promise<void> {
+export async function generateSrcMainResources(params: {
+    buildOptions: BuildOptionsLike;
+}): Promise<void> {
     const { buildOptions } = params;
 
     const [themeName, ...themeVariantNames] = buildOptions.themeNames;

@@ -9,9 +9,9 @@ export default function Account(props: PageProps<Extract<KcContext, { pageId: "a
 
     const { getClassName } = useGetClassName({
         doUseDefaultCss,
-        "classes": {
+        classes: {
             ...classes,
-            "kcBodyClass": clsx(classes?.kcBodyClass, "user")
+            kcBodyClass: clsx(classes?.kcBodyClass, "user")
         }
     });
 

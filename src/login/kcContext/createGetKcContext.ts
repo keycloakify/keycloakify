@@ -10,15 +10,23 @@ import type { ExtendKcContext } from "./getKcContextFromWindow";
 import { getKcContextFromWindow } from "./getKcContextFromWindow";
 import { symToStr } from "tsafe/symToStr";
 
-export function createGetKcContext<KcContextExtension extends { pageId: string } = never>(params?: {
+export function createGetKcContext<
+    KcContextExtension extends { pageId: string } = never
+>(params?: {
     mockData?: readonly DeepPartial<ExtendKcContext<KcContextExtension>>[];
     mockProperties?: Record<string, string>;
 }) {
     const { mockData, mockProperties } = params ?? {};
 
-    function getKcContext<PageId extends ExtendKcContext<KcContextExtension>["pageId"] | undefined = undefined>(params?: {
+    function getKcContext<
+        PageId extends
+            | ExtendKcContext<KcContextExtension>["pageId"]
+            | undefined = undefined
+    >(params?: {
         mockPageId?: PageId;
-        storyPartialKcContext?: DeepPartial<Extract<ExtendKcContext<KcContextExtension>, { pageId: PageId }>>;
+        storyPartialKcContext?: DeepPartial<
+            Extract<ExtendKcContext<KcContextExtension>, { pageId: PageId }>
+        >;
     }): {
         kcContext: PageId extends undefined
             ? ExtendKcContext<KcContextExtension> | undefined
@@ -36,34 +44,46 @@ export function createGetKcContext<KcContextExtension extends { pageId: string }
                     break warn_that_mock_is_enbaled;
                 }
 
-                console.log(`%cKeycloakify: ${symToStr({ mockPageId })} set to ${mockPageId}.`, "background: red; color: yellow; font-size: medium");
+                console.log(
+                    `%cKeycloakify: ${symToStr({
+                        mockPageId
+                    })} set to ${mockPageId}.`,
+                    "background: red; color: yellow; font-size: medium"
+                );
             }
 
-            const kcContextDefaultMock = kcContextMocks.find(({ pageId }) => pageId === mockPageId);
+            const kcContextDefaultMock = kcContextMocks.find(
+                ({ pageId }) => pageId === mockPageId
+            );
 
             const partialKcContextCustomMock = (() => {
                 const out: DeepPartial<ExtendKcContext<KcContextExtension>> = {};
 
-                const mockDataPick = mockData?.find(({ pageId }) => pageId === mockPageId);
+                const mockDataPick = mockData?.find(
+                    ({ pageId }) => pageId === mockPageId
+                );
 
                 if (mockDataPick !== undefined) {
                     deepAssign({
-                        "target": out,
-                        "source": mockDataPick
+                        target: out,
+                        source: mockDataPick
                     });
                 }
 
                 if (storyPartialKcContext !== undefined) {
                     deepAssign({
-                        "target": out,
-                        "source": storyPartialKcContext
+                        target: out,
+                        source: storyPartialKcContext
                     });
                 }
 
                 return Object.keys(out).length === 0 ? undefined : out;
             })();
 
-            if (kcContextDefaultMock === undefined && partialKcContextCustomMock === undefined) {
+            if (
+                kcContextDefaultMock === undefined &&
+                partialKcContextCustomMock === undefined
+            ) {
                 console.warn(
                     [
                         `WARNING: You declared the non build in page ${mockPageId} but you didn't `,
@@ -76,68 +96,95 @@ export function createGetKcContext<KcContextExtension extends { pageId: string }
             const kcContext: any = {};
 
             deepAssign({
-                "target": kcContext,
-                "source": kcContextDefaultMock !== undefined ? kcContextDefaultMock : { "pageId": mockPageId, ...kcContextCommonMock }
+                target: kcContext,
+                source:
+                    kcContextDefaultMock !== undefined
+                        ? kcContextDefaultMock
+                        : { pageId: mockPageId, ...kcContextCommonMock }
             });
 
             if (partialKcContextCustomMock !== undefined) {
                 deepAssign({
-                    "target": kcContext,
-                    "source": partialKcContextCustomMock
+                    target: kcContext,
+                    source: partialKcContextCustomMock
                 });
 
                 if ("profile" in partialKcContextCustomMock) {
-                    assert(kcContextDefaultMock !== undefined && "profile" in kcContextDefaultMock);
+                    assert(
+                        kcContextDefaultMock !== undefined &&
+                            "profile" in kcContextDefaultMock
+                    );
 
                     const { attributes } = kcContextDefaultMock.profile;
 
                     id<KcContext.Register>(kcContext).profile.attributes = [];
                     id<KcContext.Register>(kcContext).profile.attributesByName = {};
 
-                    const partialAttributes = [...((partialKcContextCustomMock as DeepPartial<KcContext.Register>).profile?.attributes ?? [])].filter(
-                        exclude(undefined)
-                    );
+                    const partialAttributes = [
+                        ...((
+                            partialKcContextCustomMock as DeepPartial<KcContext.Register>
+                        ).profile?.attributes ?? [])
+                    ].filter(exclude(undefined));
 
                     attributes.forEach(attribute => {
-                        const partialAttribute = partialAttributes.find(({ name }) => name === attribute.name);
+                        const partialAttribute = partialAttributes.find(
+                            ({ name }) => name === attribute.name
+                        );
 
                         const augmentedAttribute: Attribute = {} as any;
 
                         deepAssign({
-                            "target": augmentedAttribute,
-                            "source": attribute
+                            target: augmentedAttribute,
+                            source: attribute
                         });
 
                         if (partialAttribute !== undefined) {
-                            partialAttributes.splice(partialAttributes.indexOf(partialAttribute), 1);
+                            partialAttributes.splice(
+                                partialAttributes.indexOf(partialAttribute),
+                                1
+                            );
 
                             deepAssign({
-                                "target": augmentedAttribute,
-                                "source": partialAttribute
+                                target: augmentedAttribute,
+                                source: partialAttribute
                             });
                         }
 
-                        id<KcContext.Register>(kcContext).profile.attributes.push(augmentedAttribute);
-                        id<KcContext.Register>(kcContext).profile.attributesByName[augmentedAttribute.name] = augmentedAttribute;
+                        id<KcContext.Register>(kcContext).profile.attributes.push(
+                            augmentedAttribute
+                        );
+                        id<KcContext.Register>(kcContext).profile.attributesByName[
+                            augmentedAttribute.name
+                        ] = augmentedAttribute;
                     });
 
                     partialAttributes
-                        .map(partialAttribute => ({ "validators": {}, ...partialAttribute }))
+                        .map(partialAttribute => ({
+                            validators: {},
+                            ...partialAttribute
+                        }))
                         .forEach(partialAttribute => {
                             const { name } = partialAttribute;
 
-                            assert(name !== undefined, "If you define a mock attribute it must have at least a name");
+                            assert(
+                                name !== undefined,
+                                "If you define a mock attribute it must have at least a name"
+                            );
 
-                            id<KcContext.Register>(kcContext).profile.attributes.push(partialAttribute as any);
-                            id<KcContext.Register>(kcContext).profile.attributesByName[name] = partialAttribute as any;
+                            id<KcContext.Register>(kcContext).profile.attributes.push(
+                                partialAttribute as any
+                            );
+                            id<KcContext.Register>(kcContext).profile.attributesByName[
+                                name
+                            ] = partialAttribute as any;
                         });
                 }
             }
 
             if (mockProperties !== undefined) {
                 deepAssign({
-                    "target": kcContext.properties,
-                    "source": mockProperties
+                    target: kcContext.properties,
+                    source: mockProperties
                 });
             }
 
@@ -145,14 +192,14 @@ export function createGetKcContext<KcContextExtension extends { pageId: string }
         }
 
         if (realKcContext === undefined) {
-            return { "kcContext": undefined as any };
+            return { kcContext: undefined as any };
         }
 
         if (realKcContext.themeType !== "login") {
-            return { "kcContext": undefined as any };
+            return { kcContext: undefined as any };
         }
 
-        return { "kcContext": realKcContext as any };
+        return { kcContext: realKcContext as any };
     }
 
     return { getKcContext };

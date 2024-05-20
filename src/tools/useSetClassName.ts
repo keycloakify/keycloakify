@@ -1,6 +1,9 @@
 import { useEffect } from "react";
 
-export function useSetClassName(params: { qualifiedName: "html" | "body"; className: string | undefined }) {
+export function useSetClassName(params: {
+    qualifiedName: "html" | "body";
+    className: string | undefined;
+}) {
     const { qualifiedName, className } = params;
 
     useEffect(() => {

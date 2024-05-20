@@ -68,7 +68,10 @@ export declare namespace KcContext {
              * @param text to return
              * @return text if message exists for given field, else undefined
              */
-            printIfExists: <T extends string>(fieldName: string, text: T) => T | undefined;
+            printIfExists: <T extends string>(
+                fieldName: string,
+                text: T
+            ) => T | undefined;
             /**
              * Check if exists error message for given fields
              *

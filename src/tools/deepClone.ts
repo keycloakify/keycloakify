@@ -13,5 +13,7 @@ export function deepClone<T>(o: T): T {
         return o.map(deepClone) as any;
     }
 
-    return Object.fromEntries(Object.entries(o).map(([key, value]) => [key, deepClone(value)])) as any;
+    return Object.fromEntries(
+        Object.entries(o).map(([key, value]) => [key, deepClone(value)])
+    ) as any;
 }

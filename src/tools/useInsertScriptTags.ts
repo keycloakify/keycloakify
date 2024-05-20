@@ -23,7 +23,9 @@ export function createUseInsertScriptTags() {
     function useInsertScriptTags(params: { scriptTags: ScriptTag[] }) {
         const { scriptTags } = params;
 
-        const currentScriptTagsRef = useConst(() => ({ "current": scriptTags }));
+        const currentScriptTagsRef = useConst(() => ({
+            current: scriptTags
+        }));
 
         currentScriptTagsRef.current = scriptTags;
 
@@ -42,7 +44,10 @@ export function createUseInsertScriptTags() {
                         })
                         .join("---");
 
-                if (getFingerprint(scriptTags) !== getFingerprint(currentScriptTagsRef.current)) {
+                if (
+                    getFingerprint(scriptTags) !==
+                    getFingerprint(currentScriptTagsRef.current)
+                ) {
                     // NOTE: This is for when the scripts imported in the Template have changed switching
                     // from one page to another in storybook.
                     window.location.reload();

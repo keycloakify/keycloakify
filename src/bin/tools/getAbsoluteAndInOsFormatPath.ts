@@ -1,7 +1,15 @@
-import { isAbsolute as pathIsAbsolute, sep as pathSep, join as pathJoin, resolve as pathResolve } from "path";
+import {
+    isAbsolute as pathIsAbsolute,
+    sep as pathSep,
+    join as pathJoin,
+    resolve as pathResolve
+} from "path";
 import * as os from "os";
 
-export function getAbsoluteAndInOsFormatPath(params: { pathIsh: string; cwd: string }): string {
+export function getAbsoluteAndInOsFormatPath(params: {
+    pathIsh: string;
+    cwd: string;
+}): string {
     const { pathIsh, cwd } = params;
 
     let pathOut = pathIsh;

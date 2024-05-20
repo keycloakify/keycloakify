@@ -12,7 +12,10 @@ export function getThemeSrcDirPath(params: { reactAppRootDirPath: string }) {
 
     const srcDirPath = pathJoin(reactAppRootDirPath, "src");
 
-    const themeSrcDirPath: string | undefined = crawl({ "dirPath": srcDirPath, "returnedPathsType": "relative to dirPath" })
+    const themeSrcDirPath: string | undefined = crawl({
+        dirPath: srcDirPath,
+        returnedPathsType: "relative to dirPath"
+    })
         .map(fileRelativePath => {
             for (const themeSrcDirBasename of themeSrcDirBasenames) {
                 const split = fileRelativePath.split(themeSrcDirBasename);
@@ -32,7 +35,7 @@ export function getThemeSrcDirPath(params: { reactAppRootDirPath: string }) {
         if (!fs.existsSync(pathJoin(srcDirPath, themeType))) {
             continue;
         }
-        return { "themeSrcDirPath": srcDirPath };
+        return { themeSrcDirPath: srcDirPath };
     }
 
     console.error(

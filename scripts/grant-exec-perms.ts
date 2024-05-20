@@ -10,7 +10,8 @@ import { chmod, stat } from "fs/promises";
     const promises = Object.values<string>(bin).map(async scriptPath => {
         const fullPath = pathJoin(thisCodebaseRootDirPath, scriptPath);
         const oldMode = (await stat(fullPath)).mode;
-        const newMode = oldMode | constants.S_IXUSR | constants.S_IXGRP | constants.S_IXOTH;
+        const newMode =
+            oldMode | constants.S_IXUSR | constants.S_IXGRP | constants.S_IXOTH;
         await chmod(fullPath, newMode);
     });
 

@@ -14,8 +14,8 @@ export default function KcApp(props: { kcContext: KcContext }) {
     const i18n = useI18n({ kcContext });
 
     useDownloadTerms({
-        "kcContext": kcContext as any,
-        "downloadTermMarkdown": async ({ currentLanguageTag }) => {
+        kcContext: kcContext as any,
+        downloadTermMarkdown: async ({ currentLanguageTag }) => {
             const resource = (() => {
                 switch (currentLanguageTag) {
                     case "fr":
@@ -42,7 +42,17 @@ export default function KcApp(props: { kcContext: KcContext }) {
             {(() => {
                 switch (kcContext.pageId) {
                     default:
-                        return <Fallback {...{ kcContext, i18n, Template, UserProfileFormFields }} doUseDefaultCss={true} />;
+                        return (
+                            <Fallback
+                                {...{
+                                    kcContext,
+                                    i18n,
+                                    Template,
+                                    UserProfileFormFields
+                                }}
+                                doUseDefaultCss={true}
+                            />
+                        );
                 }
             })()}
         </Suspense>

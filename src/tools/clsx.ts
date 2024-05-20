@@ -1,7 +1,13 @@
 import { assert } from "tsafe/assert";
 import { typeGuard } from "tsafe/typeGuard";
 
-export type CxArg = undefined | null | string | boolean | Partial<Record<string, boolean | null | undefined>> | readonly CxArg[];
+export type CxArg =
+    | undefined
+    | null
+    | string
+    | boolean
+    | Partial<Record<string, boolean | null | undefined>>
+    | readonly CxArg[];
 
 export const clsx = (...args: CxArg[]): string => {
     const len = args.length;

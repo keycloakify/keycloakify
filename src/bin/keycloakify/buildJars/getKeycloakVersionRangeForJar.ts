@@ -1,5 +1,8 @@
 import { assert, type Equals } from "tsafe/assert";
-import type { KeycloakAccountV1Version, KeycloakThemeAdditionalInfoExtensionVersion } from "./extensionVersions";
+import type {
+    KeycloakAccountV1Version,
+    KeycloakThemeAdditionalInfoExtensionVersion
+} from "./extensionVersions";
 import type { KeycloakVersionRange } from "../../shared/KeycloakVersionRange";
 
 export function getKeycloakVersionRangeForJar(params: {
@@ -7,7 +10,11 @@ export function getKeycloakVersionRangeForJar(params: {
     keycloakAccountV1Version: KeycloakAccountV1Version;
     keycloakThemeAdditionalInfoExtensionVersion: KeycloakThemeAdditionalInfoExtensionVersion;
 }): KeycloakVersionRange | undefined {
-    const { keycloakAccountV1Version, keycloakThemeAdditionalInfoExtensionVersion, doesImplementAccountTheme } = params;
+    const {
+        keycloakAccountV1Version,
+        keycloakThemeAdditionalInfoExtensionVersion,
+        doesImplementAccountTheme
+    } = params;
 
     if (doesImplementAccountTheme) {
         const keycloakVersionRange = (() => {
@@ -19,7 +26,9 @@ export function getKeycloakVersionRangeForJar(params: {
                         case "1.1.5":
                             return undefined;
                     }
-                    assert<Equals<typeof keycloakThemeAdditionalInfoExtensionVersion, never>>(false);
+                    assert<
+                        Equals<typeof keycloakThemeAdditionalInfoExtensionVersion, never>
+                    >(false);
                 case "0.3":
                     switch (keycloakThemeAdditionalInfoExtensionVersion) {
                         case null:
@@ -27,7 +36,9 @@ export function getKeycloakVersionRangeForJar(params: {
                         case "1.1.5":
                             return "23" as const;
                     }
-                    assert<Equals<typeof keycloakThemeAdditionalInfoExtensionVersion, never>>(false);
+                    assert<
+                        Equals<typeof keycloakThemeAdditionalInfoExtensionVersion, never>
+                    >(false);
                 case "0.4":
                     switch (keycloakThemeAdditionalInfoExtensionVersion) {
                         case null:
@@ -35,11 +46,18 @@ export function getKeycloakVersionRangeForJar(params: {
                         case "1.1.5":
                             return "24-and-above" as const;
                     }
-                    assert<Equals<typeof keycloakThemeAdditionalInfoExtensionVersion, never>>(false);
+                    assert<
+                        Equals<typeof keycloakThemeAdditionalInfoExtensionVersion, never>
+                    >(false);
             }
         })();
 
-        assert<Equals<typeof keycloakVersionRange, KeycloakVersionRange.WithAccountTheme | undefined>>();
+        assert<
+            Equals<
+                typeof keycloakVersionRange,
+                KeycloakVersionRange.WithAccountTheme | undefined
+            >
+        >();
 
         return keycloakVersionRange;
     } else {
@@ -54,10 +72,17 @@ export function getKeycloakVersionRangeForJar(params: {
                 case "1.1.5":
                     return "22-and-above";
             }
-            assert<Equals<typeof keycloakThemeAdditionalInfoExtensionVersion, never>>(false);
+            assert<Equals<typeof keycloakThemeAdditionalInfoExtensionVersion, never>>(
+                false
+            );
         })();
 
-        assert<Equals<typeof keycloakVersionRange, KeycloakVersionRange.WithoutAccountTheme | undefined>>();
+        assert<
+            Equals<
+                typeof keycloakVersionRange,
+                KeycloakVersionRange.WithoutAccountTheme | undefined
+            >
+        >();
 
         return keycloakVersionRange;
     }

@@ -1,11 +1,17 @@
 import { assert, type Equals } from "tsafe/assert";
-import type { KeycloakAccountV1Version, KeycloakThemeAdditionalInfoExtensionVersion } from "./extensionVersions";
+import type {
+    KeycloakAccountV1Version,
+    KeycloakThemeAdditionalInfoExtensionVersion
+} from "./extensionVersions";
 import { join as pathJoin, dirname as pathDirname } from "path";
 import { transformCodebase } from "../../tools/transformCodebase";
 import type { BuildOptions } from "../../shared/buildOptions";
 import * as fs from "fs/promises";
 import { accountV1ThemeName } from "../../shared/constants";
-import { generatePom, BuildOptionsLike as BuildOptionsLike_generatePom } from "./generatePom";
+import {
+    generatePom,
+    BuildOptionsLike as BuildOptionsLike_generatePom
+} from "./generatePom";
 import { readFileSync } from "fs";
 import { isInside } from "../../tools/isInside";
 import child_process from "child_process";
@@ -29,26 +35,53 @@ export async function buildJar(params: {
     keycloakThemeAdditionalInfoExtensionVersion: KeycloakThemeAdditionalInfoExtensionVersion;
     buildOptions: BuildOptionsLike;
 }): Promise<void> {
-    const { jarFileBasename, keycloakAccountV1Version, keycloakThemeAdditionalInfoExtensionVersion, buildOptions } = params;
+    const {
+        jarFileBasename,
+        keycloakAccountV1Version,
+        keycloakThemeAdditionalInfoExtensionVersion,
+        buildOptions
+    } = params;
 
-    const keycloakifyBuildTmpDirPath = pathJoin(buildOptions.cacheDirPath, jarFileBasename.replace(".jar", ""));
+    const keycloakifyBuildTmpDirPath = pathJoin(
+        buildOptions.cacheDirPath,
+        jarFileBasename.replace(".jar", "")
+    );
 
-    rmSync(keycloakifyBuildTmpDirPath, { "recursive": true, "force": true });
+    rmSync(keycloakifyBuildTmpDirPath, { recursive: true, force: true });
 
     {
-        const metaInfKeycloakThemesJsonRelativePath = getMetaInfKeycloakThemesJsonFilePath({ "keycloakifyBuildDirPath": "" });
+        const metaInfKeycloakThemesJsonRelativePath =
+            getMetaInfKeycloakThemesJsonFilePath({
+                keycloakifyBuildDirPath: ""
+            });
 
         const { transformCodebase_common } = (() => {
-            const includingAccountV1ThemeNames = [...buildOptions.themeNames, accountV1ThemeName];
+            const includingAccountV1ThemeNames = [
+                ...buildOptions.themeNames,
+                accountV1ThemeName
+            ];
 
-            const transformCodebase_common: Param0<typeof transformCodebase>["transformSourceCode"] = ({ fileRelativePath, sourceCode }) => {
+            const transformCodebase_common: Param0<
+                typeof transformCodebase
+            >["transformSourceCode"] = ({ fileRelativePath, sourceCode }) => {
                 if (metaInfKeycloakThemesJsonRelativePath === fileRelativePath) {
-                    return { "modifiedSourceCode": sourceCode };
+                    return { modifiedSourceCode: sourceCode };
                 }
 
                 for (const themeName of includingAccountV1ThemeNames) {
-                    if (isInside({ "dirPath": pathJoin("src", "main", "resources", "theme", themeName), "filePath": fileRelativePath })) {
-                        return { "modifiedSourceCode": sourceCode };
+                    if (
+                        isInside({
+                            dirPath: pathJoin(
+                                "src",
+                                "main",
+                                "resources",
+                                "theme",
+                                themeName
+                            ),
+                            filePath: fileRelativePath
+                        })
+                    ) {
+                        return { modifiedSourceCode: sourceCode };
                     }
                 }
 
@@ -60,36 +93,70 @@ export async function buildJar(params: {
 
         const { transformCodebase_patchForUsingBuiltinAccountV1 } = (() => {
             if (keycloakAccountV1Version !== null) {
-                return { "transformCodebase_patchForUsingBuiltinAccountV1": undefined };
+                return {
+                    transformCodebase_patchForUsingBuiltinAccountV1: undefined
+                };
             }
 
             const themePropertiesFileRelativePathSet = new Set(
-                ...buildOptions.themeNames.map(themeName => pathJoin("src", "main", "resources", "theme", themeName, "account", "theme.properties"))
+                ...buildOptions.themeNames.map(themeName =>
+                    pathJoin(
+                        "src",
+                        "main",
+                        "resources",
+                        "theme",
+                        themeName,
+                        "account",
+                        "theme.properties"
+                    )
+                )
             );
 
-            const accountV1RelativeDirPath = pathJoin("src", "main", "resources", "theme", accountV1ThemeName);
+            const accountV1RelativeDirPath = pathJoin(
+                "src",
+                "main",
+                "resources",
+                "theme",
+                accountV1ThemeName
+            );
 
-            const transformCodebase_patchForUsingBuiltinAccountV1: Param0<typeof transformCodebase>["transformSourceCode"] = ({
-                fileRelativePath,
-                sourceCode
-            }) => {
-                if (isInside({ "dirPath": accountV1RelativeDirPath, "filePath": fileRelativePath })) {
+            const transformCodebase_patchForUsingBuiltinAccountV1: Param0<
+                typeof transformCodebase
+            >["transformSourceCode"] = ({ fileRelativePath, sourceCode }) => {
+                if (
+                    isInside({
+                        dirPath: accountV1RelativeDirPath,
+                        filePath: fileRelativePath
+                    })
+                ) {
                     return undefined;
                 }
 
                 if (fileRelativePath === metaInfKeycloakThemesJsonRelativePath) {
-                    const keycloakThemesJsonParsed = JSON.parse(sourceCode.toString("utf8")) as {
+                    const keycloakThemesJsonParsed = JSON.parse(
+                        sourceCode.toString("utf8")
+                    ) as {
                         themes: { name: string; types: string[] }[];
                     };
 
-                    keycloakThemesJsonParsed.themes = keycloakThemesJsonParsed.themes.filter(({ name }) => name !== accountV1ThemeName);
+                    keycloakThemesJsonParsed.themes =
+                        keycloakThemesJsonParsed.themes.filter(
+                            ({ name }) => name !== accountV1ThemeName
+                        );
 
-                    return { "modifiedSourceCode": Buffer.from(JSON.stringify(keycloakThemesJsonParsed, null, 2), "utf8") };
+                    return {
+                        modifiedSourceCode: Buffer.from(
+                            JSON.stringify(keycloakThemesJsonParsed, null, 2),
+                            "utf8"
+                        )
+                    };
                 }
 
                 if (themePropertiesFileRelativePathSet.has(fileRelativePath)) {
                     const modifiedSourceCode = Buffer.from(
-                        sourceCode.toString("utf8").replace(`parent=${accountV1ThemeName}`, "parent=keycloak"),
+                        sourceCode
+                            .toString("utf8")
+                            .replace(`parent=${accountV1ThemeName}`, "parent=keycloak"),
                         "utf8"
                     );
 
@@ -99,16 +166,16 @@ export async function buildJar(params: {
                     return { modifiedSourceCode };
                 }
 
-                return { "modifiedSourceCode": sourceCode };
+                return { modifiedSourceCode: sourceCode };
             };
 
             return { transformCodebase_patchForUsingBuiltinAccountV1 };
         })();
 
         transformCodebase({
-            "srcDirPath": buildOptions.keycloakifyBuildDirPath,
-            "destDirPath": keycloakifyBuildTmpDirPath,
-            "transformSourceCode": params => {
+            srcDirPath: buildOptions.keycloakifyBuildDirPath,
+            destDirPath: keycloakifyBuildTmpDirPath,
+            transformSourceCode: params => {
                 const resultCommon = transformCodebase_common(params);
 
                 if (resultCommon === undefined) {
@@ -125,7 +192,7 @@ export async function buildJar(params: {
 
                 return transformCodebase_patchForUsingBuiltinAccountV1?.({
                     ...params,
-                    "sourceCode": modifiedSourceCode
+                    sourceCode: modifiedSourceCode
                 });
             }
         });
@@ -152,7 +219,16 @@ export async function buildJar(params: {
 
         (["register.ftl", "login-update-profile.ftl"] as const).forEach(pageId =>
             buildOptions.themeNames.map(themeName => {
-                const ftlFilePath = pathJoin(keycloakifyBuildTmpDirPath, "src", "main", "resources", "theme", themeName, "login", pageId);
+                const ftlFilePath = pathJoin(
+                    keycloakifyBuildTmpDirPath,
+                    "src",
+                    "main",
+                    "resources",
+                    "theme",
+                    themeName,
+                    "login",
+                    pageId
+                );
 
                 const ftlFileContent = readFileSync(ftlFilePath).toString("utf8");
 
@@ -173,7 +249,10 @@ export async function buildJar(params: {
 
                 assert(modifiedFtlFileContent !== ftlFileContent);
 
-                fs.writeFile(pathJoin(pathDirname(ftlFilePath), realPageId), Buffer.from(modifiedFtlFileContent, "utf8"));
+                fs.writeFile(
+                    pathJoin(pathDirname(ftlFilePath), realPageId),
+                    Buffer.from(modifiedFtlFileContent, "utf8")
+                );
             })
         );
     }
@@ -185,35 +264,46 @@ export async function buildJar(params: {
             keycloakThemeAdditionalInfoExtensionVersion
         });
 
-        await fs.writeFile(pathJoin(keycloakifyBuildTmpDirPath, "pom.xml"), Buffer.from(pomFileCode, "utf8"));
+        await fs.writeFile(
+            pathJoin(keycloakifyBuildTmpDirPath, "pom.xml"),
+            Buffer.from(pomFileCode, "utf8")
+        );
     }
 
     await new Promise<void>((resolve, reject) =>
-        child_process.exec("mvn clean install", { "cwd": keycloakifyBuildTmpDirPath }, error => {
-            if (error !== null) {
-                console.error(
-                    `Build jar failed: ${JSON.stringify(
-                        {
-                            jarFileBasename,
-                            keycloakAccountV1Version,
-                            keycloakThemeAdditionalInfoExtensionVersion
-                        },
-                        null,
-                        2
-                    )}`
-                );
+        child_process.exec(
+            "mvn clean install",
+            { cwd: keycloakifyBuildTmpDirPath },
+            error => {
+                if (error !== null) {
+                    console.error(
+                        `Build jar failed: ${JSON.stringify(
+                            {
+                                jarFileBasename,
+                                keycloakAccountV1Version,
+                                keycloakThemeAdditionalInfoExtensionVersion
+                            },
+                            null,
+                            2
+                        )}`
+                    );
 
-                reject(error);
-                return;
+                    reject(error);
+                    return;
+                }
+                resolve();
             }
-            resolve();
-        })
+        )
     );
 
     await fs.rename(
-        pathJoin(keycloakifyBuildTmpDirPath, "target", `${buildOptions.artifactId}-${buildOptions.themeVersion}.jar`),
+        pathJoin(
+            keycloakifyBuildTmpDirPath,
+            "target",
+            `${buildOptions.artifactId}-${buildOptions.themeVersion}.jar`
+        ),
         pathJoin(buildOptions.keycloakifyBuildDirPath, jarFileBasename)
     );
 
-    rmSync(keycloakifyBuildTmpDirPath, { "recursive": true });
+    rmSync(keycloakifyBuildTmpDirPath, { recursive: true });
 }

@@ -2,13 +2,22 @@ import { readBuildOptions } from "../shared/buildOptions";
 import type { CliCommandOptions as CliCommandOptions_common } from "../main";
 import { promptKeycloakVersion } from "../shared/promptKeycloakVersion";
 import { readMetaInfKeycloakThemes } from "../shared/metaInfKeycloakThemes";
-import { accountV1ThemeName, skipBuildJarsEnvName, containerName } from "../shared/constants";
+import {
+    accountV1ThemeName,
+    skipBuildJarsEnvName,
+    containerName
+} from "../shared/constants";
 import { SemVer } from "../tools/SemVer";
 import type { KeycloakVersionRange } from "../shared/KeycloakVersionRange";
 import { getJarFileBasename } from "../shared/getJarFileBasename";
 import { assert, type Equals } from "tsafe/assert";
 import * as fs from "fs";
-import { join as pathJoin, relative as pathRelative, sep as pathSep, posix as pathPosix } from "path";
+import {
+    join as pathJoin,
+    relative as pathRelative,
+    sep as pathSep,
+    posix as pathPosix
+} from "path";
 import * as child_process from "child_process";
 import chalk from "chalk";
 import chokidar from "chokidar";
@@ -30,7 +39,9 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         let commandOutput: Buffer | undefined = undefined;
 
         try {
-            commandOutput = child_process.execSync("docker --version", { "stdio": ["ignore", "pipe", "ignore"] });
+            commandOutput = child_process.execSync("docker --version", {
+                stdio: ["ignore", "pipe", "ignore"]
+            });
         } catch {}
 
         if (commandOutput?.toString("utf8").includes("Docker")) {
@@ -40,7 +51,9 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         console.log(
             [
                 `${chalk.red("Docker required.")}`,
-                `Install it with Docker Desktop: ${chalk.bold.underline("https://www.docker.com/products/docker-desktop/")}`,
+                `Install it with Docker Desktop: ${chalk.bold.underline(
+                    "https://www.docker.com/products/docker-desktop/"
+                )}`,
                 `(or any other way)`
             ].join(" ")
         );
@@ -52,7 +65,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         let isDockerRunning: boolean;
 
         try {
-            child_process.execSync("docker info", { "stdio": "ignore" });
+            child_process.execSync("docker info", { stdio: "ignore" });
             isDockerRunning = true;
         } catch {
             isDockerRunning = false;
@@ -62,7 +75,12 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             break exit_if_docker_not_running;
         }
 
-        console.log([`${chalk.red("Docker daemon is not running.")}`, `Please start Docker Desktop and try again.`].join(" "));
+        console.log(
+            [
+                `${chalk.red("Docker daemon is not running.")}`,
+                `Please start Docker Desktop and try again.`
+            ].join(" ")
+        );
 
         process.exit(1);
     }
@@ -77,51 +95,60 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         }
 
         console.log(
-            [`${chalk.red("The theme has not been built.")}`, `Please run ${chalk.bold("npx vite && npx keycloakify build")} first.`].join(" ")
+            [
+                `${chalk.red("The theme has not been built.")}`,
+                `Please run ${chalk.bold("npx vite && npx keycloakify build")} first.`
+            ].join(" ")
         );
         process.exit(1);
     }
 
     const metaInfKeycloakThemes = readMetaInfKeycloakThemes({
-        "keycloakifyBuildDirPath": buildOptions.keycloakifyBuildDirPath
+        keycloakifyBuildDirPath: buildOptions.keycloakifyBuildDirPath
     });
 
-    const doesImplementAccountTheme = metaInfKeycloakThemes.themes.some(({ name }) => name === accountV1ThemeName);
+    const doesImplementAccountTheme = metaInfKeycloakThemes.themes.some(
+        ({ name }) => name === accountV1ThemeName
+    );
 
-    const { keycloakVersion, keycloakMajorNumber: keycloakMajorVersionNumber } = await (async function getKeycloakMajor(): Promise<{
-        keycloakVersion: string;
-        keycloakMajorNumber: number;
-    }> {
-        if (cliCommandOptions.keycloakVersion !== undefined) {
-            return {
-                "keycloakVersion": cliCommandOptions.keycloakVersion,
-                "keycloakMajorNumber": SemVer.parse(cliCommandOptions.keycloakVersion).major
-            };
-        }
+    const { keycloakVersion, keycloakMajorNumber: keycloakMajorVersionNumber } =
+        await (async function getKeycloakMajor(): Promise<{
+            keycloakVersion: string;
+            keycloakMajorNumber: number;
+        }> {
+            if (cliCommandOptions.keycloakVersion !== undefined) {
+                return {
+                    keycloakVersion: cliCommandOptions.keycloakVersion,
+                    keycloakMajorNumber: SemVer.parse(cliCommandOptions.keycloakVersion)
+                        .major
+                };
+            }
 
-        console.log(chalk.cyan("On which version of Keycloak do you want to test your theme?"));
-
-        const { keycloakVersion } = await promptKeycloakVersion({
-            "startingFromMajor": 17,
-            "cacheDirPath": buildOptions.cacheDirPath
-        });
-
-        console.log(`→ ${keycloakVersion}`);
-
-        const keycloakMajorNumber = SemVer.parse(keycloakVersion).major;
-
-        if (doesImplementAccountTheme && keycloakMajorNumber === 22) {
             console.log(
-                [
-                    "Unfortunately, Keycloakify themes that implements an account theme do not work on Keycloak 22",
-                    "Please select any other Keycloak version"
-                ].join(" ")
+                chalk.cyan("On which version of Keycloak do you want to test your theme?")
             );
-            return getKeycloakMajor();
-        }
 
-        return { keycloakVersion, keycloakMajorNumber };
-    })();
+            const { keycloakVersion } = await promptKeycloakVersion({
+                startingFromMajor: 17,
+                cacheDirPath: buildOptions.cacheDirPath
+            });
+
+            console.log(`→ ${keycloakVersion}`);
+
+            const keycloakMajorNumber = SemVer.parse(keycloakVersion).major;
+
+            if (doesImplementAccountTheme && keycloakMajorNumber === 22) {
+                console.log(
+                    [
+                        "Unfortunately, Keycloakify themes that implements an account theme do not work on Keycloak 22",
+                        "Please select any other Keycloak version"
+                    ].join(" ")
+                );
+                return getKeycloakMajor();
+            }
+
+            return { keycloakVersion, keycloakMajorNumber };
+        })();
 
     const keycloakVersionRange: KeycloakVersionRange = (() => {
         if (doesImplementAccountTheme) {
@@ -139,7 +166,9 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                 return "24-and-above" as const;
             })();
 
-            assert<Equals<typeof keycloakVersionRange, KeycloakVersionRange.WithAccountTheme>>();
+            assert<
+                Equals<typeof keycloakVersionRange, KeycloakVersionRange.WithAccountTheme>
+            >();
 
             return keycloakVersionRange;
         } else {
@@ -151,7 +180,12 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                 return "22-and-above" as const;
             })();
 
-            assert<Equals<typeof keycloakVersionRange, KeycloakVersionRange.WithoutAccountTheme>>();
+            assert<
+                Equals<
+                    typeof keycloakVersionRange,
+                    KeycloakVersionRange.WithoutAccountTheme
+                >
+            >();
 
             return keycloakVersionRange;
         }
@@ -163,7 +197,9 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     const mountTargets = buildOptions.themeNames
         .map(themeName => {
-            const themeEntry = metaInfKeycloakThemes.themes.find(({ name }) => name === themeName);
+            const themeEntry = metaInfKeycloakThemes.themes.find(
+                ({ name }) => name === themeName
+            );
 
             assert(themeEntry !== undefined);
 
@@ -181,10 +217,24 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
                     return fs
                         .readdirSync(localPathDirname)
-                        .filter(fileOrDirectoryBasename => !fileOrDirectoryBasename.endsWith(".properties"))
+                        .filter(
+                            fileOrDirectoryBasename =>
+                                !fileOrDirectoryBasename.endsWith(".properties")
+                        )
                         .map(fileOrDirectoryBasename => ({
-                            "localPath": pathJoin(localPathDirname, fileOrDirectoryBasename),
-                            "containerPath": pathPosix.join("/", "opt", "keycloak", "themes", themeName, themeType, fileOrDirectoryBasename)
+                            localPath: pathJoin(
+                                localPathDirname,
+                                fileOrDirectoryBasename
+                            ),
+                            containerPath: pathPosix.join(
+                                "/",
+                                "opt",
+                                "keycloak",
+                                "themes",
+                                themeName,
+                                themeType,
+                                fileOrDirectoryBasename
+                            )
                         }));
                 })
                 .flat();
@@ -192,33 +242,56 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         .flat();
 
     try {
-        child_process.execSync(`docker rm --force ${containerName}`, { "stdio": "ignore" });
+        child_process.execSync(`docker rm --force ${containerName}`, {
+            stdio: "ignore"
+        });
     } catch {}
 
     const realmJsonFilePath = await (async () => {
         if (cliCommandOptions.realmJsonFilePath !== undefined) {
-            console.log(chalk.green(`Using realm json file: ${cliCommandOptions.realmJsonFilePath}`));
+            console.log(
+                chalk.green(
+                    `Using realm json file: ${cliCommandOptions.realmJsonFilePath}`
+                )
+            );
 
             return getAbsoluteAndInOsFormatPath({
-                "pathIsh": cliCommandOptions.realmJsonFilePath,
-                "cwd": process.cwd()
+                pathIsh: cliCommandOptions.realmJsonFilePath,
+                cwd: process.cwd()
             });
         }
 
-        const dirPath = pathJoin(getThisCodebaseRootDirPath(), "src", "bin", "start-keycloak");
+        const dirPath = pathJoin(
+            getThisCodebaseRootDirPath(),
+            "src",
+            "bin",
+            "start-keycloak"
+        );
 
-        const filePath = pathJoin(dirPath, `myrealm-realm-${keycloakMajorVersionNumber}.json`);
+        const filePath = pathJoin(
+            dirPath,
+            `myrealm-realm-${keycloakMajorVersionNumber}.json`
+        );
 
         if (fs.existsSync(filePath)) {
             return filePath;
         }
 
-        console.log(`${chalk.yellow(`Keycloakify do not have a realm configuration for Keycloak ${keycloakMajorVersionNumber} yet.`)}`);
+        console.log(
+            `${chalk.yellow(
+                `Keycloakify do not have a realm configuration for Keycloak ${keycloakMajorVersionNumber} yet.`
+            )}`
+        );
 
         console.log(chalk.cyan("Select what configuration to use:"));
 
         const { value } = await cliSelect<string>({
-            "values": [...fs.readdirSync(dirPath).filter(fileBasename => fileBasename.endsWith(".json")), "none"]
+            values: [
+                ...fs
+                    .readdirSync(dirPath)
+                    .filter(fileBasename => fileBasename.endsWith(".json")),
+                "none"
+            ]
         }).catch(() => {
             process.exit(-1);
         });
@@ -238,17 +311,37 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             ...["--name", containerName],
             ...["-e", "KEYCLOAK_ADMIN=admin"],
             ...["-e", "KEYCLOAK_ADMIN_PASSWORD=admin"],
-            ...(realmJsonFilePath === undefined ? [] : ["-v", `${realmJsonFilePath}:/opt/keycloak/data/import/myrealm-realm.json`]),
-            ...["-v", `${pathJoin(buildOptions.keycloakifyBuildDirPath, jarFileBasename)}:/opt/keycloak/providers/keycloak-theme.jar`],
-            ...(keycloakMajorVersionNumber <= 20 ? ["-e", "JAVA_OPTS=-Dkeycloak.profile=preview"] : []),
-            ...mountTargets.map(({ localPath, containerPath }) => ["-v", `${localPath}:${containerPath}:rw`]).flat(),
+            ...(realmJsonFilePath === undefined
+                ? []
+                : [
+                      "-v",
+                      `${realmJsonFilePath}:/opt/keycloak/data/import/myrealm-realm.json`
+                  ]),
+            ...[
+                "-v",
+                `${pathJoin(
+                    buildOptions.keycloakifyBuildDirPath,
+                    jarFileBasename
+                )}:/opt/keycloak/providers/keycloak-theme.jar`
+            ],
+            ...(keycloakMajorVersionNumber <= 20
+                ? ["-e", "JAVA_OPTS=-Dkeycloak.profile=preview"]
+                : []),
+            ...mountTargets
+                .map(({ localPath, containerPath }) => [
+                    "-v",
+                    `${localPath}:${containerPath}:rw`
+                ])
+                .flat(),
             `quay.io/keycloak/keycloak:${keycloakVersion}`,
             "start-dev",
-            ...(21 <= keycloakMajorVersionNumber && keycloakMajorVersionNumber < 24 ? ["--features=declarative-user-profile"] : []),
+            ...(21 <= keycloakMajorVersionNumber && keycloakMajorVersionNumber < 24
+                ? ["--features=declarative-user-profile"]
+                : []),
             ...(realmJsonFilePath === undefined ? [] : ["--import-realm"])
         ],
         {
-            "cwd": buildOptions.keycloakifyBuildDirPath
+            cwd: buildOptions.keycloakifyBuildDirPath
         }
     ] as const;
 
@@ -278,17 +371,23 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                 [
                     "",
                     `${chalk.green("Your theme is accessible at:")}`,
-                    `${chalk.green("➜")} ${chalk.cyan.bold("https://my-theme.keycloakify.dev/")}`,
+                    `${chalk.green("➜")} ${chalk.cyan.bold(
+                        "https://my-theme.keycloakify.dev/"
+                    )}`,
                     "",
                     "You can login with the following credentials:",
                     `- username: ${chalk.cyan.bold("testuser")}`,
                     `- password: ${chalk.cyan.bold("password123")}`,
                     "",
-                    `Keycloak Admin console: ${chalk.cyan.bold(`http://localhost:${cliCommandOptions.port}`)}`,
+                    `Keycloak Admin console: ${chalk.cyan.bold(
+                        `http://localhost:${cliCommandOptions.port}`
+                    )}`,
                     `- user:     ${chalk.cyan.bold("admin")}`,
                     `- password: ${chalk.cyan.bold("admin")}`,
                     "",
-                    `Watching for changes in ${chalk.bold(`.${pathSep}${pathRelative(process.cwd(), srcDirPath)}`)}`
+                    `Watching for changes in ${chalk.bold(
+                        `.${pathSep}${pathRelative(process.cwd(), srcDirPath)}`
+                    )}`
                 ].join("\n")
             );
         };
@@ -297,75 +396,79 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     }
 
     {
-        const { waitForDebounce } = waitForDebounceFactory({ "delay": 400 });
+        const { waitForDebounce } = waitForDebounceFactory({ delay: 400 });
 
-        chokidar.watch([srcDirPath, getThisCodebaseRootDirPath()], { "ignoreInitial": true }).on("all", async (...[, filePath]) => {
-            if (
-                isInside({
-                    "dirPath": pathJoin(getThisCodebaseRootDirPath(), "src", "bin"),
-                    filePath
-                }) ||
-                isInside({
-                    "dirPath": pathJoin(getThisCodebaseRootDirPath(), "bin"),
-                    filePath
-                })
-            ) {
-                return;
-            }
+        chokidar
+            .watch([srcDirPath, getThisCodebaseRootDirPath()], {
+                ignoreInitial: true
+            })
+            .on("all", async (...[, filePath]) => {
+                if (
+                    isInside({
+                        dirPath: pathJoin(getThisCodebaseRootDirPath(), "src", "bin"),
+                        filePath
+                    }) ||
+                    isInside({
+                        dirPath: pathJoin(getThisCodebaseRootDirPath(), "bin"),
+                        filePath
+                    })
+                ) {
+                    return;
+                }
 
-            await waitForDebounce();
+                await waitForDebounce();
 
-            console.log(chalk.cyan("Detected changes in the theme. Rebuilding ..."));
+                console.log(chalk.cyan("Detected changes in the theme. Rebuilding ..."));
 
-            const dViteBuildDone = new Deferred<void>();
+                const dViteBuildDone = new Deferred<void>();
 
-            {
-                const child = child_process.spawn("npx", ["vite", "build"], {
-                    "cwd": buildOptions.reactAppRootDirPath,
-                    "env": process.env
-                });
+                {
+                    const child = child_process.spawn("npx", ["vite", "build"], {
+                        cwd: buildOptions.reactAppRootDirPath,
+                        env: process.env
+                    });
 
-                child.stdout.on("data", data => {
-                    if (data.toString("utf8").includes("gzip:")) {
-                        return;
-                    }
+                    child.stdout.on("data", data => {
+                        if (data.toString("utf8").includes("gzip:")) {
+                            return;
+                        }
 
-                    process.stdout.write(data);
-                });
+                        process.stdout.write(data);
+                    });
 
-                child.stderr.on("data", data => process.stderr.write(data));
+                    child.stderr.on("data", data => process.stderr.write(data));
 
-                child.on("exit", code => {
-                    if (code === 0) {
-                        dViteBuildDone.resolve();
-                    }
-                });
-            }
+                    child.on("exit", code => {
+                        if (code === 0) {
+                            dViteBuildDone.resolve();
+                        }
+                    });
+                }
 
-            await dViteBuildDone.pr;
+                await dViteBuildDone.pr;
 
-            {
-                const child = child_process.spawn("npx", ["keycloakify", "build"], {
-                    "cwd": buildOptions.reactAppRootDirPath,
-                    "env": {
-                        ...process.env,
-                        [skipBuildJarsEnvName]: "true"
-                    }
-                });
+                {
+                    const child = child_process.spawn("npx", ["keycloakify", "build"], {
+                        cwd: buildOptions.reactAppRootDirPath,
+                        env: {
+                            ...process.env,
+                            [skipBuildJarsEnvName]: "true"
+                        }
+                    });
 
-                child.stdout.on("data", data => process.stdout.write(data));
+                    child.stdout.on("data", data => process.stdout.write(data));
 
-                child.stderr.on("data", data => process.stderr.write(data));
+                    child.stderr.on("data", data => process.stderr.write(data));
 
-                child.on("exit", code => {
-                    if (code !== 0) {
-                        console.log(chalk.yellow("Theme not updated, build failed"));
-                        return;
-                    }
+                    child.on("exit", code => {
+                        if (code !== 0) {
+                            console.log(chalk.yellow("Theme not updated, build failed"));
+                            return;
+                        }
 
-                    console.log(chalk.green("Rebuild done"));
-                });
-            }
-        });
+                        console.log(chalk.green("Rebuild done"));
+                    });
+                }
+            });
     }
 }

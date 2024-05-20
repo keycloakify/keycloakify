@@ -91,19 +91,19 @@ export function createUseI18n<ExtraMessageKey extends string = never>(extraMessa
 
                 setI18n({
                     ...createI18nTranslationFunctions({
-                        "fallbackMessages": {
+                        fallbackMessages: {
                             ...fallbackMessages,
                             ...(keycloakifyExtraMessages[fallbackLanguageTag] ?? {}),
                             ...(extraMessages[fallbackLanguageTag] ?? {})
                         } as any,
-                        "messages": {
+                        messages: {
                             ...(await getMessages(currentLanguageTag)),
                             ...((keycloakifyExtraMessages as any)[currentLanguageTag] ?? {}),
                             ...(extraMessages[currentLanguageTag] ?? {})
                         } as any
                     }),
                     currentLanguageTag,
-                    "getChangeLocalUrl": newLanguageTag => {
+                    getChangeLocalUrl: newLanguageTag => {
                         const { locale } = kcContext;
 
                         assert(locale !== undefined, "Internationalization not enabled");
@@ -114,7 +114,7 @@ export function createUseI18n<ExtraMessageKey extends string = never>(extraMessa
 
                         return targetSupportedLocale.url;
                     },
-                    "labelBySupportedLanguageTag": Object.fromEntries(
+                    labelBySupportedLanguageTag: Object.fromEntries(
                         (kcContext.locale?.supported ?? []).map(({ languageTag, label }) => [languageTag, label])
                     )
                 });
@@ -170,7 +170,7 @@ function createI18nTranslationFunctions<MessageKey extends string>(params: {
         })();
 
         return doRenderMarkdown ? (
-            <Markdown allowDangerousHtml renderers={{ "paragraph": "span" }}>
+            <Markdown allowDangerousHtml renderers={{ paragraph: "span" }}>
                 {messageWithArgsInjectedIfAny}
             </Markdown>
         ) : (
@@ -186,7 +186,7 @@ function createI18nTranslationFunctions<MessageKey extends string>(params: {
         const keyUnwrappedFromCurlyBraces = match === null ? key : match[1];
 
         const out = resolveMsg({
-            "key": keyUnwrappedFromCurlyBraces,
+            key: keyUnwrappedFromCurlyBraces,
             args,
             doRenderMarkdown
         });
@@ -195,36 +195,46 @@ function createI18nTranslationFunctions<MessageKey extends string>(params: {
     }
 
     return {
-        "msgStr": (key, ...args) => resolveMsg({ key, args, "doRenderMarkdown": false }) as string,
-        "msg": (key, ...args) => resolveMsg({ key, args, "doRenderMarkdown": true }) as JSX.Element,
-        "advancedMsg": (key, ...args) => resolveMsgAdvanced({ key, args, "doRenderMarkdown": true }) as JSX.Element,
-        "advancedMsgStr": (key, ...args) => resolveMsgAdvanced({ key, args, "doRenderMarkdown": false }) as string
+        msgStr: (key, ...args) => resolveMsg({ key, args, doRenderMarkdown: false }) as string,
+        msg: (key, ...args) => resolveMsg({ key, args, doRenderMarkdown: true }) as JSX.Element,
+        advancedMsg: (key, ...args) =>
+            resolveMsgAdvanced({
+                key,
+                args,
+                doRenderMarkdown: true
+            }) as JSX.Element,
+        advancedMsgStr: (key, ...args) =>
+            resolveMsgAdvanced({
+                key,
+                args,
+                doRenderMarkdown: false
+            }) as string
     };
 }
 
 const keycloakifyExtraMessages = {
-    "en": {
-        "shouldBeEqual": "{0} should be equal to {1}",
-        "shouldBeDifferent": "{0} should be different to {1}",
-        "shouldMatchPattern": "Pattern should match: `/{0}/`",
-        "mustBeAnInteger": "Must be an integer",
-        "notAValidOption": "Not a valid option",
-        "newPasswordSameAsOld": "New password must be different from the old one",
-        "passwordConfirmNotMatch": "Password confirmation does not match"
+    en: {
+        shouldBeEqual: "{0} should be equal to {1}",
+        shouldBeDifferent: "{0} should be different to {1}",
+        shouldMatchPattern: "Pattern should match: `/{0}/`",
+        mustBeAnInteger: "Must be an integer",
+        notAValidOption: "Not a valid option",
+        newPasswordSameAsOld: "New password must be different from the old one",
+        passwordConfirmNotMatch: "Password confirmation does not match"
     },
-    "fr": {
+    fr: {
         /* spell-checker: disable */
-        "shouldBeEqual": "{0} doit être égal à {1}",
-        "shouldBeDifferent": "{0} doit être différent de {1}",
-        "shouldMatchPattern": "Dois respecter le schéma: `/{0}/`",
-        "mustBeAnInteger": "Doit être un nombre entier",
-        "notAValidOption": "N'est pas une option valide",
+        shouldBeEqual: "{0} doit être égal à {1}",
+        shouldBeDifferent: "{0} doit être différent de {1}",
+        shouldMatchPattern: "Dois respecter le schéma: `/{0}/`",
+        mustBeAnInteger: "Doit être un nombre entier",
+        notAValidOption: "N'est pas une option valide",
 
-        "logoutConfirmTitle": "Déconnexion",
-        "logoutConfirmHeader": "Êtes-vous sûr(e) de vouloir vous déconnecter ?",
-        "doLogout": "Se déconnecter",
-        "newPasswordSameAsOld": "Le nouveau mot de passe doit être différent de l'ancien",
-        "passwordConfirmNotMatch": "La confirmation du mot de passe ne correspond pas"
+        logoutConfirmTitle: "Déconnexion",
+        logoutConfirmHeader: "Êtes-vous sûr(e) de vouloir vous déconnecter ?",
+        doLogout: "Se déconnecter",
+        newPasswordSameAsOld: "Le nouveau mot de passe doit être différent de l'ancien",
+        passwordConfirmNotMatch: "La confirmation du mot de passe ne correspond pas"
         /* spell-checker: enable */
     }
 };

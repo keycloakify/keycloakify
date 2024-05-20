@@ -8,7 +8,10 @@ export type BuildOptionsLike = {
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
-export function replaceImportsInInlineCssCode(params: { cssCode: string; buildOptions: BuildOptionsLike }): {
+export function replaceImportsInInlineCssCode(params: {
+    cssCode: string;
+    buildOptions: BuildOptionsLike;
+}): {
     fixedCssCode: string;
 } {
     const { cssCode, buildOptions } = params;
@@ -17,7 +20,8 @@ export function replaceImportsInInlineCssCode(params: { cssCode: string; buildOp
         buildOptions.urlPathname === undefined
             ? /url\(["']?\/([^/][^)"']+)["']?\)/g
             : new RegExp(`url\\(["']?${buildOptions.urlPathname}([^)"']+)["']?\\)`, "g"),
-        (...[, group]) => `url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/${group})`
+        (...[, group]) =>
+            `url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/${group})`
     );
 
     return { fixedCssCode };

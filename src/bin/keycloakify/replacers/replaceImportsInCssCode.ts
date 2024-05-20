@@ -18,7 +18,15 @@ export function replaceImportsInCssCode(params: { cssCode: string }): {
     const cssGlobalsToDefine: Record<string, string> = {};
 
     new Set(cssCode.match(/url\(["']?\/[^/][^)"']+["']?\)[^;}]*?/g) ?? []).forEach(
-        match => (cssGlobalsToDefine["url" + crypto.createHash("sha256").update(match).digest("hex").substring(0, 15)] = match)
+        match =>
+            (cssGlobalsToDefine[
+                "url" +
+                    crypto
+                        .createHash("sha256")
+                        .update(match)
+                        .digest("hex")
+                        .substring(0, 15)
+            ] = match)
     );
 
     let fixedCssCode = cssCode;
@@ -26,26 +34,37 @@ export function replaceImportsInCssCode(params: { cssCode: string }): {
     Object.keys(cssGlobalsToDefine).forEach(
         cssVariableName =>
             //NOTE: split/join pattern ~ replace all
-            (fixedCssCode = fixedCssCode.split(cssGlobalsToDefine[cssVariableName]).join(`var(--${cssVariableName})`))
+            (fixedCssCode = fixedCssCode
+                .split(cssGlobalsToDefine[cssVariableName])
+                .join(`var(--${cssVariableName})`))
     );
 
     return { fixedCssCode, cssGlobalsToDefine };
 }
 
-export function generateCssCodeToDefineGlobals(params: { cssGlobalsToDefine: Record<string, string>; buildOptions: BuildOptionsLike }): {
+export function generateCssCodeToDefineGlobals(params: {
+    cssGlobalsToDefine: Record<string, string>;
+    buildOptions: BuildOptionsLike;
+}): {
     cssCodeToPrependInHead: string;
 } {
     const { cssGlobalsToDefine, buildOptions } = params;
 
     return {
-        "cssCodeToPrependInHead": [
+        cssCodeToPrependInHead: [
             ":root {",
             ...Object.keys(cssGlobalsToDefine)
                 .map(cssVariableName =>
                     [
                         `--${cssVariableName}:`,
                         cssGlobalsToDefine[cssVariableName].replace(
-                            new RegExp(`url\\(${(buildOptions.urlPathname ?? "/").replace(/\//g, "\\/")}`, "g"),
+                            new RegExp(
+                                `url\\(${(buildOptions.urlPathname ?? "/").replace(
+                                    /\//g,
+                                    "\\/"
+                                )}`,
+                                "g"
+                            ),
                             `url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/`
                         )
                     ].join(" ")

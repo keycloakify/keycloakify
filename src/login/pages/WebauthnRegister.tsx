@@ -35,18 +35,18 @@ export default function WebauthnRegister(props: PageProps<Extract<KcContext, { p
     const { msg, msgStr } = i18n;
 
     const { insertScriptTags } = useInsertScriptTags({
-        "scriptTags": [
+        scriptTags: [
             {
-                "type": "text/javascript",
-                "src": `${url.resourcesCommonPath}/node_modules/jquery/dist/jquery.min.js`
+                type: "text/javascript",
+                src: `${url.resourcesCommonPath}/node_modules/jquery/dist/jquery.min.js`
             },
             {
-                "type": "text/javascript",
-                "src": `${url.resourcesPath}/js/base64url.js`
+                type: "text/javascript",
+                src: `${url.resourcesPath}/js/base64url.js`
             },
             {
-                "type": "text/javascript",
-                "textContent": `
+                type: "text/javascript",
+                textContent: `
                 function registerSecurityKey() {
 
                     // Check if WebAuthn is supported by this browser

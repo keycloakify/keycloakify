@@ -3,7 +3,10 @@ import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
 import type { MessageKey } from "../i18n/i18n";
 
-type ExtractAfterStartingWith<Prefix extends string, StrEnum> = StrEnum extends `${Prefix}${infer U}` ? U : never;
+type ExtractAfterStartingWith<
+    Prefix extends string,
+    StrEnum
+> = StrEnum extends `${Prefix}${infer U}` ? U : never;
 
 /** Take theses type definition with a grain of salt.
  * Some values might be undefined on some pages.
@@ -103,7 +106,10 @@ export declare namespace KcContext {
              * @param text to return
              * @return text if message exists for given field, else undefined
              */
-            printIfExists: <T extends string>(fieldName: string, text: T) => T | undefined;
+            printIfExists: <T extends string>(
+                fieldName: string,
+                text: T
+            ) => T | undefined;
             /**
              * Check if exists error message for given fields
              *

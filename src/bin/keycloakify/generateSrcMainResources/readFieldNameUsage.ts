@@ -5,13 +5,22 @@ import type { ThemeType } from "../../shared/constants";
 import { getThisCodebaseRootDirPath } from "../../tools/getThisCodebaseRootDirPath";
 
 /** Assumes the theme type exists */
-export function readFieldNameUsage(params: { themeSrcDirPath: string; themeType: ThemeType }): string[] {
+export function readFieldNameUsage(params: {
+    themeSrcDirPath: string;
+    themeType: ThemeType;
+}): string[] {
     const { themeSrcDirPath, themeType } = params;
 
     const fieldNames = new Set<string>();
 
-    for (const srcDirPath of [pathJoin(getThisCodebaseRootDirPath(), "src", themeType), pathJoin(themeSrcDirPath, themeType)]) {
-        const filePaths = crawl({ "dirPath": srcDirPath, "returnedPathsType": "absolute" }).filter(filePath => /\.(ts|tsx|js|jsx)$/.test(filePath));
+    for (const srcDirPath of [
+        pathJoin(getThisCodebaseRootDirPath(), "src", themeType),
+        pathJoin(themeSrcDirPath, themeType)
+    ]) {
+        const filePaths = crawl({
+            dirPath: srcDirPath,
+            returnedPathsType: "absolute"
+        }).filter(filePath => /\.(ts|tsx|js|jsx)$/.test(filePath));
 
         for (const filePath of filePaths) {
             const rawSourceFile = fs.readFileSync(filePath).toString("utf8");
@@ -20,7 +29,13 @@ export function readFieldNameUsage(params: { themeSrcDirPath: string; themeType:
                 continue;
             }
 
-            for (const functionName of ["printIfExists", "existsError", "get", "exists", "getFirstError"] as const) {
+            for (const functionName of [
+                "printIfExists",
+                "existsError",
+                "get",
+                "exists",
+                "getFirstError"
+            ] as const) {
                 if (!rawSourceFile.includes(functionName)) {
                     continue;
                 }
@@ -40,9 +55,21 @@ export function readFieldNameUsage(params: { themeSrcDirPath: string; themeType:
                             return part
                                 .split(",")
                                 .map(a => a.trim())
-                                .filter((...[, i]) => (functionName !== "printIfExists" ? true : i === 0))
-                                .filter(a => a.startsWith('"') || a.startsWith("'") || a.startsWith("`"))
-                                .filter(a => a.endsWith('"') || a.endsWith("'") || a.endsWith("`"))
+                                .filter((...[, i]) =>
+                                    functionName !== "printIfExists" ? true : i === 0
+                                )
+                                .filter(
+                                    a =>
+                                        a.startsWith('"') ||
+                                        a.startsWith("'") ||
+                                        a.startsWith("`")
+                                )
+                                .filter(
+                                    a =>
+                                        a.endsWith('"') ||
+                                        a.endsWith("'") ||
+                                        a.endsWith("`")
+                                )
                                 .map(a => a.slice(1).slice(0, -1));
                         })
                         .flat()

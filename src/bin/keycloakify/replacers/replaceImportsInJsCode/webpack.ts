@@ -1,4 +1,7 @@
-import { nameOfTheGlobal, basenameOfTheKeycloakifyResourcesDir } from "../../../shared/constants";
+import {
+    nameOfTheGlobal,
+    basenameOfTheKeycloakifyResourcesDir
+} from "../../../shared/constants";
 import { assert } from "tsafe/assert";
 import type { BuildOptions } from "../../../shared/buildOptions";
 import * as nodePath from "path";
@@ -12,10 +15,18 @@ export type BuildOptionsLike = {
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
-export function replaceImportsInJsCode_webpack(params: { jsCode: string; buildOptions: BuildOptionsLike; systemType?: "posix" | "win32" }): {
+export function replaceImportsInJsCode_webpack(params: {
+    jsCode: string;
+    buildOptions: BuildOptionsLike;
+    systemType?: "posix" | "win32";
+}): {
     fixedJsCode: string;
 } {
-    const { jsCode, buildOptions, systemType = nodePath.sep === "/" ? "posix" : "win32" } = params;
+    const {
+        jsCode,
+        buildOptions,
+        systemType = nodePath.sep === "/" ? "posix" : "win32"
+    } = params;
 
     const { relative: pathRelative, sep: pathSep } = nodePath[systemType];
 
@@ -24,29 +35,51 @@ export function replaceImportsInJsCode_webpack(params: { jsCode: string; buildOp
     if (buildOptions.urlPathname !== undefined) {
         // "__esModule",{value:!0})},n.p="/foo-bar/",function(){if("undefined"  -> ... n.p="/" ...
         fixedJsCode = fixedJsCode.replace(
-            new RegExp(`,([a-zA-Z]\\.[a-zA-Z])="${replaceAll(buildOptions.urlPathname, "/", "\\/")}",`, "g"),
+            new RegExp(
+                `,([a-zA-Z]\\.[a-zA-Z])="${replaceAll(
+                    buildOptions.urlPathname,
+                    "/",
+                    "\\/"
+                )}",`,
+                "g"
+            ),
             (...[, assignTo]) => `,${assignTo}="/",`
         );
     }
 
     // Example: "static/ or "foo/bar/"
     const staticDir = (() => {
-        let out = pathRelative(buildOptions.reactAppBuildDirPath, buildOptions.assetsDirPath);
+        let out = pathRelative(
+            buildOptions.reactAppBuildDirPath,
+            buildOptions.assetsDirPath
+        );
 
         out = replaceAll(out, pathSep, "/") + "/";
 
         if (out === "/") {
-            throw new Error(`The assetsDirPath must be a subdirectory of reactAppBuildDirPath`);
+            throw new Error(
+                `The assetsDirPath must be a subdirectory of reactAppBuildDirPath`
+            );
         }
 
         return out;
     })();
 
-    const getReplaceArgs = (language: "js" | "css"): Parameters<typeof String.prototype.replace> => [
-        new RegExp(`([a-zA-Z_]+)\\.([a-zA-Z]+)=(function\\(([a-z]+)\\){return|([a-z]+)=>)"${staticDir.replace(/\//g, "\\/")}${language}\\/"`, "g"),
+    const getReplaceArgs = (
+        language: "js" | "css"
+    ): Parameters<typeof String.prototype.replace> => [
+        new RegExp(
+            `([a-zA-Z_]+)\\.([a-zA-Z]+)=(function\\(([a-z]+)\\){return|([a-z]+)=>)"${staticDir.replace(
+                /\//g,
+                "\\/"
+            )}${language}\\/"`,
+            "g"
+        ),
         (...[, n, u, matchedFunction, eForFunction]) => {
             const isArrowFunction = matchedFunction.includes("=>");
-            const e = isArrowFunction ? matchedFunction.replace("=>", "").trim() : eForFunction;
+            const e = isArrowFunction
+                ? matchedFunction.replace("=>", "").trim()
+                : eForFunction;
 
             return `
             ${n}[(function(){
@@ -58,7 +91,9 @@ export function replaceImportsInJsCode_webpack(params: { jsCode: string; buildOp
                     });
                 }
                 return "${u}";
-            })()] = ${isArrowFunction ? `${e} =>` : `function(${e}) { return `} "/${basenameOfTheKeycloakifyResourcesDir}/${staticDir}${language}/"`
+            })()] = ${
+                isArrowFunction ? `${e} =>` : `function(${e}) { return `
+            } "/${basenameOfTheKeycloakifyResourcesDir}/${staticDir}${language}/"`
                 .replace(/\s+/g, " ")
                 .trim();
         }
@@ -68,7 +103,10 @@ export function replaceImportsInJsCode_webpack(params: { jsCode: string; buildOp
         .replace(...getReplaceArgs("js"))
         .replace(...getReplaceArgs("css"))
         .replace(
-            new RegExp(`[a-zA-Z]+\\.[a-zA-Z]+\\+"${staticDir.replace(/\//g, "\\/")}`, "g"),
+            new RegExp(
+                `[a-zA-Z]+\\.[a-zA-Z]+\\+"${staticDir.replace(/\//g, "\\/")}`,
+                "g"
+            ),
             `window.${nameOfTheGlobal}.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/${staticDir}`
         );
 

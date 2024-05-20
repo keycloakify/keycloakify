@@ -14,13 +14,18 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     const buildOptions = readBuildOptions({ cliCommandOptions });
 
     const { themeSrcDirPath } = getThemeSrcDirPath({
-        "reactAppRootDirPath": buildOptions.reactAppRootDirPath
+        reactAppRootDirPath: buildOptions.reactAppRootDirPath
     });
 
     const emailThemeSrcDirPath = pathJoin(themeSrcDirPath, "email");
 
     if (fs.existsSync(emailThemeSrcDirPath)) {
-        console.warn(`There is already a ${pathRelative(process.cwd(), emailThemeSrcDirPath)} directory in your project. Aborting.`);
+        console.warn(
+            `There is already a ${pathRelative(
+                process.cwd(),
+                emailThemeSrcDirPath
+            )} directory in your project. Aborting.`
+        );
 
         process.exit(-1);
     }
@@ -29,33 +34,50 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     const { keycloakVersion } = await promptKeycloakVersion({
         // NOTE: This is arbitrary
-        "startingFromMajor": 17,
-        "cacheDirPath": buildOptions.cacheDirPath
+        startingFromMajor: 17,
+        cacheDirPath: buildOptions.cacheDirPath
     });
 
-    const builtinKeycloakThemeTmpDirPath = pathJoin(buildOptions.cacheDirPath, "initialize-email-theme_tmp");
+    const builtinKeycloakThemeTmpDirPath = pathJoin(
+        buildOptions.cacheDirPath,
+        "initialize-email-theme_tmp"
+    );
 
-    rmSync(builtinKeycloakThemeTmpDirPath, { "recursive": true, "force": true });
+    rmSync(builtinKeycloakThemeTmpDirPath, {
+        recursive: true,
+        force: true
+    });
 
     await downloadKeycloakDefaultTheme({
         keycloakVersion,
-        "destDirPath": builtinKeycloakThemeTmpDirPath,
+        destDirPath: builtinKeycloakThemeTmpDirPath,
         buildOptions
     });
 
     transformCodebase({
-        "srcDirPath": pathJoin(builtinKeycloakThemeTmpDirPath, "base", "email"),
-        "destDirPath": emailThemeSrcDirPath
+        srcDirPath: pathJoin(builtinKeycloakThemeTmpDirPath, "base", "email"),
+        destDirPath: emailThemeSrcDirPath
     });
 
     {
         const themePropertyFilePath = pathJoin(emailThemeSrcDirPath, "theme.properties");
 
-        fs.writeFileSync(themePropertyFilePath, Buffer.from(`parent=base\n${fs.readFileSync(themePropertyFilePath).toString("utf8")}`, "utf8"));
+        fs.writeFileSync(
+            themePropertyFilePath,
+            Buffer.from(
+                `parent=base\n${fs.readFileSync(themePropertyFilePath).toString("utf8")}`,
+                "utf8"
+            )
+        );
     }
 
-    console.log(`The \`${pathJoin(".", pathRelative(process.cwd(), emailThemeSrcDirPath))}\` directory have been created.`);
+    console.log(
+        `The \`${pathJoin(
+            ".",
+            pathRelative(process.cwd(), emailThemeSrcDirPath)
+        )}\` directory have been created.`
+    );
     console.log("You can delete any file you don't modify.");
 
-    rmSync(builtinKeycloakThemeTmpDirPath, { "recursive": true });
+    rmSync(builtinKeycloakThemeTmpDirPath, { recursive: true });
 }

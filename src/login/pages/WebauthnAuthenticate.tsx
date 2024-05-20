@@ -32,18 +32,18 @@ export default function WebauthnAuthenticate(props: PageProps<Extract<KcContext,
     const { msg, msgStr } = i18n;
 
     const { insertScriptTags } = useInsertScriptTags({
-        "scriptTags": [
+        scriptTags: [
             {
-                "type": "text/javascript",
-                "src": `${url.resourcesCommonPath}/node_modules/jquery/dist/jquery.min.js`
+                type: "text/javascript",
+                src: `${url.resourcesCommonPath}/node_modules/jquery/dist/jquery.min.js`
             },
             {
-                "type": "text/javascript",
-                "src": `${url.resourcesPath}/js/base64url.js`
+                type: "text/javascript",
+                src: `${url.resourcesPath}/js/base64url.js`
             },
             {
-                "type": "text/javascript",
-                "textContent": `
+                type: "text/javascript",
+                textContent: `
 
                     function webAuthnAuthenticate() {
                         let isUserIdentified = ${isUserIdentified};
@@ -206,7 +206,10 @@ export default function WebauthnAuthenticate(props: PageProps<Extract<KcContext,
                                                             className={getClassName("kcSelectAuthListItemDescriptionClass")}
                                                         >
                                                             {authenticator.transports.displayNameProperties
-                                                                .map((nameProperty, i, arr) => ({ nameProperty, "hasNext": i !== arr.length - 1 }))
+                                                                .map((nameProperty, i, arr) => ({
+                                                                    nameProperty,
+                                                                    hasNext: i !== arr.length - 1
+                                                                }))
                                                                 .map(({ nameProperty, hasNext }) => (
                                                                     <Fragment key={nameProperty}>
                                                                         <span>{msg(nameProperty)}</span>

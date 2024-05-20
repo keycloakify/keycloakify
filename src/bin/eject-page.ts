@@ -30,7 +30,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     console.log(chalk.cyan("Theme type:"));
 
     const { value: themeType } = await cliSelect<ThemeType>({
-        "values": [...themeTypes]
+        values: [...themeTypes]
     }).catch(() => {
         process.exit(-1);
     });
@@ -40,7 +40,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     console.log(chalk.cyan("Select the page you want to customize:"));
 
     const { value: pageId } = await cliSelect<LoginThemePageId | AccountThemePageId>({
-        "values": (() => {
+        values: (() => {
             switch (themeType) {
                 case "login":
                     return [...loginThemePageIds];
@@ -55,14 +55,29 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     console.log(`→ ${pageId}`);
 
-    const componentPageBasename = capitalize(kebabCaseToCamelCase(pageId)).replace(/ftl$/, "tsx");
+    const componentPageBasename = capitalize(kebabCaseToCamelCase(pageId)).replace(
+        /ftl$/,
+        "tsx"
+    );
 
-    const { themeSrcDirPath } = getThemeSrcDirPath({ "reactAppRootDirPath": buildOptions.reactAppRootDirPath });
+    const { themeSrcDirPath } = getThemeSrcDirPath({
+        reactAppRootDirPath: buildOptions.reactAppRootDirPath
+    });
 
-    const targetFilePath = pathJoin(themeSrcDirPath, themeType, "pages", componentPageBasename);
+    const targetFilePath = pathJoin(
+        themeSrcDirPath,
+        themeType,
+        "pages",
+        componentPageBasename
+    );
 
     if (fs.existsSync(targetFilePath)) {
-        console.log(`${pageId} is already ejected, ${pathRelative(process.cwd(), targetFilePath)} already exists`);
+        console.log(
+            `${pageId} is already ejected, ${pathRelative(
+                process.cwd(),
+                targetFilePath
+            )} already exists`
+        );
 
         process.exit(-1);
     }
@@ -71,12 +86,20 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         const targetDirPath = pathDirname(targetFilePath);
 
         if (!fs.existsSync(targetDirPath)) {
-            fs.mkdirSync(targetDirPath, { "recursive": true });
+            fs.mkdirSync(targetDirPath, { recursive: true });
         }
     }
 
     const componentPageContent = fs
-        .readFileSync(pathJoin(getThisCodebaseRootDirPath(), "src", themeType, "pages", componentPageBasename))
+        .readFileSync(
+            pathJoin(
+                getThisCodebaseRootDirPath(),
+                "src",
+                themeType,
+                "pages",
+                componentPageBasename
+            )
+        )
         .toString("utf8");
 
     fs.writeFileSync(targetFilePath, Buffer.from(componentPageContent, "utf8"));
@@ -92,11 +115,23 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             ``,
             `You now need to update your page router:`,
             ``,
-            `${chalk.bold(pathJoin(".", pathRelative(process.cwd(), themeSrcDirPath), themeType, "KcApp.tsx"))}:`,
+            `${chalk.bold(
+                pathJoin(
+                    ".",
+                    pathRelative(process.cwd(), themeSrcDirPath),
+                    themeType,
+                    "KcApp.tsx"
+                )
+            )}:`,
             chalk.grey("```"),
             `// ...`,
             ``,
-            chalk.green(`+const ${componentPageBasename.replace(/.tsx$/, "")} = lazy(() => import("./pages/${componentPageBasename}"));`),
+            chalk.green(
+                `+const ${componentPageBasename.replace(
+                    /.tsx$/,
+                    ""
+                )} = lazy(() => import("./pages/${componentPageBasename}"));`
+            ),
             ...[
                 ``,
                 ` export default function KcApp(props: { kcContext: KcContext; }) {`,
@@ -114,7 +149,9 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                 `+                            Template={Template}`,
                 ...(!componentPageContent.includes(userProfileFormFieldComponentName)
                     ? []
-                    : [`+                            ${userProfileFormFieldComponentName}={${userProfileFormFieldComponentName}}`]),
+                    : [
+                          `+                            ${userProfileFormFieldComponentName}={${userProfileFormFieldComponentName}}`
+                      ]),
                 `+                            doUseDefaultCss={true}`,
                 `+                        />`,
                 `+                    );`,

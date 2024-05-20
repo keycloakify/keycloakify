@@ -24,13 +24,13 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
     }, []);
 
     useSetClassName({
-        "qualifiedName": "html",
-        "className": getClassName("kcHtmlClass")
+        qualifiedName: "html",
+        className: getClassName("kcHtmlClass")
     });
 
     useSetClassName({
-        "qualifiedName": "body",
-        "className": clsx("admin-console", "user", getClassName("kcBodyClass"))
+        qualifiedName: "body",
+        className: clsx("admin-console", "user", getClassName("kcBodyClass"))
     });
 
     useEffect(() => {
@@ -46,7 +46,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
     }, []);
 
     const { areAllStyleSheetsLoaded } = useInsertLinkTags({
-        "hrefs": !doUseDefaultCss
+        hrefs: !doUseDefaultCss
             ? []
             : [
                   `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly.min.css`,

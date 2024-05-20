@@ -7,19 +7,26 @@ import * as fs from "fs";
 import type { ReturnType } from "tsafe";
 import { id } from "tsafe/id";
 
-export async function promptKeycloakVersion(params: { startingFromMajor: number | undefined; cacheDirPath: string }) {
+export async function promptKeycloakVersion(params: {
+    startingFromMajor: number | undefined;
+    cacheDirPath: string;
+}) {
     const { startingFromMajor, cacheDirPath } = params;
 
     const { getLatestsSemVersionedTag } = (() => {
         const { octokit } = (() => {
             const githubToken = process.env.GITHUB_TOKEN;
 
-            const octokit = new Octokit(githubToken === undefined ? undefined : { "auth": githubToken });
+            const octokit = new Octokit(
+                githubToken === undefined ? undefined : { auth: githubToken }
+            );
 
             return { octokit };
         })();
 
-        const { getLatestsSemVersionedTag } = getLatestsSemVersionedTagFactory({ octokit });
+        const { getLatestsSemVersionedTag } = getLatestsSemVersionedTagFactory({
+            octokit
+        });
 
         return { getLatestsSemVersionedTag };
     })();
@@ -39,7 +46,9 @@ export async function promptKeycloakVersion(params: { startingFromMajor: number 
                 break use_cache;
             }
 
-            const cache: Cache = JSON.parse(fs.readFileSync(cacheFilePath).toString("utf8"));
+            const cache: Cache = JSON.parse(
+                fs.readFileSync(cacheFilePath).toString("utf8")
+            );
 
             if (Date.now() - cache.time > 3_600_000) {
                 fs.unlinkSync(cacheFilePath);
@@ -50,16 +59,16 @@ export async function promptKeycloakVersion(params: { startingFromMajor: number 
         }
 
         const semVersionedTags = await getLatestsSemVersionedTag({
-            "count": 50,
-            "owner": "keycloak",
-            "repo": "keycloak"
+            count: 50,
+            owner: "keycloak",
+            repo: "keycloak"
         });
 
         {
             const dirPath = pathDirname(cacheFilePath);
 
             if (!fs.existsSync(dirPath)) {
-                fs.mkdirSync(dirPath, { "recursive": true });
+                fs.mkdirSync(dirPath, { recursive: true });
             }
         }
 
@@ -67,7 +76,7 @@ export async function promptKeycloakVersion(params: { startingFromMajor: number 
             cacheFilePath,
             JSON.stringify(
                 id<Cache>({
-                    "time": Date.now(),
+                    time: Date.now(),
                     semVersionedTags
                 }),
                 null,
@@ -79,23 +88,33 @@ export async function promptKeycloakVersion(params: { startingFromMajor: number 
     })();
 
     semVersionedTags.forEach(semVersionedTag => {
-        if (startingFromMajor !== undefined && semVersionedTag.version.major < startingFromMajor) {
+        if (
+            startingFromMajor !== undefined &&
+            semVersionedTag.version.major < startingFromMajor
+        ) {
             return;
         }
 
-        const currentSemVersionedTag = semVersionedTagByMajor.get(semVersionedTag.version.major);
+        const currentSemVersionedTag = semVersionedTagByMajor.get(
+            semVersionedTag.version.major
+        );
 
-        if (currentSemVersionedTag !== undefined && SemVer.compare(semVersionedTag.version, currentSemVersionedTag.version) === -1) {
+        if (
+            currentSemVersionedTag !== undefined &&
+            SemVer.compare(semVersionedTag.version, currentSemVersionedTag.version) === -1
+        ) {
             return;
         }
 
         semVersionedTagByMajor.set(semVersionedTag.version.major, semVersionedTag);
     });
 
-    const lastMajorVersions = Array.from(semVersionedTagByMajor.values()).map(({ tag }) => tag);
+    const lastMajorVersions = Array.from(semVersionedTagByMajor.values()).map(
+        ({ tag }) => tag
+    );
 
     const { value } = await cliSelect<string>({
-        "values": lastMajorVersions
+        values: lastMajorVersions
     }).catch(() => {
         process.exit(-1);
     });

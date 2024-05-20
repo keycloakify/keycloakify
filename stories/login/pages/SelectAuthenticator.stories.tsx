@@ -13,7 +13,7 @@ const meta: ComponentMeta<any> = {
         viewMode: "story",
         previewTabs: {
             "storybook/docs/panel": {
-                "hidden": true
+                hidden: true
             }
         }
     }

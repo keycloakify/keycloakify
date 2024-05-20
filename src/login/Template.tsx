@@ -41,13 +41,13 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
     }, []);
 
     useSetClassName({
-        "qualifiedName": "html",
-        "className": getClassName("kcHtmlClass")
+        qualifiedName: "html",
+        className: getClassName("kcHtmlClass")
     });
 
     useSetClassName({
-        "qualifiedName": "body",
-        "className": bodyClassName ?? getClassName("kcBodyClass")
+        qualifiedName: "body",
+        className: bodyClassName ?? getClassName("kcBodyClass")
     });
 
     useEffect(() => {
@@ -63,7 +63,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
     }, []);
 
     const { areAllStyleSheetsLoaded } = useInsertLinkTags({
-        "hrefs": !doUseDefaultCss
+        hrefs: !doUseDefaultCss
             ? []
             : [
                   `${url.resourcesCommonPath}/node_modules/@patternfly/patternfly/patternfly.min.css`,
@@ -75,17 +75,17 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
     });
 
     const { insertScriptTags } = useInsertScriptTags({
-        "scriptTags": [
+        scriptTags: [
             {
-                "type": "module",
-                "src": `${url.resourcesPath}/js/menu-button-links.js`
+                type: "module",
+                src: `${url.resourcesPath}/js/menu-button-links.js`
             },
             ...(authenticationSession === undefined
                 ? []
                 : [
                       {
-                          "type": "module",
-                          "textContent": [
+                          type: "module",
+                          textContent: [
                               `import { checkCookiesAndSetTimer } from "${url.resourcesPath}/js/authChecker.js";`,
                               ``,
                               `checkCookiesAndSetTimer(`,
@@ -99,8 +99,8 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
             ...scripts.map(
                 script =>
                     ({
-                        "type": "text/javascript",
-                        "src": script
+                        type: "text/javascript",
+                        src: script
                     } as const)
             )
         ]
@@ -237,7 +237,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                                 <span
                                     className={getClassName("kcAlertTitleClass")}
                                     dangerouslySetInnerHTML={{
-                                        "__html": message.summary
+                                        __html: message.summary
                                     }}
                                 />
                             </div>

@@ -6,7 +6,12 @@ import * as fs from "fs";
 import { join as pathJoin } from "path";
 import type { BuildOptions } from "../../shared/buildOptions";
 import { assert } from "tsafe/assert";
-import { type ThemeType, nameOfTheGlobal, basenameOfTheKeycloakifyResourcesDir, resources_common } from "../../shared/constants";
+import {
+    type ThemeType,
+    nameOfTheGlobal,
+    basenameOfTheKeycloakifyResourcesDir,
+    resources_common
+} from "../../shared/constants";
 import { getThisCodebaseRootDirPath } from "../../tools/getThisCodebaseRootDirPath";
 
 export type BuildOptionsLike = {
@@ -28,7 +33,15 @@ export function generateFtlFilesCodeFactory(params: {
     themeType: ThemeType;
     fieldNames: string[];
 }) {
-    const { themeName, cssGlobalsToDefine, indexHtmlCode, buildOptions, keycloakifyVersion, themeType, fieldNames } = params;
+    const {
+        themeName,
+        cssGlobalsToDefine,
+        indexHtmlCode,
+        buildOptions,
+        keycloakifyVersion,
+        themeType,
+        fieldNames
+    } = params;
 
     const $ = cheerio.load(indexHtmlCode);
 
@@ -38,7 +51,10 @@ export function generateFtlFilesCodeFactory(params: {
 
             assert(jsCode !== null);
 
-            const { fixedJsCode } = replaceImportsInJsCode({ jsCode, buildOptions });
+            const { fixedJsCode } = replaceImportsInJsCode({
+                jsCode,
+                buildOptions
+            });
 
             $(element).text(fixedJsCode);
         });
@@ -72,7 +88,9 @@ export function generateFtlFilesCodeFactory(params: {
                 $(element).attr(
                     attrName,
                     href.replace(
-                        new RegExp(`^${(buildOptions.urlPathname ?? "/").replace(/\//g, "\\/")}`),
+                        new RegExp(
+                            `^${(buildOptions.urlPathname ?? "/").replace(/\//g, "\\/")}`
+                        ),
                         `\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/`
                     )
                 );
@@ -98,20 +116,33 @@ export function generateFtlFilesCodeFactory(params: {
     //FTL is no valid html, we can't insert with cheerio, we put placeholder for injecting later.
     const ftlObjectToJsCodeDeclaringAnObject = fs
         .readFileSync(
-            pathJoin(getThisCodebaseRootDirPath(), "src", "bin", "keycloakify", "generateFtl", "ftl_object_to_js_code_declaring_an_object.ftl")
+            pathJoin(
+                getThisCodebaseRootDirPath(),
+                "src",
+                "bin",
+                "keycloakify",
+                "generateFtl",
+                "ftl_object_to_js_code_declaring_an_object.ftl"
+            )
         )
         .toString("utf8")
         .match(/^<script>const _=((?:.|\n)+)<\/script>[\n]?$/)![1]
-        .replace("FIELD_NAMES_eKsIY4ZsZ4xeM", fieldNames.map(name => `"${name}"`).join(", "))
+        .replace(
+            "FIELD_NAMES_eKsIY4ZsZ4xeM",
+            fieldNames.map(name => `"${name}"`).join(", ")
+        )
         .replace("KEYCLOAKIFY_VERSION_xEdKd3xEdr", keycloakifyVersion)
         .replace("KEYCLOAKIFY_THEME_VERSION_sIgKd3xEdr3dx", buildOptions.themeVersion)
         .replace("KEYCLOAKIFY_THEME_TYPE_dExKd3xEdr", themeType)
         .replace("KEYCLOAKIFY_THEME_NAME_cXxKd3xEer", themeName)
         .replace("RESOURCES_COMMON_cLsLsMrtDkpVv", resources_common);
 
-    const ftlObjectToJsCodeDeclaringAnObjectPlaceholder = '{ "x": "vIdLqMeOed9sdLdIdOxdK0d" }';
+    const ftlObjectToJsCodeDeclaringAnObjectPlaceholder =
+        '{ "x": "vIdLqMeOed9sdLdIdOxdK0d" }';
 
-    $("head").prepend(`<script>\nwindow.${nameOfTheGlobal}=${ftlObjectToJsCodeDeclaringAnObjectPlaceholder}</script>`);
+    $("head").prepend(
+        `<script>\nwindow.${nameOfTheGlobal}=${ftlObjectToJsCodeDeclaringAnObjectPlaceholder}</script>`
+    );
 
     // Remove part of the document marked as ignored.
     {
@@ -119,7 +150,9 @@ export function generateFtlFilesCodeFactory(params: {
 
         startTags.each((...[, startTag]) => {
             const $startTag = $(startTag);
-            const $endTag = $startTag.nextAll('meta[name="keycloakify-ignore-end"]').first();
+            const $endTag = $startTag
+                .nextAll('meta[name="keycloakify-ignore-end"]')
+                .first();
 
             if ($endTag.length) {
                 let currentNode = $startTag.next();
@@ -146,9 +179,13 @@ export function generateFtlFilesCodeFactory(params: {
         let ftlCode = $.html();
 
         Object.entries({
-            [ftlObjectToJsCodeDeclaringAnObjectPlaceholder]: ftlObjectToJsCodeDeclaringAnObject,
-            "PAGE_ID_xIgLsPgGId9D8e": pageId
-        }).map(([searchValue, replaceValue]) => (ftlCode = ftlCode.replace(searchValue, replaceValue)));
+            [ftlObjectToJsCodeDeclaringAnObjectPlaceholder]:
+                ftlObjectToJsCodeDeclaringAnObject,
+            PAGE_ID_xIgLsPgGId9D8e: pageId
+        }).map(
+            ([searchValue, replaceValue]) =>
+                (ftlCode = ftlCode.replace(searchValue, replaceValue))
+        );
 
         return { ftlCode };
     }

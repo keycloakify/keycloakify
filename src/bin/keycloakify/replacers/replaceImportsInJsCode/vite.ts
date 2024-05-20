@@ -1,4 +1,7 @@
-import { nameOfTheGlobal, basenameOfTheKeycloakifyResourcesDir } from "../../../shared/constants";
+import {
+    nameOfTheGlobal,
+    basenameOfTheKeycloakifyResourcesDir
+} from "../../../shared/constants";
 import { assert } from "tsafe/assert";
 import type { BuildOptions } from "../../../shared/buildOptions";
 import * as nodePath from "path";
@@ -20,7 +23,12 @@ export function replaceImportsInJsCode_vite(params: {
 }): {
     fixedJsCode: string;
 } {
-    const { jsCode, buildOptions, basenameOfAssetsFiles, systemType = nodePath.sep === "/" ? "posix" : "win32" } = params;
+    const {
+        jsCode,
+        buildOptions,
+        basenameOfAssetsFiles,
+        systemType = nodePath.sep === "/" ? "posix" : "win32"
+    } = params;
 
     const { relative: pathRelative, sep: pathSep } = nodePath[systemType];
 
@@ -38,22 +46,32 @@ export function replaceImportsInJsCode_vite(params: {
         // Replace `Hv=function(e){return"/abcde12345/"+e}` by `Hv=function(e){return"/"+e}`
         fixedJsCode = fixedJsCode.replace(
             new RegExp(
-                `([\\w\\$][\\w\\d\\$]*)=function\\(([\\w\\$][\\w\\d\\$]*)\\)\\{return"${replaceAll(buildOptions.urlPathname, "/", "\\/")}"\\+\\2\\}`,
+                `([\\w\\$][\\w\\d\\$]*)=function\\(([\\w\\$][\\w\\d\\$]*)\\)\\{return"${replaceAll(
+                    buildOptions.urlPathname,
+                    "/",
+                    "\\/"
+                )}"\\+\\2\\}`,
                 "g"
             ),
-            (...[, funcName, paramName]) => `${funcName}=function(${paramName}){return"/"+${paramName}}`
+            (...[, funcName, paramName]) =>
+                `${funcName}=function(${paramName}){return"/"+${paramName}}`
         );
     }
 
     replace_javascript_relatives_import_paths: {
         // Example: "assets/ or "foo/bar/"
         const staticDir = (() => {
-            let out = pathRelative(buildOptions.reactAppBuildDirPath, buildOptions.assetsDirPath);
+            let out = pathRelative(
+                buildOptions.reactAppBuildDirPath,
+                buildOptions.assetsDirPath
+            );
 
             out = replaceAll(out, pathSep, "/") + "/";
 
             if (out === "/") {
-                throw new Error(`The assetsDirPath must be a subdirectory of reactAppBuildDirPath`);
+                throw new Error(
+                    `The assetsDirPath must be a subdirectory of reactAppBuildDirPath`
+                );
             }
 
             return out;

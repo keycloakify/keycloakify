@@ -18,9 +18,9 @@ export default function Totp(props: PageProps<Extract<KcContext, { pageId: "totp
     const { msg, msgStr } = i18n;
 
     const algToKeyUriAlg: Record<(typeof kcContext)["totp"]["policy"]["algorithm"], string> = {
-        "HmacSHA1": "SHA1",
-        "HmacSHA256": "SHA256",
-        "HmacSHA512": "SHA512"
+        HmacSHA1: "SHA1",
+        HmacSHA256: "SHA256",
+        HmacSHA512: "SHA512"
     };
 
     return (

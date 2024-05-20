@@ -13,7 +13,10 @@ export type BuildOptionsLike = {
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
-export function replaceImportsInJsCode(params: { jsCode: string; buildOptions: BuildOptionsLike }) {
+export function replaceImportsInJsCode(params: {
+    jsCode: string;
+    buildOptions: BuildOptionsLike;
+}) {
     const { jsCode, buildOptions } = params;
 
     const { fixedJsCode } = (() => {
@@ -22,8 +25,8 @@ export function replaceImportsInJsCode(params: { jsCode: string; buildOptions: B
                 return replaceImportsInJsCode_vite({
                     jsCode,
                     buildOptions,
-                    "basenameOfAssetsFiles": readAssetsDirSync({
-                        "assetsDirPath": params.buildOptions.assetsDirPath
+                    basenameOfAssetsFiles: readAssetsDirSync({
+                        assetsDirPath: params.buildOptions.assetsDirPath
                     })
                 });
             case "webpack":

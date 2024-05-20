@@ -21,10 +21,10 @@ export default function LoginRecoveryAuthnCodeConfig(props: PageProps<Extract<Kc
     const { msg, msgStr } = i18n;
 
     const { insertScriptTags } = useInsertScriptTags({
-        "scriptTags": [
+        scriptTags: [
             {
-                "type": "text/javascript",
-                "textContent": `
+                type: "text/javascript",
+                textContent: `
 
                     /* copy recovery codes  */
                     function copyRecoveryCodes() {

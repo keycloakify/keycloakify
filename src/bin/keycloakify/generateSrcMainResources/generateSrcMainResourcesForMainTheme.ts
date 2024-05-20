@@ -24,7 +24,10 @@ import { bringInAccountV1 } from "./bringInAccountV1";
 import { getThemeSrcDirPath } from "../../shared/getThemeSrcDirPath";
 import { rmSync } from "../../tools/fs.rmSync";
 import { readThisNpmPackageVersion } from "../../tools/readThisNpmPackageVersion";
-import { writeMetaInfKeycloakThemes, type MetaInfKeycloakTheme } from "../../shared/metaInfKeycloakThemes";
+import {
+    writeMetaInfKeycloakThemes,
+    type MetaInfKeycloakTheme
+} from "../../shared/metaInfKeycloakThemes";
 import { objectEntries } from "tsafe/objectEntries";
 
 export type BuildOptionsLike = {
@@ -43,22 +46,35 @@ export type BuildOptionsLike = {
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
-export async function generateSrcMainResourcesForMainTheme(params: { themeName: string; buildOptions: BuildOptionsLike }): Promise<void> {
+export async function generateSrcMainResourcesForMainTheme(params: {
+    themeName: string;
+    buildOptions: BuildOptionsLike;
+}): Promise<void> {
     const { themeName, buildOptions } = params;
 
-    const { themeSrcDirPath } = getThemeSrcDirPath({ "reactAppRootDirPath": buildOptions.reactAppRootDirPath });
+    const { themeSrcDirPath } = getThemeSrcDirPath({
+        reactAppRootDirPath: buildOptions.reactAppRootDirPath
+    });
 
     const getThemeTypeDirPath = (params: { themeType: ThemeType | "email" }) => {
         const { themeType } = params;
-        return pathJoin(buildOptions.keycloakifyBuildDirPath, "src", "main", "resources", "theme", themeName, themeType);
+        return pathJoin(
+            buildOptions.keycloakifyBuildDirPath,
+            "src",
+            "main",
+            "resources",
+            "theme",
+            themeName,
+            themeType
+        );
     };
 
     const cssGlobalsToDefine: Record<string, string> = {};
 
     const implementedThemeTypes: Record<ThemeType | "email", boolean> = {
-        "login": false,
-        "account": false,
-        "email": false
+        login: false,
+        account: false,
+        email: false
     };
 
     for (const themeType of ["login", "account"] as const) {
@@ -71,18 +87,22 @@ export async function generateSrcMainResourcesForMainTheme(params: { themeName: 
         const themeTypeDirPath = getThemeTypeDirPath({ themeType });
 
         apply_replacers_and_move_to_theme_resources: {
-            const destDirPath = pathJoin(themeTypeDirPath, "resources", basenameOfTheKeycloakifyResourcesDir);
+            const destDirPath = pathJoin(
+                themeTypeDirPath,
+                "resources",
+                basenameOfTheKeycloakifyResourcesDir
+            );
 
             // NOTE: Prevent accumulation of files in the assets dir, as names are hashed they pile up.
-            rmSync(destDirPath, { "recursive": true, "force": true });
+            rmSync(destDirPath, { recursive: true, force: true });
 
             if (themeType === "account" && implementedThemeTypes.login) {
                 // NOTE: We prevent doing it twice, it has been done for the login theme.
 
                 transformCodebase({
-                    "srcDirPath": pathJoin(
+                    srcDirPath: pathJoin(
                         getThemeTypeDirPath({
-                            "themeType": "login"
+                            themeType: "login"
                         }),
                         "resources",
                         basenameOfTheKeycloakifyResourcesDir
@@ -94,14 +114,17 @@ export async function generateSrcMainResourcesForMainTheme(params: { themeName: 
             }
 
             transformCodebase({
-                "srcDirPath": buildOptions.reactAppBuildDirPath,
+                srcDirPath: buildOptions.reactAppBuildDirPath,
                 destDirPath,
-                "transformSourceCode": ({ filePath, sourceCode }) => {
+                transformSourceCode: ({ filePath, sourceCode }) => {
                     //NOTE: Prevent cycles, excludes the folder we generated for debug in public/
                     // This should not happen if users follow the new instruction setup but we keep it for retrocompatibility.
                     if (
                         isInside({
-                            "dirPath": pathJoin(buildOptions.reactAppBuildDirPath, keycloak_resources),
+                            dirPath: pathJoin(
+                                buildOptions.reactAppBuildDirPath,
+                                keycloak_resources
+                            ),
                             filePath
                         })
                     ) {
@@ -109,39 +132,50 @@ export async function generateSrcMainResourcesForMainTheme(params: { themeName: 
                     }
 
                     if (/\.css?$/i.test(filePath)) {
-                        const { cssGlobalsToDefine: cssGlobalsToDefineForThisFile, fixedCssCode } = replaceImportsInCssCode({
-                            "cssCode": sourceCode.toString("utf8")
+                        const {
+                            cssGlobalsToDefine: cssGlobalsToDefineForThisFile,
+                            fixedCssCode
+                        } = replaceImportsInCssCode({
+                            cssCode: sourceCode.toString("utf8")
                         });
 
-                        Object.entries(cssGlobalsToDefineForThisFile).forEach(([key, value]) => {
-                            cssGlobalsToDefine[key] = value;
-                        });
+                        Object.entries(cssGlobalsToDefineForThisFile).forEach(
+                            ([key, value]) => {
+                                cssGlobalsToDefine[key] = value;
+                            }
+                        );
 
-                        return { "modifiedSourceCode": Buffer.from(fixedCssCode, "utf8") };
+                        return {
+                            modifiedSourceCode: Buffer.from(fixedCssCode, "utf8")
+                        };
                     }
 
                     if (/\.js?$/i.test(filePath)) {
                         const { fixedJsCode } = replaceImportsInJsCode({
-                            "jsCode": sourceCode.toString("utf8"),
+                            jsCode: sourceCode.toString("utf8"),
                             buildOptions
                         });
 
-                        return { "modifiedSourceCode": Buffer.from(fixedJsCode, "utf8") };
+                        return {
+                            modifiedSourceCode: Buffer.from(fixedJsCode, "utf8")
+                        };
                     }
 
-                    return { "modifiedSourceCode": sourceCode };
+                    return { modifiedSourceCode: sourceCode };
                 }
             });
         }
 
         const { generateFtlFilesCode } = generateFtlFilesCodeFactory({
             themeName,
-            "indexHtmlCode": fs.readFileSync(pathJoin(buildOptions.reactAppBuildDirPath, "index.html")).toString("utf8"),
+            indexHtmlCode: fs
+                .readFileSync(pathJoin(buildOptions.reactAppBuildDirPath, "index.html"))
+                .toString("utf8"),
             cssGlobalsToDefine,
             buildOptions,
-            "keycloakifyVersion": readThisNpmPackageVersion(),
+            keycloakifyVersion: readThisNpmPackageVersion(),
             themeType,
-            "fieldNames": readFieldNameUsage({
+            fieldNames: readFieldNameUsage({
                 themeSrcDirPath,
                 themeType
             })
@@ -163,9 +197,12 @@ export async function generateSrcMainResourcesForMainTheme(params: { themeName: 
         ].forEach(pageId => {
             const { ftlCode } = generateFtlFilesCode({ pageId });
 
-            fs.mkdirSync(themeTypeDirPath, { "recursive": true });
+            fs.mkdirSync(themeTypeDirPath, { recursive: true });
 
-            fs.writeFileSync(pathJoin(themeTypeDirPath, pageId), Buffer.from(ftlCode, "utf8"));
+            fs.writeFileSync(
+                pathJoin(themeTypeDirPath, pageId),
+                Buffer.from(ftlCode, "utf8")
+            );
         });
 
         generateMessageProperties({
@@ -174,15 +211,23 @@ export async function generateSrcMainResourcesForMainTheme(params: { themeName: 
         }).forEach(({ languageTag, propertiesFileSource }) => {
             const messagesDirPath = pathJoin(themeTypeDirPath, "messages");
 
-            fs.mkdirSync(pathJoin(themeTypeDirPath, "messages"), { "recursive": true });
+            fs.mkdirSync(pathJoin(themeTypeDirPath, "messages"), {
+                recursive: true
+            });
 
-            const propertiesFilePath = pathJoin(messagesDirPath, `messages_${languageTag}.properties`);
+            const propertiesFilePath = pathJoin(
+                messagesDirPath,
+                `messages_${languageTag}.properties`
+            );
 
-            fs.writeFileSync(propertiesFilePath, Buffer.from(propertiesFileSource, "utf8"));
+            fs.writeFileSync(
+                propertiesFilePath,
+                Buffer.from(propertiesFileSource, "utf8")
+            );
         });
 
         await downloadKeycloakStaticResources({
-            "keycloakVersion": (() => {
+            keycloakVersion: (() => {
                 switch (themeType) {
                     case "account":
                         return lastKeycloakVersionWithAccountV1;
@@ -190,7 +235,7 @@ export async function generateSrcMainResourcesForMainTheme(params: { themeName: 
                         return buildOptions.loginThemeResourcesFromKeycloakVersion;
                 }
             })(),
-            "themeDirPath": pathResolve(pathJoin(themeTypeDirPath, "..")),
+            themeDirPath: pathResolve(pathJoin(themeTypeDirPath, "..")),
             themeType,
             buildOptions
         });
@@ -225,8 +270,8 @@ export async function generateSrcMainResourcesForMainTheme(params: { themeName: 
         implementedThemeTypes.email = true;
 
         transformCodebase({
-            "srcDirPath": emailThemeSrcDirPath,
-            "destDirPath": getThemeTypeDirPath({ "themeType": "email" })
+            srcDirPath: emailThemeSrcDirPath,
+            destDirPath: getThemeTypeDirPath({ themeType: "email" })
         });
     }
 
@@ -237,24 +282,24 @@ export async function generateSrcMainResourcesForMainTheme(params: { themeName: 
     }
 
     {
-        const metaInfKeycloakThemes: MetaInfKeycloakTheme = { "themes": [] };
+        const metaInfKeycloakThemes: MetaInfKeycloakTheme = { themes: [] };
 
         metaInfKeycloakThemes.themes.push({
-            "name": themeName,
-            "types": objectEntries(implementedThemeTypes)
+            name: themeName,
+            types: objectEntries(implementedThemeTypes)
                 .filter(([, isImplemented]) => isImplemented)
                 .map(([themeType]) => themeType)
         });
 
         if (implementedThemeTypes.account) {
             metaInfKeycloakThemes.themes.push({
-                "name": accountV1ThemeName,
-                "types": ["account"]
+                name: accountV1ThemeName,
+                types: ["account"]
             });
         }
 
         writeMetaInfKeycloakThemes({
-            "keycloakifyBuildDirPath": buildOptions.keycloakifyBuildDirPath,
+            keycloakifyBuildDirPath: buildOptions.keycloakifyBuildDirPath,
             metaInfKeycloakThemes
         });
     }

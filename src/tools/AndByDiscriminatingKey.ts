@@ -21,5 +21,9 @@ export declare namespace AndByDiscriminatingKey {
         SingletonU1 extends Record<DiscriminatingKey, string>,
         U2,
         U1 extends Record<DiscriminatingKey, string>
-    > = U2 extends Pick<SingletonU1, DiscriminatingKey> ? U2 & SingletonU1 : U2 extends Pick<U1, DiscriminatingKey> ? never : U2;
+    > = U2 extends Pick<SingletonU1, DiscriminatingKey>
+        ? U2 & SingletonU1
+        : U2 extends Pick<U1, DiscriminatingKey>
+        ? never
+        : U2;
 }

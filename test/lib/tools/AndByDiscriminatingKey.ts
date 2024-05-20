@@ -3,9 +3,15 @@ import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
 
 {
-    type Base = { pageId: "a"; onlyA: string } | { pageId: "b"; onlyB: string } | { pageId: "only base"; onlyBase: string };
+    type Base =
+        | { pageId: "a"; onlyA: string }
+        | { pageId: "b"; onlyB: string }
+        | { pageId: "only base"; onlyBase: string };
 
-    type Extension = { pageId: "a"; onlyExtA: string } | { pageId: "b"; onlyExtB: string } | { pageId: "only ext"; onlyExt: string };
+    type Extension =
+        | { pageId: "a"; onlyExtA: string }
+        | { pageId: "b"; onlyExtB: string }
+        | { pageId: "only ext"; onlyExt: string };
 
     type Got = AndByDiscriminatingKey<"pageId", Extension, Base>;
 
@@ -75,7 +81,10 @@ import type { Equals } from "tsafe";
 }
 
 {
-    type Base = { pageId: "a"; onlyA: string } | { pageId: "b"; onlyB: string } | { pageId: "only base"; onlyBase: string };
+    type Base =
+        | { pageId: "a"; onlyA: string }
+        | { pageId: "b"; onlyB: string }
+        | { pageId: "only base"; onlyBase: string };
 
     type Extension = { pageId: "only ext"; onlyExt: string };
 

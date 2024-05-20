@@ -43,7 +43,7 @@ export default function UserProfileFormFields(props: UserProfileFormFieldsProps)
         onIsFormSubmittableValueChange(isFormSubmittable);
     }, [isFormSubmittable]);
 
-    const groupNameRef = { "current": "" };
+    const groupNameRef = { current: "" };
 
     return (
         <>
@@ -62,7 +62,9 @@ export default function UserProfileFormFields(props: UserProfileFormFieldsProps)
                         )}
                         <div
                             className={getClassName("kcFormGroupClass")}
-                            style={{ "display": attribute.name === "password-confirm" && !doMakeUserConfirmPassword ? "none" : undefined }}
+                            style={{
+                                display: attribute.name === "password-confirm" && !doMakeUserConfirmPassword ? "none" : undefined
+                            }}
                         >
                             <div className={getClassName("kcLabelWrapperClass")}>
                                 <label htmlFor={attribute.name} className={getClassName("kcLabelClass")}>
@@ -342,9 +344,9 @@ function InputTag(props: InputFiledByTypeProps & { fieldIndex: number | undefine
                 {...Object.fromEntries(Object.entries(attribute.html5DataAnnotations ?? {}).map(([key, value]) => [`data-${key}`, value]))}
                 onChange={event =>
                     formValidationDispatch({
-                        "action": "update",
-                        "name": attribute.name,
-                        "valueOrValues": (() => {
+                        action: "update",
+                        name: attribute.name,
+                        valueOrValues: (() => {
                             if (fieldIndex !== undefined) {
                                 assert(valueOrValues instanceof Array);
 
@@ -363,9 +365,9 @@ function InputTag(props: InputFiledByTypeProps & { fieldIndex: number | undefine
                 }
                 onBlur={() =>
                     props.formValidationDispatch({
-                        "action": "focus lost",
-                        "name": attribute.name,
-                        "fieldIndex": fieldIndex
+                        action: "focus lost",
+                        name: attribute.name,
+                        fieldIndex: fieldIndex
                     })
                 }
             />
@@ -484,9 +486,9 @@ function AddRemoveButtonsMultiValuedAttribute(props: {
                     className="pf-c-button pf-m-inline pf-m-link"
                     onClick={() =>
                         dispatchFormAction({
-                            "action": "update",
-                            "name": attribute.name,
-                            "valueOrValues": values.filter((_, i) => i !== fieldIndex)
+                            action: "update",
+                            name: attribute.name,
+                            valueOrValues: values.filter((_, i) => i !== fieldIndex)
                         })
                     }
                 >
@@ -501,9 +503,9 @@ function AddRemoveButtonsMultiValuedAttribute(props: {
                     className="pf-c-button pf-m-inline pf-m-link"
                     onClick={() =>
                         dispatchFormAction({
-                            "action": "update",
-                            "name": attribute.name,
-                            "valueOrValues": [...values, ""]
+                            action: "update",
+                            name: attribute.name,
+                            valueOrValues: [...values, ""]
                         })
                     }
                 >
@@ -527,17 +529,17 @@ function InputTagSelects(props: InputFiledByTypeProps) {
         switch (inputType) {
             case "select-radiobuttons":
                 return {
-                    "inputType": "radio",
-                    "classDiv": getClassName("kcInputClassRadio"),
-                    "classInput": getClassName("kcInputClassRadioInput"),
-                    "classLabel": getClassName("kcInputClassRadioLabel")
+                    inputType: "radio",
+                    classDiv: getClassName("kcInputClassRadio"),
+                    classInput: getClassName("kcInputClassRadioInput"),
+                    classLabel: getClassName("kcInputClassRadioLabel")
                 };
             case "multiselect-checkboxes":
                 return {
-                    "inputType": "checkbox",
-                    "classDiv": getClassName("kcInputClassCheckbox"),
-                    "classInput": getClassName("kcInputClassCheckboxInput"),
-                    "classLabel": getClassName("kcInputClassCheckboxLabel")
+                    inputType: "checkbox",
+                    classDiv: getClassName("kcInputClassCheckbox"),
+                    classInput: getClassName("kcInputClassCheckboxInput"),
+                    classLabel: getClassName("kcInputClassCheckboxLabel")
                 };
         }
     })();
@@ -581,9 +583,9 @@ function InputTagSelects(props: InputFiledByTypeProps) {
                         checked={valueOrValues.includes(option)}
                         onChange={event =>
                             formValidationDispatch({
-                                "action": "update",
-                                "name": attribute.name,
-                                "valueOrValues": (() => {
+                                action: "update",
+                                name: attribute.name,
+                                valueOrValues: (() => {
                                     const isChecked = event.target.checked;
 
                                     if (valueOrValues instanceof Array) {
@@ -604,9 +606,9 @@ function InputTagSelects(props: InputFiledByTypeProps) {
                         }
                         onBlur={() =>
                             formValidationDispatch({
-                                "action": "focus lost",
-                                "name": attribute.name,
-                                "fieldIndex": undefined
+                                action: "focus lost",
+                                name: attribute.name,
+                                fieldIndex: undefined
                             })
                         }
                     />
@@ -642,16 +644,16 @@ function TextareaTag(props: InputFiledByTypeProps) {
             value={value}
             onChange={event =>
                 formValidationDispatch({
-                    "action": "update",
-                    "name": attribute.name,
-                    "valueOrValues": event.target.value
+                    action: "update",
+                    name: attribute.name,
+                    valueOrValues: event.target.value
                 })
             }
             onBlur={() =>
                 formValidationDispatch({
-                    "action": "focus lost",
-                    "name": attribute.name,
-                    "fieldIndex": undefined
+                    action: "focus lost",
+                    name: attribute.name,
+                    fieldIndex: undefined
                 })
             }
         />
@@ -677,9 +679,9 @@ function SelectTag(props: InputFiledByTypeProps) {
             value={valueOrValues}
             onChange={event =>
                 formValidationDispatch({
-                    "action": "update",
-                    "name": attribute.name,
-                    "valueOrValues": (() => {
+                    action: "update",
+                    name: attribute.name,
+                    valueOrValues: (() => {
                         if (isMultiple) {
                             return Array.from(event.target.selectedOptions).map(option => option.value);
                         }
@@ -690,9 +692,9 @@ function SelectTag(props: InputFiledByTypeProps) {
             }
             onBlur={() =>
                 formValidationDispatch({
-                    "action": "focus lost",
-                    "name": attribute.name,
-                    "fieldIndex": undefined
+                    action: "focus lost",
+                    name: attribute.name,
+                    fieldIndex: undefined
                 })
             }
         >

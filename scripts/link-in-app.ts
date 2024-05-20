@@ -13,20 +13,26 @@ fs.writeFileSync(
     Buffer.from(
         JSON.stringify(
             (() => {
-                const packageJsonParsed = JSON.parse(fs.readFileSync(pathJoin(rootDirPath, "package.json")).toString("utf8"));
+                const packageJsonParsed = JSON.parse(
+                    fs
+                        .readFileSync(pathJoin(rootDirPath, "package.json"))
+                        .toString("utf8")
+                );
 
                 return {
                     ...packageJsonParsed,
-                    "main": packageJsonParsed["main"]?.replace(/^dist\//, ""),
-                    "types": packageJsonParsed["types"]?.replace(/^dist\//, ""),
-                    "module": packageJsonParsed["module"]?.replace(/^dist\//, ""),
-                    "exports": !("exports" in packageJsonParsed)
+                    main: packageJsonParsed["main"]?.replace(/^dist\//, ""),
+                    types: packageJsonParsed["types"]?.replace(/^dist\//, ""),
+                    module: packageJsonParsed["module"]?.replace(/^dist\//, ""),
+                    exports: !("exports" in packageJsonParsed)
                         ? undefined
                         : Object.fromEntries(
-                              Object.entries(packageJsonParsed["exports"]).map(([key, value]) => [
-                                  key,
-                                  (value as string).replace(/^\.\/dist\//, "./")
-                              ])
+                              Object.entries(packageJsonParsed["exports"]).map(
+                                  ([key, value]) => [
+                                      key,
+                                      (value as string).replace(/^\.\/dist\//, "./")
+                                  ]
+                              )
                           )
                 };
             })(),
@@ -39,9 +45,9 @@ fs.writeFileSync(
 
 const destSrcDirPath = pathJoin(rootDirPath, "dist", "src");
 
-fs.rmSync(destSrcDirPath, { "recursive": true, "force": true });
+fs.rmSync(destSrcDirPath, { recursive: true, force: true });
 
-fs.cpSync(pathJoin(rootDirPath, "src"), destSrcDirPath, { "recursive": true });
+fs.cpSync(pathJoin(rootDirPath, "src"), destSrcDirPath, { recursive: true });
 
 const commonThirdPartyDeps = (() => {
     // For example [ "@emotion" ] it's more convenient than
@@ -53,7 +59,9 @@ const commonThirdPartyDeps = (() => {
         ...namespaceSingletonDependencies
             .map(namespaceModuleName =>
                 fs
-                    .readdirSync(pathJoin(rootDirPath, "node_modules", namespaceModuleName))
+                    .readdirSync(
+                        pathJoin(rootDirPath, "node_modules", namespaceModuleName)
+                    )
                     .map(submoduleName => `${namespaceModuleName}/${submoduleName}`)
             )
             .reduce((prev, curr) => [...prev, ...curr], []),
@@ -63,21 +71,25 @@ const commonThirdPartyDeps = (() => {
 
 const yarnGlobalDirPath = pathJoin(rootDirPath, ".yarn_home");
 
-fs.rmSync(yarnGlobalDirPath, { "recursive": true, "force": true });
+fs.rmSync(yarnGlobalDirPath, { recursive: true, force: true });
 fs.mkdirSync(yarnGlobalDirPath);
 
 const execYarnLink = (params: { targetModuleName?: string; cwd: string }) => {
     const { targetModuleName, cwd } = params;
 
-    const cmd = ["yarn", "link", ...(targetModuleName !== undefined ? [targetModuleName] : ["--no-bin-links"])].join(" ");
+    const cmd = [
+        "yarn",
+        "link",
+        ...(targetModuleName !== undefined ? [targetModuleName] : ["--no-bin-links"])
+    ].join(" ");
 
     console.log(`$ cd ${pathRelative(rootDirPath, cwd) || "."} && ${cmd}`);
 
     execSync(cmd, {
         cwd,
-        "env": {
+        env: {
             ...process.env,
-            "HOME": yarnGlobalDirPath
+            HOME: yarnGlobalDirPath
         }
     });
 };
@@ -93,7 +105,9 @@ const testAppPaths = (() => {
                 return testAppPath;
             }
 
-            console.warn(`Skipping ${testAppName} since it cant be found here: ${testAppPath}`);
+            console.warn(
+                `Skipping ${testAppName} since it cant be found here: ${testAppPath}`
+            );
 
             return undefined;
         })
@@ -105,7 +119,7 @@ if (testAppPaths.length === 0) {
     process.exit(-1);
 }
 
-testAppPaths.forEach(testAppPath => execSync("yarn install", { "cwd": testAppPath }));
+testAppPaths.forEach(testAppPath => execSync("yarn install", { cwd: testAppPath }));
 
 console.log("=== Linking common dependencies ===");
 
@@ -118,29 +132,37 @@ commonThirdPartyDeps.forEach(commonThirdPartyDep => {
     console.log(`${current}/${total} ${commonThirdPartyDep}`);
 
     const localInstallPath = pathJoin(
-        ...[rootDirPath, "node_modules", ...(commonThirdPartyDep.startsWith("@") ? commonThirdPartyDep.split("/") : [commonThirdPartyDep])]
+        ...[
+            rootDirPath,
+            "node_modules",
+            ...(commonThirdPartyDep.startsWith("@")
+                ? commonThirdPartyDep.split("/")
+                : [commonThirdPartyDep])
+        ]
     );
 
-    execYarnLink({ "cwd": localInstallPath });
+    execYarnLink({ cwd: localInstallPath });
 });
 
 commonThirdPartyDeps.forEach(commonThirdPartyDep =>
     testAppPaths.forEach(testAppPath =>
         execYarnLink({
-            "cwd": testAppPath,
-            "targetModuleName": commonThirdPartyDep
+            cwd: testAppPath,
+            targetModuleName: commonThirdPartyDep
         })
     )
 );
 
 console.log("=== Linking in house dependencies ===");
 
-execYarnLink({ "cwd": pathJoin(rootDirPath, "dist") });
+execYarnLink({ cwd: pathJoin(rootDirPath, "dist") });
 
 testAppPaths.forEach(testAppPath =>
     execYarnLink({
-        "cwd": testAppPath,
-        "targetModuleName": JSON.parse(fs.readFileSync(pathJoin(rootDirPath, "package.json")).toString("utf8"))["name"]
+        cwd: testAppPath,
+        targetModuleName: JSON.parse(
+            fs.readFileSync(pathJoin(rootDirPath, "package.json")).toString("utf8")
+        )["name"]
     })
 );
 

@@ -20,7 +20,9 @@ describe("crawl", () => {
                             case path.join("root_dir", "sub_2_dir"):
                                 return [];
                             default: {
-                                const enoent = new Error(`ENOENT: no such file or directory, scandir '${dir_path}'`);
+                                const enoent = new Error(
+                                    `ENOENT: no such file or directory, scandir '${dir_path}'`
+                                );
                                 // @ts-ignore
                                 enoent.code = "ENOENT";
                                 // @ts-ignore
@@ -32,7 +34,9 @@ describe("crawl", () => {
                         }
                     }),
                     lstatSync: vi.fn().mockImplementation((file_path: string) => {
-                        return { isDirectory: () => file_path.endsWith("_dir") };
+                        return {
+                            isDirectory: () => file_path.endsWith("_dir")
+                        };
                     })
                 };
             });
@@ -41,11 +45,17 @@ describe("crawl", () => {
             vi.resetAllMocks();
         });
         it("returns files under a given dir_path", async () => {
-            const paths = crawl({ "dirPath": "root_dir/sub_1_dir/sub_3_dir", "returnedPathsType": "absolute" });
+            const paths = crawl({
+                dirPath: "root_dir/sub_1_dir/sub_3_dir",
+                returnedPathsType: "absolute"
+            });
             expect(paths).toEqual(["root_dir/sub_1_dir/sub_3_dir/file_5"]);
         });
         it("returns files recursively under a given dir_path", async () => {
-            const paths = crawl({ "dirPath": "root_dir", "returnedPathsType": "absolute" });
+            const paths = crawl({
+                dirPath: "root_dir",
+                returnedPathsType: "absolute"
+            });
             expect(paths).toEqual([
                 "root_dir/sub_1_dir/file_3",
                 "root_dir/sub_1_dir/sub_3_dir/file_5",
@@ -56,7 +66,7 @@ describe("crawl", () => {
         });
         it("throw dir_path does not exist", async () => {
             try {
-                crawl({ "dirPath": "404", "returnedPathsType": "absolute" });
+                crawl({ dirPath: "404", returnedPathsType: "absolute" });
             } catch {
                 expect(true);
                 return;

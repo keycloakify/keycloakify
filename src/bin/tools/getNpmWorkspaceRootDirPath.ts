@@ -3,14 +3,22 @@ import { join as pathJoin, resolve as pathResolve, sep as pathSep } from "path";
 import { assert } from "tsafe/assert";
 import * as fs from "fs";
 
-export function getNpmWorkspaceRootDirPath(params: { reactAppRootDirPath: string; dependencyExpected: string }) {
+export function getNpmWorkspaceRootDirPath(params: {
+    reactAppRootDirPath: string;
+    dependencyExpected: string;
+}) {
     const { reactAppRootDirPath, dependencyExpected } = params;
 
     const npmWorkspaceRootDirPath = (function callee(depth: number): string {
-        const cwd = pathResolve(pathJoin(...[reactAppRootDirPath, ...Array(depth).fill("..")]));
+        const cwd = pathResolve(
+            pathJoin(...[reactAppRootDirPath, ...Array(depth).fill("..")])
+        );
 
         try {
-            child_process.execSync("npm config get", { cwd, "stdio": "ignore" });
+            child_process.execSync("npm config get", {
+                cwd,
+                stdio: "ignore"
+            });
         } catch (error) {
             if (String(error).includes("ENOWORKSPACES")) {
                 assert(cwd !== pathSep, "NPM workspace not found");
@@ -26,11 +34,16 @@ export function getNpmWorkspaceRootDirPath(params: { reactAppRootDirPath: string
 
             assert(fs.existsSync(packageJsonFilePath));
 
-            const parsedPackageJson = JSON.parse(fs.readFileSync(packageJsonFilePath).toString("utf8"));
+            const parsedPackageJson = JSON.parse(
+                fs.readFileSync(packageJsonFilePath).toString("utf8")
+            );
 
             let isExpectedDependencyFound = false;
 
-            for (const dependenciesOrDevDependencies of ["dependencies", "devDependencies"] as const) {
+            for (const dependenciesOrDevDependencies of [
+                "dependencies",
+                "devDependencies"
+            ] as const) {
                 const dependencies = parsedPackageJson[dependenciesOrDevDependencies];
 
                 if (dependencies === undefined) {

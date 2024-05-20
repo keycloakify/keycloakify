@@ -10,8 +10,8 @@ export const accountV1ThemeName = "account-v1";
 export type ThemeType = (typeof themeTypes)[number];
 
 export const vitePluginSubScriptEnvNames = {
-    "runPostBuildScript": "KEYCLOAKIFY_RUN_POST_BUILD_SCRIPT",
-    "resolveViteConfig": "KEYCLOAKIFY_RESOLVE_VITE_CONFIG"
+    runPostBuildScript: "KEYCLOAKIFY_RUN_POST_BUILD_SCRIPT",
+    resolveViteConfig: "KEYCLOAKIFY_RESOLVE_VITE_CONFIG"
 } as const;
 
 export const skipBuildJarsEnvName = "KEYCLOAKIFY_SKIP_BUILD_JAR";
