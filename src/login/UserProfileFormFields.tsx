@@ -702,11 +702,11 @@ function SelectTag(props: InputFiledByTypeProps) {
                     walk: {
                         const { inputOptionsFromValidation } = attribute.annotations;
 
-                        assert(typeof inputOptionsFromValidation === "string");
-
                         if (inputOptionsFromValidation === undefined) {
                             break walk;
                         }
+
+                        assert(typeof inputOptionsFromValidation === "string");
 
                         const validator = (attribute.validators as Record<string, { options?: string[] }>)[inputOptionsFromValidation];
 
