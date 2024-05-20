@@ -24,7 +24,12 @@ if (fs.existsSync(join("dist", "bin", "main.original.js"))) {
 
 run(`npx tsc -p ${join("src", "bin", "tsconfig.json")}`);
 
-if (!fs.readFileSync(join("dist", "bin", "main.js")).toString("utf8").includes("ncc")) {
+if (
+    !fs
+        .readFileSync(join("dist", "bin", "main.js"))
+        .toString("utf8")
+        .includes("__nccwpck_require__")
+) {
     fs.cpSync(join("dist", "bin", "main.js"), join("dist", "bin", "main.original.js"));
 }
 
@@ -73,7 +78,7 @@ if (
     !fs
         .readFileSync(join("dist", "vite-plugin", "index.js"))
         .toString("utf8")
-        .includes("ncc")
+        .includes("__nccwpck_require__")
 ) {
     fs.cpSync(
         join("dist", "vite-plugin", "index.js"),
