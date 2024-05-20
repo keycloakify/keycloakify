@@ -24,7 +24,11 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     const destDirPath = pathJoin(buildOptions.keycloakifyBuildDirPath, "src", "main", "resources", "theme");
 
     console.log(
-        `Downloading builtins theme of Keycloak ${keycloakVersion} here ${chalk.bold(`.${pathSep}${pathRelative(process.cwd(), destDirPath)}`)}`
+        [
+            `Downloading builtins theme of Keycloak ${keycloakVersion} here:`,
+            `- ${chalk.bold(`.${pathSep}${pathJoin(pathRelative(process.cwd(), destDirPath), "base")}`)}`,
+            `- ${chalk.bold(`.${pathSep}${pathJoin(pathRelative(process.cwd(), destDirPath), "keycloak")}`)}`
+        ].join("\n")
     );
 
     await downloadKeycloakDefaultTheme({
