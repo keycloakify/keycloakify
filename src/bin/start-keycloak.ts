@@ -155,6 +155,8 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     const { jarFileBasename } = getJarFileBasename({ keycloakVersionRange });
 
+    console.log(`Using Keycloak ${chalk.bold(jarFileBasename)}`);
+
     const mountTargets = buildOptions.themeNames
         .map(themeName => {
             const themeEntry = metaInfKeycloakThemes.themes.find(({ name }) => name === themeName);
@@ -211,8 +213,6 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         }
     ] as const;
 
-    console.log(JSON.stringify(spawnParams, null, 2));
-
     const child = child_process.spawn(...spawnParams);
 
     child.stdout.on("data", data => process.stdout.write(data));
@@ -264,7 +264,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             const dViteBuildDone = new Deferred<void>();
 
             {
-                const child = child_process.spawn("npx", ["vite"], {
+                const child = child_process.spawn("npx", ["vite", "build"], {
                     "cwd": buildOptions.reactAppRootDirPath,
                     "env": process.env
                 });
@@ -294,6 +294,15 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                 child.stdout.on("data", data => process.stdout.write(data));
 
                 child.stderr.on("data", data => process.stderr.write(data));
+
+                child.on("exit", code => {
+                    if (code !== 0) {
+                        console.log(chalk.yellow("Theme not updated, build failed"));
+                        return;
+                    }
+
+                    console.log(chalk.green("Rebuild done"));
+                });
             }
         });
     }
