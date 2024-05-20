@@ -13,7 +13,7 @@ import * as child_process from "child_process";
 import chalk from "chalk";
 import chokidar from "chokidar";
 import { waitForDebounceFactory } from "powerhooks/tools/waitForDebounce";
-import { getThemeSrcDirPath } from "./shared/getThemeSrcDirPath";
+import { getThisCodebaseRootDirPath } from "./tools/getThisCodebaseRootDirPath";
 import { Deferred } from "evt/tools/Deferred";
 
 export type CliCommandOptions = CliCommandOptions_common & {
@@ -221,7 +221,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     child.on("exit", process.exit);
 
-    const { themeSrcDirPath } = getThemeSrcDirPath({ "reactAppRootDirPath": buildOptions.reactAppRootDirPath });
+    const srcDirPath = pathJoin(buildOptions.reactAppRootDirPath, "src");
 
     {
         const handler = async (data: Buffer) => {
@@ -237,13 +237,17 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                 [
                     "",
                     `${chalk.green("Your theme is accessible at:")}`,
-                    `${chalk.green("➜")} ${chalk.cyan.bold("https://test.keycloakify.dev/")}`,
+                    `${chalk.green("➜")} ${chalk.cyan.bold("https://my-theme.keycloakify.dev/")}`,
+                    "",
+                    "You can login with the following credentials:",
+                    `- username: ${chalk.cyan.bold("testuser")}`,
+                    `- password: ${chalk.cyan.bold("password123")}`,
                     "",
                     `Keycloak Admin console: ${chalk.cyan.bold(`http://localhost:${cliCommandOptions.port}`)}`,
-                    `- user: ${chalk.cyan.bold("admin")}`,
+                    `- user:     ${chalk.cyan.bold("admin")}`,
                     `- password: ${chalk.cyan.bold("admin")}`,
                     "",
-                    `Watching for changes in ${chalk.bold(`.${pathSep}${pathRelative(process.cwd(), themeSrcDirPath)}`)} ...`
+                    `Watching for changes in ${chalk.bold(`.${pathSep}${pathRelative(process.cwd(), srcDirPath)}`)} ...`
                 ].join("\n")
             );
         };
@@ -254,9 +258,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     {
         const { waitForDebounce } = waitForDebounceFactory({ "delay": 400 });
 
-        chokidar.watch(themeSrcDirPath, { "ignoreInitial": true }).on("all", async (...eventArgs) => {
-            console.log({ eventArgs });
-
+        chokidar.watch([srcDirPath, getThisCodebaseRootDirPath()], { "ignoreInitial": true }).on("all", async () => {
             await waitForDebounce();
 
             console.log(chalk.cyan("Detected changes in the theme. Rebuilding ..."));
