@@ -107,6 +107,10 @@ fs.rmSync(join("dist", "ncc_out"), { recursive: true });
 
 patchDeprecatedBufferApiUsage(join("dist", "vite-plugin", "index.js"));
 
+fs.rmSync(join("dist", "src"), { recursive: true, force: true });
+
+fs.cpSync("src", join("dist", "src"), { recursive: true });
+
 console.log(chalk.green(`✓ built in ${((Date.now() - startTime) / 1000).toFixed(2)}s`));
 
 function run(command: string) {

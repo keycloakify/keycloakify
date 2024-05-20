@@ -37,7 +37,6 @@
     "author": "u/garronej",
     "license": "MIT",
     "files": [
-        "src/",
         "dist/",
         "!dist/tsconfig.tsbuildinfo",
         "!dist/bin/",
@@ -94,7 +93,6 @@
         "@types/react": "^18.0.35",
         "@types/react-dom": "^18.0.11",
         "@types/yauzl": "^2.10.3",
-        "@types/yazl": "^2.4.5",
         "@vercel/ncc": "^0.38.1",
         "chalk": "^4.1.2",
         "cheerio": "^1.0.0-rc.12",
@@ -123,7 +121,6 @@
         "vite": "^5.2.11",
         "vitest": "^0.29.8",
         "yauzl": "^2.10.0",
-        "yazl": "^2.5.1",
         "zod": "^3.17.10"
     }
 }

@@ -26,7 +26,6 @@ import { getThisCodebaseRootDirPath } from "../tools/getThisCodebaseRootDirPath"
 import { Deferred } from "evt/tools/Deferred";
 import { getAbsoluteAndInOsFormatPath } from "../tools/getAbsoluteAndInOsFormatPath";
 import cliSelect from "cli-select";
-import { isInside } from "../tools/isInside";
 import * as runExclusive from "run-exclusive";
 
 export type CliCommandOptions = CliCommandOptions_common & {
@@ -404,8 +403,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                 const dResult = new Deferred<{ isSuccess: boolean }>();
 
                 const child = child_process.spawn("npx", ["vite", "build"], {
-                    cwd: buildOptions.reactAppRootDirPath,
-                    env: process.env
+                    cwd: buildOptions.reactAppRootDirPath
                 });
 
                 child.stdout.on("data", data => {
@@ -461,30 +459,13 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             }
         });
 
-        const { waitForDebounce } = waitForDebounceFactory({ delay: 400 });
+        const { waitForDebounce } = waitForDebounceFactory({ delay: 1_000 });
 
         chokidar
-            .watch([srcDirPath, getThisCodebaseRootDirPath()], {
+            .watch([srcDirPath, pathJoin(getThisCodebaseRootDirPath(), "src")], {
                 ignoreInitial: true
             })
-            .on("all", async (...[, filePath]) => {
-                for (const dir1 of ["src", "."]) {
-                    for (const dir2 of ["bin", "vite-plugin"]) {
-                        if (
-                            isInside({
-                                dirPath: pathJoin(
-                                    getThisCodebaseRootDirPath(),
-                                    dir1,
-                                    dir2
-                                ),
-                                filePath
-                            })
-                        ) {
-                            return;
-                        }
-                    }
-                }
-
+            .on("all", async () => {
                 await waitForDebounce();
 
                 runBuildKeycloakTheme();
