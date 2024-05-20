@@ -43,12 +43,6 @@ fs.writeFileSync(
     )
 );
 
-const destSrcDirPath = pathJoin(rootDirPath, "dist", "src");
-
-fs.rmSync(destSrcDirPath, { recursive: true, force: true });
-
-fs.cpSync(pathJoin(rootDirPath, "src"), destSrcDirPath, { recursive: true });
-
 const commonThirdPartyDeps = (() => {
     // For example [ "@emotion" ] it's more convenient than
     // having to list every sub emotion packages (@emotion/css @emotion/utils ...)
