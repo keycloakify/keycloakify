@@ -27,6 +27,7 @@ import { Deferred } from "evt/tools/Deferred";
 import { getAbsoluteAndInOsFormatPath } from "../tools/getAbsoluteAndInOsFormatPath";
 import cliSelect from "cli-select";
 import { isInside } from "../tools/isInside";
+import * as runExclusive from "run-exclusive";
 
 export type CliCommandOptions = CliCommandOptions_common & {
     port: number;
@@ -396,6 +397,70 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     }
 
     {
+        const runBuildKeycloakTheme = runExclusive.build(async () => {
+            console.log(chalk.cyan("Detected changes in the theme. Rebuilding ..."));
+
+            {
+                const dResult = new Deferred<{ isSuccess: boolean }>();
+
+                const child = child_process.spawn("npx", ["vite", "build"], {
+                    cwd: buildOptions.reactAppRootDirPath,
+                    env: process.env
+                });
+
+                child.stdout.on("data", data => {
+                    if (data.toString("utf8").includes("gzip:")) {
+                        return;
+                    }
+
+                    process.stdout.write(data);
+                });
+
+                child.stderr.on("data", data => process.stderr.write(data));
+
+                child.on("exit", code => dResult.resolve({ isSuccess: code === 0 }));
+
+                const { isSuccess } = await dResult.pr;
+
+                if (!isSuccess) {
+                    return;
+                }
+            }
+
+            {
+                const dResult = new Deferred<{ isSuccess: boolean }>();
+
+                const child = child_process.spawn("npx", ["keycloakify", "build"], {
+                    cwd: buildOptions.reactAppRootDirPath,
+                    env: {
+                        ...process.env,
+                        [skipBuildJarsEnvName]: "true"
+                    }
+                });
+
+                child.stdout.on("data", data => process.stdout.write(data));
+
+                child.stderr.on("data", data => process.stderr.write(data));
+
+                child.on("exit", code => {
+                    if (code !== 0) {
+                        console.log(chalk.yellow("Theme not updated, build failed"));
+                        return;
+                    }
+
+                    console.log(chalk.green("Rebuild done"));
+                });
+
+                child.on("exit", code => dResult.resolve({ isSuccess: code === 0 }));
+
+                const { isSuccess } = await dResult.pr;
+
+                if (!isSuccess) {
+                    return;
+                }
+            }
+        });
+
         const { waitForDebounce } = waitForDebounceFactory({ delay: 400 });
 
         chokidar
@@ -403,72 +468,26 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                 ignoreInitial: true
             })
             .on("all", async (...[, filePath]) => {
-                if (
-                    isInside({
-                        dirPath: pathJoin(getThisCodebaseRootDirPath(), "src", "bin"),
-                        filePath
-                    }) ||
-                    isInside({
-                        dirPath: pathJoin(getThisCodebaseRootDirPath(), "bin"),
-                        filePath
-                    })
-                ) {
-                    return;
+                for (const dir1 of ["src", "."]) {
+                    for (const dir2 of ["bin", "vite-plugin"]) {
+                        if (
+                            isInside({
+                                dirPath: pathJoin(
+                                    getThisCodebaseRootDirPath(),
+                                    dir1,
+                                    dir2
+                                ),
+                                filePath
+                            })
+                        ) {
+                            return;
+                        }
+                    }
                 }
 
                 await waitForDebounce();
 
-                console.log(chalk.cyan("Detected changes in the theme. Rebuilding ..."));
-
-                const dViteBuildDone = new Deferred<void>();
-
-                {
-                    const child = child_process.spawn("npx", ["vite", "build"], {
-                        cwd: buildOptions.reactAppRootDirPath,
-                        env: process.env
-                    });
-
-                    child.stdout.on("data", data => {
-                        if (data.toString("utf8").includes("gzip:")) {
-                            return;
-                        }
-
-                        process.stdout.write(data);
-                    });
-
-                    child.stderr.on("data", data => process.stderr.write(data));
-
-                    child.on("exit", code => {
-                        if (code === 0) {
-                            dViteBuildDone.resolve();
-                        }
-                    });
-                }
-
-                await dViteBuildDone.pr;
-
-                {
-                    const child = child_process.spawn("npx", ["keycloakify", "build"], {
-                        cwd: buildOptions.reactAppRootDirPath,
-                        env: {
-                            ...process.env,
-                            [skipBuildJarsEnvName]: "true"
-                        }
-                    });
-
-                    child.stdout.on("data", data => process.stdout.write(data));
-
-                    child.stderr.on("data", data => process.stderr.write(data));
-
-                    child.on("exit", code => {
-                        if (code !== 0) {
-                            console.log(chalk.yellow("Theme not updated, build failed"));
-                            return;
-                        }
-
-                        console.log(chalk.green("Rebuild done"));
-                    });
-                }
+                runBuildKeycloakTheme();
             });
     }
 }
