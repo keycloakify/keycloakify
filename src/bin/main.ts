@@ -68,7 +68,11 @@ program
     });
 
 program
-    .command<{ port: number; keycloakVersion: string | undefined }>({
+    .command<{
+        port: number;
+        keycloakVersion: string | undefined;
+        realmJsonFilePath: string | undefined;
+    }>({
         "name": "start-keycloak",
         "description": "Spin up a pre configured Docker image of Keycloak to test your theme."
     })
@@ -81,7 +85,7 @@ program
 
             return name;
         })(),
-        "description": "Keycloak server port.",
+        "description": ["Keycloak server port.", "Example `--port 8085`"].join(" "),
         "defaultValue": 8080
     })
     .option({
@@ -93,8 +97,20 @@ program
 
             return name;
         })(),
-        "description": "Use a specific version of Keycloak.",
+        "description": ["Use a specific version of Keycloak.", "Example `--keycloak-version 21.1.1`"].join(" "),
         "defaultValue": undefined
+    })
+    .option({
+        "key": "realmJsonFilePath",
+        "name": (() => {
+            const name = "import";
+
+            optionsKeys.push(name);
+
+            return name;
+        })(),
+        "defaultValue": undefined,
+        "description": ["Import your own realm configuration file", "Example `--import path/to/myrealm-realm.json`"].join(" ")
     })
     .task({
         skip,

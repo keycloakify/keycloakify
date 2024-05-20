@@ -9,17 +9,17 @@
     "scripts": {
         "prepare": "ts-node --skipProject scripts/generate-i18n-messages.ts && patch-package",
         "build": "ts-node --skipProject scripts/build.ts",
-        "watch": "chokidar './src/**/*' -c 'yarn build'",
+        "storybook": "yarn build && yarn copy-keycloak-resources-to-storybook-static && start-storybook -p 6006",
+        "link-in-starter": "ts-node --skipProject scripts/link-in-starter.ts",
         "test": "yarn test:types && vitest run",
         "test:types": "tsc -p test/tsconfig.json --noEmit",
         "_format": "prettier '**/*.{ts,tsx,json,md}'",
         "format": "yarn _format --write",
         "format:check": "yarn _format --list-different",
         "link-in-app": "ts-node --skipProject scripts/link-in-app.ts",
-        "link-in-starter": "ts-node --skipProject scripts/link-in-starter.ts",
         "copy-keycloak-resources-to-storybook-static": "PUBLIC_DIR_PATH=.storybook/static node dist/bin/main.js copy-keycloak-resources-to-public",
-        "storybook": "yarn build && yarn copy-keycloak-resources-to-storybook-static && start-storybook -p 6006",
-        "build-storybook": "yarn build && yarn copy-keycloak-resources-to-storybook-static && build-storybook"
+        "build-storybook": "yarn build && yarn copy-keycloak-resources-to-storybook-static && build-storybook",
+        "dump-keycloak-realm": "ts-node --skipProject scripts/dump-keycloak-realm.ts"
     },
     "bin": {
         "keycloakify": "dist/bin/main.js"

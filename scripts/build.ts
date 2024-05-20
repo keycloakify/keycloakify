@@ -1,6 +1,6 @@
 import * as child_process from "child_process";
 import * as fs from "fs";
-import { join } from "path";
+import { join, relative } from "path";
 import { assert } from "tsafe/assert";
 import { transformCodebase } from "../src/bin/tools/transformCodebase";
 import chalk from "chalk";
@@ -21,7 +21,9 @@ if (fs.existsSync(join("dist", "bin", "main.original.js"))) {
 
 run(`npx tsc -p ${join("src", "bin", "tsconfig.json")}`);
 
-fs.cpSync(join("dist", "bin", "main.js"), join("dist", "bin", "main.original.js"));
+if (!fs.readFileSync(join("dist", "bin", "main.js")).toString("utf8").includes("ncc")) {
+    fs.cpSync(join("dist", "bin", "main.js"), join("dist", "bin", "main.original.js"));
+}
 
 run(`npx ncc build ${join("dist", "bin", "main.js")} -o ${join("dist", "ncc_out")}`);
 
@@ -58,7 +60,9 @@ if (fs.existsSync(join("dist", "vite-plugin", "index.original.js"))) {
 
 run(`npx tsc -p ${join("src", "vite-plugin", "tsconfig.json")}`);
 
-fs.cpSync(join("dist", "vite-plugin", "index.js"), join("dist", "vite-plugin", "index.original.js"));
+if (!fs.readFileSync(join("dist", "vite-plugin", "index.js")).toString("utf8").includes("ncc")) {
+    fs.cpSync(join("dist", "vite-plugin", "index.js"), join("dist", "vite-plugin", "index.original.js"));
+}
 
 run(`npx ncc build ${join("dist", "vite-plugin", "index.js")} -o ${join("dist", "ncc_out")}`);
 
@@ -92,7 +96,7 @@ function patchDeprecatedBufferApiUsage(filePath: string) {
         `var buffer = Buffer.allocUnsafe ? Buffer.allocUnsafe(toRead) : new Buffer(toRead);`
     );
 
-    assert(after !== before);
+    assert(after !== before, `Patch failed for ${relative(process.cwd(), filePath)}`);
 
     fs.writeFileSync(filePath, Buffer.from(after, "utf8"));
 }

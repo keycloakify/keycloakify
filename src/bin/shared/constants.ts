@@ -65,3 +65,5 @@ export const accountThemePageIds = [
 
 export type LoginThemePageId = (typeof loginThemePageIds)[number];
 export type AccountThemePageId = (typeof accountThemePageIds)[number];
+
+export const containerName = "keycloak-keycloakify";
