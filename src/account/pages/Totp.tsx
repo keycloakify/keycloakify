@@ -79,9 +79,7 @@ export default function Totp(props: PageProps<Extract<KcContext, { pageId: "totp
                                 <p>{msg("totpStep1")}</p>
 
                                 <ul id="kc-totp-supported-apps">
-                                    {totp.supportedApplications?.map(app => (
-                                        <li key={app}>{msg(app as MessageKey)}</li>
-                                    ))}
+                                    {totp.supportedApplications?.map(app => <li key={app}>{msg(app as MessageKey)}</li>)}
                                 </ul>
                             </li>
 

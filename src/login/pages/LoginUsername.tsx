@@ -93,8 +93,8 @@ export default function LoginUsername(props: PageProps<Extract<KcContext, { page
                                         {!realm.loginWithEmailAllowed
                                             ? msg("username")
                                             : !realm.registrationEmailAsUsername
-                                            ? msg("usernameOrEmail")
-                                            : msg("email")}
+                                              ? msg("usernameOrEmail")
+                                              : msg("email")}
                                     </label>
                                     <input
                                         tabIndex={2}

@@ -101,7 +101,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                     ({
                         type: "text/javascript",
                         src: script
-                    } as const)
+                    }) as const
             )
         ]
     });

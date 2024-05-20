@@ -31,8 +31,8 @@ export default function LoginResetPassword(props: PageProps<Extract<KcContext, {
                             {!realm.loginWithEmailAllowed
                                 ? msg("username")
                                 : !realm.registrationEmailAsUsername
-                                ? msg("usernameOrEmail")
-                                : msg("email")}
+                                  ? msg("usernameOrEmail")
+                                  : msg("email")}
                         </label>
                     </div>
                     <div className={getClassName("kcInputWrapperClass")}>

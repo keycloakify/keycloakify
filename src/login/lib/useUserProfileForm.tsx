@@ -431,8 +431,8 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                             typeof hasLostFocusAtLeastOnceOrArr === "boolean"
                                 ? hasLostFocusAtLeastOnceOrArr
                                 : error.fieldIndex !== undefined
-                                ? hasLostFocusAtLeastOnceOrArr[error.fieldIndex]
-                                : hasLostFocusAtLeastOnceOrArr[hasLostFocusAtLeastOnceOrArr.length - 1];
+                                  ? hasLostFocusAtLeastOnceOrArr[error.fieldIndex]
+                                  : hasLostFocusAtLeastOnceOrArr[hasLostFocusAtLeastOnceOrArr.length - 1];
 
                         switch (error.source.type) {
                             case "server":

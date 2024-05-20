@@ -112,6 +112,7 @@
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "recast": "^0.23.3",
+        "run-exclusive": "^2.2.19",
         "scripting-tools": "^0.19.13",
         "storybook-dark-mode": "^1.1.2",
         "termost": "^0.12.0",
