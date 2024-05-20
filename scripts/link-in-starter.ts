@@ -26,6 +26,8 @@ run(`npx ts-node --skipProject ${join("scripts", "link-in-app.ts")} keycloakify-
 const { waitForDebounce } = waitForDebounceFactory({ delay: 400 });
 
 const runYarnBuild = runExclusive.build(() => {
+    console.log(chalk.green("Running `yarn build`"));
+
     const dCompleted = new Deferred<void>();
 
     const child = child_process.spawn("yarn", ["build"], {
@@ -37,6 +39,8 @@ const runYarnBuild = runExclusive.build(() => {
     child.stderr.on("data", data => process.stderr.write(data));
 
     child.on("exit", () => dCompleted.resolve());
+
+    console.log("\n\n\n");
 
     return dCompleted.pr;
 });
