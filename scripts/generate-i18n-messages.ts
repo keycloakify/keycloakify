@@ -56,7 +56,7 @@ async function main() {
 
             (record[typeOfPage] ??= {})[language.replace(/_/g, "-")] = Object.fromEntries(
                 Object.entries(propertiesParser.parse(fs.readFileSync(pathJoin(baseThemeDirPath, filePath)).toString("utf8"))).map(
-                    ([key, value]: any) => [key, value.replace(/''/g, "'")]
+                    ([key, value]: any) => [key === "locale_pt_BR" ? "locale_pt-BR" : key, value.replace(/''/g, "'")]
                 )
             );
         });
