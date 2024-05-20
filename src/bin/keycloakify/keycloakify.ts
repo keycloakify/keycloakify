@@ -3,7 +3,7 @@ import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path
 import * as child_process from "child_process";
 import * as fs from "fs";
 import { readBuildOptions } from "../shared/buildOptions";
-import { vitePluginSubScriptEnvNames } from "../shared/constants";
+import { vitePluginSubScriptEnvNames, skipBuildJarsEnvName } from "../shared/constants";
 import { buildJars } from "./buildJars";
 import type { CliCommandOptions } from "../main";
 import chalk from "chalk";
@@ -76,7 +76,13 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         });
     }
 
-    await buildJars({ buildOptions });
+    build_jars: {
+        if (process.env[skipBuildJarsEnvName]) {
+            break build_jars;
+        }
+
+        await buildJars({ buildOptions });
+    }
 
     console.log(chalk.green(`✓ built in ${((Date.now() - startTime) / 1000).toFixed(2)}s`));
 }

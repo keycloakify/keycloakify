@@ -2,15 +2,19 @@ import { readBuildOptions } from "./shared/buildOptions";
 import type { CliCommandOptions as CliCommandOptions_common } from "./main";
 import { promptKeycloakVersion } from "./shared/promptKeycloakVersion";
 import { readMetaInfKeycloakThemes } from "./shared/metaInfKeycloakThemes";
-import { accountV1ThemeName } from "./shared/constants";
+import { accountV1ThemeName, skipBuildJarsEnvName } from "./shared/constants";
 import { SemVer } from "./tools/SemVer";
 import type { KeycloakVersionRange } from "./shared/KeycloakVersionRange";
 import { getJarFileBasename } from "./shared/getJarFileBasename";
 import { assert, type Equals } from "tsafe/assert";
 import * as fs from "fs";
-import { join as pathJoin, posix as pathPosix } from "path";
+import { join as pathJoin, relative as pathRelative, sep as pathSep, posix as pathPosix } from "path";
 import * as child_process from "child_process";
 import chalk from "chalk";
+import chokidar from "chokidar";
+import { waitForDebounceFactory } from "powerhooks/tools/waitForDebounce";
+import { getThemeSrcDirPath } from "./shared/getThemeSrcDirPath";
+import { Deferred } from "evt/tools/Deferred";
 
 export type CliCommandOptions = CliCommandOptions_common & {
     port: number;
@@ -91,12 +95,14 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             };
         }
 
-        console.log("On which version of Keycloak do you want to test your theme?");
+        console.log(chalk.cyan("On which version of Keycloak do you want to test your theme?"));
 
         const { keycloakVersion } = await promptKeycloakVersion({
             "startingFromMajor": 17,
             "cacheDirPath": buildOptions.cacheDirPath
         });
+
+        console.log(`→ ${keycloakVersion}`);
 
         const keycloakMajorNumber = SemVer.parse(keycloakVersion).major;
 
@@ -182,10 +188,10 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     const containerName = "keycloak-keycloakify";
 
     try {
-        child_process.execSync(`docker rm ${containerName}`, { "stdio": "ignore" });
+        child_process.execSync(`docker rm --force ${containerName}`, { "stdio": "ignore" });
     } catch {}
 
-    const child = child_process.spawn(
+    const spawnParams = [
         "docker",
         [
             "run",
@@ -203,11 +209,19 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         {
             "cwd": buildOptions.keycloakifyBuildDirPath
         }
-    );
+    ] as const;
+
+    console.log(JSON.stringify(spawnParams, null, 2));
+
+    const child = child_process.spawn(...spawnParams);
 
     child.stdout.on("data", data => process.stdout.write(data));
 
     child.stderr.on("data", data => process.stderr.write(data));
+
+    child.on("exit", process.exit);
+
+    const { themeSrcDirPath } = getThemeSrcDirPath({ "reactAppRootDirPath": buildOptions.reactAppRootDirPath });
 
     {
         const handler = async (data: Buffer) => {
@@ -224,7 +238,12 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                     "",
                     `${chalk.green("Your theme is accessible at:")}`,
                     `${chalk.green("➜")} ${chalk.cyan.bold("https://test.keycloakify.dev/")}`,
-                    ""
+                    "",
+                    `Keycloak Admin console: ${chalk.cyan.bold(`http://localhost:${cliCommandOptions.port}`)}`,
+                    `- user: ${chalk.cyan.bold("admin")}`,
+                    `- password: ${chalk.cyan.bold("admin")}`,
+                    "",
+                    `Watching for changes in ${chalk.bold(`.${pathSep}${pathRelative(process.cwd(), themeSrcDirPath)}`)} ...`
                 ].join("\n")
             );
         };
@@ -232,5 +251,50 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         child.stdout.on("data", handler);
     }
 
-    child.on("exit", process.exit);
+    {
+        const { waitForDebounce } = waitForDebounceFactory({ "delay": 400 });
+
+        chokidar.watch(themeSrcDirPath, { "ignoreInitial": true }).on("all", async (...eventArgs) => {
+            console.log({ eventArgs });
+
+            await waitForDebounce();
+
+            console.log(chalk.cyan("Detected changes in the theme. Rebuilding ..."));
+
+            const dViteBuildDone = new Deferred<void>();
+
+            {
+                const child = child_process.spawn("npx", ["vite"], {
+                    "cwd": buildOptions.reactAppRootDirPath,
+                    "env": process.env
+                });
+
+                child.stdout.on("data", data => process.stdout.write(data));
+
+                child.stderr.on("data", data => process.stderr.write(data));
+
+                child.on("exit", code => {
+                    if (code === 0) {
+                        dViteBuildDone.resolve();
+                    }
+                });
+            }
+
+            await dViteBuildDone.pr;
+
+            {
+                const child = child_process.spawn("npx", ["keycloakify", "build"], {
+                    "cwd": buildOptions.reactAppRootDirPath,
+                    "env": {
+                        ...process.env,
+                        [skipBuildJarsEnvName]: "true"
+                    }
+                });
+
+                child.stdout.on("data", data => process.stdout.write(data));
+
+                child.stderr.on("data", data => process.stderr.write(data));
+            }
+        });
+    }
 }
