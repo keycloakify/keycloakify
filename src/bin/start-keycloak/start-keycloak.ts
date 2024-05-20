@@ -459,7 +459,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             }
         });
 
-        const { waitForDebounce } = waitForDebounceFactory({ delay: 1_000 });
+        const { waitForDebounce } = waitForDebounceFactory({ delay: 400 });
 
         chokidar
             .watch([srcDirPath, pathJoin(getThisCodebaseRootDirPath(), "src")], {
