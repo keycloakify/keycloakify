@@ -311,7 +311,7 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
 
                         const { min: minStr } = validator;
 
-                        if (minStr === undefined) {
+                        if (!minStr) {
                             break apply_validator_min_range;
                         }
 
@@ -369,7 +369,7 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
 
                         const { kcNumberFormat } = attribute.html5DataAnnotations ?? {};
 
-                        if (kcNumberFormat === undefined) {
+                        if (!kcNumberFormat) {
                             break apply_formatters;
                         }
 
@@ -516,7 +516,7 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                 unFormat_number: {
                     const { kcNumberUnFormat } = attribute.html5DataAnnotations ?? {};
 
-                    if (kcNumberUnFormat === undefined) {
+                    if (!kcNumberUnFormat) {
                         break unFormat_number;
                     }
 
@@ -674,13 +674,13 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
 
                 const { min: minStr } = validator;
 
-                const min = minStr !== undefined ? parseInt(`${minStr}`) : attribute.required ? 1 : 0;
+                const min = minStr ? parseInt(`${minStr}`) : attribute.required ? 1 : 0;
 
                 assert(!isNaN(min));
 
                 const { max: maxStr } = validator;
 
-                const max = maxStr === undefined ? Infinity : parseInt(`${maxStr}`);
+                const max = !maxStr ? Infinity : parseInt(`${maxStr}`);
 
                 assert(!isNaN(max));
 
@@ -727,7 +727,7 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
 
                     const policy = passwordPolicies[policyName];
 
-                    if (policy === undefined) {
+                    if (!policy) {
                         break check_password_policy_x;
                     }
 
@@ -755,7 +755,7 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
 
                     const policy = passwordPolicies[policyName];
 
-                    if (policy === undefined) {
+                    if (!policy) {
                         break check_password_policy_x;
                     }
 
@@ -783,7 +783,7 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
 
                     const policy = passwordPolicies[policyName];
 
-                    if (policy === undefined) {
+                    if (!policy) {
                         break check_password_policy_x;
                     }
 
@@ -813,7 +813,7 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
 
                     const policy = passwordPolicies[policyName];
 
-                    if (policy === undefined) {
+                    if (!policy) {
                         break check_password_policy_x;
                     }
 
@@ -843,7 +843,7 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
 
                     const policy = passwordPolicies[policyName];
 
-                    if (policy === undefined) {
+                    if (!policy) {
                         break check_password_policy_x;
                     }
 
@@ -877,7 +877,7 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
 
                     const usernameFormFieldState = formFieldStates.find(formFieldState => formFieldState.attribute.name === "username");
 
-                    if (usernameFormFieldState === undefined) {
+                    if (!usernameFormFieldState) {
                         break check_password_policy_x;
                     }
 
@@ -889,7 +889,7 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                         unFormat_number: {
                             const { kcNumberUnFormat } = attribute.html5DataAnnotations ?? {};
 
-                            if (kcNumberUnFormat === undefined) {
+                            if (!kcNumberUnFormat) {
                                 break unFormat_number;
                             }
 
@@ -927,7 +927,7 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
 
                     const emailFormFieldState = formFieldStates.find(formFieldState => formFieldState.attribute.name === "email");
 
-                    if (emailFormFieldState === undefined) {
+                    if (!emailFormFieldState) {
                         break check_password_policy_x;
                     }
 
@@ -1016,7 +1016,7 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
 
                 const validator = validators[validatorName];
 
-                if (validator === undefined) {
+                if (!validator) {
                     break validator_x;
                 }
 
@@ -1031,7 +1031,7 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     "name": validatorName
                 };
 
-                if (max !== undefined && value.length > parseInt(`${max}`)) {
+                if (max && value.length > parseInt(`${max}`)) {
                     const msgArgs = ["error-invalid-length-too-long", `${max}`] as const;
 
                     errors.push({
@@ -1042,7 +1042,7 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     });
                 }
 
-                if (min !== undefined && value.length < parseInt(`${min}`)) {
+                if (min && value.length < parseInt(`${min}`)) {
                     const msgArgs = ["error-invalid-length-too-short", `${min}`] as const;
 
                     errors.push({
@@ -1160,7 +1160,7 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     break validator_x;
                 }
 
-                if (max !== undefined && intValue > parseInt(`${max}`)) {
+                if (max && intValue > parseInt(`${max}`)) {
                     const msgArgs = ["error-number-out-of-range-too-big", `${max}`] as const;
 
                     errors.push({
@@ -1173,7 +1173,7 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     break validator_x;
                 }
 
-                if (min !== undefined && intValue < parseInt(`${min}`)) {
+                if (min && intValue < parseInt(`${min}`)) {
                     const msgArgs = ["error-number-out-of-range-too-small", `${min}`] as const;
 
                     errors.push({
