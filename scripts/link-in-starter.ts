@@ -25,7 +25,7 @@ run(`npx ts-node --skipProject ${join("scripts", "link-in-app.ts")} keycloakify-
 
 const { waitForDebounce } = waitForDebounceFactory({ delay: 400 });
 
-const runYarnBuild = runExclusive.build(() => {
+const runYarnBuild = runExclusive.build(async () => {
     console.log(chalk.green("Running `yarn build`"));
 
     const dCompleted = new Deferred<void>();
@@ -40,9 +40,9 @@ const runYarnBuild = runExclusive.build(() => {
 
     child.on("exit", () => dCompleted.resolve());
 
-    console.log("\n\n\n");
+    await dCompleted.pr;
 
-    return dCompleted.pr;
+    console.log("\n\n");
 });
 
 console.log(chalk.green("Watching for changes in src/"));
