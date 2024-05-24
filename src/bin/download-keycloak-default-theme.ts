@@ -2,6 +2,7 @@ import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path
 import { promptKeycloakVersion } from "./shared/promptKeycloakVersion";
 import { readBuildOptions } from "./shared/buildOptions";
 import { downloadKeycloakDefaultTheme } from "./shared/downloadKeycloakDefaultTheme";
+import { transformCodebase } from "./tools/transformCodebase";
 import type { CliCommandOptions } from "./main";
 import chalk from "chalk";
 
@@ -48,10 +49,14 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         ].join("\n")
     );
 
-    await downloadKeycloakDefaultTheme({
+    const { defaultThemeDirPath } = await downloadKeycloakDefaultTheme({
         keycloakVersion,
-        destDirPath,
         buildOptions
+    });
+
+    transformCodebase({
+        srcDirPath: defaultThemeDirPath,
+        destDirPath
     });
 
     console.log(chalk.green(`✓ done`));

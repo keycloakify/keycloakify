@@ -9,7 +9,6 @@ import {
 } from "../../shared/constants";
 import { downloadKeycloakDefaultTheme } from "../../shared/downloadKeycloakDefaultTheme";
 import { transformCodebase } from "../../tools/transformCodebase";
-import { rmSync } from "../../tools/fs.rmSync";
 
 type BuildOptionsLike = {
     cacheDirPath: string;
@@ -22,13 +21,7 @@ assert<BuildOptions extends BuildOptionsLike ? true : false>();
 export async function bringInAccountV1(params: { buildOptions: BuildOptionsLike }) {
     const { buildOptions } = params;
 
-    const builtinKeycloakThemeTmpDirPath = pathJoin(
-        buildOptions.cacheDirPath,
-        "bringInAccountV1_tmp"
-    );
-
-    await downloadKeycloakDefaultTheme({
-        destDirPath: builtinKeycloakThemeTmpDirPath,
+    const { defaultThemeDirPath } = await downloadKeycloakDefaultTheme({
         keycloakVersion: lastKeycloakVersionWithAccountV1,
         buildOptions
     });
@@ -44,31 +37,19 @@ export async function bringInAccountV1(params: { buildOptions: BuildOptionsLike 
     );
 
     transformCodebase({
-        srcDirPath: pathJoin(builtinKeycloakThemeTmpDirPath, "base", "account"),
+        srcDirPath: pathJoin(defaultThemeDirPath, "base", "account"),
         destDirPath: accountV1DirPath
     });
 
     transformCodebase({
-        srcDirPath: pathJoin(
-            builtinKeycloakThemeTmpDirPath,
-            "keycloak",
-            "account",
-            "resources"
-        ),
+        srcDirPath: pathJoin(defaultThemeDirPath, "keycloak", "account", "resources"),
         destDirPath: pathJoin(accountV1DirPath, "resources")
     });
 
     transformCodebase({
-        srcDirPath: pathJoin(
-            builtinKeycloakThemeTmpDirPath,
-            "keycloak",
-            "common",
-            "resources"
-        ),
+        srcDirPath: pathJoin(defaultThemeDirPath, "keycloak", "common", "resources"),
         destDirPath: pathJoin(accountV1DirPath, "resources", resources_common)
     });
-
-    rmSync(builtinKeycloakThemeTmpDirPath, { recursive: true });
 
     fs.writeFileSync(
         pathJoin(accountV1DirPath, "theme.properties"),

@@ -5,7 +5,6 @@ import { promptKeycloakVersion } from "./shared/promptKeycloakVersion";
 import { readBuildOptions } from "./shared/buildOptions";
 import * as fs from "fs";
 import { getThemeSrcDirPath } from "./shared/getThemeSrcDirPath";
-import { rmSync } from "./tools/fs.rmSync";
 import type { CliCommandOptions } from "./main";
 
 export async function command(params: { cliCommandOptions: CliCommandOptions }) {
@@ -38,24 +37,13 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         cacheDirPath: buildOptions.cacheDirPath
     });
 
-    const builtinKeycloakThemeTmpDirPath = pathJoin(
-        buildOptions.cacheDirPath,
-        "initialize-email-theme_tmp"
-    );
-
-    rmSync(builtinKeycloakThemeTmpDirPath, {
-        recursive: true,
-        force: true
-    });
-
-    await downloadKeycloakDefaultTheme({
+    const { defaultThemeDirPath } = await downloadKeycloakDefaultTheme({
         keycloakVersion,
-        destDirPath: builtinKeycloakThemeTmpDirPath,
         buildOptions
     });
 
     transformCodebase({
-        srcDirPath: pathJoin(builtinKeycloakThemeTmpDirPath, "base", "email"),
+        srcDirPath: pathJoin(defaultThemeDirPath, "base", "email"),
         destDirPath: emailThemeSrcDirPath
     });
 
@@ -78,6 +66,4 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         )}\` directory have been created.`
     );
     console.log("You can delete any file you don't modify.");
-
-    rmSync(builtinKeycloakThemeTmpDirPath, { recursive: true });
 }

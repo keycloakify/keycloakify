@@ -1,16 +1,15 @@
 import { transformCodebase } from "../tools/transformCodebase";
 import { join as pathJoin } from "path";
-import { downloadKeycloakDefaultTheme } from "./downloadKeycloakDefaultTheme";
+import {
+    downloadKeycloakDefaultTheme,
+    type BuildOptionsLike as BuildOptionsLike_downloadKeycloakDefaultTheme
+} from "./downloadKeycloakDefaultTheme";
 import { resources_common, type ThemeType } from "./constants";
 import type { BuildOptions } from "./buildOptions";
 import { assert } from "tsafe/assert";
-import * as crypto from "crypto";
-import { rmSync } from "../tools/fs.rmSync";
+import { existsAsync } from "../tools/fs.existsAsync";
 
-export type BuildOptionsLike = {
-    cacheDirPath: string;
-    npmWorkspaceRootDirPath: string;
-};
+export type BuildOptionsLike = BuildOptionsLike_downloadKeycloakDefaultTheme & {};
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
@@ -22,32 +21,33 @@ export async function downloadKeycloakStaticResources(params: {
 }) {
     const { themeType, themeDirPath, keycloakVersion, buildOptions } = params;
 
-    const tmpDirPath = pathJoin(
-        buildOptions.cacheDirPath,
-        `downloadKeycloakStaticResources_tmp_${crypto
-            .createHash("sha256")
-            .update(`${themeType}-${keycloakVersion}`)
-            .digest("hex")
-            .slice(0, 8)}`
-    );
-
-    await downloadKeycloakDefaultTheme({
+    const { defaultThemeDirPath } = await downloadKeycloakDefaultTheme({
         keycloakVersion,
-        destDirPath: tmpDirPath,
         buildOptions
     });
 
-    const resourcesPath = pathJoin(themeDirPath, themeType, "resources");
+    const resourcesDirPath = pathJoin(themeDirPath, themeType, "resources");
+
+    repatriate_base_resources: {
+        const srcDirPath = pathJoin(defaultThemeDirPath, "base", themeType, "resources");
+
+        if (!(await existsAsync(srcDirPath))) {
+            break repatriate_base_resources;
+        }
+
+        transformCodebase({
+            srcDirPath,
+            destDirPath: resourcesDirPath
+        });
+    }
 
     transformCodebase({
-        srcDirPath: pathJoin(tmpDirPath, "keycloak", themeType, "resources"),
-        destDirPath: resourcesPath
+        srcDirPath: pathJoin(defaultThemeDirPath, "keycloak", themeType, "resources"),
+        destDirPath: resourcesDirPath
     });
 
     transformCodebase({
-        srcDirPath: pathJoin(tmpDirPath, "keycloak", "common", "resources"),
-        destDirPath: pathJoin(resourcesPath, resources_common)
+        srcDirPath: pathJoin(defaultThemeDirPath, "keycloak", "common", "resources"),
+        destDirPath: pathJoin(resourcesDirPath, resources_common)
     });
-
-    rmSync(tmpDirPath, { recursive: true });
 }

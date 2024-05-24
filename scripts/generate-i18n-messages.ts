@@ -22,20 +22,8 @@ async function main() {
 
     const thisCodebaseRootDirPath = getThisCodebaseRootDirPath();
 
-    const tmpDirPath = pathJoin(thisCodebaseRootDirPath, "tmp_xImOef9dOd44");
-
-    rmSync(tmpDirPath, { recursive: true, force: true });
-
-    fs.mkdirSync(tmpDirPath);
-
-    fs.writeFileSync(
-        pathJoin(tmpDirPath, ".gitignore"),
-        Buffer.from("/*\n!.gitignore\n", "utf8")
-    );
-
-    await downloadKeycloakDefaultTheme({
+    const { defaultThemeDirPath } = await downloadKeycloakDefaultTheme({
         keycloakVersion,
-        destDirPath: tmpDirPath,
         buildOptions: {
             cacheDirPath: pathJoin(
                 thisCodebaseRootDirPath,
@@ -52,7 +40,7 @@ async function main() {
     const record: { [typeOfPage: string]: { [language: string]: Dictionary } } = {};
 
     {
-        const baseThemeDirPath = pathJoin(tmpDirPath, "base");
+        const baseThemeDirPath = pathJoin(defaultThemeDirPath, "base");
         const re = new RegExp(
             `^([^\\${pathSep}]+)\\${pathSep}messages\\${pathSep}messages_([^.]+).properties$`
         );
@@ -83,8 +71,6 @@ async function main() {
             );
         });
     }
-
-    rmSync(tmpDirPath, { recursive: true });
 
     Object.keys(record).forEach(themeType => {
         const recordForPageType = record[themeType];

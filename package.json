@@ -7,7 +7,7 @@
         "url": "git://github.com/keycloakify/keycloakify.git"
     },
     "scripts": {
-        "prepare": "ts-node --skipProject scripts/generate-i18n-messages.ts && patch-package",
+        "prepare": "patch-package && ts-node --skipProject scripts/generate-i18n-messages.ts",
         "build": "ts-node --skipProject scripts/build.ts",
         "storybook": "yarn build && yarn copy-keycloak-resources-to-storybook-static && start-storybook -p 6006",
         "link-in-starter": "ts-node --skipProject scripts/link-in-starter.ts",

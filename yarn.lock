@@ -3562,13 +3562,6 @@
   dependencies:
     "@types/node" "*"
 
-"@types/yazl@^2.4.5":
-  version "2.4.5"
-  resolved "https://registry.yarnpkg.com/@types/yazl/-/yazl-2.4.5.tgz#0e21674799c7690afa23aeaff59806be5fe7494d"
-  integrity sha512-qpmPfx32HS7vlGJf7EsoM9qJnLZhXJBf1KH0hzfdc+D794rljQWh4H0I/UrZy+6Nhqn0l2jdBZXBGZtR1vnHqw==
-  dependencies:
-    "@types/node" "*"
-
 "@typescript-eslint/scope-manager@5.59.0":
   version "5.59.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/scope-manager/-/scope-manager-5.59.0.tgz#86501d7a17885710b6716a23be2e93fc54a4fe8c"
@@ -13306,13 +13299,6 @@ yauzl@^2.10.0:
   dependencies:
     buffer-crc32 "~0.2.3"
     fd-slicer "~1.1.0"
-
-yazl@^2.5.1:
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/yazl/-/yazl-2.5.1.tgz#a3d65d3dd659a5b0937850e8609f22fffa2b5c35"
-  integrity sha512-phENi2PLiHnHb6QBVot+dJnaAZ0xosj7p3fWl+znIjBDlnMI2PsZCJZ306BPTFOaHf5qdDEI8x5qFrSOBN5vrw==
-  dependencies:
-    buffer-crc32 "~0.2.3"
 
 yn@3.1.1:
   version "3.1.1"
