@@ -71,6 +71,24 @@ export async function downloadKeycloakDefaultTheme(params: {
                     return;
                 }
 
+                skip_web_modules: {
+                    if (
+                        !isInside({
+                            dirPath: pathJoin(
+                                "keycloak",
+                                "common",
+                                "resources",
+                                "web_modules"
+                            ),
+                            filePath: fileRelativePath
+                        })
+                    ) {
+                        break skip_web_modules;
+                    }
+
+                    return;
+                }
+
                 skip_unused_node_modules: {
                     const nodeModulesDirPath = pathJoin(
                         "keycloak",
