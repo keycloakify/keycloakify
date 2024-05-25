@@ -1,11 +1,12 @@
 import fetch from "make-fetch-happen";
-import { mkdir, unlink, writeFile, readdir } from "fs/promises";
+import { mkdir, unlink, writeFile, readdir, readFile } from "fs/promises";
 import { dirname as pathDirname, join as pathJoin } from "path";
 import { assert } from "tsafe/assert";
 import { extractArchive } from "../extractArchive";
 import { existsAsync } from "../fs.existsAsync";
 import { getProxyFetchOptions } from "./fetchProxyOptions";
 import * as crypto from "crypto";
+import { rm } from "../fs.rm";
 
 export async function downloadAndExtractArchive(params: {
     url: string;
@@ -35,7 +36,21 @@ export async function downloadAndExtractArchive(params: {
 
     download: {
         if (await existsAsync(archiveFilePath)) {
-            break download;
+            const isDownloaded = await SuccessTracker.getIsDownloaded({
+                cacheDirPath,
+                archiveFileBasename
+            });
+
+            if (isDownloaded) {
+                break download;
+            }
+
+            await unlink(archiveFilePath);
+
+            await SuccessTracker.removeFromDownloaded({
+                cacheDirPath,
+                archiveFileBasename
+            });
         }
 
         await mkdir(pathDirname(archiveFilePath), { recursive: true });
@@ -49,6 +64,11 @@ export async function downloadAndExtractArchive(params: {
         assert(typeof response.body !== "undefined" && response.body != null);
 
         await writeFile(archiveFilePath, response.body);
+
+        await SuccessTracker.markAsDownloaded({
+            cacheDirPath,
+            archiveFileBasename
+        });
     }
 
     const extractDirBasename = `${archiveFileBasename.split(".")[0]}_${uniqueIdOfOnOnArchiveFile}_${crypto
@@ -72,14 +92,34 @@ export async function downloadAndExtractArchive(params: {
                         basename !== extractDirBasename && basename.startsWith(prefix);
                 })()
             )
-            .map(basename => unlink(pathJoin(cacheDirPath, basename)))
+            .map(async extractDirBasename => {
+                await rm(pathJoin(cacheDirPath, extractDirBasename), { recursive: true });
+                await SuccessTracker.removeFromExtracted({
+                    cacheDirPath,
+                    extractDirBasename
+                });
+            })
     );
 
     const extractedDirPath = pathJoin(cacheDirPath, extractDirBasename);
 
     extract_and_transform: {
         if (await existsAsync(extractedDirPath)) {
-            break extract_and_transform;
+            const isExtracted = await SuccessTracker.getIsExtracted({
+                cacheDirPath,
+                extractDirBasename
+            });
+
+            if (isExtracted) {
+                break extract_and_transform;
+            }
+
+            await rm(extractedDirPath, { recursive: true });
+
+            await SuccessTracker.removeFromExtracted({
+                cacheDirPath,
+                extractDirBasename
+            });
         }
 
         await extractArchive({
@@ -95,7 +135,128 @@ export async function downloadAndExtractArchive(params: {
                         })
                 })
         });
+
+        await SuccessTracker.markAsExtracted({
+            cacheDirPath,
+            extractDirBasename
+        });
     }
 
     return { extractedDirPath };
+}
+
+type SuccessTracker = {
+    archiveFileBasenames: string[];
+    extractDirBasenames: string[];
+};
+
+namespace SuccessTracker {
+    async function read(params: { cacheDirPath: string }): Promise<SuccessTracker> {
+        const { cacheDirPath } = params;
+
+        const filePath = pathJoin(cacheDirPath, "downloadAndExtractArchive.json");
+
+        if (!(await existsAsync(filePath))) {
+            return { archiveFileBasenames: [], extractDirBasenames: [] };
+        }
+
+        return JSON.parse((await readFile(filePath)).toString("utf8"));
+    }
+
+    async function write(params: {
+        cacheDirPath: string;
+        successTracker: SuccessTracker;
+    }) {
+        const { cacheDirPath, successTracker } = params;
+
+        const filePath = pathJoin(cacheDirPath, "downloadAndExtractArchive.json");
+
+        {
+            const dirPath = pathDirname(filePath);
+
+            if (!(await existsAsync(dirPath))) {
+                await mkdir(dirPath, { recursive: true });
+            }
+        }
+
+        await writeFile(filePath, JSON.stringify(successTracker));
+    }
+
+    export async function markAsDownloaded(params: {
+        cacheDirPath: string;
+        archiveFileBasename: string;
+    }) {
+        const { cacheDirPath, archiveFileBasename } = params;
+
+        const successTracker = await read({ cacheDirPath });
+
+        successTracker.archiveFileBasenames.push(archiveFileBasename);
+
+        await write({ cacheDirPath, successTracker });
+    }
+
+    export async function getIsDownloaded(params: {
+        cacheDirPath: string;
+        archiveFileBasename: string;
+    }): Promise<boolean> {
+        const { cacheDirPath, archiveFileBasename } = params;
+
+        const successTracker = await read({ cacheDirPath });
+
+        return successTracker.archiveFileBasenames.includes(archiveFileBasename);
+    }
+
+    export async function removeFromDownloaded(params: {
+        cacheDirPath: string;
+        archiveFileBasename: string;
+    }) {
+        const { cacheDirPath, archiveFileBasename } = params;
+
+        const successTracker = await read({ cacheDirPath });
+
+        successTracker.archiveFileBasenames = successTracker.archiveFileBasenames.filter(
+            basename => basename !== archiveFileBasename
+        );
+
+        await write({ cacheDirPath, successTracker });
+    }
+
+    export async function markAsExtracted(params: {
+        cacheDirPath: string;
+        extractDirBasename: string;
+    }) {
+        const { cacheDirPath, extractDirBasename } = params;
+
+        const successTracker = await read({ cacheDirPath });
+
+        successTracker.extractDirBasenames.push(extractDirBasename);
+
+        await write({ cacheDirPath, successTracker });
+    }
+
+    export async function getIsExtracted(params: {
+        cacheDirPath: string;
+        extractDirBasename: string;
+    }): Promise<boolean> {
+        const { cacheDirPath, extractDirBasename } = params;
+
+        const successTracker = await read({ cacheDirPath });
+
+        return successTracker.extractDirBasenames.includes(extractDirBasename);
+    }
+
+    export async function removeFromExtracted(params: {
+        cacheDirPath: string;
+        extractDirBasename: string;
+    }) {
+        const { cacheDirPath, extractDirBasename } = params;
+
+        const successTracker = await read({ cacheDirPath });
+
+        successTracker.extractDirBasenames = successTracker.extractDirBasenames.filter(
+            basename => basename !== extractDirBasename
+        );
+
+        await write({ cacheDirPath, successTracker });
+    }
 }
