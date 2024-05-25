@@ -17,7 +17,7 @@ export async function extractArchive(params: {
 
     const zipFile = await new Promise<yauzl.ZipFile>((resolve, reject) => {
         yauzl.open(archiveFilePath, { lazyEntries: true }, async (error, zipFile) => {
-            if (error !== null) {
+            if (error) {
                 reject(error);
                 return;
             }
@@ -51,7 +51,7 @@ export async function extractArchive(params: {
 
             const readStream = await new Promise<stream.Readable>(resolve =>
                 zipFile.openReadStream(this.entry, async (error, readStream) => {
-                    if (error !== null) {
+                    if (error) {
                         dDone.reject(error);
                         return;
                     }
@@ -63,7 +63,7 @@ export async function extractArchive(params: {
             const dDoneWithFile = new Deferred<void>();
 
             stream.pipeline(readStream, fsSync.createWriteStream(filePath), error => {
-                if (error !== null) {
+                if (error) {
                     dDone.reject(error);
                     return;
                 }
@@ -77,7 +77,7 @@ export async function extractArchive(params: {
         public readFile(): Promise<Buffer> {
             return new Promise<Buffer>(resolve =>
                 zipFile.openReadStream(this.entry, async (error, readStream) => {
-                    if (error !== null) {
+                    if (error) {
                         dDone.reject(error);
                         return;
                     }
