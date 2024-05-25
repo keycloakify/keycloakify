@@ -72,14 +72,19 @@ export async function downloadKeycloakDefaultTheme(params: {
                 }
 
                 skip_unused_node_modules: {
-                    const dirPath = pathJoin(
+                    const nodeModulesDirPath = pathJoin(
                         "keycloak",
                         "common",
                         "resources",
                         "node_modules"
                     );
 
-                    if (!isInside({ dirPath, filePath: fileRelativePath })) {
+                    if (
+                        !isInside({
+                            dirPath: nodeModulesDirPath,
+                            filePath: fileRelativePath
+                        })
+                    ) {
                         break skip_unused_node_modules;
                     }
 
@@ -89,9 +94,15 @@ export async function downloadKeycloakDefaultTheme(params: {
                             "patternfly-additions.min.css",
                             "patternfly-additions.min.css"
                         ].map(fileBasename =>
-                            pathJoin(dirPath, "patternfly", "dist", "css", fileBasename)
+                            pathJoin(
+                                nodeModulesDirPath,
+                                "patternfly",
+                                "dist",
+                                "css",
+                                fileBasename
+                            )
                         ),
-                        pathJoin(dirPath, "patternfly", "dist", "fonts")
+                        pathJoin(nodeModulesDirPath, "patternfly", "dist", "fonts")
                     ];
 
                     if (
@@ -102,6 +113,70 @@ export async function downloadKeycloakDefaultTheme(params: {
                         break skip_unused_node_modules;
                     }
 
+                    return;
+                }
+            }
+
+            skip_unused_resources: {
+                if (keycloakVersion !== "24.0.4") {
+                    break skip_unused_resources;
+                }
+
+                for (const dirBasename of [
+                    "@patternfly-v5",
+                    "@rollup",
+                    "rollup",
+                    "react",
+                    "react-dom",
+                    "shx",
+                    ".pnpm"
+                ]) {
+                    if (
+                        isInside({
+                            dirPath: pathJoin(
+                                "keycloak",
+                                "common",
+                                "resources",
+                                "node_modules",
+                                dirBasename
+                            ),
+                            filePath: fileRelativePath
+                        })
+                    ) {
+                        return;
+                    }
+                }
+
+                for (const dirBasename of ["react", "react-dom"]) {
+                    if (
+                        isInside({
+                            dirPath: pathJoin(
+                                "keycloak",
+                                "common",
+                                "resources",
+                                "vendor",
+                                dirBasename
+                            ),
+                            filePath: fileRelativePath
+                        })
+                    ) {
+                        return;
+                    }
+                }
+
+                if (
+                    isInside({
+                        dirPath: pathJoin(
+                            "keycloak",
+                            "common",
+                            "resources",
+                            "node_modules",
+                            "@patternfly",
+                            "react-core"
+                        ),
+                        filePath: fileRelativePath
+                    })
+                ) {
                     return;
                 }
             }
