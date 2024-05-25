@@ -32,73 +32,70 @@ export async function extractArchive(params: {
         dDone.resolve();
     });
 
-    // TODO: See benchmark if using a class here improves the performance over anonymous functions
-    class FileWriter {
-        constructor(private entry: yauzl.Entry) {}
-
-        public async writeToFile(params: {
+    const writeFile = async (
+        entry: yauzl.Entry,
+        params: {
             filePath: string;
             modifiedData?: Buffer;
-        }): Promise<void> {
-            const { filePath, modifiedData } = params;
+        }
+    ): Promise<void> => {
+        const { filePath, modifiedData } = params;
 
-            await fs.mkdir(pathDirname(filePath), { recursive: true });
+        await fs.mkdir(pathDirname(filePath), { recursive: true });
 
-            if (modifiedData !== undefined) {
-                await fs.writeFile(filePath, modifiedData);
-                return;
-            }
+        if (modifiedData !== undefined) {
+            await fs.writeFile(filePath, modifiedData);
+            return;
+        }
 
-            const readStream = await new Promise<stream.Readable>(resolve =>
-                zipFile.openReadStream(this.entry, async (error, readStream) => {
-                    if (error) {
-                        dDone.reject(error);
-                        return;
-                    }
-
-                    resolve(readStream);
-                })
-            );
-
-            const dDoneWithFile = new Deferred<void>();
-
-            stream.pipeline(readStream, fsSync.createWriteStream(filePath), error => {
+        const readStream = await new Promise<stream.Readable>(resolve =>
+            zipFile.openReadStream(entry, async (error, readStream) => {
                 if (error) {
                     dDone.reject(error);
                     return;
                 }
 
-                dDoneWithFile.resolve();
-            });
+                resolve(readStream);
+            })
+        );
 
-            await dDoneWithFile.pr;
-        }
+        const dDoneWithFile = new Deferred<void>();
 
-        public readFile(): Promise<Buffer> {
-            return new Promise<Buffer>(resolve =>
-                zipFile.openReadStream(this.entry, async (error, readStream) => {
-                    if (error) {
-                        dDone.reject(error);
-                        return;
-                    }
+        stream.pipeline(readStream, fsSync.createWriteStream(filePath), error => {
+            if (error) {
+                dDone.reject(error);
+                return;
+            }
 
-                    const chunks: Buffer[] = [];
+            dDoneWithFile.resolve();
+        });
 
-                    readStream.on("data", chunk => {
-                        chunks.push(chunk);
-                    });
+        await dDoneWithFile.pr;
+    };
 
-                    readStream.on("end", () => {
-                        resolve(Buffer.concat(chunks));
-                    });
+    const readFile = (entry: yauzl.Entry) =>
+        new Promise<Buffer>(resolve =>
+            zipFile.openReadStream(entry, async (error, readStream) => {
+                if (error) {
+                    dDone.reject(error);
+                    return;
+                }
 
-                    readStream.on("error", error => {
-                        dDone.reject(error);
-                    });
-                })
-            );
-        }
-    }
+                const chunks: Buffer[] = [];
+
+                readStream.on("data", chunk => {
+                    chunks.push(chunk);
+                });
+
+                readStream.on("end", () => {
+                    resolve(Buffer.concat(chunks));
+                });
+
+                readStream.on("error", error => {
+                    dDone.reject(error);
+                });
+            })
+        );
 
     zipFile.on("entry", async (entry: yauzl.Entry) => {
         handle_file: {
@@ -107,12 +104,10 @@ export async function extractArchive(params: {
                 break handle_file;
             }
 
-            const fileWriter = new FileWriter(entry);
-
             await onArchiveFile({
                 relativeFilePathInArchive: entry.fileName.split("/").join(pathSep),
-                readFile: fileWriter.readFile.bind(fileWriter),
-                writeFile: fileWriter.writeToFile.bind(fileWriter)
+                readFile: () => readFile(entry),
+                writeFile: params => writeFile(entry, params)
             });
         }
 
