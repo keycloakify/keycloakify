@@ -12,12 +12,7 @@ import type { KeycloakVersionRange } from "../shared/KeycloakVersionRange";
 import { getJarFileBasename } from "../shared/getJarFileBasename";
 import { assert, type Equals } from "tsafe/assert";
 import * as fs from "fs";
-import {
-    join as pathJoin,
-    relative as pathRelative,
-    sep as pathSep,
-    posix as pathPosix
-} from "path";
+import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path";
 import * as child_process from "child_process";
 import chalk from "chalk";
 import chokidar from "chokidar";
@@ -27,6 +22,7 @@ import { Deferred } from "evt/tools/Deferred";
 import { getAbsoluteAndInOsFormatPath } from "../tools/getAbsoluteAndInOsFormatPath";
 import cliSelect from "cli-select";
 import * as runExclusive from "run-exclusive";
+import { extractArchive } from "../tools/extractArchive";
 
 export type CliCommandOptions = CliCommandOptions_common & {
     port: number;
@@ -195,52 +191,6 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     console.log(`Using Keycloak ${chalk.bold(jarFileBasename)}`);
 
-    const mountTargets = buildOptions.themeNames
-        .map(themeName => {
-            const themeEntry = metaInfKeycloakThemes.themes.find(
-                ({ name }) => name === themeName
-            );
-
-            assert(themeEntry !== undefined);
-
-            return themeEntry.types
-                .map(themeType => {
-                    const localPathDirname = pathJoin(
-                        buildOptions.keycloakifyBuildDirPath,
-                        "src",
-                        "main",
-                        "resources",
-                        "theme",
-                        themeName,
-                        themeType
-                    );
-
-                    return fs
-                        .readdirSync(localPathDirname)
-                        .filter(
-                            fileOrDirectoryBasename =>
-                                !fileOrDirectoryBasename.endsWith(".properties")
-                        )
-                        .map(fileOrDirectoryBasename => ({
-                            localPath: pathJoin(
-                                localPathDirname,
-                                fileOrDirectoryBasename
-                            ),
-                            containerPath: pathPosix.join(
-                                "/",
-                                "opt",
-                                "keycloak",
-                                "themes",
-                                themeName,
-                                themeType,
-                                fileOrDirectoryBasename
-                            )
-                        }));
-                })
-                .flat();
-        })
-        .flat();
-
     try {
         child_process.execSync(`docker rm --force ${containerName}`, {
             stdio: "ignore"
@@ -303,6 +253,43 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         return pathJoin(dirPath, value);
     })();
 
+    const jarFilePath = pathJoin(buildOptions.keycloakifyBuildDirPath, jarFileBasename);
+
+    let doLinkAccountV1Theme = false;
+
+    await extractArchive({
+        archiveFilePath: jarFilePath,
+        onArchiveFile: async ({ relativeFilePathInArchive, readFile, writeFile }) => {
+            for (const themeName of buildOptions.themeNames) {
+                if (
+                    relativeFilePathInArchive ===
+                    pathJoin("theme", themeName, "account", "theme.properties")
+                ) {
+                    if (
+                        (await readFile())
+                            .toString("utf8")
+                            .includes(`parent=${accountV1ThemeName}`)
+                    ) {
+                        doLinkAccountV1Theme = true;
+                    }
+
+                    await writeFile({
+                        filePath: pathJoin(
+                            buildOptions.keycloakifyBuildDirPath,
+                            "src",
+                            "main",
+                            "resources",
+                            "theme",
+                            themeName,
+                            "account",
+                            "theme.properties"
+                        )
+                    });
+                }
+            }
+        }
+    });
+
     const spawnArgs = [
         "docker",
         [
@@ -317,20 +304,28 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                       "-v",
                       `${realmJsonFilePath}:/opt/keycloak/data/import/myrealm-realm.json`
                   ]),
-            ...[
-                "-v",
-                `${pathJoin(
-                    buildOptions.keycloakifyBuildDirPath,
-                    jarFileBasename
-                )}:/opt/keycloak/providers/keycloak-theme.jar`
-            ],
+            ...["-v", `${jarFilePath}:/opt/keycloak/providers/keycloak-theme.jar`],
             ...(keycloakMajorVersionNumber <= 20
                 ? ["-e", "JAVA_OPTS=-Dkeycloak.profile=preview"]
                 : []),
-            ...mountTargets
-                .map(({ localPath, containerPath }) => [
+            ...[
+                ...buildOptions.themeNames,
+                ...(doLinkAccountV1Theme ? [accountV1ThemeName] : [])
+            ]
+                .map(themeName => ({
+                    localDirPath: pathJoin(
+                        buildOptions.keycloakifyBuildDirPath,
+                        "src",
+                        "main",
+                        "resources",
+                        "theme",
+                        themeName
+                    ),
+                    containerDirPath: `/opt/keycloak/themes/${themeName}`
+                }))
+                .map(({ localDirPath, containerDirPath }) => [
                     "-v",
-                    `${localPath}:${containerPath}:rw`
+                    `${localDirPath}:${containerDirPath}:rw`
                 ])
                 .flat(),
             `quay.io/keycloak/keycloak:${keycloakVersion}`,
@@ -344,8 +339,6 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             cwd: buildOptions.keycloakifyBuildDirPath
         }
     ] as const;
-
-    console.log(JSON.stringify(spawnArgs, null, 2));
 
     const child = child_process.spawn(...spawnArgs);
 
