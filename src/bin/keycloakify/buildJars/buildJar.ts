@@ -17,7 +17,6 @@ import { isInside } from "../../tools/isInside";
 import child_process from "child_process";
 import { rmSync } from "../../tools/fs.rmSync";
 import { getMetaInfKeycloakThemesJsonFilePath } from "../../shared/metaInfKeycloakThemes";
-import type { Param0 } from "tsafe";
 
 export type BuildOptionsLike = BuildOptionsLike_generatePom & {
     keycloakifyBuildDirPath: string;
@@ -50,131 +49,115 @@ export async function buildJar(params: {
     rmSync(keycloakifyBuildTmpDirPath, { recursive: true, force: true });
 
     {
-        const metaInfKeycloakThemesJsonRelativePath =
-            getMetaInfKeycloakThemesJsonFilePath({
-                keycloakifyBuildDirPath: ""
-            });
+        const transformCodebase_common = (params: {
+            fileRelativePath: string;
+            sourceCode: Buffer;
+        }): { modifiedSourceCode: Buffer } | undefined => {
+            const { fileRelativePath, sourceCode } = params;
 
-        const { transformCodebase_common } = (() => {
-            const includingAccountV1ThemeNames = [
-                ...buildOptions.themeNames,
-                accountV1ThemeName
-            ];
-
-            const transformCodebase_common: Param0<
-                typeof transformCodebase
-            >["transformSourceCode"] = ({ fileRelativePath, sourceCode }) => {
-                if (metaInfKeycloakThemesJsonRelativePath === fileRelativePath) {
-                    return { modifiedSourceCode: sourceCode };
-                }
-
-                for (const themeName of includingAccountV1ThemeNames) {
-                    if (
-                        isInside({
-                            dirPath: pathJoin(
-                                "src",
-                                "main",
-                                "resources",
-                                "theme",
-                                themeName
-                            ),
-                            filePath: fileRelativePath
-                        })
-                    ) {
-                        return { modifiedSourceCode: sourceCode };
-                    }
-                }
-
-                return undefined;
-            };
-
-            return { transformCodebase_common };
-        })();
-
-        const { transformCodebase_patchForUsingBuiltinAccountV1 } = (() => {
-            if (keycloakAccountV1Version !== null) {
-                return {
-                    transformCodebase_patchForUsingBuiltinAccountV1: undefined
-                };
+            if (
+                fileRelativePath ===
+                getMetaInfKeycloakThemesJsonFilePath({ keycloakifyBuildDirPath: "." })
+            ) {
+                return { modifiedSourceCode: sourceCode };
             }
 
-            const accountV1RelativeDirPath = pathJoin(
-                "src",
-                "main",
-                "resources",
-                "theme",
-                accountV1ThemeName
-            );
-
-            const transformCodebase_patchForUsingBuiltinAccountV1: Param0<
-                typeof transformCodebase
-            >["transformSourceCode"] = ({ fileRelativePath, sourceCode }) => {
+            for (const themeName of [...buildOptions.themeNames, accountV1ThemeName]) {
                 if (
                     isInside({
-                        dirPath: accountV1RelativeDirPath,
+                        dirPath: pathJoin("src", "main", "resources", "theme", themeName),
                         filePath: fileRelativePath
                     })
                 ) {
-                    return undefined;
+                    return { modifiedSourceCode: sourceCode };
                 }
+            }
 
-                if (fileRelativePath === metaInfKeycloakThemesJsonRelativePath) {
-                    const keycloakThemesJsonParsed = JSON.parse(
-                        sourceCode.toString("utf8")
-                    ) as {
-                        themes: { name: string; types: string[] }[];
-                    };
+            return undefined;
+        };
 
-                    keycloakThemesJsonParsed.themes =
-                        keycloakThemesJsonParsed.themes.filter(
-                            ({ name }) => name !== accountV1ThemeName
-                        );
+        const transformCodebase_patchForUsingBuiltinAccountV1 =
+            keycloakAccountV1Version !== null
+                ? undefined
+                : (params: {
+                      fileRelativePath: string;
+                      sourceCode: Buffer;
+                  }): { modifiedSourceCode: Buffer } | undefined => {
+                      const { fileRelativePath, sourceCode } = params;
 
-                    return {
-                        modifiedSourceCode: Buffer.from(
-                            JSON.stringify(keycloakThemesJsonParsed, null, 2),
-                            "utf8"
-                        )
-                    };
-                }
+                      if (
+                          isInside({
+                              dirPath: pathJoin(
+                                  "src",
+                                  "main",
+                                  "resources",
+                                  "theme",
+                                  accountV1ThemeName
+                              ),
+                              filePath: fileRelativePath
+                          })
+                      ) {
+                          return undefined;
+                      }
 
-                for (const themeName of buildOptions.themeNames) {
-                    if (
-                        fileRelativePath ===
-                        pathJoin(
-                            "src",
-                            "main",
-                            "resources",
-                            "theme",
-                            themeName,
-                            "account",
-                            "theme.properties"
-                        )
-                    ) {
-                        const modifiedSourceCode = Buffer.from(
-                            sourceCode
-                                .toString("utf8")
-                                .replace(
-                                    `parent=${accountV1ThemeName}`,
-                                    "parent=keycloak"
-                                ),
-                            "utf8"
-                        );
+                      if (
+                          fileRelativePath ===
+                          getMetaInfKeycloakThemesJsonFilePath({
+                              keycloakifyBuildDirPath: "."
+                          })
+                      ) {
+                          const keycloakThemesJsonParsed = JSON.parse(
+                              sourceCode.toString("utf8")
+                          ) as {
+                              themes: { name: string; types: string[] }[];
+                          };
 
-                        assert(Buffer.compare(modifiedSourceCode, sourceCode) !== 0);
+                          keycloakThemesJsonParsed.themes =
+                              keycloakThemesJsonParsed.themes.filter(
+                                  ({ name }) => name !== accountV1ThemeName
+                              );
 
-                        return { modifiedSourceCode };
-                    }
-                }
+                          return {
+                              modifiedSourceCode: Buffer.from(
+                                  JSON.stringify(keycloakThemesJsonParsed, null, 2),
+                                  "utf8"
+                              )
+                          };
+                      }
 
-                return { modifiedSourceCode: sourceCode };
-            };
+                      for (const themeName of buildOptions.themeNames) {
+                          if (
+                              fileRelativePath ===
+                              pathJoin(
+                                  "src",
+                                  "main",
+                                  "resources",
+                                  "theme",
+                                  themeName,
+                                  "account",
+                                  "theme.properties"
+                              )
+                          ) {
+                              const modifiedSourceCode = Buffer.from(
+                                  sourceCode
+                                      .toString("utf8")
+                                      .replace(
+                                          `parent=${accountV1ThemeName}`,
+                                          "parent=keycloak"
+                                      ),
+                                  "utf8"
+                              );
 
-            return { transformCodebase_patchForUsingBuiltinAccountV1 };
-        })();
+                              assert(
+                                  Buffer.compare(modifiedSourceCode, sourceCode) !== 0
+                              );
 
-        console.log("Transforming codebase...");
-        const start = Date.now();
+                              return { modifiedSourceCode };
+                          }
+                      }
+
+                      return { modifiedSourceCode: sourceCode };
+                  };
 
         transformCodebase({
             srcDirPath: buildOptions.keycloakifyBuildDirPath,
@@ -182,26 +165,22 @@ export async function buildJar(params: {
             transformSourceCode: params => {
                 const resultCommon = transformCodebase_common(params);
 
-                if (resultCommon === undefined) {
-                    return undefined;
-                }
-
                 if (transformCodebase_patchForUsingBuiltinAccountV1 === undefined) {
                     return resultCommon;
                 }
 
-                const { modifiedSourceCode, newFileName } = resultCommon;
+                if (resultCommon === undefined) {
+                    return undefined;
+                }
 
-                assert(newFileName === undefined);
+                const { modifiedSourceCode } = resultCommon;
 
-                return transformCodebase_patchForUsingBuiltinAccountV1?.({
+                return transformCodebase_patchForUsingBuiltinAccountV1({
                     ...params,
                     sourceCode: modifiedSourceCode
                 });
             }
         });
-
-        console.log(`Transforming codebase done in ${Date.now() - start}ms`);
     }
 
     route_legacy_pages: {

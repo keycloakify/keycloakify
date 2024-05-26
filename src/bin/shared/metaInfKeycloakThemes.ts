@@ -12,7 +12,7 @@ export function getMetaInfKeycloakThemesJsonFilePath(params: {
     const { keycloakifyBuildDirPath } = params;
 
     return pathJoin(
-        keycloakifyBuildDirPath,
+        keycloakifyBuildDirPath === "." ? "" : keycloakifyBuildDirPath,
         "src",
         "main",
         "resources",
