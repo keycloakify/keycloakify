@@ -5,7 +5,6 @@ import fallbackMessages from "./baseMessages/en";
 import { getMessages } from "./baseMessages";
 import { assert } from "tsafe/assert";
 import type { KcContext } from "../kcContext/KcContext";
-import { Markdown } from "keycloakify/tools/Markdown";
 
 export const fallbackLanguageTag = "en";
 
@@ -133,8 +132,8 @@ function createI18nTranslationFunctions<MessageKey extends string>(params: {
 }): Pick<GenericI18n<MessageKey>, "msg" | "msgStr" | "advancedMsg" | "advancedMsgStr"> {
     const { fallbackMessages, messages } = params;
 
-    function resolveMsg(props: { key: string; args: (string | undefined)[]; doRenderMarkdown: boolean }): string | JSX.Element | undefined {
-        const { key, args, doRenderMarkdown } = props;
+    function resolveMsg(props: { key: string; args: (string | undefined)[]; doRenderAsHtml: boolean }): string | JSX.Element | undefined {
+        const { key, args, doRenderAsHtml } = props;
 
         const messageOrUndefined: string | undefined = (messages as any)[key] ?? (fallbackMessages as any)[key];
 
@@ -163,23 +162,29 @@ function createI18nTranslationFunctions<MessageKey extends string>(params: {
                     return;
                 }
 
-                messageWithArgsInjected = messageWithArgsInjected.replace(new RegExp(`\\{${i + startIndex}\\}`, "g"), arg);
+                messageWithArgsInjected = messageWithArgsInjected.replace(
+                    new RegExp(`\\{${i + startIndex}\\}`, "g"),
+                    arg.replace(/</g, "&lt;").replace(/>/g, "&gt;")
+                );
             });
 
             return messageWithArgsInjected;
         })();
 
-        return doRenderMarkdown ? (
-            <Markdown allowDangerousHtml renderers={{ paragraph: "span" }}>
-                {messageWithArgsInjectedIfAny}
-            </Markdown>
+        return doRenderAsHtml ? (
+            <span
+                // NOTE: The message is trusted. The arguments are not but are escaped.
+                dangerouslySetInnerHTML={{
+                    __html: messageWithArgsInjectedIfAny
+                }}
+            />
         ) : (
             messageWithArgsInjectedIfAny
         );
     }
 
-    function resolveMsgAdvanced(props: { key: string; args: (string | undefined)[]; doRenderMarkdown: boolean }): JSX.Element | string {
-        const { key, args, doRenderMarkdown } = props;
+    function resolveMsgAdvanced(props: { key: string; args: (string | undefined)[]; doRenderAsHtml: boolean }): JSX.Element | string {
+        const { key, args, doRenderAsHtml } = props;
 
         const match = key.match(/^\$\{([^{]+)\}$/);
 
@@ -188,26 +193,26 @@ function createI18nTranslationFunctions<MessageKey extends string>(params: {
         const out = resolveMsg({
             key: keyUnwrappedFromCurlyBraces,
             args,
-            doRenderMarkdown
+            doRenderAsHtml
         });
 
-        return (out !== undefined ? out : doRenderMarkdown ? <span>{keyUnwrappedFromCurlyBraces}</span> : keyUnwrappedFromCurlyBraces) as any;
+        return (out !== undefined ? out : doRenderAsHtml ? <span>{keyUnwrappedFromCurlyBraces}</span> : keyUnwrappedFromCurlyBraces) as any;
     }
 
     return {
-        msgStr: (key, ...args) => resolveMsg({ key, args, doRenderMarkdown: false }) as string,
-        msg: (key, ...args) => resolveMsg({ key, args, doRenderMarkdown: true }) as JSX.Element,
+        msgStr: (key, ...args) => resolveMsg({ key, args, doRenderAsHtml: false }) as string,
+        msg: (key, ...args) => resolveMsg({ key, args, doRenderAsHtml: true }) as JSX.Element,
         advancedMsg: (key, ...args) =>
             resolveMsgAdvanced({
                 key,
                 args,
-                doRenderMarkdown: true
+                doRenderAsHtml: true
             }) as JSX.Element,
         advancedMsgStr: (key, ...args) =>
             resolveMsgAdvanced({
                 key,
                 args,
-                doRenderMarkdown: false
+                doRenderAsHtml: false
             }) as string
     };
 }
