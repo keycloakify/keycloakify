@@ -2,11 +2,7 @@ import { readBuildOptions } from "../shared/buildOptions";
 import type { CliCommandOptions as CliCommandOptions_common } from "../main";
 import { promptKeycloakVersion } from "../shared/promptKeycloakVersion";
 import { readMetaInfKeycloakThemes } from "../shared/metaInfKeycloakThemes";
-import {
-    accountV1ThemeName,
-    skipBuildJarsEnvName,
-    containerName
-} from "../shared/constants";
+import { accountV1ThemeName, containerName } from "../shared/constants";
 import { SemVer } from "../tools/SemVer";
 import type { KeycloakVersionRange } from "../shared/KeycloakVersionRange";
 import { getJarFileBasename } from "../shared/getJarFileBasename";
@@ -18,11 +14,12 @@ import chalk from "chalk";
 import chokidar from "chokidar";
 import { waitForDebounceFactory } from "powerhooks/tools/waitForDebounce";
 import { getThisCodebaseRootDirPath } from "../tools/getThisCodebaseRootDirPath";
-import { Deferred } from "evt/tools/Deferred";
 import { getAbsoluteAndInOsFormatPath } from "../tools/getAbsoluteAndInOsFormatPath";
 import cliSelect from "cli-select";
 import * as runExclusive from "run-exclusive";
 import { extractArchive } from "../tools/extractArchive";
+import { appBuild } from "./appBuild";
+import { keycloakifyBuild } from "./keycloakifyBuild";
 
 export type CliCommandOptions = CliCommandOptions_common & {
     port: number;
@@ -85,18 +82,34 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     const buildOptions = readBuildOptions({ cliCommandOptions });
 
-    exit_if_theme_not_built: {
-        if (fs.existsSync(buildOptions.keycloakifyBuildDirPath)) {
-            break exit_if_theme_not_built;
+    {
+        const { isAppBuildSuccess } = await appBuild({
+            doSkipIfReactAppBuildDirExists: true,
+            buildOptions
+        });
+
+        if (!isAppBuildSuccess) {
+            console.log(
+                chalk.red(
+                    `App build failed, exiting. Try running 'yarn build-keycloak-theme' and see what's wrong.`
+                )
+            );
+            process.exit(1);
         }
 
-        console.log(
-            [
-                `${chalk.red("The theme has not been built.")}`,
-                `Please run ${chalk.bold("npx vite && npx keycloakify build")} first.`
-            ].join(" ")
-        );
-        process.exit(1);
+        const { isKeycloakifyBuildSuccess } = await keycloakifyBuild({
+            doSkipBuildJars: false,
+            buildOptions
+        });
+
+        if (!isKeycloakifyBuildSuccess) {
+            console.log(
+                chalk.red(
+                    `Keycloakify build failed, exiting. Try running 'yarn build-keycloak-theme' and see what's wrong.`
+                )
+            );
+            process.exit(1);
+        }
     }
 
     const metaInfKeycloakThemes = readMetaInfKeycloakThemes({
@@ -255,40 +268,65 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     const jarFilePath = pathJoin(buildOptions.keycloakifyBuildDirPath, jarFileBasename);
 
-    let doLinkAccountV1Theme = false;
+    const { doUseBuiltInAccountV1Theme } = await (async () => {
+        let doUseBuiltInAccountV1Theme = false;
 
-    await extractArchive({
-        archiveFilePath: jarFilePath,
-        onArchiveFile: async ({ relativeFilePathInArchive, readFile, writeFile }) => {
-            for (const themeName of buildOptions.themeNames) {
-                if (
-                    relativeFilePathInArchive ===
-                    pathJoin("theme", themeName, "account", "theme.properties")
-                ) {
+        await extractArchive({
+            archiveFilePath: jarFilePath,
+            onArchiveFile: async ({ relativeFilePathInArchive, readFile, earlyExit }) => {
+                for (const themeName of buildOptions.themeNames) {
                     if (
-                        (await readFile())
-                            .toString("utf8")
-                            .includes(`parent=${accountV1ThemeName}`)
+                        relativeFilePathInArchive ===
+                        pathJoin("theme", themeName, "account", "theme.properties")
                     ) {
-                        doLinkAccountV1Theme = true;
-                    }
+                        if (
+                            (await readFile())
+                                .toString("utf8")
+                                .includes(`parent=keycloak`)
+                        ) {
+                            doUseBuiltInAccountV1Theme = true;
+                        }
 
-                    await writeFile({
-                        filePath: pathJoin(
-                            buildOptions.keycloakifyBuildDirPath,
-                            "src",
-                            "main",
-                            "resources",
-                            "theme",
-                            themeName,
-                            "account",
-                            "theme.properties"
-                        )
-                    });
+                        earlyExit();
+                    }
                 }
             }
-        }
-    });
+        });
+
+        return { doUseBuiltInAccountV1Theme };
+    })();
+
+    const accountThemePropertyPatch = !doUseBuiltInAccountV1Theme
+        ? undefined
+        : () => {
+              for (const themeName of buildOptions.themeNames) {
+                  const filePath = pathJoin(
+                      buildOptions.keycloakifyBuildDirPath,
+                      "src",
+                      "main",
+                      "resources",
+                      "theme",
+                      themeName,
+                      "account",
+                      "theme.properties"
+                  );
+
+                  const sourceCode = fs.readFileSync(filePath);
+
+                  const modifiedSourceCode = Buffer.from(
+                      sourceCode
+                          .toString("utf8")
+                          .replace(`parent=${accountV1ThemeName}`, "parent=keycloak"),
+                      "utf8"
+                  );
+
+                  assert(Buffer.compare(modifiedSourceCode, sourceCode) !== 0);
+
+                  fs.writeFileSync(filePath, modifiedSourceCode);
+              }
+          };
+
+    accountThemePropertyPatch?.();
 
     const spawnArgs = [
         "docker",
@@ -389,67 +427,30 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     }
 
     {
-        const runBuildKeycloakTheme = runExclusive.build(async () => {
+        const runFullBuild = runExclusive.build(async () => {
             console.log(chalk.cyan("Detected changes in the theme. Rebuilding ..."));
 
-            {
-                const dResult = new Deferred<{ isSuccess: boolean }>();
+            const { isAppBuildSuccess } = await appBuild({
+                doSkipIfReactAppBuildDirExists: false,
+                buildOptions
+            });
 
-                const child = child_process.spawn("npx", ["vite", "build"], {
-                    cwd: buildOptions.reactAppRootDirPath
-                });
-
-                child.stdout.on("data", data => {
-                    if (data.toString("utf8").includes("gzip:")) {
-                        return;
-                    }
-
-                    process.stdout.write(data);
-                });
-
-                child.stderr.on("data", data => process.stderr.write(data));
-
-                child.on("exit", code => dResult.resolve({ isSuccess: code === 0 }));
-
-                const { isSuccess } = await dResult.pr;
-
-                if (!isSuccess) {
-                    return;
-                }
+            if (!isAppBuildSuccess) {
+                return;
             }
 
-            {
-                const dResult = new Deferred<{ isSuccess: boolean }>();
+            const { isKeycloakifyBuildSuccess } = await keycloakifyBuild({
+                doSkipBuildJars: true,
+                buildOptions
+            });
 
-                const child = child_process.spawn("npx", ["keycloakify", "build"], {
-                    cwd: buildOptions.reactAppRootDirPath,
-                    env: {
-                        ...process.env,
-                        [skipBuildJarsEnvName]: "true"
-                    }
-                });
-
-                child.stdout.on("data", data => process.stdout.write(data));
-
-                child.stderr.on("data", data => process.stderr.write(data));
-
-                child.on("exit", code => {
-                    if (code !== 0) {
-                        console.log(chalk.yellow("Theme not updated, build failed"));
-                        return;
-                    }
-
-                    console.log(chalk.green("Rebuild done"));
-                });
-
-                child.on("exit", code => dResult.resolve({ isSuccess: code === 0 }));
-
-                const { isSuccess } = await dResult.pr;
-
-                if (!isSuccess) {
-                    return;
-                }
+            if (!isKeycloakifyBuildSuccess) {
+                return;
             }
+
+            accountThemePropertyPatch?.();
+
+            console.log(chalk.green("Theme rebuilt and updated in Keycloak."));
         });
 
         const { waitForDebounce } = waitForDebounceFactory({ delay: 400 });
@@ -461,7 +462,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             .on("all", async () => {
                 await waitForDebounce();
 
-                runBuildKeycloakTheme();
+                runFullBuild();
             });
     }
 }

@@ -1,6 +1,5 @@
 import { skipBuildJarsEnvName } from "../shared/constants";
 import * as child_process from "child_process";
-import chalk from "chalk";
 import { Deferred } from "evt/tools/Deferred";
 import { assert } from "tsafe/assert";
 import type { BuildOptions } from "../shared/buildOptions";
@@ -33,15 +32,6 @@ export async function keycloakifyBuild(params: {
     child.stdout.on("data", data => process.stdout.write(data));
 
     child.stderr.on("data", data => process.stderr.write(data));
-
-    child.on("exit", code => {
-        if (code !== 0) {
-            console.log(chalk.yellow("Theme not updated, build failed"));
-            return;
-        }
-
-        console.log(chalk.green("Rebuild done"));
-    });
 
     child.on("exit", code => dResult.resolve({ isSuccess: code === 0 }));
 

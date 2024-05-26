@@ -11,6 +11,7 @@ export async function extractArchive(params: {
         relativeFilePathInArchive: string;
         readFile: () => Promise<Buffer>;
         writeFile: (params: { filePath: string; modifiedData?: Buffer }) => Promise<void>;
+        earlyExit: () => void;
     }) => Promise<void>;
 }) {
     const { archiveFilePath, onArchiveFile } = params;
@@ -107,7 +108,11 @@ export async function extractArchive(params: {
             await onArchiveFile({
                 relativeFilePathInArchive: entry.fileName.split("/").join(pathSep),
                 readFile: () => readFile(entry),
-                writeFile: params => writeFile(entry, params)
+                writeFile: params => writeFile(entry, params),
+                earlyExit: () => {
+                    zipFile.close();
+                    dDone.resolve();
+                }
             });
         }
 
