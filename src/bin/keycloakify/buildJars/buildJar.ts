@@ -98,20 +98,6 @@ export async function buildJar(params: {
                 };
             }
 
-            const themePropertiesFileRelativePathSet = new Set(
-                buildOptions.themeNames.map(themeName =>
-                    pathJoin(
-                        "src",
-                        "main",
-                        "resources",
-                        "theme",
-                        themeName,
-                        "account",
-                        "theme.properties"
-                    )
-                )
-            );
-
             const accountV1RelativeDirPath = pathJoin(
                 "src",
                 "main",
@@ -152,17 +138,33 @@ export async function buildJar(params: {
                     };
                 }
 
-                if (themePropertiesFileRelativePathSet.has(fileRelativePath)) {
-                    const modifiedSourceCode = Buffer.from(
-                        sourceCode
-                            .toString("utf8")
-                            .replace(`parent=${accountV1ThemeName}`, "parent=keycloak"),
-                        "utf8"
-                    );
+                for (const themeName of buildOptions.themeNames) {
+                    if (
+                        fileRelativePath ===
+                        pathJoin(
+                            "src",
+                            "main",
+                            "resources",
+                            "theme",
+                            themeName,
+                            "account",
+                            "theme.properties"
+                        )
+                    ) {
+                        const modifiedSourceCode = Buffer.from(
+                            sourceCode
+                                .toString("utf8")
+                                .replace(
+                                    `parent=${accountV1ThemeName}`,
+                                    "parent=keycloak"
+                                ),
+                            "utf8"
+                        );
 
-                    assert(Buffer.compare(modifiedSourceCode, sourceCode) !== 0);
+                        assert(Buffer.compare(modifiedSourceCode, sourceCode) !== 0);
 
-                    return { modifiedSourceCode };
+                        return { modifiedSourceCode };
+                    }
                 }
 
                 return { modifiedSourceCode: sourceCode };
@@ -170,6 +172,9 @@ export async function buildJar(params: {
 
             return { transformCodebase_patchForUsingBuiltinAccountV1 };
         })();
+
+        console.log("Transforming codebase...");
+        const start = Date.now();
 
         transformCodebase({
             srcDirPath: buildOptions.keycloakifyBuildDirPath,
@@ -195,6 +200,8 @@ export async function buildJar(params: {
                 });
             }
         });
+
+        console.log(`Transforming codebase done in ${Date.now() - start}ms`);
     }
 
     route_legacy_pages: {
