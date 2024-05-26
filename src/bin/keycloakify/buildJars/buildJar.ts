@@ -99,7 +99,7 @@ export async function buildJar(params: {
             }
 
             const themePropertiesFileRelativePathSet = new Set(
-                ...buildOptions.themeNames.map(themeName =>
+                buildOptions.themeNames.map(themeName =>
                     pathJoin(
                         "src",
                         "main",
@@ -160,7 +160,6 @@ export async function buildJar(params: {
                         "utf8"
                     );
 
-                    // assert modifiedSourceCode !== sourceCode
                     assert(Buffer.compare(modifiedSourceCode, sourceCode) !== 0);
 
                     return { modifiedSourceCode };
