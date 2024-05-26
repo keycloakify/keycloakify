@@ -105,15 +105,22 @@ export async function extractArchive(params: {
                 break handle_file;
             }
 
+            let hasEarlyExitBeenCalled = false;
+
             await onArchiveFile({
                 relativeFilePathInArchive: entry.fileName.split("/").join(pathSep),
                 readFile: () => readFile(entry),
                 writeFile: params => writeFile(entry, params),
                 earlyExit: () => {
-                    zipFile.close();
-                    dDone.resolve();
+                    hasEarlyExitBeenCalled = true;
                 }
             });
+
+            if (hasEarlyExitBeenCalled) {
+                zipFile.close();
+                dDone.resolve();
+                return;
+            }
         }
 
         zipFile.readEntry();
