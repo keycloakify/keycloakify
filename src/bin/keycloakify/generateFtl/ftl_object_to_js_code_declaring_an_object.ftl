@@ -2,8 +2,6 @@
 (()=>{
 <#assign pageId="PAGE_ID_xIgLsPgGId9D8e">
 const out = ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
-out["msg"]= function(){ throw new Error("use import { useKcMessage } from 'keycloakify'"); };
-out["advancedMsg"]= function(){ throw new Error("use import { useKcMessage } from 'keycloakify'"); };
 out["messagesPerField"]= {
     <#assign fieldNames = [ FIELD_NAMES_eKsIY4ZsZ4xeM ]>
     <#attempt>
@@ -180,6 +178,26 @@ out["pageId"] = "${pageId}";
 try {
     out["url"]["resourcesCommonPath"] = out["url"]["resourcesPath"] + "/" + "RESOURCES_COMMON_cLsLsMrtDkpVv";
 } catch(error) { }
+
+<#if profile?? && profile.attributes??>
+    out["__localizationReamlOverrides_userProfile"] = {
+        <#list profile.attributes as attribute>
+            <#if attribute.annotations?? && attribute.displayName??>
+                "${attribute.displayName}xx": "${advancedMsg(attribute.displayName)?no_esc}",
+            </#if>
+            <#if attribute.annotations.inputHelperTextBefore??>
+                "${attribute.annotations.inputHelperTextBefore}": "${advancedMsg(attribute.annotations.inputHelperTextBefore)?no_esc}",
+            </#if>
+            <#if attribute.annotations.inputHelperTextAfter??>
+                "${attribute.annotations.inputHelperTextAfter}": "${advancedMsg(attribute.annotations.inputHelperTextAfter)?no_esc}",
+            </#if>
+            <#if attribute.annotations.inputTypePlaceholder??>
+                "${attribute.annotations.inputTypePlaceholder}": "${advancedMsg(attribute.annotations.inputTypePlaceholder)?no_esc}",
+            </#if>
+        </#list>
+    };
+</#if>
+
 
 return out;
 
