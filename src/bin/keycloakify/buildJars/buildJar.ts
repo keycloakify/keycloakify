@@ -272,7 +272,7 @@ export async function buildJar(params: {
 
     await new Promise<void>((resolve, reject) =>
         child_process.exec(
-            "mvn clean install",
+            `mvn clean install -Dmaven.repo.local=${pathJoin(keycloakifyBuildTmpDirPath, ".m2")}`,
             { cwd: keycloakifyBuildTmpDirPath },
             error => {
                 if (error !== null) {
