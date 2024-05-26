@@ -401,20 +401,21 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             console.log(
                 [
                     "",
-                    `${chalk.green("Your theme is accessible at:")}`,
-                    `${chalk.green("➜")} ${chalk.cyan.bold(
-                        "https://my-theme.keycloakify.dev/"
-                    )}`,
-                    "",
-                    "You can login with the following credentials:",
-                    `- username: ${chalk.cyan.bold("testuser")}`,
-                    `- password: ${chalk.cyan.bold("password123")}`,
-                    "",
                     `Keycloak Admin console: ${chalk.cyan.bold(
                         `http://localhost:${cliCommandOptions.port}`
                     )}`,
                     `- user:     ${chalk.cyan.bold("admin")}`,
                     `- password: ${chalk.cyan.bold("admin")}`,
+                    "",
+                    "",
+                    `${chalk.green("Your theme is accessible at:")}`,
+                    `${chalk.green("➜")} ${chalk.cyan.bold(
+                        `https://my-theme.keycloakify.dev${cliCommandOptions.port === 8080 ? "" : `?port=${cliCommandOptions.port}`}`
+                    )}`,
+                    "",
+                    "You can login with the following credentials:",
+                    `- username: ${chalk.cyan.bold("testuser")}`,
+                    `- password: ${chalk.cyan.bold("password123")}`,
                     "",
                     `Watching for changes in ${chalk.bold(
                         `.${pathSep}${pathRelative(process.cwd(), srcDirPath)}`
