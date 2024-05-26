@@ -282,7 +282,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                         if (
                             (await readFile())
                                 .toString("utf8")
-                                .includes(`parent=keycloak`)
+                                .includes("parent=keycloak")
                         ) {
                             doUseBuiltInAccountV1Theme = true;
                         }
@@ -348,7 +348,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                 : []),
             ...[
                 ...buildOptions.themeNames,
-                ...(doLinkAccountV1Theme ? [accountV1ThemeName] : [])
+                ...(doUseBuiltInAccountV1Theme ? [] : [accountV1ThemeName])
             ]
                 .map(themeName => ({
                     localDirPath: pathJoin(
