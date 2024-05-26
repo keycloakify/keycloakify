@@ -4,11 +4,13 @@ import { fallbackLanguageTag } from "keycloakify/login/i18n/i18n";
 import { useConst } from "keycloakify/tools/useConst";
 import { useConstCallback } from "keycloakify/tools/useConstCallback";
 import { assert } from "tsafe/assert";
-import { Evt } from "evt";
-import { useRerenderOnStateChange } from "evt/hooks/useRerenderOnStateChange";
+import {
+    createStatefulObservable,
+    useRerenderOnChange
+} from "keycloakify/tools/StatefulObservable";
 import { KcContext } from "../kcContext";
 
-const evtTermsMarkdown = Evt.create<string | undefined>(undefined);
+const obsTermsMarkdown = createStatefulObservable<string | undefined>(() => undefined);
 
 export type KcContextLike = {
     pageId: string;
@@ -45,15 +47,15 @@ export function useDownloadTerms(params: {
         if (kcContext.pageId === "terms.ftl" || kcContext.termsAcceptanceRequired) {
             downloadTermMarkdownMemoized(
                 kcContext.locale?.currentLanguageTag ?? fallbackLanguageTag
-            ).then(thermMarkdown => (evtTermsMarkdown.state = thermMarkdown));
+            ).then(thermMarkdown => (obsTermsMarkdown.current = thermMarkdown));
         }
     }, []);
 }
 
 export function useTermsMarkdown() {
-    useRerenderOnStateChange(evtTermsMarkdown);
+    useRerenderOnChange(obsTermsMarkdown);
 
-    const termsMarkdown = evtTermsMarkdown.state;
+    const termsMarkdown = obsTermsMarkdown.current;
 
     return { termsMarkdown };
 }
