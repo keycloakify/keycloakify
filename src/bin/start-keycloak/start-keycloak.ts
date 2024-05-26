@@ -204,12 +204,6 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     console.log(`Using Keycloak ${chalk.bold(jarFileBasename)}`);
 
-    try {
-        child_process.execSync(`docker rm --force ${containerName}`, {
-            stdio: "ignore"
-        });
-    } catch {}
-
     const realmJsonFilePath = await (async () => {
         if (cliCommandOptions.realmJsonFilePath !== undefined) {
             console.log(
@@ -327,6 +321,12 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
           };
 
     accountThemePropertyPatch?.();
+
+    try {
+        child_process.execSync(`docker rm --force ${containerName}`, {
+            stdio: "ignore"
+        });
+    } catch {}
 
     const spawnArgs = [
         "docker",

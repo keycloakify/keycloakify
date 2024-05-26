@@ -25,7 +25,7 @@ export async function keycloakifyBuild(params: {
         cwd: buildOptions.reactAppRootDirPath,
         env: {
             ...process.env,
-            ...(doSkipBuildJars ? {} : { [skipBuildJarsEnvName]: "true" })
+            ...(doSkipBuildJars ? { [skipBuildJarsEnvName]: "true" } : {})
         }
     });
 
