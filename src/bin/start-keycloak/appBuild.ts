@@ -17,17 +17,9 @@ export type BuildOptionsLike = {
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
 
 export async function appBuild(params: {
-    doSkipIfReactAppBuildDirExists: boolean;
     buildOptions: BuildOptionsLike;
 }): Promise<{ isAppBuildSuccess: boolean }> {
-    const { doSkipIfReactAppBuildDirExists, buildOptions } = params;
-
-    if (
-        doSkipIfReactAppBuildDirExists &&
-        fs.existsSync(buildOptions.reactAppBuildDirPath)
-    ) {
-        return { isAppBuildSuccess: true };
-    }
+    const { buildOptions } = params;
 
     const { bundler } = buildOptions;
 

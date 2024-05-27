@@ -84,7 +84,6 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     {
         const { isAppBuildSuccess } = await appBuild({
-            doSkipIfReactAppBuildDirExists: true,
             buildOptions
         });
 
@@ -432,7 +431,6 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             console.log(chalk.cyan("Detected changes in the theme. Rebuilding ..."));
 
             const { isAppBuildSuccess } = await appBuild({
-                doSkipIfReactAppBuildDirExists: false,
                 buildOptions
             });
 
