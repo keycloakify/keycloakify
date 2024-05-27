@@ -3,7 +3,6 @@ import type { PageProps } from "keycloakify/account/pages/PageProps";
 import { useGetClassName } from "keycloakify/account/lib/useGetClassName";
 import type { KcContext } from "../kcContext";
 import type { I18n } from "../i18n";
-import { MessageKey } from "keycloakify/account/i18n/i18n";
 
 export default function Totp(props: PageProps<Extract<KcContext, { pageId: "totp.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
@@ -15,7 +14,7 @@ export default function Totp(props: PageProps<Extract<KcContext, { pageId: "totp
 
     const { totp, mode, url, messagesPerField, stateChecker } = kcContext;
 
-    const { msg, msgStr } = i18n;
+    const { msg, msgStr, advancedMsg } = i18n;
 
     const algToKeyUriAlg: Record<(typeof kcContext)["totp"]["policy"]["algorithm"], string> = {
         HmacSHA1: "SHA1",
@@ -78,9 +77,7 @@ export default function Totp(props: PageProps<Extract<KcContext, { pageId: "totp
                             <li>
                                 <p>{msg("totpStep1")}</p>
 
-                                <ul id="kc-totp-supported-apps">
-                                    {totp.supportedApplications?.map(app => <li key={app}>{msg(app as MessageKey)}</li>)}
-                                </ul>
+                                <ul id="kc-totp-supported-apps">{totp.supportedApplications?.map(app => <li key={app}>{advancedMsg(app)}</li>)}</ul>
                             </li>
 
                             {mode && mode == "manual" ? (

@@ -1,6 +1,5 @@
 import { useEffect, Fragment } from "react";
 import { clsx } from "keycloakify/tools/clsx";
-import type { MessageKey } from "keycloakify/login/i18n/i18n";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import { assert } from "tsafe/assert";
@@ -29,7 +28,7 @@ export default function WebauthnAuthenticate(props: PageProps<Extract<KcContext,
         shouldDisplayAuthenticators
     } = kcContext;
 
-    const { msg, msgStr } = i18n;
+    const { msg, msgStr, advancedMsg } = i18n;
 
     const { insertScriptTags } = useInsertScriptTags({
         scriptTags: [
@@ -198,7 +197,7 @@ export default function WebauthnAuthenticate(props: PageProps<Extract<KcContext,
                                                         id="kc-webauthn-authenticator-label"
                                                         className={getClassName("kcSelectAuthListItemHeadingClass")}
                                                     >
-                                                        {msg(authenticator.label as MessageKey)}
+                                                        {advancedMsg(authenticator.label)}
                                                     </div>
                                                     {authenticator.transports.displayNameProperties?.length && (
                                                         <div

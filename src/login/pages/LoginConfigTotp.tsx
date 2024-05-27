@@ -3,7 +3,6 @@ import type { PageProps } from "keycloakify/login/pages/PageProps";
 import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import type { KcContext } from "../kcContext";
 import type { I18n } from "../i18n";
-import { MessageKey } from "keycloakify/login/i18n/i18n";
 
 export default function LoginConfigTotp(props: PageProps<Extract<KcContext, { pageId: "login-config-totp.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
@@ -15,7 +14,7 @@ export default function LoginConfigTotp(props: PageProps<Extract<KcContext, { pa
 
     const { url, isAppInitiatedAction, totp, mode, messagesPerField } = kcContext;
 
-    const { msg, msgStr } = i18n;
+    const { msg, msgStr, advancedMsg } = i18n;
 
     return (
         <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} headerNode={msg("loginTotpTitle")}>
@@ -26,7 +25,7 @@ export default function LoginConfigTotp(props: PageProps<Extract<KcContext, { pa
 
                         <ul id="kc-totp-supported-apps">
                             {totp.supportedApplications.map(app => (
-                                <li>{msg(app as MessageKey)}</li>
+                                <li>{advancedMsg(app)}</li>
                             ))}
                         </ul>
                     </li>

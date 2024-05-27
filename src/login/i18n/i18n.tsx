@@ -52,16 +52,31 @@ export type GenericI18n<MessageKey extends string> = {
      */
     msgStr: (key: MessageKey, ...args: (string | undefined)[]) => string;
     /**
+     * This is meant to be used when the key argument is variable, something that might have been configured by the user
+     * in the Keycloak admin for example.
+     *
      * Examples assuming currentLanguageTag === "en"
-     * advancedMsg("${access-denied} foo bar") === <span>${msgStr("access-denied")} foo bar<span> === <span>Access denied foo bar</span>
+     * {
+     *   en: {
+     *     "access-denied": "Access denied",
+     *     "foo": "Foo {0} {1}",
+     *     "bar": "Bar {0}"
+     *   }
+     * }
+     *
+     * advancedMsg("${access-denied} foo bar") === <span>{msgStr("access-denied")} foo bar<span> === <span>Access denied foo bar</span>
      * advancedMsg("${access-denied}") === advancedMsg("access-denied") === msg("access-denied") === <span>Access denied</span>
      * advancedMsg("${not-a-message-key}") === advancedMsg(not-a-message-key") === <span>not-a-message-key</span>
+     * advancedMsg("${bar}", "<strong>c</strong>")
+     *    === <span>{msgStr("bar", "<strong>XXX</strong>")}<span>
+     *    === <span>Bar &lt;strong&gt;XXX&lt;/strong&gt;</span> (The html in the arg is partially escaped for security reasons, it might be untrusted)
+     * advancedMsg("${foo} xx ${bar}", "a", "b", "c")
+     *    === <span>{msgStr("foo", "a", "b")} xx {msgStr("bar")}<span>
+     *    === <span>Foo a b xx Bar {0}</span> (The substitution are only applied in the first message)
      */
     advancedMsg: (key: string, ...args: (string | undefined)[]) => JSX.Element;
     /**
-     * Examples assuming currentLanguageTag === "en"
-     * advancedMsg("${access-denied} foo bar") === msg("access-denied") + " foo bar" === "Access denied foo bar"
-     * advancedMsg("${not-a-message-key}") === advancedMsg("not-a-message-key") === "not-a-message-key"
+     * See advancedMsg() but instead of returning a JSX.Element it returns a string.
      */
     advancedMsgStr: (key: string, ...args: (string | undefined)[]) => string;
 };
@@ -132,7 +147,7 @@ function createI18nTranslationFunctions<MessageKey extends string>(params: {
     messages: Record<MessageKey, string>;
     __localizationRealmOverridesUserProfile: Record<string, string>;
 }): Pick<GenericI18n<MessageKey>, "msg" | "msgStr" | "advancedMsg" | "advancedMsgStr"> {
-    const { fallbackMessages, messages /*__localizationRealmOverridesUserProfile*/ } = params;
+    const { fallbackMessages, messages, __localizationRealmOverridesUserProfile } = params;
 
     function resolveMsg(props: { key: string; args: (string | undefined)[]; doRenderAsHtml: boolean }): string | JSX.Element | undefined {
         const { key, args, doRenderAsHtml } = props;
@@ -188,26 +203,42 @@ function createI18nTranslationFunctions<MessageKey extends string>(params: {
     function resolveMsgAdvanced(props: { key: string; args: (string | undefined)[]; doRenderAsHtml: boolean }): JSX.Element | string {
         const { key, args, doRenderAsHtml } = props;
 
-        // TODO:
-        /*
-        if( key in __localizationRealmOverridesUserProfile ){
+        if (key in __localizationRealmOverridesUserProfile) {
+            const resolvedMessage = __localizationRealmOverridesUserProfile[key];
 
-
-
+            return doRenderAsHtml ? (
+                <span
+                    // NOTE: The message is trusted. The arguments are not but are escaped.
+                    dangerouslySetInnerHTML={{
+                        __html: resolvedMessage
+                    }}
+                />
+            ) : (
+                resolvedMessage
+            );
         }
-        */
 
-        const match = key.match(/^\$\{([^{]+)\}$/);
+        if (!/\$\{[^}]+\}/.test(key)) {
+            const resolvedMessage = resolveMsg({ key, args, doRenderAsHtml });
 
-        const keyUnwrappedFromCurlyBraces = match === null ? key : match[1];
+            if (resolvedMessage === undefined) {
+                return doRenderAsHtml ? <span dangerouslySetInnerHTML={{ __html: key }} /> : key;
+            }
 
-        const out = resolveMsg({
-            key: keyUnwrappedFromCurlyBraces,
-            args,
-            doRenderAsHtml
+            return resolvedMessage;
+        }
+
+        let isFirstMatch = true;
+
+        const resolvedComplexMessage = key.replace(/\$\{([^}]+)\}/g, (...[, key_i]) => {
+            const replaceBy = resolveMsg({ key: key_i, args: isFirstMatch ? args : [], doRenderAsHtml: false }) ?? key_i;
+
+            isFirstMatch = false;
+
+            return replaceBy;
         });
 
-        return (out !== undefined ? out : doRenderAsHtml ? <span>{keyUnwrappedFromCurlyBraces}</span> : keyUnwrappedFromCurlyBraces) as any;
+        return doRenderAsHtml ? <span dangerouslySetInnerHTML={{ __html: resolvedComplexMessage }} /> : resolvedComplexMessage;
     }
 
     return {
