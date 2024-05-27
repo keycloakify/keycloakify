@@ -82,6 +82,15 @@ export async function appBuild(params: {
                                     ) {
                                         return true;
                                     }
+
+                                    if (
+                                        scriptValue.includes("ng") &&
+                                        scriptValue.includes("build")
+                                    ) {
+                                        return true;
+                                    }
+
+                                    return false;
                                 }
                             ) ?? [];
 
