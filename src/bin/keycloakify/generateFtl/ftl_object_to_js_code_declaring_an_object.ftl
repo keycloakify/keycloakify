@@ -266,29 +266,30 @@ function decodeHtmlEntities(htmlStr){
                         !["name", "displayName", "displayNameHtml", "internationalizationEnabled", "registrationEmailAsUsername" ]?seq_contains(key)
                     ) || (
                         "applications.ftl" == pageId &&
-                        is_subpath(path, ["applications", "applications"]) &&
                         ( 
                             key == "realm" || 
                             key == "container" 
-                        )
+                        ) &&
+                        is_subpath(path, ["applications", "applications"])
                     ) || (
-                        are_same_path(path, ["user"]) &&
-                        key == "delegateForUpdate"
+                        key == "delegateForUpdate" &&
+                        are_same_path(path, ["user"])
                     ) || (
                         <#-- Security audit forwarded by Garth (Gmail) -->
-                        are_same_path(path, ["client", "attributes"]) &&
-                        key == "saml.signing.private.key"
+                        key == "saml.signing.private.key" &&
+                        are_same_path(path, ["client", "attributes"])
                     ) || (
                         <#-- See: https://github.com/keycloakify/keycloakify/issues/534 -->
-                        are_same_path(path, ["login"]) &&
-                        key == "password"
+                        key == "password" &&
+                        are_same_path(path, ["login"])
                     ) || (
                         <#-- Remove realmAttributes added by https://github.com/jcputney/keycloak-theme-additional-info-extension for peace of mind. -->
-                        are_same_path(path, []) &&
-                        key == "realmAttributes"
+                        key == "realmAttributes" &&
+                        are_same_path(path, [])
                     ) || (
                         <#-- attributesByName adds a lot of noise to the output and is not needed -->
-                        are_same_path(path, ["profile"]) && key == "attributesByName"
+                        key == "attributesByName" &&
+                        are_same_path(path, ["profile"])
                     )
                 >
                     <#local out_seq += ["/*" + path?join(".") + "." + key + " excluded*/"]>
