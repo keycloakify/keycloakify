@@ -4,12 +4,14 @@ import yauzl from "yauzl";
 import stream from "stream";
 import { Deferred } from "evt/tools/Deferred";
 import { dirname as pathDirname, sep as pathSep } from "path";
+import { existsAsync } from "./fs.existsAsync";
 
 export async function extractArchive(params: {
     archiveFilePath: string;
     onArchiveFile: (params: {
         relativeFilePathInArchive: string;
         readFile: () => Promise<Buffer>;
+        /** NOTE: Will create the directory if it does not exist */
         writeFile: (params: { filePath: string; modifiedData?: Buffer }) => Promise<void>;
         earlyExit: () => void;
     }) => Promise<void>;
@@ -42,7 +44,13 @@ export async function extractArchive(params: {
     ): Promise<void> => {
         const { filePath, modifiedData } = params;
 
-        await fs.mkdir(pathDirname(filePath), { recursive: true });
+        {
+            const dirPath = pathDirname(filePath);
+
+            if (!(await existsAsync(dirPath))) {
+                await fs.mkdir(dirPath, { recursive: true });
+            }
+        }
 
         if (modifiedData !== undefined) {
             await fs.writeFile(filePath, modifiedData);
