@@ -289,7 +289,13 @@ function decodeHtmlEntities(htmlStr){
                     ) || (
                         <#-- attributesByName adds a lot of noise to the output and is not needed -->
                         key == "attributesByName" &&
-                        are_same_path(path, ["profile"])
+                        (
+                            are_same_path(path, ["profile"]) || 
+                            are_same_path(path, ["register"])
+                        )
+                    ) || (
+                        key == "attributes" &&
+                        are_same_path(path, ["register"])
                     )
                 >
                     <#local out_seq += ["/*" + path?join(".") + "." + key + " excluded*/"]>
