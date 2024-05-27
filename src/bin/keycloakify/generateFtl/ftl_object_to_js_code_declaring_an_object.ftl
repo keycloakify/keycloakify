@@ -193,7 +193,7 @@ function decodeHtmlEntities(htmlStr){
         decodeHtmlEntities.element = element;
     }
     element.innerHTML = htmlStr;
-    return textarea.value;
+    return element.value;
 }
 
 })();

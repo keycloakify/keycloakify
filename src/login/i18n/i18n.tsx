@@ -12,7 +12,7 @@ export type KcContextLike = {
         currentLanguageTag: string;
         supported: { languageTag: string; url: string; label: string }[];
     };
-    __localizationRealmOverridesUserProfile: Record<string, string>;
+    __localizationRealmOverridesUserProfile?: Record<string, string>;
 };
 
 assert<KcContext extends KcContextLike ? true : false>();
@@ -145,7 +145,7 @@ export function createUseI18n<ExtraMessageKey extends string = never>(extraMessa
 function createI18nTranslationFunctions<MessageKey extends string>(params: {
     fallbackMessages: Record<MessageKey, string>;
     messages: Record<MessageKey, string>;
-    __localizationRealmOverridesUserProfile: Record<string, string>;
+    __localizationRealmOverridesUserProfile: Record<string, string> | undefined;
 }): Pick<GenericI18n<MessageKey>, "msg" | "msgStr" | "advancedMsg" | "advancedMsgStr"> {
     const { fallbackMessages, messages, __localizationRealmOverridesUserProfile } = params;
 
@@ -203,7 +203,7 @@ function createI18nTranslationFunctions<MessageKey extends string>(params: {
     function resolveMsgAdvanced(props: { key: string; args: (string | undefined)[]; doRenderAsHtml: boolean }): JSX.Element | string {
         const { key, args, doRenderAsHtml } = props;
 
-        if (key in __localizationRealmOverridesUserProfile) {
+        if (__localizationRealmOverridesUserProfile !== undefined && key in __localizationRealmOverridesUserProfile) {
             const resolvedMessage = __localizationRealmOverridesUserProfile[key];
 
             return doRenderAsHtml ? (

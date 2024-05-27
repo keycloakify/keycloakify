@@ -144,7 +144,7 @@ export declare namespace KcContext {
             tabId: string;
             ssoLoginInOtherTabsUrl: string;
         };
-        __localizationRealmOverridesUserProfile: Record<string, string>;
+        __localizationRealmOverridesUserProfile?: Record<string, string>;
     };
 
     export type SamlPostForm = Common & {
@@ -757,9 +757,8 @@ export type PasswordPolicies = {
 };
 
 assert<
-    KcContext.Common extends Record<
-        typeof nameOfTheLocalizationRealmOverridesUserProfileProperty,
-        unknown
+    KcContext.Common extends Partial<
+        Record<typeof nameOfTheLocalizationRealmOverridesUserProfileProperty, unknown>
     >
         ? true
         : false
