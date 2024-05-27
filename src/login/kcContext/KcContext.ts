@@ -1,4 +1,8 @@
-import type { ThemeType, LoginThemePageId } from "keycloakify/bin/shared/constants";
+import type {
+    ThemeType,
+    LoginThemePageId,
+    nameOfTheLocalizationRealmOverridesUserProfileProperty
+} from "keycloakify/bin/shared/constants";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
 import type { MessageKey } from "../i18n/i18n";
@@ -140,6 +144,7 @@ export declare namespace KcContext {
             tabId: string;
             ssoLoginInOtherTabsUrl: string;
         };
+        __localizationRealmOverridesUserProfile: Record<string, string>;
     };
 
     export type SamlPostForm = Common & {
@@ -750,3 +755,12 @@ export type PasswordPolicies = {
     /** Whether the password can be the email address */
     notEmail?: boolean;
 };
+
+assert<
+    KcContext.Common extends Record<
+        typeof nameOfTheLocalizationRealmOverridesUserProfileProperty,
+        unknown
+    >
+        ? true
+        : false
+>();

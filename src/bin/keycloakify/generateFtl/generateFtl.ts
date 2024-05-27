@@ -10,7 +10,8 @@ import {
     type ThemeType,
     nameOfTheGlobal,
     basenameOfTheKeycloakifyResourcesDir,
-    resources_common
+    resources_common,
+    nameOfTheLocalizationRealmOverridesUserProfileProperty
 } from "../../shared/constants";
 import { getThisCodebaseRootDirPath } from "../../tools/getThisCodebaseRootDirPath";
 
@@ -135,8 +136,11 @@ export function generateFtlFilesCodeFactory(params: {
         .replace("KEYCLOAKIFY_THEME_VERSION_sIgKd3xEdr3dx", buildOptions.themeVersion)
         .replace("KEYCLOAKIFY_THEME_TYPE_dExKd3xEdr", themeType)
         .replace("KEYCLOAKIFY_THEME_NAME_cXxKd3xEer", themeName)
-        .replace("RESOURCES_COMMON_cLsLsMrtDkpVv", resources_common);
-
+        .replace("RESOURCES_COMMON_cLsLsMrtDkpVv", resources_common)
+        .replace(
+            "lOCALIZATION_REALM_OVERRIDES_USER_PROFILE_PROPERTY_KEY_aaGLsPgGIdeeX",
+            nameOfTheLocalizationRealmOverridesUserProfileProperty
+        );
     const ftlObjectToJsCodeDeclaringAnObjectPlaceholder =
         '{ "x": "vIdLqMeOed9sdLdIdOxdK0d" }';
 

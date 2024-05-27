@@ -1,5 +1,4 @@
 import "minimal-polyfills/Object.fromEntries";
-//NOTE for later: https://github.com/remarkjs/react-markdown/blob/236182ecf30bd89c1e5a7652acaf8d0bf81e6170/src/renderers.js#L7-L35
 import { useEffect, useState, useRef } from "react";
 import fallbackMessages from "./baseMessages/en";
 import { getMessages } from "./baseMessages";
@@ -13,6 +12,7 @@ export type KcContextLike = {
         currentLanguageTag: string;
         supported: { languageTag: string; url: string; label: string }[];
     };
+    __localizationRealmOverridesUserProfile: Record<string, string>;
 };
 
 assert<KcContext extends KcContextLike ? true : false>();
@@ -61,7 +61,7 @@ export type GenericI18n<MessageKey extends string> = {
     /**
      * Examples assuming currentLanguageTag === "en"
      * advancedMsg("${access-denied} foo bar") === msg("access-denied") + " foo bar" === "Access denied foo bar"
-     * advancedMsg("${not-a-message-key}") === advancedMsg(not-a-message-key") === "not-a-message-key"
+     * advancedMsg("${not-a-message-key}") === advancedMsg("not-a-message-key") === "not-a-message-key"
      */
     advancedMsgStr: (key: string, ...args: (string | undefined)[]) => string;
 };
@@ -99,7 +99,8 @@ export function createUseI18n<ExtraMessageKey extends string = never>(extraMessa
                             ...(await getMessages(currentLanguageTag)),
                             ...((keycloakifyExtraMessages as any)[currentLanguageTag] ?? {}),
                             ...(extraMessages[currentLanguageTag] ?? {})
-                        } as any
+                        } as any,
+                        __localizationRealmOverridesUserProfile: kcContext.__localizationRealmOverridesUserProfile
                     }),
                     currentLanguageTag,
                     getChangeLocalUrl: newLanguageTag => {
@@ -129,8 +130,9 @@ export function createUseI18n<ExtraMessageKey extends string = never>(extraMessa
 function createI18nTranslationFunctions<MessageKey extends string>(params: {
     fallbackMessages: Record<MessageKey, string>;
     messages: Record<MessageKey, string>;
+    __localizationRealmOverridesUserProfile: Record<string, string>;
 }): Pick<GenericI18n<MessageKey>, "msg" | "msgStr" | "advancedMsg" | "advancedMsgStr"> {
-    const { fallbackMessages, messages } = params;
+    const { fallbackMessages, messages /*__localizationRealmOverridesUserProfile*/ } = params;
 
     function resolveMsg(props: { key: string; args: (string | undefined)[]; doRenderAsHtml: boolean }): string | JSX.Element | undefined {
         const { key, args, doRenderAsHtml } = props;
@@ -185,6 +187,15 @@ function createI18nTranslationFunctions<MessageKey extends string>(params: {
 
     function resolveMsgAdvanced(props: { key: string; args: (string | undefined)[]; doRenderAsHtml: boolean }): JSX.Element | string {
         const { key, args, doRenderAsHtml } = props;
+
+        // TODO:
+        /*
+        if( key in __localizationRealmOverridesUserProfile ){
+
+
+
+        }
+        */
 
         const match = key.match(/^\$\{([^{]+)\}$/);
 

@@ -29,17 +29,7 @@ out["messagesPerField"]= {
                         <#recover>
                             <#assign doExistErrorOnUsernameOrPassword = true>
                         </#attempt>
-                        <#if doExistErrorOnUsernameOrPassword>
-                            return text;
-                        <#else>
-                            <#assign doExistMessageForField = "">
-                            <#attempt>
-                                <#assign doExistMessageForField = messagesPerField.exists('${fieldName}')>
-                            <#recover>
-                                <#assign doExistMessageForField = true>
-                            </#attempt>
-                            return <#if doExistMessageForField>text<#else>undefined</#if>;
-                        </#if>
+                        return <#if doExistErrorOnUsernameOrPassword>text<#else>undefined</#if>
                     <#else>
                         <#assign doExistMessageForField = "">
                         <#attempt>
@@ -107,22 +97,18 @@ out["messagesPerField"]= {
                         </#attempt>
                         <#if doExistErrorOnUsernameOrPassword>
                             <#attempt>
-                                return "${kcSanitize(msg('invalidUserMessage'))?no_esc}";
+                                return decodeHtmlEntities("${msg('invalidUserMessage')?js_string}");
                             <#recover>
                                 return "Invalid username or password.";
                             </#attempt>
                         <#else>
-                            <#attempt>
-                                return "${messagesPerField.get('${fieldName}')?no_esc}";
-                            <#recover>
-                                return "";
-                            </#attempt>
+                            return "";
                         </#if>
                     <#else>
                         <#attempt>
-                            return "${messagesPerField.get('${fieldName}')?no_esc}";
+                            return decodeHtmlEntities("${messagesPerField.get('${fieldName}')?js_string}");
                         <#recover>
-                            return "invalid field";
+                            return "Invalid field";
                         </#attempt>
                     </#if>
                 }
@@ -180,26 +166,35 @@ try {
 } catch(error) { }
 
 <#if profile?? && profile.attributes??>
-    out["__localizationReamlOverrides_userProfile"] = {
+    out["lOCALIZATION_REALM_OVERRIDES_USER_PROFILE_PROPERTY_KEY_aaGLsPgGIdeeX"] = {
         <#list profile.attributes as attribute>
             <#if attribute.annotations?? && attribute.displayName??>
-                "${attribute.displayName}xx": "${advancedMsg(attribute.displayName)?no_esc}",
+                "${attribute.displayName}": decodeHtmlEntities("${advancedMsg(attribute.displayName)?js_string}"),
             </#if>
             <#if attribute.annotations.inputHelperTextBefore??>
-                "${attribute.annotations.inputHelperTextBefore}": "${advancedMsg(attribute.annotations.inputHelperTextBefore)?no_esc}",
+                "${attribute.annotations.inputHelperTextBefore}": decodeHtmlEntities("${advancedMsg(attribute.annotations.inputHelperTextBefore)?js_string}"),
             </#if>
             <#if attribute.annotations.inputHelperTextAfter??>
-                "${attribute.annotations.inputHelperTextAfter}": "${advancedMsg(attribute.annotations.inputHelperTextAfter)?no_esc}",
+                "${attribute.annotations.inputHelperTextAfter}": decodeHtmlEntities("${advancedMsg(attribute.annotations.inputHelperTextAfter)?js_string}"),
             </#if>
             <#if attribute.annotations.inputTypePlaceholder??>
-                "${attribute.annotations.inputTypePlaceholder}": "${advancedMsg(attribute.annotations.inputTypePlaceholder)?no_esc}",
+                "${attribute.annotations.inputTypePlaceholder}": decodeHtmlEntities("${advancedMsg(attribute.annotations.inputTypePlaceholder)?js_string}"),
             </#if>
         </#list>
     };
 </#if>
 
-
 return out;
+
+function decodeHtmlEntities(htmlStr){
+    var element = decodeHtmlEntities.element;
+    if (!element) {
+        element = document.createElement("textarea");
+        decodeHtmlEntities.element = element;
+    }
+    element.innerHTML = htmlStr;
+    return textarea.value;
+}
 
 })();
 <#function ftl_object_to_js_code_declaring_an_object object path>

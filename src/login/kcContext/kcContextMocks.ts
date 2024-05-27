@@ -221,7 +221,8 @@ export const kcContextCommonMock: KcContext.Common = {
     },
     scripts: [],
     isAppInitiatedAction: false,
-    properties: {}
+    properties: {},
+    __localizationRealmOverridesUserProfile: {}
 };
 
 const loginUrl = {

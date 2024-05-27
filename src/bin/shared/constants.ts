@@ -1,4 +1,6 @@
 export const nameOfTheGlobal = "kcContext";
+export const nameOfTheLocalizationRealmOverridesUserProfileProperty =
+    "__localizationRealmOverridesUserProfile";
 export const keycloak_resources = "keycloak-resources";
 export const resources_common = "resources-common";
 export const lastKeycloakVersionWithAccountV1 = "21.1.2";

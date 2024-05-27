@@ -184,18 +184,47 @@ function toUTF16(codePoint: number): string {
     }
 }
 
-// Escapes special characters and converts unicode to UTF-16 encoding
+// Escapes special characters for use in a .properties file
 function escapeString(str: string): string {
     let escapedStr = "";
     for (const char of [...str]) {
         const codePoint = char.codePointAt(0);
         if (!codePoint) continue;
-        if (char === "'") {
-            escapedStr += "''"; // double single quotes
-        } else if (codePoint > 0x7f) {
-            escapedStr += toUTF16(codePoint); // non-ascii characters
-        } else {
-            escapedStr += char;
+
+        switch (char) {
+            case "\n":
+                escapedStr += "\\n";
+                break;
+            case "\r":
+                escapedStr += "\\r";
+                break;
+            case "\t":
+                escapedStr += "\\t";
+                break;
+            case "\\":
+                escapedStr += "\\\\";
+                break;
+            case ":":
+                escapedStr += "\\:";
+                break;
+            case "=":
+                escapedStr += "\\=";
+                break;
+            case "#":
+                escapedStr += "\\#";
+                break;
+            case "!":
+                escapedStr += "\\!";
+                break;
+            case "'":
+                escapedStr += "''";
+                break;
+            default:
+                if (codePoint > 0x7f) {
+                    escapedStr += toUTF16(codePoint); // Non-ASCII characters
+                } else {
+                    escapedStr += char; // ASCII character needs no escape
+                }
         }
     }
     return escapedStr;
