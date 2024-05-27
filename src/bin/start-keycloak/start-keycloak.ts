@@ -417,7 +417,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                     `- password: ${chalk.cyan.bold("password123")}`,
                     "",
                     `Watching for changes in ${chalk.bold(
-                        `.${pathSep}${pathRelative(process.cwd(), srcDirPath)}`
+                        `.${pathSep}${pathRelative(process.cwd(), buildOptions.reactAppRootDirPath)}`
                     )}`
                 ].join("\n")
             );
@@ -455,10 +455,23 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         const { waitForDebounce } = waitForDebounceFactory({ delay: 400 });
 
         chokidar
-            .watch([srcDirPath, pathJoin(getThisCodebaseRootDirPath(), "src")], {
-                ignoreInitial: true
-            })
-            .on("all", async () => {
+            .watch(
+                [
+                    srcDirPath,
+                    buildOptions.publicDirPath,
+                    pathJoin(buildOptions.reactAppRootDirPath, "package.json"),
+                    pathJoin(buildOptions.reactAppRootDirPath, "vite.config.ts"),
+                    pathJoin(buildOptions.reactAppRootDirPath, "vite.config.js"),
+                    pathJoin(buildOptions.reactAppRootDirPath, "index.html"),
+                    pathJoin(getThisCodebaseRootDirPath(), "src")
+                ],
+                {
+                    ignoreInitial: true
+                }
+            )
+            .on("all", async (...[, filePath]) => {
+                console.log(`Detected changes in ${filePath}`);
+
                 await waitForDebounce();
 
                 runFullBuild();
