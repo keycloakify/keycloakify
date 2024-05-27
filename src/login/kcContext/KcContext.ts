@@ -586,7 +586,6 @@ export declare namespace KcContext {
 
 export type UserProfile = {
     attributes: Attribute[];
-    attributesByName: Record<string, Attribute>;
     html5DataAnnotations?: Record<string, string>;
 };
 

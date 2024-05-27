@@ -286,6 +286,9 @@ function decodeHtmlEntities(htmlStr){
                         <#-- Remove realmAttributes added by https://github.com/jcputney/keycloak-theme-additional-info-extension for peace of mind. -->
                         are_same_path(path, []) &&
                         key == "realmAttributes"
+                    ) || (
+                        <#-- attributesByName adds a lot of noise to the output and is not needed -->
+                        are_same_path(path, ["profile"]) && key == "attributesByName"
                     )
                 >
                     <#local out_seq += ["/*" + path?join(".") + "." + key + " excluded*/"]>

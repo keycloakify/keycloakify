@@ -39,9 +39,9 @@ export function createGetKcContext<
         if (mockPageId !== undefined && realKcContext === undefined) {
             //TODO maybe trow if no mock fo custom page
 
-            warn_that_mock_is_enbaled: {
+            warn_that_mock_is_enabled: {
                 if (isStorybook) {
-                    break warn_that_mock_is_enbaled;
+                    break warn_that_mock_is_enabled;
                 }
 
                 console.log(
@@ -118,7 +118,6 @@ export function createGetKcContext<
                     const { attributes } = kcContextDefaultMock.profile;
 
                     id<KcContext.Register>(kcContext).profile.attributes = [];
-                    id<KcContext.Register>(kcContext).profile.attributesByName = {};
 
                     const partialAttributes = [
                         ...((
@@ -153,9 +152,6 @@ export function createGetKcContext<
                         id<KcContext.Register>(kcContext).profile.attributes.push(
                             augmentedAttribute
                         );
-                        id<KcContext.Register>(kcContext).profile.attributesByName[
-                            augmentedAttribute.name
-                        ] = augmentedAttribute;
                     });
 
                     partialAttributes
@@ -174,9 +170,6 @@ export function createGetKcContext<
                             id<KcContext.Register>(kcContext).profile.attributes.push(
                                 partialAttribute as any
                             );
-                            id<KcContext.Register>(kcContext).profile.attributesByName[
-                                name
-                            ] = partialAttribute as any;
                         });
                 }
             }

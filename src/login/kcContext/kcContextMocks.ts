@@ -75,10 +75,6 @@ const attributes: Attribute[] = [
     }
 ];
 
-const attributesByName = Object.fromEntries(
-    attributes.map(attribute => [attribute.name, attribute])
-) as any;
-
 const resourcesPath = `${BASE_URL}${keycloak_resources}/login/resources`;
 
 export const kcContextCommonMock: KcContext.Common = {
@@ -269,8 +265,7 @@ export const kcContextMocks = [
         recaptchaRequired: false,
         pageId: "register.ftl",
         profile: {
-            attributes,
-            attributesByName
+            attributes
         },
         scripts: [
             //"https://www.google.com/recaptcha/api.js"
@@ -421,8 +416,7 @@ export const kcContextMocks = [
         ...kcContextCommonMock,
         pageId: "login-update-profile.ftl",
         profile: {
-            attributes,
-            attributesByName
+            attributes
         }
     }),
     id<KcContext.LoginIdpLinkConfirm>({
@@ -478,20 +472,14 @@ export const kcContextMocks = [
         ...kcContextCommonMock,
         pageId: "idp-review-user-profile.ftl",
         profile: {
-            attributes,
-            attributesByName
+            attributes
         }
     }),
     id<KcContext.UpdateEmail>({
         ...kcContextCommonMock,
         pageId: "update-email.ftl",
         profile: {
-            attributes: attributes.filter(attribute => attribute.name === "email"),
-            attributesByName: Object.fromEntries(
-                attributes
-                    .filter(attribute => attribute.name === "email")
-                    .map(attribute => [attribute.name, attribute])
-            )
+            attributes: attributes.filter(attribute => attribute.name === "email")
         }
     }),
     id<KcContext.SelectAuthenticator>({
