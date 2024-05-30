@@ -580,7 +580,7 @@ function InputTagSelects(props: InputFiledByTypeProps) {
                         className={classInput}
                         aria-invalid={props.displayableErrors.length !== 0}
                         disabled={attribute.readOnly}
-                        checked={valueOrValues.includes(option)}
+                        checked={valueOrValues instanceof Array ? valueOrValues.includes(option) : valueOrValues === option}
                         onChange={event =>
                             formValidationDispatch({
                                 action: "update",
