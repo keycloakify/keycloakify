@@ -913,6 +913,10 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                         return valueOrValues;
                     })();
 
+                    if (usernameValue === "") {
+                        break check_password_policy_x;
+                    }
+
                     if (value !== usernameValue) {
                         break check_password_policy_x;
                     }
@@ -949,6 +953,10 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
 
                     {
                         const emailValue = emailFormFieldState.valueOrValues;
+
+                        if (emailValue === "") {
+                            break check_password_policy_x;
+                        }
 
                         if (value !== emailValue) {
                             break check_password_policy_x;
