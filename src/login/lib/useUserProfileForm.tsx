@@ -9,6 +9,7 @@ import type { KcContext, PasswordPolicies } from "keycloakify/login/kcContext/Kc
 import { assert, type Equals } from "tsafe/assert";
 import { formatNumber } from "keycloakify/tools/formatNumber";
 import { createUseInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
+import { structuredCloneButFunctions } from "tools/structuredCloneButFunctions";
 import type { I18n } from "../i18n";
 
 export type FormFieldError = {
@@ -242,7 +243,7 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
             })();
 
             for (const attribute of attributes) {
-                syntheticAttributes.push(attribute);
+                syntheticAttributes.push(structuredCloneButFunctions(attribute));
 
                 add_password_and_password_confirm: {
                     if (!kcContext.passwordRequired) {
@@ -284,6 +285,21 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                 }
             }
 
+            // NOTE: Consistency patch
+            syntheticAttributes.forEach(attribute => {
+                if (getIsMultivaluedSingleField({ attribute })) {
+                    attribute.multivalued = true;
+                }
+
+                if (attribute.multivalued) {
+                    attribute.values ??= attribute.value !== undefined ? [attribute.value] : [];
+                    delete attribute.value;
+                } else {
+                    attribute.value ??= attribute.values?.[0];
+                    delete attribute.values;
+                }
+            });
+
             return syntheticAttributes;
         })();
 
@@ -299,10 +315,10 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                         break handle_multi_valued_attribute;
                     }
 
-                    const values = attribute.values ?? [""];
+                    const values = attribute.values?.length ? attribute.values : [""];
 
                     apply_validator_min_range: {
-                        if (attribute.annotations.inputType?.startsWith("multiselect")) {
+                        if (getIsMultivaluedSingleField({ attribute })) {
                             break apply_validator_min_range;
                         }
 
@@ -349,7 +365,8 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                     attributeName: attribute.name,
                     formFieldStates: initialFormFieldState
                 }),
-                hasLostFocusAtLeastOnce: valueOrValues instanceof Array ? valueOrValues.map(() => false) : false,
+                hasLostFocusAtLeastOnce:
+                    valueOrValues instanceof Array && !getIsMultivaluedSingleField({ attribute }) ? valueOrValues.map(() => false) : false,
                 valueOrValues: valueOrValues
             }))
         };
@@ -543,7 +560,7 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
 
             server_side_error: {
                 if (attribute.multivalued) {
-                    const defaultValues = attribute.values ?? [""];
+                    const defaultValues = attribute.values?.length ? attribute.values : [""];
 
                     assert(valueOrValues instanceof Array);
 
@@ -595,7 +612,7 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     break handle_multi_valued_multi_fields;
                 }
 
-                if (attribute.annotations.inputType?.startsWith("multiselect")) {
+                if (getIsMultivaluedSingleField({ attribute })) {
                     break handle_multi_valued_multi_fields;
                 }
 
@@ -674,7 +691,7 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
                     break handle_multi_valued_single_field;
                 }
 
-                if (!attribute.annotations.inputType?.startsWith("multiselect")) {
+                if (!getIsMultivaluedSingleField({ attribute })) {
                     break handle_multi_valued_single_field;
                 }
 
@@ -1246,6 +1263,12 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
     );
 
     return { getErrors };
+}
+
+function getIsMultivaluedSingleField(params: { attribute: Attribute }) {
+    const { attribute } = params;
+
+    return attribute.annotations.inputType?.startsWith("multiselect") ?? false;
 }
 
 export function getButtonToDisplayForMultivaluedAttributeField(params: { attribute: Attribute; values: string[]; fieldIndex: number }) {

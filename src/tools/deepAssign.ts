@@ -1,6 +1,6 @@
 import { assert } from "tsafe/assert";
 import { is } from "tsafe/is";
-import { deepClone } from "./deepClone";
+import { structuredCloneButFunctions } from "./structuredCloneButFunctions";
 
 //Warning: Be mindful that because of array this is not idempotent.
 export function deepAssign(params: {
@@ -9,7 +9,7 @@ export function deepAssign(params: {
 }) {
     const { target } = params;
 
-    const source = deepClone(params.source);
+    const source = structuredCloneButFunctions(params.source);
 
     Object.keys(source).forEach(key => {
         var dereferencedSource = source[key];
