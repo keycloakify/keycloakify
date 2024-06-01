@@ -426,21 +426,23 @@ function AddRemoveButtonsMultiValuedAttribute(props: {
     return (
         <>
             {hasRemove && (
-                <button
-                    id={`kc-remove${idPostfix}`}
-                    type="button"
-                    className="pf-c-button pf-m-inline pf-m-link"
-                    onClick={() =>
-                        dispatchFormAction({
-                            action: "update",
-                            name: attribute.name,
-                            valueOrValues: values.filter((_, i) => i !== fieldIndex)
-                        })
-                    }
-                >
-                    {msg("remove")}
-                    {hasRemove ? <>&nbsp;|&nbsp;</> : null}
-                </button>
+                <>
+                    <button
+                        id={`kc-remove${idPostfix}`}
+                        type="button"
+                        className="pf-c-button pf-m-inline pf-m-link"
+                        onClick={() =>
+                            dispatchFormAction({
+                                action: "update",
+                                name: attribute.name,
+                                valueOrValues: values.filter((_, i) => i !== fieldIndex)
+                            })
+                        }
+                    >
+                        {msg("remove")}
+                    </button>
+                    {hasAdd ? <>&nbsp;|&nbsp;</> : null}
+                </>
             )}
             {hasAdd && (
                 <button
