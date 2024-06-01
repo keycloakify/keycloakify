@@ -1247,3 +1247,73 @@ function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField
 
     return { getErrors };
 }
+
+export function getButtonToDisplayForMultivaluedAttributeField(params: { attribute: Attribute; values: string[]; fieldIndex: number }) {
+    const { attribute, values, fieldIndex } = params;
+
+    const hasRemove = (() => {
+        if (values.length === 1) {
+            return false;
+        }
+
+        const minCount = (() => {
+            const { multivalued } = attribute.validators;
+
+            if (multivalued === undefined) {
+                return undefined;
+            }
+
+            const minStr = multivalued.min;
+
+            if (minStr === undefined) {
+                return undefined;
+            }
+
+            return parseInt(`${minStr}`);
+        })();
+
+        if (minCount === undefined) {
+            return true;
+        }
+
+        if (values.length === minCount) {
+            return false;
+        }
+
+        return true;
+    })();
+
+    const hasAdd = (() => {
+        if (fieldIndex + 1 !== values.length) {
+            return false;
+        }
+
+        const maxCount = (() => {
+            const { multivalued } = attribute.validators;
+
+            if (multivalued === undefined) {
+                return undefined;
+            }
+
+            const maxStr = multivalued.max;
+
+            if (maxStr === undefined) {
+                return undefined;
+            }
+
+            return parseInt(`${maxStr}`);
+        })();
+
+        if (maxCount === undefined) {
+            return false;
+        }
+
+        if (values.length === maxCount) {
+            return false;
+        }
+
+        return true;
+    })();
+
+    return { hasRemove, hasAdd };
+}

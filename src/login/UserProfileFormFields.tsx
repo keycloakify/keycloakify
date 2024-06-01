@@ -1,6 +1,12 @@
 import { useEffect, useReducer, Fragment } from "react";
 import type { ClassKey } from "keycloakify/login/TemplateProps";
-import { useUserProfileForm, type KcContextLike, type FormAction, type FormFieldError } from "keycloakify/login/lib/useUserProfileForm";
+import {
+    useUserProfileForm,
+    getButtonToDisplayForMultivaluedAttributeField,
+    type KcContextLike,
+    type FormAction,
+    type FormFieldError
+} from "keycloakify/login/lib/useUserProfileForm";
 import type { Attribute } from "keycloakify/login/kcContext/KcContext";
 import { assert } from "tsafe/assert";
 import type { I18n } from "./i18n";
@@ -413,75 +419,15 @@ function AddRemoveButtonsMultiValuedAttribute(props: {
 
     const { msg } = i18n;
 
-    const hasRemove = (() => {
-        if (values.length === 1) {
-            return false;
-        }
+    const { hasAdd, hasRemove } = getButtonToDisplayForMultivaluedAttributeField({ attribute, values, fieldIndex });
 
-        const minCount = (() => {
-            const { multivalued } = attribute.validators;
-
-            if (multivalued === undefined) {
-                return undefined;
-            }
-
-            const minStr = multivalued.min;
-
-            if (minStr === undefined) {
-                return undefined;
-            }
-
-            return parseInt(`${minStr}`);
-        })();
-
-        if (minCount === undefined) {
-            return true;
-        }
-
-        if (values.length === minCount) {
-            return false;
-        }
-
-        return true;
-    })();
-
-    const hasAdd = (() => {
-        if (fieldIndex + 1 !== values.length) {
-            return false;
-        }
-
-        const maxCount = (() => {
-            const { multivalued } = attribute.validators;
-
-            if (multivalued === undefined) {
-                return undefined;
-            }
-
-            const maxStr = multivalued.max;
-
-            if (maxStr === undefined) {
-                return undefined;
-            }
-
-            return parseInt(`${maxStr}`);
-        })();
-
-        if (maxCount === undefined) {
-            return false;
-        }
-
-        if (values.length === maxCount) {
-            return false;
-        }
-
-        return true;
-    })();
+    const idPostfix = `-${attribute.name}-${fieldIndex + 1}`;
 
     return (
         <>
             {hasRemove && (
                 <button
-                    id={`kc-remove-${attribute.name}-${fieldIndex + 1}`}
+                    id={`kc-remove${idPostfix}`}
                     type="button"
                     className="pf-c-button pf-m-inline pf-m-link"
                     onClick={() =>
@@ -498,7 +444,7 @@ function AddRemoveButtonsMultiValuedAttribute(props: {
             )}
             {hasAdd && (
                 <button
-                    id="kc-add-titles-1"
+                    id={`kc-add${idPostfix}`}
                     type="button"
                     className="pf-c-button pf-m-inline pf-m-link"
                     onClick={() =>
