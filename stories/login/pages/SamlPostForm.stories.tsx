@@ -1,6 +1,6 @@
 import React from "react";
 import type { ComponentMeta } from "@storybook/react";
-import { createPageStory } from "../createPageStory";
+import { createPageStory, parameters } from "../createPageStory";
 
 const pageId = "saml-post-form.ftl";
 
@@ -9,14 +9,7 @@ const { PageStory } = createPageStory({ pageId });
 const meta: ComponentMeta<any> = {
     title: `login/${pageId}`,
     component: PageStory,
-    parameters: {
-        viewMode: "story",
-        previewTabs: {
-            "storybook/docs/panel": {
-                hidden: true
-            }
-        }
-    }
+    parameters
 };
 
 export default meta;
