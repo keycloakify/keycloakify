@@ -25,9 +25,64 @@ export const Default = () => (
     <PageStory
         kcContext={{
             message: {
-                summary: "This is the server message",
+                summary: "Server info message",
                 type: "info"
             }
+        }}
+    />
+);
+
+export const WithWarning = () => (
+    <PageStory
+        kcContext={{
+            message: {
+                summary: "Server warning message",
+                type: "warning"
+            }
+        }}
+    />
+);
+
+export const WithError = () => (
+    <PageStory
+        kcContext={{
+            message: {
+                summary: "Server error message",
+                type: "error"
+            }
+        }}
+    />
+);
+
+export const WithSuccess = () => (
+    <PageStory
+        kcContext={{
+            message: {
+                summary: "Server success message",
+                type: "success"
+            }
+        }}
+    />
+);
+
+export const WithLinkBack = () => (
+    <PageStory
+        kcContext={{
+            message: {
+                summary: "Server message"
+            },
+            actionUri: undefined
+        }}
+    />
+);
+
+export const WithRequiredActions = () => (
+    <PageStory
+        kcContext={{
+            message: {
+                summary: "Server message"
+            },
+            requiredActions: ["CONFIGURE_TOTP", "UPDATE_PROFILE", "VERIFY_EMAIL"]
         }}
     />
 );

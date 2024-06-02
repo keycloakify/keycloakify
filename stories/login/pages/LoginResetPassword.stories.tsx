@@ -22,3 +22,14 @@ const meta: ComponentMeta<any> = {
 export default meta;
 
 export const Default = () => <PageStory />;
+
+export const WithEmailAsUsername = () => (
+    <PageStory
+        kcContext={{
+            realm: {
+                loginWithEmailAllowed: true,
+                registrationEmailAsUsername: true
+            }
+        }}
+    />
+);
