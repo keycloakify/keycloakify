@@ -1,81 +1,95 @@
 import React from "react";
-import type { ComponentMeta } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { createPageStory, parameters } from "../createPageStory";
 
 const pageId = "info.ftl";
 
 const { PageStory } = createPageStory({ pageId });
 
-const meta: ComponentMeta<any> = {
+const meta = {
     title: `login/${pageId}`,
     component: PageStory,
     parameters
-};
+} satisfies Meta<typeof PageStory>;
 
 export default meta;
 
-export const Default = () => (
-    <PageStory
-        kcContext={{
-            message: {
-                summary: "Server info message",
-                type: "info"
-            }
-        }}
-    />
-);
+type Story = StoryObj<typeof meta>;
 
-export const WithWarning = () => (
-    <PageStory
-        kcContext={{
-            message: {
-                summary: "Server warning message",
-                type: "warning"
-            }
-        }}
-    />
-);
+export const Default: Story = {
+    render: () => (
+        <PageStory
+            kcContext={{
+                message: {
+                    summary: "Server info message",
+                    type: "info"
+                }
+            }}
+        />
+    )
+};
 
-export const WithError = () => (
-    <PageStory
-        kcContext={{
-            message: {
-                summary: "Server error message",
-                type: "error"
-            }
-        }}
-    />
-);
+export const WithWarning: Story = {
+    render: () => (
+        <PageStory
+            kcContext={{
+                message: {
+                    summary: "Server warning message",
+                    type: "warning"
+                }
+            }}
+        />
+    )
+};
 
-export const WithSuccess = () => (
-    <PageStory
-        kcContext={{
-            message: {
-                summary: "Server success message",
-                type: "success"
-            }
-        }}
-    />
-);
+export const WithError: Story = {
+    render: () => (
+        <PageStory
+            kcContext={{
+                message: {
+                    summary: "Server error message",
+                    type: "error"
+                }
+            }}
+        />
+    )
+};
 
-export const WithLinkBack = () => (
-    <PageStory
-        kcContext={{
-            message: {
-                summary: "Server message"
-            },
-            actionUri: undefined
-        }}
-    />
-);
+export const WithSuccess: Story = {
+    render: () => (
+        <PageStory
+            kcContext={{
+                message: {
+                    summary: "Server success message",
+                    type: "success"
+                }
+            }}
+        />
+    )
+};
 
-export const WithRequiredActions = () => (
-    <PageStory
-        kcContext={{
-            message: {
-                summary: "Server message"
-            },
-            requiredActions: ["CONFIGURE_TOTP", "UPDATE_PROFILE", "VERIFY_EMAIL"]
-        }}
-    />
-);
+export const WithLinkBack: Story = {
+    render: () => (
+        <PageStory
+            kcContext={{
+                message: {
+                    summary: "Server message"
+                },
+                actionUri: undefined
+            }}
+        />
+    )
+};
+
+export const WithRequiredActions: Story = {
+    render: () => (
+        <PageStory
+            kcContext={{
+                message: {
+                    summary: "Server message"
+                },
+                requiredActions: ["CONFIGURE_TOTP", "UPDATE_PROFILE", "VERIFY_EMAIL"]
+            }}
+        />
+    )
+};

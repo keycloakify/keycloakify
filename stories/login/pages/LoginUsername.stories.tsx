@@ -1,28 +1,34 @@
 import React from "react";
-import type { ComponentMeta } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { createPageStory, parameters } from "../createPageStory";
 
 const pageId = "login-username.ftl";
 
 const { PageStory } = createPageStory({ pageId });
 
-const meta: ComponentMeta<any> = {
+const meta = {
     title: `login/${pageId}`,
     component: PageStory,
     parameters
-};
+} satisfies Meta<typeof PageStory>;
 
 export default meta;
 
-export const Default = () => <PageStory />;
+type Story = StoryObj<typeof meta>;
 
-export const WithEmailAsUsername = () => (
-    <PageStory
-        kcContext={{
-            realm: {
-                loginWithEmailAllowed: true,
-                registrationEmailAsUsername: true
-            }
-        }}
-    />
-);
+export const Default: Story = {
+    render: () => <PageStory />
+};
+
+export const WithEmailAsUsername: Story = {
+    render: () => (
+        <PageStory
+            kcContext={{
+                realm: {
+                    loginWithEmailAllowed: true,
+                    registrationEmailAsUsername: true
+                }
+            }}
+        />
+    )
+};

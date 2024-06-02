@@ -1,19 +1,31 @@
 import React from "react";
-import { getKcContext, type KcContext } from "./kcContext";
+import type { KcContext } from "./kcContext";
+import { getKcContextMock } from "./kcContextMock";
 import KcApp from "./KcApp";
 import type { DeepPartial } from "../../dist/tools/DeepPartial";
 
 export function createPageStory<PageId extends KcContext["pageId"]>(params: { pageId: PageId }) {
     const { pageId } = params;
 
-    function PageStory(params: { kcContext?: DeepPartial<Extract<KcContext, { pageId: PageId }>> }) {
-        const { kcContext } = getKcContext({
-            mockPageId: pageId,
-            storyPartialKcContext: params.kcContext
+    function PageStory(props: { kcContext?: DeepPartial<Extract<KcContext, { pageId: PageId }>> }) {
+        const { kcContext: overrides } = props;
+
+        const kcContextMock = getKcContextMock({
+            pageId,
+            overrides
         });
 
-        return <KcApp kcContext={kcContext} />;
+        return <KcApp kcContext={kcContextMock} />;
     }
 
     return { PageStory };
 }
+
+export const parameters = {
+    viewMode: "story",
+    previewTabs: {
+        "storybook/docs/panel": {
+            hidden: true
+        }
+    }
+};
