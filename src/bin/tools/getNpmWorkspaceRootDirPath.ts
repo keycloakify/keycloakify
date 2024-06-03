@@ -14,6 +14,8 @@ export function getNpmWorkspaceRootDirPath(params: {
             pathJoin(...[reactAppRootDirPath, ...Array(depth).fill("..")])
         );
 
+        assert(cwd !== pathSep, "NPM workspace not found");
+
         try {
             child_process.execSync("npm config get", {
                 cwd,
@@ -21,48 +23,46 @@ export function getNpmWorkspaceRootDirPath(params: {
             });
         } catch (error) {
             if (String(error).includes("ENOWORKSPACES")) {
-                assert(cwd !== pathSep, "NPM workspace not found");
-
                 return callee(depth + 1);
             }
 
             throw error;
         }
 
-        const { isExpectedDependencyFound } = (() => {
-            const packageJsonFilePath = pathJoin(cwd, "package.json");
+        const packageJsonFilePath = pathJoin(cwd, "package.json");
 
-            assert(fs.existsSync(packageJsonFilePath));
+        if (!fs.existsSync(packageJsonFilePath)) {
+            return callee(depth + 1);
+        }
 
-            const parsedPackageJson = JSON.parse(
-                fs.readFileSync(packageJsonFilePath).toString("utf8")
-            );
+        assert(fs.existsSync(packageJsonFilePath));
 
-            let isExpectedDependencyFound = false;
+        const parsedPackageJson = JSON.parse(
+            fs.readFileSync(packageJsonFilePath).toString("utf8")
+        );
 
-            for (const dependenciesOrDevDependencies of [
-                "dependencies",
-                "devDependencies"
-            ] as const) {
-                const dependencies = parsedPackageJson[dependenciesOrDevDependencies];
+        let isExpectedDependencyFound = false;
 
-                if (dependencies === undefined) {
-                    continue;
-                }
+        for (const dependenciesOrDevDependencies of [
+            "dependencies",
+            "devDependencies"
+        ] as const) {
+            const dependencies = parsedPackageJson[dependenciesOrDevDependencies];
 
-                assert(dependencies instanceof Object);
-
-                if (dependencies[dependencyExpected] === undefined) {
-                    continue;
-                }
-
-                isExpectedDependencyFound = true;
+            if (dependencies === undefined) {
+                continue;
             }
 
-            return { isExpectedDependencyFound };
-        })();
+            assert(dependencies instanceof Object);
 
-        if (!isExpectedDependencyFound) {
+            if (dependencies[dependencyExpected] === undefined) {
+                continue;
+            }
+
+            isExpectedDependencyFound = true;
+        }
+
+        if (!isExpectedDependencyFound && parsedPackageJson.name !== dependencyExpected) {
             return callee(depth + 1);
         }
 
