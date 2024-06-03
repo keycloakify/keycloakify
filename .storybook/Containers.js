@@ -62,11 +62,18 @@ export function DocsContainer({ children, context }) {
 
 export function CanvasContainer({ children }) {
 
+    const isStorybookUiDark = useDarkMode();
+
+    const theme = isStorybookUiDark ? darkTheme : lightTheme;
+
+    const backgroundColor = theme.appBg;
+
     return (
         <>
             <style>{`
                 body {
                     padding: 0 !important;
+                    background-color: ${backgroundColor};
                 }
             `}</style>
             {children}
