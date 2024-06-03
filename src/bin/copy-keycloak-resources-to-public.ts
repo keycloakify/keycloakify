@@ -8,9 +8,6 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     const buildOptions = readBuildOptions({ cliCommandOptions });
 
     await copyKeycloakResourcesToPublic({
-        buildOptions: {
-            ...buildOptions,
-            publicDirPath: buildOptions.reactAppRootDirPath
-        }
+        buildOptions
     });
 }
