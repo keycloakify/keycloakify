@@ -137,7 +137,11 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
 
             const attributes = (() => {
                 retrocompat_patch: {
-                    if ("profile" in kcContext && "attributes" in kcContext.profile && Object.keys(kcContext.profile.attributesByName).length !== 0) {
+                    if (
+                        "profile" in kcContext &&
+                        "attributesByName" in kcContext.profile &&
+                        Object.keys(kcContext.profile.attributesByName).length !== 0
+                    ) {
                         break retrocompat_patch;
                     }
 
