@@ -31,7 +31,7 @@ export default function LoginRecoveryAuthnCodeConfig(props: PageProps<Extract<Kc
                         var tmpTextarea = document.createElement("textarea");
                         var codes = document.getElementById("kc-recovery-codes-list").getElementsByTagName("li");
                         for (i = 0; i < codes.length; i++) {
-                            tmpTextarea.value = tmpTextarea.value + codes[i].innerText + "\n";
+                            tmpTextarea.value = tmpTextarea.value + codes[i].innerText + "\\n";
                         }
                         document.body.appendChild(tmpTextarea);
                         tmpTextarea.select();
@@ -65,7 +65,7 @@ export default function LoginRecoveryAuthnCodeConfig(props: PageProps<Extract<Kc
 
                         for (var i = 0; i < recoveryCodes.length; i++) {
                             var recoveryCodeLiElement = recoveryCodes[i].innerText;
-                            recoveryCodeList += recoveryCodeLiElement + "\r\n";
+                            recoveryCodeList += recoveryCodeLiElement + "\\r\\n";
                         }
 
                         return recoveryCodeList;
@@ -84,9 +84,9 @@ export default function LoginRecoveryAuthnCodeConfig(props: PageProps<Extract<Kc
                         };
 
                         return fileBodyContent =
-                            "${msgStr("recovery-codes-download-file-header")}\n\n" +
-                            recoveryCodeList + "\n" +
-                            "${msgStr("recovery-codes-download-file-description")}\n\n" +
+                            "${msgStr("recovery-codes-download-file-header")}\\n\\n" +
+                            recoveryCodeList + "\\n" +
+                            "${msgStr("recovery-codes-download-file-description")}\\n\\n" +
                             "${msgStr("recovery-codes-download-file-date")} " + formatCurrentDateTime();
                     }
 
