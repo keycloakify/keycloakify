@@ -25,12 +25,11 @@ export const WithFieldError: Story = {
         <PageStory
             kcContext={{
                 profile: {
-                    attributes: [
-                        {
-                            name: "email",
+                    attributesByName: {
+                        email: {
                             value: "max.mustermann@gmail.com"
                         }
-                    ]
+                    }
                 },
                 messagesPerField: {
                     existsError: (fieldName: string) => fieldName === "email",
@@ -81,24 +80,20 @@ export const WithPresets: Story = {
         <PageStory
             kcContext={{
                 profile: {
-                    attributes: [
-                        {
-                            name: "firstName",
+                    attributesByName: {
+                        firstName: {
                             value: "Max"
                         },
-                        {
-                            name: "lastName",
+                        lastName: {
                             value: "Mustermann"
                         },
-                        {
-                            name: "email",
+                        email: {
                             value: "max.mustermann@gmail.com"
                         },
-                        {
-                            name: "username",
+                        username: {
                             value: "max.mustermann"
                         }
-                    ]
+                    }
                 }
             }}
         />
