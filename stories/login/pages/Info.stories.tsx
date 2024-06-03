@@ -21,47 +21,7 @@ export const Default: Story = {
         <PageStory
             kcContext={{
                 message: {
-                    summary: "Server info message",
-                    type: "info"
-                }
-            }}
-        />
-    )
-};
-
-export const WithWarning: Story = {
-    render: () => (
-        <PageStory
-            kcContext={{
-                message: {
-                    summary: "Server warning message",
-                    type: "warning"
-                }
-            }}
-        />
-    )
-};
-
-export const WithError: Story = {
-    render: () => (
-        <PageStory
-            kcContext={{
-                message: {
-                    summary: "Server error message",
-                    type: "error"
-                }
-            }}
-        />
-    )
-};
-
-export const WithSuccess: Story = {
-    render: () => (
-        <PageStory
-            kcContext={{
-                message: {
-                    summary: "Server success message",
-                    type: "success"
+                    summary: "Server info message"
                 }
             }}
         />
