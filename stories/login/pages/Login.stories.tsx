@@ -20,16 +20,6 @@ export const Default: Story = {
     render: () => <PageStory />
 };
 
-export const WithoutPasswordField: Story = {
-    render: () => (
-        <PageStory
-            kcContext={{
-                realm: { password: false }
-            }}
-        />
-    )
-};
-
 export const WithoutRegistration: Story = {
     render: () => (
         <PageStory
@@ -179,6 +169,16 @@ export const WithSocialProviders: Story = {
                         }
                     ]
                 }
+            }}
+        />
+    )
+};
+
+export const WithoutPasswordField: Story = {
+    render: () => (
+        <PageStory
+            kcContext={{
+                realm: { password: false }
             }}
         />
     )
