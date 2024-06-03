@@ -25,7 +25,7 @@ export default function LoginConfigTotp(props: PageProps<Extract<KcContext, { pa
 
                         <ul id="kc-totp-supported-apps">
                             {totp.supportedApplications.map(app => (
-                                <li>{advancedMsg(app)}</li>
+                                <li key={app}>{advancedMsg(app)}</li>
                             ))}
                         </ul>
                     </li>
