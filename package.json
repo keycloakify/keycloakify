@@ -9,7 +9,7 @@
     "scripts": {
         "prepare": "patch-package && ts-node --skipProject scripts/generate-i18n-messages.ts",
         "build": "ts-node --skipProject scripts/build.ts",
-        "storybook": "yarn build && yarn copy-keycloak-resources-to-storybook-static && start-storybook -p 6006",
+        "storybook": "ts-node --skipProject scripts/start-storybook.ts",
         "link-in-starter": "ts-node --skipProject scripts/link-in-starter.ts",
         "test": "yarn test:types && vitest run",
         "test:types": "tsc -p test/tsconfig.json --noEmit",
@@ -17,8 +17,7 @@
         "format": "yarn _format --write",
         "format:check": "yarn _format --list-different",
         "link-in-app": "ts-node --skipProject scripts/link-in-app.ts",
-        "copy-keycloak-resources-to-storybook-static": "PUBLIC_DIR_PATH=.storybook/static node dist/bin/main.js copy-keycloak-resources-to-public",
-        "build-storybook": "yarn build && yarn copy-keycloak-resources-to-storybook-static && build-storybook",
+        "build-storybook": "ts-node --skipProject scripts/build-storybook.ts",
         "dump-keycloak-realm": "ts-node --skipProject scripts/dump-keycloak-realm.ts"
     },
     "bin": {
