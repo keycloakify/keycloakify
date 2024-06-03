@@ -1,4 +1,4 @@
-import { ExtendKcContext } from "../../dist/login";
+import type { ExtendKcContext } from "../../dist/login";
 
 export type KcContextExtraProperties = {};
 

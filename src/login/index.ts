@@ -3,9 +3,12 @@ import Fallback from "keycloakify/login/Fallback";
 export default Fallback;
 
 export { useDownloadTerms } from "keycloakify/login/lib/useDownloadTerms";
-export { getKcContext } from "keycloakify/login/kcContext/getKcContext";
-export { createGetKcContext } from "keycloakify/login/kcContext/createGetKcContext";
-export type { LoginThemePageId as PageId } from "keycloakify/bin/shared/constants";
 export { createUseI18n } from "keycloakify/login/i18n/i18n";
+export type {
+    ExtendKcContext,
+    Attribute,
+    PasswordPolicies
+} from "keycloakify/login/kcContext";
+export { createGetKcContextMock } from "keycloakify/login/kcContext";
 
 export type { PageProps } from "keycloakify/login/pages/PageProps";

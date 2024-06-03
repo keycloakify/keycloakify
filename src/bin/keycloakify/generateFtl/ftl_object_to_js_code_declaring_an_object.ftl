@@ -288,13 +288,11 @@ function decodeHtmlEntities(htmlStr){
                         are_same_path(path, [])
                     ) || (
                         <#-- attributesByName adds a lot of noise to the output and is not needed -->
-                        key == "attributesByName" &&
-                        (
-                            are_same_path(path, ["profile"]) || 
-                            are_same_path(path, ["register"])
-                        )
-                    ) || (
                         key == "attributes" &&
+                        are_same_path(path, ["profile"]) 
+                    ) || (
+                        <#-- We already have the attributes in profile speedup the rendering by filtering it out from the register object -->
+                        (key == "attributes" || key == "attributesByName") &&
                         are_same_path(path, ["register"])
                     )
                 >

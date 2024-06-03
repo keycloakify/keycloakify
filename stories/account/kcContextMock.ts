@@ -1,4 +1,4 @@
-import { createGetKcContextMock } from "../../dist/login";
+import { createGetKcContextMock } from "../../dist/account";
 import type {
     KcContextExtraProperties,
     KcContextExtraPropertiesPerPage

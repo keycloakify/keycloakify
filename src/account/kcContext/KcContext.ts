@@ -1,6 +1,24 @@
+import type { ThemeType, AccountThemePageId } from "keycloakify/bin/shared/constants";
+import type { ValueOf } from "keycloakify/tools/ValueOf";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
-import type { ThemeType, AccountThemePageId } from "keycloakify/bin/shared/constants";
+
+export type ExtendKcContext<
+    KcContextExtraProperties extends { properties?: Record<string, string | undefined> },
+    KcContextExtraPropertiesPerPage extends Record<string, Record<string, unknown>>
+> = ValueOf<{
+    [PageId in keyof KcContextExtraPropertiesPerPage | KcContext["pageId"]]: Extract<
+        KcContext,
+        { pageId: PageId }
+    > extends never
+        ? KcContext.Common &
+              KcContextExtraProperties & {
+                  pageId: PageId;
+              } & KcContextExtraPropertiesPerPage[PageId]
+        : Extract<KcContext, { pageId: PageId }> &
+              KcContextExtraProperties &
+              KcContextExtraPropertiesPerPage[PageId];
+}>;
 
 export type KcContext =
     | KcContext.Password

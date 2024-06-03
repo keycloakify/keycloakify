@@ -7,7 +7,6 @@ import {
 import { replaceImportsInInlineCssCode } from "keycloakify/bin/keycloakify/replacers/replaceImportsInInlineCssCode";
 import { same } from "evt/tools/inDepth/same";
 import { expect, it, describe } from "vitest";
-import { isSameCode } from "../tools/isSameCode";
 import {
     basenameOfTheKeycloakifyResourcesDir,
     nameOfTheGlobal
@@ -664,3 +663,10 @@ describe("inline css replacer", () => {
         });
     });
 });
+
+export function isSameCode(code1: string, code2: string): boolean {
+    const removeSpacesAndNewLines = (code: string) =>
+        code.replace(/\s/g, "").replace(/\n/g, "");
+
+    return removeSpacesAndNewLines(code1) === removeSpacesAndNewLines(code2);
+}

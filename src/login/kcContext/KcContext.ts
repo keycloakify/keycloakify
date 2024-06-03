@@ -3,14 +3,28 @@ import type {
     LoginThemePageId,
     nameOfTheLocalizationRealmOverridesUserProfileProperty
 } from "keycloakify/bin/shared/constants";
+import type { ExtractAfterStartingWith } from "keycloakify/tools/ExtractAfterStartingWith";
+import type { ValueOf } from "keycloakify/tools/ValueOf";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
 import type { MessageKey } from "../i18n/i18n";
 
-type ExtractAfterStartingWith<
-    Prefix extends string,
-    StrEnum
-> = StrEnum extends `${Prefix}${infer U}` ? U : never;
+export type ExtendKcContext<
+    KcContextExtraProperties extends { properties?: Record<string, string | undefined> },
+    KcContextExtraPropertiesPerPage extends Record<string, Record<string, unknown>>
+> = ValueOf<{
+    [PageId in keyof KcContextExtraPropertiesPerPage | KcContext["pageId"]]: Extract<
+        KcContext,
+        { pageId: PageId }
+    > extends never
+        ? KcContext.Common &
+              KcContextExtraProperties & {
+                  pageId: PageId;
+              } & KcContextExtraPropertiesPerPage[PageId]
+        : Extract<KcContext, { pageId: PageId }> &
+              KcContextExtraProperties &
+              KcContextExtraPropertiesPerPage[PageId];
+}>;
 
 /** Take theses type definition with a grain of salt.
  * Some values might be undefined on some pages.
@@ -138,12 +152,12 @@ export declare namespace KcContext {
 
             getFirstError: (...fieldNames: string[]) => string;
         };
-        properties: Record<string, string | undefined>;
         authenticationSession?: {
             authSessionId: string;
             tabId: string;
             ssoLoginInOtherTabsUrl: string;
         };
+        properties: {};
         __localizationRealmOverridesUserProfile?: Record<string, string>;
     };
 
@@ -585,7 +599,7 @@ export declare namespace KcContext {
 }
 
 export type UserProfile = {
-    attributes: Attribute[];
+    attributesByName: Record<string, Attribute>;
     html5DataAnnotations?: Record<string, string>;
 };
 
@@ -683,31 +697,31 @@ export type Attribute = {
         | "photo";
 };
 
-export type Validators = Partial<{
-    length: Validators.DoIgnoreEmpty & Validators.Range;
-    integer: Validators.DoIgnoreEmpty & Validators.Range;
-    email: Validators.DoIgnoreEmpty;
-    pattern: Validators.DoIgnoreEmpty & Validators.ErrorMessage & { pattern: string };
-    options: Validators.Options;
-    multivalued: Validators.DoIgnoreEmpty & Validators.Range;
+export type Validators = {
+    length?: Validators.DoIgnoreEmpty & Validators.Range;
+    integer?: Validators.DoIgnoreEmpty & Validators.Range;
+    email?: Validators.DoIgnoreEmpty;
+    pattern?: Validators.DoIgnoreEmpty & Validators.ErrorMessage & { pattern: string };
+    options?: Validators.Options;
+    multivalued?: Validators.DoIgnoreEmpty & Validators.Range;
     // NOTE: Following are the validators for which we don't implement client side validation yet
     // or for which the validation can't be performed on the client side.
     /*
-    double: Validators.DoIgnoreEmpty & Validators.Range;
-    "up-immutable-attribute": {};
-    "up-attribute-required-by-metadata-value": {};
-    "up-username-has-value": {};
-    "up-duplicate-username": {};
-    "up-username-mutation": {};
-    "up-email-exists-as-username": {};
-    "up-blank-attribute-value": Validators.ErrorMessage & { "fail-on-null": boolean; };
-    "up-duplicate-email": {};
-    "local-date": Validators.DoIgnoreEmpty;
-    "person-name-prohibited-characters": Validators.DoIgnoreEmpty & Validators.ErrorMessage;
-    uri: Validators.DoIgnoreEmpty;
-    "username-prohibited-characters": Validators.DoIgnoreEmpty & Validators.ErrorMessage;
+    double?: Validators.DoIgnoreEmpty & Validators.Range;
+    "up-immutable-attribute"?: {};
+    "up-attribute-required-by-metadata-value"?: {};
+    "up-username-has-value"?: {};
+    "up-duplicate-username"?: {};
+    "up-username-mutation"?: {};
+    "up-email-exists-as-username"?: {};
+    "up-blank-attribute-value"?: Validators.ErrorMessage & { "fail-on-null": boolean; };
+    "up-duplicate-email"?: {};
+    "local-date"?: Validators.DoIgnoreEmpty;
+    "person-name-prohibited-characters"?: Validators.DoIgnoreEmpty & Validators.ErrorMessage;
+    uri?: Validators.DoIgnoreEmpty;
+    "username-prohibited-characters"?: Validators.DoIgnoreEmpty & Validators.ErrorMessage;
     */
-}>;
+};
 
 export declare namespace Validators {
     export type DoIgnoreEmpty = {

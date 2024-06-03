@@ -9,7 +9,7 @@ import type { KcContext, PasswordPolicies } from "keycloakify/login/kcContext/Kc
 import { assert, type Equals } from "tsafe/assert";
 import { formatNumber } from "keycloakify/tools/formatNumber";
 import { createUseInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
-import { structuredCloneButFunctions } from "tools/structuredCloneButFunctions";
+import { structuredCloneButFunctions } from "keycloakify/tools/structuredCloneButFunctions";
 import type { I18n } from "../i18n";
 
 export type FormFieldError = {
@@ -68,7 +68,7 @@ export type FormAction =
 export type KcContextLike = {
     messagesPerField: Pick<KcContext.Common["messagesPerField"], "existsError" | "get">;
     profile: {
-        attributes: Attribute[];
+        attributesByName: Record<string, Attribute>;
         html5DataAnnotations?: Record<string, string>;
     };
     passwordRequired?: boolean;
@@ -137,7 +137,7 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
 
             const attributes = (() => {
                 retrocompat_patch: {
-                    if ("profile" in kcContext && "attributes" in kcContext.profile && kcContext.profile.attributes.length !== 0) {
+                    if ("profile" in kcContext && "attributes" in kcContext.profile && Object.keys(kcContext.profile.attributesByName).length !== 0) {
                         break retrocompat_patch;
                     }
 
@@ -217,7 +217,7 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
                     assert(false, "Unable to mock user profile from the current kcContext");
                 }
 
-                return kcContext.profile.attributes.map(attribute_pre_group_patch => {
+                return Object.values(kcContext.profile.attributesByName).map(attribute_pre_group_patch => {
                     if (typeof attribute_pre_group_patch.group === "string" && attribute_pre_group_patch.group !== "") {
                         const { group, groupDisplayHeader, groupDisplayDescription, groupAnnotations, ...rest } =
                             attribute_pre_group_patch as Attribute & {

@@ -1,7 +1,10 @@
-import { createGetKcContext } from "../../dist/account";
+import type { ExtendKcContext } from "../../dist/account";
 
-export const { getKcContext } = createGetKcContext();
+export type KcContextExtraProperties = {};
 
-const { kcContext } = getKcContext();
+export type KcContextExtraPropertiesPerPage = {};
 
-export type KcContext = NonNullable<typeof kcContext>;
+export type KcContext = ExtendKcContext<
+    KcContextExtraProperties,
+    KcContextExtraPropertiesPerPage
+>;

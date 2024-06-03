@@ -9,71 +9,73 @@ import { id } from "tsafe/id";
 import { assert, type Equals } from "tsafe/assert";
 import { BASE_URL } from "keycloakify/lib/BASE_URL";
 
-const attributes: Attribute[] = [
-    {
-        validators: {
-            length: {
-                "ignore.empty.value": true,
-                min: "3",
-                max: "255"
-            }
-        },
-        displayName: "${username}",
-        annotations: {},
-        required: true,
-        autocomplete: "username",
-        readOnly: false,
-        name: "username",
-        value: "xxxx"
-    },
-    {
-        validators: {
-            length: {
-                max: "255",
-                "ignore.empty.value": true
+const attributesByName = Object.fromEntries(
+    id<Attribute[]>([
+        {
+            validators: {
+                length: {
+                    "ignore.empty.value": true,
+                    min: "3",
+                    max: "255"
+                }
             },
-            email: {
-                "ignore.empty.value": true
+            displayName: "${username}",
+            annotations: {},
+            required: true,
+            autocomplete: "username",
+            readOnly: false,
+            name: "username",
+            value: "xxxx"
+        },
+        {
+            validators: {
+                length: {
+                    max: "255",
+                    "ignore.empty.value": true
+                },
+                email: {
+                    "ignore.empty.value": true
+                },
+                pattern: {
+                    "ignore.empty.value": true,
+                    pattern: "gmail\\.com$"
+                }
             },
-            pattern: {
-                "ignore.empty.value": true,
-                pattern: "gmail\\.com$"
-            }
+            displayName: "${email}",
+            annotations: {},
+            required: true,
+            autocomplete: "email",
+            readOnly: false,
+            name: "email"
         },
-        displayName: "${email}",
-        annotations: {},
-        required: true,
-        autocomplete: "email",
-        readOnly: false,
-        name: "email"
-    },
-    {
-        validators: {
-            length: {
-                max: "255",
-                "ignore.empty.value": true
-            }
+        {
+            validators: {
+                length: {
+                    max: "255",
+                    "ignore.empty.value": true
+                }
+            },
+            displayName: "${firstName}",
+            annotations: {},
+            required: true,
+            readOnly: false,
+            name: "firstName"
         },
-        displayName: "${firstName}",
-        annotations: {},
-        required: true,
-        readOnly: false,
-        name: "firstName"
-    },
-    {
-        validators: {
-            length: {
-                max: "255",
-                "ignore.empty.value": true
-            }
-        },
-        displayName: "${lastName}",
-        annotations: {},
-        required: true,
-        readOnly: false,
-        name: "lastName"
-    }
-];
+        {
+            validators: {
+                length: {
+                    max: "255",
+                    "ignore.empty.value": true
+                }
+            },
+            displayName: "${lastName}",
+            annotations: {},
+            required: true,
+            readOnly: false,
+            name: "lastName"
+        }
+    ]).map(attribute => [attribute.name, attribute])
+);
 
 const resourcesPath = `${BASE_URL}${keycloak_resources}/login/resources`;
 
@@ -265,7 +267,7 @@ export const kcContextMocks = [
         recaptchaRequired: false,
         pageId: "register.ftl",
         profile: {
-            attributes
+            attributesByName
         },
         scripts: [
             //"https://www.google.com/recaptcha/api.js"
@@ -416,7 +418,7 @@ export const kcContextMocks = [
         ...kcContextCommonMock,
         pageId: "login-update-profile.ftl",
         profile: {
-            attributes
+            attributesByName
         }
     }),
     id<KcContext.LoginIdpLinkConfirm>({
@@ -472,14 +474,16 @@ export const kcContextMocks = [
         ...kcContextCommonMock,
         pageId: "idp-review-user-profile.ftl",
         profile: {
-            attributes
+            attributesByName
         }
     }),
     id<KcContext.UpdateEmail>({
         ...kcContextCommonMock,
         pageId: "update-email.ftl",
         profile: {
-            attributes: attributes.filter(attribute => attribute.name === "email")
+            attributesByName: {
+                email: attributesByName["email"]
+            }
         }
     }),
     id<KcContext.SelectAuthenticator>({
