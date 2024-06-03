@@ -68,8 +68,9 @@ export const WithRecaptcha: Story = {
     render: () => (
         <PageStory
             kcContext={{
+                scripts: ["https://www.google.com/recaptcha/api.js?hl=en"],
                 recaptchaRequired: true,
-                recaptchaSiteKey: "foobar"
+                recaptchaSiteKey: "6LfQHvApAAAAAE73SYTd5vS0lB1Xr7zdiQ-6iBVa"
             }}
         />
     )

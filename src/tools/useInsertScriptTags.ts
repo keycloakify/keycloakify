@@ -1,5 +1,4 @@
 import { useCallback } from "react";
-import { useConst } from "keycloakify/tools/useConst";
 import { assert } from "tsafe/assert";
 
 export type ScriptTag = ScriptTag.TextContent | ScriptTag.Src;
@@ -20,42 +19,19 @@ export namespace ScriptTag {
 export function createUseInsertScriptTags() {
     let areScriptsInserted = false;
 
+    let scriptTagsFingerprint: string | undefined;
+
     function useInsertScriptTags(params: { scriptTags: ScriptTag[] }) {
         const { scriptTags } = params;
 
-        const currentScriptTagsRef = useConst(() => ({
-            current: scriptTags
-        }));
-
-        currentScriptTagsRef.current = scriptTags;
+        if (scriptTagsFingerprint === undefined) {
+            scriptTagsFingerprint = getScriptTagsFingerprint(scriptTags);
+        } else if (getScriptTagsFingerprint(scriptTags) !== scriptTagsFingerprint) {
+            // NOTE: This is for storybook, when we switch to a page that has different scripts.
+            window.location.reload();
+        }
 
         const insertScriptTags = useCallback(() => {
-            {
-                const getFingerprint = (scriptTags: ScriptTag[]) =>
-                    scriptTags
-                        .map((scriptTag): string => {
-                            if ("textContent" in scriptTag) {
-                                return scriptTag.textContent;
-                            }
-                            if ("src" in scriptTag) {
-                                return scriptTag.src;
-                            }
-                            assert(false);
-                        })
-                        .join("---");
-
-                if (
-                    getFingerprint(scriptTags) !==
-                    getFingerprint(currentScriptTagsRef.current)
-                ) {
-                    // NOTE: This is for when the scripts imported in the Template have changed switching
-                    // from one page to another in storybook.
-                    window.location.reload();
-
-                    return;
-                }
-            }
-
             if (areScriptsInserted) {
                 return;
             }
@@ -108,4 +84,18 @@ export function createUseInsertScriptTags() {
     }
 
     return { useInsertScriptTags };
+}
+
+function getScriptTagsFingerprint(scriptTags: ScriptTag[]) {
+    return scriptTags
+        .map((scriptTag): string => {
+            if ("textContent" in scriptTag) {
+                return scriptTag.textContent;
+            }
+            if ("src" in scriptTag) {
+                return scriptTag.src;
+            }
+            assert(false);
+        })
+        .join("---");
 }
