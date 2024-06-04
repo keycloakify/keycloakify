@@ -3,8 +3,6 @@ import Fallback from "../../dist/login";
 import type { KcContext } from "./kcContext";
 import { useI18n } from "./i18n";
 import { useDownloadTerms } from "../../dist/login/lib/useDownloadTerms";
-import tos_en_url from "./tos_en.md";
-import tos_fr_url from "./tos_fr.md";
 import Template from "../../dist/login/Template";
 import UserProfileFormFields from "../../dist/login/UserProfileFormFields";
 
@@ -14,19 +12,18 @@ export default function KcApp(props: { kcContext: KcContext }) {
     const i18n = useI18n({ kcContext });
 
     useDownloadTerms({
-        kcContext: kcContext as any,
+        kcContext,
         downloadTermMarkdown: async ({ currentLanguageTag }) => {
             const resource = (() => {
                 switch (currentLanguageTag) {
                     case "fr":
-                        return tos_fr_url;
+                        return "/tos/tos_fr.md";
+                    case "es":
+                        return "/tos/tos_es.md";
                     default:
-                        return tos_en_url;
+                        return "/tos/tos_en.md";
                 }
             })();
-
-            // webpack5 (used via storybook) loads markdown as string, not url
-            if (resource.includes("\n")) return resource;
 
             const response = await fetch(resource);
             return response.text();

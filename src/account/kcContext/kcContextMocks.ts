@@ -40,98 +40,33 @@ export const kcContextCommonMock: KcContext.Common = {
     locale: {
         supported: [
             /* spell-checker: disable */
-            {
-                url: "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=de",
-                label: "Deutsch",
-                languageTag: "de"
-            },
-            {
-                url: "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=no",
-                label: "Norsk",
-                languageTag: "no"
-            },
-            {
-                url: "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=ru",
-                label: "Русский",
-                languageTag: "ru"
-            },
-            {
-                url: "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=sv",
-                label: "Svenska",
-                languageTag: "sv"
-            },
-            {
-                url: "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=pt-BR",
-                label: "Português (Brasil)",
-                languageTag: "pt-BR"
-            },
-            {
-                url: "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=lt",
-                label: "Lietuvių",
-                languageTag: "lt"
-            },
-            {
-                url: "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=en",
-                label: "English",
-                languageTag: "en"
-            },
-            {
-                url: "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=it",
-                label: "Italiano",
-                languageTag: "it"
-            },
-            {
-                url: "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=fr",
-                label: "Français",
-                languageTag: "fr"
-            },
-            {
-                url: "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=zh-CN",
-                label: "中文简体",
-                languageTag: "zh-CN"
-            },
-            {
-                url: "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=es",
-                label: "Español",
-                languageTag: "es"
-            },
-            {
-                url: "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=cs",
-                label: "Čeština",
-                languageTag: "cs"
-            },
-            {
-                url: "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=ja",
-                label: "日本語",
-                languageTag: "ja"
-            },
-            {
-                url: "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=sk",
-                label: "Slovenčina",
-                languageTag: "sk"
-            },
-            {
-                url: "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=pl",
-                label: "Polski",
-                languageTag: "pl"
-            },
-            {
-                url: "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=ca",
-                label: "Català",
-                languageTag: "ca"
-            },
-            {
-                url: "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=nl",
-                label: "Nederlands",
-                languageTag: "nl"
-            },
-            {
-                url: "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg&execution=ee6c2834-46a4-4a20-a1b6-f6d6f6451b36&kc_locale=tr",
-                label: "Türkçe",
-                languageTag: "tr"
-            }
+            ["de", "Deutsch"],
+            ["no", "Norsk"],
+            ["ru", "Русский"],
+            ["sv", "Svenska"],
+            ["pt-BR", "Português (Brasil)"],
+            ["lt", "Lietuvių"],
+            ["en", "English"],
+            ["it", "Italiano"],
+            ["fr", "Français"],
+            ["zh-CN", "中文简体"],
+            ["es", "Español"],
+            ["cs", "Čeština"],
+            ["ja", "日本語"],
+            ["sk", "Slovenčina"],
+            ["pl", "Polski"],
+            ["ca", "Català"],
+            ["nl", "Nederlands"],
+            ["tr", "Türkçe"]
             /* spell-checker: enable */
-        ],
+        ].map(
+            ([languageTag, label]) =>
+                ({
+                    languageTag,
+                    label,
+                    url: "https://gist.github.com/garronej/52baaca1bb925f2296ab32741e062b8e"
+                }) as const
+        ),
         currentLanguageTag: "en"
     },
     features: {

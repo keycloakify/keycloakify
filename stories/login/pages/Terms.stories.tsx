@@ -19,3 +19,27 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     render: () => <PageStory />
 };
+
+export const French: Story = {
+    render: () => (
+        <PageStory
+            kcContext={{
+                locale: {
+                    currentLanguageTag: "fr"
+                }
+            }}
+        />
+    )
+};
+
+export const Spanish: Story = {
+    render: () => (
+        <PageStory
+            kcContext={{
+                locale: {
+                    currentLanguageTag: "es"
+                }
+            }}
+        />
+    )
+};
