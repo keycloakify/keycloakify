@@ -118,7 +118,10 @@ const { getHardCodedWeight } = (() => {
         "login/login.ftl",
         "login/register.ftl",
         "login/terms.ftl",
-        "login/error.ftl",
+        "login/login-select-authenticator.ftl",
+        "login/login-login-config-totp.ftl",
+        "login/login-login-reset-password.ftl",
+        "login/error.ftl"
     ];
 
     function getHardCodedWeight(kind) {
