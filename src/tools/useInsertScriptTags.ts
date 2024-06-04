@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { assert } from "tsafe/assert";
 
 export type ScriptTag = ScriptTag.TextContent | ScriptTag.Src;
@@ -16,20 +16,28 @@ export namespace ScriptTag {
     };
 }
 
+/**
+ * NOTE: The component that use this hook can only be mounded once!
+ * And can'r rerender with different scriptTags.
+ * If it's mounted again the page will be reloaded.
+ * This simulates the behavior of a server rendered page that imports javascript in the head.
+ */
 export function createUseInsertScriptTags() {
     let areScriptsInserted = false;
 
-    let scriptTagsFingerprint: string | undefined;
+    let isFistMount = true;
 
     function useInsertScriptTags(params: { scriptTags: ScriptTag[] }) {
         const { scriptTags } = params;
 
-        if (scriptTagsFingerprint === undefined) {
-            scriptTagsFingerprint = getScriptTagsFingerprint(scriptTags);
-        } else if (getScriptTagsFingerprint(scriptTags) !== scriptTagsFingerprint) {
-            // NOTE: This is for storybook, when we switch to a page that has different scripts.
-            window.location.reload();
-        }
+        useState(() => {
+            if (!isFistMount) {
+                window.location.reload();
+                return;
+            }
+
+            isFistMount = false;
+        });
 
         const insertScriptTags = useCallback(() => {
             if (areScriptsInserted) {
@@ -84,18 +92,4 @@ export function createUseInsertScriptTags() {
     }
 
     return { useInsertScriptTags };
-}
-
-function getScriptTagsFingerprint(scriptTags: ScriptTag[]) {
-    return scriptTags
-        .map((scriptTag): string => {
-            if ("textContent" in scriptTag) {
-                return scriptTag.textContent;
-            }
-            if ("src" in scriptTag) {
-                return scriptTag.src;
-            }
-            assert(false);
-        })
-        .join("---");
 }

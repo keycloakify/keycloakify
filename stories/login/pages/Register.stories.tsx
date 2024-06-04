@@ -76,6 +76,21 @@ export const WithRecaptcha: Story = {
     )
 };
 
+export const WithRecaptchaFrench: Story = {
+    render: () => (
+        <PageStory
+            kcContext={{
+                locale: {
+                    currentLanguageTag: "fr"
+                },
+                scripts: ["https://www.google.com/recaptcha/api.js?hl=fr"],
+                recaptchaRequired: true,
+                recaptchaSiteKey: "6LfQHvApAAAAAE73SYTd5vS0lB1Xr7zdiQ-6iBVa"
+            }}
+        />
+    )
+};
+
 export const WithPresets: Story = {
     render: () => (
         <PageStory

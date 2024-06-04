@@ -1,86 +1,68 @@
-import { useReducer, useEffect } from "react";
+import { useEffect, useState } from "react";
+import {
+    createStatefulObservable,
+    useRerenderOnChange
+} from "keycloakify/tools/StatefulObservable";
 
+/**
+ * NOTE: The component that use this hook can only be mounded once!
+ * And can't rerender with different hrefs.
+ * If it's mounted again the page will be reloaded.
+ * This simulates the behavior of a server rendered page that imports css stylesheet in the head.
+ */
 export function createUseInsertLinkTags() {
-    let linkTagsContext:
-        | {
-              styleSheetHrefs: string[];
-              prAreAllStyleSheetsLoaded: Promise<void>;
-              remove: () => void;
-          }
-        | undefined = undefined;
+    let isFistMount = true;
 
-    /** NOTE: The hrefs can't changes. There should be only one one call on this. */
+    const obsAreAllStyleSheetsLoaded = createStatefulObservable(() => false);
+
     function useInsertLinkTags(params: { hrefs: string[] }) {
         const { hrefs } = params;
 
-        const [areAllStyleSheetsLoaded, setAllStyleSheetLoaded] = useReducer(
-            () => true,
-            hrefs.length === 0
-        );
+        useRerenderOnChange(obsAreAllStyleSheetsLoaded);
+
+        useState(() => {
+            if (!isFistMount) {
+                window.location.reload();
+                return;
+            }
+
+            isFistMount = false;
+        });
 
         useEffect(() => {
             let isActive = true;
 
-            mount_link_tags: {
-                if (linkTagsContext !== undefined) {
-                    if (
-                        JSON.stringify(linkTagsContext.styleSheetHrefs) ===
-                        JSON.stringify(hrefs)
-                    ) {
-                        break mount_link_tags;
-                    }
+            let lastMountedHtmlElement: HTMLLinkElement | undefined = undefined;
 
-                    linkTagsContext.remove();
+            const prs: Promise<void>[] = [];
 
-                    linkTagsContext = undefined;
+            for (const href of hrefs) {
+                const htmlElement = document.createElement("link");
+
+                prs.push(
+                    new Promise<void>(resolve =>
+                        htmlElement.addEventListener("load", () => resolve())
+                    )
+                );
+
+                htmlElement.rel = "stylesheet";
+
+                htmlElement.href = href;
+
+                if (lastMountedHtmlElement !== undefined) {
+                    lastMountedHtmlElement.insertAdjacentElement("afterend", htmlElement);
+                } else {
+                    document.head.prepend(htmlElement);
                 }
 
-                let lastMountedHtmlElement: HTMLLinkElement | undefined = undefined;
-
-                const prs: Promise<void>[] = [];
-                const removeFns: (() => void)[] = [];
-
-                for (const href of hrefs) {
-                    const htmlElement = document.createElement("link");
-
-                    prs.push(
-                        new Promise<void>(resolve =>
-                            htmlElement.addEventListener("load", () => resolve())
-                        )
-                    );
-
-                    htmlElement.rel = "stylesheet";
-
-                    htmlElement.href = href;
-
-                    if (lastMountedHtmlElement !== undefined) {
-                        lastMountedHtmlElement.insertAdjacentElement(
-                            "afterend",
-                            htmlElement
-                        );
-                    } else {
-                        document.head.prepend(htmlElement);
-                    }
-
-                    removeFns.push(() => {
-                        htmlElement.remove();
-                    });
-
-                    lastMountedHtmlElement = htmlElement;
-                }
-
-                linkTagsContext = {
-                    styleSheetHrefs: hrefs,
-                    prAreAllStyleSheetsLoaded: Promise.all(prs).then(() => undefined),
-                    remove: () => removeFns.forEach(fn => fn())
-                };
+                lastMountedHtmlElement = htmlElement;
             }
 
-            linkTagsContext.prAreAllStyleSheetsLoaded.then(() => {
+            Promise.all(prs).then(() => {
                 if (!isActive) {
                     return;
                 }
-                setAllStyleSheetLoaded();
+                obsAreAllStyleSheetsLoaded.current = true;
             });
 
             return () => {
@@ -88,7 +70,7 @@ export function createUseInsertLinkTags() {
             };
         }, []);
 
-        return { areAllStyleSheetsLoaded };
+        return { areAllStyleSheetsLoaded: obsAreAllStyleSheetsLoaded.current };
     }
 
     return { useInsertLinkTags };
