@@ -1,10 +1,14 @@
 <style>
-    body {
-        padding: 0 !important;
-        background-color: #393939 !important;
+    body.sb-show-main.sb-main-padded {
+        padding: 0;
     }
 
-    body.sb-show-preparing-docs>.sb-wrapper {
+    body:not(.kcBodyClass) {
+        background-color: #393939;
+    }
+
+
+    body.sb-show-preparing-docs > .sb-wrapper {
         visibility: hidden;
     }
 
