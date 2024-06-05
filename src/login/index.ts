@@ -1,7 +1,3 @@
-import Fallback from "keycloakify/login/Fallback";
-
-export default Fallback;
-
 export { useDownloadTerms } from "keycloakify/login/lib/useDownloadTerms";
 export { createUseI18n } from "keycloakify/login/i18n/i18n";
 export type {
