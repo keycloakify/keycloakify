@@ -3,6 +3,7 @@ import type { ClassKey } from "keycloakify/login/TemplateProps";
 
 export const { useGetClassName } = createUseClassName<ClassKey>({
     defaultClasses: {
+        kcHtmlClass: "login-pf",
         kcBodyClass: undefined,
         kcHeaderWrapperClass: undefined,
         kcLocaleWrapperClass: undefined,
@@ -54,7 +55,6 @@ export const { useGetClassName } = createUseClassName<ClassKey>({
         kcLogoLink: "http://www.keycloak.org",
         kcContainerClass: "container-fluid",
         kcSelectAuthListItemTitle: "select-auth-box-paragraph",
-        kcHtmlClass: "login-pf",
         kcLoginOTPListItemTitleClass: "pf-c-tile__title",
         "kcLogoIdP-openshift-v4": "pf-icon pf-icon-openshift",
         kcWebAuthnUnknownIcon: "pficon pficon-key unknown-transport-class",

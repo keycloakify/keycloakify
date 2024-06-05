@@ -2,13 +2,11 @@ import { useEffect } from "react";
 import { clsx } from "keycloakify/tools/clsx";
 import { type TemplateProps } from "keycloakify/account/TemplateProps";
 import { useGetClassName } from "keycloakify/account/lib/useGetClassName";
-import { createUseInsertLinkTags } from "keycloakify/tools/useInsertLinkTags";
+import { useInsertLinkTags } from "keycloakify/tools/useInsertLinkTags";
 import { useSetClassName } from "keycloakify/tools/useSetClassName";
 import type { KcContext } from "./kcContext";
 import type { I18n } from "./i18n";
 import { assert } from "keycloakify/tools/assert";
-
-const { useInsertLinkTags } = createUseInsertLinkTags();
 
 export default function Template(props: TemplateProps<KcContext, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, active, classes, children } = props;
@@ -46,6 +44,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
     }, []);
 
     const { areAllStyleSheetsLoaded } = useInsertLinkTags({
+        componentOrHookName: "Template",
         hrefs: !doUseDefaultCss
             ? []
             : [

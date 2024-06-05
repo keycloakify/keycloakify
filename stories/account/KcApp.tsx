@@ -1,9 +1,8 @@
-import React, { lazy, Suspense } from "react";
+import React from "react";
 import Fallback from "../../dist/account";
 import type { KcContext } from "./kcContext";
 import { useI18n } from "./i18n";
-
-const DefaultTemplate = lazy(() => import("../../dist/account/Template"));
+import Template from "../../dist/account/Template";
 
 export default function KcApp(props: { kcContext: KcContext }) {
     const { kcContext } = props;
@@ -14,14 +13,5 @@ export default function KcApp(props: { kcContext: KcContext }) {
         return null;
     }
 
-    return (
-        <Suspense>
-            {(() => {
-                switch (kcContext.pageId) {
-                    default:
-                        return <Fallback {...{ kcContext, i18n }} Template={DefaultTemplate} doUseDefaultCss={true} />;
-                }
-            })()}
-        </Suspense>
-    );
+    return <Fallback {...{ kcContext, i18n }} Template={Template} doUseDefaultCss={true} />;
 }

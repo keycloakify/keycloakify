@@ -3,11 +3,9 @@ import { clsx } from "keycloakify/tools/clsx";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import { assert } from "tsafe/assert";
-import { createUseInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
+import { useInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
 import type { KcContext } from "../kcContext";
 import type { I18n } from "../i18n";
-
-const { useInsertScriptTags } = createUseInsertScriptTags();
 
 export default function WebauthnAuthenticate(props: PageProps<Extract<KcContext, { pageId: "webauthn-authenticate.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
@@ -31,6 +29,7 @@ export default function WebauthnAuthenticate(props: PageProps<Extract<KcContext,
     const { msg, msgStr, advancedMsg } = i18n;
 
     const { insertScriptTags } = useInsertScriptTags({
+        componentOrHookName: "WebauthnAuthenticate",
         scriptTags: [
             {
                 type: "text/javascript",

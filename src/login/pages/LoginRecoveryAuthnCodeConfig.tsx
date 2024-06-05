@@ -2,11 +2,9 @@ import { useEffect } from "react";
 import { clsx } from "keycloakify/tools/clsx";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
-import { createUseInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
+import { useInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
 import type { KcContext } from "../kcContext";
 import type { I18n } from "../i18n";
-
-const { useInsertScriptTags } = createUseInsertScriptTags();
 
 export default function LoginRecoveryAuthnCodeConfig(props: PageProps<Extract<KcContext, { pageId: "login-recovery-authn-code-config.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
@@ -21,6 +19,7 @@ export default function LoginRecoveryAuthnCodeConfig(props: PageProps<Extract<Kc
     const { msg, msgStr } = i18n;
 
     const { insertScriptTags } = useInsertScriptTags({
+        componentOrHookName: "LoginRecoveryAuthnCodeConfig",
         scriptTags: [
             {
                 type: "text/javascript",

@@ -8,7 +8,7 @@ import { emailRegexp } from "keycloakify/tools/emailRegExp";
 import type { KcContext, PasswordPolicies } from "keycloakify/login/kcContext/KcContext";
 import { assert, type Equals } from "tsafe/assert";
 import { formatNumber } from "keycloakify/tools/formatNumber";
-import { createUseInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
+import { useInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
 import { structuredCloneButFunctions } from "keycloakify/tools/structuredCloneButFunctions";
 import type { I18n } from "../i18n";
 
@@ -103,12 +103,11 @@ namespace internal {
     };
 }
 
-const { useInsertScriptTags } = createUseInsertScriptTags();
-
 export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTypeOfUseUserProfileForm {
     const { kcContext, i18n, doMakeUserConfirmPassword } = params;
 
     const { insertScriptTags } = useInsertScriptTags({
+        componentOrHookName: "useUserProfileForm",
         scriptTags: Object.keys(kcContext.profile?.html5DataAnnotations ?? {})
             .filter(key => key !== "kcMultivalued" && key !== "kcNumberFormat") // NOTE: Keycloakify handles it.
             .map(key => ({

@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
-import {
-    createStatefulObservable,
-    useRerenderOnChange
-} from "keycloakify/tools/StatefulObservable";
+import { useEffect, useReducer } from "react";
+import { useConst } from "keycloakify/tools/useConst";
+import { id } from "tsafe/id";
+import { useOnFistMount } from "keycloakify/tools/useOnFirstMount";
+
+const alreadyMountedComponentOrHookNames = new Set<string>();
 
 /**
  * NOTE: The component that use this hook can only be mounded once!
@@ -10,28 +11,37 @@ import {
  * If it's mounted again the page will be reloaded.
  * This simulates the behavior of a server rendered page that imports css stylesheet in the head.
  */
-export function createUseInsertLinkTags() {
-    let isFistMount = true;
+export function useInsertLinkTags(params: {
+    componentOrHookName: string;
+    hrefs: string[];
+}) {
+    const { hrefs, componentOrHookName } = params;
 
-    const obsAreAllStyleSheetsLoaded = createStatefulObservable(() => false);
+    useOnFistMount(() => {
+        const isAlreadyMounted =
+            alreadyMountedComponentOrHookNames.has(componentOrHookName);
 
-    function useInsertLinkTags(params: { hrefs: string[] }) {
-        const { hrefs } = params;
+        if (isAlreadyMounted) {
+            window.location.reload();
+            return;
+        }
 
-        useRerenderOnChange(obsAreAllStyleSheetsLoaded);
+        alreadyMountedComponentOrHookNames.add(componentOrHookName);
+    });
 
-        useState(() => {
-            if (!isFistMount) {
-                window.location.reload();
-                return;
-            }
+    const [areAllStyleSheetsLoaded, setAllStyleSheetsLoaded] = useReducer(
+        () => true,
+        false
+    );
 
-            isFistMount = false;
-        });
+    const refPrAllStyleSheetLoaded = useConst(() => ({
+        current: id<Promise<void> | undefined>(undefined)
+    }));
 
-        useEffect(() => {
-            let isActive = true;
+    useEffect(() => {
+        let isActive = true;
 
+        (refPrAllStyleSheetLoaded.current ??= (async () => {
             let lastMountedHtmlElement: HTMLLinkElement | undefined = undefined;
 
             const prs: Promise<void>[] = [];
@@ -58,20 +68,19 @@ export function createUseInsertLinkTags() {
                 lastMountedHtmlElement = htmlElement;
             }
 
-            Promise.all(prs).then(() => {
-                if (!isActive) {
-                    return;
-                }
-                obsAreAllStyleSheetsLoaded.current = true;
-            });
+            await Promise.all(prs);
+        })()).then(() => {
+            if (!isActive) {
+                return;
+            }
 
-            return () => {
-                isActive = false;
-            };
-        }, []);
+            setAllStyleSheetsLoaded();
+        });
 
-        return { areAllStyleSheetsLoaded: obsAreAllStyleSheetsLoaded.current };
-    }
+        return () => {
+            isActive = false;
+        };
+    }, []);
 
-    return { useInsertLinkTags };
+    return { areAllStyleSheetsLoaded };
 }

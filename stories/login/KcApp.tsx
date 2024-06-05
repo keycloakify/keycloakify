@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import React from "react";
 import Fallback from "../../dist/login";
 import type { KcContext } from "./kcContext";
 import { useI18n } from "./i18n";
@@ -35,23 +35,14 @@ export default function KcApp(props: { kcContext: KcContext }) {
     }
 
     return (
-        <Suspense>
-            {(() => {
-                switch (kcContext.pageId) {
-                    default:
-                        return (
-                            <Fallback
-                                {...{
-                                    kcContext,
-                                    i18n,
-                                    Template,
-                                    UserProfileFormFields
-                                }}
-                                doUseDefaultCss={true}
-                            />
-                        );
-                }
-            })()}
-        </Suspense>
+        <Fallback
+            {...{
+                kcContext,
+                i18n,
+                Template,
+                UserProfileFormFields
+            }}
+            doUseDefaultCss={true}
+        />
     );
 }

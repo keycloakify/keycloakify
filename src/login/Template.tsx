@@ -3,14 +3,11 @@ import { assert } from "keycloakify/tools/assert";
 import { clsx } from "keycloakify/tools/clsx";
 import { type TemplateProps } from "keycloakify/login/TemplateProps";
 import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
-import { createUseInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
-import { createUseInsertLinkTags } from "keycloakify/tools/useInsertLinkTags";
+import { useInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
+import { useInsertLinkTags } from "keycloakify/tools/useInsertLinkTags";
 import { useSetClassName } from "keycloakify/tools/useSetClassName";
 import type { KcContext } from "./kcContext";
 import type { I18n } from "./i18n";
-
-const { useInsertLinkTags } = createUseInsertLinkTags();
-const { useInsertScriptTags } = createUseInsertScriptTags();
 
 export default function Template(props: TemplateProps<KcContext, I18n>) {
     const {
@@ -63,6 +60,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
     }, []);
 
     const { areAllStyleSheetsLoaded } = useInsertLinkTags({
+        componentOrHookName: "Template",
         hrefs: !doUseDefaultCss
             ? []
             : [
@@ -75,6 +73,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
     });
 
     const { insertScriptTags } = useInsertScriptTags({
+        componentOrHookName: "Template",
         scriptTags: [
             {
                 type: "module",

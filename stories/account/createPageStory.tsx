@@ -15,7 +15,11 @@ export function createPageStory<PageId extends KcContext["pageId"]>(params: { pa
             overrides
         });
 
-        return <KcApp kcContext={kcContextMock} />;
+        return (
+            <React.StrictMode>
+                <KcApp kcContext={kcContextMock} />
+            </React.StrictMode>
+        );
     }
 
     return { PageStory };

@@ -1,5 +1,5 @@
 import type { ExtendKcContext, KcContext as KcContextBase } from "./KcContext";
-import type { LoginThemePageId } from "keycloakify/bin/shared/constants";
+import type { AccountThemePageId } from "keycloakify/bin/shared/constants";
 import type { DeepPartial } from "keycloakify/tools/DeepPartial";
 import { deepAssign } from "keycloakify/tools/deepAssign";
 import { structuredCloneButFunctions } from "keycloakify/tools/structuredCloneButFunctions";
@@ -18,7 +18,7 @@ export function createGetKcContextMock<
     overrides?: DeepPartial<KcContextExtraProperties & KcContextBase.Common>;
     overridesPerPage?: {
         [PageId in
-            | LoginThemePageId
+            | AccountThemePageId
             | keyof KcContextExtraPropertiesPerPage]?: DeepPartial<
             Extract<
                 ExtendKcContext<
@@ -43,7 +43,7 @@ export function createGetKcContextMock<
     >;
 
     function getKcContextMock<
-        PageId extends LoginThemePageId | keyof KcContextExtraPropertiesPerPage
+        PageId extends AccountThemePageId | keyof KcContextExtraPropertiesPerPage
     >(params: {
         pageId: PageId;
         overrides?: DeepPartial<Extract<KcContext, { pageId: PageId }>>;
