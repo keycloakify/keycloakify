@@ -1,5 +1,5 @@
 import React from "react";
-import Fallback from "../../dist/login";
+import Fallback from "../../dist/login/Fallback";
 import type { KcContext } from "./kcContext";
 import { useI18n } from "./i18n";
 import { useDownloadTerms } from "../../dist/login/lib/useDownloadTerms";
