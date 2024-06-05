@@ -18,7 +18,7 @@ export type KcContextLike = {
 
 assert<KcContext extends KcContextLike ? true : false>();
 
-export type MessageKey = keyof typeof fallbackMessages | keyof (typeof keycloakifyExtraMessages)[typeof fallbackLanguageTag];
+export type MessageKey = keyof typeof fallbackMessages;
 
 export type GenericI18n<MessageKey extends string> = {
     /**
@@ -108,12 +108,10 @@ export function createUseI18n<ExtraMessageKey extends string = never>(extraMessa
                     ...createI18nTranslationFunctions({
                         fallbackMessages: {
                             ...fallbackMessages,
-                            ...(keycloakifyExtraMessages[fallbackLanguageTag] ?? {}),
                             ...(extraMessages[fallbackLanguageTag] ?? {})
                         } as any,
                         messages: {
                             ...(await getMessages(currentLanguageTag)),
-                            ...((keycloakifyExtraMessages as any)[currentLanguageTag] ?? {}),
                             ...(extraMessages[currentLanguageTag] ?? {})
                         } as any,
                         __localizationRealmOverridesUserProfile: kcContext.__localizationRealmOverridesUserProfile
@@ -262,32 +260,3 @@ function createI18nTranslationFunctions<MessageKey extends string>(params: {
             }) as string
     };
 }
-
-const keycloakifyExtraMessages = {
-    en: {
-        shouldBeEqual: "{0} should be equal to {1}",
-        shouldBeDifferent: "{0} should be different to {1}",
-        shouldMatchPattern: "Pattern should match: `/{0}/`",
-        mustBeAnInteger: "Must be an integer",
-        notAValidOption: "Not a valid option",
-        selectAnOption: "Select an option",
-        remove: "Remove",
-        addValue: "Add value"
-    },
-    fr: {
-        /* spell-checker: disable */
-        shouldBeEqual: "{0} doit être égal à {1}",
-        shouldBeDifferent: "{0} doit être différent de {1}",
-        shouldMatchPattern: "Dois respecter le schéma: `/{0}/`",
-        mustBeAnInteger: "Doit être un nombre entier",
-        notAValidOption: "N'est pas une option valide",
-
-        logoutConfirmTitle: "Déconnexion",
-        logoutConfirmHeader: "Êtes-vous sûr(e) de vouloir vous déconnecter ?",
-        doLogout: "Se déconnecter",
-        selectAnOption: "Sélectionner une option",
-        remove: "Supprimer",
-        addValue: "Ajouter une valeur"
-        /* spell-checker: enable */
-    }
-};

@@ -129,11 +129,10 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                         <div className={getClassName("kcLocaleMainClass")} id="kc-locale">
                             <div id="kc-locale-wrapper" className={getClassName("kcLocaleWrapperClass")}>
                                 <div id="kc-locale-dropdown" className={clsx("menu-button-links", getClassName("kcLocaleDropDownClass"))}>
-                                    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                                     <button
                                         tabIndex={1}
                                         id="kc-current-locale-link"
-                                        aria-label={msgStr("languages" as any)}
+                                        aria-label={msgStr("languages")}
                                         aria-haspopup="true"
                                         aria-expanded="false"
                                         aria-controls="language-switch1"
@@ -247,7 +246,6 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                                 <div className={getClassName("kcFormGroupClass")}>
                                     <div className={getClassName("kcFormGroupClass")}>
                                         <input type="hidden" name="tryAnotherWay" value="on" />
-                                        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                                         <a
                                             href="#"
                                             id="try-another-way"

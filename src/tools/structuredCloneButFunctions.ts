@@ -1,4 +1,4 @@
-import "keycloakify/tools/Object.fromEntries";
+import "./Object.fromEntries";
 
 /**
  * Functionally equivalent to structuredClone but
