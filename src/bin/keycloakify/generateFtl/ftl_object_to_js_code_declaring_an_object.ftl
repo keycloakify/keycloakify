@@ -299,6 +299,8 @@ function decodeHtmlEntities(htmlStr){
                     <#local out_seq += ["/*" + path?join(".") + "." + key + " excluded*/"]>
                     <#continue>
                 </#if>
+                
+                USER_DEFINED_EXCLUSIONS_eKsaY4ZsZ4eMr2
 
                 <#-- https://github.com/keycloakify/keycloakify/discussions/406 -->
                 <#if (

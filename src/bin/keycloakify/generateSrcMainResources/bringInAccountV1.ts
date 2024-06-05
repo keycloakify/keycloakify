@@ -10,7 +10,7 @@ import {
 import { downloadKeycloakDefaultTheme } from "../../shared/downloadKeycloakDefaultTheme";
 import { transformCodebase } from "../../tools/transformCodebase";
 
-type BuildOptionsLike = {
+export type BuildOptionsLike = {
     cacheDirPath: string;
     npmWorkspaceRootDirPath: string;
     keycloakifyBuildDirPath: string;

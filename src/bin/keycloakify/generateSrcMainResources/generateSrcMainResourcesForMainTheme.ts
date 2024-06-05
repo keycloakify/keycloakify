@@ -3,7 +3,10 @@ import * as fs from "fs";
 import { join as pathJoin, resolve as pathResolve } from "path";
 import { replaceImportsInJsCode } from "../replacers/replaceImportsInJsCode";
 import { replaceImportsInCssCode } from "../replacers/replaceImportsInCssCode";
-import { generateFtlFilesCodeFactory } from "../generateFtl";
+import {
+    generateFtlFilesCodeFactory,
+    type BuildOptionsLike as BuildOptionsLike_kcContextExclusionsFtlCode
+} from "../generateFtl";
 import {
     type ThemeType,
     lastKeycloakVersionWithAccountV1,
@@ -16,11 +19,17 @@ import {
 import { isInside } from "../../tools/isInside";
 import type { BuildOptions } from "../../shared/buildOptions";
 import { assert, type Equals } from "tsafe/assert";
-import { downloadKeycloakStaticResources } from "../../shared/downloadKeycloakStaticResources";
+import {
+    downloadKeycloakStaticResources,
+    type BuildOptionsLike as BuildOptionsLike_downloadKeycloakStaticResources
+} from "../../shared/downloadKeycloakStaticResources";
 import { readFieldNameUsage } from "./readFieldNameUsage";
 import { readExtraPagesNames } from "./readExtraPageNames";
 import { generateMessageProperties } from "./generateMessageProperties";
-import { bringInAccountV1 } from "./bringInAccountV1";
+import {
+    bringInAccountV1,
+    type BuildOptionsLike as BuildOptionsLike_bringInAccountV1
+} from "./bringInAccountV1";
 import { getThemeSrcDirPath } from "../../shared/getThemeSrcDirPath";
 import { rmSync } from "../../tools/fs.rmSync";
 import { readThisNpmPackageVersion } from "../../tools/readThisNpmPackageVersion";
@@ -30,19 +39,18 @@ import {
 } from "../../shared/metaInfKeycloakThemes";
 import { objectEntries } from "tsafe/objectEntries";
 
-export type BuildOptionsLike = {
-    bundler: "vite" | "webpack";
-    extraThemeProperties: string[] | undefined;
-    themeVersion: string;
-    loginThemeResourcesFromKeycloakVersion: string;
-    reactAppBuildDirPath: string;
-    cacheDirPath: string;
-    assetsDirPath: string;
-    urlPathname: string | undefined;
-    npmWorkspaceRootDirPath: string;
-    reactAppRootDirPath: string;
-    keycloakifyBuildDirPath: string;
-};
+export type BuildOptionsLike = BuildOptionsLike_kcContextExclusionsFtlCode &
+    BuildOptionsLike_downloadKeycloakStaticResources &
+    BuildOptionsLike_bringInAccountV1 & {
+        bundler: "vite" | "webpack";
+        extraThemeProperties: string[] | undefined;
+        loginThemeResourcesFromKeycloakVersion: string;
+        reactAppBuildDirPath: string;
+        assetsDirPath: string;
+        urlPathname: string | undefined;
+        reactAppRootDirPath: string;
+        keycloakifyBuildDirPath: string;
+    };
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
 

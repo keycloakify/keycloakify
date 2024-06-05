@@ -21,6 +21,7 @@ export type BuildOptionsLike = {
     urlPathname: string | undefined;
     reactAppBuildDirPath: string;
     assetsDirPath: string;
+    kcContextExclusionsFtlCode: string | undefined;
 };
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
@@ -140,6 +141,10 @@ export function generateFtlFilesCodeFactory(params: {
         .replace(
             "lOCALIZATION_REALM_OVERRIDES_USER_PROFILE_PROPERTY_KEY_aaGLsPgGIdeeX",
             nameOfTheLocalizationRealmOverridesUserProfileProperty
+        )
+        .replace(
+            "USER_DEFINED_EXCLUSIONS_eKsaY4ZsZ4eMr2",
+            buildOptions.kcContextExclusionsFtlCode ?? ""
         );
     const ftlObjectToJsCodeDeclaringAnObjectPlaceholder =
         '{ "x": "vIdLqMeOed9sdLdIdOxdK0d" }';

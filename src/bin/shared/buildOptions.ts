@@ -30,6 +30,7 @@ export type BuildOptions = {
     urlPathname: string | undefined;
     assetsDirPath: string;
     npmWorkspaceRootDirPath: string;
+    kcContextExclusionsFtlCode: string | undefined;
 };
 
 export type UserProvidedBuildOptions = {
@@ -39,6 +40,7 @@ export type UserProvidedBuildOptions = {
     loginThemeResourcesFromKeycloakVersion?: string;
     keycloakifyBuildDirPath?: string;
     themeName?: string | string[];
+    kcContextExclusionsFtlCode?: string;
 };
 
 export type ResolvedViteConfig = {
@@ -302,6 +304,7 @@ export function readBuildOptions(params: {
 
             return pathJoin(reactAppBuildDirPath, resolvedViteConfig.assetsDir);
         })(),
-        npmWorkspaceRootDirPath
+        npmWorkspaceRootDirPath,
+        kcContextExclusionsFtlCode: userProvidedBuildOptions.kcContextExclusionsFtlCode
     };
 }
