@@ -4,6 +4,7 @@ import fallbackMessages from "./baseMessages/en";
 import { getMessages } from "./baseMessages";
 import { assert } from "tsafe/assert";
 import type { KcContext } from "../kcContext/KcContext";
+import { Reflect } from "tsafe/Reflect";
 
 export const fallbackLanguageTag = "en";
 
@@ -137,7 +138,10 @@ export function createUseI18n<ExtraMessageKey extends string = never>(extraMessa
         return i18n ?? null;
     }
 
-    return { useI18n };
+    return {
+        useI18n,
+        ofTypeI18n: Reflect<GenericI18n<MessageKey | ExtraMessageKey>>()
+    };
 }
 
 function createI18nTranslationFunctions<MessageKey extends string>(params: {
