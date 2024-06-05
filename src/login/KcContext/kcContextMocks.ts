@@ -87,12 +87,9 @@ export const kcContextCommonMock: KcContext.Common = {
         loginAction: "#",
         resourcesPath,
         resourcesCommonPath: `${resourcesPath}/${resources_common}`,
-        loginRestartFlowUrl:
-            "/auth/realms/myrealm/login-actions/restart?client_id=account&tab_id=HoAx28ja4xg",
-        loginUrl:
-            "/auth/realms/myrealm/login-actions/authenticate?client_id=account&tab_id=HoAx28ja4xg",
-        ssoLoginInOtherTabsUrl:
-            "/auth/realms/myrealm/login-actions/switch?client_id=account&tab_id=HoAx28ja4xg"
+        loginRestartFlowUrl: "#",
+        loginUrl: "#",
+        ssoLoginInOtherTabsUrl: "#"
     },
     realm: {
         name: "myrealm",
@@ -160,13 +157,10 @@ export const kcContextCommonMock: KcContext.Common = {
 
 const loginUrl = {
     ...kcContextCommonMock.url,
-    loginResetCredentialsUrl:
-        "/auth/realms/myrealm/login-actions/reset-credentials?client_id=account&tab_id=HoAx28ja4xg",
-    registrationUrl:
-        "/auth/realms/myrealm/login-actions/registration?client_id=account&tab_id=HoAx28ja4xg",
-    oauth2DeviceVerificationAction: "/auth/realms/myrealm/device",
-    oauthAction:
-        "/auth/realms/myrealm/login-actions/consent?client_id=account&tab_id=HoAx28ja4xg"
+    loginResetCredentialsUrl: "#",
+    registrationUrl: "#",
+    oauth2DeviceVerificationAction: "#",
+    oauthAction: "#"
 };
 
 export const kcContextMocks = [
@@ -194,8 +188,7 @@ export const kcContextMocks = [
         ...kcContextCommonMock,
         url: {
             ...loginUrl,
-            registrationAction:
-                "http://localhost:8080/auth/realms/myrealm/login-actions/registration?session_code=gwZdUeO7pbYpFTRxiIxRg_QtzMbtFTKrNu6XW_f8asM&execution=12146ce0-b139-4bbd-b25b-0eccfee6577e&client_id=account&tab_id=uS8lYfebLa0"
+            registrationAction: "#"
         },
         isAppInitiatedAction: false,
         passwordRequired: true,
@@ -445,7 +438,7 @@ export const kcContextMocks = [
         ...kcContextCommonMock,
         pageId: "saml-post-form.ftl",
         samlPost: {
-            url: ""
+            url: "#"
         }
     }),
     id<KcContext.LoginPageExpired>({
