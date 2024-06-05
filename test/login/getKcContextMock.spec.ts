@@ -3,7 +3,7 @@ import { createGetKcContextMock, type Attribute } from "keycloakify/login";
 import {
     kcContextMocks,
     kcContextCommonMock
-} from "keycloakify/login/kcContext/kcContextMocks";
+} from "keycloakify/login/KcContext/kcContextMocks";
 import { structuredCloneButFunctions } from "keycloakify/tools/structuredCloneButFunctions";
 import { expect, it, describe } from "vitest";
 
