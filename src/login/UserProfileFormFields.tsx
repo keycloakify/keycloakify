@@ -1,4 +1,5 @@
 import { useEffect, useReducer, Fragment } from "react";
+import { assert } from "tsafe/assert";
 import type { ClassKey } from "keycloakify/login/TemplateProps";
 import {
     useUserProfileForm,
@@ -7,8 +8,7 @@ import {
     type FormAction,
     type FormFieldError
 } from "keycloakify/login/lib/useUserProfileForm";
-import type { Attribute } from "keycloakify/login/kcContext/KcContext";
-import { assert } from "tsafe/assert";
+import type { Attribute } from "keycloakify/login/KcContext";
 import type { I18n } from "./i18n";
 
 export type UserProfileFormFieldsProps = {

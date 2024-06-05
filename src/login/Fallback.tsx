@@ -1,9 +1,9 @@
 import { lazy, Suspense } from "react";
-import type { PageProps } from "keycloakify/login/pages/PageProps";
 import { assert, type Equals } from "tsafe/assert";
-import type { I18n } from "./i18n";
-import type { KcContext } from "./kcContext";
 import type { LazyOrNot } from "keycloakify/tools/LazyOrNot";
+import type { PageProps } from "keycloakify/login/pages/PageProps";
+import type { KcContext } from "./KcContext";
+import type { I18n } from "./i18n";
 import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFormFields";
 
 const Login = lazy(() => import("keycloakify/login/pages/Login"));

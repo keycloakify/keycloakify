@@ -1,9 +1,9 @@
 import { clsx } from "keycloakify/tools/clsx";
 import { Markdown } from "keycloakify/tools/Markdown";
-import type { PageProps } from "keycloakify/login/pages/PageProps";
 import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import { useTermsMarkdown } from "keycloakify/login/lib/useDownloadTerms";
-import type { KcContext } from "../kcContext";
+import type { PageProps } from "keycloakify/login/pages/PageProps";
+import type { KcContext } from "../KcContext";
 import type { I18n } from "../i18n";
 
 export default function Terms(props: PageProps<Extract<KcContext, { pageId: "terms.ftl" }>, I18n>) {

@@ -2,6 +2,7 @@ export type {
     ExtendKcContext,
     KcContext,
     Attribute,
-    PasswordPolicies
+    PasswordPolicies,
+    Validators
 } from "./KcContext";
 export { createGetKcContextMock } from "./getKcContextMock";

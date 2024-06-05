@@ -21,7 +21,7 @@ export function readExtraPagesNames(params: {
     }).filter(filePath => /\.(ts|tsx|js|jsx)$/.test(filePath));
 
     const candidateFilePaths = filePaths.filter(filePath =>
-        /kcContext\.[^.]+$/.test(filePath)
+        /[kK]cContext\.[^.]+$/.test(filePath)
     );
 
     if (candidateFilePaths.length === 0) {

@@ -1,6 +1,6 @@
-import { PageProps } from "keycloakify/account";
-import { I18n } from "keycloakify/account/i18n";
-import { KcContext } from "keycloakify/account/kcContext";
+import type { PageProps } from "keycloakify/account/pages/PageProps";
+import type { KcContext } from "../KcContext";
+import type { I18n } from "../i18n";
 
 export default function FederatedIdentity(props: PageProps<Extract<KcContext, { pageId: "federatedIdentity.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, classes, Template } = props;

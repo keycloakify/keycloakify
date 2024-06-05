@@ -1,7 +1,7 @@
 import { clsx } from "keycloakify/tools/clsx";
-import type { PageProps } from "keycloakify/account/pages/PageProps";
 import { useGetClassName } from "keycloakify/account/lib/useGetClassName";
-import type { KcContext } from "../kcContext";
+import type { PageProps } from "keycloakify/account/pages/PageProps";
+import type { KcContext } from "../KcContext";
 import type { I18n } from "../i18n";
 
 export default function Totp(props: PageProps<Extract<KcContext, { pageId: "totp.ftl" }>, I18n>) {

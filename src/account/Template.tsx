@@ -1,12 +1,12 @@
 import { useEffect } from "react";
+import { assert } from "keycloakify/tools/assert";
 import { clsx } from "keycloakify/tools/clsx";
-import { type TemplateProps } from "keycloakify/account/TemplateProps";
 import { useGetClassName } from "keycloakify/account/lib/useGetClassName";
 import { useInsertLinkTags } from "keycloakify/tools/useInsertLinkTags";
 import { useSetClassName } from "keycloakify/tools/useSetClassName";
-import type { KcContext } from "./kcContext";
+import type { TemplateProps } from "keycloakify/account/TemplateProps";
+import type { KcContext } from "./KcContext";
 import type { I18n } from "./i18n";
-import { assert } from "keycloakify/tools/assert";
 
 export default function Template(props: TemplateProps<KcContext, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, active, classes, children } = props;

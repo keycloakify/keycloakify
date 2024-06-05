@@ -1,5 +1,5 @@
-import { createGetKcContextMock, type Attribute } from "keycloakify/login";
 import { id } from "tsafe/id";
+import { createGetKcContextMock, type Attribute } from "keycloakify/login";
 import {
     kcContextMocks,
     kcContextCommonMock

@@ -1,9 +1,9 @@
-import "minimal-polyfills/Object.fromEntries";
+import "keycloakify/tools/Object.fromEntries";
 import { useEffect, useState, useRef } from "react";
 import fallbackMessages from "./baseMessages/en";
 import { getMessages } from "./baseMessages";
 import { assert } from "tsafe/assert";
-import type { KcContext } from "../kcContext/KcContext";
+import type { KcContext } from "../KcContext";
 import { Reflect } from "tsafe/Reflect";
 
 export const fallbackLanguageTag = "en";

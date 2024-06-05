@@ -1,4 +1,4 @@
-import "minimal-polyfills/Object.fromEntries";
+import "keycloakify/tools/Object.fromEntries";
 
 /**
  * Functionally equivalent to structuredClone but

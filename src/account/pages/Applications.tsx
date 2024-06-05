@@ -1,12 +1,8 @@
 import { clsx } from "keycloakify/tools/clsx";
-import type { PageProps } from "keycloakify/account/pages/PageProps";
 import { useGetClassName } from "keycloakify/account/lib/useGetClassName";
-import type { KcContext } from "../kcContext";
+import type { PageProps } from "keycloakify/account/pages/PageProps";
+import type { KcContext } from "../KcContext";
 import type { I18n } from "../i18n";
-
-function isArrayWithEmptyObject(variable: any): boolean {
-    return Array.isArray(variable) && variable.length === 1 && typeof variable[0] === "object" && Object.keys(variable[0]).length === 0;
-}
 
 export default function Applications(props: PageProps<Extract<KcContext, { pageId: "applications.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, classes, Template } = props;
@@ -135,4 +131,8 @@ export default function Applications(props: PageProps<Extract<KcContext, { pageI
             </div>
         </Template>
     );
+}
+
+function isArrayWithEmptyObject(variable: any): boolean {
+    return Array.isArray(variable) && variable.length === 1 && typeof variable[0] === "object" && Object.keys(variable[0]).length === 0;
 }

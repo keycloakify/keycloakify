@@ -1,11 +1,11 @@
-import { fallbackLanguageTag } from "keycloakify/login/i18n/i18n";
+import { fallbackLanguageTag } from "keycloakify/login/i18n";
 import { assert } from "tsafe/assert";
 import {
     createStatefulObservable,
     useRerenderOnChange
 } from "keycloakify/tools/StatefulObservable";
-import { KcContext } from "../kcContext";
 import { useOnFistMount } from "keycloakify/tools/useOnFirstMount";
+import { KcContext } from "../KcContext";
 
 const obsTermsMarkdown = createStatefulObservable<string | undefined>(() => undefined);
 

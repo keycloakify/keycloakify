@@ -1,8 +1,8 @@
-import type { PageProps } from "keycloakify/account/pages/PageProps";
-import type { KcContext } from "../kcContext";
-import type { I18n } from "../i18n";
-import { Key } from "react";
+import type { Key } from "react";
 import { useGetClassName } from "keycloakify/account/lib/useGetClassName";
+import type { PageProps } from "keycloakify/account/pages/PageProps";
+import type { I18n } from "../i18n";
+import type { KcContext } from "../KcContext";
 
 export default function Log(props: PageProps<Extract<KcContext, { pageId: "log.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, classes, Template } = props;

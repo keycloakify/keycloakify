@@ -1,9 +1,8 @@
 import { lazy, Suspense } from "react";
-import type { PageProps } from "keycloakify/account/pages/PageProps";
-import type { I18n } from "keycloakify/account/i18n";
-import type { KcContext } from "./kcContext";
 import { assert, type Equals } from "tsafe/assert";
-import FederatedIdentity from "./pages/FederatedIdentity";
+import type { PageProps } from "keycloakify/account/pages/PageProps";
+import type { KcContext } from "./KcContext";
+import type { I18n } from "./i18n";
 
 const Password = lazy(() => import("keycloakify/account/pages/Password"));
 const Account = lazy(() => import("keycloakify/account/pages/Account"));
@@ -11,6 +10,7 @@ const Sessions = lazy(() => import("keycloakify/account/pages/Sessions"));
 const Totp = lazy(() => import("keycloakify/account/pages/Totp"));
 const Applications = lazy(() => import("keycloakify/account/pages/Applications"));
 const Log = lazy(() => import("keycloakify/account/pages/Log"));
+const FederatedIdentity = lazy(() => import("keycloakify/account/pages/FederatedIdentity"));
 
 export default function Fallback(props: PageProps<KcContext, I18n>) {
     const { kcContext, ...rest } = props;

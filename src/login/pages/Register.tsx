@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { clsx } from "keycloakify/tools/clsx";
-import type { PageProps } from "keycloakify/login/pages/PageProps";
-import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
+import { Markdown } from "keycloakify/tools/Markdown";
 import type { LazyOrNot } from "keycloakify/tools/LazyOrNot";
 import { useTermsMarkdown } from "keycloakify/login/lib/useDownloadTerms";
+import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFormFields";
-import { Markdown } from "keycloakify/tools/Markdown";
-import type { KcContext } from "../kcContext";
+import type { PageProps } from "keycloakify/login/pages/PageProps";
+import type { KcContext } from "../KcContext";
 import type { I18n } from "../i18n";
 
 type RegisterProps = PageProps<Extract<KcContext, { pageId: "register.ftl" }>, I18n> & {

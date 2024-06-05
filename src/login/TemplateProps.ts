@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { KcContext } from "./kcContext";
+import type { KcContext } from "./KcContext";
 import type { I18n } from "./i18n";
 
 export type TemplateProps<

@@ -1,15 +1,14 @@
 import "keycloakify/tools/Array.prototype.every";
 import { useMemo, useReducer, useEffect, Fragment, type Dispatch } from "react";
+import { assert, type Equals } from "tsafe/assert";
 import { id } from "tsafe/id";
-import type { MessageKey } from "keycloakify/login/i18n/i18n";
-import type { Attribute, Validators } from "keycloakify/login/kcContext/KcContext";
+import { structuredCloneButFunctions } from "keycloakify/tools/structuredCloneButFunctions";
 import { useConstCallback } from "keycloakify/tools/useConstCallback";
 import { emailRegexp } from "keycloakify/tools/emailRegExp";
-import type { KcContext, PasswordPolicies } from "keycloakify/login/kcContext/KcContext";
-import { assert, type Equals } from "tsafe/assert";
 import { formatNumber } from "keycloakify/tools/formatNumber";
 import { useInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
-import { structuredCloneButFunctions } from "keycloakify/tools/structuredCloneButFunctions";
+import type { KcContext, PasswordPolicies, Attribute, Validators } from "keycloakify/login/KcContext";
+import type { MessageKey } from "keycloakify/login/i18n";
 import type { I18n } from "../i18n";
 
 export type FormFieldError = {

@@ -1,8 +1,8 @@
 import { clsx } from "keycloakify/tools/clsx";
-import { PageProps } from "./PageProps";
-import { KcContext } from "../kcContext";
-import { I18n } from "../i18n";
 import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
+import { PageProps } from "keycloakify/login/pages/PageProps";
+import { KcContext } from "../KcContext";
+import { I18n } from "../i18n";
 
 export default function LoginOauthGrant(props: PageProps<Extract<KcContext, { pageId: "login-oauth-grant.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, classes, Template } = props;

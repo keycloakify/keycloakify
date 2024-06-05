@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { clsx } from "keycloakify/tools/clsx";
 import type { LazyOrNot } from "keycloakify/tools/LazyOrNot";
+import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFormFields";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
-import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
-import type { KcContext } from "../kcContext";
+import type { KcContext } from "../KcContext";
 import type { I18n } from "../i18n";
 
 type UpdateEmailProps = PageProps<Extract<KcContext, { pageId: "update-email.ftl" }>, I18n> & {

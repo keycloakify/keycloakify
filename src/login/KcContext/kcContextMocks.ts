@@ -1,4 +1,4 @@
-import "minimal-polyfills/Object.fromEntries";
+import "keycloakify/tools/Object.fromEntries";
 import type { KcContext, Attribute } from "./KcContext";
 import {
     resources_common,

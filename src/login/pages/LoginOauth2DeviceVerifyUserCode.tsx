@@ -1,8 +1,8 @@
 import { clsx } from "keycloakify/tools/clsx";
-import { I18n } from "../i18n";
-import { KcContext } from "../kcContext";
 import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
-import { PageProps } from "./PageProps";
+import { PageProps } from "keycloakify/login/pages/PageProps";
+import { I18n } from "../i18n";
+import { KcContext } from "../KcContext";
 
 export default function LoginOauth2DeviceVerifyUserCode(
     props: PageProps<Extract<KcContext, { pageId: "login-oauth2-device-verify-user-code.ftl" }>, I18n>
