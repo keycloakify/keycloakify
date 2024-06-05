@@ -1,6 +1,6 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { createPageStory, parameters } from "../createPageStory";
+import { createPageStory, parameters } from "../PageStory";
 
 const pageId = "select-authenticator.ftl";
 
