@@ -46,6 +46,7 @@
         "dist/bin/shared/constants.js.map",
         "!dist/vite-plugin/",
         "dist/vite-plugin/index.d.ts",
+        "dist/vite-plugin/vite-plugin.d.ts",
         "dist/vite-plugin/index.js"
     ],
     "keywords": [
