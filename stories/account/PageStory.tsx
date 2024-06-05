@@ -1,9 +1,9 @@
 import React from "react";
-import type { KcContext } from "./kcContext";
+import type { KcContext } from "./KcContext";
 import KcApp from "./KcApp";
 import type { DeepPartial } from "../../dist/tools/DeepPartial";
 import { createGetKcContextMock } from "../../dist/account";
-import type { KcContextExtraProperties, KcContextExtraPropertiesPerPage } from "./kcContext";
+import type { KcContextExtraProperties, KcContextExtraPropertiesPerPage } from "./KcContext";
 
 const kcContextExtraProperties: KcContextExtraProperties = {};
 const kcContextExtraPropertiesPerPage: KcContextExtraPropertiesPerPage = {};
