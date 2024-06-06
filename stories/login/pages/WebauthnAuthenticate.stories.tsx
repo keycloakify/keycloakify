@@ -1,15 +1,12 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { createPageStory, parameters } from "../PageStory";
+import { createPageStory } from "../PageStory";
 
-const pageId = "webauthn-authenticate.ftl";
-
-const { PageStory } = createPageStory({ pageId });
+const { PageStory } = createPageStory({ pageId: "webauthn-authenticate.ftl" });
 
 const meta = {
-    title: `login/${pageId}`,
-    component: PageStory,
-    parameters
+    title: "login/webauthn-authenticate.ftl",
+    component: PageStory
 } satisfies Meta<typeof PageStory>;
 
 export default meta;

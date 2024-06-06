@@ -2,7 +2,7 @@ import React from "react";
 import type { KcContext } from "./KcContext";
 import KcApp from "./KcApp";
 import type { DeepPartial } from "../../dist/tools/DeepPartial";
-import { createGetKcContextMock } from "../../dist/account";
+import { createGetKcContextMock } from "../../dist/account/KcContext";
 import type { KcContextExtraProperties, KcContextExtraPropertiesPerPage } from "./KcContext";
 
 const kcContextExtraProperties: KcContextExtraProperties = {};
@@ -33,12 +33,3 @@ export function createPageStory<PageId extends KcContext["pageId"]>(params: { pa
 
     return { PageStory };
 }
-
-export const parameters = {
-    viewMode: "story",
-    previewTabs: {
-        "storybook/docs/panel": {
-            hidden: true
-        }
-    }
-};

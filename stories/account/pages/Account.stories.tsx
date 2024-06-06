@@ -1,15 +1,12 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { createPageStory, parameters } from "../PageStory";
+import { createPageStory } from "../PageStory";
 
-const pageId = "account.ftl";
-
-const { PageStory } = createPageStory({ pageId });
+const { PageStory } = createPageStory({ pageId: "account.ftl" });
 
 const meta = {
-    title: `account/${pageId}`,
-    component: PageStory,
-    parameters
+    title: "account/account.ftl",
+    component: PageStory
 } satisfies Meta<typeof PageStory>;
 
 export default meta;
