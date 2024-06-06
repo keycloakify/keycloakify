@@ -139,6 +139,18 @@ fs.rmSync(join("dist", "src"), { recursive: true, force: true });
 
 fs.cpSync("src", join("dist", "src"), { recursive: true });
 
+transformCodebase({
+    srcDirPath: join("stories"),
+    destDirPath: join("dist", "stories"),
+    transformSourceCode: ({ fileRelativePath, sourceCode }) => {
+        if (!fileRelativePath.endsWith(".stories.tsx")) {
+            return undefined;
+        }
+
+        return { modifiedSourceCode: sourceCode };
+    }
+});
+
 console.log(chalk.green(`✓ built in ${((Date.now() - startTime) / 1000).toFixed(2)}s`));
 
 function run(command: string) {

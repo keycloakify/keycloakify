@@ -164,6 +164,20 @@ program
 
 program
     .command({
+        name: "add-story",
+        description: "Add *.stories.tsx file for a specific page to in your Storybook."
+    })
+    .task({
+        skip,
+        handler: async cliCommandOptions => {
+            const { command } = await import("./add-story");
+
+            await command({ cliCommandOptions });
+        }
+    });
+
+program
+    .command({
         name: "initialize-email-theme",
         description: "Initialize an email theme."
     })
