@@ -75,14 +75,6 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         process.exit(-1);
     }
 
-    {
-        const targetDirPath = pathDirname(targetFilePath);
-
-        if (!fs.existsSync(targetDirPath)) {
-            fs.mkdirSync(targetDirPath, { recursive: true });
-        }
-    }
-
     const componentCode = fs
         .readFileSync(
             pathJoin(
@@ -93,13 +85,25 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                 componentBasename
             )
         )
-        .toString("utf8");
+        .toString("utf8")
+        .replace('import React from "react";\n', "");
+
+    {
+        const targetDirPath = pathDirname(targetFilePath);
+
+        if (!fs.existsSync(targetDirPath)) {
+            fs.mkdirSync(targetDirPath, { recursive: true });
+        }
+    }
 
     fs.writeFileSync(targetFilePath, Buffer.from(componentCode, "utf8"));
 
     console.log(
-        `${chalk.green("✓")} ${chalk.bold(
-            pathJoin(".", pathRelative(process.cwd(), targetFilePath))
-        )} copy pasted from the Keycloakify source code into your project`
+        [
+            `${chalk.green("✓")} ${chalk.bold(
+                pathJoin(".", pathRelative(process.cwd(), targetFilePath))
+            )} copy pasted from the Keycloakify source code into your project`,
+            `You can start storybook with ${chalk.bold("yarn storybook")}`
+        ].join("\n")
     );
 }

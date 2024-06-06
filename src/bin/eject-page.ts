@@ -113,14 +113,6 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         process.exit(-1);
     }
 
-    {
-        const targetDirPath = pathDirname(targetFilePath);
-
-        if (!fs.existsSync(targetDirPath)) {
-            fs.mkdirSync(targetDirPath, { recursive: true });
-        }
-    }
-
     const componentCode = fs
         .readFileSync(
             pathJoin(
@@ -132,6 +124,14 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             )
         )
         .toString("utf8");
+
+    {
+        const targetDirPath = pathDirname(targetFilePath);
+
+        if (!fs.existsSync(targetDirPath)) {
+            fs.mkdirSync(targetDirPath, { recursive: true });
+        }
+    }
 
     fs.writeFileSync(targetFilePath, Buffer.from(componentCode, "utf8"));
 
