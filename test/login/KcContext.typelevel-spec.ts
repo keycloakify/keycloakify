@@ -64,7 +64,7 @@ import { Reflect } from "tsafe/Reflect";
             pageId: "login.ftl"
         });
 
-        type Expected = KcContext;
+        type Expected = Extract<KcContext, { pageId: "login.ftl" }>;
 
         assert<Equals<typeof got, Expected>>();
     }
@@ -74,7 +74,7 @@ import { Reflect } from "tsafe/Reflect";
             pageId: "register.ftl"
         });
 
-        type Expected = KcContext;
+        type Expected = Extract<KcContext, { pageId: "register.ftl" }>;
 
         assert<Equals<typeof got, Expected>>();
     }
@@ -84,7 +84,7 @@ import { Reflect } from "tsafe/Reflect";
             pageId: "my-custom-page.ftl"
         });
 
-        type Expected = KcContext;
+        type Expected = Extract<KcContext, { pageId: "my-custom-page.ftl" }>;
 
         assert<Equals<typeof got, Expected>>();
     }
@@ -181,7 +181,7 @@ import { Reflect } from "tsafe/Reflect";
             pageId: "login.ftl"
         });
 
-        type Expected = KcContext;
+        type Expected = Extract<KcContext, { pageId: "login.ftl" }>;
 
         assert<Equals<typeof got, Expected>>();
     }
@@ -191,7 +191,7 @@ import { Reflect } from "tsafe/Reflect";
             pageId: "register.ftl"
         });
 
-        type Expected = KcContext;
+        type Expected = Extract<KcContext, { pageId: "register.ftl" }>;
 
         assert<Equals<typeof got, Expected>>();
     }
