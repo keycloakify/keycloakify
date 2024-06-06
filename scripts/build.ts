@@ -52,7 +52,25 @@ transformCodebase({
 
 fs.rmSync(join("dist", "ncc_out"), { recursive: true });
 
-patchDeprecatedBufferApiUsage(join("dist", "bin", "main.js"));
+{
+    let hasBeenPatched = false;
+
+    fs.readdirSync(join("dist", "bin")).forEach(fileBasename => {
+        if (fileBasename !== "main.js" && !fileBasename.endsWith(".index.js")) {
+            return;
+        }
+
+        const { hasBeenPatched: hasBeenPatched_i } = patchDeprecatedBufferApiUsage(
+            join("dist", "bin", fileBasename)
+        );
+
+        if (hasBeenPatched_i) {
+            hasBeenPatched = true;
+        }
+    });
+
+    assert(hasBeenPatched);
+}
 
 fs.chmodSync(
     join("dist", "bin", "main.js"),
@@ -93,6 +111,10 @@ run(
     )}`
 );
 
+fs.readdirSync(join("dist", "ncc_out")).forEach(fileBasename =>
+    assert(!fileBasename.endsWith(".index.js"))
+);
+
 transformCodebase({
     srcDirPath: join("dist", "ncc_out"),
     destDirPath: join("dist", "vite-plugin"),
@@ -105,7 +127,13 @@ transformCodebase({
 
 fs.rmSync(join("dist", "ncc_out"), { recursive: true });
 
-patchDeprecatedBufferApiUsage(join("dist", "vite-plugin", "index.js"));
+{
+    const { hasBeenPatched } = patchDeprecatedBufferApiUsage(
+        join("dist", "vite-plugin", "index.js")
+    );
+
+    assert(hasBeenPatched);
+}
 
 fs.rmSync(join("dist", "src"), { recursive: true, force: true });
 
@@ -127,7 +155,9 @@ function patchDeprecatedBufferApiUsage(filePath: string) {
         `var buffer = Buffer.allocUnsafe ? Buffer.allocUnsafe(toRead) : new Buffer(toRead);`
     );
 
-    assert(after !== before, `Patch failed for ${relative(process.cwd(), filePath)}`);
-
     fs.writeFileSync(filePath, Buffer.from(after, "utf8"));
+
+    const hasBeenPatched = after !== before;
+
+    return { hasBeenPatched };
 }
