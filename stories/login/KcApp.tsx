@@ -14,18 +14,19 @@ export default function KcApp(props: { kcContext: KcContext }) {
     useDownloadTerms({
         kcContext,
         downloadTermMarkdown: async ({ currentLanguageTag }) => {
-            const resource = (() => {
+            const termsFileName = (() => {
                 switch (currentLanguageTag) {
                     case "fr":
-                        return "/tos/tos_fr.md";
+                        return "fr.md";
                     case "es":
-                        return "/tos/tos_es.md";
+                        return "es.md";
                     default:
-                        return "/tos/tos_en.md";
+                        return "en.md";
                 }
             })();
 
-            const response = await fetch(resource);
+            const response = await fetch(`/terms/${termsFileName}`);
+
             return response.text();
         }
     });
