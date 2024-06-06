@@ -39,13 +39,26 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     console.log(chalk.cyan("Select the page you want to customize:"));
 
-    const { value: pageId } = await cliSelect<LoginThemePageId | AccountThemePageId>({
+    const templateValue = "Template.tsx (Layout common to every page)";
+    const userProfileFormFieldsValue =
+        "UserProfileFormFields.tsx (Renders the form of the register.ftl, login-update-profile.ftl, update-email.ftl and idp-review-user-profile.ftl)";
+
+    const { value: pageIdOrComponent } = await cliSelect<
+        | LoginThemePageId
+        | AccountThemePageId
+        | typeof templateValue
+        | typeof userProfileFormFieldsValue
+    >({
         values: (() => {
             switch (themeType) {
                 case "login":
-                    return [...loginThemePageIds];
+                    return [
+                        templateValue,
+                        userProfileFormFieldsValue,
+                        ...loginThemePageIds
+                    ];
                 case "account":
-                    return [...accountThemePageIds];
+                    return [templateValue, ...accountThemePageIds];
             }
             assert<Equals<typeof themeType, never>>(false);
         })()
@@ -53,27 +66,45 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         process.exit(-1);
     });
 
-    console.log(`→ ${pageId}`);
-
-    const componentPageBasename = capitalize(kebabCaseToCamelCase(pageId)).replace(
-        /ftl$/,
-        "tsx"
-    );
+    console.log(`→ ${pageIdOrComponent}`);
 
     const { themeSrcDirPath } = getThemeSrcDirPath({
         reactAppRootDirPath: buildOptions.reactAppRootDirPath
     });
 
+    const componentBasename = (() => {
+        if (pageIdOrComponent === templateValue) {
+            return "Template.tsx";
+        }
+
+        if (pageIdOrComponent === userProfileFormFieldsValue) {
+            return "UserProfileFormFields.tsx";
+        }
+
+        return capitalize(kebabCaseToCamelCase(pageIdOrComponent)).replace(/ftl$/, "tsx");
+    })();
+
+    const pagesOrDot = (() => {
+        if (
+            pageIdOrComponent === templateValue ||
+            pageIdOrComponent === userProfileFormFieldsValue
+        ) {
+            return ".";
+        }
+
+        return "pages";
+    })();
+
     const targetFilePath = pathJoin(
         themeSrcDirPath,
         themeType,
-        "pages",
-        componentPageBasename
+        pagesOrDot,
+        componentBasename
     );
 
     if (fs.existsSync(targetFilePath)) {
         console.log(
-            `${pageId} is already ejected, ${pathRelative(
+            `${pageIdOrComponent} is already ejected, ${pathRelative(
                 process.cwd(),
                 targetFilePath
             )} already exists`
@@ -90,28 +121,78 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         }
     }
 
-    const componentPageContent = fs
+    const componentCode = fs
         .readFileSync(
             pathJoin(
                 getThisCodebaseRootDirPath(),
                 "src",
                 themeType,
-                "pages",
-                componentPageBasename
+                pagesOrDot,
+                componentBasename
             )
         )
         .toString("utf8");
 
-    fs.writeFileSync(targetFilePath, Buffer.from(componentPageContent, "utf8"));
+    fs.writeFileSync(targetFilePath, Buffer.from(componentCode, "utf8"));
+
+    console.log(
+        `${chalk.green("✓")} ${chalk.bold(
+            pathJoin(".", pathRelative(process.cwd(), targetFilePath))
+        )} copy pasted from the Keycloakify source code into your project`
+    );
+
+    edit_KcApp: {
+        if (
+            pageIdOrComponent !== templateValue &&
+            pageIdOrComponent !== userProfileFormFieldsValue
+        ) {
+            break edit_KcApp;
+        }
+
+        const kcAppTsxPath = pathJoin(themeSrcDirPath, themeType, "KcApp.tsx");
+
+        const kcAppTsxCode = fs.readFileSync(kcAppTsxPath).toString("utf8");
+
+        const modifiedKcAppTsxCode = (() => {
+            switch (pageIdOrComponent) {
+                case templateValue:
+                    return kcAppTsxCode.replace(
+                        `keycloakify/${themeType}/Template`,
+                        "./Template"
+                    );
+                case userProfileFormFieldsValue:
+                    return kcAppTsxCode.replace(
+                        `keycloakify/login/UserProfileFormFields`,
+                        "./UserProfileFormFields"
+                    );
+            }
+            assert<Equals<typeof pageIdOrComponent, never>>(false);
+        })();
+
+        if (kcAppTsxCode === modifiedKcAppTsxCode) {
+            console.log(
+                chalk.red(
+                    "Unable to automatically update KcApp.tsx, please update it manually"
+                )
+            );
+            return;
+        }
+
+        fs.writeFileSync(kcAppTsxPath, Buffer.from(modifiedKcAppTsxCode, "utf8"));
+
+        console.log(
+            `${chalk.green("✓")} ${chalk.bold(
+                pathJoin(".", pathRelative(process.cwd(), kcAppTsxPath))
+            )} Updated`
+        );
+
+        return;
+    }
 
     const userProfileFormFieldComponentName = "UserProfileFormFields";
 
     console.log(
         [
-            ``,
-            `${chalk.green("✓")} ${chalk.bold(
-                pathJoin(".", pathRelative(process.cwd(), targetFilePath))
-            )} copy pasted from the Keycloakify source code into your project`,
             ``,
             `You now need to update your page router:`,
             ``,
@@ -127,10 +208,10 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             `// ...`,
             ``,
             chalk.green(
-                `+const ${componentPageBasename.replace(
+                `+const ${componentBasename.replace(
                     /.tsx$/,
                     ""
-                )} = lazy(() => import("./pages/${componentPageBasename}"));`
+                )} = lazy(() => import("./pages/${componentBasename}"));`
             ),
             ...[
                 ``,
@@ -143,11 +224,11 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                 `             {(() => {`,
                 `                 switch (kcContext.pageId) {`,
                 `                     // ...`,
-                `+                    case "${pageId}": return (`,
+                `+                    case "${pageIdOrComponent}": return (`,
                 `+                        <Login`,
                 `+                            {...{ kcContext, i18n, classes }}`,
                 `+                            Template={Template}`,
-                ...(!componentPageContent.includes(userProfileFormFieldComponentName)
+                ...(!componentCode.includes(userProfileFormFieldComponentName)
                     ? []
                     : [
                           `+                            ${userProfileFormFieldComponentName}={${userProfileFormFieldComponentName}}`
