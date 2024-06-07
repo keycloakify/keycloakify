@@ -16,7 +16,7 @@ export default function Terms(props: PageProps<Extract<KcContext, { pageId: "ter
 
     const { msg, msgStr } = i18n;
 
-    const { url } = kcContext;
+    const { locale, url } = kcContext;
 
     const { isDownloadComplete, termsMarkdown, termsLanguageTag } = useTermsMarkdown();
 
@@ -26,7 +26,7 @@ export default function Terms(props: PageProps<Extract<KcContext, { pageId: "ter
 
     return (
         <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} displayMessage={false} headerNode={msg("termsTitle")}>
-            <div id="kc-terms-text" lang={termsLanguageTag}>
+            <div id="kc-terms-text" lang={termsLanguageTag !== locale?.currentLanguageTag ? termsLanguageTag : undefined}>
                 <Markdown>{termsMarkdown}</Markdown>
             </div>
             <form className="form-actions" action={url.loginAction} method="POST">
