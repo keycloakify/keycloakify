@@ -13,21 +13,26 @@ export default function KcApp(props: { kcContext: KcContext }) {
 
     useDownloadTerms({
         kcContext,
-        downloadTermMarkdown: async ({ currentLanguageTag }) => {
-            const termsFileName = (() => {
-                switch (currentLanguageTag) {
-                    case "fr":
-                        return "fr.md";
-                    case "es":
-                        return "es.md";
-                    default:
-                        return "en.md";
-                }
-            })();
+        downloadTermsMarkdown: async ({ currentLanguageTag }) => {
+            let termsLanguageTag = currentLanguageTag;
+            let termsFileName: string;
 
-            const response = await fetch(`/terms/${termsFileName}`);
+            switch (currentLanguageTag) {
+                case "fr":
+                    termsFileName = "fr.md";
+                    break;
+                case "es":
+                    termsFileName = "es.md";
+                    break;
+                default:
+                    termsFileName = "en.md";
+                    termsLanguageTag = "en";
+                    break;
+            }
 
-            return response.text();
+            const termsMarkdown = await fetch(`/terms/${termsFileName}`).then(response => response.text());
+
+            return { termsMarkdown, termsLanguageTag };
         }
     });
 

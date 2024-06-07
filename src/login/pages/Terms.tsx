@@ -18,15 +18,15 @@ export default function Terms(props: PageProps<Extract<KcContext, { pageId: "ter
 
     const { url } = kcContext;
 
-    const { termsMarkdown } = useTermsMarkdown();
+    const { isDownloadComplete, termsMarkdown, termsLanguageTag } = useTermsMarkdown();
 
-    if (termsMarkdown === undefined) {
+    if (!isDownloadComplete) {
         return null;
     }
 
     return (
         <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} displayMessage={false} headerNode={msg("termsTitle")}>
-            <div id="kc-terms-text">
+            <div id="kc-terms-text" lang={termsLanguageTag}>
                 <Markdown>{termsMarkdown}</Markdown>
             </div>
             <form className="form-actions" action={url.loginAction} method="POST">

@@ -7,7 +7,13 @@ import {
 import { useOnFistMount } from "keycloakify/tools/useOnFirstMount";
 import { KcContext } from "../KcContext";
 
-const obsTermsMarkdown = createStatefulObservable<string | undefined>(() => undefined);
+const obs = createStatefulObservable<
+    | {
+          termsMarkdown: string;
+          termsLanguageTag: string;
+      }
+    | undefined
+>(() => undefined);
 
 export type KcContextLike = {
     pageId: string;
@@ -22,26 +28,30 @@ assert<KcContext extends KcContextLike ? true : false>();
 /** Allow to avoid bundling the terms and download it on demand*/
 export function useDownloadTerms(params: {
     kcContext: KcContextLike;
-    downloadTermMarkdown: (params: { currentLanguageTag: string }) => Promise<string>;
+    downloadTermsMarkdown: (params: {
+        currentLanguageTag: string;
+    }) => Promise<{ termsMarkdown: string; termsLanguageTag: string }>;
 }) {
-    const { kcContext, downloadTermMarkdown } = params;
+    const { kcContext, downloadTermsMarkdown } = params;
 
     useOnFistMount(async () => {
         if (kcContext.pageId === "terms.ftl" || kcContext.termsAcceptanceRequired) {
-            const termsMarkdown = await downloadTermMarkdown({
+            obs.current = await downloadTermsMarkdown({
                 currentLanguageTag:
                     kcContext.locale?.currentLanguageTag ?? fallbackLanguageTag
             });
-
-            obsTermsMarkdown.current = termsMarkdown;
         }
     });
 }
 
 export function useTermsMarkdown() {
-    useRerenderOnChange(obsTermsMarkdown);
+    useRerenderOnChange(obs);
 
-    const termsMarkdown = obsTermsMarkdown.current;
+    if (obs.current === undefined) {
+        return { isDownloadComplete: false as const };
+    }
 
-    return { termsMarkdown };
+    const { termsMarkdown, termsLanguageTag } = obs.current;
+
+    return { isDownloadComplete: true, termsMarkdown, termsLanguageTag };
 }
