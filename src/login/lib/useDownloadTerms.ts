@@ -10,7 +10,7 @@ import { KcContext } from "../KcContext";
 const obs = createStatefulObservable<
     | {
           termsMarkdown: string;
-          termsLanguageTag: string;
+          termsLanguageTag: string | undefined;
       }
     | undefined
 >(() => undefined);
@@ -30,7 +30,7 @@ export function useDownloadTerms(params: {
     kcContext: KcContextLike;
     downloadTermsMarkdown: (params: {
         currentLanguageTag: string;
-    }) => Promise<{ termsMarkdown: string; termsLanguageTag: string }>;
+    }) => Promise<{ termsMarkdown: string; termsLanguageTag: string | undefined }>;
 }) {
     const { kcContext, downloadTermsMarkdown } = params;
 
