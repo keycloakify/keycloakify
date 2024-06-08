@@ -205,6 +205,21 @@ program
         }
     });
 
+program
+    .command({
+        name: "update-kc-gen",
+        description:
+            "(Webpack/Create-React-App only) Create/update the kc.gen.ts file in your project."
+    })
+    .task({
+        skip,
+        handler: async cliCommandOptions => {
+            const { command } = await import("./update-kc-gen");
+
+            await command({ cliCommandOptions });
+        }
+    });
+
 // Fallback to build command if no command is provided
 {
     const [, , ...rest] = process.argv;

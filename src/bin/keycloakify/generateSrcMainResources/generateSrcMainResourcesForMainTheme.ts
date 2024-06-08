@@ -38,6 +38,7 @@ import {
     type MetaInfKeycloakTheme
 } from "../../shared/metaInfKeycloakThemes";
 import { objectEntries } from "tsafe/objectEntries";
+import { escapeStringForPropertiesFile } from "../../tools/escapeStringForPropertiesFile";
 
 export type BuildOptionsLike = BuildOptionsLike_kcContextExclusionsFtlCode &
     BuildOptionsLike_downloadKeycloakStaticResources &
@@ -50,6 +51,7 @@ export type BuildOptionsLike = BuildOptionsLike_kcContextExclusionsFtlCode &
         urlPathname: string | undefined;
         reactAppRootDirPath: string;
         keycloakifyBuildDirPath: string;
+        environmentVariables: { name: string; default: string }[];
     };
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
@@ -261,7 +263,11 @@ export async function generateSrcMainResourcesForMainTheme(params: {
                         }
                         assert<Equals<typeof themeType, never>>(false);
                     })()}`,
-                    ...(buildOptions.extraThemeProperties ?? [])
+                    ...(buildOptions.extraThemeProperties ?? []),
+                    buildOptions.environmentVariables.map(
+                        ({ name, default: defaultValue }) =>
+                            `${name}=\${env.${name}:${escapeStringForPropertiesFile(defaultValue)}}`
+                    )
                 ].join("\n\n"),
                 "utf8"
             )

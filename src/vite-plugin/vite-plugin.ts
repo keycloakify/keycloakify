@@ -17,6 +17,7 @@ import {
     type ResolvedViteConfig
 } from "../bin/shared/buildOptions";
 import MagicString from "magic-string";
+import { generateKcGenTs } from "../bin/shared/generateKcGenTs";
 
 export type Params = UserProvidedBuildOptions & {
     postBuild?: (buildOptions: Omit<BuildOptions, "bundler">) => Promise<void>;
@@ -115,13 +116,20 @@ export function keycloakify(params?: Params) {
                 process.exit(0);
             }
 
-            await copyKeycloakResourcesToPublic({
-                buildOptions: readBuildOptions({
-                    cliCommandOptions: {
-                        reactAppRootDirPath
-                    }
-                })
+            const buildOptions = readBuildOptions({
+                cliCommandOptions: {
+                    reactAppRootDirPath
+                }
             });
+
+            await Promise.all([
+                copyKeycloakResourcesToPublic({
+                    buildOptions
+                }),
+                generateKcGenTs({
+                    buildOptions
+                })
+            ]);
         },
         transform: (code, id) => {
             assert(command !== undefined);
