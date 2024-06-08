@@ -51,7 +51,7 @@ export async function generateKcGenTs(params: {
                     ),
                     null,
                     2
-                )}`,
+                )};`,
                 ``,
                 `/* prettier-ignore-end */`
             ].join("\n"),

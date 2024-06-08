@@ -7,43 +7,32 @@ import { kcContextMocks, kcContextCommonMock } from "./kcContextMocks";
 import { exclude } from "tsafe/exclude";
 
 export function createGetKcContextMock<
-    KcContextExtraProperties extends { properties?: Record<string, string | undefined> },
-    KcContextExtraPropertiesPerPage extends Record<
-        `${string}.ftl`,
-        Record<string, unknown>
-    >
+    KcContextExtension extends { properties?: Record<string, string | undefined> },
+    KcContextExtensionPerPage extends Record<`${string}.ftl`, Record<string, unknown>>
 >(params: {
-    kcContextExtraProperties: KcContextExtraProperties;
-    kcContextExtraPropertiesPerPage: KcContextExtraPropertiesPerPage;
-    overrides?: DeepPartial<KcContextExtraProperties & KcContextBase.Common>;
+    kcContextExtension: KcContextExtension;
+    kcContextExtensionPerPage: KcContextExtensionPerPage;
+    overrides?: DeepPartial<KcContextExtension & KcContextBase.Common>;
     overridesPerPage?: {
-        [PageId in
-            | AccountThemePageId
-            | keyof KcContextExtraPropertiesPerPage]?: DeepPartial<
+        [PageId in AccountThemePageId | keyof KcContextExtensionPerPage]?: DeepPartial<
             Extract<
-                ExtendKcContext<
-                    KcContextExtraProperties,
-                    KcContextExtraPropertiesPerPage
-                >,
+                ExtendKcContext<KcContextExtension, KcContextExtensionPerPage>,
                 { pageId: PageId }
             >
         >;
     };
 }) {
     const {
-        kcContextExtraProperties,
-        kcContextExtraPropertiesPerPage,
+        kcContextExtension,
+        kcContextExtensionPerPage,
         overrides: overrides_global,
         overridesPerPage: overridesPerPage_global
     } = params;
 
-    type KcContext = ExtendKcContext<
-        KcContextExtraProperties,
-        KcContextExtraPropertiesPerPage
-    >;
+    type KcContext = ExtendKcContext<KcContextExtension, KcContextExtensionPerPage>;
 
     function getKcContextMock<
-        PageId extends AccountThemePageId | keyof KcContextExtraPropertiesPerPage
+        PageId extends AccountThemePageId | keyof KcContextExtensionPerPage
     >(params: {
         pageId: PageId;
         overrides?: DeepPartial<Extract<KcContext, { pageId: PageId }>>;
@@ -58,8 +47,8 @@ export function createGetKcContextMock<
         );
 
         [
-            kcContextExtraProperties,
-            kcContextExtraPropertiesPerPage[pageId],
+            kcContextExtension,
+            kcContextExtensionPerPage[pageId],
             overrides_global,
             overridesPerPage_global?.[pageId],
             overrides

@@ -10,20 +10,20 @@ import type { Equals } from "tsafe";
 import type { MessageKey } from "../i18n/i18n";
 
 export type ExtendKcContext<
-    KcContextExtraProperties extends { properties?: Record<string, string | undefined> },
-    KcContextExtraPropertiesPerPage extends Record<string, Record<string, unknown>>
+    KcContextExtension extends { properties?: Record<string, string | undefined> },
+    KcContextExtensionPerPage extends Record<string, Record<string, unknown>>
 > = ValueOf<{
-    [PageId in keyof KcContextExtraPropertiesPerPage | KcContext["pageId"]]: Extract<
+    [PageId in keyof KcContextExtensionPerPage | KcContext["pageId"]]: Extract<
         KcContext,
         { pageId: PageId }
     > extends never
         ? KcContext.Common &
-              KcContextExtraProperties & {
+              KcContextExtension & {
                   pageId: PageId;
-              } & KcContextExtraPropertiesPerPage[PageId]
+              } & KcContextExtensionPerPage[PageId]
         : Extract<KcContext, { pageId: PageId }> &
-              KcContextExtraProperties &
-              KcContextExtraPropertiesPerPage[PageId];
+              KcContextExtension &
+              KcContextExtensionPerPage[PageId];
 }>;
 
 /** Take theses type definition with a grain of salt.
