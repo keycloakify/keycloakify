@@ -7,9 +7,9 @@ import { useInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
 import { useInsertLinkTags } from "keycloakify/tools/useInsertLinkTags";
 import { useSetClassName } from "keycloakify/tools/useSetClassName";
 import type { KcContext } from "./KcContext";
-import type { I18n } from "./i18n";
+import { useI18n } from "./i18n";
 
-export default function Template(props: TemplateProps<KcContext, I18n>) {
+export default function Template(props: TemplateProps<KcContext>) {
     const {
         displayInfo = false,
         displayMessage = true,
@@ -21,7 +21,6 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
         documentTitle,
         bodyClassName,
         kcContext,
-        i18n,
         doUseDefaultCss,
         classes,
         children
@@ -29,7 +28,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
 
     const { getClassName } = useGetClassName({ doUseDefaultCss, classes });
 
-    const { msg, msgStr, getChangeLocalUrl, labelBySupportedLanguageTag, currentLanguageTag } = i18n;
+    const { msg, msgStr, getChangeLocalUrl, labelBySupportedLanguageTag, currentLanguageTag } = useI18n({ kcContext });
 
     const { realm, locale, auth, url, message, isAppInitiatedAction, authenticationSession, scripts } = kcContext;
 

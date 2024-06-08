@@ -1,10 +1,10 @@
 import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import type { I18n } from "../i18n";
+import { useI18n } from "../i18n";
 
-export default function Code(props: PageProps<Extract<KcContext, { pageId: "code.ftl" }>, I18n>) {
-    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
+export default function Code(props: PageProps<Extract<KcContext, { pageId: "code.ftl" }>>) {
+    const { kcContext, doUseDefaultCss, Template, classes } = props;
 
     const { getClassName } = useGetClassName({
         doUseDefaultCss,
@@ -13,11 +13,11 @@ export default function Code(props: PageProps<Extract<KcContext, { pageId: "code
 
     const { code } = kcContext;
 
-    const { msg } = i18n;
+    const { msg } = useI18n({ kcContext });
 
     return (
         <Template
-            {...{ kcContext, i18n, doUseDefaultCss, classes }}
+            {...{ kcContext, doUseDefaultCss, classes }}
             headerNode={code.success ? msg("codeSuccessTitle") : msg("codeErrorTitle", code.error)}
         >
             <div id="kc-code">

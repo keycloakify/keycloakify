@@ -1,7 +1,6 @@
 import "keycloakify/tools/Object.fromEntries";
 import { useEffect, useState, useMemo } from "react";
 import { useConst } from "keycloakify/tools/useConst";
-import { id } from "tsafe/id";
 import { assert } from "tsafe/assert";
 import fallbackMessages from "./baseMessages/en";
 import { getMessages } from "./baseMessages";
@@ -81,6 +80,13 @@ export type GenericI18n<MessageKey extends string> = {
      * See advancedMsg() but instead of returning a JSX.Element it returns a string.
      */
     advancedMsgStr: (key: string, ...args: (string | undefined)[]) => string;
+
+    /**
+     * Initially the messages are in english (fallback language).
+     * The translations in the current language are being fetched dynamically.
+     * This property is true while the translations are being fetched.
+     */
+    isFetchingTranslations: boolean;
 };
 
 export type I18n = GenericI18n<MessageKey>;
@@ -90,7 +96,7 @@ export function createUseI18n<ExtraMessageKey extends string = never>(extraMessa
 }) {
     type I18n = GenericI18n<MessageKey | ExtraMessageKey>;
 
-    function useI18n(params: { kcContext: KcContextLike }): { i18n: I18n; isTranslationsDownloadOngoing: boolean } {
+    function useI18n(params: { kcContext: KcContextLike }): I18n {
         const { kcContext } = params;
 
         const partialI18n = useMemo(
@@ -129,6 +135,10 @@ export function createUseI18n<ExtraMessageKey extends string = never>(extraMessa
         const refHasStartedFetching = useConst(() => ({ current: false }));
 
         useEffect(() => {
+            if (partialI18n.currentLanguageTag === fallbackLanguageTag) {
+                return;
+            }
+
             if (refHasStartedFetching.current) {
                 return;
             }
@@ -137,39 +147,33 @@ export function createUseI18n<ExtraMessageKey extends string = never>(extraMessa
 
             refHasStartedFetching.current = true;
 
-            (async () => {
-                const messages = await getMessages(partialI18n.currentLanguageTag);
-
+            getMessages(partialI18n.currentLanguageTag).then(messages => {
                 if (!isActive) {
                     return;
                 }
 
                 setI18n({
                     ...partialI18n,
-                    ...createI18nTranslationFunctions({ messages })
+                    ...createI18nTranslationFunctions({ messages }),
+                    isFetchingTranslations: false
                 });
-            })();
+            });
 
             return () => {
                 isActive = false;
             };
         }, []);
 
-        const pendingI18n = useMemo(() => {
-            if (i18n !== undefined) {
-                return undefined;
-            }
-
-            return id<I18n>({
+        const fallbackI18n = useMemo(
+            (): I18n => ({
                 ...partialI18n,
-                ...createI18nTranslationFunctions({ messages: undefined })
-            });
-        }, []);
+                ...createI18nTranslationFunctions({ messages: undefined }),
+                isFetchingTranslations: partialI18n.currentLanguageTag !== fallbackLanguageTag
+            }),
+            []
+        );
 
-        return {
-            i18n: i18n ?? (assert(pendingI18n !== undefined), pendingI18n),
-            isTranslationsDownloadOngoing: i18n === undefined
-        };
+        return i18n ?? fallbackI18n;
     }
 
     return {

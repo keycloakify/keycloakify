@@ -9,11 +9,10 @@ import {
     type FormFieldError
 } from "keycloakify/login/lib/useUserProfileForm";
 import type { Attribute } from "keycloakify/login/KcContext";
-import type { I18n } from "./i18n";
+import { useI18n } from "./i18n";
 
 export type UserProfileFormFieldsProps = {
     kcContext: KcContextLike;
-    i18n: I18n;
     getClassName: (classKey: ClassKey) => string;
     onIsFormSubmittableValueChange: (isFormSubmittable: boolean) => void;
     BeforeField?: (props: BeforeAfterFieldProps) => JSX.Element | null;
