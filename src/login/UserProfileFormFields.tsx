@@ -370,7 +370,7 @@ function InputTag(props: InputFiledByTypeProps & { fieldIndex: number | undefine
                     })
                 }
                 onBlur={() =>
-                    props.formValidationDispatch({
+                    formValidationDispatch({
                         action: "focus lost",
                         name: attribute.name,
                         fieldIndex: fieldIndex
