@@ -1,34 +1,34 @@
-import type { BuildOptions } from "../../shared/buildOptions";
+import type { BuildContext } from "../../shared/buildContext";
 import { assert } from "tsafe/assert";
 import {
     generateSrcMainResourcesForMainTheme,
-    type BuildOptionsLike as BuildOptionsLike_generateSrcMainResourcesForMainTheme
+    type BuildContextLike as BuildContextLike_generateSrcMainResourcesForMainTheme
 } from "./generateSrcMainResourcesForMainTheme";
 import { generateSrcMainResourcesForThemeVariant } from "./generateSrcMainResourcesForThemeVariant";
 
-export type BuildOptionsLike = BuildOptionsLike_generateSrcMainResourcesForMainTheme & {
+export type BuildContextLike = BuildContextLike_generateSrcMainResourcesForMainTheme & {
     themeNames: string[];
 };
 
-assert<BuildOptions extends BuildOptionsLike ? true : false>();
+assert<BuildContext extends BuildContextLike ? true : false>();
 
 export async function generateSrcMainResources(params: {
-    buildOptions: BuildOptionsLike;
+    buildContext: BuildContextLike;
 }): Promise<void> {
-    const { buildOptions } = params;
+    const { buildContext } = params;
 
-    const [themeName, ...themeVariantNames] = buildOptions.themeNames;
+    const [themeName, ...themeVariantNames] = buildContext.themeNames;
 
     await generateSrcMainResourcesForMainTheme({
         themeName,
-        buildOptions
+        buildContext
     });
 
     for (const themeVariantName of themeVariantNames) {
         generateSrcMainResourcesForThemeVariant({
             themeName,
             themeVariantName,
-            buildOptions
+            buildContext
         });
     }
 }

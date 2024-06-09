@@ -4,7 +4,7 @@ import { generateCssCodeToDefineGlobals } from "../replacers/replaceImportsInCss
 import { replaceImportsInInlineCssCode } from "../replacers/replaceImportsInInlineCssCode";
 import * as fs from "fs";
 import { join as pathJoin } from "path";
-import type { BuildOptions } from "../../shared/buildOptions";
+import type { BuildContext } from "../../shared/buildContext";
 import { assert } from "tsafe/assert";
 import {
     type ThemeType,
@@ -15,7 +15,7 @@ import {
 } from "../../shared/constants";
 import { getThisCodebaseRootDirPath } from "../../tools/getThisCodebaseRootDirPath";
 
-export type BuildOptionsLike = {
+export type BuildContextLike = {
     bundler: "vite" | "webpack";
     themeVersion: string;
     urlPathname: string | undefined;
@@ -24,13 +24,13 @@ export type BuildOptionsLike = {
     kcContextExclusionsFtlCode: string | undefined;
 };
 
-assert<BuildOptions extends BuildOptionsLike ? true : false>();
+assert<BuildContext extends BuildContextLike ? true : false>();
 
 export function generateFtlFilesCodeFactory(params: {
     themeName: string;
     indexHtmlCode: string;
     cssGlobalsToDefine: Record<string, string>;
-    buildOptions: BuildOptionsLike;
+    buildContext: BuildContextLike;
     keycloakifyVersion: string;
     themeType: ThemeType;
     fieldNames: string[];
@@ -39,7 +39,7 @@ export function generateFtlFilesCodeFactory(params: {
         themeName,
         cssGlobalsToDefine,
         indexHtmlCode,
-        buildOptions,
+        buildContext,
         keycloakifyVersion,
         themeType,
         fieldNames
@@ -55,7 +55,7 @@ export function generateFtlFilesCodeFactory(params: {
 
             const { fixedJsCode } = replaceImportsInJsCode({
                 jsCode,
-                buildOptions
+                buildContext
             });
 
             $(element).text(fixedJsCode);
@@ -68,7 +68,7 @@ export function generateFtlFilesCodeFactory(params: {
 
             const { fixedCssCode } = replaceImportsInInlineCssCode({
                 cssCode,
-                buildOptions
+                buildContext
             });
 
             $(element).text(fixedCssCode);
@@ -91,7 +91,7 @@ export function generateFtlFilesCodeFactory(params: {
                     attrName,
                     href.replace(
                         new RegExp(
-                            `^${(buildOptions.urlPathname ?? "/").replace(/\//g, "\\/")}`
+                            `^${(buildContext.urlPathname ?? "/").replace(/\//g, "\\/")}`
                         ),
                         `\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/`
                     )
@@ -106,7 +106,7 @@ export function generateFtlFilesCodeFactory(params: {
                     "<style>",
                     generateCssCodeToDefineGlobals({
                         cssGlobalsToDefine,
-                        buildOptions
+                        buildContext
                     }).cssCodeToPrependInHead,
                     "</style>",
                     ""
@@ -134,7 +134,7 @@ export function generateFtlFilesCodeFactory(params: {
             fieldNames.map(name => `"${name}"`).join(", ")
         )
         .replace("KEYCLOAKIFY_VERSION_xEdKd3xEdr", keycloakifyVersion)
-        .replace("KEYCLOAKIFY_THEME_VERSION_sIgKd3xEdr3dx", buildOptions.themeVersion)
+        .replace("KEYCLOAKIFY_THEME_VERSION_sIgKd3xEdr3dx", buildContext.themeVersion)
         .replace("KEYCLOAKIFY_THEME_TYPE_dExKd3xEdr", themeType)
         .replace("KEYCLOAKIFY_THEME_NAME_cXxKd3xEer", themeName)
         .replace("RESOURCES_COMMON_cLsLsMrtDkpVv", resources_common)
@@ -144,7 +144,7 @@ export function generateFtlFilesCodeFactory(params: {
         )
         .replace(
             "USER_DEFINED_EXCLUSIONS_eKsaY4ZsZ4eMr2",
-            buildOptions.kcContextExclusionsFtlCode ?? ""
+            buildContext.kcContextExclusionsFtlCode ?? ""
         );
     const ftlObjectToJsCodeDeclaringAnObjectPlaceholder =
         '{ "x": "vIdLqMeOed9sdLdIdOxdK0d" }';

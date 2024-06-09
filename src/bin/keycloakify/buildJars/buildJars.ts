@@ -5,25 +5,25 @@ import {
     keycloakThemeAdditionalInfoExtensionVersions
 } from "./extensionVersions";
 import { getKeycloakVersionRangeForJar } from "./getKeycloakVersionRangeForJar";
-import { buildJar, BuildOptionsLike as BuildOptionsLike_buildJar } from "./buildJar";
-import type { BuildOptions } from "../../shared/buildOptions";
+import { buildJar, BuildContextLike as BuildContextLike_buildJar } from "./buildJar";
+import type { BuildContext } from "../../shared/buildContext";
 import { getJarFileBasename } from "../../shared/getJarFileBasename";
 import { readMetaInfKeycloakThemes } from "../../shared/metaInfKeycloakThemes";
 import { accountV1ThemeName } from "../../shared/constants";
 
-export type BuildOptionsLike = BuildOptionsLike_buildJar & {
+export type BuildContextLike = BuildContextLike_buildJar & {
     keycloakifyBuildDirPath: string;
 };
 
-assert<BuildOptions extends BuildOptionsLike ? true : false>();
+assert<BuildContext extends BuildContextLike ? true : false>();
 
 export async function buildJars(params: {
-    buildOptions: BuildOptionsLike;
+    buildContext: BuildContextLike;
 }): Promise<void> {
-    const { buildOptions } = params;
+    const { buildContext } = params;
 
     const doesImplementAccountTheme = readMetaInfKeycloakThemes({
-        keycloakifyBuildDirPath: buildOptions.keycloakifyBuildDirPath
+        keycloakifyBuildDirPath: buildContext.keycloakifyBuildDirPath
     }).themes.some(({ name }) => name === accountV1ThemeName);
 
     await Promise.all(
@@ -71,7 +71,7 @@ export async function buildJars(params: {
                                 jarFileBasename,
                                 keycloakAccountV1Version,
                                 keycloakThemeAdditionalInfoExtensionVersion,
-                                buildOptions
+                                buildContext
                             })
                     )
             )

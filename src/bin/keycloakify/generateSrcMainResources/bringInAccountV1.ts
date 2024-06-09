@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import { join as pathJoin } from "path";
 import { assert } from "tsafe/assert";
-import type { BuildOptions } from "../../shared/buildOptions";
+import type { BuildContext } from "../../shared/buildContext";
 import {
     resources_common,
     lastKeycloakVersionWithAccountV1,
@@ -10,24 +10,24 @@ import {
 import { downloadKeycloakDefaultTheme } from "../../shared/downloadKeycloakDefaultTheme";
 import { transformCodebase } from "../../tools/transformCodebase";
 
-export type BuildOptionsLike = {
+export type BuildContextLike = {
     cacheDirPath: string;
     npmWorkspaceRootDirPath: string;
     keycloakifyBuildDirPath: string;
 };
 
-assert<BuildOptions extends BuildOptionsLike ? true : false>();
+assert<BuildContext extends BuildContextLike ? true : false>();
 
-export async function bringInAccountV1(params: { buildOptions: BuildOptionsLike }) {
-    const { buildOptions } = params;
+export async function bringInAccountV1(params: { buildContext: BuildContextLike }) {
+    const { buildContext } = params;
 
     const { defaultThemeDirPath } = await downloadKeycloakDefaultTheme({
         keycloakVersion: lastKeycloakVersionWithAccountV1,
-        buildOptions
+        buildContext
     });
 
     const accountV1DirPath = pathJoin(
-        buildOptions.keycloakifyBuildDirPath,
+        buildContext.keycloakifyBuildDirPath,
         "src",
         "main",
         "resources",

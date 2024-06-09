@@ -5,12 +5,12 @@ import type {
 } from "./extensionVersions";
 import { join as pathJoin, dirname as pathDirname } from "path";
 import { transformCodebase } from "../../tools/transformCodebase";
-import type { BuildOptions } from "../../shared/buildOptions";
+import type { BuildContext } from "../../shared/buildContext";
 import * as fs from "fs/promises";
 import { accountV1ThemeName } from "../../shared/constants";
 import {
     generatePom,
-    BuildOptionsLike as BuildOptionsLike_generatePom
+    BuildContextLike as BuildContextLike_generatePom
 } from "./generatePom";
 import { readFileSync } from "fs";
 import { isInside } from "../../tools/isInside";
@@ -18,7 +18,7 @@ import child_process from "child_process";
 import { rmSync } from "../../tools/fs.rmSync";
 import { getMetaInfKeycloakThemesJsonFilePath } from "../../shared/metaInfKeycloakThemes";
 
-export type BuildOptionsLike = BuildOptionsLike_generatePom & {
+export type BuildContextLike = BuildContextLike_generatePom & {
     keycloakifyBuildDirPath: string;
     themeNames: string[];
     artifactId: string;
@@ -26,23 +26,23 @@ export type BuildOptionsLike = BuildOptionsLike_generatePom & {
     cacheDirPath: string;
 };
 
-assert<BuildOptions extends BuildOptionsLike ? true : false>();
+assert<BuildContext extends BuildContextLike ? true : false>();
 
 export async function buildJar(params: {
     jarFileBasename: string;
     keycloakAccountV1Version: KeycloakAccountV1Version;
     keycloakThemeAdditionalInfoExtensionVersion: KeycloakThemeAdditionalInfoExtensionVersion;
-    buildOptions: BuildOptionsLike;
+    buildContext: BuildContextLike;
 }): Promise<void> {
     const {
         jarFileBasename,
         keycloakAccountV1Version,
         keycloakThemeAdditionalInfoExtensionVersion,
-        buildOptions
+        buildContext
     } = params;
 
     const keycloakifyBuildTmpDirPath = pathJoin(
-        buildOptions.cacheDirPath,
+        buildContext.cacheDirPath,
         jarFileBasename.replace(".jar", "")
     );
 
@@ -62,7 +62,7 @@ export async function buildJar(params: {
                 return { modifiedSourceCode: sourceCode };
             }
 
-            for (const themeName of [...buildOptions.themeNames, accountV1ThemeName]) {
+            for (const themeName of [...buildContext.themeNames, accountV1ThemeName]) {
                 if (
                     isInside({
                         dirPath: pathJoin("src", "main", "resources", "theme", themeName),
@@ -125,7 +125,7 @@ export async function buildJar(params: {
                           };
                       }
 
-                      for (const themeName of buildOptions.themeNames) {
+                      for (const themeName of buildContext.themeNames) {
                           if (
                               fileRelativePath ===
                               pathJoin(
@@ -160,7 +160,7 @@ export async function buildJar(params: {
                   };
 
         transformCodebase({
-            srcDirPath: buildOptions.keycloakifyBuildDirPath,
+            srcDirPath: buildContext.keycloakifyBuildDirPath,
             destDirPath: keycloakifyBuildTmpDirPath,
             transformSourceCode: params => {
                 const resultCommon = transformCodebase_common(params);
@@ -203,7 +203,7 @@ export async function buildJar(params: {
         }
 
         (["register.ftl", "login-update-profile.ftl"] as const).forEach(pageId =>
-            buildOptions.themeNames.map(themeName => {
+            buildContext.themeNames.map(themeName => {
                 const ftlFilePath = pathJoin(
                     keycloakifyBuildTmpDirPath,
                     "src",
@@ -244,7 +244,7 @@ export async function buildJar(params: {
 
     {
         const { pomFileCode } = generatePom({
-            buildOptions,
+            buildContext,
             keycloakAccountV1Version,
             keycloakThemeAdditionalInfoExtensionVersion
         });
@@ -285,9 +285,9 @@ export async function buildJar(params: {
         pathJoin(
             keycloakifyBuildTmpDirPath,
             "target",
-            `${buildOptions.artifactId}-${buildOptions.themeVersion}.jar`
+            `${buildContext.artifactId}-${buildContext.themeVersion}.jar`
         ),
-        pathJoin(buildOptions.keycloakifyBuildDirPath, jarFileBasename)
+        pathJoin(buildContext.keycloakifyBuildDirPath, jarFileBasename)
     );
 
     rmSync(keycloakifyBuildTmpDirPath, { recursive: true });

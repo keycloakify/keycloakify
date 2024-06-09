@@ -1,6 +1,6 @@
 import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path";
 import { promptKeycloakVersion } from "./shared/promptKeycloakVersion";
-import { readBuildOptions } from "./shared/buildOptions";
+import { getBuildContext } from "./shared/buildContext";
 import { downloadKeycloakDefaultTheme } from "./shared/downloadKeycloakDefaultTheme";
 import { transformCodebase } from "./tools/transformCodebase";
 import type { CliCommandOptions } from "./main";
@@ -9,7 +9,7 @@ import chalk from "chalk";
 export async function command(params: { cliCommandOptions: CliCommandOptions }) {
     const { cliCommandOptions } = params;
 
-    const buildOptions = readBuildOptions({
+    const buildContext = getBuildContext({
         cliCommandOptions
     });
 
@@ -21,13 +21,13 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     const { keycloakVersion } = await promptKeycloakVersion({
         startingFromMajor: undefined,
-        cacheDirPath: buildOptions.cacheDirPath
+        cacheDirPath: buildContext.cacheDirPath
     });
 
     console.log(`→ ${keycloakVersion}`);
 
     const destDirPath = pathJoin(
-        buildOptions.keycloakifyBuildDirPath,
+        buildContext.keycloakifyBuildDirPath,
         "src",
         "main",
         "resources",
@@ -51,7 +51,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     const { defaultThemeDirPath } = await downloadKeycloakDefaultTheme({
         keycloakVersion,
-        buildOptions
+        buildContext
     });
 
     transformCodebase({

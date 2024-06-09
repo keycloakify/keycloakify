@@ -5,15 +5,15 @@ import {
     basename as pathBasename
 } from "path";
 import { assert } from "tsafe/assert";
-import type { BuildOptions } from "../shared/buildOptions";
+import type { BuildContext } from "../shared/buildContext";
 import { accountV1ThemeName } from "../shared/constants";
 
-export type BuildOptionsLike = {
+export type BuildContextLike = {
     keycloakifyBuildDirPath: string;
     themeNames: string[];
 };
 
-assert<BuildOptions extends BuildOptionsLike ? true : false>();
+assert<BuildContext extends BuildContextLike ? true : false>();
 
 generateStartKeycloakTestingContainer.basename = "start_keycloak_testing_container.sh";
 
@@ -24,15 +24,15 @@ const keycloakVersion = "24.0.4";
 export function generateStartKeycloakTestingContainer(params: {
     jarFilePath: string;
     doesImplementAccountTheme: boolean;
-    buildOptions: BuildOptionsLike;
+    buildContext: BuildContextLike;
 }) {
-    const { jarFilePath, doesImplementAccountTheme, buildOptions } = params;
+    const { jarFilePath, doesImplementAccountTheme, buildContext } = params;
 
     const themeRelativeDirPath = pathJoin("src", "main", "resources", "theme");
 
     fs.writeFileSync(
         pathJoin(
-            buildOptions.keycloakifyBuildDirPath,
+            buildContext.keycloakifyBuildDirPath,
             generateStartKeycloakTestingContainer.basename
         ),
         Buffer.from(
@@ -41,7 +41,7 @@ export function generateStartKeycloakTestingContainer(params: {
                 "",
                 `docker rm ${containerName} || true`,
                 "",
-                `cd "${buildOptions.keycloakifyBuildDirPath}"`,
+                `cd "${buildContext.keycloakifyBuildDirPath}"`,
                 "",
                 "docker run \\",
                 "   -p 8080:8080 \\",
@@ -50,11 +50,11 @@ export function generateStartKeycloakTestingContainer(params: {
                 "   -e KEYCLOAK_ADMIN_PASSWORD=admin \\",
                 `   -v "${pathJoin(
                     "$(pwd)",
-                    pathRelative(buildOptions.keycloakifyBuildDirPath, jarFilePath)
+                    pathRelative(buildContext.keycloakifyBuildDirPath, jarFilePath)
                 )}":"/opt/keycloak/providers/${pathBasename(jarFilePath)}" \\`,
                 [
                     ...(doesImplementAccountTheme ? [accountV1ThemeName] : []),
-                    ...buildOptions.themeNames
+                    ...buildContext.themeNames
                 ].map(
                     themeName =>
                         `   -v "${pathJoin(

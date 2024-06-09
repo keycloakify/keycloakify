@@ -1,13 +1,13 @@
 import { copyKeycloakResourcesToPublic } from "./shared/copyKeycloakResourcesToPublic";
-import { readBuildOptions } from "./shared/buildOptions";
+import { getBuildContext } from "./shared/buildContext";
 import type { CliCommandOptions } from "./main";
 
 export async function command(params: { cliCommandOptions: CliCommandOptions }) {
     const { cliCommandOptions } = params;
 
-    const buildOptions = readBuildOptions({ cliCommandOptions });
+    const buildContext = getBuildContext({ cliCommandOptions });
 
     await copyKeycloakResourcesToPublic({
-        buildOptions
+        buildContext
     });
 }

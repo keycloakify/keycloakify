@@ -1,4 +1,4 @@
-import { readBuildOptions } from "../shared/buildOptions";
+import { getBuildContext } from "../shared/buildContext";
 import { exclude } from "tsafe/exclude";
 import type { CliCommandOptions as CliCommandOptions_common } from "../main";
 import { promptKeycloakVersion } from "../shared/promptKeycloakVersion";
@@ -81,11 +81,11 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     const { cliCommandOptions } = params;
 
-    const buildOptions = readBuildOptions({ cliCommandOptions });
+    const buildContext = getBuildContext({ cliCommandOptions });
 
     {
         const { isAppBuildSuccess } = await appBuild({
-            buildOptions
+            buildContext
         });
 
         if (!isAppBuildSuccess) {
@@ -99,7 +99,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
         const { isKeycloakifyBuildSuccess } = await keycloakifyBuild({
             doSkipBuildJars: false,
-            buildOptions
+            buildContext
         });
 
         if (!isKeycloakifyBuildSuccess) {
@@ -113,7 +113,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     }
 
     const metaInfKeycloakThemes = readMetaInfKeycloakThemes({
-        keycloakifyBuildDirPath: buildOptions.keycloakifyBuildDirPath
+        keycloakifyBuildDirPath: buildContext.keycloakifyBuildDirPath
     });
 
     const doesImplementAccountTheme = metaInfKeycloakThemes.themes.some(
@@ -139,7 +139,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
             const { keycloakVersion } = await promptKeycloakVersion({
                 startingFromMajor: 17,
-                cacheDirPath: buildOptions.cacheDirPath
+                cacheDirPath: buildContext.cacheDirPath
             });
 
             console.log(`→ ${keycloakVersion}`);
@@ -260,7 +260,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         return pathJoin(dirPath, value);
     })();
 
-    const jarFilePath = pathJoin(buildOptions.keycloakifyBuildDirPath, jarFileBasename);
+    const jarFilePath = pathJoin(buildContext.keycloakifyBuildDirPath, jarFileBasename);
 
     const { doUseBuiltInAccountV1Theme } = await (async () => {
         let doUseBuiltInAccountV1Theme = false;
@@ -268,7 +268,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         await extractArchive({
             archiveFilePath: jarFilePath,
             onArchiveFile: async ({ relativeFilePathInArchive, readFile, earlyExit }) => {
-                for (const themeName of buildOptions.themeNames) {
+                for (const themeName of buildContext.themeNames) {
                     if (
                         relativeFilePathInArchive ===
                         pathJoin("theme", themeName, "account", "theme.properties")
@@ -293,9 +293,9 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     const accountThemePropertyPatch = !doUseBuiltInAccountV1Theme
         ? undefined
         : () => {
-              for (const themeName of buildOptions.themeNames) {
+              for (const themeName of buildContext.themeNames) {
                   const filePath = pathJoin(
-                      buildOptions.keycloakifyBuildDirPath,
+                      buildContext.keycloakifyBuildDirPath,
                       "src",
                       "main",
                       "resources",
@@ -347,12 +347,12 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                 ? ["-e", "JAVA_OPTS=-Dkeycloak.profile=preview"]
                 : []),
             ...[
-                ...buildOptions.themeNames,
+                ...buildContext.themeNames,
                 ...(doUseBuiltInAccountV1Theme ? [] : [accountV1ThemeName])
             ]
                 .map(themeName => ({
                     localDirPath: pathJoin(
-                        buildOptions.keycloakifyBuildDirPath,
+                        buildContext.keycloakifyBuildDirPath,
                         "src",
                         "main",
                         "resources",
@@ -366,7 +366,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                     `${localDirPath}:${containerDirPath}:rw`
                 ])
                 .flat(),
-            ...buildOptions.environmentVariables
+            ...buildContext.environmentVariables
                 .map(({ name }) => ({ name, envValue: process.env[name] }))
                 .map(({ name, envValue }) =>
                     envValue === undefined ? undefined : { name, envValue }
@@ -385,7 +385,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             ...(realmJsonFilePath === undefined ? [] : ["--import-realm"])
         ],
         {
-            cwd: buildOptions.keycloakifyBuildDirPath
+            cwd: buildContext.keycloakifyBuildDirPath
         }
     ] as const;
 
@@ -397,7 +397,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     child.on("exit", process.exit);
 
-    const srcDirPath = pathJoin(buildOptions.projectDirPath, "src");
+    const srcDirPath = pathJoin(buildContext.projectDirPath, "src");
 
     {
         const handler = async (data: Buffer) => {
@@ -429,7 +429,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                     `- password: ${chalk.cyan.bold("password123")}`,
                     "",
                     `Watching for changes in ${chalk.bold(
-                        `.${pathSep}${pathRelative(process.cwd(), buildOptions.projectDirPath)}`
+                        `.${pathSep}${pathRelative(process.cwd(), buildContext.projectDirPath)}`
                     )}`
                 ].join("\n")
             );
@@ -443,7 +443,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             console.log(chalk.cyan("Detected changes in the theme. Rebuilding ..."));
 
             const { isAppBuildSuccess } = await appBuild({
-                buildOptions
+                buildContext
             });
 
             if (!isAppBuildSuccess) {
@@ -452,7 +452,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
             const { isKeycloakifyBuildSuccess } = await keycloakifyBuild({
                 doSkipBuildJars: true,
-                buildOptions
+                buildContext
             });
 
             if (!isKeycloakifyBuildSuccess) {
@@ -470,11 +470,11 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             .watch(
                 [
                     srcDirPath,
-                    buildOptions.publicDirPath,
-                    pathJoin(buildOptions.projectDirPath, "package.json"),
-                    pathJoin(buildOptions.projectDirPath, "vite.config.ts"),
-                    pathJoin(buildOptions.projectDirPath, "vite.config.js"),
-                    pathJoin(buildOptions.projectDirPath, "index.html"),
+                    buildContext.publicDirPath,
+                    pathJoin(buildContext.projectDirPath, "package.json"),
+                    pathJoin(buildContext.projectDirPath, "vite.config.ts"),
+                    pathJoin(buildContext.projectDirPath, "vite.config.js"),
+                    pathJoin(buildContext.projectDirPath, "index.html"),
                     pathJoin(getThisCodebaseRootDirPath(), "src")
                 ],
                 {

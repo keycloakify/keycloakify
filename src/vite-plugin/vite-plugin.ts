@@ -11,20 +11,20 @@ import { rm } from "../bin/tools/fs.rm";
 import { copyKeycloakResourcesToPublic } from "../bin/shared/copyKeycloakResourcesToPublic";
 import { assert } from "tsafe/assert";
 import {
-    readBuildOptions,
+    getBuildContext,
+    type BuildContext,
     type BuildOptions,
-    type UserProvidedBuildOptions,
     type ResolvedViteConfig
-} from "../bin/shared/buildOptions";
+} from "../bin/shared/buildContext";
 import MagicString from "magic-string";
 import { generateKcGenTs } from "../bin/shared/generateKcGenTs";
 
-export type Params = UserProvidedBuildOptions & {
-    postBuild?: (buildOptions: Omit<BuildOptions, "bundler">) => Promise<void>;
+export type Params = BuildOptions & {
+    postBuild?: (buildContext: Omit<BuildContext, "bundler">) => Promise<void>;
 };
 
 export function keycloakify(params?: Params) {
-    const { postBuild, ...userProvidedBuildOptions } = params ?? {};
+    const { postBuild, ...buildOptions } = params ?? {};
 
     let projectDirPath: string | undefined = undefined;
     let urlPathname: string | undefined = undefined;
@@ -45,9 +45,9 @@ export function keycloakify(params?: Params) {
                     break run_post_build_script_case;
                 }
 
-                const buildOptions = JSON.parse(envValue) as BuildOptions;
+                const buildContext = JSON.parse(envValue) as BuildContext;
 
-                await postBuild?.(buildOptions);
+                await postBuild?.(buildContext);
 
                 process.exit(0);
             }
@@ -108,7 +108,7 @@ export function keycloakify(params?: Params) {
                             assetsDir: resolvedConfig.build.assetsDir,
                             buildDir: resolvedConfig.build.outDir,
                             urlPathname,
-                            userProvidedBuildOptions
+                            buildOptions
                         })
                     )
                 );
@@ -116,7 +116,7 @@ export function keycloakify(params?: Params) {
                 process.exit(0);
             }
 
-            const buildOptions = readBuildOptions({
+            const buildContext = getBuildContext({
                 cliCommandOptions: {
                     projectDirPath
                 }
@@ -124,10 +124,10 @@ export function keycloakify(params?: Params) {
 
             await Promise.all([
                 copyKeycloakResourcesToPublic({
-                    buildOptions
+                    buildContext
                 }),
                 generateKcGenTs({
-                    buildOptions
+                    buildContext
                 })
             ]);
         },

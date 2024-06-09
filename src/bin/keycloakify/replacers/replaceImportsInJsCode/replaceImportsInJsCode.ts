@@ -1,38 +1,38 @@
 import { assert } from "tsafe/assert";
-import type { BuildOptions } from "../../../shared/buildOptions";
+import type { BuildContext } from "../../../shared/buildContext";
 import { replaceImportsInJsCode_vite } from "./vite";
 import { replaceImportsInJsCode_webpack } from "./webpack";
 import * as fs from "fs";
 
-export type BuildOptionsLike = {
+export type BuildContextLike = {
     projectBuildDirPath: string;
     assetsDirPath: string;
     urlPathname: string | undefined;
     bundler: "vite" | "webpack";
 };
 
-assert<BuildOptions extends BuildOptionsLike ? true : false>();
+assert<BuildContext extends BuildContextLike ? true : false>();
 
 export function replaceImportsInJsCode(params: {
     jsCode: string;
-    buildOptions: BuildOptionsLike;
+    buildContext: BuildContextLike;
 }) {
-    const { jsCode, buildOptions } = params;
+    const { jsCode, buildContext } = params;
 
     const { fixedJsCode } = (() => {
-        switch (buildOptions.bundler) {
+        switch (buildContext.bundler) {
             case "vite":
                 return replaceImportsInJsCode_vite({
                     jsCode,
-                    buildOptions,
+                    buildContext,
                     basenameOfAssetsFiles: readAssetsDirSync({
-                        assetsDirPath: params.buildOptions.assetsDirPath
+                        assetsDirPath: params.buildContext.assetsDirPath
                     })
                 });
             case "webpack":
                 return replaceImportsInJsCode_webpack({
                     jsCode,
-                    buildOptions
+                    buildContext
                 });
         }
     })();

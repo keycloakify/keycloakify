@@ -2,27 +2,27 @@ import { skipBuildJarsEnvName } from "../shared/constants";
 import * as child_process from "child_process";
 import { Deferred } from "evt/tools/Deferred";
 import { assert } from "tsafe/assert";
-import type { BuildOptions } from "../shared/buildOptions";
+import type { BuildContext } from "../shared/buildContext";
 
-export type BuildOptionsLike = {
+export type BuildContextLike = {
     projectDirPath: string;
     keycloakifyBuildDirPath: string;
     bundler: "vite" | "webpack";
     npmWorkspaceRootDirPath: string;
 };
 
-assert<BuildOptions extends BuildOptionsLike ? true : false>();
+assert<BuildContext extends BuildContextLike ? true : false>();
 
 export async function keycloakifyBuild(params: {
     doSkipBuildJars: boolean;
-    buildOptions: BuildOptionsLike;
+    buildContext: BuildContextLike;
 }): Promise<{ isKeycloakifyBuildSuccess: boolean }> {
-    const { buildOptions, doSkipBuildJars } = params;
+    const { buildContext, doSkipBuildJars } = params;
 
     const dResult = new Deferred<{ isSuccess: boolean }>();
 
     const child = child_process.spawn("npx", ["keycloakify", "build"], {
-        cwd: buildOptions.projectDirPath,
+        cwd: buildContext.projectDirPath,
         env: {
             ...process.env,
             ...(doSkipBuildJars ? { [skipBuildJarsEnvName]: "true" } : {})

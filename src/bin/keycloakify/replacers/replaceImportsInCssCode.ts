@@ -1,13 +1,13 @@
 import * as crypto from "crypto";
-import type { BuildOptions } from "../../shared/buildOptions";
+import type { BuildContext } from "../../shared/buildContext";
 import { assert } from "tsafe/assert";
 import { basenameOfTheKeycloakifyResourcesDir } from "../../shared/constants";
 
-export type BuildOptionsLike = {
+export type BuildContextLike = {
     urlPathname: string | undefined;
 };
 
-assert<BuildOptions extends BuildOptionsLike ? true : false>();
+assert<BuildContext extends BuildContextLike ? true : false>();
 
 export function replaceImportsInCssCode(params: { cssCode: string }): {
     fixedCssCode: string;
@@ -44,11 +44,11 @@ export function replaceImportsInCssCode(params: { cssCode: string }): {
 
 export function generateCssCodeToDefineGlobals(params: {
     cssGlobalsToDefine: Record<string, string>;
-    buildOptions: BuildOptionsLike;
+    buildContext: BuildContextLike;
 }): {
     cssCodeToPrependInHead: string;
 } {
-    const { cssGlobalsToDefine, buildOptions } = params;
+    const { cssGlobalsToDefine, buildContext } = params;
 
     return {
         cssCodeToPrependInHead: [
@@ -59,7 +59,7 @@ export function generateCssCodeToDefineGlobals(params: {
                         `--${cssVariableName}:`,
                         cssGlobalsToDefine[cssVariableName].replace(
                             new RegExp(
-                                `url\\(${(buildOptions.urlPathname ?? "/").replace(
+                                `url\\(${(buildContext.urlPathname ?? "/").replace(
                                     /\//g,
                                     "\\/"
                                 )}`,

@@ -2,7 +2,7 @@ import { generateSrcMainResources } from "./generateSrcMainResources";
 import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path";
 import * as child_process from "child_process";
 import * as fs from "fs";
-import { readBuildOptions } from "../shared/buildOptions";
+import { getBuildContext } from "../shared/buildContext";
 import { vitePluginSubScriptEnvNames, skipBuildJarsEnvName } from "../shared/constants";
 import { buildJars } from "./buildJars";
 import type { CliCommandOptions } from "../main";
@@ -47,7 +47,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     const { cliCommandOptions } = params;
 
-    const buildOptions = readBuildOptions({ cliCommandOptions });
+    const buildContext = getBuildContext({ cliCommandOptions });
 
     console.log(
         [
@@ -55,7 +55,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             chalk.green(
                 `Building the keycloak theme in .${pathSep}${pathRelative(
                     process.cwd(),
-                    buildOptions.keycloakifyBuildDirPath
+                    buildContext.keycloakifyBuildDirPath
                 )} ...`
             )
         ].join(" ")
@@ -64,31 +64,31 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     const startTime = Date.now();
 
     {
-        if (!fs.existsSync(buildOptions.keycloakifyBuildDirPath)) {
-            fs.mkdirSync(buildOptions.keycloakifyBuildDirPath, {
+        if (!fs.existsSync(buildContext.keycloakifyBuildDirPath)) {
+            fs.mkdirSync(buildContext.keycloakifyBuildDirPath, {
                 recursive: true
             });
         }
 
         fs.writeFileSync(
-            pathJoin(buildOptions.keycloakifyBuildDirPath, ".gitignore"),
+            pathJoin(buildContext.keycloakifyBuildDirPath, ".gitignore"),
             Buffer.from("*", "utf8")
         );
     }
 
-    await generateSrcMainResources({ buildOptions });
+    await generateSrcMainResources({ buildContext });
 
     run_post_build_script: {
-        if (buildOptions.bundler !== "vite") {
+        if (buildContext.bundler !== "vite") {
             break run_post_build_script;
         }
 
         child_process.execSync("npx vite", {
-            cwd: buildOptions.projectDirPath,
+            cwd: buildContext.projectDirPath,
             env: {
                 ...process.env,
                 [vitePluginSubScriptEnvNames.runPostBuildScript]:
-                    JSON.stringify(buildOptions)
+                    JSON.stringify(buildContext)
             }
         });
     }
@@ -98,7 +98,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             break build_jars;
         }
 
-        await buildJars({ buildOptions });
+        await buildJars({ buildContext });
     }
 
     console.log(

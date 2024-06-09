@@ -3,21 +3,21 @@ import {
     basenameOfTheKeycloakifyResourcesDir
 } from "../../../shared/constants";
 import { assert } from "tsafe/assert";
-import type { BuildOptions } from "../../../shared/buildOptions";
+import type { BuildContext } from "../../../shared/buildContext";
 import * as nodePath from "path";
 import { replaceAll } from "../../../tools/String.prototype.replaceAll";
 
-export type BuildOptionsLike = {
+export type BuildContextLike = {
     projectBuildDirPath: string;
     assetsDirPath: string;
     urlPathname: string | undefined;
 };
 
-assert<BuildOptions extends BuildOptionsLike ? true : false>();
+assert<BuildContext extends BuildContextLike ? true : false>();
 
 export function replaceImportsInJsCode_vite(params: {
     jsCode: string;
-    buildOptions: BuildOptionsLike;
+    buildContext: BuildContextLike;
     basenameOfAssetsFiles: string[];
     systemType?: "posix" | "win32";
 }): {
@@ -25,7 +25,7 @@ export function replaceImportsInJsCode_vite(params: {
 } {
     const {
         jsCode,
-        buildOptions,
+        buildContext,
         basenameOfAssetsFiles,
         systemType = nodePath.sep === "/" ? "posix" : "win32"
     } = params;
@@ -35,11 +35,11 @@ export function replaceImportsInJsCode_vite(params: {
     let fixedJsCode = jsCode;
 
     replace_base_javacript_import: {
-        if (buildOptions.urlPathname === undefined) {
+        if (buildContext.urlPathname === undefined) {
             break replace_base_javacript_import;
         }
         // Optimization
-        if (!jsCode.includes(buildOptions.urlPathname)) {
+        if (!jsCode.includes(buildContext.urlPathname)) {
             break replace_base_javacript_import;
         }
 
@@ -47,7 +47,7 @@ export function replaceImportsInJsCode_vite(params: {
         fixedJsCode = fixedJsCode.replace(
             new RegExp(
                 `([\\w\\$][\\w\\d\\$]*)=function\\(([\\w\\$][\\w\\d\\$]*)\\)\\{return"${replaceAll(
-                    buildOptions.urlPathname,
+                    buildContext.urlPathname,
                     "/",
                     "\\/"
                 )}"\\+\\2\\}`,
@@ -62,8 +62,8 @@ export function replaceImportsInJsCode_vite(params: {
         // Example: "assets/ or "foo/bar/"
         const staticDir = (() => {
             let out = pathRelative(
-                buildOptions.projectBuildDirPath,
-                buildOptions.assetsDirPath
+                buildContext.projectBuildDirPath,
+                buildContext.assetsDirPath
             );
 
             out = replaceAll(out, pathSep, "/") + "/";
@@ -93,7 +93,7 @@ export function replaceImportsInJsCode_vite(params: {
 
                 fixedJsCode = replaceAll(
                     fixedJsCode,
-                    `"${buildOptions.urlPathname ?? "/"}${relativePathOfAssetFile}"`,
+                    `"${buildContext.urlPathname ?? "/"}${relativePathOfAssetFile}"`,
                     `(window.${nameOfTheGlobal}.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/${relativePathOfAssetFile}")`
                 );
             });

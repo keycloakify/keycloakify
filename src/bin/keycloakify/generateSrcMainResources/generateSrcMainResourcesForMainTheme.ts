@@ -5,7 +5,7 @@ import { replaceImportsInJsCode } from "../replacers/replaceImportsInJsCode";
 import { replaceImportsInCssCode } from "../replacers/replaceImportsInCssCode";
 import {
     generateFtlFilesCodeFactory,
-    type BuildOptionsLike as BuildOptionsLike_kcContextExclusionsFtlCode
+    type BuildContextLike as BuildContextLike_kcContextExclusionsFtlCode
 } from "../generateFtl";
 import {
     type ThemeType,
@@ -17,18 +17,18 @@ import {
     accountThemePageIds
 } from "../../shared/constants";
 import { isInside } from "../../tools/isInside";
-import type { BuildOptions } from "../../shared/buildOptions";
+import type { BuildContext } from "../../shared/buildContext";
 import { assert, type Equals } from "tsafe/assert";
 import {
     downloadKeycloakStaticResources,
-    type BuildOptionsLike as BuildOptionsLike_downloadKeycloakStaticResources
+    type BuildContextLike as BuildContextLike_downloadKeycloakStaticResources
 } from "../../shared/downloadKeycloakStaticResources";
 import { readFieldNameUsage } from "./readFieldNameUsage";
 import { readExtraPagesNames } from "./readExtraPageNames";
 import { generateMessageProperties } from "./generateMessageProperties";
 import {
     bringInAccountV1,
-    type BuildOptionsLike as BuildOptionsLike_bringInAccountV1
+    type BuildContextLike as BuildContextLike_bringInAccountV1
 } from "./bringInAccountV1";
 import { getThemeSrcDirPath } from "../../shared/getThemeSrcDirPath";
 import { rmSync } from "../../tools/fs.rmSync";
@@ -40,9 +40,9 @@ import {
 import { objectEntries } from "tsafe/objectEntries";
 import { escapeStringForPropertiesFile } from "../../tools/escapeStringForPropertiesFile";
 
-export type BuildOptionsLike = BuildOptionsLike_kcContextExclusionsFtlCode &
-    BuildOptionsLike_downloadKeycloakStaticResources &
-    BuildOptionsLike_bringInAccountV1 & {
+export type BuildContextLike = BuildContextLike_kcContextExclusionsFtlCode &
+    BuildContextLike_downloadKeycloakStaticResources &
+    BuildContextLike_bringInAccountV1 & {
         bundler: "vite" | "webpack";
         extraThemeProperties: string[] | undefined;
         loginThemeResourcesFromKeycloakVersion: string;
@@ -54,22 +54,22 @@ export type BuildOptionsLike = BuildOptionsLike_kcContextExclusionsFtlCode &
         environmentVariables: { name: string; default: string }[];
     };
 
-assert<BuildOptions extends BuildOptionsLike ? true : false>();
+assert<BuildContext extends BuildContextLike ? true : false>();
 
 export async function generateSrcMainResourcesForMainTheme(params: {
     themeName: string;
-    buildOptions: BuildOptionsLike;
+    buildContext: BuildContextLike;
 }): Promise<void> {
-    const { themeName, buildOptions } = params;
+    const { themeName, buildContext } = params;
 
     const { themeSrcDirPath } = getThemeSrcDirPath({
-        projectDirPath: buildOptions.projectDirPath
+        projectDirPath: buildContext.projectDirPath
     });
 
     const getThemeTypeDirPath = (params: { themeType: ThemeType | "email" }) => {
         const { themeType } = params;
         return pathJoin(
-            buildOptions.keycloakifyBuildDirPath,
+            buildContext.keycloakifyBuildDirPath,
             "src",
             "main",
             "resources",
@@ -124,7 +124,7 @@ export async function generateSrcMainResourcesForMainTheme(params: {
             }
 
             transformCodebase({
-                srcDirPath: buildOptions.projectBuildDirPath,
+                srcDirPath: buildContext.projectBuildDirPath,
                 destDirPath,
                 transformSourceCode: ({ filePath, sourceCode }) => {
                     //NOTE: Prevent cycles, excludes the folder we generated for debug in public/
@@ -132,7 +132,7 @@ export async function generateSrcMainResourcesForMainTheme(params: {
                     if (
                         isInside({
                             dirPath: pathJoin(
-                                buildOptions.projectBuildDirPath,
+                                buildContext.projectBuildDirPath,
                                 keycloak_resources
                             ),
                             filePath
@@ -163,7 +163,7 @@ export async function generateSrcMainResourcesForMainTheme(params: {
                     if (/\.js?$/i.test(filePath)) {
                         const { fixedJsCode } = replaceImportsInJsCode({
                             jsCode: sourceCode.toString("utf8"),
-                            buildOptions
+                            buildContext
                         });
 
                         return {
@@ -179,10 +179,10 @@ export async function generateSrcMainResourcesForMainTheme(params: {
         const { generateFtlFilesCode } = generateFtlFilesCodeFactory({
             themeName,
             indexHtmlCode: fs
-                .readFileSync(pathJoin(buildOptions.projectBuildDirPath, "index.html"))
+                .readFileSync(pathJoin(buildContext.projectBuildDirPath, "index.html"))
                 .toString("utf8"),
             cssGlobalsToDefine,
-            buildOptions,
+            buildContext,
             keycloakifyVersion: readThisNpmPackageVersion(),
             themeType,
             fieldNames: readFieldNameUsage({
@@ -242,12 +242,12 @@ export async function generateSrcMainResourcesForMainTheme(params: {
                     case "account":
                         return lastKeycloakVersionWithAccountV1;
                     case "login":
-                        return buildOptions.loginThemeResourcesFromKeycloakVersion;
+                        return buildContext.loginThemeResourcesFromKeycloakVersion;
                 }
             })(),
             themeDirPath: pathResolve(pathJoin(themeTypeDirPath, "..")),
             themeType,
-            buildOptions
+            buildContext
         });
 
         fs.writeFileSync(
@@ -263,8 +263,8 @@ export async function generateSrcMainResourcesForMainTheme(params: {
                         }
                         assert<Equals<typeof themeType, never>>(false);
                     })()}`,
-                    ...(buildOptions.extraThemeProperties ?? []),
-                    buildOptions.environmentVariables.map(
+                    ...(buildContext.extraThemeProperties ?? []),
+                    buildContext.environmentVariables.map(
                         ({ name, default: defaultValue }) =>
                             `${name}=\${env.${name}:${escapeStringForPropertiesFile(defaultValue)}}`
                     )
@@ -291,7 +291,7 @@ export async function generateSrcMainResourcesForMainTheme(params: {
 
     if (implementedThemeTypes.account) {
         await bringInAccountV1({
-            buildOptions
+            buildContext
         });
     }
 
@@ -313,7 +313,7 @@ export async function generateSrcMainResourcesForMainTheme(params: {
         }
 
         writeMetaInfKeycloakThemes({
-            keycloakifyBuildDirPath: buildOptions.keycloakifyBuildDirPath,
+            keycloakifyBuildDirPath: buildContext.keycloakifyBuildDirPath,
             metaInfKeycloakThemes
         });
     }

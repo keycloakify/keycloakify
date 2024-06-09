@@ -9,8 +9,7 @@ import { assert } from "tsafe";
 import * as child_process from "child_process";
 import { vitePluginSubScriptEnvNames } from "./constants";
 
-/** Consolidated build option gathered form CLI arguments and config in package.json */
-export type BuildOptions = {
+export type BuildContext = {
     bundler: "vite" | "webpack";
     themeVersion: string;
     themeNames: string[];
@@ -33,7 +32,7 @@ export type BuildOptions = {
     environmentVariables: { name: string; default: string }[];
 };
 
-export type UserProvidedBuildOptions = {
+export type BuildOptions = {
     themeName?: string | string[];
     environmentVariables?: { name: string; default: string }[];
     extraThemeProperties?: string[];
@@ -49,12 +48,12 @@ export type ResolvedViteConfig = {
     publicDir: string;
     assetsDir: string;
     urlPathname: string | undefined;
-    userProvidedBuildOptions: UserProvidedBuildOptions;
+    buildOptions: BuildOptions;
 };
 
-export function readBuildOptions(params: {
+export function getBuildContext(params: {
     cliCommandOptions: CliCommandOptions;
-}): BuildOptions {
+}): BuildContext {
     const { cliCommandOptions } = params;
 
     const projectDirPath = (() => {
@@ -107,7 +106,7 @@ export function readBuildOptions(params: {
             name: string;
             version?: string;
             homepage?: string;
-            keycloakify?: UserProvidedBuildOptions & {
+            keycloakify?: BuildOptions & {
                 projectBuildDirPath?: string;
             };
         };
@@ -143,13 +142,13 @@ export function readBuildOptions(params: {
         );
     })();
 
-    const userProvidedBuildOptions: UserProvidedBuildOptions = {
+    const buildOptions: BuildOptions = {
         ...parsedPackageJson.keycloakify,
-        ...resolvedViteConfig?.userProvidedBuildOptions
+        ...resolvedViteConfig?.buildOptions
     };
 
     const themeNames = (() => {
-        if (userProvidedBuildOptions.themeName === undefined) {
+        if (buildOptions.themeName === undefined) {
             return [
                 parsedPackageJson.name
                     .replace(/^@(.*)/, "$1")
@@ -158,11 +157,11 @@ export function readBuildOptions(params: {
             ];
         }
 
-        if (typeof userProvidedBuildOptions.themeName === "string") {
-            return [userProvidedBuildOptions.themeName];
+        if (typeof buildOptions.themeName === "string") {
+            return [buildOptions.themeName];
         }
 
-        return userProvidedBuildOptions.themeName;
+        return buildOptions.themeName;
     })();
 
     const projectBuildDirPath = (() => {
@@ -194,13 +193,13 @@ export function readBuildOptions(params: {
         themeVersion:
             process.env.KEYCLOAKIFY_THEME_VERSION ?? parsedPackageJson.version ?? "0.0.0",
         themeNames,
-        extraThemeProperties: userProvidedBuildOptions.extraThemeProperties,
+        extraThemeProperties: buildOptions.extraThemeProperties,
         groupId: (() => {
             const fallbackGroupId = `${themeNames[0]}.keycloak`;
 
             return (
                 process.env.KEYCLOAKIFY_GROUP_ID ??
-                userProvidedBuildOptions.groupId ??
+                buildOptions.groupId ??
                 (parsedPackageJson.homepage === undefined
                     ? fallbackGroupId
                     : urlParse(parsedPackageJson.homepage)
@@ -212,16 +211,16 @@ export function readBuildOptions(params: {
         })(),
         artifactId:
             process.env.KEYCLOAKIFY_ARTIFACT_ID ??
-            userProvidedBuildOptions.artifactId ??
+            buildOptions.artifactId ??
             `${themeNames[0]}-keycloak-theme`,
         loginThemeResourcesFromKeycloakVersion:
-            userProvidedBuildOptions.loginThemeResourcesFromKeycloakVersion ?? "24.0.4",
+            buildOptions.loginThemeResourcesFromKeycloakVersion ?? "24.0.4",
         projectDirPath,
         projectBuildDirPath,
         keycloakifyBuildDirPath: (() => {
-            if (userProvidedBuildOptions.keycloakifyBuildDirPath !== undefined) {
+            if (buildOptions.keycloakifyBuildDirPath !== undefined) {
                 return getAbsoluteAndInOsFormatPath({
-                    pathIsh: userProvidedBuildOptions.keycloakifyBuildDirPath,
+                    pathIsh: buildOptions.keycloakifyBuildDirPath,
                     cwd: projectDirPath
                 });
             }
@@ -304,7 +303,7 @@ export function readBuildOptions(params: {
             return pathJoin(projectBuildDirPath, resolvedViteConfig.assetsDir);
         })(),
         npmWorkspaceRootDirPath,
-        kcContextExclusionsFtlCode: userProvidedBuildOptions.kcContextExclusionsFtlCode,
-        environmentVariables: userProvidedBuildOptions.environmentVariables ?? []
+        kcContextExclusionsFtlCode: buildOptions.kcContextExclusionsFtlCode,
+        environmentVariables: buildOptions.environmentVariables ?? []
     };
 }

@@ -2,11 +2,11 @@ import * as child_process from "child_process";
 import { Deferred } from "evt/tools/Deferred";
 import { assert } from "tsafe/assert";
 import { is } from "tsafe/is";
-import type { BuildOptions } from "../shared/buildOptions";
+import type { BuildContext } from "../shared/buildContext";
 import * as fs from "fs";
 import { join as pathJoin } from "path";
 
-export type BuildOptionsLike = {
+export type BuildContextLike = {
     projectDirPath: string;
     keycloakifyBuildDirPath: string;
     bundler: "vite" | "webpack";
@@ -14,14 +14,14 @@ export type BuildOptionsLike = {
     projectBuildDirPath: string;
 };
 
-assert<BuildOptions extends BuildOptionsLike ? true : false>();
+assert<BuildContext extends BuildContextLike ? true : false>();
 
 export async function appBuild(params: {
-    buildOptions: BuildOptionsLike;
+    buildContext: BuildContextLike;
 }): Promise<{ isAppBuildSuccess: boolean }> {
-    const { buildOptions } = params;
+    const { buildContext } = params;
 
-    const { bundler } = buildOptions;
+    const { bundler } = buildContext;
 
     const { command, args, cwd } = (() => {
         switch (bundler) {
@@ -29,12 +29,12 @@ export async function appBuild(params: {
                 return {
                     command: "npx",
                     args: ["vite", "build"],
-                    cwd: buildOptions.projectDirPath
+                    cwd: buildContext.projectDirPath
                 };
             case "webpack": {
                 for (const dirPath of [
-                    buildOptions.projectDirPath,
-                    buildOptions.npmWorkspaceRootDirPath
+                    buildContext.projectDirPath,
+                    buildContext.npmWorkspaceRootDirPath
                 ]) {
                     try {
                         const parsedPackageJson = JSON.parse(

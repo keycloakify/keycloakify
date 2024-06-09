@@ -1,27 +1,27 @@
 import { assert } from "tsafe/assert";
-import type { BuildOptions } from "../../shared/buildOptions";
+import type { BuildContext } from "../../shared/buildContext";
 import type {
     KeycloakAccountV1Version,
     KeycloakThemeAdditionalInfoExtensionVersion
 } from "./extensionVersions";
 
-export type BuildOptionsLike = {
+export type BuildContextLike = {
     groupId: string;
     artifactId: string;
     themeVersion: string;
 };
 
-assert<BuildOptions extends BuildOptionsLike ? true : false>();
+assert<BuildContext extends BuildContextLike ? true : false>();
 
 export function generatePom(params: {
     keycloakAccountV1Version: KeycloakAccountV1Version;
     keycloakThemeAdditionalInfoExtensionVersion: KeycloakThemeAdditionalInfoExtensionVersion;
-    buildOptions: BuildOptionsLike;
+    buildContext: BuildContextLike;
 }) {
     const {
         keycloakAccountV1Version,
         keycloakThemeAdditionalInfoExtensionVersion,
-        buildOptions
+        buildContext
     } = params;
 
     const { pomFileCode } = (function generatePomFileCode(): {
@@ -33,10 +33,10 @@ export function generatePom(params: {
             `	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"`,
             `	 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">`,
             `  <modelVersion>4.0.0</modelVersion>`,
-            `	<groupId>${buildOptions.groupId}</groupId>`,
-            `	<artifactId>${buildOptions.artifactId}</artifactId>`,
-            `	<version>${buildOptions.themeVersion}</version>`,
-            `	<name>${buildOptions.artifactId}</name>`,
+            `	<groupId>${buildContext.groupId}</groupId>`,
+            `	<artifactId>${buildContext.artifactId}</artifactId>`,
+            `	<version>${buildContext.themeVersion}</version>`,
+            `	<name>${buildContext.artifactId}</name>`,
             `  <description />`,
             `  <packaging>jar</packaging>`,
             `  <properties>`,

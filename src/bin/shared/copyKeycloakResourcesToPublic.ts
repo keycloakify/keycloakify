@@ -1,6 +1,6 @@
 import {
     downloadKeycloakStaticResources,
-    type BuildOptionsLike as BuildOptionsLike_downloadKeycloakStaticResources
+    type BuildContextLike as BuildContextLike_downloadKeycloakStaticResources
 } from "./downloadKeycloakStaticResources";
 import { join as pathJoin, relative as pathRelative } from "path";
 import {
@@ -12,21 +12,21 @@ import { readThisNpmPackageVersion } from "../tools/readThisNpmPackageVersion";
 import { assert } from "tsafe/assert";
 import * as fs from "fs";
 import { rmSync } from "../tools/fs.rmSync";
-import type { BuildOptions } from "./buildOptions";
+import type { BuildContext } from "./buildContext";
 
-export type BuildOptionsLike = BuildOptionsLike_downloadKeycloakStaticResources & {
+export type BuildContextLike = BuildContextLike_downloadKeycloakStaticResources & {
     loginThemeResourcesFromKeycloakVersion: string;
     publicDirPath: string;
 };
 
-assert<BuildOptions extends BuildOptionsLike ? true : false>();
+assert<BuildContext extends BuildContextLike ? true : false>();
 
 export async function copyKeycloakResourcesToPublic(params: {
-    buildOptions: BuildOptionsLike;
+    buildContext: BuildContextLike;
 }) {
-    const { buildOptions } = params;
+    const { buildContext } = params;
 
-    const destDirPath = pathJoin(buildOptions.publicDirPath, keycloak_resources);
+    const destDirPath = pathJoin(buildContext.publicDirPath, keycloak_resources);
 
     const keycloakifyBuildinfoFilePath = pathJoin(destDirPath, "keycloakify.buildinfo");
 
@@ -34,12 +34,12 @@ export async function copyKeycloakResourcesToPublic(params: {
         {
             destDirPath,
             keycloakifyVersion: readThisNpmPackageVersion(),
-            buildOptions: {
+            buildContext: {
                 loginThemeResourcesFromKeycloakVersion: readThisNpmPackageVersion(),
-                cacheDirPath: pathRelative(destDirPath, buildOptions.cacheDirPath),
+                cacheDirPath: pathRelative(destDirPath, buildContext.cacheDirPath),
                 npmWorkspaceRootDirPath: pathRelative(
                     destDirPath,
-                    buildOptions.npmWorkspaceRootDirPath
+                    buildContext.npmWorkspaceRootDirPath
                 )
             }
         },
@@ -74,14 +74,14 @@ export async function copyKeycloakResourcesToPublic(params: {
             keycloakVersion: (() => {
                 switch (themeType) {
                     case "login":
-                        return buildOptions.loginThemeResourcesFromKeycloakVersion;
+                        return buildContext.loginThemeResourcesFromKeycloakVersion;
                     case "account":
                         return lastKeycloakVersionWithAccountV1;
                 }
             })(),
             themeType,
             themeDirPath: destDirPath,
-            buildOptions
+            buildContext
         });
     }
 

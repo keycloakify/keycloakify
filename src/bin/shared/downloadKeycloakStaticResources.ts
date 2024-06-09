@@ -2,28 +2,28 @@ import { transformCodebase } from "../tools/transformCodebase";
 import { join as pathJoin } from "path";
 import {
     downloadKeycloakDefaultTheme,
-    type BuildOptionsLike as BuildOptionsLike_downloadKeycloakDefaultTheme
+    type BuildContextLike as BuildContextLike_downloadKeycloakDefaultTheme
 } from "./downloadKeycloakDefaultTheme";
 import { resources_common, type ThemeType } from "./constants";
-import type { BuildOptions } from "./buildOptions";
+import type { BuildContext } from "./buildContext";
 import { assert } from "tsafe/assert";
 import { existsAsync } from "../tools/fs.existsAsync";
 
-export type BuildOptionsLike = BuildOptionsLike_downloadKeycloakDefaultTheme & {};
+export type BuildContextLike = BuildContextLike_downloadKeycloakDefaultTheme & {};
 
-assert<BuildOptions extends BuildOptionsLike ? true : false>();
+assert<BuildContext extends BuildContextLike ? true : false>();
 
 export async function downloadKeycloakStaticResources(params: {
     themeType: ThemeType;
     themeDirPath: string;
     keycloakVersion: string;
-    buildOptions: BuildOptionsLike;
+    buildContext: BuildContextLike;
 }) {
-    const { themeType, themeDirPath, keycloakVersion, buildOptions } = params;
+    const { themeType, themeDirPath, keycloakVersion, buildContext } = params;
 
     const { defaultThemeDirPath } = await downloadKeycloakDefaultTheme({
         keycloakVersion,
-        buildOptions
+        buildContext
     });
 
     const resourcesDirPath = pathJoin(themeDirPath, themeType, "resources");

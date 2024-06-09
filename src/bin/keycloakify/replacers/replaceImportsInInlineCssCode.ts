@@ -1,25 +1,25 @@
-import type { BuildOptions } from "../../shared/buildOptions";
+import type { BuildContext } from "../../shared/buildContext";
 import { assert } from "tsafe/assert";
 import { basenameOfTheKeycloakifyResourcesDir } from "../../shared/constants";
 
-export type BuildOptionsLike = {
+export type BuildContextLike = {
     urlPathname: string | undefined;
 };
 
-assert<BuildOptions extends BuildOptionsLike ? true : false>();
+assert<BuildContext extends BuildContextLike ? true : false>();
 
 export function replaceImportsInInlineCssCode(params: {
     cssCode: string;
-    buildOptions: BuildOptionsLike;
+    buildContext: BuildContextLike;
 }): {
     fixedCssCode: string;
 } {
-    const { cssCode, buildOptions } = params;
+    const { cssCode, buildContext } = params;
 
     const fixedCssCode = cssCode.replace(
-        buildOptions.urlPathname === undefined
+        buildContext.urlPathname === undefined
             ? /url\(["']?\/([^/][^)"']+)["']?\)/g
-            : new RegExp(`url\\(["']?${buildOptions.urlPathname}([^)"']+)["']?\\)`, "g"),
+            : new RegExp(`url\\(["']?${buildContext.urlPathname}([^)"']+)["']?\\)`, "g"),
         (...[, group]) =>
             `url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/${group})`
     );

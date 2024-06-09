@@ -1,27 +1,27 @@
 import { join as pathJoin, relative as pathRelative } from "path";
-import { type BuildOptions } from "./buildOptions";
+import { type BuildContext } from "./buildContext";
 import { assert } from "tsafe/assert";
 import { lastKeycloakVersionWithAccountV1 } from "./constants";
 import { downloadAndExtractArchive } from "../tools/downloadAndExtractArchive";
 import { isInside } from "../tools/isInside";
 
-export type BuildOptionsLike = {
+export type BuildContextLike = {
     cacheDirPath: string;
     npmWorkspaceRootDirPath: string;
 };
 
-assert<BuildOptions extends BuildOptionsLike ? true : false>();
+assert<BuildContext extends BuildContextLike ? true : false>();
 
 export async function downloadKeycloakDefaultTheme(params: {
     keycloakVersion: string;
-    buildOptions: BuildOptionsLike;
+    buildContext: BuildContextLike;
 }): Promise<{ defaultThemeDirPath: string }> {
-    const { keycloakVersion, buildOptions } = params;
+    const { keycloakVersion, buildContext } = params;
 
     const { extractedDirPath } = await downloadAndExtractArchive({
         url: `https://repo1.maven.org/maven2/org/keycloak/keycloak-themes/${keycloakVersion}/keycloak-themes-${keycloakVersion}.jar`,
-        cacheDirPath: buildOptions.cacheDirPath,
-        npmWorkspaceRootDirPath: buildOptions.npmWorkspaceRootDirPath,
+        cacheDirPath: buildContext.cacheDirPath,
+        npmWorkspaceRootDirPath: buildContext.npmWorkspaceRootDirPath,
         uniqueIdOfOnOnArchiveFile: "downloadKeycloakDefaultTheme",
         onArchiveFile: async params => {
             if (!isInside({ dirPath: "theme", filePath: params.fileRelativePath })) {

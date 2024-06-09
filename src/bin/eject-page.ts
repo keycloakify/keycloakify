@@ -17,13 +17,13 @@ import { kebabCaseToCamelCase } from "./tools/kebabCaseToSnakeCase";
 import { assert, Equals } from "tsafe/assert";
 import { getThemeSrcDirPath } from "./shared/getThemeSrcDirPath";
 import type { CliCommandOptions } from "./main";
-import { readBuildOptions } from "./shared/buildOptions";
+import { getBuildContext } from "./shared/buildContext";
 import chalk from "chalk";
 
 export async function command(params: { cliCommandOptions: CliCommandOptions }) {
     const { cliCommandOptions } = params;
 
-    const buildOptions = readBuildOptions({
+    const buildContext = getBuildContext({
         cliCommandOptions
     });
 
@@ -69,7 +69,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     console.log(`→ ${pageIdOrComponent}`);
 
     const { themeSrcDirPath } = getThemeSrcDirPath({
-        projectDirPath: buildOptions.projectDirPath
+        projectDirPath: buildContext.projectDirPath
     });
 
     const componentBasename = (() => {

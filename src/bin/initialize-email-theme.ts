@@ -2,7 +2,7 @@ import { downloadKeycloakDefaultTheme } from "./shared/downloadKeycloakDefaultTh
 import { join as pathJoin, relative as pathRelative } from "path";
 import { transformCodebase } from "./tools/transformCodebase";
 import { promptKeycloakVersion } from "./shared/promptKeycloakVersion";
-import { readBuildOptions } from "./shared/buildOptions";
+import { getBuildContext } from "./shared/buildContext";
 import * as fs from "fs";
 import { getThemeSrcDirPath } from "./shared/getThemeSrcDirPath";
 import type { CliCommandOptions } from "./main";
@@ -10,10 +10,10 @@ import type { CliCommandOptions } from "./main";
 export async function command(params: { cliCommandOptions: CliCommandOptions }) {
     const { cliCommandOptions } = params;
 
-    const buildOptions = readBuildOptions({ cliCommandOptions });
+    const buildContext = getBuildContext({ cliCommandOptions });
 
     const { themeSrcDirPath } = getThemeSrcDirPath({
-        projectDirPath: buildOptions.projectDirPath
+        projectDirPath: buildContext.projectDirPath
     });
 
     const emailThemeSrcDirPath = pathJoin(themeSrcDirPath, "email");
@@ -34,12 +34,12 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     const { keycloakVersion } = await promptKeycloakVersion({
         // NOTE: This is arbitrary
         startingFromMajor: 17,
-        cacheDirPath: buildOptions.cacheDirPath
+        cacheDirPath: buildContext.cacheDirPath
     });
 
     const { defaultThemeDirPath } = await downloadKeycloakDefaultTheme({
         keycloakVersion,
-        buildOptions
+        buildContext
     });
 
     transformCodebase({

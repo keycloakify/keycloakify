@@ -3,28 +3,28 @@ import {
     basenameOfTheKeycloakifyResourcesDir
 } from "../../../shared/constants";
 import { assert } from "tsafe/assert";
-import type { BuildOptions } from "../../../shared/buildOptions";
+import type { BuildContext } from "../../../shared/buildContext";
 import * as nodePath from "path";
 import { replaceAll } from "../../../tools/String.prototype.replaceAll";
 
-export type BuildOptionsLike = {
+export type BuildContextLike = {
     projectBuildDirPath: string;
     assetsDirPath: string;
     urlPathname: string | undefined;
 };
 
-assert<BuildOptions extends BuildOptionsLike ? true : false>();
+assert<BuildContext extends BuildContextLike ? true : false>();
 
 export function replaceImportsInJsCode_webpack(params: {
     jsCode: string;
-    buildOptions: BuildOptionsLike;
+    buildContext: BuildContextLike;
     systemType?: "posix" | "win32";
 }): {
     fixedJsCode: string;
 } {
     const {
         jsCode,
-        buildOptions,
+        buildContext,
         systemType = nodePath.sep === "/" ? "posix" : "win32"
     } = params;
 
@@ -32,12 +32,12 @@ export function replaceImportsInJsCode_webpack(params: {
 
     let fixedJsCode = jsCode;
 
-    if (buildOptions.urlPathname !== undefined) {
+    if (buildContext.urlPathname !== undefined) {
         // "__esModule",{value:!0})},n.p="/foo-bar/",function(){if("undefined"  -> ... n.p="/" ...
         fixedJsCode = fixedJsCode.replace(
             new RegExp(
                 `,([a-zA-Z]\\.[a-zA-Z])="${replaceAll(
-                    buildOptions.urlPathname,
+                    buildContext.urlPathname,
                     "/",
                     "\\/"
                 )}",`,
@@ -50,8 +50,8 @@ export function replaceImportsInJsCode_webpack(params: {
     // Example: "static/ or "foo/bar/"
     const staticDir = (() => {
         let out = pathRelative(
-            buildOptions.projectBuildDirPath,
-            buildOptions.assetsDirPath
+            buildContext.projectBuildDirPath,
+            buildContext.assetsDirPath
         );
 
         out = replaceAll(out, pathSep, "/") + "/";

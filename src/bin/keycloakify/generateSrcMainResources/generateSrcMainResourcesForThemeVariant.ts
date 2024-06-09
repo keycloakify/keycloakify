@@ -1,27 +1,27 @@
 import { join as pathJoin, extname as pathExtname, sep as pathSep } from "path";
 import { transformCodebase } from "../../tools/transformCodebase";
-import type { BuildOptions } from "../../shared/buildOptions";
+import type { BuildContext } from "../../shared/buildContext";
 import {
     readMetaInfKeycloakThemes,
     writeMetaInfKeycloakThemes
 } from "../../shared/metaInfKeycloakThemes";
 import { assert } from "tsafe/assert";
 
-export type BuildOptionsLike = {
+export type BuildContextLike = {
     keycloakifyBuildDirPath: string;
 };
 
-assert<BuildOptions extends BuildOptionsLike ? true : false>();
+assert<BuildContext extends BuildContextLike ? true : false>();
 
 export function generateSrcMainResourcesForThemeVariant(params: {
     themeName: string;
     themeVariantName: string;
-    buildOptions: BuildOptionsLike;
+    buildContext: BuildContextLike;
 }) {
-    const { themeName, themeVariantName, buildOptions } = params;
+    const { themeName, themeVariantName, buildContext } = params;
 
     const mainThemeDirPath = pathJoin(
-        buildOptions.keycloakifyBuildDirPath,
+        buildContext.keycloakifyBuildDirPath,
         "src",
         "main",
         "resources",
@@ -58,7 +58,7 @@ export function generateSrcMainResourcesForThemeVariant(params: {
 
     {
         const updatedMetaInfKeycloakThemes = readMetaInfKeycloakThemes({
-            keycloakifyBuildDirPath: buildOptions.keycloakifyBuildDirPath
+            keycloakifyBuildDirPath: buildContext.keycloakifyBuildDirPath
         });
 
         updatedMetaInfKeycloakThemes.themes.push({
@@ -73,7 +73,7 @@ export function generateSrcMainResourcesForThemeVariant(params: {
         });
 
         writeMetaInfKeycloakThemes({
-            keycloakifyBuildDirPath: buildOptions.keycloakifyBuildDirPath,
+            keycloakifyBuildDirPath: buildContext.keycloakifyBuildDirPath,
             metaInfKeycloakThemes: updatedMetaInfKeycloakThemes
         });
     }
