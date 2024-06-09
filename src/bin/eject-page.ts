@@ -225,15 +225,16 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                 `                 switch (kcContext.pageId) {`,
                 `                     // ...`,
                 `+                    case "${pageIdOrComponent}": return (`,
-                `+                        <Login`,
+                `+                        <${componentBasename}`,
                 `+                            {...{ kcContext, i18n, classes }}`,
                 `+                            Template={Template}`,
+                `+                            doUseDefaultCss={true}`,
                 ...(!componentCode.includes(userProfileFormFieldComponentName)
                     ? []
                     : [
-                          `+                            ${userProfileFormFieldComponentName}={${userProfileFormFieldComponentName}}`
+                          `+                            ${userProfileFormFieldComponentName}={${userProfileFormFieldComponentName}}`,
+                          `+                            doMakeUserConfirmPassword={doMakeUserConfirmPassword}`
                       ]),
-                `+                            doUseDefaultCss={true}`,
                 `+                        />`,
                 `+                    );`,
                 `                     default: return <Fallback /* .. */ />;`,
