@@ -1,4 +1,5 @@
 import { readBuildOptions } from "../shared/buildOptions";
+import { exclude } from "tsafe/exclude";
 import type { CliCommandOptions as CliCommandOptions_common } from "../main";
 import { promptKeycloakVersion } from "../shared/promptKeycloakVersion";
 import { readMetaInfKeycloakThemes } from "../shared/metaInfKeycloakThemes";
@@ -25,6 +26,7 @@ export type CliCommandOptions = CliCommandOptions_common & {
     port: number;
     keycloakVersion: string | undefined;
     realmJsonFilePath: string | undefined;
+    environmentVariables: { name: string; default: string }[];
 };
 
 export async function command(params: { cliCommandOptions: CliCommandOptions }) {
@@ -363,6 +365,17 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                 .map(({ localDirPath, containerDirPath }) => [
                     "-v",
                     `${localDirPath}:${containerDirPath}:rw`
+                ])
+                .flat(),
+            ...buildOptions.environmentVariables
+                .map(({ name }) => ({ name, envValue: process.env[name] }))
+                .map(({ name, envValue }) =>
+                    envValue === undefined ? undefined : { name, envValue }
+                )
+                .filter(exclude(undefined))
+                .map(({ name, envValue }) => [
+                    "--env",
+                    `${name}='${envValue.replace(/'/g, "'\\''")}'`
                 ])
                 .flat(),
             `quay.io/keycloak/keycloak:${keycloakVersion}`,
