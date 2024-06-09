@@ -4,10 +4,10 @@ import { assert } from "tsafe/assert";
 import { getKcClsx, type KcClsx } from "keycloakify/login/lib/kcClsx";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import { useI18n, type I18n } from "../i18n";
+import type { I18n } from "../i18n";
 
-export default function LoginPassword(props: PageProps<Extract<KcContext, { pageId: "login-password.ftl" }>>) {
-    const { kcContext, doUseDefaultCss, Template, classes } = props;
+export default function LoginPassword(props: PageProps<Extract<KcContext, { pageId: "login-password.ftl" }>, I18n>) {
+    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
     const { kcClsx } = getKcClsx({
         doUseDefaultCss,
@@ -16,7 +16,6 @@ export default function LoginPassword(props: PageProps<Extract<KcContext, { page
 
     const { realm, url, messagesPerField } = kcContext;
 
-    const i18n = useI18n({ kcContext });
     const { msg, msgStr } = i18n;
 
     const [isLoginButtonDisabled, setIsLoginButtonDisabled] = useState(false);
@@ -24,6 +23,7 @@ export default function LoginPassword(props: PageProps<Extract<KcContext, { page
     return (
         <Template
             kcContext={kcContext}
+            i18n={i18n}
             doUseDefaultCss={doUseDefaultCss}
             classes={classes}
             headerNode={msg("doLogIn")}

@@ -1,10 +1,10 @@
 import { getKcClsx } from "keycloakify/login/lib/kcClsx";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import { useI18n } from "../i18n";
+import type { I18n } from "../i18n";
 
-export default function DeleteAccountConfirm(props: PageProps<Extract<KcContext, { pageId: "delete-account-confirm.ftl" }>>) {
-    const { kcContext, doUseDefaultCss, Template, classes } = props;
+export default function DeleteAccountConfirm(props: PageProps<Extract<KcContext, { pageId: "delete-account-confirm.ftl" }>, I18n>) {
+    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
     const { kcClsx } = getKcClsx({
         doUseDefaultCss,
@@ -13,10 +13,10 @@ export default function DeleteAccountConfirm(props: PageProps<Extract<KcContext,
 
     const { url, triggered_from_aia } = kcContext;
 
-    const { msg, msgStr } = useI18n({ kcContext });
+    const { msg, msgStr } = i18n;
 
     return (
-        <Template kcContext={kcContext} doUseDefaultCss={doUseDefaultCss} classes={classes} headerNode={msg("deleteAccountConfirm")}>
+        <Template kcContext={kcContext} i18n={i18n} doUseDefaultCss={doUseDefaultCss} classes={classes} headerNode={msg("deleteAccountConfirm")}>
             <form action={url.loginAction} className="form-vertical" method="post">
                 <div className="alert alert-warning" style={{ marginTop: "0", marginBottom: "30px" }}>
                     <span className="pficon pficon-warning-triangle-o"></span>

@@ -1,10 +1,10 @@
 import { getKcClsx, KcClsx } from "keycloakify/login/lib/kcClsx";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import { useI18n, type I18n } from "../i18n";
+import type { I18n } from "../i18n";
 
-export default function LoginConfigTotp(props: PageProps<Extract<KcContext, { pageId: "login-config-totp.ftl" }>>) {
-    const { kcContext, doUseDefaultCss, Template, classes } = props;
+export default function LoginConfigTotp(props: PageProps<Extract<KcContext, { pageId: "login-config-totp.ftl" }>, I18n>) {
+    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
     const { kcClsx } = getKcClsx({
         doUseDefaultCss,
@@ -13,12 +13,10 @@ export default function LoginConfigTotp(props: PageProps<Extract<KcContext, { pa
 
     const { url, isAppInitiatedAction, totp, mode, messagesPerField } = kcContext;
 
-    const i18n = useI18n({ kcContext });
-
     const { msg, msgStr, advancedMsg } = i18n;
 
     return (
-        <Template kcContext={kcContext} doUseDefaultCss={doUseDefaultCss} classes={classes} headerNode={msg("loginTotpTitle")}>
+        <Template kcContext={kcContext} i18n={i18n} doUseDefaultCss={doUseDefaultCss} classes={classes} headerNode={msg("loginTotpTitle")}>
             <>
                 <ol id="kc-totp-settings">
                     <li>

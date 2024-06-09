@@ -1,12 +1,15 @@
 import React from "react";
 import Fallback from "../../dist/login/Fallback";
 import type { KcContext } from "./KcContext";
+import { useI18n } from "./i18n";
 import { useDownloadTerms } from "../../dist/login/lib/useDownloadTerms";
 import Template from "../../dist/login/Template";
 import UserProfileFormFields from "../../dist/login/UserProfileFormFields";
 
 export default function KcApp(props: { kcContext: KcContext }) {
     const { kcContext } = props;
+
+    const { i18n } = useI18n({ kcContext });
 
     useDownloadTerms({
         kcContext,
@@ -36,6 +39,7 @@ export default function KcApp(props: { kcContext: KcContext }) {
     return (
         <Fallback
             kcContext={kcContext}
+            i18n={i18n}
             Template={Template}
             doUseDefaultCss={true}
             UserProfileFormFields={UserProfileFormFields}

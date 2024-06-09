@@ -4,10 +4,10 @@ import { clsx } from "keycloakify/tools/clsx";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import { getKcClsx, type KcClsx } from "keycloakify/login/lib/kcClsx";
 import type { KcContext } from "../KcContext";
-import { useI18n, type I18n } from "../i18n";
+import type { I18n } from "../i18n";
 
-export default function Login(props: PageProps<Extract<KcContext, { pageId: "login.ftl" }>>) {
-    const { kcContext, doUseDefaultCss, Template, classes } = props;
+export default function Login(props: PageProps<Extract<KcContext, { pageId: "login.ftl" }>, I18n>) {
+    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
     const { kcClsx } = getKcClsx({
         doUseDefaultCss,
@@ -16,7 +16,6 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
 
     const { social, realm, url, usernameHidden, login, auth, registrationDisabled, messagesPerField } = kcContext;
 
-    const i18n = useI18n({ kcContext });
     const { msg, msgStr } = i18n;
 
     const [isLoginButtonDisabled, setIsLoginButtonDisabled] = useState(false);
@@ -24,6 +23,7 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
     return (
         <Template
             kcContext={kcContext}
+            i18n={i18n}
             doUseDefaultCss={doUseDefaultCss}
             classes={classes}
             displayMessage={!messagesPerField.existsError("username", "password")}

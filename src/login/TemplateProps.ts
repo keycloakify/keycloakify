@@ -1,10 +1,11 @@
 import type { ReactNode } from "react";
-import type { KcContext } from "./KcContext";
 
-export type TemplateProps<KcContext extends KcContext.Common> = {
+export type TemplateProps<KcContext, I18n> = {
     kcContext: KcContext;
+    i18n: I18n;
     doUseDefaultCss: boolean;
     classes?: Partial<Record<ClassKey, string>>;
+    children: ReactNode;
 
     displayInfo?: boolean;
     displayMessage?: boolean;
@@ -16,8 +17,6 @@ export type TemplateProps<KcContext extends KcContext.Common> = {
     infoNode?: ReactNode;
     documentTitle?: string;
     bodyClassName?: string;
-
-    children: ReactNode;
 };
 
 export type ClassKey =

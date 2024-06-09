@@ -3,17 +3,17 @@ import { getKcClsx } from "keycloakify/login/lib/kcClsx";
 import { useTermsMarkdown } from "keycloakify/login/lib/useDownloadTerms";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import { useI18n } from "../i18n";
+import type { I18n } from "../i18n";
 
-export default function Terms(props: PageProps<Extract<KcContext, { pageId: "terms.ftl" }>>) {
-    const { kcContext, doUseDefaultCss, Template, classes } = props;
+export default function Terms(props: PageProps<Extract<KcContext, { pageId: "terms.ftl" }>, I18n>) {
+    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
     const { kcClsx } = getKcClsx({
         doUseDefaultCss,
         classes
     });
 
-    const { msg, msgStr } = useI18n({ kcContext });
+    const { msg, msgStr } = i18n;
 
     const { locale, url } = kcContext;
 
@@ -24,7 +24,14 @@ export default function Terms(props: PageProps<Extract<KcContext, { pageId: "ter
     }
 
     return (
-        <Template kcContext={kcContext} doUseDefaultCss={doUseDefaultCss} classes={classes} displayMessage={false} headerNode={msg("termsTitle")}>
+        <Template
+            kcContext={kcContext}
+            i18n={i18n}
+            doUseDefaultCss={doUseDefaultCss}
+            classes={classes}
+            displayMessage={false}
+            headerNode={msg("termsTitle")}
+        >
             <div id="kc-terms-text" lang={termsLanguageTag !== locale?.currentLanguageTag ? termsLanguageTag : undefined}>
                 <Markdown>{termsMarkdown}</Markdown>
             </div>

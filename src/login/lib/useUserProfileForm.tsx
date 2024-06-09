@@ -11,7 +11,7 @@ import type { PasswordPolicies, Attribute, Validators } from "keycloakify/login/
 import type { KcContext } from "../KcContext";
 import type { MessageKey } from "keycloakify/login/i18n";
 import { KcContextLike as KcContextLike_i18n } from "keycloakify/login/i18n";
-import { useI18n } from "../i18n";
+import type { I18n } from "../i18n";
 
 export type FormFieldError = {
     errorMessage: JSX.Element;
@@ -83,6 +83,7 @@ assert<Extract<KcContext.Register, { pageId: "register.ftl" }> extends KcContext
 
 export type ParamsOfUseUserProfileForm = {
     kcContext: KcContextLike;
+    i18n: I18n;
     doMakeUserConfirmPassword: boolean;
 };
 
@@ -105,7 +106,7 @@ namespace internal {
 }
 
 export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTypeOfUseUserProfileForm {
-    const { kcContext, doMakeUserConfirmPassword } = params;
+    const { kcContext, i18n, doMakeUserConfirmPassword } = params;
 
     const { insertScriptTags } = useInsertScriptTags({
         componentOrHookName: "useUserProfileForm",
@@ -122,7 +123,8 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
     }, []);
 
     const { getErrors } = useGetErrors({
-        kcContext
+        kcContext,
+        i18n
     });
 
     const initialState = useMemo((): internal.State => {
@@ -523,12 +525,12 @@ type KcContextLike_useGetErrors = KcContextLike_i18n & {
 
 assert<KcContextLike extends KcContextLike_useGetErrors ? true : false>();
 
-function useGetErrors(params: { kcContext: KcContextLike_useGetErrors }) {
-    const { kcContext } = params;
+function useGetErrors(params: { kcContext: KcContextLike_useGetErrors; i18n: I18n }) {
+    const { kcContext, i18n } = params;
 
     const { messagesPerField, passwordPolicies } = kcContext;
 
-    const { msg, msgStr, advancedMsg, advancedMsgStr } = useI18n({ kcContext });
+    const { msg, msgStr, advancedMsg, advancedMsgStr } = i18n;
 
     const getErrors = useConstCallback(
         (params: {

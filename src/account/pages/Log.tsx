@@ -2,10 +2,10 @@ import type { Key } from "react";
 import { getKcClsx } from "keycloakify/account/lib/kcClsx";
 import type { PageProps } from "keycloakify/account/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import { useI18n } from "../i18n";
+import type { I18n } from "../i18n";
 
-export default function Log(props: PageProps<Extract<KcContext, { pageId: "log.ftl" }>>) {
-    const { kcContext, doUseDefaultCss, classes, Template } = props;
+export default function Log(props: PageProps<Extract<KcContext, { pageId: "log.ftl" }>, I18n>) {
+    const { kcContext, i18n, doUseDefaultCss, classes, Template } = props;
 
     const { kcClsx } = getKcClsx({
         doUseDefaultCss,
@@ -14,10 +14,10 @@ export default function Log(props: PageProps<Extract<KcContext, { pageId: "log.f
 
     const { log } = kcContext;
 
-    const { msg } = useI18n({ kcContext });
+    const { msg } = i18n;
 
     return (
-        <Template {...{ kcContext, doUseDefaultCss, classes }} active="log">
+        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} active="log">
             <div className={kcClsx("kcContentWrapperClass")}>
                 <div className="col-md-10">
                     <h2>{msg("accountLogHtmlTitle")}</h2>

@@ -1,10 +1,10 @@
 import { type TemplateProps, type ClassKey } from "keycloakify/login/TemplateProps";
 import type { LazyOrNot } from "keycloakify/tools/LazyOrNot";
-import type { KcContext } from "keycloakify/account/KcContext";
 
-export type PageProps<NarowedKcContext = KcContext> = {
-    Template: LazyOrNot<(props: TemplateProps<any>) => JSX.Element | null>;
-    kcContext: NarowedKcContext;
+export type PageProps<NarrowedKcContext, I18n> = {
+    Template: LazyOrNot<(props: TemplateProps<any, any>) => JSX.Element | null>;
+    kcContext: NarrowedKcContext;
+    i18n: I18n;
     doUseDefaultCss: boolean;
     classes?: Partial<Record<ClassKey, string>>;
 };

@@ -1,10 +1,10 @@
 import { getKcClsx } from "keycloakify/login/lib/kcClsx";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import { useI18n } from "../i18n";
+import type { I18n } from "../i18n";
 
-export default function LoginX509Info(props: PageProps<Extract<KcContext, { pageId: "login-x509-info.ftl" }>>) {
-    const { kcContext, doUseDefaultCss, Template, classes } = props;
+export default function LoginX509Info(props: PageProps<Extract<KcContext, { pageId: "login-x509-info.ftl" }>, I18n>) {
+    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
     const { kcClsx } = getKcClsx({
         doUseDefaultCss,
@@ -13,10 +13,10 @@ export default function LoginX509Info(props: PageProps<Extract<KcContext, { page
 
     const { url, x509 } = kcContext;
 
-    const { msg, msgStr } = useI18n({ kcContext });
+    const { msg, msgStr } = i18n;
 
     return (
-        <Template kcContext={kcContext} doUseDefaultCss={doUseDefaultCss} classes={classes} headerNode={msg("doLogIn")}>
+        <Template kcContext={kcContext} i18n={i18n} doUseDefaultCss={doUseDefaultCss} classes={classes} headerNode={msg("doLogIn")}>
             <form id="kc-x509-login-info" className={kcClsx("kcFormClass")} action={url.loginAction} method="post">
                 <div className={kcClsx("kcFormGroupClass")}>
                     <div className={kcClsx("kcLabelWrapperClass")}>

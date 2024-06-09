@@ -4,22 +4,21 @@ import { getKcClsx, type KcClsx } from "keycloakify/login/lib/kcClsx";
 import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFormFields";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import { useI18n, type I18n } from "../i18n";
+import type { I18n } from "../i18n";
 
-type UpdateEmailProps = PageProps<Extract<KcContext, { pageId: "update-email.ftl" }>> & {
+type UpdateEmailProps = PageProps<Extract<KcContext, { pageId: "update-email.ftl" }>, I18n> & {
     UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
     doMakeUserConfirmPassword: boolean;
 };
 
 export default function UpdateEmail(props: UpdateEmailProps) {
-    const { kcContext, doUseDefaultCss, Template, classes, UserProfileFormFields, doMakeUserConfirmPassword } = props;
+    const { kcContext, i18n, doUseDefaultCss, Template, classes, UserProfileFormFields, doMakeUserConfirmPassword } = props;
 
     const { kcClsx } = getKcClsx({
         doUseDefaultCss,
         classes
     });
 
-    const i18n = useI18n({ kcContext });
     const { msg, msgStr } = i18n;
 
     const [isFormSubmittable, setIsFormSubmittable] = useState(false);
@@ -29,6 +28,7 @@ export default function UpdateEmail(props: UpdateEmailProps) {
     return (
         <Template
             kcContext={kcContext}
+            i18n={i18n}
             doUseDefaultCss={doUseDefaultCss}
             classes={classes}
             displayMessage={messagesPerField.exists("global")}
@@ -38,6 +38,7 @@ export default function UpdateEmail(props: UpdateEmailProps) {
             <form id="kc-update-email-form" className={kcClsx("kcFormClass")} action={url.loginAction} method="post">
                 <UserProfileFormFields
                     kcContext={kcContext}
+                    i18n={i18n}
                     kcClsx={kcClsx}
                     onIsFormSubmittableValueChange={setIsFormSubmittable}
                     doMakeUserConfirmPassword={doMakeUserConfirmPassword}

@@ -2,7 +2,8 @@ import { lazy, Suspense } from "react";
 import { assert, type Equals } from "tsafe/assert";
 import type { LazyOrNot } from "keycloakify/tools/LazyOrNot";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
-import type { KcContext } from "./KcContext";
+import type { I18n } from "keycloakify/login/i18n";
+import type { KcContext } from "keycloakify/login/KcContext";
 import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFormFields";
 
 const Login = lazy(() => import("keycloakify/login/pages/Login"));
@@ -40,7 +41,7 @@ const LoginResetOtp = lazy(() => import("keycloakify/login/pages/LoginResetOtp")
 const LoginX509Info = lazy(() => import("keycloakify/login/pages/LoginX509Info"));
 const WebauthnError = lazy(() => import("keycloakify/login/pages/WebauthnError"));
 
-type FallbackProps = PageProps<KcContext> & {
+type FallbackProps = PageProps<KcContext, I18n> & {
     UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
     doMakeUserConfirmPassword: boolean;
 };

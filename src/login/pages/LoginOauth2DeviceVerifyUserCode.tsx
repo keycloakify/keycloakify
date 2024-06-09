@@ -1,15 +1,15 @@
 import { getKcClsx } from "keycloakify/login/lib/kcClsx";
 import { PageProps } from "keycloakify/login/pages/PageProps";
 import { KcContext } from "../KcContext";
-import { useI18n } from "../i18n";
+import type { I18n } from "../i18n";
 
 export default function LoginOauth2DeviceVerifyUserCode(
-    props: PageProps<Extract<KcContext, { pageId: "login-oauth2-device-verify-user-code.ftl" }>>
+    props: PageProps<Extract<KcContext, { pageId: "login-oauth2-device-verify-user-code.ftl" }>, I18n>
 ) {
-    const { kcContext, doUseDefaultCss, classes, Template } = props;
+    const { kcContext, i18n, doUseDefaultCss, classes, Template } = props;
     const { url } = kcContext;
 
-    const { msg, msgStr } = useI18n({ kcContext });
+    const { msg, msgStr } = i18n;
 
     const { kcClsx } = getKcClsx({
         doUseDefaultCss,
@@ -17,7 +17,13 @@ export default function LoginOauth2DeviceVerifyUserCode(
     });
 
     return (
-        <Template kcContext={kcContext} doUseDefaultCss={doUseDefaultCss} classes={classes} headerNode={msg("oauth2DeviceVerificationTitle")}>
+        <Template
+            kcContext={kcContext}
+            i18n={i18n}
+            doUseDefaultCss={doUseDefaultCss}
+            classes={classes}
+            headerNode={msg("oauth2DeviceVerificationTitle")}
+        >
             <form
                 id="kc-user-verify-device-user-code-form"
                 className={kcClsx("kcFormClass")}

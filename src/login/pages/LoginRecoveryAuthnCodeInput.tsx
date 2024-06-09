@@ -1,10 +1,10 @@
 import { getKcClsx } from "keycloakify/login/lib/kcClsx";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import { useI18n } from "../i18n";
+import type { I18n } from "../i18n";
 
-export default function LoginRecoveryAuthnCodeInput(props: PageProps<Extract<KcContext, { pageId: "login-recovery-authn-code-input.ftl" }>>) {
-    const { kcContext, doUseDefaultCss, Template, classes } = props;
+export default function LoginRecoveryAuthnCodeInput(props: PageProps<Extract<KcContext, { pageId: "login-recovery-authn-code-input.ftl" }>, I18n>) {
+    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
     const { kcClsx } = getKcClsx({
         doUseDefaultCss,
@@ -13,11 +13,12 @@ export default function LoginRecoveryAuthnCodeInput(props: PageProps<Extract<KcC
 
     const { url, messagesPerField, recoveryAuthnCodesInputBean } = kcContext;
 
-    const { msg, msgStr } = useI18n({ kcContext });
+    const { msg, msgStr } = i18n;
 
     return (
         <Template
             kcContext={kcContext}
+            i18n={i18n}
             doUseDefaultCss={doUseDefaultCss}
             classes={classes}
             headerNode={msg("auth-recovery-code-header")}

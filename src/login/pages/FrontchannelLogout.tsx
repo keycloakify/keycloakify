@@ -1,14 +1,14 @@
 import { useEffect } from "react";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import { useI18n } from "../i18n";
+import type { I18n } from "../i18n";
 
-export default function FrontchannelLogout(props: PageProps<Extract<KcContext, { pageId: "frontchannel-logout.ftl" }>>) {
-    const { kcContext, doUseDefaultCss, Template, classes } = props;
+export default function FrontchannelLogout(props: PageProps<Extract<KcContext, { pageId: "frontchannel-logout.ftl" }>, I18n>) {
+    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
     const { logout } = kcContext;
 
-    const { msg, msgStr } = useI18n({ kcContext });
+    const { msg, msgStr } = i18n;
 
     useEffect(() => {
         if (logout.logoutRedirectUri) {
@@ -19,6 +19,7 @@ export default function FrontchannelLogout(props: PageProps<Extract<KcContext, {
     return (
         <Template
             kcContext={kcContext}
+            i18n={i18n}
             doUseDefaultCss={doUseDefaultCss}
             classes={classes}
             documentTitle={msgStr("frontchannel-logout.title")}

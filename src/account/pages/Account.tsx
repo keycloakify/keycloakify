@@ -2,10 +2,10 @@ import { clsx } from "keycloakify/tools/clsx";
 import type { PageProps } from "keycloakify/account/pages/PageProps";
 import { getKcClsx } from "keycloakify/account/lib/kcClsx";
 import type { KcContext } from "../KcContext";
-import { useI18n } from "../i18n";
+import type { I18n } from "../i18n";
 
-export default function Account(props: PageProps<Extract<KcContext, { pageId: "account.ftl" }>>) {
-    const { kcContext, doUseDefaultCss, Template } = props;
+export default function Account(props: PageProps<Extract<KcContext, { pageId: "account.ftl" }>, I18n>) {
+    const { kcContext, i18n, doUseDefaultCss, Template } = props;
 
     const classes = {
         ...props.classes,
@@ -19,10 +19,10 @@ export default function Account(props: PageProps<Extract<KcContext, { pageId: "a
 
     const { url, realm, messagesPerField, stateChecker, account, referrer } = kcContext;
 
-    const { msg } = useI18n({ kcContext });
+    const { msg } = i18n;
 
     return (
-        <Template {...{ kcContext, doUseDefaultCss, classes }} active="account">
+        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} active="account">
             <div className="row">
                 <div className="col-md-10">
                     <h2>{msg("editAccountHtmlTitle")}</h2>

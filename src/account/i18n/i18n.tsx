@@ -130,7 +130,7 @@ function createGetI18n<ExtraMessageKey extends string = never>(extraMessages: { 
             extraMessages: extraMessages[partialI18n.currentLanguageTag]
         });
 
-        const isCurrentLanguageFallbackLanguage = partialI18n.currentLanguageTag !== fallbackLanguageTag;
+        const isCurrentLanguageFallbackLanguage = partialI18n.currentLanguageTag === fallbackLanguageTag;
 
         const result: Result = {
             i18n: {
@@ -175,7 +175,7 @@ export function createUseI18n<ExtraMessageKey extends string = never>(extraMessa
 
     const { getI18n } = createGetI18n(extraMessages);
 
-    function useI18n(params: { kcContext: KcContextLike }): I18n {
+    function useI18n(params: { kcContext: KcContextLike }): { i18n: I18n } {
         const { kcContext } = params;
 
         const { i18n, prI18n_currentLanguage } = getI18n({ kcContext });
@@ -198,7 +198,7 @@ export function createUseI18n<ExtraMessageKey extends string = never>(extraMessa
             };
         }, []);
 
-        return i18n_toReturn;
+        return { i18n: i18n_toReturn };
     }
 
     return { useI18n, ofTypeI18n: Reflect<I18n>() };

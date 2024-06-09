@@ -1,10 +1,10 @@
 import { getKcClsx } from "keycloakify/account/lib/kcClsx";
 import type { PageProps } from "keycloakify/account/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import { useI18n } from "../i18n";
+import type { I18n } from "../i18n";
 
-export default function Sessions(props: PageProps<Extract<KcContext, { pageId: "sessions.ftl" }>>) {
-    const { kcContext, doUseDefaultCss, Template, classes } = props;
+export default function Sessions(props: PageProps<Extract<KcContext, { pageId: "sessions.ftl" }>, I18n>) {
+    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
     const { kcClsx } = getKcClsx({
         doUseDefaultCss,
@@ -13,9 +13,9 @@ export default function Sessions(props: PageProps<Extract<KcContext, { pageId: "
 
     const { url, stateChecker, sessions } = kcContext;
 
-    const { msg } = useI18n({ kcContext });
+    const { msg } = i18n;
     return (
-        <Template {...{ kcContext, doUseDefaultCss, classes }} active="sessions">
+        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} active="sessions">
             <div className={kcClsx("kcContentWrapperClass")}>
                 <div className="col-md-10">
                     <h2>{msg("sessionsHtmlTitle")}</h2>

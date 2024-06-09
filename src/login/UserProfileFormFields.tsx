@@ -9,10 +9,11 @@ import {
     type FormFieldError
 } from "keycloakify/login/lib/useUserProfileForm";
 import type { Attribute } from "keycloakify/login/KcContext";
-import { useI18n, type I18n } from "./i18n";
+import type { I18n } from "./i18n";
 
 export type UserProfileFormFieldsProps = {
     kcContext: KcContextLike;
+    i18n: I18n;
     kcClsx: KcClsx;
     onIsFormSubmittableValueChange: (isFormSubmittable: boolean) => void;
     doMakeUserConfirmPassword: boolean;
@@ -30,23 +31,22 @@ type BeforeAfterFieldProps = {
 };
 
 export default function UserProfileFormFields(props: UserProfileFormFieldsProps) {
-    const { kcContext, kcClsx, onIsFormSubmittableValueChange, doMakeUserConfirmPassword, BeforeField, AfterField } = props;
+    const { kcContext, i18n, kcClsx, onIsFormSubmittableValueChange, doMakeUserConfirmPassword, BeforeField, AfterField } = props;
 
-    const { advancedMsg } = useI18n({ kcContext });
+    const { advancedMsg } = i18n;
 
     const {
         formState: { formFieldStates, isFormSubmittable },
         dispatchFormAction
     } = useUserProfileForm({
         kcContext,
+        i18n,
         doMakeUserConfirmPassword
     });
 
     useEffect(() => {
         onIsFormSubmittableValueChange(isFormSubmittable);
     }, [isFormSubmittable]);
-
-    const i18n = useI18n({ kcContext });
 
     const groupNameRef = { current: "" };
 

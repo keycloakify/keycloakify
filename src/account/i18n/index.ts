@@ -1,10 +1,5 @@
-export type { MessageKey } from "./i18n";
-import { createUseI18n } from "./i18n";
-export { createUseI18n };
+import type { GenericI18n, MessageKey, KcContextLike } from "./i18n";
+export type { MessageKey, KcContextLike };
+export type I18n = GenericI18n<MessageKey>;
+export { createUseI18n } from "./i18n";
 export { fallbackLanguageTag } from "./i18n";
-
-const { useI18n, ofTypeI18n } = createUseI18n({});
-
-export type I18n = typeof ofTypeI18n;
-
-export { useI18n };

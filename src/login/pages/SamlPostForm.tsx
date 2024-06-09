@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import { useI18n } from "../i18n";
+import type { I18n } from "../i18n";
 
-export default function SamlPostForm(props: PageProps<Extract<KcContext, { pageId: "saml-post-form.ftl" }>>) {
-    const { kcContext, doUseDefaultCss, Template, classes } = props;
+export default function SamlPostForm(props: PageProps<Extract<KcContext, { pageId: "saml-post-form.ftl" }>, I18n>) {
+    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
-    const { msgStr, msg } = useI18n({ kcContext });
+    const { msgStr, msg } = i18n;
 
     const { samlPost } = kcContext;
 
@@ -26,7 +26,7 @@ export default function SamlPostForm(props: PageProps<Extract<KcContext, { pageI
         htmlFormElement.submit();
     }, [htmlFormElement]);
     return (
-        <Template kcContext={kcContext} doUseDefaultCss={doUseDefaultCss} classes={classes} headerNode={msg("saml.post-form.title")}>
+        <Template kcContext={kcContext} i18n={i18n} doUseDefaultCss={doUseDefaultCss} classes={classes} headerNode={msg("saml.post-form.title")}>
             <p>{msg("saml.post-form.message")}</p>
             <form name="saml-post-binding" method="post" action={samlPost.url} ref={setHtmlFormElement}>
                 {samlPost.SAMLRequest && <input type="hidden" name="SAMLRequest" value={samlPost.SAMLRequest} />}

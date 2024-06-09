@@ -2,10 +2,10 @@ import { clsx } from "keycloakify/tools/clsx";
 import { getKcClsx } from "keycloakify/account/lib/kcClsx";
 import type { PageProps } from "keycloakify/account/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import { useI18n } from "../i18n";
+import type { I18n } from "../i18n";
 
-export default function Totp(props: PageProps<Extract<KcContext, { pageId: "totp.ftl" }>>) {
-    const { kcContext, doUseDefaultCss, Template, classes } = props;
+export default function Totp(props: PageProps<Extract<KcContext, { pageId: "totp.ftl" }>, I18n>) {
+    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
     const { kcClsx } = getKcClsx({
         doUseDefaultCss,
@@ -14,7 +14,7 @@ export default function Totp(props: PageProps<Extract<KcContext, { pageId: "totp
 
     const { totp, mode, url, messagesPerField, stateChecker } = kcContext;
 
-    const { msg, msgStr, advancedMsg } = useI18n({ kcContext });
+    const { msg, msgStr, advancedMsg } = i18n;
 
     const algToKeyUriAlg: Record<(typeof kcContext)["totp"]["policy"]["algorithm"], string> = {
         HmacSHA1: "SHA1",
@@ -23,7 +23,7 @@ export default function Totp(props: PageProps<Extract<KcContext, { pageId: "totp
     };
 
     return (
-        <Template {...{ kcContext, doUseDefaultCss, classes }} active="totp">
+        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} active="totp">
             <>
                 <div className="row">
                     <div className="col-md-10">

@@ -6,15 +6,15 @@ import { getKcClsx, type KcClsx } from "keycloakify/login/lib/kcClsx";
 import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFormFields";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import { useI18n, type I18n } from "../i18n";
+import type { I18n } from "../i18n";
 
-type RegisterProps = PageProps<Extract<KcContext, { pageId: "register.ftl" }>> & {
+type RegisterProps = PageProps<Extract<KcContext, { pageId: "register.ftl" }>, I18n> & {
     UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
     doMakeUserConfirmPassword: boolean;
 };
 
 export default function Register(props: RegisterProps) {
-    const { kcContext, doUseDefaultCss, Template, classes, UserProfileFormFields, doMakeUserConfirmPassword } = props;
+    const { kcContext, i18n, doUseDefaultCss, Template, classes, UserProfileFormFields, doMakeUserConfirmPassword } = props;
 
     const { kcClsx } = getKcClsx({
         doUseDefaultCss,
@@ -23,16 +23,23 @@ export default function Register(props: RegisterProps) {
 
     const { url, messagesPerField, recaptchaRequired, recaptchaSiteKey, termsAcceptanceRequired } = kcContext;
 
-    const i18n = useI18n({ kcContext });
     const { msg, msgStr } = i18n;
 
     const [isFormSubmittable, setIsFormSubmittable] = useState(false);
 
     return (
-        <Template kcContext={kcContext} doUseDefaultCss={doUseDefaultCss} classes={classes} headerNode={msg("registerTitle")} displayRequiredFields>
+        <Template
+            kcContext={kcContext}
+            i18n={i18n}
+            doUseDefaultCss={doUseDefaultCss}
+            classes={classes}
+            headerNode={msg("registerTitle")}
+            displayRequiredFields
+        >
             <form id="kc-register-form" className={kcClsx("kcFormClass")} action={url.registrationAction} method="post">
                 <UserProfileFormFields
                     kcContext={kcContext}
+                    i18n={i18n}
                     kcClsx={kcClsx}
                     onIsFormSubmittableValueChange={setIsFormSubmittable}
                     doMakeUserConfirmPassword={doMakeUserConfirmPassword}
