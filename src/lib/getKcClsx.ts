@@ -21,7 +21,21 @@ export function createGetKcClsx<ClassKey extends string>(params: {
             return true;
         }
 
-        return JSON.stringify(params1.classes) === JSON.stringify(params2.classes);
+        if (params1.classes === undefined || params2.classes === undefined) {
+            return false;
+        }
+
+        if (Object.keys(params1.classes).length !== Object.keys(params2.classes).length) {
+            return false;
+        }
+
+        for (const key in params1.classes) {
+            if (params1.classes[key] !== params2.classes[key]) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     let cache:
