@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { assert } from "keycloakify/tools/assert";
 import { clsx } from "keycloakify/tools/clsx";
-import { useGetClassName } from "keycloakify/account/lib/useGetClassName";
+import { getKcClsx } from "keycloakify/account/lib/kcClsx";
 import { useInsertLinkTags } from "keycloakify/tools/useInsertLinkTags";
 import { useSetClassName } from "keycloakify/tools/useSetClassName";
 import type { TemplateProps } from "keycloakify/account/TemplateProps";
@@ -11,7 +11,7 @@ import { useI18n } from "./i18n";
 export default function Template(props: TemplateProps<KcContext>) {
     const { kcContext, doUseDefaultCss, active, classes, children } = props;
 
-    const { getClassName } = useGetClassName({ doUseDefaultCss, classes });
+    const { kcClsx } = getKcClsx({ doUseDefaultCss, classes });
 
     const { msg, msgStr, getChangeLocalUrl, labelBySupportedLanguageTag, currentLanguageTag } = useI18n({ kcContext });
 
@@ -23,12 +23,12 @@ export default function Template(props: TemplateProps<KcContext>) {
 
     useSetClassName({
         qualifiedName: "html",
-        className: getClassName("kcHtmlClass")
+        className: kcClsx("kcHtmlClass")
     });
 
     useSetClassName({
         qualifiedName: "body",
-        className: clsx("admin-console", "user", getClassName("kcBodyClass"))
+        className: clsx("admin-console", "user", kcClsx("kcBodyClass"))
     });
 
     useEffect(() => {

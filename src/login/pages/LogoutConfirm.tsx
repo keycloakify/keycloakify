@@ -1,5 +1,4 @@
-import { clsx } from "keycloakify/tools/clsx";
-import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
+import { getKcClsx } from "keycloakify/login/lib/kcClsx";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
 import { useI18n } from "../i18n";
@@ -7,7 +6,7 @@ import { useI18n } from "../i18n";
 export default function LogoutConfirm(props: PageProps<Extract<KcContext, { pageId: "logout-confirm.ftl" }>>) {
     const { kcContext, doUseDefaultCss, Template, classes } = props;
 
-    const { getClassName } = useGetClassName({
+    const { kcClsx } = getKcClsx({
         doUseDefaultCss,
         classes
     });
@@ -17,24 +16,19 @@ export default function LogoutConfirm(props: PageProps<Extract<KcContext, { page
     const { msg, msgStr } = useI18n({ kcContext });
 
     return (
-        <Template {...{ kcContext, doUseDefaultCss, classes }} headerNode={msg("logoutConfirmTitle")}>
+        <Template kcContext={kcContext} doUseDefaultCss={doUseDefaultCss} classes={classes} headerNode={msg("logoutConfirmTitle")}>
             <div id="kc-logout-confirm" className="content-area">
                 <p className="instruction">{msg("logoutConfirmHeader")}</p>
                 <form className="form-actions" action={url.logoutConfirmAction} method="POST">
                     <input type="hidden" name="session_code" value={logoutConfirm.code} />
-                    <div className={getClassName("kcFormGroupClass")}>
+                    <div className={kcClsx("kcFormGroupClass")}>
                         <div id="kc-form-options">
-                            <div className={getClassName("kcFormOptionsWrapperClass")}></div>
+                            <div className={kcClsx("kcFormOptionsWrapperClass")}></div>
                         </div>
-                        <div id="kc-form-buttons" className={getClassName("kcFormGroupClass")}>
+                        <div id="kc-form-buttons" className={kcClsx("kcFormGroupClass")}>
                             <input
                                 tabIndex={4}
-                                className={clsx(
-                                    getClassName("kcButtonClass"),
-                                    getClassName("kcButtonPrimaryClass"),
-                                    getClassName("kcButtonBlockClass"),
-                                    getClassName("kcButtonLargeClass")
-                                )}
+                                className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonBlockClass", "kcButtonLargeClass")}
                                 name="confirmLogout"
                                 id="kc-logout"
                                 type="submit"

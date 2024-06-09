@@ -18,7 +18,9 @@ export default function FrontchannelLogout(props: PageProps<Extract<KcContext, {
 
     return (
         <Template
-            {...{ kcContext, doUseDefaultCss, classes }}
+            kcContext={kcContext}
+            doUseDefaultCss={doUseDefaultCss}
+            classes={classes}
             documentTitle={msgStr("frontchannel-logout.title")}
             headerNode={msg("frontchannel-logout.title")}
         >

@@ -1,19 +1,21 @@
 import { useState } from "react";
 import { clsx } from "keycloakify/tools/clsx";
-import { useGetClassName } from "keycloakify/account/lib/useGetClassName";
+import { getKcClsx } from "keycloakify/account/lib/kcClsx";
 import type { PageProps } from "keycloakify/account/pages/PageProps";
 import type { KcContext } from "../KcContext";
 import { useI18n } from "../i18n";
 
 export default function Password(props: PageProps<Extract<KcContext, { pageId: "password.ftl" }>>) {
-    const { kcContext, doUseDefaultCss, Template, classes } = props;
+    const { kcContext, doUseDefaultCss, Template } = props;
 
-    const { getClassName } = useGetClassName({
+    const classes = {
+        ...props.classes,
+        kcBodyClass: clsx(props.classes?.kcBodyClass, "password")
+    };
+
+    const { kcClsx } = getKcClsx({
         doUseDefaultCss,
-        classes: {
-            ...classes,
-            kcBodyClass: clsx(classes?.kcBodyClass, "password")
-        }
+        classes
     });
 
     const { url, password, account, stateChecker } = kcContext;
@@ -191,11 +193,7 @@ export default function Password(props: PageProps<Extract<KcContext, { pageId: "
                             <button
                                 disabled={newPasswordError !== "" || newPasswordConfirmError !== ""}
                                 type="submit"
-                                className={clsx(
-                                    getClassName("kcButtonClass"),
-                                    getClassName("kcButtonPrimaryClass"),
-                                    getClassName("kcButtonLargeClass")
-                                )}
+                                className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonLargeClass")}
                                 name="submitAction"
                                 value="Save"
                             >

@@ -1,6 +1,5 @@
 import { Fragment } from "react";
-import { clsx } from "keycloakify/tools/clsx";
-import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
+import { getKcClsx } from "keycloakify/login/lib/kcClsx";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
 import { useI18n } from "../i18n";
@@ -8,7 +7,7 @@ import { useI18n } from "../i18n";
 export default function LoginResetOtp(props: PageProps<Extract<KcContext, { pageId: "login-reset-otp.ftl" }>>) {
     const { kcContext, doUseDefaultCss, Template, classes } = props;
 
-    const { getClassName } = useGetClassName({
+    const { kcClsx } = getKcClsx({
         doUseDefaultCss,
         classes
     });
@@ -18,41 +17,42 @@ export default function LoginResetOtp(props: PageProps<Extract<KcContext, { page
     const { msg, msgStr } = useI18n({ kcContext });
 
     return (
-        <Template {...{ kcContext, doUseDefaultCss, classes }} displayMessage={!messagesPerField.existsError("totp")} headerNode={msg("doLogIn")}>
-            <form id="kc-otp-reset-form" className={getClassName("kcFormClass")} action={url.loginAction} method="post">
-                <div className={getClassName("kcInputWrapperClass")}>
-                    <div className={getClassName("kcInfoAreaWrapperClass")}>
+        <Template
+            kcContext={kcContext}
+            doUseDefaultCss={doUseDefaultCss}
+            classes={classes}
+            displayMessage={!messagesPerField.existsError("totp")}
+            headerNode={msg("doLogIn")}
+        >
+            <form id="kc-otp-reset-form" className={kcClsx("kcFormClass")} action={url.loginAction} method="post">
+                <div className={kcClsx("kcInputWrapperClass")}>
+                    <div className={kcClsx("kcInfoAreaWrapperClass")}>
                         <p id="kc-otp-reset-form-description">{msg("otp-reset-description")}</p>
                         {configuredOtpCredentials.userOtpCredentials.map((otpCredential, index) => (
                             <Fragment key={otpCredential.id}>
                                 <input
                                     id={`kc-otp-credential-${index}`}
-                                    className={getClassName("kcLoginOTPListInputClass")}
+                                    className={kcClsx("kcLoginOTPListInputClass")}
                                     type="radio"
                                     name="selectedCredentialId"
                                     value={otpCredential.id}
                                     defaultChecked={otpCredential.id === configuredOtpCredentials.selectedCredentialId}
                                 />
-                                <label htmlFor={`kc-otp-credential-${index}`} className={getClassName("kcLoginOTPListClass")} tabIndex={index}>
-                                    <span className={getClassName("kcLoginOTPListItemHeaderClass")}>
-                                        <span className={getClassName("kcLoginOTPListItemIconBodyClass")}>
-                                            <i className={getClassName("kcLoginOTPListItemIconClass")} aria-hidden="true"></i>
+                                <label htmlFor={`kc-otp-credential-${index}`} className={kcClsx("kcLoginOTPListClass")} tabIndex={index}>
+                                    <span className={kcClsx("kcLoginOTPListItemHeaderClass")}>
+                                        <span className={kcClsx("kcLoginOTPListItemIconBodyClass")}>
+                                            <i className={kcClsx("kcLoginOTPListItemIconClass")} aria-hidden="true"></i>
                                         </span>
-                                        <span className={getClassName("kcLoginOTPListItemTitleClass")}>{otpCredential.userLabel}</span>
+                                        <span className={kcClsx("kcLoginOTPListItemTitleClass")}>{otpCredential.userLabel}</span>
                                     </span>
                                 </label>
                             </Fragment>
                         ))}
-                        <div className={getClassName("kcFormGroupClass")}>
-                            <div id="kc-form-buttons" className={getClassName("kcFormButtonsClass")}>
+                        <div className={kcClsx("kcFormGroupClass")}>
+                            <div id="kc-form-buttons" className={kcClsx("kcFormButtonsClass")}>
                                 <input
                                     id="kc-otp-reset-form-submit"
-                                    className={clsx(
-                                        getClassName("kcButtonClass"),
-                                        getClassName("kcButtonPrimaryClass"),
-                                        getClassName("kcButtonBlockClass"),
-                                        getClassName("kcButtonLargeClass")
-                                    )}
+                                    className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonBlockClass", "kcButtonLargeClass")}
                                     type="submit"
                                     value={msgStr("doSubmit")}
                                 />

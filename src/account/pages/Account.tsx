@@ -1,18 +1,20 @@
 import { clsx } from "keycloakify/tools/clsx";
 import type { PageProps } from "keycloakify/account/pages/PageProps";
-import { useGetClassName } from "keycloakify/account/lib/useGetClassName";
+import { getKcClsx } from "keycloakify/account/lib/kcClsx";
 import type { KcContext } from "../KcContext";
 import { useI18n } from "../i18n";
 
 export default function Account(props: PageProps<Extract<KcContext, { pageId: "account.ftl" }>>) {
-    const { kcContext, doUseDefaultCss, Template, classes } = props;
+    const { kcContext, doUseDefaultCss, Template } = props;
 
-    const { getClassName } = useGetClassName({
+    const classes = {
+        ...props.classes,
+        kcBodyClass: clsx(props.classes?.kcBodyClass, "user")
+    };
+
+    const { kcClsx } = getKcClsx({
         doUseDefaultCss,
-        classes: {
-            ...classes,
-            kcBodyClass: clsx(classes?.kcBodyClass, "user")
-        }
+        classes
     });
 
     const { url, realm, messagesPerField, stateChecker, account, referrer } = kcContext;
@@ -102,11 +104,7 @@ export default function Account(props: PageProps<Extract<KcContext, { pageId: "a
                             {referrer !== undefined && <a href={referrer?.url}>{msg("backToApplication")}</a>}
                             <button
                                 type="submit"
-                                className={clsx(
-                                    getClassName("kcButtonClass"),
-                                    getClassName("kcButtonPrimaryClass"),
-                                    getClassName("kcButtonLargeClass")
-                                )}
+                                className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonLargeClass")}
                                 name="submitAction"
                                 value="Save"
                             >
@@ -114,11 +112,7 @@ export default function Account(props: PageProps<Extract<KcContext, { pageId: "a
                             </button>
                             <button
                                 type="submit"
-                                className={clsx(
-                                    getClassName("kcButtonClass"),
-                                    getClassName("kcButtonDefaultClass"),
-                                    getClassName("kcButtonLargeClass")
-                                )}
+                                className={kcClsx("kcButtonClass", "kcButtonDefaultClass", "kcButtonLargeClass")}
                                 name="submitAction"
                                 value="Cancel"
                             >

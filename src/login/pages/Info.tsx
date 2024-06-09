@@ -17,7 +17,9 @@ export default function Info(props: PageProps<Extract<KcContext, { pageId: "info
 
     return (
         <Template
-            {...{ kcContext, doUseDefaultCss, classes }}
+            kcContext={kcContext}
+            doUseDefaultCss={doUseDefaultCss}
+            classes={classes}
             displayMessage={false}
             headerNode={messageHeader !== undefined ? <>{messageHeader}</> : <>{message.summary}</>}
         >

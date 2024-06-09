@@ -1,5 +1,4 @@
-import { clsx } from "keycloakify/tools/clsx";
-import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
+import { getKcClsx } from "keycloakify/login/lib/kcClsx";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
 import { useI18n } from "../i18n";
@@ -7,7 +6,7 @@ import { useI18n } from "../i18n";
 export default function DeleteAccountConfirm(props: PageProps<Extract<KcContext, { pageId: "delete-account-confirm.ftl" }>>) {
     const { kcContext, doUseDefaultCss, Template, classes } = props;
 
-    const { getClassName } = useGetClassName({
+    const { kcClsx } = getKcClsx({
         doUseDefaultCss,
         classes
     });
@@ -17,7 +16,7 @@ export default function DeleteAccountConfirm(props: PageProps<Extract<KcContext,
     const { msg, msgStr } = useI18n({ kcContext });
 
     return (
-        <Template {...{ kcContext, doUseDefaultCss, classes }} headerNode={msg("deleteAccountConfirm")}>
+        <Template kcContext={kcContext} doUseDefaultCss={doUseDefaultCss} classes={classes} headerNode={msg("deleteAccountConfirm")}>
             <form action={url.loginAction} className="form-vertical" method="post">
                 <div className="alert alert-warning" style={{ marginTop: "0", marginBottom: "30px" }}>
                     <span className="pficon pficon-warning-triangle-o"></span>
@@ -37,13 +36,13 @@ export default function DeleteAccountConfirm(props: PageProps<Extract<KcContext,
                 <p className="delete-account-text">{msg("finalDeletionConfirmation")}</p>
                 <div id="kc-form-buttons">
                     <input
-                        className={clsx(getClassName("kcButtonClass"), getClassName("kcButtonPrimaryClass"), getClassName("kcButtonLargeClass"))}
+                        className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonLargeClass")}
                         type="submit"
                         value={msgStr("doConfirmDelete")}
                     />
                     {triggered_from_aia && (
                         <button
-                            className={clsx(getClassName("kcButtonClass"), getClassName("kcButtonDefaultClass"), getClassName("kcButtonLargeClass"))}
+                            className={kcClsx("kcButtonClass", "kcButtonDefaultClass", "kcButtonLargeClass")}
                             style={{ marginLeft: "calc(100% - 220px)" }}
                             type="submit"
                             name="cancel-aia"

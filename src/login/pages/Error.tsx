@@ -10,7 +10,7 @@ export default function Error(props: PageProps<Extract<KcContext, { pageId: "err
     const { msg } = useI18n({ kcContext });
 
     return (
-        <Template {...{ kcContext, doUseDefaultCss, classes }} displayMessage={false} headerNode={msg("errorTitle")}>
+        <Template kcContext={kcContext} doUseDefaultCss={doUseDefaultCss} classes={classes} displayMessage={false} headerNode={msg("errorTitle")}>
             <div id="kc-error-message">
                 <p className="instruction">{message.summary}</p>
                 {!skipLink && client !== undefined && client.baseUrl !== undefined && (

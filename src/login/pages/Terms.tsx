@@ -1,6 +1,5 @@
-import { clsx } from "keycloakify/tools/clsx";
 import { Markdown } from "keycloakify/tools/Markdown";
-import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
+import { getKcClsx } from "keycloakify/login/lib/kcClsx";
 import { useTermsMarkdown } from "keycloakify/login/lib/useDownloadTerms";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
@@ -9,7 +8,7 @@ import { useI18n } from "../i18n";
 export default function Terms(props: PageProps<Extract<KcContext, { pageId: "terms.ftl" }>>) {
     const { kcContext, doUseDefaultCss, Template, classes } = props;
 
-    const { getClassName } = useGetClassName({
+    const { kcClsx } = getKcClsx({
         doUseDefaultCss,
         classes
     });
@@ -25,26 +24,20 @@ export default function Terms(props: PageProps<Extract<KcContext, { pageId: "ter
     }
 
     return (
-        <Template {...{ kcContext, doUseDefaultCss, classes }} displayMessage={false} headerNode={msg("termsTitle")}>
+        <Template kcContext={kcContext} doUseDefaultCss={doUseDefaultCss} classes={classes} displayMessage={false} headerNode={msg("termsTitle")}>
             <div id="kc-terms-text" lang={termsLanguageTag !== locale?.currentLanguageTag ? termsLanguageTag : undefined}>
                 <Markdown>{termsMarkdown}</Markdown>
             </div>
             <form className="form-actions" action={url.loginAction} method="POST">
                 <input
-                    className={clsx(
-                        getClassName("kcButtonClass"),
-                        getClassName("kcButtonClass"),
-                        getClassName("kcButtonClass"),
-                        getClassName("kcButtonPrimaryClass"),
-                        getClassName("kcButtonLargeClass")
-                    )}
+                    className={kcClsx("kcButtonClass", "kcButtonClass", "kcButtonClass", "kcButtonPrimaryClass", "kcButtonLargeClass")}
                     name="accept"
                     id="kc-accept"
                     type="submit"
                     value={msgStr("doAccept")}
                 />
                 <input
-                    className={clsx(getClassName("kcButtonClass"), getClassName("kcButtonDefaultClass"), getClassName("kcButtonLargeClass"))}
+                    className={kcClsx("kcButtonClass", "kcButtonDefaultClass", "kcButtonLargeClass")}
                     name="cancel"
                     id="kc-decline"
                     type="submit"

@@ -1,4 +1,4 @@
-import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
+import { getKcClsx } from "keycloakify/login/lib/kcClsx";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
 import { useI18n } from "../i18n";
@@ -6,7 +6,7 @@ import { useI18n } from "../i18n";
 export default function Code(props: PageProps<Extract<KcContext, { pageId: "code.ftl" }>>) {
     const { kcContext, doUseDefaultCss, Template, classes } = props;
 
-    const { getClassName } = useGetClassName({
+    const { kcClsx } = getKcClsx({
         doUseDefaultCss,
         classes
     });
@@ -17,14 +17,16 @@ export default function Code(props: PageProps<Extract<KcContext, { pageId: "code
 
     return (
         <Template
-            {...{ kcContext, doUseDefaultCss, classes }}
+            kcContext={kcContext}
+            doUseDefaultCss={doUseDefaultCss}
+            classes={classes}
             headerNode={code.success ? msg("codeSuccessTitle") : msg("codeErrorTitle", code.error)}
         >
             <div id="kc-code">
                 {code.success ? (
                     <>
                         <p>{msg("copyCodeInstruction")}</p>
-                        <input id="code" className={getClassName("kcTextareaClass")} defaultValue={code.code} />
+                        <input id="code" className={kcClsx("kcTextareaClass")} defaultValue={code.code} />
                     </>
                 ) : (
                     <p id="error">{code.error}</p>

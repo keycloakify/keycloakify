@@ -1,16 +1,24 @@
 import React from "react";
-import type { KcContext } from "./KcContext";
-import KcApp from "./KcApp";
 import type { DeepPartial } from "../../dist/tools/DeepPartial";
+import type { KcContext } from "./KcContext";
 import { createGetKcContextMock } from "../../dist/login/KcContext";
-import type { KcContextExtraProperties, KcContextExtraPropertiesPerPage } from "./KcContext";
+import type { KcContextExtension, KcContextExtensionPerPage } from "./KcContext";
+import KcApp from "./KcApp";
+import { themeNames, kcEnvDefaults } from "../kc.gen";
 
-const kcContextExtraProperties: KcContextExtraProperties = {};
-const kcContextExtraPropertiesPerPage: KcContextExtraPropertiesPerPage = {};
+const kcContextExtension: KcContextExtension = {
+    themeName: themeNames[0],
+    properties: {
+        ...kcEnvDefaults
+    }
+};
+const kcContextExtensionPerPage: KcContextExtensionPerPage = {};
 
-const { getKcContextMock } = createGetKcContextMock({
-    kcContextExtraProperties,
-    kcContextExtraPropertiesPerPage
+export const { getKcContextMock } = createGetKcContextMock({
+    kcContextExtension,
+    kcContextExtensionPerPage,
+    overrides: {},
+    overridesPerPage: {}
 });
 
 export function createPageStory<PageId extends KcContext["pageId"]>(params: { pageId: PageId }) {

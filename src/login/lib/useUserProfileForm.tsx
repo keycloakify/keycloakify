@@ -7,9 +7,11 @@ import { useConstCallback } from "keycloakify/tools/useConstCallback";
 import { emailRegexp } from "keycloakify/tools/emailRegExp";
 import { formatNumber } from "keycloakify/tools/formatNumber";
 import { useInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
-import type { KcContext, PasswordPolicies, Attribute, Validators } from "keycloakify/login/KcContext";
+import type { PasswordPolicies, Attribute, Validators } from "keycloakify/login/KcContext";
+import type { KcContext } from "../KcContext";
 import type { MessageKey } from "keycloakify/login/i18n";
-import type { I18n } from "../i18n";
+import { KcContextLike as KcContextLike_i18n } from "keycloakify/login/i18n";
+import { useI18n } from "../i18n";
 
 export type FormFieldError = {
     errorMessage: JSX.Element;
@@ -64,23 +66,23 @@ export type FormAction =
           fieldIndex: number | undefined;
       };
 
-export type KcContextLike = {
-    messagesPerField: Pick<KcContext.Common["messagesPerField"], "existsError" | "get">;
-    profile: {
-        attributesByName: Record<string, Attribute>;
-        html5DataAnnotations?: Record<string, string>;
+export type KcContextLike = KcContextLike_i18n &
+    KcContextLike_useGetErrors & {
+        profile: {
+            attributesByName: Record<string, Attribute>;
+            html5DataAnnotations?: Record<string, string>;
+        };
+        passwordRequired?: boolean;
+        realm: { registrationEmailAsUsername: boolean };
+        url: {
+            resourcesPath: string;
+        };
     };
-    passwordRequired?: boolean;
-    realm: { registrationEmailAsUsername: boolean };
-    passwordPolicies?: PasswordPolicies;
-    url: {
-        resourcesPath: string;
-    };
-};
+
+assert<Extract<KcContext.Register, { pageId: "register.ftl" }> extends KcContextLike ? true : false>();
 
 export type ParamsOfUseUserProfileForm = {
     kcContext: KcContextLike;
-    i18n: I18n;
     doMakeUserConfirmPassword: boolean;
 };
 
@@ -103,7 +105,7 @@ namespace internal {
 }
 
 export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTypeOfUseUserProfileForm {
-    const { kcContext, i18n, doMakeUserConfirmPassword } = params;
+    const { kcContext, doMakeUserConfirmPassword } = params;
 
     const { insertScriptTags } = useInsertScriptTags({
         componentOrHookName: "useUserProfileForm",
@@ -120,8 +122,7 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
     }, []);
 
     const { getErrors } = useGetErrors({
-        kcContext,
-        i18n
+        kcContext
     });
 
     const initialState = useMemo((): internal.State => {
@@ -515,12 +516,19 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
     };
 }
 
-function useGetErrors(params: { kcContext: Pick<KcContextLike, "messagesPerField" | "passwordPolicies">; i18n: I18n }) {
-    const { kcContext, i18n } = params;
+type KcContextLike_useGetErrors = KcContextLike_i18n & {
+    messagesPerField: Pick<KcContext["messagesPerField"], "existsError" | "get">;
+    passwordPolicies?: PasswordPolicies;
+};
+
+assert<KcContextLike extends KcContextLike_useGetErrors ? true : false>();
+
+function useGetErrors(params: { kcContext: KcContextLike_useGetErrors }) {
+    const { kcContext } = params;
 
     const { messagesPerField, passwordPolicies } = kcContext;
 
-    const { msg, msgStr, advancedMsg, advancedMsgStr } = i18n;
+    const { msg, msgStr, advancedMsg, advancedMsgStr } = useI18n({ kcContext });
 
     const getErrors = useConstCallback(
         (params: {

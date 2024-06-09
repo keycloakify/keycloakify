@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { assert } from "keycloakify/tools/assert";
 import { clsx } from "keycloakify/tools/clsx";
 import type { TemplateProps } from "keycloakify/login/TemplateProps";
-import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
+import { getKcClsx } from "keycloakify/login/lib/kcClsx";
 import { useInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
 import { useInsertLinkTags } from "keycloakify/tools/useInsertLinkTags";
 import { useSetClassName } from "keycloakify/tools/useSetClassName";
@@ -26,7 +26,7 @@ export default function Template(props: TemplateProps<KcContext>) {
         children
     } = props;
 
-    const { getClassName } = useGetClassName({ doUseDefaultCss, classes });
+    const { kcClsx } = getKcClsx({ doUseDefaultCss, classes });
 
     const { msg, msgStr, getChangeLocalUrl, labelBySupportedLanguageTag, currentLanguageTag } = useI18n({ kcContext });
 
@@ -38,12 +38,12 @@ export default function Template(props: TemplateProps<KcContext>) {
 
     useSetClassName({
         qualifiedName: "html",
-        className: getClassName("kcHtmlClass")
+        className: kcClsx("kcHtmlClass")
     });
 
     useSetClassName({
         qualifiedName: "body",
-        className: bodyClassName ?? getClassName("kcBodyClass")
+        className: bodyClassName ?? kcClsx("kcBodyClass")
     });
 
     useEffect(() => {
@@ -115,19 +115,19 @@ export default function Template(props: TemplateProps<KcContext>) {
     }
 
     return (
-        <div className={getClassName("kcLoginClass")}>
-            <div id="kc-header" className={getClassName("kcHeaderClass")}>
-                <div id="kc-header-wrapper" className={getClassName("kcHeaderWrapperClass")}>
+        <div className={kcClsx("kcLoginClass")}>
+            <div id="kc-header" className={kcClsx("kcHeaderClass")}>
+                <div id="kc-header-wrapper" className={kcClsx("kcHeaderWrapperClass")}>
                     {msg("loginTitleHtml", realm.displayNameHtml)}
                 </div>
             </div>
 
-            <div className={getClassName("kcFormCardClass")}>
-                <header className={getClassName("kcFormHeaderClass")}>
+            <div className={kcClsx("kcFormCardClass")}>
+                <header className={kcClsx("kcFormHeaderClass")}>
                     {realm.internationalizationEnabled && (assert(locale !== undefined), locale.supported.length > 1) && (
-                        <div className={getClassName("kcLocaleMainClass")} id="kc-locale">
-                            <div id="kc-locale-wrapper" className={getClassName("kcLocaleWrapperClass")}>
-                                <div id="kc-locale-dropdown" className={clsx("menu-button-links", getClassName("kcLocaleDropDownClass"))}>
+                        <div className={kcClsx("kcLocaleMainClass")} id="kc-locale">
+                            <div id="kc-locale-wrapper" className={kcClsx("kcLocaleWrapperClass")}>
+                                <div id="kc-locale-dropdown" className={clsx("menu-button-links", kcClsx("kcLocaleDropDownClass"))}>
                                     <button
                                         tabIndex={1}
                                         id="kc-current-locale-link"
@@ -144,14 +144,14 @@ export default function Template(props: TemplateProps<KcContext>) {
                                         aria-labelledby="kc-current-locale-link"
                                         aria-activedescendant=""
                                         id="language-switch1"
-                                        className={getClassName("kcLocaleListClass")}
+                                        className={kcClsx("kcLocaleListClass")}
                                     >
                                         {locale.supported.map(({ languageTag }, i) => (
-                                            <li key={languageTag} className={getClassName("kcLocaleListItemClass")} role="none">
+                                            <li key={languageTag} className={kcClsx("kcLocaleListItemClass")} role="none">
                                                 <a
                                                     role="menuitem"
                                                     id={`language-${i + 1}`}
-                                                    className={getClassName("kcLocaleItemClass")}
+                                                    className={kcClsx("kcLocaleItemClass")}
                                                     href={getChangeLocalUrl(languageTag)}
                                                 >
                                                     {labelBySupportedLanguageTag[languageTag]}
@@ -165,8 +165,8 @@ export default function Template(props: TemplateProps<KcContext>) {
                     )}
                     {!(auth !== undefined && auth.showUsername && !auth.showResetCredentials) ? (
                         displayRequiredFields ? (
-                            <div className={getClassName("kcContentWrapperClass")}>
-                                <div className={clsx(getClassName("kcLabelWrapperClass"), "subtitle")}>
+                            <div className={kcClsx("kcContentWrapperClass")}>
+                                <div className={clsx(kcClsx("kcLabelWrapperClass"), "subtitle")}>
                                     <span className="subtitle">
                                         <span className="required">*</span>
                                         {msg("requiredFields")}
@@ -180,19 +180,19 @@ export default function Template(props: TemplateProps<KcContext>) {
                             <h1 id="kc-page-title">{headerNode}</h1>
                         )
                     ) : displayRequiredFields ? (
-                        <div className={getClassName("kcContentWrapperClass")}>
-                            <div className={clsx(getClassName("kcLabelWrapperClass"), "subtitle")}>
+                        <div className={kcClsx("kcContentWrapperClass")}>
+                            <div className={clsx(kcClsx("kcLabelWrapperClass"), "subtitle")}>
                                 <span className="subtitle">
                                     <span className="required">*</span> {msg("requiredFields")}
                                 </span>
                             </div>
                             <div className="col-md-10">
                                 {showUsernameNode}
-                                <div id="kc-username" className={getClassName("kcFormGroupClass")}>
+                                <div id="kc-username" className={kcClsx("kcFormGroupClass")}>
                                     <label id="kc-attempted-username">{auth.attemptedUsername}</label>
                                     <a id="reset-login" href={url.loginRestartFlowUrl} aria-label={msgStr("restartLoginTooltip")}>
                                         <div className="kc-login-tooltip">
-                                            <i className={getClassName("kcResetFlowIcon")}></i>
+                                            <i className={kcClsx("kcResetFlowIcon")}></i>
                                             <span className="kc-tooltip-text">{msg("restartLoginTooltip")}</span>
                                         </div>
                                     </a>
@@ -202,11 +202,11 @@ export default function Template(props: TemplateProps<KcContext>) {
                     ) : (
                         <>
                             {showUsernameNode}
-                            <div id="kc-username" className={getClassName("kcFormGroupClass")}>
+                            <div id="kc-username" className={kcClsx("kcFormGroupClass")}>
                                 <label id="kc-attempted-username">{auth.attemptedUsername}</label>
                                 <a id="reset-login" href={url.loginRestartFlowUrl} aria-label={msgStr("restartLoginTooltip")}>
                                     <div className="kc-login-tooltip">
-                                        <i className={getClassName("kcResetFlowIcon")}></i>
+                                        <i className={kcClsx("kcResetFlowIcon")}></i>
                                         <span className="kc-tooltip-text">{msg("restartLoginTooltip")}</span>
                                     </div>
                                 </a>
@@ -221,18 +221,18 @@ export default function Template(props: TemplateProps<KcContext>) {
                             <div
                                 className={clsx(
                                     `alert-${message.type}`,
-                                    getClassName("kcAlertClass"),
+                                    kcClsx("kcAlertClass"),
                                     `pf-m-${message?.type === "error" ? "danger" : message.type}`
                                 )}
                             >
                                 <div className="pf-c-alert__icon">
-                                    {message.type === "success" && <span className={getClassName("kcFeedbackSuccessIcon")}></span>}
-                                    {message.type === "warning" && <span className={getClassName("kcFeedbackWarningIcon")}></span>}
-                                    {message.type === "error" && <span className={getClassName("kcFeedbackErrorIcon")}></span>}
-                                    {message.type === "info" && <span className={getClassName("kcFeedbackInfoIcon")}></span>}
+                                    {message.type === "success" && <span className={kcClsx("kcFeedbackSuccessIcon")}></span>}
+                                    {message.type === "warning" && <span className={kcClsx("kcFeedbackWarningIcon")}></span>}
+                                    {message.type === "error" && <span className={kcClsx("kcFeedbackErrorIcon")}></span>}
+                                    {message.type === "info" && <span className={kcClsx("kcFeedbackInfoIcon")}></span>}
                                 </div>
                                 <span
-                                    className={getClassName("kcAlertTitleClass")}
+                                    className={kcClsx("kcAlertTitleClass")}
                                     dangerouslySetInnerHTML={{
                                         __html: message.summary
                                     }}
@@ -242,8 +242,8 @@ export default function Template(props: TemplateProps<KcContext>) {
                         {children}
                         {auth !== undefined && auth.showTryAnotherWayLink && (
                             <form id="kc-select-try-another-way-form" action={url.loginAction} method="post">
-                                <div className={getClassName("kcFormGroupClass")}>
-                                    <div className={getClassName("kcFormGroupClass")}>
+                                <div className={kcClsx("kcFormGroupClass")}>
+                                    <div className={kcClsx("kcFormGroupClass")}>
                                         <input type="hidden" name="tryAnotherWay" value="on" />
                                         <a
                                             href="#"
@@ -261,8 +261,8 @@ export default function Template(props: TemplateProps<KcContext>) {
                         )}
                         {socialProvidersNode}
                         {displayInfo && (
-                            <div id="kc-info" className={getClassName("kcSignUpClass")}>
-                                <div id="kc-info-wrapper" className={getClassName("kcInfoAreaWrapperClass")}>
+                            <div id="kc-info" className={kcClsx("kcSignUpClass")}>
+                                <div id="kc-info-wrapper" className={kcClsx("kcInfoAreaWrapperClass")}>
                                     {infoNode}
                                 </div>
                             </div>

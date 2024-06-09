@@ -1,5 +1,4 @@
-import { clsx } from "keycloakify/tools/clsx";
-import { useGetClassName } from "keycloakify/account/lib/useGetClassName";
+import { getKcClsx } from "keycloakify/account/lib/kcClsx";
 import type { PageProps } from "keycloakify/account/pages/PageProps";
 import type { KcContext } from "../KcContext";
 import { useI18n } from "../i18n";
@@ -7,7 +6,7 @@ import { useI18n } from "../i18n";
 export default function Applications(props: PageProps<Extract<KcContext, { pageId: "applications.ftl" }>>) {
     const { kcContext, doUseDefaultCss, classes, Template } = props;
 
-    const { getClassName } = useGetClassName({
+    const { kcClsx } = getKcClsx({
         doUseDefaultCss,
         classes
     });
@@ -114,7 +113,7 @@ export default function Applications(props: PageProps<Extract<KcContext, { pageI
                                         application.additionalGrants.length > 0 ? (
                                             <button
                                                 type="submit"
-                                                className={clsx(getClassName("kcButtonPrimaryClass"), getClassName("kcButtonClass"))}
+                                                className={kcClsx("kcButtonPrimaryClass", "kcButtonClass")}
                                                 id={`revoke-${application.client.clientId}`}
                                                 name="clientId"
                                                 value={application.client.id}

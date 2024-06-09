@@ -1,5 +1,4 @@
-import { clsx } from "keycloakify/tools/clsx";
-import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
+import { getKcClsx } from "keycloakify/login/lib/kcClsx";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
 import { useI18n } from "../i18n";
@@ -8,36 +7,37 @@ export default function SelectAuthenticator(props: PageProps<Extract<KcContext, 
     const { kcContext, doUseDefaultCss, Template, classes } = props;
     const { url, auth } = kcContext;
 
-    const { getClassName } = useGetClassName({ doUseDefaultCss, classes });
+    const { kcClsx } = getKcClsx({ doUseDefaultCss, classes });
     const { msg } = useI18n({ kcContext });
 
     return (
-        <Template {...{ kcContext, doUseDefaultCss, classes }} displayInfo={false} headerNode={msg("loginChooseAuthenticator")}>
-            <form id="kc-select-credential-form" className={getClassName("kcFormClass")} action={url.loginAction} method="post">
-                <div className={getClassName("kcSelectAuthListClass")}>
+        <Template
+            kcContext={kcContext}
+            doUseDefaultCss={doUseDefaultCss}
+            classes={classes}
+            displayInfo={false}
+            headerNode={msg("loginChooseAuthenticator")}
+        >
+            <form id="kc-select-credential-form" className={kcClsx("kcFormClass")} action={url.loginAction} method="post">
+                <div className={kcClsx("kcSelectAuthListClass")}>
                     {auth.authenticationSelections.map((authenticationSelection, i) => (
                         <button
                             key={i}
-                            className={getClassName("kcSelectAuthListItemClass")}
+                            className={kcClsx("kcSelectAuthListItemClass")}
                             type="submit"
                             name="authenticationExecution"
                             value={authenticationSelection.authExecId}
                         >
-                            <div className={getClassName("kcSelectAuthListItemIconClass")}>
-                                <i
-                                    className={clsx(
-                                        getClassName(authenticationSelection.iconCssClass),
-                                        getClassName("kcSelectAuthListItemIconPropertyClass")
-                                    )}
-                                />
+                            <div className={kcClsx("kcSelectAuthListItemIconClass")}>
+                                <i className={kcClsx(authenticationSelection.iconCssClass, "kcSelectAuthListItemIconPropertyClass")} />
                             </div>
-                            <div className={getClassName("kcSelectAuthListItemBodyClass")}>
-                                <div className={getClassName("kcSelectAuthListItemHeadingClass")}>{msg(authenticationSelection.displayName)}</div>
-                                <div className={getClassName("kcSelectAuthListItemDescriptionClass")}>{msg(authenticationSelection.helpText)}</div>
+                            <div className={kcClsx("kcSelectAuthListItemBodyClass")}>
+                                <div className={kcClsx("kcSelectAuthListItemHeadingClass")}>{msg(authenticationSelection.displayName)}</div>
+                                <div className={kcClsx("kcSelectAuthListItemDescriptionClass")}>{msg(authenticationSelection.helpText)}</div>
                             </div>
-                            <div className={getClassName("kcSelectAuthListItemFillClass")} />
-                            <div className={getClassName("kcSelectAuthListItemArrowClass")}>
-                                <i className={getClassName("kcSelectAuthListItemArrowIconClass")} />
+                            <div className={kcClsx("kcSelectAuthListItemFillClass")} />
+                            <div className={kcClsx("kcSelectAuthListItemArrowClass")}>
+                                <i className={kcClsx("kcSelectAuthListItemArrowIconClass")} />
                             </div>
                         </button>
                     ))}

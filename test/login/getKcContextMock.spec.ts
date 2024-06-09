@@ -9,13 +9,13 @@ import { structuredCloneButFunctions } from "keycloakify/tools/structuredCloneBu
 import { expect, it, describe } from "vitest";
 
 describe("createGetKcContextMock", () => {
-    type KcContextExtraProperties = {
+    type KcContextExtension = {
         properties: {
             MY_ENV_VAR?: string;
         };
     };
 
-    type KcContextExtraPropertiesPerPage = {
+    type KcContextExtensionPerPage = {
         "register.ftl": {
             authorizedMailDomains: string[];
         };
@@ -25,12 +25,12 @@ describe("createGetKcContextMock", () => {
     };
 
     const { getKcContextMock } = createGetKcContextMock({
-        kcContextExtraProperties: id<KcContextExtraProperties>({
+        kcContextExtension: id<KcContextExtension>({
             properties: {
                 MY_ENV_VAR: "my env var value"
             }
         }),
-        kcContextExtraPropertiesPerPage: id<KcContextExtraPropertiesPerPage>({
+        kcContextExtensionPerPage: id<KcContextExtensionPerPage>({
             "register.ftl": {
                 authorizedMailDomains: ["gmail.com", "hotmail.com"]
             },

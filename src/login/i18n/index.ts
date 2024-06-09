@@ -1,4 +1,4 @@
-export type { MessageKey } from "./i18n";
+export type { MessageKey, KcContextLike } from "./i18n";
 import { createUseI18n } from "./i18n";
 export { createUseI18n };
 export { fallbackLanguageTag } from "./i18n";

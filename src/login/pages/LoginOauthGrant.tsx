@@ -1,5 +1,4 @@
-import { clsx } from "keycloakify/tools/clsx";
-import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
+import { getKcClsx } from "keycloakify/login/lib/kcClsx";
 import { PageProps } from "keycloakify/login/pages/PageProps";
 import { KcContext } from "../KcContext";
 import { useI18n } from "../i18n";
@@ -10,14 +9,16 @@ export default function LoginOauthGrant(props: PageProps<Extract<KcContext, { pa
 
     const { msg, msgStr, advancedMsg, advancedMsgStr } = useI18n({ kcContext });
 
-    const { getClassName } = useGetClassName({
+    const { kcClsx } = getKcClsx({
         doUseDefaultCss,
         classes
     });
 
     return (
         <Template
-            {...{ kcContext, doUseDefaultCss, classes }}
+            kcContext={kcContext}
+            doUseDefaultCss={doUseDefaultCss}
+            classes={classes}
             bodyClassName="oauth"
             headerNode={
                 <>
@@ -68,30 +69,22 @@ export default function LoginOauthGrant(props: PageProps<Extract<KcContext, { pa
 
                 <form className="form-actions" action={url.oauthAction} method="POST">
                     <input type="hidden" name="code" value={oauth.code} />
-                    <div className={getClassName("kcFormGroupClass")}>
+                    <div className={kcClsx("kcFormGroupClass")}>
                         <div id="kc-form-options">
-                            <div className={getClassName("kcFormOptionsWrapperClass")}></div>
+                            <div className={kcClsx("kcFormOptionsWrapperClass")}></div>
                         </div>
 
                         <div id="kc-form-buttons">
-                            <div className={getClassName("kcFormButtonsWrapperClass")}>
+                            <div className={kcClsx("kcFormButtonsWrapperClass")}>
                                 <input
-                                    className={clsx(
-                                        getClassName("kcButtonClass"),
-                                        getClassName("kcButtonPrimaryClass"),
-                                        getClassName("kcButtonLargeClass")
-                                    )}
+                                    className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonLargeClass")}
                                     name="accept"
                                     id="kc-login"
                                     type="submit"
                                     value={msgStr("doYes")}
                                 />
                                 <input
-                                    className={clsx(
-                                        getClassName("kcButtonClass"),
-                                        getClassName("kcButtonDefaultClass"),
-                                        getClassName("kcButtonLargeClass")
-                                    )}
+                                    className={kcClsx("kcButtonClass", "kcButtonDefaultClass", "kcButtonLargeClass")}
                                     name="cancel"
                                     id="kc-cancel"
                                     type="submit"

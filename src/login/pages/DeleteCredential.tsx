@@ -1,5 +1,4 @@
-import { clsx } from "keycloakify/tools/clsx";
-import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
+import { getKcClsx } from "keycloakify/login/lib/kcClsx";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
 import { useI18n } from "../i18n";
@@ -9,7 +8,7 @@ export default function DeleteCredential(props: PageProps<Extract<KcContext, { p
 
     const { msgStr, msg } = useI18n({ kcContext });
 
-    const { getClassName } = useGetClassName({
+    const { kcClsx } = getKcClsx({
         doUseDefaultCss,
         classes
     });
@@ -17,18 +16,24 @@ export default function DeleteCredential(props: PageProps<Extract<KcContext, { p
     const { url, credentialLabel } = kcContext;
 
     return (
-        <Template {...{ kcContext, doUseDefaultCss, classes }} displayMessage={false} headerNode={msg("deleteCredentialTitle", credentialLabel)}>
+        <Template
+            kcContext={kcContext}
+            doUseDefaultCss={doUseDefaultCss}
+            classes={classes}
+            displayMessage={false}
+            headerNode={msg("deleteCredentialTitle", credentialLabel)}
+        >
             <div id="kc-delete-text">{msg("deleteCredentialMessage", credentialLabel)}</div>
             <form className="form-actions" action={url.loginAction} method="POST">
                 <input
-                    className={clsx(getClassName("kcButtonClass"), getClassName("kcButtonPrimaryClass"), getClassName("kcButtonLargeClass"))}
+                    className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonLargeClass")}
                     name="accept"
                     id="kc-accept"
                     type="submit"
                     value={msgStr("doConfirmDelete")}
                 />
                 <input
-                    className={clsx(getClassName("kcButtonClass"), getClassName("kcButtonDefaultClass"), getClassName("kcButtonLargeClass"))}
+                    className={kcClsx("kcButtonClass", "kcButtonDefaultClass", "kcButtonLargeClass")}
                     name="cancel-aia"
                     value={msgStr("doCancel")}
                     id="kc-decline"

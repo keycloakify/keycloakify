@@ -1,10 +1,11 @@
 import type { ExtendKcContext } from "../../dist/account";
+import type { KcEnvName, ThemeName } from "../kc.gen";
 
-export type KcContextExtraProperties = {};
+export type KcContextExtension = {
+    themeName: ThemeName;
+    properties: Record<KcEnvName, string> & {};
+};
 
-export type KcContextExtraPropertiesPerPage = {};
+export type KcContextExtensionPerPage = {};
 
-export type KcContext = ExtendKcContext<
-    KcContextExtraProperties,
-    KcContextExtraPropertiesPerPage
->;
+export type KcContext = ExtendKcContext<KcContextExtension, KcContextExtensionPerPage>;

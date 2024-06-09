@@ -1,7 +1,7 @@
-import { createUseClassName } from "keycloakify/lib/useGetClassName";
+import { createGetKcClsx } from "keycloakify/lib/getKcClsx";
 import type { ClassKey } from "keycloakify/login/TemplateProps";
 
-export const { useGetClassName } = createUseClassName<ClassKey>({
+export const { getKcClsx } = createGetKcClsx<ClassKey>({
     defaultClasses: {
         kcHtmlClass: "login-pf",
         kcBodyClass: undefined,
@@ -137,3 +137,7 @@ export const { useGetClassName } = createUseClassName<ClassKey>({
         kcLabelClass: "pf-c-form__label pf-c-form__label-text"
     }
 });
+
+export type { ClassKey };
+
+export type KcClsx = ReturnType<typeof getKcClsx>["kcClsx"];

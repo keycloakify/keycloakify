@@ -1,5 +1,4 @@
-import { clsx } from "keycloakify/tools/clsx";
-import { useGetClassName } from "keycloakify/account/lib/useGetClassName";
+import { getKcClsx } from "keycloakify/account/lib/kcClsx";
 import type { PageProps } from "keycloakify/account/pages/PageProps";
 import type { KcContext } from "../KcContext";
 import { useI18n } from "../i18n";
@@ -7,7 +6,7 @@ import { useI18n } from "../i18n";
 export default function Sessions(props: PageProps<Extract<KcContext, { pageId: "sessions.ftl" }>>) {
     const { kcContext, doUseDefaultCss, Template, classes } = props;
 
-    const { getClassName } = useGetClassName({
+    const { kcClsx } = getKcClsx({
         doUseDefaultCss,
         classes
     });
@@ -17,7 +16,7 @@ export default function Sessions(props: PageProps<Extract<KcContext, { pageId: "
     const { msg } = useI18n({ kcContext });
     return (
         <Template {...{ kcContext, doUseDefaultCss, classes }} active="sessions">
-            <div className={getClassName("kcContentWrapperClass")}>
+            <div className={kcClsx("kcContentWrapperClass")}>
                 <div className="col-md-10">
                     <h2>{msg("sessionsHtmlTitle")}</h2>
                 </div>
@@ -56,7 +55,7 @@ export default function Sessions(props: PageProps<Extract<KcContext, { pageId: "
 
             <form action={url.sessionsUrl} method="post">
                 <input type="hidden" id="stateChecker" name="stateChecker" value={stateChecker} />
-                <button id="logout-all-sessions" type="submit" className={clsx(getClassName("kcButtonDefaultClass"), getClassName("kcButtonClass"))}>
+                <button id="logout-all-sessions" type="submit" className={kcClsx("kcButtonDefaultClass", "kcButtonClass")}>
                     {msg("doLogOutAllSessions")}
                 </button>
             </form>

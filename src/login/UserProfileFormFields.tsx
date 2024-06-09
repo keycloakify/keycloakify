@@ -1,6 +1,6 @@
 import { useEffect, useReducer, Fragment } from "react";
 import { assert } from "tsafe/assert";
-import type { ClassKey } from "keycloakify/login/TemplateProps";
+import type { KcClsx } from "keycloakify/login/lib/kcClsx";
 import {
     useUserProfileForm,
     getButtonToDisplayForMultivaluedAttributeField,
@@ -9,11 +9,11 @@ import {
     type FormFieldError
 } from "keycloakify/login/lib/useUserProfileForm";
 import type { Attribute } from "keycloakify/login/KcContext";
-import { useI18n } from "./i18n";
+import { useI18n, type I18n } from "./i18n";
 
 export type UserProfileFormFieldsProps = {
     kcContext: KcContextLike;
-    getClassName: (classKey: ClassKey) => string;
+    kcClsx: KcClsx;
     onIsFormSubmittableValueChange: (isFormSubmittable: boolean) => void;
     BeforeField?: (props: BeforeAfterFieldProps) => JSX.Element | null;
     AfterField?: (props: BeforeAfterFieldProps) => JSX.Element | null;
@@ -23,30 +23,32 @@ type BeforeAfterFieldProps = {
     attribute: Attribute;
     dispatchFormAction: React.Dispatch<FormAction>;
     displayableErrors: FormFieldError[];
-    i18n: I18n;
     valueOrValues: string | string[];
+    kcClsx: KcClsx;
+    i18n: I18n;
 };
 
 // NOTE: Enabled by default but it's a UX best practice to set it to false.
 const doMakeUserConfirmPassword = true;
 
 export default function UserProfileFormFields(props: UserProfileFormFieldsProps) {
-    const { kcContext, onIsFormSubmittableValueChange, i18n, getClassName, BeforeField, AfterField } = props;
+    const { kcContext, kcClsx, onIsFormSubmittableValueChange, BeforeField, AfterField } = props;
 
-    const { advancedMsg } = i18n;
+    const { advancedMsg } = useI18n({ kcContext });
 
     const {
         formState: { formFieldStates, isFormSubmittable },
         dispatchFormAction
     } = useUserProfileForm({
         kcContext,
-        i18n,
         doMakeUserConfirmPassword
     });
 
     useEffect(() => {
         onIsFormSubmittableValueChange(isFormSubmittable);
     }, [isFormSubmittable]);
+
+    const i18n = useI18n({ kcContext });
 
     const groupNameRef = { current: "" };
 
@@ -55,32 +57,33 @@ export default function UserProfileFormFields(props: UserProfileFormFieldsProps)
             {formFieldStates.map(({ attribute, displayableErrors, valueOrValues }) => {
                 return (
                     <Fragment key={attribute.name}>
-                        <GroupLabel attribute={attribute} getClassName={getClassName} i18n={i18n} groupNameRef={groupNameRef} />
+                        <GroupLabel attribute={attribute} groupNameRef={groupNameRef} i18n={i18n} kcClsx={kcClsx} />
                         {BeforeField !== undefined && (
                             <BeforeField
                                 attribute={attribute}
                                 dispatchFormAction={dispatchFormAction}
                                 displayableErrors={displayableErrors}
-                                i18n={i18n}
                                 valueOrValues={valueOrValues}
+                                kcClsx={kcClsx}
+                                i18n={i18n}
                             />
                         )}
                         <div
-                            className={getClassName("kcFormGroupClass")}
+                            className={kcClsx("kcFormGroupClass")}
                             style={{
                                 display: attribute.name === "password-confirm" && !doMakeUserConfirmPassword ? "none" : undefined
                             }}
                         >
-                            <div className={getClassName("kcLabelWrapperClass")}>
-                                <label htmlFor={attribute.name} className={getClassName("kcLabelClass")}>
+                            <div className={kcClsx("kcLabelWrapperClass")}>
+                                <label htmlFor={attribute.name} className={kcClsx("kcLabelClass")}>
                                     {advancedMsg(attribute.displayName ?? "")}
                                 </label>
                                 {attribute.required && <>*</>}
                             </div>
-                            <div className={getClassName("kcInputWrapperClass")}>
+                            <div className={kcClsx("kcInputWrapperClass")}>
                                 {attribute.annotations.inputHelperTextBefore !== undefined && (
                                     <div
-                                        className={getClassName("kcInputHelperTextBeforeClass")}
+                                        className={kcClsx("kcInputHelperTextBeforeClass")}
                                         id={`form-help-text-before-${attribute.name}`}
                                         aria-live="polite"
                                     >
@@ -91,19 +94,14 @@ export default function UserProfileFormFields(props: UserProfileFormFieldsProps)
                                     attribute={attribute}
                                     valueOrValues={valueOrValues}
                                     displayableErrors={displayableErrors}
-                                    formValidationDispatch={dispatchFormAction}
-                                    getClassName={getClassName}
+                                    dispatchFormAction={dispatchFormAction}
+                                    kcClsx={kcClsx}
                                     i18n={i18n}
                                 />
-                                <FieldErrors
-                                    attribute={attribute}
-                                    getClassName={getClassName}
-                                    displayableErrors={displayableErrors}
-                                    fieldIndex={undefined}
-                                />
+                                <FieldErrors attribute={attribute} displayableErrors={displayableErrors} kcClsx={kcClsx} fieldIndex={undefined} />
                                 {attribute.annotations.inputHelperTextAfter !== undefined && (
                                     <div
-                                        className={getClassName("kcInputHelperTextAfterClass")}
+                                        className={kcClsx("kcInputHelperTextAfterClass")}
                                         id={`form-help-text-after-${attribute.name}`}
                                         aria-live="polite"
                                     >
@@ -116,8 +114,9 @@ export default function UserProfileFormFields(props: UserProfileFormFieldsProps)
                                         attribute={attribute}
                                         dispatchFormAction={dispatchFormAction}
                                         displayableErrors={displayableErrors}
-                                        i18n={i18n}
                                         valueOrValues={valueOrValues}
+                                        kcClsx={kcClsx}
+                                        i18n={i18n}
                                     />
                                 )}
                                 {/* NOTE: Downloading of html5DataAnnotations scripts is done in the useUserProfileForm hook */}
@@ -132,13 +131,13 @@ export default function UserProfileFormFields(props: UserProfileFormFieldsProps)
 
 function GroupLabel(props: {
     attribute: Attribute;
-    getClassName: UserProfileFormFieldsProps["getClassName"];
-    i18n: I18n;
     groupNameRef: {
         current: string;
     };
+    i18n: I18n;
+    kcClsx: KcClsx;
 }) {
-    const { attribute, getClassName, i18n, groupNameRef } = props;
+    const { attribute, groupNameRef, i18n, kcClsx } = props;
 
     const { advancedMsg } = i18n;
 
@@ -150,7 +149,7 @@ function GroupLabel(props: {
 
             return (
                 <div
-                    className={getClassName("kcFormGroupClass")}
+                    className={kcClsx("kcFormGroupClass")}
                     {...Object.fromEntries(Object.entries(attribute.group.html5DataAnnotations).map(([key, value]) => [`data-${key}`, value]))}
                 >
                     {(() => {
@@ -158,8 +157,8 @@ function GroupLabel(props: {
                         const groupHeaderText = groupDisplayHeader !== "" ? advancedMsg(groupDisplayHeader) : attribute.group.name;
 
                         return (
-                            <div className={getClassName("kcContentWrapperClass")}>
-                                <label id={`header-${attribute.group.name}`} className={getClassName("kcFormGroupHeader")}>
+                            <div className={kcClsx("kcContentWrapperClass")}>
+                                <label id={`header-${attribute.group.name}`} className={kcClsx("kcFormGroupHeader")}>
                                     {groupHeaderText}
                                 </label>
                             </div>
@@ -172,8 +171,8 @@ function GroupLabel(props: {
                             const groupDescriptionText = advancedMsg(groupDisplayDescription);
 
                             return (
-                                <div className={getClassName("kcLabelWrapperClass")}>
-                                    <label id={`description-${attribute.group.name}`} className={getClassName("kcLabelClass")}>
+                                <div className={kcClsx("kcLabelWrapperClass")}>
+                                    <label id={`description-${attribute.group.name}`} className={kcClsx("kcLabelClass")}>
                                         {groupDescriptionText}
                                     </label>
                                 </div>
@@ -190,13 +189,8 @@ function GroupLabel(props: {
     return null;
 }
 
-function FieldErrors(props: {
-    attribute: Attribute;
-    getClassName: UserProfileFormFieldsProps["getClassName"];
-    displayableErrors: FormFieldError[];
-    fieldIndex: number | undefined;
-}) {
-    const { attribute, getClassName, fieldIndex } = props;
+function FieldErrors(props: { attribute: Attribute; displayableErrors: FormFieldError[]; fieldIndex: number | undefined; kcClsx: KcClsx }) {
+    const { attribute, fieldIndex, kcClsx } = props;
 
     const displayableErrors = props.displayableErrors.filter(error => error.fieldIndex === fieldIndex);
 
@@ -207,7 +201,7 @@ function FieldErrors(props: {
     return (
         <span
             id={`input-error-${attribute.name}${fieldIndex === undefined ? "" : `-${fieldIndex}`}`}
-            className={getClassName("kcInputErrorMessageClass")}
+            className={kcClsx("kcInputErrorMessageClass")}
             aria-live="polite"
         >
             {displayableErrors
@@ -226,9 +220,9 @@ type InputFiledByTypeProps = {
     attribute: Attribute;
     valueOrValues: string | string[];
     displayableErrors: FormFieldError[];
-    formValidationDispatch: React.Dispatch<FormAction>;
-    getClassName: UserProfileFormFieldsProps["getClassName"];
+    dispatchFormAction: React.Dispatch<FormAction>;
     i18n: I18n;
+    kcClsx: KcClsx;
 };
 
 function InputFiledByType(props: InputFiledByTypeProps) {
@@ -258,7 +252,7 @@ function InputFiledByType(props: InputFiledByTypeProps) {
 
             if (attribute.name === "password" || attribute.name === "password-confirm") {
                 return (
-                    <PasswordWrapper getClassName={props.getClassName} i18n={props.i18n} passwordInputId={attribute.name}>
+                    <PasswordWrapper kcClsx={props.kcClsx} i18n={props.i18n} passwordInputId={attribute.name}>
                         {inputNode}
                     </PasswordWrapper>
                 );
@@ -269,8 +263,8 @@ function InputFiledByType(props: InputFiledByTypeProps) {
     }
 }
 
-function PasswordWrapper(props: { getClassName: (classKey: ClassKey) => string; i18n: I18n; passwordInputId: string; children: JSX.Element }) {
-    const { getClassName, i18n, passwordInputId, children } = props;
+function PasswordWrapper(props: { kcClsx: KcClsx; i18n: I18n; passwordInputId: string; children: JSX.Element }) {
+    const { kcClsx, i18n, passwordInputId, children } = props;
 
     const { msgStr } = i18n;
 
@@ -285,26 +279,23 @@ function PasswordWrapper(props: { getClassName: (classKey: ClassKey) => string; 
     }, [isPasswordRevealed]);
 
     return (
-        <div className={getClassName("kcInputGroup")}>
+        <div className={kcClsx("kcInputGroup")}>
             {children}
             <button
                 type="button"
-                className={getClassName("kcFormPasswordVisibilityButtonClass")}
+                className={kcClsx("kcFormPasswordVisibilityButtonClass")}
                 aria-label={msgStr(isPasswordRevealed ? "hidePassword" : "showPassword")}
                 aria-controls={passwordInputId}
                 onClick={toggleIsPasswordRevealed}
             >
-                <i
-                    className={getClassName(isPasswordRevealed ? "kcFormPasswordVisibilityIconHide" : "kcFormPasswordVisibilityIconShow")}
-                    aria-hidden
-                />
+                <i className={kcClsx(isPasswordRevealed ? "kcFormPasswordVisibilityIconHide" : "kcFormPasswordVisibilityIconShow")} aria-hidden />
             </button>
         </div>
     );
 }
 
 function InputTag(props: InputFiledByTypeProps & { fieldIndex: number | undefined }) {
-    const { attribute, fieldIndex, getClassName, formValidationDispatch, valueOrValues, i18n, displayableErrors } = props;
+    const { attribute, fieldIndex, kcClsx, dispatchFormAction, valueOrValues, i18n, displayableErrors } = props;
 
     return (
         <>
@@ -330,7 +321,7 @@ function InputTag(props: InputFiledByTypeProps & { fieldIndex: number | undefine
 
                     return valueOrValues;
                 })()}
-                className={getClassName("kcInputClass")}
+                className={kcClsx("kcInputClass")}
                 aria-invalid={displayableErrors.find(error => error.fieldIndex === fieldIndex) !== undefined}
                 disabled={attribute.readOnly}
                 autoComplete={attribute.autocomplete}
@@ -348,7 +339,7 @@ function InputTag(props: InputFiledByTypeProps & { fieldIndex: number | undefine
                 step={attribute.annotations.inputTypeStep}
                 {...Object.fromEntries(Object.entries(attribute.html5DataAnnotations ?? {}).map(([key, value]) => [`data-${key}`, value]))}
                 onChange={event =>
-                    formValidationDispatch({
+                    dispatchFormAction({
                         action: "update",
                         name: attribute.name,
                         valueOrValues: (() => {
@@ -369,7 +360,7 @@ function InputTag(props: InputFiledByTypeProps & { fieldIndex: number | undefine
                     })
                 }
                 onBlur={() =>
-                    formValidationDispatch({
+                    dispatchFormAction({
                         action: "focus lost",
                         name: attribute.name,
                         fieldIndex: fieldIndex
@@ -387,17 +378,12 @@ function InputTag(props: InputFiledByTypeProps & { fieldIndex: number | undefine
 
                 return (
                     <>
-                        <FieldErrors
-                            attribute={attribute}
-                            getClassName={getClassName}
-                            displayableErrors={displayableErrors}
-                            fieldIndex={fieldIndex}
-                        />
+                        <FieldErrors attribute={attribute} kcClsx={kcClsx} displayableErrors={displayableErrors} fieldIndex={fieldIndex} />
                         <AddRemoveButtonsMultiValuedAttribute
                             attribute={attribute}
                             values={values}
                             fieldIndex={fieldIndex}
-                            dispatchFormAction={formValidationDispatch}
+                            dispatchFormAction={dispatchFormAction}
                             i18n={i18n}
                         />
                     </>
@@ -464,7 +450,7 @@ function AddRemoveButtonsMultiValuedAttribute(props: {
 }
 
 function InputTagSelects(props: InputFiledByTypeProps) {
-    const { attribute, formValidationDispatch, getClassName, valueOrValues } = props;
+    const { attribute, dispatchFormAction, kcClsx, valueOrValues } = props;
 
     const { advancedMsg } = props.i18n;
 
@@ -477,16 +463,16 @@ function InputTagSelects(props: InputFiledByTypeProps) {
             case "select-radiobuttons":
                 return {
                     inputType: "radio",
-                    classDiv: getClassName("kcInputClassRadio"),
-                    classInput: getClassName("kcInputClassRadioInput"),
-                    classLabel: getClassName("kcInputClassRadioLabel")
+                    classDiv: kcClsx("kcInputClassRadio"),
+                    classInput: kcClsx("kcInputClassRadioInput"),
+                    classLabel: kcClsx("kcInputClassRadioLabel")
                 };
             case "multiselect-checkboxes":
                 return {
                     inputType: "checkbox",
-                    classDiv: getClassName("kcInputClassCheckbox"),
-                    classInput: getClassName("kcInputClassCheckboxInput"),
-                    classLabel: getClassName("kcInputClassCheckboxLabel")
+                    classDiv: kcClsx("kcInputClassCheckbox"),
+                    classInput: kcClsx("kcInputClassCheckboxInput"),
+                    classLabel: kcClsx("kcInputClassCheckboxLabel")
                 };
         }
     })();
@@ -529,7 +515,7 @@ function InputTagSelects(props: InputFiledByTypeProps) {
                         disabled={attribute.readOnly}
                         checked={valueOrValues instanceof Array ? valueOrValues.includes(option) : valueOrValues === option}
                         onChange={event =>
-                            formValidationDispatch({
+                            dispatchFormAction({
                                 action: "update",
                                 name: attribute.name,
                                 valueOrValues: (() => {
@@ -552,7 +538,7 @@ function InputTagSelects(props: InputFiledByTypeProps) {
                             })
                         }
                         onBlur={() =>
-                            formValidationDispatch({
+                            dispatchFormAction({
                                 action: "focus lost",
                                 name: attribute.name,
                                 fieldIndex: undefined
@@ -561,7 +547,7 @@ function InputTagSelects(props: InputFiledByTypeProps) {
                     />
                     <label
                         htmlFor={`${attribute.name}-${option}`}
-                        className={`${classLabel}${attribute.readOnly ? ` ${getClassName("kcInputClassRadioCheckboxLabelDisabled")}` : ""}`}
+                        className={`${classLabel}${attribute.readOnly ? ` ${kcClsx("kcInputClassRadioCheckboxLabelDisabled")}` : ""}`}
                     >
                         {advancedMsg(option)}
                     </label>
@@ -572,7 +558,7 @@ function InputTagSelects(props: InputFiledByTypeProps) {
 }
 
 function TextareaTag(props: InputFiledByTypeProps) {
-    const { attribute, formValidationDispatch, getClassName, displayableErrors, valueOrValues } = props;
+    const { attribute, dispatchFormAction, kcClsx, displayableErrors, valueOrValues } = props;
 
     assert(typeof valueOrValues === "string");
 
@@ -582,7 +568,7 @@ function TextareaTag(props: InputFiledByTypeProps) {
         <textarea
             id={attribute.name}
             name={attribute.name}
-            className={getClassName("kcInputClass")}
+            className={kcClsx("kcInputClass")}
             aria-invalid={displayableErrors.length !== 0}
             disabled={attribute.readOnly}
             cols={attribute.annotations.inputTypeCols === undefined ? undefined : parseInt(`${attribute.annotations.inputTypeCols}`)}
@@ -590,14 +576,14 @@ function TextareaTag(props: InputFiledByTypeProps) {
             maxLength={attribute.annotations.inputTypeMaxlength === undefined ? undefined : parseInt(`${attribute.annotations.inputTypeMaxlength}`)}
             value={value}
             onChange={event =>
-                formValidationDispatch({
+                dispatchFormAction({
                     action: "update",
                     name: attribute.name,
                     valueOrValues: event.target.value
                 })
             }
             onBlur={() =>
-                formValidationDispatch({
+                dispatchFormAction({
                     action: "focus lost",
                     name: attribute.name,
                     fieldIndex: undefined
@@ -608,7 +594,7 @@ function TextareaTag(props: InputFiledByTypeProps) {
 }
 
 function SelectTag(props: InputFiledByTypeProps) {
-    const { attribute, formValidationDispatch, getClassName, displayableErrors, i18n, valueOrValues } = props;
+    const { attribute, dispatchFormAction, kcClsx, displayableErrors, i18n, valueOrValues } = props;
 
     const { advancedMsg } = i18n;
 
@@ -618,14 +604,14 @@ function SelectTag(props: InputFiledByTypeProps) {
         <select
             id={attribute.name}
             name={attribute.name}
-            className={getClassName("kcInputClass")}
+            className={kcClsx("kcInputClass")}
             aria-invalid={displayableErrors.length !== 0}
             disabled={attribute.readOnly}
             multiple={isMultiple}
             size={attribute.annotations.inputTypeSize === undefined ? undefined : parseInt(`${attribute.annotations.inputTypeSize}`)}
             value={valueOrValues}
             onChange={event =>
-                formValidationDispatch({
+                dispatchFormAction({
                     action: "update",
                     name: attribute.name,
                     valueOrValues: (() => {
@@ -638,7 +624,7 @@ function SelectTag(props: InputFiledByTypeProps) {
                 })
             }
             onBlur={() =>
-                formValidationDispatch({
+                dispatchFormAction({
                     action: "focus lost",
                     name: attribute.name,
                     fieldIndex: undefined

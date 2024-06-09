@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { assert } from "tsafe/assert";
-import { clsx } from "keycloakify/tools/clsx";
-import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
+import { getKcClsx, type KcClsx } from "keycloakify/login/lib/kcClsx";
 import { useInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
@@ -10,7 +9,7 @@ import { useI18n, type I18n } from "../i18n";
 export default function WebauthnRegister(props: PageProps<Extract<KcContext, { pageId: "webauthn-register.ftl" }>>) {
     const { kcContext, doUseDefaultCss, Template, classes } = props;
 
-    const { getClassName } = useGetClassName({ doUseDefaultCss, classes });
+    const { kcClsx } = getKcClsx({ doUseDefaultCss, classes });
 
     const {
         url,
@@ -207,33 +206,30 @@ export default function WebauthnRegister(props: PageProps<Extract<KcContext, { p
 
     return (
         <Template
-            {...{ kcContext, doUseDefaultCss, classes }}
+            kcContext={kcContext}
+            doUseDefaultCss={doUseDefaultCss}
+            classes={classes}
             headerNode={
                 <>
-                    <span className={getClassName("kcWebAuthnKeyIcon")} />
+                    <span className={kcClsx("kcWebAuthnKeyIcon")} />
                     {msg("webauthn-registration-title")}
                 </>
             }
         >
-            <form id="register" className={getClassName("kcFormClass")} action={url.loginAction} method="post">
-                <div className={getClassName("kcFormGroupClass")}>
+            <form id="register" className={kcClsx("kcFormClass")} action={url.loginAction} method="post">
+                <div className={kcClsx("kcFormGroupClass")}>
                     <input type="hidden" id="clientDataJSON" name="clientDataJSON" />
                     <input type="hidden" id="attestationObject" name="attestationObject" />
                     <input type="hidden" id="publicKeyCredentialId" name="publicKeyCredentialId" />
                     <input type="hidden" id="authenticatorLabel" name="authenticatorLabel" />
                     <input type="hidden" id="transports" name="transports" />
                     <input type="hidden" id="error" name="error" />
-                    <LogoutOtherSessions {...{ i18n, getClassName }} />
+                    <LogoutOtherSessions kcClsx={kcClsx} i18n={i18n} />
                 </div>
             </form>
             <input
                 type="submit"
-                className={clsx(
-                    getClassName("kcButtonClass"),
-                    getClassName("kcButtonPrimaryClass"),
-                    getClassName("kcButtonBlockClass"),
-                    getClassName("kcButtonLargeClass")
-                )}
+                className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonBlockClass", "kcButtonLargeClass")}
                 id="registerWebAuthn"
                 value={msgStr("doRegisterSecurityKey")}
                 onClick={() => {
@@ -244,15 +240,10 @@ export default function WebauthnRegister(props: PageProps<Extract<KcContext, { p
             />
 
             {!isSetRetry && isAppInitiatedAction && (
-                <form action={url.loginAction} className={getClassName("kcFormClass")} id="kc-webauthn-settings-form" method="post">
+                <form action={url.loginAction} className={kcClsx("kcFormClass")} id="kc-webauthn-settings-form" method="post">
                     <button
                         type="submit"
-                        className={clsx(
-                            getClassName("kcButtonClass"),
-                            getClassName("kcButtonDefaultClass"),
-                            getClassName("kcButtonBlockClass"),
-                            getClassName("kcButtonLargeClass")
-                        )}
+                        className={kcClsx("kcButtonClass", "kcButtonDefaultClass", "kcButtonBlockClass", "kcButtonLargeClass")}
                         id="cancelWebAuthnAIA"
                         name="cancel-aia"
                         value="true"
@@ -265,14 +256,14 @@ export default function WebauthnRegister(props: PageProps<Extract<KcContext, { p
     );
 }
 
-function LogoutOtherSessions(props: { i18n: I18n; getClassName: ReturnType<typeof useGetClassName>["getClassName"] }) {
-    const { getClassName, i18n } = props;
+function LogoutOtherSessions(props: { kcClsx: KcClsx; i18n: I18n }) {
+    const { kcClsx, i18n } = props;
 
     const { msg } = i18n;
 
     return (
-        <div id="kc-form-options" className={getClassName("kcFormOptionsClass")}>
-            <div className={getClassName("kcFormOptionsWrapperClass")}>
+        <div id="kc-form-options" className={kcClsx("kcFormOptionsClass")}>
+            <div className={kcClsx("kcFormOptionsWrapperClass")}>
                 <div className="checkbox">
                     <label>
                         <input type="checkbox" id="logout-sessions" name="logout-sessions" value="on" defaultChecked={true} />

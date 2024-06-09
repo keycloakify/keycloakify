@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { clsx } from "keycloakify/tools/clsx";
 import type { LazyOrNot } from "keycloakify/tools/LazyOrNot";
-import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
+import { getKcClsx, type KcClsx } from "keycloakify/login/lib/kcClsx";
 import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFormFields";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
@@ -14,7 +13,7 @@ type UpdateEmailProps = PageProps<Extract<KcContext, { pageId: "update-email.ftl
 export default function UpdateEmail(props: UpdateEmailProps) {
     const { kcContext, doUseDefaultCss, Template, classes, UserProfileFormFields } = props;
 
-    const { getClassName } = useGetClassName({
+    const { kcClsx } = getKcClsx({
         doUseDefaultCss,
         classes
     });
@@ -28,47 +27,38 @@ export default function UpdateEmail(props: UpdateEmailProps) {
 
     return (
         <Template
-            {...{ kcContext, doUseDefaultCss, classes }}
+            kcContext={kcContext}
+            doUseDefaultCss={doUseDefaultCss}
+            classes={classes}
             displayMessage={messagesPerField.exists("global")}
             displayRequiredFields
             headerNode={msg("updateEmailTitle")}
         >
-            <form id="kc-update-email-form" className={getClassName("kcFormClass")} action={url.loginAction} method="post">
-                <UserProfileFormFields
-                    {...{
-                        kcContext,
-                        getClassName,
-                        messagesPerField
-                    }}
-                    onIsFormSubmittableValueChange={setIsFormSubmittable}
-                />
+            <form id="kc-update-email-form" className={kcClsx("kcFormClass")} action={url.loginAction} method="post">
+                <UserProfileFormFields kcContext={kcContext} kcClsx={kcClsx} onIsFormSubmittableValueChange={setIsFormSubmittable} />
 
-                <div className={getClassName("kcFormGroupClass")}>
-                    <div id="kc-form-options" className={getClassName("kcFormOptionsClass")}>
-                        <div className={getClassName("kcFormOptionsWrapperClass")} />
+                <div className={kcClsx("kcFormGroupClass")}>
+                    <div id="kc-form-options" className={kcClsx("kcFormOptionsClass")}>
+                        <div className={kcClsx("kcFormOptionsWrapperClass")} />
                     </div>
 
-                    <LogoutOtherSessions {...{ getClassName, i18n }} />
+                    <LogoutOtherSessions kcClsx={kcClsx} i18n={i18n} />
 
-                    <div id="kc-form-buttons" className={getClassName("kcFormButtonsClass")}>
+                    <div id="kc-form-buttons" className={kcClsx("kcFormButtonsClass")}>
                         <input
                             disabled={!isFormSubmittable}
-                            className={clsx(
-                                getClassName("kcButtonClass"),
-                                getClassName("kcButtonPrimaryClass"),
-                                isAppInitiatedAction && getClassName("kcButtonBlockClass"),
-                                getClassName("kcButtonLargeClass")
+                            className={kcClsx(
+                                "kcButtonClass",
+                                "kcButtonPrimaryClass",
+                                isAppInitiatedAction && "kcButtonBlockClass",
+                                "kcButtonLargeClass"
                             )}
                             type="submit"
                             value={msgStr("doSubmit")}
                         />
                         {isAppInitiatedAction && (
                             <button
-                                className={clsx(
-                                    getClassName("kcButtonClass"),
-                                    getClassName("kcButtonDefaultClass"),
-                                    getClassName("kcButtonLargeClass")
-                                )}
+                                className={kcClsx("kcButtonClass", "kcButtonDefaultClass", "kcButtonLargeClass")}
                                 type="submit"
                                 name="cancel-aia"
                                 value="true"
@@ -83,14 +73,14 @@ export default function UpdateEmail(props: UpdateEmailProps) {
     );
 }
 
-function LogoutOtherSessions(props: { getClassName: ReturnType<typeof useGetClassName>["getClassName"]; i18n: I18n }) {
-    const { getClassName, i18n } = props;
+function LogoutOtherSessions(props: { kcClsx: KcClsx; i18n: I18n }) {
+    const { kcClsx, i18n } = props;
 
     const { msg } = i18n;
 
     return (
-        <div id="kc-form-options" className={getClassName("kcFormOptionsClass")}>
-            <div className={getClassName("kcFormOptionsWrapperClass")}>
+        <div id="kc-form-options" className={kcClsx("kcFormOptionsClass")}>
+            <div className={kcClsx("kcFormOptionsWrapperClass")}>
                 <div className="checkbox">
                     <label>
                         <input type="checkbox" id="logout-sessions" name="logout-sessions" value="on" defaultChecked={true} />

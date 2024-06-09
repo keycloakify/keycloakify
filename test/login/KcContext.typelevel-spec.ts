@@ -5,13 +5,13 @@ import { assert, type Equals } from "tsafe/assert";
 import { Reflect } from "tsafe/Reflect";
 
 {
-    type KcContextExtraProperties = {
+    type KcContextExtension = {
         properties: {
             myCustomProperty: string | undefined;
         };
     };
 
-    type KcContextExtraPropertiesPerPage = {
+    type KcContextExtensionPerPage = {
         "login.ftl": {
             foo: string;
         };
@@ -20,10 +20,7 @@ import { Reflect } from "tsafe/Reflect";
         };
     };
 
-    type KcContext = ExtendKcContext<
-        KcContextExtraProperties,
-        KcContextExtraPropertiesPerPage
-    >;
+    type KcContext = ExtendKcContext<KcContextExtension, KcContextExtensionPerPage>;
 
     {
         type Got = Extract<KcContext, { pageId: "login.ftl" }>;
@@ -47,7 +44,7 @@ import { Reflect } from "tsafe/Reflect";
         type Got = Extract<KcContext, { pageId: "my-custom-page.ftl" }>;
 
         type Expected = KcContextBase.Common &
-            KcContextExtraProperties & { pageId: "my-custom-page.ftl" } & {
+            KcContextExtension & { pageId: "my-custom-page.ftl" } & {
                 properties: { myCustomProperty: string | undefined };
             } & { bar: number };
 
@@ -56,8 +53,8 @@ import { Reflect } from "tsafe/Reflect";
     }
 
     const { getKcContextMock } = createGetKcContextMock({
-        kcContextExtraProperties: Reflect<KcContextExtraProperties>(),
-        kcContextExtraPropertiesPerPage: Reflect<KcContextExtraPropertiesPerPage>()
+        kcContextExtension: Reflect<KcContextExtension>(),
+        kcContextExtensionPerPage: Reflect<KcContextExtensionPerPage>()
     });
 
     {
@@ -104,8 +101,8 @@ import { Reflect } from "tsafe/Reflect";
     });
 
     createGetKcContextMock({
-        kcContextExtraProperties: Reflect<KcContextExtraProperties>(),
-        kcContextExtraPropertiesPerPage: Reflect<KcContextExtraPropertiesPerPage>(),
+        kcContextExtension: Reflect<KcContextExtension>(),
+        kcContextExtensionPerPage: Reflect<KcContextExtensionPerPage>(),
         overrides: {
             locale: {
                 currentLanguageTag: "fr"
@@ -137,8 +134,8 @@ import { Reflect } from "tsafe/Reflect";
     });
 
     createGetKcContextMock({
-        kcContextExtraProperties: Reflect<KcContextExtraProperties>(),
-        kcContextExtraPropertiesPerPage: Reflect<KcContextExtraPropertiesPerPage>(),
+        kcContextExtension: Reflect<KcContextExtension>(),
+        kcContextExtensionPerPage: Reflect<KcContextExtensionPerPage>(),
         overridesPerPage: {
             "register.ftl": {
                 // @ts-expect-error
@@ -149,14 +146,11 @@ import { Reflect } from "tsafe/Reflect";
 }
 
 {
-    type KcContextExtraProperties = {};
+    type KcContextExtension = {};
 
-    type KcContextExtraPropertiesPerPage = {};
+    type KcContextExtensionPerPage = {};
 
-    type KcContext = ExtendKcContext<
-        KcContextExtraProperties,
-        KcContextExtraPropertiesPerPage
-    >;
+    type KcContext = ExtendKcContext<KcContextExtension, KcContextExtensionPerPage>;
 
     {
         type Got = Extract<KcContext, { pageId: "login.ftl" }>;
@@ -173,8 +167,8 @@ import { Reflect } from "tsafe/Reflect";
     }
 
     const { getKcContextMock } = createGetKcContextMock({
-        kcContextExtraProperties: Reflect<KcContextExtraProperties>(),
-        kcContextExtraPropertiesPerPage: Reflect<KcContextExtraPropertiesPerPage>()
+        kcContextExtension: Reflect<KcContextExtension>(),
+        kcContextExtensionPerPage: Reflect<KcContextExtensionPerPage>()
     });
 
     {

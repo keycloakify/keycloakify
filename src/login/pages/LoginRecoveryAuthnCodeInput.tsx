@@ -1,5 +1,4 @@
-import { clsx } from "keycloakify/tools/clsx";
-import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
+import { getKcClsx } from "keycloakify/login/lib/kcClsx";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
 import { useI18n } from "../i18n";
@@ -7,7 +6,7 @@ import { useI18n } from "../i18n";
 export default function LoginRecoveryAuthnCodeInput(props: PageProps<Extract<KcContext, { pageId: "login-recovery-authn-code-input.ftl" }>>) {
     const { kcContext, doUseDefaultCss, Template, classes } = props;
 
-    const { getClassName } = useGetClassName({
+    const { kcClsx } = getKcClsx({
         doUseDefaultCss,
         classes
     });
@@ -18,18 +17,20 @@ export default function LoginRecoveryAuthnCodeInput(props: PageProps<Extract<KcC
 
     return (
         <Template
-            {...{ kcContext, doUseDefaultCss, classes }}
+            kcContext={kcContext}
+            doUseDefaultCss={doUseDefaultCss}
+            classes={classes}
             headerNode={msg("auth-recovery-code-header")}
             displayMessage={!messagesPerField.existsError("recoveryCodeInput")}
         >
-            <form id="kc-recovery-code-login-form" className={getClassName("kcFormClass")} action={url.loginAction} method="post">
-                <div className={getClassName("kcFormGroupClass")}>
-                    <div className={getClassName("kcLabelWrapperClass")}>
-                        <label htmlFor="recoveryCodeInput" className={getClassName("kcLabelClass")}>
+            <form id="kc-recovery-code-login-form" className={kcClsx("kcFormClass")} action={url.loginAction} method="post">
+                <div className={kcClsx("kcFormGroupClass")}>
+                    <div className={kcClsx("kcLabelWrapperClass")}>
+                        <label htmlFor="recoveryCodeInput" className={kcClsx("kcLabelClass")}>
                             {msg("auth-recovery-code-prompt", `${recoveryAuthnCodesInputBean.codeNumber}`)}
                         </label>
                     </div>
-                    <div className={getClassName("kcInputWrapperClass")}>
+                    <div className={kcClsx("kcInputWrapperClass")}>
                         <input
                             tabIndex={1}
                             id="recoveryCodeInput"
@@ -37,29 +38,24 @@ export default function LoginRecoveryAuthnCodeInput(props: PageProps<Extract<KcC
                             aria-invalid={messagesPerField.existsError("recoveryCodeInput")}
                             autoComplete="off"
                             type="text"
-                            className={getClassName("kcInputClass")}
+                            className={kcClsx("kcInputClass")}
                             autoFocus
                         />
                         {messagesPerField.existsError("recoveryCodeInput") && (
-                            <span id="input-error" className={getClassName("kcInputErrorMessageClass")} aria-live="polite">
+                            <span id="input-error" className={kcClsx("kcInputErrorMessageClass")} aria-live="polite">
                                 {messagesPerField.get("recoveryCodeInput")}
                             </span>
                         )}
                     </div>
                 </div>
 
-                <div className={getClassName("kcFormGroupClass")}>
-                    <div id="kc-form-options" className={getClassName("kcFormOptionsWrapperClass")}>
-                        <div className={getClassName("kcFormOptionsWrapperClass")} />
+                <div className={kcClsx("kcFormGroupClass")}>
+                    <div id="kc-form-options" className={kcClsx("kcFormOptionsWrapperClass")}>
+                        <div className={kcClsx("kcFormOptionsWrapperClass")} />
                     </div>
-                    <div id="kc-form-buttons" className={getClassName("kcFormButtonsClass")}>
+                    <div id="kc-form-buttons" className={kcClsx("kcFormButtonsClass")}>
                         <input
-                            className={clsx(
-                                getClassName("kcButtonClass"),
-                                getClassName("kcButtonPrimaryClass"),
-                                getClassName("kcButtonBlockClass"),
-                                getClassName("kcButtonLargeClass")
-                            )}
+                            className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonBlockClass", "kcButtonLargeClass")}
                             name="login"
                             id="kc-login"
                             type="submit"

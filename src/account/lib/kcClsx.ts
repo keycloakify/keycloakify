@@ -1,7 +1,7 @@
-import { createUseClassName } from "keycloakify/lib/useGetClassName";
+import { createGetKcClsx } from "keycloakify/lib/getKcClsx";
 import type { ClassKey } from "keycloakify/account/TemplateProps";
 
-export const { useGetClassName } = createUseClassName<ClassKey>({
+export const { getKcClsx } = createGetKcClsx<ClassKey>({
     defaultClasses: {
         kcHtmlClass: undefined,
         kcBodyClass: undefined,
@@ -19,3 +19,7 @@ export const { useGetClassName } = createUseClassName<ClassKey>({
             "pf-c-form__helper-text pf-m-error required kc-feedback-text"
     }
 });
+
+export type { ClassKey };
+
+export type KcClsx = ReturnType<typeof getKcClsx>["kcClsx"];

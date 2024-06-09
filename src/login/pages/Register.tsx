@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { clsx } from "keycloakify/tools/clsx";
 import { Markdown } from "keycloakify/tools/Markdown";
 import type { LazyOrNot } from "keycloakify/tools/LazyOrNot";
 import { useTermsMarkdown } from "keycloakify/login/lib/useDownloadTerms";
-import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
+import { getKcClsx, type KcClsx } from "keycloakify/login/lib/kcClsx";
 import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFormFields";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
@@ -16,7 +15,7 @@ type RegisterProps = PageProps<Extract<KcContext, { pageId: "register.ftl" }>> &
 export default function Register(props: RegisterProps) {
     const { kcContext, doUseDefaultCss, Template, classes, UserProfileFormFields } = props;
 
-    const { getClassName } = useGetClassName({
+    const { kcClsx } = getKcClsx({
         doUseDefaultCss,
         classes
     });
@@ -29,49 +28,29 @@ export default function Register(props: RegisterProps) {
     const [isFormSubmittable, setIsFormSubmittable] = useState(false);
 
     return (
-        <Template {...{ kcContext, doUseDefaultCss, classes }} headerNode={msg("registerTitle")} displayRequiredFields>
-            <form id="kc-register-form" className={getClassName("kcFormClass")} action={url.registrationAction} method="post">
-                <UserProfileFormFields
-                    {...{
-                        kcContext,
-                        getClassName,
-                        messagesPerField
-                    }}
-                    onIsFormSubmittableValueChange={setIsFormSubmittable}
-                />
-                {termsAcceptanceRequired && (
-                    <TermsAcceptance
-                        {...{
-                            i18n,
-                            getClassName,
-                            messagesPerField
-                        }}
-                    />
-                )}
+        <Template kcContext={kcContext} doUseDefaultCss={doUseDefaultCss} classes={classes} headerNode={msg("registerTitle")} displayRequiredFields>
+            <form id="kc-register-form" className={kcClsx("kcFormClass")} action={url.registrationAction} method="post">
+                <UserProfileFormFields kcContext={kcContext} kcClsx={kcClsx} onIsFormSubmittableValueChange={setIsFormSubmittable} />
+                {termsAcceptanceRequired && <TermsAcceptance i18n={i18n} kcClsx={kcClsx} messagesPerField={messagesPerField} />}
                 {recaptchaRequired && (
                     <div className="form-group">
-                        <div className={getClassName("kcInputWrapperClass")}>
+                        <div className={kcClsx("kcInputWrapperClass")}>
                             <div className="g-recaptcha" data-size="compact" data-sitekey={recaptchaSiteKey}></div>
                         </div>
                     </div>
                 )}
-                <div className={getClassName("kcFormGroupClass")}>
-                    <div id="kc-form-options" className={getClassName("kcFormOptionsClass")}>
-                        <div className={getClassName("kcFormOptionsWrapperClass")}>
+                <div className={kcClsx("kcFormGroupClass")}>
+                    <div id="kc-form-options" className={kcClsx("kcFormOptionsClass")}>
+                        <div className={kcClsx("kcFormOptionsWrapperClass")}>
                             <span>
                                 <a href={url.loginUrl}>{msg("backToLogin")}</a>
                             </span>
                         </div>
                     </div>
-                    <div id="kc-form-buttons" className={getClassName("kcFormButtonsClass")}>
+                    <div id="kc-form-buttons" className={kcClsx("kcFormButtonsClass")}>
                         <input
                             disabled={!isFormSubmittable}
-                            className={clsx(
-                                getClassName("kcButtonClass"),
-                                getClassName("kcButtonPrimaryClass"),
-                                getClassName("kcButtonBlockClass"),
-                                getClassName("kcButtonLargeClass")
-                            )}
+                            className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonBlockClass", "kcButtonLargeClass")}
                             type="submit"
                             value={msgStr("doRegister")}
                         />
@@ -82,12 +61,8 @@ export default function Register(props: RegisterProps) {
     );
 }
 
-function TermsAcceptance(props: {
-    i18n: I18n;
-    getClassName: ReturnType<typeof useGetClassName>["getClassName"];
-    messagesPerField: Pick<KcContext["messagesPerField"], "existsError" | "get">;
-}) {
-    const { i18n, getClassName, messagesPerField } = props;
+function TermsAcceptance(props: { i18n: I18n; kcClsx: KcClsx; messagesPerField: Pick<KcContext["messagesPerField"], "existsError" | "get"> }) {
+    const { i18n, kcClsx, messagesPerField } = props;
 
     const { msg } = i18n;
 
@@ -101,7 +76,7 @@ function TermsAcceptance(props: {
     return (
         <>
             <div className="form-group">
-                <div className={getClassName("kcInputWrapperClass")}>
+                <div className={kcClsx("kcInputWrapperClass")}>
                     {msg("termsTitle")}
                     <div id="kc-registration-terms-text">
                         <Markdown>{termsMarkdown}</Markdown>
@@ -109,21 +84,21 @@ function TermsAcceptance(props: {
                 </div>
             </div>
             <div className="form-group">
-                <div className={getClassName("kcLabelWrapperClass")}>
+                <div className={kcClsx("kcLabelWrapperClass")}>
                     <input
                         type="checkbox"
                         id="termsAccepted"
                         name="termsAccepted"
-                        className={getClassName("kcCheckboxInputClass")}
+                        className={kcClsx("kcCheckboxInputClass")}
                         aria-invalid={messagesPerField.existsError("termsAccepted")}
                     />
-                    <label htmlFor="termsAccepted" className={getClassName("kcLabelClass")}>
+                    <label htmlFor="termsAccepted" className={kcClsx("kcLabelClass")}>
                         {msg("acceptTerms")}
                     </label>
                 </div>
                 {messagesPerField.existsError("termsAccepted") && (
-                    <div className={getClassName("kcLabelWrapperClass")}>
-                        <span id="input-error-terms-accepted" className={getClassName("kcInputErrorMessageClass")} aria-live="polite">
+                    <div className={kcClsx("kcLabelWrapperClass")}>
+                        <span id="input-error-terms-accepted" className={kcClsx("kcInputErrorMessageClass")} aria-live="polite">
                             {messagesPerField.get("termsAccepted")}
                         </span>
                     </div>

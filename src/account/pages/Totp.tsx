@@ -1,5 +1,5 @@
 import { clsx } from "keycloakify/tools/clsx";
-import { useGetClassName } from "keycloakify/account/lib/useGetClassName";
+import { getKcClsx } from "keycloakify/account/lib/kcClsx";
 import type { PageProps } from "keycloakify/account/pages/PageProps";
 import type { KcContext } from "../KcContext";
 import { useI18n } from "../i18n";
@@ -7,7 +7,7 @@ import { useI18n } from "../i18n";
 export default function Totp(props: PageProps<Extract<KcContext, { pageId: "totp.ftl" }>>) {
     const { kcContext, doUseDefaultCss, Template, classes } = props;
 
-    const { getClassName } = useGetClassName({
+    const { kcClsx } = getKcClsx({
         doUseDefaultCss,
         classes
     });
@@ -140,9 +140,9 @@ export default function Totp(props: PageProps<Extract<KcContext, { pageId: "totp
                             </li>
                         </ol>
                         <hr />
-                        <form action={url.totpUrl} className={getClassName("kcFormClass")} id="kc-totp-settings-form" method="post">
+                        <form action={url.totpUrl} className={kcClsx("kcFormClass")} id="kc-totp-settings-form" method="post">
                             <input type="hidden" id="stateChecker" name="stateChecker" value={stateChecker} />
-                            <div className={getClassName("kcFormGroupClass")}>
+                            <div className={kcClsx("kcFormGroupClass")}>
                                 <div className="col-sm-2 col-md-2">
                                     <label htmlFor="totp" className="control-label">
                                         {msg("authenticatorCode")}
@@ -155,12 +155,12 @@ export default function Totp(props: PageProps<Extract<KcContext, { pageId: "totp
                                         id="totp"
                                         name="totp"
                                         autoComplete="off"
-                                        className={getClassName("kcInputClass")}
+                                        className={kcClsx("kcInputClass")}
                                         aria-invalid={messagesPerField.existsError("totp")}
                                     />
 
                                     {messagesPerField.existsError("totp") && (
-                                        <span id="input-error-otp-code" className={getClassName("kcInputErrorMessageClass")} aria-live="polite">
+                                        <span id="input-error-otp-code" className={kcClsx("kcInputErrorMessageClass")} aria-live="polite">
                                             {messagesPerField.get("totp")}
                                         </span>
                                     )}
@@ -169,9 +169,9 @@ export default function Totp(props: PageProps<Extract<KcContext, { pageId: "totp
                                 {mode && <input type="hidden" id="mode" value={mode} />}
                             </div>
 
-                            <div className={getClassName("kcFormGroupClass")}>
+                            <div className={kcClsx("kcFormGroupClass")}>
                                 <div className="col-sm-2 col-md-2">
-                                    <label htmlFor="userLabel" className={getClassName("kcLabelClass")}>
+                                    <label htmlFor="userLabel" className={kcClsx("kcLabelClass")}>
                                         {msg("totpDeviceName")}
                                     </label>
                                     {totp.otpCredentials.length >= 1 && <span className="required">*</span>}
@@ -182,37 +182,28 @@ export default function Totp(props: PageProps<Extract<KcContext, { pageId: "totp
                                         id="userLabel"
                                         name="userLabel"
                                         autoComplete="off"
-                                        className={getClassName("kcInputClass")}
+                                        className={kcClsx("kcInputClass")}
                                         aria-invalid={messagesPerField.existsError("userLabel")}
                                     />
                                     {messagesPerField.existsError("userLabel") && (
-                                        <span id="input-error-otp-label" className={getClassName("kcInputErrorMessageClass")} aria-live="polite">
+                                        <span id="input-error-otp-label" className={kcClsx("kcInputErrorMessageClass")} aria-live="polite">
                                             {messagesPerField.get("userLabel")}
                                         </span>
                                     )}
                                 </div>
                             </div>
 
-                            <div id="kc-form-buttons" className={clsx(getClassName("kcFormGroupClass"), "text-right")}>
-                                <div className={getClassName("kcInputWrapperClass")}>
+                            <div id="kc-form-buttons" className={clsx(kcClsx("kcFormGroupClass"), "text-right")}>
+                                <div className={kcClsx("kcInputWrapperClass")}>
                                     <input
                                         type="submit"
-                                        className={clsx(
-                                            getClassName("kcButtonClass"),
-                                            getClassName("kcButtonPrimaryClass"),
-                                            getClassName("kcButtonLargeClass")
-                                        )}
+                                        className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonLargeClass")}
                                         id="saveTOTPBtn"
                                         value={msgStr("doSave")}
                                     />
                                     <button
                                         type="submit"
-                                        className={clsx(
-                                            getClassName("kcButtonClass"),
-                                            getClassName("kcButtonDefaultClass"),
-                                            getClassName("kcButtonLargeClass"),
-                                            getClassName("kcButtonLargeClass")
-                                        )}
+                                        className={kcClsx("kcButtonClass", "kcButtonDefaultClass", "kcButtonLargeClass", "kcButtonLargeClass")}
                                         id="cancelTOTPBtn"
                                         name="submitAction"
                                         value="Cancel"

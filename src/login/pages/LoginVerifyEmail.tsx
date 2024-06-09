@@ -11,7 +11,9 @@ export default function LoginVerifyEmail(props: PageProps<Extract<KcContext, { p
 
     return (
         <Template
-            {...{ kcContext, doUseDefaultCss, classes }}
+            kcContext={kcContext}
+            doUseDefaultCss={doUseDefaultCss}
+            classes={classes}
             displayInfo
             headerNode={msg("emailVerifyTitle")}
             infoNode={

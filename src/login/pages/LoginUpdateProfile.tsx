@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { clsx } from "keycloakify/tools/clsx";
 import type { LazyOrNot } from "keycloakify/tools/LazyOrNot";
-import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
+import { getKcClsx } from "keycloakify/login/lib/kcClsx";
 import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFormFields";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
@@ -14,51 +13,46 @@ type LoginUpdateProfileProps = PageProps<Extract<KcContext, { pageId: "login-upd
 export default function LoginUpdateProfile(props: LoginUpdateProfileProps) {
     const { kcContext, doUseDefaultCss, Template, classes, UserProfileFormFields } = props;
 
-    const { getClassName } = useGetClassName({
+    const { kcClsx } = getKcClsx({
         doUseDefaultCss,
         classes
     });
 
-    const { url, messagesPerField, isAppInitiatedAction } = kcContext;
+    const { url, isAppInitiatedAction } = kcContext;
 
     const { msg, msgStr } = useI18n({ kcContext });
 
     const [isFormSubmittable, setIsFormSubmittable] = useState(false);
 
     return (
-        <Template {...{ kcContext, doUseDefaultCss, classes }} displayRequiredFields headerNode={msg("loginProfileTitle")}>
-            <form id="kc-update-profile-form" className={getClassName("kcFormClass")} action={url.loginAction} method="post">
-                <UserProfileFormFields
-                    {...{
-                        kcContext,
-                        getClassName,
-                        messagesPerField
-                    }}
-                    onIsFormSubmittableValueChange={setIsFormSubmittable}
-                />
-                <div className={getClassName("kcFormGroupClass")}>
-                    <div id="kc-form-options" className={getClassName("kcFormOptionsClass")}>
-                        <div className={getClassName("kcFormOptionsWrapperClass")} />
+        <Template
+            kcContext={kcContext}
+            doUseDefaultCss={doUseDefaultCss}
+            classes={classes}
+            displayRequiredFields
+            headerNode={msg("loginProfileTitle")}
+        >
+            <form id="kc-update-profile-form" className={kcClsx("kcFormClass")} action={url.loginAction} method="post">
+                <UserProfileFormFields kcContext={kcContext} kcClsx={kcClsx} onIsFormSubmittableValueChange={setIsFormSubmittable} />
+                <div className={kcClsx("kcFormGroupClass")}>
+                    <div id="kc-form-options" className={kcClsx("kcFormOptionsClass")}>
+                        <div className={kcClsx("kcFormOptionsWrapperClass")} />
                     </div>
-                    <div id="kc-form-buttons" className={getClassName("kcFormButtonsClass")}>
+                    <div id="kc-form-buttons" className={kcClsx("kcFormButtonsClass")}>
                         <input
                             disabled={!isFormSubmittable}
-                            className={clsx(
-                                getClassName("kcButtonClass"),
-                                getClassName("kcButtonPrimaryClass"),
-                                !isAppInitiatedAction && getClassName("kcButtonBlockClass"),
-                                getClassName("kcButtonLargeClass")
+                            className={kcClsx(
+                                "kcButtonClass",
+                                "kcButtonPrimaryClass",
+                                !isAppInitiatedAction && "kcButtonBlockClass",
+                                "kcButtonLargeClass"
                             )}
                             type="submit"
                             value={msgStr("doSubmit")}
                         />
                         {isAppInitiatedAction && (
                             <button
-                                className={clsx(
-                                    getClassName("kcButtonClass"),
-                                    getClassName("kcButtonDefaultClass"),
-                                    getClassName("kcButtonLargeClass")
-                                )}
+                                className={kcClsx("kcButtonClass", "kcButtonDefaultClass", "kcButtonLargeClass")}
                                 type="submit"
                                 name="cancel-aia"
                                 value="true"
