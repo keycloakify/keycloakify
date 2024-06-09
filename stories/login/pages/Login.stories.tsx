@@ -1,25 +1,25 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { createPageStory } from "../PageStory";
+import { createKcPageStory } from "../KcPageStory";
 
-const { PageStory } = createPageStory({ pageId: "login.ftl" });
+const { KcPageStory } = createKcPageStory({ pageId: "login.ftl" });
 
 const meta = {
     title: "login/login.ftl",
-    component: PageStory
-} satisfies Meta<typeof PageStory>;
+    component: KcPageStory
+} satisfies Meta<typeof KcPageStory>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    render: () => <PageStory />
+    render: () => <KcPageStory />
 };
 
 export const WithoutRegistration: Story = {
     render: () => (
-        <PageStory
+        <KcPageStory
             kcContext={{
                 realm: { registrationAllowed: false }
             }}
@@ -29,7 +29,7 @@ export const WithoutRegistration: Story = {
 
 export const WithoutRememberMe: Story = {
     render: () => (
-        <PageStory
+        <KcPageStory
             kcContext={{
                 realm: { rememberMe: false }
             }}
@@ -39,7 +39,7 @@ export const WithoutRememberMe: Story = {
 
 export const WithoutPasswordReset: Story = {
     render: () => (
-        <PageStory
+        <KcPageStory
             kcContext={{
                 realm: { resetPasswordAllowed: false }
             }}
@@ -49,7 +49,7 @@ export const WithoutPasswordReset: Story = {
 
 export const WithEmailAsUsername: Story = {
     render: () => (
-        <PageStory
+        <KcPageStory
             kcContext={{
                 realm: { loginWithEmailAllowed: false }
             }}
@@ -59,7 +59,7 @@ export const WithEmailAsUsername: Story = {
 
 export const WithPresetUsername: Story = {
     render: () => (
-        <PageStory
+        <KcPageStory
             kcContext={{
                 login: { username: "max.mustermann@mail.com" }
             }}
@@ -69,7 +69,7 @@ export const WithPresetUsername: Story = {
 
 export const WithImmutablePresetUsername: Story = {
     render: () => (
-        <PageStory
+        <KcPageStory
             kcContext={{
                 auth: {
                     attemptedUsername: "max.mustermann@mail.com",
@@ -87,7 +87,7 @@ export const WithImmutablePresetUsername: Story = {
 
 export const WithSocialProviders: Story = {
     render: () => (
-        <PageStory
+        <KcPageStory
             kcContext={{
                 social: {
                     displayInfo: true,
@@ -173,7 +173,7 @@ export const WithSocialProviders: Story = {
 
 export const WithoutPasswordField: Story = {
     render: () => (
-        <PageStory
+        <KcPageStory
             kcContext={{
                 realm: { password: false }
             }}

@@ -3,7 +3,7 @@ import type { DeepPartial } from "../../dist/tools/DeepPartial";
 import type { KcContext } from "./KcContext";
 import { createGetKcContextMock } from "../../dist/account/KcContext";
 import type { KcContextExtension, KcContextExtensionPerPage } from "./KcContext";
-import KcApp from "./KcApp";
+import KcPage from "./KcPage";
 import { themeNames, kcEnvDefaults } from "../kc.gen";
 
 const kcContextExtension: KcContextExtension = {
@@ -21,10 +21,10 @@ export const { getKcContextMock } = createGetKcContextMock({
     overridesPerPage: {}
 });
 
-export function createPageStory<PageId extends KcContext["pageId"]>(params: { pageId: PageId }) {
+export function createKcPageStory<PageId extends KcContext["pageId"]>(params: { pageId: PageId }) {
     const { pageId } = params;
 
-    function PageStory(props: { kcContext?: DeepPartial<Extract<KcContext, { pageId: PageId }>> }) {
+    function KcPageStory(props: { kcContext?: DeepPartial<Extract<KcContext, { pageId: PageId }>> }) {
         const { kcContext: overrides } = props;
 
         const kcContextMock = getKcContextMock({
@@ -34,10 +34,10 @@ export function createPageStory<PageId extends KcContext["pageId"]>(params: { pa
 
         return (
             <React.StrictMode>
-                <KcApp kcContext={kcContextMock} />
+                <KcPage kcContext={kcContextMock} />
             </React.StrictMode>
         );
     }
 
-    return { PageStory };
+    return { KcPageStory };
 }

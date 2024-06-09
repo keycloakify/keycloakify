@@ -1,25 +1,25 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { createPageStory } from "../PageStory";
+import { createKcPageStory } from "../KcPageStory";
 
-const { PageStory } = createPageStory({ pageId: "terms.ftl" });
+const { KcPageStory } = createKcPageStory({ pageId: "terms.ftl" });
 
 const meta = {
     title: "login/terms.ftl",
-    component: PageStory
-} satisfies Meta<typeof PageStory>;
+    component: KcPageStory
+} satisfies Meta<typeof KcPageStory>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    render: () => <PageStory />
+    render: () => <KcPageStory />
 };
 
 export const French: Story = {
     render: () => (
-        <PageStory
+        <KcPageStory
             kcContext={{
                 locale: {
                     currentLanguageTag: "fr"
@@ -31,7 +31,7 @@ export const French: Story = {
 
 export const Spanish: Story = {
     render: () => (
-        <PageStory
+        <KcPageStory
             kcContext={{
                 locale: {
                     currentLanguageTag: "es"

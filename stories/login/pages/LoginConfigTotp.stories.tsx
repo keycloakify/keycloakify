@@ -1,25 +1,25 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { createPageStory } from "../PageStory";
+import { createKcPageStory } from "../KcPageStory";
 
-const { PageStory } = createPageStory({ pageId: "login-config-totp.ftl" });
+const { KcPageStory } = createKcPageStory({ pageId: "login-config-totp.ftl" });
 
 const meta = {
     title: "login/login-config-totp.ftl",
-    component: PageStory
-} satisfies Meta<typeof PageStory>;
+    component: KcPageStory
+} satisfies Meta<typeof KcPageStory>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    render: () => <PageStory />
+    render: () => <KcPageStory />
 };
 
 export const WithManualSetUp: Story = {
     render: () => (
-        <PageStory
+        <KcPageStory
             kcContext={{
                 mode: "manual"
             }}
@@ -29,7 +29,7 @@ export const WithManualSetUp: Story = {
 
 export const WithError: Story = {
     render: () => (
-        <PageStory
+        <KcPageStory
             kcContext={{
                 messagesPerField: {
                     get: (fieldName: string) => (fieldName === "totp" ? "Invalid TOTP" : undefined),

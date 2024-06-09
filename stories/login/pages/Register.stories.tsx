@@ -1,25 +1,25 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { createPageStory } from "../PageStory";
+import { createKcPageStory } from "../KcPageStory";
 
-const { PageStory } = createPageStory({ pageId: "register.ftl" });
+const { KcPageStory } = createKcPageStory({ pageId: "register.ftl" });
 
 const meta = {
     title: "login/register.ftl",
-    component: PageStory
-} satisfies Meta<typeof PageStory>;
+    component: KcPageStory
+} satisfies Meta<typeof KcPageStory>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    render: () => <PageStory />
+    render: () => <KcPageStory />
 };
 
 export const WithFieldError: Story = {
     render: () => (
-        <PageStory
+        <KcPageStory
             kcContext={{
                 profile: {
                     attributesByName: {
@@ -41,7 +41,7 @@ export const WithFieldError: Story = {
 
 export const WithEmailAsUsername: Story = {
     render: () => (
-        <PageStory
+        <KcPageStory
             kcContext={{
                 realm: {
                     registrationEmailAsUsername: true
@@ -53,7 +53,7 @@ export const WithEmailAsUsername: Story = {
 
 export const WithoutPassword: Story = {
     render: () => (
-        <PageStory
+        <KcPageStory
             kcContext={{
                 passwordRequired: false
             }}
@@ -63,7 +63,7 @@ export const WithoutPassword: Story = {
 
 export const WithRecaptcha: Story = {
     render: () => (
-        <PageStory
+        <KcPageStory
             kcContext={{
                 scripts: ["https://www.google.com/recaptcha/api.js?hl=en"],
                 recaptchaRequired: true,
@@ -75,7 +75,7 @@ export const WithRecaptcha: Story = {
 
 export const WithRecaptchaFrench: Story = {
     render: () => (
-        <PageStory
+        <KcPageStory
             kcContext={{
                 locale: {
                     currentLanguageTag: "fr"
@@ -90,7 +90,7 @@ export const WithRecaptchaFrench: Story = {
 
 export const WithPresets: Story = {
     render: () => (
-        <PageStory
+        <KcPageStory
             kcContext={{
                 profile: {
                     attributesByName: {

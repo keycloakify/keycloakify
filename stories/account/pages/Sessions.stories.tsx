@@ -1,13 +1,13 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { createPageStory } from "../PageStory";
+import { createKcPageStory } from "../KcPageStory";
 
-const { PageStory } = createPageStory({ pageId: "sessions.ftl" });
+const { KcPageStory } = createKcPageStory({ pageId: "sessions.ftl" });
 
 const meta = {
     title: "account/sessions.ftl",
-    component: PageStory
-} satisfies Meta<typeof PageStory>;
+    component: KcPageStory
+} satisfies Meta<typeof KcPageStory>;
 
 export default meta;
 
@@ -15,7 +15,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     render: () => (
-        <PageStory
+        <KcPageStory
             kcContext={{
                 sessions: {
                     sessions: [
@@ -45,7 +45,7 @@ export const Default: Story = {
 
 export const WithError: Story = {
     render: () => (
-        <PageStory
+        <KcPageStory
             kcContext={{
                 url: { passwordUrl: "/auth/realms/keycloakify/account/password" },
                 stateChecker: "xQ7EOgFrLi4EvnJ8dbXKhwFGWk_bkOp0X89mhilt1os",

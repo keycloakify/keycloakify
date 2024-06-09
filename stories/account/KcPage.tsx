@@ -4,7 +4,7 @@ import { useI18n } from "./i18n";
 import type { KcContext } from "./KcContext";
 import Template from "../../dist/account/Template";
 
-export default function KcApp(props: { kcContext: KcContext }) {
+export default function KcPage(props: { kcContext: KcContext }) {
     const { kcContext } = props;
 
     const { i18n } = useI18n({ kcContext });

@@ -1,13 +1,13 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { createPageStory } from "../PageStory";
+import { createKcPageStory } from "../KcPageStory";
 
-const { PageStory } = createPageStory({ pageId: "totp.ftl" });
+const { KcPageStory } = createKcPageStory({ pageId: "totp.ftl" });
 
 const meta = {
     title: "account/totp.ftl",
-    component: PageStory
-} satisfies Meta<typeof PageStory>;
+    component: KcPageStory
+} satisfies Meta<typeof KcPageStory>;
 
 export default meta;
 
@@ -15,7 +15,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     render: () => (
-        <PageStory
+        <KcPageStory
             kcContext={{
                 totp: {
                     enabled: false,
@@ -51,7 +51,7 @@ export const Default: Story = {
 
 export const WithTotpEnabled: Story = {
     render: () => (
-        <PageStory
+        <KcPageStory
             kcContext={{
                 totp: {
                     enabled: true,
@@ -98,7 +98,7 @@ export const WithTotpEnabled: Story = {
 
 export const WithManualMode: Story = {
     render: () => (
-        <PageStory
+        <KcPageStory
             kcContext={{
                 mode: "manual",
                 totp: {
@@ -136,7 +136,7 @@ export const WithManualMode: Story = {
 
 export const MoreThanOneTotpProviders: Story = {
     render: () => (
-        <PageStory
+        <KcPageStory
             kcContext={{
                 totp: {
                     enabled: true,

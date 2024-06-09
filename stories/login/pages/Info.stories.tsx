@@ -1,13 +1,13 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { createPageStory } from "../PageStory";
+import { createKcPageStory } from "../KcPageStory";
 
-const { PageStory } = createPageStory({ pageId: "info.ftl" });
+const { KcPageStory } = createKcPageStory({ pageId: "info.ftl" });
 
 const meta = {
     title: "login/info.ftl",
-    component: PageStory
-} satisfies Meta<typeof PageStory>;
+    component: KcPageStory
+} satisfies Meta<typeof KcPageStory>;
 
 export default meta;
 
@@ -15,7 +15,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     render: () => (
-        <PageStory
+        <KcPageStory
             kcContext={{
                 message: {
                     summary: "Server info message"
@@ -27,7 +27,7 @@ export const Default: Story = {
 
 export const WithLinkBack: Story = {
     render: () => (
-        <PageStory
+        <KcPageStory
             kcContext={{
                 message: {
                     summary: "Server message"
@@ -40,7 +40,7 @@ export const WithLinkBack: Story = {
 
 export const WithRequiredActions: Story = {
     render: () => (
-        <PageStory
+        <KcPageStory
             kcContext={{
                 message: {
                     summary: "Server message"

@@ -6,7 +6,7 @@ import { useDownloadTerms } from "../../dist/login/lib/useDownloadTerms";
 import Template from "../../dist/login/Template";
 import UserProfileFormFields from "../../dist/login/UserProfileFormFields";
 
-export default function KcApp(props: { kcContext: KcContext }) {
+export default function KcPage(props: { kcContext: KcContext }) {
     const { kcContext } = props;
 
     const { i18n } = useI18n({ kcContext });

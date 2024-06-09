@@ -149,7 +149,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             break edit_KcApp;
         }
 
-        const kcAppTsxPath = pathJoin(themeSrcDirPath, themeType, "KcApp.tsx");
+        const kcAppTsxPath = pathJoin(themeSrcDirPath, themeType, "KcPage.tsx");
 
         const kcAppTsxCode = fs.readFileSync(kcAppTsxPath).toString("utf8");
 
@@ -172,7 +172,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         if (kcAppTsxCode === modifiedKcAppTsxCode) {
             console.log(
                 chalk.red(
-                    "Unable to automatically update KcApp.tsx, please update it manually"
+                    "Unable to automatically update KcPage.tsx, please update it manually"
                 )
             );
             return;
@@ -201,7 +201,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                     ".",
                     pathRelative(process.cwd(), themeSrcDirPath),
                     themeType,
-                    "KcApp.tsx"
+                    "KcPage.tsx"
                 )
             )}:`,
             chalk.grey("```"),
@@ -215,7 +215,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             ),
             ...[
                 ``,
-                ` export default function KcApp(props: { kcContext: KcContext; }) {`,
+                ` export default function KcPage(props: { kcContext: KcContext; }) {`,
                 ``,
                 `     // ...`,
                 ``,
