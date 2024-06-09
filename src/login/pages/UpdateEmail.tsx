@@ -8,10 +8,11 @@ import { useI18n, type I18n } from "../i18n";
 
 type UpdateEmailProps = PageProps<Extract<KcContext, { pageId: "update-email.ftl" }>> & {
     UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
+    doMakeUserConfirmPassword: boolean;
 };
 
 export default function UpdateEmail(props: UpdateEmailProps) {
-    const { kcContext, doUseDefaultCss, Template, classes, UserProfileFormFields } = props;
+    const { kcContext, doUseDefaultCss, Template, classes, UserProfileFormFields, doMakeUserConfirmPassword } = props;
 
     const { kcClsx } = getKcClsx({
         doUseDefaultCss,
@@ -35,7 +36,12 @@ export default function UpdateEmail(props: UpdateEmailProps) {
             headerNode={msg("updateEmailTitle")}
         >
             <form id="kc-update-email-form" className={kcClsx("kcFormClass")} action={url.loginAction} method="post">
-                <UserProfileFormFields kcContext={kcContext} kcClsx={kcClsx} onIsFormSubmittableValueChange={setIsFormSubmittable} />
+                <UserProfileFormFields
+                    kcContext={kcContext}
+                    kcClsx={kcClsx}
+                    onIsFormSubmittableValueChange={setIsFormSubmittable}
+                    doMakeUserConfirmPassword={doMakeUserConfirmPassword}
+                />
 
                 <div className={kcClsx("kcFormGroupClass")}>
                     <div id="kc-form-options" className={kcClsx("kcFormOptionsClass")}>

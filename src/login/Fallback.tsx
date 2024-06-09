@@ -42,6 +42,7 @@ const WebauthnError = lazy(() => import("keycloakify/login/pages/WebauthnError")
 
 type FallbackProps = PageProps<KcContext> & {
     UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
+    doMakeUserConfirmPassword: boolean;
 };
 
 export default function Fallback(props: FallbackProps) {

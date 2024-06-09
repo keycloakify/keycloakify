@@ -10,10 +10,11 @@ import { useI18n, type I18n } from "../i18n";
 
 type RegisterProps = PageProps<Extract<KcContext, { pageId: "register.ftl" }>> & {
     UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
+    doMakeUserConfirmPassword: boolean;
 };
 
 export default function Register(props: RegisterProps) {
-    const { kcContext, doUseDefaultCss, Template, classes, UserProfileFormFields } = props;
+    const { kcContext, doUseDefaultCss, Template, classes, UserProfileFormFields, doMakeUserConfirmPassword } = props;
 
     const { kcClsx } = getKcClsx({
         doUseDefaultCss,
@@ -30,7 +31,12 @@ export default function Register(props: RegisterProps) {
     return (
         <Template kcContext={kcContext} doUseDefaultCss={doUseDefaultCss} classes={classes} headerNode={msg("registerTitle")} displayRequiredFields>
             <form id="kc-register-form" className={kcClsx("kcFormClass")} action={url.registrationAction} method="post">
-                <UserProfileFormFields kcContext={kcContext} kcClsx={kcClsx} onIsFormSubmittableValueChange={setIsFormSubmittable} />
+                <UserProfileFormFields
+                    kcContext={kcContext}
+                    kcClsx={kcClsx}
+                    onIsFormSubmittableValueChange={setIsFormSubmittable}
+                    doMakeUserConfirmPassword={doMakeUserConfirmPassword}
+                />
                 {termsAcceptanceRequired && <TermsAcceptance i18n={i18n} kcClsx={kcClsx} messagesPerField={messagesPerField} />}
                 {recaptchaRequired && (
                     <div className="form-group">

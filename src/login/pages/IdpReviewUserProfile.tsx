@@ -8,10 +8,11 @@ import { useI18n } from "../i18n";
 
 type IdpReviewUserProfileProps = PageProps<Extract<KcContext, { pageId: "idp-review-user-profile.ftl" }>> & {
     UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
+    doMakeUserConfirmPassword: boolean;
 };
 
 export default function IdpReviewUserProfile(props: IdpReviewUserProfileProps) {
-    const { kcContext, doUseDefaultCss, Template, classes, UserProfileFormFields } = props;
+    const { kcContext, doUseDefaultCss, Template, classes, UserProfileFormFields, doMakeUserConfirmPassword } = props;
 
     const { kcClsx } = getKcClsx({
         doUseDefaultCss,
@@ -34,7 +35,12 @@ export default function IdpReviewUserProfile(props: IdpReviewUserProfileProps) {
             headerNode={msg("loginIdpReviewProfileTitle")}
         >
             <form id="kc-idp-review-profile-form" className={kcClsx("kcFormClass")} action={url.loginAction} method="post">
-                <UserProfileFormFields kcContext={kcContext} onIsFormSubmittableValueChange={setIsFomSubmittable} kcClsx={kcClsx} />
+                <UserProfileFormFields
+                    kcContext={kcContext}
+                    onIsFormSubmittableValueChange={setIsFomSubmittable}
+                    kcClsx={kcClsx}
+                    doMakeUserConfirmPassword={doMakeUserConfirmPassword}
+                />
                 <div className={kcClsx("kcFormGroupClass")}>
                     <div id="kc-form-options" className={kcClsx("kcFormOptionsClass")}>
                         <div className={kcClsx("kcFormOptionsWrapperClass")} />

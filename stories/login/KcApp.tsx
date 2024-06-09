@@ -33,5 +33,13 @@ export default function KcApp(props: { kcContext: KcContext }) {
         }
     });
 
-    return <Fallback kcContext={kcContext} Template={Template} UserProfileFormFields={UserProfileFormFields} doUseDefaultCss={true} />;
+    return (
+        <Fallback
+            kcContext={kcContext}
+            Template={Template}
+            doUseDefaultCss={true}
+            UserProfileFormFields={UserProfileFormFields}
+            doMakeUserConfirmPassword={true}
+        />
+    );
 }

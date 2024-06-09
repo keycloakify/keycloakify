@@ -15,6 +15,7 @@ export type UserProfileFormFieldsProps = {
     kcContext: KcContextLike;
     kcClsx: KcClsx;
     onIsFormSubmittableValueChange: (isFormSubmittable: boolean) => void;
+    doMakeUserConfirmPassword: boolean;
     BeforeField?: (props: BeforeAfterFieldProps) => JSX.Element | null;
     AfterField?: (props: BeforeAfterFieldProps) => JSX.Element | null;
 };
@@ -28,11 +29,8 @@ type BeforeAfterFieldProps = {
     i18n: I18n;
 };
 
-// NOTE: Enabled by default but it's a UX best practice to set it to false.
-const doMakeUserConfirmPassword = true;
-
 export default function UserProfileFormFields(props: UserProfileFormFieldsProps) {
-    const { kcContext, kcClsx, onIsFormSubmittableValueChange, BeforeField, AfterField } = props;
+    const { kcContext, kcClsx, onIsFormSubmittableValueChange, doMakeUserConfirmPassword, BeforeField, AfterField } = props;
 
     const { advancedMsg } = useI18n({ kcContext });
 
