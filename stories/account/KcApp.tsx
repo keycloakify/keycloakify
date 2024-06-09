@@ -1,5 +1,5 @@
 import React from "react";
-import Fallback from "../../dist/account/Fallback";
+import DefaultPage from "../../dist/account/Fallback";
 import { useI18n } from "./i18n";
 import type { KcContext } from "./KcContext";
 import Template from "../../dist/account/Template";
@@ -9,5 +9,5 @@ export default function KcApp(props: { kcContext: KcContext }) {
 
     const { i18n } = useI18n({ kcContext });
 
-    return <Fallback kcContext={kcContext} i18n={i18n} Template={Template} doUseDefaultCss={true} />;
+    return <DefaultPage kcContext={kcContext} i18n={i18n} Template={Template} doUseDefaultCss={true} />;
 }

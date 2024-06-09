@@ -1,5 +1,5 @@
 import React from "react";
-import Fallback from "../../dist/login/Fallback";
+import DefaultPage from "../../dist/login/Fallback";
 import type { KcContext } from "./KcContext";
 import { useI18n } from "./i18n";
 import { useDownloadTerms } from "../../dist/login/lib/useDownloadTerms";
@@ -37,7 +37,7 @@ export default function KcApp(props: { kcContext: KcContext }) {
     });
 
     return (
-        <Fallback
+        <DefaultPage
             kcContext={kcContext}
             i18n={i18n}
             Template={Template}

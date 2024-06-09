@@ -12,7 +12,7 @@ const Applications = lazy(() => import("keycloakify/account/pages/Applications")
 const Log = lazy(() => import("keycloakify/account/pages/Log"));
 const FederatedIdentity = lazy(() => import("keycloakify/account/pages/FederatedIdentity"));
 
-export default function Fallback(props: PageProps<KcContext, I18n>) {
+export default function DefaultPage(props: PageProps<KcContext, I18n>) {
     const { kcContext, ...rest } = props;
 
     return (

@@ -41,12 +41,12 @@ const LoginResetOtp = lazy(() => import("keycloakify/login/pages/LoginResetOtp")
 const LoginX509Info = lazy(() => import("keycloakify/login/pages/LoginX509Info"));
 const WebauthnError = lazy(() => import("keycloakify/login/pages/WebauthnError"));
 
-type FallbackProps = PageProps<KcContext, I18n> & {
+type DefaultPageProps = PageProps<KcContext, I18n> & {
     UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
     doMakeUserConfirmPassword: boolean;
 };
 
-export default function Fallback(props: FallbackProps) {
+export default function DefaultPage(props: DefaultPageProps) {
     const { kcContext, ...rest } = props;
 
     return (
