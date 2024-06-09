@@ -58,7 +58,8 @@ export async function generateKcGenTs(params: {
                 2
             )};`,
             ``,
-            `/* prettier-ignore-end */`
+            `/* prettier-ignore-end */`,
+            ``
         ].join("\n"),
         "utf8"
     );
