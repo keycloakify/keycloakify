@@ -26,7 +26,7 @@ async function main() {
 
     const { defaultThemeDirPath } = await downloadKeycloakDefaultTheme({
         keycloakVersion,
-        buildOptions: {
+        buildContext: {
             cacheDirPath: pathJoin(
                 thisCodebaseRootDirPath,
                 "node_modules",
