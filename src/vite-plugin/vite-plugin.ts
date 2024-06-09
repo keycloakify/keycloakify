@@ -33,7 +33,7 @@ export function keycloakify(params?: Params) {
     let shouldGenerateSourcemap: boolean | undefined = undefined;
 
     const plugin = {
-        name: "keycloakify" as const,
+        name: "keycloakify",
         configResolved: async resolvedConfig => {
             shouldGenerateSourcemap = resolvedConfig.build.sourcemap !== false;
 
