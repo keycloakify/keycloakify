@@ -44,6 +44,7 @@
         "dist/bin/shared/constants.js",
         "dist/bin/shared/constants.d.ts",
         "dist/bin/shared/constants.js.map",
+        "dist/bin/shared/buildContext.d.ts",
         "!dist/vite-plugin/",
         "dist/vite-plugin/index.d.ts",
         "dist/vite-plugin/vite-plugin.d.ts",
