@@ -7,14 +7,14 @@ import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFormFields";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import type { I18n } from "../i18n";
+import { useI18n, type I18n } from "../i18n";
 
-type RegisterProps = PageProps<Extract<KcContext, { pageId: "register.ftl" }>, I18n> & {
+type RegisterProps = PageProps<Extract<KcContext, { pageId: "register.ftl" }>> & {
     UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
 };
 
 export default function Register(props: RegisterProps) {
-    const { kcContext, i18n, doUseDefaultCss, Template, classes, UserProfileFormFields } = props;
+    const { kcContext, doUseDefaultCss, Template, classes, UserProfileFormFields } = props;
 
     const { getClassName } = useGetClassName({
         doUseDefaultCss,
@@ -23,17 +23,17 @@ export default function Register(props: RegisterProps) {
 
     const { url, messagesPerField, recaptchaRequired, recaptchaSiteKey, termsAcceptanceRequired } = kcContext;
 
+    const i18n = useI18n({ kcContext });
     const { msg, msgStr } = i18n;
 
     const [isFormSubmittable, setIsFormSubmittable] = useState(false);
 
     return (
-        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} headerNode={msg("registerTitle")} displayRequiredFields>
+        <Template {...{ kcContext, doUseDefaultCss, classes }} headerNode={msg("registerTitle")} displayRequiredFields>
             <form id="kc-register-form" className={getClassName("kcFormClass")} action={url.registrationAction} method="post">
                 <UserProfileFormFields
                     {...{
                         kcContext,
-                        i18n,
                         getClassName,
                         messagesPerField
                     }}

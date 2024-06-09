@@ -1,16 +1,16 @@
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import type { I18n } from "../i18n";
+import { useI18n } from "../i18n";
 
-export default function Error(props: PageProps<Extract<KcContext, { pageId: "error.ftl" }>, I18n>) {
-    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
+export default function Error(props: PageProps<Extract<KcContext, { pageId: "error.ftl" }>>) {
+    const { kcContext, doUseDefaultCss, Template, classes } = props;
 
     const { message, client, skipLink } = kcContext;
 
-    const { msg } = i18n;
+    const { msg } = useI18n({ kcContext });
 
     return (
-        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} displayMessage={false} headerNode={msg("errorTitle")}>
+        <Template {...{ kcContext, doUseDefaultCss, classes }} displayMessage={false} headerNode={msg("errorTitle")}>
             <div id="kc-error-message">
                 <p className="instruction">{message.summary}</p>
                 {!skipLink && client !== undefined && client.baseUrl !== undefined && (

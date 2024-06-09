@@ -5,10 +5,10 @@ import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import { useInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import type { I18n } from "../i18n";
+import { useI18n, type I18n } from "../i18n";
 
-export default function WebauthnRegister(props: PageProps<Extract<KcContext, { pageId: "webauthn-register.ftl" }>, I18n>) {
-    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
+export default function WebauthnRegister(props: PageProps<Extract<KcContext, { pageId: "webauthn-register.ftl" }>>) {
+    const { kcContext, doUseDefaultCss, Template, classes } = props;
 
     const { getClassName } = useGetClassName({ doUseDefaultCss, classes });
 
@@ -30,6 +30,7 @@ export default function WebauthnRegister(props: PageProps<Extract<KcContext, { p
         isAppInitiatedAction
     } = kcContext;
 
+    const i18n = useI18n({ kcContext });
     const { msg, msgStr } = i18n;
 
     const { insertScriptTags } = useInsertScriptTags({
@@ -206,7 +207,7 @@ export default function WebauthnRegister(props: PageProps<Extract<KcContext, { p
 
     return (
         <Template
-            {...{ kcContext, i18n, doUseDefaultCss, classes }}
+            {...{ kcContext, doUseDefaultCss, classes }}
             headerNode={
                 <>
                     <span className={getClassName("kcWebAuthnKeyIcon")} />

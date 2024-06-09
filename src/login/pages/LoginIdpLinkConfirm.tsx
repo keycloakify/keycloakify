@@ -2,10 +2,10 @@ import { clsx } from "keycloakify/tools/clsx";
 import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import type { I18n } from "../i18n";
+import { useI18n } from "../i18n";
 
-export default function LoginIdpLinkConfirm(props: PageProps<Extract<KcContext, { pageId: "login-idp-link-confirm.ftl" }>, I18n>) {
-    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
+export default function LoginIdpLinkConfirm(props: PageProps<Extract<KcContext, { pageId: "login-idp-link-confirm.ftl" }>>) {
+    const { kcContext, doUseDefaultCss, Template, classes } = props;
 
     const { getClassName } = useGetClassName({
         doUseDefaultCss,
@@ -14,10 +14,10 @@ export default function LoginIdpLinkConfirm(props: PageProps<Extract<KcContext, 
 
     const { url, idpAlias } = kcContext;
 
-    const { msg } = i18n;
+    const { msg } = useI18n({ kcContext });
 
     return (
-        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} headerNode={msg("confirmLinkIdpTitle")}>
+        <Template {...{ kcContext, doUseDefaultCss, classes }} headerNode={msg("confirmLinkIdpTitle")}>
             <form id="kc-register-form" action={url.loginAction} method="post">
                 <div className={getClassName("kcFormGroupClass")}>
                     <button

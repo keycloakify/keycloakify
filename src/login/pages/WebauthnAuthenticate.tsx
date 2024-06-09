@@ -5,10 +5,10 @@ import { useInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
 import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import type { I18n } from "../i18n";
+import { useI18n } from "../i18n";
 
-export default function WebauthnAuthenticate(props: PageProps<Extract<KcContext, { pageId: "webauthn-authenticate.ftl" }>, I18n>) {
-    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
+export default function WebauthnAuthenticate(props: PageProps<Extract<KcContext, { pageId: "webauthn-authenticate.ftl" }>>) {
+    const { kcContext, doUseDefaultCss, Template, classes } = props;
 
     const { getClassName } = useGetClassName({ doUseDefaultCss, classes });
 
@@ -26,7 +26,7 @@ export default function WebauthnAuthenticate(props: PageProps<Extract<KcContext,
         shouldDisplayAuthenticators
     } = kcContext;
 
-    const { msg, msgStr, advancedMsg } = i18n;
+    const { msg, msgStr, advancedMsg } = useI18n({ kcContext });
 
     const { insertScriptTags } = useInsertScriptTags({
         componentOrHookName: "WebauthnAuthenticate",
@@ -136,7 +136,7 @@ export default function WebauthnAuthenticate(props: PageProps<Extract<KcContext,
 
     return (
         <Template
-            {...{ kcContext, i18n, doUseDefaultCss, classes }}
+            {...{ kcContext, doUseDefaultCss, classes }}
             displayMessage={!messagesPerField.existsError("username")}
             displayInfo={realm.password && realm.registrationAllowed && !registrationDisabled}
             infoNode={

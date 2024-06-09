@@ -1,14 +1,14 @@
 import type { PageProps } from "keycloakify/account/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import type { I18n } from "../i18n";
+import { useI18n } from "../i18n";
 
-export default function FederatedIdentity(props: PageProps<Extract<KcContext, { pageId: "federatedIdentity.ftl" }>, I18n>) {
-    const { kcContext, i18n, doUseDefaultCss, classes, Template } = props;
+export default function FederatedIdentity(props: PageProps<Extract<KcContext, { pageId: "federatedIdentity.ftl" }>>) {
+    const { kcContext, doUseDefaultCss, classes, Template } = props;
 
     const { url, federatedIdentity, stateChecker } = kcContext;
-    const { msg } = i18n;
+    const { msg } = useI18n({ kcContext });
     return (
-        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} active="federatedIdentity">
+        <Template {...{ kcContext, doUseDefaultCss, classes }} active="federatedIdentity">
             <div className="main-layout social">
                 <div className="row">
                     <div className="col-md-10">

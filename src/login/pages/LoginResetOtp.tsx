@@ -3,10 +3,10 @@ import { clsx } from "keycloakify/tools/clsx";
 import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import type { I18n } from "../i18n";
+import { useI18n } from "../i18n";
 
-export default function LoginResetOtp(props: PageProps<Extract<KcContext, { pageId: "login-reset-otp.ftl" }>, I18n>) {
-    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
+export default function LoginResetOtp(props: PageProps<Extract<KcContext, { pageId: "login-reset-otp.ftl" }>>) {
+    const { kcContext, doUseDefaultCss, Template, classes } = props;
 
     const { getClassName } = useGetClassName({
         doUseDefaultCss,
@@ -15,14 +15,10 @@ export default function LoginResetOtp(props: PageProps<Extract<KcContext, { page
 
     const { url, messagesPerField, configuredOtpCredentials } = kcContext;
 
-    const { msg, msgStr } = i18n;
+    const { msg, msgStr } = useI18n({ kcContext });
 
     return (
-        <Template
-            {...{ kcContext, i18n, doUseDefaultCss, classes }}
-            displayMessage={!messagesPerField.existsError("totp")}
-            headerNode={msg("doLogIn")}
-        >
+        <Template {...{ kcContext, doUseDefaultCss, classes }} displayMessage={!messagesPerField.existsError("totp")} headerNode={msg("doLogIn")}>
             <form id="kc-otp-reset-form" className={getClassName("kcFormClass")} action={url.loginAction} method="post">
                 <div className={getClassName("kcInputWrapperClass")}>
                     <div className={getClassName("kcInfoAreaWrapperClass")}>

@@ -5,14 +5,14 @@ import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFormFields";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import type { I18n } from "../i18n";
+import { useI18n } from "../i18n";
 
-type LoginUpdateProfileProps = PageProps<Extract<KcContext, { pageId: "login-update-profile.ftl" }>, I18n> & {
+type LoginUpdateProfileProps = PageProps<Extract<KcContext, { pageId: "login-update-profile.ftl" }>> & {
     UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
 };
 
 export default function LoginUpdateProfile(props: LoginUpdateProfileProps) {
-    const { kcContext, i18n, doUseDefaultCss, Template, classes, UserProfileFormFields } = props;
+    const { kcContext, doUseDefaultCss, Template, classes, UserProfileFormFields } = props;
 
     const { getClassName } = useGetClassName({
         doUseDefaultCss,
@@ -21,17 +21,16 @@ export default function LoginUpdateProfile(props: LoginUpdateProfileProps) {
 
     const { url, messagesPerField, isAppInitiatedAction } = kcContext;
 
-    const { msg, msgStr } = i18n;
+    const { msg, msgStr } = useI18n({ kcContext });
 
     const [isFormSubmittable, setIsFormSubmittable] = useState(false);
 
     return (
-        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} displayRequiredFields headerNode={msg("loginProfileTitle")}>
+        <Template {...{ kcContext, doUseDefaultCss, classes }} displayRequiredFields headerNode={msg("loginProfileTitle")}>
             <form id="kc-update-profile-form" className={getClassName("kcFormClass")} action={url.loginAction} method="post">
                 <UserProfileFormFields
                     {...{
                         kcContext,
-                        i18n,
                         getClassName,
                         messagesPerField
                     }}

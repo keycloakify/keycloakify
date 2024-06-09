@@ -4,10 +4,10 @@ import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import { useInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import type { I18n } from "../i18n";
+import { useI18n, type I18n } from "../i18n";
 
-export default function LoginRecoveryAuthnCodeConfig(props: PageProps<Extract<KcContext, { pageId: "login-recovery-authn-code-config.ftl" }>, I18n>) {
-    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
+export default function LoginRecoveryAuthnCodeConfig(props: PageProps<Extract<KcContext, { pageId: "login-recovery-authn-code-config.ftl" }>>) {
+    const { kcContext, doUseDefaultCss, Template, classes } = props;
 
     const { getClassName } = useGetClassName({
         doUseDefaultCss,
@@ -16,6 +16,7 @@ export default function LoginRecoveryAuthnCodeConfig(props: PageProps<Extract<Kc
 
     const { recoveryAuthnCodesConfigBean, isAppInitiatedAction } = kcContext;
 
+    const i18n = useI18n({ kcContext });
     const { msg, msgStr } = i18n;
 
     const { insertScriptTags } = useInsertScriptTags({
@@ -144,7 +145,7 @@ export default function LoginRecoveryAuthnCodeConfig(props: PageProps<Extract<Kc
     }, []);
 
     return (
-        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} headerNode={msg("recovery-code-config-header")}>
+        <Template {...{ kcContext, doUseDefaultCss, classes }} headerNode={msg("recovery-code-config-header")}>
             <div className={clsx("pf-c-alert", "pf-m-warning", "pf-m-inline", getClassName("kcRecoveryCodesWarning"))} aria-label="Warning alert">
                 <div className="pf-c-alert__icon">
                     <i className="pficon-warning-triangle-o" aria-hidden="true" />

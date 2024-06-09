@@ -5,20 +5,21 @@ import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFormFields";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import type { I18n } from "../i18n";
+import { useI18n, type I18n } from "../i18n";
 
-type UpdateEmailProps = PageProps<Extract<KcContext, { pageId: "update-email.ftl" }>, I18n> & {
+type UpdateEmailProps = PageProps<Extract<KcContext, { pageId: "update-email.ftl" }>> & {
     UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
 };
 
 export default function UpdateEmail(props: UpdateEmailProps) {
-    const { kcContext, i18n, doUseDefaultCss, Template, classes, UserProfileFormFields } = props;
+    const { kcContext, doUseDefaultCss, Template, classes, UserProfileFormFields } = props;
 
     const { getClassName } = useGetClassName({
         doUseDefaultCss,
         classes
     });
 
+    const i18n = useI18n({ kcContext });
     const { msg, msgStr } = i18n;
 
     const [isFormSubmittable, setIsFormSubmittable] = useState(false);
@@ -27,7 +28,7 @@ export default function UpdateEmail(props: UpdateEmailProps) {
 
     return (
         <Template
-            {...{ kcContext, i18n, doUseDefaultCss, classes }}
+            {...{ kcContext, doUseDefaultCss, classes }}
             displayMessage={messagesPerField.exists("global")}
             displayRequiredFields
             headerNode={msg("updateEmailTitle")}
@@ -36,7 +37,6 @@ export default function UpdateEmail(props: UpdateEmailProps) {
                 <UserProfileFormFields
                     {...{
                         kcContext,
-                        i18n,
                         getClassName,
                         messagesPerField
                     }}

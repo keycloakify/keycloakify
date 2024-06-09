@@ -3,10 +3,10 @@ import { clsx } from "keycloakify/tools/clsx";
 import { useGetClassName } from "keycloakify/account/lib/useGetClassName";
 import type { PageProps } from "keycloakify/account/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import type { I18n } from "../i18n";
+import { useI18n } from "../i18n";
 
-export default function Password(props: PageProps<Extract<KcContext, { pageId: "password.ftl" }>, I18n>) {
-    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
+export default function Password(props: PageProps<Extract<KcContext, { pageId: "password.ftl" }>>) {
+    const { kcContext, doUseDefaultCss, Template, classes } = props;
 
     const { getClassName } = useGetClassName({
         doUseDefaultCss,
@@ -18,7 +18,7 @@ export default function Password(props: PageProps<Extract<KcContext, { pageId: "
 
     const { url, password, account, stateChecker } = kcContext;
 
-    const { msgStr, msg } = i18n;
+    const { msgStr, msg } = useI18n({ kcContext });
 
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
@@ -75,7 +75,6 @@ export default function Password(props: PageProps<Extract<KcContext, { pageId: "
                         return kcContext.message;
                     })()
                 },
-                i18n,
                 doUseDefaultCss,
                 classes
             }}

@@ -1,16 +1,16 @@
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import type { I18n } from "../i18n";
+import { useI18n } from "../i18n";
 
-export default function LoginPageExpired(props: PageProps<Extract<KcContext, { pageId: "login-page-expired.ftl" }>, I18n>) {
-    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
+export default function LoginPageExpired(props: PageProps<Extract<KcContext, { pageId: "login-page-expired.ftl" }>>) {
+    const { kcContext, doUseDefaultCss, Template, classes } = props;
 
     const { url } = kcContext;
 
-    const { msg } = i18n;
+    const { msg } = useI18n({ kcContext });
 
     return (
-        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} headerNode={msg("pageExpiredTitle")}>
+        <Template {...{ kcContext, doUseDefaultCss, classes }} headerNode={msg("pageExpiredTitle")}>
             <p id="instruction1" className="instruction">
                 {msg("pageExpiredMsg1")}
                 <a id="loginRestartLink" href={url.loginRestartFlowUrl}>

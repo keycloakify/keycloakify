@@ -2,14 +2,14 @@ import { clsx } from "keycloakify/tools/clsx";
 import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import type { I18n } from "../i18n";
+import { useI18n } from "../i18n";
 
-export default function WebauthnError(props: PageProps<Extract<KcContext, { pageId: "webauthn-error.ftl" }>, I18n>) {
-    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
+export default function WebauthnError(props: PageProps<Extract<KcContext, { pageId: "webauthn-error.ftl" }>>) {
+    const { kcContext, doUseDefaultCss, Template, classes } = props;
 
     const { url, isAppInitiatedAction } = kcContext;
 
-    const { msg, msgStr } = i18n;
+    const { msg, msgStr } = useI18n({ kcContext });
 
     const { getClassName } = useGetClassName({
         doUseDefaultCss,
@@ -17,7 +17,7 @@ export default function WebauthnError(props: PageProps<Extract<KcContext, { page
     });
 
     return (
-        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} displayMessage headerNode={msg("webauthn-error-title")}>
+        <Template {...{ kcContext, doUseDefaultCss, classes }} displayMessage headerNode={msg("webauthn-error-title")}>
             <form id="kc-error-credential-form" className={getClassName("kcFormClass")} action={url.loginAction} method="post">
                 <input type="hidden" id="executionValue" name="authenticationExecution" />
                 <input type="hidden" id="isSetRetry" name="isSetRetry" />

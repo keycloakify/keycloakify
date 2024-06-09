@@ -4,10 +4,10 @@ import { assert } from "tsafe/assert";
 import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import type { I18n } from "../i18n";
+import { useI18n, type I18n } from "../i18n";
 
-export default function LoginPassword(props: PageProps<Extract<KcContext, { pageId: "login-password.ftl" }>, I18n>) {
-    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
+export default function LoginPassword(props: PageProps<Extract<KcContext, { pageId: "login-password.ftl" }>>) {
+    const { kcContext, doUseDefaultCss, Template, classes } = props;
 
     const { getClassName } = useGetClassName({
         doUseDefaultCss,
@@ -16,16 +16,13 @@ export default function LoginPassword(props: PageProps<Extract<KcContext, { page
 
     const { realm, url, messagesPerField } = kcContext;
 
+    const i18n = useI18n({ kcContext });
     const { msg, msgStr } = i18n;
 
     const [isLoginButtonDisabled, setIsLoginButtonDisabled] = useState(false);
 
     return (
-        <Template
-            {...{ kcContext, i18n, doUseDefaultCss, classes }}
-            headerNode={msg("doLogIn")}
-            displayMessage={!messagesPerField.existsError("password")}
-        >
+        <Template {...{ kcContext, doUseDefaultCss, classes }} headerNode={msg("doLogIn")} displayMessage={!messagesPerField.existsError("password")}>
             <div id="kc-form">
                 <div id="kc-form-wrapper">
                     <form

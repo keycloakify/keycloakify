@@ -1,12 +1,12 @@
 import { assert } from "keycloakify/tools/assert";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import type { I18n } from "../i18n";
+import { useI18n } from "../i18n";
 
-export default function Info(props: PageProps<Extract<KcContext, { pageId: "info.ftl" }>, I18n>) {
-    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
+export default function Info(props: PageProps<Extract<KcContext, { pageId: "info.ftl" }>>) {
+    const { kcContext, doUseDefaultCss, Template, classes } = props;
 
-    const { msgStr, msg } = i18n;
+    const { msgStr, msg } = useI18n({ kcContext });
 
     assert(
         kcContext.message !== undefined,
@@ -17,7 +17,7 @@ export default function Info(props: PageProps<Extract<KcContext, { pageId: "info
 
     return (
         <Template
-            {...{ kcContext, i18n, doUseDefaultCss, classes }}
+            {...{ kcContext, doUseDefaultCss, classes }}
             displayMessage={false}
             headerNode={messageHeader !== undefined ? <>{messageHeader}</> : <>{message.summary}</>}
         >

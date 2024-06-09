@@ -6,14 +6,14 @@ import { useInsertLinkTags } from "keycloakify/tools/useInsertLinkTags";
 import { useSetClassName } from "keycloakify/tools/useSetClassName";
 import type { TemplateProps } from "keycloakify/account/TemplateProps";
 import type { KcContext } from "./KcContext";
-import type { I18n } from "./i18n";
+import { useI18n } from "./i18n";
 
-export default function Template(props: TemplateProps<KcContext, I18n>) {
-    const { kcContext, i18n, doUseDefaultCss, active, classes, children } = props;
+export default function Template(props: TemplateProps<KcContext>) {
+    const { kcContext, doUseDefaultCss, active, classes, children } = props;
 
     const { getClassName } = useGetClassName({ doUseDefaultCss, classes });
 
-    const { msg, msgStr, getChangeLocalUrl, labelBySupportedLanguageTag, currentLanguageTag } = i18n;
+    const { msg, msgStr, getChangeLocalUrl, labelBySupportedLanguageTag, currentLanguageTag } = useI18n({ kcContext });
 
     const { locale, url, features, realm, message, referrer } = kcContext;
 

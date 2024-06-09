@@ -4,17 +4,17 @@ import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import { useTermsMarkdown } from "keycloakify/login/lib/useDownloadTerms";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import type { I18n } from "../i18n";
+import { useI18n } from "../i18n";
 
-export default function Terms(props: PageProps<Extract<KcContext, { pageId: "terms.ftl" }>, I18n>) {
-    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
+export default function Terms(props: PageProps<Extract<KcContext, { pageId: "terms.ftl" }>>) {
+    const { kcContext, doUseDefaultCss, Template, classes } = props;
 
     const { getClassName } = useGetClassName({
         doUseDefaultCss,
         classes
     });
 
-    const { msg, msgStr } = i18n;
+    const { msg, msgStr } = useI18n({ kcContext });
 
     const { locale, url } = kcContext;
 
@@ -25,7 +25,7 @@ export default function Terms(props: PageProps<Extract<KcContext, { pageId: "ter
     }
 
     return (
-        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} displayMessage={false} headerNode={msg("termsTitle")}>
+        <Template {...{ kcContext, doUseDefaultCss, classes }} displayMessage={false} headerNode={msg("termsTitle")}>
             <div id="kc-terms-text" lang={termsLanguageTag !== locale?.currentLanguageTag ? termsLanguageTag : undefined}>
                 <Markdown>{termsMarkdown}</Markdown>
             </div>

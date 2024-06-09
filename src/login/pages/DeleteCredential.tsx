@@ -2,12 +2,12 @@ import { clsx } from "keycloakify/tools/clsx";
 import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import type { I18n } from "../i18n";
+import { useI18n } from "../i18n";
 
-export default function DeleteCredential(props: PageProps<Extract<KcContext, { pageId: "delete-credential.ftl" }>, I18n>) {
-    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
+export default function DeleteCredential(props: PageProps<Extract<KcContext, { pageId: "delete-credential.ftl" }>>) {
+    const { kcContext, doUseDefaultCss, Template, classes } = props;
 
-    const { msgStr, msg } = i18n;
+    const { msgStr, msg } = useI18n({ kcContext });
 
     const { getClassName } = useGetClassName({
         doUseDefaultCss,
@@ -17,11 +17,7 @@ export default function DeleteCredential(props: PageProps<Extract<KcContext, { p
     const { url, credentialLabel } = kcContext;
 
     return (
-        <Template
-            {...{ kcContext, i18n, doUseDefaultCss, classes }}
-            displayMessage={false}
-            headerNode={msg("deleteCredentialTitle", credentialLabel)}
-        >
+        <Template {...{ kcContext, doUseDefaultCss, classes }} displayMessage={false} headerNode={msg("deleteCredentialTitle", credentialLabel)}>
             <div id="kc-delete-text">{msg("deleteCredentialMessage", credentialLabel)}</div>
             <form className="form-actions" action={url.loginAction} method="POST">
                 <input

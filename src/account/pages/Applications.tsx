@@ -2,10 +2,10 @@ import { clsx } from "keycloakify/tools/clsx";
 import { useGetClassName } from "keycloakify/account/lib/useGetClassName";
 import type { PageProps } from "keycloakify/account/pages/PageProps";
 import type { KcContext } from "../KcContext";
-import type { I18n } from "../i18n";
+import { useI18n } from "../i18n";
 
-export default function Applications(props: PageProps<Extract<KcContext, { pageId: "applications.ftl" }>, I18n>) {
-    const { kcContext, i18n, doUseDefaultCss, classes, Template } = props;
+export default function Applications(props: PageProps<Extract<KcContext, { pageId: "applications.ftl" }>>) {
+    const { kcContext, doUseDefaultCss, classes, Template } = props;
 
     const { getClassName } = useGetClassName({
         doUseDefaultCss,
@@ -18,10 +18,10 @@ export default function Applications(props: PageProps<Extract<KcContext, { pageI
         stateChecker
     } = kcContext;
 
-    const { msg, advancedMsg } = i18n;
+    const { msg, advancedMsg } = useI18n({ kcContext });
 
     return (
-        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} active="applications">
+        <Template {...{ kcContext, doUseDefaultCss, classes }} active="applications">
             <div className="row">
                 <div className="col-md-10">
                     <h2>{msg("applicationsHtmlTitle")}</h2>

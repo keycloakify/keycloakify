@@ -2,13 +2,13 @@ import { clsx } from "keycloakify/tools/clsx";
 import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import { PageProps } from "keycloakify/login/pages/PageProps";
 import { KcContext } from "../KcContext";
-import { I18n } from "../i18n";
+import { useI18n } from "../i18n";
 
-export default function LoginOauthGrant(props: PageProps<Extract<KcContext, { pageId: "login-oauth-grant.ftl" }>, I18n>) {
-    const { kcContext, i18n, doUseDefaultCss, classes, Template } = props;
+export default function LoginOauthGrant(props: PageProps<Extract<KcContext, { pageId: "login-oauth-grant.ftl" }>>) {
+    const { kcContext, doUseDefaultCss, classes, Template } = props;
     const { url, oauth, client } = kcContext;
 
-    const { msg, msgStr, advancedMsg, advancedMsgStr } = i18n;
+    const { msg, msgStr, advancedMsg, advancedMsgStr } = useI18n({ kcContext });
 
     const { getClassName } = useGetClassName({
         doUseDefaultCss,
@@ -17,7 +17,7 @@ export default function LoginOauthGrant(props: PageProps<Extract<KcContext, { pa
 
     return (
         <Template
-            {...{ kcContext, i18n, doUseDefaultCss, classes }}
+            {...{ kcContext, doUseDefaultCss, classes }}
             bodyClassName="oauth"
             headerNode={
                 <>
