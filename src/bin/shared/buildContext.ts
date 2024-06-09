@@ -40,7 +40,7 @@ export type BuildOptions = {
     groupId?: string;
     loginThemeResourcesFromKeycloakVersion?: string;
     keycloakifyBuildDirPath?: string;
-    kcContextExclusionsFtlCode?: string;
+    kcContextExclusionsFtl?: string;
 };
 
 export type ResolvedViteConfig = {
@@ -303,7 +303,22 @@ export function getBuildContext(params: {
             return pathJoin(projectBuildDirPath, resolvedViteConfig.assetsDir);
         })(),
         npmWorkspaceRootDirPath,
-        kcContextExclusionsFtlCode: buildOptions.kcContextExclusionsFtlCode,
+        kcContextExclusionsFtlCode: (() => {
+            if (buildOptions.kcContextExclusionsFtl === undefined) {
+                return undefined;
+            }
+
+            if (buildOptions.kcContextExclusionsFtl.endsWith(".ftl")) {
+                const kcContextExclusionsFtlPath = getAbsoluteAndInOsFormatPath({
+                    pathIsh: buildOptions.kcContextExclusionsFtl,
+                    cwd: projectDirPath
+                });
+
+                return fs.readFileSync(kcContextExclusionsFtlPath).toString("utf8");
+            }
+
+            return buildOptions.kcContextExclusionsFtl;
+        })(),
         environmentVariables: buildOptions.environmentVariables ?? []
     };
 }
