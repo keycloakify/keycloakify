@@ -132,7 +132,7 @@ function createGetI18n<ExtraMessageKey extends string = never>(extraMessages: { 
             __localizationRealmOverridesUserProfile: kcContext.__localizationRealmOverridesUserProfile
         });
 
-        const isCurrentLanguageFallbackLanguage = partialI18n.currentLanguageTag !== fallbackLanguageTag;
+        const isCurrentLanguageFallbackLanguage = partialI18n.currentLanguageTag === fallbackLanguageTag;
 
         const result: Result = {
             i18n: {
