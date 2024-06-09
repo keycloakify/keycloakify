@@ -84,7 +84,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         }
 
         child_process.execSync("npx vite", {
-            cwd: buildOptions.reactAppRootDirPath,
+            cwd: buildOptions.projectDirPath,
             env: {
                 ...process.env,
                 [vitePluginSubScriptEnvNames.runPostBuildScript]:

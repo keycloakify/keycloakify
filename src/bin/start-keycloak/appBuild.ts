@@ -7,11 +7,11 @@ import * as fs from "fs";
 import { join as pathJoin } from "path";
 
 export type BuildOptionsLike = {
-    reactAppRootDirPath: string;
+    projectDirPath: string;
     keycloakifyBuildDirPath: string;
     bundler: "vite" | "webpack";
     npmWorkspaceRootDirPath: string;
-    reactAppBuildDirPath: string;
+    projectBuildDirPath: string;
 };
 
 assert<BuildOptions extends BuildOptionsLike ? true : false>();
@@ -29,11 +29,11 @@ export async function appBuild(params: {
                 return {
                     command: "npx",
                     args: ["vite", "build"],
-                    cwd: buildOptions.reactAppRootDirPath
+                    cwd: buildOptions.projectDirPath
                 };
             case "webpack": {
                 for (const dirPath of [
-                    buildOptions.reactAppRootDirPath,
+                    buildOptions.projectDirPath,
                     buildOptions.npmWorkspaceRootDirPath
                 ]) {
                     try {

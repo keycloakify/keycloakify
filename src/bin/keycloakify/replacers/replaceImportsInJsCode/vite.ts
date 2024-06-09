@@ -8,7 +8,7 @@ import * as nodePath from "path";
 import { replaceAll } from "../../../tools/String.prototype.replaceAll";
 
 export type BuildOptionsLike = {
-    reactAppBuildDirPath: string;
+    projectBuildDirPath: string;
     assetsDirPath: string;
     urlPathname: string | undefined;
 };
@@ -62,7 +62,7 @@ export function replaceImportsInJsCode_vite(params: {
         // Example: "assets/ or "foo/bar/"
         const staticDir = (() => {
             let out = pathRelative(
-                buildOptions.reactAppBuildDirPath,
+                buildOptions.projectBuildDirPath,
                 buildOptions.assetsDirPath
             );
 
@@ -70,7 +70,7 @@ export function replaceImportsInJsCode_vite(params: {
 
             if (out === "/") {
                 throw new Error(
-                    `The assetsDirPath must be a subdirectory of reactAppBuildDirPath`
+                    `The assetsDirPath must be a subdirectory of projectBuildDirPath`
                 );
             }
 

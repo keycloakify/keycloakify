@@ -19,7 +19,7 @@ export type BuildOptionsLike = {
     bundler: "vite" | "webpack";
     themeVersion: string;
     urlPathname: string | undefined;
-    reactAppBuildDirPath: string;
+    projectBuildDirPath: string;
     assetsDirPath: string;
     kcContextExclusionsFtlCode: string | undefined;
 };

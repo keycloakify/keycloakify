@@ -69,7 +69,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     console.log(`→ ${pageIdOrComponent}`);
 
     const { themeSrcDirPath } = getThemeSrcDirPath({
-        reactAppRootDirPath: buildOptions.reactAppRootDirPath
+        projectDirPath: buildOptions.projectDirPath
     });
 
     const componentBasename = (() => {

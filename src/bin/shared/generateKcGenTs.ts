@@ -5,7 +5,7 @@ import * as fs from "fs/promises";
 import { join as pathJoin } from "path";
 
 export type BuildOptionsLike = {
-    reactAppRootDirPath: string;
+    projectDirPath: string;
     themeNames: string[];
     environmentVariables: { name: string; default: string }[];
 };
@@ -18,7 +18,7 @@ export async function generateKcGenTs(params: {
     const { buildOptions } = params;
 
     const { themeSrcDirPath } = getThemeSrcDirPath({
-        reactAppRootDirPath: buildOptions.reactAppRootDirPath
+        projectDirPath: buildOptions.projectDirPath
     });
 
     await fs.writeFile(

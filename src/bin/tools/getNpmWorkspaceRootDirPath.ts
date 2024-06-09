@@ -4,14 +4,14 @@ import { assert } from "tsafe/assert";
 import * as fs from "fs";
 
 export function getNpmWorkspaceRootDirPath(params: {
-    reactAppRootDirPath: string;
+    projectDirPath: string;
     dependencyExpected: string;
 }) {
-    const { reactAppRootDirPath, dependencyExpected } = params;
+    const { projectDirPath, dependencyExpected } = params;
 
     const npmWorkspaceRootDirPath = (function callee(depth: number): string {
         const cwd = pathResolve(
-            pathJoin(...[reactAppRootDirPath, ...Array(depth).fill("..")])
+            pathJoin(...[projectDirPath, ...Array(depth).fill("..")])
         );
 
         assert(cwd !== pathSep, "NPM workspace not found");

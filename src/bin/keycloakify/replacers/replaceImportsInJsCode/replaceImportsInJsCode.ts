@@ -5,7 +5,7 @@ import { replaceImportsInJsCode_webpack } from "./webpack";
 import * as fs from "fs";
 
 export type BuildOptionsLike = {
-    reactAppBuildDirPath: string;
+    projectBuildDirPath: string;
     assetsDirPath: string;
     urlPathname: string | undefined;
     bundler: "vite" | "webpack";

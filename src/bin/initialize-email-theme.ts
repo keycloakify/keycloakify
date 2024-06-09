@@ -13,7 +13,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     const buildOptions = readBuildOptions({ cliCommandOptions });
 
     const { themeSrcDirPath } = getThemeSrcDirPath({
-        reactAppRootDirPath: buildOptions.reactAppRootDirPath
+        projectDirPath: buildOptions.projectDirPath
     });
 
     const emailThemeSrcDirPath = pathJoin(themeSrcDirPath, "email");

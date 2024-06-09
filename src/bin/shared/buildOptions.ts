@@ -18,8 +18,8 @@ export type BuildOptions = {
     groupId: string;
     artifactId: string;
     loginThemeResourcesFromKeycloakVersion: string;
-    reactAppRootDirPath: string;
-    reactAppBuildDirPath: string;
+    projectDirPath: string;
+    projectBuildDirPath: string;
     /** Directory that keycloakify outputs to. Defaults to {cwd}/build_keycloak */
     keycloakifyBuildDirPath: string;
     publicDirPath: string;
@@ -57,13 +57,13 @@ export function readBuildOptions(params: {
 }): BuildOptions {
     const { cliCommandOptions } = params;
 
-    const reactAppRootDirPath = (() => {
-        if (cliCommandOptions.reactAppRootDirPath === undefined) {
+    const projectDirPath = (() => {
+        if (cliCommandOptions.projectDirPath === undefined) {
             return process.cwd();
         }
 
         return getAbsoluteAndInOsFormatPath({
-            pathIsh: cliCommandOptions.reactAppRootDirPath,
+            pathIsh: cliCommandOptions.projectDirPath,
             cwd: process.cwd()
         });
     })();
@@ -71,7 +71,7 @@ export function readBuildOptions(params: {
     const { resolvedViteConfig } = (() => {
         if (
             fs
-                .readdirSync(reactAppRootDirPath)
+                .readdirSync(projectDirPath)
                 .find(fileBasename => fileBasename.startsWith("vite.config")) ===
             undefined
         ) {
@@ -80,7 +80,7 @@ export function readBuildOptions(params: {
 
         const output = child_process
             .execSync("npx vite", {
-                cwd: reactAppRootDirPath,
+                cwd: projectDirPath,
                 env: {
                     ...process.env,
                     [vitePluginSubScriptEnvNames.resolveViteConfig]: "true"
@@ -108,7 +108,7 @@ export function readBuildOptions(params: {
             version?: string;
             homepage?: string;
             keycloakify?: UserProvidedBuildOptions & {
-                reactAppBuildDirPath?: string;
+                projectBuildDirPath?: string;
             };
         };
 
@@ -122,7 +122,7 @@ export function readBuildOptions(params: {
                     artifactId: z.string().optional(),
                     groupId: z.string().optional(),
                     loginThemeResourcesFromKeycloakVersion: z.string().optional(),
-                    reactAppBuildDirPath: z.string().optional(),
+                    projectBuildDirPath: z.string().optional(),
                     keycloakifyBuildDirPath: z.string().optional(),
                     themeName: z.union([z.string(), z.array(z.string())]).optional()
                 })
@@ -138,9 +138,7 @@ export function readBuildOptions(params: {
 
         return zParsedPackageJson.parse(
             JSON.parse(
-                fs
-                    .readFileSync(pathJoin(reactAppRootDirPath, "package.json"))
-                    .toString("utf8")
+                fs.readFileSync(pathJoin(projectDirPath, "package.json")).toString("utf8")
             )
         );
     })();
@@ -167,27 +165,27 @@ export function readBuildOptions(params: {
         return userProvidedBuildOptions.themeName;
     })();
 
-    const reactAppBuildDirPath = (() => {
+    const projectBuildDirPath = (() => {
         webpack: {
             if (resolvedViteConfig !== undefined) {
                 break webpack;
             }
 
-            if (parsedPackageJson.keycloakify?.reactAppBuildDirPath !== undefined) {
+            if (parsedPackageJson.keycloakify?.projectBuildDirPath !== undefined) {
                 return getAbsoluteAndInOsFormatPath({
-                    pathIsh: parsedPackageJson.keycloakify.reactAppBuildDirPath,
-                    cwd: reactAppRootDirPath
+                    pathIsh: parsedPackageJson.keycloakify.projectBuildDirPath,
+                    cwd: projectDirPath
                 });
             }
 
-            return pathJoin(reactAppRootDirPath, "build");
+            return pathJoin(projectDirPath, "build");
         }
 
-        return pathJoin(reactAppRootDirPath, resolvedViteConfig.buildDir);
+        return pathJoin(projectDirPath, resolvedViteConfig.buildDir);
     })();
 
     const { npmWorkspaceRootDirPath } = getNpmWorkspaceRootDirPath({
-        reactAppRootDirPath,
+        projectDirPath,
         dependencyExpected: "keycloakify"
     });
 
@@ -218,18 +216,18 @@ export function readBuildOptions(params: {
             `${themeNames[0]}-keycloak-theme`,
         loginThemeResourcesFromKeycloakVersion:
             userProvidedBuildOptions.loginThemeResourcesFromKeycloakVersion ?? "24.0.4",
-        reactAppRootDirPath,
-        reactAppBuildDirPath,
+        projectDirPath,
+        projectBuildDirPath,
         keycloakifyBuildDirPath: (() => {
             if (userProvidedBuildOptions.keycloakifyBuildDirPath !== undefined) {
                 return getAbsoluteAndInOsFormatPath({
                     pathIsh: userProvidedBuildOptions.keycloakifyBuildDirPath,
-                    cwd: reactAppRootDirPath
+                    cwd: projectDirPath
                 });
             }
 
             return pathJoin(
-                reactAppRootDirPath,
+                projectDirPath,
                 resolvedViteConfig?.buildDir === undefined
                     ? "build_keycloak"
                     : `${resolvedViteConfig.buildDir}_keycloak`
@@ -244,14 +242,14 @@ export function readBuildOptions(params: {
                 if (process.env.PUBLIC_DIR_PATH !== undefined) {
                     return getAbsoluteAndInOsFormatPath({
                         pathIsh: process.env.PUBLIC_DIR_PATH,
-                        cwd: reactAppRootDirPath
+                        cwd: projectDirPath
                     });
                 }
 
-                return pathJoin(reactAppRootDirPath, "public");
+                return pathJoin(projectDirPath, "public");
             }
 
-            return pathJoin(reactAppRootDirPath, resolvedViteConfig.publicDir);
+            return pathJoin(projectDirPath, resolvedViteConfig.publicDir);
         })(),
         cacheDirPath: (() => {
             const cacheDirPath = pathJoin(
@@ -300,10 +298,10 @@ export function readBuildOptions(params: {
                     break webpack;
                 }
 
-                return pathJoin(reactAppBuildDirPath, "static");
+                return pathJoin(projectBuildDirPath, "static");
             }
 
-            return pathJoin(reactAppBuildDirPath, resolvedViteConfig.assetsDir);
+            return pathJoin(projectBuildDirPath, resolvedViteConfig.assetsDir);
         })(),
         npmWorkspaceRootDirPath,
         kcContextExclusionsFtlCode: userProvidedBuildOptions.kcContextExclusionsFtlCode,

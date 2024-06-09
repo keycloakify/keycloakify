@@ -46,10 +46,10 @@ export type BuildOptionsLike = BuildOptionsLike_kcContextExclusionsFtlCode &
         bundler: "vite" | "webpack";
         extraThemeProperties: string[] | undefined;
         loginThemeResourcesFromKeycloakVersion: string;
-        reactAppBuildDirPath: string;
+        projectBuildDirPath: string;
         assetsDirPath: string;
         urlPathname: string | undefined;
-        reactAppRootDirPath: string;
+        projectDirPath: string;
         keycloakifyBuildDirPath: string;
         environmentVariables: { name: string; default: string }[];
     };
@@ -63,7 +63,7 @@ export async function generateSrcMainResourcesForMainTheme(params: {
     const { themeName, buildOptions } = params;
 
     const { themeSrcDirPath } = getThemeSrcDirPath({
-        reactAppRootDirPath: buildOptions.reactAppRootDirPath
+        projectDirPath: buildOptions.projectDirPath
     });
 
     const getThemeTypeDirPath = (params: { themeType: ThemeType | "email" }) => {
@@ -124,7 +124,7 @@ export async function generateSrcMainResourcesForMainTheme(params: {
             }
 
             transformCodebase({
-                srcDirPath: buildOptions.reactAppBuildDirPath,
+                srcDirPath: buildOptions.projectBuildDirPath,
                 destDirPath,
                 transformSourceCode: ({ filePath, sourceCode }) => {
                     //NOTE: Prevent cycles, excludes the folder we generated for debug in public/
@@ -132,7 +132,7 @@ export async function generateSrcMainResourcesForMainTheme(params: {
                     if (
                         isInside({
                             dirPath: pathJoin(
-                                buildOptions.reactAppBuildDirPath,
+                                buildOptions.projectBuildDirPath,
                                 keycloak_resources
                             ),
                             filePath
@@ -179,7 +179,7 @@ export async function generateSrcMainResourcesForMainTheme(params: {
         const { generateFtlFilesCode } = generateFtlFilesCodeFactory({
             themeName,
             indexHtmlCode: fs
-                .readFileSync(pathJoin(buildOptions.reactAppBuildDirPath, "index.html"))
+                .readFileSync(pathJoin(buildOptions.projectBuildDirPath, "index.html"))
                 .toString("utf8"),
             cssGlobalsToDefine,
             buildOptions,

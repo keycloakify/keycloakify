@@ -5,7 +5,7 @@ import { readThisNpmPackageVersion } from "./tools/readThisNpmPackageVersion";
 import * as child_process from "child_process";
 
 export type CliCommandOptions = {
-    reactAppRootDirPath: string | undefined;
+    projectDirPath: string | undefined;
 };
 
 const program = termost<CliCommandOptions>(
@@ -25,7 +25,7 @@ const program = termost<CliCommandOptions>(
 const optionsKeys: string[] = [];
 
 program.option({
-    key: "reactAppRootDirPath",
+    key: "projectDirPath",
     name: (() => {
         const long = "project";
         const short = "p";

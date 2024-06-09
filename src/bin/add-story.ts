@@ -54,7 +54,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     console.log(`→ ${pageId}`);
 
     const { themeSrcDirPath } = getThemeSrcDirPath({
-        reactAppRootDirPath: buildOptions.reactAppRootDirPath
+        projectDirPath: buildOptions.projectDirPath
     });
 
     const componentBasename = capitalize(kebabCaseToCamelCase(pageId)).replace(

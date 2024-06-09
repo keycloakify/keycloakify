@@ -26,7 +26,7 @@ export type Params = UserProvidedBuildOptions & {
 export function keycloakify(params?: Params) {
     const { postBuild, ...userProvidedBuildOptions } = params ?? {};
 
-    let reactAppRootDirPath: string | undefined = undefined;
+    let projectDirPath: string | undefined = undefined;
     let urlPathname: string | undefined = undefined;
     let buildDirPath: string | undefined = undefined;
     let command: "build" | "serve" | undefined = undefined;
@@ -54,7 +54,7 @@ export function keycloakify(params?: Params) {
 
             command = resolvedConfig.command;
 
-            reactAppRootDirPath = resolvedConfig.root;
+            projectDirPath = resolvedConfig.root;
             urlPathname = (() => {
                 let out = resolvedConfig.env.BASE_URL;
 
@@ -86,7 +86,7 @@ export function keycloakify(params?: Params) {
                 return out;
             })();
 
-            buildDirPath = pathJoin(reactAppRootDirPath, resolvedConfig.build.outDir);
+            buildDirPath = pathJoin(projectDirPath, resolvedConfig.build.outDir);
 
             resolve_vite_config_case: {
                 const envValue =
@@ -102,7 +102,7 @@ export function keycloakify(params?: Params) {
                     JSON.stringify(
                         id<ResolvedViteConfig>({
                             publicDir: pathRelative(
-                                reactAppRootDirPath,
+                                projectDirPath,
                                 resolvedConfig.publicDir
                             ),
                             assetsDir: resolvedConfig.build.assetsDir,
@@ -118,7 +118,7 @@ export function keycloakify(params?: Params) {
 
             const buildOptions = readBuildOptions({
                 cliCommandOptions: {
-                    reactAppRootDirPath
+                    projectDirPath
                 }
             });
 
@@ -139,11 +139,11 @@ export function keycloakify(params?: Params) {
                 return;
             }
 
-            assert(reactAppRootDirPath !== undefined);
+            assert(projectDirPath !== undefined);
 
             {
                 const isWithinSourceDirectory = id.startsWith(
-                    pathJoin(reactAppRootDirPath, "src") + pathSep
+                    pathJoin(projectDirPath, "src") + pathSep
                 );
 
                 if (!isWithinSourceDirectory) {

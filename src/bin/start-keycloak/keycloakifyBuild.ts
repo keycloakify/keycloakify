@@ -5,7 +5,7 @@ import { assert } from "tsafe/assert";
 import type { BuildOptions } from "../shared/buildOptions";
 
 export type BuildOptionsLike = {
-    reactAppRootDirPath: string;
+    projectDirPath: string;
     keycloakifyBuildDirPath: string;
     bundler: "vite" | "webpack";
     npmWorkspaceRootDirPath: string;
@@ -22,7 +22,7 @@ export async function keycloakifyBuild(params: {
     const dResult = new Deferred<{ isSuccess: boolean }>();
 
     const child = child_process.spawn("npx", ["keycloakify", "build"], {
-        cwd: buildOptions.reactAppRootDirPath,
+        cwd: buildOptions.projectDirPath,
         env: {
             ...process.env,
             ...(doSkipBuildJars ? { [skipBuildJarsEnvName]: "true" } : {})

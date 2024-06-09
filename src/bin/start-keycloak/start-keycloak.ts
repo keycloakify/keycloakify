@@ -26,7 +26,6 @@ export type CliCommandOptions = CliCommandOptions_common & {
     port: number;
     keycloakVersion: string | undefined;
     realmJsonFilePath: string | undefined;
-    environmentVariables: { name: string; default: string }[];
 };
 
 export async function command(params: { cliCommandOptions: CliCommandOptions }) {
@@ -398,7 +397,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     child.on("exit", process.exit);
 
-    const srcDirPath = pathJoin(buildOptions.reactAppRootDirPath, "src");
+    const srcDirPath = pathJoin(buildOptions.projectDirPath, "src");
 
     {
         const handler = async (data: Buffer) => {
@@ -430,7 +429,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                     `- password: ${chalk.cyan.bold("password123")}`,
                     "",
                     `Watching for changes in ${chalk.bold(
-                        `.${pathSep}${pathRelative(process.cwd(), buildOptions.reactAppRootDirPath)}`
+                        `.${pathSep}${pathRelative(process.cwd(), buildOptions.projectDirPath)}`
                     )}`
                 ].join("\n")
             );
@@ -472,10 +471,10 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                 [
                     srcDirPath,
                     buildOptions.publicDirPath,
-                    pathJoin(buildOptions.reactAppRootDirPath, "package.json"),
-                    pathJoin(buildOptions.reactAppRootDirPath, "vite.config.ts"),
-                    pathJoin(buildOptions.reactAppRootDirPath, "vite.config.js"),
-                    pathJoin(buildOptions.reactAppRootDirPath, "index.html"),
+                    pathJoin(buildOptions.projectDirPath, "package.json"),
+                    pathJoin(buildOptions.projectDirPath, "vite.config.ts"),
+                    pathJoin(buildOptions.projectDirPath, "vite.config.js"),
+                    pathJoin(buildOptions.projectDirPath, "index.html"),
                     pathJoin(getThisCodebaseRootDirPath(), "src")
                 ],
                 {
