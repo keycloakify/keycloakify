@@ -21,8 +21,8 @@ describe("js replacer - vite", () => {
         const { fixedJsCode } = replaceImportsInJsCode_vite({
             jsCode: jsCodeUntransformed,
             basenameOfAssetsFiles: [],
-            buildOptions: {
-                reactAppBuildDirPath: "/Users/someone/github/keycloakify-starter/dist/",
+            buildContext: {
+                projectBuildDirPath: "/Users/someone/github/keycloakify-starter/dist/",
                 assetsDirPath: "/Users/someone/github/keycloakify-starter/dist/assets/",
                 urlPathname: "/foo-bar-baz/"
             }
@@ -41,8 +41,8 @@ describe("js replacer - vite", () => {
         const { fixedJsCode } = replaceImportsInJsCode_vite({
             jsCode: jsCodeUntransformed,
             basenameOfAssetsFiles: [],
-            buildOptions: {
-                reactAppBuildDirPath: "/Users/someone/github/keycloakify-starter/dist/",
+            buildContext: {
+                projectBuildDirPath: "/Users/someone/github/keycloakify-starter/dist/",
                 assetsDirPath: "/Users/someone/github/keycloakify-starter/dist/assets/",
                 urlPathname: "/foo/bar/baz/"
             }
@@ -65,15 +65,15 @@ describe("js replacer - vite", () => {
             }
         `;
 
-        for (const { reactAppBuildDirPath, assetsDirPath, systemType } of [
+        for (const { projectBuildDirPath, assetsDirPath, systemType } of [
             {
                 systemType: "posix",
-                reactAppBuildDirPath: "/Users/someone/github/keycloakify-starter/dist",
+                projectBuildDirPath: "/Users/someone/github/keycloakify-starter/dist",
                 assetsDirPath: "/Users/someone/github/keycloakify-starter/dist/assets"
             },
             {
                 systemType: "win32",
-                reactAppBuildDirPath:
+                projectBuildDirPath:
                     "C:\\\\Users\\someone\\github\\keycloakify-starter\\dist",
                 assetsDirPath:
                     "C:\\\\Users\\someone\\github\\keycloakify-starter\\dist\\assets"
@@ -86,8 +86,8 @@ describe("js replacer - vite", () => {
                     "index-XwzrZ5Gu.js",
                     "keycloakify-logo-mqjydaoZ.png"
                 ],
-                buildOptions: {
-                    reactAppBuildDirPath,
+                buildContext: {
+                    projectBuildDirPath,
                     assetsDirPath,
                     urlPathname: undefined
                 },
@@ -124,15 +124,15 @@ describe("js replacer - vite", () => {
             }
         `;
 
-        for (const { reactAppBuildDirPath, assetsDirPath, systemType } of [
+        for (const { projectBuildDirPath, assetsDirPath, systemType } of [
             {
                 systemType: "posix",
-                reactAppBuildDirPath: "/Users/someone/github/keycloakify-starter/dist",
+                projectBuildDirPath: "/Users/someone/github/keycloakify-starter/dist",
                 assetsDirPath: "/Users/someone/github/keycloakify-starter/dist/foo/bar"
             },
             {
                 systemType: "win32",
-                reactAppBuildDirPath:
+                projectBuildDirPath:
                     "C:\\\\Users\\someone\\github\\keycloakify-starter\\dist",
                 assetsDirPath:
                     "C:\\\\Users\\someone\\github\\keycloakify-starter\\dist\\foo\\bar"
@@ -145,8 +145,8 @@ describe("js replacer - vite", () => {
                     "index-XwzrZ5Gu.js",
                     "keycloakify-logo-mqjydaoZ.png"
                 ],
-                buildOptions: {
-                    reactAppBuildDirPath,
+                buildContext: {
+                    projectBuildDirPath,
                     assetsDirPath,
                     urlPathname: undefined
                 },
@@ -183,15 +183,15 @@ describe("js replacer - vite", () => {
             }
         `;
 
-        for (const { reactAppBuildDirPath, assetsDirPath, systemType } of [
+        for (const { projectBuildDirPath, assetsDirPath, systemType } of [
             {
                 systemType: "posix",
-                reactAppBuildDirPath: "/Users/someone/github/keycloakify-starter/dist",
+                projectBuildDirPath: "/Users/someone/github/keycloakify-starter/dist",
                 assetsDirPath: "/Users/someone/github/keycloakify-starter/dist/assets"
             },
             {
                 systemType: "win32",
-                reactAppBuildDirPath:
+                projectBuildDirPath:
                     "C:\\\\Users\\someone\\github\\keycloakify-starter\\dist",
                 assetsDirPath:
                     "C:\\\\Users\\someone\\github\\keycloakify-starter\\dist\\assets"
@@ -204,8 +204,8 @@ describe("js replacer - vite", () => {
                     "index-XwzrZ5Gu.js",
                     "keycloakify-logo-mqjydaoZ.png"
                 ],
-                buildOptions: {
-                    reactAppBuildDirPath,
+                buildContext: {
+                    projectBuildDirPath,
                     assetsDirPath,
                     urlPathname: "/foo-bar-baz/"
                 },
@@ -266,8 +266,8 @@ describe("js replacer - webpack", () => {
 
         const { fixedJsCode } = replaceImportsInJsCode_webpack({
             jsCode: jsCodeUntransformed,
-            buildOptions: {
-                reactAppBuildDirPath: "/Users/someone/github/keycloakify-starter/build",
+            buildContext: {
+                projectBuildDirPath: "/Users/someone/github/keycloakify-starter/build",
                 assetsDirPath: "/Users/someone/github/keycloakify-starter/build/static",
                 urlPathname: undefined
             }
@@ -353,8 +353,8 @@ describe("js replacer - webpack", () => {
 
         const { fixedJsCode } = replaceImportsInJsCode_webpack({
             jsCode: jsCodeUntransformed,
-            buildOptions: {
-                reactAppBuildDirPath: "/Users/someone/github/keycloakify-starter/build",
+            buildContext: {
+                projectBuildDirPath: "/Users/someone/github/keycloakify-starter/build",
                 assetsDirPath: "/Users/someone/github/keycloakify-starter/build/static",
                 urlPathname: "/foo-bar/"
             }
@@ -373,8 +373,8 @@ describe("js replacer - webpack", () => {
 
         const { fixedJsCode } = replaceImportsInJsCode_webpack({
             jsCode: jsCodeUntransformed,
-            buildOptions: {
-                reactAppBuildDirPath: "/Users/someone/github/keycloakify-starter/build",
+            buildContext: {
+                projectBuildDirPath: "/Users/someone/github/keycloakify-starter/build",
                 assetsDirPath:
                     "/Users/someone/github/keycloakify-starter/dist/build/static",
                 urlPathname: "/foo/bar/"
@@ -430,7 +430,7 @@ describe("css replacer", () => {
 
         const { cssCodeToPrependInHead } = generateCssCodeToDefineGlobals({
             cssGlobalsToDefine,
-            buildOptions: {
+            buildContext: {
                 urlPathname: undefined
             }
         });
@@ -488,7 +488,7 @@ describe("css replacer", () => {
 
         const { cssCodeToPrependInHead } = generateCssCodeToDefineGlobals({
             cssGlobalsToDefine,
-            buildOptions: {
+            buildContext: {
                 urlPathname: "/x/y/z/"
             }
         });
@@ -541,7 +541,7 @@ describe("inline css replacer", () => {
         it("transforms css for standalone app properly", () => {
             const { fixedCssCode } = replaceImportsInInlineCssCode({
                 cssCode,
-                buildOptions: {
+                buildContext: {
                     urlPathname: undefined
                 }
             });
@@ -619,7 +619,7 @@ describe("inline css replacer", () => {
         it("transforms css for standalone app properly", () => {
             const { fixedCssCode } = replaceImportsInInlineCssCode({
                 cssCode,
-                buildOptions: {
+                buildContext: {
                     urlPathname: "/x/y/z/"
                 }
             });
