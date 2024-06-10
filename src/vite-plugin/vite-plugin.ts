@@ -45,21 +45,13 @@ export function keycloakify(params?: Params) {
                     break run_post_build_script_case;
                 }
 
-                if (postBuild === undefined) {
-                    break run_post_build_script_case;
-                }
-
                 const buildContext = JSON.parse(envValue) as BuildContext;
-
-                const cwd = process.cwd();
 
                 process.chdir(
                     pathJoin(buildContext.keycloakifyBuildDirPath, "resources")
                 );
 
-                await postBuild(buildContext);
-
-                process.chdir(cwd);
+                await postBuild?.(buildContext);
 
                 process.exit(0);
             }
