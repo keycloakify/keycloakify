@@ -90,7 +90,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         }
 
         child_process.execSync("npx vite", {
-            cwd: resourcesDirPath,
+            cwd: buildContext.projectDirPath,
             env: {
                 ...process.env,
                 [vitePluginSubScriptEnvNames.runPostBuildScript]:
