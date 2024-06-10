@@ -1,5 +1,5 @@
 // NOTE: v0.5 is a dummy version.
-export const keycloakAccountV1Versions = [null, "0.3", "0.4"] as const;
+export const keycloakAccountV1Versions = [null, "0.3", "0.4", "0.6"] as const;
 
 /**
  * https://central.sonatype.com/artifact/io.phasetwo.keycloak/keycloak-account-v1

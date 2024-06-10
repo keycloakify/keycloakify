@@ -193,7 +193,11 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                     return "23" as const;
                 }
 
-                return "24-and-above" as const;
+                if (keycloakMajorVersionNumber === 24) {
+                    return "24" as const;
+                }
+
+                return "25-and-above" as const;
             })();
 
             assert<
