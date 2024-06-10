@@ -108,11 +108,11 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         onlyBuildJarFileBasename: process.env[onlyBuildJarFileBasenameEnvName]
     });
 
-    if (Date.now() === 0) {
-        rmSync(resourcesDirPath, { recursive: true });
-    }
+    rmSync(resourcesDirPath, { recursive: true });
 
     console.log(
-        chalk.green(`✓ built in ${((Date.now() - startTime) / 1000).toFixed(2)}s`)
+        chalk.green(
+            `✓ keycloak theme built in ${((Date.now() - startTime) / 1000).toFixed(2)}s`
+        )
     );
 }
