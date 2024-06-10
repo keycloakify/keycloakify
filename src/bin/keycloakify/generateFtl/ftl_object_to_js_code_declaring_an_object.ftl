@@ -184,6 +184,28 @@ try {
     };
 </#if>
 
+attributes_to_attributesByName: {
+
+    if( !out["profile"] ){
+        break attributes_to_attributesByName;
+    }
+
+    if( !out["profile"]["attributes"] ){
+        break attributes_to_attributesByName;
+    }
+
+    var attributes =  out["profile"]["attributes"];
+
+    delete out["profile"]["attributes"];
+
+    out["profile"]["attributesByName"] = {};
+
+    attributes.forEach(function(attribute){
+        out["profile"]["attributesByName"][attribute.name] = attribute;
+    });
+
+}
+
 return out;
 
 function decodeHtmlEntities(htmlStr){
@@ -287,8 +309,8 @@ function decodeHtmlEntities(htmlStr){
                         key == "realmAttributes" &&
                         are_same_path(path, [])
                     ) || (
-                        <#-- attributesByName adds a lot of noise to the output and is not needed -->
-                        key == "attributes" &&
+                        <#-- attributesByName adds a lot of noise to the output and is not needed, we already have profile.attributes -->
+                        key == "attributesByName" &&
                         are_same_path(path, ["profile"]) 
                     ) || (
                         <#-- We already have the attributes in profile speedup the rendering by filtering it out from the register object -->
