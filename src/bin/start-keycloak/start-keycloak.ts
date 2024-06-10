@@ -101,7 +101,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         }
 
         const { isKeycloakifyBuildSuccess } = await keycloakifyBuild({
-            doSkipBuildJars: false,
+            onlyBuildJarFileBasename: undefined,
             buildContext
         });
 
@@ -442,7 +442,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             }
 
             const { isKeycloakifyBuildSuccess } = await keycloakifyBuild({
-                doSkipBuildJars: true,
+                onlyBuildJarFileBasename: jarFileBasename,
                 buildContext
             });
 

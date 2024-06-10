@@ -16,7 +16,7 @@ export const vitePluginSubScriptEnvNames = {
     resolveViteConfig: "KEYCLOAKIFY_RESOLVE_VITE_CONFIG"
 } as const;
 
-export const skipBuildJarsEnvName = "KEYCLOAKIFY_SKIP_BUILD_JAR";
+export const onlyBuildJarFileBasenameEnvName = "KEYCLOAKIFY_ONLY_BUILD_JAR_FILE_BASENAME";
 
 export const loginThemePageIds = [
     "login.ftl",

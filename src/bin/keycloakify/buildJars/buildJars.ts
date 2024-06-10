@@ -19,9 +19,10 @@ assert<BuildContext extends BuildContextLike ? true : false>();
 
 export async function buildJars(params: {
     resourcesDirPath: string;
+    onlyBuildJarFileBasename: string | undefined;
     buildContext: BuildContextLike;
 }): Promise<void> {
-    const { resourcesDirPath, buildContext } = params;
+    const { onlyBuildJarFileBasename, resourcesDirPath, buildContext } = params;
 
     const doesImplementAccountTheme = readMetaInfKeycloakThemes_fromResourcesDirPath({
         resourcesDirPath: buildContext.keycloakifyBuildDirPath
@@ -57,12 +58,20 @@ export async function buildJars(params: {
                                 keycloakVersionRange
                             });
 
+                            if (
+                                onlyBuildJarFileBasename !== undefined &&
+                                onlyBuildJarFileBasename !== jarFileBasename
+                            ) {
+                                return undefined;
+                            }
+
                             return {
                                 keycloakThemeAdditionalInfoExtensionVersion,
                                 jarFileBasename
                             };
                         }
                     )
+                    .filter(exclude(undefined))
                     .map(
                         ({
                             keycloakThemeAdditionalInfoExtensionVersion,

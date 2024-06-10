@@ -1,4 +1,4 @@
-import { skipBuildJarsEnvName } from "../shared/constants";
+import { onlyBuildJarFileBasenameEnvName } from "../shared/constants";
 import * as child_process from "child_process";
 import { Deferred } from "evt/tools/Deferred";
 import { assert } from "tsafe/assert";
@@ -14,10 +14,10 @@ export type BuildContextLike = {
 assert<BuildContext extends BuildContextLike ? true : false>();
 
 export async function keycloakifyBuild(params: {
-    doSkipBuildJars: boolean;
+    onlyBuildJarFileBasename: string | undefined;
     buildContext: BuildContextLike;
 }): Promise<{ isKeycloakifyBuildSuccess: boolean }> {
-    const { buildContext, doSkipBuildJars } = params;
+    const { buildContext, onlyBuildJarFileBasename } = params;
 
     const dResult = new Deferred<{ isSuccess: boolean }>();
 
@@ -25,7 +25,7 @@ export async function keycloakifyBuild(params: {
         cwd: buildContext.projectDirPath,
         env: {
             ...process.env,
-            ...(doSkipBuildJars ? { [skipBuildJarsEnvName]: "true" } : {})
+            [onlyBuildJarFileBasenameEnvName]: onlyBuildJarFileBasename
         }
     });
 

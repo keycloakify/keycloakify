@@ -3,7 +3,10 @@ import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path
 import * as child_process from "child_process";
 import * as fs from "fs";
 import { getBuildContext } from "../shared/buildContext";
-import { vitePluginSubScriptEnvNames, skipBuildJarsEnvName } from "../shared/constants";
+import {
+    vitePluginSubScriptEnvNames,
+    onlyBuildJarFileBasenameEnvName
+} from "../shared/constants";
 import { buildJars } from "./buildJars";
 import type { CliCommandOptions } from "../main";
 import chalk from "chalk";
@@ -99,13 +102,11 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         });
     }
 
-    build_jars: {
-        if (process.env[skipBuildJarsEnvName]) {
-            break build_jars;
-        }
-
-        await buildJars({ resourcesDirPath, buildContext });
-    }
+    await buildJars({
+        resourcesDirPath,
+        buildContext,
+        onlyBuildJarFileBasename: process.env[onlyBuildJarFileBasenameEnvName]
+    });
 
     if (Date.now() === 0) {
         rmSync(resourcesDirPath, { recursive: true });
