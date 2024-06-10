@@ -1,5 +1,5 @@
 import React from "react";
-import DefaultPage from "../../dist/account/Fallback";
+import DefaultPage from "../../dist/account/DefaultPage";
 import { useI18n } from "./i18n";
 import type { KcContext } from "./KcContext";
 import Template from "../../dist/account/Template";
