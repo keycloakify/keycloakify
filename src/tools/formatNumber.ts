@@ -1,4 +1,4 @@
-export const formatNumber = (input: string, format: string): string => {
+export const formatNumber = (input: string, format: string) => {
     if (!input) {
         return "";
     }
@@ -20,7 +20,8 @@ export const formatNumber = (input: string, format: string): string => {
     let rawValue = input.replace(/\D+/g, "");
 
     // make sure the value is a number
-    if (`${parseInt(rawValue)}` !== rawValue) {
+    // @ts-expect-error: It's Keycloak's code, we trust it.
+    if (parseInt(rawValue) != rawValue) {
         return "";
     }
 
