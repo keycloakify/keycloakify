@@ -11144,11 +11144,6 @@ schema-utils@^3.0.0, schema-utils@^3.1.1, schema-utils@^3.1.2:
     ajv "^6.12.5"
     ajv-keywords "^3.5.2"
 
-scripting-tools@^0.19.13:
-  version "0.19.14"
-  resolved "https://registry.yarnpkg.com/scripting-tools/-/scripting-tools-0.19.14.tgz#d46cdea3dcf042b103b1712103b007e72c4901d5"
-  integrity sha512-KGRES70dEmcaCdpx3R88bLWmfA4mQ/EGikCQy0FGTZwx3y9F5yYkzEhwp02+ZTgpvF25JcNOhDBbOqL6z92kwg==
-
 semver-compare@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/semver-compare/-/semver-compare-1.0.0.tgz#0dee216a1c941ab37e9efb1788f6afc5ff5537fc"
