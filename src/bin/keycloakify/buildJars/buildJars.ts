@@ -25,7 +25,7 @@ export async function buildJars(params: {
     const { onlyBuildJarFileBasename, resourcesDirPath, buildContext } = params;
 
     const doesImplementAccountTheme = readMetaInfKeycloakThemes_fromResourcesDirPath({
-        resourcesDirPath: buildContext.keycloakifyBuildDirPath
+        resourcesDirPath
     }).themes.some(({ name }) => name === accountV1ThemeName);
 
     await Promise.all(
