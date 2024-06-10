@@ -50,35 +50,10 @@ export async function buildJar(params: {
 
     rmSync(keycloakifyBuildTmpDirPath, { recursive: true, force: true });
 
-    {
-        const transformCodebase_common = (params: {
-            fileRelativePath: string;
-            sourceCode: Buffer;
-        }): { modifiedSourceCode: Buffer } | undefined => {
-            const { fileRelativePath, sourceCode } = params;
-
-            if (
-                fileRelativePath ===
-                getMetaInfKeycloakThemesJsonFilePath({ resourcesDirPath: "." })
-            ) {
-                return { modifiedSourceCode: sourceCode };
-            }
-
-            for (const themeName of [...buildContext.themeNames, accountV1ThemeName]) {
-                if (
-                    isInside({
-                        dirPath: pathJoin("theme", themeName),
-                        filePath: fileRelativePath
-                    })
-                ) {
-                    return { modifiedSourceCode: sourceCode };
-                }
-            }
-
-            return undefined;
-        };
-
-        const transformCodebase_patchForUsingBuiltinAccountV1 =
+    transformCodebase({
+        srcDirPath: resourcesDirPath,
+        destDirPath: pathJoin(keycloakifyBuildTmpDirPath, "src", "main", "resources"),
+        transformSourceCode:
             keycloakAccountV1Version !== null
                 ? undefined
                 : (params: {
@@ -145,31 +120,8 @@ export async function buildJar(params: {
                       }
 
                       return { modifiedSourceCode: sourceCode };
-                  };
-
-        transformCodebase({
-            srcDirPath: resourcesDirPath,
-            destDirPath: pathJoin(keycloakifyBuildTmpDirPath, "src", "main", "resources"),
-            transformSourceCode: params => {
-                const resultCommon = transformCodebase_common(params);
-
-                if (transformCodebase_patchForUsingBuiltinAccountV1 === undefined) {
-                    return resultCommon;
-                }
-
-                if (resultCommon === undefined) {
-                    return undefined;
-                }
-
-                const { modifiedSourceCode } = resultCommon;
-
-                return transformCodebase_patchForUsingBuiltinAccountV1({
-                    ...params,
-                    sourceCode: modifiedSourceCode
-                });
-            }
-        });
-    }
+                  }
+    });
 
     route_legacy_pages: {
         // NOTE: If there's no account theme there is no special target for keycloak 24 and up so we create
