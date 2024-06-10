@@ -136,20 +136,6 @@ program
 
 program
     .command({
-        name: "download-keycloak-default-theme",
-        description: "Download the built-in Keycloak theme."
-    })
-    .task({
-        skip,
-        handler: async cliCommandOptions => {
-            const { command } = await import("./download-keycloak-default-theme");
-
-            await command({ cliCommandOptions });
-        }
-    });
-
-program
-    .command({
         name: "eject-page",
         description: "Eject a Keycloak page."
     })

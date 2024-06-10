@@ -43,14 +43,10 @@ import { escapeStringForPropertiesFile } from "../../tools/escapeStringForProper
 export type BuildContextLike = BuildContextLike_kcContextExclusionsFtlCode &
     BuildContextLike_downloadKeycloakStaticResources &
     BuildContextLike_bringInAccountV1 & {
-        bundler: "vite" | "webpack";
         extraThemeProperties: string[] | undefined;
         loginThemeResourcesFromKeycloakVersion: string;
-        projectBuildDirPath: string;
-        assetsDirPath: string;
-        urlPathname: string | undefined;
         projectDirPath: string;
-        keycloakifyBuildDirPath: string;
+        projectBuildDirPath: string;
         environmentVariables: { name: string; default: string }[];
     };
 
@@ -58,9 +54,10 @@ assert<BuildContext extends BuildContextLike ? true : false>();
 
 export async function generateSrcMainResourcesForMainTheme(params: {
     themeName: string;
+    resourcesDirPath: string;
     buildContext: BuildContextLike;
 }): Promise<void> {
-    const { themeName, buildContext } = params;
+    const { themeName, resourcesDirPath, buildContext } = params;
 
     const { themeSrcDirPath } = getThemeSrcDirPath({
         projectDirPath: buildContext.projectDirPath
@@ -68,15 +65,7 @@ export async function generateSrcMainResourcesForMainTheme(params: {
 
     const getThemeTypeDirPath = (params: { themeType: ThemeType | "email" }) => {
         const { themeType } = params;
-        return pathJoin(
-            buildContext.keycloakifyBuildDirPath,
-            "src",
-            "main",
-            "resources",
-            "theme",
-            themeName,
-            themeType
-        );
+        return pathJoin(resourcesDirPath, "theme", themeName, themeType);
     };
 
     const cssGlobalsToDefine: Record<string, string> = {};
@@ -207,8 +196,6 @@ export async function generateSrcMainResourcesForMainTheme(params: {
         ].forEach(pageId => {
             const { ftlCode } = generateFtlFilesCode({ pageId });
 
-            fs.mkdirSync(themeTypeDirPath, { recursive: true });
-
             fs.writeFileSync(
                 pathJoin(themeTypeDirPath, pageId),
                 Buffer.from(ftlCode, "utf8")
@@ -291,6 +278,7 @@ export async function generateSrcMainResourcesForMainTheme(params: {
 
     if (implementedThemeTypes.account) {
         await bringInAccountV1({
+            resourcesDirPath,
             buildContext
         });
     }
@@ -313,7 +301,7 @@ export async function generateSrcMainResourcesForMainTheme(params: {
         }
 
         writeMetaInfKeycloakThemes({
-            keycloakifyBuildDirPath: buildContext.keycloakifyBuildDirPath,
+            resourcesDirPath,
             metaInfKeycloakThemes
         });
     }

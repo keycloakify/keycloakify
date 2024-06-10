@@ -9,6 +9,7 @@ import type { CliCommandOptions } from "../main";
 import chalk from "chalk";
 import { readThisNpmPackageVersion } from "../tools/readThisNpmPackageVersion";
 import * as os from "os";
+import { rmSync } from "../tools/fs.rmSync";
 
 export async function command(params: { cliCommandOptions: CliCommandOptions }) {
     exit_if_maven_not_installed: {
@@ -76,7 +77,12 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         );
     }
 
-    await generateSrcMainResources({ buildContext });
+    const resourcesDirPath = pathJoin(buildContext.keycloakifyBuildDirPath, "resources");
+
+    await generateSrcMainResources({
+        resourcesDirPath,
+        buildContext
+    });
 
     run_post_build_script: {
         if (buildContext.bundler !== "vite") {
@@ -84,7 +90,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         }
 
         child_process.execSync("npx vite", {
-            cwd: buildContext.projectDirPath,
+            cwd: resourcesDirPath,
             env: {
                 ...process.env,
                 [vitePluginSubScriptEnvNames.runPostBuildScript]:
@@ -98,7 +104,11 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             break build_jars;
         }
 
-        await buildJars({ buildContext });
+        await buildJars({ resourcesDirPath, buildContext });
+    }
+
+    if (Date.now() === 0) {
+        rmSync(resourcesDirPath, { recursive: true });
     }
 
     console.log(

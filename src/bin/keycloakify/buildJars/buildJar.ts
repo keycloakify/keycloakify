@@ -32,12 +32,14 @@ export async function buildJar(params: {
     jarFileBasename: string;
     keycloakAccountV1Version: KeycloakAccountV1Version;
     keycloakThemeAdditionalInfoExtensionVersion: KeycloakThemeAdditionalInfoExtensionVersion;
+    resourcesDirPath: string;
     buildContext: BuildContextLike;
 }): Promise<void> {
     const {
         jarFileBasename,
         keycloakAccountV1Version,
         keycloakThemeAdditionalInfoExtensionVersion,
+        resourcesDirPath,
         buildContext
     } = params;
 
@@ -57,7 +59,7 @@ export async function buildJar(params: {
 
             if (
                 fileRelativePath ===
-                getMetaInfKeycloakThemesJsonFilePath({ keycloakifyBuildDirPath: "." })
+                getMetaInfKeycloakThemesJsonFilePath({ resourcesDirPath: "." })
             ) {
                 return { modifiedSourceCode: sourceCode };
             }
@@ -65,7 +67,7 @@ export async function buildJar(params: {
             for (const themeName of [...buildContext.themeNames, accountV1ThemeName]) {
                 if (
                     isInside({
-                        dirPath: pathJoin("src", "main", "resources", "theme", themeName),
+                        dirPath: pathJoin("theme", themeName),
                         filePath: fileRelativePath
                     })
                 ) {
@@ -87,13 +89,7 @@ export async function buildJar(params: {
 
                       if (
                           isInside({
-                              dirPath: pathJoin(
-                                  "src",
-                                  "main",
-                                  "resources",
-                                  "theme",
-                                  accountV1ThemeName
-                              ),
+                              dirPath: pathJoin("theme", accountV1ThemeName),
                               filePath: fileRelativePath
                           })
                       ) {
@@ -103,7 +99,7 @@ export async function buildJar(params: {
                       if (
                           fileRelativePath ===
                           getMetaInfKeycloakThemesJsonFilePath({
-                              keycloakifyBuildDirPath: "."
+                              resourcesDirPath: "."
                           })
                       ) {
                           const keycloakThemesJsonParsed = JSON.parse(
@@ -128,15 +124,7 @@ export async function buildJar(params: {
                       for (const themeName of buildContext.themeNames) {
                           if (
                               fileRelativePath ===
-                              pathJoin(
-                                  "src",
-                                  "main",
-                                  "resources",
-                                  "theme",
-                                  themeName,
-                                  "account",
-                                  "theme.properties"
-                              )
+                              pathJoin("theme", themeName, "account", "theme.properties")
                           ) {
                               const modifiedSourceCode = Buffer.from(
                                   sourceCode
@@ -160,8 +148,8 @@ export async function buildJar(params: {
                   };
 
         transformCodebase({
-            srcDirPath: buildContext.keycloakifyBuildDirPath,
-            destDirPath: keycloakifyBuildTmpDirPath,
+            srcDirPath: resourcesDirPath,
+            destDirPath: pathJoin(keycloakifyBuildTmpDirPath, "src", "main", "resources"),
             transformSourceCode: params => {
                 const resultCommon = transformCodebase_common(params);
 

@@ -2,7 +2,7 @@ import { join as pathJoin, extname as pathExtname, sep as pathSep } from "path";
 import { transformCodebase } from "../../tools/transformCodebase";
 import type { BuildContext } from "../../shared/buildContext";
 import {
-    readMetaInfKeycloakThemes,
+    readMetaInfKeycloakThemes_fromResourcesDirPath,
     writeMetaInfKeycloakThemes
 } from "../../shared/metaInfKeycloakThemes";
 import { assert } from "tsafe/assert";
@@ -14,20 +14,13 @@ export type BuildContextLike = {
 assert<BuildContext extends BuildContextLike ? true : false>();
 
 export function generateSrcMainResourcesForThemeVariant(params: {
+    resourcesDirPath: string;
     themeName: string;
     themeVariantName: string;
-    buildContext: BuildContextLike;
 }) {
-    const { themeName, themeVariantName, buildContext } = params;
+    const { resourcesDirPath, themeName, themeVariantName } = params;
 
-    const mainThemeDirPath = pathJoin(
-        buildContext.keycloakifyBuildDirPath,
-        "src",
-        "main",
-        "resources",
-        "theme",
-        themeName
-    );
+    const mainThemeDirPath = pathJoin(resourcesDirPath, "theme", themeName);
 
     transformCodebase({
         srcDirPath: mainThemeDirPath,
@@ -57,9 +50,10 @@ export function generateSrcMainResourcesForThemeVariant(params: {
     });
 
     {
-        const updatedMetaInfKeycloakThemes = readMetaInfKeycloakThemes({
-            keycloakifyBuildDirPath: buildContext.keycloakifyBuildDirPath
-        });
+        const updatedMetaInfKeycloakThemes =
+            readMetaInfKeycloakThemes_fromResourcesDirPath({
+                resourcesDirPath
+            });
 
         updatedMetaInfKeycloakThemes.themes.push({
             name: themeVariantName,
@@ -73,7 +67,7 @@ export function generateSrcMainResourcesForThemeVariant(params: {
         });
 
         writeMetaInfKeycloakThemes({
-            keycloakifyBuildDirPath: buildContext.keycloakifyBuildDirPath,
+            resourcesDirPath,
             metaInfKeycloakThemes: updatedMetaInfKeycloakThemes
         });
     }

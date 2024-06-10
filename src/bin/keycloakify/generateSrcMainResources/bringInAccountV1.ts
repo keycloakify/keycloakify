@@ -13,13 +13,15 @@ import { transformCodebase } from "../../tools/transformCodebase";
 export type BuildContextLike = {
     cacheDirPath: string;
     npmWorkspaceRootDirPath: string;
-    keycloakifyBuildDirPath: string;
 };
 
 assert<BuildContext extends BuildContextLike ? true : false>();
 
-export async function bringInAccountV1(params: { buildContext: BuildContextLike }) {
-    const { buildContext } = params;
+export async function bringInAccountV1(params: {
+    resourcesDirPath: string;
+    buildContext: BuildContextLike;
+}) {
+    const { resourcesDirPath, buildContext } = params;
 
     const { defaultThemeDirPath } = await downloadKeycloakDefaultTheme({
         keycloakVersion: lastKeycloakVersionWithAccountV1,
@@ -27,10 +29,7 @@ export async function bringInAccountV1(params: { buildContext: BuildContextLike 
     });
 
     const accountV1DirPath = pathJoin(
-        buildContext.keycloakifyBuildDirPath,
-        "src",
-        "main",
-        "resources",
+        resourcesDirPath,
         "theme",
         accountV1ThemeName,
         "account"

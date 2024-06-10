@@ -12,7 +12,7 @@ import { vitePluginSubScriptEnvNames } from "./constants";
 export type BuildContext = {
     bundler: "vite" | "webpack";
     themeVersion: string;
-    themeNames: string[];
+    themeNames: [string, ...string[]];
     extraThemeProperties: string[] | undefined;
     groupId: string;
     artifactId: string;
@@ -147,7 +147,7 @@ export function getBuildContext(params: {
         ...resolvedViteConfig?.buildOptions
     };
 
-    const themeNames = (() => {
+    const themeNames = ((): [string, ...string[]] => {
         if (buildOptions.themeName === undefined) {
             return [
                 parsedPackageJson.name
@@ -161,7 +161,11 @@ export function getBuildContext(params: {
             return [buildOptions.themeName];
         }
 
-        return buildOptions.themeName;
+        const [mainThemeName, ...themeVariantNames] = buildOptions.themeName;
+
+        assert(mainThemeName !== undefined);
+
+        return [mainThemeName, ...themeVariantNames];
     })();
 
     const projectBuildDirPath = (() => {

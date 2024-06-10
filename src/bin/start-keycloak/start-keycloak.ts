@@ -2,7 +2,7 @@ import { getBuildContext } from "../shared/buildContext";
 import { exclude } from "tsafe/exclude";
 import type { CliCommandOptions as CliCommandOptions_common } from "../main";
 import { promptKeycloakVersion } from "../shared/promptKeycloakVersion";
-import { readMetaInfKeycloakThemes } from "../shared/metaInfKeycloakThemes";
+import { readMetaInfKeycloakThemes_fromJar } from "../shared/metaInfKeycloakThemes";
 import { accountV1ThemeName, containerName } from "../shared/constants";
 import { SemVer } from "../tools/SemVer";
 import type { KeycloakVersionRange } from "../shared/KeycloakVersionRange";
@@ -21,6 +21,9 @@ import * as runExclusive from "run-exclusive";
 import { extractArchive } from "../tools/extractArchive";
 import { appBuild } from "./appBuild";
 import { keycloakifyBuild } from "./keycloakifyBuild";
+import { isInside } from "../tools/isInside";
+import { existsAsync } from "../tools/fs.existsAsync";
+import { rm } from "../tools/fs.rm";
 
 export type CliCommandOptions = CliCommandOptions_common & {
     port: number;
@@ -112,13 +115,31 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         }
     }
 
-    const metaInfKeycloakThemes = readMetaInfKeycloakThemes({
-        keycloakifyBuildDirPath: buildContext.keycloakifyBuildDirPath
-    });
+    const { doesImplementAccountTheme } = await (async () => {
+        const latestJarFilePath = fs
+            .readdirSync(buildContext.keycloakifyBuildDirPath)
+            .filter(fileBasename => fileBasename.endsWith(".jar"))
+            .map(fileBasename =>
+                pathJoin(buildContext.keycloakifyBuildDirPath, fileBasename)
+            )
+            .sort((a, b) => fs.statSync(b).mtimeMs - fs.statSync(a).mtimeMs)[0];
 
-    const doesImplementAccountTheme = metaInfKeycloakThemes.themes.some(
-        ({ name }) => name === accountV1ThemeName
-    );
+        assert(latestJarFilePath !== undefined);
+
+        const metaInfKeycloakThemes = await readMetaInfKeycloakThemes_fromJar({
+            jarFilePath: latestJarFilePath
+        });
+
+        const mainThemeEntry = metaInfKeycloakThemes.themes.find(
+            ({ name }) => name === buildContext.themeNames[0]
+        );
+
+        assert(mainThemeEntry !== undefined);
+
+        const doesImplementAccountTheme = mainThemeEntry.types.includes("account");
+
+        return { doesImplementAccountTheme };
+    })();
 
     const { keycloakVersion, keycloakMajorNumber: keycloakMajorVersionNumber } =
         await (async function getKeycloakMajor(): Promise<{
@@ -262,65 +283,30 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     const jarFilePath = pathJoin(buildContext.keycloakifyBuildDirPath, jarFileBasename);
 
-    const { doUseBuiltInAccountV1Theme } = await (async () => {
-        let doUseBuiltInAccountV1Theme = false;
-
+    async function extractThemeResourcesFromJar() {
         await extractArchive({
             archiveFilePath: jarFilePath,
-            onArchiveFile: async ({ relativeFilePathInArchive, readFile, earlyExit }) => {
-                for (const themeName of buildContext.themeNames) {
-                    if (
-                        relativeFilePathInArchive ===
-                        pathJoin("theme", themeName, "account", "theme.properties")
-                    ) {
-                        if (
-                            (await readFile())
-                                .toString("utf8")
-                                .includes("parent=keycloak")
-                        ) {
-                            doUseBuiltInAccountV1Theme = true;
-                        }
-
-                        earlyExit();
-                    }
+            onArchiveFile: async ({ relativeFilePathInArchive, writeFile }) => {
+                if (isInside({ dirPath: "theme", filePath: relativeFilePathInArchive })) {
+                    await writeFile({
+                        filePath: pathJoin(
+                            buildContext.keycloakifyBuildDirPath,
+                            relativeFilePathInArchive
+                        )
+                    });
                 }
             }
         });
+    }
 
-        return { doUseBuiltInAccountV1Theme };
-    })();
+    {
+        const destDirPath = pathJoin(buildContext.keycloakifyBuildDirPath, "theme");
+        if (await existsAsync(destDirPath)) {
+            await rm(destDirPath, { recursive: true });
+        }
+    }
 
-    const accountThemePropertyPatch = !doUseBuiltInAccountV1Theme
-        ? undefined
-        : () => {
-              for (const themeName of buildContext.themeNames) {
-                  const filePath = pathJoin(
-                      buildContext.keycloakifyBuildDirPath,
-                      "src",
-                      "main",
-                      "resources",
-                      "theme",
-                      themeName,
-                      "account",
-                      "theme.properties"
-                  );
-
-                  const sourceCode = fs.readFileSync(filePath);
-
-                  const modifiedSourceCode = Buffer.from(
-                      sourceCode
-                          .toString("utf8")
-                          .replace(`parent=${accountV1ThemeName}`, "parent=keycloak"),
-                      "utf8"
-                  );
-
-                  assert(Buffer.compare(modifiedSourceCode, sourceCode) !== 0);
-
-                  fs.writeFileSync(filePath, modifiedSourceCode);
-              }
-          };
-
-    accountThemePropertyPatch?.();
+    await extractThemeResourcesFromJar();
 
     try {
         child_process.execSync(`docker rm --force ${containerName}`, {
@@ -348,14 +334,19 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                 : []),
             ...[
                 ...buildContext.themeNames,
-                ...(doUseBuiltInAccountV1Theme ? [] : [accountV1ThemeName])
+                ...(fs.existsSync(
+                    pathJoin(
+                        buildContext.keycloakifyBuildDirPath,
+                        "theme",
+                        accountV1ThemeName
+                    )
+                )
+                    ? [accountV1ThemeName]
+                    : [])
             ]
                 .map(themeName => ({
                     localDirPath: pathJoin(
                         buildContext.keycloakifyBuildDirPath,
-                        "src",
-                        "main",
-                        "resources",
                         "theme",
                         themeName
                     ),
@@ -459,7 +450,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                 return;
             }
 
-            accountThemePropertyPatch?.();
+            await extractThemeResourcesFromJar();
 
             console.log(chalk.green("Theme rebuilt and updated in Keycloak."));
         });

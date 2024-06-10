@@ -8,7 +8,7 @@ import { getKeycloakVersionRangeForJar } from "./getKeycloakVersionRangeForJar";
 import { buildJar, BuildContextLike as BuildContextLike_buildJar } from "./buildJar";
 import type { BuildContext } from "../../shared/buildContext";
 import { getJarFileBasename } from "../../shared/getJarFileBasename";
-import { readMetaInfKeycloakThemes } from "../../shared/metaInfKeycloakThemes";
+import { readMetaInfKeycloakThemes_fromResourcesDirPath } from "../../shared/metaInfKeycloakThemes";
 import { accountV1ThemeName } from "../../shared/constants";
 
 export type BuildContextLike = BuildContextLike_buildJar & {
@@ -18,12 +18,13 @@ export type BuildContextLike = BuildContextLike_buildJar & {
 assert<BuildContext extends BuildContextLike ? true : false>();
 
 export async function buildJars(params: {
+    resourcesDirPath: string;
     buildContext: BuildContextLike;
 }): Promise<void> {
-    const { buildContext } = params;
+    const { resourcesDirPath, buildContext } = params;
 
-    const doesImplementAccountTheme = readMetaInfKeycloakThemes({
-        keycloakifyBuildDirPath: buildContext.keycloakifyBuildDirPath
+    const doesImplementAccountTheme = readMetaInfKeycloakThemes_fromResourcesDirPath({
+        resourcesDirPath: buildContext.keycloakifyBuildDirPath
     }).themes.some(({ name }) => name === accountV1ThemeName);
 
     await Promise.all(
@@ -71,6 +72,7 @@ export async function buildJars(params: {
                                 jarFileBasename,
                                 keycloakAccountV1Version,
                                 keycloakThemeAdditionalInfoExtensionVersion,
+                                resourcesDirPath,
                                 buildContext
                             })
                     )
