@@ -34,6 +34,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     const { keycloakVersion } = await promptKeycloakVersion({
         // NOTE: This is arbitrary
         startingFromMajor: 17,
+        excludeMajorVersions: [],
         cacheDirPath: buildContext.cacheDirPath
     });
 
