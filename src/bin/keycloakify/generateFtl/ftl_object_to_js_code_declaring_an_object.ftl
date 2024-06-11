@@ -180,6 +180,16 @@ try {
             <#if attribute.annotations.inputTypePlaceholder??>
                 "${attribute.annotations.inputTypePlaceholder}": decodeHtmlEntities("${advancedMsg(attribute.annotations.inputTypePlaceholder)?js_string}"),
             </#if>
+            <!-- Loop through the options that are in attribute.validators.options.options -->
+            <#if (
+                attribute.annotations.inputOptionLabelsI18nPrefix?? &&
+                attribute.validators?? &&
+                attribute.validators.options??
+            )>
+                <#list attribute.validators.options.options as option>
+                    "${attribute.annotations.inputOptionLabelsI18nPrefix}.${option}": decodeHtmlEntities("${msg(attribute.annotations.inputOptionLabelsI18nPrefix + "." + option)?js_string}"),
+                </#list>
+            </#if>
         </#list>
     };
 </#if>
