@@ -1501,14 +1501,14 @@
                 "subComponents": {},
                 "config": {
                     "allowed-protocol-mapper-types": [
-                        "oidc-sha256-pairwise-sub-mapper",
                         "saml-role-list-mapper",
                         "oidc-address-mapper",
                         "oidc-usermodel-property-mapper",
+                        "oidc-sha256-pairwise-sub-mapper",
                         "saml-user-attribute-mapper",
+                        "oidc-usermodel-attribute-mapper",
                         "oidc-full-name-mapper",
-                        "saml-user-property-mapper",
-                        "oidc-usermodel-attribute-mapper"
+                        "saml-user-property-mapper"
                     ]
                 }
             },
@@ -1541,13 +1541,13 @@
                 "config": {
                     "allowed-protocol-mapper-types": [
                         "oidc-sha256-pairwise-sub-mapper",
-                        "saml-user-property-mapper",
-                        "oidc-usermodel-attribute-mapper",
-                        "oidc-address-mapper",
                         "oidc-usermodel-property-mapper",
+                        "oidc-full-name-mapper",
+                        "oidc-address-mapper",
+                        "oidc-usermodel-attribute-mapper",
+                        "saml-user-property-mapper",
                         "saml-role-list-mapper",
-                        "saml-user-attribute-mapper",
-                        "oidc-full-name-mapper"
+                        "saml-user-attribute-mapper"
                     ]
                 }
             },
@@ -2200,7 +2200,7 @@
             "name": "Terms and Conditions",
             "providerId": "TERMS_AND_CONDITIONS",
             "enabled": true,
-            "defaultAction": false,
+            "defaultAction": true,
             "priority": 20,
             "config": {}
         },
@@ -2307,7 +2307,7 @@
         "cibaInterval": "5",
         "realmReusableOtpCode": "false"
     },
-    "keycloakVersion": "24.0.4",
+    "keycloakVersion": "24.0.5",
     "userManagedAccessAllowed": false,
     "clientProfiles": {
         "profiles": []
