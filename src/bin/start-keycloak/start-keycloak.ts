@@ -159,7 +159,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             );
 
             const { keycloakVersion } = await promptKeycloakVersion({
-                startingFromMajor: 17,
+                startingFromMajor: 18,
                 cacheDirPath: buildContext.cacheDirPath
             });
 
@@ -231,6 +231,10 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     const realmJsonFilePath = await (async () => {
         if (cliCommandOptions.realmJsonFilePath !== undefined) {
+            if (cliCommandOptions.realmJsonFilePath === "none") {
+                return undefined;
+            }
+
             console.log(
                 chalk.green(
                     `Using realm json file: ${cliCommandOptions.realmJsonFilePath}`
