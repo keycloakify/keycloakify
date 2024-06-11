@@ -46,7 +46,7 @@ export async function generateKcGenTs(params: {
             ``,
             `export type KcEnvName = ${buildContext.environmentVariables.length === 0 ? "never" : buildContext.environmentVariables.map(({ name }) => `"${name}"`).join(" | ")};`,
             ``,
-            `export const KcEnvNames: KcEnvName[] = [${buildContext.environmentVariables.map(({ name }) => `"${name}"`).join(", ")}];`,
+            `export const kcEnvNames: KcEnvName[] = [${buildContext.environmentVariables.map(({ name }) => `"${name}"`).join(", ")}];`,
             ``,
             `export const kcEnvDefaults: Record<KcEnvName, string> = ${JSON.stringify(
                 Object.fromEntries(
