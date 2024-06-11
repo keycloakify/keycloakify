@@ -79,9 +79,9 @@ export type KcContextLike = KcContextLike_i18n &
         };
     };
 
-assert<Extract<KcContext.Register, { pageId: "register.ftl" }> extends KcContextLike ? true : false>();
+assert<Extract<Extract<KcContext, { profile: unknown }>, { pageId: "register.ftl" }> extends KcContextLike ? true : false>();
 
-export type ParamsOfUseUserProfileForm = {
+export type UseUserProfileFormParams = {
     kcContext: KcContextLike;
     i18n: I18n;
     doMakeUserConfirmPassword: boolean;
@@ -105,7 +105,7 @@ namespace internal {
     };
 }
 
-export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTypeOfUseUserProfileForm {
+export function useUserProfileForm(params: UseUserProfileFormParams): ReturnTypeOfUseUserProfileForm {
     const { kcContext, i18n, doMakeUserConfirmPassword } = params;
 
     const { insertScriptTags } = useInsertScriptTags({

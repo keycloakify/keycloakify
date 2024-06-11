@@ -4,33 +4,15 @@ import type { KcClsx } from "keycloakify/login/lib/kcClsx";
 import {
     useUserProfileForm,
     getButtonToDisplayForMultivaluedAttributeField,
-    type KcContextLike,
     type FormAction,
     type FormFieldError
 } from "keycloakify/login/lib/useUserProfileForm";
+import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFormFieldsProps";
 import type { Attribute } from "keycloakify/login/KcContext";
+import type { KcContext } from "./KcContext";
 import type { I18n } from "./i18n";
 
-export type UserProfileFormFieldsProps = {
-    kcContext: KcContextLike;
-    i18n: I18n;
-    kcClsx: KcClsx;
-    onIsFormSubmittableValueChange: (isFormSubmittable: boolean) => void;
-    doMakeUserConfirmPassword: boolean;
-    BeforeField?: (props: BeforeAfterFieldProps) => JSX.Element | null;
-    AfterField?: (props: BeforeAfterFieldProps) => JSX.Element | null;
-};
-
-type BeforeAfterFieldProps = {
-    attribute: Attribute;
-    dispatchFormAction: React.Dispatch<FormAction>;
-    displayableErrors: FormFieldError[];
-    valueOrValues: string | string[];
-    kcClsx: KcClsx;
-    i18n: I18n;
-};
-
-export default function UserProfileFormFields(props: UserProfileFormFieldsProps) {
+export default function UserProfileFormFields(props: UserProfileFormFieldsProps<KcContext, I18n>) {
     const { kcContext, i18n, kcClsx, onIsFormSubmittableValueChange, doMakeUserConfirmPassword, BeforeField, AfterField } = props;
 
     const { advancedMsg } = i18n;
