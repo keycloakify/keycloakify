@@ -4,7 +4,7 @@ import type { LazyOrNot } from "keycloakify/tools/LazyOrNot";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { I18n } from "keycloakify/login/i18n";
 import type { KcContext } from "keycloakify/login/KcContext";
-import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFormFields";
+import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFormFieldsProps";
 
 const Login = lazy(() => import("keycloakify/login/pages/Login"));
 const Register = lazy(() => import("keycloakify/login/pages/Register"));
@@ -42,7 +42,7 @@ const LoginX509Info = lazy(() => import("keycloakify/login/pages/LoginX509Info")
 const WebauthnError = lazy(() => import("keycloakify/login/pages/WebauthnError"));
 
 type DefaultPageProps = PageProps<KcContext, I18n> & {
-    UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
+    UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps<KcContext, I18n>) => JSX.Element>;
     doMakeUserConfirmPassword: boolean;
 };
 
