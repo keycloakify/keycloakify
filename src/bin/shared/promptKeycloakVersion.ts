@@ -9,9 +9,10 @@ import { id } from "tsafe/id";
 
 export async function promptKeycloakVersion(params: {
     startingFromMajor: number | undefined;
+    excludeMajorVersions: number[];
     cacheDirPath: string;
 }) {
-    const { startingFromMajor, cacheDirPath } = params;
+    const { startingFromMajor, excludeMajorVersions, cacheDirPath } = params;
 
     const { getLatestsSemVersionedTag } = (() => {
         const { octokit } = (() => {
@@ -92,6 +93,10 @@ export async function promptKeycloakVersion(params: {
             startingFromMajor !== undefined &&
             semVersionedTag.version.major < startingFromMajor
         ) {
+            return;
+        }
+
+        if (excludeMajorVersions.includes(semVersionedTag.version.major)) {
             return;
         }
 
