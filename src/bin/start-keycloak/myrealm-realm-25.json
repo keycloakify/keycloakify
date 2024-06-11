@@ -528,6 +528,44 @@
     "webAuthnPolicyPasswordlessAvoidSameAuthenticatorRegister": false,
     "webAuthnPolicyPasswordlessAcceptableAaguids": [],
     "webAuthnPolicyPasswordlessExtraOrigins": [],
+    "users": [
+        {
+            "id": "d93e1772-4916-4243-850f-a6d9b2615716",
+            "username": "testuser",
+            "firstName": "Test",
+            "lastName": "User",
+            "email": "testuser@gmail.com",
+            "emailVerified": true,
+            "attributes": {
+                "additional_emails": ["test.user@protonmail.com", "testuser@hotmail.com"],
+                "gender": ["prefer_not_to_say"],
+                "favorite_pet": ["cats"],
+                "favourite_pet": ["cat"],
+                "bio": ["Hello I'm Test User and I do not exist."],
+                "phone_number": ["1111111111"],
+                "locale": ["fr"],
+                "favorite_media": ["movies", "series"]
+            },
+            "createdTimestamp": 1716183898408,
+            "enabled": true,
+            "totp": false,
+            "credentials": [
+                {
+                    "id": "576982e2-6fb3-4752-8724-5ff390ea8301",
+                    "type": "password",
+                    "userLabel": "My password",
+                    "createdDate": 1716183916529,
+                    "secretData": "{\"value\":\"9hwJ989FAr0UgT0MfffNYSI6Zf/3qT/y17DTUcwbiEM=\",\"salt\":\"C3ZnHzgPd+0Lemw4olCOgA==\",\"additionalParameters\":{}}",
+                    "credentialData": "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+                }
+            ],
+            "disableableCredentialTypes": [],
+            "requiredActions": [],
+            "realmRoles": ["default-roles-myrealm"],
+            "notBefore": 0,
+            "groups": []
+        }
+    ],
     "scopeMappings": [
         {
             "clientScope": "offline_access",
@@ -660,7 +698,9 @@
             "publicClient": true,
             "frontchannelLogout": false,
             "protocol": "openid-connect",
-            "attributes": {},
+            "attributes": {
+                "post.logout.redirect.uris": "+"
+            },
             "authenticationFlowBindingOverrides": {},
             "fullScopeAllowed": false,
             "nodeReRegistrationTimeout": 0,
@@ -699,7 +739,9 @@
             "publicClient": false,
             "frontchannelLogout": false,
             "protocol": "openid-connect",
-            "attributes": {},
+            "attributes": {
+                "post.logout.redirect.uris": "+"
+            },
             "authenticationFlowBindingOverrides": {},
             "fullScopeAllowed": false,
             "nodeReRegistrationTimeout": 0,
@@ -812,7 +854,9 @@
             "publicClient": false,
             "frontchannelLogout": false,
             "protocol": "openid-connect",
-            "attributes": {},
+            "attributes": {
+                "post.logout.redirect.uris": "+"
+            },
             "authenticationFlowBindingOverrides": {},
             "fullScopeAllowed": false,
             "nodeReRegistrationTimeout": 0,
@@ -1014,8 +1058,9 @@
                     "consentRequired": false,
                     "config": {
                         "user.session.note": "AUTH_TIME",
-                        "id.token.claim": "true",
                         "introspection.token.claim": "true",
+                        "userinfo.token.claim": "true",
+                        "id.token.claim": "true",
                         "access.token.claim": "true",
                         "claim.name": "auth_time",
                         "jsonType.label": "long"
@@ -1382,6 +1427,7 @@
                     "config": {
                         "introspection.token.claim": "true",
                         "multivalued": "true",
+                        "userinfo.token.claim": "true",
                         "user.attribute": "foo",
                         "id.token.claim": "true",
                         "access.token.claim": "true",
@@ -1464,7 +1510,8 @@
                     "config": {
                         "id.token.claim": "true",
                         "introspection.token.claim": "true",
-                        "access.token.claim": "true"
+                        "access.token.claim": "true",
+                        "userinfo.token.claim": "true"
                     }
                 }
             ]
@@ -1527,14 +1574,14 @@
                 "subComponents": {},
                 "config": {
                     "allowed-protocol-mapper-types": [
-                        "oidc-address-mapper",
                         "oidc-full-name-mapper",
-                        "oidc-sha256-pairwise-sub-mapper",
                         "oidc-usermodel-attribute-mapper",
+                        "oidc-address-mapper",
                         "saml-user-attribute-mapper",
+                        "oidc-usermodel-property-mapper",
                         "saml-user-property-mapper",
                         "saml-role-list-mapper",
-                        "oidc-usermodel-property-mapper"
+                        "oidc-sha256-pairwise-sub-mapper"
                     ]
                 }
             },
@@ -1564,12 +1611,12 @@
                 "subComponents": {},
                 "config": {
                     "allowed-protocol-mapper-types": [
+                        "oidc-sha256-pairwise-sub-mapper",
                         "oidc-usermodel-property-mapper",
                         "oidc-address-mapper",
-                        "oidc-full-name-mapper",
                         "oidc-usermodel-attribute-mapper",
+                        "oidc-full-name-mapper",
                         "saml-user-attribute-mapper",
-                        "oidc-sha256-pairwise-sub-mapper",
                         "saml-user-property-mapper",
                         "saml-role-list-mapper"
                     ]
@@ -2329,8 +2376,8 @@
     "attributes": {
         "cibaBackchannelTokenDeliveryMode": "poll",
         "cibaAuthRequestedUserHint": "login_hint",
-        "oauth2DevicePollingInterval": "5",
         "clientOfflineSessionMaxLifespan": "0",
+        "oauth2DevicePollingInterval": "5",
         "clientSessionIdleTimeout": "0",
         "clientOfflineSessionIdleTimeout": "0",
         "cibaInterval": "5",
