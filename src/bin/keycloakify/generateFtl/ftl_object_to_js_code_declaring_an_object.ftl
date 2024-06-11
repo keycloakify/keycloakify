@@ -326,7 +326,7 @@ function decodeHtmlEntities(htmlStr){
 
                 <#-- https://github.com/keycloakify/keycloakify/discussions/406 -->
                 <#if (
-                    ["register.ftl", "register-user-profile.ftl", "info.ftl", "login.ftl", "login-update-password.ftl", "login-oauth2-device-verify-user-code.ftl"]?seq_contains(pageId) && 
+                    ["register.ftl", "register-user-profile.ftl", "terms.ftl", "info.ftl", "login.ftl", "login-update-password.ftl", "login-oauth2-device-verify-user-code.ftl"]?seq_contains(pageId) && 
                     key == "attemptedUsername" && are_same_path(path, ["auth"])
                 )>
                     <#attempt>
