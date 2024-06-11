@@ -317,6 +317,10 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     await extractThemeResourcesFromJar();
 
+    const jarFilePath_cacheDir = pathJoin(buildContext.cacheDirPath, jarFileBasename);
+
+    fs.copyFileSync(jarFilePath, jarFilePath_cacheDir);
+
     try {
         child_process.execSync(`docker rm --force ${containerName}`, {
             stdio: "ignore"
@@ -337,7 +341,10 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                       "-v",
                       `${realmJsonFilePath}:/opt/keycloak/data/import/myrealm-realm.json`
                   ]),
-            ...["-v", `${jarFilePath}:/opt/keycloak/providers/keycloak-theme.jar`],
+            ...[
+                "-v",
+                `${jarFilePath_cacheDir}:/opt/keycloak/providers/keycloak-theme.jar`
+            ],
             ...(keycloakMajorVersionNumber <= 20
                 ? ["-e", "JAVA_OPTS=-Dkeycloak.profile=preview"]
                 : []),
