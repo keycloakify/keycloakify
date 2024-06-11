@@ -2,7 +2,7 @@ import { type FormAction, type FormFieldError } from "keycloakify/login/lib/useU
 import type { KcClsx } from "keycloakify/login/lib/kcClsx";
 import type { Attribute } from "keycloakify/login/KcContext";
 
-export type UserProfileFormFieldsProps<KcContext, I18n> = {
+export type UserProfileFormFieldsProps<KcContext = any, I18n = any> = {
     kcContext: Extract<KcContext, { profile: unknown }>;
     i18n: I18n;
     kcClsx: KcClsx;

@@ -9,7 +9,7 @@ import type { KcContext } from "../KcContext";
 import type { I18n } from "../i18n";
 
 type RegisterProps = PageProps<Extract<KcContext, { pageId: "register.ftl" }>, I18n> & {
-    UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps<KcContext, I18n>) => JSX.Element>;
+    UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
     doMakeUserConfirmPassword: boolean;
 };
 

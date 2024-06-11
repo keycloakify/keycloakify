@@ -42,7 +42,7 @@ const LoginX509Info = lazy(() => import("keycloakify/login/pages/LoginX509Info")
 const WebauthnError = lazy(() => import("keycloakify/login/pages/WebauthnError"));
 
 type DefaultPageProps = PageProps<KcContext, I18n> & {
-    UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps<KcContext, I18n>) => JSX.Element>;
+    UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
     doMakeUserConfirmPassword: boolean;
 };
 
