@@ -19,7 +19,7 @@ export default function LoginUpdateProfile(props: LoginUpdateProfileProps) {
         classes
     });
 
-    const { url, isAppInitiatedAction } = kcContext;
+    const { messagesPerField, url, isAppInitiatedAction } = kcContext;
 
     const { msg, msgStr } = i18n;
 
@@ -33,6 +33,7 @@ export default function LoginUpdateProfile(props: LoginUpdateProfileProps) {
             classes={classes}
             displayRequiredFields
             headerNode={msg("loginProfileTitle")}
+            displayMessage={messagesPerField.exists("global")}
         >
             <form id="kc-update-profile-form" className={kcClsx("kcFormClass")} action={url.loginAction} method="post">
                 <UserProfileFormFields

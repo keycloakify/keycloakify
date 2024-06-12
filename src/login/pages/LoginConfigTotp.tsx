@@ -16,7 +16,14 @@ export default function LoginConfigTotp(props: PageProps<Extract<KcContext, { pa
     const { msg, msgStr, advancedMsg } = i18n;
 
     return (
-        <Template kcContext={kcContext} i18n={i18n} doUseDefaultCss={doUseDefaultCss} classes={classes} headerNode={msg("loginTotpTitle")}>
+        <Template
+            kcContext={kcContext}
+            i18n={i18n}
+            doUseDefaultCss={doUseDefaultCss}
+            classes={classes}
+            headerNode={msg("loginTotpTitle")}
+            displayMessage={!messagesPerField.existsError("totp", "userLabel")}
+        >
             <>
                 <ol id="kc-totp-settings">
                     <li>
