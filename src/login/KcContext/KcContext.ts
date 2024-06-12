@@ -209,17 +209,13 @@ export declare namespace KcContext {
     export type Register = Common & {
         pageId: "register.ftl";
         profile: UserProfile;
+        passwordPolicies?: PasswordPolicies;
         url: {
             registrationAction: string;
         };
         passwordRequired: boolean;
         recaptchaRequired: boolean;
         recaptchaSiteKey?: string;
-        /**
-         * Theses values are added by: https://github.com/jcputney/keycloak-theme-additional-info-extension
-         * A Keycloak Java extension used as dependency in Keycloakify.
-         */
-        passwordPolicies?: PasswordPolicies;
         termsAcceptanceRequired?: boolean;
     };
 
@@ -479,16 +475,19 @@ export declare namespace KcContext {
     export type LoginUpdateProfile = Common & {
         pageId: "login-update-profile.ftl";
         profile: UserProfile;
+        passwordPolicies?: PasswordPolicies;
     };
 
     export type IdpReviewUserProfile = Common & {
         pageId: "idp-review-user-profile.ftl";
         profile: UserProfile;
+        passwordPolicies?: PasswordPolicies;
     };
 
     export type UpdateEmail = Common & {
         pageId: "update-email.ftl";
         profile: UserProfile;
+        passwordPolicies?: PasswordPolicies;
     };
 
     export type SelectAuthenticator = Common & {
@@ -752,6 +751,10 @@ export declare namespace Validators {
     assert<Equals<OnlyInExpected, never>>();
 }
 
+/**
+ * Theses values are added by: https://github.com/jcputney/keycloak-theme-additional-info-extension
+ * A Keycloak Java extension used as dependency in Keycloakify.
+ */
 export type PasswordPolicies = {
     /** The minimum length of the password */
     length?: number;
