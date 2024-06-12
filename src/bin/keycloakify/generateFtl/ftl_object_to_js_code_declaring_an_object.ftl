@@ -334,7 +334,7 @@ function decodeHtmlEntities(htmlStr){
                 <#list fieldNames as fieldName>
 
                     <#-- See: https://github.com/keycloakify/keycloakify/issues/217 -->
-                    <#if pageId === "login.ftl" >
+                    <#if pageId == "login.ftl" >
 
                         <#if fieldName == "username">
 
@@ -382,7 +382,7 @@ function decodeHtmlEntities(htmlStr){
                 <#list fieldNames as fieldName>
 
                     <#-- See: https://github.com/keycloakify/keycloakify/issues/217 -->
-                    <#if pageId === "login.ftl" >
+                    <#if pageId == "login.ftl" >
                         <#if fieldName == "username">
 
                             <#local jsFunctionCode += "if(fieldName === 'username' || fieldName === 'password' ){ ">
