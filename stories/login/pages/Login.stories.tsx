@@ -212,7 +212,7 @@ export const WithErrorMessage: Story = {
         <KcPageStory
             kcContext={{
                 message: {
-                    summary: "Please restart the login process.",
+                    summary: "The time allotted for the connection has elapsed. The login process will restart from the beginning.",
                     type: "error"
                 }
             }}
