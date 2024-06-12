@@ -13,7 +13,7 @@ import {
     join as pathJoin,
     relative as pathRelative,
     sep as pathSep,
-    dirname as pathDirname
+    basename as pathBasename
 } from "path";
 import * as child_process from "child_process";
 import chalk from "chalk";
@@ -302,7 +302,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
         const filePath = pathJoin(
             buildContext.cacheDirPath,
-            pathDirname(internalFilePath)
+            pathBasename(internalFilePath)
         );
 
         fs.writeFileSync(
