@@ -2,23 +2,16 @@
 (()=>{
 <#assign pageId="PAGE_ID_xIgLsPgGId9D8e">
 const out = ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
-
 if( out.messagesPerField ){
-
-    {
-
-        var existsError_singleFieldName = out.messagesPerField.existsError;
-
-        out.messagesPerField.existsError = function (){
-            for( let i = 0; i < arguments.length; i++ ){
-                if( existsError_singleFieldName(arguments[i]) ){
-                    return true;
-                }
+    var existsError_singleFieldName = out.messagesPerField.existsError;
+    out.messagesPerField.existsError = function (){
+        for( let i = 0; i < arguments.length; i++ ){
+            if( existsError_singleFieldName(arguments[i]) ){
+                return true;
             }
-            return false;
-        };
-
-    }
+        }
+        return false;
+    };
     out.messagesPerField.exists = function (fieldName) {
         return out.messagesPerField.get(fieldName) !== "";
     };
@@ -33,19 +26,15 @@ if( out.messagesPerField ){
             }
         }
     };
-
 }
-
 out.keycloakifyVersion = "KEYCLOAKIFY_VERSION_xEdKd3xEdr";
 out.themeVersion = "KEYCLOAKIFY_THEME_VERSION_sIgKd3xEdr3dx";
 out.themeType = "KEYCLOAKIFY_THEME_TYPE_dExKd3xEdr";
 out.themeName = "KEYCLOAKIFY_THEME_NAME_cXxKd3xEer";
 out.pageId = "${pageId}";
-
 if( out.url && out.url.resourcesPath ){
     out.url.resourcesCommonPath = out.url.resourcesPath + "/" + "RESOURCES_COMMON_cLsLsMrtDkpVv";
 }
-
 <#if profile?? && profile.attributes??>
     out.lOCALIZATION_REALM_OVERRIDES_USER_PROFILE_PROPERTY_KEY_aaGLsPgGIdeeX = {
         <#list profile.attributes as attribute>
@@ -74,29 +63,20 @@ if( out.url && out.url.resourcesPath ){
         </#list>
     };
 </#if>
-
 attributes_to_attributesByName: {
-
     if( !out.profile ){
         break attributes_to_attributesByName;
     }
-
     if( !out.profile.attributes ){
         break attributes_to_attributesByName;
     }
-
     var attributes =  out.profile.attributes;
-
     delete out.profile.attributes;
-
     out.profile.attributesByName = {};
-
     attributes.forEach(function(attribute){
         out.profile.attributesByName[attribute.name] = attribute;
     });
-
 }
-
 return out;
 
 function decodeHtmlEntities(htmlStr){
@@ -108,7 +88,6 @@ function decodeHtmlEntities(htmlStr){
     element.innerHTML = htmlStr;
     return element.value;
 }
-
 })();
 <#function ftl_object_to_js_code_declaring_an_object object path>
 
