@@ -42,7 +42,7 @@ export function generatePom(params: {
             `  <properties>`,
             `    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>`,
             `  </properties>`,
-            ...(keycloakAccountV1Version !== null &&
+            ...(keycloakAccountV1Version !== null ||
             keycloakThemeAdditionalInfoExtensionVersion !== null
                 ? [
                       `  <build>`,
