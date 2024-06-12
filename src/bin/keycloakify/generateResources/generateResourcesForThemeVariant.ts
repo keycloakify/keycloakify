@@ -13,7 +13,7 @@ export type BuildContextLike = {
 
 assert<BuildContext extends BuildContextLike ? true : false>();
 
-export function generateSrcMainResourcesForThemeVariant(params: {
+export function generateResourcesForThemeVariant(params: {
     resourcesDirPath: string;
     themeName: string;
     themeVariantName: string;

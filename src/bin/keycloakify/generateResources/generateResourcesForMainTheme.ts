@@ -52,7 +52,7 @@ export type BuildContextLike = BuildContextLike_kcContextExclusionsFtlCode &
 
 assert<BuildContext extends BuildContextLike ? true : false>();
 
-export async function generateSrcMainResourcesForMainTheme(params: {
+export async function generateResourcesForMainTheme(params: {
     themeName: string;
     resourcesDirPath: string;
     buildContext: BuildContextLike;

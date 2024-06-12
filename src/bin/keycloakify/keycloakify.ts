@@ -1,4 +1,4 @@
-import { generateSrcMainResources } from "./generateSrcMainResources";
+import { generateResources } from "./generateResources";
 import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path";
 import * as child_process from "child_process";
 import * as fs from "fs";
@@ -82,7 +82,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     const resourcesDirPath = pathJoin(buildContext.keycloakifyBuildDirPath, "resources");
 
-    await generateSrcMainResources({
+    await generateResources({
         resourcesDirPath,
         buildContext
     });

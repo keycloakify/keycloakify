@@ -1,20 +1,20 @@
 import type { BuildContext } from "../../shared/buildContext";
 import { assert } from "tsafe/assert";
 import {
-    generateSrcMainResourcesForMainTheme,
-    type BuildContextLike as BuildContextLike_generateSrcMainResourcesForMainTheme
-} from "./generateSrcMainResourcesForMainTheme";
-import { generateSrcMainResourcesForThemeVariant } from "./generateSrcMainResourcesForThemeVariant";
+    generateResourcesForMainTheme,
+    type BuildContextLike as BuildContextLike_generateResourcesForMainTheme
+} from "./generateResourcesForMainTheme";
+import { generateResourcesForThemeVariant } from "./generateResourcesForThemeVariant";
 import fs from "fs";
 import { rmSync } from "../../tools/fs.rmSync";
 
-export type BuildContextLike = BuildContextLike_generateSrcMainResourcesForMainTheme & {
+export type BuildContextLike = BuildContextLike_generateResourcesForMainTheme & {
     themeNames: string[];
 };
 
 assert<BuildContext extends BuildContextLike ? true : false>();
 
-export async function generateSrcMainResources(params: {
+export async function generateResources(params: {
     buildContext: BuildContextLike;
     resourcesDirPath: string;
 }): Promise<void> {
@@ -26,14 +26,14 @@ export async function generateSrcMainResources(params: {
         rmSync(resourcesDirPath, { recursive: true });
     }
 
-    await generateSrcMainResourcesForMainTheme({
+    await generateResourcesForMainTheme({
         resourcesDirPath,
         themeName,
         buildContext
     });
 
     for (const themeVariantName of themeVariantNames) {
-        generateSrcMainResourcesForThemeVariant({
+        generateResourcesForThemeVariant({
             resourcesDirPath,
             themeName,
             themeVariantName
