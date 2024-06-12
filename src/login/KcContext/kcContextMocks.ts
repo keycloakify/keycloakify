@@ -99,13 +99,22 @@ export const kcContextCommonMock: KcContext.Common = {
         registrationEmailAsUsername: false
     },
     messagesPerField: {
-        printIfExists: () => {
-            return undefined;
-        },
+        get: () => "",
         existsError: () => false,
-        get: fieldName => `Fake error for ${fieldName}`,
-        exists: () => false,
-        getFirstError: fieldName => `Fake error for ${fieldName}`
+        printIfExists: function <T>(fieldName: string, text: T) {
+            return this.get(fieldName) !== "" ? text : undefined;
+        },
+        exists: function (fieldName) {
+            return this.get(fieldName) !== "";
+        },
+        getFirstError: function (...fieldNames) {
+            for (const fieldName of fieldNames) {
+                if (this.existsError(fieldName)) {
+                    return this.get(fieldName);
+                }
+            }
+            return "";
+        }
     },
     locale: {
         supported: [

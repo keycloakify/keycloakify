@@ -17,6 +17,36 @@ export const Default: Story = {
     render: () => <KcPageStory />
 };
 
+export const WithInvalidCredential: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                message: {
+                    summary: "Invalid username or password.",
+                    type: "error"
+                },
+                login: {
+                    username: "johndoe"
+                },
+                messagesPerField: {
+                    // NOTE: The other functions of messagesPerField are derived from get() and
+                    // existsError() so they are the only ones that need to mock.
+                    existsError: (fieldName: string, ...otherFieldNames: string[]) => {
+                        const fieldNames = [fieldName, ...otherFieldNames];
+                        return fieldNames.includes("username") || fieldNames.includes("password");
+                    },
+                    get: (fieldName: string) => {
+                        if (fieldName === "username" || fieldName === "password") {
+                            return "Invalid username or password.";
+                        }
+                        return "";
+                    }
+                }
+            }}
+        />
+    )
+};
+
 export const WithoutRegistration: Story = {
     render: () => (
         <KcPageStory
@@ -176,6 +206,19 @@ export const WithoutPasswordField: Story = {
         <KcPageStory
             kcContext={{
                 realm: { password: false }
+            }}
+        />
+    )
+};
+
+export const WithErrorMessage: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                message: {
+                    summary: "Please restart the login process.",
+                    type: "error"
+                }
             }}
         />
     )

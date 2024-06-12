@@ -17,22 +17,31 @@ export const Default: Story = {
     render: () => <KcPageStory />
 };
 
-export const WithFieldError: Story = {
+export const WithEmailAlreadyExists: Story = {
     render: () => (
         <KcPageStory
             kcContext={{
                 profile: {
                     attributesByName: {
+                        username: {
+                            value: "johndoe"
+                        },
                         email: {
-                            value: "max.mustermann@gmail.com"
+                            value: "jhon.doe@gmail.com"
+                        },
+                        firstName: {
+                            value: "John"
+                        },
+                        lastName: {
+                            value: "Doe"
                         }
                     }
                 },
                 messagesPerField: {
-                    existsError: (fieldName: string) => fieldName === "email",
-                    exists: (fieldName: string) => fieldName === "email",
-                    get: (fieldName: string) => (fieldName === "email" ? "I don't like your email address" : undefined),
-                    printIfExists: <T,>(fieldName: string, x: T) => (fieldName === "email" ? x : undefined)
+                    // NOTE: The other functions of messagesPerField are derived from get() and
+                    // existsError() so they are the only ones that need to mock.
+                    existsError: (fieldName: string, ...otherFieldNames: string[]) => [fieldName, ...otherFieldNames].includes("email"),
+                    get: (fieldName: string) => (fieldName === "email" ? "Email already exists." : undefined)
                 }
             }}
         />
