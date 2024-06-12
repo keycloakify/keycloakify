@@ -82,17 +82,7 @@ export const kcContextCommonMock: KcContext.Common = {
         email: "john.doe@code.gouv.fr",
         username: "doe_j"
     },
-    properties: {
-        parent: "account-v1",
-        kcButtonLargeClass: "btn-lg",
-        locales:
-            "ar,ca,cs,da,de,en,es,fr,fi,hu,it,ja,lt,nl,no,pl,pt-BR,ru,sk,sv,tr,zh-CN",
-        kcButtonPrimaryClass: "btn-primary",
-        accountResourceProvider: "account-v1",
-        styles: "css/account.css img/icon-sidebar-active.png img/logo.png resources-common/node_modules/patternfly/dist/css/patternfly.min.css resources-common/node_modules/patternfly/dist/css/patternfly-additions.min.css resources-common/node_modules/patternfly/dist/css/patternfly-additions.min.css",
-        kcButtonClass: "btn",
-        kcButtonDefaultClass: "btn-default"
-    }
+    properties: {}
 };
 
 export const kcContextMocks: KcContext[] = [

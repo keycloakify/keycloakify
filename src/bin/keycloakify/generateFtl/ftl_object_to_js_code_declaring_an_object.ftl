@@ -207,9 +207,21 @@ function decodeHtmlEntities(htmlStr){
                         <#-- We already have the attributes in profile speedup the rendering by filtering it out from the register object -->
                         (key == "attributes" || key == "attributesByName") &&
                         are_same_path(path, ["register"])
+                    ) || (
+                        are_same_path(path, ["properties"]) &&
+                        (
+                            key?starts_with("kc") || 
+                            key == "locales" || 
+                            key == "import" || 
+                            key == "parent" || 
+                            key == "meta" ||
+                            key == "stylesCommon" ||
+                            key == "styles" ||
+                            key == "accountResourceProvider"
+                        )
                     )
                 >
-                    <#local out_seq += ["/*" + path?join(".") + "." + key + " excluded*/"]>
+                    <#-- <#local out_seq += ["/*" + path?join(".") + "." + key + " excluded*/"]> -->
                     <#continue>
                 </#if>
                 
