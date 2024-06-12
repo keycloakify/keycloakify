@@ -14,5 +14,17 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    render: () => <KcPageStory />
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                message: {
+                    summary: "You need to verify your email to activate your account.",
+                    type: "warning"
+                },
+                user: {
+                    email: "john.doe@gmail.com"
+                }
+            }}
+        />
+    )
 };
