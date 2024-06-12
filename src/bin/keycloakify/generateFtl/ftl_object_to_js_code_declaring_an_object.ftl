@@ -2,171 +2,52 @@
 (()=>{
 <#assign pageId="PAGE_ID_xIgLsPgGId9D8e">
 const out = ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
-out["messagesPerField"]= {
-    <#assign fieldNames = [ FIELD_NAMES_eKsIY4ZsZ4xeM ]>
-    <#attempt>
-        <#if profile?? && profile.attributes?? && profile.attributes?is_enumerable>
-            <#list profile.attributes as attribute>
-                <#if fieldNames?seq_contains(attribute.name)>
-                    <#continue>
-                </#if>
-                <#assign fieldNames += [attribute.name]>
-            </#list>
-        </#if>
-    <#recover>
-    </#attempt>
-    "printIfExists": function (fieldName, text) {
-        <#if !messagesPerField?? || !(messagesPerField?is_hash)>   
-            throw new Error("You're not supposed to use messagesPerField.printIfExists in this page");
-        <#else>
-            <#list fieldNames as fieldName>
-                if(fieldName === "${fieldName}" ){
-                    <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
-                    <#if ('${fieldName}' == 'username' || '${fieldName}' == 'password') && pageId != 'register.ftl' && pageId != 'register-user-profile.ftl'>
-                        <#assign doExistErrorOnUsernameOrPassword = "">
-                        <#attempt>
-                            <#assign doExistErrorOnUsernameOrPassword = messagesPerField.existsError('username', 'password')>
-                        <#recover>
-                            <#assign doExistErrorOnUsernameOrPassword = true>
-                        </#attempt>
-                        return <#if doExistErrorOnUsernameOrPassword>text<#else>undefined</#if>
-                    <#else>
-                        <#assign doExistMessageForField = "">
-                        <#attempt>
-                            <#assign doExistMessageForField = messagesPerField.exists('${fieldName}')>
-                        <#recover>
-                            <#assign doExistMessageForField = true>
-                        </#attempt>
-                        return <#if doExistMessageForField>text<#else>undefined</#if>;
-                    </#if>
+
+if( out.messagesPerField ){
+
+    {
+
+        var existsError_singleFieldName = out.messagesPerField.existsError;
+
+        out.messagesPerField.existsError = function (){
+            for( let i = 0; i < arguments.length; i++ ){
+                if( existsError_singleFieldName(arguments[i]) ){
+                    return true;
                 }
-            </#list>
-            throw new Error(fieldName + "is probably runtime generated, see: https://docs.keycloakify.dev/limitations#field-names-cant-be-runtime-generated");
-        </#if>
-    },
-    "existsError": function (){
-        function existsError_singleFieldName(fieldName) {
-            <#if !messagesPerField?? || !(messagesPerField?is_hash)>   
-                throw new Error("You're not supposed to use messagesPerField.printIfExists in this page");
-            <#else>
-                <#list fieldNames as fieldName>
-                    if(fieldName === "${fieldName}" ){
-                        <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
-                        <#if ('${fieldName}' == 'username' || '${fieldName}' == 'password') && pageId != 'register.ftl' && pageId != 'register-user-profile.ftl'>
-                            <#assign doExistErrorOnUsernameOrPassword = "">
-                            <#attempt>
-                                <#assign doExistErrorOnUsernameOrPassword = messagesPerField.existsError('username', 'password')>
-                            <#recover>
-                                <#assign doExistErrorOnUsernameOrPassword = true>
-                            </#attempt>
-                            return <#if doExistErrorOnUsernameOrPassword>true<#else>false</#if>;
-                        <#else>
-                            <#assign doExistErrorMessageForField = "">
-                            <#attempt>
-                                <#assign doExistErrorMessageForField = messagesPerField.existsError('${fieldName}')>
-                            <#recover>
-                                <#assign doExistErrorMessageForField = true>
-                            </#attempt>
-                            return <#if doExistErrorMessageForField>true<#else>false</#if>;
-                        </#if>
-                    }
-                </#list>
-                throw new Error(fieldName + "is probably runtime generated, see: https://docs.keycloakify.dev/limitations#field-names-cant-be-runtime-generated");
-            </#if>
-        }
-        for( let i = 0; i < arguments.length; i++ ){
-            if( existsError_singleFieldName(arguments[i]) ){
-                return true;
             }
-        }
-        return false;
-    },
-    "get": function (fieldName) {
-        <#if !messagesPerField?? || !(messagesPerField?is_hash)>   
-            throw new Error("You're not supposed to use messagesPerField.get in this page");
-        <#else>
-            <#list fieldNames as fieldName>
-                if(fieldName === "${fieldName}" ){
-                    <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
-                    <#if ('${fieldName}' == 'username' || '${fieldName}' == 'password') && pageId != 'register.ftl' && pageId != 'register-user-profile.ftl'>
-                        <#assign doExistErrorOnUsernameOrPassword = "">
-                        <#attempt>
-                            <#assign doExistErrorOnUsernameOrPassword = messagesPerField.existsError('username', 'password')>
-                        <#recover>
-                            <#assign doExistErrorOnUsernameOrPassword = true>
-                        </#attempt>
-                        <#if doExistErrorOnUsernameOrPassword>
-                            <#attempt>
-                                return decodeHtmlEntities("${msg('invalidUserMessage')?js_string}");
-                            <#recover>
-                                return "Invalid username or password.";
-                            </#attempt>
-                        <#else>
-                            return "";
-                        </#if>
-                    <#else>
-                        <#attempt>
-                            return decodeHtmlEntities("${messagesPerField.get('${fieldName}')?js_string}");
-                        <#recover>
-                            return "Invalid field";
-                        </#attempt>
-                    </#if>
-                }
-            </#list>
-            throw new Error(fieldName + "is probably runtime generated, see: https://docs.keycloakify.dev/limitations#field-names-cant-be-runtime-generated");
-        </#if>
-    },
-    "exists": function (fieldName) {
-        <#if !messagesPerField?? || !(messagesPerField?is_hash)>   
-            throw new Error("You're not supposed to use messagesPerField.exists in this page");
-        <#else>
-            <#list fieldNames as fieldName>
-                if(fieldName === "${fieldName}" ){
-                    <#-- https://github.com/keycloakify/keycloakify/pull/218 -->
-                    <#if ('${fieldName}' == 'username' || '${fieldName}' == 'password') && pageId != 'register.ftl' && pageId != 'register-user-profile.ftl'>
-                        <#assign doExistErrorOnUsernameOrPassword = "">
-                        <#attempt>
-                            <#assign doExistErrorOnUsernameOrPassword = messagesPerField.existsError('username', 'password')>
-                        <#recover>
-                            <#assign doExistErrorOnUsernameOrPassword = true>
-                        </#attempt>
-                        return <#if doExistErrorOnUsernameOrPassword>true<#else>false</#if>;
-                    <#else>
-                        <#assign doExistErrorMessageForField = "">
-                        <#attempt>
-                            <#assign doExistErrorMessageForField = messagesPerField.exists('${fieldName}')>
-                        <#recover>
-                            <#assign doExistErrorMessageForField = true>
-                        </#attempt>
-                        return <#if doExistErrorMessageForField>true<#else>false</#if>;
-                    </#if>
-                }
-            </#list>
-            throw new Error(fieldName + "is probably runtime generated, see: https://docs.keycloakify.dev/limitations#field-names-cant-be-runtime-generated");
-        </#if>
-    },
-    "getFirstError": function () {
+            return false;
+        };
+
+    }
+    out.messagesPerField.exists = function (fieldName) {
+        return out.messagesPerField.get(fieldName) !== "";
+    };
+    out.messagesPerField.printIfExists = function (fieldName, text) {
+        return out.messagesPerField.exists(fieldName) ? text : undefined;
+    };
+    out.messagesPerField.getFirstError = function () {
         for( let i = 0; i < arguments.length; i++ ){
             const fieldName = arguments[i];
             if( out.messagesPerField.existsError(fieldName) ){
                 return out.messagesPerField.get(fieldName);
             }
         }
-    }
-};
+    };
 
-out["keycloakifyVersion"] = "KEYCLOAKIFY_VERSION_xEdKd3xEdr";
-out["themeVersion"] = "KEYCLOAKIFY_THEME_VERSION_sIgKd3xEdr3dx";
-out["themeType"] = "KEYCLOAKIFY_THEME_TYPE_dExKd3xEdr";
-out["themeName"] = "KEYCLOAKIFY_THEME_NAME_cXxKd3xEer";
-out["pageId"] = "${pageId}";
+}
 
-try {
-    out["url"]["resourcesCommonPath"] = out["url"]["resourcesPath"] + "/" + "RESOURCES_COMMON_cLsLsMrtDkpVv";
-} catch(error) { }
+out.keycloakifyVersion = "KEYCLOAKIFY_VERSION_xEdKd3xEdr";
+out.themeVersion = "KEYCLOAKIFY_THEME_VERSION_sIgKd3xEdr3dx";
+out.themeType = "KEYCLOAKIFY_THEME_TYPE_dExKd3xEdr";
+out.themeName = "KEYCLOAKIFY_THEME_NAME_cXxKd3xEer";
+out.pageId = "${pageId}";
+
+if( out.url && out.url.resourcesPath ){
+    out.url.resourcesCommonPath = out.url.resourcesPath + "/" + "RESOURCES_COMMON_cLsLsMrtDkpVv";
+}
 
 <#if profile?? && profile.attributes??>
-    out["lOCALIZATION_REALM_OVERRIDES_USER_PROFILE_PROPERTY_KEY_aaGLsPgGIdeeX"] = {
+    out.lOCALIZATION_REALM_OVERRIDES_USER_PROFILE_PROPERTY_KEY_aaGLsPgGIdeeX = {
         <#list profile.attributes as attribute>
             <#if attribute.annotations?? && attribute.displayName??>
                 "${attribute.displayName}": decodeHtmlEntities("${advancedMsg(attribute.displayName)?js_string}"),
@@ -196,22 +77,22 @@ try {
 
 attributes_to_attributesByName: {
 
-    if( !out["profile"] ){
+    if( !out.profile ){
         break attributes_to_attributesByName;
     }
 
-    if( !out["profile"]["attributes"] ){
+    if( !out.profile.attributes ){
         break attributes_to_attributesByName;
     }
 
-    var attributes =  out["profile"]["attributes"];
+    var attributes =  out.profile.attributes;
 
-    delete out["profile"]["attributes"];
+    delete out.profile.attributes;
 
-    out["profile"]["attributesByName"] = {};
+    out.profile.attributesByName = {};
 
     attributes.forEach(function(attribute){
-        out["profile"]["attributesByName"][attribute.name] = attribute;
+        out.profile.attributesByName[attribute.name] = attribute;
     });
 
 }
@@ -440,6 +321,104 @@ function decodeHtmlEntities(htmlStr){
                     <#return "ABORT: Couldn't evaluate totp.policy.getAlgorithmKey()">
                 </#attempt>
                 <#return 'function(){ return "' + returnValue + '"; }'>
+            </#if>
+
+            <#assign fieldNames = [ FIELD_NAMES_eKsIY4ZsZ4xeM ]>
+            <#if profile?? && profile.attributes??>
+                <#list profile.attributes as attribute>
+                    <#if fieldNames?seq_contains(attribute.name)>
+                        <#continue>
+                    </#if>
+                    <#assign fieldNames += [attribute.name]>
+                </#list>
+            </#if>
+
+            <#if are_same_path(path, ["messagesPerField", "get"])>
+
+                <#local jsFunctionCode = "function (fieldName) { ">
+
+                <#list fieldNames as fieldName>
+
+                    <#-- See: https://github.com/keycloakify/keycloakify/issues/217 -->
+                    <#if fieldName == "username">
+
+                        <#local jsFunctionCode += "if(fieldName === 'username' || fieldName === 'password' ){ ">
+
+                        <#if messagesPerField.exists('username') || messagesPerField.exists('password')>
+                            <#local jsFunctionCode += "return out.message && out.message.summary ? out.message.summary : 'error'; ">
+                        <#else>
+                            <#local jsFunctionCode += "return ''; ">
+                        </#if>
+
+                        <#local jsFunctionCode += "} ">
+
+                        <#continue>
+                    </#if>
+
+                    <#if fieldName == "password">
+                        <#continue>
+                    </#if>
+
+                    <#local jsFunctionCode += "if(fieldName === '" + fieldName + "'){ ">
+
+                    <#if messagesPerField.exists('${fieldName}')>
+                        <#local jsFunctionCode += 'return decodeHtmlEntities("' + messagesPerField.get('${fieldName}')?js_string + '"); '>
+                    <#else>
+                        <#local jsFunctionCode += "return ''; ">
+                    </#if>
+
+                    <#local jsFunctionCode += "} ">
+
+                </#list>
+
+                <#local jsFunctionCode += "}">
+
+                <#return jsFunctionCode>
+
+            </#if>
+
+            <#if are_same_path(path, ["messagesPerField", "existsError"])>
+
+                <#local jsFunctionCode = "function (fieldName) { ">
+
+                <#list fieldNames as fieldName>
+
+                    <#-- See: https://github.com/keycloakify/keycloakify/issues/217 -->
+                    <#if fieldName == "username">
+
+                        <#local jsFunctionCode += "if(fieldName === 'username' || fieldName === 'password' ){ ">
+
+                        <#if messagesPerField.existsError('username') || messagesPerField.existsError('password')>
+                            <#local jsFunctionCode += "return true; ">
+                        <#else>
+                            <#local jsFunctionCode += "return false; ">
+                        </#if>
+
+                        <#local jsFunctionCode += "} ">
+
+                        <#continue>
+                    </#if>
+
+                    <#if fieldName == "password">
+                        <#continue>
+                    </#if>
+
+                    <#local jsFunctionCode += "if(fieldName === '" + fieldName + "' ){ ">
+
+                    <#if messagesPerField.existsError('${fieldName}')>
+                        <#local jsFunctionCode += 'return true; '>
+                    <#else>
+                        <#local jsFunctionCode += "return false; ">
+                    </#if>
+
+                    <#local jsFunctionCode += "}">
+
+                </#list>
+
+                <#local jsFunctionCode += "}">
+
+                <#return jsFunctionCode>
+
             </#if>
 
             <#return "ABORT: It's a method">
