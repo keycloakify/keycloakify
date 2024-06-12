@@ -229,6 +229,7 @@ export declare namespace KcContext {
         client: {
             baseUrl?: string;
         };
+        message: NonNullable<Common["message"]>;
     };
 
     export type Error = Common & {

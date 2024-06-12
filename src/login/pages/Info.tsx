@@ -1,4 +1,3 @@
-import { assert } from "keycloakify/tools/assert";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
 import type { I18n } from "../i18n";
@@ -7,11 +6,6 @@ export default function Info(props: PageProps<Extract<KcContext, { pageId: "info
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
     const { msgStr, msg } = i18n;
-
-    assert(
-        kcContext.message !== undefined,
-        "No message in kcContext.message, there will always be a message in production context, add it in your mock"
-    );
 
     const { messageHeader, message, requiredActions, skipLink, pageRedirectUri, actionUri, client } = kcContext;
 

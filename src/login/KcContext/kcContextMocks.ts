@@ -212,6 +212,11 @@ export const kcContextMocks = [
             clientId: "myApp",
             baseUrl: "#",
             attributes: {}
+        },
+        message: {
+            type: "info",
+            summary:
+                "This is the info message from the Keycloak server (in real environment, this message is localized)"
         }
     }),
     id<KcContext.Error>({
@@ -224,7 +229,8 @@ export const kcContextMocks = [
         },
         message: {
             type: "error",
-            summary: "This is the error message"
+            summary:
+                "This is the error message from the Keycloak server (in real environment, this message is localized)"
         }
     }),
     id<KcContext.LoginResetPassword>({
