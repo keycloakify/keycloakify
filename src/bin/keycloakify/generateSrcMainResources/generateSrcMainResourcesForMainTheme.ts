@@ -251,7 +251,7 @@ export async function generateSrcMainResourcesForMainTheme(params: {
                         assert<Equals<typeof themeType, never>>(false);
                     })()}`,
                     ...(buildContext.extraThemeProperties ?? []),
-                    buildContext.environmentVariables.map(
+                    ...buildContext.environmentVariables.map(
                         ({ name, default: defaultValue }) =>
                             `${name}=\${env.${name}:${escapeStringForPropertiesFile(defaultValue)}}`
                     )
