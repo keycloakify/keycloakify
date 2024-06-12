@@ -198,6 +198,9 @@ function decodeHtmlEntities(htmlStr){
                             key == "styles" ||
                             key == "accountResourceProvider"
                         )
+                    ) || (
+                        key == "execution" &&
+                        are_same_path(path, [])
                     )
                 >
                     <#-- <#local out_seq += ["/*" + path?join(".") + "." + key + " excluded*/"]> -->
