@@ -9,7 +9,12 @@ import type { KeycloakVersionRange } from "../shared/KeycloakVersionRange";
 import { getJarFileBasename } from "../shared/getJarFileBasename";
 import { assert, type Equals } from "tsafe/assert";
 import * as fs from "fs";
-import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path";
+import {
+    join as pathJoin,
+    relative as pathRelative,
+    sep as pathSep,
+    dirname as pathDirname
+} from "path";
 import * as child_process from "child_process";
 import chalk from "chalk";
 import chokidar from "chokidar";
@@ -248,46 +253,70 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             });
         }
 
-        const dirPath = pathJoin(
-            getThisCodebaseRootDirPath(),
-            "src",
-            "bin",
-            "start-keycloak"
-        );
+        const internalFilePath = await (async () => {
+            const dirPath = pathJoin(
+                getThisCodebaseRootDirPath(),
+                "src",
+                "bin",
+                "start-keycloak"
+            );
 
-        const filePath = pathJoin(
-            dirPath,
-            `myrealm-realm-${keycloakMajorVersionNumber}.json`
-        );
+            const filePath = pathJoin(
+                dirPath,
+                `myrealm-realm-${keycloakMajorVersionNumber}.json`
+            );
 
-        if (fs.existsSync(filePath)) {
-            return filePath;
-        }
+            if (fs.existsSync(filePath)) {
+                return filePath;
+            }
 
-        console.log(
-            `${chalk.yellow(
-                `Keycloakify do not have a realm configuration for Keycloak ${keycloakMajorVersionNumber} yet.`
-            )}`
-        );
+            console.log(
+                `${chalk.yellow(
+                    `Keycloakify do not have a realm configuration for Keycloak ${keycloakMajorVersionNumber} yet.`
+                )}`
+            );
 
-        console.log(chalk.cyan("Select what configuration to use:"));
+            console.log(chalk.cyan("Select what configuration to use:"));
 
-        const { value } = await cliSelect<string>({
-            values: [
-                ...fs
-                    .readdirSync(dirPath)
-                    .filter(fileBasename => fileBasename.endsWith(".json")),
-                "none"
-            ]
-        }).catch(() => {
-            process.exit(-1);
-        });
+            const { value } = await cliSelect<string>({
+                values: [
+                    ...fs
+                        .readdirSync(dirPath)
+                        .filter(fileBasename => fileBasename.endsWith(".json")),
+                    "none"
+                ]
+            }).catch(() => {
+                process.exit(-1);
+            });
 
-        if (value === "none") {
+            if (value === "none") {
+                return undefined;
+            }
+
+            return pathJoin(dirPath, value);
+        })();
+
+        if (internalFilePath === undefined) {
             return undefined;
         }
 
-        return pathJoin(dirPath, value);
+        const filePath = pathJoin(
+            buildContext.cacheDirPath,
+            pathDirname(internalFilePath)
+        );
+
+        fs.writeFileSync(
+            filePath,
+            Buffer.from(
+                fs
+                    .readFileSync(internalFilePath)
+                    .toString("utf8")
+                    .replace(/keycloakify\-starter/g, buildContext.themeNames[0])
+            ),
+            "utf8"
+        );
+
+        return filePath;
     })();
 
     const jarFilePath = pathJoin(buildContext.keycloakifyBuildDirPath, jarFileBasename);
