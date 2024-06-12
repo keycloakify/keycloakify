@@ -21,10 +21,6 @@ export const WithInvalidCredential: Story = {
     render: () => (
         <KcPageStory
             kcContext={{
-                message: {
-                    summary: "Invalid username or password.",
-                    type: "error"
-                },
                 login: {
                     username: "johndoe"
                 },

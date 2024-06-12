@@ -121,3 +121,15 @@ export const WithPresets: Story = {
         />
     )
 };
+
+export const WithPasswordMinLength8: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                passwordPolicies: {
+                    length: 8
+                }
+            }}
+        />
+    )
+};
