@@ -331,23 +331,27 @@ function decodeHtmlEntities(htmlStr){
                 <#list fieldNames as fieldName>
 
                     <#-- See: https://github.com/keycloakify/keycloakify/issues/217 -->
-                    <#if fieldName == "username">
+                    <#if pageId === "login.ftl" >
 
-                        <#local jsFunctionCode += "if(fieldName === 'username' || fieldName === 'password' ){ ">
+                        <#if fieldName == "username">
 
-                        <#if messagesPerField.exists('username') || messagesPerField.exists('password')>
-                            <#local jsFunctionCode += "return out.message && out.message.summary ? out.message.summary : 'error'; ">
-                        <#else>
-                            <#local jsFunctionCode += "return ''; ">
+                            <#local jsFunctionCode += "if(fieldName === 'username' || fieldName === 'password' ){ ">
+
+                            <#if messagesPerField.exists('username') || messagesPerField.exists('password')>
+                                <#local jsFunctionCode += "return out.message && out.message.summary ? out.message.summary : 'error'; ">
+                            <#else>
+                                <#local jsFunctionCode += "return ''; ">
+                            </#if>
+
+                            <#local jsFunctionCode += "} ">
+
+                            <#continue>
                         </#if>
 
-                        <#local jsFunctionCode += "} ">
+                        <#if fieldName == "password">
+                            <#continue>
+                        </#if>
 
-                        <#continue>
-                    </#if>
-
-                    <#if fieldName == "password">
-                        <#continue>
                     </#if>
 
                     <#local jsFunctionCode += "if(fieldName === '" + fieldName + "'){ ">
@@ -375,23 +379,25 @@ function decodeHtmlEntities(htmlStr){
                 <#list fieldNames as fieldName>
 
                     <#-- See: https://github.com/keycloakify/keycloakify/issues/217 -->
-                    <#if fieldName == "username">
+                    <#if pageId === "login.ftl" >
+                        <#if fieldName == "username">
 
-                        <#local jsFunctionCode += "if(fieldName === 'username' || fieldName === 'password' ){ ">
+                            <#local jsFunctionCode += "if(fieldName === 'username' || fieldName === 'password' ){ ">
 
-                        <#if messagesPerField.existsError('username') || messagesPerField.existsError('password')>
-                            <#local jsFunctionCode += "return true; ">
-                        <#else>
-                            <#local jsFunctionCode += "return false; ">
+                            <#if messagesPerField.existsError('username') || messagesPerField.existsError('password')>
+                                <#local jsFunctionCode += "return true; ">
+                            <#else>
+                                <#local jsFunctionCode += "return false; ">
+                            </#if>
+
+                            <#local jsFunctionCode += "} ">
+
+                            <#continue>
                         </#if>
 
-                        <#local jsFunctionCode += "} ">
-
-                        <#continue>
-                    </#if>
-
-                    <#if fieldName == "password">
-                        <#continue>
+                        <#if fieldName == "password">
+                            <#continue>
+                        </#if>
                     </#if>
 
                     <#local jsFunctionCode += "if(fieldName === '" + fieldName + "' ){ ">
