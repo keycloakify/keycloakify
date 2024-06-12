@@ -29,8 +29,6 @@ export function readFieldNameUsage(params: {
                 continue;
             }
 
-            console.log(filePath);
-
             for (const functionName of [
                 "printIfExists",
                 "existsError",
