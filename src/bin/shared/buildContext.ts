@@ -5,7 +5,7 @@ import { getNpmWorkspaceRootDirPath } from "../tools/getNpmWorkspaceRootDirPath"
 import type { CliCommandOptions } from "../main";
 import { z } from "zod";
 import * as fs from "fs";
-import { assert } from "tsafe";
+import { assert, type Equals } from "tsafe";
 import * as child_process from "child_process";
 import { vitePluginSubScriptEnvNames } from "./constants";
 
@@ -102,14 +102,32 @@ export function getBuildContext(params: {
     })();
 
     const parsedPackageJson = (() => {
+        type WebpackSpecificBuildOptions = {
+            projectBuildDirPath?: string;
+        };
+
         type ParsedPackageJson = {
             name: string;
             version?: string;
             homepage?: string;
-            keycloakify?: BuildOptions & {
+            keycloakify?: {
+                themeName?: string | string[];
+                environmentVariables?: { name: string; default: string }[];
+                extraThemeProperties?: string[];
+                artifactId?: string;
+                groupId?: string;
+                loginThemeResourcesFromKeycloakVersion?: string;
+                keycloakifyBuildDirPath?: string;
+                kcContextExclusionsFtl?: string;
                 projectBuildDirPath?: string;
             };
         };
+
+        {
+            type Got = NonNullable<ParsedPackageJson["keycloakify"]>;
+            type Expected = BuildOptions & WebpackSpecificBuildOptions;
+            assert<Equals<Got, Expected>>();
+        }
 
         const zParsedPackageJson = z.object({
             name: z.string(),
@@ -123,16 +141,24 @@ export function getBuildContext(params: {
                     loginThemeResourcesFromKeycloakVersion: z.string().optional(),
                     projectBuildDirPath: z.string().optional(),
                     keycloakifyBuildDirPath: z.string().optional(),
+                    kcContextExclusionsFtl: z.string().optional(),
+                    environmentVariables: z
+                        .array(
+                            z.object({
+                                name: z.string(),
+                                default: z.string()
+                            })
+                        )
+                        .optional(),
                     themeName: z.union([z.string(), z.array(z.string())]).optional()
                 })
                 .optional()
         });
 
         {
-            type Got = ReturnType<(typeof zParsedPackageJson)["parse"]>;
+            type Got = z.infer<typeof zParsedPackageJson>;
             type Expected = ParsedPackageJson;
-            assert<Got extends Expected ? true : false>();
-            assert<Expected extends Got ? true : false>();
+            assert<Equals<Got, Expected>>();
         }
 
         return zParsedPackageJson.parse(
