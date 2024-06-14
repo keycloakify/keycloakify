@@ -1,4 +1,4 @@
-import path from "path";
+import { join as pathJoin } from "path";
 import { it, describe, expect, vi, beforeAll, afterAll } from "vitest";
 import { crawl } from "keycloakify/bin/tools/crawl";
 
@@ -13,11 +13,11 @@ describe("crawl", () => {
                         switch (dir_path) {
                             case "root_dir":
                                 return ["sub_1_dir", "file_1", "sub_2_dir", "file_2"];
-                            case path.join("root_dir", "sub_1_dir"):
+                            case pathJoin("root_dir", "sub_1_dir"):
                                 return ["file_3", "sub_3_dir", "file_4"];
-                            case path.join("root_dir", "sub_1_dir", "sub_3_dir"):
+                            case pathJoin("root_dir", "sub_1_dir", "sub_3_dir"):
                                 return ["file_5"];
-                            case path.join("root_dir", "sub_2_dir"):
+                            case pathJoin("root_dir", "sub_2_dir"):
                                 return [];
                             default: {
                                 const enoent = new Error(
@@ -46,10 +46,12 @@ describe("crawl", () => {
         });
         it("returns files under a given dir_path", async () => {
             const paths = crawl({
-                dirPath: "root_dir/sub_1_dir/sub_3_dir",
+                dirPath: pathJoin("root_dir", "sub_1_dir", "sub_3_dir"),
                 returnedPathsType: "absolute"
             });
-            expect(paths).toEqual(["root_dir/sub_1_dir/sub_3_dir/file_5"]);
+            expect(paths).toEqual([
+                pathJoin("root_dir", "sub_1_dir", "sub_3_dir", "file_5")
+            ]);
         });
         it("returns files recursively under a given dir_path", async () => {
             const paths = crawl({
@@ -57,11 +59,11 @@ describe("crawl", () => {
                 returnedPathsType: "absolute"
             });
             expect(paths).toEqual([
-                "root_dir/sub_1_dir/file_3",
-                "root_dir/sub_1_dir/sub_3_dir/file_5",
-                "root_dir/sub_1_dir/file_4",
-                "root_dir/file_1",
-                "root_dir/file_2"
+                pathJoin("root_dir", "sub_1_dir", "file_3"),
+                pathJoin("root_dir", "sub_1_dir", "sub_3_dir", "file_5"),
+                pathJoin("root_dir", "sub_1_dir", "file_4"),
+                pathJoin("root_dir", "file_1"),
+                pathJoin("root_dir", "file_2")
             ]);
         });
         it("throw dir_path does not exist", async () => {
