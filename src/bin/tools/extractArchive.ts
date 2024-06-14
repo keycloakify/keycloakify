@@ -109,7 +109,7 @@ export async function extractArchive(params: {
     zipFile.on("entry", async (entry: yauzl.Entry) => {
         handle_file: {
             // NOTE: Skip directories
-            if (entry.fileName.endsWith(pathSep)) {
+            if (entry.fileName.endsWith("/")) {
                 break handle_file;
             }
 
