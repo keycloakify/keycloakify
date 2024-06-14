@@ -79,8 +79,16 @@ export async function getProxyFetchOptions(params: {
                 }
 
                 const cafileContent = await readFile(cafile, "utf-8");
+
+                const newLinePlaceholder = "NEW_LINE_PLACEHOLDER_xIsPsK23svt";
+
                 return chunks(cafileContent.split(/(-----END CERTIFICATE-----)/), 2).map(
-                    ca => ca.join("").replace(/^\n/, "").replace(/\n/g, "\\n")
+                    ca =>
+                        ca
+                            .join("")
+                            .replace(/\r?\n/g, newLinePlaceholder)
+                            .replace(new RegExp(`^${newLinePlaceholder}`), "")
+                            .replace(new RegExp(newLinePlaceholder, "g"), "\\n")
                 );
             })())
         );
