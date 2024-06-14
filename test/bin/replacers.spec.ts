@@ -7,10 +7,7 @@ import {
 import { replaceImportsInInlineCssCode } from "keycloakify/bin/keycloakify/replacers/replaceImportsInInlineCssCode";
 import { same } from "evt/tools/inDepth/same";
 import { expect, it, describe } from "vitest";
-import {
-    basenameOfTheKeycloakifyResourcesDir,
-    nameOfTheGlobal
-} from "keycloakify/bin/shared/constants";
+import { basenameOfTheKeycloakifyResourcesDir } from "keycloakify/bin/shared/constants";
 
 describe("js replacer - vite", () => {
     it("replaceImportsInJsCode_vite - 1", () => {
@@ -95,13 +92,13 @@ describe("js replacer - vite", () => {
             });
 
             const fixedJsCodeExpected = `
-                    S=(window.${nameOfTheGlobal}.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/assets/keycloakify-logo-mqjydaoZ.png"),H=(()=>{
+                    S=(window.kcContext.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/assets/keycloakify-logo-mqjydaoZ.png"),H=(()=>{
 
                     function __vite__mapDeps(indexes) {
                         if (!__vite__mapDeps.viteFileDeps) {
                             __vite__mapDeps.viteFileDeps = [
-                                (window.${nameOfTheGlobal}.url.resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/assets/Login-dJpPRzM4.js"), 
-                                (window.${nameOfTheGlobal}.url.resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/assets/index-XwzrZ5Gu.js")
+                                (window.kcContext.url.resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/assets/Login-dJpPRzM4.js"), 
+                                (window.kcContext.url.resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/assets/index-XwzrZ5Gu.js")
                             ]
                         }
                         return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
@@ -154,13 +151,13 @@ describe("js replacer - vite", () => {
             });
 
             const fixedJsCodeExpected = `
-                    S=(window.${nameOfTheGlobal}.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/foo/bar/keycloakify-logo-mqjydaoZ.png"),H=(()=>{
+                    S=(window.kcContext.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/foo/bar/keycloakify-logo-mqjydaoZ.png"),H=(()=>{
 
                     function __vite__mapDeps(indexes) {
                         if (!__vite__mapDeps.viteFileDeps) {
                             __vite__mapDeps.viteFileDeps = [
-                                (window.${nameOfTheGlobal}.url.resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/foo/bar/Login-dJpPRzM4.js"), 
-                                (window.${nameOfTheGlobal}.url.resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/foo/bar/index-XwzrZ5Gu.js")
+                                (window.kcContext.url.resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/foo/bar/Login-dJpPRzM4.js"), 
+                                (window.kcContext.url.resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/foo/bar/index-XwzrZ5Gu.js")
                             ]
                         }
                         return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
@@ -213,13 +210,13 @@ describe("js replacer - vite", () => {
             });
 
             const fixedJsCodeExpected = `
-                    S=(window.${nameOfTheGlobal}.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/assets/keycloakify-logo-mqjydaoZ.png"),H=(()=>{
+                    S=(window.kcContext.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/assets/keycloakify-logo-mqjydaoZ.png"),H=(()=>{
 
                     function __vite__mapDeps(indexes) {
                         if (!__vite__mapDeps.viteFileDeps) {
                             __vite__mapDeps.viteFileDeps = [
-                                (window.${nameOfTheGlobal}.url.resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/assets/Login-dJpPRzM4.js"), 
-                                (window.${nameOfTheGlobal}.url.resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/assets/index-XwzrZ5Gu.js")
+                                (window.kcContext.url.resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/assets/Login-dJpPRzM4.js"), 
+                                (window.kcContext.url.resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/assets/index-XwzrZ5Gu.js")
                             ]
                         }
                         return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])

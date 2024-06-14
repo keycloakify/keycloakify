@@ -1,4 +1,3 @@
-export const nameOfTheGlobal = "kcContext";
 export const nameOfTheLocalizationRealmOverridesUserProfileProperty =
     "__localizationRealmOverridesUserProfile";
 export const keycloak_resources = "keycloak-resources";

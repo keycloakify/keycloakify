@@ -1,10 +1,8 @@
-<script>const _= 
-(()=>{
 <#assign pageId="PAGE_ID_xIgLsPgGId9D8e">
-const out = ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
-if( out.messagesPerField ){
-    var existsError_singleFieldName = out.messagesPerField.existsError;
-    out.messagesPerField.existsError = function (){
+const kcContext = ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
+if( kcContext.messagesPerField ){
+    var existsError_singleFieldName = kcContext.messagesPerField.existsError;
+    kcContext.messagesPerField.existsError = function (){
         for( let i = 0; i < arguments.length; i++ ){
             if( existsError_singleFieldName(arguments[i]) ){
                 return true;
@@ -12,31 +10,31 @@ if( out.messagesPerField ){
         }
         return false;
     };
-    out.messagesPerField.exists = function (fieldName) {
-        return out.messagesPerField.get(fieldName) !== "";
+    kcContext.messagesPerField.exists = function (fieldName) {
+        return kcContext.messagesPerField.get(fieldName) !== "";
     };
-    out.messagesPerField.printIfExists = function (fieldName, text) {
-        return out.messagesPerField.exists(fieldName) ? text : undefined;
+    kcContext.messagesPerField.printIfExists = function (fieldName, text) {
+        return kcContext.messagesPerField.exists(fieldName) ? text : undefined;
     };
-    out.messagesPerField.getFirstError = function () {
+    kcContext.messagesPerField.getFirstError = function () {
         for( let i = 0; i < arguments.length; i++ ){
             const fieldName = arguments[i];
-            if( out.messagesPerField.existsError(fieldName) ){
-                return out.messagesPerField.get(fieldName);
+            if( kcContext.messagesPerField.existsError(fieldName) ){
+                return kcContext.messagesPerField.get(fieldName);
             }
         }
     };
 }
-out.keycloakifyVersion = "KEYCLOAKIFY_VERSION_xEdKd3xEdr";
-out.themeVersion = "KEYCLOAKIFY_THEME_VERSION_sIgKd3xEdr3dx";
-out.themeType = "KEYCLOAKIFY_THEME_TYPE_dExKd3xEdr";
-out.themeName = "KEYCLOAKIFY_THEME_NAME_cXxKd3xEer";
-out.pageId = "${pageId}";
-if( out.url && out.url.resourcesPath ){
-    out.url.resourcesCommonPath = out.url.resourcesPath + "/" + "RESOURCES_COMMON_cLsLsMrtDkpVv";
+kcContext.keycloakifyVersion = "KEYCLOAKIFY_VERSION_xEdKd3xEdr";
+kcContext.themeVersion = "KEYCLOAKIFY_THEME_VERSION_sIgKd3xEdr3dx";
+kcContext.themeType = "KEYCLOAKIFY_THEME_TYPE_dExKd3xEdr";
+kcContext.themeName = "KEYCLOAKIFY_THEME_NAME_cXxKd3xEer";
+kcContext.pageId = "${pageId}";
+if( kcContext.url && kcContext.url.resourcesPath ){
+    kcContext.url.resourcesCommonPath = kcContext.url.resourcesPath + "/" + "RESOURCES_COMMON_cLsLsMrtDkpVv";
 }
 <#if profile?? && profile.attributes??>
-    out.lOCALIZATION_REALM_OVERRIDES_USER_PROFILE_PROPERTY_KEY_aaGLsPgGIdeeX = {
+    kcContext.lOCALIZATION_REALM_OVERRIDES_USER_PROFILE_PROPERTY_KEY_aaGLsPgGIdeeX = {
         <#list profile.attributes as attribute>
             <#if attribute.annotations?? && attribute.displayName??>
                 "${attribute.displayName}": decodeHtmlEntities("${advancedMsg(attribute.displayName)?js_string}"),
@@ -64,21 +62,20 @@ if( out.url && out.url.resourcesPath ){
     };
 </#if>
 attributes_to_attributesByName: {
-    if( !out.profile ){
+    if( !kcContext.profile ){
         break attributes_to_attributesByName;
     }
-    if( !out.profile.attributes ){
+    if( !kcContext.profile.attributes ){
         break attributes_to_attributesByName;
     }
-    var attributes =  out.profile.attributes;
-    delete out.profile.attributes;
-    out.profile.attributesByName = {};
+    var attributes =  kcContext.profile.attributes;
+    delete kcContext.profile.attributes;
+    kcContext.profile.attributesByName = {};
     attributes.forEach(function(attribute){
-        out.profile.attributesByName[attribute.name] = attribute;
+        kcContext.profile.attributesByName[attribute.name] = attribute;
     });
 }
-return out;
-
+window.kcContext = kcContext;
 function decodeHtmlEntities(htmlStr){
     var element = decodeHtmlEntities.element;
     if (!element) {
@@ -88,7 +85,7 @@ function decodeHtmlEntities(htmlStr){
     element.innerHTML = htmlStr;
     return element.value;
 }
-})();
+
 <#function ftl_object_to_js_code_declaring_an_object object path>
 
         <#local isHash = "">
@@ -341,7 +338,7 @@ function decodeHtmlEntities(htmlStr){
                             <#local jsFunctionCode += "if(fieldName === 'username' || fieldName === 'password' ){ ">
 
                             <#if messagesPerField.exists('username') || messagesPerField.exists('password')>
-                                <#local jsFunctionCode += "return out.message && out.message.summary ? out.message.summary : 'error'; ">
+                                <#local jsFunctionCode += "return kcContext.message && kcContext.message.summary ? kcContext.message.summary : 'error'; ">
                             <#else>
                                 <#local jsFunctionCode += "return ''; ">
                             </#if>
@@ -552,4 +549,3 @@ function decodeHtmlEntities(htmlStr){
 <#function are_same_path path searchedPath>
     <#return path?size == searchedPath?size && is_subpath(path, searchedPath)>
 </#function>
-</script>

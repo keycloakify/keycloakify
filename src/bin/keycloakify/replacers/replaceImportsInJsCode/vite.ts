@@ -1,7 +1,4 @@
-import {
-    nameOfTheGlobal,
-    basenameOfTheKeycloakifyResourcesDir
-} from "../../../shared/constants";
+import { basenameOfTheKeycloakifyResourcesDir } from "../../../shared/constants";
 import { assert } from "tsafe/assert";
 import type { BuildContext } from "../../../shared/buildContext";
 import * as nodePath from "path";
@@ -88,13 +85,13 @@ export function replaceImportsInJsCode_vite(params: {
                 fixedJsCode = replaceAll(
                     fixedJsCode,
                     `"${relativePathOfAssetFile}"`,
-                    `(window.${nameOfTheGlobal}.url.resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/${relativePathOfAssetFile}")`
+                    `(window.kcContext.url.resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/${relativePathOfAssetFile}")`
                 );
 
                 fixedJsCode = replaceAll(
                     fixedJsCode,
                     `"${buildContext.urlPathname ?? "/"}${relativePathOfAssetFile}"`,
-                    `(window.${nameOfTheGlobal}.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/${relativePathOfAssetFile}")`
+                    `(window.kcContext.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/${relativePathOfAssetFile}")`
                 );
             });
     }

@@ -1,7 +1,4 @@
-import {
-    nameOfTheGlobal,
-    basenameOfTheKeycloakifyResourcesDir
-} from "../../../shared/constants";
+import { basenameOfTheKeycloakifyResourcesDir } from "../../../shared/constants";
 import { assert } from "tsafe/assert";
 import type { BuildContext } from "../../../shared/buildContext";
 import * as nodePath from "path";
@@ -86,7 +83,7 @@ export function replaceImportsInJsCode_webpack(params: {
                 var pd = Object.getOwnPropertyDescriptor(${n}, "p");
                 if( pd === undefined || pd.configurable ){
                     Object.defineProperty(${n}, "p", {
-                        get: function() { return window.${nameOfTheGlobal}.url.resourcesPath; },
+                        get: function() { return window.kcContext.url.resourcesPath; },
                         set: function() {}
                     });
                 }
@@ -107,7 +104,7 @@ export function replaceImportsInJsCode_webpack(params: {
                 `[a-zA-Z]+\\.[a-zA-Z]+\\+"${staticDir.replace(/\//g, "\\/")}`,
                 "g"
             ),
-            `window.${nameOfTheGlobal}.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/${staticDir}`
+            `window.kcContext.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/${staticDir}`
         );
 
     return { fixedJsCode };

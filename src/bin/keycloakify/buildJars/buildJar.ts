@@ -168,8 +168,8 @@ export async function buildJar(params: {
                 })();
 
                 const modifiedFtlFileContent = ftlFileContent.replace(
-                    `out.pageId = "\${pageId}";`,
-                    `out.pageId = "${pageId}"; out.realPageId = "${realPageId}";`
+                    `kcContext.pageId = "\${pageId}";`,
+                    `kcContext.pageId = "${pageId}"; kcContext.realPageId = "${realPageId}";`
                 );
 
                 assert(modifiedFtlFileContent !== ftlFileContent);

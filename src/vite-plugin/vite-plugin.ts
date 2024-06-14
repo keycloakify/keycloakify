@@ -1,7 +1,6 @@
 import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path";
 import type { Plugin } from "vite";
 import {
-    nameOfTheGlobal,
     basenameOfTheKeycloakifyResourcesDir,
     keycloak_resources,
     vitePluginSubScriptEnvNames
@@ -170,9 +169,9 @@ export function keycloakify(params?: Params) {
                 /import\.meta\.env(?:(?:\.BASE_URL)|(?:\["BASE_URL"\]))/g,
                 [
                     `(`,
-                    `(window.${nameOfTheGlobal} === undefined || import.meta.env.MODE === "development")?`,
+                    `(window.kcContext === undefined || import.meta.env.MODE === "development")?`,
                     `"${urlPathname ?? "/"}":`,
-                    `(window.${nameOfTheGlobal}.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/")`,
+                    `(window.kcContext.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/")`,
                     `)`
                 ].join("")
             );

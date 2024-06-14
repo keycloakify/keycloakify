@@ -1,7 +1,4 @@
-import {
-    nameOfTheGlobal,
-    basenameOfTheKeycloakifyResourcesDir
-} from "keycloakify/bin/shared/constants";
+import { basenameOfTheKeycloakifyResourcesDir } from "keycloakify/bin/shared/constants";
 import { assert } from "tsafe/assert";
 
 /**
@@ -9,7 +6,7 @@ import { assert } from "tsafe/assert";
  * This works both in your main app and in your Keycloak theme.
  */
 export const PUBLIC_URL = (() => {
-    const kcContext = (window as any)[nameOfTheGlobal];
+    const kcContext = (window as any).kcContext;
 
     if (kcContext === undefined || process.env.NODE_ENV === "development") {
         assert(
