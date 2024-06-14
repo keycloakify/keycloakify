@@ -2,6 +2,7 @@ import { execSync } from "child_process";
 import { join as pathJoin, relative as pathRelative } from "path";
 import { getThisCodebaseRootDirPath } from "../src/bin/tools/getThisCodebaseRootDirPath";
 import * as fs from "fs";
+import * as os from "os";
 
 const singletonDependencies: string[] = ["react", "@types/react"];
 
@@ -83,7 +84,9 @@ const execYarnLink = (params: { targetModuleName?: string; cwd: string }) => {
         cwd,
         env: {
             ...process.env,
-            HOME: yarnGlobalDirPath
+            ...(os.platform() === "win32"
+                ? { USERPROFILE: yarnGlobalDirPath }
+                : { HOME: yarnGlobalDirPath })
         }
     });
 };
