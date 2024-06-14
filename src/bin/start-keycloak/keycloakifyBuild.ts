@@ -26,7 +26,8 @@ export async function keycloakifyBuild(params: {
         env: {
             ...process.env,
             [onlyBuildJarFileBasenameEnvName]: onlyBuildJarFileBasename
-        }
+        },
+        shell: true
     });
 
     child.stdout.on("data", data => process.stdout.write(data));

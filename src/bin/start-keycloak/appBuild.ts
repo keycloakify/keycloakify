@@ -109,7 +109,7 @@ export async function appBuild(params: {
 
     const dResult = new Deferred<{ isSuccess: boolean }>();
 
-    const child = child_process.spawn(command, args, { cwd });
+    const child = child_process.spawn(command, args, { cwd, shell: true });
 
     child.stdout.on("data", data => {
         if (data.toString("utf8").includes("gzip:")) {

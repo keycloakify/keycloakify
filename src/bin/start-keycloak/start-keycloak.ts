@@ -421,7 +421,8 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             ...(realmJsonFilePath === undefined ? [] : ["--import-realm"])
         ],
         {
-            cwd: buildContext.keycloakifyBuildDirPath
+            cwd: buildContext.keycloakifyBuildDirPath,
+            shell: true
         }
     ] as const;
 
