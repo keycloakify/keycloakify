@@ -9,40 +9,30 @@ const singletonDependencies: string[] = ["react", "@types/react"];
 const rootDirPath = getThisCodebaseRootDirPath();
 
 //NOTE: This is only required because of: https://github.com/garronej/ts-ci/blob/c0e207b9677523d4ec97fe672ddd72ccbb3c1cc4/README.md?plain=1#L54-L58
-fs.writeFileSync(
-    pathJoin(rootDirPath, "dist", "package.json"),
-    Buffer.from(
-        JSON.stringify(
-            (() => {
-                const packageJsonParsed = JSON.parse(
-                    fs
-                        .readFileSync(pathJoin(rootDirPath, "package.json"))
-                        .toString("utf8")
-                );
+{
+    let modifiedPackageJsonContent = fs
+        .readFileSync(pathJoin(rootDirPath, "package.json"))
+        .toString("utf8");
 
-                return {
-                    ...packageJsonParsed,
-                    main: packageJsonParsed["main"]?.replace(/^dist\//, ""),
-                    types: packageJsonParsed["types"]?.replace(/^dist\//, ""),
-                    module: packageJsonParsed["module"]?.replace(/^dist\//, ""),
-                    exports: !("exports" in packageJsonParsed)
-                        ? undefined
-                        : Object.fromEntries(
-                              Object.entries(packageJsonParsed["exports"]).map(
-                                  ([key, value]) => [
-                                      key,
-                                      (value as string).replace(/^\.\/dist\//, "./")
-                                  ]
-                              )
-                          )
-                };
-            })(),
-            null,
-            2
-        ),
-        "utf8"
-    )
-);
+    modifiedPackageJsonContent = (() => {
+        const o = JSON.parse(modifiedPackageJsonContent);
+
+        delete o.files;
+
+        return JSON.stringify(o, null, 2);
+    })();
+
+    modifiedPackageJsonContent = modifiedPackageJsonContent
+        .replace(/"dist\//g, '"')
+        .replace(/"\.\/dist\//g, '"./')
+        .replace(/"!dist\//g, '"!')
+        .replace(/"!\.\/dist\//g, '"!./');
+
+    fs.writeFileSync(
+        pathJoin(rootDirPath, "dist", "package.json"),
+        Buffer.from(modifiedPackageJsonContent, "utf8")
+    );
+}
 
 const commonThirdPartyDeps = (() => {
     // For example [ "@emotion" ] it's more convenient than
