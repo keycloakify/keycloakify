@@ -13,7 +13,9 @@ run(`node ${join("dist", "bin", "main.js")} copy-keycloak-resources-to-public`, 
 });
 
 {
-    const child = child_process.spawn("npx", ["start-storybook", "-p", "6006"]);
+    const child = child_process.spawn("npx", ["start-storybook", "-p", "6006"], {
+        shell: true
+    });
 
     child.stdout.on("data", data => process.stdout.write(data));
 

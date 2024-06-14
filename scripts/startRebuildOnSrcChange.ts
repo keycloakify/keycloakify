@@ -13,7 +13,7 @@ export function startRebuildOnSrcChange() {
 
         const dCompleted = new Deferred<void>();
 
-        const child = child_process.spawn("yarn", ["build"]);
+        const child = child_process.spawn("yarn", ["build"], { shell: true });
 
         child.stdout.on("data", data => process.stdout.write(data));
 

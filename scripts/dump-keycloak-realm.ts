@@ -11,13 +11,17 @@ import { is } from "tsafe/is";
     {
         const dCompleted = new Deferred<void>();
 
-        const child = child_process.spawn("docker", [
-            ...["exec", containerName],
-            ...["/opt/keycloak/bin/kc.sh", "export"],
-            ...["--dir", "/tmp"],
-            ...["--realm", "myrealm"],
-            ...["--users", "realm_file"]
-        ]);
+        const child = child_process.spawn(
+            "docker",
+            [
+                ...["exec", containerName],
+                ...["/opt/keycloak/bin/kc.sh", "export"],
+                ...["--dir", "/tmp"],
+                ...["--realm", "myrealm"],
+                ...["--users", "realm_file"]
+            ],
+            { shell: true }
+        );
 
         let output = "";
 
