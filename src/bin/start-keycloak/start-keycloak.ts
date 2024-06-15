@@ -99,7 +99,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         if (!isAppBuildSuccess) {
             console.log(
                 chalk.red(
-                    `App build failed, exiting. Try running 'yarn build-keycloak-theme' and see what's wrong.`
+                    `App build failed, exiting. Try running 'npm run build-keycloak-theme' and see what's wrong.`
                 )
             );
             process.exit(1);
@@ -113,7 +113,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         if (!isKeycloakifyBuildSuccess) {
             console.log(
                 chalk.red(
-                    `Keycloakify build failed, exiting. Try running 'yarn build-keycloak-theme' and see what's wrong.`
+                    `Keycloakify build failed, exiting. Try running 'npm run build-keycloak-theme' and see what's wrong.`
                 )
             );
             process.exit(1);
