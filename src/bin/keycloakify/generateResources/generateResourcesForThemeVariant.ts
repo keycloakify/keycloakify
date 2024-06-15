@@ -1,10 +1,7 @@
 import { join as pathJoin, extname as pathExtname, sep as pathSep } from "path";
 import { transformCodebase } from "../../tools/transformCodebase";
 import type { BuildContext } from "../../shared/buildContext";
-import {
-    readMetaInfKeycloakThemes_fromResourcesDirPath,
-    writeMetaInfKeycloakThemes
-} from "../../shared/metaInfKeycloakThemes";
+import { writeMetaInfKeycloakThemes } from "../../shared/metaInfKeycloakThemes";
 import { assert } from "tsafe/assert";
 
 export type BuildContextLike = {
@@ -34,8 +31,8 @@ export function generateResourcesForThemeVariant(params: {
                     Buffer.from(sourceCode)
                         .toString("utf-8")
                         .replace(
-                            `out["themeName"] = "${themeName}";`,
-                            `out["themeName"] = "${themeVariantName}";`
+                            `kcContext.themeName = "${themeName}";`,
+                            `kcContext.themeName = "${themeVariantName}";`
                         ),
                     "utf8"
                 );
@@ -49,26 +46,25 @@ export function generateResourcesForThemeVariant(params: {
         }
     });
 
-    {
-        const updatedMetaInfKeycloakThemes =
-            readMetaInfKeycloakThemes_fromResourcesDirPath({
-                resourcesDirPath
+    writeMetaInfKeycloakThemes({
+        resourcesDirPath,
+        getNewMetaInfKeycloakTheme: ({ metaInfKeycloakTheme }) => {
+            assert(metaInfKeycloakTheme !== undefined);
+
+            const newMetaInfKeycloakTheme = metaInfKeycloakTheme;
+
+            newMetaInfKeycloakTheme.themes.push({
+                name: themeVariantName,
+                types: (() => {
+                    const theme = newMetaInfKeycloakTheme.themes.find(
+                        ({ name }) => name === themeName
+                    );
+                    assert(theme !== undefined);
+                    return theme.types;
+                })()
             });
 
-        updatedMetaInfKeycloakThemes.themes.push({
-            name: themeVariantName,
-            types: (() => {
-                const theme = updatedMetaInfKeycloakThemes.themes.find(
-                    ({ name }) => name === themeName
-                );
-                assert(theme !== undefined);
-                return theme.types;
-            })()
-        });
-
-        writeMetaInfKeycloakThemes({
-            resourcesDirPath,
-            metaInfKeycloakThemes: updatedMetaInfKeycloakThemes
-        });
-    }
+            return newMetaInfKeycloakTheme;
+        }
+    });
 }

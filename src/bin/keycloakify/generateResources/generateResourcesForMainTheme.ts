@@ -1,6 +1,6 @@
 import { transformCodebase } from "../../tools/transformCodebase";
 import * as fs from "fs";
-import { join as pathJoin, resolve as pathResolve } from "path";
+import { join as pathJoin, resolve as pathResolve, relative as pathRelative } from "path";
 import { replaceImportsInJsCode } from "../replacers/replaceImportsInJsCode";
 import { replaceImportsInCssCode } from "../replacers/replaceImportsInCssCode";
 import {
@@ -16,7 +16,6 @@ import {
     loginThemePageIds,
     accountThemePageIds
 } from "../../shared/constants";
-import { isInside } from "../../tools/isInside";
 import type { BuildContext } from "../../shared/buildContext";
 import { assert, type Equals } from "tsafe/assert";
 import {
@@ -39,6 +38,7 @@ import {
 } from "../../shared/metaInfKeycloakThemes";
 import { objectEntries } from "tsafe/objectEntries";
 import { escapeStringForPropertiesFile } from "../../tools/escapeStringForPropertiesFile";
+import { getImplementedThemeTypes } from "../../shared/getImplementedThemeTypes";
 
 export type BuildContextLike = BuildContextLike_kcContextExclusionsFtlCode &
     BuildContextLike_downloadKeycloakStaticResources &
@@ -63,6 +63,10 @@ export async function generateResourcesForMainTheme(params: {
         projectDirPath: buildContext.projectDirPath
     });
 
+    const { implementedThemeTypes } = getImplementedThemeTypes({
+        projectDirPath: buildContext.projectDirPath
+    });
+
     const getThemeTypeDirPath = (params: { themeType: ThemeType | "email" }) => {
         const { themeType } = params;
         return pathJoin(resourcesDirPath, "theme", themeName, themeType);
@@ -70,18 +74,10 @@ export async function generateResourcesForMainTheme(params: {
 
     const cssGlobalsToDefine: Record<string, string> = {};
 
-    const implementedThemeTypes: Record<ThemeType | "email", boolean> = {
-        login: false,
-        account: false,
-        email: false
-    };
-
     for (const themeType of ["login", "account"] as const) {
-        if (!fs.existsSync(pathJoin(themeSrcDirPath, themeType))) {
+        if (!implementedThemeTypes[themeType]) {
             continue;
         }
-
-        implementedThemeTypes[themeType] = true;
 
         const themeTypeDirPath = getThemeTypeDirPath({ themeType });
 
@@ -112,25 +108,32 @@ export async function generateResourcesForMainTheme(params: {
                 break apply_replacers_and_move_to_theme_resources;
             }
 
+            {
+                const dirPath = pathJoin(
+                    buildContext.projectBuildDirPath,
+                    keycloak_resources
+                );
+
+                if (fs.existsSync(dirPath)) {
+                    assert(buildContext.bundler === "webpack");
+
+                    throw new Error(
+                        [
+                            `Keycloakify build error: The ${keycloak_resources} directory shouldn't exist in your build directory.`,
+                            `(${pathRelative(process.cwd(), dirPath)}).\n`,
+                            `Theses assets are only required for local development with Storybook.",
+                            "Please remove this directory as an additional step of your command.\n`,
+                            `For example: \`"build": "... && rimraf ${pathRelative(buildContext.projectDirPath, dirPath)}"\``
+                        ].join(" ")
+                    );
+                }
+            }
+
             transformCodebase({
                 srcDirPath: buildContext.projectBuildDirPath,
                 destDirPath,
                 transformSourceCode: ({ filePath, sourceCode }) => {
-                    //NOTE: Prevent cycles, excludes the folder we generated for debug in public/
-                    // This should not happen if users follow the new instruction setup but we keep it for retrocompatibility.
-                    if (
-                        isInside({
-                            dirPath: pathJoin(
-                                buildContext.projectBuildDirPath,
-                                keycloak_resources
-                            ),
-                            filePath
-                        })
-                    ) {
-                        return undefined;
-                    }
-
-                    if (/\.css?$/i.test(filePath)) {
+                    if (filePath.endsWith(".css")) {
                         const {
                             cssGlobalsToDefine: cssGlobalsToDefineForThisFile,
                             fixedCssCode
@@ -149,7 +152,7 @@ export async function generateResourcesForMainTheme(params: {
                         };
                     }
 
-                    if (/\.js?$/i.test(filePath)) {
+                    if (filePath.endsWith(".js")) {
                         const { fixedJsCode } = replaceImportsInJsCode({
                             jsCode: sourceCode.toString("utf8"),
                             buildContext
@@ -262,13 +265,11 @@ export async function generateResourcesForMainTheme(params: {
     }
 
     email: {
-        const emailThemeSrcDirPath = pathJoin(themeSrcDirPath, "email");
-
-        if (!fs.existsSync(emailThemeSrcDirPath)) {
+        if (!implementedThemeTypes.email) {
             break email;
         }
 
-        implementedThemeTypes.email = true;
+        const emailThemeSrcDirPath = pathJoin(themeSrcDirPath, "email");
 
         transformCodebase({
             srcDirPath: emailThemeSrcDirPath,
@@ -302,7 +303,7 @@ export async function generateResourcesForMainTheme(params: {
 
         writeMetaInfKeycloakThemes({
             resourcesDirPath,
-            metaInfKeycloakThemes
+            getNewMetaInfKeycloakTheme: () => metaInfKeycloakThemes
         });
     }
 }

@@ -2,7 +2,7 @@ import { getBuildContext } from "../shared/buildContext";
 import { exclude } from "tsafe/exclude";
 import type { CliCommandOptions as CliCommandOptions_common } from "../main";
 import { promptKeycloakVersion } from "../shared/promptKeycloakVersion";
-import { readMetaInfKeycloakThemes_fromJar } from "../shared/metaInfKeycloakThemes";
+import { getImplementedThemeTypes } from "../shared/getImplementedThemeTypes";
 import { accountV1ThemeName, containerName } from "../shared/constants";
 import { SemVer } from "../tools/SemVer";
 import type { KeycloakVersionRange } from "../shared/KeycloakVersionRange";
@@ -120,37 +120,12 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         }
     }
 
-    const { doesImplementAccountTheme } = await (async () => {
-        const latestJarFilePath = fs
-            .readdirSync(buildContext.keycloakifyBuildDirPath)
-            .filter(fileBasename => fileBasename.endsWith(".jar"))
-            .map(fileBasename =>
-                pathJoin(buildContext.keycloakifyBuildDirPath, fileBasename)
-            )
-            .sort((a, b) => fs.statSync(b).mtimeMs - fs.statSync(a).mtimeMs)[0];
-
-        assert(latestJarFilePath !== undefined);
-
-        const metaInfKeycloakThemes = await readMetaInfKeycloakThemes_fromJar({
-            jarFilePath: latestJarFilePath
-        });
-
-        const mainThemeEntry = metaInfKeycloakThemes.themes.find(
-            ({ name }) => name === buildContext.themeNames[0]
-        );
-
-        assert(mainThemeEntry !== undefined);
-
-        const doesImplementAccountTheme = mainThemeEntry.types.includes("account");
-
-        return { doesImplementAccountTheme };
-    })();
+    const doesImplementAccountTheme = getImplementedThemeTypes({
+        projectDirPath: buildContext.projectDirPath
+    }).implementedThemeTypes.account;
 
     const { keycloakVersion, keycloakMajorNumber: keycloakMajorVersionNumber } =
-        await (async function getKeycloakMajor(): Promise<{
-            keycloakVersion: string;
-            keycloakMajorNumber: number;
-        }> {
+        await (async () => {
             if (cliCommandOptions.keycloakVersion !== undefined) {
                 return {
                     keycloakVersion: cliCommandOptions.keycloakVersion,
@@ -172,16 +147,6 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             console.log(`→ ${keycloakVersion}`);
 
             const keycloakMajorNumber = SemVer.parse(keycloakVersion).major;
-
-            if (doesImplementAccountTheme && keycloakMajorNumber === 22) {
-                console.log(
-                    [
-                        "Unfortunately, Keycloakify themes that implements an account theme do not work on Keycloak 22",
-                        "Please select any other Keycloak version"
-                    ].join(" ")
-                );
-                return getKeycloakMajor();
-            }
 
             return { keycloakVersion, keycloakMajorNumber };
         })();

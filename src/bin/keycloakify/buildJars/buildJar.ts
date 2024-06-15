@@ -16,7 +16,7 @@ import { readFileSync } from "fs";
 import { isInside } from "../../tools/isInside";
 import child_process from "child_process";
 import { rmSync } from "../../tools/fs.rmSync";
-import { getMetaInfKeycloakThemesJsonFilePath } from "../../shared/metaInfKeycloakThemes";
+import { writeMetaInfKeycloakThemes } from "../../shared/metaInfKeycloakThemes";
 
 export type BuildContextLike = BuildContextLike_generatePom & {
     keycloakifyBuildDirPath: string;
@@ -50,9 +50,16 @@ export async function buildJar(params: {
 
     rmSync(keycloakifyBuildTmpDirPath, { recursive: true, force: true });
 
+    const tmpResourcesDirPath = pathJoin(
+        keycloakifyBuildTmpDirPath,
+        "src",
+        "main",
+        "resources"
+    );
+
     transformCodebase({
         srcDirPath: resourcesDirPath,
-        destDirPath: pathJoin(keycloakifyBuildTmpDirPath, "src", "main", "resources"),
+        destDirPath: tmpResourcesDirPath,
         transformSourceCode:
             keycloakAccountV1Version !== null
                 ? undefined
@@ -69,31 +76,6 @@ export async function buildJar(params: {
                           })
                       ) {
                           return undefined;
-                      }
-
-                      if (
-                          fileRelativePath ===
-                          getMetaInfKeycloakThemesJsonFilePath({
-                              resourcesDirPath: "."
-                          })
-                      ) {
-                          const keycloakThemesJsonParsed = JSON.parse(
-                              sourceCode.toString("utf8")
-                          ) as {
-                              themes: { name: string; types: string[] }[];
-                          };
-
-                          keycloakThemesJsonParsed.themes =
-                              keycloakThemesJsonParsed.themes.filter(
-                                  ({ name }) => name !== accountV1ThemeName
-                              );
-
-                          return {
-                              modifiedSourceCode: Buffer.from(
-                                  JSON.stringify(keycloakThemesJsonParsed, null, 2),
-                                  "utf8"
-                              )
-                          };
                       }
 
                       for (const themeName of buildContext.themeNames) {
@@ -122,6 +104,21 @@ export async function buildJar(params: {
                       return { modifiedSourceCode: sourceCode };
                   }
     });
+
+    if (keycloakAccountV1Version === null) {
+        writeMetaInfKeycloakThemes({
+            resourcesDirPath: tmpResourcesDirPath,
+            getNewMetaInfKeycloakTheme: ({ metaInfKeycloakTheme }) => {
+                assert(metaInfKeycloakTheme !== undefined);
+
+                metaInfKeycloakTheme.themes = metaInfKeycloakTheme.themes.filter(
+                    ({ name }) => name !== accountV1ThemeName
+                );
+
+                return metaInfKeycloakTheme;
+            }
+        });
+    }
 
     route_legacy_pages: {
         // NOTE: If there's no account theme there is no special target for keycloak 24 and up so we create
