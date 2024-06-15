@@ -60,11 +60,11 @@ export type BuildOptions = {
     loginThemeResourcesFromKeycloakVersion?: string;
     keycloakifyBuildDirPath?: string;
     kcContextExclusionsFtl?: string;
-    jarTargets?: BuildOptions.JarTargets;
+    keycloakVersionTargets?: BuildOptions.KeycloakVersionTargets;
 };
 
 export namespace BuildOptions {
-    export type JarTargets =
+    export type KeycloakVersionTargets =
         | ({ hasAccountTheme: true } & Record<
               KeycloakVersionRange.WithAccountTheme,
               string | boolean
@@ -168,9 +168,11 @@ export function getBuildContext(params: {
                             )
                             .optional(),
                         themeName: z.union([z.string(), z.array(z.string())]).optional(),
-                        jarTargets: id<z.ZodType<BuildOptions.JarTargets>>(
+                        keycloakVersionTargets: id<
+                            z.ZodType<BuildOptions.KeycloakVersionTargets>
+                        >(
                             (() => {
-                                const zJarTargets = z.union([
+                                const zKeycloakVersionTargets = z.union([
                                     z.object({
                                         hasAccountTheme: z.literal(true),
                                         "21-and-below": z.union([
@@ -192,12 +194,12 @@ export function getBuildContext(params: {
                                 ]);
 
                                 {
-                                    type Got = z.infer<typeof zJarTargets>;
-                                    type Expected = BuildOptions.JarTargets;
+                                    type Got = z.infer<typeof zKeycloakVersionTargets>;
+                                    type Expected = BuildOptions.KeycloakVersionTargets;
                                     assert<Equals<Got, Expected>>();
                                 }
 
-                                return zJarTargets;
+                                return zKeycloakVersionTargets;
                             })()
                         ).optional()
                     });
@@ -584,31 +586,31 @@ export function getBuildContext(params: {
                 return jarTargets;
             })();
 
-            if (buildOptions.jarTargets === undefined) {
+            if (buildOptions.keycloakVersionTargets === undefined) {
                 return jarTargets_default;
             }
 
             if (
-                buildOptions.jarTargets.hasAccountTheme !==
+                buildOptions.keycloakVersionTargets.hasAccountTheme !==
                 recordIsImplementedByThemeType.account
             ) {
                 console.log(
                     chalk.red(
                         (() => {
-                            const { jarTargets } = buildOptions;
+                            const { keycloakVersionTargets } = buildOptions;
 
-                            let message = `Bad ${symToStr({ jarTargets })} configuration.\n`;
+                            let message = `Bad ${symToStr({ keycloakVersionTargets })} configuration.\n`;
 
-                            if (jarTargets.hasAccountTheme) {
+                            if (keycloakVersionTargets.hasAccountTheme) {
                                 message +=
                                     "Your codebase does not seem to implement an account theme ";
                             } else {
                                 message += "Your codebase implements an account theme ";
                             }
 
-                            const { hasAccountTheme } = jarTargets;
+                            const { hasAccountTheme } = keycloakVersionTargets;
 
-                            message += `but you have set ${symToStr({ jarTargets })}.${symToStr({ hasAccountTheme })}`;
+                            message += `but you have set ${symToStr({ keycloakVersionTargets })}.${symToStr({ hasAccountTheme })}`;
                             message += ` to ${hasAccountTheme} in your `;
                             message += (() => {
                                 switch (bundler) {
@@ -624,8 +626,8 @@ export function getBuildContext(params: {
                                 "and fill up the relevant keycloak version ranges.\n";
                             message += "Example:\n";
                             message += JSON.stringify(
-                                id<Pick<BuildOptions, "jarTargets">>({
-                                    jarTargets: {
+                                id<Pick<BuildOptions, "keycloakVersionTargets">>({
+                                    keycloakVersionTargets: {
                                         hasAccountTheme:
                                             recordIsImplementedByThemeType.account,
                                         ...objectFromEntries(
@@ -655,7 +657,7 @@ export function getBuildContext(params: {
 
             const jarTargets: BuildContext["jarTargets"] = [];
 
-            const { hasAccountTheme, ...rest } = buildOptions.jarTargets;
+            const { hasAccountTheme, ...rest } = buildOptions.keycloakVersionTargets;
 
             for (const [keycloakVersionRange, jarNameOrBoolean] of objectEntries(rest)) {
                 if (jarNameOrBoolean === false) {
