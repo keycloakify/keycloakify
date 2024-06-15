@@ -14,7 +14,7 @@ export type BuildContextLike = {
 assert<BuildContext extends BuildContextLike ? true : false>();
 
 export async function keycloakifyBuild(params: {
-    onlyBuildJarFileBasename: string | undefined;
+    onlyBuildJarFileBasename: string;
     buildContext: BuildContextLike;
 }): Promise<{ isKeycloakifyBuildSuccess: boolean }> {
     const { buildContext, onlyBuildJarFileBasename } = params;

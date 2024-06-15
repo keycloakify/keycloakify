@@ -91,39 +91,6 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     const buildContext = getBuildContext({ cliCommandOptions });
 
-    {
-        const { isAppBuildSuccess } = await appBuild({
-            buildContext
-        });
-
-        if (!isAppBuildSuccess) {
-            console.log(
-                chalk.red(
-                    `App build failed, exiting. Try running 'npm run build-keycloak-theme' and see what's wrong.`
-                )
-            );
-            process.exit(1);
-        }
-
-        const { isKeycloakifyBuildSuccess } = await keycloakifyBuild({
-            onlyBuildJarFileBasename: undefined,
-            buildContext
-        });
-
-        if (!isKeycloakifyBuildSuccess) {
-            console.log(
-                chalk.red(
-                    `Keycloakify build failed, exiting. Try running 'npm run build-keycloak-theme' and see what's wrong.`
-                )
-            );
-            process.exit(1);
-        }
-    }
-
-    const doesImplementAccountTheme = getImplementedThemeTypes({
-        projectDirPath: buildContext.projectDirPath
-    }).implementedThemeTypes.account;
-
     const { keycloakVersion, keycloakMajorNumber: keycloakMajorVersionNumber } =
         await (async () => {
             if (cliCommandOptions.keycloakVersion !== undefined) {
@@ -152,6 +119,10 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         })();
 
     const keycloakVersionRange: KeycloakVersionRange = (() => {
+        const doesImplementAccountTheme = getImplementedThemeTypes({
+            projectDirPath: buildContext.projectDirPath
+        }).implementedThemeTypes.account;
+
         if (doesImplementAccountTheme) {
             const keycloakVersionRange = (() => {
                 if (keycloakMajorVersionNumber <= 21) {
@@ -197,6 +168,35 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     })();
 
     const { jarFileBasename } = getJarFileBasename({ keycloakVersionRange });
+
+    {
+        const { isAppBuildSuccess } = await appBuild({
+            buildContext
+        });
+
+        if (!isAppBuildSuccess) {
+            console.log(
+                chalk.red(
+                    `App build failed, exiting. Try running 'npm run build-keycloak-theme' and see what's wrong.`
+                )
+            );
+            process.exit(1);
+        }
+
+        const { isKeycloakifyBuildSuccess } = await keycloakifyBuild({
+            onlyBuildJarFileBasename: jarFileBasename,
+            buildContext
+        });
+
+        if (!isKeycloakifyBuildSuccess) {
+            console.log(
+                chalk.red(
+                    `Keycloakify build failed, exiting. Try running 'npm run build-keycloak-theme' and see what's wrong.`
+                )
+            );
+            process.exit(1);
+        }
+    }
 
     console.log(`Using Keycloak ${chalk.bold(jarFileBasename)}`);
 
