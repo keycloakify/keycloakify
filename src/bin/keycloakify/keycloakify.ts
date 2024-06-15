@@ -3,10 +3,7 @@ import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path
 import * as child_process from "child_process";
 import * as fs from "fs";
 import { getBuildContext } from "../shared/buildContext";
-import {
-    vitePluginSubScriptEnvNames,
-    onlyBuildJarFileBasenameEnvName
-} from "../shared/constants";
+import { vitePluginSubScriptEnvNames } from "../shared/constants";
 import { buildJars } from "./buildJars";
 import type { CliCommandOptions } from "../main";
 import chalk from "chalk";
@@ -96,16 +93,17 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             cwd: buildContext.projectDirPath,
             env: {
                 ...process.env,
-                [vitePluginSubScriptEnvNames.runPostBuildScript]:
-                    JSON.stringify(buildContext)
+                [vitePluginSubScriptEnvNames.runPostBuildScript]: JSON.stringify({
+                    resourcesDirPath,
+                    buildContext
+                })
             }
         });
     }
 
     await buildJars({
         resourcesDirPath,
-        buildContext,
-        onlyBuildJarFileBasename: process.env[onlyBuildJarFileBasenameEnvName]
+        buildContext
     });
 
     rmSync(resourcesDirPath, { recursive: true });

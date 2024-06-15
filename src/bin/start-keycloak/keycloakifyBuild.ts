@@ -1,4 +1,4 @@
-import { onlyBuildJarFileBasenameEnvName } from "../shared/constants";
+import { buildForKeycloakMajorVersionEnvName } from "../shared/constants";
 import * as child_process from "child_process";
 import { Deferred } from "evt/tools/Deferred";
 import { assert } from "tsafe/assert";
@@ -14,10 +14,10 @@ export type BuildContextLike = {
 assert<BuildContext extends BuildContextLike ? true : false>();
 
 export async function keycloakifyBuild(params: {
-    onlyBuildJarFileBasename: string;
+    buildForKeycloakMajorVersionNumber: number;
     buildContext: BuildContextLike;
 }): Promise<{ isKeycloakifyBuildSuccess: boolean }> {
-    const { buildContext, onlyBuildJarFileBasename } = params;
+    const { buildForKeycloakMajorVersionNumber, buildContext } = params;
 
     const dResult = new Deferred<{ isSuccess: boolean }>();
 
@@ -25,7 +25,7 @@ export async function keycloakifyBuild(params: {
         cwd: buildContext.projectDirPath,
         env: {
             ...process.env,
-            [onlyBuildJarFileBasenameEnvName]: onlyBuildJarFileBasename
+            [buildForKeycloakMajorVersionEnvName]: `${buildForKeycloakMajorVersionNumber}`
         },
         shell: true
     });

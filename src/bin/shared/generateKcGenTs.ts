@@ -1,6 +1,5 @@
 import { assert } from "tsafe/assert";
 import type { BuildContext } from "./buildContext";
-import { getThemeSrcDirPath } from "./getThemeSrcDirPath";
 import * as fs from "fs/promises";
 import { join as pathJoin } from "path";
 import { existsAsync } from "../tools/fs.existsAsync";
@@ -9,6 +8,7 @@ export type BuildContextLike = {
     projectDirPath: string;
     themeNames: string[];
     environmentVariables: { name: string; default: string }[];
+    themeSrcDirPath: string;
 };
 
 assert<BuildContext extends BuildContextLike ? true : false>();
@@ -18,11 +18,7 @@ export async function generateKcGenTs(params: {
 }): Promise<void> {
     const { buildContext } = params;
 
-    const { themeSrcDirPath } = getThemeSrcDirPath({
-        projectDirPath: buildContext.projectDirPath
-    });
-
-    const filePath = pathJoin(themeSrcDirPath, "kc.gen.ts");
+    const filePath = pathJoin(buildContext.themeSrcDirPath, "kc.gen.ts");
 
     const currentContent = (await existsAsync(filePath))
         ? await fs.readFile(filePath)

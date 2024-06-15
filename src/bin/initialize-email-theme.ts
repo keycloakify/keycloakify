@@ -4,7 +4,6 @@ import { transformCodebase } from "./tools/transformCodebase";
 import { promptKeycloakVersion } from "./shared/promptKeycloakVersion";
 import { getBuildContext } from "./shared/buildContext";
 import * as fs from "fs";
-import { getThemeSrcDirPath } from "./shared/getThemeSrcDirPath";
 import type { CliCommandOptions } from "./main";
 
 export async function command(params: { cliCommandOptions: CliCommandOptions }) {
@@ -12,11 +11,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     const buildContext = getBuildContext({ cliCommandOptions });
 
-    const { themeSrcDirPath } = getThemeSrcDirPath({
-        projectDirPath: buildContext.projectDirPath
-    });
-
-    const emailThemeSrcDirPath = pathJoin(themeSrcDirPath, "email");
+    const emailThemeSrcDirPath = pathJoin(buildContext.themeSrcDirPath, "email");
 
     if (fs.existsSync(emailThemeSrcDirPath)) {
         console.warn(

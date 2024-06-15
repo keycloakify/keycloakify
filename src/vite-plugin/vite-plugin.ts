@@ -44,11 +44,12 @@ export function keycloakify(params?: Params) {
                     break run_post_build_script_case;
                 }
 
-                const buildContext = JSON.parse(envValue) as BuildContext;
+                const { buildContext, resourcesDirPath } = JSON.parse(envValue) as {
+                    buildContext: BuildContext;
+                    resourcesDirPath: string;
+                };
 
-                process.chdir(
-                    pathJoin(buildContext.keycloakifyBuildDirPath, "resources")
-                );
+                process.chdir(resourcesDirPath);
 
                 await postBuild?.(buildContext);
 

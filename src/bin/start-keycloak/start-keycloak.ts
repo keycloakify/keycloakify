@@ -2,12 +2,9 @@ import { getBuildContext } from "../shared/buildContext";
 import { exclude } from "tsafe/exclude";
 import type { CliCommandOptions as CliCommandOptions_common } from "../main";
 import { promptKeycloakVersion } from "../shared/promptKeycloakVersion";
-import { getImplementedThemeTypes } from "../shared/getImplementedThemeTypes";
 import { accountV1ThemeName, containerName } from "../shared/constants";
 import { SemVer } from "../tools/SemVer";
-import type { KeycloakVersionRange } from "../shared/KeycloakVersionRange";
-import { getJarFileBasename } from "../shared/getJarFileBasename";
-import { assert, type Equals } from "tsafe/assert";
+import { assert } from "tsafe/assert";
 import * as fs from "fs";
 import {
     join as pathJoin,
@@ -91,83 +88,30 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     const buildContext = getBuildContext({ cliCommandOptions });
 
-    const { keycloakVersion, keycloakMajorNumber: keycloakMajorVersionNumber } =
-        await (async () => {
-            if (cliCommandOptions.keycloakVersion !== undefined) {
-                return {
-                    keycloakVersion: cliCommandOptions.keycloakVersion,
-                    keycloakMajorNumber: SemVer.parse(cliCommandOptions.keycloakVersion)
-                        .major
-                };
-            }
-
-            console.log(
-                chalk.cyan("On which version of Keycloak do you want to test your theme?")
-            );
-
-            const { keycloakVersion } = await promptKeycloakVersion({
-                startingFromMajor: 18,
-                excludeMajorVersions: [22],
-                cacheDirPath: buildContext.cacheDirPath
-            });
-
-            console.log(`→ ${keycloakVersion}`);
-
-            const keycloakMajorNumber = SemVer.parse(keycloakVersion).major;
-
-            return { keycloakVersion, keycloakMajorNumber };
-        })();
-
-    const keycloakVersionRange: KeycloakVersionRange = (() => {
-        const doesImplementAccountTheme = getImplementedThemeTypes({
-            projectDirPath: buildContext.projectDirPath
-        }).implementedThemeTypes.account;
-
-        if (doesImplementAccountTheme) {
-            const keycloakVersionRange = (() => {
-                if (keycloakMajorVersionNumber <= 21) {
-                    return "21-and-below" as const;
-                }
-
-                assert(keycloakMajorVersionNumber !== 22);
-
-                if (keycloakMajorVersionNumber === 23) {
-                    return "23" as const;
-                }
-
-                if (keycloakMajorVersionNumber === 24) {
-                    return "24" as const;
-                }
-
-                return "25-and-above" as const;
-            })();
-
-            assert<
-                Equals<typeof keycloakVersionRange, KeycloakVersionRange.WithAccountTheme>
-            >();
-
-            return keycloakVersionRange;
-        } else {
-            const keycloakVersionRange = (() => {
-                if (keycloakMajorVersionNumber <= 21) {
-                    return "21-and-below" as const;
-                }
-
-                return "22-and-above" as const;
-            })();
-
-            assert<
-                Equals<
-                    typeof keycloakVersionRange,
-                    KeycloakVersionRange.WithoutAccountTheme
-                >
-            >();
-
-            return keycloakVersionRange;
+    const { keycloakVersion } = await (async () => {
+        if (cliCommandOptions.keycloakVersion !== undefined) {
+            return {
+                keycloakVersion: cliCommandOptions.keycloakVersion,
+                keycloakMajorNumber: SemVer.parse(cliCommandOptions.keycloakVersion).major
+            };
         }
+
+        console.log(
+            chalk.cyan("On which version of Keycloak do you want to test your theme?")
+        );
+
+        const { keycloakVersion } = await promptKeycloakVersion({
+            startingFromMajor: 18,
+            excludeMajorVersions: [22],
+            cacheDirPath: buildContext.cacheDirPath
+        });
+
+        console.log(`→ ${keycloakVersion}`);
+
+        return { keycloakVersion };
     })();
 
-    const { jarFileBasename } = getJarFileBasename({ keycloakVersionRange });
+    const keycloakMajorVersionNumber = SemVer.parse(keycloakVersion).major;
 
     {
         const { isAppBuildSuccess } = await appBuild({
@@ -177,28 +121,36 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         if (!isAppBuildSuccess) {
             console.log(
                 chalk.red(
-                    `App build failed, exiting. Try running 'npm run build-keycloak-theme' and see what's wrong.`
+                    `App build failed, exiting. Try running 'npm run build' and see what's wrong.`
                 )
             );
             process.exit(1);
         }
 
         const { isKeycloakifyBuildSuccess } = await keycloakifyBuild({
-            onlyBuildJarFileBasename: jarFileBasename,
+            buildForKeycloakMajorVersionNumber: keycloakMajorVersionNumber,
             buildContext
         });
 
         if (!isKeycloakifyBuildSuccess) {
             console.log(
                 chalk.red(
-                    `Keycloakify build failed, exiting. Try running 'npm run build-keycloak-theme' and see what's wrong.`
+                    `Keycloakify build failed, exiting. Try running 'npx keycloakify build' and see what's wrong.`
                 )
             );
             process.exit(1);
         }
     }
 
-    console.log(`Using Keycloak ${chalk.bold(jarFileBasename)}`);
+    const jarFilePath = fs
+        .readdirSync(buildContext.keycloakifyBuildDirPath)
+        .filter(fileBasename => fileBasename.endsWith(".jar"))
+        .map(fileBasename => pathJoin(buildContext.keycloakifyBuildDirPath, fileBasename))
+        .sort((a, b) => fs.statSync(b).mtimeMs - fs.statSync(a).mtimeMs)[0];
+
+    assert(jarFilePath !== undefined);
+
+    console.log(`Using ${chalk.bold(pathBasename(jarFilePath))}`);
 
     const realmJsonFilePath = await (async () => {
         if (cliCommandOptions.realmJsonFilePath !== undefined) {
@@ -284,8 +236,6 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         return filePath;
     })();
 
-    const jarFilePath = pathJoin(buildContext.keycloakifyBuildDirPath, jarFileBasename);
-
     async function extractThemeResourcesFromJar() {
         await extractArchive({
             archiveFilePath: jarFilePath,
@@ -311,7 +261,10 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     await extractThemeResourcesFromJar();
 
-    const jarFilePath_cacheDir = pathJoin(buildContext.cacheDirPath, jarFileBasename);
+    const jarFilePath_cacheDir = pathJoin(
+        buildContext.cacheDirPath,
+        pathBasename(jarFilePath)
+    );
 
     fs.copyFileSync(jarFilePath, jarFilePath_cacheDir);
 
@@ -453,7 +406,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             }
 
             const { isKeycloakifyBuildSuccess } = await keycloakifyBuild({
-                onlyBuildJarFileBasename: jarFileBasename,
+                buildForKeycloakMajorVersionNumber: keycloakMajorVersionNumber,
                 buildContext
             });
 

@@ -5,9 +5,22 @@ import { getNpmWorkspaceRootDirPath } from "../tools/getNpmWorkspaceRootDirPath"
 import type { CliCommandOptions } from "../main";
 import { z } from "zod";
 import * as fs from "fs";
-import { assert, type Equals } from "tsafe";
+import { assert, type Equals } from "tsafe/assert";
 import * as child_process from "child_process";
-import { vitePluginSubScriptEnvNames } from "./constants";
+import {
+    vitePluginSubScriptEnvNames,
+    buildForKeycloakMajorVersionEnvName
+} from "./constants";
+import type { KeycloakVersionRange } from "./KeycloakVersionRange";
+import { exclude } from "tsafe";
+import { crawl } from "../tools/crawl";
+import { themeTypes } from "./constants";
+import { objectFromEntries } from "tsafe/objectFromEntries";
+import { objectEntries } from "tsafe/objectEntries";
+import { type ThemeType } from "./constants";
+import { id } from "tsafe/id";
+import { symToStr } from "tsafe/symToStr";
+import chalk from "chalk";
 
 export type BuildContext = {
     bundler: "vite" | "webpack";
@@ -30,6 +43,12 @@ export type BuildContext = {
     npmWorkspaceRootDirPath: string;
     kcContextExclusionsFtlCode: string | undefined;
     environmentVariables: { name: string; default: string }[];
+    themeSrcDirPath: string;
+    recordIsImplementedByThemeType: Readonly<Record<ThemeType | "email", boolean>>;
+    jarTargets: {
+        keycloakVersionRange: KeycloakVersionRange;
+        jarFileBasename: string;
+    }[];
 };
 
 export type BuildOptions = {
@@ -41,7 +60,20 @@ export type BuildOptions = {
     loginThemeResourcesFromKeycloakVersion?: string;
     keycloakifyBuildDirPath?: string;
     kcContextExclusionsFtl?: string;
+    jarTargets?: BuildOptions.JarTargets;
 };
+
+export namespace BuildOptions {
+    export type JarTargets =
+        | ({ hasAccountTheme: true } & Record<
+              KeycloakVersionRange.WithAccountTheme,
+              string | boolean
+          >)
+        | ({ hasAccountTheme: false } & Record<
+              KeycloakVersionRange.WithoutAccountTheme,
+              string | boolean
+          >);
+}
 
 export type ResolvedViteConfig = {
     buildDir: string;
@@ -102,7 +134,7 @@ export function getBuildContext(params: {
     })();
 
     const parsedPackageJson = (() => {
-        type WebpackSpecificBuildOptions = {
+        type BuildOptions_packageJson = BuildOptions & {
             projectBuildDirPath?: string;
         };
 
@@ -110,49 +142,75 @@ export function getBuildContext(params: {
             name: string;
             version?: string;
             homepage?: string;
-            keycloakify?: {
-                themeName?: string | string[];
-                environmentVariables?: { name: string; default: string }[];
-                extraThemeProperties?: string[];
-                artifactId?: string;
-                groupId?: string;
-                loginThemeResourcesFromKeycloakVersion?: string;
-                keycloakifyBuildDirPath?: string;
-                kcContextExclusionsFtl?: string;
-                projectBuildDirPath?: string;
-            };
+            keycloakify?: BuildOptions_packageJson;
         };
-
-        {
-            type Got = NonNullable<ParsedPackageJson["keycloakify"]>;
-            type Expected = BuildOptions & WebpackSpecificBuildOptions;
-            assert<Equals<Got, Expected>>();
-        }
 
         const zParsedPackageJson = z.object({
             name: z.string(),
             version: z.string().optional(),
             homepage: z.string().optional(),
-            keycloakify: z
-                .object({
-                    extraThemeProperties: z.array(z.string()).optional(),
-                    artifactId: z.string().optional(),
-                    groupId: z.string().optional(),
-                    loginThemeResourcesFromKeycloakVersion: z.string().optional(),
-                    projectBuildDirPath: z.string().optional(),
-                    keycloakifyBuildDirPath: z.string().optional(),
-                    kcContextExclusionsFtl: z.string().optional(),
-                    environmentVariables: z
-                        .array(
-                            z.object({
-                                name: z.string(),
-                                default: z.string()
-                            })
-                        )
-                        .optional(),
-                    themeName: z.union([z.string(), z.array(z.string())]).optional()
-                })
-                .optional()
+            keycloakify: id<z.ZodType<BuildOptions_packageJson>>(
+                (() => {
+                    const zBuildOptions_packageJson = z.object({
+                        extraThemeProperties: z.array(z.string()).optional(),
+                        artifactId: z.string().optional(),
+                        groupId: z.string().optional(),
+                        loginThemeResourcesFromKeycloakVersion: z.string().optional(),
+                        projectBuildDirPath: z.string().optional(),
+                        keycloakifyBuildDirPath: z.string().optional(),
+                        kcContextExclusionsFtl: z.string().optional(),
+                        environmentVariables: z
+                            .array(
+                                z.object({
+                                    name: z.string(),
+                                    default: z.string()
+                                })
+                            )
+                            .optional(),
+                        themeName: z.union([z.string(), z.array(z.string())]).optional(),
+                        jarTargets: id<z.ZodType<BuildOptions.JarTargets>>(
+                            (() => {
+                                const zJarTargets = z.union([
+                                    z.object({
+                                        hasAccountTheme: z.literal(true),
+                                        "21-and-below": z.union([
+                                            z.boolean(),
+                                            z.string()
+                                        ]),
+                                        "23": z.union([z.boolean(), z.string()]),
+                                        "24": z.union([z.boolean(), z.string()]),
+                                        "25-and-above": z.union([z.boolean(), z.string()])
+                                    }),
+                                    z.object({
+                                        hasAccountTheme: z.literal(false),
+                                        "21-and-below": z.union([
+                                            z.boolean(),
+                                            z.string()
+                                        ]),
+                                        "22-and-above": z.union([z.boolean(), z.string()])
+                                    })
+                                ]);
+
+                                {
+                                    type Got = z.infer<typeof zJarTargets>;
+                                    type Expected = BuildOptions.JarTargets;
+                                    assert<Equals<Got, Expected>>();
+                                }
+
+                                return zJarTargets;
+                            })()
+                        ).optional()
+                    });
+
+                    {
+                        type Got = z.infer<typeof zBuildOptions_packageJson>;
+                        type Expected = BuildOptions_packageJson;
+                        assert<Equals<Got, Expected>>();
+                    }
+
+                    return zBuildOptions_packageJson;
+                })()
+            ).optional()
         });
 
         {
@@ -172,6 +230,54 @@ export function getBuildContext(params: {
         ...parsedPackageJson.keycloakify,
         ...resolvedViteConfig?.buildOptions
     };
+
+    const { themeSrcDirPath } = (() => {
+        const srcDirPath = pathJoin(projectDirPath, "src");
+
+        const themeSrcDirPath: string | undefined = crawl({
+            dirPath: srcDirPath,
+            returnedPathsType: "relative to dirPath"
+        })
+            .map(fileRelativePath => {
+                for (const themeSrcDirBasename of ["keycloak-theme", "keycloak_theme"]) {
+                    const split = fileRelativePath.split(themeSrcDirBasename);
+                    if (split.length === 2) {
+                        return pathJoin(srcDirPath, split[0] + themeSrcDirBasename);
+                    }
+                }
+                return undefined;
+            })
+            .filter(exclude(undefined))[0];
+
+        if (themeSrcDirPath !== undefined) {
+            return { themeSrcDirPath };
+        }
+
+        for (const themeType of [...themeTypes, "email"]) {
+            if (!fs.existsSync(pathJoin(srcDirPath, themeType))) {
+                continue;
+            }
+            return { themeSrcDirPath: srcDirPath };
+        }
+
+        console.log(
+            chalk.red(
+                [
+                    "Can't locate your keycloak theme source directory.",
+                    "See: https://docs.keycloakify.dev/v/v10/keycloakify-in-my-app/collocation"
+                ].join("\n")
+            )
+        );
+
+        process.exit(1);
+    })();
+
+    const recordIsImplementedByThemeType = objectFromEntries(
+        (["login", "account", "email"] as const).map(themeType => [
+            themeType,
+            fs.existsSync(pathJoin(themeSrcDirPath, themeType))
+        ])
+    );
 
     const themeNames = ((): [string, ...string[]] => {
         if (buildOptions.themeName === undefined) {
@@ -218,8 +324,10 @@ export function getBuildContext(params: {
         dependencyExpected: "keycloakify"
     });
 
+    const bundler = resolvedViteConfig !== undefined ? "vite" : "webpack";
+
     return {
-        bundler: resolvedViteConfig !== undefined ? "vite" : "webpack",
+        bundler,
         themeVersion:
             process.env.KEYCLOAKIFY_THEME_VERSION ?? parsedPackageJson.version ?? "0.0.0",
         themeNames,
@@ -349,6 +457,257 @@ export function getBuildContext(params: {
 
             return buildOptions.kcContextExclusionsFtl;
         })(),
-        environmentVariables: buildOptions.environmentVariables ?? []
+        environmentVariables: buildOptions.environmentVariables ?? [],
+        recordIsImplementedByThemeType,
+        themeSrcDirPath,
+        jarTargets: (() => {
+            const getJarFileBasename = (range: string) =>
+                `keycloak-theme-for-kc-${range}.jar`;
+
+            build_for_specific_keycloak_major_version: {
+                const buildForKeycloakMajorVersionNumber = (() => {
+                    const envValue = process.env[buildForKeycloakMajorVersionEnvName];
+
+                    if (envValue === undefined) {
+                        return undefined;
+                    }
+
+                    const major = parseInt(envValue);
+
+                    assert(!isNaN(major));
+
+                    return major;
+                })();
+
+                if (buildForKeycloakMajorVersionNumber === undefined) {
+                    break build_for_specific_keycloak_major_version;
+                }
+
+                const keycloakVersionRange: KeycloakVersionRange = (() => {
+                    const doesImplementAccountTheme =
+                        recordIsImplementedByThemeType.account;
+
+                    if (doesImplementAccountTheme) {
+                        const keycloakVersionRange = (() => {
+                            if (buildForKeycloakMajorVersionNumber <= 21) {
+                                return "21-and-below" as const;
+                            }
+
+                            assert(buildForKeycloakMajorVersionNumber !== 22);
+
+                            if (buildForKeycloakMajorVersionNumber === 23) {
+                                return "23" as const;
+                            }
+
+                            if (buildForKeycloakMajorVersionNumber === 24) {
+                                return "24" as const;
+                            }
+
+                            return "25-and-above" as const;
+                        })();
+
+                        assert<
+                            Equals<
+                                typeof keycloakVersionRange,
+                                KeycloakVersionRange.WithAccountTheme
+                            >
+                        >();
+
+                        return keycloakVersionRange;
+                    } else {
+                        const keycloakVersionRange = (() => {
+                            if (buildForKeycloakMajorVersionNumber <= 21) {
+                                return "21-and-below" as const;
+                            }
+
+                            return "22-and-above" as const;
+                        })();
+
+                        assert<
+                            Equals<
+                                typeof keycloakVersionRange,
+                                KeycloakVersionRange.WithoutAccountTheme
+                            >
+                        >();
+
+                        return keycloakVersionRange;
+                    }
+                })();
+
+                return [
+                    {
+                        keycloakVersionRange,
+                        jarFileBasename: getJarFileBasename(keycloakVersionRange)
+                    }
+                ];
+            }
+
+            const jarTargets_default = (() => {
+                const jarTargets: BuildContext["jarTargets"] = [];
+
+                if (recordIsImplementedByThemeType.account) {
+                    for (const keycloakVersionRange of [
+                        "21-and-below",
+                        "23",
+                        "24",
+                        "25-and-above"
+                    ] as const) {
+                        assert<
+                            Equals<
+                                typeof keycloakVersionRange,
+                                KeycloakVersionRange.WithAccountTheme
+                            >
+                        >(true);
+                        jarTargets.push({
+                            keycloakVersionRange,
+                            jarFileBasename: getJarFileBasename(keycloakVersionRange)
+                        });
+                    }
+                } else {
+                    for (const keycloakVersionRange of [
+                        "21-and-below",
+                        "22-and-above"
+                    ] as const) {
+                        assert<
+                            Equals<
+                                typeof keycloakVersionRange,
+                                KeycloakVersionRange.WithoutAccountTheme
+                            >
+                        >(true);
+                        jarTargets.push({
+                            keycloakVersionRange,
+                            jarFileBasename: getJarFileBasename(keycloakVersionRange)
+                        });
+                    }
+                }
+
+                return jarTargets;
+            })();
+
+            if (buildOptions.jarTargets === undefined) {
+                return jarTargets_default;
+            }
+
+            if (
+                buildOptions.jarTargets.hasAccountTheme !==
+                recordIsImplementedByThemeType.account
+            ) {
+                console.log(
+                    chalk.red(
+                        (() => {
+                            const { jarTargets } = buildOptions;
+
+                            let message = `Bad ${symToStr({ jarTargets })} configuration.\n`;
+
+                            if (jarTargets.hasAccountTheme) {
+                                message +=
+                                    "Your codebase does not seem to implement an account theme ";
+                            } else {
+                                message += "Your codebase implements an account theme ";
+                            }
+
+                            const { hasAccountTheme } = jarTargets;
+
+                            message += `but you have set ${symToStr({ jarTargets })}.${symToStr({ hasAccountTheme })}`;
+                            message += ` to ${hasAccountTheme} in your `;
+                            message += (() => {
+                                switch (bundler) {
+                                    case "vite":
+                                        return "vite.config.ts";
+                                    case "webpack":
+                                        return "package.json";
+                                }
+                                assert<Equals<typeof bundler, never>>(false);
+                            })();
+                            message += `. Please set it to ${!hasAccountTheme} `;
+                            message +=
+                                "and fill up the relevant keycloak version ranges.\n";
+                            message += "Example:\n";
+                            message += JSON.stringify(
+                                id<Pick<BuildOptions, "jarTargets">>({
+                                    jarTargets: {
+                                        hasAccountTheme:
+                                            recordIsImplementedByThemeType.account,
+                                        ...objectFromEntries(
+                                            jarTargets_default.map(
+                                                ({
+                                                    keycloakVersionRange,
+                                                    jarFileBasename
+                                                }) => [
+                                                    keycloakVersionRange,
+                                                    jarFileBasename
+                                                ]
+                                            )
+                                        )
+                                    }
+                                }),
+                                null,
+                                2
+                            );
+
+                            return message;
+                        })()
+                    )
+                );
+
+                process.exit(1);
+            }
+
+            const jarTargets: BuildContext["jarTargets"] = [];
+
+            const { hasAccountTheme, ...rest } = buildOptions.jarTargets;
+
+            for (const [keycloakVersionRange, jarNameOrBoolean] of objectEntries(rest)) {
+                if (jarNameOrBoolean === false) {
+                    continue;
+                }
+
+                if (jarNameOrBoolean === true) {
+                    jarTargets.push({
+                        keycloakVersionRange: keycloakVersionRange,
+                        jarFileBasename: getJarFileBasename(keycloakVersionRange)
+                    });
+                    continue;
+                }
+
+                const jarFileBasename = jarNameOrBoolean;
+
+                if (!jarFileBasename.endsWith(".jar")) {
+                    console.log(
+                        chalk.red(`Bad ${jarFileBasename} should end with '.jar'\n`)
+                    );
+                    process.exit(1);
+                }
+
+                if (jarFileBasename.includes("/") || jarFileBasename.includes("\\")) {
+                    console.log(
+                        chalk.red(
+                            [
+                                `Invalid ${jarFileBasename}. It's not supposed to be a path,`,
+                                `Only the basename of the jar file is expected.`,
+                                `Example: keycloak-theme.jar`
+                            ].join(" ")
+                        )
+                    );
+                    process.exit(1);
+                }
+
+                jarTargets.push({
+                    keycloakVersionRange: keycloakVersionRange,
+                    jarFileBasename: jarNameOrBoolean
+                });
+            }
+
+            if (jarTargets.length === 0) {
+                console.log(
+                    chalk.red(
+                        "All jar targets are disabled. Please enable at least one jar target."
+                    )
+                );
+                process.exit(1);
+            }
+
+            return jarTargets;
+        })()
     };
 }

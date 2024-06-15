@@ -13,7 +13,6 @@ import * as fs from "fs";
 import { join as pathJoin, relative as pathRelative, dirname as pathDirname } from "path";
 import { kebabCaseToCamelCase } from "./tools/kebabCaseToSnakeCase";
 import { assert, Equals } from "tsafe/assert";
-import { getThemeSrcDirPath } from "./shared/getThemeSrcDirPath";
 import type { CliCommandOptions } from "./main";
 import { getBuildContext } from "./shared/buildContext";
 import chalk from "chalk";
@@ -53,17 +52,13 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     console.log(`→ ${pageId}`);
 
-    const { themeSrcDirPath } = getThemeSrcDirPath({
-        projectDirPath: buildContext.projectDirPath
-    });
-
     const componentBasename = capitalize(kebabCaseToCamelCase(pageId)).replace(
         /ftl$/,
         "stories.tsx"
     );
 
     const targetFilePath = pathJoin(
-        themeSrcDirPath,
+        buildContext.themeSrcDirPath,
         themeType,
         "pages",
         componentBasename

@@ -29,7 +29,6 @@ import {
     bringInAccountV1,
     type BuildContextLike as BuildContextLike_bringInAccountV1
 } from "./bringInAccountV1";
-import { getThemeSrcDirPath } from "../../shared/getThemeSrcDirPath";
 import { rmSync } from "../../tools/fs.rmSync";
 import { readThisNpmPackageVersion } from "../../tools/readThisNpmPackageVersion";
 import {
@@ -38,7 +37,6 @@ import {
 } from "../../shared/metaInfKeycloakThemes";
 import { objectEntries } from "tsafe/objectEntries";
 import { escapeStringForPropertiesFile } from "../../tools/escapeStringForPropertiesFile";
-import { getImplementedThemeTypes } from "../../shared/getImplementedThemeTypes";
 
 export type BuildContextLike = BuildContextLike_kcContextExclusionsFtlCode &
     BuildContextLike_downloadKeycloakStaticResources &
@@ -48,6 +46,8 @@ export type BuildContextLike = BuildContextLike_kcContextExclusionsFtlCode &
         projectDirPath: string;
         projectBuildDirPath: string;
         environmentVariables: { name: string; default: string }[];
+        recordIsImplementedByThemeType: BuildContext["recordIsImplementedByThemeType"];
+        themeSrcDirPath: string;
     };
 
 assert<BuildContext extends BuildContextLike ? true : false>();
@@ -59,14 +59,6 @@ export async function generateResourcesForMainTheme(params: {
 }): Promise<void> {
     const { themeName, resourcesDirPath, buildContext } = params;
 
-    const { themeSrcDirPath } = getThemeSrcDirPath({
-        projectDirPath: buildContext.projectDirPath
-    });
-
-    const { implementedThemeTypes } = getImplementedThemeTypes({
-        projectDirPath: buildContext.projectDirPath
-    });
-
     const getThemeTypeDirPath = (params: { themeType: ThemeType | "email" }) => {
         const { themeType } = params;
         return pathJoin(resourcesDirPath, "theme", themeName, themeType);
@@ -75,7 +67,7 @@ export async function generateResourcesForMainTheme(params: {
     const cssGlobalsToDefine: Record<string, string> = {};
 
     for (const themeType of ["login", "account"] as const) {
-        if (!implementedThemeTypes[themeType]) {
+        if (!buildContext.recordIsImplementedByThemeType[themeType]) {
             continue;
         }
 
@@ -91,7 +83,10 @@ export async function generateResourcesForMainTheme(params: {
             // NOTE: Prevent accumulation of files in the assets dir, as names are hashed they pile up.
             rmSync(destDirPath, { recursive: true, force: true });
 
-            if (themeType === "account" && implementedThemeTypes.login) {
+            if (
+                themeType === "account" &&
+                buildContext.recordIsImplementedByThemeType.login
+            ) {
                 // NOTE: We prevent doing it twice, it has been done for the login theme.
 
                 transformCodebase({
@@ -178,7 +173,7 @@ export async function generateResourcesForMainTheme(params: {
             keycloakifyVersion: readThisNpmPackageVersion(),
             themeType,
             fieldNames: readFieldNameUsage({
-                themeSrcDirPath,
+                themeSrcDirPath: buildContext.themeSrcDirPath,
                 themeType
             })
         });
@@ -194,7 +189,7 @@ export async function generateResourcesForMainTheme(params: {
             })(),
             ...readExtraPagesNames({
                 themeType,
-                themeSrcDirPath
+                themeSrcDirPath: buildContext.themeSrcDirPath
             })
         ].forEach(pageId => {
             const { ftlCode } = generateFtlFilesCode({ pageId });
@@ -206,7 +201,7 @@ export async function generateResourcesForMainTheme(params: {
         });
 
         generateMessageProperties({
-            themeSrcDirPath,
+            themeSrcDirPath: buildContext.themeSrcDirPath,
             themeType
         }).forEach(({ languageTag, propertiesFileSource }) => {
             const messagesDirPath = pathJoin(themeTypeDirPath, "messages");
@@ -265,11 +260,11 @@ export async function generateResourcesForMainTheme(params: {
     }
 
     email: {
-        if (!implementedThemeTypes.email) {
+        if (!buildContext.recordIsImplementedByThemeType.email) {
             break email;
         }
 
-        const emailThemeSrcDirPath = pathJoin(themeSrcDirPath, "email");
+        const emailThemeSrcDirPath = pathJoin(buildContext.themeSrcDirPath, "email");
 
         transformCodebase({
             srcDirPath: emailThemeSrcDirPath,
@@ -277,7 +272,7 @@ export async function generateResourcesForMainTheme(params: {
         });
     }
 
-    if (implementedThemeTypes.account) {
+    if (buildContext.recordIsImplementedByThemeType.account) {
         await bringInAccountV1({
             resourcesDirPath,
             buildContext
@@ -289,12 +284,12 @@ export async function generateResourcesForMainTheme(params: {
 
         metaInfKeycloakThemes.themes.push({
             name: themeName,
-            types: objectEntries(implementedThemeTypes)
+            types: objectEntries(buildContext.recordIsImplementedByThemeType)
                 .filter(([, isImplemented]) => isImplemented)
                 .map(([themeType]) => themeType)
         });
 
-        if (implementedThemeTypes.account) {
+        if (buildContext.recordIsImplementedByThemeType.account) {
             metaInfKeycloakThemes.themes.push({
                 name: accountV1ThemeName,
                 types: ["account"]

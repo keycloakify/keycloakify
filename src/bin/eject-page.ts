@@ -15,7 +15,6 @@ import * as fs from "fs";
 import { join as pathJoin, relative as pathRelative, dirname as pathDirname } from "path";
 import { kebabCaseToCamelCase } from "./tools/kebabCaseToSnakeCase";
 import { assert, Equals } from "tsafe/assert";
-import { getThemeSrcDirPath } from "./shared/getThemeSrcDirPath";
 import type { CliCommandOptions } from "./main";
 import { getBuildContext } from "./shared/buildContext";
 import chalk from "chalk";
@@ -68,10 +67,6 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     console.log(`→ ${pageIdOrComponent}`);
 
-    const { themeSrcDirPath } = getThemeSrcDirPath({
-        projectDirPath: buildContext.projectDirPath
-    });
-
     const componentBasename = (() => {
         if (pageIdOrComponent === templateValue) {
             return "Template.tsx";
@@ -96,7 +91,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     })();
 
     const targetFilePath = pathJoin(
-        themeSrcDirPath,
+        buildContext.themeSrcDirPath,
         themeType,
         pagesOrDot,
         componentBasename
@@ -149,7 +144,11 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             break edit_KcApp;
         }
 
-        const kcAppTsxPath = pathJoin(themeSrcDirPath, themeType, "KcPage.tsx");
+        const kcAppTsxPath = pathJoin(
+            buildContext.themeSrcDirPath,
+            themeType,
+            "KcPage.tsx"
+        );
 
         const kcAppTsxCode = fs.readFileSync(kcAppTsxPath).toString("utf8");
 
@@ -199,7 +198,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             `${chalk.bold(
                 pathJoin(
                     ".",
-                    pathRelative(process.cwd(), themeSrcDirPath),
+                    pathRelative(process.cwd(), buildContext.themeSrcDirPath),
                     themeType,
                     "KcPage.tsx"
                 )
