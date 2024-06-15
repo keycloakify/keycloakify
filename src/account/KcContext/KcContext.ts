@@ -166,6 +166,7 @@ export declare namespace KcContext {
                 algorithm: "HmacSHA1" | "HmacSHA256" | "HmacSHA512";
                 digits: number;
                 lookAheadWindow: number;
+                getAlgorithmKey: () => string;
             } & (
                 | {
                       type: "totp";

@@ -305,12 +305,14 @@ function decodeHtmlEntities(htmlStr){
             </#if>
 
             <#if are_same_path(path, ["totp", "policy", "getAlgorithmKey"])>
-                <#local returnValue = "">
-                <#attempt>
-                    <#local returnValue = totp.policy.getAlgorithmKey()>
-                <#recover>
-                    <#return "ABORT: Couldn't evaluate totp.policy.getAlgorithmKey()">
-                </#attempt>
+                <#local returnValue = "error">
+                <#if mode?? && mode = "manual">
+                    <#attempt>
+                        <#local returnValue = totp.policy.getAlgorithmKey()>
+                    <#recover>
+                        <#return "ABORT: Couldn't evaluate totp.policy.getAlgorithmKey()">
+                    </#attempt>
+                </#if>
                 <#return 'function(){ return "' + returnValue + '"; }'>
             </#if>
 
