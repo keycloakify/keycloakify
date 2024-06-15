@@ -113,6 +113,10 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     const keycloakMajorVersionNumber = SemVer.parse(keycloakVersion).major;
 
+    const beforeBuildJarFileBasenames = fs
+        .readdirSync(buildContext.keycloakifyBuildDirPath)
+        .filter(fileBasename => fileBasename.endsWith(".jar"));
+
     {
         const { isAppBuildSuccess } = await appBuild({
             buildContext
@@ -266,7 +270,13 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         pathBasename(jarFilePath)
     );
 
-    fs.copyFileSync(jarFilePath, jarFilePath_cacheDir);
+    {
+        const fsFnName = beforeBuildJarFileBasenames.includes(pathBasename(jarFilePath))
+            ? "copyFileSync"
+            : "renameSync";
+
+        fs[fsFnName](jarFilePath, jarFilePath_cacheDir);
+    }
 
     try {
         child_process.execSync(`docker rm --force ${containerName}`, {
