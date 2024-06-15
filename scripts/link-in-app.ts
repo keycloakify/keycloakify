@@ -6,7 +6,23 @@ import * as os from "os";
 
 const singletonDependencies: string[] = ["react", "@types/react"];
 
+// For example [ "@emotion" ] it's more convenient than
+// having to list every sub emotion packages (@emotion/css @emotion/utils ...)
+// in singletonDependencies
+const namespaceSingletonDependencies: string[] = [];
+
 const rootDirPath = getThisCodebaseRootDirPath();
+
+const commonThirdPartyDeps = [
+    ...namespaceSingletonDependencies
+        .map(namespaceModuleName =>
+            fs
+                .readdirSync(pathJoin(rootDirPath, "node_modules", namespaceModuleName))
+                .map(submoduleName => `${namespaceModuleName}/${submoduleName}`)
+        )
+        .reduce((prev, curr) => [...prev, ...curr], []),
+    ...singletonDependencies
+];
 
 //NOTE: This is only required because of: https://github.com/garronej/ts-ci/blob/c0e207b9677523d4ec97fe672ddd72ccbb3c1cc4/README.md?plain=1#L54-L58
 {
@@ -33,26 +49,6 @@ const rootDirPath = getThisCodebaseRootDirPath();
         Buffer.from(modifiedPackageJsonContent, "utf8")
     );
 }
-
-const commonThirdPartyDeps = (() => {
-    // For example [ "@emotion" ] it's more convenient than
-    // having to list every sub emotion packages (@emotion/css @emotion/utils ...)
-    // in singletonDependencies
-    const namespaceSingletonDependencies: string[] = [];
-
-    return [
-        ...namespaceSingletonDependencies
-            .map(namespaceModuleName =>
-                fs
-                    .readdirSync(
-                        pathJoin(rootDirPath, "node_modules", namespaceModuleName)
-                    )
-                    .map(submoduleName => `${namespaceModuleName}/${submoduleName}`)
-            )
-            .reduce((prev, curr) => [...prev, ...curr], []),
-        ...singletonDependencies
-    ];
-})();
 
 const yarnGlobalDirPath = pathJoin(rootDirPath, ".yarn_home");
 

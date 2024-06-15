@@ -17,7 +17,7 @@ fs.rmSync(join("..", "keycloakify-starter", "node_modules"), {
 
 run("yarn install", { cwd: join("..", "keycloakify-starter") });
 
-run(`npx ts-node --skipProject ${join("scripts", "link-in-app.ts")} keycloakify-starter`);
+run(`npx tsx ${join("scripts", "link-in-app.ts")} keycloakify-starter`);
 
 startRebuildOnSrcChange();
 

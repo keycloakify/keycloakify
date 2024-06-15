@@ -7,18 +7,18 @@
         "url": "git://github.com/keycloakify/keycloakify.git"
     },
     "scripts": {
-        "prepare": "patch-package && ts-node --skipProject scripts/generate-i18n-messages.ts",
-        "build": "ts-node --skipProject scripts/build.ts",
-        "storybook": "ts-node --skipProject scripts/start-storybook.ts",
-        "link-in-starter": "ts-node --skipProject scripts/link-in-starter.ts",
+        "prepare": "patch-package && tsx scripts/generate-i18n-messages.ts",
+        "build": "tsx scripts/build.ts",
+        "storybook": "tsx scripts/start-storybook.ts",
+        "link-in-starter": "tsx scripts/link-in-starter.ts",
         "test": "yarn test:types && vitest run",
         "test:types": "tsc -p test/tsconfig.json --noEmit",
         "_format": "prettier '**/*.{ts,tsx,json,md}'",
         "format": "yarn _format --write",
         "format:check": "yarn _format --list-different",
-        "link-in-app": "ts-node --skipProject scripts/link-in-app.ts",
-        "build-storybook": "ts-node --skipProject scripts/build-storybook.ts",
-        "dump-keycloak-realm": "ts-node --skipProject scripts/dump-keycloak-realm.ts"
+        "link-in-app": "tsx scripts/link-in-app.ts",
+        "build-storybook": "tsx scripts/build-storybook.ts",
+        "dump-keycloak-realm": "tsx scripts/dump-keycloak-realm.ts"
     },
     "bin": {
         "keycloakify": "dist/bin/main.js"
@@ -112,7 +112,6 @@
         "run-exclusive": "^2.2.19",
         "storybook-dark-mode": "^1.1.2",
         "termost": "^0.12.0",
-        "ts-node": "^10.9.2",
         "tsc-alias": "^1.8.10",
         "tss-react": "^4.9.10",
         "typescript": "^4.9.1-beta",
@@ -120,6 +119,7 @@
         "vitest": "^1.6.0",
         "yauzl": "^2.10.0",
         "zod": "^3.17.10",
-        "evt": "^2.5.7"
+        "evt": "^2.5.7",
+        "tsx": "^4.15.5"
     }
 }
