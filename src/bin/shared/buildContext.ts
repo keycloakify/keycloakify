@@ -137,6 +137,7 @@ export function getBuildContext(params: {
     const parsedPackageJson = (() => {
         type BuildOptions_packageJson = BuildOptions & {
             projectBuildDirPath?: string;
+            staticDirPathInBuildDirPath?: string;
         };
 
         type ParsedPackageJson = {
@@ -169,6 +170,7 @@ export function getBuildContext(params: {
                             )
                             .optional(),
                         themeName: z.union([z.string(), z.array(z.string())]).optional(),
+                        staticDirPathInBuildDirPath: z.string().optional(),
                         keycloakVersionTargets: id<
                             z.ZodType<BuildOptions.KeycloakVersionTargets>
                         >(
@@ -229,7 +231,7 @@ export function getBuildContext(params: {
         );
     })();
 
-    const buildOptions: BuildOptions = {
+    const buildOptions = {
         ...parsedPackageJson.keycloakify,
         ...resolvedViteConfig?.buildOptions
     };
@@ -309,9 +311,9 @@ export function getBuildContext(params: {
                 break webpack;
             }
 
-            if (parsedPackageJson.keycloakify?.projectBuildDirPath !== undefined) {
+            if (buildOptions.projectBuildDirPath !== undefined) {
                 return getAbsoluteAndInOsFormatPath({
-                    pathIsh: parsedPackageJson.keycloakify.projectBuildDirPath,
+                    pathIsh: buildOptions.projectBuildDirPath,
                     cwd: projectDirPath
                 });
             }
@@ -436,6 +438,13 @@ export function getBuildContext(params: {
             webpack: {
                 if (resolvedViteConfig !== undefined) {
                     break webpack;
+                }
+
+                if (buildOptions.staticDirPathInBuildDirPath !== undefined) {
+                    getAbsoluteAndInOsFormatPath({
+                        pathIsh: buildOptions.staticDirPathInBuildDirPath,
+                        cwd: projectBuildDirPath
+                    });
                 }
 
                 return pathJoin(projectBuildDirPath, "static");
