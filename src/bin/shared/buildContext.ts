@@ -60,6 +60,7 @@ export type BuildOptions = {
     loginThemeResourcesFromKeycloakVersion?: string;
     keycloakifyBuildDirPath?: string;
     kcContextExclusionsFtl?: string;
+    /** https://docs.keycloakify.dev/v/v10/targetting-specific-keycloak-versions */
     keycloakVersionTargets?: BuildOptions.KeycloakVersionTargets;
 };
 
@@ -677,6 +678,8 @@ export function getBuildContext(params: {
                                 null,
                                 2
                             );
+                            message +=
+                                "\nSee: https://docs.keycloakify.dev/v/v10/targetting-specific-keycloak-versions";
 
                             return message;
                         })()
