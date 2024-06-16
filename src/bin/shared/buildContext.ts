@@ -139,6 +139,7 @@ export function getBuildContext(params: {
         type BuildOptions_packageJson = BuildOptions & {
             projectBuildDirPath?: string;
             staticDirPathInProjectBuildDirPath?: string;
+            publicDirPath?: string;
         };
 
         type ParsedPackageJson = {
@@ -173,6 +174,7 @@ export function getBuildContext(params: {
                         themeName: z.union([z.string(), z.array(z.string())]).optional(),
                         themeVersion: z.string().optional(),
                         staticDirPathInProjectBuildDirPath: z.string().optional(),
+                        publicDirPath: z.string().optional(),
                         keycloakVersionTargets: id<
                             z.ZodType<BuildOptions.KeycloakVersionTargets>
                         >(
@@ -377,14 +379,21 @@ export function getBuildContext(params: {
             );
         })(),
         publicDirPath: (() => {
+            if (process.env.PUBLIC_DIR_PATH !== undefined) {
+                return getAbsoluteAndInOsFormatPath({
+                    pathIsh: process.env.PUBLIC_DIR_PATH,
+                    cwd: projectDirPath
+                });
+            }
+
             webpack: {
                 if (resolvedViteConfig !== undefined) {
                     break webpack;
                 }
 
-                if (process.env.PUBLIC_DIR_PATH !== undefined) {
+                if (buildOptions.publicDirPath !== undefined) {
                     return getAbsoluteAndInOsFormatPath({
-                        pathIsh: process.env.PUBLIC_DIR_PATH,
+                        pathIsh: buildOptions.publicDirPath,
                         cwd: projectDirPath
                     });
                 }
