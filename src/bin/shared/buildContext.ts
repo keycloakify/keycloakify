@@ -53,6 +53,7 @@ export type BuildContext = {
 
 export type BuildOptions = {
     themeName?: string | string[];
+    themeVersion?: string;
     environmentVariables?: { name: string; default: string }[];
     extraThemeProperties?: string[];
     artifactId?: string;
@@ -137,7 +138,7 @@ export function getBuildContext(params: {
     const parsedPackageJson = (() => {
         type BuildOptions_packageJson = BuildOptions & {
             projectBuildDirPath?: string;
-            staticDirPathInBuildDirPath?: string;
+            staticDirPathInProjectBuildDirPath?: string;
         };
 
         type ParsedPackageJson = {
@@ -170,7 +171,8 @@ export function getBuildContext(params: {
                             )
                             .optional(),
                         themeName: z.union([z.string(), z.array(z.string())]).optional(),
-                        staticDirPathInBuildDirPath: z.string().optional(),
+                        themeVersion: z.string().optional(),
+                        staticDirPathInProjectBuildDirPath: z.string().optional(),
                         keycloakVersionTargets: id<
                             z.ZodType<BuildOptions.KeycloakVersionTargets>
                         >(
@@ -333,8 +335,7 @@ export function getBuildContext(params: {
 
     return {
         bundler,
-        themeVersion:
-            process.env.KEYCLOAKIFY_THEME_VERSION ?? parsedPackageJson.version ?? "0.0.0",
+        themeVersion: buildOptions.themeVersion ?? parsedPackageJson.version ?? "0.0.0",
         themeNames,
         extraThemeProperties: buildOptions.extraThemeProperties,
         groupId: (() => {
@@ -440,9 +441,9 @@ export function getBuildContext(params: {
                     break webpack;
                 }
 
-                if (buildOptions.staticDirPathInBuildDirPath !== undefined) {
+                if (buildOptions.staticDirPathInProjectBuildDirPath !== undefined) {
                     getAbsoluteAndInOsFormatPath({
-                        pathIsh: buildOptions.staticDirPathInBuildDirPath,
+                        pathIsh: buildOptions.staticDirPathInProjectBuildDirPath,
                         cwd: projectBuildDirPath
                     });
                 }
