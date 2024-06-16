@@ -272,13 +272,13 @@ describe("js replacer - webpack", () => {
 
         const fixedJsCodeExpected = `
             function f() {
-                return window.kcContext.url.resourcesPath + "/build/static/js/" + ({}[e] || e) + "." + {
+                return window.kcContext.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/static/js/" + ({}[e] || e) + "." + {
                     3: "0664cdc0"
                 }[e] + ".chunk.js"
             }
 
             function sameAsF() {
-                return window.kcContext.url.resourcesPath + "/build/static/js/" + ({}[e] || e) + "." + {
+                return window.kcContext.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/static/js/" + ({}[e] || e) + "." + {
                     3: "0664cdc0"
                 }[e] + ".chunk.js"
             }
@@ -293,7 +293,7 @@ describe("js replacer - webpack", () => {
                 }
                 return "u";
             })()] = function(e) {
-                return "/build/static/js/" + e + "." + {
+                return "/${basenameOfTheKeycloakifyResourcesDir}/static/js/" + e + "." + {
                     147: "6c5cee76",
                     787: "8da10fcf",
                     922: "be170a73"
@@ -310,7 +310,7 @@ describe("js replacer - webpack", () => {
                 }
                 return "miniCssF";
             })()] = function(e) {
-                return "/build/static/css/" + e + "." + {
+                return "/${basenameOfTheKeycloakifyResourcesDir}/static/css/" + e + "." + {
                     164:"dcfd7749",
                     908:"67c9ed2c"
                 } [e] + ".chunk.css"
@@ -325,7 +325,7 @@ describe("js replacer - webpack", () => {
                     });
                 }
                 return "u";
-            })()] = e => "/build/static/js/"+e+"."+{69:"4f205f87",128:"49264537",453:"b2fed72e",482:"f0106901"}[e]+".chunk.js"
+            })()] = e => "/${basenameOfTheKeycloakifyResourcesDir}/static/js/"+e+"."+{69:"4f205f87",128:"49264537",453:"b2fed72e",482:"f0106901"}[e]+".chunk.js"
         
             t[(function(){
                 var pd = Object.getOwnPropertyDescriptor(t, "p");
@@ -336,7 +336,7 @@ describe("js replacer - webpack", () => {
                     });
                 }
                 return "miniCssF";
-            })()] = e => "/build/static/css/"+e+"."+{164:"dcfd7749",908:"67c9ed2c"}[e]+".chunk.css"
+            })()] = e => "/${basenameOfTheKeycloakifyResourcesDir}/static/css/"+e+"."+{164:"dcfd7749",908:"67c9ed2c"}[e]+".chunk.css"
         `;
 
         expect(isSameCode(fixedJsCode, fixedJsCodeExpected)).toBe(true);
@@ -434,8 +434,8 @@ describe("css replacer", () => {
 
         const cssCodeToPrependInHeadExpected = `
             :root {
-                --urla882a969fd39473: url(\${url.resourcesPath}/build/logo192.png);
-                --urldd75cab58377c19: url(\${url.resourcesPath}/build/static/media/something.svg);
+                --urla882a969fd39473: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/logo192.png);
+                --urldd75cab58377c19: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/static/media/something.svg);
             }
         `;
 
@@ -492,8 +492,8 @@ describe("css replacer", () => {
 
         const cssCodeToPrependInHeadExpected = `
             :root {
-                --url749a3139386b2c8: url(\${url.resourcesPath}/build/logo192.png);
-                --url8bdc0887b97ac9a: url(\${url.resourcesPath}/build/static/media/something.svg);
+                --url749a3139386b2c8: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/logo192.png);
+                --url8bdc0887b97ac9a: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/static/media/something.svg);
             }
         `;
 
@@ -549,7 +549,7 @@ describe("inline css replacer", () => {
               font-style: normal;
               font-weight: 400;
               font-display: swap;
-              src: url(\${url.resourcesPath}/build/fonts/WorkSans/worksans-regular-webfont.woff2)
+              src: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/fonts/WorkSans/worksans-regular-webfont.woff2)
                 format("woff2");
             }
             @font-face {
@@ -557,7 +557,7 @@ describe("inline css replacer", () => {
               font-style: normal;
               font-weight: 500;
               font-display: swap;
-              src: url(\${url.resourcesPath}/build/fonts/WorkSans/worksans-medium-webfont.woff2)
+              src: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/fonts/WorkSans/worksans-medium-webfont.woff2)
                 format("woff2");
             }
             @font-face {
@@ -565,7 +565,7 @@ describe("inline css replacer", () => {
               font-style: normal;
               font-weight: 600;
               font-display: swap;
-              src: url(\${url.resourcesPath}/build/fonts/WorkSans/worksans-semibold-webfont.woff2)
+              src: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/fonts/WorkSans/worksans-semibold-webfont.woff2)
                 format("woff2");
             }
             @font-face {
@@ -573,7 +573,7 @@ describe("inline css replacer", () => {
               font-style: normal;
               font-weight: 700;
               font-display: swap;
-              src: url(\${url.resourcesPath}/build/fonts/WorkSans/worksans-bold-webfont.woff2)
+              src: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/fonts/WorkSans/worksans-bold-webfont.woff2)
                 format("woff2");
             }
         `;
@@ -627,7 +627,7 @@ describe("inline css replacer", () => {
                   font-style: normal;
                   font-weight: 400;
                   font-display: swap;
-                  src: url(\${url.resourcesPath}/build/fonts/WorkSans/worksans-regular-webfont.woff2)
+                  src: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/fonts/WorkSans/worksans-regular-webfont.woff2)
                     format("woff2");
                 }
                 @font-face {
@@ -635,7 +635,7 @@ describe("inline css replacer", () => {
                   font-style: normal;
                   font-weight: 500;
                   font-display: swap;
-                  src: url(\${url.resourcesPath}/build/fonts/WorkSans/worksans-medium-webfont.woff2)
+                  src: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/fonts/WorkSans/worksans-medium-webfont.woff2)
                     format("woff2");
                 }
                 @font-face {
@@ -643,7 +643,7 @@ describe("inline css replacer", () => {
                   font-style: normal;
                   font-weight: 600;
                   font-display: swap;
-                  src: url(\${url.resourcesPath}/build/fonts/WorkSans/worksans-semibold-webfont.woff2)
+                  src: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/fonts/WorkSans/worksans-semibold-webfont.woff2)
                     format("woff2");
                 }
                 @font-face {
@@ -651,7 +651,7 @@ describe("inline css replacer", () => {
                   font-style: normal;
                   font-weight: 700;
                   font-display: swap;
-                  src: url(\${url.resourcesPath}/build/fonts/WorkSans/worksans-bold-webfont.woff2)
+                  src: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/fonts/WorkSans/worksans-bold-webfont.woff2)
                     format("woff2");
                 }
             `;
