@@ -463,7 +463,7 @@ export function getBuildContext(params: {
         recordIsImplementedByThemeType,
         themeSrcDirPath,
         jarTargets: (() => {
-            const getJarFileBasename = (range: string) =>
+            const getDefaultJarFileBasename = (range: string) =>
                 `keycloak-theme-for-kc-${range}.jar`;
 
             build_for_specific_keycloak_major_version: {
@@ -536,10 +536,39 @@ export function getBuildContext(params: {
                     }
                 })();
 
+                const jarFileBasename = (() => {
+                    use_custom_jar_basename: {
+                        const { keycloakVersionTargets } = buildOptions;
+
+                        if (keycloakVersionTargets === undefined) {
+                            break use_custom_jar_basename;
+                        }
+
+                        const entry = objectEntries(keycloakVersionTargets).find(
+                            ([keycloakVersionRange_entry]) =>
+                                keycloakVersionRange_entry === keycloakVersionRange
+                        );
+
+                        if (entry === undefined) {
+                            break use_custom_jar_basename;
+                        }
+
+                        const maybeJarFileBasename = entry[1];
+
+                        if (typeof maybeJarFileBasename !== "string") {
+                            break use_custom_jar_basename;
+                        }
+
+                        return maybeJarFileBasename;
+                    }
+
+                    return getDefaultJarFileBasename(keycloakVersionRange);
+                })();
+
                 return [
                     {
                         keycloakVersionRange,
-                        jarFileBasename: getJarFileBasename(keycloakVersionRange)
+                        jarFileBasename
                     }
                 ];
             }
@@ -562,7 +591,8 @@ export function getBuildContext(params: {
                         >(true);
                         jarTargets.push({
                             keycloakVersionRange,
-                            jarFileBasename: getJarFileBasename(keycloakVersionRange)
+                            jarFileBasename:
+                                getDefaultJarFileBasename(keycloakVersionRange)
                         });
                     }
                 } else {
@@ -578,7 +608,8 @@ export function getBuildContext(params: {
                         >(true);
                         jarTargets.push({
                             keycloakVersionRange,
-                            jarFileBasename: getJarFileBasename(keycloakVersionRange)
+                            jarFileBasename:
+                                getDefaultJarFileBasename(keycloakVersionRange)
                         });
                     }
                 }
@@ -667,7 +698,7 @@ export function getBuildContext(params: {
                 if (jarNameOrBoolean === true) {
                     jarTargets.push({
                         keycloakVersionRange: keycloakVersionRange,
-                        jarFileBasename: getJarFileBasename(keycloakVersionRange)
+                        jarFileBasename: getDefaultJarFileBasename(keycloakVersionRange)
                     });
                     continue;
                 }

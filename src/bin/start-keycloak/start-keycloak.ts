@@ -113,10 +113,6 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     const keycloakMajorVersionNumber = SemVer.parse(keycloakVersion).major;
 
-    const beforeBuildJarFileBasenames = fs
-        .readdirSync(buildContext.keycloakifyBuildDirPath)
-        .filter(fileBasename => fileBasename.endsWith(".jar"));
-
     {
         const { isAppBuildSuccess } = await appBuild({
             buildContext
@@ -270,13 +266,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         pathBasename(jarFilePath)
     );
 
-    {
-        const fsFnName = beforeBuildJarFileBasenames.includes(pathBasename(jarFilePath))
-            ? "copyFileSync"
-            : "renameSync";
-
-        fs[fsFnName](jarFilePath, jarFilePath_cacheDir);
-    }
+    fs.copyFileSync(jarFilePath, jarFilePath_cacheDir);
 
     try {
         child_process.execSync(`docker rm --force ${containerName}`, {
@@ -376,6 +366,10 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
             console.log(
                 [
+                    "",
+                    `The ftl files from ${chalk.bold(
+                        `.${pathSep}${pathRelative(process.cwd(), pathJoin(buildContext.keycloakifyBuildDirPath, "theme"))}`
+                    )} are mounted in the Keycloak container.`,
                     "",
                     `Keycloak Admin console: ${chalk.cyan.bold(
                         `http://localhost:${cliCommandOptions.port}`
