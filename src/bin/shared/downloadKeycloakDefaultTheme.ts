@@ -187,6 +187,24 @@ export async function downloadKeycloakDefaultTheme(params: {
                                 "patternfly",
                                 "dist",
                                 "fonts",
+                                "OpenSans-Bold-webfont.woff2"
+                            ),
+                            pathJoin(
+                                "patternfly",
+                                "dist",
+                                "fonts",
+                                "OpenSans-Bold-webfont.woff"
+                            ),
+                            pathJoin(
+                                "patternfly",
+                                "dist",
+                                "fonts",
+                                "OpenSans-Bold-webfont.ttf"
+                            ),
+                            pathJoin(
+                                "patternfly",
+                                "dist",
+                                "fonts",
                                 "fontawesome-webfont.woff2"
                             ),
                             pathJoin("jquery", "dist", "jquery.min.js")
