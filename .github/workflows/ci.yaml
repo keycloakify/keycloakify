@@ -16,8 +16,8 @@ jobs:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
     - uses: bahmutov/npm-install@v1
-    - name: If this step fails run 'yarn format' then commit again.
-      run: yarn format:check
+    - name: If this step fails run 'npm run format' then commit again.
+      run: npm run format:check
   test:
     runs-on: ${{ matrix.os }}
     needs: test_lint
@@ -32,9 +32,8 @@ jobs:
       with:
         node-version: ${{ matrix.node }}
     - uses: bahmutov/npm-install@v1
-    - run: yarn build
-    - run: yarn test
-    #- run: yarn test:keycloakify-starter
+    - run: npm run build
+    - run: npm run test
 
   storybook:
     runs-on: ubuntu-latest
@@ -46,11 +45,11 @@ jobs:
       with:
         node-version: '18'
     - uses: bahmutov/npm-install@v1
-    - run: yarn build-storybook -o ./build_storybook
+    - run: npm run build-storybook
     - run: git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${{github.repository}}.git
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - run: npx -y -p gh-pages@3.1.0 gh-pages -d ./build_storybook -u "github-actions-bot <actions@github.com>" 
+    - run: npx -y -p gh-pages@3.1.0 gh-pages -d ./storybook-static -u "github-actions-bot <actions@github.com>" 
 
   check_if_version_upgraded:
     name: Check if version upgrade
@@ -112,7 +111,7 @@ jobs:
       with:
         registry-url: https://registry.npmjs.org/
     - uses: bahmutov/npm-install@v1
-    - run: yarn build
+    - run: npm run build
     - run: npx -y -p denoify@1.6.12 enable_short_npm_import_path
       env:
         DRY_RUN: "0"
