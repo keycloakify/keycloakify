@@ -1,8 +1,8 @@
 {
   "destDirPath": "/home/runner/work/keycloakify/keycloakify/.storybook/static/keycloak-resources",
-  "keycloakifyVersion": "10.0.0-rc.72",
+  "keycloakifyVersion": "10.0.0-rc.73",
   "buildContext": {
-    "loginThemeResourcesFromKeycloakVersion": "10.0.0-rc.72",
+    "loginThemeResourcesFromKeycloakVersion": "10.0.0-rc.73",
     "cacheDirPath": "../../../node_modules/.cache/keycloakify",
     "npmWorkspaceRootDirPath": "../../.."
   }
