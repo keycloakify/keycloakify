@@ -112,6 +112,18 @@ export async function downloadKeycloakDefaultTheme(params: {
                                 "dist",
                                 "fonts",
                                 "OpenSans-Semibold-webfont.woff2"
+                            ),
+                            pathJoin(
+                                "patternfly",
+                                "dist",
+                                "fonts",
+                                "PatternFlyIcons-webfont.ttf"
+                            ),
+                            pathJoin(
+                                "patternfly",
+                                "dist",
+                                "fonts",
+                                "PatternFlyIcons-webfont.woff"
                             )
                         ];
                     }
