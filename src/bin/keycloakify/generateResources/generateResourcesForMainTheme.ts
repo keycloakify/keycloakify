@@ -1,6 +1,11 @@
 import { transformCodebase } from "../../tools/transformCodebase";
 import * as fs from "fs";
-import { join as pathJoin, resolve as pathResolve, relative as pathRelative } from "path";
+import {
+    join as pathJoin,
+    resolve as pathResolve,
+    relative as pathRelative,
+    dirname as pathDirname
+} from "path";
 import { replaceImportsInJsCode } from "../replacers/replaceImportsInJsCode";
 import { replaceImportsInCssCode } from "../replacers/replaceImportsInCssCode";
 import {
@@ -64,8 +69,6 @@ export async function generateResourcesForMainTheme(params: {
         return pathJoin(resourcesDirPath, "theme", themeName, themeType);
     };
 
-    const cssGlobalsToDefine: Record<string, string> = {};
-
     for (const themeType of ["login", "account"] as const) {
         if (!buildContext.recordIsImplementedByThemeType[themeType]) {
             continue;
@@ -127,20 +130,13 @@ export async function generateResourcesForMainTheme(params: {
             transformCodebase({
                 srcDirPath: buildContext.projectBuildDirPath,
                 destDirPath,
-                transformSourceCode: ({ filePath, sourceCode }) => {
+                transformSourceCode: ({ filePath, fileRelativePath, sourceCode }) => {
                     if (filePath.endsWith(".css")) {
-                        const {
-                            cssGlobalsToDefine: cssGlobalsToDefineForThisFile,
-                            fixedCssCode
-                        } = replaceImportsInCssCode({
-                            cssCode: sourceCode.toString("utf8")
+                        const { fixedCssCode } = replaceImportsInCssCode({
+                            cssCode: sourceCode.toString("utf8"),
+                            fileRelativeDirPath: pathDirname(fileRelativePath),
+                            buildContext
                         });
-
-                        Object.entries(cssGlobalsToDefineForThisFile).forEach(
-                            ([key, value]) => {
-                                cssGlobalsToDefine[key] = value;
-                            }
-                        );
 
                         return {
                             modifiedSourceCode: Buffer.from(fixedCssCode, "utf8")
@@ -168,7 +164,6 @@ export async function generateResourcesForMainTheme(params: {
             indexHtmlCode: fs
                 .readFileSync(pathJoin(buildContext.projectBuildDirPath, "index.html"))
                 .toString("utf8"),
-            cssGlobalsToDefine,
             buildContext,
             keycloakifyVersion: readThisNpmPackageVersion(),
             themeType,

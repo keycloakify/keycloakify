@@ -1,11 +1,6 @@
 import { replaceImportsInJsCode_vite } from "keycloakify/bin/keycloakify/replacers/replaceImportsInJsCode/vite";
 import { replaceImportsInJsCode_webpack } from "keycloakify/bin/keycloakify/replacers/replaceImportsInJsCode/webpack";
-import {
-    generateCssCodeToDefineGlobals,
-    replaceImportsInCssCode
-} from "keycloakify/bin/keycloakify/replacers/replaceImportsInCssCode";
-import { replaceImportsInInlineCssCode } from "keycloakify/bin/keycloakify/replacers/replaceImportsInInlineCssCode";
-import { same } from "evt/tools/inDepth/same";
+import { replaceImportsInCssCode } from "keycloakify/bin/keycloakify/replacers/replaceImportsInCssCode";
 import { expect, it, describe } from "vitest";
 import { basenameOfTheKeycloakifyResourcesDir } from "keycloakify/bin/shared/constants";
 
@@ -385,279 +380,80 @@ describe("js replacer - webpack", () => {
 });
 
 describe("css replacer", () => {
-    it("transforms absolute urls to css globals properly with no urlPathname", () => {
-        const { fixedCssCode, cssGlobalsToDefine } = replaceImportsInCssCode({
+    it("replaceImportsInCssCode - 1", () => {
+        const { fixedCssCode } = replaceImportsInCssCode({
             cssCode: `
                 .my-div {
-                    background: url(/logo192.png) no-repeat center center;
+                    background: url(/background.png) no-repeat center center;
                 }
     
                 .my-div2 {
-                    background: url(/logo192.png) repeat center center;
+                    background: url(/assets/background.png) repeat center center;
                 }
     
-                .my-div {
-                    background-image: url(/static/media/something.svg);
+                .my-div3 {
+                    background-image: url(/assets/media/something.svg);
                 }
-            `
-        });
-
-        const fixedCssCodeExpected = `
-            .my-div {
-                background: var(--urla882a969fd39473) no-repeat center center;
-            }
-    
-            .my-div2 {
-                background: var(--urla882a969fd39473) repeat center center;
-            }
-    
-            .my-div {
-                background-image: var(--urldd75cab58377c19);
-            }
-        `;
-
-        expect(isSameCode(fixedCssCode, fixedCssCodeExpected)).toBe(true);
-
-        const cssGlobalsToDefineExpected = {
-            urla882a969fd39473: "url(/logo192.png)",
-            urldd75cab58377c19: "url(/static/media/something.svg)"
-        };
-
-        expect(same(cssGlobalsToDefine, cssGlobalsToDefineExpected)).toBe(true);
-
-        const { cssCodeToPrependInHead } = generateCssCodeToDefineGlobals({
-            cssGlobalsToDefine,
+            `,
+            fileRelativeDirPath: "assets/",
             buildContext: {
                 urlPathname: undefined
             }
         });
 
-        const cssCodeToPrependInHeadExpected = `
-            :root {
-                --urla882a969fd39473: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/logo192.png);
-                --urldd75cab58377c19: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/static/media/something.svg);
-            }
-        `;
-
-        expect(isSameCode(cssCodeToPrependInHead, cssCodeToPrependInHeadExpected)).toBe(
-            true
-        );
-    });
-    it("transforms absolute urls to css globals properly with custom urlPathname", () => {
-        const { fixedCssCode, cssGlobalsToDefine } = replaceImportsInCssCode({
-            cssCode: `
-                .my-div {
-                    background: url(/x/y/z/logo192.png) no-repeat center center;
-                }
-    
-                .my-div2 {
-                    background: url(/x/y/z/logo192.png) no-repeat center center;
-                }
-    
-                .my-div {
-                    background-image: url(/x/y/z/static/media/something.svg);
-                }
-            `
-        });
-
         const fixedCssCodeExpected = `
             .my-div {
-                background: var(--url749a3139386b2c8) no-repeat center center;
+                background: url(../background.png) no-repeat center center;
             }
     
             .my-div2 {
-                background: var(--url749a3139386b2c8) no-repeat center center;
+                background: url(background.png) repeat center center;
             }
     
-            .my-div {
-                background-image: var(--url8bdc0887b97ac9a);
+            .my-div3 {
+                background-image: url(media/something.svg);
             }
         `;
 
         expect(isSameCode(fixedCssCode, fixedCssCodeExpected)).toBe(true);
+    });
 
-        const cssGlobalsToDefineExpected = {
-            url749a3139386b2c8: "url(/x/y/z/logo192.png)",
-            url8bdc0887b97ac9a: "url(/x/y/z/static/media/something.svg)"
-        };
-
-        expect(same(cssGlobalsToDefine, cssGlobalsToDefineExpected)).toBe(true);
-
-        const { cssCodeToPrependInHead } = generateCssCodeToDefineGlobals({
-            cssGlobalsToDefine,
+    it("replaceImportsInCssCode - 2", () => {
+        const { fixedCssCode } = replaceImportsInCssCode({
+            cssCode: `
+                .my-div {
+                    background: url(/a/b/background.png) no-repeat center center;
+                }
+    
+                .my-div2 {
+                    background: url(/a/b/assets/background.png) repeat center center;
+                }
+    
+                .my-div3 {
+                    background-image: url(/a/b/assets/media/something.svg);
+                }
+            `,
+            fileRelativeDirPath: "assets/",
             buildContext: {
-                urlPathname: "/x/y/z/"
+                urlPathname: "/a/b/"
             }
         });
 
-        const cssCodeToPrependInHeadExpected = `
-            :root {
-                --url749a3139386b2c8: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/logo192.png);
-                --url8bdc0887b97ac9a: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/static/media/something.svg);
+        const fixedCssCodeExpected = `
+            .my-div {
+                background: url(../background.png) no-repeat center center;
+            }
+    
+            .my-div2 {
+                background: url(background.png) repeat center center;
+            }
+    
+            .my-div3 {
+                background-image: url(media/something.svg);
             }
         `;
 
-        expect(isSameCode(cssCodeToPrependInHead, cssCodeToPrependInHeadExpected)).toBe(
-            true
-        );
-    });
-});
-
-describe("inline css replacer", () => {
-    describe("no url pathName", () => {
-        const cssCode = `
-        @font-face {
-          font-family: "Work Sans";
-          font-style: normal;
-          font-weight: 400;
-          font-display: swap;
-          src: url("/fonts/WorkSans/worksans-regular-webfont.woff2") format("woff2");
-        }
-        @font-face {
-          font-family: "Work Sans";
-          font-style: normal;
-          font-weight: 500;
-          font-display: swap;
-          src: url("/fonts/WorkSans/worksans-medium-webfont.woff2") format("woff2");
-        }
-        @font-face {
-          font-family: "Work Sans";
-          font-style: normal;
-          font-weight: 600;
-          font-display: swap;
-          src: url("/fonts/WorkSans/worksans-semibold-webfont.woff2") format("woff2");
-        }
-        @font-face {
-          font-family: "Work Sans";
-          font-style: normal;
-          font-weight: 700;
-          font-display: swap;
-          src: url("/fonts/WorkSans/worksans-bold-webfont.woff2") format("woff2");
-        }
-    `;
-        it("transforms css for standalone app properly", () => {
-            const { fixedCssCode } = replaceImportsInInlineCssCode({
-                cssCode,
-                buildContext: {
-                    urlPathname: undefined
-                }
-            });
-
-            const fixedCssCodeExpected = `
-            @font-face {
-              font-family: "Work Sans";
-              font-style: normal;
-              font-weight: 400;
-              font-display: swap;
-              src: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/fonts/WorkSans/worksans-regular-webfont.woff2)
-                format("woff2");
-            }
-            @font-face {
-              font-family: "Work Sans";
-              font-style: normal;
-              font-weight: 500;
-              font-display: swap;
-              src: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/fonts/WorkSans/worksans-medium-webfont.woff2)
-                format("woff2");
-            }
-            @font-face {
-              font-family: "Work Sans";
-              font-style: normal;
-              font-weight: 600;
-              font-display: swap;
-              src: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/fonts/WorkSans/worksans-semibold-webfont.woff2)
-                format("woff2");
-            }
-            @font-face {
-              font-family: "Work Sans";
-              font-style: normal;
-              font-weight: 700;
-              font-display: swap;
-              src: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/fonts/WorkSans/worksans-bold-webfont.woff2)
-                format("woff2");
-            }
-        `;
-
-            expect(isSameCode(fixedCssCode, fixedCssCodeExpected)).toBe(true);
-        });
-    });
-
-    describe("with url pathName", () => {
-        const cssCode = `
-        @font-face {
-          font-family: "Work Sans";
-          font-style: normal;
-          font-weight: 400;
-          font-display: swap;
-          src: url("/x/y/z/fonts/WorkSans/worksans-regular-webfont.woff2") format("woff2");
-        }
-        @font-face {
-          font-family: "Work Sans";
-          font-style: normal;
-          font-weight: 500;
-          font-display: swap;
-          src: url("/x/y/z/fonts/WorkSans/worksans-medium-webfont.woff2") format("woff2");
-        }
-        @font-face {
-          font-family: "Work Sans";
-          font-style: normal;
-          font-weight: 600;
-          font-display: swap;
-          src: url("/x/y/z/fonts/WorkSans/worksans-semibold-webfont.woff2") format("woff2");
-        }
-        @font-face {
-          font-family: "Work Sans";
-          font-style: normal;
-          font-weight: 700;
-          font-display: swap;
-          src: url("/x/y/z/fonts/WorkSans/worksans-bold-webfont.woff2") format("woff2");
-        }
-    `;
-        it("transforms css for standalone app properly", () => {
-            const { fixedCssCode } = replaceImportsInInlineCssCode({
-                cssCode,
-                buildContext: {
-                    urlPathname: "/x/y/z/"
-                }
-            });
-
-            const fixedCssCodeExpected = `
-                @font-face {
-                  font-family: "Work Sans";
-                  font-style: normal;
-                  font-weight: 400;
-                  font-display: swap;
-                  src: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/fonts/WorkSans/worksans-regular-webfont.woff2)
-                    format("woff2");
-                }
-                @font-face {
-                  font-family: "Work Sans";
-                  font-style: normal;
-                  font-weight: 500;
-                  font-display: swap;
-                  src: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/fonts/WorkSans/worksans-medium-webfont.woff2)
-                    format("woff2");
-                }
-                @font-face {
-                  font-family: "Work Sans";
-                  font-style: normal;
-                  font-weight: 600;
-                  font-display: swap;
-                  src: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/fonts/WorkSans/worksans-semibold-webfont.woff2)
-                    format("woff2");
-                }
-                @font-face {
-                  font-family: "Work Sans";
-                  font-style: normal;
-                  font-weight: 700;
-                  font-display: swap;
-                  src: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/fonts/WorkSans/worksans-bold-webfont.woff2)
-                    format("woff2");
-                }
-            `;
-
-            expect(isSameCode(fixedCssCode, fixedCssCodeExpected)).toBe(true);
-        });
+        expect(isSameCode(fixedCssCode, fixedCssCodeExpected)).toBe(true);
     });
 });
 

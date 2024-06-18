@@ -1,7 +1,6 @@
 import cheerio from "cheerio";
 import { replaceImportsInJsCode } from "../replacers/replaceImportsInJsCode";
-import { generateCssCodeToDefineGlobals } from "../replacers/replaceImportsInCssCode";
-import { replaceImportsInInlineCssCode } from "../replacers/replaceImportsInInlineCssCode";
+import { replaceImportsInCssCode } from "../replacers/replaceImportsInCssCode";
 import * as fs from "fs";
 import { join as pathJoin } from "path";
 import type { BuildContext } from "../../shared/buildContext";
@@ -28,7 +27,6 @@ assert<BuildContext extends BuildContextLike ? true : false>();
 export function generateFtlFilesCodeFactory(params: {
     themeName: string;
     indexHtmlCode: string;
-    cssGlobalsToDefine: Record<string, string>;
     buildContext: BuildContextLike;
     keycloakifyVersion: string;
     themeType: ThemeType;
@@ -36,7 +34,6 @@ export function generateFtlFilesCodeFactory(params: {
 }) {
     const {
         themeName,
-        cssGlobalsToDefine,
         indexHtmlCode,
         buildContext,
         keycloakifyVersion,
@@ -65,8 +62,9 @@ export function generateFtlFilesCodeFactory(params: {
 
             assert(cssCode !== null);
 
-            const { fixedCssCode } = replaceImportsInInlineCssCode({
+            const { fixedCssCode } = replaceImportsInCssCode({
                 cssCode,
+                fileRelativeDirPath: ".",
                 buildContext
             });
 
@@ -97,21 +95,6 @@ export function generateFtlFilesCodeFactory(params: {
                 );
             })
         );
-
-        if (Object.keys(cssGlobalsToDefine).length !== 0) {
-            $("head").prepend(
-                [
-                    "",
-                    "<style>",
-                    generateCssCodeToDefineGlobals({
-                        cssGlobalsToDefine,
-                        buildContext
-                    }).cssCodeToPrependInHead,
-                    "</style>",
-                    ""
-                ].join("\n")
-            );
-        }
     }
 
     //FTL is no valid html, we can't insert with cheerio, we put placeholder for injecting later.
