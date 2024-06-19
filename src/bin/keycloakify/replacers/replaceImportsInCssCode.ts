@@ -1,4 +1,5 @@
 import type { BuildContext } from "../../shared/buildContext";
+import { basenameOfTheKeycloakifyResourcesDir } from "../../shared/constants";
 import { assert } from "tsafe/assert";
 import { posix } from "path";
 
@@ -10,12 +11,12 @@ assert<BuildContext extends BuildContextLike ? true : false>();
 
 export function replaceImportsInCssCode(params: {
     cssCode: string;
-    fileRelativeDirPath: string;
+    cssFileRelativeDirPath: string | undefined;
     buildContext: BuildContextLike;
 }): {
     fixedCssCode: string;
 } {
-    const { cssCode, fileRelativeDirPath, buildContext } = params;
+    const { cssCode, cssFileRelativeDirPath, buildContext } = params;
 
     const fixedCssCode = cssCode.replace(
         /url\(["']?(\/[^/][^)"']+)["']?\)/g,
@@ -31,8 +32,16 @@ export function replaceImportsInCssCode(params: {
                 );
             }
 
+            inline_style_in_html: {
+                if (cssFileRelativeDirPath !== undefined) {
+                    break inline_style_in_html;
+                }
+
+                return `url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}${assetFileAbsoluteUrlPathname})`;
+            }
+
             const assetFileRelativeUrlPathname = posix.relative(
-                fileRelativeDirPath.replace(/\\/g, "/"),
+                cssFileRelativeDirPath.replace(/\\/g, "/"),
                 assetFileAbsoluteUrlPathname.replace(/^\//, "")
             );
 

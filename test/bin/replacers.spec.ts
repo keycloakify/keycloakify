@@ -395,7 +395,7 @@ describe("css replacer", () => {
                     background-image: url(/assets/media/something.svg);
                 }
             `,
-            fileRelativeDirPath: "assets/",
+            cssFileRelativeDirPath: "assets/",
             buildContext: {
                 urlPathname: undefined
             }
@@ -433,7 +433,7 @@ describe("css replacer", () => {
                     background-image: url(/a/b/assets/media/something.svg);
                 }
             `,
-            fileRelativeDirPath: "assets/",
+            cssFileRelativeDirPath: "assets/",
             buildContext: {
                 urlPathname: "/a/b/"
             }
@@ -450,6 +450,82 @@ describe("css replacer", () => {
     
             .my-div3 {
                 background-image: url(media/something.svg);
+            }
+        `;
+
+        expect(isSameCode(fixedCssCode, fixedCssCodeExpected)).toBe(true);
+    });
+
+    it("replaceImportsInCssCode - 3", () => {
+        const { fixedCssCode } = replaceImportsInCssCode({
+            cssCode: `
+                .my-div {
+                    background: url(/a/b/background.png) no-repeat center center;
+                }
+    
+                .my-div2 {
+                    background: url(/a/b/assets/background.png) repeat center center;
+                }
+    
+                .my-div3 {
+                    background-image: url(/a/b/assets/media/something.svg);
+                }
+            `,
+            cssFileRelativeDirPath: undefined,
+            buildContext: {
+                urlPathname: "/a/b/"
+            }
+        });
+
+        const fixedCssCodeExpected = `
+            .my-div {
+                background: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/background.png) no-repeat center center;
+            }
+    
+            .my-div2 {
+                background: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/assets/background.png) repeat center center;
+            }
+    
+            .my-div3 {
+                background-image: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/assets/media/something.svg);
+            }
+        `;
+
+        expect(isSameCode(fixedCssCode, fixedCssCodeExpected)).toBe(true);
+    });
+
+    it("replaceImportsInCssCode - 4", () => {
+        const { fixedCssCode } = replaceImportsInCssCode({
+            cssCode: `
+                .my-div {
+                    background: url(/background.png) no-repeat center center;
+                }
+    
+                .my-div2 {
+                    background: url(/assets/background.png) repeat center center;
+                }
+    
+                .my-div3 {
+                    background-image: url(/assets/media/something.svg);
+                }
+            `,
+            cssFileRelativeDirPath: undefined,
+            buildContext: {
+                urlPathname: undefined
+            }
+        });
+
+        const fixedCssCodeExpected = `
+            .my-div {
+                background: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/background.png) no-repeat center center;
+            }
+    
+            .my-div2 {
+                background: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/assets/background.png) repeat center center;
+            }
+    
+            .my-div3 {
+                background-image: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/assets/media/something.svg);
             }
         `;
 

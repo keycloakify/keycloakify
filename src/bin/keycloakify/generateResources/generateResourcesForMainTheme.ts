@@ -134,7 +134,7 @@ export async function generateResourcesForMainTheme(params: {
                     if (filePath.endsWith(".css")) {
                         const { fixedCssCode } = replaceImportsInCssCode({
                             cssCode: sourceCode.toString("utf8"),
-                            fileRelativeDirPath: pathDirname(fileRelativePath),
+                            cssFileRelativeDirPath: pathDirname(fileRelativePath),
                             buildContext
                         });
 

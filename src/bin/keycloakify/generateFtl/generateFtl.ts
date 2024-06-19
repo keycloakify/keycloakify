@@ -64,7 +64,7 @@ export function generateFtlFilesCodeFactory(params: {
 
             const { fixedCssCode } = replaceImportsInCssCode({
                 cssCode,
-                fileRelativeDirPath: ".",
+                cssFileRelativeDirPath: undefined,
                 buildContext
             });
 
