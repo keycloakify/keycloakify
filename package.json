@@ -7,7 +7,7 @@
         "url": "git://github.com/keycloakify/keycloakify.git"
     },
     "scripts": {
-        "prepare": "patch-package && tsx scripts/generate-i18n-messages.ts",
+        "prepare": "tsx scripts/generate-i18n-messages.ts",
         "build": "tsx scripts/build.ts",
         "storybook": "tsx scripts/start-storybook.ts",
         "link-in-starter": "tsx scripts/link-in-starter.ts",
@@ -102,7 +102,6 @@
         "lint-staged": "^11.0.0",
         "magic-string": "^0.30.7",
         "make-fetch-happen": "^11.0.3",
-        "patch-package": "^8.0.0",
         "powerhooks": "^1.0.10",
         "prettier": "^3.2.5",
         "properties-parser": "^0.3.1",
@@ -111,7 +110,7 @@
         "recast": "^0.23.3",
         "run-exclusive": "^2.2.19",
         "storybook-dark-mode": "^1.1.2",
-        "termost": "^0.12.0",
+        "termost": "^v0.12.1",
         "tsc-alias": "^1.8.10",
         "tss-react": "^4.9.10",
         "typescript": "^4.9.1-beta",
