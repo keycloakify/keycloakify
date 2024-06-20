@@ -190,6 +190,8 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     const userProfileFormFieldComponentName = "UserProfileFormFields";
 
+    const componentName = componentBasename.replace(/.tsx$/, "");
+
     console.log(
         [
             ``,
@@ -207,10 +209,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             `// ...`,
             ``,
             chalk.green(
-                `+const ${componentBasename.replace(
-                    /.tsx$/,
-                    ""
-                )} = lazy(() => import("./pages/${componentBasename}"));`
+                `+const ${componentName} = lazy(() => import("./pages/${componentName}"));`
             ),
             ...[
                 ``,
@@ -224,7 +223,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                 `                 switch (kcContext.pageId) {`,
                 `                     // ...`,
                 `+                    case "${pageIdOrComponent}": return (`,
-                `+                        <${componentBasename}`,
+                `+                        <${componentName}`,
                 `+                            {...{ kcContext, i18n, classes }}`,
                 `+                            Template={Template}`,
                 `+                            doUseDefaultCss={true}`,
