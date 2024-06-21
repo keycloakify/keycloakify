@@ -161,7 +161,10 @@ export const kcContextCommonMock: KcContext.Common = {
     scripts: [],
     isAppInitiatedAction: false,
     properties: {},
-    __localizationRealmOverridesUserProfile: {}
+    "x-keycloakify": {
+        realmMessageBundleUserProfile: undefined,
+        realmMessageBundleTermsText: undefined
+    }
 };
 
 const loginUrl = {

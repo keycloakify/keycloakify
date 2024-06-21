@@ -1,8 +1,4 @@
-import type {
-    ThemeType,
-    LoginThemePageId,
-    nameOfTheLocalizationRealmOverridesUserProfileProperty
-} from "keycloakify/bin/shared/constants";
+import type { ThemeType, LoginThemePageId } from "keycloakify/bin/shared/constants";
 import type { ExtractAfterStartingWith } from "keycloakify/tools/ExtractAfterStartingWith";
 import type { ValueOf } from "keycloakify/tools/ValueOf";
 import { assert } from "tsafe/assert";
@@ -158,7 +154,10 @@ export declare namespace KcContext {
             ssoLoginInOtherTabsUrl: string;
         };
         properties: {};
-        __localizationRealmOverridesUserProfile?: Record<string, string>;
+        "x-keycloakify": {
+            realmMessageBundleUserProfile: Record<string, string> | undefined;
+            realmMessageBundleTermsText: string | undefined;
+        };
     };
 
     export type SamlPostForm = Common & {
@@ -276,6 +275,7 @@ export declare namespace KcContext {
             lastName?: string;
             markedForEviction?: boolean;
         };
+        __localizationRealmOverridesTermsText?: string;
     };
 
     export type LoginDeviceVerifyUserCode = Common & {
@@ -772,11 +772,3 @@ export type PasswordPolicies = {
     /** Whether the password can be the email address */
     notEmail?: boolean;
 };
-
-assert<
-    KcContext.Common extends Partial<
-        Record<typeof nameOfTheLocalizationRealmOverridesUserProfileProperty, unknown>
-    >
-        ? true
-        : false
->();

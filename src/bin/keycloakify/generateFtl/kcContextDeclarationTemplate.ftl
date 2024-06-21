@@ -33,8 +33,9 @@ kcContext.pageId = "${pageId}";
 if( kcContext.url && kcContext.url.resourcesPath ){
     kcContext.url.resourcesCommonPath = kcContext.url.resourcesPath + "/" + "RESOURCES_COMMON_cLsLsMrtDkpVv";
 }
+kcContext["x-keycloakify"] = {};
 <#if profile?? && profile.attributes??>
-    kcContext.lOCALIZATION_REALM_OVERRIDES_USER_PROFILE_PROPERTY_KEY_aaGLsPgGIdeeX = {
+    kcContext["x-keycloakify"].realmMessageBundleUserProfile = {
         <#list profile.attributes as attribute>
             <#if attribute.annotations?? && attribute.displayName??>
                 "${attribute.displayName}": decodeHtmlEntities("${advancedMsg(attribute.displayName)?js_string}"),
@@ -60,6 +61,9 @@ if( kcContext.url && kcContext.url.resourcesPath ){
             </#if>
         </#list>
     };
+</#if>
+<#if pageId == "terms.ftl" || termsAcceptanceRequired?? && termsAcceptanceRequired>
+    kcContext["x-keycloakify"].realmMessageBundleTermsText= decodeHtmlEntities("${msg("termsText")?js_string}");
 </#if>
 attributes_to_attributesByName: {
     if( !kcContext.profile ){
@@ -198,6 +202,9 @@ function decodeHtmlEntities(htmlStr){
                     ) || (
                         key == "execution" &&
                         are_same_path(path, [])
+                    ) || (
+                        key == "entity" &&
+                        are_same_path(path, ["user"])
                     )
                 >
                     <#-- <#local out_seq += ["/*" + path?join(".") + "." + key + " excluded*/"]> -->

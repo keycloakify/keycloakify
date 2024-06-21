@@ -1,10 +1,8 @@
 import "keycloakify/tools/Object.fromEntries";
-import { useEffect, useState } from "react";
 import { assert } from "tsafe/assert";
 import messages_fallbackLanguage from "./baseMessages/en";
 import { getMessages } from "./baseMessages";
 import type { KcContext } from "../KcContext";
-import { Reflect } from "tsafe/Reflect";
 
 export const fallbackLanguageTag = "en";
 
@@ -13,7 +11,10 @@ export type KcContextLike = {
         currentLanguageTag: string;
         supported: { languageTag: string; url: string; label: string }[];
     };
-    __localizationRealmOverridesUserProfile?: Record<string, string>;
+    "x-keycloakify": {
+        realmMessageBundleUserProfile: Record<string, string> | undefined;
+        realmMessageBundleTermsText: string | undefined;
+    };
 };
 
 assert<KcContext extends KcContextLike ? true : false>();
@@ -89,7 +90,9 @@ export type GenericI18n<MessageKey extends string> = {
     isFetchingTranslations: boolean;
 };
 
-function createGetI18n<ExtraMessageKey extends string = never>(extraMessages: { [languageTag: string]: { [key in ExtraMessageKey]: string } }) {
+export function createGetI18n<ExtraMessageKey extends string = never>(messageBundle: {
+    [languageTag: string]: { [key in ExtraMessageKey]: string };
+}) {
     type I18n = GenericI18n<MessageKey | ExtraMessageKey>;
 
     type Result = { i18n: I18n; prI18n_currentLanguage: Promise<I18n> | undefined };
@@ -127,9 +130,10 @@ function createGetI18n<ExtraMessageKey extends string = never>(extraMessages: { 
 
         const { createI18nTranslationFunctions } = createI18nTranslationFunctionsFactory<MessageKey, ExtraMessageKey>({
             messages_fallbackLanguage,
-            extraMessages_fallbackLanguage: extraMessages[fallbackLanguageTag],
-            extraMessages: extraMessages[partialI18n.currentLanguageTag],
-            __localizationRealmOverridesUserProfile: kcContext.__localizationRealmOverridesUserProfile
+            messageBundle_fallbackLanguage: messageBundle[fallbackLanguageTag],
+            messageBundle_currentLanguage: messageBundle[partialI18n.currentLanguageTag],
+            realmMessageBundleUserProfile: kcContext["x-keycloakify"].realmMessageBundleUserProfile,
+            realmMessageBundleTermsText: kcContext["x-keycloakify"].realmMessageBundleTermsText
         });
 
         const isCurrentLanguageFallbackLanguage = partialI18n.currentLanguageTag === fallbackLanguageTag;
@@ -137,17 +141,19 @@ function createGetI18n<ExtraMessageKey extends string = never>(extraMessages: { 
         const result: Result = {
             i18n: {
                 ...partialI18n,
-                ...createI18nTranslationFunctions({ messages: undefined }),
+                ...createI18nTranslationFunctions({
+                    messages_currentLanguage: isCurrentLanguageFallbackLanguage ? messages_fallbackLanguage : undefined
+                }),
                 isFetchingTranslations: !isCurrentLanguageFallbackLanguage
             },
             prI18n_currentLanguage: isCurrentLanguageFallbackLanguage
                 ? undefined
                 : (async () => {
-                      const messages = await getMessages(partialI18n.currentLanguageTag);
+                      const messages_currentLanguage = await getMessages(partialI18n.currentLanguageTag);
 
                       const i18n_currentLanguage: I18n = {
                           ...partialI18n,
-                          ...createI18nTranslationFunctions({ messages }),
+                          ...createI18nTranslationFunctions({ messages_currentLanguage }),
                           isFetchingTranslations: false
                       };
 
@@ -170,67 +176,48 @@ function createGetI18n<ExtraMessageKey extends string = never>(extraMessages: { 
     return { getI18n };
 }
 
-export function createUseI18n<ExtraMessageKey extends string = never>(extraMessages: {
-    [languageTag: string]: { [key in ExtraMessageKey]: string };
-}) {
-    type I18n = GenericI18n<MessageKey | ExtraMessageKey>;
-
-    const { getI18n } = createGetI18n(extraMessages);
-
-    function useI18n(params: { kcContext: KcContextLike }): { i18n: I18n } {
-        const { kcContext } = params;
-
-        const { i18n, prI18n_currentLanguage } = getI18n({ kcContext });
-
-        const [i18n_toReturn, setI18n_toReturn] = useState<I18n>(i18n);
-
-        useEffect(() => {
-            let isActive = true;
-
-            prI18n_currentLanguage?.then(i18n => {
-                if (!isActive) {
-                    return;
-                }
-
-                setI18n_toReturn(i18n);
-            });
-
-            return () => {
-                isActive = false;
-            };
-        }, []);
-
-        return { i18n: i18n_toReturn };
-    }
-
-    return { useI18n, ofTypeI18n: Reflect<I18n>() };
-}
-
 function createI18nTranslationFunctionsFactory<MessageKey extends string, ExtraMessageKey extends string>(params: {
     messages_fallbackLanguage: Record<MessageKey, string>;
-    extraMessages_fallbackLanguage: Record<ExtraMessageKey, string> | undefined;
-    extraMessages: Partial<Record<ExtraMessageKey, string>> | undefined;
-    __localizationRealmOverridesUserProfile: Record<string, string> | undefined;
+    messageBundle_fallbackLanguage: Record<ExtraMessageKey, string> | undefined;
+    messageBundle_currentLanguage: Partial<Record<ExtraMessageKey, string>> | undefined;
+    realmMessageBundleUserProfile: Record<string, string> | undefined;
+    realmMessageBundleTermsText: string | undefined;
 }) {
-    const { __localizationRealmOverridesUserProfile, extraMessages } = params;
+    const { messageBundle_currentLanguage, realmMessageBundleUserProfile, realmMessageBundleTermsText } = params;
 
     const messages_fallbackLanguage = {
         ...params.messages_fallbackLanguage,
-        ...params.extraMessages_fallbackLanguage
+        ...params.messageBundle_fallbackLanguage
     };
 
     function createI18nTranslationFunctions(params: {
-        messages: Partial<Record<MessageKey, string>> | undefined;
+        messages_currentLanguage: Partial<Record<MessageKey, string>> | undefined;
     }): Pick<GenericI18n<MessageKey | ExtraMessageKey>, "msg" | "msgStr" | "advancedMsg" | "advancedMsgStr"> {
-        const messages = {
-            ...params.messages,
-            ...extraMessages
+        const messages_currentLanguage = {
+            ...params.messages_currentLanguage,
+            ...messageBundle_currentLanguage
         };
 
         function resolveMsg(props: { key: string; args: (string | undefined)[]; doRenderAsHtml: boolean }): string | JSX.Element | undefined {
             const { key, args, doRenderAsHtml } = props;
 
-            const messageOrUndefined: string | undefined = (messages as any)[key] ?? (messages_fallbackLanguage as any)[key];
+            const messageOrUndefined: string | undefined = (() => {
+                const messageOrUndefined = (messages_currentLanguage as any)[key] ?? (messages_fallbackLanguage as any)[key];
+
+                if (key === "termsText") {
+                    if (params.messages_currentLanguage === undefined) {
+                        return " ";
+                    }
+
+                    if (realmMessageBundleTermsText !== messageOrUndefined) {
+                        return realmMessageBundleTermsText;
+                    } else {
+                        return "";
+                    }
+                }
+
+                return messageOrUndefined;
+            })();
 
             if (messageOrUndefined === undefined) {
                 return undefined;
@@ -281,8 +268,8 @@ function createI18nTranslationFunctionsFactory<MessageKey extends string, ExtraM
         function resolveMsgAdvanced(props: { key: string; args: (string | undefined)[]; doRenderAsHtml: boolean }): JSX.Element | string {
             const { key, args, doRenderAsHtml } = props;
 
-            if (__localizationRealmOverridesUserProfile !== undefined && key in __localizationRealmOverridesUserProfile) {
-                const resolvedMessage = __localizationRealmOverridesUserProfile[key];
+            if (realmMessageBundleUserProfile !== undefined && key in realmMessageBundleUserProfile) {
+                const resolvedMessage = realmMessageBundleUserProfile[key];
 
                 return doRenderAsHtml ? (
                     <span

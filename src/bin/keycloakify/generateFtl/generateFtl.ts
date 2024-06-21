@@ -8,8 +8,7 @@ import { assert } from "tsafe/assert";
 import {
     type ThemeType,
     basenameOfTheKeycloakifyResourcesDir,
-    resources_common,
-    nameOfTheLocalizationRealmOverridesUserProfileProperty
+    resources_common
 } from "../../shared/constants";
 import { getThisCodebaseRootDirPath } from "../../tools/getThisCodebaseRootDirPath";
 
@@ -119,10 +118,6 @@ export function generateFtlFilesCodeFactory(params: {
         .replace("KEYCLOAKIFY_THEME_TYPE_dExKd3xEdr", themeType)
         .replace("KEYCLOAKIFY_THEME_NAME_cXxKd3xEer", themeName)
         .replace("RESOURCES_COMMON_cLsLsMrtDkpVv", resources_common)
-        .replace(
-            "lOCALIZATION_REALM_OVERRIDES_USER_PROFILE_PROPERTY_KEY_aaGLsPgGIdeeX",
-            nameOfTheLocalizationRealmOverridesUserProfileProperty
-        )
         .replace(
             "USER_DEFINED_EXCLUSIONS_eKsaY4ZsZ4eMr2",
             buildContext.kcContextExclusionsFtlCode ?? ""

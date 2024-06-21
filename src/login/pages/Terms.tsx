@@ -1,4 +1,3 @@
-import { Markdown } from "keycloakify/tools/Markdown";
 import { getKcClsx } from "keycloakify/login/lib/kcClsx";
 import { useTermsMarkdown } from "keycloakify/login/lib/useDownloadTerms";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
@@ -15,13 +14,7 @@ export default function Terms(props: PageProps<Extract<KcContext, { pageId: "ter
 
     const { msg, msgStr } = i18n;
 
-    const { locale, url } = kcContext;
-
-    const { isDownloadComplete, termsMarkdown, termsLanguageTag } = useTermsMarkdown();
-
-    if (!isDownloadComplete) {
-        return null;
-    }
+    const { url } = kcContext;
 
     return (
         <Template
@@ -32,9 +25,7 @@ export default function Terms(props: PageProps<Extract<KcContext, { pageId: "ter
             displayMessage={false}
             headerNode={msg("termsTitle")}
         >
-            <div id="kc-terms-text" lang={termsLanguageTag !== locale?.currentLanguageTag ? termsLanguageTag : undefined}>
-                <Markdown>{termsMarkdown}</Markdown>
-            </div>
+            <div id="kc-terms-text">{msgStr("termsText") ? msg("termsText") : <TermsMarkdown />}</div>
             <form className="form-actions" action={url.loginAction} method="POST">
                 <input
                     className={kcClsx("kcButtonClass", "kcButtonClass", "kcButtonClass", "kcButtonPrimaryClass", "kcButtonLargeClass")}
@@ -54,4 +45,14 @@ export default function Terms(props: PageProps<Extract<KcContext, { pageId: "ter
             <div className="clearfix" />
         </Template>
     );
+}
+
+function TermsMarkdown() {
+    const { isDownloadComplete, termsMarkdown, ReactMarkdown } = useTermsMarkdown();
+
+    if (!isDownloadComplete) {
+        return null;
+    }
+
+    return <ReactMarkdown>{termsMarkdown}</ReactMarkdown>;
 }
