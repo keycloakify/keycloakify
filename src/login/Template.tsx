@@ -29,7 +29,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
 
     const { kcClsx } = getKcClsx({ doUseDefaultCss, classes });
 
-    const { msg, msgStr, getChangeLocalUrl, labelBySupportedLanguageTag, currentLanguageTag } = i18n;
+    const { msg, msgStr, getChangeLocaleUrl, labelBySupportedLanguageTag, currentLanguageTag } = i18n;
 
     const { realm, locale, auth, url, message, isAppInitiatedAction, authenticationSession, scripts } = kcContext;
 
@@ -153,7 +153,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                                                     role="menuitem"
                                                     id={`language-${i + 1}`}
                                                     className={kcClsx("kcLocaleItemClass")}
-                                                    href={getChangeLocalUrl(languageTag)}
+                                                    href={getChangeLocaleUrl(languageTag)}
                                                 >
                                                     {labelBySupportedLanguageTag[languageTag]}
                                                 </a>

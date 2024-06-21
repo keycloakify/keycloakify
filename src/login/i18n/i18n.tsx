@@ -32,7 +32,7 @@ export type GenericI18n<MessageKey extends string> = {
      * Redirect to this url to change the language.
      * After reload currentLanguageTag === newLanguageTag
      */
-    getChangeLocalUrl: (newLanguageTag: string) => string;
+    getChangeLocaleUrl: (newLanguageTag: string) => string;
     /**
      * e.g. "en" => "English", "fr" => "Français", ...
      *
@@ -112,9 +112,9 @@ export function createGetI18n<ExtraMessageKey extends string = never>(messageBun
             return cachedResult;
         }
 
-        const partialI18n: Pick<I18n, "currentLanguageTag" | "getChangeLocalUrl" | "labelBySupportedLanguageTag"> = {
+        const partialI18n: Pick<I18n, "currentLanguageTag" | "getChangeLocaleUrl" | "labelBySupportedLanguageTag"> = {
             currentLanguageTag: kcContext.locale?.currentLanguageTag ?? fallbackLanguageTag,
-            getChangeLocalUrl: newLanguageTag => {
+            getChangeLocaleUrl: newLanguageTag => {
                 const { locale } = kcContext;
 
                 assert(locale !== undefined, "Internationalization not enabled");
