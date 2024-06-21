@@ -14,7 +14,15 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    render: () => <KcPageStory />
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                "x-keycloakify": {
+                    realmMessageBundleTermsText: "<p>My terms in <strong>English</strong></p>"
+                }
+            }}
+        />
+    )
 };
 
 export const French: Story = {
@@ -23,18 +31,29 @@ export const French: Story = {
             kcContext={{
                 locale: {
                     currentLanguageTag: "fr"
+                },
+                "x-keycloakify": {
+                    // cSpell: disable
+                    realmMessageBundleTermsText: "<p>Mes terme en <strong>Français</strong></p>"
+                    // cSpell: enable
                 }
             }}
         />
     )
 };
 
-export const Spanish: Story = {
+// NOTE: Only works if using `useDownloadTerms()`
+export const RenderedFromMarkdown: Story = {
+    render: () => <KcPageStory />
+};
+
+// NOTE: Only works if using `useDownloadTerms()`
+export const RenderedFromMarkdownFrench: Story = {
     render: () => (
         <KcPageStory
             kcContext={{
                 locale: {
-                    currentLanguageTag: "es"
+                    currentLanguageTag: "fr"
                 }
             }}
         />
