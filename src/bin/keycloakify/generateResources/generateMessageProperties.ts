@@ -128,7 +128,7 @@ export function generateMessageProperties(params: {
             }
 
             for (const [key, value] of Object.entries(keyValueMap_i)) {
-                if (keyValueMap[key] !== undefined) {
+                if (key !== "termsText" && keyValueMap[key] !== undefined) {
                     console.warn(
                         [
                             "WARNING: The following key is defined multiple times:",
