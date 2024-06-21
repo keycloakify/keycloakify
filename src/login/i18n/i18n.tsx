@@ -205,15 +205,7 @@ function createI18nTranslationFunctionsFactory<MessageKey extends string, ExtraM
                 const messageOrUndefined = (messages_currentLanguage as any)[key] ?? (messages_fallbackLanguage as any)[key];
 
                 if (key === "termsText") {
-                    if (params.messages_currentLanguage === undefined) {
-                        return " ";
-                    }
-
-                    if (realmMessageBundleTermsText !== messageOrUndefined) {
-                        return realmMessageBundleTermsText;
-                    } else {
-                        return "";
-                    }
+                    return realmMessageBundleTermsText;
                 }
 
                 return messageOrUndefined;
