@@ -3,8 +3,7 @@ import { assert } from "tsafe/assert";
 import messages_fallbackLanguage from "./baseMessages/en";
 import { getMessages } from "./baseMessages";
 import type { KcContext } from "../KcContext";
-
-export const fallbackLanguageTag = "en";
+import { fallbackLanguageTag } from "keycloakify/bin/shared/constants";
 
 export type KcContextLike = {
     locale?: {
