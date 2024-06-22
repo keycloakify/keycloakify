@@ -62,9 +62,6 @@
         "bluehats"
     ],
     "homepage": "https://www.keycloakify.dev",
-    "peerDependencies": {
-        "react": "*"
-    },
     "dependencies": {
         "tsafe": "^1.6.6"
     },
