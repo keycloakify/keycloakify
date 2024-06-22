@@ -1,4 +1,4 @@
-import type { ThemeType } from "../../shared/constants";
+import { type ThemeType, fallbackLanguageTag } from "../../shared/constants";
 import { crawl } from "../../tools/crawl";
 import { join as pathJoin } from "path";
 import { readFileSync } from "fs";
@@ -41,7 +41,7 @@ export function generateMessageProperties(params: {
         readFileSync(file).toString("utf8").includes("createUseI18n")
     );
 
-    const extraMessages = files
+    const messageBundles = files
         .map(file => {
             const root = recast.parse(readFileSync(file).toString("utf8"), {
                 parser: {
@@ -73,12 +73,12 @@ export function generateMessageProperties(params: {
         })
         .flat()
         .map(code => {
-            let extraMessages: {
+            let messageBundle: {
                 [languageTag: string]: Record<string, string>;
             } = {};
 
             try {
-                eval(`${symToStr({ extraMessages })} = ${code}`);
+                eval(`${symToStr({ messageBundle })} = ${code}`);
             } catch {
                 console.warn(
                     [
@@ -94,34 +94,23 @@ export function generateMessageProperties(params: {
                 );
             }
 
-            return extraMessages;
+            return messageBundle;
         });
 
-    const languageTags = [
-        ...extraMessages.map(extraMessage => Object.keys(extraMessage)).flat(),
-        ...fs
-            .readdirSync(
-                pathJoin(
-                    getThisCodebaseRootDirPath(),
-                    "src",
-                    themeType,
-                    "i18n",
-                    "baseMessages"
-                )
-            )
-            .filter(baseName => baseName !== "index.ts")
-            .map(baseName => baseName.replace(/\.ts$/, ""))
-    ].reduce(...removeDuplicates<string>());
+    const languageTags_messageBundle = messageBundles
+        .map(extraMessage => Object.keys(extraMessage))
+        .flat()
+        .reduce(...removeDuplicates<string>());
 
     const keyValueMapByLanguageTag: Record<string, Record<string, string>> = {};
 
-    for (const languageTag of languageTags) {
+    languageTags_messageBundle.forEach(languageTag_messageBundle => {
         const keyValueMap: Record<string, string> = {
             termsText: ""
         };
 
-        for (const extraMessage of extraMessages) {
-            const keyValueMap_i = extraMessage[languageTag];
+        for (const messageBundle of messageBundles) {
+            const keyValueMap_i = messageBundle[languageTag_messageBundle];
 
             if (keyValueMap_i === undefined) {
                 continue;
@@ -151,8 +140,25 @@ export function generateMessageProperties(params: {
             }
         }
 
-        keyValueMapByLanguageTag[languageTag] = keyValueMap;
-    }
+        keyValueMapByLanguageTag[languageTag_messageBundle] = keyValueMap;
+    });
+
+    fs.readdirSync(
+        pathJoin(getThisCodebaseRootDirPath(), "src", themeType, "i18n", "baseMessages")
+    )
+        .filter(baseName => baseName !== "index.ts")
+        .map(baseName => baseName.replace(/\.ts$/, ""))
+        .filter(languageTag => !languageTags_messageBundle.includes(languageTag))
+        .forEach(
+            languageTag_noMessageBundle =>
+                (keyValueMapByLanguageTag[languageTag_noMessageBundle] =
+                    keyValueMapByLanguageTag[fallbackLanguageTag] ??
+                        keyValueMapByLanguageTag[
+                            Object.keys(keyValueMapByLanguageTag)[0]
+                        ] ?? {
+                            termsText: ""
+                        })
+        );
 
     const out: { languageTag: string; propertiesFileSource: string }[] = [];
 
