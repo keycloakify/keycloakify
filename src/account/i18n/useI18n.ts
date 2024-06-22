@@ -7,12 +7,12 @@ import {
 } from "./i18n";
 import { Reflect } from "tsafe/Reflect";
 
-export function createUseI18n<ExtraMessageKey extends string = never>(extraMessages: {
+export function createUseI18n<ExtraMessageKey extends string = never>(messageBundle: {
     [languageTag: string]: { [key in ExtraMessageKey]: string };
 }) {
     type I18n = GenericI18n<MessageKey | ExtraMessageKey>;
 
-    const { getI18n } = createGetI18n(extraMessages);
+    const { getI18n } = createGetI18n(messageBundle);
 
     function useI18n(params: { kcContext: KcContextLike }): { i18n: I18n } {
         const { kcContext } = params;
