@@ -1,6 +1,8 @@
 {
     "id": "34c5f904-d66e-4d8f-8876-8f00d9fa9d6c",
     "realm": "myrealm",
+    "displayName": "",
+    "displayNameHtml": "",
     "notBefore": 0,
     "defaultSignatureAlgorithm": "RS256",
     "revokeRefreshToken": false,
@@ -1356,11 +1358,11 @@
                 "config": {
                     "allowed-protocol-mapper-types": [
                         "oidc-sha256-pairwise-sub-mapper",
-                        "oidc-address-mapper",
                         "saml-user-property-mapper",
+                        "oidc-address-mapper",
                         "oidc-full-name-mapper",
-                        "oidc-usermodel-attribute-mapper",
                         "saml-role-list-mapper",
+                        "oidc-usermodel-attribute-mapper",
                         "saml-user-attribute-mapper",
                         "oidc-usermodel-property-mapper"
                     ]
@@ -1431,13 +1433,13 @@
                 "subComponents": {},
                 "config": {
                     "allowed-protocol-mapper-types": [
-                        "saml-user-property-mapper",
+                        "saml-role-list-mapper",
                         "oidc-full-name-mapper",
+                        "oidc-address-mapper",
                         "saml-user-attribute-mapper",
                         "oidc-sha256-pairwise-sub-mapper",
-                        "saml-role-list-mapper",
-                        "oidc-address-mapper",
                         "oidc-usermodel-attribute-mapper",
+                        "saml-user-property-mapper",
                         "oidc-usermodel-property-mapper"
                     ]
                 }
@@ -2127,17 +2129,20 @@
     "dockerAuthenticationFlow": "docker auth",
     "attributes": {
         "cibaBackchannelTokenDeliveryMode": "poll",
-        "cibaExpiresIn": "120",
         "cibaAuthRequestedUserHint": "login_hint",
-        "oauth2DeviceCodeLifespan": "600",
         "clientOfflineSessionMaxLifespan": "0",
         "oauth2DevicePollingInterval": "5",
         "clientSessionIdleTimeout": "0",
-        "parRequestUriLifespan": "60",
-        "clientSessionMaxLifespan": "0",
+        "userProfileEnabled": "true",
         "clientOfflineSessionIdleTimeout": "0",
         "cibaInterval": "5",
-        "realmReusableOtpCode": "false"
+        "realmReusableOtpCode": "false",
+        "cibaExpiresIn": "120",
+        "oauth2DeviceCodeLifespan": "600",
+        "parRequestUriLifespan": "60",
+        "clientSessionMaxLifespan": "0",
+        "frontendUrl": "",
+        "acr.loa.map": "{}"
     },
     "keycloakVersion": "23.0.7",
     "userManagedAccessAllowed": false,
