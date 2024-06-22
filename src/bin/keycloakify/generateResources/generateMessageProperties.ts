@@ -1,9 +1,7 @@
 import { type ThemeType, fallbackLanguageTag } from "../../shared/constants";
 import { crawl } from "../../tools/crawl";
 import { join as pathJoin } from "path";
-import { readFileSync } from "fs";
 import { symToStr } from "tsafe/symToStr";
-import { removeDuplicates } from "evt/tools/reducers/removeDuplicates";
 import * as recast from "recast";
 import * as babelParser from "@babel/parser";
 import babelGenerate from "@babel/generator";
@@ -11,6 +9,7 @@ import * as babelTypes from "@babel/types";
 import { escapeStringForPropertiesFile } from "../../tools/escapeStringForPropertiesFile";
 import { getThisCodebaseRootDirPath } from "../../tools/getThisCodebaseRootDirPath";
 import * as fs from "fs";
+import { assert } from "tsafe/assert";
 
 export function generateMessageProperties(params: {
     themeSrcDirPath: string;
@@ -18,32 +17,92 @@ export function generateMessageProperties(params: {
 }): { languageTag: string; propertiesFileSource: string }[] {
     const { themeSrcDirPath, themeType } = params;
 
-    let files = crawl({
-        dirPath: pathJoin(themeSrcDirPath, themeType),
-        returnedPathsType: "absolute"
-    });
-
-    files = files.filter(file => {
-        const regex = /\.(js|ts|tsx)$/;
-        return regex.test(file);
-    });
-
-    files = files.sort((a, b) => {
-        const regex = /\.i18n\.(ts|js|tsx)$/;
-        const aIsI18nFile = regex.test(a);
-        const bIsI18nFile = regex.test(b);
-        return aIsI18nFile === bIsI18nFile ? 0 : aIsI18nFile ? -1 : 1;
-    });
-
-    files = files.sort((a, b) => a.length - b.length);
-
-    files = files.filter(file =>
-        readFileSync(file).toString("utf8").includes("createUseI18n")
+    const baseMessagesDirPath = pathJoin(
+        getThisCodebaseRootDirPath(),
+        "src",
+        themeType,
+        "i18n",
+        "baseMessages"
     );
 
-    const messageBundles = files
-        .map(file => {
-            const root = recast.parse(readFileSync(file).toString("utf8"), {
+    const baseMessageBundle: { [languageTag: string]: Record<string, string> } =
+        Object.fromEntries(
+            fs
+                .readdirSync(baseMessagesDirPath)
+                .filter(baseName => baseName !== "index.ts")
+                .map(basename => ({
+                    languageTag: basename.replace(/\.ts$/, ""),
+                    filePath: pathJoin(baseMessagesDirPath, basename)
+                }))
+                .map(({ languageTag, filePath }) => {
+                    const lines = fs
+                        .readFileSync(filePath)
+                        .toString("utf8")
+                        .split(/\r?\n/);
+
+                    let messagesJson = "{";
+
+                    let isInDeclaration = false;
+
+                    for (const line of lines) {
+                        if (!isInDeclaration) {
+                            if (line.startsWith("const messages")) {
+                                isInDeclaration = true;
+                            }
+
+                            continue;
+                        }
+
+                        if (line.startsWith("}")) {
+                            messagesJson += "}";
+                            break;
+                        }
+
+                        messagesJson += line;
+                    }
+
+                    const messages = JSON.parse(messagesJson) as Record<string, string>;
+
+                    return [languageTag, messages];
+                })
+        );
+
+    const { i18nTsFilePath } = (() => {
+        let files = crawl({
+            dirPath: pathJoin(themeSrcDirPath, themeType),
+            returnedPathsType: "absolute"
+        });
+
+        files = files.filter(file => {
+            const regex = /\.(js|ts|tsx)$/;
+            return regex.test(file);
+        });
+
+        files = files.sort((a, b) => {
+            const regex = /\.i18n\.(ts|js|tsx)$/;
+            const aIsI18nFile = regex.test(a);
+            const bIsI18nFile = regex.test(b);
+            return aIsI18nFile === bIsI18nFile ? 0 : aIsI18nFile ? -1 : 1;
+        });
+
+        files = files.sort((a, b) => a.length - b.length);
+
+        files = files.filter(file =>
+            fs.readFileSync(file).toString("utf8").includes("createUseI18n(")
+        );
+
+        const i18nTsFilePath: string | undefined = files[0];
+
+        return { i18nTsFilePath };
+    })();
+
+    const messageBundle: { [languageTag: string]: Record<string, string> } | undefined =
+        (() => {
+            if (i18nTsFilePath === undefined) {
+                return undefined;
+            }
+
+            const root = recast.parse(fs.readFileSync(i18nTsFilePath).toString("utf8"), {
                 parser: {
                     parse: (code: string) =>
                         babelParser.parse(code, {
@@ -55,7 +114,7 @@ export function generateMessageProperties(params: {
                 }
             });
 
-            const codes: string[] = [];
+            let messageBundleDeclarationTsCode: string | undefined = undefined;
 
             recast.visit(root, {
                 visitCallExpression: function (path) {
@@ -63,117 +122,71 @@ export function generateMessageProperties(params: {
                         path.node.callee.type === "Identifier" &&
                         path.node.callee.name === "createUseI18n"
                     ) {
-                        codes.push(babelGenerate(path.node.arguments[0] as any).code);
+                        messageBundleDeclarationTsCode = babelGenerate(
+                            path.node.arguments[0] as any
+                        ).code;
+                        return false;
                     }
+
                     this.traverse(path);
                 }
             });
 
-            return codes;
-        })
-        .flat()
-        .map(code => {
+            assert(messageBundleDeclarationTsCode !== undefined);
+
             let messageBundle: {
                 [languageTag: string]: Record<string, string>;
             } = {};
 
             try {
-                eval(`${symToStr({ messageBundle })} = ${code}`);
+                eval(
+                    `${symToStr({ messageBundle })} = ${messageBundleDeclarationTsCode}`
+                );
             } catch {
                 console.warn(
                     [
-                        "WARNING: Make sure that the first argument of createUseI18n can be evaluated in a javascript",
-                        "runtime where only the node globals are available.",
+                        "WARNING: Make sure the messageBundle your provided as argument of createUseI18n can be statically evaluated.",
                         "This is important because we need to put your i18n messages in messages_*.properties files",
                         "or they won't be available server side.",
                         "\n",
                         "The following code could not be evaluated:",
                         "\n",
-                        code
+                        messageBundleDeclarationTsCode
                     ].join(" ")
                 );
             }
 
             return messageBundle;
-        });
+        })();
 
-    const languageTags_messageBundle = messageBundles
-        .map(extraMessage => Object.keys(extraMessage))
-        .flat()
-        .reduce(...removeDuplicates<string>());
-
-    const keyValueMapByLanguageTag: Record<string, Record<string, string>> = {};
-
-    languageTags_messageBundle.forEach(languageTag_messageBundle => {
-        const keyValueMap: Record<string, string> = {
-            termsText: ""
-        };
-
-        for (const messageBundle of messageBundles) {
-            const keyValueMap_i = messageBundle[languageTag_messageBundle];
-
-            if (keyValueMap_i === undefined) {
-                continue;
-            }
-
-            for (const [key, value] of Object.entries(keyValueMap_i)) {
-                if (key !== "termsText" && keyValueMap[key] !== undefined) {
-                    console.warn(
-                        [
-                            "WARNING: The following key is defined multiple times:",
-                            "\n",
-                            key,
-                            "\n",
-                            "The following value will be ignored:",
-                            "\n",
-                            value,
-                            "\n",
-                            "The following value was already defined:",
-                            "\n",
-                            keyValueMap[key]
-                        ].join(" ")
-                    );
-                    continue;
+    const mergedMessageBundle: { [languageTag: string]: Record<string, string> } =
+        Object.fromEntries(
+            Object.entries(baseMessageBundle).map(([languageTag, messages]) => [
+                languageTag,
+                {
+                    ...messages,
+                    ...(messageBundle === undefined
+                        ? {}
+                        : messageBundle[languageTag] ??
+                          messageBundle[fallbackLanguageTag] ??
+                          messageBundle[Object.keys(messageBundle)[0]] ??
+                          {})
                 }
-
-                keyValueMap[key] = value;
-            }
-        }
-
-        keyValueMapByLanguageTag[languageTag_messageBundle] = keyValueMap;
-    });
-
-    fs.readdirSync(
-        pathJoin(getThisCodebaseRootDirPath(), "src", themeType, "i18n", "baseMessages")
-    )
-        .filter(baseName => baseName !== "index.ts")
-        .map(baseName => baseName.replace(/\.ts$/, ""))
-        .filter(languageTag => !languageTags_messageBundle.includes(languageTag))
-        .forEach(
-            languageTag_noMessageBundle =>
-                (keyValueMapByLanguageTag[languageTag_noMessageBundle] =
-                    keyValueMapByLanguageTag[fallbackLanguageTag] ??
-                        keyValueMapByLanguageTag[
-                            Object.keys(keyValueMapByLanguageTag)[0]
-                        ] ?? {
-                            termsText: ""
-                        })
+            ])
         );
 
-    const out: { languageTag: string; propertiesFileSource: string }[] = [];
-
-    for (const [languageTag, keyValueMap] of Object.entries(keyValueMapByLanguageTag)) {
-        const propertiesFileSource = Object.entries(keyValueMap)
-            .map(([key, value]) => `${key}=${escapeStringForPropertiesFile(value)}`)
-            .join("\n");
-
-        out.push({
+    const messageProperties: { languageTag: string; propertiesFileSource: string }[] =
+        Object.entries(mergedMessageBundle).map(([languageTag, messages]) => ({
             languageTag,
-            propertiesFileSource: ["", "parent=base", "", propertiesFileSource, ""].join(
-                "\n"
-            )
-        });
-    }
+            propertiesFileSource: [
+                "",
+                ...(themeType !== "account" ? ["parent=base"] : []),
+                ...Object.entries(messages).map(
+                    ([key, value]) => `${key}=${escapeStringForPropertiesFile(value)}`
+                ),
+                ""
+            ].join("\n")
+        }));
 
-    return out;
+    return messageProperties;
 }

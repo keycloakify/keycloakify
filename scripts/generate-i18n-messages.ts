@@ -65,11 +65,14 @@ async function main() {
                         fs
                             .readFileSync(pathJoin(baseThemeDirPath, filePath))
                             .toString("utf8")
-                    )
-                ).map(([key, value]: any) => [
-                    key === "locale_pt_BR" ? "locale_pt-BR" : key,
-                    value.replace(/''/g, "'")
-                ])
+                    ) as Record<string, string>
+                )
+                    .map(([key, value]) => [key, value.replace(/''/g, "'")])
+                    .map(([key, value]) => [
+                        key === "locale_pt_BR" ? "locale_pt-BR" : key,
+                        value
+                    ])
+                    .map(([key, value]) => [key, key === "termsText" ? "" : value])
             );
         });
     }
