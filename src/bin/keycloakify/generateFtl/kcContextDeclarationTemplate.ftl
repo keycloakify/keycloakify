@@ -211,8 +211,6 @@ function decodeHtmlEntities(htmlStr){
                     <#continue>
                 </#if>
                 
-                USER_DEFINED_EXCLUSIONS_eKsaY4ZsZ4eMr2
-
                 <#-- https://github.com/keycloakify/keycloakify/discussions/406 -->
                 <#if (
                     ["register.ftl", "register-user-profile.ftl", "terms.ftl", "info.ftl", "login.ftl", "login-update-password.ftl", "login-oauth2-device-verify-user-code.ftl"]?seq_contains(pageId) && 
@@ -228,6 +226,8 @@ function decodeHtmlEntities(htmlStr){
                         <#local out_seq += ["/*Accessing attemptedUsername throwed an exception */"]>
                     </#attempt>
                 </#if>
+
+                USER_DEFINED_EXCLUSIONS_eKsaY4ZsZ4eMr2
                 
                 <#attempt>
                     <#if !object[key]??>
