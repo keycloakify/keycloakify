@@ -1,5 +1,5 @@
 import { useState, useEffect, useReducer } from "react";
-import { assert } from "tsafe/assert";
+import { assert } from "keycloakify/tools/assert";
 import { clsx } from "keycloakify/tools/clsx";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import { getKcClsx, type KcClsx } from "keycloakify/login/lib/kcClsx";

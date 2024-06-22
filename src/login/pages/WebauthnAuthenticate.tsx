@@ -1,5 +1,5 @@
 import { useEffect, Fragment } from "react";
-import { assert } from "tsafe/assert";
+import { assert } from "keycloakify/tools/assert";
 import { clsx } from "keycloakify/tools/clsx";
 import { useInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
 import { getKcClsx } from "keycloakify/login/lib/kcClsx";

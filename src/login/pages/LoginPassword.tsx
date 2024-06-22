@@ -1,6 +1,6 @@
 import { useState, useEffect, useReducer } from "react";
 import { clsx } from "keycloakify/tools/clsx";
-import { assert } from "tsafe/assert";
+import { assert } from "keycloakify/tools/assert";
 import { getKcClsx, type KcClsx } from "keycloakify/login/lib/kcClsx";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
