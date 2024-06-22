@@ -1,6 +1,5 @@
 import { useState } from "react";
 import type { LazyOrNot } from "keycloakify/tools/LazyOrNot";
-import { useTermsMarkdown } from "keycloakify/login/lib/useDownloadTerms";
 import { getKcClsx, type KcClsx } from "keycloakify/login/lib/kcClsx";
 import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFormFieldsProps";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
@@ -77,14 +76,14 @@ export default function Register(props: RegisterProps) {
 function TermsAcceptance(props: { i18n: I18n; kcClsx: KcClsx; messagesPerField: Pick<KcContext["messagesPerField"], "existsError" | "get"> }) {
     const { i18n, kcClsx, messagesPerField } = props;
 
-    const { msg, msgStr } = i18n;
+    const { msg } = i18n;
 
     return (
         <>
             <div className="form-group">
                 <div className={kcClsx("kcInputWrapperClass")}>
                     {msg("termsTitle")}
-                    <div id="kc-registration-terms-text">{msgStr("termsText") ? msg("termsText") : <TermsMarkdown />}</div>
+                    <div id="kc-registration-terms-text">{msg("termsText")}</div>
                 </div>
             </div>
             <div className="form-group">
@@ -110,14 +109,4 @@ function TermsAcceptance(props: { i18n: I18n; kcClsx: KcClsx; messagesPerField: 
             </div>
         </>
     );
-}
-
-function TermsMarkdown() {
-    const { isDownloadComplete, termsMarkdown, ReactMarkdown } = useTermsMarkdown();
-
-    if (!isDownloadComplete) {
-        return null;
-    }
-
-    return <ReactMarkdown>{termsMarkdown}</ReactMarkdown>;
 }

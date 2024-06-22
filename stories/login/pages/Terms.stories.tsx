@@ -41,21 +41,3 @@ export const French: Story = {
         />
     )
 };
-
-// NOTE: Only works if using `useDownloadTerms()`
-export const RenderedFromMarkdown: Story = {
-    render: () => <KcPageStory />
-};
-
-// NOTE: Only works if using `useDownloadTerms()`
-export const RenderedFromMarkdownFrench: Story = {
-    render: () => (
-        <KcPageStory
-            kcContext={{
-                locale: {
-                    currentLanguageTag: "fr"
-                }
-            }}
-        />
-    )
-};
