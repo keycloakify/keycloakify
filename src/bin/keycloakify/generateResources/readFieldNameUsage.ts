@@ -11,7 +11,15 @@ export function readFieldNameUsage(params: {
 }): string[] {
     const { themeSrcDirPath, themeType } = params;
 
-    const fieldNames = new Set<string>();
+    // NOTE: We pre-populate with the synthetic user attributes defined in useUserProfileForm (can't be parsed automatically)
+    const fieldNames = new Set<string>([
+        "firstName",
+        "lastName",
+        "email",
+        "username",
+        "password",
+        "password-confirm"
+    ]);
 
     for (const srcDirPath of [
         pathJoin(getThisCodebaseRootDirPath(), "src", themeType),
