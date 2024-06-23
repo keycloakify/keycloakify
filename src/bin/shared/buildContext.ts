@@ -204,6 +204,7 @@ export function getBuildContext(params: {
 
             const parsedPackageJson = z
                 .object({
+                    name: z.string().optional(),
                     dependencies: z.record(z.string()).optional(),
                     devDependencies: z.record(z.string()).optional()
                 })
@@ -211,7 +212,8 @@ export function getBuildContext(params: {
 
             if (
                 parsedPackageJson.dependencies?.keycloakify === undefined &&
-                parsedPackageJson.devDependencies?.keycloakify === undefined
+                parsedPackageJson.devDependencies?.keycloakify === undefined &&
+                parsedPackageJson.name !== "keycloakify" // NOTE: For local storybook build
             ) {
                 break success;
             }
