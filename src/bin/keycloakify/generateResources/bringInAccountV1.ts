@@ -7,13 +7,13 @@ import {
     lastKeycloakVersionWithAccountV1,
     accountV1ThemeName
 } from "../../shared/constants";
-import { downloadKeycloakDefaultTheme } from "../../shared/downloadKeycloakDefaultTheme";
+import {
+    downloadKeycloakDefaultTheme,
+    BuildContextLike as BuildContextLike_downloadKeycloakDefaultTheme
+} from "../../shared/downloadKeycloakDefaultTheme";
 import { transformCodebase } from "../../tools/transformCodebase";
 
-export type BuildContextLike = {
-    cacheDirPath: string;
-    npmWorkspaceRootDirPath: string;
-};
+export type BuildContextLike = BuildContextLike_downloadKeycloakDefaultTheme;
 
 assert<BuildContext extends BuildContextLike ? true : false>();
 
