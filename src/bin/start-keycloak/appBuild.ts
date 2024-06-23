@@ -34,7 +34,9 @@ async function appBuild_vite(params: {
 
     assert(buildContext.bundler.type === "vite");
 
-    const dResult = new Deferred<{ isSuccess: boolean }>();
+    const dIsSuccess = new Deferred<boolean>();
+
+    console.log(chalk.blue("Running: 'npx vite build'"));
 
     const child = child_process.spawn("npx", ["vite", "build"], {
         cwd: buildContext.projectDirPath,
@@ -51,9 +53,9 @@ async function appBuild_vite(params: {
 
     child.stderr.on("data", data => process.stderr.write(data));
 
-    child.on("exit", code => dResult.resolve({ isSuccess: code === 0 }));
+    child.on("exit", code => dIsSuccess.resolve(code === 0));
 
-    const { isSuccess } = await dResult.pr;
+    const isSuccess = await dIsSuccess.pr;
 
     return { isAppBuildSuccess: isSuccess };
 }
@@ -123,40 +125,35 @@ async function appBuild_webpack(params: {
     for (const subCommand of appBuildSubCommands) {
         const dIsSuccess = new Deferred<boolean>();
 
-        child_process.exec(
-            subCommand,
-            {
-                cwd: buildContext.bundler.packageJsonDirPath,
-                env: {
-                    ...process.env,
-                    PATH: (() => {
-                        const separator = pathSep === "/" ? ":" : ";";
+        console.log(chalk.blue(`Running: '${subCommand}'`));
 
-                        return [
-                            pathJoin(
-                                buildContext.bundler.packageJsonDirPath,
-                                "node_modules",
-                                ".bin"
-                            ),
-                            ...(process.env.PATH ?? "").split(separator)
-                        ].join(separator);
-                    })()
-                }
+        const [command, ...args] = subCommand.split(" ");
+
+        const child = child_process.spawn(command, args, {
+            cwd: buildContext.bundler.packageJsonDirPath,
+            env: {
+                ...process.env,
+                PATH: (() => {
+                    const separator = pathSep === "/" ? ":" : ";";
+
+                    return [
+                        pathJoin(
+                            buildContext.bundler.packageJsonDirPath,
+                            "node_modules",
+                            ".bin"
+                        ),
+                        ...(process.env.PATH ?? "").split(separator)
+                    ].join(separator);
+                })()
             },
-            (error, stdout, stderr) => {
-                if (error) {
-                    dIsSuccess.resolve(false);
+            shell: true
+        });
 
-                    console.log(chalk.red(`Error running: '${subCommand}'`));
-                    console.log(stdout);
-                    console.log(stderr);
+        child.stdout.on("data", data => process.stdout.write(data));
 
-                    return;
-                }
+        child.stderr.on("data", data => process.stderr.write(data));
 
-                dIsSuccess.resolve(true);
-            }
-        );
+        child.on("exit", code => dIsSuccess.resolve(code === 0));
 
         const isSuccess = await dIsSuccess.pr;
 
