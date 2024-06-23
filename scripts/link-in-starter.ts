@@ -10,7 +10,7 @@ fs.rmSync(".yarn_home", { recursive: true, force: true });
 run("yarn install");
 run("yarn build");
 
-const starterName = "keycloakify-starter";
+const starterName = "keycloakify-starter-webpack";
 
 fs.rmSync(join("..", starterName, "node_modules"), {
     recursive: true,

@@ -85,7 +85,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     });
 
     run_post_build_script: {
-        if (buildContext.bundler !== "vite") {
+        if (buildContext.bundler.type !== "vite") {
             break run_post_build_script;
         }
 

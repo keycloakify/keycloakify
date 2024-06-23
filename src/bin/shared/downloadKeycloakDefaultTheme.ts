@@ -6,7 +6,7 @@ import { downloadAndExtractArchive } from "../tools/downloadAndExtractArchive";
 
 export type BuildContextLike = {
     cacheDirPath: string;
-    npmWorkspaceRootDirPath: string;
+    fetchOptions: BuildContext["fetchOptions"];
 };
 
 assert<BuildContext extends BuildContextLike ? true : false>();
@@ -23,7 +23,7 @@ export async function downloadKeycloakDefaultTheme(params: {
     const { extractedDirPath } = await downloadAndExtractArchive({
         url: `https://repo1.maven.org/maven2/org/keycloak/keycloak-themes/${keycloakVersion}/keycloak-themes-${keycloakVersion}.jar`,
         cacheDirPath: buildContext.cacheDirPath,
-        npmWorkspaceRootDirPath: buildContext.npmWorkspaceRootDirPath,
+        fetchOptions: buildContext.fetchOptions,
         uniqueIdOfOnOnArchiveFile: "downloadKeycloakDefaultTheme",
         onArchiveFile: async params => {
             const fileRelativePath = pathRelative("theme", params.fileRelativePath);

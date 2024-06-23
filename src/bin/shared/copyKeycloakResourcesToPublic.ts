@@ -37,10 +37,7 @@ export async function copyKeycloakResourcesToPublic(params: {
             buildContext: {
                 loginThemeResourcesFromKeycloakVersion: readThisNpmPackageVersion(),
                 cacheDirPath: pathRelative(destDirPath, buildContext.cacheDirPath),
-                npmWorkspaceRootDirPath: pathRelative(
-                    destDirPath,
-                    buildContext.npmWorkspaceRootDirPath
-                )
+                fetchOptions: buildContext.fetchOptions
             }
         },
         null,

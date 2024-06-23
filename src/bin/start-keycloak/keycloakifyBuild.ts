@@ -7,7 +7,6 @@ import type { BuildContext } from "../shared/buildContext";
 export type BuildContextLike = {
     projectDirPath: string;
     keycloakifyBuildDirPath: string;
-    bundler: "vite" | "webpack";
 };
 
 assert<BuildContext extends BuildContextLike ? true : false>();

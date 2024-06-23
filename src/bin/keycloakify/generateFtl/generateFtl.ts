@@ -1,6 +1,12 @@
 import cheerio from "cheerio";
-import { replaceImportsInJsCode } from "../replacers/replaceImportsInJsCode";
-import { replaceImportsInCssCode } from "../replacers/replaceImportsInCssCode";
+import {
+    replaceImportsInJsCode,
+    BuildContextLike as BuildContextLike_replaceImportsInJsCode
+} from "../replacers/replaceImportsInJsCode";
+import {
+    replaceImportsInCssCode,
+    BuildContextLike as BuildContextLike_replaceImportsInCssCode
+} from "../replacers/replaceImportsInCssCode";
 import * as fs from "fs";
 import { join as pathJoin } from "path";
 import type { BuildContext } from "../../shared/buildContext";
@@ -12,14 +18,12 @@ import {
 } from "../../shared/constants";
 import { getThisCodebaseRootDirPath } from "../../tools/getThisCodebaseRootDirPath";
 
-export type BuildContextLike = {
-    bundler: "vite" | "webpack";
-    themeVersion: string;
-    urlPathname: string | undefined;
-    projectBuildDirPath: string;
-    assetsDirPath: string;
-    kcContextExclusionsFtlCode: string | undefined;
-};
+export type BuildContextLike = BuildContextLike_replaceImportsInJsCode &
+    BuildContextLike_replaceImportsInCssCode & {
+        urlPathname: string | undefined;
+        themeVersion: string;
+        kcContextExclusionsFtlCode: string | undefined;
+    };
 
 assert<BuildContext extends BuildContextLike ? true : false>();
 

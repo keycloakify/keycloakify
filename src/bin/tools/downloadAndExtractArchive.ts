@@ -1,12 +1,12 @@
-import fetch from "make-fetch-happen";
+import fetch, { type FetchOptions } from "make-fetch-happen";
 import { mkdir, unlink, writeFile, readdir, readFile } from "fs/promises";
 import { dirname as pathDirname, join as pathJoin } from "path";
 import { assert } from "tsafe/assert";
-import { extractArchive } from "../extractArchive";
-import { existsAsync } from "../fs.existsAsync";
-import { getProxyFetchOptions } from "./fetchProxyOptions";
+import { extractArchive } from "./extractArchive";
+import { existsAsync } from "./fs.existsAsync";
+
 import * as crypto from "crypto";
-import { rm } from "../fs.rm";
+import { rm } from "./fs.rm";
 
 export async function downloadAndExtractArchive(params: {
     url: string;
@@ -20,15 +20,10 @@ export async function downloadAndExtractArchive(params: {
         }) => Promise<void>;
     }) => Promise<void>;
     cacheDirPath: string;
-    npmWorkspaceRootDirPath: string;
+    fetchOptions: FetchOptions | undefined;
 }): Promise<{ extractedDirPath: string }> {
-    const {
-        url,
-        uniqueIdOfOnOnArchiveFile,
-        onArchiveFile,
-        cacheDirPath,
-        npmWorkspaceRootDirPath
-    } = params;
+    const { url, uniqueIdOfOnOnArchiveFile, onArchiveFile, cacheDirPath, fetchOptions } =
+        params;
 
     const archiveFileBasename = url.split("?")[0].split("/").reverse()[0];
 
@@ -55,10 +50,7 @@ export async function downloadAndExtractArchive(params: {
 
         await mkdir(pathDirname(archiveFilePath), { recursive: true });
 
-        const response = await fetch(
-            url,
-            await getProxyFetchOptions({ npmWorkspaceRootDirPath })
-        );
+        const response = await fetch(url, fetchOptions);
 
         response.body?.setMaxListeners(Number.MAX_VALUE);
         assert(typeof response.body !== "undefined" && response.body != null);

@@ -1,16 +1,14 @@
 import * as child_process from "child_process";
 import { Deferred } from "evt/tools/Deferred";
 import { assert } from "tsafe/assert";
-import { is } from "tsafe/is";
 import type { BuildContext } from "../shared/buildContext";
-import * as fs from "fs";
-import { join as pathJoin } from "path";
+import chalk from "chalk";
+import { sep as pathSep, join as pathJoin } from "path";
 
 export type BuildContextLike = {
     projectDirPath: string;
     keycloakifyBuildDirPath: string;
-    bundler: "vite" | "webpack";
-    npmWorkspaceRootDirPath: string;
+    bundler: BuildContext["bundler"];
     projectBuildDirPath: string;
 };
 
@@ -21,95 +19,27 @@ export async function appBuild(params: {
 }): Promise<{ isAppBuildSuccess: boolean }> {
     const { buildContext } = params;
 
-    const { bundler } = buildContext;
+    switch (buildContext.bundler.type) {
+        case "vite":
+            return appBuild_vite({ buildContext });
+        case "webpack":
+            return appBuild_webpack({ buildContext });
+    }
+}
 
-    const { command, args, cwd } = (() => {
-        switch (bundler) {
-            case "vite":
-                return {
-                    command: "npx",
-                    args: ["vite", "build"],
-                    cwd: buildContext.projectDirPath
-                };
-            case "webpack": {
-                for (const dirPath of [
-                    buildContext.projectDirPath,
-                    buildContext.npmWorkspaceRootDirPath
-                ]) {
-                    try {
-                        const parsedPackageJson = JSON.parse(
-                            fs
-                                .readFileSync(pathJoin(dirPath, "package.json"))
-                                .toString("utf8")
-                        );
+async function appBuild_vite(params: {
+    buildContext: BuildContextLike;
+}): Promise<{ isAppBuildSuccess: boolean }> {
+    const { buildContext } = params;
 
-                        const [scriptName] =
-                            Object.entries(parsedPackageJson.scripts).find(
-                                ([, scriptValue]) => {
-                                    assert(is<string>(scriptValue));
-                                    if (
-                                        scriptValue.includes("webpack") &&
-                                        scriptValue.includes("--mode production")
-                                    ) {
-                                        return true;
-                                    }
-
-                                    if (
-                                        scriptValue.includes("react-scripts") &&
-                                        scriptValue.includes("build")
-                                    ) {
-                                        return true;
-                                    }
-
-                                    if (
-                                        scriptValue.includes("react-app-rewired") &&
-                                        scriptValue.includes("build")
-                                    ) {
-                                        return true;
-                                    }
-
-                                    if (
-                                        scriptValue.includes("craco") &&
-                                        scriptValue.includes("build")
-                                    ) {
-                                        return true;
-                                    }
-
-                                    if (
-                                        scriptValue.includes("ng") &&
-                                        scriptValue.includes("build")
-                                    ) {
-                                        return true;
-                                    }
-
-                                    return false;
-                                }
-                            ) ?? [];
-
-                        if (scriptName === undefined) {
-                            continue;
-                        }
-
-                        return {
-                            command: "npm",
-                            args: ["run", scriptName],
-                            cwd: dirPath
-                        };
-                    } catch {
-                        continue;
-                    }
-                }
-
-                throw new Error(
-                    "Keycloakify was unable to determine which script is responsible for building the app."
-                );
-            }
-        }
-    })();
+    assert(buildContext.bundler.type === "vite");
 
     const dResult = new Deferred<{ isSuccess: boolean }>();
 
-    const child = child_process.spawn(command, args, { cwd, shell: true });
+    const child = child_process.spawn("npx", ["vite", "build"], {
+        cwd: buildContext.projectDirPath,
+        shell: true
+    });
 
     child.stdout.on("data", data => {
         if (data.toString("utf8").includes("gzip:")) {
@@ -126,4 +56,114 @@ export async function appBuild(params: {
     const { isSuccess } = await dResult.pr;
 
     return { isAppBuildSuccess: isSuccess };
+}
+
+async function appBuild_webpack(params: {
+    buildContext: BuildContextLike;
+}): Promise<{ isAppBuildSuccess: boolean }> {
+    const { buildContext } = params;
+
+    assert(buildContext.bundler.type === "webpack");
+
+    const entries = Object.entries(buildContext.bundler.packageJsonScripts).filter(
+        ([, scriptCommand]) => scriptCommand.includes("keycloakify build")
+    );
+
+    if (entries.length === 0) {
+        console.log(
+            chalk.red(
+                [
+                    `You should have a script in your package.json at ${buildContext.bundler.packageJsonDirPath}`,
+                    `that includes the 'keycloakify build' command`
+                ].join(" ")
+            )
+        );
+        process.exit(-1);
+    }
+
+    const entry =
+        entries.length === 1
+            ? entries[0]
+            : entries.find(([scriptName]) => scriptName === "build-keycloak-theme");
+
+    if (entry === undefined) {
+        console.log(
+            chalk.red(
+                "There's multiple candidate script for building your app, name one 'build-keycloak-theme'"
+            )
+        );
+        process.exit(-1);
+    }
+
+    const [scriptName, scriptCommand] = entry;
+
+    const { appBuildSubCommands } = (() => {
+        const appBuildSubCommands: string[] = [];
+
+        for (const subCmd of scriptCommand.split("&&").map(s => s.trim())) {
+            if (subCmd.includes("keycloakify build")) {
+                break;
+            }
+
+            appBuildSubCommands.push(subCmd);
+        }
+
+        return { appBuildSubCommands };
+    })();
+
+    if (appBuildSubCommands.length === 0) {
+        console.log(
+            chalk.red(
+                `Your ${scriptName} script should look like "... && keycloakify build ..."`
+            )
+        );
+        process.exit(-1);
+    }
+
+    for (const subCommand of appBuildSubCommands) {
+        const dIsSuccess = new Deferred<boolean>();
+
+        child_process.exec(
+            subCommand,
+            {
+                cwd: buildContext.bundler.packageJsonDirPath,
+                env: {
+                    ...process.env,
+                    PATH: (() => {
+                        const separator = pathSep === "/" ? ":" : ";";
+
+                        return [
+                            pathJoin(
+                                buildContext.bundler.packageJsonDirPath,
+                                "node_modules",
+                                ".bin"
+                            ),
+                            ...(process.env.PATH ?? "").split(separator)
+                        ].join(separator);
+                    })()
+                }
+            },
+            (error, stdout, stderr) => {
+                if (error) {
+                    dIsSuccess.resolve(false);
+
+                    console.log(chalk.red(`Error running: '${subCommand}'`));
+                    console.log(stdout);
+                    console.log(stderr);
+
+                    return;
+                }
+
+                dIsSuccess.resolve(true);
+            }
+        );
+
+        const isSuccess = await dIsSuccess.pr;
+
+        if (!isSuccess) {
+            return { isAppBuildSuccess: false };
+        }
+    }
+
+    return { isAppBuildSuccess: true };
 }

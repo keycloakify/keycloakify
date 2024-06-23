@@ -1,7 +1,12 @@
 import { parse as urlParse } from "url";
-import { join as pathJoin, sep as pathSep, relative as pathRelative } from "path";
+import {
+    join as pathJoin,
+    sep as pathSep,
+    relative as pathRelative,
+    resolve as pathResolve,
+    dirname as pathDirname
+} from "path";
 import { getAbsoluteAndInOsFormatPath } from "../tools/getAbsoluteAndInOsFormatPath";
-import { getNpmWorkspaceRootDirPath } from "../tools/getNpmWorkspaceRootDirPath";
 import type { CliCommandOptions } from "../main";
 import { z } from "zod";
 import * as fs from "fs";
@@ -21,9 +26,9 @@ import { type ThemeType } from "./constants";
 import { id } from "tsafe/id";
 import { symToStr } from "tsafe/symToStr";
 import chalk from "chalk";
+import { getProxyFetchOptions, type ProxyFetchOptions } from "../tools/fetchProxyOptions";
 
 export type BuildContext = {
-    bundler: "vite" | "webpack";
     themeVersion: string;
     themeNames: [string, ...string[]];
     extraThemeProperties: string[] | undefined;
@@ -40,7 +45,7 @@ export type BuildContext = {
      * In this case the urlPathname will be "/my-app/" */
     urlPathname: string | undefined;
     assetsDirPath: string;
-    npmWorkspaceRootDirPath: string;
+    fetchOptions: ProxyFetchOptions;
     kcContextExclusionsFtlCode: string | undefined;
     environmentVariables: { name: string; default: string }[];
     themeSrcDirPath: string;
@@ -49,6 +54,15 @@ export type BuildContext = {
         keycloakVersionRange: KeycloakVersionRange;
         jarFileBasename: string;
     }[];
+    bundler:
+        | {
+              type: "vite";
+          }
+        | {
+              type: "webpack";
+              packageJsonDirPath: string;
+              packageJsonScripts: Record<string, string>;
+          };
 };
 
 export type BuildOptions = {
@@ -174,6 +188,40 @@ export function getBuildContext(params: {
         return { resolvedViteConfig };
     })();
 
+    const packageJsonFilePath = (function getPackageJSonDirPath(upCount: number): string {
+        const dirPath = pathResolve(
+            pathJoin(...[projectDirPath, ...Array(upCount).fill("..")])
+        );
+
+        assert(dirPath !== pathSep, "Root package.json not found");
+
+        success: {
+            const packageJsonFilePath = pathJoin(dirPath, "package.json");
+
+            if (!fs.existsSync(packageJsonFilePath)) {
+                break success;
+            }
+
+            const parsedPackageJson = z
+                .object({
+                    dependencies: z.record(z.string()).optional(),
+                    devDependencies: z.record(z.string()).optional()
+                })
+                .parse(JSON.parse(fs.readFileSync(packageJsonFilePath).toString("utf8")));
+
+            if (
+                parsedPackageJson.dependencies?.keycloakify === undefined &&
+                parsedPackageJson.devDependencies?.keycloakify === undefined
+            ) {
+                break success;
+            }
+
+            return packageJsonFilePath;
+        }
+
+        return getPackageJSonDirPath(upCount + 1);
+    })(0);
+
     const parsedPackageJson = (() => {
         type BuildOptions_packageJson = BuildOptions & {
             projectBuildDirPath?: string;
@@ -182,14 +230,14 @@ export function getBuildContext(params: {
         };
 
         type ParsedPackageJson = {
-            name: string;
+            name?: string;
             version?: string;
             homepage?: string;
             keycloakify?: BuildOptions_packageJson;
         };
 
         const zParsedPackageJson = z.object({
-            name: z.string(),
+            name: z.string().optional(),
             version: z.string().optional(),
             homepage: z.string().optional(),
             keycloakify: id<z.ZodType<BuildOptions_packageJson>>(
@@ -267,10 +315,16 @@ export function getBuildContext(params: {
             assert<Equals<Got, Expected>>();
         }
 
+        const configurationPackageJsonFilePath = (() => {
+            const rootPackageJsonFilePath = pathJoin(projectDirPath, "package.json");
+
+            return fs.existsSync(rootPackageJsonFilePath)
+                ? rootPackageJsonFilePath
+                : packageJsonFilePath;
+        })();
+
         return zParsedPackageJson.parse(
-            JSON.parse(
-                fs.readFileSync(pathJoin(projectDirPath, "package.json")).toString("utf8")
-            )
+            JSON.parse(fs.readFileSync(configurationPackageJsonFilePath).toString("utf8"))
         );
     })();
 
@@ -288,12 +342,14 @@ export function getBuildContext(params: {
 
     const themeNames = ((): [string, ...string[]] => {
         if (buildOptions.themeName === undefined) {
-            return [
-                parsedPackageJson.name
-                    .replace(/^@(.*)/, "$1")
-                    .split("/")
-                    .join("-")
-            ];
+            return parsedPackageJson.name === undefined
+                ? ["keycloakify"]
+                : [
+                      parsedPackageJson.name
+                          .replace(/^@(.*)/, "$1")
+                          .split("/")
+                          .join("-")
+                  ];
         }
 
         if (typeof buildOptions.themeName === "string") {
@@ -326,15 +382,29 @@ export function getBuildContext(params: {
         return pathJoin(projectDirPath, resolvedViteConfig.buildDir);
     })();
 
-    const { npmWorkspaceRootDirPath } = getNpmWorkspaceRootDirPath({
-        projectDirPath,
-        dependencyExpected: "keycloakify"
-    });
-
     const bundler = resolvedViteConfig !== undefined ? "vite" : "webpack";
 
     return {
-        bundler,
+        bundler:
+            resolvedViteConfig !== undefined
+                ? { type: "vite" }
+                : (() => {
+                      const { scripts } = z
+                          .object({
+                              scripts: z.record(z.string()).optional()
+                          })
+                          .parse(
+                              JSON.parse(
+                                  fs.readFileSync(packageJsonFilePath).toString("utf8")
+                              )
+                          );
+
+                      return {
+                          type: "webpack",
+                          packageJsonDirPath: pathDirname(packageJsonFilePath),
+                          packageJsonScripts: scripts ?? {}
+                      };
+                  })(),
         themeVersion: buildOptions.themeVersion ?? parsedPackageJson.version ?? "0.0.0",
         themeNames,
         extraThemeProperties: buildOptions.extraThemeProperties,
@@ -411,7 +481,11 @@ export function getBuildContext(params: {
                         });
                     }
 
-                    return pathJoin(npmWorkspaceRootDirPath, "node_modules", ".cache");
+                    return pathJoin(
+                        pathDirname(packageJsonFilePath),
+                        "node_modules",
+                        ".cache"
+                    );
                 })(),
                 "keycloakify"
             );
@@ -460,7 +534,6 @@ export function getBuildContext(params: {
 
             return pathJoin(projectBuildDirPath, resolvedViteConfig.assetsDir);
         })(),
-        npmWorkspaceRootDirPath,
         kcContextExclusionsFtlCode: (() => {
             if (buildOptions.kcContextExclusionsFtl === undefined) {
                 return undefined;
@@ -480,6 +553,33 @@ export function getBuildContext(params: {
         environmentVariables: buildOptions.environmentVariables ?? [],
         recordIsImplementedByThemeType,
         themeSrcDirPath,
+        fetchOptions: getProxyFetchOptions({
+            npmConfigGetCwd: (function callee(upCount: number): string {
+                const dirPath = pathResolve(
+                    pathJoin(...[projectDirPath, ...Array(upCount).fill("..")])
+                );
+
+                assert(
+                    dirPath !== pathSep,
+                    "Couldn't find a place to run 'npm config get'"
+                );
+
+                try {
+                    child_process.execSync("npm config get", {
+                        cwd: dirPath,
+                        stdio: "ignore"
+                    });
+                } catch (error) {
+                    if (String(error).includes("ENOWORKSPACES")) {
+                        return callee(upCount + 1);
+                    }
+
+                    throw error;
+                }
+
+                return dirPath;
+            })(0)
+        }),
         jarTargets: (() => {
             const getDefaultJarFileBasename = (range: string) =>
                 `keycloak-theme-for-kc-${range}.jar`;

@@ -121,7 +121,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         if (!isAppBuildSuccess) {
             console.log(
                 chalk.red(
-                    `App build failed, exiting. Try running 'npm run build' and see what's wrong.`
+                    `App build failed, exiting. Try building your app (e.g 'npm run build') and see what's wrong.`
                 )
             );
             process.exit(1);
