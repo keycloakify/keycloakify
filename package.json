@@ -41,14 +41,14 @@
         "!dist/bin/",
         "dist/bin/main.js",
         "dist/bin/*.index.js",
-        "!dist/bin/shared/*.js",
+        "dist/bin/*.node",
         "dist/bin/shared/constants.js",
         "dist/bin/shared/*.d.ts",
         "dist/bin/shared/*.js.map",
         "!dist/vite-plugin/",
+        "dist/vite-plugin/index.js",
         "dist/vite-plugin/index.d.ts",
-        "dist/vite-plugin/vite-plugin.d.ts",
-        "dist/vite-plugin/index.js"
+        "dist/vite-plugin/vite-plugin.d.ts"
     ],
     "keywords": [
         "keycloak",

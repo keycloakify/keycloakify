@@ -16,7 +16,7 @@ if (fs.existsSync(join("dist", "bin", "main.original.js"))) {
     );
 
     fs.readdirSync(join("dist", "bin")).forEach(fileBasename => {
-        if (/[0-9]\.index.js/.test(fileBasename)) {
+        if (/[0-9]\.index.js/.test(fileBasename) || fileBasename.endsWith(".node")) {
             fs.rmSync(join("dist", "bin", fileBasename));
         }
     });
@@ -111,9 +111,10 @@ run(
     )}`
 );
 
-fs.readdirSync(join("dist", "ncc_out")).forEach(fileBasename =>
-    assert(!fileBasename.endsWith(".index.js"))
-);
+fs.readdirSync(join("dist", "ncc_out")).forEach(fileBasename => {
+    assert(!fileBasename.endsWith(".index.js"));
+    assert(!fileBasename.endsWith(".node"));
+});
 
 transformCodebase({
     srcDirPath: join("dist", "ncc_out"),
