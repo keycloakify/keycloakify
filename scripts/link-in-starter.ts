@@ -10,14 +10,16 @@ fs.rmSync(".yarn_home", { recursive: true, force: true });
 run("yarn install");
 run("yarn build");
 
-fs.rmSync(join("..", "keycloakify-starter", "node_modules"), {
+const starterName = "keycloakify-starter";
+
+fs.rmSync(join("..", starterName, "node_modules"), {
     recursive: true,
     force: true
 });
 
-run("yarn install", { cwd: join("..", "keycloakify-starter") });
+run("yarn install", { cwd: join("..", starterName) });
 
-run(`npx tsx ${join("scripts", "link-in-app.ts")} keycloakify-starter`);
+run(`npx tsx ${join("scripts", "link-in-app.ts")} ${starterName}`);
 
 startRebuildOnSrcChange();
 
