@@ -1,5 +1,5 @@
 import { parse as urlParse } from "url";
-import { join as pathJoin } from "path";
+import { join as pathJoin, sep as pathSep, relative as pathRelative } from "path";
 import { getAbsoluteAndInOsFormatPath } from "../tools/getAbsoluteAndInOsFormatPath";
 import { getNpmWorkspaceRootDirPath } from "../tools/getNpmWorkspaceRootDirPath";
 import type { CliCommandOptions } from "../main";
@@ -90,15 +90,54 @@ export function getBuildContext(params: {
 }): BuildContext {
     const { cliCommandOptions } = params;
 
-    const projectDirPath = (() => {
-        if (cliCommandOptions.projectDirPath === undefined) {
-            return process.cwd();
+    const projectDirPath =
+        cliCommandOptions.projectDirPath !== undefined
+            ? getAbsoluteAndInOsFormatPath({
+                  pathIsh: cliCommandOptions.projectDirPath,
+                  cwd: process.cwd()
+              })
+            : process.cwd();
+
+    const { themeSrcDirPath } = (() => {
+        const srcDirPath = pathJoin(projectDirPath, "src");
+
+        const themeSrcDirPath: string | undefined = crawl({
+            dirPath: srcDirPath,
+            returnedPathsType: "relative to dirPath"
+        })
+            .map(fileRelativePath => {
+                for (const themeSrcDirBasename of ["keycloak-theme", "keycloak_theme"]) {
+                    const split = fileRelativePath.split(themeSrcDirBasename);
+                    if (split.length === 2) {
+                        return pathJoin(srcDirPath, split[0] + themeSrcDirBasename);
+                    }
+                }
+                return undefined;
+            })
+            .filter(exclude(undefined))[0];
+
+        if (themeSrcDirPath !== undefined) {
+            return { themeSrcDirPath };
         }
 
-        return getAbsoluteAndInOsFormatPath({
-            pathIsh: cliCommandOptions.projectDirPath,
-            cwd: process.cwd()
-        });
+        for (const themeType of [...themeTypes, "email"]) {
+            if (!fs.existsSync(pathJoin(srcDirPath, themeType))) {
+                continue;
+            }
+            return { themeSrcDirPath: srcDirPath };
+        }
+
+        console.log(
+            chalk.red(
+                [
+                    `Can't locate your Keycloak theme source directory in .${pathSep}${pathRelative(process.cwd(), srcDirPath)}`,
+                    `Make sure to either use the Keycloakify CLI in the root of your Keycloakify project or use the --project CLI option`,
+                    `If you are collocating your Keycloak theme with your app you must have a directory named 'keycloak-theme' or 'keycloak_theme' in your 'src' directory`
+                ].join("\n")
+            )
+        );
+
+        process.exit(1);
     })();
 
     const { resolvedViteConfig } = (() => {
@@ -239,47 +278,6 @@ export function getBuildContext(params: {
         ...parsedPackageJson.keycloakify,
         ...resolvedViteConfig?.buildOptions
     };
-
-    const { themeSrcDirPath } = (() => {
-        const srcDirPath = pathJoin(projectDirPath, "src");
-
-        const themeSrcDirPath: string | undefined = crawl({
-            dirPath: srcDirPath,
-            returnedPathsType: "relative to dirPath"
-        })
-            .map(fileRelativePath => {
-                for (const themeSrcDirBasename of ["keycloak-theme", "keycloak_theme"]) {
-                    const split = fileRelativePath.split(themeSrcDirBasename);
-                    if (split.length === 2) {
-                        return pathJoin(srcDirPath, split[0] + themeSrcDirBasename);
-                    }
-                }
-                return undefined;
-            })
-            .filter(exclude(undefined))[0];
-
-        if (themeSrcDirPath !== undefined) {
-            return { themeSrcDirPath };
-        }
-
-        for (const themeType of [...themeTypes, "email"]) {
-            if (!fs.existsSync(pathJoin(srcDirPath, themeType))) {
-                continue;
-            }
-            return { themeSrcDirPath: srcDirPath };
-        }
-
-        console.log(
-            chalk.red(
-                [
-                    "Can't locate your keycloak theme source directory.",
-                    "See: https://docs.keycloakify.dev/v/v10/keycloakify-in-my-app/collocation"
-                ].join("\n")
-            )
-        );
-
-        process.exit(1);
-    })();
 
     const recordIsImplementedByThemeType = objectFromEntries(
         (["login", "account", "email"] as const).map(themeType => [
