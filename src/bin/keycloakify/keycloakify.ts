@@ -12,6 +12,12 @@ import * as os from "os";
 import { rmSync } from "../tools/fs.rmSync";
 
 export async function command(params: { cliCommandOptions: CliCommandOptions }) {
+    console.log("DEBUG:", {
+        __filename,
+        __dirname,
+        "process.cwd()": process.cwd()
+    });
+
     exit_if_maven_not_installed: {
         let commandOutput: Buffer | undefined = undefined;
 

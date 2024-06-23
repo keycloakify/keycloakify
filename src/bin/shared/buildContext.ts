@@ -90,6 +90,8 @@ export function getBuildContext(params: {
 }): BuildContext {
     const { cliCommandOptions } = params;
 
+    console.log("DEBUG:", { cliCommandOptions });
+
     const projectDirPath = (() => {
         if (cliCommandOptions.projectDirPath === undefined) {
             return process.cwd();
@@ -100,6 +102,8 @@ export function getBuildContext(params: {
             cwd: process.cwd()
         });
     })();
+
+    console.log("DEBUG:", { projectDirPath });
 
     const { resolvedViteConfig } = (() => {
         if (
@@ -134,6 +138,8 @@ export function getBuildContext(params: {
 
         return { resolvedViteConfig };
     })();
+
+    console.log("DEBUG:", { resolvedViteConfig });
 
     const parsedPackageJson = (() => {
         type BuildOptions_packageJson = BuildOptions & {
@@ -235,10 +241,14 @@ export function getBuildContext(params: {
         );
     })();
 
+    console.log("DEBUG:", { parsedPackageJson });
+
     const buildOptions = {
         ...parsedPackageJson.keycloakify,
         ...resolvedViteConfig?.buildOptions
     };
+
+    console.log("DEBUG:", { buildOptions });
 
     const { themeSrcDirPath } = (() => {
         const srcDirPath = pathJoin(projectDirPath, "src");
@@ -288,6 +298,8 @@ export function getBuildContext(params: {
         ])
     );
 
+    console.log("DEBUG:", { themeSrcDirPath });
+
     const themeNames = ((): [string, ...string[]] => {
         if (buildOptions.themeName === undefined) {
             return [
@@ -309,6 +321,8 @@ export function getBuildContext(params: {
         return [mainThemeName, ...themeVariantNames];
     })();
 
+    console.log("DEBUG:", { themeNames });
+
     const projectBuildDirPath = (() => {
         webpack: {
             if (resolvedViteConfig !== undefined) {
@@ -328,14 +342,18 @@ export function getBuildContext(params: {
         return pathJoin(projectDirPath, resolvedViteConfig.buildDir);
     })();
 
+    console.log("DEBUG:", { projectBuildDirPath });
+
     const { npmWorkspaceRootDirPath } = getNpmWorkspaceRootDirPath({
         projectDirPath,
         dependencyExpected: "keycloakify"
     });
 
+    console.log("DEBUG:", { npmWorkspaceRootDirPath });
+
     const bundler = resolvedViteConfig !== undefined ? "vite" : "webpack";
 
-    return {
+    const buildContext: BuildContext = {
         bundler,
         themeVersion: buildOptions.themeVersion ?? parsedPackageJson.version ?? "0.0.0",
         themeNames,
@@ -765,4 +783,8 @@ export function getBuildContext(params: {
             return jarTargets;
         })()
     };
+
+    console.log("DEBUG:", JSON.stringify({ buildContext }, null, 2));
+
+    return buildContext;
 }

@@ -9,10 +9,17 @@ export function getNpmWorkspaceRootDirPath(params: {
 }) {
     const { projectDirPath, dependencyExpected } = params;
 
+    console.log("DEBUG getNpmWorkspaceRootDirPath:", {
+        projectDirPath,
+        dependencyExpected
+    });
+
     const npmWorkspaceRootDirPath = (function callee(depth: number): string {
         const cwd = pathResolve(
             pathJoin(...[projectDirPath, ...Array(depth).fill("..")])
         );
+
+        console.log("DEBUG getNpmWorkspaceRootDirPath:", { cwd });
 
         assert(cwd !== pathSep, "NPM workspace not found");
 
@@ -22,12 +29,16 @@ export function getNpmWorkspaceRootDirPath(params: {
                 stdio: "ignore"
             });
         } catch (error) {
+            console.log("DEBUG getNpmWorkspaceRootDirPath: got error npm config get");
+
             if (String(error).includes("ENOWORKSPACES")) {
                 return callee(depth + 1);
             }
 
             throw error;
         }
+
+        console.log("DEBUG getNpmWorkspaceRootDirPath: npm workspace found");
 
         const packageJsonFilePath = pathJoin(cwd, "package.json");
 
