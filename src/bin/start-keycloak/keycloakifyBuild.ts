@@ -8,7 +8,6 @@ export type BuildContextLike = {
     projectDirPath: string;
     keycloakifyBuildDirPath: string;
     bundler: "vite" | "webpack";
-    npmWorkspaceRootDirPath: string;
 };
 
 assert<BuildContext extends BuildContextLike ? true : false>();
