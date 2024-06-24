@@ -3,6 +3,7 @@ import * as child_process from "child_process";
 import { Deferred } from "evt/tools/Deferred";
 import { assert } from "tsafe/assert";
 import type { BuildContext } from "../shared/buildContext";
+import chalk from "chalk";
 
 export type BuildContextLike = {
     projectDirPath: string;
@@ -18,6 +19,8 @@ export async function keycloakifyBuild(params: {
     const { buildForKeycloakMajorVersionNumber, buildContext } = params;
 
     const dResult = new Deferred<{ isSuccess: boolean }>();
+
+    console.log(chalk.blue("Running: 'npx keycloakify build'"));
 
     const child = child_process.spawn("npx", ["keycloakify", "build"], {
         cwd: buildContext.projectDirPath,
