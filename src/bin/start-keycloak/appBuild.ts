@@ -4,6 +4,7 @@ import { assert } from "tsafe/assert";
 import type { BuildContext } from "../shared/buildContext";
 import chalk from "chalk";
 import { sep as pathSep, join as pathJoin } from "path";
+import { getAbsoluteAndInOsFormatPath } from "../tools/getAbsoluteAndInOsFormatPath";
 
 export type BuildContextLike = {
     projectDirPath: string;
@@ -122,15 +123,28 @@ async function appBuild_webpack(params: {
         process.exit(-1);
     }
 
+    let commandCwd = buildContext.bundler.packageJsonDirPath;
+
     for (const subCommand of appBuildSubCommands) {
         const dIsSuccess = new Deferred<boolean>();
 
-        console.log(chalk.blue(`Running: '${subCommand}'`));
-
         const [command, ...args] = subCommand.split(" ");
 
+        if (command === "cd") {
+            const [pathIsh] = args;
+
+            commandCwd = getAbsoluteAndInOsFormatPath({
+                pathIsh,
+                cwd: commandCwd
+            });
+
+            continue;
+        }
+
+        console.log(chalk.blue(`Running: '${subCommand}'`));
+
         const child = child_process.spawn(command, args, {
-            cwd: buildContext.bundler.packageJsonDirPath,
+            cwd: commandCwd,
             env: {
                 ...process.env,
                 PATH: (() => {
