@@ -19,7 +19,9 @@
     </a>
     <p align="center">
       Check out our discord server!<br/>
-      <img src="https://dcbadge.limes.pink/api/server/kYFZG7fQmn"/>
+      <a href="https://discord.gg/mJdYJSdcm4">
+        <img src="https://dcbadge.limes.pink/api/server/kYFZG7fQmn"/>
+      </a>
     </p>
     <p align="center">
         <a href="https://www.keycloakify.dev">Home</a>
