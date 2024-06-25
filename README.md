@@ -17,9 +17,10 @@
     <a href="https://github.com/thomasdarimont/awesome-keycloak">
         <img src="https://awesome.re/mentioned-badge.svg"/>
     </a>
-    <a href="https://discord.gg/kYFZG7fQmn">
-        <img src="https://img.shields.io/discord/1097708346976505977"/>
-    </a>
+    <p align="center">
+      Check out our discord server!<br/>
+      <img src="https://dcbadge.limes.pink/api/server/kYFZG7fQmn"/>
+    </p>
     <p align="center">
         <a href="https://www.keycloakify.dev">Home</a>
         -
