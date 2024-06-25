@@ -35,8 +35,8 @@ export function readExtraPagesNames(params: {
 
         extraPages.push(
             ...Array.from(
-                rawSourceFile.matchAll(/["']?pageId["']?\s*:\s*["']([^.]+.ftl)["']/g),
-                m => m[1]
+                rawSourceFile.matchAll(/["']([^.\s]+.ftl)["']:/g),
+                m => (console.log(m), m[1])
             )
         );
     }
