@@ -1,11 +1,25 @@
 {
-    "printWidth": 150,
+    "printWidth": 90,
     "tabWidth": 4,
     "useTabs": false,
     "semi": true,
     "singleQuote": false,
-    "quoteProps": "preserve",
     "trailingComma": "none",
     "bracketSpacing": true,
-    "arrowParens": "avoid"
+    "arrowParens": "avoid",
+    "overrides": [
+        {
+            "files": [
+                "**/login/pages/*.tsx",
+                "**/account/pages/*.tsx",
+                "**/login/Template.tsx",
+                "**/account/Template.tsx",
+                "**/login/UserProfileFormFields.tsx",
+                "KcApp.tsx"
+            ],
+            "options": {
+                "printWidth": 150
+            }
+        }
+    ]
 }

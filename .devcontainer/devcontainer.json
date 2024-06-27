@@ -1,0 +1,23 @@
+{
+    "name": "Keycloakify Starter Devcontainer",
+    "image": "mcr.microsoft.com/devcontainers/typescript-node:1-20-bookworm",
+    "features": {
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {
+            "moby": true,
+            "installDockerBuildx": true,
+            "version": "latest",
+            "dockerDashComposeVersion": "none"
+        },
+        "ghcr.io/devcontainers-contrib/features/maven-sdkman:2": {
+            "version": "latest",
+            "jdkVersion": "latest",
+            "jdkDistro": "ms"
+        }
+    },
+    "postCreateCommand": "yarn install",
+    "customizations": {
+        "vscode": {
+            "extensions": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]
+        }
+    }
+}

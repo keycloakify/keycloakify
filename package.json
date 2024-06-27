@@ -1,131 +1,41 @@
 {
-    "name": "keycloakify",
-    "version": "9.7.0",
-    "description": "Create Keycloak themes using React",
+    "name": "keycloakify-starter",
+    "version": "0.0.0",
+    "description": "Starter for Keycloakify 10",
     "repository": {
         "type": "git",
-        "url": "git://github.com/keycloakify/keycloakify.git"
+        "url": "git://github.com/codegouvfr/keycloakify-starter.git"
     },
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
+    "type": "module",
     "scripts": {
-        "prepare": "yarn generate-i18n-messages",
-        "build": "rimraf dist/ && tsc -p src/bin && tsc -p src && tsc -p src/vite-plugin && tsc-alias -p src/tsconfig.json && yarn grant-exec-perms && yarn copy-files dist/ && cp -r src dist/",
-        "generate:json-schema": "ts-node scripts/generate-json-schema.ts",
-        "grant-exec-perms": "node dist/bin/tools/grant-exec-perms.js",
-        "copy-files": "copyfiles -u 1 src/**/*.ftl src/**/*.java",
-        "test": "yarn test:types && vitest run",
-        "test:keycloakify-starter": "ts-node scripts/test-keycloakify-starter",
-        "test:types": "tsc -p test/tsconfig.json --noEmit",
-        "_format": "prettier '**/*.{ts,tsx,json,md}'",
-        "format": "yarn _format --write",
-        "format:check": "yarn _format --list-different",
-        "generate-i18n-messages": "ts-node --skipProject scripts/generate-i18n-messages.ts",
-        "link-in-app": "ts-node --skipProject scripts/link-in-app.ts",
-        "link-in-starter": "yarn link-in-app keycloakify-starter",
-        "watch-in-starter": "yarn build && yarn link-in-starter && (concurrently \"tsc -p src -w\" \"tsc-alias -p src/tsconfig.json\" \"tsc -p src/bin -w\")",
-        "copy-keycloak-resources-to-storybook-static": "PUBLIC_DIR_PATH=.storybook/static node dist/bin/copy-keycloak-resources-to-public.js",
-        "storybook": "yarn build && yarn copy-keycloak-resources-to-storybook-static && start-storybook -p 6006",
-        "build-storybook": "yarn build && yarn copy-keycloak-resources-to-storybook-static && build-storybook"
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "build-keycloak-theme": "npm run build && keycloakify build",
+        "storybook": "storybook dev -p 6006",
+        "format": "prettier . --write"
     },
-    "bin": {
-        "copy-keycloak-resources-to-public": "dist/bin/copy-keycloak-resources-to-public.js",
-        "download-builtin-keycloak-theme": "dist/bin/download-builtin-keycloak-theme.js",
-        "eject-keycloak-page": "dist/bin/eject-keycloak-page.js",
-        "initialize-email-theme": "dist/bin/initialize-email-theme.js",
-        "keycloakify": "dist/bin/keycloakify/index.js"
-    },
-    "lint-staged": {
-        "*.{ts,tsx,json,md}": [
-            "prettier --write"
-        ]
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged -v"
-        }
-    },
-    "author": "u/garronej",
     "license": "MIT",
-    "files": [
-        "src/",
-        "dist/",
-        "!dist/tsconfig.tsbuildinfo",
-        "!dist/bin/tsconfig.tsbuildinfo"
-    ],
-    "keywords": [
-        "bluehats",
-        "keycloak",
-        "react",
-        "theme",
-        "FreeMarker",
-        "ftl",
-        "login",
-        "register"
-    ],
-    "homepage": "https://www.keycloakify.dev",
-    "peerDependencies": {
-        "react": "^16.8.0 || ^17.0.0 || ^18.0.0"
+    "keywords": [],
+    "dependencies": {
+        "keycloakify": "10.0.0-rc.95",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0"
     },
     "devDependencies": {
-        "@babel/core": "^7.0.0",
-        "@emotion/react": "^11.10.6",
-        "@storybook/addon-a11y": "^6.5.16",
-        "@storybook/addon-actions": "^6.5.13",
-        "@storybook/addon-essentials": "^6.5.13",
-        "@storybook/addon-interactions": "^6.5.13",
-        "@storybook/addon-links": "^6.5.13",
-        "@storybook/builder-webpack5": "^6.5.13",
-        "@storybook/manager-webpack5": "^6.5.13",
-        "@storybook/react": "^6.5.13",
-        "@storybook/testing-library": "^0.0.13",
-        "@types/babel__generator": "^7.6.4",
-        "@types/make-fetch-happen": "^10.0.1",
-        "@types/minimist": "^1.2.2",
-        "@types/node": "^18.15.3",
-        "@types/react": "^18.0.35",
-        "@types/react-dom": "^18.0.11",
-        "@types/yauzl": "^2.10.0",
-        "@types/yazl": "^2.4.2",
-        "concurrently": "^8.0.1",
-        "copyfiles": "^2.4.1",
-        "eslint-plugin-storybook": "^0.6.7",
-        "husky": "^4.3.8",
-        "lint-staged": "^11.0.0",
-        "powerhooks": "^0.26.7",
-        "prettier": "^2.3.0",
-        "properties-parser": "^0.3.1",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "rimraf": "^3.0.2",
-        "scripting-tools": "^0.19.13",
-        "storybook-dark-mode": "^1.1.2",
-        "ts-node": "^10.9.1",
-        "tsc-alias": "^1.8.3",
-        "tss-react": "^4.8.2",
-        "typescript": "^4.9.1-beta",
-        "vitest": "^0.29.8",
-        "zod-to-json-schema": "^3.20.4",
-        "vite": "^5.0.12"
-    },
-    "dependencies": {
-        "@babel/generator": "^7.22.9",
-        "@babel/parser": "^7.22.7",
-        "@babel/types": "^7.22.5",
-        "@octokit/rest": "^18.12.0",
-        "cheerio": "^1.0.0-rc.5",
-        "cli-select": "^1.1.2",
-        "evt": "^2.4.18",
-        "make-fetch-happen": "^11.0.3",
-        "minimal-polyfills": "^2.2.2",
-        "minimist": "^1.2.6",
-        "react-markdown": "^5.0.3",
-        "recast": "^0.23.3",
-        "rfc4648": "^1.5.2",
-        "tsafe": "^1.6.0",
-        "yauzl": "^2.10.0",
-        "yazl": "^2.5.1",
-        "zod": "^3.17.10",
-        "magic-string": "^0.30.7"
+        "storybook": "^8.1.10",
+        "@storybook/react": "^8.1.10",
+        "@storybook/react-vite": "^8.1.10",
+        "@types/react": "^18.2.43",
+        "@types/react-dom": "^18.2.17",
+        "@typescript-eslint/eslint-plugin": "^6.14.0",
+        "@typescript-eslint/parser": "^6.14.0",
+        "@vitejs/plugin-react": "^4.2.1",
+        "eslint": "^8.55.0",
+        "eslint-plugin-react-hooks": "^4.6.0",
+        "eslint-plugin-react-refresh": "^0.4.5",
+        "eslint-plugin-storybook": "^0.8.0",
+        "prettier": "3.3.1",
+        "typescript": "^5.2.2",
+        "vite": "^5.0.8"
     }
 }

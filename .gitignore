@@ -33,6 +33,16 @@ jspm_packages
 # Optional npm cache directory
 .npm
 
+# yarn cache directory
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+
 # Optional REPL history
 .node_repl_history
 
@@ -41,21 +51,8 @@ jspm_packages
 .DS_Store
 
 /dist
-/keycloakify_starter_test/
-/sample_custom_react_project/
-/sample_react_project/
-/.yarn_home/
 
-.idea
-
-/src/login/i18n/baseMessages/
-/src/account/i18n/baseMessages/
-
-# VS Code devcontainers
-.devcontainer
-/.yarn
-/.yarnrc.yml
-
-/stories/assets/fonts/
-/build_storybook/
-/storybook-static/
+/dist_keycloak
+/build
+/storybook-static
+/.idea/

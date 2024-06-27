@@ -1,0 +1,25 @@
+<style>
+    body.sb-show-main.sb-main-padded {
+        padding: 0;
+    }
+
+    /* Following styles are just meant to avoid white flash when switching from one story to another */
+    @keyframes fadeToTransparent {
+        from {
+            background-color: #393939;
+        }
+
+        to {
+            background-color: transparent;
+        }
+    }
+    html {
+        animation: fadeToTransparent 500ms forwards ease-in;
+    }
+    body > .sb-preparing-docs {
+        visibility: hidden;
+    }
+    body > .sb-preparing-story {
+        visibility: hidden;
+    }
+</style>
