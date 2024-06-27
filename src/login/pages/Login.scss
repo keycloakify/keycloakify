@@ -1,0 +1,73 @@
+.main-container{
+    max-width: 1200px;
+    //background-color: red;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 15.6rem;
+
+    .field-container{
+        min-width: 450px;
+        background-color: white;
+
+        -webkit-box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.75);
+        box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.75);
+
+        .header-1{
+            background-color: #39A9B0;
+            font-size: 1rem;
+            color: white;
+            height: 3.5rem;
+            text-align: start;
+            display: flex;
+            align-items: center;
+            justify-content: left;
+            padding-left: 1.2rem;
+        }
+    
+        .data-fields{
+            padding:  1.5rem 1.5rem 1rem;
+
+            .button{
+                background-color: #1E678F;
+                color: white;
+                padding: 0.5rem;
+                width: 7rem;
+                border-radius: 5px;
+                border-style: none;
+                font-size: 14px;
+                //margin-bottom: 1rem;
+                &:hover{
+                    background-color: #1e688fd0;
+                }
+            }
+        }
+
+    }
+
+
+    .create-account{
+        min-width: 400px;
+        .button-account{
+            background-color: #1E678F;
+            color: white;
+            padding: 12px 15px;
+            //width: 200px;
+            border-radius: 5px;
+            border-style: none;
+            font-size: 15px;
+            //margin-top: 400px;
+            &:hover{
+                text-decoration: none;
+                background-color: #1e688fd3;
+            }
+        }
+    }
+}
+
+
+
+
