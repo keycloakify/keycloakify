@@ -81,7 +81,8 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             )
         )
         .toString("utf8")
-        .replace('import React from "react";\n', "");
+        .replace('import React from "react";\n', "")
+        .replace(/from "[./]+dist\//, 'from "keycloakify/');
 
     {
         const targetDirPath = pathDirname(targetFilePath);
