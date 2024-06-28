@@ -3,10 +3,13 @@
 import { termost } from "termost";
 import { readThisNpmPackageVersion } from "./tools/readThisNpmPackageVersion";
 import * as child_process from "child_process";
+import { assertNoPnpmDlx } from "./tools/assertNoPnpmDlx";
 
 export type CliCommandOptions = {
     projectDirPath: string | undefined;
 };
+
+assertNoPnpmDlx();
 
 const program = termost<CliCommandOptions>(
     {
