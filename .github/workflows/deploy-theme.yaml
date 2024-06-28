@@ -1,6 +1,10 @@
 name: Build and Push Keycloak Image
 
-on: [pull_request]
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - dev
 
 jobs:
   build-push:
