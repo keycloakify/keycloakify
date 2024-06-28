@@ -259,8 +259,16 @@ function createI18nTranslationFunctionsFactory<MessageKey extends string, ExtraM
         function resolveMsgAdvanced(props: { key: string; args: (string | undefined)[]; doRenderAsHtml: boolean }): JSX.Element | string {
             const { key, args, doRenderAsHtml } = props;
 
-            if (realmMessageBundleUserProfile !== undefined && key in realmMessageBundleUserProfile) {
-                const resolvedMessage = realmMessageBundleUserProfile[key];
+            user_profile: {
+                if (realmMessageBundleUserProfile === undefined) {
+                    break user_profile;
+                }
+
+                const resolvedMessage = realmMessageBundleUserProfile[key] ?? realmMessageBundleUserProfile["${" + key + "}"];
+
+                if (resolvedMessage === undefined) {
+                    break user_profile;
+                }
 
                 return doRenderAsHtml ? (
                     <span
