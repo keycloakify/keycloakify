@@ -170,3 +170,16 @@ export const WithPasswordMinLength8: Story = {
         />
     )
 };
+
+export const WithTermsAcceptance: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                termsAcceptanceRequired: true,
+                "x-keycloakify": {
+                    realmMessageBundleTermsText: "<a href='https://example.com/terms'>Service Terms of Use</a>"
+                }
+            }}
+        />
+    )
+};

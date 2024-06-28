@@ -24,6 +24,7 @@ export default function Register(props: RegisterProps) {
     const { msg, msgStr } = i18n;
 
     const [isFormSubmittable, setIsFormSubmittable] = useState(false);
+    const [areTermsAccepted, setAreTermsAccepted] = useState(false);
 
     return (
         <Template
@@ -43,7 +44,15 @@ export default function Register(props: RegisterProps) {
                     onIsFormSubmittableValueChange={setIsFormSubmittable}
                     doMakeUserConfirmPassword={doMakeUserConfirmPassword}
                 />
-                {termsAcceptanceRequired && <TermsAcceptance i18n={i18n} kcClsx={kcClsx} messagesPerField={messagesPerField} />}
+                {termsAcceptanceRequired && (
+                    <TermsAcceptance
+                        i18n={i18n}
+                        kcClsx={kcClsx}
+                        messagesPerField={messagesPerField}
+                        areTermsAccepted={areTermsAccepted}
+                        onAreTermsAcceptedValueChange={setAreTermsAccepted}
+                    />
+                )}
                 {recaptchaRequired && (
                     <div className="form-group">
                         <div className={kcClsx("kcInputWrapperClass")}>
@@ -61,7 +70,7 @@ export default function Register(props: RegisterProps) {
                     </div>
                     <div id="kc-form-buttons" className={kcClsx("kcFormButtonsClass")}>
                         <input
-                            disabled={!isFormSubmittable}
+                            disabled={!isFormSubmittable || (termsAcceptanceRequired && !areTermsAccepted)}
                             className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonBlockClass", "kcButtonLargeClass")}
                             type="submit"
                             value={msgStr("doRegister")}
@@ -73,8 +82,14 @@ export default function Register(props: RegisterProps) {
     );
 }
 
-function TermsAcceptance(props: { i18n: I18n; kcClsx: KcClsx; messagesPerField: Pick<KcContext["messagesPerField"], "existsError" | "get"> }) {
-    const { i18n, kcClsx, messagesPerField } = props;
+function TermsAcceptance(props: {
+    i18n: I18n;
+    kcClsx: KcClsx;
+    messagesPerField: Pick<KcContext["messagesPerField"], "existsError" | "get">;
+    areTermsAccepted: boolean;
+    onAreTermsAcceptedValueChange: (areTermsAccepted: boolean) => void;
+}) {
+    const { i18n, kcClsx, messagesPerField, areTermsAccepted, onAreTermsAcceptedValueChange } = props;
 
     const { msg } = i18n;
 
@@ -93,6 +108,8 @@ function TermsAcceptance(props: { i18n: I18n; kcClsx: KcClsx; messagesPerField: 
                         id="termsAccepted"
                         name="termsAccepted"
                         className={kcClsx("kcCheckboxInputClass")}
+                        checked={areTermsAccepted}
+                        onChange={e => onAreTermsAcceptedValueChange(e.target.checked)}
                         aria-invalid={messagesPerField.existsError("termsAccepted")}
                     />
                     <label htmlFor="termsAccepted" className={kcClsx("kcLabelClass")}>
