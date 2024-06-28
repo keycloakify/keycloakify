@@ -62,7 +62,6 @@ export default function Applications(props: PageProps<Extract<KcContext, { pageI
                                                     {index < application.realmRolesAvailable.length - 1 && ", "}
                                                 </span>
                                             ))}
-                                        {!isArrayWithEmptyObject(application.realmRolesAvailable) && application.resourceRolesAvailable && ", "}
                                         {application.resourceRolesAvailable &&
                                             Object.keys(application.resourceRolesAvailable).map(resource => (
                                                 <span key={resource}>
