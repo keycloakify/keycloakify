@@ -2,6 +2,10 @@
 FROM node:18 AS node
 WORKDIR /app
 COPY . .
+RUN apt-get update \
+    && apt-get install -y \
+        maven \
+    && rm -rf /var/lib/apt/lists/*
 RUN yarn install --frozen-lockfile && yarn build-keycloak-theme
 
 # Keycloak build stage
