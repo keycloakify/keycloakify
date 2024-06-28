@@ -1,7 +1,7 @@
 # Node stage
 FROM node:18 AS node
 WORKDIR /app
-COPY mvrb-keycloakify/ .
+COPY . .
 RUN yarn install --frozen-lockfile && yarn build-keycloak-theme
 
 # Keycloak build stage
