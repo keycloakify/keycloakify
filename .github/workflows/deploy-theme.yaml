@@ -1,12 +1,6 @@
 name: Build and Push Keycloak Image
 
-on:
-  push:
-    branches:
-      - dev
-  pull_request:
-    branches:
-      - dev
+on: [pull_request]
 
 jobs:
   build-push:
