@@ -10,8 +10,11 @@ import { getThemeSrcDirPath } from "../getThemeSrcDirPath";
 import { getThisCodebaseRootDirPath } from "../tools/getThisCodebaseRootDirPath";
 import { readThisNpmProjectVersion } from "../tools/readThisNpmProjectVersion";
 import { keycloakifyBuildOptionsForPostPostBuildScriptEnvName } from "../constants";
+import { assertNoPnpmDlx } from "../tools/assertNoPnpmDlx";
 
 export async function main() {
+    assertNoPnpmDlx();
+
     const buildOptions = readBuildOptions({
         "processArgv": process.argv.slice(2)
     });
