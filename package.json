@@ -15,7 +15,6 @@
         "test:types": "tsc -p test/tsconfig.json --noEmit",
         "_format": "prettier '**/*.{ts,tsx,json,md}'",
         "format": "yarn _format --write",
-        "format:check": "yarn _format --list-different",
         "link-in-app": "tsx scripts/link-in-app.ts",
         "build-storybook": "tsx scripts/build-storybook.ts",
         "dump-keycloak-realm": "tsx scripts/dump-keycloak-realm.ts"

@@ -17,7 +17,7 @@ jobs:
     - uses: actions/setup-node@v4
     - uses: bahmutov/npm-install@v1
     - name: If this step fails run 'npm run format' then commit again.
-      run: npm run format:check
+      run: npm run _format --list-different
   test:
     runs-on: ${{ matrix.os }}
     needs: test_lint
