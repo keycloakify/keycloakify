@@ -18,7 +18,7 @@ export default function SamlPostForm(props: PageProps<Extract<KcContext, { pageI
         }
 
         // Storybook
-        if (samlPost.url === "") {
+        if (samlPost.url === "#") {
             alert("In a real Keycloak the user would be redirected immediately");
             return;
         }
