@@ -1,11 +1,24 @@
 {
-    "printWidth": 150,
+    "printWidth": 90,
     "tabWidth": 4,
     "useTabs": false,
     "semi": true,
     "singleQuote": false,
-    "quoteProps": "preserve",
     "trailingComma": "none",
     "bracketSpacing": true,
-    "arrowParens": "avoid"
+    "arrowParens": "avoid",
+    "overrides": [
+        {
+            "files": "*.tsx",
+            "options": {
+                "printWidth": 150
+            }
+        },
+        {
+            "files": "useUserProfileForm.tsx",
+            "options": {
+                "printWidth": 150
+            }
+        }
+    ]
 }

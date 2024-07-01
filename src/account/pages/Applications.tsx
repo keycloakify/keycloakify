@@ -1,17 +1,12 @@
-import { clsx } from "keycloakify/tools/clsx";
+import { getKcClsx } from "keycloakify/account/lib/kcClsx";
 import type { PageProps } from "keycloakify/account/pages/PageProps";
-import { useGetClassName } from "keycloakify/account/lib/useGetClassName";
-import type { KcContext } from "../kcContext";
+import type { KcContext } from "../KcContext";
 import type { I18n } from "../i18n";
-
-function isArrayWithEmptyObject(variable: any): boolean {
-    return Array.isArray(variable) && variable.length === 1 && typeof variable[0] === "object" && Object.keys(variable[0]).length === 0;
-}
 
 export default function Applications(props: PageProps<Extract<KcContext, { pageId: "applications.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, classes, Template } = props;
 
-    const { getClassName } = useGetClassName({
+    const { kcClsx } = getKcClsx({
         doUseDefaultCss,
         classes
     });
@@ -67,7 +62,6 @@ export default function Applications(props: PageProps<Extract<KcContext, { pageI
                                                     {index < application.realmRolesAvailable.length - 1 && ", "}
                                                 </span>
                                             ))}
-                                        {!isArrayWithEmptyObject(application.realmRolesAvailable) && application.resourceRolesAvailable && ", "}
                                         {application.resourceRolesAvailable &&
                                             Object.keys(application.resourceRolesAvailable).map(resource => (
                                                 <span key={resource}>
@@ -118,7 +112,7 @@ export default function Applications(props: PageProps<Extract<KcContext, { pageI
                                         application.additionalGrants.length > 0 ? (
                                             <button
                                                 type="submit"
-                                                className={clsx(getClassName("kcButtonPrimaryClass"), getClassName("kcButtonClass"))}
+                                                className={kcClsx("kcButtonPrimaryClass", "kcButtonClass")}
                                                 id={`revoke-${application.client.clientId}`}
                                                 name="clientId"
                                                 value={application.client.id}
@@ -135,4 +129,8 @@ export default function Applications(props: PageProps<Extract<KcContext, { pageI
             </div>
         </Template>
     );
+}
+
+function isArrayWithEmptyObject(variable: any): boolean {
+    return Array.isArray(variable) && variable.length === 1 && typeof variable[0] === "object" && Object.keys(variable[0]).length === 0;
 }

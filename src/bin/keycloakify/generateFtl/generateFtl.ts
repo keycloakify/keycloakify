@@ -1,34 +1,48 @@
 import cheerio from "cheerio";
-import { replaceImportsInJsCode } from "../replacers/replaceImportsInJsCode";
-import { generateCssCodeToDefineGlobals } from "../replacers/replaceImportsInCssCode";
-import { replaceImportsInInlineCssCode } from "../replacers/replaceImportsInInlineCssCode";
+import {
+    replaceImportsInJsCode,
+    BuildContextLike as BuildContextLike_replaceImportsInJsCode
+} from "../replacers/replaceImportsInJsCode";
+import {
+    replaceImportsInCssCode,
+    BuildContextLike as BuildContextLike_replaceImportsInCssCode
+} from "../replacers/replaceImportsInCssCode";
 import * as fs from "fs";
 import { join as pathJoin } from "path";
-import { objectKeys } from "tsafe/objectKeys";
-import type { BuildOptions } from "../buildOptions";
+import type { BuildContext } from "../../shared/buildContext";
 import { assert } from "tsafe/assert";
-import { type ThemeType, nameOfTheGlobal, basenameOfTheKeycloakifyResourcesDir, resources_common } from "../../constants";
+import {
+    type ThemeType,
+    basenameOfTheKeycloakifyResourcesDir,
+    resources_common
+} from "../../shared/constants";
+import { getThisCodebaseRootDirPath } from "../../tools/getThisCodebaseRootDirPath";
 
-export type BuildOptionsLike = {
-    bundler: "vite" | "webpack";
-    themeVersion: string;
-    urlPathname: string | undefined;
-    reactAppBuildDirPath: string;
-    assetsDirPath: string;
-};
+export type BuildContextLike = BuildContextLike_replaceImportsInJsCode &
+    BuildContextLike_replaceImportsInCssCode & {
+        urlPathname: string | undefined;
+        themeVersion: string;
+        kcContextExclusionsFtlCode: string | undefined;
+    };
 
-assert<BuildOptions extends BuildOptionsLike ? true : false>();
+assert<BuildContext extends BuildContextLike ? true : false>();
 
 export function generateFtlFilesCodeFactory(params: {
     themeName: string;
     indexHtmlCode: string;
-    cssGlobalsToDefine: Record<string, string>;
-    buildOptions: BuildOptionsLike;
+    buildContext: BuildContextLike;
     keycloakifyVersion: string;
     themeType: ThemeType;
     fieldNames: string[];
 }) {
-    const { themeName, cssGlobalsToDefine, indexHtmlCode, buildOptions, keycloakifyVersion, themeType, fieldNames } = params;
+    const {
+        themeName,
+        indexHtmlCode,
+        buildContext,
+        keycloakifyVersion,
+        themeType,
+        fieldNames
+    } = params;
 
     const $ = cheerio.load(indexHtmlCode);
 
@@ -38,7 +52,10 @@ export function generateFtlFilesCodeFactory(params: {
 
             assert(jsCode !== null);
 
-            const { fixedJsCode } = replaceImportsInJsCode({ jsCode, buildOptions });
+            const { fixedJsCode } = replaceImportsInJsCode({
+                jsCode,
+                buildContext
+            });
 
             $(element).text(fixedJsCode);
         });
@@ -48,9 +65,10 @@ export function generateFtlFilesCodeFactory(params: {
 
             assert(cssCode !== null);
 
-            const { fixedCssCode } = replaceImportsInInlineCssCode({
+            const { fixedCssCode } = replaceImportsInCssCode({
                 cssCode,
-                buildOptions
+                cssFileRelativeDirPath: undefined,
+                buildContext
             });
 
             $(element).text(fixedCssCode);
@@ -72,58 +90,47 @@ export function generateFtlFilesCodeFactory(params: {
                 $(element).attr(
                     attrName,
                     href.replace(
-                        new RegExp(`^${(buildOptions.urlPathname ?? "/").replace(/\//g, "\\/")}`),
+                        new RegExp(
+                            `^${(buildContext.urlPathname ?? "/").replace(/\//g, "\\/")}`
+                        ),
                         `\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/`
                     )
                 );
             })
         );
-
-        if (Object.keys(cssGlobalsToDefine).length !== 0) {
-            $("head").prepend(
-                [
-                    "",
-                    "<style>",
-                    generateCssCodeToDefineGlobals({
-                        cssGlobalsToDefine,
-                        buildOptions
-                    }).cssCodeToPrependInHead,
-                    "</style>",
-                    ""
-                ].join("\n")
-            );
-        }
     }
 
     //FTL is no valid html, we can't insert with cheerio, we put placeholder for injecting later.
-    const replaceValueBySearchValue = {
-        '{ "x": "vIdLqMeOed9sdLdIdOxdK0d" }': fs
-            .readFileSync(pathJoin(__dirname, "ftl_object_to_js_code_declaring_an_object.ftl"))
-            .toString("utf8")
-            .match(/^<script>const _=((?:.|\n)+)<\/script>[\n]?$/)![1]
-            .replace("FIELD_NAMES_eKsIY4ZsZ4xeM", fieldNames.map(name => `"${name}"`).join(", "))
-            .replace("KEYCLOAKIFY_VERSION_xEdKd3xEdr", keycloakifyVersion)
-            .replace("KEYCLOAKIFY_THEME_VERSION_sIgKd3xEdr3dx", buildOptions.themeVersion)
-            .replace("KEYCLOAKIFY_THEME_TYPE_dExKd3xEdr", themeType)
-            .replace("KEYCLOAKIFY_THEME_NAME_cXxKd3xEer", themeName)
-            .replace("RESOURCES_COMMON_cLsLsMrtDkpVv", resources_common),
-        "<!-- xIdLqMeOedErIdLsPdNdI9dSlxI -->": [
-            "<#if scripts??>",
-            "    <#list scripts as script>",
-            '        <script src="${script}" type="text/javascript"></script>',
-            "    </#list>",
-            "</#if>"
-        ].join("\n")
-    };
+    const kcContextDeclarationTemplateFtl = fs
+        .readFileSync(
+            pathJoin(
+                getThisCodebaseRootDirPath(),
+                "src",
+                "bin",
+                "keycloakify",
+                "generateFtl",
+                "kcContextDeclarationTemplate.ftl"
+            )
+        )
+        .toString("utf8")
+        .replace(
+            "FIELD_NAMES_eKsIY4ZsZ4xeM",
+            fieldNames.map(name => `"${name}"`).join(", ")
+        )
+        .replace("KEYCLOAKIFY_VERSION_xEdKd3xEdr", keycloakifyVersion)
+        .replace("KEYCLOAKIFY_THEME_VERSION_sIgKd3xEdr3dx", buildContext.themeVersion)
+        .replace("KEYCLOAKIFY_THEME_TYPE_dExKd3xEdr", themeType)
+        .replace("KEYCLOAKIFY_THEME_NAME_cXxKd3xEer", themeName)
+        .replace("RESOURCES_COMMON_cLsLsMrtDkpVv", resources_common)
+        .replace(
+            "USER_DEFINED_EXCLUSIONS_eKsaY4ZsZ4eMr2",
+            buildContext.kcContextExclusionsFtlCode ?? ""
+        );
+    const ftlObjectToJsCodeDeclaringAnObjectPlaceholder =
+        '{ "x": "vIdLqMeOed9sdLdIdOxdK0d" }';
 
     $("head").prepend(
-        [
-            "<script>",
-            `    window.${nameOfTheGlobal}= ${objectKeys(replaceValueBySearchValue)[0]};`,
-            "</script>",
-            "",
-            objectKeys(replaceValueBySearchValue)[1]
-        ].join("\n")
+        `<script>\n${ftlObjectToJsCodeDeclaringAnObjectPlaceholder}\n</script>`
     );
 
     // Remove part of the document marked as ignored.
@@ -132,7 +139,9 @@ export function generateFtlFilesCodeFactory(params: {
 
         startTags.each((...[, startTag]) => {
             const $startTag = $(startTag);
-            const $endTag = $startTag.nextAll('meta[name="keycloakify-ignore-end"]').first();
+            const $endTag = $startTag
+                .nextAll('meta[name="keycloakify-ignore-end"]')
+                .first();
 
             if ($endTag.length) {
                 let currentNode = $startTag.next();
@@ -159,9 +168,13 @@ export function generateFtlFilesCodeFactory(params: {
         let ftlCode = $.html();
 
         Object.entries({
-            ...replaceValueBySearchValue,
-            "PAGE_ID_xIgLsPgGId9D8e": pageId
-        }).map(([searchValue, replaceValue]) => (ftlCode = ftlCode.replace(searchValue, replaceValue)));
+            [ftlObjectToJsCodeDeclaringAnObjectPlaceholder]:
+                kcContextDeclarationTemplateFtl,
+            PAGE_ID_xIgLsPgGId9D8e: pageId
+        }).map(
+            ([searchValue, replaceValue]) =>
+                (ftlCode = ftlCode.replace(searchValue, replaceValue))
+        );
 
         return { ftlCode };
     }

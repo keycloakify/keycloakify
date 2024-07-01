@@ -1,19 +1,21 @@
 import { useState } from "react";
 import { clsx } from "keycloakify/tools/clsx";
+import { getKcClsx } from "keycloakify/account/lib/kcClsx";
 import type { PageProps } from "keycloakify/account/pages/PageProps";
-import { useGetClassName } from "keycloakify/account/lib/useGetClassName";
-import type { KcContext } from "../kcContext";
+import type { KcContext } from "../KcContext";
 import type { I18n } from "../i18n";
 
 export default function Password(props: PageProps<Extract<KcContext, { pageId: "password.ftl" }>, I18n>) {
-    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
+    const { kcContext, i18n, doUseDefaultCss, Template } = props;
 
-    const { getClassName } = useGetClassName({
+    const classes = {
+        ...props.classes,
+        kcBodyClass: clsx(props.classes?.kcBodyClass, "password")
+    };
+
+    const { kcClsx } = getKcClsx({
         doUseDefaultCss,
-        "classes": {
-            ...classes,
-            "kcBodyClass": clsx(classes?.kcBodyClass, "password")
-        }
+        classes
     });
 
     const { url, password, account, stateChecker } = kcContext;
@@ -57,18 +59,18 @@ export default function Password(props: PageProps<Extract<KcContext, { pageId: "
             {...{
                 kcContext: {
                     ...kcContext,
-                    "message": (() => {
+                    message: (() => {
                         if (newPasswordError !== "") {
                             return {
-                                "type": "error",
-                                "summary": newPasswordError
+                                type: "error",
+                                summary: newPasswordError
                             };
                         }
 
                         if (newPasswordConfirmError !== "") {
                             return {
-                                "type": "error",
-                                "summary": newPasswordConfirmError
+                                type: "error",
+                                summary: newPasswordConfirmError
                             };
                         }
 
@@ -98,7 +100,7 @@ export default function Password(props: PageProps<Extract<KcContext, { pageId: "
                     value={account.username ?? ""}
                     autoComplete="username"
                     readOnly
-                    style={{ "display": "none" }}
+                    style={{ display: "none" }}
                 />
 
                 {password.passwordSet && (
@@ -192,11 +194,7 @@ export default function Password(props: PageProps<Extract<KcContext, { pageId: "
                             <button
                                 disabled={newPasswordError !== "" || newPasswordConfirmError !== ""}
                                 type="submit"
-                                className={clsx(
-                                    getClassName("kcButtonClass"),
-                                    getClassName("kcButtonPrimaryClass"),
-                                    getClassName("kcButtonLargeClass")
-                                )}
+                                className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonLargeClass")}
                                 name="submitAction"
                                 value="Save"
                             >

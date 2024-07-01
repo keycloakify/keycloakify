@@ -1,13 +1,9 @@
-import "minimal-polyfills/Object.fromEntries";
-//NOTE for later: https://github.com/remarkjs/react-markdown/blob/236182ecf30bd89c1e5a7652acaf8d0bf81e6170/src/renderers.js#L7-L35
-import { useEffect, useState, useRef } from "react";
-import fallbackMessages from "./baseMessages/en";
-import { getMessages } from "./baseMessages";
+import "keycloakify/tools/Object.fromEntries";
 import { assert } from "tsafe/assert";
-import type { KcContext } from "../kcContext/KcContext";
-import { Markdown } from "keycloakify/tools/Markdown";
-
-export const fallbackLanguageTag = "en";
+import messages_fallbackLanguage from "./baseMessages/en";
+import { getMessages } from "./baseMessages";
+import type { KcContext } from "../KcContext";
+import { fallbackLanguageTag } from "keycloakify/bin/shared/constants";
 
 export type KcContextLike = {
     locale?: {
@@ -18,7 +14,7 @@ export type KcContextLike = {
 
 assert<KcContext extends KcContextLike ? true : false>();
 
-export type MessageKey = keyof typeof fallbackMessages | keyof (typeof keycloakifyExtraMessages)[typeof fallbackLanguageTag];
+export type MessageKey = keyof typeof messages_fallbackLanguage;
 
 export type GenericI18n<MessageKey extends string> = {
     /**
@@ -28,11 +24,10 @@ export type GenericI18n<MessageKey extends string> = {
      */
     currentLanguageTag: string;
     /**
-     * To call when the user switch language.
-     * This will cause the page to be reloaded,
-     * on next load currentLanguageTag === newLanguageTag
+     * Redirect to this url to change the language.
+     * After reload currentLanguageTag === newLanguageTag
      */
-    changeLocale: (newLanguageTag: string) => never;
+    getChangeLocaleUrl: (newLanguageTag: string) => string;
     /**
      * e.g. "en" => "English", "fr" => "Français", ...
      *
@@ -54,180 +49,240 @@ export type GenericI18n<MessageKey extends string> = {
      */
     msgStr: (key: MessageKey, ...args: (string | undefined)[]) => string;
     /**
+     * This is meant to be used when the key argument is variable, something that might have been configured by the user
+     * in the Keycloak admin for example.
+     *
      * Examples assuming currentLanguageTag === "en"
-     * advancedMsg("${access-denied} foo bar") === <span>${msgStr("access-denied")} foo bar<span> === <span>Access denied foo bar</span>
+     * {
+     *   en: {
+     *     "access-denied": "Access denied",
+     *     "foo": "Foo {0} {1}",
+     *     "bar": "Bar {0}"
+     *   }
+     * }
+     *
+     * advancedMsg("${access-denied} foo bar") === <span>{msgStr("access-denied")} foo bar<span> === <span>Access denied foo bar</span>
      * advancedMsg("${access-denied}") === advancedMsg("access-denied") === msg("access-denied") === <span>Access denied</span>
      * advancedMsg("${not-a-message-key}") === advancedMsg(not-a-message-key") === <span>not-a-message-key</span>
+     * advancedMsg("${bar}", "<strong>c</strong>")
+     *    === <span>{msgStr("bar", "<strong>XXX</strong>")}<span>
+     *    === <span>Bar &lt;strong&gt;XXX&lt;/strong&gt;</span> (The html in the arg is partially escaped for security reasons, it might be untrusted)
+     * advancedMsg("${foo} xx ${bar}", "a", "b", "c")
+     *    === <span>{msgStr("foo", "a", "b")} xx {msgStr("bar")}<span>
+     *    === <span>Foo a b xx Bar {0}</span> (The substitution are only applied in the first message)
      */
     advancedMsg: (key: string, ...args: (string | undefined)[]) => JSX.Element;
     /**
-     * Examples assuming currentLanguageTag === "en"
-     * advancedMsg("${access-denied} foo bar") === msg("access-denied") + " foo bar" === "Access denied foo bar"
-     * advancedMsg("${not-a-message-key}") === advancedMsg(not-a-message-key") === "not-a-message-key"
+     * See advancedMsg() but instead of returning a JSX.Element it returns a string.
      */
     advancedMsgStr: (key: string, ...args: (string | undefined)[]) => string;
+
+    /**
+     * Initially the messages are in english (fallback language).
+     * The translations in the current language are being fetched dynamically.
+     * This property is true while the translations are being fetched.
+     */
+    isFetchingTranslations: boolean;
 };
 
-export type I18n = GenericI18n<MessageKey>;
-
-export function createUseI18n<ExtraMessageKey extends string = never>(extraMessages: {
+export function createGetI18n<ExtraMessageKey extends string = never>(messageBundle: {
     [languageTag: string]: { [key in ExtraMessageKey]: string };
 }) {
-    function useI18n(params: { kcContext: KcContextLike }): GenericI18n<MessageKey | ExtraMessageKey> | null {
+    type I18n = GenericI18n<MessageKey | ExtraMessageKey>;
+
+    type Result = { i18n: I18n; prI18n_currentLanguage: Promise<I18n> | undefined };
+
+    const cachedResultByKcContext = new WeakMap<KcContextLike, Result>();
+
+    function getI18n(params: { kcContext: KcContextLike }): Result {
         const { kcContext } = params;
 
-        const [i18n, setI18n] = useState<GenericI18n<ExtraMessageKey | MessageKey> | undefined>(undefined);
+        use_cache: {
+            const cachedResult = cachedResultByKcContext.get(kcContext);
 
-        const refHasStartedFetching = useRef(false);
-
-        useEffect(() => {
-            if (refHasStartedFetching.current) {
-                return;
+            if (cachedResult === undefined) {
+                break use_cache;
             }
 
-            refHasStartedFetching.current = true;
-
-            (async () => {
-                const { currentLanguageTag = fallbackLanguageTag } = kcContext.locale ?? {};
-
-                setI18n({
-                    ...createI18nTranslationFunctions({
-                        "fallbackMessages": {
-                            ...fallbackMessages,
-                            ...(keycloakifyExtraMessages[fallbackLanguageTag] ?? {}),
-                            ...(extraMessages[fallbackLanguageTag] ?? {})
-                        } as any,
-                        "messages": {
-                            ...(await getMessages(currentLanguageTag)),
-                            ...((keycloakifyExtraMessages as any)[currentLanguageTag] ?? {}),
-                            ...(extraMessages[currentLanguageTag] ?? {})
-                        } as any
-                    }),
-                    currentLanguageTag,
-                    "changeLocale": newLanguageTag => {
-                        const { locale } = kcContext;
-
-                        assert(locale !== undefined, "Internationalization not enabled");
-
-                        const targetSupportedLocale = locale.supported.find(({ languageTag }) => languageTag === newLanguageTag);
-
-                        assert(targetSupportedLocale !== undefined, `${newLanguageTag} need to be enabled in Keycloak admin`);
-
-                        window.location.href = targetSupportedLocale.url;
-
-                        assert(false, "never");
-                    },
-                    "labelBySupportedLanguageTag": Object.fromEntries(
-                        (kcContext.locale?.supported ?? []).map(({ languageTag, label }) => [languageTag, label])
-                    )
-                });
-            })();
-        }, []);
-
-        return i18n ?? null;
-    }
-
-    return { useI18n };
-}
-
-function createI18nTranslationFunctions<MessageKey extends string>(params: {
-    fallbackMessages: Record<MessageKey, string>;
-    messages: Record<MessageKey, string>;
-}): Pick<GenericI18n<MessageKey>, "msg" | "msgStr" | "advancedMsg" | "advancedMsgStr"> {
-    const { fallbackMessages, messages } = params;
-
-    function resolveMsg(props: { key: string; args: (string | undefined)[]; doRenderMarkdown: boolean }): string | JSX.Element | undefined {
-        const { key, args, doRenderMarkdown } = props;
-
-        const messageOrUndefined: string | undefined = (messages as any)[key] ?? (fallbackMessages as any)[key];
-
-        if (messageOrUndefined === undefined) {
-            return undefined;
+            return cachedResult;
         }
 
-        const message = messageOrUndefined;
+        const partialI18n: Pick<I18n, "currentLanguageTag" | "getChangeLocaleUrl" | "labelBySupportedLanguageTag"> = {
+            currentLanguageTag: kcContext.locale?.currentLanguageTag ?? fallbackLanguageTag,
+            getChangeLocaleUrl: newLanguageTag => {
+                const { locale } = kcContext;
 
-        const messageWithArgsInjectedIfAny = (() => {
-            const startIndex = message
-                .match(/{[0-9]+}/g)
-                ?.map(g => g.match(/{([0-9]+)}/)![1])
-                .map(indexStr => parseInt(indexStr))
-                .sort((a, b) => a - b)[0];
+                assert(locale !== undefined, "Internationalization not enabled");
 
-            if (startIndex === undefined) {
-                // No {0} in message (no arguments expected)
-                return message;
-            }
+                const targetSupportedLocale = locale.supported.find(({ languageTag }) => languageTag === newLanguageTag);
 
-            let messageWithArgsInjected = message;
+                assert(targetSupportedLocale !== undefined, `${newLanguageTag} need to be enabled in Keycloak admin`);
 
-            args.forEach((arg, i) => {
-                if (arg === undefined) {
-                    return;
-                }
+                return targetSupportedLocale.url;
+            },
+            labelBySupportedLanguageTag: Object.fromEntries((kcContext.locale?.supported ?? []).map(({ languageTag, label }) => [languageTag, label]))
+        };
 
-                messageWithArgsInjected = messageWithArgsInjected.replace(new RegExp(`\\{${i + startIndex}\\}`, "g"), arg);
-            });
-
-            return messageWithArgsInjected;
-        })();
-
-        return doRenderMarkdown ? (
-            <Markdown allowDangerousHtml renderers={{ "paragraph": "span" }}>
-                {messageWithArgsInjectedIfAny}
-            </Markdown>
-        ) : (
-            messageWithArgsInjectedIfAny
-        );
-    }
-
-    function resolveMsgAdvanced(props: { key: string; args: (string | undefined)[]; doRenderMarkdown: boolean }): JSX.Element | string {
-        const { key, args, doRenderMarkdown } = props;
-
-        const match = key.match(/^\$\{([^{]+)\}$/);
-
-        const keyUnwrappedFromCurlyBraces = match === null ? key : match[1];
-
-        const out = resolveMsg({
-            "key": keyUnwrappedFromCurlyBraces,
-            args,
-            doRenderMarkdown
+        const { createI18nTranslationFunctions } = createI18nTranslationFunctionsFactory<MessageKey, ExtraMessageKey>({
+            messages_fallbackLanguage,
+            messageBundle_fallbackLanguage: messageBundle[fallbackLanguageTag],
+            messageBundle_currentLanguage: messageBundle[partialI18n.currentLanguageTag]
         });
 
-        return (out !== undefined ? out : doRenderMarkdown ? <span>{keyUnwrappedFromCurlyBraces}</span> : keyUnwrappedFromCurlyBraces) as any;
+        const isCurrentLanguageFallbackLanguage = partialI18n.currentLanguageTag === fallbackLanguageTag;
+
+        const result: Result = {
+            i18n: {
+                ...partialI18n,
+                ...createI18nTranslationFunctions({
+                    messages_currentLanguage: isCurrentLanguageFallbackLanguage ? messages_fallbackLanguage : undefined
+                }),
+                isFetchingTranslations: !isCurrentLanguageFallbackLanguage
+            },
+            prI18n_currentLanguage: isCurrentLanguageFallbackLanguage
+                ? undefined
+                : (async () => {
+                      const messages_currentLanguage = await getMessages(partialI18n.currentLanguageTag);
+
+                      const i18n_currentLanguage: I18n = {
+                          ...partialI18n,
+                          ...createI18nTranslationFunctions({ messages_currentLanguage }),
+                          isFetchingTranslations: false
+                      };
+
+                      // NOTE: This promise.resolve is just because without it we TypeScript
+                      // gives a Variable 'result' is used before being assigned. error
+                      await Promise.resolve().then(() => {
+                          result.i18n = i18n_currentLanguage;
+                          result.prI18n_currentLanguage = undefined;
+                      });
+
+                      return i18n_currentLanguage;
+                  })()
+        };
+
+        cachedResultByKcContext.set(kcContext, result);
+
+        return result;
     }
 
-    return {
-        "msgStr": (key, ...args) => resolveMsg({ key, args, "doRenderMarkdown": false }) as string,
-        "msg": (key, ...args) => resolveMsg({ key, args, "doRenderMarkdown": true }) as JSX.Element,
-        "advancedMsg": (key, ...args) => resolveMsgAdvanced({ key, args, "doRenderMarkdown": true }) as JSX.Element,
-        "advancedMsgStr": (key, ...args) => resolveMsgAdvanced({ key, args, "doRenderMarkdown": false }) as string
-    };
+    return { getI18n };
 }
 
-const keycloakifyExtraMessages = {
-    "en": {
-        "shouldBeEqual": "{0} should be equal to {1}",
-        "shouldBeDifferent": "{0} should be different to {1}",
-        "shouldMatchPattern": "Pattern should match: `/{0}/`",
-        "mustBeAnInteger": "Must be an integer",
-        "notAValidOption": "Not a valid option",
-        "newPasswordSameAsOld": "New password must be different from the old one",
-        "passwordConfirmNotMatch": "Password confirmation does not match"
-    },
-    "fr": {
-        /* spell-checker: disable */
-        "shouldBeEqual": "{0} doit être égal à {1}",
-        "shouldBeDifferent": "{0} doit être différent de {1}",
-        "shouldMatchPattern": "Dois respecter le schéma: `/{0}/`",
-        "mustBeAnInteger": "Doit être un nombre entier",
-        "notAValidOption": "N'est pas une option valide",
+function createI18nTranslationFunctionsFactory<MessageKey extends string, ExtraMessageKey extends string>(params: {
+    messages_fallbackLanguage: Record<MessageKey, string>;
+    messageBundle_fallbackLanguage: Record<ExtraMessageKey, string> | undefined;
+    messageBundle_currentLanguage: Partial<Record<ExtraMessageKey, string>> | undefined;
+}) {
+    const { messageBundle_currentLanguage } = params;
 
-        "logoutConfirmTitle": "Déconnexion",
-        "logoutConfirmHeader": "Êtes-vous sûr(e) de vouloir vous déconnecter ?",
-        "doLogout": "Se déconnecter",
-        "newPasswordSameAsOld": "Le nouveau mot de passe doit être différent de l'ancien",
-        "passwordConfirmNotMatch": "La confirmation du mot de passe ne correspond pas"
-        /* spell-checker: enable */
+    const messages_fallbackLanguage = {
+        ...params.messages_fallbackLanguage,
+        ...params.messageBundle_fallbackLanguage
+    };
+
+    function createI18nTranslationFunctions(params: {
+        messages_currentLanguage: Partial<Record<MessageKey, string>> | undefined;
+    }): Pick<GenericI18n<MessageKey | ExtraMessageKey>, "msg" | "msgStr" | "advancedMsg" | "advancedMsgStr"> {
+        const messages_currentLanguage = {
+            ...params.messages_currentLanguage,
+            ...messageBundle_currentLanguage
+        };
+
+        function resolveMsg(props: { key: string; args: (string | undefined)[]; doRenderAsHtml: boolean }): string | JSX.Element | undefined {
+            const { key, args, doRenderAsHtml } = props;
+
+            const messageOrUndefined: string | undefined = (messages_currentLanguage as any)[key] ?? (messages_fallbackLanguage as any)[key];
+
+            if (messageOrUndefined === undefined) {
+                return undefined;
+            }
+
+            const message = messageOrUndefined;
+
+            const messageWithArgsInjectedIfAny = (() => {
+                const startIndex = message
+                    .match(/{[0-9]+}/g)
+                    ?.map(g => g.match(/{([0-9]+)}/)![1])
+                    .map(indexStr => parseInt(indexStr))
+                    .sort((a, b) => a - b)[0];
+
+                if (startIndex === undefined) {
+                    // No {0} in message (no arguments expected)
+                    return message;
+                }
+
+                let messageWithArgsInjected = message;
+
+                args.forEach((arg, i) => {
+                    if (arg === undefined) {
+                        return;
+                    }
+
+                    messageWithArgsInjected = messageWithArgsInjected.replace(
+                        new RegExp(`\\{${i + startIndex}\\}`, "g"),
+                        arg.replace(/</g, "&lt;").replace(/>/g, "&gt;")
+                    );
+                });
+
+                return messageWithArgsInjected;
+            })();
+
+            return doRenderAsHtml ? (
+                <span
+                    // NOTE: The message is trusted. The arguments are not but are escaped.
+                    dangerouslySetInnerHTML={{
+                        __html: messageWithArgsInjectedIfAny
+                    }}
+                />
+            ) : (
+                messageWithArgsInjectedIfAny
+            );
+        }
+
+        function resolveMsgAdvanced(props: { key: string; args: (string | undefined)[]; doRenderAsHtml: boolean }): JSX.Element | string {
+            const { key, args, doRenderAsHtml } = props;
+
+            if (!/\$\{[^}]+\}/.test(key)) {
+                const resolvedMessage = resolveMsg({ key, args, doRenderAsHtml });
+
+                if (resolvedMessage === undefined) {
+                    return doRenderAsHtml ? <span dangerouslySetInnerHTML={{ __html: key }} /> : key;
+                }
+
+                return resolvedMessage;
+            }
+
+            let isFirstMatch = true;
+
+            const resolvedComplexMessage = key.replace(/\$\{([^}]+)\}/g, (...[, key_i]) => {
+                const replaceBy = resolveMsg({ key: key_i, args: isFirstMatch ? args : [], doRenderAsHtml: false }) ?? key_i;
+
+                isFirstMatch = false;
+
+                return replaceBy;
+            });
+
+            return doRenderAsHtml ? <span dangerouslySetInnerHTML={{ __html: resolvedComplexMessage }} /> : resolvedComplexMessage;
+        }
+
+        return {
+            msgStr: (key, ...args) => resolveMsg({ key, args, doRenderAsHtml: false }) as string,
+            msg: (key, ...args) => resolveMsg({ key, args, doRenderAsHtml: true }) as JSX.Element,
+            advancedMsg: (key, ...args) =>
+                resolveMsgAdvanced({
+                    key,
+                    args,
+                    doRenderAsHtml: true
+                }) as JSX.Element,
+            advancedMsgStr: (key, ...args) =>
+                resolveMsgAdvanced({
+                    key,
+                    args,
+                    doRenderAsHtml: false
+                }) as string
+        };
     }
-};
+
+    return { createI18nTranslationFunctions };
+}

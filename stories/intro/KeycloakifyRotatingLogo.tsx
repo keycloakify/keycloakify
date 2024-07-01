@@ -34,28 +34,28 @@ export const KeycloakifyRotatingLogo = memo((props: Props) => {
 });
 
 const useStyles = makeStyles<{ isImageLoaded: boolean }>({
-    "name": { KeycloakifyRotatingLogo }
+    name: { KeycloakifyRotatingLogo }
 })((_theme, { isImageLoaded }) => ({
-    "root": {
-        "position": "relative"
+    root: {
+        position: "relative"
     },
-    "rotatingImg": {
-        "animation": `${keyframes({
-            "from": {
-                "transform": "rotate(0deg)"
+    rotatingImg: {
+        animation: `${keyframes({
+            from: {
+                transform: "rotate(0deg)"
             },
-            "to": {
-                "transform": "rotate(360deg)"
+            to: {
+                transform: "rotate(360deg)"
             }
         })} infinite 20s linear`,
-        "width": isImageLoaded ? "100%" : undefined,
-        "height": isImageLoaded ? "auto" : undefined
+        width: isImageLoaded ? "100%" : undefined,
+        height: isImageLoaded ? "auto" : undefined
     },
-    "stillImg": {
-        "position": "absolute",
-        "top": "0",
-        "left": "0",
-        "width": isImageLoaded ? "100%" : undefined,
-        "height": isImageLoaded ? "auto" : undefined
+    stillImg: {
+        position: "absolute",
+        top: "0",
+        left: "0",
+        width: isImageLoaded ? "100%" : undefined,
+        height: isImageLoaded ? "auto" : undefined
     }
 }));

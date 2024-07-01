@@ -34,7 +34,6 @@ export function DocsContainer({ children, context }) {
                 .docblock-argstable-head th:nth-child(3), .docblock-argstable-body tr > td:nth-child(2) p {
                     font-size: 13px;
                 }
-
             `}</style>
             <BaseContainer
                 context={{
@@ -64,11 +63,6 @@ export function CanvasContainer({ children }) {
 
     return (
         <>
-            <style>{`
-                body {
-                    padding: 0 !important;
-                }
-            `}</style>
             {children}
         </>
     );

@@ -1,4 +1,8 @@
-export function replaceAll(string: string, searchValue: string | RegExp, replaceValue: string): string {
+export function replaceAll(
+    string: string,
+    searchValue: string | RegExp,
+    replaceValue: string
+): string {
     if ((string as any).replaceAll !== undefined) {
         return (string as any).replaceAll(searchValue, replaceValue);
     }
@@ -24,7 +28,10 @@ export function replaceAll(string: string, searchValue: string | RegExp, replace
 
     // Convert searchValue to string if it's not a string or RegExp
     var searchString = String(searchValue);
-    var regexFromString = new RegExp(searchString.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g");
+    var regexFromString = new RegExp(
+        searchString.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
+        "g"
+    );
 
     return string.replace(regexFromString, replaceValue);
 }

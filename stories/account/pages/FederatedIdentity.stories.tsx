@@ -1,34 +1,38 @@
 import React from "react";
-import { Meta } from "@storybook/react";
-import { createPageStory } from "../createPageStory";
+import type { Meta, StoryObj } from "@storybook/react";
+import { createKcPageStory } from "../KcPageStory";
 
-const pageId = "federatedIdentity.ftl";
-
-const { PageStory } = createPageStory({ pageId });
+const { KcPageStory } = createKcPageStory({ pageId: "federatedIdentity.ftl" });
 
 const meta = {
-    title: "account/FederatedIdentity",
-    component: PageStory
-} satisfies Meta<typeof PageStory>;
+    title: "account/federatedIdentity.ftl",
+    component: KcPageStory
+} satisfies Meta<typeof KcPageStory>;
 
 export default meta;
 
-export const Default = () => <PageStory />;
+type Story = StoryObj<typeof meta>;
 
-export const NotConnected = () => (
-    <PageStory
-        kcContext={{
-            pageId: "federatedIdentity.ftl",
-            federatedIdentity: {
-                identities: [
-                    {
-                        providerId: "google",
-                        displayName: "keycloak-oidc",
-                        connected: false
-                    }
-                ],
-                removeLinkPossible: true
-            }
-        }}
-    />
-);
+export const Default: Story = {
+    render: () => <KcPageStory />
+};
+
+export const NotConnected: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                pageId: "federatedIdentity.ftl",
+                federatedIdentity: {
+                    identities: [
+                        {
+                            providerId: "google",
+                            displayName: "keycloak-oidc",
+                            connected: false
+                        }
+                    ],
+                    removeLinkPossible: true
+                }
+            }}
+        />
+    )
+};

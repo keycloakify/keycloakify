@@ -1,24 +1,43 @@
 import React from "react";
-import type { ComponentMeta } from "@storybook/react";
-import { createPageStory } from "../createPageStory";
+import type { Meta, StoryObj } from "@storybook/react";
+import { createKcPageStory } from "../KcPageStory";
 
-const pageId = "login-config-totp.ftl";
+const { KcPageStory } = createKcPageStory({ pageId: "login-config-totp.ftl" });
 
-const { PageStory } = createPageStory({ pageId });
-
-const meta: ComponentMeta<any> = {
-    title: `login/${pageId}`,
-    component: PageStory,
-    parameters: {
-        viewMode: "story",
-        previewTabs: {
-            "storybook/docs/panel": {
-                "hidden": true
-            }
-        }
-    }
-};
+const meta = {
+    title: "login/login-config-totp.ftl",
+    component: KcPageStory
+} satisfies Meta<typeof KcPageStory>;
 
 export default meta;
 
-export const Default = () => <PageStory />;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+    render: () => <KcPageStory />
+};
+
+export const WithManualSetUp: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                mode: "manual"
+            }}
+        />
+    )
+};
+
+export const WithError: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                messagesPerField: {
+                    get: (fieldName: string) => (fieldName === "totp" ? "Invalid TOTP" : undefined),
+                    exists: (fieldName: string) => fieldName === "totp",
+                    existsError: (fieldName: string) => fieldName === "totp",
+                    printIfExists: <T,>(fieldName: string, x: T) => (fieldName === "totp" ? x : undefined)
+                }
+            }}
+        />
+    )
+};

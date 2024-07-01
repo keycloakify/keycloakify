@@ -20,13 +20,13 @@ export function rmSync(dirPath: string, options: { recursive: true; force?: true
 
     const removeDir_rec = (dirPath: string) =>
         fs.readdirSync(dirPath).forEach(basename => {
-            const fileOrDirpath = pathJoin(dirPath, basename);
+            const fileOrDirPath = pathJoin(dirPath, basename);
 
-            if (fs.lstatSync(fileOrDirpath).isDirectory()) {
-                removeDir_rec(fileOrDirpath);
+            if (fs.lstatSync(fileOrDirPath).isDirectory()) {
+                removeDir_rec(fileOrDirPath);
                 return;
             } else {
-                fs.unlinkSync(fileOrDirpath);
+                fs.unlinkSync(fileOrDirPath);
             }
         });
 

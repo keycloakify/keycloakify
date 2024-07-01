@@ -1,24 +1,43 @@
 import React from "react";
-import type { ComponentMeta } from "@storybook/react";
-import { createPageStory } from "../createPageStory";
+import type { Meta, StoryObj } from "@storybook/react";
+import { createKcPageStory } from "../KcPageStory";
 
-const pageId = "terms.ftl";
+const { KcPageStory } = createKcPageStory({ pageId: "terms.ftl" });
 
-const { PageStory } = createPageStory({ pageId });
-
-const meta: ComponentMeta<any> = {
-    title: `login/${pageId}`,
-    component: PageStory,
-    parameters: {
-        viewMode: "story",
-        previewTabs: {
-            "storybook/docs/panel": {
-                "hidden": true
-            }
-        }
-    }
-};
+const meta = {
+    title: "login/terms.ftl",
+    component: KcPageStory
+} satisfies Meta<typeof KcPageStory>;
 
 export default meta;
 
-export const Default = () => <PageStory />;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                "x-keycloakify": {
+                    realmMessageBundleTermsText: "<p>My terms in <strong>English</strong></p>"
+                }
+            }}
+        />
+    )
+};
+
+export const French: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                locale: {
+                    currentLanguageTag: "fr"
+                },
+                "x-keycloakify": {
+                    // cSpell: disable
+                    realmMessageBundleTermsText: "<p>Mes terme en <strong>Français</strong></p>"
+                    // cSpell: enable
+                }
+            }}
+        />
+    )
+};

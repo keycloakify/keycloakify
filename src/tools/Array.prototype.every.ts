@@ -17,7 +17,10 @@ if (!Array.prototype.every) {
         var len = O.length >>> 0;
 
         // 4. If IsCallable(callbackfn) is false, throw a TypeError exception.
-        if (typeof callbackfn !== "function" && Object.prototype.toString.call(callbackfn) !== "[object Function]") {
+        if (
+            typeof callbackfn !== "function" &&
+            Object.prototype.toString.call(callbackfn) !== "[object Function]"
+        ) {
             throw new TypeError();
         }
 

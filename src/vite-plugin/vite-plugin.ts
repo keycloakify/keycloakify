@@ -1,69 +1,75 @@
 import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path";
 import type { Plugin } from "vite";
-import * as fs from "fs";
 import {
-    resolvedViteConfigJsonBasename,
-    nameOfTheGlobal,
     basenameOfTheKeycloakifyResourcesDir,
     keycloak_resources,
-    keycloakifyBuildOptionsForPostPostBuildScriptEnvName
-} from "../bin/constants";
-import type { ResolvedViteConfig } from "../bin/keycloakify/buildOptions/resolvedViteConfig";
-import { getCacheDirPath } from "../bin/keycloakify/buildOptions/getCacheDirPath";
+    vitePluginSubScriptEnvNames
+} from "../bin/shared/constants";
 import { id } from "tsafe/id";
 import { rm } from "../bin/tools/fs.rm";
-import { copyKeycloakResourcesToPublic } from "../bin/copy-keycloak-resources-to-public";
+import { copyKeycloakResourcesToPublic } from "../bin/shared/copyKeycloakResourcesToPublic";
 import { assert } from "tsafe/assert";
-import type { BuildOptions } from "../bin/keycloakify/buildOptions";
-import type { UserProvidedBuildOptions } from "../bin/keycloakify/buildOptions/UserProvidedBuildOptions";
+import {
+    getBuildContext,
+    type BuildContext,
+    type BuildOptions,
+    type ResolvedViteConfig
+} from "../bin/shared/buildContext";
 import MagicString from "magic-string";
+import { generateKcGenTs } from "../bin/shared/generateKcGenTs";
 
-export type Params = UserProvidedBuildOptions & {
-    postBuild?: (buildOptions: Omit<BuildOptions, "bundler">) => Promise<void>;
+export type Params = BuildOptions & {
+    postBuild?: (buildContext: Omit<BuildContext, "bundler">) => Promise<void>;
 };
 
 export function keycloakify(params?: Params) {
-    const { postBuild, ...userProvidedBuildOptions } = params ?? {};
+    const { postBuild, ...buildOptions } = params ?? {};
 
-    let reactAppRootDirPath: string | undefined = undefined;
+    let projectDirPath: string | undefined = undefined;
     let urlPathname: string | undefined = undefined;
     let buildDirPath: string | undefined = undefined;
     let command: "build" | "serve" | undefined = undefined;
     let shouldGenerateSourcemap: boolean | undefined = undefined;
 
     const plugin = {
-        "name": "keycloakify" as const,
-        "configResolved": async resolvedConfig => {
+        name: "keycloakify",
+        configResolved: async resolvedConfig => {
             shouldGenerateSourcemap = resolvedConfig.build.sourcemap !== false;
 
-            run_post_build_script: {
-                const buildOptionJson = process.env[keycloakifyBuildOptionsForPostPostBuildScriptEnvName];
+            run_post_build_script_case: {
+                const envValue =
+                    process.env[vitePluginSubScriptEnvNames.runPostBuildScript];
 
-                if (buildOptionJson === undefined) {
-                    break run_post_build_script;
+                if (envValue === undefined) {
+                    break run_post_build_script_case;
                 }
 
-                if (postBuild === undefined) {
-                    process.exit(0);
-                }
+                const { buildContext, resourcesDirPath } = JSON.parse(envValue) as {
+                    buildContext: BuildContext;
+                    resourcesDirPath: string;
+                };
 
-                const buildOptions: BuildOptions = JSON.parse(buildOptionJson);
+                process.chdir(resourcesDirPath);
 
-                await postBuild(buildOptions);
+                await postBuild?.(buildContext);
 
                 process.exit(0);
             }
 
             command = resolvedConfig.command;
 
-            reactAppRootDirPath = resolvedConfig.root;
+            projectDirPath = resolvedConfig.root;
             urlPathname = (() => {
                 let out = resolvedConfig.env.BASE_URL;
 
-                if (out.startsWith(".") && command === "build" && resolvedConfig.envPrefix?.includes("STORYBOOK_") !== true) {
+                if (
+                    out.startsWith(".") &&
+                    command === "build" &&
+                    resolvedConfig.envPrefix?.includes("STORYBOOK_") !== true
+                ) {
                     throw new Error(
                         [
-                            `BASE_URL=${out} is not supported By Keycloakify. Use an absolute URL instead.`,
+                            `BASE_URL=${out} is not supported By Keycloakify. Use an absolute path instead.`,
                             `If this is a problem, please open an issue at https://github.com/keycloakify/keycloakify/issues/new`
                         ].join("\n")
                     );
@@ -84,39 +90,52 @@ export function keycloakify(params?: Params) {
                 return out;
             })();
 
-            buildDirPath = pathJoin(reactAppRootDirPath, resolvedConfig.build.outDir);
+            buildDirPath = pathJoin(projectDirPath, resolvedConfig.build.outDir);
 
-            const { cacheDirPath } = getCacheDirPath({
-                reactAppRootDirPath
-            });
+            resolve_vite_config_case: {
+                const envValue =
+                    process.env[vitePluginSubScriptEnvNames.resolveViteConfig];
 
-            if (!fs.existsSync(cacheDirPath)) {
-                fs.mkdirSync(cacheDirPath, { "recursive": true });
-            }
+                if (envValue === undefined) {
+                    break resolve_vite_config_case;
+                }
 
-            fs.writeFileSync(
-                pathJoin(cacheDirPath, resolvedViteConfigJsonBasename),
-                Buffer.from(
+                console.log(vitePluginSubScriptEnvNames.resolveViteConfig);
+
+                console.log(
                     JSON.stringify(
                         id<ResolvedViteConfig>({
-                            "publicDir": pathRelative(reactAppRootDirPath, resolvedConfig.publicDir),
-                            "assetsDir": resolvedConfig.build.assetsDir,
-                            "buildDir": resolvedConfig.build.outDir,
+                            publicDir: pathRelative(
+                                projectDirPath,
+                                resolvedConfig.publicDir
+                            ),
+                            assetsDir: resolvedConfig.build.assetsDir,
+                            buildDir: resolvedConfig.build.outDir,
                             urlPathname,
-                            userProvidedBuildOptions
-                        }),
-                        null,
-                        2
-                    ),
-                    "utf8"
-                )
-            );
+                            buildOptions
+                        })
+                    )
+                );
 
-            await copyKeycloakResourcesToPublic({
-                "processArgv": ["--project", reactAppRootDirPath]
+                process.exit(0);
+            }
+
+            const buildContext = getBuildContext({
+                cliCommandOptions: {
+                    projectDirPath
+                }
             });
+
+            await Promise.all([
+                copyKeycloakResourcesToPublic({
+                    buildContext
+                }),
+                generateKcGenTs({
+                    buildContext
+                })
+            ]);
         },
-        "transform": (code, id) => {
+        transform: (code, id) => {
             assert(command !== undefined);
             assert(shouldGenerateSourcemap !== undefined);
 
@@ -124,10 +143,12 @@ export function keycloakify(params?: Params) {
                 return;
             }
 
-            assert(reactAppRootDirPath !== undefined);
+            assert(projectDirPath !== undefined);
 
             {
-                const isWithinSourceDirectory = id.startsWith(pathJoin(reactAppRootDirPath, "src") + pathSep);
+                const isWithinSourceDirectory = id.startsWith(
+                    pathJoin(projectDirPath, "src") + pathSep
+                );
 
                 if (!isWithinSourceDirectory) {
                     return;
@@ -149,9 +170,9 @@ export function keycloakify(params?: Params) {
                 /import\.meta\.env(?:(?:\.BASE_URL)|(?:\["BASE_URL"\]))/g,
                 [
                     `(`,
-                    `(window.${nameOfTheGlobal} === undefined || import.meta.env.MODE === "development")?`,
+                    `(window.kcContext === undefined || import.meta.env.MODE === "development")?`,
                     `"${urlPathname ?? "/"}":`,
-                    `(window.${nameOfTheGlobal}.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/")`,
+                    `(window.kcContext.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/")`,
                     `)`
                 ].join("")
             );
@@ -165,17 +186,17 @@ export function keycloakify(params?: Params) {
             }
 
             const map = transformedCode.generateMap({
-                "source": id,
-                "includeContent": true,
-                "hires": true
+                source: id,
+                includeContent: true,
+                hires: true
             });
 
             return {
-                "code": transformedCode.toString(),
-                "map": map.toString()
+                code: transformedCode.toString(),
+                map: map.toString()
             };
         },
-        "closeBundle": async () => {
+        closeBundle: async () => {
             assert(command !== undefined);
 
             if (command !== "build") {
@@ -184,7 +205,10 @@ export function keycloakify(params?: Params) {
 
             assert(buildDirPath !== undefined);
 
-            await rm(pathJoin(buildDirPath, keycloak_resources), { "recursive": true, "force": true });
+            await rm(pathJoin(buildDirPath, keycloak_resources), {
+                recursive: true,
+                force: true
+            });
         }
     } satisfies Plugin;
 
