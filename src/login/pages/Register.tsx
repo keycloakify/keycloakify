@@ -1,4 +1,4 @@
-//import { useState } from "react";
+import { useState } from "react";
 import type { LazyOrNot } from "keycloakify/tools/LazyOrNot";
 import { getKcClsx, /* type KcClsx */ } from "keycloakify/login/lib/kcClsx";
 import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFormFieldsProps";
@@ -13,18 +13,18 @@ type RegisterProps = PageProps<Extract<KcContext, { pageId: "register.ftl" }>, I
 };
 
 export default function Register(props: RegisterProps) {
-    const { kcContext, i18n, doUseDefaultCss, Template, classes, /* UserProfileFormFields, doMakeUserConfirmPassword */ } = props;
+    const { kcContext, i18n, doUseDefaultCss, Template, classes, UserProfileFormFields, doMakeUserConfirmPassword } = props;
 
     const { kcClsx } = getKcClsx({
         doUseDefaultCss,
         classes
     });
 
-    const { url, messagesPerField/* , recaptchaRequired, recaptchaSiteKey, termsAcceptanceRequired  */} = kcContext;
+    const { url, messagesPerField, recaptchaRequired, recaptchaSiteKey, termsAcceptanceRequired } = kcContext;
 
-    /* const { msg, msgStr } = i18n; */
+    //const { msg, msgStr } = i18n;
 
-  /*   const [isFormSubmittable, setIsFormSubmittable] = useState(false); */
+    const [isFormSubmittable, setIsFormSubmittable] = useState(false);
 
     return (
         <Template
@@ -36,7 +36,7 @@ export default function Register(props: RegisterProps) {
             displayMessage={messagesPerField.exists("global")}
             displayRequiredFields
         >
-            {/* <form id="kc-register-form" className={kcClsx("kcFormClass")} action={url.registrationAction} method="post">
+           {/*  <form id="kc-register-form" className={kcClsx("kcFormClass")} action={url.registrationAction} method="post">
                 <UserProfileFormFields
                     kcContext={kcContext}
                     i18n={i18n}
@@ -70,89 +70,107 @@ export default function Register(props: RegisterProps) {
                     </div>
                 </div>
             </form> */}
-            <div className="login-text">
-                Already have an account? <a href={url.loginUrl}>Log In Now</a>
-            </div>
-            <div className="create-container">
-                <div className="header">
-                    Create Account
+
+            <form 
+                id="kc-register-form" 
+                className={kcClsx("kcFormClass")} 
+                action={url.registrationAction} 
+                method="post"
+            >
+                <div className="login-text">
+                    Already have an account?  <a style={{marginLeft:'30px'}} href={url.loginUrl}> Log In Now</a>
                 </div>
-                <div className="user-info">
-                    User Information
-                </div>
-                <div className="create-fields">
-                    <div style={{width:'46%'}}>
-                        <label className={kcClsx("kcLabelClass")}>
-                            Name
-                        </label>
-                        <input
-                            tabIndex={1}
-                            className={kcClsx("kcInputClass")}
-                            defaultValue={""}
-                            type="text"
-                            autoFocus={true}
-                            autoComplete="off"
-                        />
-                    </div>
-                    <div style={{width:'45%'}}>
-                        <label className={kcClsx("kcLabelClass")}>
-                            Last Name
-                        </label>
-                        <input
-                            tabIndex={1}
-                            className={kcClsx("kcInputClass")}
-                            defaultValue={""}
-                            type="text"
-                            autoFocus={true}
-                            autoComplete="off"
-                        />
-                    </div>
-                    <div style={{width:'100%'}}>
-                        <label className={kcClsx("kcLabelClass")}>
-                            Email
-                        </label>
-                        <input
-                            tabIndex={1}
-                            className={kcClsx("kcInputClass")}
-                            defaultValue={""}
-                            type="text"
-                            autoFocus={true}
-                            autoComplete="off"
-                        />
-                    </div>
-                    <div style={{width:'100%'}}>
-                        <label className={kcClsx("kcLabelClass")}>
-                            Password
-                        </label>
-                        <input
-                            tabIndex={1}
-                            className={kcClsx("kcInputClass")}
-                            defaultValue={""}
-                            type="password"
-                            autoFocus={true}
-                            autoComplete="off"
-                        />
-                    </div>
-                    <div style={{width:'100%'}}> 
-                        <label className={kcClsx("kcLabelClass")}>
-                            Confirm Password
-                        </label>
-                        <input
-                            tabIndex={1}
-                            className={kcClsx("kcInputClass")}
-                            defaultValue={""}
-                            type="password"
-                            autoFocus={true}
-                            autoComplete="off"
-                        />
-                    </div>
-                </div>
-                <div className="button-create-section">
-                    <button className="button-create">
+                <div className="create-container">
+                    <div className="header">
                         Create Account
-                    </button>
+                    </div>
+                    <div className="user-info">
+                        User Information
+                    </div>
+                    <div className="create-fields">
+                       {/*  <div style={{ width: '46%' }}>
+                            <label className={kcClsx("kcLabelClass")}>
+                                Name
+                            </label>
+                            <input
+                                tabIndex={1}
+                                className={kcClsx("kcInputClass")}
+                                defaultValue={""}
+                                type="text"
+                                autoFocus={true}
+                                autoComplete="off"
+                            />
+                        </div>
+                        <div style={{ width: '45%' }}>
+                            <label className={kcClsx("kcLabelClass")}>
+                                Last Name
+                            </label>
+                            <input
+                                tabIndex={1}
+                                className={kcClsx("kcInputClass")}
+                                defaultValue={""}
+                                type="text"
+                                autoFocus={true}
+                                autoComplete="off"
+                            />
+                        </div>
+                        <div style={{ width: '100%' }}>
+                            <label className={kcClsx("kcLabelClass")}>
+                                Email
+                            </label>
+                            <input
+                                tabIndex={1}
+                                className={kcClsx("kcInputClass")}
+                                defaultValue={""}
+                                type="text"
+                                autoFocus={true}
+                                autoComplete="off"
+                            />
+                        </div>
+                        <div style={{ width: '100%' }}>
+                            <label className={kcClsx("kcLabelClass")}>
+                                Password
+                            </label>
+                            <input
+                                tabIndex={1}
+                                className={kcClsx("kcInputClass")}
+                                defaultValue={""}
+                                type="password"
+                                autoFocus={true}
+                                autoComplete="off"
+                            />
+                        </div>
+                        <div style={{ width: '100%' }}>
+                            <label className={kcClsx("kcLabelClass")}>
+                                Confirm Password
+                            </label>
+                            <input
+                                tabIndex={1}
+                                className={kcClsx("kcInputClass")}
+                                defaultValue={""}
+                                type="password"
+                                autoFocus={true}
+                                autoComplete="off"
+                            />
+                        </div> */}
+                        <UserProfileFormFields
+                            kcContext={kcContext}
+                            i18n={i18n}
+                            kcClsx={kcClsx}
+                            onIsFormSubmittableValueChange={setIsFormSubmittable}
+                            doMakeUserConfirmPassword={doMakeUserConfirmPassword}
+                        />
+                    </div>
+                    <div  id="kc-form-buttons" className="button-create-section">
+                        <input
+                            disabled={!isFormSubmittable}
+                            className="button-create"
+                            type="submit"
+                            value="Create Account"
+                        />
+                    </div>
                 </div>
-            </div>
+            </form>
         </Template>
     );
 }

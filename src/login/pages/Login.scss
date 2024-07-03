@@ -1,6 +1,5 @@
 .main-container{
     max-width: 1200px;
-    //background-color: red;
     margin: auto;
     display: flex;
     flex-wrap: wrap;
@@ -31,7 +30,7 @@
         .data-fields{
             padding:  1.5rem 1.5rem 1rem;
 
-            .button{
+            .button-login{
                 background-color: #1E678F;
                 color: white;
                 padding: 0.5rem;
@@ -39,11 +38,19 @@
                 border-radius: 5px;
                 border-style: none;
                 font-size: 14px;
-                //margin-bottom: 1rem;
+                margin-top: 1rem;
                 &:hover{
                     background-color: #1e688fd0;
                 }
             }
+
+            .links{
+                font-weight: bolder;
+                font-size: 0.8rem;
+                a{
+                    color: black;
+                }
+            }   
         }
 
     }
@@ -55,11 +62,9 @@
             background-color: #1E678F;
             color: white;
             padding: 12px 15px;
-            //width: 200px;
             border-radius: 5px;
             border-style: none;
             font-size: 15px;
-            //margin-top: 400px;
             &:hover{
                 text-decoration: none;
                 background-color: #1e688fd3;

@@ -12,7 +12,7 @@ export default function LoginResetPassword(props: PageProps<Extract<KcContext, {
         classes
     });
 
-    const { url, realm, /* auth, messagesPerField  */} = kcContext;
+    const { url, realm, auth, messagesPerField } = kcContext;
 
    /*  const { msg, msgStr } = i18n; */
 
@@ -78,9 +78,18 @@ export default function LoginResetPassword(props: PageProps<Extract<KcContext, {
 					Reset Password
 				</div>
 				<div className="reset-fields">
+                    <form 
+                        id="kc-reset-password-form" 
+                        className={kcClsx("kcFormClass")} 
+                        action={url.loginAction} 
+                        method="post"
+                    >
+
 					{!realm.loginWithEmailAllowed ? (
 						<div /* className={kcClsx("kcInputClass")} */>
-							<label htmlFor="password" className={kcClsx("kcLabelClass")}>
+                            <p style={{marginTop:'-10px', fontWeight:'550', color:'#5e5e5e'}}>Please submit your new password </p>
+							
+                            <label style={{fontSize:'0.8rem', color: '#1E678F'}} htmlFor="password" className={kcClsx("kcLabelClass")}>
 								Password
 							</label>
 							<input
@@ -94,34 +103,46 @@ export default function LoginResetPassword(props: PageProps<Extract<KcContext, {
 						</div>
 					) : (
 					<>
-						<label className={kcClsx("kcLabelClass")}>
+						<label style={{fontSize:'0.8rem', color: '#1E678F'}} className={kcClsx("kcLabelClass")}>
 							Email
 						</label>
 						<input
+                            id="username"
+                            name="username"
 							tabIndex={1}
 							className={kcClsx("kcInputClass")}
-							defaultValue={""}
 							type="text"
 							autoFocus={true}
 							autoComplete="off"
+                            aria-invalid={messagesPerField.existsError("username")}
+                            defaultValue={auth.attemptedUsername ?? ""}
 						/>
+                         {messagesPerField.existsError("username") && (
+                            <span id="input-error-username" className={kcClsx("kcInputErrorMessageClass")} aria-live="polite">
+                                {messagesPerField.get("username")}
+                            </span>
+                        )}
 					</>
 					)}
 
 					<input
-						tabIndex={4}
-						className={"button-reset"}
+						className="button-reset"
 						name="reset"
 						id="kc-reset"
 						type="submit"
-						value={"Reset Pasword"}
+						value={!realm.loginWithEmailAllowed?"Submit":"Reset Password"}
 					/>
 
-					<hr className="divider"/>
+                        {realm.loginWithEmailAllowed &&
+                            <>
+                                <hr className="divider" />
 
-					<a href={url.loginUrl} className="button-back">
-						Back
-					</a>
+                                <a href={url.loginUrl} className="button-back">
+                                    Back
+                                </a>
+                            </>
+                        }
+                    </form>
 				</div>
 			</div>
         </Template>

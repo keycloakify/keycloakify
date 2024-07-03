@@ -1,8 +1,9 @@
 .login-text{
     margin: auto;
-    width: 350px;
-    font-size: 1rem;
+    text-align: center;
+    font-size: 15px;
     margin-top: 10rem;
+    font-weight: 600;
 }
 
 .create-container{
@@ -21,23 +22,21 @@
         display: flex;
         align-items: center;
         left: 50%;
-        padding-left: 1rem;
+        padding-left: 1.4rem;
     }
     .user-info{
         font-size: 0.9rem;
+        font-weight: bolder;
         color: #333333;
         background-color: #F0F2F5;
-        padding-left: 20px;
+        padding-left: 1.4rem;
         padding-top: 5px;
         padding-bottom: 8px;
     }
     .create-fields{
         background-color: white;
         width: 100%;
-        padding: 20px;
-        display: flex;
-        flex-flow: row wrap;
-        justify-content: space-between;
+        padding: 20px 40px;
     }
 }
 
