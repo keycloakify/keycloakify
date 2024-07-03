@@ -6,7 +6,7 @@
 
 This starter is based on Vite. There is also [a Webpack based starter](https://github.com/keycloakify/keycloakify-starter-webpack).
 
-# Quick starttt
+# Quick start
 
 ```bash
 git clone https://github.com/keycloakify/keycloakify-starter

@@ -1,0 +1,32 @@
+name: Build and Push Keycloak Image
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Login to Azure Container Registry
+        uses: azure/docker-login@v2
+        with:
+          login-server: mvrbdev.azurecr.io
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push Keycloak Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: mvrbdev.azurecr.io/keycloak:latest,mvrbdev.azurecr.io/keycloak:${{ github.sha }}
