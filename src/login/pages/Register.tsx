@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { LazyOrNot } from "keycloakify/tools/LazyOrNot";
-import { getKcClsx, /* type KcClsx */ } from "keycloakify/login/lib/kcClsx";
+import { getKcClsx } from "keycloakify/login/lib/kcClsx";
 import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFormFieldsProps";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
@@ -20,9 +20,7 @@ export default function Register(props: RegisterProps) {
         classes
     });
 
-    const { url, messagesPerField, recaptchaRequired, recaptchaSiteKey, termsAcceptanceRequired } = kcContext;
-
-    //const { msg, msgStr } = i18n;
+    const { url, messagesPerField } = kcContext;
 
     const [isFormSubmittable, setIsFormSubmittable] = useState(false);
 
@@ -36,49 +34,14 @@ export default function Register(props: RegisterProps) {
             displayMessage={messagesPerField.exists("global")}
             displayRequiredFields
         >
-           {/*  <form id="kc-register-form" className={kcClsx("kcFormClass")} action={url.registrationAction} method="post">
-                <UserProfileFormFields
-                    kcContext={kcContext}
-                    i18n={i18n}
-                    kcClsx={kcClsx}
-                    onIsFormSubmittableValueChange={setIsFormSubmittable}
-                    doMakeUserConfirmPassword={doMakeUserConfirmPassword}
-                />
-                {termsAcceptanceRequired && <TermsAcceptance i18n={i18n} kcClsx={kcClsx} messagesPerField={messagesPerField} />}
-                {recaptchaRequired && (
-                    <div className="form-group">
-                        <div className={kcClsx("kcInputWrapperClass")}>
-                            <div className="g-recaptcha" data-size="compact" data-sitekey={recaptchaSiteKey}></div>
-                        </div>
-                    </div>
-                )}
-                <div className={kcClsx("kcFormGroupClass")}>
-                    <div id="kc-form-options" className={kcClsx("kcFormOptionsClass")}>
-                        <div className={kcClsx("kcFormOptionsWrapperClass")}>
-                            <span>
-                                <a href={url.loginUrl}>{msg("backToLogin")}</a>
-                            </span>
-                        </div>
-                    </div>
-                    <div id="kc-form-buttons" className={kcClsx("kcFormButtonsClass")}>
-                        <input
-                            disabled={!isFormSubmittable}
-                            className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonBlockClass", "kcButtonLargeClass")}
-                            type="submit"
-                            value={msgStr("doRegister")}
-                        />
-                    </div>
-                </div>
-            </form> */}
-
-            <form 
-                id="kc-register-form" 
-                className={kcClsx("kcFormClass")} 
-                action={url.registrationAction} 
+            <form
+                id="kc-register-form"
+                className={kcClsx("kcFormClass")}
+                action={url.registrationAction}
                 method="post"
             >
                 <div className="login-text">
-                    Already have an account?  <a style={{marginLeft:'30px'}} href={url.loginUrl}> Log In Now</a>
+                    Already have an account?  <a style={{ marginLeft: '30px' }} href={url.loginUrl}> Log In Now</a>
                 </div>
                 <div className="create-container">
                     <div className="header">
@@ -88,71 +51,6 @@ export default function Register(props: RegisterProps) {
                         User Information
                     </div>
                     <div className="create-fields">
-                       {/*  <div style={{ width: '46%' }}>
-                            <label className={kcClsx("kcLabelClass")}>
-                                Name
-                            </label>
-                            <input
-                                tabIndex={1}
-                                className={kcClsx("kcInputClass")}
-                                defaultValue={""}
-                                type="text"
-                                autoFocus={true}
-                                autoComplete="off"
-                            />
-                        </div>
-                        <div style={{ width: '45%' }}>
-                            <label className={kcClsx("kcLabelClass")}>
-                                Last Name
-                            </label>
-                            <input
-                                tabIndex={1}
-                                className={kcClsx("kcInputClass")}
-                                defaultValue={""}
-                                type="text"
-                                autoFocus={true}
-                                autoComplete="off"
-                            />
-                        </div>
-                        <div style={{ width: '100%' }}>
-                            <label className={kcClsx("kcLabelClass")}>
-                                Email
-                            </label>
-                            <input
-                                tabIndex={1}
-                                className={kcClsx("kcInputClass")}
-                                defaultValue={""}
-                                type="text"
-                                autoFocus={true}
-                                autoComplete="off"
-                            />
-                        </div>
-                        <div style={{ width: '100%' }}>
-                            <label className={kcClsx("kcLabelClass")}>
-                                Password
-                            </label>
-                            <input
-                                tabIndex={1}
-                                className={kcClsx("kcInputClass")}
-                                defaultValue={""}
-                                type="password"
-                                autoFocus={true}
-                                autoComplete="off"
-                            />
-                        </div>
-                        <div style={{ width: '100%' }}>
-                            <label className={kcClsx("kcLabelClass")}>
-                                Confirm Password
-                            </label>
-                            <input
-                                tabIndex={1}
-                                className={kcClsx("kcInputClass")}
-                                defaultValue={""}
-                                type="password"
-                                autoFocus={true}
-                                autoComplete="off"
-                            />
-                        </div> */}
                         <UserProfileFormFields
                             kcContext={kcContext}
                             i18n={i18n}
@@ -161,7 +59,7 @@ export default function Register(props: RegisterProps) {
                             doMakeUserConfirmPassword={doMakeUserConfirmPassword}
                         />
                     </div>
-                    <div  id="kc-form-buttons" className="button-create-section">
+                    <div id="kc-form-buttons" className="button-create-section">
                         <input
                             disabled={!isFormSubmittable}
                             className="button-create"
@@ -174,41 +72,3 @@ export default function Register(props: RegisterProps) {
         </Template>
     );
 }
-
-/* function TermsAcceptance(props: { i18n: I18n; kcClsx: KcClsx; messagesPerField: Pick<KcContext["messagesPerField"], "existsError" | "get"> }) {
-    const { i18n, kcClsx, messagesPerField } = props;
-
-    const { msg } = i18n;
-
-    return (
-        <>
-            <div className="form-group">
-                <div className={kcClsx("kcInputWrapperClass")}>
-                    {msg("termsTitle")}
-                    <div id="kc-registration-terms-text">{msg("termsText")}</div>
-                </div>
-            </div>
-            <div className="form-group">
-                <div className={kcClsx("kcLabelWrapperClass")}>
-                    <input
-                        type="checkbox"
-                        id="termsAccepted"
-                        name="termsAccepted"
-                        className={kcClsx("kcCheckboxInputClass")}
-                        aria-invalid={messagesPerField.existsError("termsAccepted")}
-                    />
-                    <label htmlFor="termsAccepted" className={kcClsx("kcLabelClass")}>
-                        {msg("acceptTerms")}
-                    </label>
-                </div>
-                {messagesPerField.existsError("termsAccepted") && (
-                    <div className={kcClsx("kcLabelWrapperClass")}>
-                        <span id="input-error-terms-accepted" className={kcClsx("kcInputErrorMessageClass")} aria-live="polite">
-                            {messagesPerField.get("termsAccepted")}
-                        </span>
-                    </div>
-                )}
-            </div>
-        </>
-    );
-} */
