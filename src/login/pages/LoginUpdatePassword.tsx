@@ -46,9 +46,14 @@ export default function LoginUpdatePassword(props: PageProps<Extract<KcContext, 
                             </PasswordWrapper>
 
                             {messagesPerField.existsError("password") && (
-                                <span id="input-error-password" className={kcClsx("kcInputErrorMessageClass")} aria-live="polite">
-                                    {messagesPerField.get("password")}
-                                </span>
+                                <span
+                                    id="input-error-password"
+                                    className={kcClsx("kcInputErrorMessageClass")}
+                                    aria-live="polite"
+                                    dangerouslySetInnerHTML={{
+                                        __html: messagesPerField.get("password")
+                                    }}
+                                />
                             )}
                         </div>
                     </div>
@@ -74,9 +79,14 @@ export default function LoginUpdatePassword(props: PageProps<Extract<KcContext, 
                         </PasswordWrapper>
 
                         {messagesPerField.existsError("password-confirm") && (
-                            <span id="input-error-password-confirm" className={kcClsx("kcInputErrorMessageClass")} aria-live="polite">
-                                {messagesPerField.get("password-confirm")}
-                            </span>
+                            <span
+                                id="input-error-password-confirm"
+                                className={kcClsx("kcInputErrorMessageClass")}
+                                aria-live="polite"
+                                dangerouslySetInnerHTML={{
+                                    __html: messagesPerField.get("password-confirm")
+                                }}
+                            />
                         )}
                     </div>
 

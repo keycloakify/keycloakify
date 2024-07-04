@@ -145,7 +145,12 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                         <div className={clsx("alert", `alert-${message.type}`)}>
                             {message.type === "success" && <span className="pficon pficon-ok"></span>}
                             {message.type === "error" && <span className="pficon pficon-error-circle-o"></span>}
-                            <span className="kc-feedback-text">{message.summary}</span>
+                            <span
+                                className="kc-feedback-text"
+                                dangerouslySetInnerHTML={{
+                                    __html: message.summary
+                                }}
+                            />
                         </div>
                     )}
 

@@ -16,13 +16,33 @@ export default function Info(props: PageProps<Extract<KcContext, { pageId: "info
             doUseDefaultCss={doUseDefaultCss}
             classes={classes}
             displayMessage={false}
-            headerNode={messageHeader !== undefined ? <>{messageHeader}</> : <>{message.summary}</>}
+            headerNode={
+                <span
+                    dangerouslySetInnerHTML={{
+                        __html: messageHeader ?? message.summary
+                    }}
+                />
+            }
         >
             <div id="kc-info-message">
-                <p className="instruction">
-                    {message.summary}
-                    {requiredActions && <b>{requiredActions.map(requiredAction => msgStr(`requiredAction.${requiredAction}` as const)).join(",")}</b>}
-                </p>
+                <p
+                    className="instruction"
+                    dangerouslySetInnerHTML={{
+                        __html: (() => {
+                            let html = message.summary;
+
+                            if (requiredActions) {
+                                html += "<b>";
+
+                                html += requiredActions.map(requiredAction => msgStr(`requiredAction.${requiredAction}` as const)).join(",");
+
+                                html += "</b>";
+                            }
+
+                            return html;
+                        })()
+                    }}
+                />
                 {(() => {
                     if (skipLink) {
                         return null;

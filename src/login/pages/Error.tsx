@@ -19,7 +19,7 @@ export default function Error(props: PageProps<Extract<KcContext, { pageId: "err
             headerNode={msg("errorTitle")}
         >
             <div id="kc-error-message">
-                <p className="instruction">{message.summary}</p>
+                <p className="instruction" dangerouslySetInnerHTML={{ __html: message.summary }} />
                 {!skipLink && client !== undefined && client.baseUrl !== undefined && (
                     <p>
                         <a id="backToApplication" href={client.baseUrl}>

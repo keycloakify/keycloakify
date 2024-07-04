@@ -188,7 +188,7 @@ function FieldErrors(props: { attribute: Attribute; displayableErrors: FormField
                 .filter(error => error.fieldIndex === fieldIndex)
                 .map(({ errorMessage }, i, arr) => (
                     <Fragment key={i}>
-                        <span key={i}>{errorMessage}</span>
+                        {errorMessage}
                         {arr.length - 1 !== i && <br />}
                     </Fragment>
                 ))}

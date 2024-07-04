@@ -60,9 +60,14 @@ export default function LoginPassword(props: PageProps<Extract<KcContext, { page
                             </PasswordWrapper>
 
                             {messagesPerField.existsError("password") && (
-                                <span id="input-error-password" className={kcClsx("kcInputErrorMessageClass")} aria-live="polite">
-                                    {messagesPerField.get("password")}
-                                </span>
+                                <span
+                                    id="input-error-password"
+                                    className={kcClsx("kcInputErrorMessageClass")}
+                                    aria-live="polite"
+                                    dangerouslySetInnerHTML={{
+                                        __html: messagesPerField.get("password")
+                                    }}
+                                />
                             )}
                         </div>
                         <div className={kcClsx("kcFormGroupClass", "kcFormSettingClass")}>

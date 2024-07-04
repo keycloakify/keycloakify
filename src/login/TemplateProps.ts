@@ -12,7 +12,6 @@ export type TemplateProps<KcContext, I18n> = {
     displayRequiredFields?: boolean;
     showAnotherWayIfPresent?: boolean;
     headerNode: ReactNode;
-    showUsernameNode?: ReactNode;
     socialProvidersNode?: ReactNode;
     infoNode?: ReactNode;
     documentTitle?: string;

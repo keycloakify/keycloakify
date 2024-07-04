@@ -70,9 +70,14 @@ export default function LoginOtp(props: PageProps<Extract<KcContext, { pageId: "
                             aria-invalid={messagesPerField.existsError("totp")}
                         />
                         {messagesPerField.existsError("totp") && (
-                            <span id="input-error-otp-code" className={kcClsx("kcInputErrorMessageClass")} aria-live="polite">
-                                {messagesPerField.get("totp")}
-                            </span>
+                            <span
+                                id="input-error-otp-code"
+                                className={kcClsx("kcInputErrorMessageClass")}
+                                aria-live="polite"
+                                dangerouslySetInnerHTML={{
+                                    __html: messagesPerField.get("totp")
+                                }}
+                            />
                         )}
                     </div>
                 </div>

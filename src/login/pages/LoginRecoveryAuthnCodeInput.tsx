@@ -43,9 +43,14 @@ export default function LoginRecoveryAuthnCodeInput(props: PageProps<Extract<KcC
                             autoFocus
                         />
                         {messagesPerField.existsError("recoveryCodeInput") && (
-                            <span id="input-error" className={kcClsx("kcInputErrorMessageClass")} aria-live="polite">
-                                {messagesPerField.get("recoveryCodeInput")}
-                            </span>
+                            <span
+                                id="input-error"
+                                className={kcClsx("kcInputErrorMessageClass")}
+                                aria-live="polite"
+                                dangerouslySetInnerHTML={{
+                                    __html: messagesPerField.get("recoveryCodeInput")
+                                }}
+                            />
                         )}
                     </div>
                 </div>

@@ -15,7 +15,6 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
         displayMessage = true,
         displayRequiredFields = false,
         headerNode,
-        showUsernameNode = null,
         socialProvidersNode = null,
         infoNode = null,
         documentTitle,
@@ -164,45 +163,10 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                             </div>
                         </div>
                     )}
-                    {!(auth !== undefined && auth.showUsername && !auth.showResetCredentials) ? (
-                        displayRequiredFields ? (
-                            <div className={kcClsx("kcContentWrapperClass")}>
-                                <div className={clsx(kcClsx("kcLabelWrapperClass"), "subtitle")}>
-                                    <span className="subtitle">
-                                        <span className="required">*</span>
-                                        {msg("requiredFields")}
-                                    </span>
-                                </div>
-                                <div className="col-md-10">
-                                    <h1 id="kc-page-title">{headerNode}</h1>
-                                </div>
-                            </div>
-                        ) : (
+                    {(() => {
+                        const node = !(auth !== undefined && auth.showUsername && !auth.showResetCredentials) ? (
                             <h1 id="kc-page-title">{headerNode}</h1>
-                        )
-                    ) : displayRequiredFields ? (
-                        <div className={kcClsx("kcContentWrapperClass")}>
-                            <div className={clsx(kcClsx("kcLabelWrapperClass"), "subtitle")}>
-                                <span className="subtitle">
-                                    <span className="required">*</span> {msg("requiredFields")}
-                                </span>
-                            </div>
-                            <div className="col-md-10">
-                                {showUsernameNode}
-                                <div id="kc-username" className={kcClsx("kcFormGroupClass")}>
-                                    <label id="kc-attempted-username">{auth.attemptedUsername}</label>
-                                    <a id="reset-login" href={url.loginRestartFlowUrl} aria-label={msgStr("restartLoginTooltip")}>
-                                        <div className="kc-login-tooltip">
-                                            <i className={kcClsx("kcResetFlowIcon")}></i>
-                                            <span className="kc-tooltip-text">{msg("restartLoginTooltip")}</span>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    ) : (
-                        <>
-                            {showUsernameNode}
+                        ) : (
                             <div id="kc-username" className={kcClsx("kcFormGroupClass")}>
                                 <label id="kc-attempted-username">{auth.attemptedUsername}</label>
                                 <a id="reset-login" href={url.loginRestartFlowUrl} aria-label={msgStr("restartLoginTooltip")}>
@@ -212,8 +176,24 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                                     </div>
                                 </a>
                             </div>
-                        </>
-                    )}
+                        );
+
+                        if (displayRequiredFields) {
+                            return (
+                                <div className={kcClsx("kcContentWrapperClass")}>
+                                    <div className={clsx(kcClsx("kcLabelWrapperClass"), "subtitle")}>
+                                        <span className="subtitle">
+                                            <span className="required">*</span>
+                                            {msg("requiredFields")}
+                                        </span>
+                                    </div>
+                                    <div className="col-md-10">{node}</div>
+                                </div>
+                            );
+                        }
+
+                        return node;
+                    })()}
                 </header>
                 <div id="kc-content">
                     <div id="kc-content-wrapper">

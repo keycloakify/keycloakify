@@ -612,7 +612,14 @@ function useGetErrors(params: { kcContext: KcContextLike_useGetErrors; i18n: I18
                 return [
                     {
                         errorMessageStr,
-                        errorMessage: <span key={0}>{errorMessageStr}</span>,
+                        errorMessage: (
+                            <span
+                                key={0}
+                                dangerouslySetInnerHTML={{
+                                    __html: errorMessageStr
+                                }}
+                            />
+                        ),
                         fieldIndex: undefined,
                         source: {
                             type: "server"

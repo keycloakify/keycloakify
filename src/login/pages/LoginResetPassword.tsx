@@ -48,9 +48,14 @@ export default function LoginResetPassword(props: PageProps<Extract<KcContext, {
                             aria-invalid={messagesPerField.existsError("username")}
                         />
                         {messagesPerField.existsError("username") && (
-                            <span id="input-error-username" className={kcClsx("kcInputErrorMessageClass")} aria-live="polite">
-                                {messagesPerField.get("username")}
-                            </span>
+                            <span
+                                id="input-error-username"
+                                className={kcClsx("kcInputErrorMessageClass")}
+                                aria-live="polite"
+                                dangerouslySetInnerHTML={{
+                                    __html: messagesPerField.get("username")
+                                }}
+                            />
                         )}
                     </div>
                 </div>

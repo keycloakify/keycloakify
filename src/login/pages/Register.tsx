@@ -118,9 +118,14 @@ function TermsAcceptance(props: {
                 </div>
                 {messagesPerField.existsError("termsAccepted") && (
                     <div className={kcClsx("kcLabelWrapperClass")}>
-                        <span id="input-error-terms-accepted" className={kcClsx("kcInputErrorMessageClass")} aria-live="polite">
-                            {messagesPerField.get("termsAccepted")}
-                        </span>
+                        <span
+                            id="input-error-terms-accepted"
+                            className={kcClsx("kcInputErrorMessageClass")}
+                            aria-live="polite"
+                            dangerouslySetInnerHTML={{
+                                __html: messagesPerField.get("termsAccepted")
+                            }}
+                        />
                     </div>
                 )}
             </div>

@@ -112,9 +112,14 @@ export default function LoginConfigTotp(props: PageProps<Extract<KcContext, { pa
                             />
 
                             {messagesPerField.existsError("totp") && (
-                                <span id="input-error-otp-code" className={kcClsx("kcInputErrorMessageClass")} aria-live="polite">
-                                    {messagesPerField.get("totp")}
-                                </span>
+                                <span
+                                    id="input-error-otp-code"
+                                    className={kcClsx("kcInputErrorMessageClass")}
+                                    aria-live="polite"
+                                    dangerouslySetInnerHTML={{
+                                        __html: messagesPerField.get("totp")
+                                    }}
+                                />
                             )}
                         </div>
                         <input type="hidden" id="totpSecret" name="totpSecret" value={totp.totpSecret} />
@@ -138,9 +143,14 @@ export default function LoginConfigTotp(props: PageProps<Extract<KcContext, { pa
                                 aria-invalid={messagesPerField.existsError("userLabel")}
                             />
                             {messagesPerField.existsError("userLabel") && (
-                                <span id="input-error-otp-label" className={kcClsx("kcInputErrorMessageClass")} aria-live="polite">
-                                    {messagesPerField.get("userLabel")}
-                                </span>
+                                <span
+                                    id="input-error-otp-label"
+                                    className={kcClsx("kcInputErrorMessageClass")}
+                                    aria-live="polite"
+                                    dangerouslySetInnerHTML={{
+                                        __html: messagesPerField.get("userLabel")
+                                    }}
+                                />
                             )}
                         </div>
                     </div>
