@@ -231,6 +231,7 @@ export async function downloadKeycloakDefaultTheme(params: {
                                 "fonts",
                                 "PatternFlyIcons-webfont.woff"
                             ),
+                            pathJoin("patternfly", "dist", "img", "bg-login.jpg"),
                             pathJoin("jquery", "dist", "jquery.min.js")
                         ];
                     }
