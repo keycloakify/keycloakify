@@ -1,4 +1,4 @@
-import { /* useState, */ useEffect, useReducer } from "react";
+import { useState, useEffect, useReducer } from "react";
 import { assert } from "keycloakify/tools/assert";
 //import { clsx } from "keycloakify/tools/clsx";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
@@ -19,7 +19,7 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
     
     /* const { msg, msgStr } = i18n; */
 
-/*     const [isLoginButtonDisabled, setIsLoginButtonDisabled] = useState(false); */
+    const [isLoginButtonDisabled, setIsLoginButtonDisabled] = useState(false);
 
     return (
         <Template
@@ -185,80 +185,90 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
                     <section className="header-1">
                         Login with ORS
                     </section>
-                    <div className="data-fields">
-                        <>
-                            <label className={kcClsx("kcLabelClass")}>
-                                Email
-                            </label>
-                            <input
-                                tabIndex={2}
-                                id="username"
-                                className={kcClsx("kcInputClass")}
-                                name="username"
-                                defaultValue={login.username ?? ""}
-                                type="text"
-                                autoFocus
-                                autoComplete="username"
-                                aria-invalid={messagesPerField.existsError("username", "password")}
-                            />
-                            {messagesPerField.existsError("username", "password") && (
-                                <span id="input-error" className={kcClsx("kcInputErrorMessageClass")} aria-live="polite">
-                                    {messagesPerField.getFirstError("username", "password")}
-                                </span>
-                            )}
-                        </>
-                        <div className={kcClsx("kcFormGroupClass")}>
-                            <label htmlFor="password" className={kcClsx("kcLabelClass")}>
-                                Password
-                            </label>
-                            <PasswordWrapper kcClsx={kcClsx} i18n={i18n} passwordInputId="password">
-                                    <input
-                                        tabIndex={3}
-                                        id="password"
-                                        className={kcClsx("kcInputClass")}
-                                        name="password"
-                                        type="password"
-                                        autoComplete="current-password"
-                                        aria-invalid={messagesPerField.existsError("username", "password")}
-                                    />
-                                </PasswordWrapper>
-                                {usernameHidden && messagesPerField.existsError("username", "password") && (
+                    <form 
+                        id="kc-form-login"
+                        onSubmit={() => {
+                            setIsLoginButtonDisabled(true);
+                            return true;
+                        }}
+                        action={url.loginAction}
+                         method="post"
+                    >
+                        <div className="data-fields">
+                            <>
+                                <label style={{fontSize:'0.8rem', color: '#1E678F'}} className={kcClsx("kcLabelClass")}>
+                                    Email
+                                </label>
+                                <input
+                                    tabIndex={2}
+                                    id="username"
+                                    className={kcClsx("kcInputClass")}
+                                    name="username"
+                                    defaultValue={login.username ?? ""}
+                                    type="text"
+                                    autoFocus
+                                    autoComplete="username"
+                                    aria-invalid={messagesPerField.existsError("username", "password")}
+                                />
+                                {messagesPerField.existsError("username", "password") && (
                                     <span id="input-error" className={kcClsx("kcInputErrorMessageClass")} aria-live="polite">
                                         {messagesPerField.getFirstError("username", "password")}
                                     </span>
                                 )}
-                        </div>
-                        <div >
-                            <p>
-                                <a href={url.loginResetCredentialsUrl}>
-                                    Forgot paswword
-                                </a>
-                            </p>
+                            </>
+                            <div className={kcClsx("kcFormGroupClass")}>
+                                <label style={{marginTop:'20px', fontSize:'0.8rem', color: '#1E678F'}} htmlFor="password" className={kcClsx("kcLabelClass")}>
+                                    Password
+                                </label>
+                                <PasswordWrapper kcClsx={kcClsx} i18n={i18n} passwordInputId="password">
+                                        <input
+                                            tabIndex={3}
+                                            id="password"
+                                            className={kcClsx("kcInputClass")}
+                                            name="password"
+                                            type="password"
+                                            autoComplete="current-password"
+                                            aria-invalid={messagesPerField.existsError("username", "password")}
+                                        />
+                                    </PasswordWrapper>
+                                    {usernameHidden && messagesPerField.existsError("username", "password") && (
+                                        <span id="input-error" className={kcClsx("kcInputErrorMessageClass")} aria-live="polite">
+                                            {messagesPerField.getFirstError("username", "password")}
+                                        </span>
+                                )}
+                            </div>
+                            <div className="links">
+                                <p>
+                                    <a href={url.loginResetCredentialsUrl}>
+                                        Forgot password?
+                                    </a> 
+                                    
+                                    <br />
 
-                            <p>
-                                <a href={url.loginResetCredentialsUrl}>
-                                    Staff login
-                                </a>
-                            </p>
+                                    <a href={url.loginResetCredentialsUrl}>
+                                        Staff login
+                                    </a>
+                                </p>
+                            </div>
+                            <input
+                                tabIndex={4}
+                                className="button-login"
+                                name="login"
+                                id="kc-login"
+                                type="submit"
+                                value="Login"
+                                disabled={isLoginButtonDisabled}
+                            />
                         </div>
-                        <input
-                            tabIndex={4}
-                            className={"button"}
-                            name="login"
-                            id="kc-login"
-                            type="submit"
-                            value={"Login"}
-                            //disabled={isLoginButtonDisabled}
-                        />
-                    </div>
+                    </form>
                 </div>
                 <div style={{ width: '50%' }} className="create-account">
-                    <h1 style={{ fontSize: '1.7rem', fontWeight: 'bold' }}>Create An Account</h1>
+                    <h1 style={{ fontSize: '1.99rem', fontWeight: 'bold' }}>Create An Account</h1>
                     <p style={{ fontSize: '0.9rem', marginBottom:'30px' }}>
                         Create an account to add your voice to Public Reviews <br /> and receive notifications about new Public Reviews.
                     </p>
                     <a href={url.registrationUrl} className="button-account">
-                        Create new Account
+                        Create New Account
                     </a>
                 </div>
             </div>
