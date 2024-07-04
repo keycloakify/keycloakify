@@ -37,10 +37,10 @@ export default function LoginUpdatePassword(props: PageProps<Extract<KcContext, 
 
                         <div className={kcClsx("kcFormGroupClass")}>
                             <div className={kcClsx("kcLabelWrapperClass")}>
-                                <label style={{fontSize:'0.8rem', color: '#1E678F'}}  htmlFor="password-new" className={kcClsx("kcLabelClass")}>
+                                <label style={{ fontSize: '0.8rem', color: '#1E678F' }} htmlFor="password-new" className={kcClsx("kcLabelClass")}>
                                     {msg("passwordNew")}
                                 </label>
-                                <div /* className={kcClsx("kcInputWrapperClass")} */>
+                                <div>
                                     <PasswordWrapper kcClsx={kcClsx} i18n={i18n} passwordInputId="password-new">
                                         <input
                                             type="password"
@@ -64,7 +64,7 @@ export default function LoginUpdatePassword(props: PageProps<Extract<KcContext, 
 
                         <div className={kcClsx("kcFormGroupClass")}>
                             <div className={kcClsx("kcLabelWrapperClass")}>
-                                <label style={{fontSize:'0.8rem', color: '#1E678F'}}  htmlFor="password-confirm" className={kcClsx("kcLabelClass")}>
+                                <label style={{ fontSize: '0.8rem', color: '#1E678F' }} htmlFor="password-confirm" className={kcClsx("kcLabelClass")}>
                                     {msg("passwordConfirm")}
                                 </label>
                             </div>
@@ -90,16 +90,8 @@ export default function LoginUpdatePassword(props: PageProps<Extract<KcContext, 
                         </div>
 
                         <div className={kcClsx("kcFormGroupClass")}>
-                            {/*  <LogoutOtherSessions kcClsx={kcClsx} i18n={i18n} /> */}
-
                             <div id="kc-form-buttons" className={kcClsx("kcFormButtonsClass")}>
                                 <input
-                                    /* className={kcClsx(
-                                        "kcButtonClass",
-                                        "kcButtonPrimaryClass",
-                                        isAppInitiatedAction && "kcButtonBlockClass",
-                                        "kcButtonLargeClass"
-                                    )} */
                                     className="button-reset"
                                     type="submit"
                                     value={msgStr("doSubmit")}
@@ -120,25 +112,6 @@ export default function LoginUpdatePassword(props: PageProps<Extract<KcContext, 
                 </div>
             </form>
         </Template>
-    );
-}
-
-function LogoutOtherSessions(props: { kcClsx: KcClsx; i18n: I18n }) {
-    const { kcClsx, i18n } = props;
-
-    const { msg } = i18n;
-
-    return (
-        <div id="kc-form-options" className={kcClsx("kcFormOptionsClass")}>
-            <div className={kcClsx("kcFormOptionsWrapperClass")}>
-                <div className="checkbox">
-                    <label>
-                        <input type="checkbox" id="logout-sessions" name="logout-sessions" value="on" defaultChecked={true} />
-                        {msg("logoutOtherSessions")}
-                    </label>
-                </div>
-            </div>
-        </div>
     );
 }
 
