@@ -34,10 +34,7 @@ export function readExtraPagesNames(params: {
         const rawSourceFile = fs.readFileSync(candidateFilPath).toString("utf8");
 
         extraPages.push(
-            ...Array.from(
-                rawSourceFile.matchAll(/["']([^.\s]+.ftl)["']:/g),
-                m => (console.log(m), m[1])
-            )
+            ...Array.from(rawSourceFile.matchAll(/["']([^.\s]+.ftl)["']:/g), m => m[1])
         );
     }
 
