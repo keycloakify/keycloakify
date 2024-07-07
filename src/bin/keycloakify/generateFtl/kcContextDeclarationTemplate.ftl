@@ -1,4 +1,5 @@
 <#assign pageId="PAGE_ID_xIgLsPgGId9D8e">
+<#assign themeType="KEYCLOAKIFY_THEME_TYPE_dExKd3xEdr">
 const kcContext = ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
 if( kcContext.messagesPerField ){
     var existsError_singleFieldName = kcContext.messagesPerField.existsError;
@@ -27,7 +28,7 @@ if( kcContext.messagesPerField ){
 }
 kcContext.keycloakifyVersion = "KEYCLOAKIFY_VERSION_xEdKd3xEdr";
 kcContext.themeVersion = "KEYCLOAKIFY_THEME_VERSION_sIgKd3xEdr3dx";
-kcContext.themeType = "KEYCLOAKIFY_THEME_TYPE_dExKd3xEdr";
+kcContext.themeType = "${themeType}";
 kcContext.themeName = "KEYCLOAKIFY_THEME_NAME_cXxKd3xEer";
 kcContext.pageId = "${pageId}";
 if( kcContext.url && kcContext.url.resourcesPath ){

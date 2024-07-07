@@ -33,6 +33,7 @@ export async function buildJar(params: {
     keycloakAccountV1Version: KeycloakAccountV1Version;
     keycloakThemeAdditionalInfoExtensionVersion: KeycloakThemeAdditionalInfoExtensionVersion;
     resourcesDirPath: string;
+    doesImplementAccountV1Theme: boolean;
     buildContext: BuildContextLike;
 }): Promise<void> {
     const {
@@ -40,6 +41,7 @@ export async function buildJar(params: {
         keycloakAccountV1Version,
         keycloakThemeAdditionalInfoExtensionVersion,
         resourcesDirPath,
+        doesImplementAccountV1Theme,
         buildContext
     } = params;
 
@@ -61,7 +63,7 @@ export async function buildJar(params: {
         srcDirPath: resourcesDirPath,
         destDirPath: tmpResourcesDirPath,
         transformSourceCode:
-            keycloakAccountV1Version !== null
+            !doesImplementAccountV1Theme || keycloakAccountV1Version !== null
                 ? undefined
                 : (params: {
                       fileRelativePath: string;
@@ -105,7 +107,17 @@ export async function buildJar(params: {
                   }
     });
 
-    if (keycloakAccountV1Version === null) {
+    remove_account_v1_in_meta_inf: {
+        if (!doesImplementAccountV1Theme) {
+            // NOTE: We do not have account v1 anyway
+            break remove_account_v1_in_meta_inf;
+        }
+
+        if (keycloakAccountV1Version !== null) {
+            // NOTE: No, we need to keep account-v1 in meta-inf
+            break remove_account_v1_in_meta_inf;
+        }
+
         writeMetaInfKeycloakThemes({
             resourcesDirPath: tmpResourcesDirPath,
             getNewMetaInfKeycloakTheme: ({ metaInfKeycloakTheme }) => {
@@ -135,6 +147,7 @@ export async function buildJar(params: {
             }
         })();
 
+        // TODO: Remove this optimization, it's a bit hacky.
         if (doBreak) {
             break route_legacy_pages;
         }

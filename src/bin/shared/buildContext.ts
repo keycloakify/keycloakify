@@ -63,6 +63,7 @@ export type BuildContext = {
               packageJsonDirPath: string;
               packageJsonScripts: Record<string, string>;
           };
+    doUseAccountV3: boolean;
 };
 
 export type BuildOptions = {
@@ -77,16 +78,17 @@ export type BuildOptions = {
     kcContextExclusionsFtl?: string;
     /** https://docs.keycloakify.dev/v/v10/targetting-specific-keycloak-versions */
     keycloakVersionTargets?: BuildOptions.KeycloakVersionTargets;
+    doUseAccountV3?: boolean;
 };
 
 export namespace BuildOptions {
     export type KeycloakVersionTargets =
         | ({ hasAccountTheme: true } & Record<
-              KeycloakVersionRange.WithAccountTheme,
+              KeycloakVersionRange.WithAccountV1Theme,
               string | boolean
           >)
         | ({ hasAccountTheme: false } & Record<
-              KeycloakVersionRange.WithoutAccountTheme,
+              KeycloakVersionRange.WithoutAccountV1Theme,
               string | boolean
           >);
 }
@@ -229,6 +231,7 @@ export function getBuildContext(params: {
             projectBuildDirPath?: string;
             staticDirPathInProjectBuildDirPath?: string;
             publicDirPath?: string;
+            doUseAccountV3?: boolean;
         };
 
         type ParsedPackageJson = {
@@ -297,7 +300,8 @@ export function getBuildContext(params: {
 
                                 return zKeycloakVersionTargets;
                             })()
-                        ).optional()
+                        ).optional(),
+                        doUseAccountV3: z.boolean().optional()
                     });
 
                     {
@@ -385,6 +389,8 @@ export function getBuildContext(params: {
     })();
 
     const bundler = resolvedViteConfig !== undefined ? "vite" : "webpack";
+
+    const doUseAccountV3 = buildOptions.doUseAccountV3 ?? false;
 
     return {
         bundler:
@@ -606,10 +612,10 @@ export function getBuildContext(params: {
                 }
 
                 const keycloakVersionRange: KeycloakVersionRange = (() => {
-                    const doesImplementAccountTheme =
-                        recordIsImplementedByThemeType.account;
+                    const doesImplementAccountV1Theme =
+                        !doUseAccountV3 && recordIsImplementedByThemeType.account;
 
-                    if (doesImplementAccountTheme) {
+                    if (doesImplementAccountV1Theme) {
                         const keycloakVersionRange = (() => {
                             if (buildForKeycloakMajorVersionNumber <= 21) {
                                 return "21-and-below" as const;
@@ -631,7 +637,7 @@ export function getBuildContext(params: {
                         assert<
                             Equals<
                                 typeof keycloakVersionRange,
-                                KeycloakVersionRange.WithAccountTheme
+                                KeycloakVersionRange.WithAccountV1Theme
                             >
                         >();
 
@@ -648,7 +654,7 @@ export function getBuildContext(params: {
                         assert<
                             Equals<
                                 typeof keycloakVersionRange,
-                                KeycloakVersionRange.WithoutAccountTheme
+                                KeycloakVersionRange.WithoutAccountV1Theme
                             >
                         >();
 
@@ -696,7 +702,7 @@ export function getBuildContext(params: {
             const jarTargets_default = (() => {
                 const jarTargets: BuildContext["jarTargets"] = [];
 
-                if (recordIsImplementedByThemeType.account) {
+                if (!doUseAccountV3 && recordIsImplementedByThemeType.account) {
                     for (const keycloakVersionRange of [
                         "21-and-below",
                         "23",
@@ -706,7 +712,7 @@ export function getBuildContext(params: {
                         assert<
                             Equals<
                                 typeof keycloakVersionRange,
-                                KeycloakVersionRange.WithAccountTheme
+                                KeycloakVersionRange.WithAccountV1Theme
                             >
                         >(true);
                         jarTargets.push({
@@ -723,7 +729,7 @@ export function getBuildContext(params: {
                         assert<
                             Equals<
                                 typeof keycloakVersionRange,
-                                KeycloakVersionRange.WithoutAccountTheme
+                                KeycloakVersionRange.WithoutAccountV1Theme
                             >
                         >(true);
                         jarTargets.push({
@@ -742,8 +748,9 @@ export function getBuildContext(params: {
             }
 
             if (
-                buildOptions.keycloakVersionTargets.hasAccountTheme !==
-                recordIsImplementedByThemeType.account
+                buildOptions.keycloakVersionTargets.hasAccountTheme !== doUseAccountV3
+                    ? false
+                    : recordIsImplementedByThemeType.account
             ) {
                 console.log(
                     chalk.red(
@@ -863,6 +870,7 @@ export function getBuildContext(params: {
             }
 
             return jarTargets;
-        })()
+        })(),
+        doUseAccountV3
     };
 }

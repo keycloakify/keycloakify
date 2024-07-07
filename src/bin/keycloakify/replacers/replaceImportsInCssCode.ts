@@ -12,11 +12,12 @@ assert<BuildContext extends BuildContextLike ? true : false>();
 export function replaceImportsInCssCode(params: {
     cssCode: string;
     cssFileRelativeDirPath: string | undefined;
+    isAccountV3: boolean;
     buildContext: BuildContextLike;
 }): {
     fixedCssCode: string;
 } {
-    const { cssCode, cssFileRelativeDirPath, buildContext } = params;
+    const { cssCode, cssFileRelativeDirPath, buildContext, isAccountV3 } = params;
 
     const fixedCssCode = cssCode.replace(
         /url\(["']?(\/[^/][^)"']+)["']?\)/g,
@@ -37,7 +38,7 @@ export function replaceImportsInCssCode(params: {
                     break inline_style_in_html;
                 }
 
-                return `url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}${assetFileAbsoluteUrlPathname})`;
+                return `url(\${${!isAccountV3 ? "url.resourcesPath" : "resourceUrl"}}/${basenameOfTheKeycloakifyResourcesDir}${assetFileAbsoluteUrlPathname})`;
             }
 
             const assetFileRelativeUrlPathname = posix.relative(

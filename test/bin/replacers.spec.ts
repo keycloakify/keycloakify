@@ -396,6 +396,7 @@ describe("css replacer", () => {
                 }
             `,
             cssFileRelativeDirPath: "assets/",
+            isAccountV3: false,
             buildContext: {
                 urlPathname: undefined
             }
@@ -434,6 +435,7 @@ describe("css replacer", () => {
                 }
             `,
             cssFileRelativeDirPath: "assets/",
+            isAccountV3: false,
             buildContext: {
                 urlPathname: "/a/b/"
             }
@@ -472,6 +474,7 @@ describe("css replacer", () => {
                 }
             `,
             cssFileRelativeDirPath: undefined,
+            isAccountV3: false,
             buildContext: {
                 urlPathname: "/a/b/"
             }
@@ -510,6 +513,7 @@ describe("css replacer", () => {
                 }
             `,
             cssFileRelativeDirPath: undefined,
+            isAccountV3: false,
             buildContext: {
                 urlPathname: undefined
             }

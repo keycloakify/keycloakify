@@ -12,6 +12,7 @@ export type BuildContextLike = BuildContextLike_buildJar & {
     keycloakifyBuildDirPath: string;
     recordIsImplementedByThemeType: BuildContext["recordIsImplementedByThemeType"];
     jarTargets: BuildContext["jarTargets"];
+    doUseAccountV3: boolean;
 };
 
 assert<BuildContext extends BuildContextLike ? true : false>();
@@ -22,7 +23,9 @@ export async function buildJars(params: {
 }): Promise<void> {
     const { resourcesDirPath, buildContext } = params;
 
-    const doesImplementAccountTheme = buildContext.recordIsImplementedByThemeType.account;
+    const doesImplementAccountV1Theme =
+        buildContext.recordIsImplementedByThemeType.account &&
+        !buildContext.doUseAccountV3;
 
     await Promise.all(
         keycloakAccountV1Versions
@@ -30,7 +33,7 @@ export async function buildJars(params: {
                 keycloakThemeAdditionalInfoExtensionVersions.map(
                     keycloakThemeAdditionalInfoExtensionVersion => {
                         const keycloakVersionRange = getKeycloakVersionRangeForJar({
-                            doesImplementAccountTheme,
+                            doesImplementAccountV1Theme,
                             keycloakAccountV1Version,
                             keycloakThemeAdditionalInfoExtensionVersion
                         });
@@ -55,6 +58,7 @@ export async function buildJars(params: {
                             keycloakAccountV1Version,
                             keycloakThemeAdditionalInfoExtensionVersion,
                             resourcesDirPath,
+                            doesImplementAccountV1Theme,
                             buildContext
                         });
                     }

@@ -54,6 +54,7 @@ export type BuildContextLike = BuildContextLike_kcContextExclusionsFtlCode &
         recordIsImplementedByThemeType: BuildContext["recordIsImplementedByThemeType"];
         themeSrcDirPath: string;
         bundler: { type: "vite" } | { type: "webpack" };
+        doUseAccountV3: boolean;
     };
 
 assert<BuildContext extends BuildContextLike ? true : false>();
@@ -71,6 +72,7 @@ export async function generateResourcesForMainTheme(params: {
     };
 
     for (const themeType of ["login", "account"] as const) {
+        const isAccountV3 = themeType === "account" && buildContext.doUseAccountV3;
         if (!buildContext.recordIsImplementedByThemeType[themeType]) {
             continue;
         }
@@ -136,7 +138,8 @@ export async function generateResourcesForMainTheme(params: {
                         const { fixedCssCode } = replaceImportsInCssCode({
                             cssCode: sourceCode.toString("utf8"),
                             cssFileRelativeDirPath: pathDirname(fileRelativePath),
-                            buildContext
+                            buildContext,
+                            isAccountV3
                         });
 
                         return {
@@ -171,7 +174,8 @@ export async function generateResourcesForMainTheme(params: {
             fieldNames: readFieldNameUsage({
                 themeSrcDirPath: buildContext.themeSrcDirPath,
                 themeType
-            })
+            }),
+            isAccountV3
         });
 
         [
@@ -180,13 +184,15 @@ export async function generateResourcesForMainTheme(params: {
                     case "login":
                         return loginThemePageIds;
                     case "account":
-                        return accountThemePageIds;
+                        return isAccountV3 ? ["index.ftl"] : accountThemePageIds;
                 }
             })(),
-            ...readExtraPagesNames({
-                themeType,
-                themeSrcDirPath: buildContext.themeSrcDirPath
-            })
+            ...(isAccountV3
+                ? []
+                : readExtraPagesNames({
+                      themeType,
+                      themeSrcDirPath: buildContext.themeSrcDirPath
+                  }))
         ].forEach(pageId => {
             const { ftlCode } = generateFtlFilesCode({ pageId });
 
@@ -196,40 +202,52 @@ export async function generateResourcesForMainTheme(params: {
             );
         });
 
-        generateMessageProperties({
-            themeSrcDirPath: buildContext.themeSrcDirPath,
-            themeType
-        }).forEach(({ languageTag, propertiesFileSource }) => {
-            const messagesDirPath = pathJoin(themeTypeDirPath, "messages");
+        i18n_messages_generation: {
+            if (isAccountV3) {
+                break i18n_messages_generation;
+            }
 
-            fs.mkdirSync(pathJoin(themeTypeDirPath, "messages"), {
-                recursive: true
+            generateMessageProperties({
+                themeSrcDirPath: buildContext.themeSrcDirPath,
+                themeType
+            }).forEach(({ languageTag, propertiesFileSource }) => {
+                const messagesDirPath = pathJoin(themeTypeDirPath, "messages");
+
+                fs.mkdirSync(pathJoin(themeTypeDirPath, "messages"), {
+                    recursive: true
+                });
+
+                const propertiesFilePath = pathJoin(
+                    messagesDirPath,
+                    `messages_${languageTag}.properties`
+                );
+
+                fs.writeFileSync(
+                    propertiesFilePath,
+                    Buffer.from(propertiesFileSource, "utf8")
+                );
             });
+        }
 
-            const propertiesFilePath = pathJoin(
-                messagesDirPath,
-                `messages_${languageTag}.properties`
-            );
+        keycloak_static_resources: {
+            if (isAccountV3) {
+                break keycloak_static_resources;
+            }
 
-            fs.writeFileSync(
-                propertiesFilePath,
-                Buffer.from(propertiesFileSource, "utf8")
-            );
-        });
-
-        await downloadKeycloakStaticResources({
-            keycloakVersion: (() => {
-                switch (themeType) {
-                    case "account":
-                        return lastKeycloakVersionWithAccountV1;
-                    case "login":
-                        return buildContext.loginThemeResourcesFromKeycloakVersion;
-                }
-            })(),
-            themeDirPath: pathResolve(pathJoin(themeTypeDirPath, "..")),
-            themeType,
-            buildContext
-        });
+            await downloadKeycloakStaticResources({
+                keycloakVersion: (() => {
+                    switch (themeType) {
+                        case "account":
+                            return lastKeycloakVersionWithAccountV1;
+                        case "login":
+                            return buildContext.loginThemeResourcesFromKeycloakVersion;
+                    }
+                })(),
+                themeDirPath: pathResolve(pathJoin(themeTypeDirPath, "..")),
+                themeType,
+                buildContext
+            });
+        }
 
         fs.writeFileSync(
             pathJoin(themeTypeDirPath, "theme.properties"),
@@ -238,12 +256,13 @@ export async function generateResourcesForMainTheme(params: {
                     `parent=${(() => {
                         switch (themeType) {
                             case "account":
-                                return accountV1ThemeName;
+                                return isAccountV3 ? "base" : accountV1ThemeName;
                             case "login":
                                 return "keycloak";
                         }
                         assert<Equals<typeof themeType, never>>(false);
                     })()}`,
+                    ...(isAccountV3 ? ["deprecatedMode=false"] : []),
                     ...(buildContext.extraThemeProperties ?? []),
                     ...buildContext.environmentVariables.map(
                         ({ name, default: defaultValue }) =>
@@ -268,7 +287,15 @@ export async function generateResourcesForMainTheme(params: {
         });
     }
 
-    if (buildContext.recordIsImplementedByThemeType.account) {
+    bring_in_account_v1: {
+        if (buildContext.doUseAccountV3) {
+            break bring_in_account_v1;
+        }
+
+        if (!buildContext.recordIsImplementedByThemeType.account) {
+            break bring_in_account_v1;
+        }
+
         await bringInAccountV1({
             resourcesDirPath,
             buildContext

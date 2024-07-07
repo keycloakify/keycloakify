@@ -34,6 +34,7 @@ export function generateFtlFilesCodeFactory(params: {
     keycloakifyVersion: string;
     themeType: ThemeType;
     fieldNames: string[];
+    isAccountV3: boolean;
 }) {
     const {
         themeName,
@@ -41,7 +42,8 @@ export function generateFtlFilesCodeFactory(params: {
         buildContext,
         keycloakifyVersion,
         themeType,
-        fieldNames
+        fieldNames,
+        isAccountV3
     } = params;
 
     const $ = cheerio.load(indexHtmlCode);
@@ -68,7 +70,8 @@ export function generateFtlFilesCodeFactory(params: {
             const { fixedCssCode } = replaceImportsInCssCode({
                 cssCode,
                 cssFileRelativeDirPath: undefined,
-                buildContext
+                buildContext,
+                isAccountV3
             });
 
             $(element).text(fixedCssCode);
@@ -93,7 +96,7 @@ export function generateFtlFilesCodeFactory(params: {
                         new RegExp(
                             `^${(buildContext.urlPathname ?? "/").replace(/\//g, "\\/")}`
                         ),
-                        `\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/`
+                        `\${${!isAccountV3 ? "url.resourcesPath" : "resourceUrl"}}/${basenameOfTheKeycloakifyResourcesDir}/`
                     )
                 );
             })

@@ -6,17 +6,17 @@ import type {
 import type { KeycloakVersionRange } from "../../shared/KeycloakVersionRange";
 
 export function getKeycloakVersionRangeForJar(params: {
-    doesImplementAccountTheme: boolean;
+    doesImplementAccountV1Theme: boolean;
     keycloakAccountV1Version: KeycloakAccountV1Version;
     keycloakThemeAdditionalInfoExtensionVersion: KeycloakThemeAdditionalInfoExtensionVersion;
 }): KeycloakVersionRange | undefined {
     const {
         keycloakAccountV1Version,
         keycloakThemeAdditionalInfoExtensionVersion,
-        doesImplementAccountTheme
+        doesImplementAccountV1Theme
     } = params;
 
-    if (doesImplementAccountTheme) {
+    if (doesImplementAccountV1Theme) {
         const keycloakVersionRange = (() => {
             switch (keycloakAccountV1Version) {
                 case null:
@@ -63,7 +63,7 @@ export function getKeycloakVersionRangeForJar(params: {
         assert<
             Equals<
                 typeof keycloakVersionRange,
-                KeycloakVersionRange.WithAccountTheme | undefined
+                KeycloakVersionRange.WithAccountV1Theme | undefined
             >
         >();
 
@@ -87,7 +87,7 @@ export function getKeycloakVersionRangeForJar(params: {
         assert<
             Equals<
                 typeof keycloakVersionRange,
-                KeycloakVersionRange.WithoutAccountTheme | undefined
+                KeycloakVersionRange.WithoutAccountV1Theme | undefined
             >
         >();
 
