@@ -10,7 +10,7 @@ import { rm } from "./fs.rm";
 
 export async function downloadAndExtractArchive(params: {
     url: string;
-    uniqueIdOfOnOnArchiveFile: string;
+    uniqueIdOfOnArchiveFile: string;
     onArchiveFile: (params: {
         fileRelativePath: string;
         readFile: () => Promise<Buffer>;
@@ -22,7 +22,7 @@ export async function downloadAndExtractArchive(params: {
     cacheDirPath: string;
     fetchOptions: FetchOptions | undefined;
 }): Promise<{ extractedDirPath: string }> {
-    const { url, uniqueIdOfOnOnArchiveFile, onArchiveFile, cacheDirPath, fetchOptions } =
+    const { url, uniqueIdOfOnArchiveFile, onArchiveFile, cacheDirPath, fetchOptions } =
         params;
 
     const archiveFileBasename = url.split("?")[0].split("/").reverse()[0];
@@ -63,7 +63,7 @@ export async function downloadAndExtractArchive(params: {
         });
     }
 
-    const extractDirBasename = `${archiveFileBasename.split(".")[0]}_${uniqueIdOfOnOnArchiveFile}_${crypto
+    const extractDirBasename = `${archiveFileBasename.split(".")[0]}_${uniqueIdOfOnArchiveFile}_${crypto
         .createHash("sha256")
         .update(onArchiveFile.toString())
         .digest("hex")

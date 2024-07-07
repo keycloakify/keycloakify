@@ -24,7 +24,7 @@ export async function downloadKeycloakDefaultTheme(params: {
         url: `https://repo1.maven.org/maven2/org/keycloak/keycloak-themes/${keycloakVersion}/keycloak-themes-${keycloakVersion}.jar`,
         cacheDirPath: buildContext.cacheDirPath,
         fetchOptions: buildContext.fetchOptions,
-        uniqueIdOfOnOnArchiveFile: "downloadKeycloakDefaultTheme",
+        uniqueIdOfOnArchiveFile: "downloadKeycloakDefaultTheme",
         onArchiveFile: async params => {
             const fileRelativePath = pathRelative("theme", params.fileRelativePath);
 
