@@ -12,6 +12,7 @@ import { crawl } from "../src/bin/tools/crawl";
 import { downloadKeycloakDefaultTheme } from "../src/bin/shared/downloadKeycloakDefaultTheme";
 import { getThisCodebaseRootDirPath } from "../src/bin/tools/getThisCodebaseRootDirPath";
 import { deepAssign } from "../src/tools/deepAssign";
+import { getProxyFetchOptions } from "../src/bin/tools/fetchProxyOptions";
 
 // NOTE: To run without argument when we want to generate src/i18n/generated_kcMessages files,
 // update the version array for generating for newer version.
@@ -33,7 +34,9 @@ async function main() {
                 ".cache",
                 "keycloakify"
             ),
-            npmWorkspaceRootDirPath: thisCodebaseRootDirPath
+            fetchOptions: getProxyFetchOptions({
+                npmConfigGetCwd: thisCodebaseRootDirPath
+            })
         }
     });
 
