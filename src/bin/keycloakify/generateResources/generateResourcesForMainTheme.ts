@@ -4,7 +4,8 @@ import {
     join as pathJoin,
     resolve as pathResolve,
     relative as pathRelative,
-    dirname as pathDirname
+    dirname as pathDirname,
+    basename as pathBasename
 } from "path";
 import { replaceImportsInJsCode } from "../replacers/replaceImportsInJsCode";
 import { replaceImportsInCssCode } from "../replacers/replaceImportsInCssCode";
@@ -42,6 +43,7 @@ import {
 } from "../../shared/metaInfKeycloakThemes";
 import { objectEntries } from "tsafe/objectEntries";
 import { escapeStringForPropertiesFile } from "../../tools/escapeStringForPropertiesFile";
+import { downloadAndExtractArchive } from "../../tools/downloadAndExtractArchive";
 
 export type BuildContextLike = BuildContextLike_kcContextExclusionsFtlCode &
     BuildContextLike_downloadKeycloakStaticResources &
@@ -299,6 +301,39 @@ export async function generateResourcesForMainTheme(params: {
         await bringInAccountV1({
             resourcesDirPath,
             buildContext
+        });
+    }
+
+    bring_in_account_v3_i18n_messages: {
+        if (!buildContext.doUseAccountV3) {
+            break bring_in_account_v3_i18n_messages;
+        }
+
+        const { extractedDirPath } = await downloadAndExtractArchive({
+            url: "https://repo1.maven.org/maven2/org/keycloak/keycloak-account-ui/25.0.1/keycloak-account-ui-25.0.1.jar",
+            cacheDirPath: buildContext.cacheDirPath,
+            fetchOptions: buildContext.fetchOptions,
+            uniqueIdOfOnArchiveFile: "bring_in_account_v3_i18n_messages",
+            onArchiveFile: async ({ fileRelativePath, writeFile }) => {
+                if (
+                    !fileRelativePath.startsWith(
+                        pathJoin("theme", "keycloak.v3", "account", "messages")
+                    )
+                ) {
+                    return;
+                }
+                await writeFile({
+                    fileRelativePath: pathBasename(fileRelativePath)
+                });
+            }
+        });
+
+        transformCodebase({
+            srcDirPath: extractedDirPath,
+            destDirPath: pathJoin(
+                getThemeTypeDirPath({ themeType: "account" }),
+                "messages"
+            )
         });
     }
 
