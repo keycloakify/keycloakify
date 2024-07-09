@@ -575,7 +575,7 @@ export function getBuildContext(params: {
                 try {
                     child_process.execSync("npm config get", {
                         cwd: dirPath,
-                        stdio: "ignore"
+                        stdio: "pipe"
                     });
                 } catch (error) {
                     if (String(error).includes("ENOWORKSPACES")) {
