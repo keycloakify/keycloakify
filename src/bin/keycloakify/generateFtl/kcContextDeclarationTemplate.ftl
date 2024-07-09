@@ -34,6 +34,14 @@ kcContext.pageId = "${pageId}";
 if( kcContext.url && kcContext.url.resourcesPath ){
     kcContext.url.resourcesCommonPath = kcContext.url.resourcesPath + "/" + "RESOURCES_COMMON_cLsLsMrtDkpVv";
 }
+if( kcContext.resourceUrl && !kcContext.url ){
+    Object.defineProperty(kcContext, "url", {
+        value: {
+            resourcesPath: kcContext.resourceUrl
+        },
+        enumerable: false
+    });
+}
 kcContext["x-keycloakify"] = {};
 <#if profile?? && profile.attributes??>
     kcContext["x-keycloakify"].realmMessageBundleUserProfile = {
@@ -426,6 +434,14 @@ function decodeHtmlEntities(htmlStr){
 
                 <#return jsFunctionCode>
 
+            </#if>
+
+            <#if themeType == "account" && are_same_path(path, ["realm", "isInternationalizationEnabled"])>
+                <#attempt>
+                    <#return realm.isInternationalizationEnabled()?c>
+                <#recover>
+                    <#return "ABORT: Couldn't evaluate realm.isInternationalizationEnabled()">
+                </#attempt>
             </#if>
 
             <#return "ABORT: It's a method">
