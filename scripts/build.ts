@@ -1,6 +1,6 @@
 import * as child_process from "child_process";
 import * as fs from "fs";
-import { join, relative } from "path";
+import { join } from "path";
 import { assert } from "tsafe/assert";
 import { transformCodebase } from "../src/bin/tools/transformCodebase";
 import chalk from "chalk";
