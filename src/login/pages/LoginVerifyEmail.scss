@@ -1,0 +1,33 @@
+.main-container{
+    width: 500px;
+    margin: auto;
+    margin-top: 70px;
+
+    -webkit-box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.75);
+
+    .header1{
+        background-color: #39A9B0;
+        font-size: 1.1rem;
+        color: white;
+        height: 3.5rem;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        left: 50%;
+        padding-left: 1rem;
+    }
+
+    .inner-text{
+        padding: 1.5rem 1.5rem 1rem;
+        font-size: 1rem;
+    }
+
+    .last-text{
+        padding: 1.5rem 1.5rem 1rem;
+        text-align: center;
+        background-color: #efefef;
+        font-size: 14px;
+    }
+}

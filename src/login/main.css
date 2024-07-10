@@ -1,8 +1,10 @@
 body.kcBodyClass{
     background-color: white;
+    font-family: 'Commissioner', sans-serif;
 }
 
 .login-pf{
     background: none !important;
     background-color: white !important;
+    font-family: 'Commissioner', sans-serif;
 }
