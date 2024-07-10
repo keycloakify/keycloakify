@@ -204,13 +204,13 @@ export default function WebauthnAuthenticate(props: PageProps<Extract<KcContext,
                                                             className={kcClsx("kcSelectAuthListItemDescriptionClass")}
                                                         >
                                                             {authenticator.transports.displayNameProperties
-                                                                .map((nameProperty, i, arr) => ({
-                                                                    nameProperty,
+                                                                .map((displayNameProperty, i, arr) => ({
+                                                                    displayNameProperty,
                                                                     hasNext: i !== arr.length - 1
                                                                 }))
-                                                                .map(({ nameProperty, hasNext }) => (
-                                                                    <Fragment key={nameProperty}>
-                                                                        <span>{msg(nameProperty)}</span>
+                                                                .map(({ displayNameProperty, hasNext }) => (
+                                                                    <Fragment key={displayNameProperty}>
+                                                                        {advancedMsg(displayNameProperty)}
                                                                         {hasNext && <span>, </span>}
                                                                     </Fragment>
                                                                 ))}

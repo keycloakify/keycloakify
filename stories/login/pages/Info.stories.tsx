@@ -43,9 +43,14 @@ export const WithRequiredActions: Story = {
         <KcPageStory
             kcContext={{
                 message: {
-                    summary: "Server message"
+                    summary: "Required actions: "
                 },
-                requiredActions: ["CONFIGURE_TOTP", "UPDATE_PROFILE", "VERIFY_EMAIL"]
+                requiredActions: ["CONFIGURE_TOTP", "UPDATE_PROFILE", "VERIFY_EMAIL", "CUSTOM_ACTION"],
+                "x-keycloakify": {
+                    messages: {
+                        "requiredAction.CUSTOM_ACTION": "Custom action"
+                    }
+                }
             }}
         />
     )

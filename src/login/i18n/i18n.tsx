@@ -11,8 +11,7 @@ export type KcContextLike = {
         supported: { languageTag: string; url: string; label: string }[];
     };
     "x-keycloakify": {
-        realmMessageBundleUserProfile: Record<string, string> | undefined;
-        realmMessageBundleTermsText: string | undefined;
+        messages: Record<string, string>;
     };
 };
 
@@ -131,8 +130,7 @@ export function createGetI18n<ExtraMessageKey extends string = never>(messageBun
             messages_fallbackLanguage,
             messageBundle_fallbackLanguage: messageBundle[fallbackLanguageTag],
             messageBundle_currentLanguage: messageBundle[partialI18n.currentLanguageTag],
-            realmMessageBundleUserProfile: kcContext["x-keycloakify"].realmMessageBundleUserProfile,
-            realmMessageBundleTermsText: kcContext["x-keycloakify"].realmMessageBundleTermsText
+            messageBundle_realm: kcContext["x-keycloakify"].messages
         });
 
         const isCurrentLanguageFallbackLanguage = partialI18n.currentLanguageTag === fallbackLanguageTag;
@@ -179,10 +177,9 @@ function createI18nTranslationFunctionsFactory<MessageKey extends string, ExtraM
     messages_fallbackLanguage: Record<MessageKey, string>;
     messageBundle_fallbackLanguage: Record<ExtraMessageKey, string> | undefined;
     messageBundle_currentLanguage: Partial<Record<ExtraMessageKey, string>> | undefined;
-    realmMessageBundleUserProfile: Record<string, string> | undefined;
-    realmMessageBundleTermsText: string | undefined;
+    messageBundle_realm: Record<string, string>;
 }) {
-    const { messageBundle_currentLanguage, realmMessageBundleUserProfile, realmMessageBundleTermsText } = params;
+    const { messageBundle_currentLanguage, messageBundle_realm } = params;
 
     const messages_fallbackLanguage = {
         ...params.messages_fallbackLanguage,
@@ -201,11 +198,20 @@ function createI18nTranslationFunctionsFactory<MessageKey extends string, ExtraM
             const { key, args, doRenderAsHtml } = props;
 
             const messageOrUndefined: string | undefined = (() => {
-                const messageOrUndefined = (messages_currentLanguage as any)[key] ?? (messages_fallbackLanguage as any)[key];
+                terms_text: {
+                    if (key !== "termsText") {
+                        break terms_text;
+                    }
+                    const termsTextMessage = messageBundle_realm[key];
 
-                if (key === "termsText" && realmMessageBundleTermsText !== undefined) {
-                    return realmMessageBundleTermsText;
+                    if (termsTextMessage === undefined) {
+                        break terms_text;
+                    }
+
+                    return termsTextMessage;
                 }
+
+                const messageOrUndefined = (messages_currentLanguage as any)[key] ?? (messages_fallbackLanguage as any)[key];
 
                 return messageOrUndefined;
             })();
@@ -259,15 +265,11 @@ function createI18nTranslationFunctionsFactory<MessageKey extends string, ExtraM
         function resolveMsgAdvanced(props: { key: string; args: (string | undefined)[]; doRenderAsHtml: boolean }): JSX.Element | string {
             const { key, args, doRenderAsHtml } = props;
 
-            user_profile: {
-                if (realmMessageBundleUserProfile === undefined) {
-                    break user_profile;
-                }
-
-                const resolvedMessage = realmMessageBundleUserProfile[key] ?? realmMessageBundleUserProfile["${" + key + "}"];
+            realm_messages: {
+                const resolvedMessage = messageBundle_realm[key] ?? messageBundle_realm["${" + key + "}"];
 
                 if (resolvedMessage === undefined) {
-                    break user_profile;
+                    break realm_messages;
                 }
 
                 return doRenderAsHtml ? (

@@ -41,3 +41,29 @@ export const WithDifferentAuthenticationMethods: Story = {
         />
     )
 };
+
+export const WithRealmTranslations: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                auth: {
+                    authenticationSelections: [
+                        {
+                            authExecId: "f0c22855-eda7-4092-8565-0c22f77d2ffb",
+                            displayName: "home-idp-discovery-display-name",
+                            helpText: "home-idp-discovery-help-text",
+                            iconCssClass: "kcAuthenticatorDefaultClass"
+                        }
+                    ]
+                },
+                ["x-keycloakify"]: {
+                    messages: {
+                        "${home-idp-discovery-display-name}": "Home identity provider",
+                        "${home-idp-discovery-help-text}":
+                            "Sign in via your home identity provider which will be automatically determined based on your provided email address."
+                    }
+                }
+            }}
+        />
+    )
+};

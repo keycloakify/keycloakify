@@ -162,8 +162,7 @@ export const kcContextCommonMock: KcContext.Common = {
     isAppInitiatedAction: false,
     properties: {},
     "x-keycloakify": {
-        realmMessageBundleUserProfile: undefined,
-        realmMessageBundleTermsText: undefined
+        messages: {}
     }
 };
 

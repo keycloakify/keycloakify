@@ -69,7 +69,7 @@ export const WithRestrictedToMITStudents: Story = {
                     }
                 },
                 "x-keycloakify": {
-                    realmMessageBundleUserProfile: {
+                    messages: {
                         "${profile.attributes.email.inputHelperTextBefore}": "Please use your MIT or Berkeley email.",
                         "${profile.attributes.email.pattern.error}":
                             "This is not an MIT (<strong>@mit.edu</strong>) nor a Berkeley (<strong>@berkeley.edu</strong>) email."
@@ -103,7 +103,7 @@ export const WithFavoritePet: Story = {
                     }
                 },
                 "x-keycloakify": {
-                    realmMessageBundleUserProfile: {
+                    messages: {
                         "${profile.attributes.favoritePet}": "Favorite Pet",
                         "${profile.attributes.favoritePet.options.cat}": "Fluffy Cat",
                         "${profile.attributes.favoritePet.options.dog}": "Loyal Dog",
@@ -177,7 +177,9 @@ export const WithTermsAcceptance: Story = {
             kcContext={{
                 termsAcceptanceRequired: true,
                 "x-keycloakify": {
-                    realmMessageBundleTermsText: "<a href='https://example.com/terms'>Service Terms of Use</a>"
+                    messages: {
+                        termsText: "<a href='https://example.com/terms'>Service Terms of Use</a>"
+                    }
                 }
             }}
         />

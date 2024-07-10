@@ -1,9 +1,8 @@
 import type { ThemeType, LoginThemePageId } from "keycloakify/bin/shared/constants";
-import type { ExtractAfterStartingWith } from "keycloakify/tools/ExtractAfterStartingWith";
 import type { ValueOf } from "keycloakify/tools/ValueOf";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
-import type { MessageKey } from "../i18n/i18n";
+import type { ClassKey } from "keycloakify/login/TemplateProps";
 
 export type ExtendKcContext<
     KcContextExtension extends { properties?: Record<string, string | undefined> },
@@ -155,8 +154,7 @@ export declare namespace KcContext {
         };
         properties: {};
         "x-keycloakify": {
-            realmMessageBundleUserProfile: Record<string, string> | undefined;
-            realmMessageBundleTermsText: string | undefined;
+            messages: Record<string, string>;
         };
     };
 
@@ -221,7 +219,7 @@ export declare namespace KcContext {
     export type Info = Common & {
         pageId: "info.ftl";
         messageHeader?: string;
-        requiredActions?: ExtractAfterStartingWith<"requiredAction.", MessageKey>[];
+        requiredActions?: string[];
         skipLink: boolean;
         pageRedirectUri?: string;
         actionUri?: string;
@@ -384,7 +382,7 @@ export declare namespace KcContext {
             credentialId: string;
             transports: {
                 iconClass: string;
-                displayNameProperties?: MessageKey[];
+                displayNameProperties?: string[];
             };
             label: string;
             createdAt: string;
@@ -501,26 +499,9 @@ export declare namespace KcContext {
     export namespace SelectAuthenticator {
         export type AuthenticationSelection = {
             authExecId: string;
-            displayName:
-                | "otp-display-name"
-                | "password-display-name"
-                | "auth-username-form-display-name"
-                | "auth-username-password-form-display-name"
-                | "webauthn-display-name"
-                | "webauthn-passwordless-display-name";
-            helpText:
-                | "otp-help-text"
-                | "password-help-text"
-                | "auth-username-form-help-text"
-                | "auth-username-password-form-help-text"
-                | "webauthn-help-text"
-                | "webauthn-passwordless-help-text";
-            iconCssClass?:
-                | "kcAuthenticatorDefaultClass"
-                | "kcAuthenticatorPasswordClass"
-                | "kcAuthenticatorOTPClass"
-                | "kcAuthenticatorWebAuthnClass"
-                | "kcAuthenticatorWebAuthnPasswordlessClass";
+            displayName: string;
+            helpText: string;
+            iconCssClass?: ClassKey;
         };
     }
 

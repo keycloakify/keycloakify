@@ -5,7 +5,7 @@ import type { I18n } from "../i18n";
 export default function Info(props: PageProps<Extract<KcContext, { pageId: "info.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
-    const { msgStr, msg } = i18n;
+    const { advancedMsgStr, msg } = i18n;
 
     const { messageHeader, message, requiredActions, skipLink, pageRedirectUri, actionUri, client } = kcContext;
 
@@ -34,7 +34,7 @@ export default function Info(props: PageProps<Extract<KcContext, { pageId: "info
                             if (requiredActions) {
                                 html += "<b>";
 
-                                html += requiredActions.map(requiredAction => msgStr(`requiredAction.${requiredAction}` as const)).join(",");
+                                html += requiredActions.map(requiredAction => advancedMsgStr(`requiredAction.${requiredAction}`)).join(",");
 
                                 html += "</b>";
                             }

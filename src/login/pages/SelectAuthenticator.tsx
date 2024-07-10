@@ -8,7 +8,7 @@ export default function SelectAuthenticator(props: PageProps<Extract<KcContext, 
     const { url, auth } = kcContext;
 
     const { kcClsx } = getKcClsx({ doUseDefaultCss, classes });
-    const { msg } = i18n;
+    const { msg, advancedMsg } = i18n;
 
     return (
         <Template
@@ -30,11 +30,11 @@ export default function SelectAuthenticator(props: PageProps<Extract<KcContext, 
                             value={authenticationSelection.authExecId}
                         >
                             <div className={kcClsx("kcSelectAuthListItemIconClass")}>
-                                <i className={kcClsx(authenticationSelection.iconCssClass, "kcSelectAuthListItemIconPropertyClass")} />
+                                <i className={kcClsx("kcSelectAuthListItemIconPropertyClass", authenticationSelection.iconCssClass)} />
                             </div>
                             <div className={kcClsx("kcSelectAuthListItemBodyClass")}>
-                                <div className={kcClsx("kcSelectAuthListItemHeadingClass")}>{msg(authenticationSelection.displayName)}</div>
-                                <div className={kcClsx("kcSelectAuthListItemDescriptionClass")}>{msg(authenticationSelection.helpText)}</div>
+                                <div className={kcClsx("kcSelectAuthListItemHeadingClass")}>{advancedMsg(authenticationSelection.displayName)}</div>
+                                <div className={kcClsx("kcSelectAuthListItemDescriptionClass")}>{advancedMsg(authenticationSelection.helpText)}</div>
                             </div>
                             <div className={kcClsx("kcSelectAuthListItemFillClass")} />
                             <div className={kcClsx("kcSelectAuthListItemArrowClass")}>
