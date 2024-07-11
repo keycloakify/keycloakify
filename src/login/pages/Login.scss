@@ -1,3 +1,38 @@
+.notification{
+    background-color: #edf7ed;
+    max-width: 450px;
+    margin: auto;
+    margin-top: 20px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items:flex-start;
+    border-radius: 10px;
+    border: 1px solid #a2d8a2;
+    padding: 10px 10px 10px 20px;
+
+    .check-icon{
+        width: 24px;
+    }
+
+    .cross-icon{
+        &:hover{
+            cursor: pointer;
+        }
+    }
+
+    .header-notification{
+        font-weight: bolder;
+        font-size: 1rem;
+    }
+
+    .content-notification{
+        font-size: 14px;
+    }
+}
+
+
+
 .main-container{
     max-width: 1200px;
     margin: auto;
@@ -5,7 +40,7 @@
     flex-wrap: wrap;
     justify-content: space-around;
     align-items: center;
-    margin-top: 15.6rem;
+    margin-top: 15rem;
 
     .field-container{
         min-width: 450px;

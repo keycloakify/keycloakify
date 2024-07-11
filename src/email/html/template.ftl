@@ -1,6 +1,6 @@
 <#macro emailLayout>
 <html>
-<body>
+<body style="font-family: 'Commissioner', sans-serif;">
     <#nested>
 </body>
 </html>
