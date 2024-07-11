@@ -52,6 +52,14 @@ kcContext["x-keycloakify"] = {
                 <#if attribute.displayName??>
                     "${attribute.displayName}": decodeHtmlEntities("${advancedMsg(attribute.displayName)?js_string}"),
                 </#if>
+                <#if attribute.group??>
+                    <#if attribute.group.displayDescription??>
+                        "${attribute.group.displayDescription}": decodeHtmlEntities("${advancedMsg(attribute.group.displayDescription)?js_string}"),
+                    </#if>
+                    <#if attribute.group.displayHeader??>
+                        "${attribute.group.displayHeader}": decodeHtmlEntities("${advancedMsg(attribute.group.displayHeader)?js_string}"),
+                    </#if>
+                </#if>
                 <#if attribute.annotations??>
                     <#if attribute.annotations.inputHelperTextBefore??>
                         "${attribute.annotations.inputHelperTextBefore}": decodeHtmlEntities("${advancedMsg(attribute.annotations.inputHelperTextBefore)?js_string}"),
@@ -128,7 +136,7 @@ attributes_to_attributesByName: {
     if( !kcContext.profile.attributes ){
         break attributes_to_attributesByName;
     }
-    var attributes =  kcContext.profile.attributes;
+    var attributes = kcContext.profile.attributes;
     delete kcContext.profile.attributes;
     kcContext.profile.attributesByName = {};
     attributes.forEach(function(attribute){
