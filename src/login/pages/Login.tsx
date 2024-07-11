@@ -4,9 +4,9 @@ import type { PageProps } from "keycloakify/login/pages/PageProps";
 import { getKcClsx, type KcClsx } from "keycloakify/login/lib/kcClsx";
 import type { KcContext } from "../KcContext";
 import type { I18n } from "../i18n";
-import './Login.scss'
-import checkedimg from '../../../public/keycloak-resources/login/resources/img/checked.png'
-import crossimg from '../../../public/keycloak-resources/login/resources/img/cross.png'
+import './Login.scss';
+import checkedimg from '../../img/checked.png';
+import crossimg from '../../img/cross.png';
 
 export default function Login(props: PageProps<Extract<KcContext, { pageId: "login.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
@@ -16,7 +16,7 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
         classes
     });
 
-    const { realm, url, usernameHidden, login, registrationDisabled, messagesPerField, auth } = kcContext;
+    const { realm, url, usernameHidden, login, registrationDisabled, messagesPerField, social } = kcContext;
 
     const [isLoginButtonDisabled, setIsLoginButtonDisabled] = useState(false);
     const [active, setActive ] = useState(true);
@@ -32,7 +32,7 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
             displayInfo={realm.password && realm.registrationAllowed && !registrationDisabled}
         >
             <>
-                {auth?.attemptedUsername && active &&
+                {login?.username && active &&
                     <div className="notification">
                         <img src={checkedimg} className="check-icon" width="20px" height="20px" />
                         <div style={{marginLeft: '10px'}}>
@@ -40,7 +40,7 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
                                 Check Your Inbox!
                             </div>
                             <div className="content-notification">
-                                We've sent an email to <b>{auth.attemptedUsername}</b> to verify your email address and
+                                We've sent an email to <b>{login.username}</b> to verify your email address and
                                 registration.
                             </div>
                         </div>
@@ -111,10 +111,11 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
                                         </a>
 
                                         <br />
-
-                                        <a href={url.loginResetCredentialsUrl}>
-                                            Staff login
-                                        </a>
+                                        {social?.providers &&
+                                            <a href={social.providers[1]?.loginUrl}>
+                                                Staff login
+                                            </a>
+                                        }
                                     </p>
                                 </div>
                                 <input
