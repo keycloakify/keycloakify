@@ -53,14 +53,29 @@ export const WithRealmTranslations: Story = {
                             displayName: "home-idp-discovery-display-name",
                             helpText: "home-idp-discovery-help-text",
                             iconCssClass: "kcAuthenticatorDefaultClass"
+                        },
+                        {
+                            authExecId: "20456f5a-8b2b-45f3-98e0-551dcb27e3e1",
+                            displayName: "identity-provider-redirctor-display-name",
+                            helpText: "identity-provider-redirctor-help-text",
+                            iconCssClass: "kcAuthenticatorDefaultClass"
+                        },
+                        {
+                            authExecId: "eb435db9-474e-473a-8da7-c184fa510b96",
+                            displayName: "auth-username-password-form-display-name",
+                            helpText: "auth-username-password-help-text",
+                            iconCssClass: "kcAuthenticatorDefaultClass"
                         }
                     ]
                 },
-                ["x-keycloakify"]: {
+                "x-keycloakify": {
                     messages: {
-                        "${home-idp-discovery-display-name}": "Home identity provider",
-                        "${home-idp-discovery-help-text}":
-                            "Sign in via your home identity provider which will be automatically determined based on your provided email address."
+                        "home-idp-discovery-display-name": "Home identity provider",
+                        "home-idp-discovery-help-text":
+                            "Sign in via your home identity provider which will be automatically determined based on your provided email address.",
+                        "identity-provider-redirctor-display-name": "Identity Provider Redirector",
+                        "identity-provider-redirctor-help-text": "Sign in via your identity provider.",
+                        "auth-username-password-help-text": "Sign in via your username and password."
                     }
                 }
             }}
