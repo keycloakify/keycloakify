@@ -17,8 +17,8 @@ export async function downloadKeycloakDefaultTheme(params: {
 }): Promise<{ defaultThemeDirPath: string }> {
     const { keycloakVersion, buildContext } = params;
 
-    let kcNodeModulesKeepFilePaths: string[] | undefined = undefined;
-    let kcNodeModulesKeepFilePaths_lastAccountV1: string[] | undefined = undefined;
+    let kcNodeModulesKeepFilePaths: Set<string> | undefined = undefined;
+    let kcNodeModulesKeepFilePaths_lastAccountV1: Set<string> | undefined = undefined;
 
     const { extractedDirPath } = await downloadAndExtractArchive({
         url: `https://repo1.maven.org/maven2/org/keycloak/keycloak-themes/${keycloakVersion}/keycloak-themes-${keycloakVersion}.jar`,
@@ -72,16 +72,19 @@ export async function downloadKeycloakDefaultTheme(params: {
                 }
 
                 skip_node_modules: {
-                    if (
-                        !fileRelativePath.startsWith(
-                            pathJoin("keycloak", "common", "resources", "node_modules")
-                        )
-                    ) {
+                    const nodeModulesRelativeDirPath = pathJoin(
+                        "keycloak",
+                        "common",
+                        "resources",
+                        "node_modules"
+                    );
+
+                    if (!fileRelativePath.startsWith(nodeModulesRelativeDirPath)) {
                         break skip_node_modules;
                     }
 
                     if (kcNodeModulesKeepFilePaths_lastAccountV1 === undefined) {
-                        kcNodeModulesKeepFilePaths_lastAccountV1 = [
+                        kcNodeModulesKeepFilePaths_lastAccountV1 = new Set([
                             pathJoin("patternfly", "dist", "css", "patternfly.min.css"),
                             pathJoin(
                                 "patternfly",
@@ -125,13 +128,19 @@ export async function downloadKeycloakDefaultTheme(params: {
                                 "fonts",
                                 "PatternFlyIcons-webfont.woff"
                             )
-                        ];
+                        ]);
                     }
 
-                    for (const keepPath of kcNodeModulesKeepFilePaths_lastAccountV1) {
-                        if (fileRelativePath.endsWith(keepPath)) {
-                            break skip_node_modules;
-                        }
+                    const fileRelativeToNodeModulesPath = fileRelativePath.substring(
+                        nodeModulesRelativeDirPath.length + 1
+                    );
+
+                    if (
+                        kcNodeModulesKeepFilePaths_lastAccountV1.has(
+                            fileRelativeToNodeModulesPath
+                        )
+                    ) {
+                        break skip_node_modules;
                     }
 
                     return;
@@ -165,16 +174,19 @@ export async function downloadKeycloakDefaultTheme(params: {
                 }
 
                 skip_node_modules: {
-                    if (
-                        !fileRelativePath.startsWith(
-                            pathJoin("keycloak", "common", "resources", "node_modules")
-                        )
-                    ) {
+                    const nodeModulesRelativeDirPath = pathJoin(
+                        "keycloak",
+                        "common",
+                        "resources",
+                        "node_modules"
+                    );
+
+                    if (!fileRelativePath.startsWith(nodeModulesRelativeDirPath)) {
                         break skip_node_modules;
                     }
 
                     if (kcNodeModulesKeepFilePaths === undefined) {
-                        kcNodeModulesKeepFilePaths = [
+                        kcNodeModulesKeepFilePaths = new Set([
                             pathJoin("@patternfly", "patternfly", "patternfly.min.css"),
                             pathJoin("patternfly", "dist", "css", "patternfly.min.css"),
                             pathJoin(
@@ -231,15 +243,23 @@ export async function downloadKeycloakDefaultTheme(params: {
                                 "fonts",
                                 "PatternFlyIcons-webfont.woff"
                             ),
+                            pathJoin(
+                                "patternfly",
+                                "dist",
+                                "fonts",
+                                "OpenSans-Semibold-webfont.woff2"
+                            ),
                             pathJoin("patternfly", "dist", "img", "bg-login.jpg"),
                             pathJoin("jquery", "dist", "jquery.min.js")
-                        ];
+                        ]);
                     }
 
-                    for (const keepPath of kcNodeModulesKeepFilePaths) {
-                        if (fileRelativePath.endsWith(keepPath)) {
-                            break skip_node_modules;
-                        }
+                    const fileRelativeToNodeModulesPath = fileRelativePath.substring(
+                        nodeModulesRelativeDirPath.length + 1
+                    );
+
+                    if (kcNodeModulesKeepFilePaths.has(fileRelativeToNodeModulesPath)) {
+                        break skip_node_modules;
                     }
 
                     return;
