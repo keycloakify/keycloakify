@@ -16,7 +16,7 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
         classes
     });
 
-    const { realm, url, usernameHidden, login, registrationDisabled, messagesPerField, social } = kcContext;
+    const { realm, url, usernameHidden, login, registrationDisabled, messagesPerField, social, message } = kcContext;
 
     const [isLoginButtonDisabled, setIsLoginButtonDisabled] = useState(false);
     const [active, setActive ] = useState(true);
@@ -32,7 +32,7 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
             displayInfo={realm.password && realm.registrationAllowed && !registrationDisabled}
         >
             <>
-                {login?.username && active &&
+                {login?.username && message===undefined && active &&
                     <div className="notification">
                         <img src={checkedimg} className="check-icon" width="20px" height="20px" />
                         <div style={{marginLeft: '10px'}}>
@@ -46,6 +46,20 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
                         </div>
                         <img onClick={()=>setActive(false)} src={crossimg} className="cross-icon" width="20px" height="20px" />
                     </div>
+                }
+                {login?.username && message && message.type === "success" && active &&
+                    <div className="notification">
+                    <img src={checkedimg} className="check-icon" width="20px" height="20px" />
+                    <div style={{marginLeft: '10px'}}>
+                        <div className="header-notification">
+                            Check Your Inbox!
+                        </div>
+                        <div className="content-notification">
+                            We've sent an email to <b>{login.username}</b> so that you can reset your password.
+                        </div>
+                    </div>
+                    <img onClick={()=>setActive(false)} src={crossimg} className="cross-icon" width="20px" height="20px" />
+                </div>
                 }
                 <div className="main-container">
                     <div className="field-container">
