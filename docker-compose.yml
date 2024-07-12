@@ -1,0 +1,45 @@
+services:
+  keycloak:
+    build: .
+    container_name: mvrb-keycloak
+    command:
+      - start-dev
+      - -Dkeycloak.profile.feature.upload_scripts=enabled
+      - --import-realm
+    environment:
+      DB_VENDOR: "${DB_VENDOR}"
+      DB_ADDR: "${DB_ADDR}"
+      DB_DATABASE: "${DB_DATABASE}"
+      DB_USER: "${DB_USERNAME}"
+      DB_PASSWORD: "${DB_PASSWORD}"
+      KEYCLOAK_ADMIN: "${KEYCLOAK_ADMIN}"
+      KEYCLOAK_ADMIN_PASSWORD: "${KEYCLOAK_ADMIN_PASSWORD}"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./imports:/opt/keycloak/data/import
+    depends_on:
+      - mssql
+    networks:
+      - backend
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: mssql
+    environment:
+      SA_PASSWORD: "${DB_PASSWORD}"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql_data:/var/opt/mssql
+    networks:
+      - backend
+
+volumes:
+  keycloak:
+  mssql_data:
+
+networks:
+  backend:
+    driver: bridge
