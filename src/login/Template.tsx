@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { assert } from "keycloakify/tools/assert";
-import { clsx } from "keycloakify/tools/clsx";
 import type { TemplateProps } from "keycloakify/login/TemplateProps";
 import { getKcClsx } from "keycloakify/login/lib/kcClsx";
 import { useInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
@@ -12,13 +11,6 @@ import type { KcContext } from "./KcContext";
 
 export default function Template(props: TemplateProps<KcContext, I18n>) {
     const {
-        //displayInfo = false,
-        displayMessage = true,
-        //displayRequiredFields = false,
-        //headerNode,
-        //showUsernameNode = null,
-        //socialProvidersNode = null,
-        //infoNode = null,
         documentTitle,
         bodyClassName,
         kcContext,
@@ -30,9 +22,9 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
 
     const { kcClsx } = getKcClsx({ doUseDefaultCss, classes });
 
-    const { msg, msgStr,/*  getChangeLocaleUrl, labelBySupportedLanguageTag, currentLanguageTag */ } = i18n;
+    const { msg, msgStr } = i18n;
 
-    const { /* realm,  */locale, auth, url, message, isAppInitiatedAction, authenticationSession, scripts } = kcContext;
+    const { locale, auth, url, authenticationSession, scripts } = kcContext;
 
     useEffect(() => {
         document.title = documentTitle ?? msgStr("loginTitle", kcContext.realm.displayName);
@@ -123,29 +115,6 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
             <div>
                 <div>
                     <div>
-                       
-                        {displayMessage && message !== undefined && (message.type !== "warning" || !isAppInitiatedAction) && (
-                            <div
-                                className={clsx(
-                                    `alert-${message.type}`,
-                                    kcClsx("kcAlertClass"),
-                                    `pf-m-${message?.type === "error" ? "danger" : message.type}`
-                                )}
-                            >
-                                <div className="pf-c-alert__icon">
-                                    {message.type === "success" && <span className={kcClsx("kcFeedbackSuccessIcon")}></span>}
-                                    {message.type === "warning" && <span className={kcClsx("kcFeedbackWarningIcon")}></span>}
-                                    {message.type === "error" && <span className={kcClsx("kcFeedbackErrorIcon")}></span>}
-                                    {message.type === "info" && <span className={kcClsx("kcFeedbackInfoIcon")}></span>}
-                                </div>
-                                <span
-                                    className={kcClsx("kcAlertTitleClass")}
-                                    dangerouslySetInnerHTML={{
-                                        __html: message.summary
-                                    }}
-                                />
-                            </div>
-                        )}
                         {children}
                         {auth !== undefined && auth.showTryAnotherWayLink && (
                             <form id="kc-select-try-another-way-form" action={url.loginAction} method="post">
@@ -166,14 +135,6 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                                 </div>
                             </form>
                         )}
-                       {/*  {socialProvidersNode} */}
-                        {/* {displayInfo && (
-                            <div id="kc-info" className={kcClsx("kcSignUpClass")}>
-                                <div id="kc-info-wrapper" className={kcClsx("kcInfoAreaWrapperClass")}>
-                                    {infoNode}
-                                </div>
-                            </div>
-                        )} */}
                     </div>
                 </div>
             </div>

@@ -8,7 +8,7 @@ export default function LoginVerifyEmail(props: PageProps<Extract<KcContext, { p
 
     const { msg } = i18n;
 
-    const { url, user } = kcContext;
+    const { url } = kcContext;
 
     return (
         <Template
@@ -16,25 +16,12 @@ export default function LoginVerifyEmail(props: PageProps<Extract<KcContext, { p
             i18n={i18n}
             doUseDefaultCss={doUseDefaultCss}
             classes={classes}
-            displayInfo
             headerNode={msg("emailVerifyTitle")}
             infoNode={""}
         >
-            <div className="main-container">
-                <div className="header1">
-                    Email Verification
-                </div>
-                <div>
-
-                <div className="inner-text">
-                    An email with instructions to verify your email has been sent to your address <b>{user?.email}</b>.
-                </div>
-                <div className="last-text">
-                    Haven't received a Verification code in your email?
-                    <br />
-                    <a href={url.loginAction}>Click Here</a> to re-send the email.
-                </div>
-                </div>
+            <meta httpEquiv="refresh" content={`1; url=${url.loginRestartFlowUrl}`} />
+            <div className="loader-container">
+                <span className="loader"></span>
             </div>
         </Template>
     );
