@@ -205,6 +205,9 @@ function decodeHtmlEntities(htmlStr){
                 ) || (
                     key == "entity" &&
                     areSamePath(path, ["user"])
+                ) || (
+                    key == "attributes" &&
+                    areSamePath(path, ["realm"])
                 )
             >
                 <#-- <#local outSeq += ["/*" + path?join(".") + "." + key + " excluded*/"]> -->
