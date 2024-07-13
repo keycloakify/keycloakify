@@ -3,7 +3,7 @@ import { createGetI18n, type GenericI18n_noJsx, type KcContextLike, type Message
 import { GenericI18n } from "./GenericI18n";
 import { Reflect } from "tsafe/Reflect";
 
-export function createUseI18n<MessageKey_themeDefined extends string = never>(messageBundle: {
+export function createUseI18n<MessageKey_themeDefined extends string = never>(messagesByLanguageTag: {
     [languageTag: string]: { [key in MessageKey_themeDefined]: string };
 }) {
     type MessageKey = MessageKey_defaultSet | MessageKey_themeDefined;
@@ -49,7 +49,7 @@ export function createUseI18n<MessageKey_themeDefined extends string = never>(me
         return { withJsx };
     })();
 
-    const { getI18n } = createGetI18n(messageBundle);
+    const { getI18n } = createGetI18n(messagesByLanguageTag);
 
     function useI18n(params: { kcContext: KcContextLike }): { i18n: I18n } {
         const { kcContext } = params;
