@@ -1,9 +1,10 @@
 import "keycloakify/tools/Object.fromEntries";
 import { assert } from "tsafe/assert";
-import messages_fallbackLanguage from "./baseMessages/en";
-import { getMessages } from "./baseMessages";
+import messages_defaultSet_fallbackLanguage from "./messages_defaultSet/en";
+import { fetchMessages_defaultSet } from "./messages_defaultSet";
 import type { KcContext } from "../KcContext";
 import { fallbackLanguageTag } from "keycloakify/bin/shared/constants";
+import { id } from "tsafe/id";
 
 export type KcContextLike = {
     locale?: {
@@ -17,9 +18,7 @@ export type KcContextLike = {
 
 assert<KcContext extends KcContextLike ? true : false>();
 
-export type MessageKey = keyof typeof messages_fallbackLanguage;
-
-export type GenericI18n<MessageKey extends string> = {
+export type GenericI18n_noJsx<MessageKey extends string> = {
     /**
      * e.g: "en", "fr", "zh-CN"
      *
@@ -39,16 +38,21 @@ export type GenericI18n<MessageKey extends string> = {
      * */
     labelBySupportedLanguageTag: Record<string, string>;
     /**
-     * Examples assuming currentLanguageTag === "en"
      *
-     * msg("access-denied") === <span>Access denied</span>
-     * msg("impersonateTitleHtml", "Foo") === <span><strong>Foo</strong> Impersonate User</span>
-     */
-    msg: (key: MessageKey, ...args: (string | undefined)[]) => JSX.Element;
-    /**
-     * It's the same thing as msg() but instead of returning a JSX.Element it returns a string.
-     * It can be more convenient to manipulate strings but if there are HTML tags it wont render.
+     * Examples assuming currentLanguageTag === "en"
+     * {
+     *   en: {
+     *     "access-denied": "Access denied",
+     *     "impersonateTitleHtml": "<strong>{0}</strong> Impersonate User",
+     *     "bar": "Bar {0}"
+     *   }
+     * }
+     *
+     * msgStr("access-denied") === "Access denied"
+     * msgStr("not-a-message-key") Throws an error
      * msgStr("impersonateTitleHtml", "Foo") === "<strong>Foo</strong> Impersonate User"
+     * msgStr("${bar}", "<strong>c</strong>") === "Bar &lt;strong&gt;XXX&lt;/strong&gt;"
+     *  The html in the arg is partially escaped for security reasons, it might come from an untrusted source, it's not safe to render it as html.
      */
     msgStr: (key: MessageKey, ...args: (string | undefined)[]) => string;
     /**
@@ -59,24 +63,11 @@ export type GenericI18n<MessageKey extends string> = {
      * {
      *   en: {
      *     "access-denied": "Access denied",
-     *     "foo": "Foo {0} {1}",
-     *     "bar": "Bar {0}"
      *   }
      * }
      *
-     * advancedMsg("${access-denied} foo bar") === <span>{msgStr("access-denied")} foo bar<span> === <span>Access denied foo bar</span>
-     * advancedMsg("${access-denied}") === advancedMsg("access-denied") === msg("access-denied") === <span>Access denied</span>
-     * advancedMsg("${not-a-message-key}") === advancedMsg(not-a-message-key") === <span>not-a-message-key</span>
-     * advancedMsg("${bar}", "<strong>c</strong>")
-     *    === <span>{msgStr("bar", "<strong>XXX</strong>")}<span>
-     *    === <span>Bar &lt;strong&gt;XXX&lt;/strong&gt;</span> (The html in the arg is partially escaped for security reasons, it might be untrusted)
-     * advancedMsg("${foo} xx ${bar}", "a", "b", "c")
-     *    === <span>{msgStr("foo", "a", "b")} xx {msgStr("bar")}<span>
-     *    === <span>Foo a b xx Bar {0}</span> (The substitution are only applied in the first message)
-     */
-    advancedMsg: (key: string, ...args: (string | undefined)[]) => JSX.Element;
-    /**
-     * See advancedMsg() but instead of returning a JSX.Element it returns a string.
+     * advancedMsgStr("${access-denied}") === advancedMsgStr("access-denied") === msgStr("access-denied") === "Access denied"
+     * advancedMsgStr("${not-a-message-key}") === advancedMsgStr("not-a-message-key") === "not-a-message-key"
      */
     advancedMsgStr: (key: string, ...args: (string | undefined)[]) => string;
 
@@ -88,10 +79,12 @@ export type GenericI18n<MessageKey extends string> = {
     isFetchingTranslations: boolean;
 };
 
-export function createGetI18n<ExtraMessageKey extends string = never>(messageBundle: {
-    [languageTag: string]: { [key in ExtraMessageKey]: string };
+export type MessageKey_defaultSet = keyof typeof messages_defaultSet_fallbackLanguage;
+
+export function createGetI18n<MessageKey_themeDefined extends string = never>(messagesByLanguageTag_themeDefined: {
+    [languageTag: string]: { [key in MessageKey_themeDefined]: string };
 }) {
-    type I18n = GenericI18n<MessageKey | ExtraMessageKey>;
+    type I18n = GenericI18n_noJsx<MessageKey_defaultSet | MessageKey_themeDefined>;
 
     type Result = { i18n: I18n; prI18n_currentLanguage: Promise<I18n> | undefined };
 
@@ -126,11 +119,18 @@ export function createGetI18n<ExtraMessageKey extends string = never>(messageBun
             labelBySupportedLanguageTag: Object.fromEntries((kcContext.locale?.supported ?? []).map(({ languageTag, label }) => [languageTag, label]))
         };
 
-        const { createI18nTranslationFunctions } = createI18nTranslationFunctionsFactory<MessageKey, ExtraMessageKey>({
-            messages_fallbackLanguage,
-            messageBundle_fallbackLanguage: messageBundle[fallbackLanguageTag],
-            messageBundle_currentLanguage: messageBundle[partialI18n.currentLanguageTag],
-            messageBundle_realm: kcContext["x-keycloakify"].messages
+        const { createI18nTranslationFunctions } = createI18nTranslationFunctionsFactory<MessageKey_themeDefined>({
+            messages_themeDefined:
+                messagesByLanguageTag_themeDefined[partialI18n.currentLanguageTag] ??
+                messagesByLanguageTag_themeDefined[fallbackLanguageTag] ??
+                (() => {
+                    const firstLanguageTag = Object.keys(messagesByLanguageTag_themeDefined)[0];
+                    if (firstLanguageTag === undefined) {
+                        return undefined;
+                    }
+                    return messagesByLanguageTag_themeDefined[firstLanguageTag];
+                })(),
+            messages_fromKcServer: kcContext["x-keycloakify"].messages
         });
 
         const isCurrentLanguageFallbackLanguage = partialI18n.currentLanguageTag === fallbackLanguageTag;
@@ -139,18 +139,18 @@ export function createGetI18n<ExtraMessageKey extends string = never>(messageBun
             i18n: {
                 ...partialI18n,
                 ...createI18nTranslationFunctions({
-                    messages_currentLanguage: isCurrentLanguageFallbackLanguage ? messages_fallbackLanguage : undefined
+                    messages_defaultSet_currentLanguage: isCurrentLanguageFallbackLanguage ? messages_defaultSet_fallbackLanguage : undefined
                 }),
                 isFetchingTranslations: !isCurrentLanguageFallbackLanguage
             },
             prI18n_currentLanguage: isCurrentLanguageFallbackLanguage
                 ? undefined
                 : (async () => {
-                      const messages_currentLanguage = await getMessages(partialI18n.currentLanguageTag);
+                      const messages_defaultSet_currentLanguage = await fetchMessages_defaultSet(partialI18n.currentLanguageTag);
 
                       const i18n_currentLanguage: I18n = {
                           ...partialI18n,
-                          ...createI18nTranslationFunctions({ messages_currentLanguage }),
+                          ...createI18nTranslationFunctions({ messages_defaultSet_currentLanguage }),
                           isFetchingTranslations: false
                       };
 
@@ -173,155 +173,72 @@ export function createGetI18n<ExtraMessageKey extends string = never>(messageBun
     return { getI18n };
 }
 
-function createI18nTranslationFunctionsFactory<MessageKey extends string, ExtraMessageKey extends string>(params: {
-    messages_fallbackLanguage: Record<MessageKey, string>;
-    messageBundle_fallbackLanguage: Record<ExtraMessageKey, string> | undefined;
-    messageBundle_currentLanguage: Partial<Record<ExtraMessageKey, string>> | undefined;
-    messageBundle_realm: Record<string, string>;
+function createI18nTranslationFunctionsFactory<MessageKey_themeDefined extends string>(params: {
+    messages_themeDefined: Record<MessageKey_themeDefined, string> | undefined;
+    messages_fromKcServer: Record<string, string>;
 }) {
-    const { messageBundle_currentLanguage, messageBundle_realm } = params;
-
-    const messages_fallbackLanguage = {
-        ...params.messages_fallbackLanguage,
-        ...params.messageBundle_fallbackLanguage
-    };
+    const { messages_themeDefined, messages_fromKcServer } = params;
 
     function createI18nTranslationFunctions(params: {
-        messages_currentLanguage: Partial<Record<MessageKey, string>> | undefined;
-    }): Pick<GenericI18n<MessageKey | ExtraMessageKey>, "msg" | "msgStr" | "advancedMsg" | "advancedMsgStr"> {
-        const messages_currentLanguage = {
-            ...params.messages_currentLanguage,
-            ...messageBundle_currentLanguage
-        };
+        messages_defaultSet_currentLanguage: Partial<Record<MessageKey_defaultSet, string>> | undefined;
+    }): Pick<GenericI18n_noJsx<MessageKey_defaultSet | MessageKey_themeDefined>, "msgStr" | "advancedMsgStr"> {
+        const { messages_defaultSet_currentLanguage } = params;
 
-        function resolveMsg(props: { key: string; args: (string | undefined)[]; doRenderAsHtml: boolean }): string | JSX.Element | undefined {
-            const { key, args, doRenderAsHtml } = props;
+        function resolveMsg(props: { key: string; args: (string | undefined)[] }): string | undefined {
+            const { key, args } = props;
 
-            const messageOrUndefined: string | undefined = (() => {
-                terms_text: {
-                    if (key !== "termsText") {
-                        break terms_text;
-                    }
-                    const termsTextMessage = messageBundle_realm[key];
+            const message =
+                id<Record<string, string | undefined>>(messages_fromKcServer)[key] ??
+                id<Record<string, string | undefined> | undefined>(messages_themeDefined)?.[key] ??
+                id<Record<string, string | undefined> | undefined>(messages_defaultSet_currentLanguage)?.[key] ??
+                id<Record<string, string | undefined>>(messages_defaultSet_fallbackLanguage)[key];
 
-                    if (termsTextMessage === undefined) {
-                        break terms_text;
-                    }
-
-                    return termsTextMessage;
-                }
-
-                const messageOrUndefined = (messages_currentLanguage as any)[key] ?? (messages_fallbackLanguage as any)[key];
-
-                return messageOrUndefined;
-            })();
-
-            if (messageOrUndefined === undefined) {
+            if (message === undefined) {
                 return undefined;
             }
 
-            const message = messageOrUndefined;
+            const startIndex = message
+                .match(/{[0-9]+}/g)
+                ?.map(g => g.match(/{([0-9]+)}/)![1])
+                .map(indexStr => parseInt(indexStr))
+                .sort((a, b) => a - b)[0];
 
-            const messageWithArgsInjectedIfAny = (() => {
-                const startIndex = message
-                    .match(/{[0-9]+}/g)
-                    ?.map(g => g.match(/{([0-9]+)}/)![1])
-                    .map(indexStr => parseInt(indexStr))
-                    .sort((a, b) => a - b)[0];
+            if (startIndex === undefined) {
+                // No {0} in message (no arguments expected)
+                return message;
+            }
 
-                if (startIndex === undefined) {
-                    // No {0} in message (no arguments expected)
-                    return message;
+            let messageWithArgsInjected = message;
+
+            args.forEach((arg, i) => {
+                if (arg === undefined) {
+                    return;
                 }
 
-                let messageWithArgsInjected = message;
-
-                args.forEach((arg, i) => {
-                    if (arg === undefined) {
-                        return;
-                    }
-
-                    messageWithArgsInjected = messageWithArgsInjected.replace(
-                        new RegExp(`\\{${i + startIndex}\\}`, "g"),
-                        arg.replace(/</g, "&lt;").replace(/>/g, "&gt;")
-                    );
-                });
-
-                return messageWithArgsInjected;
-            })();
-
-            return doRenderAsHtml ? (
-                <span
-                    // NOTE: The message is trusted. The arguments are not but are escaped.
-                    dangerouslySetInnerHTML={{
-                        __html: messageWithArgsInjectedIfAny
-                    }}
-                />
-            ) : (
-                messageWithArgsInjectedIfAny
-            );
-        }
-
-        function resolveMsgAdvanced(props: { key: string; args: (string | undefined)[]; doRenderAsHtml: boolean }): JSX.Element | string {
-            const { key, args, doRenderAsHtml } = props;
-
-            realm_messages: {
-                const resolvedMessage = messageBundle_realm[key] ?? messageBundle_realm["${" + key + "}"];
-
-                if (resolvedMessage === undefined) {
-                    break realm_messages;
-                }
-
-                return doRenderAsHtml ? (
-                    <span
-                        // NOTE: The message is trusted. The arguments are not but are escaped.
-                        dangerouslySetInnerHTML={{
-                            __html: resolvedMessage
-                        }}
-                    />
-                ) : (
-                    resolvedMessage
+                messageWithArgsInjected = messageWithArgsInjected.replace(
+                    new RegExp(`\\{${i + startIndex}\\}`, "g"),
+                    arg.replace(/</g, "&lt;").replace(/>/g, "&gt;")
                 );
-            }
-
-            if (!/\$\{[^}]+\}/.test(key)) {
-                const resolvedMessage = resolveMsg({ key, args, doRenderAsHtml });
-
-                if (resolvedMessage === undefined) {
-                    return doRenderAsHtml ? <span dangerouslySetInnerHTML={{ __html: key }} /> : key;
-                }
-
-                return resolvedMessage;
-            }
-
-            let isFirstMatch = true;
-
-            const resolvedComplexMessage = key.replace(/\$\{([^}]+)\}/g, (...[, key_i]) => {
-                const replaceBy = resolveMsg({ key: key_i, args: isFirstMatch ? args : [], doRenderAsHtml: false }) ?? key_i;
-
-                isFirstMatch = false;
-
-                return replaceBy;
             });
 
-            return doRenderAsHtml ? <span dangerouslySetInnerHTML={{ __html: resolvedComplexMessage }} /> : resolvedComplexMessage;
+            return messageWithArgsInjected;
+        }
+
+        function resolveMsgAdvanced(props: { key: string; args: (string | undefined)[] }): string {
+            const { key, args } = props;
+
+            const match = key.match(/^\$\{(.+)\}$/);
+
+            return resolveMsg({ key: match !== null ? match[1] : key, args }) ?? key;
         }
 
         return {
-            msgStr: (key, ...args) => resolveMsg({ key, args, doRenderAsHtml: false }) as string,
-            msg: (key, ...args) => resolveMsg({ key, args, doRenderAsHtml: true }) as JSX.Element,
-            advancedMsg: (key, ...args) =>
-                resolveMsgAdvanced({
-                    key,
-                    args,
-                    doRenderAsHtml: true
-                }) as JSX.Element,
-            advancedMsgStr: (key, ...args) =>
-                resolveMsgAdvanced({
-                    key,
-                    args,
-                    doRenderAsHtml: false
-                }) as string
+            msgStr: (key, ...args) => {
+                const resolvedMessage = resolveMsg({ key, args });
+                assert(resolvedMessage !== undefined, `Message with key "${key}" not found`);
+                return resolvedMessage;
+            },
+            advancedMsgStr: (key, ...args) => resolveMsgAdvanced({ key, args })
         };
     }
 

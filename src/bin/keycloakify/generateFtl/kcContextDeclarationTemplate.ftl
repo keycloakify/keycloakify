@@ -1,6 +1,24 @@
 <#assign pageId="PAGE_ID_xIgLsPgGId9D8e">
 <#assign themeType="KEYCLOAKIFY_THEME_TYPE_dExKd3xEdr">
+<#assign xKeycloakifyMessages = {}>
+<#assign debugMessage="">
+
 const kcContext = ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
+
+<@addNonAutomaticallyGatherableMessagesToXKeycloakifyMessages />
+
+console.log(`${debugMessage}`);
+
+kcContext["x-keycloakify"] = {};
+
+{
+  var messages = {};
+  <#list xKeycloakifyMessages as key, resolvedMsg>
+    messages["${key}"] = decodeHtmlEntities("${resolvedMsg?js_string}");
+  </#list>
+  kcContext["x-keycloakify"].messages = messages;
+}
+
 if( kcContext.messagesPerField ){
     var existsError_singleFieldName = kcContext.messagesPerField.existsError;
     kcContext.messagesPerField.existsError = function (){
@@ -42,93 +60,7 @@ if( kcContext.resourceUrl && !kcContext.url ){
         enumerable: false
     });
 }
-kcContext["x-keycloakify"] = {
-    messages: {}
-};
-<#if profile?? && profile.attributes??>
-    {
-        var messages = {
-            <#list profile.attributes as attribute>
-                <#if attribute.displayName??>
-                    "${attribute.displayName}": decodeHtmlEntities("${advancedMsg(attribute.displayName)?js_string}"),
-                </#if>
-                <#if attribute.group??>
-                    <#if attribute.group.displayDescription??>
-                        "${attribute.group.displayDescription}": decodeHtmlEntities("${advancedMsg(attribute.group.displayDescription)?js_string}"),
-                    </#if>
-                    <#if attribute.group.displayHeader??>
-                        "${attribute.group.displayHeader}": decodeHtmlEntities("${advancedMsg(attribute.group.displayHeader)?js_string}"),
-                    </#if>
-                </#if>
-                <#if attribute.annotations??>
-                    <#if attribute.annotations.inputHelperTextBefore??>
-                        "${attribute.annotations.inputHelperTextBefore}": decodeHtmlEntities("${advancedMsg(attribute.annotations.inputHelperTextBefore)?js_string}"),
-                    </#if>
-                    <#if attribute.annotations.inputHelperTextAfter??>
-                        "${attribute.annotations.inputHelperTextAfter}": decodeHtmlEntities("${advancedMsg(attribute.annotations.inputHelperTextAfter)?js_string}"),
-                    </#if>
-                    <#if attribute.annotations.inputTypePlaceholder??>
-                        "${attribute.annotations.inputTypePlaceholder}": decodeHtmlEntities("${advancedMsg(attribute.annotations.inputTypePlaceholder)?js_string}"),
-                    </#if>
-                    <!-- Loop through the options that are in attribute.validators.options.options -->
-                    <#if (
-                        attribute.annotations.inputOptionLabelsI18nPrefix?? &&
-                        attribute.validators?? &&
-                        attribute.validators.options??
-                    )>
-                        <#list attribute.validators.options.options as option>
-                            "${attribute.annotations.inputOptionLabelsI18nPrefix}.${option}": decodeHtmlEntities("${msg(attribute.annotations.inputOptionLabelsI18nPrefix + "." + option)?js_string}"),
-                        </#list>
-                    </#if>
-                </#if>
-            </#list>
-        };
-        Object.assign(kcContext["x-keycloakify"].messages, messages);
-    }
-</#if>
-<#if pageId == "terms.ftl" || termsAcceptanceRequired?? && termsAcceptanceRequired>
-    kcContext["x-keycloakify"].messages["termsText"]= decodeHtmlEntities("${msg("termsText")?js_string}");
-</#if>
-<#if auth?? && auth.authenticationSelections??>
-    {
-        var messages = {
-            <#list auth.authenticationSelections as authenticationSelection>
-                <#if authenticationSelection.displayName??>
-                    "${authenticationSelection.displayName}": decodeHtmlEntities("${advancedMsg(authenticationSelection.displayName)?js_string}"),
-                </#if>
-                <#if authenticationSelection.helpText??>
-                    "${authenticationSelection.helpText}": decodeHtmlEntities("${advancedMsg(authenticationSelection.helpText)?js_string}"),
-                </#if>
-            </#list>
-        };
-        Object.assign(kcContext["x-keycloakify"].messages, messages);
-    }
-</#if>
-<#if themeType == "login" && pageId == "info.ftl" && requiredActions??>
-    {
-        var messages = {
-            <#list requiredActions as requiredAction>
-                "requiredAction.${requiredAction}": decodeHtmlEntities("${advancedMsg("requiredAction." + requiredAction)?js_string}"),
-            </#list>
-        };
-        Object.assign(kcContext["x-keycloakify"].messages, messages);
-    }
-</#if>
-<#if authenticators?? && authenticators.authenticators??>
-    {
-        var messages = {
-            <#list authenticators.authenticators as authenticator>
-                "${authenticator.label}": decodeHtmlEntities("${advancedMsg(authenticator.label)?js_string}"),
-                <#if authenticator.transports?? && authenticator.transports.displayNameProperties??>
-                    <#list authenticator.transports.displayNameProperties as displayNameProperty>
-                        "${displayNameProperty}": decodeHtmlEntities("${advancedMsg(displayNameProperty)?js_string}"),
-                    </#list>
-                </#if>
-            </#list>
-        };
-        Object.assign(kcContext["x-keycloakify"].messages, messages);
-    }
-</#if>
+
 attributes_to_attributesByName: {
     if( !kcContext.profile ){
         break attributes_to_attributesByName;
@@ -579,6 +511,17 @@ function decodeHtmlEntities(htmlStr){
             <#return object?c>
         </#if>
 
+        <#local isString = "">
+        <#attempt>
+            <#local isString = object?is_string>
+        <#recover>
+            <#return "ABORT: Can't test if it's a string">
+        </#attempt>
+
+        <#if isString>
+            <@addToXKeycloakifyMessagesIfMessageKey str=object />
+        </#if>
+
         <#attempt>
             <#return '"' + object?js_string + '"'>;
         <#recover>
@@ -630,3 +573,72 @@ function decodeHtmlEntities(htmlStr){
 <#function are_same_path path searchedPath>
     <#return path?size == searchedPath?size && is_subpath(path, searchedPath)>
 </#function>
+
+<#macro addToXKeycloakifyMessagesIfMessageKey str>
+    <#if !msg?? || !msg?is_method>
+        <#return>
+    </#if>
+    <#if (str?length > 200)>
+        <#return>
+    </#if>
+    <#local key=removeBrackets(str)>
+    <#if key?length==0>
+        <#return>
+    </#if>
+    <#if !(key?matches(r"^[a-zA-Z0-9-_.]*$"))>
+        <#return>
+    </#if>
+    <#local resolvedMsg=msg(key)>
+    <#if resolvedMsg==key>
+        <#return>
+    </#if>
+    <#assign xKeycloakifyMessages = xKeycloakifyMessages + { "${key}": resolvedMsg }>
+</#macro>
+
+<#function removeBrackets str>
+  <#if str?starts_with("${") && str?ends_with("}")>
+    <#return str[2..(str?length-2)]>
+  <#else>
+    <#return str>
+  </#if>
+</#function>
+
+<#macro addNonAutomaticallyGatherableMessagesToXKeycloakifyMessages>
+    <#if profile?? && profile?is_hash && profile.attributes?? && profile.attributes?is_enumerable>
+        <#list profile.attributes as attribute>
+            <#if !(
+                attribute.annotations?? && attribute.annotations?is_hash &&
+                attribute.annotations.inputOptionLabelsI18nPrefix?? && attribute.annotations.inputOptionLabelsI18nPrefix?is_string
+            )>
+                <#continue>
+            </#if>
+            <#local prefix=attribute.annotations.inputOptionLabelsI18nPrefix>
+            <#if !(
+                attribute.validators?? && attribute.validators?is_hash &&
+                attribute.validators.options?? && attribute.validators.options?is_hash &&
+                attribute.validators.options.options?? && attribute.validators.options.options?is_enumerable
+            )>
+                <#continue>
+            </#if>
+            <#list attribute.validators.options.options as option>
+                <#if !option?is_string>
+                    <#continue>
+                </#if>
+                <@addToXKeycloakifyMessagesIfMessageKey str="${prefix}.${option}" />
+            </#list>
+        </#list>
+    </#if>
+    <#if pageId == "terms.ftl" || termsAcceptanceRequired?? && termsAcceptanceRequired>
+        <@addToXKeycloakifyMessagesIfMessageKey str="termsText" />
+    </#if>
+    <#if requiredActions?? && requiredActions?is_enumerable>
+        <#list requiredActions as requiredAction>
+            <#if !requiredAction?is_string>
+                <#continue>
+            </#if>
+            <@addToXKeycloakifyMessagesIfMessageKey str="requiredAction.${requiredAction}" />
+        </#list>
+    </#if>
+</#macro>
+
+

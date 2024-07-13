@@ -9,7 +9,7 @@ import { formatNumber } from "keycloakify/tools/formatNumber";
 import { useInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
 import type { PasswordPolicies, Attribute, Validators } from "keycloakify/login/KcContext";
 import type { KcContext } from "../KcContext";
-import type { MessageKey } from "keycloakify/login/i18n";
+import type { MessageKey_defaultSet } from "keycloakify/login/i18n";
 import { KcContextLike as KcContextLike_i18n } from "keycloakify/login/i18n";
 import type { I18n } from "../i18n";
 
@@ -148,7 +148,7 @@ export function useUserProfileForm(params: UseUserProfileFormParams): ReturnType
                         .map(name =>
                             id<Attribute>({
                                 name: name,
-                                displayName: id<`\${${MessageKey}}`>(`\${${name}}`),
+                                displayName: id<`\${${MessageKey_defaultSet}}`>(`\${${name}}`),
                                 required: true,
                                 value: (kcContext.register as any).formData[name] ?? "",
                                 html5DataAnnotations: {},
@@ -176,7 +176,7 @@ export function useUserProfileForm(params: UseUserProfileFormParams): ReturnType
                         .map(name =>
                             id<Attribute>({
                                 name: name,
-                                displayName: id<`\${${MessageKey}}`>(`\${${name}}`),
+                                displayName: id<`\${${MessageKey_defaultSet}}`>(`\${${name}}`),
                                 required: true,
                                 value: (kcContext as any).user[name] ?? "",
                                 html5DataAnnotations: {},
@@ -202,7 +202,7 @@ export function useUserProfileForm(params: UseUserProfileFormParams): ReturnType
                     return [
                         id<Attribute>({
                             name: "email",
-                            displayName: id<`\${${MessageKey}}`>(`\${email}`),
+                            displayName: id<`\${${MessageKey_defaultSet}}`>(`\${email}`),
                             required: true,
                             value: (kcContext.email as any).value ?? "",
                             html5DataAnnotations: {},
@@ -293,7 +293,7 @@ export function useUserProfileForm(params: UseUserProfileFormParams): ReturnType
                     0,
                     {
                         name: "password",
-                        displayName: id<`\${${MessageKey}}`>("${password}"),
+                        displayName: id<`\${${MessageKey_defaultSet}}`>("${password}"),
                         required: true,
                         readOnly: false,
                         validators: {},
@@ -303,7 +303,7 @@ export function useUserProfileForm(params: UseUserProfileFormParams): ReturnType
                     },
                     {
                         name: "password-confirm",
-                        displayName: id<`\${${MessageKey}}`>("${passwordConfirm}"),
+                        displayName: id<`\${${MessageKey_defaultSet}}`>("${passwordConfirm}"),
                         required: true,
                         readOnly: false,
                         validators: {},
@@ -1134,7 +1134,7 @@ function useGetErrors(params: { kcContext: KcContextLike_useGetErrors; i18n: I18
                     break validator_x;
                 }
 
-                const msgArgs = [errorMessageKey ?? id<MessageKey>("shouldMatchPattern"), pattern] as const;
+                const msgArgs = [errorMessageKey ?? id<MessageKey_defaultSet>("shouldMatchPattern"), pattern] as const;
 
                 errors.push({
                     errorMessage: <Fragment key={`${attributeName}-${errors.length}`}>{advancedMsg(...msgArgs)}</Fragment>,
@@ -1173,7 +1173,7 @@ function useGetErrors(params: { kcContext: KcContextLike_useGetErrors; i18n: I18
                     break validator_x;
                 }
 
-                const msgArgs = [id<MessageKey>("invalidEmailMessage")] as const;
+                const msgArgs = [id<MessageKey_defaultSet>("invalidEmailMessage")] as const;
 
                 errors.push({
                     errorMessage: <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
@@ -1265,11 +1265,11 @@ function useGetErrors(params: { kcContext: KcContextLike_useGetErrors; i18n: I18
                     break validator_x;
                 }
 
-                const msgArgs = [id<MessageKey>("notAValidOption")] as const;
+                const msgArgs = [id<MessageKey_defaultSet>("notAValidOption")] as const;
 
                 errors.push({
-                    errorMessage: <Fragment key={`${attributeName}-${errors.length}`}>{advancedMsg(...msgArgs)}</Fragment>,
-                    errorMessageStr: advancedMsgStr(...msgArgs),
+                    errorMessage: <Fragment key={`${attributeName}-${errors.length}`}>{msg(...msgArgs)}</Fragment>,
+                    errorMessageStr: msgStr(...msgArgs),
                     fieldIndex: undefined,
                     source: {
                         type: "validator",

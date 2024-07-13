@@ -22,7 +22,7 @@ export function generateMessageProperties(params: {
         "src",
         themeType,
         "i18n",
-        "baseMessages"
+        "messages_defaultSet"
     );
 
     const baseMessageBundle: { [languageTag: string]: Record<string, string> } =

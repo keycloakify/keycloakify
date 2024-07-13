@@ -118,7 +118,10 @@ export declare namespace KcContext {
             lastName?: string;
             username?: string;
         };
-        properties: Record<string, string | undefined>;
+        properties: {};
+        "x-keycloakify": {
+            messages: Record<string, string>;
+        };
     };
 
     export type Password = Common & {

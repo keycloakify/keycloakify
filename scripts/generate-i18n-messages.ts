@@ -110,12 +110,12 @@ async function main() {
             source: keycloakifyExtraMessages
         });
 
-        const baseMessagesDirPath = pathJoin(
+        const messagesDirPath = pathJoin(
             thisCodebaseRootDirPath,
             "src",
             themeType,
             "i18n",
-            "baseMessages"
+            "messages_defaultSet"
         );
 
         const generatedFileHeader = [
@@ -127,7 +127,7 @@ async function main() {
         ].join("\n");
 
         languages.forEach(language => {
-            const filePath = pathJoin(baseMessagesDirPath, `${language}.ts`);
+            const filePath = pathJoin(messagesDirPath, `${language}.ts`);
 
             fs.mkdirSync(pathDirname(filePath), { recursive: true });
 
@@ -155,14 +155,14 @@ async function main() {
         });
 
         fs.writeFileSync(
-            pathJoin(baseMessagesDirPath, "index.ts"),
+            pathJoin(messagesDirPath, "index.ts"),
             Buffer.from(
                 [
                     generatedFileHeader,
                     `import * as en from "./en";`,
                     "",
-                    "export async function getMessages(currentLanguageTag: string) {",
-                    "    const { default: messages } = await (() => {",
+                    "export async function fetchMessages_defaultSet(currentLanguageTag: string) {",
+                    "    const { default: messages_defaultSet } = await (() => {",
                     "        switch (currentLanguageTag) {",
                     `            case "en": return en;`,
                     ...languages
@@ -174,7 +174,7 @@ async function main() {
                     '            default: return { "default": {} };',
                     "        }",
                     "    })();",
-                    "    return messages;",
+                    "    return messages_defaultSet;",
                     "}"
                 ].join("\n"),
                 "utf8"

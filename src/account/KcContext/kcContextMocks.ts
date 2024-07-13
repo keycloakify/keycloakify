@@ -82,7 +82,10 @@ export const kcContextCommonMock: KcContext.Common = {
         email: "john.doe@code.gouv.fr",
         username: "doe_j"
     },
-    properties: {}
+    properties: {},
+    "x-keycloakify": {
+        messages: {}
+    }
 };
 
 export const kcContextMocks: KcContext[] = [
