@@ -45,19 +45,20 @@ export async function buildJar(params: {
         buildContext
     } = params;
 
-    const keycloakifyBuildTmpDirPath = pathJoin(
+    const keycloakifyBuildCacheDirPath = pathJoin(
         buildContext.cacheDirPath,
+        "maven",
         jarFileBasename.replace(".jar", "")
     );
 
-    rmSync(keycloakifyBuildTmpDirPath, { recursive: true, force: true });
-
     const tmpResourcesDirPath = pathJoin(
-        keycloakifyBuildTmpDirPath,
+        keycloakifyBuildCacheDirPath,
         "src",
         "main",
         "resources"
     );
+
+    rmSync(tmpResourcesDirPath, { recursive: true, force: true });
 
     transformCodebase({
         srcDirPath: resourcesDirPath,
@@ -155,10 +156,7 @@ export async function buildJar(params: {
         (["register.ftl", "login-update-profile.ftl"] as const).forEach(pageId =>
             buildContext.themeNames.map(themeName => {
                 const ftlFilePath = pathJoin(
-                    keycloakifyBuildTmpDirPath,
-                    "src",
-                    "main",
-                    "resources",
+                    tmpResourcesDirPath,
                     "theme",
                     themeName,
                     "login",
@@ -200,15 +198,15 @@ export async function buildJar(params: {
         });
 
         await fs.writeFile(
-            pathJoin(keycloakifyBuildTmpDirPath, "pom.xml"),
+            pathJoin(keycloakifyBuildCacheDirPath, "pom.xml"),
             Buffer.from(pomFileCode, "utf8")
         );
     }
 
     await new Promise<void>((resolve, reject) =>
         child_process.exec(
-            `mvn clean install -Dmaven.repo.local="${pathJoin(keycloakifyBuildTmpDirPath, ".m2")}"`,
-            { cwd: keycloakifyBuildTmpDirPath },
+            `mvn install -Dmaven.repo.local="${pathJoin(keycloakifyBuildCacheDirPath, ".m2")}"`,
+            { cwd: keycloakifyBuildCacheDirPath },
             error => {
                 if (error !== null) {
                     console.error(
@@ -233,12 +231,10 @@ export async function buildJar(params: {
 
     await fs.rename(
         pathJoin(
-            keycloakifyBuildTmpDirPath,
+            keycloakifyBuildCacheDirPath,
             "target",
             `${buildContext.artifactId}-${buildContext.themeVersion}.jar`
         ),
         pathJoin(buildContext.keycloakifyBuildDirPath, jarFileBasename)
     );
-
-    rmSync(keycloakifyBuildTmpDirPath, { recursive: true });
 }
