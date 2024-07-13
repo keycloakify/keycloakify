@@ -227,7 +227,7 @@ export function useUserProfileForm(params: UseUserProfileFormParams): ReturnType
                     break patch_legacy_group;
                 }
 
-                const { group, groupDisplayHeader, groupDisplayDescription /*, groupAnnotations*/ } = attribute as Attribute & {
+                const { group, groupDisplayHeader, groupDisplayDescription, groupAnnotations } = attribute as Attribute & {
                     group: string;
                     groupDisplayHeader?: string;
                     groupDisplayDescription?: string;
@@ -250,6 +250,7 @@ export function useUserProfileForm(params: UseUserProfileFormParams): ReturnType
                     name: group,
                     displayHeader: groupDisplayHeader,
                     displayDescription: groupDisplayDescription,
+                    annotations: groupAnnotations,
                     html5DataAnnotations: {}
                 };
             }

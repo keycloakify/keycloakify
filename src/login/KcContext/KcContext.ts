@@ -591,6 +591,7 @@ export type Attribute = {
     value?: string;
     values?: string[];
     group?: {
+        annotations: Record<string, string>;
         html5DataAnnotations: Record<string, string>;
         displayHeader?: string;
         name: string;
