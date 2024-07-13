@@ -31,13 +31,13 @@ export function replaceImportsInJsCode_vite(params: {
 
     let fixedJsCode = jsCode;
 
-    replace_base_javacript_import: {
+    replace_base_js_import: {
         if (buildContext.urlPathname === undefined) {
-            break replace_base_javacript_import;
+            break replace_base_js_import;
         }
         // Optimization
         if (!jsCode.includes(buildContext.urlPathname)) {
-            break replace_base_javacript_import;
+            break replace_base_js_import;
         }
 
         // Replace `Hv=function(e){return"/abcde12345/"+e}` by `Hv=function(e){return"/"+e}`
@@ -85,13 +85,13 @@ export function replaceImportsInJsCode_vite(params: {
                 fixedJsCode = replaceAll(
                     fixedJsCode,
                     `"${relativePathOfAssetFile}"`,
-                    `(window.kcContext.url.resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/${relativePathOfAssetFile}")`
+                    `(window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/${relativePathOfAssetFile}")`
                 );
 
                 fixedJsCode = replaceAll(
                     fixedJsCode,
                     `"${buildContext.urlPathname ?? "/"}${relativePathOfAssetFile}"`,
-                    `(window.kcContext.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/${relativePathOfAssetFile}")`
+                    `(window.kcContext["x-keycloakify"].resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/${relativePathOfAssetFile}")`
                 );
             });
     }

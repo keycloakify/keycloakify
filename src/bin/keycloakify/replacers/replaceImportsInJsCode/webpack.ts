@@ -83,7 +83,7 @@ export function replaceImportsInJsCode_webpack(params: {
                 var pd = Object.getOwnPropertyDescriptor(${n}, "p");
                 if( pd === undefined || pd.configurable ){
                     Object.defineProperty(${n}, "p", {
-                        get: function() { return window.kcContext.url.resourcesPath; },
+                        get: function() { return window.kcContext["x-keycloakify"].resourcesPath; },
                         set: function() {}
                     });
                 }
@@ -104,7 +104,7 @@ export function replaceImportsInJsCode_webpack(params: {
                 `[a-zA-Z]+\\.[a-zA-Z]+\\+"${staticDir.replace(/\//g, "\\/")}`,
                 "g"
             ),
-            `window.kcContext.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/${staticDir}`
+            `window.kcContext["x-keycloakify"].resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/${staticDir}`
         );
 
     return { fixedJsCode };

@@ -34,7 +34,6 @@ export function generateFtlFilesCodeFactory(params: {
     keycloakifyVersion: string;
     themeType: ThemeType;
     fieldNames: string[];
-    isAccountV3: boolean;
 }) {
     const {
         themeName,
@@ -42,8 +41,7 @@ export function generateFtlFilesCodeFactory(params: {
         buildContext,
         keycloakifyVersion,
         themeType,
-        fieldNames,
-        isAccountV3
+        fieldNames
     } = params;
 
     const $ = cheerio.load(indexHtmlCode);
@@ -70,8 +68,7 @@ export function generateFtlFilesCodeFactory(params: {
             const { fixedCssCode } = replaceImportsInCssCode({
                 cssCode,
                 cssFileRelativeDirPath: undefined,
-                buildContext,
-                isAccountV3
+                buildContext
             });
 
             $(element).text(fixedCssCode);
@@ -96,7 +93,7 @@ export function generateFtlFilesCodeFactory(params: {
                         new RegExp(
                             `^${(buildContext.urlPathname ?? "/").replace(/\//g, "\\/")}`
                         ),
-                        `\${${!isAccountV3 ? "url.resourcesPath" : "resourceUrl"}}/${basenameOfTheKeycloakifyResourcesDir}/`
+                        `\${xKeycloakify.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/`
                     )
                 );
             })
@@ -116,19 +113,17 @@ export function generateFtlFilesCodeFactory(params: {
             )
         )
         .toString("utf8")
+        .replace("{{themeType}}", themeType)
+        .replace("{{themeName}}", themeName)
+        .replace("{{keycloakifyVersion}}", keycloakifyVersion)
+        .replace("{{themeVersion}}", buildContext.themeVersion)
+        .replace("{{fieldNames}}", fieldNames.map(name => `"${name}"`).join(", "))
+        .replace("{{RESOURCES_COMMON}}", resources_common)
         .replace(
-            "FIELD_NAMES_eKsIY4ZsZ4xeM",
-            fieldNames.map(name => `"${name}"`).join(", ")
-        )
-        .replace("KEYCLOAKIFY_VERSION_xEdKd3xEdr", keycloakifyVersion)
-        .replace("KEYCLOAKIFY_THEME_VERSION_sIgKd3xEdr3dx", buildContext.themeVersion)
-        .replace("KEYCLOAKIFY_THEME_TYPE_dExKd3xEdr", themeType)
-        .replace("KEYCLOAKIFY_THEME_NAME_cXxKd3xEer", themeName)
-        .replace("RESOURCES_COMMON_cLsLsMrtDkpVv", resources_common)
-        .replace(
-            "USER_DEFINED_EXCLUSIONS_eKsaY4ZsZ4eMr2",
+            "{{userDefinedExclusions}}",
             buildContext.kcContextExclusionsFtlCode ?? ""
         );
+
     const ftlObjectToJsCodeDeclaringAnObjectPlaceholder =
         '{ "x": "vIdLqMeOed9sdLdIdOxdK0d" }';
 
@@ -173,7 +168,8 @@ export function generateFtlFilesCodeFactory(params: {
         Object.entries({
             [ftlObjectToJsCodeDeclaringAnObjectPlaceholder]:
                 kcContextDeclarationTemplateFtl,
-            PAGE_ID_xIgLsPgGId9D8e: pageId
+            "{{pageId}}": pageId,
+            "{{ftlTemplateFileName}}": pageId
         }).map(
             ([searchValue, replaceValue]) =>
                 (ftlCode = ftlCode.replace(searchValue, replaceValue))

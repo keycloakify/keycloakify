@@ -140,8 +140,7 @@ export async function generateResourcesForMainTheme(params: {
                         const { fixedCssCode } = replaceImportsInCssCode({
                             cssCode: sourceCode.toString("utf8"),
                             cssFileRelativeDirPath: pathDirname(fileRelativePath),
-                            buildContext,
-                            isAccountV3
+                            buildContext
                         });
 
                         return {
@@ -176,8 +175,7 @@ export async function generateResourcesForMainTheme(params: {
             fieldNames: readFieldNameUsage({
                 themeSrcDirPath: buildContext.themeSrcDirPath,
                 themeType
-            }),
-            isAccountV3
+            })
         });
 
         [

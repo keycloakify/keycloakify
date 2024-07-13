@@ -172,7 +172,7 @@ export function keycloakify(params?: Params) {
                     `(`,
                     `(window.kcContext === undefined || import.meta.env.MODE === "development")?`,
                     `"${urlPathname ?? "/"}":`,
-                    `(window.kcContext.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/")`,
+                    `(window.kcContext["x-keycloakify"].resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/")`,
                     `)`
                 ].join("")
             );

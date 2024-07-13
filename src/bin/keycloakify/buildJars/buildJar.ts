@@ -24,6 +24,7 @@ export type BuildContextLike = BuildContextLike_generatePom & {
     artifactId: string;
     themeVersion: string;
     cacheDirPath: string;
+    recordIsImplementedByThemeType: BuildContext["recordIsImplementedByThemeType"];
 };
 
 assert<BuildContext extends BuildContextLike ? true : false>();
@@ -134,6 +135,10 @@ export async function buildJar(params: {
     }
 
     route_legacy_pages: {
+        if (!buildContext.recordIsImplementedByThemeType.login) {
+            break route_legacy_pages;
+        }
+
         // NOTE: If there's no account theme there is no special target for keycloak 24 and up so we create
         // the pages anyway. If there is an account pages, since we know that account-v1 is only support keycloak
         // 24 in version 0.4 and up, we can safely break the route for legacy pages.
@@ -165,7 +170,7 @@ export async function buildJar(params: {
 
                 const ftlFileContent = readFileSync(ftlFilePath).toString("utf8");
 
-                const realPageId = (() => {
+                const ftlFileBasename = (() => {
                     switch (pageId) {
                         case "register.ftl":
                             return "register-user-profile.ftl";
@@ -176,14 +181,14 @@ export async function buildJar(params: {
                 })();
 
                 const modifiedFtlFileContent = ftlFileContent.replace(
-                    `kcContext.pageId = "\${pageId}";`,
-                    `kcContext.pageId = "${pageId}"; kcContext.realPageId = "${realPageId}";`
+                    `"ftlTemplateFileName": "${pageId}"`,
+                    `"ftlTemplateFileName": "${ftlFileBasename}"`
                 );
 
                 assert(modifiedFtlFileContent !== ftlFileContent);
 
                 fs.writeFile(
-                    pathJoin(pathDirname(ftlFilePath), realPageId),
+                    pathJoin(pathDirname(ftlFilePath), ftlFileBasename),
                     Buffer.from(modifiedFtlFileContent, "utf8")
                 );
             })

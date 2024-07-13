@@ -87,13 +87,13 @@ describe("js replacer - vite", () => {
             });
 
             const fixedJsCodeExpected = `
-                    S=(window.kcContext.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/assets/keycloakify-logo-mqjydaoZ.png"),H=(()=>{
+                    S=(window.kcContext["x-keycloakify"].resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/assets/keycloakify-logo-mqjydaoZ.png"),H=(()=>{
 
                     function __vite__mapDeps(indexes) {
                         if (!__vite__mapDeps.viteFileDeps) {
                             __vite__mapDeps.viteFileDeps = [
-                                (window.kcContext.url.resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/assets/Login-dJpPRzM4.js"), 
-                                (window.kcContext.url.resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/assets/index-XwzrZ5Gu.js")
+                                (window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/assets/Login-dJpPRzM4.js"), 
+                                (window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/assets/index-XwzrZ5Gu.js")
                             ]
                         }
                         return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
@@ -146,13 +146,13 @@ describe("js replacer - vite", () => {
             });
 
             const fixedJsCodeExpected = `
-                    S=(window.kcContext.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/foo/bar/keycloakify-logo-mqjydaoZ.png"),H=(()=>{
+                    S=(window.kcContext["x-keycloakify"].resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/foo/bar/keycloakify-logo-mqjydaoZ.png"),H=(()=>{
 
                     function __vite__mapDeps(indexes) {
                         if (!__vite__mapDeps.viteFileDeps) {
                             __vite__mapDeps.viteFileDeps = [
-                                (window.kcContext.url.resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/foo/bar/Login-dJpPRzM4.js"), 
-                                (window.kcContext.url.resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/foo/bar/index-XwzrZ5Gu.js")
+                                (window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/foo/bar/Login-dJpPRzM4.js"), 
+                                (window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/foo/bar/index-XwzrZ5Gu.js")
                             ]
                         }
                         return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
@@ -205,13 +205,13 @@ describe("js replacer - vite", () => {
             });
 
             const fixedJsCodeExpected = `
-                    S=(window.kcContext.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/assets/keycloakify-logo-mqjydaoZ.png"),H=(()=>{
+                    S=(window.kcContext["x-keycloakify"].resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/assets/keycloakify-logo-mqjydaoZ.png"),H=(()=>{
 
                     function __vite__mapDeps(indexes) {
                         if (!__vite__mapDeps.viteFileDeps) {
                             __vite__mapDeps.viteFileDeps = [
-                                (window.kcContext.url.resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/assets/Login-dJpPRzM4.js"), 
-                                (window.kcContext.url.resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/assets/index-XwzrZ5Gu.js")
+                                (window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/assets/Login-dJpPRzM4.js"), 
+                                (window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${basenameOfTheKeycloakifyResourcesDir}/assets/index-XwzrZ5Gu.js")
                             ]
                         }
                         return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
@@ -267,13 +267,13 @@ describe("js replacer - webpack", () => {
 
         const fixedJsCodeExpected = `
             function f() {
-                return window.kcContext.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/static/js/" + ({}[e] || e) + "." + {
+                return window.kcContext["x-keycloakify"].resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/static/js/" + ({}[e] || e) + "." + {
                     3: "0664cdc0"
                 }[e] + ".chunk.js"
             }
 
             function sameAsF() {
-                return window.kcContext.url.resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/static/js/" + ({}[e] || e) + "." + {
+                return window.kcContext["x-keycloakify"].resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/static/js/" + ({}[e] || e) + "." + {
                     3: "0664cdc0"
                 }[e] + ".chunk.js"
             }
@@ -282,7 +282,7 @@ describe("js replacer - webpack", () => {
                 var pd = Object.getOwnPropertyDescriptor(__webpack_require__, "p");
                 if( pd === undefined || pd.configurable ){
                     Object.defineProperty(__webpack_require__, "p", {
-                        get: function() { return window.kcContext.url.resourcesPath; },
+                        get: function() { return window.kcContext["x-keycloakify"].resourcesPath; },
                         set: function() {}
                     });
                 }
@@ -299,7 +299,7 @@ describe("js replacer - webpack", () => {
                 var pd = Object.getOwnPropertyDescriptor(t, "p");
                 if( pd === undefined || pd.configurable ){
                     Object.defineProperty(t, "p", {
-                        get: function() { return window.kcContext.url.resourcesPath; },
+                        get: function() { return window.kcContext["x-keycloakify"].resourcesPath; },
                         set: function() {}
                     });
                 }
@@ -315,7 +315,7 @@ describe("js replacer - webpack", () => {
                 var pd = Object.getOwnPropertyDescriptor(n, "p");
                 if( pd === undefined || pd.configurable ){
                     Object.defineProperty(n, "p", {
-                        get: function() { return window.kcContext.url.resourcesPath; },
+                        get: function() { return window.kcContext["x-keycloakify"].resourcesPath; },
                         set: function() {}
                     });
                 }
@@ -326,7 +326,7 @@ describe("js replacer - webpack", () => {
                 var pd = Object.getOwnPropertyDescriptor(t, "p");
                 if( pd === undefined || pd.configurable ){
                     Object.defineProperty(t, "p", {
-                        get: function() { return window.kcContext.url.resourcesPath; },
+                        get: function() { return window.kcContext["x-keycloakify"].resourcesPath; },
                         set: function() {}
                     });
                 }
@@ -396,7 +396,6 @@ describe("css replacer", () => {
                 }
             `,
             cssFileRelativeDirPath: "assets/",
-            isAccountV3: false,
             buildContext: {
                 urlPathname: undefined
             }
@@ -435,7 +434,6 @@ describe("css replacer", () => {
                 }
             `,
             cssFileRelativeDirPath: "assets/",
-            isAccountV3: false,
             buildContext: {
                 urlPathname: "/a/b/"
             }
@@ -474,7 +472,6 @@ describe("css replacer", () => {
                 }
             `,
             cssFileRelativeDirPath: undefined,
-            isAccountV3: false,
             buildContext: {
                 urlPathname: "/a/b/"
             }
@@ -482,15 +479,15 @@ describe("css replacer", () => {
 
         const fixedCssCodeExpected = `
             .my-div {
-                background: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/background.png) no-repeat center center;
+                background: url(\${xKeycloakify.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/background.png) no-repeat center center;
             }
     
             .my-div2 {
-                background: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/assets/background.png) repeat center center;
+                background: url(\${xKeycloakify.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/assets/background.png) repeat center center;
             }
     
             .my-div3 {
-                background-image: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/assets/media/something.svg);
+                background-image: url(\${xKeycloakify.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/assets/media/something.svg);
             }
         `;
 
@@ -513,7 +510,6 @@ describe("css replacer", () => {
                 }
             `,
             cssFileRelativeDirPath: undefined,
-            isAccountV3: false,
             buildContext: {
                 urlPathname: undefined
             }
@@ -521,15 +517,15 @@ describe("css replacer", () => {
 
         const fixedCssCodeExpected = `
             .my-div {
-                background: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/background.png) no-repeat center center;
+                background: url(\${xKeycloakify.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/background.png) no-repeat center center;
             }
     
             .my-div2 {
-                background: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/assets/background.png) repeat center center;
+                background: url(\${xKeycloakify.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/assets/background.png) repeat center center;
             }
     
             .my-div3 {
-                background-image: url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/assets/media/something.svg);
+                background-image: url(\${xKeycloakify.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/assets/media/something.svg);
             }
         `;
 

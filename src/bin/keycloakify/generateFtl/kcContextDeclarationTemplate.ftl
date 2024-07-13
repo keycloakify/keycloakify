@@ -1,19 +1,48 @@
-<#assign pageId="PAGE_ID_xIgLsPgGId9D8e">
-<#assign themeType="KEYCLOAKIFY_THEME_TYPE_dExKd3xEdr">
-<#assign xKeycloakifyMessages = {}>
+<#assign xKeycloakify={
+    "messages": {},
+    "pageId": "{{pageId}}",
+    "ftlTemplateFileName": "{{ftlTemplateFileName}}",
+    "themeType": "{{themeType}}",
+    "themeName": "{{themeName}}",
+    "keycloakifyVersion": "{{keycloakifyVersion}}",
+    "themeVersion": "{{themeVersion}}",
+    "resourcesPath": ""
+}>
 
-const kcContext = ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
+<#if url?? && url?is_hash && url.resourcesPath?? && url.resourcesPath?is_string>
+    <#assign xKeycloakify = xKeycloakify + { "resourcesPath": url.resourcesPath }>
+</#if>
+<#if resourceUrl?? && resourceUrl?is_string>
+    <#assign xKeycloakify = xKeycloakify + { "resourcesPath": resourceUrl }>
+</#if>
+
+const kcContext = ${toJsDeclarationString(.data_model, [])?no_esc};
+kcContext.keycloakifyVersion = "${xKeycloakify.keycloakifyVersion}";
+kcContext.themeVersion = "${xKeycloakify.themeVersion}";
+kcContext.themeType = "${xKeycloakify.themeType}";
+kcContext.themeName = "${xKeycloakify.themeName}";
+kcContext.pageId = "${xKeycloakify.pageId}";
+kcContext.ftlTemplateFileName = "${xKeycloakify.ftlTemplateFileName}";
 
 <@addNonAutomaticallyGatherableMessagesToXKeycloakifyMessages />
 
 kcContext["x-keycloakify"] = {};
 
+kcContext["x-keycloakify"].resourcesPath = "${xKeycloakify.resourcesPath}";
+
 {
-  var messages = {};
-  <#list xKeycloakifyMessages as key, resolvedMsg>
-    messages["${key}"] = decodeHtmlEntities("${resolvedMsg?js_string}");
-  </#list>
-  kcContext["x-keycloakify"].messages = messages;
+    var messages = {};
+    <#list xKeycloakify.messages as key, resolvedMsg>
+        messages["${key}"] = decodeHtmlEntities("${resolvedMsg?js_string}");
+    </#list>
+    kcContext["x-keycloakify"].messages = messages;
+}
+
+if( 
+    kcContext.url instanceof Object &&
+    typeof kcContext.url.resourcesPath === "string"
+){
+    kcContext.url.resourcesCommonPath = kcContext.url.resourcesPath + "/{{RESOURCES_COMMON}}";
 }
 
 if( kcContext.messagesPerField ){
@@ -41,23 +70,6 @@ if( kcContext.messagesPerField ){
         }
     };
 }
-kcContext.keycloakifyVersion = "KEYCLOAKIFY_VERSION_xEdKd3xEdr";
-kcContext.themeVersion = "KEYCLOAKIFY_THEME_VERSION_sIgKd3xEdr3dx";
-kcContext.themeType = "${themeType}";
-kcContext.themeName = "KEYCLOAKIFY_THEME_NAME_cXxKd3xEer";
-kcContext.pageId = "${pageId}";
-if( kcContext.url && kcContext.url.resourcesPath ){
-    kcContext.url.resourcesCommonPath = kcContext.url.resourcesPath + "/" + "RESOURCES_COMMON_cLsLsMrtDkpVv";
-}
-if( kcContext.resourceUrl && !kcContext.url ){
-    Object.defineProperty(kcContext, "url", {
-        value: {
-            resourcesPath: kcContext.resourceUrl
-        },
-        enumerable: false
-    });
-}
-
 attributes_to_attributesByName: {
     if( !kcContext.profile ){
         break attributes_to_attributesByName;
@@ -83,451 +95,450 @@ function decodeHtmlEntities(htmlStr){
     return element.value;
 }
 
-<#function ftl_object_to_js_code_declaring_an_object object path>
+<#function toJsDeclarationString object path>
+    <#local isHash = -1>
+    <#attempt>
+        <#local isHash = object?is_hash || object?is_hash_ex>
+    <#recover>
+        <#return "ABORT: Can't evaluate if " + path?join(".") + " is a hash">
+    </#attempt>
 
-        <#local isHash = "">
+    <#if isHash>
+        <#if path?size gt 10>
+            <#return "ABORT: Too many recursive calls, path: " + path?join(".")>
+        </#if>
+        <#local keys = -1>
+
         <#attempt>
-            <#local isHash = object?is_hash || object?is_hash_ex>
+            <#local keys = object?keys>
         <#recover>
-            <#return "ABORT: Can't evaluate if " + path?join(".") + " is hash">
+            <#return "ABORT: We can't list keys on object">
         </#attempt>
 
-        <#if isHash>
+        <#local outSeq = []>
 
-            <#if path?size gt 10>
-                <#return "ABORT: Too many recursive calls, path: " + path?join(".")>
+        <#list keys as key>
+            <#if ["class","declaredConstructors","superclass","declaringClass" ]?seq_contains(key) >
+                <#continue>
             </#if>
 
-            <#local keys = "">
+            <#if (
+                    areSamePath(path, ["url"]) &&
+                    ["loginUpdatePasswordUrl", "loginUpdateProfileUrl", "loginUsernameReminderUrl", "loginUpdateTotpUrl"]?seq_contains(key)
+                ) || (
+                    key == "updateProfileCtx" && 
+                    areSamePath(path, [])
+                ) || (
+                    <#-- https://github.com/keycloakify/keycloakify/pull/65#issuecomment-991896344 (reports with saml-post-form.ftl) -->
+                    <#-- https://github.com/keycloakify/keycloakify/issues/91#issue-1212319466 (reports with error.ftl and Kc18) -->
+                    <#-- https://github.com/keycloakify/keycloakify/issues/109#issuecomment-1134610163 -->
+                    <#-- https://github.com/keycloakify/keycloakify/issues/357 -->
+                    <#-- https://github.com/keycloakify/keycloakify/discussions/406#discussioncomment-7514787 -->
+                    key == "loginAction" && 
+                    areSamePath(path, ["url"]) && 
+                    ["saml-post-form.ftl", "error.ftl", "info.ftl", "login-oauth-grant.ftl", "logout-confirm.ftl", "login-oauth2-device-verify-user-code.ftl"]?seq_contains(xKeycloakify.pageId) &&
+                    !(auth?has_content && auth.showTryAnotherWayLink())
+                ) || (
+                    <#-- https://github.com/keycloakify/keycloakify/issues/362 -->
+                    ["secretData", "value"]?seq_contains(key) && 
+                    areSamePath(path, [ "totp", "otpCredentials", "*" ])
+                ) || (
+                    ["contextData", "idpConfig", "idp", "authenticationSession"]?seq_contains(key) &&
+                    areSamePath(path, ["brokerContext"]) &&
+                    ["login-idp-link-confirm.ftl", "login-idp-link-email.ftl" ]?seq_contains(xKeycloakify.pageId)
+                ) || (
+                    key == "identityProviderBrokerCtx" && 
+                    areSamePath(path, []) &&
+                    ["login-idp-link-confirm.ftl", "login-idp-link-email.ftl" ]?seq_contains(xKeycloakify.pageId)
+                ) ||  (
+                    ["masterAdminClient", "delegateForUpdate", "defaultRole"]?seq_contains(key) &&
+                    areSamePath(path, ["realm"])
+                ) || (
+                    xKeycloakify.pageId == "error.ftl" &&
+                    areSamePath(path, ["realm"]) &&
+                    !["name", "displayName", "displayNameHtml", "internationalizationEnabled", "registrationEmailAsUsername" ]?seq_contains(key)
+                ) || (
+                    xKeycloakify.pageId == "applications.ftl" &&
+                    ( 
+                        key == "realm" || 
+                        key == "container" 
+                    ) &&
+                    isSubpath(path, ["applications", "applications"])
+                ) || (
+                    key == "delegateForUpdate" &&
+                    areSamePath(path, ["user"])
+                ) || (
+                    <#-- Security audit forwarded by Garth (Gmail) -->
+                    key == "saml.signing.private.key" &&
+                    areSamePath(path, ["client", "attributes"])
+                ) || (
+                    <#-- See: https://github.com/keycloakify/keycloakify/issues/534 -->
+                    key == "password" &&
+                    areSamePath(path, ["login"])
+                ) || (
+                    <#-- Remove realmAttributes added by https://github.com/jcputney/keycloak-theme-additional-info-extension for peace of mind. -->
+                    key == "realmAttributes" &&
+                    areSamePath(path, [])
+                ) || (
+                    <#-- attributesByName adds a lot of noise to the output and is not needed, we already have profile.attributes -->
+                    key == "attributesByName" &&
+                    areSamePath(path, ["profile"]) 
+                ) || (
+                    <#-- We already have the attributes in profile speedup the rendering by filtering it out from the register object -->
+                    (key == "attributes" || key == "attributesByName") &&
+                    areSamePath(path, ["register"])
+                ) || (
+                    areSamePath(path, ["properties"]) &&
+                    (
+                        key?starts_with("kc") || 
+                        key == "locales" || 
+                        key == "import" || 
+                        key == "parent" || 
+                        key == "meta" ||
+                        key == "stylesCommon" ||
+                        key == "styles" ||
+                        key == "accountResourceProvider"
+                    )
+                ) || (
+                    key == "execution" &&
+                    areSamePath(path, [])
+                ) || (
+                    key == "entity" &&
+                    areSamePath(path, ["user"])
+                )
+            >
+                <#-- <#local outSeq += ["/*" + path?join(".") + "." + key + " excluded*/"]> -->
+                <#continue>
+            </#if>
+
+            <#-- https://github.com/keycloakify/keycloakify/discussions/406 -->
+            <#if (
+                key == "attemptedUsername" &&
+                areSamePath(path, ["auth"]) &&
+                [ 
+                    "register.ftl", "terms.ftl", "info.ftl", "login.ftl", 
+                    "login-update-password.ftl", "login-oauth2-device-verify-user-code.ftl"
+                ]?seq_contains(xKeycloakify.pageId)
+            )>
+                <#attempt>
+                    <#-- https://github.com/keycloak/keycloak/blob/3a2bf0c04bcde185e497aaa32d0bb7ab7520cf4a/themes/src/main/resources/theme/base/login/template.ftl#L63 -->
+                    <#if !(auth?has_content && auth.showUsername() && !auth.showResetCredentials())>
+                        <#local outSeq += ["/*" + path?join(".") + "." + key + " excluded*/"]>
+                        <#continue>
+                    </#if>
+                <#recover>
+                    <#local outSeq += ["/*Accessing attemptedUsername throwed an exception */"]>
+                </#attempt>
+            </#if>
+
+            {{userDefinedExclusions}}
 
             <#attempt>
-                <#local keys = object?keys>
+                <#if !object[key]??>
+                    <#continue>
+                </#if>
             <#recover>
-                <#return "ABORT: We can't list keys on this object">
+                <#local outSeq += ["/*Couldn't test if '" + key + "' is available on this object*/"]>
+                <#continue>
             </#attempt>
 
-            <#local out_seq = []>
+            <#local propertyValue = -1>
 
-            <#list keys as key>
+            <#attempt>
+                <#local propertyValue = object[key]>
+            <#recover>
+                <#local outSeq += ["/*Couldn't dereference '" + key + "' on this object*/"]>
+                <#continue>
+            </#attempt>
 
-                <#if ["class","declaredConstructors","superclass","declaringClass" ]?seq_contains(key) >
-                    <#continue>
+            <#local recOut = toJsDeclarationString(propertyValue, path + [ key ])>
+
+            <#if recOut?starts_with("ABORT:")>
+
+                <#local errorMessage = recOut?remove_beginning("ABORT:")>
+
+                <#if errorMessage != " It's a method" >
+                    <#local outSeq += ["/*" + key + ": " + errorMessage + "*/"]>
                 </#if>
 
-                <#if 
-                    (
-                        ["loginUpdatePasswordUrl", "loginUpdateProfileUrl", "loginUsernameReminderUrl", "loginUpdateTotpUrl"]?seq_contains(key) && 
-                        are_same_path(path, ["url"])
-                    ) || (
-                        key == "updateProfileCtx" && 
-                        are_same_path(path, [])
-                    ) || (
-                        <#-- https://github.com/keycloakify/keycloakify/pull/65#issuecomment-991896344 (reports with saml-post-form.ftl) -->
-                        <#-- https://github.com/keycloakify/keycloakify/issues/91#issue-1212319466 (reports with error.ftl and Kc18) -->
-                        <#-- https://github.com/keycloakify/keycloakify/issues/109#issuecomment-1134610163 -->
-                        <#-- https://github.com/keycloakify/keycloakify/issues/357 -->
-                        <#-- https://github.com/keycloakify/keycloakify/discussions/406#discussioncomment-7514787 -->
-                        key == "loginAction" && 
-                        are_same_path(path, ["url"]) && 
-                        ["saml-post-form.ftl", "error.ftl", "info.ftl", "login-oauth-grant.ftl", "logout-confirm.ftl", "login-oauth2-device-verify-user-code.ftl"]?seq_contains(pageId) &&
-                        !(auth?has_content && auth.showTryAnotherWayLink())
-                    ) || (
-                        <#-- https://github.com/keycloakify/keycloakify/issues/362 -->
-                        ["secretData", "value"]?seq_contains(key) && 
-                        are_same_path(path, [ "totp", "otpCredentials", "*" ])
-                    ) || (
-                        ["contextData", "idpConfig", "idp", "authenticationSession"]?seq_contains(key) &&
-                        are_same_path(path, ["brokerContext"]) &&
-                        ["login-idp-link-confirm.ftl", "login-idp-link-email.ftl" ]?seq_contains(pageId)
-                    ) || (
-                        key == "identityProviderBrokerCtx" && 
-                        are_same_path(path, []) &&
-                        ["login-idp-link-confirm.ftl", "login-idp-link-email.ftl" ]?seq_contains(pageId)
-                    ) ||  (
-                        ["masterAdminClient", "delegateForUpdate", "defaultRole"]?seq_contains(key) &&
-                        are_same_path(path, ["realm"])
-                    ) || (
-                        "error.ftl" == pageId &&
-                        are_same_path(path, ["realm"]) &&
-                        !["name", "displayName", "displayNameHtml", "internationalizationEnabled", "registrationEmailAsUsername" ]?seq_contains(key)
-                    ) || (
-                        "applications.ftl" == pageId &&
-                        ( 
-                            key == "realm" || 
-                            key == "container" 
-                        ) &&
-                        is_subpath(path, ["applications", "applications"])
-                    ) || (
-                        key == "delegateForUpdate" &&
-                        are_same_path(path, ["user"])
-                    ) || (
-                        <#-- Security audit forwarded by Garth (Gmail) -->
-                        key == "saml.signing.private.key" &&
-                        are_same_path(path, ["client", "attributes"])
-                    ) || (
-                        <#-- See: https://github.com/keycloakify/keycloakify/issues/534 -->
-                        key == "password" &&
-                        are_same_path(path, ["login"])
-                    ) || (
-                        <#-- Remove realmAttributes added by https://github.com/jcputney/keycloak-theme-additional-info-extension for peace of mind. -->
-                        key == "realmAttributes" &&
-                        are_same_path(path, [])
-                    ) || (
-                        <#-- attributesByName adds a lot of noise to the output and is not needed, we already have profile.attributes -->
-                        key == "attributesByName" &&
-                        are_same_path(path, ["profile"]) 
-                    ) || (
-                        <#-- We already have the attributes in profile speedup the rendering by filtering it out from the register object -->
-                        (key == "attributes" || key == "attributesByName") &&
-                        are_same_path(path, ["register"])
-                    ) || (
-                        are_same_path(path, ["properties"]) &&
-                        (
-                            key?starts_with("kc") || 
-                            key == "locales" || 
-                            key == "import" || 
-                            key == "parent" || 
-                            key == "meta" ||
-                            key == "stylesCommon" ||
-                            key == "styles" ||
-                            key == "accountResourceProvider"
-                        )
-                    ) || (
-                        key == "execution" &&
-                        are_same_path(path, [])
-                    ) || (
-                        key == "entity" &&
-                        are_same_path(path, ["user"])
-                    )
-                >
-                    <#-- <#local out_seq += ["/*" + path?join(".") + "." + key + " excluded*/"]> -->
-                    <#continue>
-                </#if>
-                
-                <#-- https://github.com/keycloakify/keycloakify/discussions/406 -->
-                <#if (
-                    ["register.ftl", "register-user-profile.ftl", "terms.ftl", "info.ftl", "login.ftl", "login-update-password.ftl", "login-oauth2-device-verify-user-code.ftl"]?seq_contains(pageId) && 
-                    key == "attemptedUsername" && are_same_path(path, ["auth"])
-                )>
-                    <#attempt>
-                        <#-- https://github.com/keycloak/keycloak/blob/3a2bf0c04bcde185e497aaa32d0bb7ab7520cf4a/themes/src/main/resources/theme/base/login/template.ftl#L63 -->
-                        <#if !(auth?has_content && auth.showUsername() && !auth.showResetCredentials())>
-                            <#local out_seq += ["/*" + path?join(".") + "." + key + " excluded*/"]>
-                            <#continue>
-                        </#if>
-                    <#recover>
-                        <#local out_seq += ["/*Accessing attemptedUsername throwed an exception */"]>
-                    </#attempt>
-                </#if>
+                <#continue>
+            </#if>
 
-                USER_DEFINED_EXCLUSIONS_eKsaY4ZsZ4eMr2
-                
+            <#local outSeq +=  ['"' + key + '": ' + recOut + ","]>
+
+        </#list>
+
+        <#return (["{"] + outSeq?map(str -> ""?right_pad(4 * (path?size + 1)) + str) + [ ""?right_pad(4 * path?size) + "}"])?join("\n")>
+
+    </#if>
+
+    <#local isMethod = -1>
+    <#attempt>
+        <#local isMethod = object?is_method>
+    <#recover>
+        <#return "ABORT: Can't test if it'sa method.">
+    </#attempt>
+
+    <#if isMethod>
+
+        <#if areSamePath(path, ["auth", "showUsername"])>
+            <#attempt>
+                <#return auth.showUsername()?c>
+            <#recover>
+                <#return "ABORT: Couldn't evaluate auth.showUsername()">
+            </#attempt>
+        </#if>
+
+        <#if areSamePath(path, ["auth", "showResetCredentials"])>
+            <#attempt>
+                <#return auth.showResetCredentials()?c>
+            <#recover>
+                <#return "ABORT: Couldn't evaluate auth.showResetCredentials()">
+            </#attempt>
+        </#if>
+
+        <#if areSamePath(path, ["auth", "showTryAnotherWayLink"])>
+            <#attempt>
+                <#return auth.showTryAnotherWayLink()?c>
+            <#recover>
+                <#return "ABORT: Couldn't evaluate auth.showTryAnotherWayLink()">
+            </#attempt>
+        </#if>
+
+        <#if areSamePath(path, ["url", "getLogoutUrl"])>
+            <#local returnValue = -1>
+            <#attempt>
+                <#local returnValue = url.getLogoutUrl()>
+            <#recover>
+                <#return "ABORT: Couldn't evaluate url.getLogoutUrl()">
+            </#attempt>
+            <#return 'function(){ return "' + returnValue + '"; }'>
+        </#if>
+
+        <#if areSamePath(path, ["totp", "policy", "getAlgorithmKey"])>
+            <#local returnValue = "error">
+            <#if mode?? && mode = "manual">
                 <#attempt>
-                    <#if !object[key]??>
+                    <#local returnValue = totp.policy.getAlgorithmKey()>
+                <#recover>
+                    <#return "ABORT: Couldn't evaluate totp.policy.getAlgorithmKey()">
+                </#attempt>
+            </#if>
+            <#return 'function(){ return "' + returnValue + '"; }'>
+        </#if>
+
+        <#assign fieldNames = [{{fieldNames}}]>
+        <#if profile?? && profile.attributes??>
+            <#list profile.attributes as attribute>
+                <#if fieldNames?seq_contains(attribute.name)>
+                    <#continue>
+                </#if>
+                <#assign fieldNames += [attribute.name]>
+            </#list>
+        </#if>
+
+        <#if areSamePath(path, ["messagesPerField", "get"])>
+
+            <#local jsFunctionCode = "function (fieldName) { ">
+
+            <#list fieldNames as fieldName>
+
+                <#-- See: https://github.com/keycloakify/keycloakify/issues/217 -->
+                <#if xKeycloakify.pageId == "login.ftl" >
+
+                    <#if fieldName == "username">
+
+                        <#local jsFunctionCode += "if(fieldName === 'username' || fieldName === 'password' ){ ">
+
+                        <#if messagesPerField.exists('username') || messagesPerField.exists('password')>
+                            <#local jsFunctionCode += "return kcContext.message && kcContext.message.summary ? kcContext.message.summary : 'error'; ">
+                        <#else>
+                            <#local jsFunctionCode += "return ''; ">
+                        </#if>
+
+                        <#local jsFunctionCode += "} ">
+
                         <#continue>
                     </#if>
-                <#recover>
-                    <#local out_seq += ["/*Couldn't test if '" + key + "' is available on this object*/"]>
-                    <#continue>
-                </#attempt>
 
-                <#local propertyValue = "">
-
-                <#attempt>
-                    <#local propertyValue = object[key]>
-                <#recover>
-                    <#local out_seq += ["/*Couldn't dereference '" + key + "' on this object*/"]>
-                    <#continue>
-                </#attempt>
-
-                <#local rec_out = ftl_object_to_js_code_declaring_an_object(propertyValue, path + [ key ])>
-
-                <#if rec_out?starts_with("ABORT:")>
-
-                    <#local errorMessage = rec_out?remove_beginning("ABORT:")>
-
-                    <#if errorMessage != " It's a method" >
-                        <#local out_seq += ["/*" + key + ": " + errorMessage + "*/"]>
+                    <#if fieldName == "password">
+                        <#continue>
                     </#if>
 
-                    <#continue>
                 </#if>
 
-                <#local out_seq +=  ['"' + key + '": ' + rec_out + ","]>
+                <#local jsFunctionCode += "if(fieldName === '" + fieldName + "'){ ">
+
+                <#if messagesPerField.exists('${fieldName}')>
+                    <#local jsFunctionCode += 'return decodeHtmlEntities("' + messagesPerField.get('${fieldName}')?js_string + '"); '>
+                <#else>
+                    <#local jsFunctionCode += "return ''; ">
+                </#if>
+
+                <#local jsFunctionCode += "} ">
 
             </#list>
 
-            <#return (["{"] + out_seq?map(str -> ""?right_pad(4 * (path?size + 1)) + str) + [ ""?right_pad(4 * path?size) + "}"])?join("\n")>
+            <#local jsFunctionCode += "}">
+
+            <#return jsFunctionCode>
 
         </#if>
 
-        <#local isMethod = "">
-        <#attempt>
-            <#local isMethod = object?is_method>
-        <#recover>
-            <#return "ABORT: Can't test if it'sa method.">
-        </#attempt>
+        <#if areSamePath(path, ["messagesPerField", "existsError"])>
 
-        <#if isMethod>
+            <#local jsFunctionCode = "function (fieldName) { ">
 
-            <#if are_same_path(path, ["auth", "showUsername"])>
-                <#attempt>
-                    <#return auth.showUsername()?c>
-                <#recover>
-                    <#return "ABORT: Couldn't evaluate auth.showUsername()">
-                </#attempt>
-            </#if>
+            <#list fieldNames as fieldName>
 
-            <#if are_same_path(path, ["auth", "showResetCredentials"])>
-                <#attempt>
-                    <#return auth.showResetCredentials()?c>
-                <#recover>
-                    <#return "ABORT: Couldn't evaluate auth.showResetCredentials()">
-                </#attempt>
-            </#if>
+                <#-- See: https://github.com/keycloakify/keycloakify/issues/217 -->
+                <#if xKeycloakify.pageId == "login.ftl" >
+                    <#if fieldName == "username">
 
-            <#if are_same_path(path, ["auth", "showTryAnotherWayLink"])>
-                <#attempt>
-                    <#return auth.showTryAnotherWayLink()?c>
-                <#recover>
-                    <#return "ABORT: Couldn't evaluate auth.showTryAnotherWayLink()">
-                </#attempt>
-            </#if>
+                        <#local jsFunctionCode += "if(fieldName === 'username' || fieldName === 'password' ){ ">
 
-            <#if are_same_path(path, ["url", "getLogoutUrl"])>
-                <#local returnValue = "">
-                <#attempt>
-                    <#local returnValue = url.getLogoutUrl()>
-                <#recover>
-                    <#return "ABORT: Couldn't evaluate url.getLogoutUrl()">
-                </#attempt>
-                <#return 'function(){ return "' + returnValue + '"; }'>
-            </#if>
+                        <#if messagesPerField.existsError('username') || messagesPerField.existsError('password')>
+                            <#local jsFunctionCode += "return true; ">
+                        <#else>
+                            <#local jsFunctionCode += "return false; ">
+                        </#if>
 
-            <#if are_same_path(path, ["totp", "policy", "getAlgorithmKey"])>
-                <#local returnValue = "error">
-                <#if mode?? && mode = "manual">
-                    <#attempt>
-                        <#local returnValue = totp.policy.getAlgorithmKey()>
-                    <#recover>
-                        <#return "ABORT: Couldn't evaluate totp.policy.getAlgorithmKey()">
-                    </#attempt>
-                </#if>
-                <#return 'function(){ return "' + returnValue + '"; }'>
-            </#if>
+                        <#local jsFunctionCode += "} ">
 
-            <#assign fieldNames = [ FIELD_NAMES_eKsIY4ZsZ4xeM ]>
-            <#if profile?? && profile.attributes??>
-                <#list profile.attributes as attribute>
-                    <#if fieldNames?seq_contains(attribute.name)>
                         <#continue>
                     </#if>
-                    <#assign fieldNames += [attribute.name]>
-                </#list>
-            </#if>
 
-            <#if are_same_path(path, ["messagesPerField", "get"])>
-
-                <#local jsFunctionCode = "function (fieldName) { ">
-
-                <#list fieldNames as fieldName>
-
-                    <#-- See: https://github.com/keycloakify/keycloakify/issues/217 -->
-                    <#if pageId == "login.ftl" >
-
-                        <#if fieldName == "username">
-
-                            <#local jsFunctionCode += "if(fieldName === 'username' || fieldName === 'password' ){ ">
-
-                            <#if messagesPerField.exists('username') || messagesPerField.exists('password')>
-                                <#local jsFunctionCode += "return kcContext.message && kcContext.message.summary ? kcContext.message.summary : 'error'; ">
-                            <#else>
-                                <#local jsFunctionCode += "return ''; ">
-                            </#if>
-
-                            <#local jsFunctionCode += "} ">
-
-                            <#continue>
-                        </#if>
-
-                        <#if fieldName == "password">
-                            <#continue>
-                        </#if>
-
+                    <#if fieldName == "password">
+                        <#continue>
                     </#if>
-
-                    <#local jsFunctionCode += "if(fieldName === '" + fieldName + "'){ ">
-
-                    <#if messagesPerField.exists('${fieldName}')>
-                        <#local jsFunctionCode += 'return decodeHtmlEntities("' + messagesPerField.get('${fieldName}')?js_string + '"); '>
-                    <#else>
-                        <#local jsFunctionCode += "return ''; ">
-                    </#if>
-
-                    <#local jsFunctionCode += "} ">
-
-                </#list>
-
-                <#local jsFunctionCode += "}">
-
-                <#return jsFunctionCode>
-
-            </#if>
-
-            <#if are_same_path(path, ["messagesPerField", "existsError"])>
-
-                <#local jsFunctionCode = "function (fieldName) { ">
-
-                <#list fieldNames as fieldName>
-
-                    <#-- See: https://github.com/keycloakify/keycloakify/issues/217 -->
-                    <#if pageId == "login.ftl" >
-                        <#if fieldName == "username">
-
-                            <#local jsFunctionCode += "if(fieldName === 'username' || fieldName === 'password' ){ ">
-
-                            <#if messagesPerField.existsError('username') || messagesPerField.existsError('password')>
-                                <#local jsFunctionCode += "return true; ">
-                            <#else>
-                                <#local jsFunctionCode += "return false; ">
-                            </#if>
-
-                            <#local jsFunctionCode += "} ">
-
-                            <#continue>
-                        </#if>
-
-                        <#if fieldName == "password">
-                            <#continue>
-                        </#if>
-                    </#if>
-
-                    <#local jsFunctionCode += "if(fieldName === '" + fieldName + "' ){ ">
-
-                    <#if messagesPerField.existsError('${fieldName}')>
-                        <#local jsFunctionCode += 'return true; '>
-                    <#else>
-                        <#local jsFunctionCode += "return false; ">
-                    </#if>
-
-                    <#local jsFunctionCode += "}">
-
-                </#list>
-
-                <#local jsFunctionCode += "}">
-
-                <#return jsFunctionCode>
-
-            </#if>
-
-            <#if themeType == "account" && are_same_path(path, ["realm", "isInternationalizationEnabled"])>
-                <#attempt>
-                    <#return realm.isInternationalizationEnabled()?c>
-                <#recover>
-                    <#return "ABORT: Couldn't evaluate realm.isInternationalizationEnabled()">
-                </#attempt>
-            </#if>
-
-            <#return "ABORT: It's a method">
-        </#if>
-
-        <#local isBoolean = "">
-        <#attempt>
-            <#local isBoolean = object?is_boolean>
-        <#recover>
-            <#return "ABORT: Can't test if it's a boolean">
-        </#attempt>
-
-        <#if isBoolean>
-            <#return object?c>
-        </#if>
-
-        <#local isEnumerable = "">
-        <#attempt>
-            <#local isEnumerable = object?is_enumerable>
-        <#recover>
-            <#return "ABORT: Can't test if it's an enumerable">
-        </#attempt>
-
-
-        <#if isEnumerable>
-
-            <#local out_seq = []>
-
-            <#local i = 0>
-
-            <#list object as array_item>
-
-                <#if !array_item??>
-                    <#local out_seq += ["null,"]>
-                    <#continue>
                 </#if>
 
-                <#local rec_out = ftl_object_to_js_code_declaring_an_object(array_item, path + [ i ])>
+                <#local jsFunctionCode += "if(fieldName === '" + fieldName + "' ){ ">
 
-                <#local i = i + 1>
-
-                <#if rec_out?starts_with("ABORT:")>
-
-                    <#local errorMessage = rec_out?remove_beginning("ABORT:")>
-
-                    <#if errorMessage != " It's a method" >
-                        <#local out_seq += ["/*" + i?string + ": " + errorMessage + "*/"]>
-                    </#if>
-
-                    <#continue>
+                <#if messagesPerField.existsError('${fieldName}')>
+                    <#local jsFunctionCode += 'return true; '>
+                <#else>
+                    <#local jsFunctionCode += "return false; ">
                 </#if>
 
-                <#local out_seq += [rec_out + ","]>
+                <#local jsFunctionCode += "}">
 
             </#list>
 
-            <#return (["["] + out_seq?map(str -> ""?right_pad(4 * (path?size + 1)) + str) + [ ""?right_pad(4 * path?size) + "]"])?join("\n")>
+            <#local jsFunctionCode += "}">
+
+            <#return jsFunctionCode>
 
         </#if>
 
-        <#local isDate = "">
-        <#attempt>
-            <#local isDate = object?is_date_like>
-        <#recover>
-            <#return "ABORT: Can't test if it's a date">
-        </#attempt>
-
-        <#if isDate>
-            <#return '"' + object?datetime?iso_utc + '"'>
+        <#if xKeycloakify.themeType == "account" && areSamePath(path, ["realm", "isInternationalizationEnabled"])>
+            <#attempt>
+                <#return realm.isInternationalizationEnabled()?c>
+            <#recover>
+                <#return "ABORT: Couldn't evaluate realm.isInternationalizationEnabled()">
+            </#attempt>
         </#if>
 
-        <#local isNumber = "">
-        <#attempt>
-            <#local isNumber = object?is_number>
-        <#recover>
-            <#return "ABORT: Can't test if it's a number">
-        </#attempt>
+        <#return "ABORT: It's a method">
+    </#if>
 
-        <#if isNumber>
-            <#return object?c>
-        </#if>
+    <#local isBoolean = -1>
+    <#attempt>
+        <#local isBoolean = object?is_boolean>
+    <#recover>
+        <#return "ABORT: Can't test if it's a boolean">
+    </#attempt>
 
-        <#local isString = "">
-        <#attempt>
-            <#local isString = object?is_string>
-        <#recover>
-            <#return "ABORT: Can't test if it's a string">
-        </#attempt>
+    <#if isBoolean>
+        <#return object?c>
+    </#if>
 
-        <#if isString>
-            <@addToXKeycloakifyMessagesIfMessageKey str=object />
-        </#if>
+    <#local isEnumerable = -1>
+    <#attempt>
+        <#local isEnumerable = object?is_enumerable>
+    <#recover>
+        <#return "ABORT: Can't test if it's an enumerable">
+    </#attempt>
 
-        <#attempt>
-            <#return '"' + object?js_string + '"'>;
-        <#recover>
-        </#attempt>
 
-        <#return "ABORT: Couldn't convert into string non hash, non method, non boolean, non number, non enumerable object">
+    <#if isEnumerable>
+
+        <#local outSeq = []>
+
+        <#local i = 0>
+
+        <#list object as array_item>
+
+            <#if !array_item??>
+                <#local outSeq += ["null,"]>
+                <#continue>
+            </#if>
+
+            <#local recOut = toJsDeclarationString(array_item, path + [ i ])>
+
+            <#local i = i + 1>
+
+            <#if recOut?starts_with("ABORT:")>
+
+                <#local errorMessage = recOut?remove_beginning("ABORT:")>
+
+                <#if errorMessage != " It's a method" >
+                    <#local outSeq += ["/*" + i?string + ": " + errorMessage + "*/"]>
+                </#if>
+
+                <#continue>
+            </#if>
+
+            <#local outSeq += [recOut + ","]>
+
+        </#list>
+
+        <#return (["["] + outSeq?map(str -> ""?right_pad(4 * (path?size + 1)) + str) + [ ""?right_pad(4 * path?size) + "]"])?join("\n")>
+
+    </#if>
+
+    <#local isDate = -1>
+    <#attempt>
+        <#local isDate = object?is_date_like>
+    <#recover>
+        <#return "ABORT: Can't test if it's a date">
+    </#attempt>
+
+    <#if isDate>
+        <#return '"' + object?datetime?iso_utc + '"'>
+    </#if>
+
+    <#local isNumber = -1>
+    <#attempt>
+        <#local isNumber = object?is_number>
+    <#recover>
+        <#return "ABORT: Can't test if it's a number">
+    </#attempt>
+
+    <#if isNumber>
+        <#return object?c>
+    </#if>
+
+    <#local isString = -1>
+    <#attempt>
+        <#local isString = object?is_string>
+    <#recover>
+        <#return "ABORT: Can't test if it's a string">
+    </#attempt>
+
+    <#if isString>
+        <@addToXKeycloakifyMessagesIfMessageKey str=object />
+    </#if>
+
+    <#attempt>
+        <#return 'decodeHtmlEntities("' + object?js_string + '")'>;
+    <#recover>
+    </#attempt>
+
+    <#return "ABORT: Couldn't convert into string non hash, non method, non boolean, non number, non enumerable object">
 
 </#function>
-<#function is_subpath path searchedPath>
+<#function isSubpath path searchedPath>
 
     <#if path?size < searchedPath?size>
         <#return false>
@@ -567,8 +578,8 @@ function decodeHtmlEntities(htmlStr){
 
 </#function>
 
-<#function are_same_path path searchedPath>
-    <#return path?size == searchedPath?size && is_subpath(path, searchedPath)>
+<#function areSamePath path searchedPath>
+    <#return path?size == searchedPath?size && isSubpath(path, searchedPath)>
 </#function>
 
 <#macro addToXKeycloakifyMessagesIfMessageKey str>
@@ -589,15 +600,17 @@ function decodeHtmlEntities(htmlStr){
     <#if resolvedMsg==key>
         <#return>
     </#if>
-    <#assign xKeycloakifyMessages = xKeycloakifyMessages + { "${key}": resolvedMsg }>
+    <#local messages=xKeycloakify.messages>
+    <#local messages = messages + { key: resolvedMsg }>
+    <#assign xKeycloakify = xKeycloakify + { "messages": messages }>
 </#macro>
 
 <#function removeBrackets str>
-  <#if str?starts_with("${") && str?ends_with("}")>
-    <#return str[2..(str?length-2)]>
-  <#else>
-    <#return str>
-  </#if>
+    <#if str?starts_with("${") && str?ends_with("}")>
+        <#return str[2..(str?length-2)]>
+    <#else>
+        <#return str>
+    </#if>
 </#function>
 
 <#macro addNonAutomaticallyGatherableMessagesToXKeycloakifyMessages>
@@ -625,7 +638,7 @@ function decodeHtmlEntities(htmlStr){
             </#list>
         </#list>
     </#if>
-    <#if pageId == "terms.ftl" || termsAcceptanceRequired?? && termsAcceptanceRequired>
+    <#if xKeycloakify.pageId == "terms.ftl" || termsAcceptanceRequired?? && termsAcceptanceRequired>
         <@addToXKeycloakifyMessagesIfMessageKey str="termsText" />
     </#if>
     <#if requiredActions?? && requiredActions?is_enumerable>
@@ -637,5 +650,3 @@ function decodeHtmlEntities(htmlStr){
         </#list>
     </#if>
 </#macro>
-
-

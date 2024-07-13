@@ -31,8 +31,8 @@ export function generateResourcesForThemeVariant(params: {
                     Buffer.from(sourceCode)
                         .toString("utf-8")
                         .replace(
-                            `kcContext.themeName = "${themeName}";`,
-                            `kcContext.themeName = "${themeVariantName}";`
+                            `"themeName": "${themeName}"`,
+                            `"themeName": "${themeVariantName}"`
                         ),
                     "utf8"
                 );
