@@ -1,13 +1,10 @@
 <#assign pageId="PAGE_ID_xIgLsPgGId9D8e">
 <#assign themeType="KEYCLOAKIFY_THEME_TYPE_dExKd3xEdr">
 <#assign xKeycloakifyMessages = {}>
-<#assign debugMessage="">
 
 const kcContext = ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
 
 <@addNonAutomaticallyGatherableMessagesToXKeycloakifyMessages />
-
-console.log(`${debugMessage}`);
 
 kcContext["x-keycloakify"] = {};
 
