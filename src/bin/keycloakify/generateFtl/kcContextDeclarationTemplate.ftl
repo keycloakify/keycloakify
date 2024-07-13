@@ -534,7 +534,7 @@ function decodeHtmlEntities(htmlStr){
     </#if>
 
     <#attempt>
-        <#return 'decodeHtmlEntities("' + object?js_string + '")'>;
+        <#return '"' + object?js_string + '"'>;
     <#recover>
     </#attempt>
 
