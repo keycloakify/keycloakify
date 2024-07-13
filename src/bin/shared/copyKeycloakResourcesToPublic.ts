@@ -4,9 +4,9 @@ import {
 } from "./downloadKeycloakStaticResources";
 import { join as pathJoin, relative as pathRelative } from "path";
 import {
-    themeTypes,
-    keycloak_resources,
-    lastKeycloakVersionWithAccountV1
+    THEME_TYPES,
+    KEYCLOAK_RESOURCES,
+    LAST_KEYCLOAK_VERSION_WITH_ACCOUNT_V1
 } from "../shared/constants";
 import { readThisNpmPackageVersion } from "../tools/readThisNpmPackageVersion";
 import { assert } from "tsafe/assert";
@@ -26,7 +26,7 @@ export async function copyKeycloakResourcesToPublic(params: {
 }) {
     const { buildContext } = params;
 
-    const destDirPath = pathJoin(buildContext.publicDirPath, keycloak_resources);
+    const destDirPath = pathJoin(buildContext.publicDirPath, KEYCLOAK_RESOURCES);
 
     const keycloakifyBuildinfoFilePath = pathJoin(destDirPath, "keycloakify.buildinfo");
 
@@ -66,14 +66,14 @@ export async function copyKeycloakResourcesToPublic(params: {
 
     fs.writeFileSync(pathJoin(destDirPath, ".gitignore"), Buffer.from("*", "utf8"));
 
-    for (const themeType of themeTypes) {
+    for (const themeType of THEME_TYPES) {
         await downloadKeycloakStaticResources({
             keycloakVersion: (() => {
                 switch (themeType) {
                     case "login":
                         return buildContext.loginThemeResourcesFromKeycloakVersion;
                     case "account":
-                        return lastKeycloakVersionWithAccountV1;
+                        return LAST_KEYCLOAK_VERSION_WITH_ACCOUNT_V1;
                 }
             })(),
             themeType,

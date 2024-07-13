@@ -5,8 +5,8 @@ import * as fs from "fs";
 import { join as pathJoin } from "path";
 import {
     type ThemeType,
-    accountThemePageIds,
-    loginThemePageIds
+    ACCOUNT_THEME_PAGE_IDS,
+    LOGIN_THEME_PAGE_IDS
 } from "../../shared/constants";
 
 export function readExtraPagesNames(params: {
@@ -41,9 +41,9 @@ export function readExtraPagesNames(params: {
     return extraPages.reduce(...removeDuplicates<string>()).filter(pageId => {
         switch (themeType) {
             case "account":
-                return !id<readonly string[]>(accountThemePageIds).includes(pageId);
+                return !id<readonly string[]>(ACCOUNT_THEME_PAGE_IDS).includes(pageId);
             case "login":
-                return !id<readonly string[]>(loginThemePageIds).includes(pageId);
+                return !id<readonly string[]>(LOGIN_THEME_PAGE_IDS).includes(pageId);
         }
     });
 }

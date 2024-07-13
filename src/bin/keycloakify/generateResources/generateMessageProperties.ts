@@ -1,4 +1,4 @@
-import { type ThemeType, fallbackLanguageTag } from "../../shared/constants";
+import { type ThemeType, FALLBACK_LANGUAGE_TAG } from "../../shared/constants";
 import { crawl } from "../../tools/crawl";
 import { join as pathJoin } from "path";
 import { symToStr } from "tsafe/symToStr";
@@ -168,7 +168,7 @@ export function generateMessageProperties(params: {
                     ...(messageBundle === undefined
                         ? {}
                         : messageBundle[languageTag] ??
-                          messageBundle[fallbackLanguageTag] ??
+                          messageBundle[FALLBACK_LANGUAGE_TAG] ??
                           messageBundle[Object.keys(messageBundle)[0]] ??
                           {})
                 }

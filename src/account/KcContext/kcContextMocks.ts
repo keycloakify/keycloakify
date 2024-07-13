@@ -1,10 +1,10 @@
 import "keycloakify/tools/Object.fromEntries";
-import { resources_common, keycloak_resources } from "keycloakify/bin/shared/constants";
+import { RESOURCES_COMMON, KEYCLOAK_RESOURCES } from "keycloakify/bin/shared/constants";
 import { id } from "tsafe/id";
 import type { KcContext } from "./KcContext";
 import { BASE_URL } from "keycloakify/lib/BASE_URL";
 
-const resourcesPath = `${BASE_URL}${keycloak_resources}/account/resources`;
+const resourcesPath = `${BASE_URL}${KEYCLOAK_RESOURCES}/account/resources`;
 
 export const kcContextCommonMock: KcContext.Common = {
     themeVersion: "0.0.0",
@@ -13,7 +13,7 @@ export const kcContextCommonMock: KcContext.Common = {
     themeName: "my-theme-name",
     url: {
         resourcesPath,
-        resourcesCommonPath: `${resourcesPath}/${resources_common}`,
+        resourcesCommonPath: `${resourcesPath}/${RESOURCES_COMMON}`,
         resourceUrl: "#",
         accountUrl: "#",
         applicationsUrl: "#",

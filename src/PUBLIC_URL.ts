@@ -1,4 +1,4 @@
-import { basenameOfTheKeycloakifyResourcesDir } from "keycloakify/bin/shared/constants";
+import { BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR } from "keycloakify/bin/shared/constants";
 import { assert } from "tsafe/assert";
 
 /**
@@ -17,5 +17,5 @@ export const PUBLIC_URL = (() => {
         return process.env.PUBLIC_URL;
     }
 
-    return `${kcContext.url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}`;
+    return `${kcContext.url.resourcesPath}/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}`;
 })();

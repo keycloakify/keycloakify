@@ -3,9 +3,9 @@ import { join as pathJoin } from "path";
 import { assert } from "tsafe/assert";
 import type { BuildContext } from "../../shared/buildContext";
 import {
-    resources_common,
-    lastKeycloakVersionWithAccountV1,
-    accountV1ThemeName
+    RESOURCES_COMMON,
+    LAST_KEYCLOAK_VERSION_WITH_ACCOUNT_V1,
+    ACCOUNT_V1_THEME_NAME
 } from "../../shared/constants";
 import {
     downloadKeycloakDefaultTheme,
@@ -24,14 +24,14 @@ export async function bringInAccountV1(params: {
     const { resourcesDirPath, buildContext } = params;
 
     const { defaultThemeDirPath } = await downloadKeycloakDefaultTheme({
-        keycloakVersion: lastKeycloakVersionWithAccountV1,
+        keycloakVersion: LAST_KEYCLOAK_VERSION_WITH_ACCOUNT_V1,
         buildContext
     });
 
     const accountV1DirPath = pathJoin(
         resourcesDirPath,
         "theme",
-        accountV1ThemeName,
+        ACCOUNT_V1_THEME_NAME,
         "account"
     );
 
@@ -47,7 +47,7 @@ export async function bringInAccountV1(params: {
 
     transformCodebase({
         srcDirPath: pathJoin(defaultThemeDirPath, "keycloak", "common", "resources"),
-        destDirPath: pathJoin(accountV1DirPath, "resources", resources_common)
+        destDirPath: pathJoin(accountV1DirPath, "resources", RESOURCES_COMMON)
     });
 
     fs.writeFileSync(
@@ -69,7 +69,7 @@ export async function bringInAccountV1(params: {
                             "patternfly-additions.min.css"
                         ].map(
                             fileBasename =>
-                                `${resources_common}/node_modules/patternfly/dist/css/${fileBasename}`
+                                `${RESOURCES_COMMON}/node_modules/patternfly/dist/css/${fileBasename}`
                         )
                     ].join(" "),
                 "",

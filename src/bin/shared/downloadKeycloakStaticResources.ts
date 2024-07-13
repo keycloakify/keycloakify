@@ -4,7 +4,7 @@ import {
     downloadKeycloakDefaultTheme,
     type BuildContextLike as BuildContextLike_downloadKeycloakDefaultTheme
 } from "./downloadKeycloakDefaultTheme";
-import { resources_common, type ThemeType } from "./constants";
+import { RESOURCES_COMMON, type ThemeType } from "./constants";
 import type { BuildContext } from "./buildContext";
 import { assert } from "tsafe/assert";
 import { existsAsync } from "../tools/fs.existsAsync";
@@ -48,6 +48,6 @@ export async function downloadKeycloakStaticResources(params: {
 
     transformCodebase({
         srcDirPath: pathJoin(defaultThemeDirPath, "keycloak", "common", "resources"),
-        destDirPath: pathJoin(resourcesDirPath, resources_common)
+        destDirPath: pathJoin(resourcesDirPath, RESOURCES_COMMON)
     });
 }

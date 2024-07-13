@@ -1,4 +1,4 @@
-import { buildForKeycloakMajorVersionEnvName } from "../shared/constants";
+import { BUILD_FOR_KEYCLOAK_MAJOR_VERSION_ENV_NAME } from "../shared/constants";
 import * as child_process from "child_process";
 import { Deferred } from "evt/tools/Deferred";
 import { assert } from "tsafe/assert";
@@ -26,7 +26,7 @@ export async function keycloakifyBuild(params: {
         cwd: buildContext.projectDirPath,
         env: {
             ...process.env,
-            [buildForKeycloakMajorVersionEnvName]: `${buildForKeycloakMajorVersionNumber}`
+            [BUILD_FOR_KEYCLOAK_MAJOR_VERSION_ENV_NAME]: `${buildForKeycloakMajorVersionNumber}`
         },
         shell: true
     });

@@ -1,4 +1,4 @@
-import { basenameOfTheKeycloakifyResourcesDir } from "../../../shared/constants";
+import { BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR } from "../../../shared/constants";
 import { assert } from "tsafe/assert";
 import type { BuildContext } from "../../../shared/buildContext";
 import * as nodePath from "path";
@@ -90,7 +90,7 @@ export function replaceImportsInJsCode_webpack(params: {
                 return "${u}";
             })()] = ${
                 isArrowFunction ? `${e} =>` : `function(${e}) { return `
-            } "/${basenameOfTheKeycloakifyResourcesDir}/${staticDir}${language}/"`
+            } "/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/${staticDir}${language}/"`
                 .replace(/\s+/g, " ")
                 .trim();
         }
@@ -104,7 +104,7 @@ export function replaceImportsInJsCode_webpack(params: {
                 `[a-zA-Z]+\\.[a-zA-Z]+\\+"${staticDir.replace(/\//g, "\\/")}`,
                 "g"
             ),
-            `window.kcContext["x-keycloakify"].resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/${staticDir}`
+            `window.kcContext["x-keycloakify"].resourcesPath + "/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/${staticDir}`
         );
 
     return { fixedJsCode };

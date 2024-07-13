@@ -3,7 +3,7 @@ import { assert } from "tsafe/assert";
 import messages_defaultSet_fallbackLanguage from "./messages_defaultSet/en";
 import { fetchMessages_defaultSet } from "./messages_defaultSet";
 import type { KcContext } from "../KcContext";
-import { fallbackLanguageTag } from "keycloakify/bin/shared/constants";
+import { FALLBACK_LANGUAGE_TAG } from "keycloakify/bin/shared/constants";
 import { id } from "tsafe/id";
 
 export type KcContextLike = {
@@ -104,7 +104,7 @@ export function createGetI18n<MessageKey_themeDefined extends string = never>(me
         }
 
         const partialI18n: Pick<I18n, "currentLanguageTag" | "getChangeLocaleUrl" | "labelBySupportedLanguageTag"> = {
-            currentLanguageTag: kcContext.locale?.currentLanguageTag ?? fallbackLanguageTag,
+            currentLanguageTag: kcContext.locale?.currentLanguageTag ?? FALLBACK_LANGUAGE_TAG,
             getChangeLocaleUrl: newLanguageTag => {
                 const { locale } = kcContext;
 
@@ -122,7 +122,7 @@ export function createGetI18n<MessageKey_themeDefined extends string = never>(me
         const { createI18nTranslationFunctions } = createI18nTranslationFunctionsFactory<MessageKey_themeDefined>({
             messages_themeDefined:
                 messagesByLanguageTag_themeDefined[partialI18n.currentLanguageTag] ??
-                messagesByLanguageTag_themeDefined[fallbackLanguageTag] ??
+                messagesByLanguageTag_themeDefined[FALLBACK_LANGUAGE_TAG] ??
                 (() => {
                     const firstLanguageTag = Object.keys(messagesByLanguageTag_themeDefined)[0];
                     if (firstLanguageTag === undefined) {
@@ -133,7 +133,7 @@ export function createGetI18n<MessageKey_themeDefined extends string = never>(me
             messages_fromKcServer: kcContext["x-keycloakify"].messages
         });
 
-        const isCurrentLanguageFallbackLanguage = partialI18n.currentLanguageTag === fallbackLanguageTag;
+        const isCurrentLanguageFallbackLanguage = partialI18n.currentLanguageTag === FALLBACK_LANGUAGE_TAG;
 
         const result: Result = {
             i18n: {

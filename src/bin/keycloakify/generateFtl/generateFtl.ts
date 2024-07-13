@@ -13,8 +13,8 @@ import type { BuildContext } from "../../shared/buildContext";
 import { assert } from "tsafe/assert";
 import {
     type ThemeType,
-    basenameOfTheKeycloakifyResourcesDir,
-    resources_common
+    BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR,
+    RESOURCES_COMMON
 } from "../../shared/constants";
 import { getThisCodebaseRootDirPath } from "../../tools/getThisCodebaseRootDirPath";
 
@@ -93,7 +93,7 @@ export function generateFtlFilesCodeFactory(params: {
                         new RegExp(
                             `^${(buildContext.urlPathname ?? "/").replace(/\//g, "\\/")}`
                         ),
-                        `\${xKeycloakify.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/`
+                        `\${xKeycloakify.resourcesPath}/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/`
                     )
                 );
             })
@@ -118,7 +118,7 @@ export function generateFtlFilesCodeFactory(params: {
         .replace("{{keycloakifyVersion}}", keycloakifyVersion)
         .replace("{{themeVersion}}", buildContext.themeVersion)
         .replace("{{fieldNames}}", fieldNames.map(name => `"${name}"`).join(", "))
-        .replace("{{RESOURCES_COMMON}}", resources_common)
+        .replace("{{RESOURCES_COMMON}}", RESOURCES_COMMON)
         .replace(
             "{{userDefinedExclusions}}",
             buildContext.kcContextExclusionsFtlCode ?? ""

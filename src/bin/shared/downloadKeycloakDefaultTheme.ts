@@ -1,7 +1,7 @@
 import { join as pathJoin, relative as pathRelative } from "path";
 import { type BuildContext } from "./buildContext";
 import { assert } from "tsafe/assert";
-import { lastKeycloakVersionWithAccountV1 } from "./constants";
+import { LAST_KEYCLOAK_VERSION_WITH_ACCOUNT_V1 } from "./constants";
 import { downloadAndExtractArchive } from "../tools/downloadAndExtractArchive";
 
 export type BuildContextLike = {
@@ -43,7 +43,7 @@ export async function downloadKeycloakDefaultTheme(params: {
             }
 
             last_account_v1_transformations: {
-                if (lastKeycloakVersionWithAccountV1 !== keycloakVersion) {
+                if (LAST_KEYCLOAK_VERSION_WITH_ACCOUNT_V1 !== keycloakVersion) {
                     break last_account_v1_transformations;
                 }
 

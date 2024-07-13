@@ -1,22 +1,22 @@
-export const keycloak_resources = "keycloak-resources";
-export const resources_common = "resources-common";
-export const lastKeycloakVersionWithAccountV1 = "21.1.2";
-export const basenameOfTheKeycloakifyResourcesDir = "dist";
+export const KEYCLOAK_RESOURCES = "keycloak-resources";
+export const RESOURCES_COMMON = "resources-common";
+export const LAST_KEYCLOAK_VERSION_WITH_ACCOUNT_V1 = "21.1.2";
+export const BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR = "dist";
 
-export const themeTypes = ["login", "account"] as const;
-export const accountV1ThemeName = "account-v1";
+export const THEME_TYPES = ["login", "account"] as const;
+export const ACCOUNT_V1_THEME_NAME = "account-v1";
 
-export type ThemeType = (typeof themeTypes)[number];
+export type ThemeType = (typeof THEME_TYPES)[number];
 
-export const vitePluginSubScriptEnvNames = {
-    runPostBuildScript: "KEYCLOAKIFY_RUN_POST_BUILD_SCRIPT",
-    resolveViteConfig: "KEYCLOAKIFY_RESOLVE_VITE_CONFIG"
+export const VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES = {
+    RUN_POST_BUILD_SCRIPT: "KEYCLOAKIFY_RUN_POST_BUILD_SCRIPT",
+    RESOLVE_VITE_CONFIG: "KEYCLOAKIFY_RESOLVE_VITE_CONFIG"
 } as const;
 
-export const buildForKeycloakMajorVersionEnvName =
+export const BUILD_FOR_KEYCLOAK_MAJOR_VERSION_ENV_NAME =
     "KEYCLOAKIFY_BUILD_FOR_KEYCLOAK_MAJOR_VERSION";
 
-export const loginThemePageIds = [
+export const LOGIN_THEME_PAGE_IDS = [
     "login.ftl",
     "login-username.ftl",
     "login-password.ftl",
@@ -53,7 +53,7 @@ export const loginThemePageIds = [
     "webauthn-error.ftl"
 ] as const;
 
-export const accountThemePageIds = [
+export const ACCOUNT_THEME_PAGE_IDS = [
     "password.ftl",
     "account.ftl",
     "sessions.ftl",
@@ -63,9 +63,9 @@ export const accountThemePageIds = [
     "federatedIdentity.ftl"
 ] as const;
 
-export type LoginThemePageId = (typeof loginThemePageIds)[number];
-export type AccountThemePageId = (typeof accountThemePageIds)[number];
+export type LoginThemePageId = (typeof LOGIN_THEME_PAGE_IDS)[number];
+export type AccountThemePageId = (typeof ACCOUNT_THEME_PAGE_IDS)[number];
 
-export const containerName = "keycloak-keycloakify";
+export const CONTAINER_NAME = "keycloak-keycloakify";
 
-export const fallbackLanguageTag = "en";
+export const FALLBACK_LANGUAGE_TAG = "en";

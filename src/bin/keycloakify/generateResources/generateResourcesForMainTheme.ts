@@ -15,12 +15,12 @@ import {
 } from "../generateFtl";
 import {
     type ThemeType,
-    lastKeycloakVersionWithAccountV1,
-    keycloak_resources,
-    accountV1ThemeName,
-    basenameOfTheKeycloakifyResourcesDir,
-    loginThemePageIds,
-    accountThemePageIds
+    LAST_KEYCLOAK_VERSION_WITH_ACCOUNT_V1,
+    KEYCLOAK_RESOURCES,
+    ACCOUNT_V1_THEME_NAME,
+    BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR,
+    LOGIN_THEME_PAGE_IDS,
+    ACCOUNT_THEME_PAGE_IDS
 } from "../../shared/constants";
 import type { BuildContext } from "../../shared/buildContext";
 import { assert, type Equals } from "tsafe/assert";
@@ -85,7 +85,7 @@ export async function generateResourcesForMainTheme(params: {
             const destDirPath = pathJoin(
                 themeTypeDirPath,
                 "resources",
-                basenameOfTheKeycloakifyResourcesDir
+                BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR
             );
 
             // NOTE: Prevent accumulation of files in the assets dir, as names are hashed they pile up.
@@ -103,7 +103,7 @@ export async function generateResourcesForMainTheme(params: {
                             themeType: "login"
                         }),
                         "resources",
-                        basenameOfTheKeycloakifyResourcesDir
+                        BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR
                     ),
                     destDirPath
                 });
@@ -114,7 +114,7 @@ export async function generateResourcesForMainTheme(params: {
             {
                 const dirPath = pathJoin(
                     buildContext.projectBuildDirPath,
-                    keycloak_resources
+                    KEYCLOAK_RESOURCES
                 );
 
                 if (fs.existsSync(dirPath)) {
@@ -122,7 +122,7 @@ export async function generateResourcesForMainTheme(params: {
 
                     throw new Error(
                         [
-                            `Keycloakify build error: The ${keycloak_resources} directory shouldn't exist in your build directory.`,
+                            `Keycloakify build error: The ${KEYCLOAK_RESOURCES} directory shouldn't exist in your build directory.`,
                             `(${pathRelative(process.cwd(), dirPath)}).\n`,
                             `Theses assets are only required for local development with Storybook.",
                             "Please remove this directory as an additional step of your command.\n`,
@@ -182,9 +182,9 @@ export async function generateResourcesForMainTheme(params: {
             ...(() => {
                 switch (themeType) {
                     case "login":
-                        return loginThemePageIds;
+                        return LOGIN_THEME_PAGE_IDS;
                     case "account":
-                        return isAccountV3 ? ["index.ftl"] : accountThemePageIds;
+                        return isAccountV3 ? ["index.ftl"] : ACCOUNT_THEME_PAGE_IDS;
                 }
             })(),
             ...(isAccountV3
@@ -238,7 +238,7 @@ export async function generateResourcesForMainTheme(params: {
                 keycloakVersion: (() => {
                     switch (themeType) {
                         case "account":
-                            return lastKeycloakVersionWithAccountV1;
+                            return LAST_KEYCLOAK_VERSION_WITH_ACCOUNT_V1;
                         case "login":
                             return buildContext.loginThemeResourcesFromKeycloakVersion;
                     }
@@ -256,7 +256,7 @@ export async function generateResourcesForMainTheme(params: {
                     `parent=${(() => {
                         switch (themeType) {
                             case "account":
-                                return isAccountV3 ? "base" : accountV1ThemeName;
+                                return isAccountV3 ? "base" : ACCOUNT_V1_THEME_NAME;
                             case "login":
                                 return "keycloak";
                         }
@@ -347,7 +347,7 @@ export async function generateResourcesForMainTheme(params: {
 
         if (buildContext.recordIsImplementedByThemeType.account) {
             metaInfKeycloakThemes.themes.push({
-                name: accountV1ThemeName,
+                name: ACCOUNT_V1_THEME_NAME,
                 types: ["account"]
             });
         }

@@ -13,13 +13,13 @@ import * as fs from "fs";
 import { assert, type Equals } from "tsafe/assert";
 import * as child_process from "child_process";
 import {
-    vitePluginSubScriptEnvNames,
-    buildForKeycloakMajorVersionEnvName
+    VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES,
+    BUILD_FOR_KEYCLOAK_MAJOR_VERSION_ENV_NAME
 } from "./constants";
 import type { KeycloakVersionRange } from "./KeycloakVersionRange";
 import { exclude } from "tsafe";
 import { crawl } from "../tools/crawl";
-import { themeTypes } from "./constants";
+import { THEME_TYPES } from "./constants";
 import { objectFromEntries } from "tsafe/objectFromEntries";
 import { objectEntries } from "tsafe/objectEntries";
 import { type ThemeType } from "./constants";
@@ -136,7 +136,7 @@ export function getBuildContext(params: {
             return { themeSrcDirPath };
         }
 
-        for (const themeType of [...themeTypes, "email"]) {
+        for (const themeType of [...THEME_TYPES, "email"]) {
             if (!fs.existsSync(pathJoin(srcDirPath, themeType))) {
                 continue;
             }
@@ -171,18 +171,18 @@ export function getBuildContext(params: {
                 cwd: projectDirPath,
                 env: {
                     ...process.env,
-                    [vitePluginSubScriptEnvNames.resolveViteConfig]: "true"
+                    [VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES.RESOLVE_VITE_CONFIG]: "true"
                 }
             })
             .toString("utf8");
 
         assert(
-            output.includes(vitePluginSubScriptEnvNames.resolveViteConfig),
+            output.includes(VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES.RESOLVE_VITE_CONFIG),
             "Seems like the Keycloakify's Vite plugin is not installed."
         );
 
         const resolvedViteConfigStr = output
-            .split(vitePluginSubScriptEnvNames.resolveViteConfig)
+            .split(VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES.RESOLVE_VITE_CONFIG)
             .reverse()[0];
 
         const resolvedViteConfig: ResolvedViteConfig = JSON.parse(resolvedViteConfigStr);
@@ -594,7 +594,8 @@ export function getBuildContext(params: {
 
             build_for_specific_keycloak_major_version: {
                 const buildForKeycloakMajorVersionNumber = (() => {
-                    const envValue = process.env[buildForKeycloakMajorVersionEnvName];
+                    const envValue =
+                        process.env[BUILD_FOR_KEYCLOAK_MAJOR_VERSION_ENV_NAME];
 
                     if (envValue === undefined) {
                         return undefined;

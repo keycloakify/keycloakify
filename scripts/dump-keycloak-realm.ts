@@ -1,4 +1,4 @@
-import { containerName } from "../src/bin/shared/constants";
+import { CONTAINER_NAME } from "../src/bin/shared/constants";
 import child_process from "child_process";
 import { SemVer } from "../src/bin/tools/SemVer";
 import { join as pathJoin, relative as pathRelative } from "path";
@@ -14,7 +14,7 @@ import { is } from "tsafe/is";
         const child = child_process.spawn(
             "docker",
             [
-                ...["exec", containerName],
+                ...["exec", CONTAINER_NAME],
                 ...["/opt/keycloak/bin/kc.sh", "export"],
                 ...["--dir", "/tmp"],
                 ...["--realm", "myrealm"],
@@ -62,7 +62,7 @@ import { is } from "tsafe/is";
 
     const keycloakMajorVersionNumber = SemVer.parse(
         child_process
-            .execSync(`docker inspect --format '{{.Config.Image}}' ${containerName}`)
+            .execSync(`docker inspect --format '{{.Config.Image}}' ${CONTAINER_NAME}`)
             .toString("utf8")
             .trim()
             .split(":")[1]
@@ -80,7 +80,7 @@ import { is } from "tsafe/is";
         )
     );
 
-    run(`docker cp ${containerName}:/tmp/myrealm-realm.json ${targetFilePath}`);
+    run(`docker cp ${CONTAINER_NAME}:/tmp/myrealm-realm.json ${targetFilePath}`);
 
     console.log(`${chalk.green(`✓ Exported realm to`)} ${chalk.bold(targetFilePath)}`);
 })();

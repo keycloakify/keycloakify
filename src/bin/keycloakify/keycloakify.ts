@@ -3,7 +3,7 @@ import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path
 import * as child_process from "child_process";
 import * as fs from "fs";
 import { getBuildContext } from "../shared/buildContext";
-import { vitePluginSubScriptEnvNames } from "../shared/constants";
+import { VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES } from "../shared/constants";
 import { buildJars } from "./buildJars";
 import type { CliCommandOptions } from "../main";
 import chalk from "chalk";
@@ -93,10 +93,12 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             cwd: buildContext.projectDirPath,
             env: {
                 ...process.env,
-                [vitePluginSubScriptEnvNames.runPostBuildScript]: JSON.stringify({
-                    resourcesDirPath,
-                    buildContext
-                })
+                [VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES.RUN_POST_BUILD_SCRIPT]: JSON.stringify(
+                    {
+                        resourcesDirPath,
+                        buildContext
+                    }
+                )
             }
         });
     }

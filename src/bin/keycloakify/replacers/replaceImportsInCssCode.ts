@@ -1,5 +1,5 @@
 import type { BuildContext } from "../../shared/buildContext";
-import { basenameOfTheKeycloakifyResourcesDir } from "../../shared/constants";
+import { BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR } from "../../shared/constants";
 import { assert } from "tsafe/assert";
 import { posix } from "path";
 
@@ -37,7 +37,7 @@ export function replaceImportsInCssCode(params: {
                     break inline_style_in_html;
                 }
 
-                return `url(\${xKeycloakify.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}${assetFileAbsoluteUrlPathname})`;
+                return `url(\${xKeycloakify.resourcesPath}/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}${assetFileAbsoluteUrlPathname})`;
             }
 
             const assetFileRelativeUrlPathname = posix.relative(

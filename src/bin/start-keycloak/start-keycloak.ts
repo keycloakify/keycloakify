@@ -2,7 +2,7 @@ import { getBuildContext } from "../shared/buildContext";
 import { exclude } from "tsafe/exclude";
 import type { CliCommandOptions as CliCommandOptions_common } from "../main";
 import { promptKeycloakVersion } from "../shared/promptKeycloakVersion";
-import { accountV1ThemeName, containerName } from "../shared/constants";
+import { ACCOUNT_V1_THEME_NAME, CONTAINER_NAME } from "../shared/constants";
 import { SemVer } from "../tools/SemVer";
 import { assert } from "tsafe/assert";
 import * as fs from "fs";
@@ -269,7 +269,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     fs.copyFileSync(jarFilePath, jarFilePath_cacheDir);
 
     try {
-        child_process.execSync(`docker rm --force ${containerName}`, {
+        child_process.execSync(`docker rm --force ${CONTAINER_NAME}`, {
             stdio: "ignore"
         });
     } catch {}
@@ -279,7 +279,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         [
             "run",
             ...["-p", `${cliCommandOptions.port}:8080`],
-            ...["--name", containerName],
+            ...["--name", CONTAINER_NAME],
             ...["-e", "KEYCLOAK_ADMIN=admin"],
             ...["-e", "KEYCLOAK_ADMIN_PASSWORD=admin"],
             ...(realmJsonFilePath === undefined
@@ -301,10 +301,10 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                     pathJoin(
                         buildContext.keycloakifyBuildDirPath,
                         "theme",
-                        accountV1ThemeName
+                        ACCOUNT_V1_THEME_NAME
                     )
                 )
-                    ? [accountV1ThemeName]
+                    ? [ACCOUNT_V1_THEME_NAME]
                     : [])
             ]
                 .map(themeName => ({

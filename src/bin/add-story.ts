@@ -1,11 +1,11 @@
 import { getThisCodebaseRootDirPath } from "./tools/getThisCodebaseRootDirPath";
 import cliSelect from "cli-select";
 import {
-    loginThemePageIds,
-    accountThemePageIds,
+    LOGIN_THEME_PAGE_IDS,
+    ACCOUNT_THEME_PAGE_IDS,
     type LoginThemePageId,
     type AccountThemePageId,
-    themeTypes,
+    THEME_TYPES,
     type ThemeType
 } from "./shared/constants";
 import { capitalize } from "tsafe/capitalize";
@@ -27,7 +27,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     console.log(chalk.cyan("Theme type:"));
 
     const { value: themeType } = await cliSelect<ThemeType>({
-        values: [...themeTypes]
+        values: [...THEME_TYPES]
     }).catch(() => {
         process.exit(-1);
     });
@@ -40,9 +40,9 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         values: (() => {
             switch (themeType) {
                 case "login":
-                    return [...loginThemePageIds];
+                    return [...LOGIN_THEME_PAGE_IDS];
                 case "account":
-                    return [...accountThemePageIds];
+                    return [...ACCOUNT_THEME_PAGE_IDS];
             }
             assert<Equals<typeof themeType, never>>(false);
         })()

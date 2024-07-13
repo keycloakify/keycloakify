@@ -1,9 +1,9 @@
 import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path";
 import type { Plugin } from "vite";
 import {
-    basenameOfTheKeycloakifyResourcesDir,
-    keycloak_resources,
-    vitePluginSubScriptEnvNames
+    BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR,
+    KEYCLOAK_RESOURCES,
+    VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES
 } from "../bin/shared/constants";
 import { id } from "tsafe/id";
 import { rm } from "../bin/tools/fs.rm";
@@ -38,7 +38,7 @@ export function keycloakify(params?: Params) {
 
             run_post_build_script_case: {
                 const envValue =
-                    process.env[vitePluginSubScriptEnvNames.runPostBuildScript];
+                    process.env[VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES.RUN_POST_BUILD_SCRIPT];
 
                 if (envValue === undefined) {
                     break run_post_build_script_case;
@@ -94,13 +94,13 @@ export function keycloakify(params?: Params) {
 
             resolve_vite_config_case: {
                 const envValue =
-                    process.env[vitePluginSubScriptEnvNames.resolveViteConfig];
+                    process.env[VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES.RESOLVE_VITE_CONFIG];
 
                 if (envValue === undefined) {
                     break resolve_vite_config_case;
                 }
 
-                console.log(vitePluginSubScriptEnvNames.resolveViteConfig);
+                console.log(VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES.RESOLVE_VITE_CONFIG);
 
                 console.log(
                     JSON.stringify(
@@ -172,7 +172,7 @@ export function keycloakify(params?: Params) {
                     `(`,
                     `(window.kcContext === undefined || import.meta.env.MODE === "development")?`,
                     `"${urlPathname ?? "/"}":`,
-                    `(window.kcContext["x-keycloakify"].resourcesPath + "/${basenameOfTheKeycloakifyResourcesDir}/")`,
+                    `(window.kcContext["x-keycloakify"].resourcesPath + "/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/")`,
                     `)`
                 ].join("")
             );
@@ -205,7 +205,7 @@ export function keycloakify(params?: Params) {
 
             assert(buildDirPath !== undefined);
 
-            await rm(pathJoin(buildDirPath, keycloak_resources), {
+            await rm(pathJoin(buildDirPath, KEYCLOAK_RESOURCES), {
                 recursive: true,
                 force: true
             });
