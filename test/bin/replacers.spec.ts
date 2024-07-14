@@ -394,6 +394,14 @@ describe("css replacer", () => {
                 .my-div3 {
                     background-image: url(/assets/media/something.svg);
                 }
+
+                .my-div4 {
+                    background-image: url("/assets/media/something(cool).svg");
+                }
+
+                .my-div5 {
+                    background-image: url('/assets/media/something(cool).svg');
+                }
             `,
             cssFileRelativeDirPath: "assets/",
             buildContext: {
@@ -412,6 +420,14 @@ describe("css replacer", () => {
     
             .my-div3 {
                 background-image: url("media/something.svg");
+            }
+
+            .my-div4 {
+                background-image: url("media/something(cool).svg");
+            }
+
+            .my-div5 {
+                background-image: url("media/something(cool).svg");
             }
         `;
 
