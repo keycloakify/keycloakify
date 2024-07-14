@@ -71,10 +71,14 @@ export function createGetKcClsx<ClassKey extends string>(params: {
                 transform: classKey => {
                     assert(is<ClassKey>(classKey));
 
+                    const className = classes?.[classKey];
+
                     return clsx(
                         classKey,
-                        doUseDefaultCss ? defaultClasses[classKey] : undefined,
-                        classes?.[classKey]
+                        doUseDefaultCss && !className?.split(" ").includes("CLEAR")
+                            ? defaultClasses[classKey]
+                            : undefined,
+                        className
                     );
                 }
             });
