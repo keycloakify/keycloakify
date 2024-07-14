@@ -13,10 +13,11 @@ export function createUseI18n<MessageKey_themeDefined extends string = never>(me
     const { withJsx } = (() => {
         const cache = new WeakMap<GenericI18n_noJsx<MessageKey>, GenericI18n<MessageKey>>();
 
-        function renderHtmlString(htmlString: string): JSX.Element {
+        function renderHtmlString(params: { htmlString: string; msgKey: string }): JSX.Element {
+            const { htmlString, msgKey } = params;
             return (
                 <div
-                    style={{ display: "inline-block" }}
+                    data-kc-msg={msgKey}
                     dangerouslySetInnerHTML={{
                         __html: htmlString
                     }}
@@ -37,8 +38,8 @@ export function createUseI18n<MessageKey_themeDefined extends string = never>(me
 
             const i18n: I18n = {
                 ...i18n_noJsx,
-                msg: (...args) => renderHtmlString(i18n_noJsx.msgStr(...args)),
-                advancedMsg: (...args) => renderHtmlString(i18n_noJsx.advancedMsgStr(...args))
+                msg: (msgKey, ...args) => renderHtmlString({ htmlString: i18n_noJsx.msgStr(msgKey, ...args), msgKey }),
+                advancedMsg: (msgKey, ...args) => renderHtmlString({ htmlString: i18n_noJsx.advancedMsgStr(msgKey, ...args), msgKey })
             };
 
             cache.set(i18n_noJsx, i18n);
@@ -48,6 +49,19 @@ export function createUseI18n<MessageKey_themeDefined extends string = never>(me
 
         return { withJsx };
     })();
+
+    add_style: {
+        const attributeName = "data-kc-i18n";
+
+        // Check if already exists in head
+        if (document.querySelector(`style[${attributeName}]`) !== null) {
+            break add_style;
+        }
+
+        const styleElement = document.createElement("style");
+        styleElement.attributes.setNamedItem(document.createAttribute(attributeName));
+        (styleElement.textContent = `[data-kc-msg] { display: inline-block; }`), document.head.prepend(styleElement);
+    }
 
     const { getI18n } = createGetI18n(messagesByLanguageTag);
 
