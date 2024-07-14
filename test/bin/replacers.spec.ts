@@ -403,15 +403,15 @@ describe("css replacer", () => {
 
         const fixedCssCodeExpected = `
             .my-div {
-                background: url(../background.png) no-repeat center center;
+                background: url("../background.png") no-repeat center center;
             }
     
             .my-div2 {
-                background: url(background.png) repeat center center;
+                background: url("background.png") repeat center center;
             }
     
             .my-div3 {
-                background-image: url(media/something.svg);
+                background-image: url("media/something.svg");
             }
         `;
 
@@ -441,15 +441,15 @@ describe("css replacer", () => {
 
         const fixedCssCodeExpected = `
             .my-div {
-                background: url(../background.png) no-repeat center center;
+                background: url("../background.png") no-repeat center center;
             }
     
             .my-div2 {
-                background: url(background.png) repeat center center;
+                background: url("background.png") repeat center center;
             }
     
             .my-div3 {
-                background-image: url(media/something.svg);
+                background-image: url("media/something.svg");
             }
         `;
 
@@ -479,15 +479,15 @@ describe("css replacer", () => {
 
         const fixedCssCodeExpected = `
             .my-div {
-                background: url(\${xKeycloakify.resourcesPath}/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/background.png) no-repeat center center;
+                background: url("\${xKeycloakify.resourcesPath}/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/background.png") no-repeat center center;
             }
     
             .my-div2 {
-                background: url(\${xKeycloakify.resourcesPath}/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/assets/background.png) repeat center center;
+                background: url("\${xKeycloakify.resourcesPath}/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/assets/background.png") repeat center center;
             }
     
             .my-div3 {
-                background-image: url(\${xKeycloakify.resourcesPath}/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/assets/media/something.svg);
+                background-image: url("\${xKeycloakify.resourcesPath}/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/assets/media/something.svg");
             }
         `;
 
@@ -517,15 +517,15 @@ describe("css replacer", () => {
 
         const fixedCssCodeExpected = `
             .my-div {
-                background: url(\${xKeycloakify.resourcesPath}/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/background.png) no-repeat center center;
+                background: url("\${xKeycloakify.resourcesPath}/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/background.png") no-repeat center center;
             }
     
             .my-div2 {
-                background: url(\${xKeycloakify.resourcesPath}/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/assets/background.png) repeat center center;
+                background: url("\${xKeycloakify.resourcesPath}/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/assets/background.png") repeat center center;
             }
     
             .my-div3 {
-                background-image: url(\${xKeycloakify.resourcesPath}/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/assets/media/something.svg);
+                background-image: url("\${xKeycloakify.resourcesPath}/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/assets/media/something.svg");
             }
         `;
 

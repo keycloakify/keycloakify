@@ -37,7 +37,7 @@ export function replaceImportsInCssCode(params: {
                     break inline_style_in_html;
                 }
 
-                return `url(\${xKeycloakify.resourcesPath}/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}${assetFileAbsoluteUrlPathname})`;
+                return `url("\${xKeycloakify.resourcesPath}/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}${assetFileAbsoluteUrlPathname}")`;
             }
 
             const assetFileRelativeUrlPathname = posix.relative(
@@ -45,7 +45,7 @@ export function replaceImportsInCssCode(params: {
                 assetFileAbsoluteUrlPathname.replace(/^\//, "")
             );
 
-            return `url(${assetFileRelativeUrlPathname})`;
+            return `url("${assetFileRelativeUrlPathname}")`;
         }
     );
 
