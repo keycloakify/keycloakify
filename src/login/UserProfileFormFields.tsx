@@ -70,7 +70,7 @@ export default function UserProfileFormFields(props: UserProfileFormFieldsProps<
                                         {advancedMsg(attribute.annotations.inputHelperTextBefore)}
                                     </div>
                                 )}
-                                <InputFiledByType
+                                <InputFieldByType
                                     attribute={attribute}
                                     valueOrValues={valueOrValues}
                                     displayableErrors={displayableErrors}
@@ -196,7 +196,7 @@ function FieldErrors(props: { attribute: Attribute; displayableErrors: FormField
     );
 }
 
-type InputFiledByTypeProps = {
+type InputFieldByTypeProps = {
     attribute: Attribute;
     valueOrValues: string | string[];
     displayableErrors: FormFieldError[];
@@ -205,7 +205,7 @@ type InputFiledByTypeProps = {
     kcClsx: KcClsx;
 };
 
-function InputFiledByType(props: InputFiledByTypeProps) {
+function InputFieldByType(props: InputFieldByTypeProps) {
     const { attribute, valueOrValues } = props;
 
     switch (attribute.annotations.inputType) {
@@ -274,7 +274,7 @@ function PasswordWrapper(props: { kcClsx: KcClsx; i18n: I18n; passwordInputId: s
     );
 }
 
-function InputTag(props: InputFiledByTypeProps & { fieldIndex: number | undefined }) {
+function InputTag(props: InputFieldByTypeProps & { fieldIndex: number | undefined }) {
     const { attribute, fieldIndex, kcClsx, dispatchFormAction, valueOrValues, i18n, displayableErrors } = props;
 
     return (
@@ -429,7 +429,7 @@ function AddRemoveButtonsMultiValuedAttribute(props: {
     );
 }
 
-function InputTagSelects(props: InputFiledByTypeProps) {
+function InputTagSelects(props: InputFieldByTypeProps) {
     const { attribute, dispatchFormAction, kcClsx, valueOrValues } = props;
 
     const { advancedMsg } = props.i18n;
@@ -537,7 +537,7 @@ function InputTagSelects(props: InputFiledByTypeProps) {
     );
 }
 
-function TextareaTag(props: InputFiledByTypeProps) {
+function TextareaTag(props: InputFieldByTypeProps) {
     const { attribute, dispatchFormAction, kcClsx, displayableErrors, valueOrValues } = props;
 
     assert(typeof valueOrValues === "string");
@@ -573,7 +573,7 @@ function TextareaTag(props: InputFiledByTypeProps) {
     );
 }
 
-function SelectTag(props: InputFiledByTypeProps) {
+function SelectTag(props: InputFieldByTypeProps) {
     const { attribute, dispatchFormAction, kcClsx, displayableErrors, i18n, valueOrValues } = props;
 
     const { advancedMsg } = i18n;
