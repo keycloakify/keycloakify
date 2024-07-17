@@ -1,5 +1,5 @@
 import { useEffect, useReducer, Fragment } from "react";
-import { assert } from "tsafe/assert";
+import { assert } from "keycloakify/tools/assert";
 import type { KcClsx } from "keycloakify/login/lib/kcClsx";
 import {
     useUserProfileForm,
