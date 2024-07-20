@@ -20,11 +20,9 @@ import type { KeycloakVersionRange } from "./KeycloakVersionRange";
 import { exclude } from "tsafe";
 import { crawl } from "../tools/crawl";
 import { THEME_TYPES } from "./constants";
-import { objectFromEntries } from "tsafe/objectFromEntries";
 import { objectEntries } from "tsafe/objectEntries";
 import { type ThemeType } from "./constants";
 import { id } from "tsafe/id";
-import { symToStr } from "tsafe/symToStr";
 import chalk from "chalk";
 import { getProxyFetchOptions, type ProxyFetchOptions } from "../tools/fetchProxyOptions";
 
@@ -49,11 +47,13 @@ export type BuildContext = {
     kcContextExclusionsFtlCode: string | undefined;
     environmentVariables: { name: string; default: string }[];
     themeSrcDirPath: string;
-    recordIsImplementedByThemeType: Readonly<Record<ThemeType | "email", boolean>>;
-    jarTargets: {
-        keycloakVersionRange: KeycloakVersionRange;
-        jarFileBasename: string;
-    }[];
+    implementedThemeTypes: {
+        login: { isImplemented: boolean };
+        email: { isImplemented: boolean };
+        account:
+            | { isImplemented: false }
+            | { isImplemented: true; type: "Single-Page" | "Multi-Page" };
+    };
     bundler:
         | {
               type: "vite";
@@ -63,8 +63,13 @@ export type BuildContext = {
               packageJsonDirPath: string;
               packageJsonScripts: Record<string, string>;
           };
-    doUseAccountV3: boolean;
+    jarTargets: {
+        keycloakVersionRange: KeycloakVersionRange;
+        jarFileBasename: string;
+    }[];
 };
+
+assert<Equals<keyof BuildContext["implementedThemeTypes"], ThemeType | "email">>();
 
 export type BuildOptions = {
     themeName?: string | string[];
@@ -76,21 +81,30 @@ export type BuildOptions = {
     loginThemeResourcesFromKeycloakVersion?: string;
     keycloakifyBuildDirPath?: string;
     kcContextExclusionsFtl?: string;
-    /** https://docs.keycloakify.dev/v/v10/targetting-specific-keycloak-versions */
-    keycloakVersionTargets?: BuildOptions.KeycloakVersionTargets;
-    doUseAccountV3?: boolean;
-};
+} & BuildOptions.AccountThemeImplAndKeycloakVersionTargets;
 
 export namespace BuildOptions {
-    export type KeycloakVersionTargets =
-        | ({ hasAccountTheme: true } & Record<
-              KeycloakVersionRange.WithAccountV1Theme,
-              string | boolean
-          >)
-        | ({ hasAccountTheme: false } & Record<
-              KeycloakVersionRange.WithoutAccountV1Theme,
-              string | boolean
-          >);
+    export type AccountThemeImplAndKeycloakVersionTargets =
+        | AccountThemeImplAndKeycloakVersionTargets.MultiPageApp
+        | AccountThemeImplAndKeycloakVersionTargets.SinglePageAppOrNone;
+
+    export namespace AccountThemeImplAndKeycloakVersionTargets {
+        export type MultiPageApp = {
+            accountThemeImplementation: "Multi-Page";
+            keycloakVersionTargets?: Record<
+                KeycloakVersionRange.WithAccountV1Theme,
+                string | boolean
+            >;
+        };
+
+        export type SinglePageAppOrNone = {
+            accountThemeImplementation: "Single-Page" | "none";
+            keycloakVersionTargets?: Record<
+                KeycloakVersionRange.WithoutAccountV1Theme,
+                string | boolean
+            >;
+        };
+    }
 }
 
 export type ResolvedViteConfig = {
@@ -231,7 +245,7 @@ export function getBuildContext(params: {
             projectBuildDirPath?: string;
             staticDirPathInProjectBuildDirPath?: string;
             publicDirPath?: string;
-            doUseAccountV3?: boolean;
+            scripts?: Record<string, string>;
         };
 
         type ParsedPackageJson = {
@@ -241,85 +255,121 @@ export function getBuildContext(params: {
             keycloakify?: BuildOptions_packageJson;
         };
 
-        const zParsedPackageJson = z.object({
-            name: z.string().optional(),
-            version: z.string().optional(),
-            homepage: z.string().optional(),
-            keycloakify: id<z.ZodType<BuildOptions_packageJson>>(
-                (() => {
-                    const zBuildOptions_packageJson = z.object({
-                        extraThemeProperties: z.array(z.string()).optional(),
-                        artifactId: z.string().optional(),
-                        groupId: z.string().optional(),
-                        loginThemeResourcesFromKeycloakVersion: z.string().optional(),
-                        projectBuildDirPath: z.string().optional(),
-                        keycloakifyBuildDirPath: z.string().optional(),
-                        kcContextExclusionsFtl: z.string().optional(),
-                        environmentVariables: z
-                            .array(
-                                z.object({
-                                    name: z.string(),
-                                    default: z.string()
-                                })
-                            )
-                            .optional(),
-                        themeName: z.union([z.string(), z.array(z.string())]).optional(),
-                        themeVersion: z.string().optional(),
-                        staticDirPathInProjectBuildDirPath: z.string().optional(),
-                        publicDirPath: z.string().optional(),
-                        keycloakVersionTargets: id<
-                            z.ZodType<BuildOptions.KeycloakVersionTargets>
-                        >(
-                            (() => {
-                                const zKeycloakVersionTargets = z.union([
-                                    z.object({
-                                        hasAccountTheme: z.literal(true),
-                                        "21-and-below": z.union([
-                                            z.boolean(),
-                                            z.string()
-                                        ]),
-                                        "23": z.union([z.boolean(), z.string()]),
-                                        "24": z.union([z.boolean(), z.string()]),
-                                        "25-and-above": z.union([z.boolean(), z.string()])
-                                    }),
-                                    z.object({
-                                        hasAccountTheme: z.literal(false),
-                                        "21-and-below": z.union([
-                                            z.boolean(),
-                                            z.string()
-                                        ]),
-                                        "22-and-above": z.union([z.boolean(), z.string()])
-                                    })
-                                ]);
+        const zMultiPageApp = (() => {
+            type TargetType =
+                BuildOptions.AccountThemeImplAndKeycloakVersionTargets.MultiPageApp;
 
-                                {
-                                    type Got = z.infer<typeof zKeycloakVersionTargets>;
-                                    type Expected = BuildOptions.KeycloakVersionTargets;
-                                    assert<Equals<Got, Expected>>();
-                                }
+            const zTargetType = z.object({
+                accountThemeImplementation: z.literal("Multi-Page"),
+                keycloakVersionTargets: z
+                    .object({
+                        "21-and-below": z.union([z.boolean(), z.string()]),
+                        "23": z.union([z.boolean(), z.string()]),
+                        "24": z.union([z.boolean(), z.string()]),
+                        "25-and-above": z.union([z.boolean(), z.string()])
+                    })
+                    .optional()
+            });
 
-                                return zKeycloakVersionTargets;
-                            })()
-                        ).optional(),
-                        doUseAccountV3: z.boolean().optional()
-                    });
+            assert<Equals<z.infer<typeof zTargetType>, TargetType>>();
 
-                    {
-                        type Got = z.infer<typeof zBuildOptions_packageJson>;
-                        type Expected = BuildOptions_packageJson;
-                        assert<Equals<Got, Expected>>();
-                    }
+            return id<z.ZodType<TargetType>>(zTargetType);
+        })();
 
-                    return zBuildOptions_packageJson;
-                })()
-            ).optional()
-        });
+        const zSinglePageApp = (() => {
+            type TargetType =
+                BuildOptions.AccountThemeImplAndKeycloakVersionTargets.SinglePageAppOrNone;
 
-        {
-            type Got = z.infer<typeof zParsedPackageJson>;
-            type Expected = ParsedPackageJson;
-            assert<Equals<Got, Expected>>();
-        }
+            const zTargetType = z.object({
+                accountThemeImplementation: z.union([
+                    z.literal("Single-Page"),
+                    z.literal("none")
+                ]),
+                keycloakVersionTargets: z
+                    .object({
+                        "21-and-below": z.union([z.boolean(), z.string()]),
+                        "22-and-above": z.union([z.boolean(), z.string()])
+                    })
+                    .optional()
+            });
+
+            assert<Equals<z.infer<typeof zTargetType>, TargetType>>();
+
+            return id<z.ZodType<TargetType>>(zTargetType);
+        })();
+
+        const zAccountThemeImplAndKeycloakVersionTargets = (() => {
+            type TargetType = BuildOptions.AccountThemeImplAndKeycloakVersionTargets;
+
+            const zTargetType = z.union([zMultiPageApp, zSinglePageApp]);
+
+            assert<Equals<z.infer<typeof zTargetType>, TargetType>>();
+
+            return id<z.ZodType<TargetType>>(zTargetType);
+        })();
+
+        const zBuildOptions = (() => {
+            type TargetType = BuildOptions;
+
+            const zTargetType = z.intersection(
+                z.object({
+                    themeName: z.union([z.string(), z.array(z.string())]).optional(),
+                    themeVersion: z.string().optional(),
+                    environmentVariables: z
+                        .array(
+                            z.object({
+                                name: z.string(),
+                                default: z.string()
+                            })
+                        )
+                        .optional(),
+                    extraThemeProperties: z.array(z.string()).optional(),
+                    artifactId: z.string().optional(),
+                    groupId: z.string().optional(),
+                    loginThemeResourcesFromKeycloakVersion: z.string().optional(),
+                    keycloakifyBuildDirPath: z.string().optional(),
+                    kcContextExclusionsFtl: z.string().optional()
+                }),
+                zAccountThemeImplAndKeycloakVersionTargets
+            );
+
+            assert<Equals<z.infer<typeof zTargetType>, TargetType>>();
+
+            return id<z.ZodType<TargetType>>(zTargetType);
+        })();
+
+        const zBuildOptions_packageJson = (() => {
+            type TargetType = BuildOptions_packageJson;
+
+            const zTargetType = z.intersection(
+                zBuildOptions,
+                z.object({
+                    projectBuildDirPath: z.string().optional(),
+                    staticDirPathInProjectBuildDirPath: z.string().optional(),
+                    publicDirPath: z.string().optional(),
+                    scripts: z.record(z.string()).optional()
+                })
+            );
+
+            assert<Equals<z.infer<typeof zTargetType>, TargetType>>();
+
+            return id<z.ZodType<TargetType>>(zTargetType);
+        })();
+
+        const zParsedPackageJson = (() => {
+            type TargetType = ParsedPackageJson;
+
+            const zTargetType = z.object({
+                name: z.string().optional(),
+                version: z.string().optional(),
+                homepage: z.string().optional(),
+                keycloakify: zBuildOptions_packageJson.optional()
+            });
+
+            assert<Equals<z.infer<typeof zTargetType>, TargetType>>();
+
+            return id<z.ZodType<TargetType>>(zTargetType);
+        })();
 
         const configurationPackageJsonFilePath = (() => {
             const rootPackageJsonFilePath = pathJoin(projectDirPath, "package.json");
@@ -334,17 +384,63 @@ export function getBuildContext(params: {
         );
     })();
 
-    const buildOptions = {
-        ...parsedPackageJson.keycloakify,
-        ...resolvedViteConfig?.buildOptions
+    const bundler = resolvedViteConfig !== undefined ? "vite" : "webpack";
+
+    if (bundler === "vite" && parsedPackageJson.keycloakify !== undefined) {
+        console.error(
+            chalk.red(
+                `In vite projects, provide your Keycloakify options in vite.config.ts, not in package.json`
+            )
+        );
+        process.exit(-1);
+    }
+
+    const buildOptions: BuildOptions = (() => {
+        switch (bundler) {
+            case "vite":
+                assert(resolvedViteConfig !== undefined);
+                return resolvedViteConfig.buildOptions;
+            case "webpack":
+                assert(parsedPackageJson.keycloakify !== undefined);
+                return parsedPackageJson.keycloakify;
+        }
+        assert<Equals<typeof bundler, never>>(false);
+    })();
+
+    const implementedThemeTypes: BuildContext["implementedThemeTypes"] = {
+        login: {
+            isImplemented: fs.existsSync(pathJoin(themeSrcDirPath, "login"))
+        },
+        email: {
+            isImplemented: fs.existsSync(pathJoin(themeSrcDirPath, "email"))
+        },
+        account: (() => {
+            if (buildOptions.accountThemeImplementation === "none") {
+                return { isImplemented: false };
+            }
+
+            return {
+                isImplemented: true,
+                type: buildOptions.accountThemeImplementation
+            };
+        })()
     };
 
-    const recordIsImplementedByThemeType = objectFromEntries(
-        (["login", "account", "email"] as const).map(themeType => [
-            themeType,
-            fs.existsSync(pathJoin(themeSrcDirPath, themeType))
-        ])
-    );
+    if (
+        implementedThemeTypes.account.isImplemented &&
+        !fs.existsSync(pathJoin(themeSrcDirPath, "account"))
+    ) {
+        console.error(
+            chalk.red(
+                [
+                    `You have set 'accountThemeImplementation' to '${implementedThemeTypes.account.type}'`,
+                    `but the 'account' directory is missing in your theme source directory`,
+                    "Use the `npx keycloakify initialize-account-theme` command to create it"
+                ].join(" ")
+            )
+        );
+        process.exit(-1);
+    }
 
     const themeNames = ((): [string, ...string[]] => {
         if (buildOptions.themeName === undefined) {
@@ -371,13 +467,15 @@ export function getBuildContext(params: {
 
     const projectBuildDirPath = (() => {
         webpack: {
-            if (resolvedViteConfig !== undefined) {
+            if (bundler !== "webpack") {
                 break webpack;
             }
 
-            if (buildOptions.projectBuildDirPath !== undefined) {
+            assert(parsedPackageJson.keycloakify !== undefined);
+
+            if (parsedPackageJson.keycloakify.projectBuildDirPath !== undefined) {
                 return getAbsoluteAndInOsFormatPath({
-                    pathIsh: buildOptions.projectBuildDirPath,
+                    pathIsh: parsedPackageJson.keycloakify.projectBuildDirPath,
                     cwd: projectDirPath
                 });
             }
@@ -385,34 +483,26 @@ export function getBuildContext(params: {
             return pathJoin(projectDirPath, "build");
         }
 
+        assert(bundler === "vite");
+        assert(resolvedViteConfig !== undefined);
+
         return pathJoin(projectDirPath, resolvedViteConfig.buildDir);
     })();
 
-    const bundler = resolvedViteConfig !== undefined ? "vite" : "webpack";
-
-    const doUseAccountV3 = buildOptions.doUseAccountV3 ?? false;
-
     return {
-        bundler:
-            resolvedViteConfig !== undefined
-                ? { type: "vite" }
-                : (() => {
-                      const { scripts } = z
-                          .object({
-                              scripts: z.record(z.string()).optional()
-                          })
-                          .parse(
-                              JSON.parse(
-                                  fs.readFileSync(packageJsonFilePath).toString("utf8")
-                              )
-                          );
-
-                      return {
-                          type: "webpack",
-                          packageJsonDirPath: pathDirname(packageJsonFilePath),
-                          packageJsonScripts: scripts ?? {}
-                      };
-                  })(),
+        bundler: (() => {
+            switch (bundler) {
+                case "vite":
+                    return { type: "vite" };
+                case "webpack":
+                    return {
+                        type: "webpack",
+                        packageJsonDirPath: pathDirname(packageJsonFilePath),
+                        packageJsonScripts: parsedPackageJson.keycloakify?.scripts ?? {}
+                    };
+            }
+            assert<Equals<typeof bundler, never>>(false);
+        })(),
         themeVersion: buildOptions.themeVersion ?? parsedPackageJson.version ?? "0.0.0",
         themeNames,
         extraThemeProperties: buildOptions.extraThemeProperties,
@@ -463,19 +553,24 @@ export function getBuildContext(params: {
             }
 
             webpack: {
-                if (resolvedViteConfig !== undefined) {
+                if (bundler !== "webpack") {
                     break webpack;
                 }
 
-                if (buildOptions.publicDirPath !== undefined) {
+                assert(parsedPackageJson.keycloakify !== undefined);
+
+                if (parsedPackageJson.keycloakify.publicDirPath !== undefined) {
                     return getAbsoluteAndInOsFormatPath({
-                        pathIsh: buildOptions.publicDirPath,
+                        pathIsh: parsedPackageJson.keycloakify.publicDirPath,
                         cwd: projectDirPath
                     });
                 }
 
                 return pathJoin(projectDirPath, "public");
             }
+
+            assert(bundler === "vite");
+            assert(resolvedViteConfig !== undefined);
 
             return pathJoin(projectDirPath, resolvedViteConfig.publicDir);
         })(),
@@ -502,7 +597,7 @@ export function getBuildContext(params: {
         })(),
         urlPathname: (() => {
             webpack: {
-                if (resolvedViteConfig !== undefined) {
+                if (bundler !== "webpack") {
                     break webpack;
                 }
 
@@ -522,23 +617,35 @@ export function getBuildContext(params: {
                 return out === "/" ? undefined : out;
             }
 
+            assert(bundler === "vite");
+            assert(resolvedViteConfig !== undefined);
+
             return resolvedViteConfig.urlPathname;
         })(),
         assetsDirPath: (() => {
             webpack: {
-                if (resolvedViteConfig !== undefined) {
+                if (bundler !== "webpack") {
                     break webpack;
                 }
 
-                if (buildOptions.staticDirPathInProjectBuildDirPath !== undefined) {
+                assert(parsedPackageJson.keycloakify !== undefined);
+
+                if (
+                    parsedPackageJson.keycloakify.staticDirPathInProjectBuildDirPath !==
+                    undefined
+                ) {
                     getAbsoluteAndInOsFormatPath({
-                        pathIsh: buildOptions.staticDirPathInProjectBuildDirPath,
+                        pathIsh:
+                            parsedPackageJson.keycloakify
+                                .staticDirPathInProjectBuildDirPath,
                         cwd: projectBuildDirPath
                     });
                 }
 
                 return pathJoin(projectBuildDirPath, "static");
             }
+            assert(bundler === "vite");
+            assert(resolvedViteConfig !== undefined);
 
             return pathJoin(projectBuildDirPath, resolvedViteConfig.assetsDir);
         })(),
@@ -559,7 +666,7 @@ export function getBuildContext(params: {
             return buildOptions.kcContextExclusionsFtl;
         })(),
         environmentVariables: buildOptions.environmentVariables ?? [],
-        recordIsImplementedByThemeType,
+        implementedThemeTypes,
         themeSrcDirPath,
         fetchOptions: getProxyFetchOptions({
             npmConfigGetCwd: (function callee(upCount: number): string {
@@ -613,10 +720,10 @@ export function getBuildContext(params: {
                 }
 
                 const keycloakVersionRange: KeycloakVersionRange = (() => {
-                    const doesImplementAccountV1Theme =
-                        !doUseAccountV3 && recordIsImplementedByThemeType.account;
-
-                    if (doesImplementAccountV1Theme) {
+                    if (
+                        implementedThemeTypes.account.isImplemented &&
+                        implementedThemeTypes.account.type === "Multi-Page"
+                    ) {
                         const keycloakVersionRange = (() => {
                             if (buildForKeycloakMajorVersionNumber <= 21) {
                                 return "21-and-below" as const;
@@ -703,7 +810,10 @@ export function getBuildContext(params: {
             const jarTargets_default = (() => {
                 const jarTargets: BuildContext["jarTargets"] = [];
 
-                if (!doUseAccountV3 && recordIsImplementedByThemeType.account) {
+                if (
+                    implementedThemeTypes.account.isImplemented &&
+                    implementedThemeTypes.account.type === "Multi-Page"
+                ) {
                     for (const keycloakVersionRange of [
                         "21-and-below",
                         "23",
@@ -748,79 +858,11 @@ export function getBuildContext(params: {
                 return jarTargets_default;
             }
 
-            if (
-                buildOptions.keycloakVersionTargets.hasAccountTheme !== doUseAccountV3
-                    ? false
-                    : recordIsImplementedByThemeType.account
-            ) {
-                console.log(
-                    chalk.red(
-                        (() => {
-                            const { keycloakVersionTargets } = buildOptions;
-
-                            let message = `Bad ${symToStr({ keycloakVersionTargets })} configuration.\n`;
-
-                            if (keycloakVersionTargets.hasAccountTheme) {
-                                message +=
-                                    "Your codebase does not seem to implement an account theme ";
-                            } else {
-                                message += "Your codebase implements an account theme ";
-                            }
-
-                            const { hasAccountTheme } = keycloakVersionTargets;
-
-                            message += `but you have set ${symToStr({ keycloakVersionTargets })}.${symToStr({ hasAccountTheme })}`;
-                            message += ` to ${hasAccountTheme} in your `;
-                            message += (() => {
-                                switch (bundler) {
-                                    case "vite":
-                                        return "vite.config.ts";
-                                    case "webpack":
-                                        return "package.json";
-                                }
-                                assert<Equals<typeof bundler, never>>(false);
-                            })();
-                            message += `. Please set it to ${!hasAccountTheme} `;
-                            message +=
-                                "and fill up the relevant keycloak version ranges.\n";
-                            message += "Example:\n";
-                            message += JSON.stringify(
-                                id<Pick<BuildOptions, "keycloakVersionTargets">>({
-                                    keycloakVersionTargets: {
-                                        hasAccountTheme:
-                                            recordIsImplementedByThemeType.account,
-                                        ...objectFromEntries(
-                                            jarTargets_default.map(
-                                                ({
-                                                    keycloakVersionRange,
-                                                    jarFileBasename
-                                                }) => [
-                                                    keycloakVersionRange,
-                                                    jarFileBasename
-                                                ]
-                                            )
-                                        )
-                                    }
-                                }),
-                                null,
-                                2
-                            );
-                            message +=
-                                "\nSee: https://docs.keycloakify.dev/v/v10/targetting-specific-keycloak-versions";
-
-                            return message;
-                        })()
-                    )
-                );
-
-                process.exit(1);
-            }
-
             const jarTargets: BuildContext["jarTargets"] = [];
 
-            const { hasAccountTheme, ...rest } = buildOptions.keycloakVersionTargets;
-
-            for (const [keycloakVersionRange, jarNameOrBoolean] of objectEntries(rest)) {
+            for (const [keycloakVersionRange, jarNameOrBoolean] of objectEntries(
+                buildOptions.keycloakVersionTargets
+            )) {
                 if (jarNameOrBoolean === false) {
                     continue;
                 }
@@ -871,7 +913,6 @@ export function getBuildContext(params: {
             }
 
             return jarTargets;
-        })(),
-        doUseAccountV3
+        })()
     };
 }

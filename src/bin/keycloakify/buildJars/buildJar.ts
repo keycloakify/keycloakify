@@ -24,7 +24,7 @@ export type BuildContextLike = BuildContextLike_generatePom & {
     artifactId: string;
     themeVersion: string;
     cacheDirPath: string;
-    recordIsImplementedByThemeType: BuildContext["recordIsImplementedByThemeType"];
+    implementedThemeTypes: BuildContext["implementedThemeTypes"];
 };
 
 assert<BuildContext extends BuildContextLike ? true : false>();
@@ -135,7 +135,7 @@ export async function buildJar(params: {
     }
 
     route_legacy_pages: {
-        if (!buildContext.recordIsImplementedByThemeType.login) {
+        if (!buildContext.implementedThemeTypes.login.isImplemented) {
             break route_legacy_pages;
         }
 

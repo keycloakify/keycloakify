@@ -10,9 +10,8 @@ import type { BuildContext } from "../../shared/buildContext";
 export type BuildContextLike = BuildContextLike_buildJar & {
     projectDirPath: string;
     keycloakifyBuildDirPath: string;
-    recordIsImplementedByThemeType: BuildContext["recordIsImplementedByThemeType"];
+    implementedThemeTypes: BuildContext["implementedThemeTypes"];
     jarTargets: BuildContext["jarTargets"];
-    doUseAccountV3: boolean;
 };
 
 assert<BuildContext extends BuildContextLike ? true : false>();
@@ -24,8 +23,8 @@ export async function buildJars(params: {
     const { resourcesDirPath, buildContext } = params;
 
     const doesImplementAccountV1Theme =
-        buildContext.recordIsImplementedByThemeType.account &&
-        !buildContext.doUseAccountV3;
+        buildContext.implementedThemeTypes.account.isImplemented &&
+        buildContext.implementedThemeTypes.account.type === "Multi-Page";
 
     await Promise.all(
         keycloakAccountV1Versions

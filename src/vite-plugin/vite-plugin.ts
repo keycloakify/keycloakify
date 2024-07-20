@@ -18,12 +18,14 @@ import {
 import MagicString from "magic-string";
 import { generateKcGenTs } from "../bin/shared/generateKcGenTs";
 
-export type Params = BuildOptions & {
-    postBuild?: (buildContext: Omit<BuildContext, "bundler">) => Promise<void>;
-};
+export namespace keycloakify {
+    export type Params = BuildOptions & {
+        postBuild?: (buildContext: Omit<BuildContext, "bundler">) => Promise<void>;
+    };
+}
 
-export function keycloakify(params?: Params) {
-    const { postBuild, ...buildOptions } = params ?? {};
+export function keycloakify(params: keycloakify.Params) {
+    const { postBuild, ...buildOptions } = params;
 
     let projectDirPath: string | undefined = undefined;
     let urlPathname: string | undefined = undefined;

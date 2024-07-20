@@ -53,10 +53,9 @@ export type BuildContextLike = BuildContextLike_kcContextExclusionsFtlCode &
         projectDirPath: string;
         projectBuildDirPath: string;
         environmentVariables: { name: string; default: string }[];
-        recordIsImplementedByThemeType: BuildContext["recordIsImplementedByThemeType"];
+        implementedThemeTypes: BuildContext["implementedThemeTypes"];
         themeSrcDirPath: string;
         bundler: { type: "vite" } | { type: "webpack" };
-        doUseAccountV3: boolean;
     };
 
 assert<BuildContext extends BuildContextLike ? true : false>();
@@ -74,10 +73,14 @@ export async function generateResourcesForMainTheme(params: {
     };
 
     for (const themeType of ["login", "account"] as const) {
-        const isAccountV3 = themeType === "account" && buildContext.doUseAccountV3;
-        if (!buildContext.recordIsImplementedByThemeType[themeType]) {
+        if (!buildContext.implementedThemeTypes[themeType].isImplemented) {
             continue;
         }
+
+        const isForAccountSpa =
+            themeType === "account" &&
+            (assert(buildContext.implementedThemeTypes.account.isImplemented),
+            buildContext.implementedThemeTypes.account.type === "Single-Page");
 
         const themeTypeDirPath = getThemeTypeDirPath({ themeType });
 
@@ -93,7 +96,7 @@ export async function generateResourcesForMainTheme(params: {
 
             if (
                 themeType === "account" &&
-                buildContext.recordIsImplementedByThemeType.login
+                buildContext.implementedThemeTypes.login.isImplemented
             ) {
                 // NOTE: We prevent doing it twice, it has been done for the login theme.
 
@@ -184,10 +187,10 @@ export async function generateResourcesForMainTheme(params: {
                     case "login":
                         return LOGIN_THEME_PAGE_IDS;
                     case "account":
-                        return isAccountV3 ? ["index.ftl"] : ACCOUNT_THEME_PAGE_IDS;
+                        return isForAccountSpa ? ["index.ftl"] : ACCOUNT_THEME_PAGE_IDS;
                 }
             })(),
-            ...(isAccountV3
+            ...(isForAccountSpa
                 ? []
                 : readExtraPagesNames({
                       themeType,
@@ -203,7 +206,7 @@ export async function generateResourcesForMainTheme(params: {
         });
 
         i18n_messages_generation: {
-            if (isAccountV3) {
+            if (isForAccountSpa) {
                 break i18n_messages_generation;
             }
 
@@ -230,7 +233,7 @@ export async function generateResourcesForMainTheme(params: {
         }
 
         keycloak_static_resources: {
-            if (isAccountV3) {
+            if (isForAccountSpa) {
                 break keycloak_static_resources;
             }
 
@@ -256,13 +259,13 @@ export async function generateResourcesForMainTheme(params: {
                     `parent=${(() => {
                         switch (themeType) {
                             case "account":
-                                return isAccountV3 ? "base" : ACCOUNT_V1_THEME_NAME;
+                                return isForAccountSpa ? "base" : ACCOUNT_V1_THEME_NAME;
                             case "login":
                                 return "keycloak";
                         }
                         assert<Equals<typeof themeType, never>>(false);
                     })()}`,
-                    ...(isAccountV3 ? ["deprecatedMode=false"] : []),
+                    ...(isForAccountSpa ? ["deprecatedMode=false"] : []),
                     ...(buildContext.extraThemeProperties ?? []),
                     ...buildContext.environmentVariables.map(
                         ({ name, default: defaultValue }) =>
@@ -275,7 +278,7 @@ export async function generateResourcesForMainTheme(params: {
     }
 
     email: {
-        if (!buildContext.recordIsImplementedByThemeType.email) {
+        if (!buildContext.implementedThemeTypes.email.isImplemented) {
             break email;
         }
 
@@ -288,11 +291,11 @@ export async function generateResourcesForMainTheme(params: {
     }
 
     bring_in_account_v1: {
-        if (buildContext.doUseAccountV3) {
+        if (!buildContext.implementedThemeTypes.account.isImplemented) {
             break bring_in_account_v1;
         }
 
-        if (!buildContext.recordIsImplementedByThemeType.account) {
+        if (buildContext.implementedThemeTypes.account.type !== "Multi-Page") {
             break bring_in_account_v1;
         }
 
@@ -303,7 +306,10 @@ export async function generateResourcesForMainTheme(params: {
     }
 
     bring_in_account_v3_i18n_messages: {
-        if (!buildContext.doUseAccountV3) {
+        if (!buildContext.implementedThemeTypes.account.isImplemented) {
+            break bring_in_account_v3_i18n_messages;
+        }
+        if (buildContext.implementedThemeTypes.account.type !== "Single-Page") {
             break bring_in_account_v3_i18n_messages;
         }
 
@@ -340,12 +346,12 @@ export async function generateResourcesForMainTheme(params: {
 
         metaInfKeycloakThemes.themes.push({
             name: themeName,
-            types: objectEntries(buildContext.recordIsImplementedByThemeType)
-                .filter(([, isImplemented]) => isImplemented)
+            types: objectEntries(buildContext.implementedThemeTypes)
+                .filter(([, { isImplemented }]) => isImplemented)
                 .map(([themeType]) => themeType)
         });
 
-        if (buildContext.recordIsImplementedByThemeType.account) {
+        if (buildContext.implementedThemeTypes.account.isImplemented) {
             metaInfKeycloakThemes.themes.push({
                 name: ACCOUNT_V1_THEME_NAME,
                 types: ["account"]
