@@ -63,7 +63,7 @@ export async function downloadAndExtractArchive(params: {
         });
     }
 
-    const extractDirBasename = `${archiveFileBasename.split(".")[0]}_${uniqueIdOfOnArchiveFile}_${crypto
+    const extractDirBasename = `${archiveFileBasename.replace(/\.([^.]+)$/, (...[, ext]) => `_${ext}`)}_${uniqueIdOfOnArchiveFile}_${crypto
         .createHash("sha256")
         .update(onArchiveFile.toString())
         .digest("hex")
@@ -85,7 +85,9 @@ export async function downloadAndExtractArchive(params: {
                 })()
             )
             .map(async extractDirBasename => {
-                await rm(pathJoin(cacheDirPath, extractDirBasename), { recursive: true });
+                await rm(pathJoin(cacheDirPath, extractDirBasename), {
+                    recursive: true
+                });
                 await SuccessTracker.removeFromExtracted({
                     cacheDirPath,
                     extractDirBasename
