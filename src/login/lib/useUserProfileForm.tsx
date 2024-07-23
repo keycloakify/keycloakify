@@ -429,6 +429,28 @@ export function useUserProfileForm(params: UseUserProfileFormParams): ReturnType
                         });
                     }
 
+                    trigger_password_confirm_validation_on_password_change: {
+                        if (!doMakeUserConfirmPassword) {
+                            break trigger_password_confirm_validation_on_password_change;
+                        }
+
+                        if (formAction.name !== "password") {
+                            break trigger_password_confirm_validation_on_password_change;
+                        }
+
+                        state = reducer(state, {
+                            action: "update",
+                            name: "password-confirm",
+                            valueOrValues: (() => {
+                                const formFieldState = state.formFieldStates.find(({ attribute }) => attribute.name === "password-confirm");
+
+                                assert(formFieldState !== undefined);
+
+                                return formFieldState.valueOrValues;
+                            })()
+                        });
+                    }
+
                     return;
                 case "focus lost":
                     if (formFieldState.hasLostFocusAtLeastOnce instanceof Array) {
