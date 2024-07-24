@@ -15,5 +15,5 @@ COPY --from=node /app/dist_keycloak/keycloak-theme-for-kc-25-and-above.jar /opt/
 RUN /opt/keycloak/bin/kc.sh build
 
 # Final image
-FROM quay.io/phasetwo/phasetwo-keycloak:25.0
+FROM quay.io/keycloak/keycloak:25.0
 COPY --from=keycloak_build /opt/keycloak/ /opt/keycloak/
