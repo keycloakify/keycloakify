@@ -277,6 +277,8 @@ function PasswordWrapper(props: { kcClsx: KcClsx; i18n: I18n; passwordInputId: s
 function InputTag(props: InputFieldByTypeProps & { fieldIndex: number | undefined }) {
     const { attribute, fieldIndex, kcClsx, dispatchFormAction, valueOrValues, i18n, displayableErrors } = props;
 
+    const { advancedMsgStr } = i18n;
+
     return (
         <>
             <input
@@ -305,7 +307,9 @@ function InputTag(props: InputFieldByTypeProps & { fieldIndex: number | undefine
                 aria-invalid={displayableErrors.find(error => error.fieldIndex === fieldIndex) !== undefined}
                 disabled={attribute.readOnly}
                 autoComplete={attribute.autocomplete}
-                placeholder={attribute.annotations.inputTypePlaceholder}
+                placeholder={
+                    attribute.annotations.inputTypePlaceholder === undefined ? undefined : advancedMsgStr(attribute.annotations.inputTypePlaceholder)
+                }
                 pattern={attribute.annotations.inputTypePattern}
                 size={attribute.annotations.inputTypeSize === undefined ? undefined : parseInt(`${attribute.annotations.inputTypeSize}`)}
                 maxLength={
