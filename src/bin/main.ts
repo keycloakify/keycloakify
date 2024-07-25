@@ -187,7 +187,7 @@ program
     .task({
         skip,
         handler: async cliCommandOptions => {
-            const { command } = await import("./initialize-account-heme");
+            const { command } = await import("./initialize-account-theme");
 
             await command({ cliCommandOptions });
         }
