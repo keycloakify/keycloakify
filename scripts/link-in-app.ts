@@ -44,6 +44,12 @@ const commonThirdPartyDeps = [
         .replace(/"!dist\//g, '"!')
         .replace(/"!\.\/dist\//g, '"!./');
 
+    modifiedPackageJsonContent = JSON.stringify(
+        { ...JSON.parse(modifiedPackageJsonContent), version: "0.0.0" },
+        null,
+        4
+    );
+
     fs.writeFileSync(
         pathJoin(rootDirPath, "dist", "package.json"),
         Buffer.from(modifiedPackageJsonContent, "utf8")
