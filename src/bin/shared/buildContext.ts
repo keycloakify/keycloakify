@@ -54,15 +54,8 @@ export type BuildContext = {
             | { isImplemented: false }
             | { isImplemented: true; type: "Single-Page" | "Multi-Page" };
     };
-    bundler:
-        | {
-              type: "vite";
-          }
-        | {
-              type: "webpack";
-              packageJsonDirPath: string;
-              packageJsonScripts: Record<string, string>;
-          };
+    packageJsonFilePath: string;
+    bundler: "vite" | "webpack";
     jarTargets: {
         keycloakVersionRange: KeycloakVersionRange;
         jarFileBasename: string;
@@ -245,7 +238,6 @@ export function getBuildContext(params: {
             projectBuildDirPath?: string;
             staticDirPathInProjectBuildDirPath?: string;
             publicDirPath?: string;
-            scripts?: Record<string, string>;
         };
 
         type ParsedPackageJson = {
@@ -346,8 +338,7 @@ export function getBuildContext(params: {
                 z.object({
                     projectBuildDirPath: z.string().optional(),
                     staticDirPathInProjectBuildDirPath: z.string().optional(),
-                    publicDirPath: z.string().optional(),
-                    scripts: z.record(z.string()).optional()
+                    publicDirPath: z.string().optional()
                 })
             );
 
@@ -490,19 +481,8 @@ export function getBuildContext(params: {
     })();
 
     return {
-        bundler: (() => {
-            switch (bundler) {
-                case "vite":
-                    return { type: "vite" };
-                case "webpack":
-                    return {
-                        type: "webpack",
-                        packageJsonDirPath: pathDirname(packageJsonFilePath),
-                        packageJsonScripts: parsedPackageJson.keycloakify?.scripts ?? {}
-                    };
-            }
-            assert<Equals<typeof bundler, never>>(false);
-        })(),
+        bundler,
+        packageJsonFilePath,
         themeVersion: buildOptions.themeVersion ?? parsedPackageJson.version ?? "0.0.0",
         themeNames,
         extraThemeProperties: buildOptions.extraThemeProperties,

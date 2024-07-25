@@ -181,6 +181,20 @@ program
 
 program
     .command({
+        name: "initialize-account-theme",
+        description: "Initialize the account theme."
+    })
+    .task({
+        skip,
+        handler: async cliCommandOptions => {
+            const { command } = await import("./initialize-account-heme");
+
+            await command({ cliCommandOptions });
+        }
+    });
+
+program
+    .command({
         name: "copy-keycloak-resources-to-public",
         description:
             "(Webpack/Create-React-App only) Copy Keycloak default theme resources to the public directory."

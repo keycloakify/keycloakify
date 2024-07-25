@@ -8,7 +8,7 @@ export type BuildContextLike = {
     projectBuildDirPath: string;
     assetsDirPath: string;
     urlPathname: string | undefined;
-    bundler: { type: "vite" } | { type: "webpack" };
+    bundler: "vite" | "webpack";
 };
 
 assert<BuildContext extends BuildContextLike ? true : false>();
@@ -20,7 +20,7 @@ export function replaceImportsInJsCode(params: {
     const { jsCode, buildContext } = params;
 
     const { fixedJsCode } = (() => {
-        switch (buildContext.bundler.type) {
+        switch (buildContext.bundler) {
             case "vite":
                 return replaceImportsInJsCode_vite({
                     jsCode,

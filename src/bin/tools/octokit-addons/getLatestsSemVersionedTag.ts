@@ -9,13 +9,14 @@ export function getLatestsSemVersionedTagFactory(params: { octokit: Octokit }) {
         owner: string;
         repo: string;
         count: number;
+        doIgnoreReleaseCandidates: boolean;
     }): Promise<
         {
             tag: string;
             version: SemVer;
         }[]
     > {
-        const { owner, repo, count } = params;
+        const { owner, repo, count, doIgnoreReleaseCandidates } = params;
 
         const semVersionedTags: { tag: string; version: SemVer }[] = [];
 
@@ -30,7 +31,7 @@ export function getLatestsSemVersionedTagFactory(params: { octokit: Octokit }) {
                 continue;
             }
 
-            if (version.rc !== undefined) {
+            if (doIgnoreReleaseCandidates && version.rc !== undefined) {
                 continue;
             }
 

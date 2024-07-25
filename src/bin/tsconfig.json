@@ -8,5 +8,7 @@
         "moduleResolution": "node",
         "outDir": "../../dist/bin",
         "rootDir": "."
-    }
+    },
+    "include": ["**/*.ts", "**/*.tsx"],
+    "exclude": ["initialize-account-heme/src"]
 }

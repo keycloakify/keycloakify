@@ -55,7 +55,7 @@ export type BuildContextLike = BuildContextLike_kcContextExclusionsFtlCode &
         environmentVariables: { name: string; default: string }[];
         implementedThemeTypes: BuildContext["implementedThemeTypes"];
         themeSrcDirPath: string;
-        bundler: { type: "vite" } | { type: "webpack" };
+        bundler: "vite" | "webpack";
     };
 
 assert<BuildContext extends BuildContextLike ? true : false>();
@@ -121,7 +121,7 @@ export async function generateResourcesForMainTheme(params: {
                 );
 
                 if (fs.existsSync(dirPath)) {
-                    assert(buildContext.bundler.type === "webpack");
+                    assert(buildContext.bundler === "webpack");
 
                     throw new Error(
                         [

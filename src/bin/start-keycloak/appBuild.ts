@@ -5,12 +5,15 @@ import type { BuildContext } from "../shared/buildContext";
 import chalk from "chalk";
 import { sep as pathSep, join as pathJoin } from "path";
 import { getAbsoluteAndInOsFormatPath } from "../tools/getAbsoluteAndInOsFormatPath";
+import * as fs from "fs";
+import { dirname as pathDirname, relative as pathRelative } from "path";
 
 export type BuildContextLike = {
     projectDirPath: string;
     keycloakifyBuildDirPath: string;
     bundler: BuildContext["bundler"];
     projectBuildDirPath: string;
+    packageJsonFilePath: string;
 };
 
 assert<BuildContext extends BuildContextLike ? true : false>();
@@ -20,7 +23,7 @@ export async function appBuild(params: {
 }): Promise<{ isAppBuildSuccess: boolean }> {
     const { buildContext } = params;
 
-    switch (buildContext.bundler.type) {
+    switch (buildContext.bundler) {
         case "vite":
             return appBuild_vite({ buildContext });
         case "webpack":
@@ -33,7 +36,7 @@ async function appBuild_vite(params: {
 }): Promise<{ isAppBuildSuccess: boolean }> {
     const { buildContext } = params;
 
-    assert(buildContext.bundler.type === "vite");
+    assert(buildContext.bundler === "vite");
 
     const dIsSuccess = new Deferred<boolean>();
 
@@ -66,17 +69,18 @@ async function appBuild_webpack(params: {
 }): Promise<{ isAppBuildSuccess: boolean }> {
     const { buildContext } = params;
 
-    assert(buildContext.bundler.type === "webpack");
+    assert(buildContext.bundler === "webpack");
 
-    const entries = Object.entries(buildContext.bundler.packageJsonScripts).filter(
-        ([, scriptCommand]) => scriptCommand.includes("keycloakify build")
-    );
+    const entries = Object.entries(
+        (JSON.parse(fs.readFileSync(buildContext.packageJsonFilePath).toString("utf8"))
+            .scripts ?? {}) as Record<string, string>
+    ).filter(([, scriptCommand]) => scriptCommand.includes("keycloakify build"));
 
     if (entries.length === 0) {
         console.log(
             chalk.red(
                 [
-                    `You should have a script in your package.json at ${buildContext.bundler.packageJsonDirPath}`,
+                    `You should have a script in your package.json at ${pathRelative(process.cwd(), pathDirname(buildContext.packageJsonFilePath))}`,
                     `that includes the 'keycloakify build' command`
                 ].join(" ")
             )
@@ -123,7 +127,7 @@ async function appBuild_webpack(params: {
         process.exit(-1);
     }
 
-    let commandCwd = buildContext.bundler.packageJsonDirPath;
+    let commandCwd = pathDirname(buildContext.packageJsonFilePath);
 
     for (const subCommand of appBuildSubCommands) {
         const dIsSuccess = new Deferred<boolean>();
@@ -152,7 +156,7 @@ async function appBuild_webpack(params: {
 
                     return [
                         pathJoin(
-                            buildContext.bundler.packageJsonDirPath,
+                            pathDirname(buildContext.packageJsonFilePath),
                             "node_modules",
                             ".bin"
                         ),
