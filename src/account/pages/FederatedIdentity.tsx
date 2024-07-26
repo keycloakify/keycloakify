@@ -8,7 +8,7 @@ export default function FederatedIdentity(props: PageProps<Extract<KcContext, { 
     const { url, federatedIdentity, stateChecker } = kcContext;
     const { msg } = i18n;
     return (
-        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} active="federatedIdentity">
+        <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} active="social">
             <div className="main-layout social">
                 <div className="row">
                     <div className="col-md-10">
