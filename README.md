@@ -2,7 +2,7 @@
     <img src="https://user-images.githubusercontent.com/6702424/109387840-eba11f80-7903-11eb-9050-db1dad883f78.png">  
 </p>
 <p align="center">
-    <i>🔏 Create Keycloak themes using React 🔏</i>
+    <i>🔏 Keycloak Theming for the Modern Web 🔏</i>
     <br>
     <br>
     <a href="https://github.com/garronej/keycloakify/actions">
