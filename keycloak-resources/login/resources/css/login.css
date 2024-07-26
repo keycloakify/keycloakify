@@ -1,71 +1,68 @@
-/* Patternfly CSS places a "bg-login.jpg" as the background on this ".login-pf" class.
-   This clashes with the "keycloak-bg.png' background defined on the body below.
-   Therefore the Patternfly background must be set to none. */
-.login-pf {
-    background: none;
-}
-
 .login-pf body {
     background: url("../img/keycloak-bg.png") no-repeat center center fixed;
     background-size: cover;
     height: 100%;
 }
 
-textarea.pf-c-form-control {
-	height: auto;
-}
-
-.pf-c-alert__title {
-    font-size: var(--pf-global--FontSize--xs);
-}
-
-p.instruction {
-    margin: 5px 0;
-}
-
-.pf-c-button.pf-m-control {
-    border-color: rgba(230, 230, 230, 0.5);
-}
-
-h1#kc-page-title {
-    margin-top: 10px;
+.alert-error {
+    background-color: #ffffff;
+    border-color: #cc0000;
+    color: #333333;
 }
 
 #kc-locale ul {
-    background-color: var(--pf-global--BackgroundColor--100);
     display: none;
+    position: absolute;
+    background-color: #fff;
+    list-style: none;
+    right: 0;
     top: 20px;
     min-width: 100px;
-    padding: 0;
+    padding: 2px 0;
+    border: solid 1px #bbb;
 }
 
-#kc-locale-dropdown{
-    display: inline-block;
+#kc-locale:hover ul {
+    display: block;
+    margin: 0;
 }
 
-#kc-locale-dropdown:hover ul {
-    display:block;
+#kc-locale ul li a {
+    display: block;
+    padding: 5px 14px;
+    color: #000 !important;
+    text-decoration: none;
+    line-height: 20px;
+}
+
+#kc-locale ul li a:hover {
+    color: #4d5258;
+    background-color: #d4edfa;
 }
 
 #kc-locale-dropdown a {
-    color: var(--pf-global--Color--200);
-    text-align: right;
-    font-size: var(--pf-global--FontSize--sm);
+    color: #4d5258;
+    background: 0 0;
+    padding: 0 15px 0 0;
+    font-weight: 300;
 }
 
-#kc-locale-dropdown button {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    color: var(--pf-global--Color--200);
-    text-align: right;
-    font-size: var(--pf-global--FontSize--sm);
+#kc-locale-dropdown a:hover {
+    text-decoration: none;
 }
 
-button#kc-current-locale-link::after {
+a#kc-current-locale-link {
+    display: block;
+    padding: 0 5px;
+}
+
+/* a#kc-current-locale-link:hover {
+    background-color: rgba(0,0,0,0.2);
+} */
+
+a#kc-current-locale-link::after {
     content: "\2c5";
-    margin-left: var(--pf-global--spacer--xs)
+    margin-left: 4px;
 }
 
 .login-pf .container {
@@ -78,6 +75,14 @@ button#kc-current-locale-link::after {
 
 #kc-logo {
     width: 100%;
+}
+
+#kc-logo-wrapper {
+    background-image: url(../img/keycloak-logo-2.png);
+    background-repeat: no-repeat;
+    height: 63px;
+    width: 300px;
+    margin: 62px auto 0;
 }
 
 div.kc-logo-text {
@@ -111,67 +116,32 @@ div.kc-logo-text span {
     width: 100%;
 }
 
-#kc-attempted-username {
+#kc-attempted-username{
     font-size: 20px;
-    font-family: inherit;
+    font-family:inherit;
     font-weight: normal;
-    padding-right: 10px;
+    padding-right:10px;
 }
 
-#kc-username {
+#kc-username{
     text-align: center;
-    margin-bottom:-10px;
 }
 
-#kc-webauthn-settings-form {
-    padding-top: 8px;
+#kc-webauthn-settings-form{
+    padding-top:8px;
 }
 
-#kc-form-webauthn .select-auth-box-parent {
-    pointer-events: none;
-}
-
-#kc-form-webauthn .select-auth-box-desc {
-    color: var(--pf-global--palette--black-600);
-}
-
-#kc-form-webauthn .select-auth-box-headline {
-    color: var(--pf-global--Color--300);
-}
-
-#kc-form-webauthn .select-auth-box-icon {
-    flex: 0 0 3em;
-}
-
-#kc-form-webauthn .select-auth-box-icon-properties {
-    margin-top: 10px;
-    font-size: 1.8em;
-}
-
-#kc-form-webauthn .select-auth-box-icon-properties.unknown-transport-class {
-    margin-top: 3px;
-}
-
-#kc-form-webauthn .pf-l-stack__item {
-    margin: -1px 0;
-}
-
-#kc-content-wrapper {
-    margin-top: 20px;
-}
-
-#kc-form-wrapper {
-    margin-top: 10px;
-}
+/* #kc-content-wrapper {
+    overflow-y: hidden;
+} */
 
 #kc-info {
-    margin: 20px -40px -30px;
+    padding-bottom: 200px;
+    margin-bottom: -200px;
 }
 
 #kc-info-wrapper {
     font-size: 13px;
-    padding: 15px 35px;
-    background-color: #F0F0F0;
 }
 
 #kc-form-options span {
@@ -187,15 +157,8 @@ div.kc-logo-text span {
     margin-bottom: 20px;
 }
 
-#kc-registration-terms-text {
-    max-height: 100px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    margin: 5px;
-}
-
 #kc-registration {
-    margin-bottom: 0;
+    margin-bottom: 15px;
 }
 
 /* TOTP */
@@ -207,7 +170,7 @@ div.kc-logo-text span {
 }
 
 .required {
-    color: var(--pf-global--danger-color--200);
+    color: #CB2915;
 }
 
 ol#kc-totp-settings {
@@ -216,7 +179,7 @@ ol#kc-totp-settings {
 }
 
 ul#kc-totp-supported-apps {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 #kc-totp-secret-qr-code {
@@ -265,66 +228,22 @@ ul#kc-totp-supported-apps {
 }
 
 /* Social */
-.kc-social-links {
-    margin-top: 20px;
+
+#kc-social-providers ul {
+    padding: 0;
 }
 
-.kc-social-links li {
-    width: 100%;
+#kc-social-providers li {
+    display: block;
 }
 
-.kc-social-provider-logo {
-    font-size: 23px;
-    width: 30px;
-    height: 25px;
-    float: left;
+#kc-social-providers li:first-of-type {
+    margin-top: 0;
 }
 
-.kc-social-gray {
-    color: var(--pf-global--Color--200);
-}
-
-.kc-social-gray h2 {
-    font-size: 1em;
-}
-
-.kc-social-item {
-    margin-bottom: var(--pf-global--spacer--sm);
-    font-size: 15px;
-    text-align: center;
-}
-
-.kc-social-provider-name {
-    position: relative;
-}
-
-.kc-social-icon-text {
-    left: -15px;
-}
-
-.kc-social-grid {
-    display:grid;
-    grid-column-gap: 10px;
-    grid-row-gap: 5px;
-    grid-column-end: span 6;
-    --pf-l-grid__item--GridColumnEnd: span 6;
-}
-
-.kc-social-grid .kc-social-icon-text {
-    left: -10px;
-}
-
-.kc-login-tooltip {
-    position: relative;
+.kc-login-tooltip{
+    position:relative;
     display: inline-block;
-}
-
-.kc-social-section {
-    text-align: center;
-}
-
-.kc-social-section hr{
-    margin-bottom: 10px
 }
 
 .kc-login-tooltip .kc-tooltip-text{
@@ -363,6 +282,49 @@ ul#kc-totp-supported-apps {
     border-color: transparent black transparent transparent;
 }
 
+.zocial,
+a.zocial  {
+    width: 100%;
+    font-weight: normal;
+    font-size: 14px;
+    text-shadow: none;
+    border: 0;
+    background: #f5f5f5;
+    color: #72767b;
+    border-radius: 0;
+    white-space: normal;
+}
+.zocial:before {
+  border-right: 0;
+  margin-right: 0;
+}
+.zocial span:before {
+    padding: 7px 10px;
+    font-size: 14px;
+}
+.zocial:hover {
+    background: #ededed !important;
+}
+
+.zocial.facebook,
+.zocial.github,
+.zocial.google,
+.zocial.microsoft,
+.zocial.stackoverflow,
+.zocial.linkedin,
+.zocial.twitter {
+    background-image: none;
+    border: 0;
+
+    box-shadow: none;
+    text-shadow: none;
+}
+
+/* Copy of zocial windows classes to be used for microsoft's social provider button */
+.zocial.microsoft:before{ content: "\f15d"; }
+.zocial.stackoverflow:before{ color: inherit; }
+
+
 @media (min-width: 768px) {
     #kc-container-wrapper {
         position: absolute;
@@ -383,7 +345,7 @@ ul#kc-totp-supported-apps {
 @media (max-width: 767px) {
 
     .login-pf body {
-        background: white;
+      background: white;
     }
 
     #kc-header {
@@ -394,11 +356,11 @@ ul#kc-totp-supported-apps {
     }
 
     #kc-header-wrapper {
-        font-size: 16px;
-        font-weight: bold;
-        padding: 20px 60px 0 0;
-        color: #72767b;
-        letter-spacing: 0;
+      font-size: 16px;
+      font-weight: bold;
+      padding: 20px 60px 0 0;
+      color: #72767b;
+      letter-spacing: 0;
     }
 
     div.kc-logo-text {
@@ -414,7 +376,15 @@ ul#kc-totp-supported-apps {
 
     #kc-info-wrapper {
         border-top: 1px solid rgba(255, 255, 255, 0.1);
-        background-color: transparent;
+        margin-top: 15px;
+        padding-top: 15px;
+        padding-left: 0px;
+        padding-right: 15px;
+    }
+
+    #kc-social-providers li {
+        display: block;
+        margin-right: 5px;
     }
 
     .login-pf .container {
@@ -430,6 +400,14 @@ ul#kc-totp-supported-apps {
         text-align: right;
         z-index: 9999;
     }
+
+    #kc-logo-wrapper {
+        background-size: 100px 21px;
+        height: 21px;
+        width: 100px;
+        margin: 20px 0 0 20px;
+    }
+
 }
 
 @media (min-height: 646px) {
@@ -451,108 +429,78 @@ ul#kc-totp-supported-apps {
 }
 
 #kc-form-buttons {
-    margin-top: 20px;
+  margin-top: 40px;
 }
 
 .login-pf-page .login-pf-brand {
-    margin-top: 20px;
-    max-width: 360px;
-    width: 40%;
-}
-
-.select-auth-box-arrow{
-    display: flex;
-    align-items: center;
-    margin-right: 2rem;
-}
-
-.select-auth-box-icon{
-    display: flex;
-    flex: 0 0 2em;
-    justify-content: center;
-    margin-right: 1rem;
-    margin-left: 3rem;
-}
-
-.select-auth-box-parent{
-    border-top: 1px solid var(--pf-global--palette--black-200);
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    cursor: pointer;
-    text-align: left;
-    align-items: unset;
-    background-color: unset;
-    border-right: unset;
-    border-bottom: unset;
-    border-left: unset;
-}
-
-.select-auth-box-parent:hover{
-    background-color: #f7f8f8;
-}
-
-.select-auth-container {
-    padding-bottom: 0px !important;
-}
-
-.select-auth-box-headline {
-    font-size: var(--pf-global--FontSize--md);
-    color: var(--pf-global--primary-color--100);
-    font-weight: bold;
-}
-
-.select-auth-box-desc {
-    font-size: var(--pf-global--FontSize--sm);
-}
-
-.select-auth-box-paragraph {
-    text-align: center;
-    font-size: var(--pf-global--FontSize--md);
-    margin-bottom: 5px;
+  margin-top: 20px;
+  max-width: 360px;
+  width: 40%;
 }
 
 .card-pf {
-    margin: 0 auto;
-    box-shadow: var(--pf-global--BoxShadow--lg);
-    padding: 0 20px;
-    max-width: 500px;
-    border-top: 4px solid;
-    border-color: var(--pf-global--primary-color--100);
+  background: #fff;
+  margin: 0 auto;
+  padding: 0 20px;
+  max-width: 500px;
+  border-top: 0;
+  box-shadow: 0 0 0;
 }
 
-/*phone*/
+/*tablet*/
+@media (max-width: 840px) {
+    .login-pf-page .card-pf{
+      max-width: none;
+      margin-left: 20px;
+      margin-right: 20px;
+      padding: 20px 20px 30px 20px;
+    }
+}
 @media (max-width: 767px) {
-    .login-pf-page .card-pf {
-        max-width: none;
-        margin-left: 0;
-        margin-right: 0;
-        padding-top: 0;
-        border-top: 0;
-        box-shadow: 0 0;
+    .login-pf-page .card-pf{
+      max-width: none;
+      margin-left: 0;
+      margin-right: 0;
+      padding-top: 0;
     }
-
-    .kc-social-grid {
-        grid-column-end: 12;
-        --pf-l-grid__item--GridColumnEnd: span 12;
-    }
-
-    .kc-social-grid .kc-social-icon-text {
-        left: -15px;
+    .card-pf.login-pf-accounts{
+      max-width: none;
     }
 }
 
 .login-pf-page .login-pf-signup {
-    font-size: 15px;
-    color: #72767b;
+  font-size: 15px;
+  color: #72767b;
 }
 #kc-content-wrapper .row {
-    margin-left: 0;
-    margin-right: 0;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+@media (min-width: 768px) {
+  .login-pf-page .login-pf-social-section:first-of-type {
+    padding-right: 39px;
+    border-right: 1px solid #d1d1d1;
+    margin-right: -1px;
+  }
+  .login-pf-page .login-pf-social-section:last-of-type {
+    padding-left: 40px;
+  }
+  .login-pf-page .login-pf-social-section .login-pf-social-link:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+.login-pf-page .login-pf-social-link {
+  margin-bottom: 25px;
+}
+.login-pf-page .login-pf-social-link a {
+  padding: 2px 0;
 }
 
 .login-pf-page.login-pf-page-accounts {
-    margin-left: auto;
-    margin-right: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .login-pf-page .btn-primary {
@@ -567,63 +515,21 @@ ul#kc-totp-supported-apps {
     width: 100%;
 }
 
-#kc-form-login div.form-group:last-of-type,
-#kc-register-form div.form-group:last-of-type,
-#kc-update-profile-form div.form-group:last-of-type,
-#kc-update-email-form div.form-group:last-of-type{
-    margin-bottom: 0px;
+.login-pf-page .card-pf{
+  margin-bottom: 10px;
 }
 
-.no-bottom-margin {
-    margin-bottom: 0;
+#kc-form-login div.form-group:last-of-type,
+#kc-register-form div.form-group:last-of-type,
+#kc-update-profile-form div.form-group:last-of-type {
+    margin-bottom: 0px;
 }
 
 #kc-back {
     margin-top: 5px;
 }
 
-/* Recovery codes */
-.kc-recovery-codes-warning {
-    margin-bottom: 32px;
+form#kc-select-back-form div.login-pf-social-section {
+    padding-left: 0px;
+    border-left: 0px;
 }
-.kc-recovery-codes-warning .pf-c-alert__description p {
-    font-size: 0.875rem;
-}
-.kc-recovery-codes-list {
-    list-style: none;
-    columns: 2;
-    margin: 16px 0;
-    padding: 16px 16px 8px 16px;
-    border: 1px solid #D2D2D2;
-}
-.kc-recovery-codes-list li {
-    margin-bottom: 8px;
-    font-size: 11px;
-}
-.kc-recovery-codes-list li span {
-    color: #6A6E73;
-    width: 16px;
-    text-align: right;
-    display: inline-block;
-    margin-right: 1px;
-}
-
-.kc-recovery-codes-actions {
-    margin-bottom: 24px;
-}
-.kc-recovery-codes-actions button {
-    padding-left: 0;
-}
-.kc-recovery-codes-actions button i {
-    margin-right: 8px;
-}
-
-.kc-recovery-codes-confirmation {
-    align-items: baseline;
-    margin-bottom: 16px;
-}
-
-#certificate_subjectDN {
-    overflow-wrap: break-word
-}
-/* End Recovery codes */
