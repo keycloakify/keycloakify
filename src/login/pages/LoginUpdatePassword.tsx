@@ -32,30 +32,30 @@ export default function LoginUpdatePassword(props: PageProps<Extract<KcContext, 
                         <label htmlFor="password-new" className={kcClsx("kcLabelClass")}>
                             {msg("passwordNew")}
                         </label>
-                        <div className={kcClsx("kcInputWrapperClass")}>
-                            <PasswordWrapper kcClsx={kcClsx} i18n={i18n} passwordInputId="password-new">
-                                <input
-                                    type="password"
-                                    id="password-new"
-                                    name="password-new"
-                                    className={kcClsx("kcInputClass")}
-                                    autoFocus
-                                    autoComplete="new-password"
-                                    aria-invalid={messagesPerField.existsError("password", "password-confirm")}
-                                />
-                            </PasswordWrapper>
+                    </div>
+                    <div className={kcClsx("kcInputWrapperClass")}>
+                        <PasswordWrapper kcClsx={kcClsx} i18n={i18n} passwordInputId="password-new">
+                            <input
+                                type="password"
+                                id="password-new"
+                                name="password-new"
+                                className={kcClsx("kcInputClass")}
+                                autoFocus
+                                autoComplete="new-password"
+                                aria-invalid={messagesPerField.existsError("password", "password-confirm")}
+                            />
+                        </PasswordWrapper>
 
-                            {messagesPerField.existsError("password") && (
-                                <span
-                                    id="input-error-password"
-                                    className={kcClsx("kcInputErrorMessageClass")}
-                                    aria-live="polite"
-                                    dangerouslySetInnerHTML={{
-                                        __html: messagesPerField.get("password")
-                                    }}
-                                />
-                            )}
-                        </div>
+                        {messagesPerField.existsError("password") && (
+                            <span
+                                id="input-error-password"
+                                className={kcClsx("kcInputErrorMessageClass")}
+                                aria-live="polite"
+                                dangerouslySetInnerHTML={{
+                                    __html: messagesPerField.get("password")
+                                }}
+                            />
+                        )}
                     </div>
                 </div>
 
@@ -89,32 +89,30 @@ export default function LoginUpdatePassword(props: PageProps<Extract<KcContext, 
                             />
                         )}
                     </div>
-
-                    <div className={kcClsx("kcFormGroupClass")}>
-                        <LogoutOtherSessions kcClsx={kcClsx} i18n={i18n} />
-
-                        <div id="kc-form-buttons" className={kcClsx("kcFormButtonsClass")}>
-                            <input
-                                className={kcClsx(
-                                    "kcButtonClass",
-                                    "kcButtonPrimaryClass",
-                                    isAppInitiatedAction && "kcButtonBlockClass",
-                                    "kcButtonLargeClass"
-                                )}
-                                type="submit"
-                                value={msgStr("doSubmit")}
-                            />
-                            {isAppInitiatedAction && (
-                                <button
-                                    className={kcClsx("kcButtonClass", "kcButtonDefaultClass", "kcButtonLargeClass")}
-                                    type="submit"
-                                    name="cancel-aia"
-                                    value="true"
-                                >
-                                    {msg("doCancel")}
-                                </button>
+                </div>
+                <div className={kcClsx("kcFormGroupClass")}>
+                    <LogoutOtherSessions kcClsx={kcClsx} i18n={i18n} />
+                    <div id="kc-form-buttons" className={kcClsx("kcFormButtonsClass")}>
+                        <input
+                            className={kcClsx(
+                                "kcButtonClass",
+                                "kcButtonPrimaryClass",
+                                !isAppInitiatedAction && "kcButtonBlockClass",
+                                "kcButtonLargeClass"
                             )}
-                        </div>
+                            type="submit"
+                            value={msgStr("doSubmit")}
+                        />
+                        {isAppInitiatedAction && (
+                            <button
+                                className={kcClsx("kcButtonClass", "kcButtonDefaultClass", "kcButtonLargeClass")}
+                                type="submit"
+                                name="cancel-aia"
+                                value="true"
+                            >
+                                {msg("doCancel")}
+                            </button>
+                        )}
                     </div>
                 </div>
             </form>
