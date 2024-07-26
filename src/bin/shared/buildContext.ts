@@ -14,7 +14,8 @@ import { assert, type Equals } from "tsafe/assert";
 import * as child_process from "child_process";
 import {
     VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES,
-    BUILD_FOR_KEYCLOAK_MAJOR_VERSION_ENV_NAME
+    BUILD_FOR_KEYCLOAK_MAJOR_VERSION_ENV_NAME,
+    LOGIN_THEME_RESOURCES_FROMkEYCLOAK_VERSION_DEFAULT
 } from "./constants";
 import type { KeycloakVersionRange } from "./KeycloakVersionRange";
 import { exclude } from "tsafe";
@@ -506,7 +507,8 @@ export function getBuildContext(params: {
             buildOptions.artifactId ??
             `${themeNames[0]}-keycloak-theme`,
         loginThemeResourcesFromKeycloakVersion:
-            buildOptions.loginThemeResourcesFromKeycloakVersion ?? "24.0.4",
+            buildOptions.loginThemeResourcesFromKeycloakVersion ??
+            LOGIN_THEME_RESOURCES_FROMkEYCLOAK_VERSION_DEFAULT,
         projectDirPath,
         projectBuildDirPath,
         keycloakifyBuildDirPath: (() => {
@@ -554,27 +556,23 @@ export function getBuildContext(params: {
 
             return pathJoin(projectDirPath, resolvedViteConfig.publicDir);
         })(),
-        cacheDirPath: (() => {
-            const cacheDirPath = pathJoin(
-                (() => {
-                    if (process.env.XDG_CACHE_HOME !== undefined) {
-                        return getAbsoluteAndInOsFormatPath({
-                            pathIsh: process.env.XDG_CACHE_HOME,
-                            cwd: process.cwd()
-                        });
-                    }
+        cacheDirPath: pathJoin(
+            (() => {
+                if (process.env.XDG_CACHE_HOME !== undefined) {
+                    return getAbsoluteAndInOsFormatPath({
+                        pathIsh: process.env.XDG_CACHE_HOME,
+                        cwd: process.cwd()
+                    });
+                }
 
-                    return pathJoin(
-                        pathDirname(packageJsonFilePath),
-                        "node_modules",
-                        ".cache"
-                    );
-                })(),
-                "keycloakify"
-            );
-
-            return cacheDirPath;
-        })(),
+                return pathJoin(
+                    pathDirname(packageJsonFilePath),
+                    "node_modules",
+                    ".cache"
+                );
+            })(),
+            "keycloakify"
+        ),
         urlPathname: (() => {
             webpack: {
                 if (bundler !== "webpack") {

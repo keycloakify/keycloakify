@@ -1,16 +1,13 @@
 import * as child_process from "child_process";
-import { join } from "path";
+import { copyKeycloakResourcesToStorybookStaticDir } from "./copyKeycloakResourcesToStorybookStaticDir";
 
-run("yarn build");
+(async () => {
+    run("yarn build");
 
-run(`node ${join("dist", "bin", "main.js")} copy-keycloak-resources-to-public`, {
-    env: {
-        ...process.env,
-        PUBLIC_DIR_PATH: join(".storybook", "static")
-    }
-});
+    await copyKeycloakResourcesToStorybookStaticDir();
 
-run("npx build-storybook");
+    run("npx build-storybook");
+})();
 
 function run(command: string, options?: { env?: NodeJS.ProcessEnv }) {
     console.log(`$ ${command}`);
