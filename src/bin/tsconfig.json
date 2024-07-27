@@ -1,11 +1,14 @@
 {
     "extends": "../../tsproject.json",
     "compilerOptions": {
-        "module": "CommonJS",
-        "target": "ES5",
+        "module": "ES2020",
+        "target": "ES2017",
         "esModuleInterop": true,
-        "lib": ["es2015", "DOM", "ES2019.Object"],
+        "lib": ["es2015", "ES2019.Object"],
+        "moduleResolution": "node",
         "outDir": "../../dist/bin",
         "rootDir": "."
-    }
+    },
+    "include": ["**/*.ts", "**/*.tsx"],
+    "exclude": ["initialize-account-theme/src"]
 }

@@ -1,33 +1,57 @@
 import React from "react";
-import type { ComponentMeta } from "@storybook/react";
-import { createPageStory } from "../createPageStory";
+import type { Meta, StoryObj } from "@storybook/react";
+import { createKcPageStory } from "../KcPageStory";
 
-const pageId = "info.ftl";
+const { KcPageStory } = createKcPageStory({ pageId: "info.ftl" });
 
-const { PageStory } = createPageStory({ pageId });
-
-const meta: ComponentMeta<any> = {
-    title: `login/${pageId}`,
-    component: PageStory,
-    parameters: {
-        viewMode: "story",
-        previewTabs: {
-            "storybook/docs/panel": {
-                "hidden": true
-            }
-        }
-    }
-};
+const meta = {
+    title: "login/info.ftl",
+    component: KcPageStory
+} satisfies Meta<typeof KcPageStory>;
 
 export default meta;
 
-export const Default = () => (
-    <PageStory
-        kcContext={{
-            message: {
-                summary: "This is the server message",
-                type: "info"
-            }
-        }}
-    />
-);
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                message: {
+                    summary: "Server info message"
+                }
+            }}
+        />
+    )
+};
+
+export const WithLinkBack: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                message: {
+                    summary: "Server message"
+                },
+                actionUri: undefined
+            }}
+        />
+    )
+};
+
+export const WithRequiredActions: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                message: {
+                    summary: "Required actions: "
+                },
+                requiredActions: ["CONFIGURE_TOTP", "UPDATE_PROFILE", "VERIFY_EMAIL", "CUSTOM_ACTION"],
+                "x-keycloakify": {
+                    messages: {
+                        "requiredAction.CUSTOM_ACTION": "Custom action"
+                    }
+                }
+            }}
+        />
+    )
+};

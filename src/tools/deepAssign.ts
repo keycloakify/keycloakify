@@ -1,44 +1,82 @@
 import { assert } from "tsafe/assert";
 import { is } from "tsafe/is";
-import { deepClone } from "./deepClone";
+import { structuredCloneButFunctions } from "./structuredCloneButFunctions";
 
-//Warning: Be mindful that because of array this is not idempotent.
-export function deepAssign(params: { target: Record<string, unknown>; source: Record<string, unknown> }) {
-    const { target } = params;
-
-    const source = deepClone(params.source);
+/** NOTE: Array a copied over, not merged. */
+export function deepAssign(params: {
+    target: Record<string, unknown>;
+    source: Record<string, unknown>;
+}): void {
+    const { target, source } = params;
 
     Object.keys(source).forEach(key => {
         var dereferencedSource = source[key];
 
-        if (target[key] === undefined || dereferencedSource instanceof Function || !(dereferencedSource instanceof Object)) {
-            Object.defineProperty(target, key, {
-                "enumerable": true,
-                "writable": true,
-                "configurable": true,
-                "value": dereferencedSource
+        if (dereferencedSource === undefined) {
+            delete target[key];
+            return;
+        }
+
+        if (dereferencedSource instanceof Date) {
+            assign({
+                target,
+                key,
+                value: new Date(dereferencedSource.getTime())
             });
 
             return;
         }
 
-        const dereferencedTarget = target[key];
-
         if (dereferencedSource instanceof Array) {
-            assert(is<unknown[]>(dereferencedTarget));
-            assert(is<unknown[]>(dereferencedSource));
-
-            dereferencedSource.forEach(entry => dereferencedTarget.push(entry));
+            assign({
+                target,
+                key,
+                value: structuredCloneButFunctions(dereferencedSource)
+            });
 
             return;
         }
+
+        if (
+            dereferencedSource instanceof Function ||
+            !(dereferencedSource instanceof Object)
+        ) {
+            assign({
+                target,
+                key,
+                value: dereferencedSource
+            });
+
+            return;
+        }
+
+        if (!(target[key] instanceof Object)) {
+            target[key] = {};
+        }
+
+        const dereferencedTarget = target[key];
 
         assert(is<Record<string, unknown>>(dereferencedTarget));
         assert(is<Record<string, unknown>>(dereferencedSource));
 
         deepAssign({
-            "target": dereferencedTarget,
-            "source": dereferencedSource
+            target: dereferencedTarget,
+            source: dereferencedSource
         });
+    });
+}
+
+function assign(params: {
+    target: Record<string, unknown>;
+    key: string;
+    value: unknown;
+}): void {
+    const { target, key, value } = params;
+
+    Object.defineProperty(target, key, {
+        enumerable: true,
+        writable: true,
+        configurable: true,
+        value
     });
 }

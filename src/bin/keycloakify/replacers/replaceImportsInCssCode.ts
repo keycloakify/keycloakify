@@ -1,57 +1,67 @@
-import * as crypto from "crypto";
-import type { BuildOptions } from "../buildOptions";
+import type { BuildContext } from "../../shared/buildContext";
+import { BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR } from "../../shared/constants";
 import { assert } from "tsafe/assert";
-import { basenameOfTheKeycloakifyResourcesDir } from "../../constants";
+import { posix } from "path";
 
-export type BuildOptionsLike = {
+export type BuildContextLike = {
     urlPathname: string | undefined;
 };
 
-assert<BuildOptions extends BuildOptionsLike ? true : false>();
+assert<BuildContext extends BuildContextLike ? true : false>();
 
-export function replaceImportsInCssCode(params: { cssCode: string }): {
+export function replaceImportsInCssCode(params: {
+    cssCode: string;
+    cssFileRelativeDirPath: string | undefined;
+    buildContext: BuildContextLike;
+}): {
     fixedCssCode: string;
-    cssGlobalsToDefine: Record<string, string>;
 } {
-    const { cssCode } = params;
-
-    const cssGlobalsToDefine: Record<string, string> = {};
-
-    new Set(cssCode.match(/url\(["']?\/[^/][^)"']+["']?\)[^;}]*?/g) ?? []).forEach(
-        match => (cssGlobalsToDefine["url" + crypto.createHash("sha256").update(match).digest("hex").substring(0, 15)] = match)
-    );
+    const { cssCode, cssFileRelativeDirPath, buildContext } = params;
 
     let fixedCssCode = cssCode;
 
-    Object.keys(cssGlobalsToDefine).forEach(
-        cssVariableName =>
-            //NOTE: split/join pattern ~ replace all
-            (fixedCssCode = fixedCssCode.split(cssGlobalsToDefine[cssVariableName]).join(`var(--${cssVariableName})`))
+    [
+        /url\("(\/[^/][^"]+)"\)/g,
+        /url\('(\/[^/][^']+)'\)/g,
+        /url\((\/[^/][^)]+)\)/g
+    ].forEach(
+        regex =>
+            (fixedCssCode = fixedCssCode.replace(
+                regex,
+                (match, assetFileAbsoluteUrlPathname) => {
+                    if (buildContext.urlPathname !== undefined) {
+                        if (
+                            !assetFileAbsoluteUrlPathname.startsWith(
+                                buildContext.urlPathname
+                            )
+                        ) {
+                            // NOTE: Should never happen
+                            return match;
+                        }
+                        assetFileAbsoluteUrlPathname =
+                            assetFileAbsoluteUrlPathname.replace(
+                                buildContext.urlPathname,
+                                "/"
+                            );
+                    }
+
+                    inline_style_in_html: {
+                        if (cssFileRelativeDirPath !== undefined) {
+                            break inline_style_in_html;
+                        }
+
+                        return `url("\${xKeycloakify.resourcesPath}/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}${assetFileAbsoluteUrlPathname}")`;
+                    }
+
+                    const assetFileRelativeUrlPathname = posix.relative(
+                        cssFileRelativeDirPath.replace(/\\/g, "/"),
+                        assetFileAbsoluteUrlPathname.replace(/^\//, "")
+                    );
+
+                    return `url("${assetFileRelativeUrlPathname}")`;
+                }
+            ))
     );
 
-    return { fixedCssCode, cssGlobalsToDefine };
-}
-
-export function generateCssCodeToDefineGlobals(params: { cssGlobalsToDefine: Record<string, string>; buildOptions: BuildOptionsLike }): {
-    cssCodeToPrependInHead: string;
-} {
-    const { cssGlobalsToDefine, buildOptions } = params;
-
-    return {
-        "cssCodeToPrependInHead": [
-            ":root {",
-            ...Object.keys(cssGlobalsToDefine)
-                .map(cssVariableName =>
-                    [
-                        `--${cssVariableName}:`,
-                        cssGlobalsToDefine[cssVariableName].replace(
-                            new RegExp(`url\\(${(buildOptions.urlPathname ?? "/").replace(/\//g, "\\/")}`, "g"),
-                            `url(\${url.resourcesPath}/${basenameOfTheKeycloakifyResourcesDir}/`
-                        )
-                    ].join(" ")
-                )
-                .map(line => `    ${line};`),
-            "}"
-        ].join("\n")
-    };
+    return { fixedCssCode };
 }

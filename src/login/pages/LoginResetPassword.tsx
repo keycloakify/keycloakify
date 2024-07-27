@@ -1,67 +1,76 @@
-import { clsx } from "keycloakify/tools/clsx";
+import { getKcClsx } from "keycloakify/login/lib/kcClsx";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
-import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
-import type { KcContext } from "../kcContext";
+import type { KcContext } from "../KcContext";
 import type { I18n } from "../i18n";
 
 export default function LoginResetPassword(props: PageProps<Extract<KcContext, { pageId: "login-reset-password.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
-    const { getClassName } = useGetClassName({
+    const { kcClsx } = getKcClsx({
         doUseDefaultCss,
         classes
     });
 
-    const { url, realm, auth } = kcContext;
+    const { url, realm, auth, messagesPerField } = kcContext;
 
     const { msg, msgStr } = i18n;
 
     return (
         <Template
-            {...{ kcContext, i18n, doUseDefaultCss, classes }}
-            displayMessage={false}
+            kcContext={kcContext}
+            i18n={i18n}
+            doUseDefaultCss={doUseDefaultCss}
+            classes={classes}
+            displayInfo
+            displayMessage={!messagesPerField.existsError("username")}
+            infoNode={realm.duplicateEmailsAllowed ? msg("emailInstructionUsername") : msg("emailInstruction")}
             headerNode={msg("emailForgotTitle")}
-            infoNode={msg("emailInstruction")}
         >
-            <form id="kc-reset-password-form" className={getClassName("kcFormClass")} action={url.loginAction} method="post">
-                <div className={getClassName("kcFormGroupClass")}>
-                    <div className={getClassName("kcLabelWrapperClass")}>
-                        <label htmlFor="username" className={getClassName("kcLabelClass")}>
+            <form id="kc-reset-password-form" className={kcClsx("kcFormClass")} action={url.loginAction} method="post">
+                <div className={kcClsx("kcFormGroupClass")}>
+                    <div className={kcClsx("kcLabelWrapperClass")}>
+                        <label htmlFor="username" className={kcClsx("kcLabelClass")}>
                             {!realm.loginWithEmailAllowed
                                 ? msg("username")
                                 : !realm.registrationEmailAsUsername
-                                ? msg("usernameOrEmail")
-                                : msg("email")}
+                                  ? msg("usernameOrEmail")
+                                  : msg("email")}
                         </label>
                     </div>
-                    <div className={getClassName("kcInputWrapperClass")}>
+                    <div className={kcClsx("kcInputWrapperClass")}>
                         <input
                             type="text"
                             id="username"
                             name="username"
-                            className={getClassName("kcInputClass")}
+                            className={kcClsx("kcInputClass")}
                             autoFocus
-                            defaultValue={auth !== undefined && auth.showUsername ? auth.attemptedUsername : undefined}
+                            defaultValue={auth.attemptedUsername ?? ""}
+                            aria-invalid={messagesPerField.existsError("username")}
                         />
+                        {messagesPerField.existsError("username") && (
+                            <span
+                                id="input-error-username"
+                                className={kcClsx("kcInputErrorMessageClass")}
+                                aria-live="polite"
+                                dangerouslySetInnerHTML={{
+                                    __html: messagesPerField.get("username")
+                                }}
+                            />
+                        )}
                     </div>
                 </div>
-                <div className={clsx(getClassName("kcFormGroupClass"), getClassName("kcFormSettingClass"))}>
-                    <div id="kc-form-options" className={getClassName("kcFormOptionsClass")}>
-                        <div className={getClassName("kcFormOptionsWrapperClass")}>
+                <div className={kcClsx("kcFormGroupClass", "kcFormSettingClass")}>
+                    <div id="kc-form-options" className={kcClsx("kcFormOptionsClass")}>
+                        <div className={kcClsx("kcFormOptionsWrapperClass")}>
                             <span>
                                 <a href={url.loginUrl}>{msg("backToLogin")}</a>
                             </span>
                         </div>
                     </div>
 
-                    <div id="kc-form-buttons" className={getClassName("kcFormButtonsClass")}>
+                    <div id="kc-form-buttons" className={kcClsx("kcFormButtonsClass")}>
                         <input
-                            className={clsx(
-                                getClassName("kcButtonClass"),
-                                getClassName("kcButtonPrimaryClass"),
-                                getClassName("kcButtonBlockClass"),
-                                getClassName("kcButtonLargeClass")
-                            )}
+                            className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonBlockClass", "kcButtonLargeClass")}
                             type="submit"
                             value={msgStr("doSubmit")}
                         />

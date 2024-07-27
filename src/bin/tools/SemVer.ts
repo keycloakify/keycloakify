@@ -12,35 +12,39 @@ export namespace SemVer {
     export type BumpType = (typeof bumpTypes)[number];
 
     export function parse(versionStr: string): SemVer {
-        const match = versionStr.match(/^v?([0-9]+)\.([0-9]+)(?:\.([0-9]+))?(?:-rc.([0-9]+))?$/);
+        const match = versionStr.match(
+            /^v?([0-9]+)\.([0-9]+)(?:\.([0-9]+))?(?:-rc.([0-9]+))?$/
+        );
 
         if (!match) {
             throw new Error(`${versionStr} is not a valid semantic version`);
         }
 
         const semVer: Omit<SemVer, "parsedFrom"> = {
-            "major": parseInt(match[1]),
-            "minor": parseInt(match[2]),
-            "patch": (() => {
+            major: parseInt(match[1]),
+            minor: parseInt(match[2]),
+            patch: (() => {
                 const str = match[3];
 
                 return str === undefined ? 0 : parseInt(str);
             })(),
             ...(() => {
                 const str = match[4];
-                return str === undefined ? {} : { "rc": parseInt(str) };
+                return str === undefined ? {} : { rc: parseInt(str) };
             })()
         };
 
         const initialStr = stringify(semVer);
 
         Object.defineProperty(semVer, "parsedFrom", {
-            "enumerable": true,
-            "get": function () {
+            enumerable: true,
+            get: function () {
                 const currentStr = stringify(this);
 
                 if (currentStr !== initialStr) {
-                    throw new Error(`SemVer.parsedFrom can't be read anymore, the version have been modified from ${initialStr} to ${currentStr}`);
+                    throw new Error(
+                        `SemVer.parsedFrom can't be read anymore, the version have been modified from ${initialStr} to ${currentStr}`
+                    );
                 }
 
                 return versionStr;
@@ -51,7 +55,9 @@ export namespace SemVer {
     }
 
     export function stringify(v: Omit<SemVer, "parsedFrom">): string {
-        return `${v.major}.${v.minor}.${v.patch}${v.rc === undefined ? "" : `-rc.${v.rc}`}`;
+        return `${v.major}.${v.minor}.${v.patch}${
+            v.rc === undefined ? "" : `-rc.${v.rc}`
+        }`;
     }
 
     /**
@@ -80,12 +86,25 @@ export namespace SemVer {
     console.log(compare(parse("3.0.0-rc.3"), parse("4.0.0")) === -1 )
     */
 
-    export function bumpType(params: { versionBehind: string | SemVer; versionAhead: string | SemVer }): BumpType | "no bump" {
-        const versionAhead = typeof params.versionAhead === "string" ? parse(params.versionAhead) : params.versionAhead;
-        const versionBehind = typeof params.versionBehind === "string" ? parse(params.versionBehind) : params.versionBehind;
+    export function bumpType(params: {
+        versionBehind: string | SemVer;
+        versionAhead: string | SemVer;
+    }): BumpType | "no bump" {
+        const versionAhead =
+            typeof params.versionAhead === "string"
+                ? parse(params.versionAhead)
+                : params.versionAhead;
+        const versionBehind =
+            typeof params.versionBehind === "string"
+                ? parse(params.versionBehind)
+                : params.versionBehind;
 
         if (compare(versionBehind, versionAhead) === 1) {
-            throw new Error(`Version regression ${stringify(versionBehind)} -> ${stringify(versionAhead)}`);
+            throw new Error(
+                `Version regression ${stringify(versionBehind)} -> ${stringify(
+                    versionAhead
+                )}`
+            );
         }
 
         for (const level of ["major", "minor", "patch", "rc"] as const) {

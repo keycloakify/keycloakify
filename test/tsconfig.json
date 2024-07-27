@@ -16,5 +16,6 @@
         // https://github.com/vitejs/vite/issues/15112#issuecomment-1823908010
         "skipLibCheck": true
     },
-    "include": ["../src", "."]
+    "include": ["../src", "."],
+    "exclude": ["../src/bin/initialize-account-theme/src"]
 }

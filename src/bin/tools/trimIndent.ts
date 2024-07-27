@@ -14,7 +14,10 @@ function populateTemplate(strings: TemplateStringsArray, ...args: unknown[]) {
         if (args[i]) {
             // if the interpolation value has newlines, indent the interpolation values
             // using the last known string indent
-            const chunk = String(args[i]).replace(/([\r?\n])/g, "$1" + " ".repeat(lastStringLineLength));
+            const chunk = String(args[i]).replace(
+                /([\r?\n])/g,
+                "$1" + " ".repeat(lastStringLineLength)
+            );
             chunks.push(chunk);
         }
     }

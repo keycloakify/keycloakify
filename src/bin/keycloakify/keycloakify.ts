@@ -1,135 +1,118 @@
-import { generateTheme } from "./generateTheme";
-import { generatePom } from "./generatePom";
-import { join as pathJoin, relative as pathRelative, basename as pathBasename, dirname as pathDirname, sep as pathSep } from "path";
+import { generateResources } from "./generateResources";
+import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path";
 import * as child_process from "child_process";
-import { generateStartKeycloakTestingContainer } from "./generateStartKeycloakTestingContainer";
 import * as fs from "fs";
-import { readBuildOptions } from "./buildOptions";
-import { getLogger } from "../tools/logger";
-import { getThemeSrcDirPath } from "../getThemeSrcDirPath";
-import { getThisCodebaseRootDirPath } from "../tools/getThisCodebaseRootDirPath";
-import { readThisNpmProjectVersion } from "../tools/readThisNpmProjectVersion";
-import { keycloakifyBuildOptionsForPostPostBuildScriptEnvName } from "../constants";
-import { assertNoPnpmDlx } from "../tools/assertNoPnpmDlx";
+import { getBuildContext } from "../shared/buildContext";
+import { VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES } from "../shared/constants";
+import { buildJars } from "./buildJars";
+import type { CliCommandOptions } from "../main";
+import chalk from "chalk";
+import { readThisNpmPackageVersion } from "../tools/readThisNpmPackageVersion";
+import * as os from "os";
+import { rmSync } from "../tools/fs.rmSync";
 
-export async function main() {
-    assertNoPnpmDlx();
+export async function command(params: { cliCommandOptions: CliCommandOptions }) {
+    exit_if_maven_not_installed: {
+        let commandOutput: Buffer | undefined = undefined;
 
-    const buildOptions = readBuildOptions({
-        "processArgv": process.argv.slice(2)
-    });
+        try {
+            commandOutput = child_process.execSync("mvn --version", {
+                stdio: ["ignore", "pipe", "ignore"]
+            });
+        } catch {}
 
-    const logger = getLogger({ "isSilent": buildOptions.isSilent });
-    logger.log("🔏 Building the keycloak theme...⌚");
+        if (commandOutput?.toString("utf8").includes("Apache Maven")) {
+            break exit_if_maven_not_installed;
+        }
 
-    const { themeSrcDirPath } = getThemeSrcDirPath({ "reactAppRootDirPath": buildOptions.reactAppRootDirPath });
+        const installationCommand = (() => {
+            switch (os.platform()) {
+                case "darwin":
+                    return "brew install mvn";
+                case "win32":
+                    return "choco install mvn";
+                case "linux":
+                default:
+                    return "sudo apt-get install mvn";
+            }
+        })();
 
-    for (const themeName of buildOptions.themeNames) {
-        await generateTheme({
-            themeName,
-            themeSrcDirPath,
-            "keycloakifySrcDirPath": pathJoin(getThisCodebaseRootDirPath(), "src"),
-            "keycloakifyVersion": readThisNpmProjectVersion(),
-            buildOptions
-        });
+        console.log(
+            `${chalk.red("Apache Maven required.")} Install it with \`${chalk.bold(
+                installationCommand
+            )}\` (for example)`
+        );
+
+        process.exit(1);
     }
+
+    const { cliCommandOptions } = params;
+
+    const buildContext = getBuildContext({ cliCommandOptions });
+
+    console.log(
+        [
+            chalk.cyan(`keycloakify v${readThisNpmPackageVersion()}`),
+            chalk.green(
+                `Building the keycloak theme in .${pathSep}${pathRelative(
+                    process.cwd(),
+                    buildContext.keycloakifyBuildDirPath
+                )} ...`
+            )
+        ].join(" ")
+    );
+
+    const startTime = Date.now();
 
     {
-        const { pomFileCode } = generatePom({ buildOptions });
+        if (!fs.existsSync(buildContext.keycloakifyBuildDirPath)) {
+            fs.mkdirSync(buildContext.keycloakifyBuildDirPath, {
+                recursive: true
+            });
+        }
 
-        fs.writeFileSync(pathJoin(buildOptions.keycloakifyBuildDirPath, "pom.xml"), Buffer.from(pomFileCode, "utf8"));
+        fs.writeFileSync(
+            pathJoin(buildContext.keycloakifyBuildDirPath, ".gitignore"),
+            Buffer.from("*", "utf8")
+        );
     }
 
-    const containerKeycloakVersion = "23.0.6";
+    const resourcesDirPath = pathJoin(buildContext.keycloakifyBuildDirPath, "resources");
 
-    const jarFilePath = pathJoin(buildOptions.keycloakifyBuildDirPath, "target", `${buildOptions.artifactId}-${buildOptions.themeVersion}.jar`);
-
-    generateStartKeycloakTestingContainer({
-        "keycloakVersion": containerKeycloakVersion,
-        jarFilePath,
-        buildOptions
+    await generateResources({
+        resourcesDirPath,
+        buildContext
     });
 
-    fs.writeFileSync(pathJoin(buildOptions.keycloakifyBuildDirPath, ".gitignore"), Buffer.from("*", "utf8"));
-
     run_post_build_script: {
-        if (buildOptions.bundler !== "vite") {
+        if (buildContext.bundler !== "vite") {
             break run_post_build_script;
         }
 
         child_process.execSync("npx vite", {
-            "cwd": buildOptions.reactAppRootDirPath,
-            "env": {
+            cwd: buildContext.projectDirPath,
+            env: {
                 ...process.env,
-                [keycloakifyBuildOptionsForPostPostBuildScriptEnvName]: JSON.stringify(buildOptions)
+                [VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES.RUN_POST_BUILD_SCRIPT]: JSON.stringify(
+                    {
+                        resourcesDirPath,
+                        buildContext
+                    }
+                )
             }
         });
     }
 
-    create_jar: {
-        if (!buildOptions.doCreateJar) {
-            break create_jar;
-        }
+    await buildJars({
+        resourcesDirPath,
+        buildContext
+    });
 
-        child_process.execSync("mvn clean install", { "cwd": buildOptions.keycloakifyBuildDirPath });
+    rmSync(resourcesDirPath, { recursive: true });
 
-        const jarDirPath = pathDirname(jarFilePath);
-        const retrocompatJarFilePath = pathJoin(jarDirPath, "retrocompat-" + pathBasename(jarFilePath));
-
-        fs.renameSync(pathJoin(jarDirPath, "original-" + pathBasename(jarFilePath)), retrocompatJarFilePath);
-
-        fs.writeFileSync(
-            pathJoin(jarDirPath, "README.md"),
-            Buffer.from(
-                [
-                    `- The ${jarFilePath} is to be used in Keycloak 23 and up.  `,
-                    `- The ${retrocompatJarFilePath} is to be used in Keycloak 22 and below.`,
-                    `  Note that Keycloak 22 is only supported for login and email theme but not for account themes.  `
-                ].join("\n"),
-                "utf8"
-            )
-        );
-    }
-
-    logger.log(
-        [
-            "",
-            ...(!buildOptions.doCreateJar
-                ? []
-                : [
-                      `✅ Your keycloak theme has been generated and bundled into .${pathSep}${pathRelative(
-                          buildOptions.reactAppRootDirPath,
-                          jarFilePath
-                      )} 🚀`
-                  ]),
-            "",
-            `To test your theme locally you can spin up a Keycloak ${containerKeycloakVersion} container image with the theme pre loaded by running:`,
-            "",
-            `👉 $ .${pathSep}${pathRelative(
-                buildOptions.reactAppRootDirPath,
-                pathJoin(buildOptions.keycloakifyBuildDirPath, generateStartKeycloakTestingContainer.basename)
-            )} 👈`,
-            ``,
-            `Once your container is up and running: `,
-            "- Log into the admin console 👉 http://localhost:8080/admin username: admin, password: admin 👈",
-            `- Create a realm:                       Master         -> AddRealm   -> Name: myrealm`,
-            `- Enable registration:                  Realm settings -> Login tab  -> User registration: on`,
-            `- Enable the Account theme (optional):  Realm settings -> Themes tab -> Account theme: ${buildOptions.themeNames[0]}`,
-            `                                        Clients        -> account    -> Login theme:   ${buildOptions.themeNames[0]}`,
-            `- Enable the email theme (optional):    Realm settings -> Themes tab -> Email theme:   ${buildOptions.themeNames[0]} (option will appear only if you have ran npx initialize-email-theme)`,
-            `- Create a client                       Clients        -> Create     -> Client ID:                       myclient`,
-            `                                                                        Root URL:                        https://www.keycloak.org/app/`,
-            `                                                                        Valid redirect URIs:             https://www.keycloak.org/app* http://localhost* (localhost is optional)`,
-            `                                                                        Valid post logout redirect URIs: https://www.keycloak.org/app* http://localhost*`,
-            `                                                                        Web origins:                     *`,
-            `                                                                        Login Theme:                     ${buildOptions.themeNames[0]}`,
-            `                                                                        Save (button at the bottom of the page)`,
-            ``,
-            `- Go to  👉  https://www.keycloak.org/app/ 👈 Click "Save" then "Sign in". You should see your login page`,
-            `- Got to 👉  http://localhost:8080/realms/myrealm/account 👈 to see your account theme`,
-            ``,
-            `Video tutorial: https://youtu.be/WMyGZNHQkjU`,
-            ``
-        ].join("\n")
+    console.log(
+        chalk.green(
+            `✓ keycloak theme built in ${((Date.now() - startTime) / 1000).toFixed(2)}s`
+        )
     );
 }

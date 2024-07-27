@@ -5,13 +5,18 @@ import { SemVer } from "../SemVer";
 export function getLatestsSemVersionedTagFactory(params: { octokit: Octokit }) {
     const { octokit } = params;
 
-    async function getLatestsSemVersionedTag(params: { owner: string; repo: string; count: number }): Promise<
+    async function getLatestsSemVersionedTag(params: {
+        owner: string;
+        repo: string;
+        count: number;
+        doIgnoreReleaseCandidates: boolean;
+    }): Promise<
         {
             tag: string;
             version: SemVer;
         }[]
     > {
-        const { owner, repo, count } = params;
+        const { owner, repo, count, doIgnoreReleaseCandidates } = params;
 
         const semVersionedTags: { tag: string; version: SemVer }[] = [];
 
@@ -26,14 +31,16 @@ export function getLatestsSemVersionedTagFactory(params: { octokit: Octokit }) {
                 continue;
             }
 
-            if (version.rc !== undefined) {
+            if (doIgnoreReleaseCandidates && version.rc !== undefined) {
                 continue;
             }
 
             semVersionedTags.push({ tag, version });
         }
 
-        return semVersionedTags.sort(({ version: vX }, { version: vY }) => SemVer.compare(vY, vX)).slice(0, count);
+        return semVersionedTags
+            .sort(({ version: vX }, { version: vY }) => SemVer.compare(vY, vX))
+            .slice(0, count);
     }
 
     return { getLatestsSemVersionedTag };

@@ -1,60 +1,65 @@
-#!/usr/bin/env node
-
-import { downloadBuiltinKeycloakTheme } from "./download-builtin-keycloak-theme";
+import { downloadKeycloakDefaultTheme } from "./shared/downloadKeycloakDefaultTheme";
 import { join as pathJoin, relative as pathRelative } from "path";
 import { transformCodebase } from "./tools/transformCodebase";
-import { promptKeycloakVersion } from "./promptKeycloakVersion";
-import { readBuildOptions } from "./keycloakify/buildOptions";
+import { promptKeycloakVersion } from "./shared/promptKeycloakVersion";
+import { getBuildContext } from "./shared/buildContext";
 import * as fs from "fs";
-import { getLogger } from "./tools/logger";
-import { getThemeSrcDirPath } from "./getThemeSrcDirPath";
-import { rmSync } from "./tools/fs.rmSync";
+import type { CliCommandOptions } from "./main";
 
-export async function main() {
-    const buildOptions = readBuildOptions({
-        "processArgv": process.argv.slice(2)
-    });
+export async function command(params: { cliCommandOptions: CliCommandOptions }) {
+    const { cliCommandOptions } = params;
 
-    const logger = getLogger({ "isSilent": buildOptions.isSilent });
+    const buildContext = getBuildContext({ cliCommandOptions });
 
-    const { themeSrcDirPath } = getThemeSrcDirPath({
-        "reactAppRootDirPath": buildOptions.reactAppRootDirPath
-    });
-
-    const emailThemeSrcDirPath = pathJoin(themeSrcDirPath, "email");
+    const emailThemeSrcDirPath = pathJoin(buildContext.themeSrcDirPath, "email");
 
     if (fs.existsSync(emailThemeSrcDirPath)) {
-        logger.warn(`There is already a ${pathRelative(process.cwd(), emailThemeSrcDirPath)} directory in your project. Aborting.`);
+        console.warn(
+            `There is already a ${pathRelative(
+                process.cwd(),
+                emailThemeSrcDirPath
+            )} directory in your project. Aborting.`
+        );
 
         process.exit(-1);
     }
 
-    const { keycloakVersion } = await promptKeycloakVersion();
+    console.log("Initialize with the base email theme from which version of Keycloak?");
 
-    const builtinKeycloakThemeTmpDirPath = pathJoin(emailThemeSrcDirPath, "..", "tmp_xIdP3_builtin_keycloak_theme");
+    const { keycloakVersion } = await promptKeycloakVersion({
+        // NOTE: This is arbitrary
+        startingFromMajor: 17,
+        excludeMajorVersions: [],
+        cacheDirPath: buildContext.cacheDirPath
+    });
 
-    await downloadBuiltinKeycloakTheme({
+    const { defaultThemeDirPath } = await downloadKeycloakDefaultTheme({
         keycloakVersion,
-        "destDirPath": builtinKeycloakThemeTmpDirPath,
-        buildOptions
+        buildContext
     });
 
     transformCodebase({
-        "srcDirPath": pathJoin(builtinKeycloakThemeTmpDirPath, "base", "email"),
-        "destDirPath": emailThemeSrcDirPath
+        srcDirPath: pathJoin(defaultThemeDirPath, "base", "email"),
+        destDirPath: emailThemeSrcDirPath
     });
 
     {
         const themePropertyFilePath = pathJoin(emailThemeSrcDirPath, "theme.properties");
 
-        fs.writeFileSync(themePropertyFilePath, Buffer.from(`parent=base\n${fs.readFileSync(themePropertyFilePath).toString("utf8")}`, "utf8"));
+        fs.writeFileSync(
+            themePropertyFilePath,
+            Buffer.from(
+                `parent=base\n${fs.readFileSync(themePropertyFilePath).toString("utf8")}`,
+                "utf8"
+            )
+        );
     }
 
-    logger.log(`${pathRelative(process.cwd(), emailThemeSrcDirPath)} ready to be customized, feel free to remove every file you do not customize`);
-
-    rmSync(builtinKeycloakThemeTmpDirPath, { "recursive": true, "force": true });
-}
-
-if (require.main === module) {
-    main();
+    console.log(
+        `The \`${pathJoin(
+            ".",
+            pathRelative(process.cwd(), emailThemeSrcDirPath)
+        )}\` directory have been created.`
+    );
+    console.log("You can delete any file you don't modify.");
 }

@@ -1,35 +1,38 @@
 import { assert } from "tsafe/assert";
-import type { BuildOptions } from "../../buildOptions";
+import type { BuildContext } from "../../../shared/buildContext";
 import { replaceImportsInJsCode_vite } from "./vite";
 import { replaceImportsInJsCode_webpack } from "./webpack";
 import * as fs from "fs";
 
-export type BuildOptionsLike = {
-    reactAppBuildDirPath: string;
+export type BuildContextLike = {
+    projectBuildDirPath: string;
     assetsDirPath: string;
     urlPathname: string | undefined;
     bundler: "vite" | "webpack";
 };
 
-assert<BuildOptions extends BuildOptionsLike ? true : false>();
+assert<BuildContext extends BuildContextLike ? true : false>();
 
-export function replaceImportsInJsCode(params: { jsCode: string; buildOptions: BuildOptionsLike }) {
-    const { jsCode, buildOptions } = params;
+export function replaceImportsInJsCode(params: {
+    jsCode: string;
+    buildContext: BuildContextLike;
+}) {
+    const { jsCode, buildContext } = params;
 
     const { fixedJsCode } = (() => {
-        switch (buildOptions.bundler) {
+        switch (buildContext.bundler) {
             case "vite":
                 return replaceImportsInJsCode_vite({
                     jsCode,
-                    buildOptions,
-                    "basenameOfAssetsFiles": readAssetsDirSync({
-                        "assetsDirPath": params.buildOptions.assetsDirPath
+                    buildContext,
+                    basenameOfAssetsFiles: readAssetsDirSync({
+                        assetsDirPath: params.buildContext.assetsDirPath
                     })
                 });
             case "webpack":
                 return replaceImportsInJsCode_webpack({
                     jsCode,
-                    buildOptions
+                    buildContext
                 });
         }
     })();

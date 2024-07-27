@@ -1,34 +1,60 @@
-import { clsx } from "keycloakify/tools/clsx";
-import { usePrepareTemplate } from "keycloakify/lib/usePrepareTemplate";
-import { type TemplateProps } from "keycloakify/account/TemplateProps";
-import { useGetClassName } from "keycloakify/account/lib/useGetClassName";
-import type { KcContext } from "./kcContext";
-import type { I18n } from "./i18n";
+import { useEffect } from "react";
 import { assert } from "keycloakify/tools/assert";
+import { clsx } from "keycloakify/tools/clsx";
+import { getKcClsx } from "keycloakify/account/lib/kcClsx";
+import { useInsertLinkTags } from "keycloakify/tools/useInsertLinkTags";
+import { useSetClassName } from "keycloakify/tools/useSetClassName";
+import type { TemplateProps } from "keycloakify/account/TemplateProps";
+import type { I18n } from "./i18n";
+import type { KcContext } from "./KcContext";
 
 export default function Template(props: TemplateProps<KcContext, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, active, classes, children } = props;
 
-    const { getClassName } = useGetClassName({ doUseDefaultCss, classes });
+    const { kcClsx } = getKcClsx({ doUseDefaultCss, classes });
 
-    const { msg, changeLocale, labelBySupportedLanguageTag, currentLanguageTag } = i18n;
+    const { msg, msgStr, getChangeLocaleUrl, labelBySupportedLanguageTag, currentLanguageTag } = i18n;
 
     const { locale, url, features, realm, message, referrer } = kcContext;
 
-    const { isReady } = usePrepareTemplate({
-        "doFetchDefaultThemeResources": doUseDefaultCss,
-        "styles": [
-            `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly.min.css`,
-            `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly-additions.min.css`,
-            `${url.resourcesPath}/css/account.css`
-        ],
-        "htmlClassName": getClassName("kcHtmlClass"),
-        "bodyClassName": clsx("admin-console", "user", getClassName("kcBodyClass")),
-        "htmlLangProperty": locale?.currentLanguageTag,
-        "documentTitle": i18n.msgStr("accountManagementTitle")
+    useEffect(() => {
+        document.title = msgStr("accountManagementTitle");
+    }, []);
+
+    useSetClassName({
+        qualifiedName: "html",
+        className: kcClsx("kcHtmlClass")
     });
 
-    if (!isReady) {
+    useSetClassName({
+        qualifiedName: "body",
+        className: clsx("admin-console", "user", kcClsx("kcBodyClass"))
+    });
+
+    useEffect(() => {
+        const { currentLanguageTag } = locale ?? {};
+
+        if (currentLanguageTag === undefined) {
+            return;
+        }
+
+        const html = document.querySelector("html");
+        assert(html !== null);
+        html.lang = currentLanguageTag;
+    }, []);
+
+    const { areAllStyleSheetsLoaded } = useInsertLinkTags({
+        componentOrHookName: "Template",
+        hrefs: !doUseDefaultCss
+            ? []
+            : [
+                  `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly.min.css`,
+                  `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly-additions.min.css`,
+                  `${url.resourcesPath}/css/account.css`
+              ]
+    });
+
+    if (!areAllStyleSheetsLoaded) {
         return null;
     }
 
@@ -47,17 +73,13 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                                 {realm.internationalizationEnabled && (assert(locale !== undefined), true) && locale.supported.length > 1 && (
                                     <li>
                                         <div className="kc-dropdown" id="kc-locale-dropdown">
-                                            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                                             <a href="#" id="kc-current-locale-link">
                                                 {labelBySupportedLanguageTag[currentLanguageTag]}
                                             </a>
                                             <ul>
                                                 {locale.supported.map(({ languageTag }) => (
                                                     <li key={languageTag} className="kc-dropdown-item">
-                                                        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                                                        <a href="#" onClick={() => changeLocale(languageTag)}>
-                                                            {labelBySupportedLanguageTag[languageTag]}
-                                                        </a>
+                                                        <a href={getChangeLocaleUrl(languageTag)}>{labelBySupportedLanguageTag[languageTag]}</a>
                                                     </li>
                                                 ))}
                                             </ul>
@@ -123,7 +145,12 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                         <div className={clsx("alert", `alert-${message.type}`)}>
                             {message.type === "success" && <span className="pficon pficon-ok"></span>}
                             {message.type === "error" && <span className="pficon pficon-error-circle-o"></span>}
-                            <span className="kc-feedback-text">{message.summary}</span>
+                            <span
+                                className="kc-feedback-text"
+                                dangerouslySetInnerHTML={{
+                                    __html: message.summary
+                                }}
+                            />
                         </div>
                     )}
 

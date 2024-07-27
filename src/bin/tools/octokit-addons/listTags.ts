@@ -5,11 +5,19 @@ const per_page = 99;
 export function listTagsFactory(params: { octokit: Octokit }) {
     const { octokit } = params;
 
-    const octokit_repo_listTags = async (params: { owner: string; repo: string; per_page: number; page: number }) => {
+    const octokit_repo_listTags = async (params: {
+        owner: string;
+        repo: string;
+        per_page: number;
+        page: number;
+    }) => {
         return octokit.repos.listTags(params);
     };
 
-    async function* listTags(params: { owner: string; repo: string }): AsyncGenerator<string> {
+    async function* listTags(params: {
+        owner: string;
+        repo: string;
+    }): AsyncGenerator<string> {
         const { owner, repo } = params;
 
         let page = 1;
@@ -19,7 +27,7 @@ export function listTagsFactory(params: { octokit: Octokit }) {
                 owner,
                 repo,
                 per_page,
-                "page": page++
+                page: page++
             });
 
             for (const branch of resp.data.map(({ name }) => name)) {
@@ -33,7 +41,10 @@ export function listTagsFactory(params: { octokit: Octokit }) {
     }
 
     /** Returns the same "latest" tag as deno.land/x, not actually the latest though */
-    async function getLatestTag(params: { owner: string; repo: string }): Promise<string | undefined> {
+    async function getLatestTag(params: {
+        owner: string;
+        repo: string;
+    }): Promise<string | undefined> {
         const { owner, repo } = params;
 
         const itRes = await listTags({ owner, repo }).next();

@@ -3,7 +3,11 @@ import * as path from "path";
 import { crawl } from "./crawl";
 import { rmSync } from "../tools/fs.rmSync";
 
-type TransformSourceCode = (params: { sourceCode: Buffer; filePath: string; fileRelativePath: string }) =>
+type TransformSourceCode = (params: {
+    sourceCode: Buffer;
+    filePath: string;
+    fileRelativePath: string;
+}) =>
     | {
           modifiedSourceCode: Buffer;
           newFileName?: string;
@@ -15,18 +19,27 @@ type TransformSourceCode = (params: { sourceCode: Buffer; filePath: string; file
  * If source and destination are the same this function can be used to apply the transformation in place
  * like filtering out some files or modifying them.
  * */
-export function transformCodebase(params: { srcDirPath: string; destDirPath: string; transformSourceCode?: TransformSourceCode }) {
+export function transformCodebase(params: {
+    srcDirPath: string;
+    destDirPath: string;
+    transformSourceCode?: TransformSourceCode;
+}) {
     const { srcDirPath, transformSourceCode } = params;
 
     const isTargetSameAsSource = path.relative(srcDirPath, params.destDirPath) === "";
 
-    const destDirPath = isTargetSameAsSource ? path.join(srcDirPath, "..", "tmp_xOsPdkPsTdzPs34sOkHs") : params.destDirPath;
+    const destDirPath = isTargetSameAsSource
+        ? path.join(srcDirPath, "..", "tmp_xOsPdkPsTdzPs34sOkHs")
+        : params.destDirPath;
 
     fs.mkdirSync(destDirPath, {
-        "recursive": true
+        recursive: true
     });
 
-    for (const fileRelativePath of crawl({ "dirPath": srcDirPath, "returnedPathsType": "relative to dirPath" })) {
+    for (const fileRelativePath of crawl({
+        dirPath: srcDirPath,
+        returnedPathsType: "relative to dirPath"
+    })) {
         const filePath = path.join(srcDirPath, fileRelativePath);
         const destFilePath = path.join(destDirPath, fileRelativePath);
 
@@ -34,7 +47,7 @@ export function transformCodebase(params: { srcDirPath: string; destDirPath: str
         // it using the lower level implementation.
         if (transformSourceCode === undefined) {
             fs.mkdirSync(path.dirname(destFilePath), {
-                "recursive": true
+                recursive: true
             });
 
             fs.copyFileSync(filePath, destFilePath);
@@ -43,7 +56,7 @@ export function transformCodebase(params: { srcDirPath: string; destDirPath: str
         }
 
         const transformSourceCodeResult = transformSourceCode({
-            "sourceCode": fs.readFileSync(filePath),
+            sourceCode: fs.readFileSync(filePath),
             filePath,
             fileRelativePath
         });
@@ -53,16 +66,22 @@ export function transformCodebase(params: { srcDirPath: string; destDirPath: str
         }
 
         fs.mkdirSync(path.dirname(destFilePath), {
-            "recursive": true
+            recursive: true
         });
 
         const { newFileName, modifiedSourceCode } = transformSourceCodeResult;
 
-        fs.writeFileSync(path.join(path.dirname(destFilePath), newFileName ?? path.basename(destFilePath)), modifiedSourceCode);
+        fs.writeFileSync(
+            path.join(
+                path.dirname(destFilePath),
+                newFileName ?? path.basename(destFilePath)
+            ),
+            modifiedSourceCode
+        );
     }
 
     if (isTargetSameAsSource) {
-        rmSync(srcDirPath, { "recursive": true });
+        rmSync(srcDirPath, { recursive: true });
 
         fs.renameSync(destDirPath, srcDirPath);
     }

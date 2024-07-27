@@ -16,7 +16,10 @@ const crawlRec = (dirPath: string, filePaths: string[]) => {
 };
 
 /** List all files in a given directory return paths relative to the dir_path */
-export function crawl(params: { dirPath: string; returnedPathsType: "absolute" | "relative to dirPath" }): string[] {
+export function crawl(params: {
+    dirPath: string;
+    returnedPathsType: "absolute" | "relative to dirPath";
+}): string[] {
     const { dirPath, returnedPathsType } = params;
 
     const filePaths: string[] = [];
