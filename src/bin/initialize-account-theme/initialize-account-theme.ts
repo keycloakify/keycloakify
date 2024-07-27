@@ -6,6 +6,7 @@ import chalk from "chalk";
 import { join as pathJoin, relative as pathRelative } from "path";
 import * as fs from "fs";
 import { updateAccountThemeImplementationInConfig } from "./updateAccountThemeImplementationInConfig";
+import { generateKcGenTs } from "../shared/generateKcGenTs";
 
 export async function command(params: { cliCommandOptions: CliCommandOptions }) {
     const { cliCommandOptions } = params;
@@ -14,7 +15,10 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     const accountThemeSrcDirPath = pathJoin(buildContext.themeSrcDirPath, "account");
 
-    if (fs.existsSync(accountThemeSrcDirPath)) {
+    if (
+        fs.existsSync(accountThemeSrcDirPath) &&
+        fs.readdirSync(accountThemeSrcDirPath).length > 0
+    ) {
         console.warn(
             chalk.red(
                 `There is already a ${pathRelative(
@@ -92,4 +96,17 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     }
 
     updateAccountThemeImplementationInConfig({ buildContext, accountThemeType });
+
+    await generateKcGenTs({
+        buildContext: {
+            ...buildContext,
+            implementedThemeTypes: {
+                ...buildContext.implementedThemeTypes,
+                account: {
+                    isImplemented: true,
+                    type: accountThemeType
+                }
+            }
+        }
+    });
 }
