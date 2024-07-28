@@ -1,0 +1,32 @@
+import { Meta } from "@storybook/addon-docs";
+import screenshotPngUrl from "./screenshot.png";
+
+<Meta
+    title="account-spa/index.ftl" 
+    parameters={{
+        "viewMode": "docs",
+        "previewTabs": {
+            "canvas": { "hidden": true },
+            "zoom": { "hidden": true },
+            "storybook/background": { "hidden": true },
+            "storybook/viewport": { "hidden": true },
+        },
+    }}
+/>
+
+<div style={{ "margin": "0 auto", "maxWidth": "700px", "textAlign": "center" }}>
+
+<p>  
+
+Keycloakify offers two option for creating an account theme:  
+[Multi Page](https://storybook.keycloakify.dev/?path=/story/account-account-ftl--default) or Single Page (also known as Account v3).  
+Since the account Single Page does not support Storybook, here is a screenshot of it's default look:  
+
+<img width="1508" alt="image" src={screenshotPngUrl} />  
+
+[Learn more](https://docs.keycloakify.dev/account-theme)  
+
+</p>
+
+
+</div>
