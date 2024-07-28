@@ -27,10 +27,30 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     console.log(chalk.cyan("Theme type:"));
 
     const { value: themeType } = await cliSelect<ThemeType>({
-        values: [...THEME_TYPES]
+        values: [...THEME_TYPES].filter(themeType => {
+            switch (themeType) {
+                case "account":
+                    return buildContext.implementedThemeTypes.account.isImplemented;
+                case "login":
+                    return buildContext.implementedThemeTypes.login.isImplemented;
+            }
+            assert<Equals<typeof themeType, never>>(false);
+        })
     }).catch(() => {
         process.exit(-1);
     });
+
+    if (
+        themeType === "account" &&
+        (assert(buildContext.implementedThemeTypes.account.isImplemented),
+        buildContext.implementedThemeTypes.account.type === "Single-Page")
+    ) {
+        console.log(
+            `${chalk.red("✗")} Sorry, there is no Storybook support for Single-Page Account themes.`
+        );
+
+        process.exit(0);
+    }
 
     console.log(`→ ${themeType}`);
 
