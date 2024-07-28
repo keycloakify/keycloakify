@@ -12,7 +12,12 @@ import {
 } from "./shared/constants";
 import { capitalize } from "tsafe/capitalize";
 import * as fs from "fs";
-import { join as pathJoin, relative as pathRelative, dirname as pathDirname } from "path";
+import {
+    join as pathJoin,
+    relative as pathRelative,
+    dirname as pathDirname,
+    basename as pathBasename
+} from "path";
 import { kebabCaseToCamelCase } from "./tools/kebabCaseToSnakeCase";
 import { assert, Equals } from "tsafe/assert";
 import type { CliCommandOptions } from "./main";
@@ -29,10 +34,101 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     console.log(chalk.cyan("Theme type:"));
 
     const { value: themeType } = await cliSelect<ThemeType>({
-        values: [...THEME_TYPES]
+        values: [...THEME_TYPES].filter(themeType => {
+            switch (themeType) {
+                case "account":
+                    return buildContext.implementedThemeTypes.account.isImplemented;
+                case "login":
+                    return buildContext.implementedThemeTypes.login.isImplemented;
+            }
+            assert<Equals<typeof themeType, never>>(false);
+        })
     }).catch(() => {
         process.exit(-1);
     });
+
+    if (
+        themeType === "account" &&
+        (assert(buildContext.implementedThemeTypes.account.isImplemented),
+        buildContext.implementedThemeTypes.account.type === "Single-Page")
+    ) {
+        const srcDirPath = pathJoin(
+            pathDirname(buildContext.packageJsonFilePath),
+            "node_modules",
+            "@keycloakify",
+            "keycloak-account-ui",
+            "src"
+        );
+
+        console.log(
+            [
+                `There isn't an interactive CLI to eject components of the Single-Page Account theme.`,
+                `You can however copy paste into your codebase the any file or directory from the following source directory:`,
+                ``,
+                `${chalk.bold(pathJoin(pathRelative(process.cwd(), srcDirPath)))}`,
+                ``
+            ].join("\n")
+        );
+
+        eject_entrypoint: {
+            const kcAccountUiTsxFileRelativePath = "KcAccountUi.tsx";
+
+            const accountThemeSrcDirPath = pathJoin(
+                buildContext.themeSrcDirPath,
+                "account"
+            );
+
+            const targetFilePath = pathJoin(
+                accountThemeSrcDirPath,
+                kcAccountUiTsxFileRelativePath
+            );
+
+            if (fs.existsSync(targetFilePath)) {
+                break eject_entrypoint;
+            }
+
+            fs.cpSync(
+                pathJoin(srcDirPath, kcAccountUiTsxFileRelativePath),
+                targetFilePath
+            );
+
+            {
+                const kcPageTsxFilePath = pathJoin(accountThemeSrcDirPath, "KcPage.tsx");
+
+                const kcPageTsxCode = fs.readFileSync(kcPageTsxFilePath).toString("utf8");
+
+                const componentName = pathBasename(
+                    kcAccountUiTsxFileRelativePath
+                ).replace(/.tsx$/, "");
+
+                const modifiedKcPageTsxCode = kcPageTsxCode.replace(
+                    `@keycloakify/keycloak-account-ui/${componentName}`,
+                    `./${componentName}`
+                );
+
+                fs.writeFileSync(
+                    kcPageTsxFilePath,
+                    Buffer.from(modifiedKcPageTsxCode, "utf8")
+                );
+            }
+
+            const routesTsxFilePath = pathRelative(
+                process.cwd(),
+                pathJoin(srcDirPath, "routes.tsx")
+            );
+
+            console.log(
+                [
+                    `To help you get started ${chalk.bold(pathRelative(process.cwd(), targetFilePath))} has been copied into your project.`,
+                    `The next step is usually to eject ${chalk.bold(routesTsxFilePath)}`,
+                    `with \`cp ${routesTsxFilePath} ${pathRelative(process.cwd(), accountThemeSrcDirPath)}\``,
+                    `then update the import of routes in ${kcAccountUiTsxFileRelativePath}.`
+                ].join("\n")
+            );
+        }
+
+        process.exit(0);
+    }
 
     console.log(`→ ${themeType}`);
 
