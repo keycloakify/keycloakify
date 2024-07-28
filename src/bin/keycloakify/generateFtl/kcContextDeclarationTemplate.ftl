@@ -208,6 +208,18 @@ function decodeHtmlEntities(htmlStr){
                 ) || (
                     key == "attributes" &&
                     areSamePath(path, ["realm"])
+                ) || (
+                    xKeycloakify.pageId == "index.ftl" &&
+                    xKeycloakify.themeType == "account" &&
+                    areSamePath(path, ["realm"]) &&
+                    ![ 
+                        "name",
+                        "registrationEmailAsUsername",
+                        "editUsernameAllowed",
+                        "isInternationalizationEnabled",
+                        "identityFederationEnabled",
+                        "userManagedAccessAllowed"
+                    ]?seq_contains(key)
                 )
             >
                 <#-- <#local outSeq += ["/*" + path?join(".") + "." + key + " excluded*/"]> -->
