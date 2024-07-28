@@ -26,8 +26,8 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     console.log(chalk.cyan("Theme type:"));
 
-    const { value: themeType } = await cliSelect<ThemeType>({
-        values: [...THEME_TYPES].filter(themeType => {
+    const themeType = await (async () => {
+        const values = THEME_TYPES.filter(themeType => {
             switch (themeType) {
                 case "account":
                     return buildContext.implementedThemeTypes.account.isImplemented;
@@ -35,10 +35,22 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                     return buildContext.implementedThemeTypes.login.isImplemented;
             }
             assert<Equals<typeof themeType, never>>(false);
-        })
-    }).catch(() => {
-        process.exit(-1);
-    });
+        });
+
+        assert(values.length > 0, "No theme is implemented in this project");
+
+        if (values.length === 1) {
+            return values[0];
+        }
+
+        const { value } = await cliSelect<ThemeType>({
+            values
+        }).catch(() => {
+            process.exit(-1);
+        });
+
+        return value;
+    })();
 
     if (
         themeType === "account" &&
