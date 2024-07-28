@@ -15,6 +15,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+// NOTE: Enable in your Keycloak realm with: https://github.com/user-attachments/assets/5fc5e49e-a172-4cb0-897a-49baac284b47
 export const Default: Story = {
     render: () => (
         <KcPageStory
