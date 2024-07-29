@@ -22,7 +22,15 @@ export function useInsertLinkTags(params: {
             alreadyMountedComponentOrHookNames.has(componentOrHookName);
 
         if (isAlreadyMounted) {
-            window.location.reload();
+            reload: {
+                if (
+                    new URL(window.location.href).searchParams.get("viewMode") === "docs"
+                ) {
+                    // NOTE: Special case for Storybook, we want to avoid infinite reload loop.
+                    break reload;
+                }
+                window.location.reload();
+            }
             return;
         }
 
