@@ -1,15 +1,13 @@
 module.exports = {
-    "stories": [
-        "../stories/**/*.stories.@(ts|tsx|mdx)"
+    stories: [
+        "../stories/**/*.stories.tsx"
     ],
-    "addons": [
-        "@storybook/addon-links",
-        "@storybook/addon-essentials",
+    addons: [
         "storybook-dark-mode",
         "@storybook/addon-a11y"
     ],
-    "core": {
-        "builder": "webpack5"
+    core: {
+        builder: "webpack5"
     },
-    "staticDirs": ["./static"]
+    staticDirs: ["./static"]
 };

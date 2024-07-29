@@ -2,18 +2,20 @@ import React from "react";
 import { memo, useState } from "react";
 import { useConstCallback } from "powerhooks";
 import { keyframes } from "tss-react";
+// @ts-expect-error
 import keycloakifyLogoHeroMovingPngUrl from "./keycloakify-logo-hero-moving.png";
+// @ts-expect-error
 import keycloakifyLogoHeroStillPngUrl from "./keycloakify-logo-hero-still.png";
-import { makeStyles } from "./tss";
+import { tss } from "../tss";
 
 export type Props = {
-    style?: React.CSSProperties;
+    className?: string;
     id?: string;
     onLoad?: () => void;
 };
 
 export const KeycloakifyRotatingLogo = memo((props: Props) => {
-    const { id, style, onLoad: onLoadProp } = props;
+    const { id, className, onLoad: onLoadProp } = props;
 
     const [isImageLoaded, setIsImageLoaded] = useState(false);
 
@@ -22,40 +24,41 @@ export const KeycloakifyRotatingLogo = memo((props: Props) => {
         onLoadProp?.();
     });
 
-    const { classes } = useStyles({
+    const { cx, classes } = useStyles({
         isImageLoaded
     });
     return (
-        <div id={id} className={classes.root} style={style}>
+        <div id={id} className={cx(classes.root, className)}>
             <img className={classes.rotatingImg} onLoad={onLoad} src={keycloakifyLogoHeroMovingPngUrl} alt={"Rotating react logo"} />
             <img className={classes.stillImg} src={keycloakifyLogoHeroStillPngUrl} alt={"keyhole"} />
         </div>
     );
 });
 
-const useStyles = makeStyles<{ isImageLoaded: boolean }>({
-    name: { KeycloakifyRotatingLogo }
-})((_theme, { isImageLoaded }) => ({
-    root: {
-        position: "relative"
-    },
-    rotatingImg: {
-        animation: `${keyframes({
-            from: {
-                transform: "rotate(0deg)"
-            },
-            to: {
-                transform: "rotate(360deg)"
-            }
-        })} infinite 20s linear`,
-        width: isImageLoaded ? "100%" : undefined,
-        height: isImageLoaded ? "auto" : undefined
-    },
-    stillImg: {
-        position: "absolute",
-        top: "0",
-        left: "0",
-        width: isImageLoaded ? "100%" : undefined,
-        height: isImageLoaded ? "auto" : undefined
-    }
-}));
+const useStyles = tss
+    .withParams<{ isImageLoaded: boolean }>()
+    .withName({ KeycloakifyRotatingLogo })
+    .create(({ isImageLoaded }) => ({
+        root: {
+            position: "relative"
+        },
+        rotatingImg: {
+            animation: `${keyframes({
+                from: {
+                    transform: "rotate(0deg)"
+                },
+                to: {
+                    transform: "rotate(360deg)"
+                }
+            })} infinite 20s linear`,
+            width: isImageLoaded ? "100%" : undefined,
+            height: isImageLoaded ? "auto" : undefined
+        },
+        stillImg: {
+            position: "absolute",
+            top: "0",
+            left: "0",
+            width: isImageLoaded ? "100%" : undefined,
+            height: isImageLoaded ? "auto" : undefined
+        }
+    }));
