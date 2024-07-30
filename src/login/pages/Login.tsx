@@ -125,11 +125,15 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
                                         </a>
 
                                         <br />
-                                        {social?.providers &&
-                                            <a href={social.providers[1]?.loginUrl}>
-                                                Staff login
-                                            </a>
-                                        }
+                                        {social?.providers && social.providers.length && (
+                                            social.providers.map(provider => (
+                                                <div>
+                                                    <a key={provider.alias} href={provider.loginUrl}>
+                                                        {provider.displayName}
+                                                    </a>
+                                                </div>
+                                            ))
+                                        )}
                                     </p>
                                 </div>
                                 <input
