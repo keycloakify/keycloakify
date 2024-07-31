@@ -59,6 +59,8 @@ export type FormAction =
           action: "update";
           name: string;
           valueOrValues: string | string[];
+          /** Default false */
+          displayErrorsImmediately?: boolean;
       }
     | {
           action: "focus lost";
@@ -413,6 +415,24 @@ export function useUserProfileForm(params: UseUserProfileFormParams): ReturnType
                         formFieldStates: state.formFieldStates
                     });
 
+                    simulate_focus_lost: {
+                        const { displayErrorsImmediately = false } = formAction;
+
+                        if (!displayErrorsImmediately) {
+                            break simulate_focus_lost;
+                        }
+
+                        for (const fieldIndex of formAction.valueOrValues instanceof Array
+                            ? formAction.valueOrValues.map((...[, index]) => index)
+                            : [undefined]) {
+                            state = reducer(state, {
+                                action: "focus lost",
+                                name: formAction.name,
+                                fieldIndex
+                            });
+                        }
+                    }
+
                     update_password_confirm: {
                         if (doMakeUserConfirmPassword) {
                             break update_password_confirm;
@@ -425,7 +445,8 @@ export function useUserProfileForm(params: UseUserProfileFormParams): ReturnType
                         state = reducer(state, {
                             action: "update",
                             name: "password-confirm",
-                            valueOrValues: formAction.valueOrValues
+                            valueOrValues: formAction.valueOrValues,
+                            displayErrorsImmediately: formAction.displayErrorsImmediately
                         });
                     }
 
@@ -447,7 +468,8 @@ export function useUserProfileForm(params: UseUserProfileFormParams): ReturnType
                                 assert(formFieldState !== undefined);
 
                                 return formFieldState.valueOrValues;
-                            })()
+                            })(),
+                            displayErrorsImmediately: formAction.displayErrorsImmediately
                         });
                     }
 
