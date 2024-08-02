@@ -286,11 +286,11 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                 ? []
                 : [
                       "-v",
-                      `${realmJsonFilePath}:/opt/keycloak/data/import/myrealm-realm.json`
+                      `"${realmJsonFilePath}":/opt/keycloak/data/import/myrealm-realm.json`
                   ]),
             ...[
                 "-v",
-                `${jarFilePath_cacheDir}:/opt/keycloak/providers/keycloak-theme.jar`
+                `"${jarFilePath_cacheDir}":/opt/keycloak/providers/keycloak-theme.jar`
             ],
             ...(keycloakMajorVersionNumber <= 20
                 ? ["-e", "JAVA_OPTS=-Dkeycloak.profile=preview"]
@@ -317,7 +317,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                 }))
                 .map(({ localDirPath, containerDirPath }) => [
                     "-v",
-                    `${localDirPath}:${containerDirPath}:rw`
+                    `"${localDirPath}":${containerDirPath}:rw`
                 ])
                 .flat(),
             ...buildContext.environmentVariables
