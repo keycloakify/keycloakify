@@ -77,7 +77,8 @@ export function generateFtlFilesCodeFactory(params: {
         (
             [
                 ["link", "href"],
-                ["script", "src"]
+                ["script", "src"],
+                ["script", "data-src"]
             ] as const
         ).forEach(([selector, attrName]) =>
             $(selector).each((...[, element]) => {
