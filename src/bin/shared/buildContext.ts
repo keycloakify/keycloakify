@@ -670,6 +670,10 @@ export function getBuildContext(params: {
                     throw error;
                 }
 
+                console.log(
+                    `The root of the NPM project should be "${pathRelative(process.cwd(), dirPath) || "."}"`
+                );
+
                 return dirPath;
             })(0)
         }),

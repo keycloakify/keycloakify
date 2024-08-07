@@ -19,6 +19,9 @@ export function getProxyFetchOptions(params: {
             })
             .toString("utf8");
 
+        console.log("Output of `npm config get`:");
+        console.log(output);
+
         return output
             .split("\n")
             .filter(line => !line.startsWith(";"))
@@ -36,17 +39,34 @@ export function getProxyFetchOptions(params: {
             );
     })();
 
+    console.log("npm config get object");
+    console.log(cfg);
+
     const proxy = ensureSingleOrNone(cfg["https-proxy"] ?? cfg["proxy"]);
+
+    console.log("proxy", proxy);
+
     const noProxy = cfg["noproxy"] ?? cfg["no-proxy"];
+
+    console.log("noProxy", noProxy);
 
     function maybeBoolean(arg0: string | undefined) {
         return typeof arg0 === "undefined" ? undefined : Boolean(arg0);
     }
 
     const strictSSL = maybeBoolean(ensureSingleOrNone(cfg["strict-ssl"]));
+
+    console.log("strictSSL", strictSSL);
+
     const cert = cfg["cert"];
+
+    console.log("cert", cert);
     const ca = ensureArray(cfg["ca"] ?? cfg["ca[]"]);
+
+    console.log("ca", ca);
     const cafile = ensureSingleOrNone(cfg["cafile"]);
+
+    console.log("cafile", cafile);
 
     if (typeof cafile !== "undefined" && cafile !== "null") {
         ca.push(
@@ -72,13 +92,17 @@ export function getProxyFetchOptions(params: {
         );
     }
 
-    return {
+    const out = {
         proxy,
         noProxy,
         strictSSL,
         cert,
         ca: ca.length === 0 ? undefined : ca
     };
+
+    console.log("Final proxy options", out);
+
+    return out;
 }
 
 function ensureArray<T>(arg0: T | T[]) {
