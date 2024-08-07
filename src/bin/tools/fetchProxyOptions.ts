@@ -20,9 +20,6 @@ export function getProxyFetchOptions(params: {
             })
             .toString("utf8");
 
-        console.log("Output of `npm config get`:");
-        console.log(output);
-
         return output
             .split("\n")
             .filter(line => !line.startsWith(";"))
