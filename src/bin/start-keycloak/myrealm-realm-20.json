@@ -73,7 +73,7 @@
                 "composites": {
                     "realm": ["offline_access", "uma_authorization"],
                     "client": {
-                        "account": ["view-profile", "manage-account"]
+                        "account": ["delete-account", "view-profile", "manage-account"]
                     }
                 },
                 "clientRole": false,
@@ -628,8 +628,8 @@
             "name": "",
             "description": "",
             "rootUrl": "https://my-theme.keycloakify.dev",
-            "adminUrl": "",
-            "baseUrl": "",
+            "adminUrl": "https://my-theme.keycloakify.dev",
+            "baseUrl": "https://my-theme.keycloakify.dev",
             "surrogateAuthRequired": false,
             "enabled": true,
             "alwaysDisplayInConsole": false,
@@ -2140,7 +2140,7 @@
             "alias": "delete_account",
             "name": "Delete Account",
             "providerId": "delete_account",
-            "enabled": false,
+            "enabled": true,
             "defaultAction": false,
             "priority": 60,
             "config": {}
