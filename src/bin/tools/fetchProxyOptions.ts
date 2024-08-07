@@ -1,6 +1,7 @@
 import { type FetchOptions } from "make-fetch-happen";
 import * as child_process from "child_process";
 import * as fs from "fs";
+import { exclude } from "tsafe/exclude";
 
 export type ProxyFetchOptions = Pick<
     FetchOptions,
@@ -26,12 +27,32 @@ export function getProxyFetchOptions(params: {
             .split("\n")
             .filter(line => !line.startsWith(";"))
             .map(line => line.trim())
-            .map(line => line.split("=", 2) as [string, string])
+            .map(line => {
+                const [key, value] = line.split("=");
+                if (key === undefined) {
+                    return undefined;
+                }
+                if (value === undefined) {
+                    return undefined;
+                }
+                return [key.trim(), value.trim()] as const;
+            })
+            .filter(exclude(undefined))
+            .filter(([key]) => key !== "")
+            .map(([key, value]) => {
+                if (value.startsWith('"') && value.endsWith('"')) {
+                    return [key, value.slice(1, -1)] as const;
+                }
+
+                if (value === "true" || value === "false") {
+                    return [key, value] as const;
+                }
+
+                return undefined;
+            })
+            .filter(exclude(undefined))
             .reduce(
-                (
-                    cfg: Record<string, string | string[]>,
-                    [key, value]: [string, string]
-                ) =>
+                (cfg: Record<string, string | string[]>, [key, value]) =>
                     key in cfg
                         ? { ...cfg, [key]: [...ensureArray(cfg[key]), value] }
                         : { ...cfg, [key]: value },
@@ -39,36 +60,19 @@ export function getProxyFetchOptions(params: {
             );
     })();
 
-    console.log("npm config get object");
-    console.log(cfg);
-
     const proxy = ensureSingleOrNone(cfg["https-proxy"] ?? cfg["proxy"]);
-
-    console.log("proxy", proxy);
 
     const noProxy = cfg["noproxy"] ?? cfg["no-proxy"];
 
-    console.log("noProxy", noProxy);
-
-    function maybeBoolean(arg0: string | undefined) {
-        return typeof arg0 === "undefined" ? undefined : Boolean(arg0);
-    }
-
-    const strictSSL = maybeBoolean(ensureSingleOrNone(cfg["strict-ssl"]));
-
-    console.log("strictSSL", strictSSL);
+    const strictSSL = ensureSingleOrNone(cfg["strict-ssl"]) === "true";
 
     const cert = cfg["cert"];
 
-    console.log("cert", cert);
     const ca = ensureArray(cfg["ca"] ?? cfg["ca[]"]);
 
-    console.log("ca", ca);
     const cafile = ensureSingleOrNone(cfg["cafile"]);
 
-    console.log("cafile", cafile);
-
-    if (typeof cafile !== "undefined" && cafile !== "null") {
+    if (cafile !== undefined) {
         ca.push(
             ...(() => {
                 const cafileContent = fs.readFileSync(cafile).toString("utf8");
@@ -92,21 +96,17 @@ export function getProxyFetchOptions(params: {
         );
     }
 
-    const out = {
+    return {
         proxy,
         noProxy,
         strictSSL,
         cert,
         ca: ca.length === 0 ? undefined : ca
     };
-
-    console.log("Final proxy options", out);
-
-    return out;
 }
 
 function ensureArray<T>(arg0: T | T[]) {
-    return Array.isArray(arg0) ? arg0 : typeof arg0 === "undefined" ? [] : [arg0];
+    return Array.isArray(arg0) ? arg0 : arg0 === undefined ? [] : [arg0];
 }
 
 function ensureSingleOrNone<T>(arg0: T | T[]) {
