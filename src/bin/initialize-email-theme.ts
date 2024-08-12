@@ -30,7 +30,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         // NOTE: This is arbitrary
         startingFromMajor: 17,
         excludeMajorVersions: [],
-        cacheDirPath: buildContext.cacheDirPath
+        buildContext
     });
 
     const { defaultThemeDirPath } = await downloadKeycloakDefaultTheme({

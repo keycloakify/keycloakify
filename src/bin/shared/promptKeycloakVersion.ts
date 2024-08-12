@@ -1,22 +1,31 @@
-import { getLatestsSemVersionedTag } from "./getLatestsSemVersionedTag";
+import {
+    getLatestsSemVersionedTag,
+    type BuildContextLike as BuildContextLike_getLatestsSemVersionedTag
+} from "./getLatestsSemVersionedTag";
 import cliSelect from "cli-select";
+import { assert } from "tsafe/assert";
 import { SemVer } from "../tools/SemVer";
+import type { BuildContext } from "./buildContext";
+
+export type BuildContextLike = BuildContextLike_getLatestsSemVersionedTag & {};
+
+assert<BuildContext extends BuildContextLike ? true : false>();
 
 export async function promptKeycloakVersion(params: {
     startingFromMajor: number | undefined;
     excludeMajorVersions: number[];
-    cacheDirPath: string;
+    buildContext: BuildContextLike;
 }) {
-    const { startingFromMajor, excludeMajorVersions, cacheDirPath } = params;
+    const { startingFromMajor, excludeMajorVersions, buildContext } = params;
 
     const semVersionedTagByMajor = new Map<number, { tag: string; version: SemVer }>();
 
     const semVersionedTags = await getLatestsSemVersionedTag({
-        cacheDirPath,
         count: 50,
         owner: "keycloak",
         repo: "keycloak",
-        doIgnoreReleaseCandidates: true
+        doIgnoreReleaseCandidates: true,
+        buildContext
     });
 
     semVersionedTags.forEach(semVersionedTag => {

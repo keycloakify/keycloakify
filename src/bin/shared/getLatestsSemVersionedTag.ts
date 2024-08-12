@@ -9,6 +9,7 @@ import { assert, type Equals } from "tsafe/assert";
 import { id } from "tsafe/id";
 import type { SemVer } from "../tools/SemVer";
 import { same } from "evt/tools/inDepth/same";
+import type { BuildContext } from "./buildContext";
 
 type GetLatestsSemVersionedTag = ReturnType<
     typeof getLatestsSemVersionedTagFactory
@@ -31,11 +32,23 @@ type Cache = {
     }[];
 };
 
+export type BuildContextLike = {
+    cacheDirPath: string;
+    fetchOptions: BuildContext["fetchOptions"];
+};
+
+assert<BuildContext extends BuildContextLike ? true : false>();
+
 export async function getLatestsSemVersionedTag({
-    cacheDirPath,
+    buildContext,
     ...params
-}: Params & { cacheDirPath: string }): Promise<R> {
-    const cacheFilePath = pathJoin(cacheDirPath, "latest-sem-versioned-tags.json");
+}: Params & {
+    buildContext: BuildContextLike;
+}): Promise<R> {
+    const cacheFilePath = pathJoin(
+        buildContext.cacheDirPath,
+        "latest-sem-versioned-tags.json"
+    );
 
     const cacheLookupResult = (() => {
         const getResult_currentCache = (currentCacheEntries: Cache["entries"]) => ({
@@ -144,9 +157,10 @@ export async function getLatestsSemVersionedTag({
         const octokit = (() => {
             const githubToken = process.env.GITHUB_TOKEN;
 
-            const octokit = new Octokit(
-                githubToken === undefined ? undefined : { auth: githubToken }
-            );
+            const octokit = new Octokit({
+                ...(githubToken === undefined ? {} : { auth: githubToken }),
+                request: buildContext.fetchOptions
+            });
 
             return octokit;
         })();

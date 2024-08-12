@@ -2,7 +2,10 @@ import { join as pathJoin, relative as pathRelative, dirname as pathDirname } fr
 import type { BuildContext } from "../shared/buildContext";
 import * as fs from "fs";
 import chalk from "chalk";
-import { getLatestsSemVersionedTag } from "../shared/getLatestsSemVersionedTag";
+import {
+    getLatestsSemVersionedTag,
+    type BuildContextLike as BuildContextLike_getLatestsSemVersionedTag
+} from "../shared/getLatestsSemVersionedTag";
 import fetch from "make-fetch-happen";
 import { z } from "zod";
 import { assert, type Equals } from "tsafe/assert";
@@ -12,8 +15,7 @@ import { npmInstall } from "../tools/npmInstall";
 import { copyBoilerplate } from "./copyBoilerplate";
 import { getThisCodebaseRootDirPath } from "../tools/getThisCodebaseRootDirPath";
 
-type BuildContextLike = {
-    cacheDirPath: string;
+type BuildContextLike = BuildContextLike_getLatestsSemVersionedTag & {
     fetchOptions: BuildContext["fetchOptions"];
     packageJsonFilePath: string;
 };
@@ -30,11 +32,11 @@ export async function initializeAccountTheme_singlePage(params: {
     const REPO = "keycloak-account-ui";
 
     const [semVersionedTag] = await getLatestsSemVersionedTag({
-        cacheDirPath: buildContext.cacheDirPath,
         owner: OWNER,
         repo: REPO,
         count: 1,
-        doIgnoreReleaseCandidates: false
+        doIgnoreReleaseCandidates: false,
+        buildContext
     });
 
     const dependencies = await fetch(
