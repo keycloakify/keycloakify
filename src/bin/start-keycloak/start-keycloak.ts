@@ -97,7 +97,14 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         }
 
         console.log(
-            chalk.cyan("On which version of Keycloak do you want to test your theme?")
+            [
+                chalk.cyan(
+                    "On which version of Keycloak do you want to test your theme?"
+                ),
+                chalk.gray(
+                    "You can also explicitly provide the version with `npx keycloakify start-keycloak --keycloak-version 25.0.2` (or any other version)"
+                )
+            ].join("\n")
         );
 
         const { keycloakVersion } = await promptKeycloakVersion({
