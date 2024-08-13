@@ -1,6 +1,6 @@
 {
     "name": "keycloakify",
-    "version": "6.13.4",
+    "version": "6.13.5",
     "description": "Create Keycloak themes using React",
     "repository": {
         "type": "git",
@@ -79,7 +79,7 @@
     },
     "dependencies": {
         "@octokit/rest": "^18.12.0",
-        "cheerio": "^1.0.0-rc.5",
+        "cheerio": "1.0.0-rc.5",
         "cli-select": "^1.1.2",
         "evt": "^2.4.18",
         "make-fetch-happen": "^11.0.3",
