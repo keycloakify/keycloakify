@@ -85,7 +85,7 @@
         "@types/yauzl": "^2.10.3",
         "@vercel/ncc": "^0.38.1",
         "chalk": "^4.1.2",
-        "cheerio": "^1.0.0-rc.12",
+        "cheerio": "1.0.0-rc.12",
         "chokidar-cli": "^3.0.0",
         "cli-select": "^1.1.2",
         "husky": "^4.3.8",
