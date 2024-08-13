@@ -113,7 +113,7 @@
         "@babel/parser": "^7.22.7",
         "@babel/types": "^7.22.5",
         "@octokit/rest": "^18.12.0",
-        "cheerio": "^1.0.0-rc.5",
+        "cheerio": "1.0.0-rc.5",
         "cli-select": "^1.1.2",
         "evt": "^2.4.18",
         "make-fetch-happen": "^11.0.3",
