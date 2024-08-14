@@ -10,6 +10,7 @@ import { id } from "tsafe/id";
 import type { SemVer } from "../tools/SemVer";
 import { same } from "evt/tools/inDepth/same";
 import type { BuildContext } from "./buildContext";
+import fetch from "make-fetch-happen";
 
 type GetLatestsSemVersionedTag = ReturnType<
     typeof getLatestsSemVersionedTagFactory
@@ -159,7 +160,13 @@ export async function getLatestsSemVersionedTag({
 
             const octokit = new Octokit({
                 ...(githubToken === undefined ? {} : { auth: githubToken }),
-                request: buildContext.fetchOptions
+                request: {
+                    fetch: (url: string, options?: any) =>
+                        fetch(url, {
+                            ...options,
+                            ...buildContext.fetchOptions
+                        })
+                }
             });
 
             return octokit;
