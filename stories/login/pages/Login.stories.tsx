@@ -122,73 +122,85 @@ export const WithSocialProviders: Story = {
                             loginUrl: "google",
                             alias: "google",
                             providerId: "google",
-                            displayName: "Google"
+                            displayName: "Google",
+                            iconClasses: "fa fa-google"
                         },
                         {
                             loginUrl: "microsoft",
                             alias: "microsoft",
                             providerId: "microsoft",
-                            displayName: "Microsoft"
+                            displayName: "Microsoft",
+                            iconClasses: "fa fa-windows"
                         },
                         {
                             loginUrl: "facebook",
                             alias: "facebook",
                             providerId: "facebook",
-                            displayName: "Facebook"
+                            displayName: "Facebook",
+                            iconClasses: "fa fa-facebook"
                         },
                         {
                             loginUrl: "instagram",
                             alias: "instagram",
                             providerId: "instagram",
-                            displayName: "Instagram"
+                            displayName: "Instagram",
+                            iconClasses: "fa fa-instagram"
                         },
                         {
                             loginUrl: "twitter",
                             alias: "twitter",
                             providerId: "twitter",
-                            displayName: "Twitter"
+                            displayName: "Twitter",
+                            iconClasses: "fa fa-twitter"
                         },
                         {
                             loginUrl: "linkedin",
                             alias: "linkedin",
                             providerId: "linkedin",
-                            displayName: "LinkedIn"
+                            displayName: "LinkedIn",
+                            iconClasses: "fa fa-linkedin"
                         },
                         {
                             loginUrl: "stackoverflow",
                             alias: "stackoverflow",
                             providerId: "stackoverflow",
-                            displayName: "Stackoverflow"
+                            displayName: "Stackoverflow",
+                            iconClasses: "fa fa-stack-overflow"
                         },
                         {
                             loginUrl: "github",
                             alias: "github",
                             providerId: "github",
-                            displayName: "Github"
+                            displayName: "Github",
+                            iconClasses: "fa fa-github"
                         },
                         {
                             loginUrl: "gitlab",
                             alias: "gitlab",
                             providerId: "gitlab",
-                            displayName: "Gitlab"
+                            displayName: "Gitlab",
+                            iconClasses: "fa fa-gitlab"
                         },
                         {
                             loginUrl: "bitbucket",
                             alias: "bitbucket",
                             providerId: "bitbucket",
-                            displayName: "Bitbucket"
+                            displayName: "Bitbucket",
+                            iconClasses: "fa fa-bitbucket"
                         },
                         {
                             loginUrl: "paypal",
                             alias: "paypal",
                             providerId: "paypal",
-                            displayName: "PayPal"
+                            displayName: "PayPal",
+                            iconClasses: "fa fa-paypal"
                         },
                         {
                             loginUrl: "openshift",
                             alias: "openshift",
                             providerId: "openshift",
-                            displayName: "OpenShift"
+                            displayName: "OpenShift",
+                            iconClasses: "fa fa-cloud"
                         }
                     ]
                 }
