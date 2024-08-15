@@ -79,8 +79,8 @@ export declare namespace KcContext {
         };
         realm: {
             name: string;
-            displayName?: string;
-            displayNameHtml?: string;
+            displayName: string;
+            displayNameHtml: string;
             internationalizationEnabled: boolean;
             registrationEmailAsUsername: boolean;
         };
