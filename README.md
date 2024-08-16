@@ -41,6 +41,10 @@
     <img width="400" src="https://github.com/keycloakify/keycloakify/assets/6702424/e66d105c-c06f-47d1-8a31-a6ab09da4e80">
 </p>
 
+> WARNING: Do not use Keycloakify v9 if you are staring out!
+> Use the latest release candidate of Keycloakify v10 instead.
+> `yarn add keycloakify@next` See [npm](https://www.npmjs.com/package/keycloakify?activeTab=versions).
+
 Keycloakify is fully compatible with Keycloak 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, [~~22~~](https://github.com/keycloakify/keycloakify/issues/389#issuecomment-1822509763), 23, 24, 25...[and beyond](https://github.com/keycloakify/keycloakify/discussions/346#discussioncomment-5889791)
 
 > NOTE: Keycloakify 10 is still in realase-candidate state. [Follow progress](https://github.com/keycloakify/keycloakify/pull/538).
