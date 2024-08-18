@@ -334,13 +334,18 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         });
     } catch {}
 
+    const DEFAULT_PORT = 8080;
+    const port =
+        cliCommandOptions.port ?? buildContext.startKeycloakOptions.port ?? DEFAULT_PORT;
+
     const SPACE_PLACEHOLDER = "SPACE_PLACEHOLDER_xKLmdPd";
 
     const dockerRunArgs: string[] = [
-        `-p${SPACE_PLACEHOLDER}${cliCommandOptions.port ?? buildContext.startKeycloakOptions.port ?? 8080}:8080`,
+        `-p${SPACE_PLACEHOLDER}${port}:8080`,
         `--name${SPACE_PLACEHOLDER}${CONTAINER_NAME}`,
         `-e${SPACE_PLACEHOLDER}KEYCLOAK_ADMIN=admin`,
         `-e${SPACE_PLACEHOLDER}KEYCLOAK_ADMIN_PASSWORD=admin`,
+        buildContext.startKeycloakOptions.dockerExtraArgs.join(SPACE_PLACEHOLDER),
         ...(realmJsonFilePath === undefined
             ? []
             : [
@@ -388,7 +393,6 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                 ({ name, envValue }) =>
                     `--env${SPACE_PLACEHOLDER}${name}='${envValue.replace(/'/g, "'\\''")}'`
             ),
-        buildContext.startKeycloakOptions.dockerExtraArgs.join(SPACE_PLACEHOLDER),
         `${buildContext.startKeycloakOptions.dockerImage?.reference ?? "quay.io/keycloak/keycloak"}:${dockerImageTag}`,
         "start-dev",
         ...(21 <= keycloakMajorVersionNumber && keycloakMajorVersionNumber < 24
@@ -444,7 +448,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                     )} are mounted in the Keycloak container.`,
                     "",
                     `Keycloak Admin console: ${chalk.cyan.bold(
-                        `http://localhost:${cliCommandOptions.port}`
+                        `http://localhost:${port}`
                     )}`,
                     `- user:     ${chalk.cyan.bold("admin")}`,
                     `- password: ${chalk.cyan.bold("admin")}`,
@@ -452,7 +456,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                     "",
                     `${chalk.green("Your theme is accessible at:")}`,
                     `${chalk.green("➜")} ${chalk.cyan.bold(
-                        `https://my-theme.keycloakify.dev${cliCommandOptions.port === 8080 ? "" : `?port=${cliCommandOptions.port}`}`
+                        `https://my-theme.keycloakify.dev${port === DEFAULT_PORT ? "" : `?port=${port}`}`
                     )}`,
                     "",
                     "You can login with the following credentials:",
