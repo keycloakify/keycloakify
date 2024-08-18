@@ -72,6 +72,7 @@ export type BuildContext = {
         keycloakExtraArgs: string[];
         extensionJars: ({ type: "path"; path: string } | { type: "url"; url: string })[];
         realmJsonFilePath: string | undefined;
+        port: number | undefined;
     };
 };
 
@@ -93,6 +94,7 @@ export type BuildOptions = {
         keycloakExtraArgs?: string[];
         extensionJars?: string[];
         realmJsonFilePath?: string;
+        port?: number;
     };
 } & BuildOptions.AccountThemeImplAndKeycloakVersionTargets;
 
@@ -328,7 +330,8 @@ export function getBuildContext(params: {
                 extensionJars: z.array(z.string()).optional(),
                 realmJsonFilePath: z.string().optional(),
                 dockerExtraArgs: z.array(z.string()).optional(),
-                keycloakExtraArgs: z.array(z.string()).optional()
+                keycloakExtraArgs: z.array(z.string()).optional(),
+                port: z.number().optional()
             });
 
             assert<Equals<z.infer<typeof zTargetType>, TargetType>>();
@@ -967,7 +970,8 @@ export function getBuildContext(params: {
                     : getAbsoluteAndInOsFormatPath({
                           pathIsh: buildOptions.startKeycloakOptions.realmJsonFilePath,
                           cwd: projectDirPath
-                      })
+                      }),
+            port: buildOptions.startKeycloakOptions?.port
         }
     };
 }

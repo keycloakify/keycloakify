@@ -78,7 +78,7 @@ program
 
 program
     .command<{
-        port: number;
+        port: number | undefined;
         keycloakVersion: string | undefined;
         realmJsonFilePath: string | undefined;
     }>({
@@ -96,7 +96,7 @@ program
             return name;
         })(),
         description: ["Keycloak server port.", "Example `--port 8085`"].join(" "),
-        defaultValue: 8080
+        defaultValue: undefined
     })
     .option({
         key: "keycloakVersion",

@@ -29,7 +29,7 @@ import { rm } from "../tools/fs.rm";
 import { downloadAndExtractArchive } from "../tools/downloadAndExtractArchive";
 
 export type CliCommandOptions = CliCommandOptions_common & {
-    port: number;
+    port: number | undefined;
     keycloakVersion: string | undefined;
     realmJsonFilePath: string | undefined;
 };
@@ -337,7 +337,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     const SPACE_PLACEHOLDER = "SPACE_PLACEHOLDER_xKLmdPd";
 
     const dockerRunArgs: string[] = [
-        `-p${SPACE_PLACEHOLDER}${cliCommandOptions.port}:8080`,
+        `-p${SPACE_PLACEHOLDER}${cliCommandOptions.port ?? buildContext.startKeycloakOptions.port ?? 8080}:8080`,
         `--name${SPACE_PLACEHOLDER}${CONTAINER_NAME}`,
         `-e${SPACE_PLACEHOLDER}KEYCLOAK_ADMIN=admin`,
         `-e${SPACE_PLACEHOLDER}KEYCLOAK_ADMIN_PASSWORD=admin`,
