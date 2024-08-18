@@ -40,7 +40,7 @@ async function appBuild_vite(params: {
 
     const dIsSuccess = new Deferred<boolean>();
 
-    console.log(chalk.blue("Running: 'npx vite build'"));
+    console.log(chalk.blue("$ npx vite build"));
 
     const child = child_process.spawn("npx", ["vite", "build"], {
         cwd: buildContext.projectDirPath,
@@ -145,7 +145,7 @@ async function appBuild_webpack(params: {
             continue;
         }
 
-        console.log(chalk.blue(`Running: '${subCommand}'`));
+        console.log(chalk.blue(`$ ${subCommand}`));
 
         const child = child_process.spawn(command, args, {
             cwd: commandCwd,

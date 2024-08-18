@@ -61,6 +61,18 @@ export type BuildContext = {
         keycloakVersionRange: KeycloakVersionRange;
         jarFileBasename: string;
     }[];
+    startKeycloakOptions: {
+        dockerImage:
+            | {
+                  reference: string;
+                  tag: string;
+              }
+            | undefined;
+        dockerExtraArgs: string[];
+        keycloakExtraArgs: string[];
+        extensionJars: ({ type: "path"; path: string } | { type: "url"; url: string })[];
+        realmJsonFilePath: string | undefined;
+    };
 };
 
 assert<Equals<keyof BuildContext["implementedThemeTypes"], ThemeType | "email">>();
@@ -75,6 +87,13 @@ export type BuildOptions = {
     loginThemeResourcesFromKeycloakVersion?: string;
     keycloakifyBuildDirPath?: string;
     kcContextExclusionsFtl?: string;
+    startKeycloakOptions?: {
+        dockerImage?: string;
+        dockerExtraArgs?: string[];
+        keycloakExtraArgs?: string[];
+        extensionJars?: string[];
+        realmJsonFilePath?: string;
+    };
 } & BuildOptions.AccountThemeImplAndKeycloakVersionTargets;
 
 export namespace BuildOptions {
@@ -301,6 +320,22 @@ export function getBuildContext(params: {
             return id<z.ZodType<TargetType>>(zTargetType);
         })();
 
+        const zStartKeycloakOptions = (() => {
+            type TargetType = NonNullable<BuildOptions["startKeycloakOptions"]>;
+
+            const zTargetType = z.object({
+                dockerImage: z.string().optional(),
+                extensionJars: z.array(z.string()).optional(),
+                realmJsonFilePath: z.string().optional(),
+                dockerExtraArgs: z.array(z.string()).optional(),
+                keycloakExtraArgs: z.array(z.string()).optional()
+            });
+
+            assert<Equals<z.infer<typeof zTargetType>, TargetType>>();
+
+            return id<z.ZodType<TargetType>>(zTargetType);
+        })();
+
         const zBuildOptions = (() => {
             type TargetType = BuildOptions;
 
@@ -321,7 +356,8 @@ export function getBuildContext(params: {
                     groupId: z.string().optional(),
                     loginThemeResourcesFromKeycloakVersion: z.string().optional(),
                     keycloakifyBuildDirPath: z.string().optional(),
-                    kcContextExclusionsFtl: z.string().optional()
+                    kcContextExclusionsFtl: z.string().optional(),
+                    startKeycloakOptions: zStartKeycloakOptions.optional()
                 }),
                 zAccountThemeImplAndKeycloakVersionTargets
             );
@@ -891,6 +927,47 @@ export function getBuildContext(params: {
             }
 
             return jarTargets;
-        })()
+        })(),
+        startKeycloakOptions: {
+            dockerImage: (() => {
+                if (buildOptions.startKeycloakOptions?.dockerImage === undefined) {
+                    return undefined;
+                }
+
+                const [reference, tag, ...rest] =
+                    buildOptions.startKeycloakOptions.dockerImage.split(":");
+
+                assert(
+                    reference !== undefined && tag !== undefined && rest.length === 0,
+                    `Invalid docker image: ${buildOptions.startKeycloakOptions.dockerImage}`
+                );
+
+                return { reference, tag };
+            })(),
+            dockerExtraArgs: buildOptions.startKeycloakOptions?.dockerExtraArgs ?? [],
+            keycloakExtraArgs: buildOptions.startKeycloakOptions?.keycloakExtraArgs ?? [],
+            extensionJars: (buildOptions.startKeycloakOptions?.extensionJars ?? []).map(
+                urlOrPath => {
+                    if (/^https?:\/\//.test(urlOrPath)) {
+                        return { type: "url", url: urlOrPath };
+                    }
+
+                    return {
+                        type: "path",
+                        path: getAbsoluteAndInOsFormatPath({
+                            pathIsh: urlOrPath,
+                            cwd: projectDirPath
+                        })
+                    };
+                }
+            ),
+            realmJsonFilePath:
+                buildOptions.startKeycloakOptions?.realmJsonFilePath === undefined
+                    ? undefined
+                    : getAbsoluteAndInOsFormatPath({
+                          pathIsh: buildOptions.startKeycloakOptions.realmJsonFilePath,
+                          cwd: projectDirPath
+                      })
+        }
     };
 }

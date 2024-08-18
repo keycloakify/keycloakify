@@ -4,7 +4,7 @@ import type { CliCommandOptions as CliCommandOptions_common } from "../main";
 import { promptKeycloakVersion } from "../shared/promptKeycloakVersion";
 import { ACCOUNT_V1_THEME_NAME, CONTAINER_NAME } from "../shared/constants";
 import { SemVer } from "../tools/SemVer";
-import { assert } from "tsafe/assert";
+import { assert, type Equals } from "tsafe/assert";
 import * as fs from "fs";
 import {
     join as pathJoin,
@@ -26,6 +26,7 @@ import { keycloakifyBuild } from "./keycloakifyBuild";
 import { isInside } from "../tools/isInside";
 import { existsAsync } from "../tools/fs.existsAsync";
 import { rm } from "../tools/fs.rm";
+import { downloadAndExtractArchive } from "../tools/downloadAndExtractArchive";
 
 export type CliCommandOptions = CliCommandOptions_common & {
     port: number;
@@ -88,11 +89,14 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     const buildContext = getBuildContext({ cliCommandOptions });
 
-    const { keycloakVersion } = await (async () => {
+    const { dockerImageTag } = await (async () => {
         if (cliCommandOptions.keycloakVersion !== undefined) {
+            return { dockerImageTag: cliCommandOptions.keycloakVersion };
+        }
+
+        if (buildContext.startKeycloakOptions.dockerImage !== undefined) {
             return {
-                keycloakVersion: cliCommandOptions.keycloakVersion,
-                keycloakMajorNumber: SemVer.parse(cliCommandOptions.keycloakVersion).major
+                dockerImageTag: buildContext.startKeycloakOptions.dockerImage.tag
             };
         }
 
@@ -115,10 +119,35 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
         console.log(`→ ${keycloakVersion}`);
 
-        return { keycloakVersion };
+        return { dockerImageTag: keycloakVersion };
     })();
 
-    const keycloakMajorVersionNumber = SemVer.parse(keycloakVersion).major;
+    const keycloakMajorVersionNumber = (() => {
+        if (buildContext.startKeycloakOptions.dockerImage === undefined) {
+            return SemVer.parse(dockerImageTag).major;
+        }
+
+        const { tag } = buildContext.startKeycloakOptions.dockerImage;
+
+        const [wrap] = [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]
+            .map(majorVersionNumber => ({
+                majorVersionNumber,
+                index: tag.indexOf(`${majorVersionNumber}`)
+            }))
+            .filter(({ index }) => index !== -1)
+            .sort((a, b) => a.index - b.index);
+
+        if (wrap === undefined) {
+            console.warn(
+                chalk.yellow(
+                    `Could not determine the major Keycloak version number from the docker image tag ${tag}. Assuming 25`
+                )
+            );
+            return 25;
+        }
+
+        return wrap.majorVersionNumber;
+    })();
 
     {
         const { isAppBuildSuccess } = await appBuild({
@@ -157,24 +186,48 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     assert(jarFilePath !== undefined);
 
-    console.log(`Using ${chalk.bold(pathBasename(jarFilePath))}`);
+    const extensionJarFilePaths = await Promise.all(
+        buildContext.startKeycloakOptions.extensionJars.map(async extensionJar => {
+            switch (extensionJar.type) {
+                case "path": {
+                    assert(
+                        await existsAsync(extensionJar.path),
+                        `${extensionJar.path} does not exist`
+                    );
+                    return extensionJar.path;
+                }
+                case "url": {
+                    const { archiveFilePath } = await downloadAndExtractArchive({
+                        cacheDirPath: buildContext.cacheDirPath,
+                        fetchOptions: buildContext.fetchOptions,
+                        urlOrPath: extensionJar.url,
+                        uniqueIdOfOnArchiveFile: "no extraction",
+                        onArchiveFile: async () => {}
+                    });
+                    return archiveFilePath;
+                }
+            }
+            assert<Equals<typeof extensionJar, never>>(false);
+        })
+    );
 
     const realmJsonFilePath = await (async () => {
         if (cliCommandOptions.realmJsonFilePath !== undefined) {
             if (cliCommandOptions.realmJsonFilePath === "none") {
                 return undefined;
             }
-
-            console.log(
-                chalk.green(
-                    `Using realm json file: ${cliCommandOptions.realmJsonFilePath}`
-                )
-            );
-
             return getAbsoluteAndInOsFormatPath({
                 pathIsh: cliCommandOptions.realmJsonFilePath,
                 cwd: process.cwd()
             });
+        }
+
+        if (buildContext.startKeycloakOptions.realmJsonFilePath !== undefined) {
+            assert(
+                await existsAsync(buildContext.startKeycloakOptions.realmJsonFilePath),
+                `${pathRelative(process.cwd(), buildContext.startKeycloakOptions.realmJsonFilePath)} does not exist`
+            );
+            return buildContext.startKeycloakOptions.realmJsonFilePath;
         }
 
         const internalFilePath = await (async () => {
@@ -281,77 +334,84 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         });
     } catch {}
 
-    const spawnArgs = [
-        "docker",
-        [
-            "run",
-            ...["-p", `${cliCommandOptions.port}:8080`],
-            ...["--name", CONTAINER_NAME],
-            ...["-e", "KEYCLOAK_ADMIN=admin"],
-            ...["-e", "KEYCLOAK_ADMIN_PASSWORD=admin"],
-            ...(realmJsonFilePath === undefined
-                ? []
-                : [
-                      "-v",
-                      `"${realmJsonFilePath}":/opt/keycloak/data/import/myrealm-realm.json`
-                  ]),
-            ...[
-                "-v",
-                `"${jarFilePath_cacheDir}":/opt/keycloak/providers/keycloak-theme.jar`
-            ],
-            ...(keycloakMajorVersionNumber <= 20
-                ? ["-e", "JAVA_OPTS=-Dkeycloak.profile=preview"]
-                : []),
-            ...[
-                ...buildContext.themeNames,
-                ...(fs.existsSync(
-                    pathJoin(
-                        buildContext.keycloakifyBuildDirPath,
-                        "theme",
-                        ACCOUNT_V1_THEME_NAME
-                    )
+    const dockerRunArgs: string[] = [
+        `-p ${cliCommandOptions.port}:8080`,
+        `--name ${CONTAINER_NAME}`,
+        `-e KEYCLOAK_ADMIN=admin`,
+        `-e KEYCLOAK_ADMIN_PASSWORD=admin`,
+        ...(realmJsonFilePath === undefined
+            ? []
+            : [
+                  `-v ".${pathSep}${pathRelative(process.cwd(), realmJsonFilePath)}":/opt/keycloak/data/import/myrealm-realm.json`
+              ]),
+        `-v "./${pathRelative(process.cwd(), jarFilePath_cacheDir)}":/opt/keycloak/providers/keycloak-theme.jar`,
+        ...extensionJarFilePaths.map(
+            jarFilePath =>
+                `-v ".${pathSep}${pathRelative(process.cwd(), jarFilePath)}":/opt/keycloak/providers/${pathBasename(jarFilePath)}`
+        ),
+        ...(keycloakMajorVersionNumber <= 20
+            ? ["-e JAVA_OPTS=-Dkeycloak.profile=preview"]
+            : []),
+        ...[
+            ...buildContext.themeNames,
+            ...(fs.existsSync(
+                pathJoin(
+                    buildContext.keycloakifyBuildDirPath,
+                    "theme",
+                    ACCOUNT_V1_THEME_NAME
                 )
-                    ? [ACCOUNT_V1_THEME_NAME]
-                    : [])
-            ]
-                .map(themeName => ({
-                    localDirPath: pathJoin(
-                        buildContext.keycloakifyBuildDirPath,
-                        "theme",
-                        themeName
-                    ),
-                    containerDirPath: `/opt/keycloak/themes/${themeName}`
-                }))
-                .map(({ localDirPath, containerDirPath }) => [
-                    "-v",
-                    `"${localDirPath}":${containerDirPath}:rw`
-                ])
-                .flat(),
-            ...buildContext.environmentVariables
-                .map(({ name }) => ({ name, envValue: process.env[name] }))
-                .map(({ name, envValue }) =>
-                    envValue === undefined ? undefined : { name, envValue }
-                )
-                .filter(exclude(undefined))
-                .map(({ name, envValue }) => [
-                    "--env",
-                    `${name}='${envValue.replace(/'/g, "'\\''")}'`
-                ])
-                .flat(),
-            `quay.io/keycloak/keycloak:${keycloakVersion}`,
-            "start-dev",
-            ...(21 <= keycloakMajorVersionNumber && keycloakMajorVersionNumber < 24
-                ? ["--features=declarative-user-profile"]
-                : []),
-            ...(realmJsonFilePath === undefined ? [] : ["--import-realm"])
-        ],
-        {
-            cwd: buildContext.keycloakifyBuildDirPath,
-            shell: true
-        }
-    ] as const;
+            )
+                ? [ACCOUNT_V1_THEME_NAME]
+                : [])
+        ]
+            .map(themeName => ({
+                localDirPath: pathJoin(
+                    buildContext.keycloakifyBuildDirPath,
+                    "theme",
+                    themeName
+                ),
+                containerDirPath: `/opt/keycloak/themes/${themeName}`
+            }))
+            .map(
+                ({ localDirPath, containerDirPath }) =>
+                    `-v ".${pathSep}${pathRelative(process.cwd(), localDirPath)}":${containerDirPath}:rw`
+            ),
+        ...buildContext.environmentVariables
+            .map(({ name }) => ({ name, envValue: process.env[name] }))
+            .map(({ name, envValue }) =>
+                envValue === undefined ? undefined : { name, envValue }
+            )
+            .filter(exclude(undefined))
+            .map(
+                ({ name, envValue }) =>
+                    `--env ${name}='${envValue.replace(/'/g, "'\\''")}'`
+            ),
+        ...buildContext.startKeycloakOptions.dockerExtraArgs,
+        `${buildContext.startKeycloakOptions.dockerImage?.reference ?? "quay.io/keycloak/keycloak"}:${dockerImageTag}`,
+        "start-dev",
+        ...(21 <= keycloakMajorVersionNumber && keycloakMajorVersionNumber < 24
+            ? ["--features=declarative-user-profile"]
+            : []),
+        ...(realmJsonFilePath === undefined ? [] : ["--import-realm"]),
+        ...buildContext.startKeycloakOptions.keycloakExtraArgs
+    ];
 
-    const child = child_process.spawn(...spawnArgs);
+    console.log(
+        chalk.blue(
+            [
+                `$ docker run \\`,
+                ...dockerRunArgs.map(
+                    (line, i, arr) => `    ${line}${arr.length - 1 === i ? "" : " \\"}`
+                )
+            ].join("\n")
+        )
+    );
+
+    const child = child_process.spawn(
+        "docker",
+        ["run", ...dockerRunArgs.map(line => line.split(" ")).flat()],
+        { shell: true }
+    );
 
     child.stdout.on("data", data => process.stdout.write(data));
 
