@@ -431,6 +431,18 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     const srcDirPath = pathJoin(buildContext.projectDirPath, "src");
 
     {
+        const kcHttpRelativePath = (() => {
+            const match = buildContext.startKeycloakOptions.dockerExtraArgs
+                .join(" ")
+                .match(/KC_HTTP_RELATIVE_PATH=([^ ]+)/);
+
+            if (match === null) {
+                return undefined;
+            }
+
+            return match[1];
+        })();
+
         const handler = async (data: Buffer) => {
             if (!data.toString("utf8").includes("Listening on: http://0.0.0.0:8080")) {
                 return;
@@ -448,7 +460,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                     )} are mounted in the Keycloak container.`,
                     "",
                     `Keycloak Admin console: ${chalk.cyan.bold(
-                        `http://localhost:${port}`
+                        `http://localhost:${port}${kcHttpRelativePath ?? ""}`
                     )}`,
                     `- user:     ${chalk.cyan.bold("admin")}`,
                     `- password: ${chalk.cyan.bold("admin")}`,
@@ -456,7 +468,21 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                     "",
                     `${chalk.green("Your theme is accessible at:")}`,
                     `${chalk.green("➜")} ${chalk.cyan.bold(
-                        `https://my-theme.keycloakify.dev${port === DEFAULT_PORT ? "" : `?port=${port}`}`
+                        (() => {
+                            const url = new URL("https://my-theme.keycloakify.dev");
+
+                            if (port !== DEFAULT_PORT) {
+                                url.searchParams.set("port", `${port}`);
+                            }
+                            if (kcHttpRelativePath !== undefined) {
+                                url.searchParams.set(
+                                    "kcHttpRelativePath",
+                                    kcHttpRelativePath
+                                );
+                            }
+
+                            return url.href;
+                        })()
                     )}`,
                     "",
                     "You can login with the following credentials:",

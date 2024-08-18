@@ -21,7 +21,7 @@ export async function downloadAndExtractArchive(params: {
     }) => Promise<void>;
     cacheDirPath: string;
     fetchOptions: FetchOptions | undefined;
-}): Promise<{ extractedDirPath: string; archiveFilePath: string; }> {
+}): Promise<{ extractedDirPath: string; archiveFilePath: string }> {
     const {
         urlOrPath,
         uniqueIdOfOnArchiveFile,
