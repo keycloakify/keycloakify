@@ -334,23 +334,25 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         });
     } catch {}
 
+    const SPACE_PLACEHOLDER = "SPACE_PLACEHOLDER_xKLmdPd";
+
     const dockerRunArgs: string[] = [
-        `-p ${cliCommandOptions.port}:8080`,
-        `--name ${CONTAINER_NAME}`,
-        `-e KEYCLOAK_ADMIN=admin`,
-        `-e KEYCLOAK_ADMIN_PASSWORD=admin`,
+        `-p${SPACE_PLACEHOLDER}${cliCommandOptions.port}:8080`,
+        `--name${SPACE_PLACEHOLDER}${CONTAINER_NAME}`,
+        `-e${SPACE_PLACEHOLDER}KEYCLOAK_ADMIN=admin`,
+        `-e${SPACE_PLACEHOLDER}KEYCLOAK_ADMIN_PASSWORD=admin`,
         ...(realmJsonFilePath === undefined
             ? []
             : [
-                  `-v ".${pathSep}${pathRelative(process.cwd(), realmJsonFilePath)}":/opt/keycloak/data/import/myrealm-realm.json`
+                  `-v${SPACE_PLACEHOLDER}".${pathSep}${pathRelative(process.cwd(), realmJsonFilePath)}":/opt/keycloak/data/import/myrealm-realm.json`
               ]),
-        `-v "./${pathRelative(process.cwd(), jarFilePath_cacheDir)}":/opt/keycloak/providers/keycloak-theme.jar`,
+        `-v${SPACE_PLACEHOLDER}"./${pathRelative(process.cwd(), jarFilePath_cacheDir)}":/opt/keycloak/providers/keycloak-theme.jar`,
         ...extensionJarFilePaths.map(
             jarFilePath =>
-                `-v ".${pathSep}${pathRelative(process.cwd(), jarFilePath)}":/opt/keycloak/providers/${pathBasename(jarFilePath)}`
+                `-v${SPACE_PLACEHOLDER}".${pathSep}${pathRelative(process.cwd(), jarFilePath)}":/opt/keycloak/providers/${pathBasename(jarFilePath)}`
         ),
         ...(keycloakMajorVersionNumber <= 20
-            ? ["-e JAVA_OPTS=-Dkeycloak.profile=preview"]
+            ? [`-e${SPACE_PLACEHOLDER}JAVA_OPTS=-Dkeycloak.profile=preview`]
             : []),
         ...[
             ...buildContext.themeNames,
@@ -374,7 +376,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             }))
             .map(
                 ({ localDirPath, containerDirPath }) =>
-                    `-v ".${pathSep}${pathRelative(process.cwd(), localDirPath)}":${containerDirPath}:rw`
+                    `-v${SPACE_PLACEHOLDER}".${pathSep}${pathRelative(process.cwd(), localDirPath)}":${containerDirPath}:rw`
             ),
         ...buildContext.environmentVariables
             .map(({ name }) => ({ name, envValue: process.env[name] }))
@@ -384,32 +386,35 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             .filter(exclude(undefined))
             .map(
                 ({ name, envValue }) =>
-                    `--env ${name}='${envValue.replace(/'/g, "'\\''")}'`
+                    `--env${SPACE_PLACEHOLDER}${name}='${envValue.replace(/'/g, "'\\''")}'`
             ),
-        ...buildContext.startKeycloakOptions.dockerExtraArgs,
+        ...buildContext.startKeycloakOptions.dockerExtraArgs.join(SPACE_PLACEHOLDER),
         `${buildContext.startKeycloakOptions.dockerImage?.reference ?? "quay.io/keycloak/keycloak"}:${dockerImageTag}`,
         "start-dev",
         ...(21 <= keycloakMajorVersionNumber && keycloakMajorVersionNumber < 24
             ? ["--features=declarative-user-profile"]
             : []),
         ...(realmJsonFilePath === undefined ? [] : ["--import-realm"]),
-        ...buildContext.startKeycloakOptions.keycloakExtraArgs
+        ...buildContext.startKeycloakOptions.keycloakExtraArgs.join(SPACE_PLACEHOLDER)
     ];
 
     console.log(
         chalk.blue(
             [
                 `$ docker run \\`,
-                ...dockerRunArgs.map(
-                    (line, i, arr) => `    ${line}${arr.length - 1 === i ? "" : " \\"}`
-                )
+                ...dockerRunArgs
+                    .map(arg => arg.replace(new RegExp(SPACE_PLACEHOLDER, "g"), " "))
+                    .map(
+                        (line, i, arr) =>
+                            `    ${line}${arr.length - 1 === i ? "" : " \\"}`
+                    )
             ].join("\n")
         )
     );
 
     const child = child_process.spawn(
         "docker",
-        ["run", ...dockerRunArgs.map(line => line.split(" ")).flat()],
+        ["run", ...dockerRunArgs.map(line => line.split(SPACE_PLACEHOLDER)).flat()],
         { shell: true }
     );
 
