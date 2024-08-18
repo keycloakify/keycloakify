@@ -388,14 +388,14 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                 ({ name, envValue }) =>
                     `--env${SPACE_PLACEHOLDER}${name}='${envValue.replace(/'/g, "'\\''")}'`
             ),
-        ...buildContext.startKeycloakOptions.dockerExtraArgs.join(SPACE_PLACEHOLDER),
+        buildContext.startKeycloakOptions.dockerExtraArgs.join(SPACE_PLACEHOLDER),
         `${buildContext.startKeycloakOptions.dockerImage?.reference ?? "quay.io/keycloak/keycloak"}:${dockerImageTag}`,
         "start-dev",
         ...(21 <= keycloakMajorVersionNumber && keycloakMajorVersionNumber < 24
             ? ["--features=declarative-user-profile"]
             : []),
         ...(realmJsonFilePath === undefined ? [] : ["--import-realm"]),
-        ...buildContext.startKeycloakOptions.keycloakExtraArgs.join(SPACE_PLACEHOLDER)
+        buildContext.startKeycloakOptions.keycloakExtraArgs.join(SPACE_PLACEHOLDER)
     ];
 
     console.log(
