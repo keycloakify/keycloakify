@@ -345,7 +345,13 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         `--name${SPACE_PLACEHOLDER}${CONTAINER_NAME}`,
         `-e${SPACE_PLACEHOLDER}KEYCLOAK_ADMIN=admin`,
         `-e${SPACE_PLACEHOLDER}KEYCLOAK_ADMIN_PASSWORD=admin`,
-        buildContext.startKeycloakOptions.dockerExtraArgs.join(SPACE_PLACEHOLDER),
+        ...(buildContext.startKeycloakOptions.dockerExtraArgs.length === 0
+            ? []
+            : [
+                  buildContext.startKeycloakOptions.dockerExtraArgs.join(
+                      SPACE_PLACEHOLDER
+                  )
+              ]),
         ...(realmJsonFilePath === undefined
             ? []
             : [
@@ -399,7 +405,13 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             ? ["--features=declarative-user-profile"]
             : []),
         ...(realmJsonFilePath === undefined ? [] : ["--import-realm"]),
-        buildContext.startKeycloakOptions.keycloakExtraArgs.join(SPACE_PLACEHOLDER)
+        ...(buildContext.startKeycloakOptions.keycloakExtraArgs.length === 0
+            ? []
+            : [
+                  buildContext.startKeycloakOptions.keycloakExtraArgs.join(
+                      SPACE_PLACEHOLDER
+                  )
+              ])
     ];
 
     console.log(
