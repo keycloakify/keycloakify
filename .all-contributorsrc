@@ -240,6 +240,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "oliviergoulet5",
+      "name": "Olivier Goulet",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17685861?v=4",
+      "profile": "https://github.com/oliviergoulet5",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
