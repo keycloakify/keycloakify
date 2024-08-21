@@ -153,7 +153,7 @@ export default function WebauthnRegister(props: PageProps<Extract<KcContext, { p
     
                 function getPubKeyCredParams(signatureAlgorithmsList) {
                     let pubKeyCredParams = [];
-                    if (signatureAlgorithmsList === []) {
+                    if (signatureAlgorithmsList.length === 0) {
                         pubKeyCredParams.push({type: "public-key", alg: -7});
                         return pubKeyCredParams;
                     }
@@ -184,7 +184,7 @@ export default function WebauthnRegister(props: PageProps<Extract<KcContext, { p
                 }
     
                 function getTransportsAsString(transportsList) {
-                    if (transportsList === '' || transportsList.constructor !== Array) return "";
+                    if (transportsList === '' || Array.isArray(transportsList)) return "";
     
                     let transportsString = "";
     
