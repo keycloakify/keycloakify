@@ -357,7 +357,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             : [
                   `-v${SPACE_PLACEHOLDER}".${pathSep}${pathRelative(process.cwd(), realmJsonFilePath)}":/opt/keycloak/data/import/myrealm-realm.json`
               ]),
-        `-v${SPACE_PLACEHOLDER}"./${pathRelative(process.cwd(), jarFilePath_cacheDir)}":/opt/keycloak/providers/keycloak-theme.jar`,
+        `-v${SPACE_PLACEHOLDER}".${pathSep}${pathRelative(process.cwd(), jarFilePath_cacheDir)}":/opt/keycloak/providers/keycloak-theme.jar`,
         ...extensionJarFilePaths.map(
             jarFilePath =>
                 `-v${SPACE_PLACEHOLDER}".${pathSep}${pathRelative(process.cwd(), jarFilePath)}":/opt/keycloak/providers/${pathBasename(jarFilePath)}`
