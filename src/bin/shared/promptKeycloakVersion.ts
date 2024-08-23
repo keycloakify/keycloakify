@@ -55,7 +55,7 @@ export async function promptKeycloakVersion(params: {
     });
 
     const lastMajorVersions = Array.from(semVersionedTagByMajor.values()).map(
-        ({ tag }) => tag
+        ({ version }) => `${version.major}.${version.minor}`
     );
 
     const { value } = await cliSelect<string>({
