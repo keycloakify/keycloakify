@@ -26,6 +26,8 @@ import { type ThemeType } from "./constants";
 import { id } from "tsafe/id";
 import chalk from "chalk";
 import { getProxyFetchOptions, type ProxyFetchOptions } from "../tools/fetchProxyOptions";
+import { removeDuplicates } from "evt/tools/reducers/removeDuplicates";
+import { same } from "evt/tools/inDepth/same";
 
 export type BuildContext = {
     themeVersion: string;
@@ -61,6 +63,7 @@ export type BuildContext = {
         keycloakVersionRange: KeycloakVersionRange;
         jarFileBasename: string;
     }[];
+    extensionJars: ({ type: "path"; path: string } | { type: "url"; url: string })[];
     startKeycloakOptions: {
         dockerImage:
             | {
@@ -88,6 +91,7 @@ export type BuildOptions = {
     loginThemeResourcesFromKeycloakVersion?: string;
     keycloakifyBuildDirPath?: string;
     kcContextExclusionsFtl?: string;
+    extensionJars?: string[];
     startKeycloakOptions?: {
         dockerImage?: string;
         dockerExtraArgs?: string[];
@@ -360,6 +364,7 @@ export function getBuildContext(params: {
                     loginThemeResourcesFromKeycloakVersion: z.string().optional(),
                     keycloakifyBuildDirPath: z.string().optional(),
                     kcContextExclusionsFtl: z.string().optional(),
+                    extensionJars: z.array(z.string()).optional(),
                     startKeycloakOptions: zStartKeycloakOptions.optional()
                 }),
                 zAccountThemeImplAndKeycloakVersionTargets
@@ -519,6 +524,36 @@ export function getBuildContext(params: {
 
         return pathJoin(projectDirPath, resolvedViteConfig.buildDir);
     })();
+
+    const buildForKeycloakMajorVersionNumber = (() => {
+        const envValue = process.env[BUILD_FOR_KEYCLOAK_MAJOR_VERSION_ENV_NAME];
+
+        if (envValue === undefined) {
+            return undefined;
+        }
+
+        const major = parseInt(envValue);
+
+        assert(!isNaN(major));
+
+        return major;
+    })();
+
+    function urlOrPathToDiscriminatingWrapper(
+        urlOrPath: string
+    ): { type: "url"; url: string } | { type: "path"; path: string } {
+        if (/^https?:\/\//.test(urlOrPath)) {
+            return { type: "url", url: urlOrPath };
+        }
+
+        return {
+            type: "path",
+            path: getAbsoluteAndInOsFormatPath({
+                pathIsh: urlOrPath,
+                cwd: projectDirPath
+            })
+        };
+    }
 
     return {
         bundler,
@@ -717,21 +752,6 @@ export function getBuildContext(params: {
                 `keycloak-theme-for-kc-${range}.jar`;
 
             build_for_specific_keycloak_major_version: {
-                const buildForKeycloakMajorVersionNumber = (() => {
-                    const envValue =
-                        process.env[BUILD_FOR_KEYCLOAK_MAJOR_VERSION_ENV_NAME];
-
-                    if (envValue === undefined) {
-                        return undefined;
-                    }
-
-                    const major = parseInt(envValue);
-
-                    assert(!isNaN(major));
-
-                    return major;
-                })();
-
                 if (buildForKeycloakMajorVersionNumber === undefined) {
                     break build_for_specific_keycloak_major_version;
                 }
@@ -931,6 +951,10 @@ export function getBuildContext(params: {
 
             return jarTargets;
         })(),
+        extensionJars: (buildForKeycloakMajorVersionNumber !== undefined
+            ? []
+            : buildOptions.extensionJars ?? []
+        ).map(urlOrPath => urlOrPathToDiscriminatingWrapper(urlOrPath)),
         startKeycloakOptions: {
             dockerImage: (() => {
                 if (buildOptions.startKeycloakOptions?.dockerImage === undefined) {
@@ -949,21 +973,14 @@ export function getBuildContext(params: {
             })(),
             dockerExtraArgs: buildOptions.startKeycloakOptions?.dockerExtraArgs ?? [],
             keycloakExtraArgs: buildOptions.startKeycloakOptions?.keycloakExtraArgs ?? [],
-            extensionJars: (buildOptions.startKeycloakOptions?.extensionJars ?? []).map(
-                urlOrPath => {
-                    if (/^https?:\/\//.test(urlOrPath)) {
-                        return { type: "url", url: urlOrPath };
-                    }
-
-                    return {
-                        type: "path",
-                        path: getAbsoluteAndInOsFormatPath({
-                            pathIsh: urlOrPath,
-                            cwd: projectDirPath
-                        })
-                    };
-                }
-            ),
+            extensionJars: [
+                ...(buildForKeycloakMajorVersionNumber !== undefined
+                    ? buildOptions.extensionJars ?? []
+                    : []),
+                ...(buildOptions.startKeycloakOptions?.extensionJars ?? [])
+            ]
+                .map(urlOrPath => urlOrPathToDiscriminatingWrapper(urlOrPath))
+                .reduce(...removeDuplicates<BuildContext["extensionJars"][number]>(same)),
             realmJsonFilePath:
                 buildOptions.startKeycloakOptions?.realmJsonFilePath === undefined
                     ? undefined

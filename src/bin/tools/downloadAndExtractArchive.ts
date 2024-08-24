@@ -1,15 +1,14 @@
 import fetch, { type FetchOptions } from "make-fetch-happen";
 import { mkdir, unlink, writeFile, readdir, readFile } from "fs/promises";
-import { dirname as pathDirname, join as pathJoin, basename as pathBasename } from "path";
+import { dirname as pathDirname, join as pathJoin } from "path";
 import { assert } from "tsafe/assert";
 import { extractArchive } from "./extractArchive";
 import { existsAsync } from "./fs.existsAsync";
 import * as crypto from "crypto";
 import { rm } from "./fs.rm";
-import * as fsPr from "fs/promises";
 
 export async function downloadAndExtractArchive(params: {
-    urlOrPath: string;
+    url: string;
     uniqueIdOfOnArchiveFile: string;
     onArchiveFile: (params: {
         fileRelativePath: string;
@@ -22,32 +21,15 @@ export async function downloadAndExtractArchive(params: {
     cacheDirPath: string;
     fetchOptions: FetchOptions | undefined;
 }): Promise<{ extractedDirPath: string; archiveFilePath: string }> {
-    const {
-        urlOrPath,
-        uniqueIdOfOnArchiveFile,
-        onArchiveFile,
-        cacheDirPath,
-        fetchOptions
-    } = params;
+    const { url, uniqueIdOfOnArchiveFile, onArchiveFile, cacheDirPath, fetchOptions } =
+        params;
 
-    const isUrl = /^https?:\/\//.test(urlOrPath);
-
-    const archiveFileBasename = isUrl
-        ? urlOrPath.split("?")[0].split("/").reverse()[0]
-        : pathBasename(urlOrPath);
+    const archiveFileBasename = url.split("?")[0].split("/").reverse()[0];
 
     const archiveFilePath = pathJoin(cacheDirPath, archiveFileBasename);
 
     download: {
         await mkdir(pathDirname(archiveFilePath), { recursive: true });
-
-        if (!isUrl) {
-            await fsPr.copyFile(urlOrPath, archiveFilePath);
-
-            break download;
-        }
-
-        const url = urlOrPath;
 
         if (await existsAsync(archiveFilePath)) {
             const isDownloaded = await SuccessTracker.getIsDownloaded({

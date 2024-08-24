@@ -200,7 +200,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
                     const { archiveFilePath } = await downloadAndExtractArchive({
                         cacheDirPath: buildContext.cacheDirPath,
                         fetchOptions: buildContext.fetchOptions,
-                        urlOrPath: extensionJar.url,
+                        url: extensionJar.url,
                         uniqueIdOfOnArchiveFile: "no extraction",
                         onArchiveFile: async () => {}
                     });

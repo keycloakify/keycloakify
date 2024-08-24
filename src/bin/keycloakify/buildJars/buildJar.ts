@@ -17,15 +17,20 @@ import { isInside } from "../../tools/isInside";
 import child_process from "child_process";
 import { rmSync } from "../../tools/fs.rmSync";
 import { writeMetaInfKeycloakThemes } from "../../shared/metaInfKeycloakThemes";
+import {
+    bundleExtensionsIntoJar,
+    type BuildContextLike as BuildContextLike_bundleExtensionsIntoJar
+} from "./bundleExtensionsIntoJar";
 
-export type BuildContextLike = BuildContextLike_generatePom & {
-    keycloakifyBuildDirPath: string;
-    themeNames: string[];
-    artifactId: string;
-    themeVersion: string;
-    cacheDirPath: string;
-    implementedThemeTypes: BuildContext["implementedThemeTypes"];
-};
+export type BuildContextLike = BuildContextLike_generatePom &
+    BuildContextLike_bundleExtensionsIntoJar & {
+        keycloakifyBuildDirPath: string;
+        themeNames: string[];
+        artifactId: string;
+        themeVersion: string;
+        cacheDirPath: string;
+        implementedThemeTypes: BuildContext["implementedThemeTypes"];
+    };
 
 assert<BuildContext extends BuildContextLike ? true : false>();
 
@@ -234,12 +239,19 @@ export async function buildJar(params: {
         )
     );
 
+    const jarFilePath_generatedByMaven = pathJoin(
+        keycloakifyBuildCacheDirPath,
+        "target",
+        `${buildContext.artifactId}-${buildContext.themeVersion}.jar`
+    );
+
+    await bundleExtensionsIntoJar({
+        buildContext,
+        jarFilePath: jarFilePath_generatedByMaven
+    });
+
     await fs.rename(
-        pathJoin(
-            keycloakifyBuildCacheDirPath,
-            "target",
-            `${buildContext.artifactId}-${buildContext.themeVersion}.jar`
-        ),
+        jarFilePath_generatedByMaven,
         pathJoin(buildContext.keycloakifyBuildDirPath, jarFileBasename)
     );
 }
