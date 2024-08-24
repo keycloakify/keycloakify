@@ -314,8 +314,7 @@ export async function generateResourcesForMainTheme(params: {
         }
 
         const { extractedDirPath } = await downloadAndExtractArchive({
-            urlOrPath:
-                "https://repo1.maven.org/maven2/org/keycloak/keycloak-account-ui/25.0.1/keycloak-account-ui-25.0.1.jar",
+            url: "https://repo1.maven.org/maven2/org/keycloak/keycloak-account-ui/25.0.1/keycloak-account-ui-25.0.1.jar",
             cacheDirPath: buildContext.cacheDirPath,
             fetchOptions: buildContext.fetchOptions,
             uniqueIdOfOnArchiveFile: "bring_in_account_v3_i18n_messages",

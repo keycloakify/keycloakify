@@ -21,7 +21,7 @@ export async function downloadKeycloakDefaultTheme(params: {
     let kcNodeModulesKeepFilePaths_lastAccountV1: Set<string> | undefined = undefined;
 
     const { extractedDirPath } = await downloadAndExtractArchive({
-        urlOrPath: `https://repo1.maven.org/maven2/org/keycloak/keycloak-themes/${keycloakVersion}/keycloak-themes-${keycloakVersion}.jar`,
+        url: `https://repo1.maven.org/maven2/org/keycloak/keycloak-themes/${keycloakVersion}/keycloak-themes-${keycloakVersion}.jar`,
         cacheDirPath: buildContext.cacheDirPath,
         fetchOptions: buildContext.fetchOptions,
         uniqueIdOfOnArchiveFile: "downloadKeycloakDefaultTheme",
