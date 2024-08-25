@@ -10,7 +10,8 @@ import {
     join as pathJoin,
     relative as pathRelative,
     sep as pathSep,
-    basename as pathBasename
+    basename as pathBasename,
+    dirname as pathDirname
 } from "path";
 import * as child_process from "child_process";
 import chalk from "chalk";
@@ -211,6 +212,17 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         })
     );
 
+    const getRealmJsonFilePath_defaultForKeycloakMajor = (
+        keycloakMajorVersionNumber: number
+    ) =>
+        pathJoin(
+            getThisCodebaseRootDirPath(),
+            "src",
+            "bin",
+            "start-keycloak",
+            `myrealm-realm-${keycloakMajorVersionNumber}.json`
+        );
+
     const realmJsonFilePath = await (async () => {
         if (cliCommandOptions.realmJsonFilePath !== undefined) {
             if (cliCommandOptions.realmJsonFilePath === "none") {
@@ -231,20 +243,12 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         }
 
         const internalFilePath = await (async () => {
-            const dirPath = pathJoin(
-                getThisCodebaseRootDirPath(),
-                "src",
-                "bin",
-                "start-keycloak"
+            const defaultFilePath = getRealmJsonFilePath_defaultForKeycloakMajor(
+                keycloakMajorVersionNumber
             );
 
-            const filePath = pathJoin(
-                dirPath,
-                `myrealm-realm-${keycloakMajorVersionNumber}.json`
-            );
-
-            if (fs.existsSync(filePath)) {
-                return filePath;
+            if (fs.existsSync(defaultFilePath)) {
+                return defaultFilePath;
             }
 
             console.log(
@@ -254,6 +258,8 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             );
 
             console.log(chalk.cyan("Select what configuration to use:"));
+
+            const dirPath = pathDirname(defaultFilePath);
 
             const { value } = await cliSelect<string>({
                 values: [
@@ -295,6 +301,40 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
         return filePath;
     })();
+
+    add_test_user_if_missing: {
+        if (realmJsonFilePath === undefined) {
+            break add_test_user_if_missing;
+        }
+
+        const realm: Record<string, unknown> = JSON.parse(
+            fs.readFileSync(realmJsonFilePath).toString("utf8")
+        );
+
+        if (realm.users !== undefined) {
+            break add_test_user_if_missing;
+        }
+
+        const realmJsonFilePath_internal = (() => {
+            const filePath = getRealmJsonFilePath_defaultForKeycloakMajor(
+                keycloakMajorVersionNumber
+            );
+
+            if (!fs.existsSync(filePath)) {
+                return getRealmJsonFilePath_defaultForKeycloakMajor(25);
+            }
+
+            return filePath;
+        })();
+
+        const users = JSON.parse(
+            fs.readFileSync(realmJsonFilePath_internal).toString("utf8")
+        ).users;
+
+        realm.users = users;
+
+        fs.writeFileSync(realmJsonFilePath, JSON.stringify(realm, null, 2), "utf8");
+    }
 
     async function extractThemeResourcesFromJar() {
         await extractArchive({
