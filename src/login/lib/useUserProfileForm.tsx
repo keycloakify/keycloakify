@@ -1394,14 +1394,10 @@ export function getButtonToDisplayForMultivaluedAttributeField(params: { attribu
         })();
 
         if (maxCount === undefined) {
-            return false;
+            return true;
         }
 
-        if (values.length === maxCount) {
-            return false;
-        }
-
-        return true;
+        return values.length !== maxCount;
     })();
 
     return { hasRemove, hasAdd };
