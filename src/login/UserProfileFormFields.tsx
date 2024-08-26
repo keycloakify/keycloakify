@@ -580,7 +580,7 @@ function TextareaTag(props: InputFieldByTypeProps) {
 function SelectTag(props: InputFieldByTypeProps) {
     const { attribute, dispatchFormAction, kcClsx, displayableErrors, i18n, valueOrValues } = props;
 
-    const { advancedMsg } = i18n;
+    const { advancedMsgStr } = i18n;
 
     const isMultiple = attribute.annotations.inputType === "multiselect";
 
@@ -649,11 +649,11 @@ function SelectTag(props: InputFieldByTypeProps) {
                             if (attribute.annotations.inputOptionLabels !== undefined) {
                                 const { inputOptionLabels } = attribute.annotations;
 
-                                return advancedMsg(inputOptionLabels[option] ?? option);
+                                return advancedMsgStr(inputOptionLabels[option] ?? option);
                             }
 
                             if (attribute.annotations.inputOptionLabelsI18nPrefix !== undefined) {
-                                return advancedMsg(`${attribute.annotations.inputOptionLabelsI18nPrefix}.${option}`);
+                                return advancedMsgStr(`${attribute.annotations.inputOptionLabelsI18nPrefix}.${option}`);
                             }
 
                             return option;
