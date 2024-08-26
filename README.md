@@ -43,9 +43,6 @@
 
 Keycloakify is fully compatible with Keycloak 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, [~~22~~](https://github.com/keycloakify/keycloakify/issues/389#issuecomment-1822509763), 23, 24, 25...[and beyond](https://github.com/keycloakify/keycloakify/discussions/346#discussioncomment-5889791)
 
-> NOTE: Keycloakify 10, while still being tagged as release candidate is the version you should use if you are starting today.  
-> Use `yarn add keycloakify@next` or pin [the latest version candidate](https://www.npmjs.com/package/keycloakify?activeTab=versions).
-
 ## Sponsors
 
 Friends for the project, we trust and recommend their services.
