@@ -115,6 +115,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         const { keycloakVersion } = await promptKeycloakVersion({
             startingFromMajor: 18,
             excludeMajorVersions: [22],
+            doOmitPatch: true,
             buildContext
         });
 

@@ -14,9 +14,10 @@ assert<BuildContext extends BuildContextLike ? true : false>();
 export async function promptKeycloakVersion(params: {
     startingFromMajor: number | undefined;
     excludeMajorVersions: number[];
+    doOmitPatch: boolean;
     buildContext: BuildContextLike;
 }) {
-    const { startingFromMajor, excludeMajorVersions, buildContext } = params;
+    const { startingFromMajor, excludeMajorVersions, doOmitPatch, buildContext } = params;
 
     const semVersionedTagByMajor = new Map<number, { tag: string; version: SemVer }>();
 
@@ -55,7 +56,8 @@ export async function promptKeycloakVersion(params: {
     });
 
     const lastMajorVersions = Array.from(semVersionedTagByMajor.values()).map(
-        ({ version }) => `${version.major}.${version.minor}`
+        ({ version }) =>
+            `${version.major}.${version.minor}${doOmitPatch ? "" : `.${version.patch}`}`
     );
 
     const { value } = await cliSelect<string>({
