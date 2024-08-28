@@ -75,17 +75,22 @@ export function updateAccountThemeImplementationInConfig(params: {
                         return id<z.ZodType<TargetType>>(zTargetType);
                     })();
 
-                    return zParsedPackageJson.parse(
-                        JSON.parse(
-                            fs
-                                .readFileSync(buildContext.packageJsonFilePath)
-                                .toString("utf8")
-                        )
+                    const parsedPackageJson = JSON.parse(
+                        fs.readFileSync(buildContext.packageJsonFilePath).toString("utf8")
                     );
+
+                    zParsedPackageJson.parse(parsedPackageJson);
+
+                    return parsedPackageJson;
                 })();
 
                 parsedPackageJson.keycloakify.accountThemeImplementation =
                     accountThemeType;
+
+                fs.writeFileSync(
+                    buildContext.packageJsonFilePath,
+                    Buffer.from(JSON.stringify(parsedPackageJson, undefined, 4), "utf8")
+                );
             }
             break;
     }
