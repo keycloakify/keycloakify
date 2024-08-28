@@ -60,14 +60,14 @@ export function updateAccountThemeImplementationInConfig(params: {
             {
                 const parsedPackageJson = (() => {
                     type ParsedPackageJson = {
-                        keycloakify: Record<string, string>;
+                        keycloakify: Record<string, unknown>;
                     };
 
                     const zParsedPackageJson = (() => {
                         type TargetType = ParsedPackageJson;
 
                         const zTargetType = z.object({
-                            keycloakify: z.record(z.string())
+                            keycloakify: z.record(z.unknown())
                         });
 
                         assert<Equals<z.infer<typeof zTargetType>, TargetType>>();
