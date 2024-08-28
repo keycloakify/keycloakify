@@ -41,7 +41,7 @@
     <img width="400" src="https://github.com/user-attachments/assets/6bf3bef9-00b0-4460-97b9-0d2da8500798">
 </p>
 
-Keycloakify is fully compatible with Keycloak 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, [~~22~~](https://github.com/keycloakify/keycloakify/issues/389#issuecomment-1822509763), 23, 24, 25...[and beyond](https://github.com/keycloakify/keycloakify/discussions/346#discussioncomment-5889791)
+Keycloakify is fully compatible with Keycloak from version 11 to 25...[and beyond](https://github.com/keycloakify/keycloakify/discussions/346#discussioncomment-5889791)
 
 ## Sponsors
 
