@@ -40,7 +40,7 @@ export default function LoginUsername(props: PageProps<Extract<KcContext, { page
             headerNode={msg("doLogIn")}
             socialProvidersNode={
                 <>
-                    {realm.password && social.providers?.length && (
+                    {realm.password && social.providers !== undefined && social.providers.length !== 0 && (
                         <div id="kc-social-providers" className={kcClsx("kcFormSocialAccountSectionClass")}>
                             <hr />
                             <h2>{msg("identity-provider-login-label")}</h2>
