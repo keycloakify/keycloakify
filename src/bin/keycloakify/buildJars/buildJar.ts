@@ -139,25 +139,6 @@ export async function buildJar(params: {
             break route_legacy_pages;
         }
 
-        // NOTE: If there's no account theme there is no special target for keycloak 24 and up so we create
-        // the pages anyway. If there is an account pages, since we know that account-v1 is only support keycloak
-        // 24 in version 0.4 and up, we can safely break the route for legacy pages.
-        const doBreak: boolean = (() => {
-            switch (keycloakAccountV1Version) {
-                case null:
-                    return false;
-                case "0.3":
-                    return false;
-                default:
-                    return true;
-            }
-        })();
-
-        // TODO: Remove this optimization, it's a bit hacky.
-        if (doBreak) {
-            break route_legacy_pages;
-        }
-
         (["register.ftl", "login-update-profile.ftl"] as const).forEach(pageId =>
             buildContext.themeNames.map(themeName => {
                 const ftlFilePath = pathJoin(
