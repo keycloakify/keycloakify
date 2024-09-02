@@ -50,7 +50,9 @@ export const LOGIN_THEME_PAGE_IDS = [
     "login-recovery-authn-code-input.ftl",
     "login-reset-otp.ftl",
     "login-x509-info.ftl",
-    "webauthn-error.ftl"
+    "webauthn-error.ftl",
+    "login-passkeys-conditional-authenticate.ftl",
+    "login-idp-link-confirm-override.ftl"
 ] as const;
 
 export const ACCOUNT_THEME_PAGE_IDS = [
@@ -70,4 +72,4 @@ export const CONTAINER_NAME = "keycloak-keycloakify";
 
 export const FALLBACK_LANGUAGE_TAG = "en";
 
-export const LOGIN_THEME_RESOURCES_FROMkEYCLOAK_VERSION_DEFAULT = "24.0.4";
+export const LOGIN_THEME_RESOURCES_FROM_KEYCLOAK_VERSION_DEFAULT = "24.0.4";

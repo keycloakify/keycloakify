@@ -1,8 +1,10 @@
-import { join as pathJoin, relative as pathRelative } from "path";
-import { type BuildContext } from "./buildContext";
+import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path";
+import { type BuildContext } from "../buildContext";
 import { assert } from "tsafe/assert";
-import { LAST_KEYCLOAK_VERSION_WITH_ACCOUNT_V1 } from "./constants";
-import { downloadAndExtractArchive } from "../tools/downloadAndExtractArchive";
+import { LAST_KEYCLOAK_VERSION_WITH_ACCOUNT_V1 } from "../constants";
+import { downloadAndExtractArchive } from "../../tools/downloadAndExtractArchive";
+import { getThisCodebaseRootDirPath } from "../../tools/getThisCodebaseRootDirPath";
+import * as fsPr from "fs/promises";
 
 export type BuildContextLike = {
     cacheDirPath: string;
@@ -20,6 +22,8 @@ export async function downloadKeycloakDefaultTheme(params: {
     let kcNodeModulesKeepFilePaths: Set<string> | undefined = undefined;
     let kcNodeModulesKeepFilePaths_lastAccountV1: Set<string> | undefined = undefined;
 
+    let areExtraAssetsFor24Copied = false;
+
     const { extractedDirPath } = await downloadAndExtractArchive({
         url: `https://repo1.maven.org/maven2/org/keycloak/keycloak-themes/${keycloakVersion}/keycloak-themes-${keycloakVersion}.jar`,
         cacheDirPath: buildContext.cacheDirPath,
@@ -32,8 +36,6 @@ export async function downloadKeycloakDefaultTheme(params: {
                 return;
             }
 
-            const { readFile, writeFile } = params;
-
             skip_keycloak_v2: {
                 if (!fileRelativePath.startsWith(pathJoin("keycloak.v2"))) {
                     break skip_keycloak_v2;
@@ -41,6 +43,8 @@ export async function downloadKeycloakDefaultTheme(params: {
 
                 return;
             }
+
+            const { readFile, writeFile } = params;
 
             last_account_v1_transformations: {
                 if (LAST_KEYCLOAK_VERSION_WITH_ACCOUNT_V1 !== keycloakVersion) {
@@ -166,6 +170,42 @@ export async function downloadKeycloakDefaultTheme(params: {
 
                     return;
                 }
+            }
+
+            copy_extra_assets: {
+                if (keycloakVersion !== "24.0.4") {
+                    break copy_extra_assets;
+                }
+
+                if (areExtraAssetsFor24Copied) {
+                    break copy_extra_assets;
+                }
+
+                const extraAssetsDirPath = pathJoin(
+                    getThisCodebaseRootDirPath(),
+                    "src",
+                    "bin",
+                    __dirname.split(`${pathSep}bin${pathSep}`)[1],
+                    "extra-assets"
+                );
+
+                await Promise.all(
+                    ["webauthnAuthenticate.js", "passkeysConditionalAuth.js"].map(
+                        async fileBasename =>
+                            writeFile({
+                                fileRelativePath: pathJoin(
+                                    "base",
+                                    "login",
+                                    "resources",
+                                    "js",
+                                    fileBasename
+                                ),
+                                modifiedData: await fsPr.readFile(
+                                    pathJoin(extraAssetsDirPath, fileBasename)
+                                )
+                            })
+                    )
+                );
             }
 
             skip_unused_resources: {

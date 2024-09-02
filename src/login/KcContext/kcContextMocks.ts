@@ -567,6 +567,39 @@ export const kcContextMocks = [
         pageId: "webauthn-error.ftl",
         ...kcContextCommonMock,
         isAppInitiatedAction: true
+    }),
+    id<KcContext.LoginPasskeysConditionalAuthenticate>({
+        pageId: "login-passkeys-conditional-authenticate.ftl",
+        ...kcContextCommonMock,
+        url: {
+            ...kcContextCommonMock.url,
+            registrationUrl: "#"
+        },
+        realm: {
+            ...kcContextCommonMock.realm,
+            password: true,
+            registrationAllowed: true
+        },
+        registrationDisabled: false,
+        isUserIdentified: "false",
+        challenge: "",
+        userVerification: "not specified",
+        rpId: "",
+        createTimeout: "0",
+        authenticators: {
+            authenticators: []
+        },
+        shouldDisplayAuthenticators: false,
+        login: {}
+    }),
+    id<KcContext.LoginIdpLinkConfirmOverride>({
+        pageId: "login-idp-link-confirm-override.ftl",
+        ...kcContextCommonMock,
+        url: {
+            ...kcContextCommonMock.url,
+            loginRestartFlowUrl: "#"
+        },
+        idpDisplayName: "Google"
     })
 ];
 

@@ -15,7 +15,7 @@ import * as child_process from "child_process";
 import {
     VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES,
     BUILD_FOR_KEYCLOAK_MAJOR_VERSION_ENV_NAME,
-    LOGIN_THEME_RESOURCES_FROMkEYCLOAK_VERSION_DEFAULT
+    LOGIN_THEME_RESOURCES_FROM_KEYCLOAK_VERSION_DEFAULT
 } from "./constants";
 import type { KeycloakVersionRange } from "./KeycloakVersionRange";
 import { exclude } from "tsafe";
@@ -547,7 +547,7 @@ export function getBuildContext(params: {
             `${themeNames[0]}-keycloak-theme`,
         loginThemeResourcesFromKeycloakVersion:
             buildOptions.loginThemeResourcesFromKeycloakVersion ??
-            LOGIN_THEME_RESOURCES_FROMkEYCLOAK_VERSION_DEFAULT,
+            LOGIN_THEME_RESOURCES_FROM_KEYCLOAK_VERSION_DEFAULT,
         projectDirPath,
         projectBuildDirPath,
         keycloakifyBuildDirPath: (() => {

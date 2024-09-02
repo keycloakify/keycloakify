@@ -59,7 +59,9 @@ export type KcContext =
     | KcContext.LoginRecoveryAuthnCodeInput
     | KcContext.LoginResetOtp
     | KcContext.LoginX509Info
-    | KcContext.WebauthnError;
+    | KcContext.WebauthnError
+    | KcContext.LoginPasskeysConditionalAuthenticate
+    | KcContext.LoginIdpLinkConfirmOverride;
 
 assert<KcContext["themeType"] extends ThemeType ? true : false>();
 
@@ -576,6 +578,40 @@ export declare namespace KcContext {
     export type WebauthnError = Common & {
         pageId: "webauthn-error.ftl";
         isAppInitiatedAction?: boolean;
+    };
+
+    export type LoginPasskeysConditionalAuthenticate = Common & {
+        pageId: "login-passkeys-conditional-authenticate.ftl";
+        realm: {
+            registrationAllowed: boolean;
+            password: boolean;
+        };
+        url: {
+            registrationUrl: string;
+        };
+        registrationDisabled: boolean;
+        isUserIdentified: boolean | "true" | "false";
+        challenge: string;
+        userVerification: string;
+        rpId: string;
+        createTimeout: number | string;
+
+        authenticators?: {
+            authenticators: WebauthnAuthenticate.WebauthnAuthenticator[];
+        };
+        shouldDisplayAuthenticators?: boolean;
+        usernameHidden?: boolean;
+        login: {
+            username?: string;
+        };
+    };
+
+    export type LoginIdpLinkConfirmOverride = Common & {
+        pageId: "login-idp-link-confirm-override.ftl";
+        url: {
+            loginRestartFlowUrl: string;
+        };
+        idpDisplayName: string;
     };
 }
 
