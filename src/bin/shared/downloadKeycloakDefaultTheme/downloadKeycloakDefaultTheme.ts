@@ -1,4 +1,4 @@
-import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path";
+import { join as pathJoin, relative as pathRelative } from "path";
 import { type BuildContext } from "../buildContext";
 import { assert } from "tsafe/assert";
 import { LAST_KEYCLOAK_VERSION_WITH_ACCOUNT_V1 } from "../constants";
@@ -185,7 +185,8 @@ export async function downloadKeycloakDefaultTheme(params: {
                     getThisCodebaseRootDirPath(),
                     "src",
                     "bin",
-                    __dirname.split(`${pathSep}bin${pathSep}`)[1],
+                    "shared",
+                    "downloadKeycloakDefaultTheme",
                     "extra-assets"
                 );
 
