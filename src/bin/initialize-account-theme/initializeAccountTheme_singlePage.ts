@@ -6,6 +6,7 @@ import {
     getLatestsSemVersionedTag,
     type BuildContextLike as BuildContextLike_getLatestsSemVersionedTag
 } from "../shared/getLatestsSemVersionedTag";
+import { SemVer } from "../tools/SemVer";
 import fetch from "make-fetch-happen";
 import { z } from "zod";
 import { assert, type Equals } from "tsafe/assert";
@@ -68,7 +69,9 @@ export async function initializeAccountTheme_singlePage(params: {
             })()
         );
 
-    dependencies.dependencies["@keycloakify/keycloak-account-ui"] = semVersionedTag.tag;
+    dependencies.dependencies["@keycloakify/keycloak-account-ui"] = SemVer.stringify(
+        semVersionedTag.version
+    );
 
     const parsedPackageJson = (() => {
         type ParsedPackageJson = {
