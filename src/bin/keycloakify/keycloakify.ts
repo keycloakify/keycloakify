@@ -12,6 +12,10 @@ import * as os from "os";
 import { rmSync } from "../tools/fs.rmSync";
 
 export async function command(params: { cliCommandOptions: CliCommandOptions }) {
+    const { cliCommandOptions } = params;
+
+    const buildContext = getBuildContext({ cliCommandOptions });
+
     exit_if_maven_not_installed: {
         let commandOutput: Buffer | undefined = undefined;
 
@@ -25,30 +29,43 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
             break exit_if_maven_not_installed;
         }
 
-        const installationCommand = (() => {
-            switch (os.platform()) {
-                case "darwin":
-                    return "brew install mvn";
-                case "win32":
-                    return "choco install mvn";
-                case "linux":
-                default:
-                    return "sudo apt-get install mvn";
-            }
-        })();
+        if (
+            fs
+                .readFileSync(buildContext.packageJsonFilePath)
+                .toString("utf8")
+                .includes(`"mvn"`)
+        ) {
+            console.log(
+                chalk.red(
+                    [
+                        "Please remove the 'mvn' package from your package.json'dependencies list,",
+                        "reinstall your dependencies and try again.",
+                        "We need the Apache Maven CLI, not this: https://www.npmjs.com/package/mvn"
+                    ].join(" ")
+                )
+            );
+        } else {
+            const installationCommand = (() => {
+                switch (os.platform()) {
+                    case "darwin":
+                        return "brew install mvn";
+                    case "win32":
+                        return "choco install mvn";
+                    case "linux":
+                    default:
+                        return "sudo apt-get install mvn";
+                }
+            })();
 
-        console.log(
-            `${chalk.red("Apache Maven required.")} Install it with \`${chalk.bold(
-                installationCommand
-            )}\` (for example)`
-        );
+            console.log(
+                `${chalk.red("Apache Maven required.")} Install it with \`${chalk.bold(
+                    installationCommand
+                )}\` (for example)`
+            );
+        }
 
         process.exit(1);
     }
-
-    const { cliCommandOptions } = params;
-
-    const buildContext = getBuildContext({ cliCommandOptions });
 
     console.log(
         [
