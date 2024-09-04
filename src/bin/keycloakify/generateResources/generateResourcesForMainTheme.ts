@@ -4,8 +4,7 @@ import {
     join as pathJoin,
     resolve as pathResolve,
     relative as pathRelative,
-    dirname as pathDirname,
-    basename as pathBasename
+    dirname as pathDirname
 } from "path";
 import { replaceImportsInJsCode } from "../replacers/replaceImportsInJsCode";
 import { replaceImportsInCssCode } from "../replacers/replaceImportsInCssCode";
@@ -43,7 +42,7 @@ import {
 } from "../../shared/metaInfKeycloakThemes";
 import { objectEntries } from "tsafe/objectEntries";
 import { escapeStringForPropertiesFile } from "../../tools/escapeStringForPropertiesFile";
-import { downloadAndExtractArchive } from "../../tools/downloadAndExtractArchive";
+import * as child_process from "child_process";
 
 export type BuildContextLike = BuildContextLike_kcContextExclusionsFtlCode &
     BuildContextLike_downloadKeycloakStaticResources &
@@ -56,6 +55,7 @@ export type BuildContextLike = BuildContextLike_kcContextExclusionsFtlCode &
         implementedThemeTypes: BuildContext["implementedThemeTypes"];
         themeSrcDirPath: string;
         bundler: "vite" | "webpack";
+        packageJsonFilePath: string;
     };
 
 assert<BuildContext extends BuildContextLike ? true : false>();
@@ -313,27 +313,23 @@ export async function generateResourcesForMainTheme(params: {
             break bring_in_account_v3_i18n_messages;
         }
 
-        const { extractedDirPath } = await downloadAndExtractArchive({
-            url: "https://repo1.maven.org/maven2/org/keycloak/keycloak-account-ui/25.0.1/keycloak-account-ui-25.0.1.jar",
-            cacheDirPath: buildContext.cacheDirPath,
-            fetchOptions: buildContext.fetchOptions,
-            uniqueIdOfOnArchiveFile: "bring_in_account_v3_i18n_messages",
-            onArchiveFile: async ({ fileRelativePath, writeFile }) => {
-                if (
-                    !fileRelativePath.startsWith(
-                        pathJoin("theme", "keycloak.v3", "account", "messages")
-                    )
-                ) {
-                    return;
-                }
-                await writeFile({
-                    fileRelativePath: pathBasename(fileRelativePath)
-                });
-            }
-        });
+        const accountUiDirPath = child_process
+            .execSync("npm list @keycloakify/keycloak-account-ui --parseable", {
+                cwd: pathDirname(buildContext.packageJsonFilePath)
+            })
+            .toString("utf8")
+            .trim();
+
+        const messagesDirPath = pathJoin(accountUiDirPath, "messages");
+
+        if (!fs.existsSync(messagesDirPath)) {
+            throw new Error(
+                `Please update @keycloakify/keycloak-account-ui to 25.0.4-rc.5 or later.`
+            );
+        }
 
         transformCodebase({
-            srcDirPath: extractedDirPath,
+            srcDirPath: messagesDirPath,
             destDirPath: pathJoin(
                 getThemeTypeDirPath({ themeType: "account" }),
                 "messages"
