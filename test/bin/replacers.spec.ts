@@ -2,7 +2,7 @@ import { replaceImportsInJsCode_vite } from "keycloakify/bin/keycloakify/replace
 import { replaceImportsInJsCode_webpack } from "keycloakify/bin/keycloakify/replacers/replaceImportsInJsCode/webpack";
 import { replaceImportsInCssCode } from "keycloakify/bin/keycloakify/replacers/replaceImportsInCssCode";
 import { expect, it, describe } from "vitest";
-import { BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR } from "keycloakify/bin/shared/constants";
+import { WELL_KNOWN_DIRECTORY_BASE_NAME } from "keycloakify/bin/shared/constants";
 
 describe("js replacer - vite", () => {
     it("replaceImportsInJsCode_vite - 1", () => {
@@ -87,13 +87,13 @@ describe("js replacer - vite", () => {
             });
 
             const fixedJsCodeExpected = `
-                    S=(window.kcContext["x-keycloakify"].resourcesPath + "/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/assets/keycloakify-logo-mqjydaoZ.png"),H=(()=>{
+                    S=(window.kcContext["x-keycloakify"].resourcesPath + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/assets/keycloakify-logo-mqjydaoZ.png"),H=(()=>{
 
                     function __vite__mapDeps(indexes) {
                         if (!__vite__mapDeps.viteFileDeps) {
                             __vite__mapDeps.viteFileDeps = [
-                                (window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/assets/Login-dJpPRzM4.js"), 
-                                (window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/assets/index-XwzrZ5Gu.js")
+                                (window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/assets/Login-dJpPRzM4.js"), 
+                                (window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/assets/index-XwzrZ5Gu.js")
                             ]
                         }
                         return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
@@ -146,13 +146,13 @@ describe("js replacer - vite", () => {
             });
 
             const fixedJsCodeExpected = `
-                    S=(window.kcContext["x-keycloakify"].resourcesPath + "/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/foo/bar/keycloakify-logo-mqjydaoZ.png"),H=(()=>{
+                    S=(window.kcContext["x-keycloakify"].resourcesPath + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/foo/bar/keycloakify-logo-mqjydaoZ.png"),H=(()=>{
 
                     function __vite__mapDeps(indexes) {
                         if (!__vite__mapDeps.viteFileDeps) {
                             __vite__mapDeps.viteFileDeps = [
-                                (window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/foo/bar/Login-dJpPRzM4.js"), 
-                                (window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/foo/bar/index-XwzrZ5Gu.js")
+                                (window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/foo/bar/Login-dJpPRzM4.js"), 
+                                (window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/foo/bar/index-XwzrZ5Gu.js")
                             ]
                         }
                         return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
@@ -205,13 +205,13 @@ describe("js replacer - vite", () => {
             });
 
             const fixedJsCodeExpected = `
-                    S=(window.kcContext["x-keycloakify"].resourcesPath + "/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/assets/keycloakify-logo-mqjydaoZ.png"),H=(()=>{
+                    S=(window.kcContext["x-keycloakify"].resourcesPath + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/assets/keycloakify-logo-mqjydaoZ.png"),H=(()=>{
 
                     function __vite__mapDeps(indexes) {
                         if (!__vite__mapDeps.viteFileDeps) {
                             __vite__mapDeps.viteFileDeps = [
-                                (window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/assets/Login-dJpPRzM4.js"), 
-                                (window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/assets/index-XwzrZ5Gu.js")
+                                (window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/assets/Login-dJpPRzM4.js"), 
+                                (window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/assets/index-XwzrZ5Gu.js")
                             ]
                         }
                         return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
@@ -267,13 +267,13 @@ describe("js replacer - webpack", () => {
 
         const fixedJsCodeExpected = `
             function f() {
-                return window.kcContext["x-keycloakify"].resourcesPath + "/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/static/js/" + ({}[e] || e) + "." + {
+                return window.kcContext["x-keycloakify"].resourcesPath + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/static/js/" + ({}[e] || e) + "." + {
                     3: "0664cdc0"
                 }[e] + ".chunk.js"
             }
 
             function sameAsF() {
-                return window.kcContext["x-keycloakify"].resourcesPath + "/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/static/js/" + ({}[e] || e) + "." + {
+                return window.kcContext["x-keycloakify"].resourcesPath + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/static/js/" + ({}[e] || e) + "." + {
                     3: "0664cdc0"
                 }[e] + ".chunk.js"
             }
@@ -288,7 +288,7 @@ describe("js replacer - webpack", () => {
                 }
                 return "u";
             })()] = function(e) {
-                return "/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/static/js/" + e + "." + {
+                return "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/static/js/" + e + "." + {
                     147: "6c5cee76",
                     787: "8da10fcf",
                     922: "be170a73"
@@ -305,7 +305,7 @@ describe("js replacer - webpack", () => {
                 }
                 return "miniCssF";
             })()] = function(e) {
-                return "/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/static/css/" + e + "." + {
+                return "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/static/css/" + e + "." + {
                     164:"dcfd7749",
                     908:"67c9ed2c"
                 } [e] + ".chunk.css"
@@ -320,7 +320,7 @@ describe("js replacer - webpack", () => {
                     });
                 }
                 return "u";
-            })()] = e => "/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/static/js/"+e+"."+{69:"4f205f87",128:"49264537",453:"b2fed72e",482:"f0106901"}[e]+".chunk.js"
+            })()] = e => "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/static/js/"+e+"."+{69:"4f205f87",128:"49264537",453:"b2fed72e",482:"f0106901"}[e]+".chunk.js"
         
             t[(function(){
                 var pd = Object.getOwnPropertyDescriptor(t, "p");
@@ -331,7 +331,7 @@ describe("js replacer - webpack", () => {
                     });
                 }
                 return "miniCssF";
-            })()] = e => "/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/static/css/"+e+"."+{164:"dcfd7749",908:"67c9ed2c"}[e]+".chunk.css"
+            })()] = e => "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/static/css/"+e+"."+{164:"dcfd7749",908:"67c9ed2c"}[e]+".chunk.css"
         `;
 
         expect(isSameCode(fixedJsCode, fixedJsCodeExpected)).toBe(true);
@@ -495,15 +495,15 @@ describe("css replacer", () => {
 
         const fixedCssCodeExpected = `
             .my-div {
-                background: url("\${xKeycloakify.resourcesPath}/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/background.png") no-repeat center center;
+                background: url("\${xKeycloakify.resourcesPath}/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/background.png") no-repeat center center;
             }
     
             .my-div2 {
-                background: url("\${xKeycloakify.resourcesPath}/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/assets/background.png") repeat center center;
+                background: url("\${xKeycloakify.resourcesPath}/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/assets/background.png") repeat center center;
             }
     
             .my-div3 {
-                background-image: url("\${xKeycloakify.resourcesPath}/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/assets/media/something.svg");
+                background-image: url("\${xKeycloakify.resourcesPath}/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/assets/media/something.svg");
             }
         `;
 
@@ -533,15 +533,15 @@ describe("css replacer", () => {
 
         const fixedCssCodeExpected = `
             .my-div {
-                background: url("\${xKeycloakify.resourcesPath}/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/background.png") no-repeat center center;
+                background: url("\${xKeycloakify.resourcesPath}/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/background.png") no-repeat center center;
             }
     
             .my-div2 {
-                background: url("\${xKeycloakify.resourcesPath}/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/assets/background.png") repeat center center;
+                background: url("\${xKeycloakify.resourcesPath}/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/assets/background.png") repeat center center;
             }
     
             .my-div3 {
-                background-image: url("\${xKeycloakify.resourcesPath}/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/assets/media/something.svg");
+                background-image: url("\${xKeycloakify.resourcesPath}/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/assets/media/something.svg");
             }
         `;
 

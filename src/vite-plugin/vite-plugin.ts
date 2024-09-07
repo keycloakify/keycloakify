@@ -1,8 +1,7 @@
 import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path";
 import type { Plugin } from "vite";
 import {
-    BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR,
-    KEYCLOAK_RESOURCES,
+    WELL_KNOWN_DIRECTORY_BASE_NAME,
     VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES
 } from "../bin/shared/constants";
 import { id } from "tsafe/id";
@@ -128,14 +127,8 @@ export function keycloakify(params: keycloakify.Params) {
                 }
             });
 
-            await Promise.all([
-                copyKeycloakResourcesToPublic({
-                    buildContext
-                }),
-                generateKcGenTs({
-                    buildContext
-                })
-            ]);
+            copyKeycloakResourcesToPublic({ buildContext }),
+                await generateKcGenTs({ buildContext });
         },
         transform: (code, id) => {
             assert(command !== undefined);
@@ -174,7 +167,7 @@ export function keycloakify(params: keycloakify.Params) {
                     `(`,
                     `(window.kcContext === undefined || import.meta.env.MODE === "development")?`,
                     `"${urlPathname ?? "/"}":`,
-                    `(window.kcContext["x-keycloakify"].resourcesPath + "/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/")`,
+                    `(window.kcContext["x-keycloakify"].resourcesPath + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/")`,
                     `)`
                 ].join("")
             );
@@ -207,10 +200,13 @@ export function keycloakify(params: keycloakify.Params) {
 
             assert(buildDirPath !== undefined);
 
-            await rm(pathJoin(buildDirPath, KEYCLOAK_RESOURCES), {
-                recursive: true,
-                force: true
-            });
+            await rm(
+                pathJoin(buildDirPath, WELL_KNOWN_DIRECTORY_BASE_NAME.DOT_KEYCLOAKIFY),
+                {
+                    recursive: true,
+                    force: true
+                }
+            );
         }
     } satisfies Plugin;
 

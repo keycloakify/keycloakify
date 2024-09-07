@@ -1,4 +1,4 @@
-import { BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR } from "../../../shared/constants";
+import { WELL_KNOWN_DIRECTORY_BASE_NAME } from "../../../shared/constants";
 import { assert } from "tsafe/assert";
 import type { BuildContext } from "../../../shared/buildContext";
 import * as nodePath from "path";
@@ -85,13 +85,13 @@ export function replaceImportsInJsCode_vite(params: {
                 fixedJsCode = replaceAll(
                     fixedJsCode,
                     `"${relativePathOfAssetFile}"`,
-                    `(window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/${relativePathOfAssetFile}")`
+                    `(window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/${relativePathOfAssetFile}")`
                 );
 
                 fixedJsCode = replaceAll(
                     fixedJsCode,
                     `"${buildContext.urlPathname ?? "/"}${relativePathOfAssetFile}"`,
-                    `(window.kcContext["x-keycloakify"].resourcesPath + "/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/${relativePathOfAssetFile}")`
+                    `(window.kcContext["x-keycloakify"].resourcesPath + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/${relativePathOfAssetFile}")`
                 );
             });
     }

@@ -8,15 +8,12 @@ import {
 } from "path";
 import { assert } from "tsafe/assert";
 import { same } from "evt/tools/inDepth";
-import { crawl } from "../src/bin/tools/crawl";
-import { downloadKeycloakDefaultTheme } from "../src/bin/shared/downloadKeycloakDefaultTheme";
-import { getThisCodebaseRootDirPath } from "../src/bin/tools/getThisCodebaseRootDirPath";
-import { deepAssign } from "../src/tools/deepAssign";
-import { getProxyFetchOptions } from "../src/bin/tools/fetchProxyOptions";
-import {
-    THEME_TYPES,
-    LAST_KEYCLOAK_VERSION_WITH_ACCOUNT_V1
-} from "../src/bin/shared/constants";
+import { crawl } from "../../src/bin/tools/crawl";
+import { downloadKeycloakDefaultTheme } from "./downloadKeycloakDefaultTheme";
+import { getThisCodebaseRootDirPath } from "../../src/bin/tools/getThisCodebaseRootDirPath";
+import { deepAssign } from "../../src/tools/deepAssign";
+import { THEME_TYPES } from "../../src/bin/shared/constants";
+import { KEYCLOAK_VERSION } from "./constants";
 
 // NOTE: To run without argument when we want to generate src/i18n/generated_kcMessages files,
 // update the version array for generating for newer version.
@@ -24,7 +21,7 @@ import {
 //@ts-ignore
 const propertiesParser = require("properties-parser");
 
-async function main() {
+export async function generateI18nMessages() {
     const thisCodebaseRootDirPath = getThisCodebaseRootDirPath();
 
     type Dictionary = { [idiomId: string]: string };
@@ -32,30 +29,19 @@ async function main() {
     const record: { [themeType: string]: { [language: string]: Dictionary } } = {};
 
     for (const themeType of THEME_TYPES) {
-        const { defaultThemeDirPath } = await downloadKeycloakDefaultTheme({
+        const { extractedDirPath } = await downloadKeycloakDefaultTheme({
             keycloakVersion: (() => {
                 switch (themeType) {
                     case "login":
-                        return "25.0.4";
+                        return KEYCLOAK_VERSION.FOR_LOGIN_THEME;
                     case "account":
-                        return LAST_KEYCLOAK_VERSION_WITH_ACCOUNT_V1;
+                        return KEYCLOAK_VERSION.FOR_ACCOUNT_MULTI_PAGE;
                 }
-            })(),
-            buildContext: {
-                cacheDirPath: pathJoin(
-                    thisCodebaseRootDirPath,
-                    "node_modules",
-                    ".cache",
-                    "keycloakify"
-                ),
-                fetchOptions: getProxyFetchOptions({
-                    npmConfigGetCwd: thisCodebaseRootDirPath
-                })
-            }
+            })()
         });
 
         {
-            const baseThemeDirPath = pathJoin(defaultThemeDirPath, "base");
+            const baseThemeDirPath = pathJoin(extractedDirPath, "base");
             const re = new RegExp(
                 `^([^\\${pathSep}]+)\\${pathSep}messages\\${pathSep}messages_([^.]+).properties$`
             );
@@ -597,30 +583,34 @@ const keycloakifyExtraMessages_login: Record<
     /* spell-checker: enable */
 };
 
+export const accountMultiPageSupportedLanguages = [
+    "en",
+    "ar",
+    "ca",
+    "cs",
+    "da",
+    "de",
+    "es",
+    "fi",
+    "fr",
+    "hu",
+    "it",
+    "ja",
+    "lt",
+    "lv",
+    "nl",
+    "no",
+    "pl",
+    "pt-BR",
+    "ru",
+    "sk",
+    "sv",
+    "tr",
+    "zh-CN"
+] as const;
+
 const keycloakifyExtraMessages_account: Record<
-    | "en"
-    | "ar"
-    | "ca"
-    | "cs"
-    | "da"
-    | "de"
-    | "es"
-    | "fi"
-    | "fr"
-    | "hu"
-    | "it"
-    | "ja"
-    | "lt"
-    | "lv"
-    | "nl"
-    | "no"
-    | "pl"
-    | "pt-BR"
-    | "ru"
-    | "sk"
-    | "sv"
-    | "tr"
-    | "zh-CN",
+    (typeof accountMultiPageSupportedLanguages)[number],
     Record<"newPasswordSameAsOld" | "passwordConfirmNotMatch", string>
 > = {
     en: {
@@ -719,7 +709,3 @@ const keycloakifyExtraMessages_account: Record<
     }
     /* spell-checker: enable */
 };
-
-if (require.main === module) {
-    main();
-}

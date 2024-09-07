@@ -4,6 +4,7 @@ import { join } from "path";
 import { assert } from "tsafe/assert";
 import { transformCodebase } from "../src/bin/tools/transformCodebase";
 import chalk from "chalk";
+import { WELL_KNOWN_DIRECTORY_BASE_NAME } from "../src/bin/shared/constants";
 
 console.log(chalk.cyan("Building Keycloakify..."));
 
@@ -136,9 +137,17 @@ fs.rmSync(join("dist", "ncc_out"), { recursive: true });
     assert(hasBeenPatched);
 }
 
-fs.rmSync(join("dist", "src"), { recursive: true, force: true });
+for (const dirBasename of [
+    "src",
+    WELL_KNOWN_DIRECTORY_BASE_NAME.RESOURCES,
+    WELL_KNOWN_DIRECTORY_BASE_NAME.ACCOUNT_V1
+]) {
+    const destDirPath = join("dist", dirBasename);
 
-fs.cpSync("src", join("dist", "src"), { recursive: true });
+    fs.rmSync(destDirPath, { recursive: true, force: true });
+
+    fs.cpSync(dirBasename, destDirPath, { recursive: true });
+}
 
 transformCodebase({
     srcDirPath: join("stories"),

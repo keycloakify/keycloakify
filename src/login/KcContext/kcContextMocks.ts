@@ -1,8 +1,7 @@
 import "keycloakify/tools/Object.fromEntries";
 import type { KcContext, Attribute } from "./KcContext";
 import {
-    RESOURCES_COMMON,
-    KEYCLOAK_RESOURCES,
+    WELL_KNOWN_DIRECTORY_BASE_NAME,
     type LoginThemePageId
 } from "keycloakify/bin/shared/constants";
 import { id } from "tsafe/id";
@@ -76,7 +75,7 @@ const attributesByName = Object.fromEntries(
     ]).map(attribute => [attribute.name, attribute])
 );
 
-const resourcesPath = `${BASE_URL}${KEYCLOAK_RESOURCES}/login/resources`;
+const resourcesPath = `${BASE_URL}${WELL_KNOWN_DIRECTORY_BASE_NAME.DOT_KEYCLOAKIFY}/login`;
 
 export const kcContextCommonMock: KcContext.Common = {
     themeVersion: "0.0.0",
@@ -86,7 +85,7 @@ export const kcContextCommonMock: KcContext.Common = {
     url: {
         loginAction: "#",
         resourcesPath,
-        resourcesCommonPath: `${resourcesPath}/${RESOURCES_COMMON}`,
+        resourcesCommonPath: `${resourcesPath}/${WELL_KNOWN_DIRECTORY_BASE_NAME.RESOURCES_COMMON}`,
         loginRestartFlowUrl: "#",
         loginUrl: "#",
         ssoLoginInOtherTabsUrl: "#"

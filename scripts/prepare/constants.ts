@@ -1,0 +1,4 @@
+export const KEYCLOAK_VERSION = {
+    FOR_LOGIN_THEME: "25.0.4",
+    FOR_ACCOUNT_MULTI_PAGE: "21.1.2"
+};
