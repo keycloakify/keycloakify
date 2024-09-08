@@ -152,7 +152,6 @@ export declare namespace KcContext {
         authenticationSession?: {
             authSessionId: string;
             tabId: string;
-            ssoLoginInOtherTabsUrl: string;
         };
         properties: {};
         "x-keycloakify": {

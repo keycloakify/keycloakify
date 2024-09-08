@@ -8,7 +8,7 @@ import { assert, type Equals } from "tsafe/assert";
 const KEYCLOAK_VERSION = {
     FOR_LOGIN_THEME: "25.0.4",
     FOR_ACCOUNT_MULTI_PAGE: "21.1.2",
-    LAST_24: "24.0.4"
+    LAST_24: "24.0.6"
 } as const;
 
 export async function downloadKeycloakDefaultTheme(params: {
