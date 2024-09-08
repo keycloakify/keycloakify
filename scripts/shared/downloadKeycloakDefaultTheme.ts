@@ -8,7 +8,7 @@ import { assert, type Equals } from "tsafe/assert";
 const KEYCLOAK_VERSION = {
     FOR_LOGIN_THEME: "25.0.4",
     FOR_ACCOUNT_MULTI_PAGE: "21.1.2",
-    LAST_24: "24.0.6"
+    LAST_24: "24.0.4"
 } as const;
 
 export async function downloadKeycloakDefaultTheme(params: {
@@ -295,7 +295,8 @@ export async function downloadKeycloakDefaultTheme(params: {
                                 "OpenSans-Semibold-webfont.woff2"
                             ),
                             pathJoin("patternfly", "dist", "img", "bg-login.jpg"),
-                            pathJoin("jquery", "dist", "jquery.min.js")
+                            pathJoin("jquery", "dist", "jquery.min.js"),
+                            pathJoin("rfc4648", "lib", "rfc4648.js")
                         ]);
                     }
 
@@ -330,6 +331,16 @@ export async function downloadKeycloakDefaultTheme(params: {
                         break skip_rollup_config;
                     }
 
+                    return;
+                }
+
+                skip_package_json: {
+                    if (
+                        fileRelativePath !==
+                        pathJoin("keycloak", "common", "resources", "package.json")
+                    ) {
+                        break skip_package_json;
+                    }
                     return;
                 }
             }
