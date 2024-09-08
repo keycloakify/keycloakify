@@ -1,23 +1,21 @@
 import * as fs from "fs";
 import { join as pathJoin } from "path";
-import { KEYCLOAK_VERSION } from "./constants";
+import { KEYCLOAK_VERSION } from "../shared/constants";
 import { transformCodebase } from "../../src/bin/tools/transformCodebase";
-import { downloadKeycloakDefaultTheme } from "./downloadKeycloakDefaultTheme";
+import { downloadKeycloakDefaultTheme } from "../shared/downloadKeycloakDefaultTheme";
 import { WELL_KNOWN_DIRECTORY_BASE_NAME } from "../../src/bin/shared/constants";
 import { getThisCodebaseRootDirPath } from "../../src/bin/tools/getThisCodebaseRootDirPath";
-import { accountMultiPageSupportedLanguages } from "./generateI18nMessages";
+import { accountMultiPageSupportedLanguages } from "../generate-i18n-messages";
+import * as fsPr from "fs/promises";
 
 export async function createAccountV1Dir() {
     const { extractedDirPath } = await downloadKeycloakDefaultTheme({
         keycloakVersion: KEYCLOAK_VERSION.FOR_ACCOUNT_MULTI_PAGE
     });
 
-    // TODO: Exclude unused resources.
+    const destDirPath = pathJoin(getThisCodebaseRootDirPath(), "dist", "account-v1");
 
-    const destDirPath = pathJoin(
-        getThisCodebaseRootDirPath(),
-        WELL_KNOWN_DIRECTORY_BASE_NAME.ACCOUNT_V1
-    );
+    await fsPr.rm(destDirPath, { recursive: true, force: true });
 
     transformCodebase({
         srcDirPath: pathJoin(extractedDirPath, "base", "account"),

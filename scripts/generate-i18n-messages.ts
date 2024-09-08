@@ -8,20 +8,19 @@ import {
 } from "path";
 import { assert } from "tsafe/assert";
 import { same } from "evt/tools/inDepth";
-import { crawl } from "../../src/bin/tools/crawl";
-import { downloadKeycloakDefaultTheme } from "./downloadKeycloakDefaultTheme";
-import { getThisCodebaseRootDirPath } from "../../src/bin/tools/getThisCodebaseRootDirPath";
-import { deepAssign } from "../../src/tools/deepAssign";
-import { THEME_TYPES } from "../../src/bin/shared/constants";
-import { KEYCLOAK_VERSION } from "./constants";
+import { crawl } from "../src/bin/tools/crawl";
+import { downloadKeycloakDefaultTheme } from "./shared/downloadKeycloakDefaultTheme";
+import { getThisCodebaseRootDirPath } from "../src/bin/tools/getThisCodebaseRootDirPath";
+import { deepAssign } from "../src/tools/deepAssign";
+import { THEME_TYPES } from "../src/bin/shared/constants";
+import { KEYCLOAK_VERSION } from "./shared/constants";
+const propertiesParser: any = require("properties-parser");
 
-// NOTE: To run without argument when we want to generate src/i18n/generated_kcMessages files,
-// update the version array for generating for newer version.
+if (require.main === module) {
+    generateI18nMessages();
+}
 
-//@ts-ignore
-const propertiesParser = require("properties-parser");
-
-export async function generateI18nMessages() {
+async function generateI18nMessages() {
     const thisCodebaseRootDirPath = getThisCodebaseRootDirPath();
 
     type Dictionary = { [idiomId: string]: string };

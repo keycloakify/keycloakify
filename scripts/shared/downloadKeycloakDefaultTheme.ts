@@ -18,7 +18,7 @@ export async function downloadKeycloakDefaultTheme(params: { keycloakVersion: st
         fetchOptions: getProxyFetchOptions({
             npmConfigGetCwd: getThisCodebaseRootDirPath()
         }),
-        uniqueIdOfOnArchiveFile: "downloadKeycloakDefaultTheme",
+        uniqueIdOfOnArchiveFile: "extractOnlyRequiredFiles",
         onArchiveFile: async ({ fileRelativePath, writeFile }) => {
             const fileRelativePath_target = pathRelative("theme", fileRelativePath);
 

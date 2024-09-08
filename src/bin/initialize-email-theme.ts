@@ -1,10 +1,10 @@
-import { downloadKeycloakDefaultTheme } from "./shared/downloadKeycloakDefaultTheme";
 import { join as pathJoin, relative as pathRelative } from "path";
 import { transformCodebase } from "./tools/transformCodebase";
 import { promptKeycloakVersion } from "./shared/promptKeycloakVersion";
 import { getBuildContext } from "./shared/buildContext";
 import * as fs from "fs";
 import type { CliCommandOptions } from "./main";
+import { downloadAndExtractArchive } from "./tools/downloadAndExtractArchive";
 
 export async function command(params: { cliCommandOptions: CliCommandOptions }) {
     const { cliCommandOptions } = params;
@@ -13,9 +13,12 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     const emailThemeSrcDirPath = pathJoin(buildContext.themeSrcDirPath, "email");
 
-    if (fs.existsSync(emailThemeSrcDirPath)) {
+    if (
+        fs.existsSync(emailThemeSrcDirPath) &&
+        fs.readdirSync(emailThemeSrcDirPath).length > 0
+    ) {
         console.warn(
-            `There is already a ${pathRelative(
+            `There is already a non empty ${pathRelative(
                 process.cwd(),
                 emailThemeSrcDirPath
             )} directory in your project. Aborting.`
@@ -34,13 +37,27 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         buildContext
     });
 
-    const { defaultThemeDirPath } = await downloadKeycloakDefaultTheme({
-        keycloakVersion,
-        buildContext
+    const { extractedDirPath } = await downloadAndExtractArchive({
+        url: `https://repo1.maven.org/maven2/org/keycloak/keycloak-themes/${keycloakVersion}/keycloak-themes-${keycloakVersion}.jar`,
+        cacheDirPath: buildContext.cacheDirPath,
+        fetchOptions: buildContext.fetchOptions,
+        uniqueIdOfOnArchiveFile: "extractOnlyEmailTheme",
+        onArchiveFile: async ({ fileRelativePath, writeFile }) => {
+            const fileRelativePath_target = pathRelative(
+                pathJoin("theme", "base", "email"),
+                fileRelativePath
+            );
+
+            if (fileRelativePath_target.startsWith("..")) {
+                return;
+            }
+
+            await writeFile({ fileRelativePath: fileRelativePath_target });
+        }
     });
 
     transformCodebase({
-        srcDirPath: pathJoin(defaultThemeDirPath, "base", "email"),
+        srcDirPath: extractedDirPath,
         destDirPath: emailThemeSrcDirPath
     });
 

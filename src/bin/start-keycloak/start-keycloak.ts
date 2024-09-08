@@ -2,7 +2,7 @@ import { getBuildContext } from "../shared/buildContext";
 import { exclude } from "tsafe/exclude";
 import type { CliCommandOptions as CliCommandOptions_common } from "../main";
 import { promptKeycloakVersion } from "../shared/promptKeycloakVersion";
-import { ACCOUNT_V1_THEME_NAME, CONTAINER_NAME } from "../shared/constants";
+import { CONTAINER_NAME } from "../shared/constants";
 import { SemVer } from "../tools/SemVer";
 import { assert, type Equals } from "tsafe/assert";
 import * as fs from "fs";
@@ -409,13 +409,9 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         ...[
             ...buildContext.themeNames,
             ...(fs.existsSync(
-                pathJoin(
-                    buildContext.keycloakifyBuildDirPath,
-                    "theme",
-                    ACCOUNT_V1_THEME_NAME
-                )
+                pathJoin(buildContext.keycloakifyBuildDirPath, "theme", "account-v1")
             )
-                ? [ACCOUNT_V1_THEME_NAME]
+                ? ["account-v1"]
                 : [])
         ]
             .map(themeName => ({

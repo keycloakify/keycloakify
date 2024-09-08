@@ -1,10 +1,8 @@
 export const WELL_KNOWN_DIRECTORY_BASE_NAME = {
     DOT_KEYCLOAKIFY: ".keycloakify",
     RESOURCES_COMMON: "resources-common",
-    DIST: "dist",
-    RESOURCES: "resources",
-    ACCOUNT_V1: "account-v1"
-};
+    DIST: "dist"
+} as const;
 
 export const THEME_TYPES = ["login", "account"] as const;
 

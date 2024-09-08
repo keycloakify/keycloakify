@@ -7,8 +7,8 @@
         "url": "git://github.com/keycloakify/keycloakify.git"
     },
     "scripts": {
-        "prepare": "tsx scripts/prepare/main.ts",
-        "build": "tsx scripts/build.ts",
+        "prepare": "tsx scripts/generate-i18n-messages.ts",
+        "build": "tsx scripts/build/main.ts",
         "storybook": "tsx scripts/start-storybook.ts",
         "link-in-starter": "tsx scripts/link-in-starter.ts",
         "test": "yarn test:types && vitest run",

@@ -50,8 +50,6 @@ jspm_packages
 
 /src/login/i18n/messages_defaultSet/
 /src/account/i18n/messages_defaultSet/
-/resources/
-/account-v1/
 
 # VS Code devcontainers
 .devcontainer

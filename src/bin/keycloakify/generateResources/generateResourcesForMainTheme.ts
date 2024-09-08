@@ -254,7 +254,8 @@ export async function generateResourcesForMainTheme(params: {
             transformCodebase({
                 srcDirPath: pathJoin(
                     getThisCodebaseRootDirPath(),
-                    WELL_KNOWN_DIRECTORY_BASE_NAME.RESOURCES,
+                    "public",
+                    WELL_KNOWN_DIRECTORY_BASE_NAME.DOT_KEYCLOAKIFY,
                     themeType
                 ),
                 destDirPath: pathJoin(themeTypeDirPath, "resources")
@@ -309,10 +310,7 @@ export async function generateResourcesForMainTheme(params: {
         }
 
         transformCodebase({
-            srcDirPath: pathJoin(
-                getThisCodebaseRootDirPath(),
-                WELL_KNOWN_DIRECTORY_BASE_NAME.ACCOUNT_V1
-            ),
+            srcDirPath: pathJoin(getThisCodebaseRootDirPath(), "account-v1"),
             destDirPath: pathJoin(resourcesDirPath, "theme", "account-v1", "account")
         });
     }
