@@ -13,7 +13,12 @@ export async function createAccountV1Dir() {
         keycloakVersion: KEYCLOAK_VERSION.FOR_ACCOUNT_MULTI_PAGE
     });
 
-    const destDirPath = pathJoin(getThisCodebaseRootDirPath(), "dist", "account-v1");
+    const destDirPath = pathJoin(
+        getThisCodebaseRootDirPath(),
+        "dist",
+        "res",
+        "account-v1"
+    );
 
     await fsPr.rm(destDirPath, { recursive: true, force: true });
 

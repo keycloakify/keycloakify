@@ -65,6 +65,7 @@ export function copyKeycloakResourcesToPublic(params: {
     transformCodebase({
         srcDirPath: pathJoin(
             getThisCodebaseRootDirPath(),
+            "res",
             "public",
             WELL_KNOWN_DIRECTORY_BASE_NAME.DOT_KEYCLOAKIFY
         ),

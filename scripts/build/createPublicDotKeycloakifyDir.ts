@@ -28,6 +28,7 @@ export async function createPublicDotKeycloakifyDir() {
             const destDirPath = pathJoin(
                 getThisCodebaseRootDirPath(),
                 "dist",
+                "res",
                 "public",
                 WELL_KNOWN_DIRECTORY_BASE_NAME.DOT_KEYCLOAKIFY,
                 themeType

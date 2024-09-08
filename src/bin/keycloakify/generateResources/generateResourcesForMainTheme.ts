@@ -310,7 +310,7 @@ export async function generateResourcesForMainTheme(params: {
         }
 
         transformCodebase({
-            srcDirPath: pathJoin(getThisCodebaseRootDirPath(), "account-v1"),
+            srcDirPath: pathJoin(getThisCodebaseRootDirPath(), "res", "account-v1"),
             destDirPath: pathJoin(resourcesDirPath, "theme", "account-v1", "account")
         });
     }

@@ -67,7 +67,10 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         fs.writeFileSync(
             themePropertyFilePath,
             Buffer.from(
-                `parent=base\n${fs.readFileSync(themePropertyFilePath).toString("utf8")}`,
+                [
+                    `parent=base`,
+                    fs.readFileSync(themePropertyFilePath).toString("utf8")
+                ].join("\n"),
                 "utf8"
             )
         );
