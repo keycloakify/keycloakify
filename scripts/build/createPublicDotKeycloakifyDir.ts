@@ -1,6 +1,5 @@
 import { join as pathJoin } from "path";
 import { downloadKeycloakDefaultTheme } from "../shared/downloadKeycloakDefaultTheme";
-import { KEYCLOAK_VERSION } from "../shared/constants";
 import { transformCodebase } from "../../src/bin/tools/transformCodebase";
 import { existsAsync } from "../../src/bin/tools/fs.existsAsync";
 import { getThisCodebaseRootDirPath } from "../../src/bin/tools/getThisCodebaseRootDirPath";
@@ -11,18 +10,16 @@ import * as fsPr from "fs/promises";
 export async function createPublicDotKeycloakifyDir() {
     await Promise.all(
         (["login", "account"] as const).map(async themeType => {
-            const keycloakVersion = (() => {
-                switch (themeType) {
-                    case "login":
-                        return KEYCLOAK_VERSION.FOR_LOGIN_THEME;
-                    case "account":
-                        return KEYCLOAK_VERSION.FOR_ACCOUNT_MULTI_PAGE;
-                }
-                assert<Equals<typeof themeType, never>>();
-            })();
-
             const { extractedDirPath } = await downloadKeycloakDefaultTheme({
-                keycloakVersion
+                keycloakVersionId: (() => {
+                    switch (themeType) {
+                        case "login":
+                            return "FOR_LOGIN_THEME";
+                        case "account":
+                            return "FOR_ACCOUNT_MULTI_PAGE";
+                    }
+                    assert<Equals<typeof themeType, never>>();
+                })()
             });
 
             const destDirPath = pathJoin(

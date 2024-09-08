@@ -6,14 +6,13 @@ import {
     dirname as pathDirname,
     sep as pathSep
 } from "path";
-import { assert } from "tsafe/assert";
+import { assert, type Equals } from "tsafe/assert";
 import { same } from "evt/tools/inDepth";
 import { crawl } from "../src/bin/tools/crawl";
 import { downloadKeycloakDefaultTheme } from "./shared/downloadKeycloakDefaultTheme";
 import { getThisCodebaseRootDirPath } from "../src/bin/tools/getThisCodebaseRootDirPath";
 import { deepAssign } from "../src/tools/deepAssign";
 import { THEME_TYPES } from "../src/bin/shared/constants";
-import { KEYCLOAK_VERSION } from "./shared/constants";
 const propertiesParser: any = require("properties-parser");
 
 if (require.main === module) {
@@ -29,13 +28,14 @@ async function generateI18nMessages() {
 
     for (const themeType of THEME_TYPES) {
         const { extractedDirPath } = await downloadKeycloakDefaultTheme({
-            keycloakVersion: (() => {
+            keycloakVersionId: (() => {
                 switch (themeType) {
                     case "login":
-                        return KEYCLOAK_VERSION.FOR_LOGIN_THEME;
+                        return "FOR_LOGIN_THEME";
                     case "account":
-                        return KEYCLOAK_VERSION.FOR_ACCOUNT_MULTI_PAGE;
+                        return "FOR_ACCOUNT_MULTI_PAGE";
                 }
+                assert<Equals<typeof themeType, never>>();
             })()
         });
 

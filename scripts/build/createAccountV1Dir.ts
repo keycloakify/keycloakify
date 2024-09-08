@@ -1,6 +1,5 @@
 import * as fs from "fs";
 import { join as pathJoin } from "path";
-import { KEYCLOAK_VERSION } from "../shared/constants";
 import { transformCodebase } from "../../src/bin/tools/transformCodebase";
 import { downloadKeycloakDefaultTheme } from "../shared/downloadKeycloakDefaultTheme";
 import { WELL_KNOWN_DIRECTORY_BASE_NAME } from "../../src/bin/shared/constants";
@@ -10,7 +9,7 @@ import * as fsPr from "fs/promises";
 
 export async function createAccountV1Dir() {
     const { extractedDirPath } = await downloadKeycloakDefaultTheme({
-        keycloakVersion: KEYCLOAK_VERSION.FOR_ACCOUNT_MULTI_PAGE
+        keycloakVersionId: "FOR_ACCOUNT_MULTI_PAGE"
     });
 
     const destDirPath = pathJoin(
