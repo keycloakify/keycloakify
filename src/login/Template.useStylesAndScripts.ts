@@ -14,22 +14,18 @@ export type KcContextLike = {
         currentLanguageTag: string;
     };
     scripts: string[];
-    authenticationSession?: {
-        authSessionId: string;
-        tabId: string;
-    };
 };
 
 assert<keyof KcContextLike extends keyof KcContext ? true : false>();
 assert<KcContext extends KcContextLike ? true : false>();
 
-export function useInitTemplate(params: {
+export function useStylesAndScripts(params: {
     kcContext: KcContextLike;
     doUseDefaultCss: boolean;
 }) {
     const { kcContext, doUseDefaultCss } = params;
 
-    const { url, locale, scripts, authenticationSession } = kcContext;
+    const { url, locale, scripts } = kcContext;
 
     useEffect(() => {
         const { currentLanguageTag } = locale ?? {};
@@ -60,32 +56,31 @@ export function useInitTemplate(params: {
         componentOrHookName: "Template",
         scriptTags: [
             {
+                type: "importmap",
+                textContent: JSON.stringify({
+                    imports: {
+                        rfc4648: `${url.resourcesCommonPath}/node_modules/rfc4648/lib/rfc4648.js`
+                    }
+                })
+            },
+            {
                 type: "module",
                 src: `${url.resourcesPath}/js/menu-button-links.js`
             },
-            ...(authenticationSession === undefined
-                ? []
-                : [
-                      {
-                          type: "module",
-                          textContent: [
-                              `import { checkCookiesAndSetTimer } from "${url.resourcesPath}/js/authChecker.js";`,
-                              ``,
-                              `checkCookiesAndSetTimer(`,
-                              `  "${authenticationSession.authSessionId}",`,
-                              `  "${authenticationSession.tabId}",`,
-                              `  "${url.ssoLoginInOtherTabsUrl}"`,
-                              `);`
-                          ].join("\n")
-                      } as const
-                  ]),
-            ...scripts.map(
-                script =>
-                    ({
-                        type: "text/javascript",
-                        src: script
-                    }) as const
-            )
+            ...scripts.map(src => ({
+                type: "text/javascript" as const,
+                src
+            })),
+            {
+                type: "module",
+                textContent: `
+                    import { checkCookiesAndSetTimer } from "${url.resourcesPath}/js/authChecker.js";
+
+                    checkCookiesAndSetTimer(
+                        "${url.ssoLoginInOtherTabsUrl}"
+                    );
+                `
+            }
         ]
     });
 

@@ -149,10 +149,6 @@ export declare namespace KcContext {
 
             getFirstError: (...fieldNames: string[]) => string;
         };
-        authenticationSession?: {
-            authSessionId: string;
-            tabId: string;
-        };
         properties: {};
         "x-keycloakify": {
             messages: Record<string, string>;
@@ -593,7 +589,7 @@ export declare namespace KcContext {
         challenge: string;
         userVerification: string;
         rpId: string;
-        createTimeout: number | string;
+        createTimeout: number;
 
         authenticators?: {
             authenticators: WebauthnAuthenticate.WebauthnAuthenticator[];

@@ -68,27 +68,6 @@ export async function createPublicDotKeycloakifyDir() {
                     WELL_KNOWN_DIRECTORY_BASE_NAME.RESOURCES_COMMON
                 )
             });
-
-            copy_v24_js: {
-                if (themeType !== "login") {
-                    break copy_v24_js;
-                }
-
-                const { extractedDirPath } = await downloadKeycloakDefaultTheme({
-                    keycloakVersionId: "LAST_24"
-                });
-
-                transformCodebase({
-                    srcDirPath: pathJoin(
-                        extractedDirPath,
-                        "base",
-                        "login",
-                        "resources",
-                        "js"
-                    ),
-                    destDirPath: pathJoin(destDirPath, "js", "v24")
-                });
-            }
         })
     );
 }

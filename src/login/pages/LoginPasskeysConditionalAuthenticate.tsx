@@ -1,33 +1,17 @@
-import { useEffect, Fragment } from "react";
+import { Fragment } from "react";
 import { clsx } from "keycloakify/tools/clsx";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
-import { useInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
 import { getKcClsx } from "keycloakify/login/lib/kcClsx";
-import { assert } from "keycloakify/tools/assert";
+import { useScript } from "keycloakify/login/pages/LoginPasskeysConditionalAuthenticate.useScript";
 import type { KcContext } from "../KcContext";
 import type { I18n } from "../i18n";
 
-// NOTE: From Keycloak 25.0.4
 export default function LoginPasskeysConditionalAuthenticate(
     props: PageProps<Extract<KcContext, { pageId: "login-passkeys-conditional-authenticate.ftl" }>, I18n>
 ) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
-    const {
-        messagesPerField,
-        login,
-        url,
-        usernameHidden,
-        shouldDisplayAuthenticators,
-        authenticators,
-        registrationDisabled,
-        realm,
-        isUserIdentified,
-        challenge,
-        userVerification,
-        rpId,
-        createTimeout
-    } = kcContext;
+    const { messagesPerField, login, url, usernameHidden, shouldDisplayAuthenticators, authenticators, registrationDisabled, realm } = kcContext;
 
     const { msg, msgStr, advancedMsg } = i18n;
 
@@ -36,46 +20,9 @@ export default function LoginPasskeysConditionalAuthenticate(
         classes
     });
 
-    const { insertScriptTags } = useInsertScriptTags({
-        componentOrHookName: "LoginRecoveryAuthnCodeConfig",
-        scriptTags: [
-            {
-                type: "module",
-                textContent: `
-                    import { authenticateByWebAuthn } from "${url.resourcesPath}/js/webauthnAuthenticate.js";
-                    import { initAuthenticate } from "${url.resourcesPath}/js/passkeysConditionalAuth.js";
+    const authButtonId = "authenticateWebAuthnButton";
 
-                    const authButton = document.getElementById('authenticateWebAuthnButton');
-                    const input = {
-                        isUserIdentified : ${isUserIdentified},
-                        challenge : '${challenge}',
-                        userVerification : '${userVerification}',
-                        rpId : '${rpId}',
-                        createTimeout : ${createTimeout},
-                        errmsg : "${msgStr("webauthn-unsupported-browser-text")}"
-                    };
-                    authButton.addEventListener("click", () => {
-                        authenticateByWebAuthn(input);
-                    });
-
-                    const args = {
-                        isUserIdentified : ${isUserIdentified},
-                        challenge : '${challenge}',
-                        userVerification : '${userVerification}',
-                        rpId : '${rpId}',
-                        createTimeout : ${createTimeout},
-                        errmsg : "${msgStr("passkey-unsupported-browser-text")}"
-                    };
-
-                    document.addEventListener("DOMContentLoaded", (event) => initAuthenticate(args));
-                `
-            }
-        ]
-    });
-
-    useEffect(() => {
-        insertScriptTags();
-    }, []);
+    useScript({ authButtonId, kcContext, i18n });
 
     return (
         <Template
@@ -213,29 +160,7 @@ export default function LoginPasskeysConditionalAuthenticate(
                                 )}
                                 <div id="kc-form-passkey-button" className={kcClsx("kcFormButtonsClass")} style={{ display: "none" }}>
                                     <input
-                                        id="authenticateWebAuthnButton"
-                                        type="button"
-                                        onClick={() => {
-                                            assert("doAuthenticate" in window);
-                                            assert(typeof window.doAuthenticate === "function");
-                                            window.doAuthenticate(
-                                                [],
-                                                rpId,
-                                                challenge,
-                                                typeof isUserIdentified === "boolean" ? isUserIdentified : isUserIdentified === "true",
-                                                createTimeout,
-                                                userVerification,
-                                                msgStr("passkey-unsupported-browser-text")
-                                            );
-                                        }}
-                                        autoFocus
-                                        value={msgStr("passkey-doAuthenticate")}
-                                        className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonBlockClass", "kcButtonLargeClass")}
-                                    />
-                                </div>
-                                <div id="kc-form-passkey-button" className={kcClsx("kcFormButtonsClass")} style={{ display: "none" }}>
-                                    <input
-                                        id="authenticateWebAuthnButton"
+                                        id={authButtonId}
                                         type="button"
                                         autoFocus
                                         value={msgStr("passkey-doAuthenticate")}

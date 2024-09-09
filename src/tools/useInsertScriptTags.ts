@@ -6,7 +6,7 @@ export type ScriptTag = ScriptTag.TextContent | ScriptTag.Src;
 
 export namespace ScriptTag {
     type Common = {
-        type: "text/javascript" | "module";
+        type: "text/javascript" | "module" | "importmap";
     };
 
     export type TextContent = Common & {
