@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { LazyOrNot } from "keycloakify/tools/LazyOrNot";
 import { getKcClsx, type KcClsx } from "keycloakify/login/lib/kcClsx";
+import { clsx } from "keycloakify/tools/clsx";
 import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFormFieldsProps";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
@@ -19,9 +20,10 @@ export default function Register(props: RegisterProps) {
         classes
     });
 
-    const { url, messagesPerField, recaptchaRequired, recaptchaSiteKey, termsAcceptanceRequired } = kcContext;
+    const { messageHeader, url, messagesPerField, recaptchaRequired, recaptchaVisible, recaptchaSiteKey, recaptchaAction, termsAcceptanceRequired } =
+        kcContext;
 
-    const { msg, msgStr } = i18n;
+    const { msg, msgStr, advancedMsg } = i18n;
 
     const [isFormSubmittable, setIsFormSubmittable] = useState(false);
     const [areTermsAccepted, setAreTermsAccepted] = useState(false);
@@ -32,7 +34,7 @@ export default function Register(props: RegisterProps) {
             i18n={i18n}
             doUseDefaultCss={doUseDefaultCss}
             classes={classes}
-            headerNode={msg("registerTitle")}
+            headerNode={messageHeader !== undefined ? advancedMsg(messageHeader) : msg("registerTitle")}
             displayMessage={messagesPerField.exists("global")}
             displayRequiredFields
         >
@@ -53,10 +55,10 @@ export default function Register(props: RegisterProps) {
                         onAreTermsAcceptedValueChange={setAreTermsAccepted}
                     />
                 )}
-                {recaptchaRequired && (
+                {recaptchaRequired && (recaptchaVisible || recaptchaAction === undefined) && (
                     <div className="form-group">
                         <div className={kcClsx("kcInputWrapperClass")}>
-                            <div className="g-recaptcha" data-size="compact" data-sitekey={recaptchaSiteKey}></div>
+                            <div className="g-recaptcha" data-size="compact" data-sitekey={recaptchaSiteKey} data-action={recaptchaAction}></div>
                         </div>
                     </div>
                 )}
@@ -68,14 +70,34 @@ export default function Register(props: RegisterProps) {
                             </span>
                         </div>
                     </div>
-                    <div id="kc-form-buttons" className={kcClsx("kcFormButtonsClass")}>
-                        <input
-                            disabled={!isFormSubmittable || (termsAcceptanceRequired && !areTermsAccepted)}
-                            className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonBlockClass", "kcButtonLargeClass")}
-                            type="submit"
-                            value={msgStr("doRegister")}
-                        />
-                    </div>
+
+                    {recaptchaRequired && !recaptchaVisible && recaptchaAction !== undefined ? (
+                        <div id="kc-form-buttons" className={kcClsx("kcFormButtonsClass")}>
+                            <button
+                                className={clsx(
+                                    kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonBlockClass", "kcButtonLargeClass"),
+                                    "g-recaptcha"
+                                )}
+                                data-sitekey={recaptchaSiteKey}
+                                data-callback={() => {
+                                    (document.getElementById("kc-register-form") as HTMLFormElement).submit();
+                                }}
+                                data-action={recaptchaAction}
+                                type="submit"
+                            >
+                                {msg("doRegister")}
+                            </button>
+                        </div>
+                    ) : (
+                        <div id="kc-form-buttons" className={kcClsx("kcFormButtonsClass")}>
+                            <input
+                                disabled={!isFormSubmittable || (termsAcceptanceRequired && !areTermsAccepted)}
+                                className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonBlockClass", "kcButtonLargeClass")}
+                                type="submit"
+                                value={msgStr("doRegister")}
+                            />
+                        </div>
+                    )}
                 </div>
             </form>
         </Template>

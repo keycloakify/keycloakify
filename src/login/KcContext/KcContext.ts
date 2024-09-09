@@ -208,9 +208,12 @@ export declare namespace KcContext {
             registrationAction: string;
         };
         passwordRequired: boolean;
-        recaptchaRequired: boolean;
+        recaptchaRequired?: boolean;
+        recaptchaVisible?: boolean;
         recaptchaSiteKey?: string;
+        recaptchaAction?: string;
         termsAcceptanceRequired?: boolean;
+        messageHeader?: string;
     };
 
     export type Info = Common & {
