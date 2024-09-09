@@ -19,6 +19,7 @@ assert<KcContext.LoginPasskeysConditionalAuthenticate extends KcContextLike ? tr
 
 type I18nLike = {
     msgStr: (key: "webauthn-unsupported-browser-text" | "passkey-unsupported-browser-text") => string;
+    isFetchingTranslations: boolean;
 };
 
 export function useScript(params: { authButtonId: string; kcContext: KcContextLike; i18n: I18nLike }) {
@@ -26,18 +27,18 @@ export function useScript(params: { authButtonId: string; kcContext: KcContextLi
 
     const { url, isUserIdentified, challenge, userVerification, rpId, createTimeout } = kcContext;
 
-    const { msgStr } = i18n;
+    const { msgStr, isFetchingTranslations } = i18n;
 
     const { insertScriptTags } = useInsertScriptTags({
         componentOrHookName: "LoginRecoveryAuthnCodeConfig",
         scriptTags: [
             {
                 type: "module",
-                textContent: `
+                textContent: () => `
                     import { authenticateByWebAuthn } from "${url.resourcesPath}/js/webauthnAuthenticate.js";
                     import { initAuthenticate } from "${url.resourcesPath}/js/passkeysConditionalAuth.js";
 
-                    const authButton = document.getElementById(${JSON.stringify(authButtonId)});
+                    const authButton = document.getElementById("${authButtonId}");
                     const input = {
                         isUserIdentified : ${isUserIdentified},
                         challenge : '${challenge}',
@@ -62,6 +63,10 @@ export function useScript(params: { authButtonId: string; kcContext: KcContextLi
     });
 
     useEffect(() => {
+        if (isFetchingTranslations) {
+            return;
+        }
+
         insertScriptTags();
-    }, []);
+    }, [isFetchingTranslations]);
 }
