@@ -326,9 +326,6 @@ export const kcContextMocks = [
         realm: {
             ...kcContextCommonMock.realm,
             resetPasswordAllowed: true
-        },
-        social: {
-            displayInfo: false
         }
     }),
     id<KcContext.WebauthnAuthenticate>({
@@ -349,9 +346,6 @@ export const kcContextMocks = [
         createTimeout: "0",
         isUserIdentified: "false",
         shouldDisplayAuthenticators: false,
-        social: {
-            displayInfo: false
-        },
         login: {}
     }),
     id<KcContext.LoginUpdatePassword>({
@@ -584,7 +578,7 @@ export const kcContextMocks = [
         challenge: "",
         userVerification: "not specified",
         rpId: "",
-        createTimeout: "0",
+        createTimeout: 0,
         authenticators: {
             authenticators: []
         },

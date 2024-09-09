@@ -188,7 +188,7 @@ export declare namespace KcContext {
             password?: string;
         };
         usernameHidden?: boolean;
-        social: {
+        social?: {
             displayInfo: boolean;
             providers?: {
                 loginUrl: string;
@@ -325,7 +325,7 @@ export declare namespace KcContext {
             rememberMe?: string;
         };
         usernameHidden?: boolean;
-        social: Login["social"];
+        social?: Login["social"];
     };
 
     export type LoginPassword = Common & {
@@ -343,9 +343,6 @@ export declare namespace KcContext {
             showTryAnotherWayLink?: boolean;
             attemptedUsername?: string;
         };
-        social: {
-            displayInfo: boolean;
-        };
     };
 
     export type WebauthnAuthenticate = Common & {
@@ -360,9 +357,6 @@ export declare namespace KcContext {
         createTimeout: string;
         isUserIdentified: "true" | "false";
         shouldDisplayAuthenticators: boolean;
-        social: {
-            displayInfo: boolean;
-        };
         login: {};
         realm: {
             password: boolean;
