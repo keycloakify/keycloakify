@@ -357,10 +357,9 @@ export declare namespace KcContext {
         // I hate this:
         userVerification: UserVerificationRequirement | "not specified";
         rpId: string;
-        createTimeout: string;
+        createTimeout: string | number;
         isUserIdentified: "true" | "false";
         shouldDisplayAuthenticators: boolean;
-        login: {};
         realm: {
             password: boolean;
             registrationAllowed: boolean;
@@ -395,7 +394,7 @@ export declare namespace KcContext {
         authenticatorAttachment: string;
         requireResidentKey: string;
         userVerificationRequirement: string;
-        createTimeout: number;
+        createTimeout: number | string;
         excludeCredentialIds: string;
         isSetRetry?: boolean;
         isAppInitiatedAction?: boolean;
@@ -586,7 +585,7 @@ export declare namespace KcContext {
         challenge: string;
         userVerification: string;
         rpId: string;
-        createTimeout: number;
+        createTimeout: number | string;
 
         authenticators?: {
             authenticators: WebauthnAuthenticate.WebauthnAuthenticator[];
