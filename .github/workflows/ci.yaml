@@ -49,7 +49,7 @@ jobs:
     - run: git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${{github.repository}}.git
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - run: npx -y -p gh-pages@3.1.0 gh-pages -d ./storybook-static -u "github-actions-bot <actions@github.com>" --dotfiles
+    - run: npx -y -p gh-pages@3.1.0 gh-pages -d ./storybook-static -u "github-actions-bot <actions@github.com>"
 
   check_if_version_upgraded:
     name: Check if version upgrade
