@@ -580,7 +580,7 @@ export declare namespace KcContext {
         url: {
             registrationUrl: string;
         };
-        registrationDisabled: boolean;
+        registrationDisabled?: boolean;
         isUserIdentified: boolean | "true" | "false";
         challenge: string;
         userVerification: string;
