@@ -11,7 +11,7 @@ type KcContextLike = {
     challenge: string;
     userVerification: string;
     rpId: string;
-    createTimeout: number;
+    createTimeout: number | string;
 };
 
 assert<keyof KcContextLike extends keyof KcContext.LoginPasskeysConditionalAuthenticate ? true : false>();
@@ -41,9 +41,9 @@ export function useScript(params: { authButtonId: string; kcContext: KcContextLi
                     const authButton = document.getElementById("${authButtonId}");
                     const input = {
                         isUserIdentified : ${isUserIdentified},
-                        challenge : '${challenge}',
-                        userVerification : '${userVerification}',
-                        rpId : '${rpId}',
+                        challenge : ${JSON.stringify(challenge)},
+                        userVerification : ${JSON.stringify(userVerification)},
+                        rpId : ${JSON.stringify(rpId)},
                         createTimeout : ${createTimeout}
                     };
                     authButton.addEventListener("click", () => {

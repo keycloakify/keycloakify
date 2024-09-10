@@ -345,8 +345,7 @@ export const kcContextMocks = [
         rpId: "",
         createTimeout: "0",
         isUserIdentified: "false",
-        shouldDisplayAuthenticators: false,
-        login: {}
+        shouldDisplayAuthenticators: false
     }),
     id<KcContext.LoginUpdatePassword>({
         ...kcContextCommonMock,

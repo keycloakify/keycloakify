@@ -30,7 +30,7 @@ export function useScript(params: { authButtonId: string; kcContext: KcContextLi
     const { msgStr, isFetchingTranslations } = i18n;
 
     const { insertScriptTags } = useInsertScriptTags({
-        componentOrHookName: "LoginRecoveryAuthnCodeConfig",
+        componentOrHookName: "WebauthnAuthenticate",
         scriptTags: [
             {
                 type: "module",
