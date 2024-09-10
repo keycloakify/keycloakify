@@ -1,6 +1,6 @@
 {
     "name": "keycloakify",
-    "version": "10.0.6",
+    "version": "10.1.0-rc.1",
     "description": "Create Keycloak themes using React",
     "repository": {
         "type": "git",
@@ -8,7 +8,7 @@
     },
     "scripts": {
         "prepare": "tsx scripts/generate-i18n-messages.ts",
-        "build": "tsx scripts/build.ts",
+        "build": "tsx scripts/build/main.ts",
         "storybook": "tsx scripts/start-storybook.ts",
         "link-in-starter": "tsx scripts/link-in-starter.ts",
         "test": "yarn test:types && vitest run",

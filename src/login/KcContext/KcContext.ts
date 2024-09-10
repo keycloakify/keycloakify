@@ -59,7 +59,9 @@ export type KcContext =
     | KcContext.LoginRecoveryAuthnCodeInput
     | KcContext.LoginResetOtp
     | KcContext.LoginX509Info
-    | KcContext.WebauthnError;
+    | KcContext.WebauthnError
+    | KcContext.LoginPasskeysConditionalAuthenticate
+    | KcContext.LoginIdpLinkConfirmOverride;
 
 assert<KcContext["themeType"] extends ThemeType ? true : false>();
 
@@ -147,11 +149,6 @@ export declare namespace KcContext {
 
             getFirstError: (...fieldNames: string[]) => string;
         };
-        authenticationSession?: {
-            authSessionId: string;
-            tabId: string;
-            ssoLoginInOtherTabsUrl: string;
-        };
         properties: {};
         "x-keycloakify": {
             messages: Record<string, string>;
@@ -191,7 +188,7 @@ export declare namespace KcContext {
             password?: string;
         };
         usernameHidden?: boolean;
-        social: {
+        social?: {
             displayInfo: boolean;
             providers?: {
                 loginUrl: string;
@@ -211,9 +208,12 @@ export declare namespace KcContext {
             registrationAction: string;
         };
         passwordRequired: boolean;
-        recaptchaRequired: boolean;
+        recaptchaRequired?: boolean;
+        recaptchaVisible?: boolean;
         recaptchaSiteKey?: string;
+        recaptchaAction?: string;
         termsAcceptanceRequired?: boolean;
+        messageHeader?: string;
     };
 
     export type Info = Common & {
@@ -328,7 +328,7 @@ export declare namespace KcContext {
             rememberMe?: string;
         };
         usernameHidden?: boolean;
-        social: Login["social"];
+        social?: Login["social"];
     };
 
     export type LoginPassword = Common & {
@@ -346,9 +346,6 @@ export declare namespace KcContext {
             showTryAnotherWayLink?: boolean;
             attemptedUsername?: string;
         };
-        social: {
-            displayInfo: boolean;
-        };
     };
 
     export type WebauthnAuthenticate = Common & {
@@ -360,13 +357,9 @@ export declare namespace KcContext {
         // I hate this:
         userVerification: UserVerificationRequirement | "not specified";
         rpId: string;
-        createTimeout: string;
+        createTimeout: string | number;
         isUserIdentified: "true" | "false";
         shouldDisplayAuthenticators: boolean;
-        social: {
-            displayInfo: boolean;
-        };
-        login: {};
         realm: {
             password: boolean;
             registrationAllowed: boolean;
@@ -401,7 +394,7 @@ export declare namespace KcContext {
         authenticatorAttachment: string;
         requireResidentKey: string;
         userVerificationRequirement: string;
-        createTimeout: number;
+        createTimeout: number | string;
         excludeCredentialIds: string;
         isSetRetry?: boolean;
         isAppInitiatedAction?: boolean;
@@ -576,6 +569,40 @@ export declare namespace KcContext {
     export type WebauthnError = Common & {
         pageId: "webauthn-error.ftl";
         isAppInitiatedAction?: boolean;
+    };
+
+    export type LoginPasskeysConditionalAuthenticate = Common & {
+        pageId: "login-passkeys-conditional-authenticate.ftl";
+        realm: {
+            registrationAllowed: boolean;
+            password: boolean;
+        };
+        url: {
+            registrationUrl: string;
+        };
+        registrationDisabled?: boolean;
+        isUserIdentified: boolean | "true" | "false";
+        challenge: string;
+        userVerification: string;
+        rpId: string;
+        createTimeout: number | string;
+
+        authenticators?: {
+            authenticators: WebauthnAuthenticate.WebauthnAuthenticator[];
+        };
+        shouldDisplayAuthenticators?: boolean;
+        usernameHidden?: boolean;
+        login: {
+            username?: string;
+        };
+    };
+
+    export type LoginIdpLinkConfirmOverride = Common & {
+        pageId: "login-idp-link-confirm-override.ftl";
+        url: {
+            loginRestartFlowUrl: string;
+        };
+        idpDisplayName: string;
     };
 }
 

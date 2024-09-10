@@ -1,11 +1,6 @@
 import { transformCodebase } from "../../tools/transformCodebase";
 import * as fs from "fs";
-import {
-    join as pathJoin,
-    resolve as pathResolve,
-    relative as pathRelative,
-    dirname as pathDirname
-} from "path";
+import { join as pathJoin, relative as pathRelative, dirname as pathDirname } from "path";
 import { replaceImportsInJsCode } from "../replacers/replaceImportsInJsCode";
 import { replaceImportsInCssCode } from "../replacers/replaceImportsInCssCode";
 import {
@@ -14,26 +9,15 @@ import {
 } from "../generateFtl";
 import {
     type ThemeType,
-    LAST_KEYCLOAK_VERSION_WITH_ACCOUNT_V1,
-    KEYCLOAK_RESOURCES,
-    ACCOUNT_V1_THEME_NAME,
-    BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR,
     LOGIN_THEME_PAGE_IDS,
-    ACCOUNT_THEME_PAGE_IDS
+    ACCOUNT_THEME_PAGE_IDS,
+    WELL_KNOWN_DIRECTORY_BASE_NAME
 } from "../../shared/constants";
 import type { BuildContext } from "../../shared/buildContext";
 import { assert, type Equals } from "tsafe/assert";
-import {
-    downloadKeycloakStaticResources,
-    type BuildContextLike as BuildContextLike_downloadKeycloakStaticResources
-} from "../../shared/downloadKeycloakStaticResources";
 import { readFieldNameUsage } from "./readFieldNameUsage";
 import { readExtraPagesNames } from "./readExtraPageNames";
 import { generateMessageProperties } from "./generateMessageProperties";
-import {
-    bringInAccountV1,
-    type BuildContextLike as BuildContextLike_bringInAccountV1
-} from "./bringInAccountV1";
 import { rmSync } from "../../tools/fs.rmSync";
 import { readThisNpmPackageVersion } from "../../tools/readThisNpmPackageVersion";
 import {
@@ -43,20 +27,18 @@ import {
 import { objectEntries } from "tsafe/objectEntries";
 import { escapeStringForPropertiesFile } from "../../tools/escapeStringForPropertiesFile";
 import * as child_process from "child_process";
+import { getThisCodebaseRootDirPath } from "../../tools/getThisCodebaseRootDirPath";
 
-export type BuildContextLike = BuildContextLike_kcContextExclusionsFtlCode &
-    BuildContextLike_downloadKeycloakStaticResources &
-    BuildContextLike_bringInAccountV1 & {
-        extraThemeProperties: string[] | undefined;
-        loginThemeResourcesFromKeycloakVersion: string;
-        projectDirPath: string;
-        projectBuildDirPath: string;
-        environmentVariables: { name: string; default: string }[];
-        implementedThemeTypes: BuildContext["implementedThemeTypes"];
-        themeSrcDirPath: string;
-        bundler: "vite" | "webpack";
-        packageJsonFilePath: string;
-    };
+export type BuildContextLike = BuildContextLike_kcContextExclusionsFtlCode & {
+    extraThemeProperties: string[] | undefined;
+    projectDirPath: string;
+    projectBuildDirPath: string;
+    environmentVariables: { name: string; default: string }[];
+    implementedThemeTypes: BuildContext["implementedThemeTypes"];
+    themeSrcDirPath: string;
+    bundler: "vite" | "webpack";
+    packageJsonFilePath: string;
+};
 
 assert<BuildContext extends BuildContextLike ? true : false>();
 
@@ -88,7 +70,7 @@ export async function generateResourcesForMainTheme(params: {
             const destDirPath = pathJoin(
                 themeTypeDirPath,
                 "resources",
-                BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR
+                WELL_KNOWN_DIRECTORY_BASE_NAME.DIST
             );
 
             // NOTE: Prevent accumulation of files in the assets dir, as names are hashed they pile up.
@@ -106,7 +88,7 @@ export async function generateResourcesForMainTheme(params: {
                             themeType: "login"
                         }),
                         "resources",
-                        BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR
+                        WELL_KNOWN_DIRECTORY_BASE_NAME.DIST
                     ),
                     destDirPath
                 });
@@ -117,7 +99,7 @@ export async function generateResourcesForMainTheme(params: {
             {
                 const dirPath = pathJoin(
                     buildContext.projectBuildDirPath,
-                    KEYCLOAK_RESOURCES
+                    WELL_KNOWN_DIRECTORY_BASE_NAME.DOT_KEYCLOAKIFY
                 );
 
                 if (fs.existsSync(dirPath)) {
@@ -125,7 +107,7 @@ export async function generateResourcesForMainTheme(params: {
 
                     throw new Error(
                         [
-                            `Keycloakify build error: The ${KEYCLOAK_RESOURCES} directory shouldn't exist in your build directory.`,
+                            `Keycloakify build error: The ${WELL_KNOWN_DIRECTORY_BASE_NAME.DOT_KEYCLOAKIFY} directory shouldn't exist in your build directory.`,
                             `(${pathRelative(process.cwd(), dirPath)}).\n`,
                             `Theses assets are only required for local development with Storybook.",
                             "Please remove this directory as an additional step of your command.\n`,
@@ -232,23 +214,52 @@ export async function generateResourcesForMainTheme(params: {
             });
         }
 
+        bring_in_account_v3_i18n_messages: {
+            if (!buildContext.implementedThemeTypes.account.isImplemented) {
+                break bring_in_account_v3_i18n_messages;
+            }
+            if (buildContext.implementedThemeTypes.account.type !== "Single-Page") {
+                break bring_in_account_v3_i18n_messages;
+            }
+
+            const accountUiDirPath = child_process
+                .execSync("npm list @keycloakify/keycloak-account-ui --parseable", {
+                    cwd: pathDirname(buildContext.packageJsonFilePath)
+                })
+                .toString("utf8")
+                .trim();
+
+            const messagesDirPath = pathJoin(accountUiDirPath, "messages");
+
+            if (!fs.existsSync(messagesDirPath)) {
+                throw new Error(
+                    `Please update @keycloakify/keycloak-account-ui to 25.0.4-rc.5 or later.`
+                );
+            }
+
+            transformCodebase({
+                srcDirPath: messagesDirPath,
+                destDirPath: pathJoin(
+                    getThemeTypeDirPath({ themeType: "account" }),
+                    "messages"
+                )
+            });
+        }
+
         keycloak_static_resources: {
             if (isForAccountSpa) {
                 break keycloak_static_resources;
             }
 
-            await downloadKeycloakStaticResources({
-                keycloakVersion: (() => {
-                    switch (themeType) {
-                        case "account":
-                            return LAST_KEYCLOAK_VERSION_WITH_ACCOUNT_V1;
-                        case "login":
-                            return buildContext.loginThemeResourcesFromKeycloakVersion;
-                    }
-                })(),
-                themeDirPath: pathResolve(pathJoin(themeTypeDirPath, "..")),
-                themeType,
-                buildContext
+            transformCodebase({
+                srcDirPath: pathJoin(
+                    getThisCodebaseRootDirPath(),
+                    "res",
+                    "public",
+                    WELL_KNOWN_DIRECTORY_BASE_NAME.DOT_KEYCLOAKIFY,
+                    themeType
+                ),
+                destDirPath: pathJoin(themeTypeDirPath, "resources")
             });
         }
 
@@ -259,7 +270,7 @@ export async function generateResourcesForMainTheme(params: {
                     `parent=${(() => {
                         switch (themeType) {
                             case "account":
-                                return isForAccountSpa ? "base" : ACCOUNT_V1_THEME_NAME;
+                                return isForAccountSpa ? "base" : "account-v1";
                             case "login":
                                 return "keycloak";
                         }
@@ -299,41 +310,9 @@ export async function generateResourcesForMainTheme(params: {
             break bring_in_account_v1;
         }
 
-        await bringInAccountV1({
-            resourcesDirPath,
-            buildContext
-        });
-    }
-
-    bring_in_account_v3_i18n_messages: {
-        if (!buildContext.implementedThemeTypes.account.isImplemented) {
-            break bring_in_account_v3_i18n_messages;
-        }
-        if (buildContext.implementedThemeTypes.account.type !== "Single-Page") {
-            break bring_in_account_v3_i18n_messages;
-        }
-
-        const accountUiDirPath = child_process
-            .execSync("npm list @keycloakify/keycloak-account-ui --parseable", {
-                cwd: pathDirname(buildContext.packageJsonFilePath)
-            })
-            .toString("utf8")
-            .trim();
-
-        const messagesDirPath = pathJoin(accountUiDirPath, "messages");
-
-        if (!fs.existsSync(messagesDirPath)) {
-            throw new Error(
-                `Please update @keycloakify/keycloak-account-ui to 25.0.4-rc.5 or later.`
-            );
-        }
-
         transformCodebase({
-            srcDirPath: messagesDirPath,
-            destDirPath: pathJoin(
-                getThemeTypeDirPath({ themeType: "account" }),
-                "messages"
-            )
+            srcDirPath: pathJoin(getThisCodebaseRootDirPath(), "res", "account-v1"),
+            destDirPath: pathJoin(resourcesDirPath, "theme", "account-v1", "account")
         });
     }
 
@@ -349,7 +328,7 @@ export async function generateResourcesForMainTheme(params: {
 
         if (buildContext.implementedThemeTypes.account.isImplemented) {
             metaInfKeycloakThemes.themes.push({
-                name: ACCOUNT_V1_THEME_NAME,
+                name: "account-v1",
                 types: ["account"]
             });
         }

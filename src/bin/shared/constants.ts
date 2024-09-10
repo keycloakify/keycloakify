@@ -1,10 +1,10 @@
-export const KEYCLOAK_RESOURCES = "keycloak-resources";
-export const RESOURCES_COMMON = "resources-common";
-export const LAST_KEYCLOAK_VERSION_WITH_ACCOUNT_V1 = "21.1.2";
-export const BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR = "dist";
+export const WELL_KNOWN_DIRECTORY_BASE_NAME = {
+    DOT_KEYCLOAKIFY: ".keycloakify",
+    RESOURCES_COMMON: "resources-common",
+    DIST: "dist"
+} as const;
 
 export const THEME_TYPES = ["login", "account"] as const;
-export const ACCOUNT_V1_THEME_NAME = "account-v1";
 
 export type ThemeType = (typeof THEME_TYPES)[number];
 
@@ -50,7 +50,9 @@ export const LOGIN_THEME_PAGE_IDS = [
     "login-recovery-authn-code-input.ftl",
     "login-reset-otp.ftl",
     "login-x509-info.ftl",
-    "webauthn-error.ftl"
+    "webauthn-error.ftl",
+    "login-passkeys-conditional-authenticate.ftl",
+    "login-idp-link-confirm-override.ftl"
 ] as const;
 
 export const ACCOUNT_THEME_PAGE_IDS = [
@@ -69,5 +71,3 @@ export type AccountThemePageId = (typeof ACCOUNT_THEME_PAGE_IDS)[number];
 export const CONTAINER_NAME = "keycloak-keycloakify";
 
 export const FALLBACK_LANGUAGE_TAG = "en";
-
-export const LOGIN_THEME_RESOURCES_FROMkEYCLOAK_VERSION_DEFAULT = "24.0.4";

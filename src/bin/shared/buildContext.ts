@@ -14,8 +14,7 @@ import { assert, type Equals } from "tsafe/assert";
 import * as child_process from "child_process";
 import {
     VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES,
-    BUILD_FOR_KEYCLOAK_MAJOR_VERSION_ENV_NAME,
-    LOGIN_THEME_RESOURCES_FROMkEYCLOAK_VERSION_DEFAULT
+    BUILD_FOR_KEYCLOAK_MAJOR_VERSION_ENV_NAME
 } from "./constants";
 import type { KeycloakVersionRange } from "./KeycloakVersionRange";
 import { exclude } from "tsafe";
@@ -33,7 +32,6 @@ export type BuildContext = {
     extraThemeProperties: string[] | undefined;
     groupId: string;
     artifactId: string;
-    loginThemeResourcesFromKeycloakVersion: string;
     projectDirPath: string;
     projectBuildDirPath: string;
     /** Directory that keycloakify outputs to. Defaults to {cwd}/build_keycloak */
@@ -85,7 +83,6 @@ export type BuildOptions = {
     extraThemeProperties?: string[];
     artifactId?: string;
     groupId?: string;
-    loginThemeResourcesFromKeycloakVersion?: string;
     keycloakifyBuildDirPath?: string;
     kcContextExclusionsFtl?: string;
     startKeycloakOptions?: {
@@ -357,7 +354,6 @@ export function getBuildContext(params: {
                     extraThemeProperties: z.array(z.string()).optional(),
                     artifactId: z.string().optional(),
                     groupId: z.string().optional(),
-                    loginThemeResourcesFromKeycloakVersion: z.string().optional(),
                     keycloakifyBuildDirPath: z.string().optional(),
                     kcContextExclusionsFtl: z.string().optional(),
                     startKeycloakOptions: zStartKeycloakOptions.optional()
@@ -545,9 +541,6 @@ export function getBuildContext(params: {
             process.env.KEYCLOAKIFY_ARTIFACT_ID ??
             buildOptions.artifactId ??
             `${themeNames[0]}-keycloak-theme`,
-        loginThemeResourcesFromKeycloakVersion:
-            buildOptions.loginThemeResourcesFromKeycloakVersion ??
-            LOGIN_THEME_RESOURCES_FROMkEYCLOAK_VERSION_DEFAULT,
         projectDirPath,
         projectBuildDirPath,
         keycloakifyBuildDirPath: (() => {

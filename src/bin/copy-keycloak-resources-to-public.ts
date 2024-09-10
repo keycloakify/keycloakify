@@ -7,7 +7,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     const buildContext = getBuildContext({ cliCommandOptions });
 
-    await copyKeycloakResourcesToPublic({
+    copyKeycloakResourcesToPublic({
         buildContext
     });
 }

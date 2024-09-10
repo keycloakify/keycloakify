@@ -1,11 +1,8 @@
 import * as child_process from "child_process";
-import { startRebuildOnSrcChange } from "./startRebuildOnSrcChange";
-import { copyKeycloakResourcesToStorybookStaticDir } from "./copyKeycloakResourcesToStorybookStaticDir";
+import { startRebuildOnSrcChange } from "./shared/startRebuildOnSrcChange";
 
 (async () => {
     run("yarn build");
-
-    await copyKeycloakResourcesToStorybookStaticDir();
 
     {
         const child = child_process.spawn("npx", ["start-storybook", "-p", "6006"], {

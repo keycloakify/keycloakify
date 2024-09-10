@@ -1,4 +1,4 @@
-import { BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR } from "keycloakify/bin/shared/constants";
+import { WELL_KNOWN_DIRECTORY_BASE_NAME } from "keycloakify/bin/shared/constants";
 import { assert } from "tsafe/assert";
 
 /**
@@ -6,7 +6,9 @@ import { assert } from "tsafe/assert";
  * This works both in your main app and in your Keycloak theme.
  */
 export const PUBLIC_URL = (() => {
-    const kcContext = (window as any).kcContext;
+    const kcContext: { "x-keycloakify": { resourcesPath: string } } | undefined = (
+        window as any
+    ).kcContext;
 
     if (kcContext === undefined || process.env.NODE_ENV === "development") {
         assert(
@@ -17,5 +19,5 @@ export const PUBLIC_URL = (() => {
         return process.env.PUBLIC_URL;
     }
 
-    return `${kcContext.url.resourcesPath}/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}`;
+    return `${kcContext["x-keycloakify"].resourcesPath}/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}`;
 })();

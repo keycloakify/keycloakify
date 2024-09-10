@@ -1,30 +1,37 @@
-import { join as pathJoin, relative as pathRelative } from "path";
-import { type BuildContext } from "./buildContext";
-import { assert } from "tsafe/assert";
-import { LAST_KEYCLOAK_VERSION_WITH_ACCOUNT_V1 } from "./constants";
-import { downloadAndExtractArchive } from "../tools/downloadAndExtractArchive";
+import { relative as pathRelative } from "path";
+import { downloadAndExtractArchive } from "../../src/bin/tools/downloadAndExtractArchive";
+import { getProxyFetchOptions } from "../../src/bin/tools/fetchProxyOptions";
+import { join as pathJoin } from "path";
+import { getThisCodebaseRootDirPath } from "../../src/bin/tools/getThisCodebaseRootDirPath";
+import { assert, type Equals } from "tsafe/assert";
 
-export type BuildContextLike = {
-    cacheDirPath: string;
-    fetchOptions: BuildContext["fetchOptions"];
-};
-
-assert<BuildContext extends BuildContextLike ? true : false>();
+const KEYCLOAK_VERSION = {
+    FOR_LOGIN_THEME: "25.0.4",
+    FOR_ACCOUNT_MULTI_PAGE: "21.1.2"
+} as const;
 
 export async function downloadKeycloakDefaultTheme(params: {
-    keycloakVersion: string;
-    buildContext: BuildContextLike;
-}): Promise<{ defaultThemeDirPath: string }> {
-    const { keycloakVersion, buildContext } = params;
+    keycloakVersionId: keyof typeof KEYCLOAK_VERSION;
+}) {
+    const { keycloakVersionId } = params;
+
+    const keycloakVersion = KEYCLOAK_VERSION[keycloakVersionId];
 
     let kcNodeModulesKeepFilePaths: Set<string> | undefined = undefined;
     let kcNodeModulesKeepFilePaths_lastAccountV1: Set<string> | undefined = undefined;
 
     const { extractedDirPath } = await downloadAndExtractArchive({
         url: `https://repo1.maven.org/maven2/org/keycloak/keycloak-themes/${keycloakVersion}/keycloak-themes-${keycloakVersion}.jar`,
-        cacheDirPath: buildContext.cacheDirPath,
-        fetchOptions: buildContext.fetchOptions,
-        uniqueIdOfOnArchiveFile: "downloadKeycloakDefaultTheme",
+        cacheDirPath: pathJoin(
+            getThisCodebaseRootDirPath(),
+            "node_modules",
+            ".cache",
+            "scripts"
+        ),
+        fetchOptions: getProxyFetchOptions({
+            npmConfigGetCwd: getThisCodebaseRootDirPath()
+        }),
+        uniqueIdOfOnArchiveFile: "extractOnlyRequiredFiles",
         onArchiveFile: async params => {
             const fileRelativePath = pathRelative("theme", params.fileRelativePath);
 
@@ -34,16 +41,44 @@ export async function downloadKeycloakDefaultTheme(params: {
 
             const { readFile, writeFile } = params;
 
-            skip_keycloak_v2: {
-                if (!fileRelativePath.startsWith(pathJoin("keycloak.v2"))) {
-                    break skip_keycloak_v2;
-                }
-
+            if (
+                !fileRelativePath.startsWith("base") &&
+                !fileRelativePath.startsWith("keycloak")
+            ) {
                 return;
             }
 
+            switch (keycloakVersion) {
+                case KEYCLOAK_VERSION.FOR_LOGIN_THEME:
+                    if (
+                        !fileRelativePath.startsWith(pathJoin("base", "login")) &&
+                        !fileRelativePath.startsWith(pathJoin("keycloak", "login")) &&
+                        !fileRelativePath.startsWith(pathJoin("keycloak", "common"))
+                    ) {
+                        return;
+                    }
+
+                    if (fileRelativePath.endsWith(".ftl")) {
+                        return;
+                    }
+
+                    break;
+                case KEYCLOAK_VERSION.FOR_ACCOUNT_MULTI_PAGE:
+                    if (
+                        !fileRelativePath.startsWith(pathJoin("base", "account")) &&
+                        !fileRelativePath.startsWith(pathJoin("keycloak", "account")) &&
+                        !fileRelativePath.startsWith(pathJoin("keycloak", "common"))
+                    ) {
+                        return;
+                    }
+
+                    break;
+                default:
+                    assert<Equals<typeof keycloakVersion, never>>(false);
+            }
+
             last_account_v1_transformations: {
-                if (LAST_KEYCLOAK_VERSION_WITH_ACCOUNT_V1 !== keycloakVersion) {
+                if (keycloakVersion !== KEYCLOAK_VERSION.FOR_ACCOUNT_MULTI_PAGE) {
                     break last_account_v1_transformations;
                 }
 
@@ -169,7 +204,7 @@ export async function downloadKeycloakDefaultTheme(params: {
             }
 
             skip_unused_resources: {
-                if (keycloakVersion !== "24.0.4") {
+                if (keycloakVersion !== KEYCLOAK_VERSION.FOR_LOGIN_THEME) {
                     break skip_unused_resources;
                 }
 
@@ -250,7 +285,8 @@ export async function downloadKeycloakDefaultTheme(params: {
                                 "OpenSans-Semibold-webfont.woff2"
                             ),
                             pathJoin("patternfly", "dist", "img", "bg-login.jpg"),
-                            pathJoin("jquery", "dist", "jquery.min.js")
+                            pathJoin("jquery", "dist", "jquery.min.js"),
+                            pathJoin("rfc4648", "lib", "rfc4648.js")
                         ]);
                     }
 
@@ -287,11 +323,21 @@ export async function downloadKeycloakDefaultTheme(params: {
 
                     return;
                 }
+
+                skip_package_json: {
+                    if (
+                        fileRelativePath !==
+                        pathJoin("keycloak", "common", "resources", "package.json")
+                    ) {
+                        break skip_package_json;
+                    }
+                    return;
+                }
             }
 
             await writeFile({ fileRelativePath });
         }
     });
 
-    return { defaultThemeDirPath: extractedDirPath };
+    return { extractedDirPath };
 }

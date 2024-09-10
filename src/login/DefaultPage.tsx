@@ -40,6 +40,8 @@ const LoginRecoveryAuthnCodeInput = lazy(() => import("keycloakify/login/pages/L
 const LoginResetOtp = lazy(() => import("keycloakify/login/pages/LoginResetOtp"));
 const LoginX509Info = lazy(() => import("keycloakify/login/pages/LoginX509Info"));
 const WebauthnError = lazy(() => import("keycloakify/login/pages/WebauthnError"));
+const LoginPasskeysConditionalAuthenticate = lazy(() => import("keycloakify/login/pages/LoginPasskeysConditionalAuthenticate"));
+const LoginIdpLinkConfirmOverride = lazy(() => import("keycloakify/login/pages/LoginIdpLinkConfirmOverride"));
 
 type DefaultPageProps = PageProps<KcContext, I18n> & {
     UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
@@ -121,6 +123,10 @@ export default function DefaultPage(props: DefaultPageProps) {
                         return <LoginX509Info kcContext={kcContext} {...rest} />;
                     case "webauthn-error.ftl":
                         return <WebauthnError kcContext={kcContext} {...rest} />;
+                    case "login-passkeys-conditional-authenticate.ftl":
+                        return <LoginPasskeysConditionalAuthenticate kcContext={kcContext} {...rest} />;
+                    case "login-idp-link-confirm-override.ftl":
+                        return <LoginIdpLinkConfirmOverride kcContext={kcContext} {...rest} />;
                 }
                 assert<Equals<typeof kcContext, never>>(false);
             })()}

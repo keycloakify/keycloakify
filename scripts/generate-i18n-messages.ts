@@ -6,83 +6,81 @@ import {
     dirname as pathDirname,
     sep as pathSep
 } from "path";
-import { assert } from "tsafe/assert";
+import { assert, type Equals } from "tsafe/assert";
 import { same } from "evt/tools/inDepth";
 import { crawl } from "../src/bin/tools/crawl";
-import { downloadKeycloakDefaultTheme } from "../src/bin/shared/downloadKeycloakDefaultTheme";
+import { downloadKeycloakDefaultTheme } from "./shared/downloadKeycloakDefaultTheme";
 import { getThisCodebaseRootDirPath } from "../src/bin/tools/getThisCodebaseRootDirPath";
 import { deepAssign } from "../src/tools/deepAssign";
-import { getProxyFetchOptions } from "../src/bin/tools/fetchProxyOptions";
+import { THEME_TYPES } from "../src/bin/shared/constants";
+const propertiesParser: any = require("properties-parser");
 
-// NOTE: To run without argument when we want to generate src/i18n/generated_kcMessages files,
-// update the version array for generating for newer version.
+if (require.main === module) {
+    generateI18nMessages();
+}
 
-//@ts-ignore
-const propertiesParser = require("properties-parser");
-
-async function main() {
-    const keycloakVersion = "24.0.4";
-
+async function generateI18nMessages() {
     const thisCodebaseRootDirPath = getThisCodebaseRootDirPath();
-
-    const { defaultThemeDirPath } = await downloadKeycloakDefaultTheme({
-        keycloakVersion,
-        buildContext: {
-            cacheDirPath: pathJoin(
-                thisCodebaseRootDirPath,
-                "node_modules",
-                ".cache",
-                "keycloakify"
-            ),
-            fetchOptions: getProxyFetchOptions({
-                npmConfigGetCwd: thisCodebaseRootDirPath
-            })
-        }
-    });
 
     type Dictionary = { [idiomId: string]: string };
 
-    const record: { [typeOfPage: string]: { [language: string]: Dictionary } } = {};
+    const record: { [themeType: string]: { [language: string]: Dictionary } } = {};
 
-    {
-        const baseThemeDirPath = pathJoin(defaultThemeDirPath, "base");
-        const re = new RegExp(
-            `^([^\\${pathSep}]+)\\${pathSep}messages\\${pathSep}messages_([^.]+).properties$`
-        );
-
-        crawl({
-            dirPath: baseThemeDirPath,
-            returnedPathsType: "relative to dirPath"
-        }).forEach(filePath => {
-            const match = filePath.match(re);
-
-            if (match === null) {
-                return;
-            }
-
-            const [, typeOfPage, language] = match;
-
-            (record[typeOfPage] ??= {})[language.replace(/_/g, "-")] = Object.fromEntries(
-                Object.entries(
-                    propertiesParser.parse(
-                        fs
-                            .readFileSync(pathJoin(baseThemeDirPath, filePath))
-                            .toString("utf8")
-                    ) as Record<string, string>
-                )
-                    .map(([key, value]) => [key, value.replace(/''/g, "'")])
-                    .map(([key, value]) => [
-                        key === "locale_pt_BR" ? "locale_pt-BR" : key,
-                        value
-                    ])
-                    .map(([key, value]) => [key, key === "termsText" ? "" : value])
-            );
+    for (const themeType of THEME_TYPES) {
+        const { extractedDirPath } = await downloadKeycloakDefaultTheme({
+            keycloakVersionId: (() => {
+                switch (themeType) {
+                    case "login":
+                        return "FOR_LOGIN_THEME";
+                    case "account":
+                        return "FOR_ACCOUNT_MULTI_PAGE";
+                }
+                assert<Equals<typeof themeType, never>>();
+            })()
         });
-    }
 
-    Object.keys(record).forEach(themeType => {
-        if (themeType !== "login" && themeType !== "account") {
-            return;
+        {
+            const baseThemeDirPath = pathJoin(extractedDirPath, "base");
+            const re = new RegExp(
+                `^([^\\${pathSep}]+)\\${pathSep}messages\\${pathSep}messages_([^.]+).properties$`
+            );
+
+            crawl({
+                dirPath: baseThemeDirPath,
+                returnedPathsType: "relative to dirPath"
+            }).forEach(filePath => {
+                const match = filePath.match(re);
+
+                if (match === null) {
+                    return;
+                }
+
+                const [, themeType_here, language] = match;
+
+                if (themeType_here !== themeType) {
+                    return;
+                }
+
+                (record[themeType] ??= {})[language.replace(/_/g, "-")] =
+                    Object.fromEntries(
+                        Object.entries(
+                            propertiesParser.parse(
+                                fs
+                                    .readFileSync(pathJoin(baseThemeDirPath, filePath))
+                                    .toString("utf8")
+                            ) as Record<string, string>
+                        )
+                            .map(([key, value]) => [key, value.replace(/''/g, "'")])
+                            .map(([key, value]) => [
+                                key === "locale_pt_BR" ? "locale_pt-BR" : key,
+                                value
+                            ])
+                            .map(([key, value]) => [
+                                key,
+                                key === "termsText" ? "" : value
+                            ])
+                    );
+            });
         }
 
         const recordForThemeType = record[themeType];
@@ -98,6 +96,29 @@ async function main() {
             }
             assert(false);
         })();
+
+        /* Migration helper
+
+        console.log({ themeType });
+
+        {
+
+            const all = new Set<string>();
+
+            languages.forEach(languages => all.add(languages));
+            const currentlySupportedLanguages = Object.keys(keycloakifyExtraMessages);
+            currentlySupportedLanguages.forEach(languages => all.add(languages));
+
+            all.forEach(language => {
+                console.log([
+                    `"${language}": `,
+                    `isInLanguages: ${languages.includes(language)}`,
+                    `isInKeycloakifyExtraMessages: ${currentlySupportedLanguages.includes(language)}`
+                ].join(" "))
+            });
+
+        }
+        */
 
         assert(
             same(languages, Object.keys(keycloakifyExtraMessages), {
@@ -180,7 +201,7 @@ async function main() {
                 "utf8"
             )
         );
-    });
+    }
 }
 
 const keycloakifyExtraMessages_login: Record<
@@ -203,6 +224,7 @@ const keycloakifyExtraMessages_login: Record<
     | "nl"
     | "no"
     | "pl"
+    | "pt"
     | "pt-BR"
     | "ru"
     | "sk"
@@ -210,7 +232,9 @@ const keycloakifyExtraMessages_login: Record<
     | "th"
     | "tr"
     | "uk"
-    | "zh-CN",
+    | "ka"
+    | "zh-CN"
+    | "zh-TW",
     Record<
         | "shouldBeEqual"
         | "shouldBeDifferent"
@@ -434,6 +458,17 @@ const keycloakifyExtraMessages_login: Record<
         addValue: "Dodaj wartość",
         languages: "Języki"
     },
+    pt: {
+        shouldBeEqual: "{0} deve ser igual a {1}",
+        shouldBeDifferent: "{0} deve ser diferente de {1}",
+        shouldMatchPattern: "O padrão deve corresponder: `/{0}/`",
+        mustBeAnInteger: "Deve ser um número inteiro",
+        notAValidOption: "Não é uma opção válida",
+        selectAnOption: "Selecione uma opção",
+        remove: "Remover",
+        addValue: "Adicionar valor",
+        languages: "Idiomas"
+    },
     "pt-BR": {
         shouldBeEqual: "{0} deve ser igual a {1}",
         shouldBeDifferent: "{0} deve ser diferente de {1}",
@@ -511,6 +546,17 @@ const keycloakifyExtraMessages_login: Record<
         addValue: "Додати значення",
         languages: "Мови"
     },
+    ka: {
+        shouldBeEqual: "{0} უნდა იყოს ტოლი {1}-სთვის",
+        shouldBeDifferent: "{0} უნდა იყოს სხვა {1}-სთვის",
+        shouldMatchPattern: "შაბლონს უნდა ემთხვევა: `/{0}/`",
+        mustBeAnInteger: "უნდა იყოს მთელი რიცხვი",
+        notAValidOption: "არასწორი ვარიანტი",
+        selectAnOption: "აირჩიეთ ვარიანტი",
+        remove: "წაშალეთ",
+        addValue: "დაამატეთ მნიშვნელობა",
+        languages: "ენები"
+    },
     "zh-CN": {
         shouldBeEqual: "{0} 应该等于 {1}",
         shouldBeDifferent: "{0} 应该不同于 {1}",
@@ -521,38 +567,49 @@ const keycloakifyExtraMessages_login: Record<
         remove: "移除",
         addValue: "添加值",
         languages: "语言"
+    },
+    "zh-TW": {
+        shouldBeEqual: "{0} 應該等於 {1}",
+        shouldBeDifferent: "{0} 應該不同於 {1}",
+        shouldMatchPattern: "模式應匹配: `/{0}/`",
+        mustBeAnInteger: "必須是整數",
+        notAValidOption: "不是有效選項",
+        selectAnOption: "選擇一個選項",
+        remove: "移除",
+        addValue: "添加值",
+        languages: "語言"
     }
     /* spell-checker: enable */
 };
 
+export const accountMultiPageSupportedLanguages = [
+    "en",
+    "ar",
+    "ca",
+    "cs",
+    "da",
+    "de",
+    "es",
+    "fi",
+    "fr",
+    "hu",
+    "it",
+    "ja",
+    "lt",
+    "lv",
+    "nl",
+    "no",
+    "pl",
+    "pt-BR",
+    "ru",
+    "sk",
+    "sv",
+    "tr",
+    "zh-CN"
+] as const;
+
 const keycloakifyExtraMessages_account: Record<
-    | "en"
-    | "ar"
-    | "ca"
-    | "cs"
-    | "da"
-    | "de"
-    | "el"
-    | "es"
-    | "fa"
-    | "fi"
-    | "fr"
-    | "hu"
-    | "it"
-    | "ja"
-    | "lt"
-    | "lv"
-    | "nl"
-    | "no"
-    | "pl"
-    | "pt-BR"
-    | "ru"
-    | "sk"
-    | "sv"
-    | "th"
-    | "tr"
-    | "uk"
-    | "zh-CN",
+    (typeof accountMultiPageSupportedLanguages)[number],
     Record<"newPasswordSameAsOld" | "passwordConfirmNotMatch", string>
 > = {
     en: {
@@ -580,17 +637,9 @@ const keycloakifyExtraMessages_account: Record<
         newPasswordSameAsOld: "Das neue Passwort muss sich vom alten unterscheiden",
         passwordConfirmNotMatch: "Passwortbestätigung stimmt nicht überein"
     },
-    el: {
-        newPasswordSameAsOld: "Ο νέος κωδικός πρόσβασης πρέπει να διαφέρει από τον παλιό",
-        passwordConfirmNotMatch: "Η επιβεβαίωση του κωδικού πρόσβασης δεν ταιριάζει"
-    },
     es: {
         newPasswordSameAsOld: "La nueva contraseña debe ser diferente de la anterior",
         passwordConfirmNotMatch: "La confirmación de la contraseña no coincide"
-    },
-    fa: {
-        newPasswordSameAsOld: "رمز عبور جدید باید با رمز عبور قبلی متفاوت باشد",
-        passwordConfirmNotMatch: "تأیید رمز عبور مطابقت ندارد"
     },
     fi: {
         newPasswordSameAsOld: "Uusi salasana on oltava erilainen kuin vanha",
@@ -649,17 +698,9 @@ const keycloakifyExtraMessages_account: Record<
         newPasswordSameAsOld: "Det nya lösenordet måste skilja sig från det gamla",
         passwordConfirmNotMatch: "Lösenordsbekräftelsen matchar inte"
     },
-    th: {
-        newPasswordSameAsOld: "รหัสผ่านใหม่ต้องต่างจากรหัสผ่านเดิม",
-        passwordConfirmNotMatch: "การยืนยันรหัสผ่านไม่ตรงกัน"
-    },
     tr: {
         newPasswordSameAsOld: "Yeni şifre eskisinden farklı olmalıdır",
         passwordConfirmNotMatch: "Şifre doğrulama eşleşmiyor"
-    },
-    uk: {
-        newPasswordSameAsOld: "Новий пароль повинен відрізнятися від старого",
-        passwordConfirmNotMatch: "Підтвердження пароля не співпадає"
     },
     "zh-CN": {
         newPasswordSameAsOld: "新密码必须与旧密码不同",
@@ -667,7 +708,3 @@ const keycloakifyExtraMessages_account: Record<
     }
     /* spell-checker: enable */
 };
-
-if (require.main === module) {
-    main();
-}

@@ -1,8 +1,7 @@
 import "keycloakify/tools/Object.fromEntries";
 import type { KcContext, Attribute } from "./KcContext";
 import {
-    RESOURCES_COMMON,
-    KEYCLOAK_RESOURCES,
+    WELL_KNOWN_DIRECTORY_BASE_NAME,
     type LoginThemePageId
 } from "keycloakify/bin/shared/constants";
 import { id } from "tsafe/id";
@@ -76,7 +75,7 @@ const attributesByName = Object.fromEntries(
     ]).map(attribute => [attribute.name, attribute])
 );
 
-const resourcesPath = `${BASE_URL}${KEYCLOAK_RESOURCES}/login/resources`;
+const resourcesPath = `${BASE_URL}${WELL_KNOWN_DIRECTORY_BASE_NAME.DOT_KEYCLOAKIFY}/login`;
 
 export const kcContextCommonMock: KcContext.Common = {
     themeVersion: "0.0.0",
@@ -86,7 +85,7 @@ export const kcContextCommonMock: KcContext.Common = {
     url: {
         loginAction: "#",
         resourcesPath,
-        resourcesCommonPath: `${resourcesPath}/${RESOURCES_COMMON}`,
+        resourcesCommonPath: `${resourcesPath}/${WELL_KNOWN_DIRECTORY_BASE_NAME.RESOURCES_COMMON}`,
         loginRestartFlowUrl: "#",
         loginUrl: "#",
         ssoLoginInOtherTabsUrl: "#"
@@ -327,9 +326,6 @@ export const kcContextMocks = [
         realm: {
             ...kcContextCommonMock.realm,
             resetPasswordAllowed: true
-        },
-        social: {
-            displayInfo: false
         }
     }),
     id<KcContext.WebauthnAuthenticate>({
@@ -349,11 +345,7 @@ export const kcContextMocks = [
         rpId: "",
         createTimeout: "0",
         isUserIdentified: "false",
-        shouldDisplayAuthenticators: false,
-        social: {
-            displayInfo: false
-        },
-        login: {}
+        shouldDisplayAuthenticators: false
     }),
     id<KcContext.LoginUpdatePassword>({
         ...kcContextCommonMock,
@@ -567,6 +559,39 @@ export const kcContextMocks = [
         pageId: "webauthn-error.ftl",
         ...kcContextCommonMock,
         isAppInitiatedAction: true
+    }),
+    id<KcContext.LoginPasskeysConditionalAuthenticate>({
+        pageId: "login-passkeys-conditional-authenticate.ftl",
+        ...kcContextCommonMock,
+        url: {
+            ...kcContextCommonMock.url,
+            registrationUrl: "#"
+        },
+        realm: {
+            ...kcContextCommonMock.realm,
+            password: true,
+            registrationAllowed: true
+        },
+        registrationDisabled: false,
+        isUserIdentified: "false",
+        challenge: "",
+        userVerification: "not specified",
+        rpId: "",
+        createTimeout: 0,
+        authenticators: {
+            authenticators: []
+        },
+        shouldDisplayAuthenticators: false,
+        login: {}
+    }),
+    id<KcContext.LoginIdpLinkConfirmOverride>({
+        pageId: "login-idp-link-confirm-override.ftl",
+        ...kcContextCommonMock,
+        url: {
+            ...kcContextCommonMock.url,
+            loginRestartFlowUrl: "#"
+        },
+        idpDisplayName: "Google"
     })
 ];
 

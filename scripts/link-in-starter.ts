@@ -1,7 +1,7 @@
 import * as child_process from "child_process";
 import * as fs from "fs";
 import { join } from "path";
-import { startRebuildOnSrcChange } from "./startRebuildOnSrcChange";
+import { startRebuildOnSrcChange } from "./shared/startRebuildOnSrcChange";
 import { crawl } from "../src/bin/tools/crawl";
 
 {

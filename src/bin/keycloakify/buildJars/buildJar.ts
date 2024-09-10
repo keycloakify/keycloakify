@@ -7,7 +7,6 @@ import { join as pathJoin, dirname as pathDirname } from "path";
 import { transformCodebase } from "../../tools/transformCodebase";
 import type { BuildContext } from "../../shared/buildContext";
 import * as fs from "fs/promises";
-import { ACCOUNT_V1_THEME_NAME } from "../../shared/constants";
 import {
     generatePom,
     BuildContextLike as BuildContextLike_generatePom
@@ -75,7 +74,7 @@ export async function buildJar(params: {
 
                       if (
                           isInside({
-                              dirPath: pathJoin("theme", ACCOUNT_V1_THEME_NAME),
+                              dirPath: pathJoin("theme", "account-v1"),
                               filePath: fileRelativePath
                           })
                       ) {
@@ -90,10 +89,7 @@ export async function buildJar(params: {
                               const modifiedSourceCode = Buffer.from(
                                   sourceCode
                                       .toString("utf8")
-                                      .replace(
-                                          `parent=${ACCOUNT_V1_THEME_NAME}`,
-                                          "parent=keycloak"
-                                      ),
+                                      .replace(`parent=account-v1`, "parent=keycloak"),
                                   "utf8"
                               );
 
@@ -126,7 +122,7 @@ export async function buildJar(params: {
                 assert(metaInfKeycloakTheme !== undefined);
 
                 metaInfKeycloakTheme.themes = metaInfKeycloakTheme.themes.filter(
-                    ({ name }) => name !== ACCOUNT_V1_THEME_NAME
+                    ({ name }) => name !== "account-v1"
                 );
 
                 return metaInfKeycloakTheme;

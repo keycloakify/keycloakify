@@ -11,11 +11,7 @@ import * as fs from "fs";
 import { join as pathJoin } from "path";
 import type { BuildContext } from "../../shared/buildContext";
 import { assert } from "tsafe/assert";
-import {
-    type ThemeType,
-    BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR,
-    RESOURCES_COMMON
-} from "../../shared/constants";
+import { type ThemeType, WELL_KNOWN_DIRECTORY_BASE_NAME } from "../../shared/constants";
 import { getThisCodebaseRootDirPath } from "../../tools/getThisCodebaseRootDirPath";
 
 export type BuildContextLike = BuildContextLike_replaceImportsInJsCode &
@@ -94,7 +90,7 @@ export function generateFtlFilesCodeFactory(params: {
                         new RegExp(
                             `^${(buildContext.urlPathname ?? "/").replace(/\//g, "\\/")}`
                         ),
-                        `\${xKeycloakify.resourcesPath}/${BASENAME_OF_KEYCLOAKIFY_RESOURCES_DIR}/`
+                        `\${xKeycloakify.resourcesPath}/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/`
                     )
                 );
             })
@@ -119,7 +115,7 @@ export function generateFtlFilesCodeFactory(params: {
         .replace("{{keycloakifyVersion}}", keycloakifyVersion)
         .replace("{{themeVersion}}", buildContext.themeVersion)
         .replace("{{fieldNames}}", fieldNames.map(name => `"${name}"`).join(", "))
-        .replace("{{RESOURCES_COMMON}}", RESOURCES_COMMON)
+        .replace("{{RESOURCES_COMMON}}", WELL_KNOWN_DIRECTORY_BASE_NAME.RESOURCES_COMMON)
         .replace(
             "{{userDefinedExclusions}}",
             buildContext.kcContextExclusionsFtlCode ?? ""

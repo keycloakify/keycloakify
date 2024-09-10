@@ -1,11 +1,7 @@
 import * as child_process from "child_process";
-import { copyKeycloakResourcesToStorybookStaticDir } from "./copyKeycloakResourcesToStorybookStaticDir";
 
 (async () => {
     run("yarn build");
-
-    await copyKeycloakResourcesToStorybookStaticDir();
-
     run("npx build-storybook");
 })();
 

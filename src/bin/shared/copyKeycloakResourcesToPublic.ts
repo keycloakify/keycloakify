@@ -1,44 +1,34 @@
-import {
-    downloadKeycloakStaticResources,
-    type BuildContextLike as BuildContextLike_downloadKeycloakStaticResources
-} from "./downloadKeycloakStaticResources";
-import { join as pathJoin, relative as pathRelative } from "path";
-import {
-    THEME_TYPES,
-    KEYCLOAK_RESOURCES,
-    LAST_KEYCLOAK_VERSION_WITH_ACCOUNT_V1
-} from "../shared/constants";
+import { join as pathJoin, dirname as pathDirname } from "path";
+import { WELL_KNOWN_DIRECTORY_BASE_NAME } from "../shared/constants";
 import { readThisNpmPackageVersion } from "../tools/readThisNpmPackageVersion";
 import { assert } from "tsafe/assert";
 import * as fs from "fs";
 import { rmSync } from "../tools/fs.rmSync";
 import type { BuildContext } from "./buildContext";
+import { transformCodebase } from "../tools/transformCodebase";
+import { getThisCodebaseRootDirPath } from "../tools/getThisCodebaseRootDirPath";
 
-export type BuildContextLike = BuildContextLike_downloadKeycloakStaticResources & {
-    loginThemeResourcesFromKeycloakVersion: string;
+export type BuildContextLike = {
     publicDirPath: string;
 };
 
 assert<BuildContext extends BuildContextLike ? true : false>();
 
-export async function copyKeycloakResourcesToPublic(params: {
+export function copyKeycloakResourcesToPublic(params: {
     buildContext: BuildContextLike;
 }) {
     const { buildContext } = params;
 
-    const destDirPath = pathJoin(buildContext.publicDirPath, KEYCLOAK_RESOURCES);
+    const destDirPath = pathJoin(
+        buildContext.publicDirPath,
+        WELL_KNOWN_DIRECTORY_BASE_NAME.DOT_KEYCLOAKIFY
+    );
 
     const keycloakifyBuildinfoFilePath = pathJoin(destDirPath, "keycloakify.buildinfo");
 
     const keycloakifyBuildinfoRaw = JSON.stringify(
         {
-            destDirPath,
-            keycloakifyVersion: readThisNpmPackageVersion(),
-            buildContext: {
-                loginThemeResourcesFromKeycloakVersion: readThisNpmPackageVersion(),
-                cacheDirPath: pathRelative(destDirPath, buildContext.cacheDirPath),
-                fetchOptions: buildContext.fetchOptions
-            }
+            keycloakifyVersion: readThisNpmPackageVersion()
         },
         null,
         2
@@ -62,35 +52,35 @@ export async function copyKeycloakResourcesToPublic(params: {
 
     rmSync(destDirPath, { force: true, recursive: true });
 
+    // NOTE: To remove in a while, remove the legacy keycloak-resources directory
+    rmSync(pathJoin(pathDirname(destDirPath), "keycloak-resources"), {
+        force: true,
+        recursive: true
+    });
+
     fs.mkdirSync(destDirPath, { recursive: true });
 
     fs.writeFileSync(pathJoin(destDirPath, ".gitignore"), Buffer.from("*", "utf8"));
 
-    for (const themeType of THEME_TYPES) {
-        await downloadKeycloakStaticResources({
-            keycloakVersion: (() => {
-                switch (themeType) {
-                    case "login":
-                        return buildContext.loginThemeResourcesFromKeycloakVersion;
-                    case "account":
-                        return LAST_KEYCLOAK_VERSION_WITH_ACCOUNT_V1;
-                }
-            })(),
-            themeType,
-            themeDirPath: destDirPath,
-            buildContext
-        });
-    }
+    transformCodebase({
+        srcDirPath: pathJoin(
+            getThisCodebaseRootDirPath(),
+            "res",
+            "public",
+            WELL_KNOWN_DIRECTORY_BASE_NAME.DOT_KEYCLOAKIFY
+        ),
+        destDirPath
+    });
 
     fs.writeFileSync(
         pathJoin(destDirPath, "README.txt"),
         Buffer.from(
             // prettier-ignore
             [
-                "This is just a test folder that helps develop",
-                "the login and register page without having to run a Keycloak container\n",
-                "This directory will be automatically excluded from the final build."
-            ].join(" ")
+                "This directory is only used in dev mode by Keycloakify",
+                "It won't be included in your final build.",
+                "Do not modify anything in this directory.",
+            ].join("\n")
         )
     );
 

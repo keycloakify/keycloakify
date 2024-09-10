@@ -6,11 +6,11 @@ export type ScriptTag = ScriptTag.TextContent | ScriptTag.Src;
 
 export namespace ScriptTag {
     type Common = {
-        type: "text/javascript" | "module";
+        type: "text/javascript" | "module" | "importmap";
     };
 
     export type TextContent = Common & {
-        textContent: string;
+        textContent: string | (() => string);
     };
     export type Src = Common & {
         src: string;
@@ -69,7 +69,12 @@ export function useInsertScriptTags(params: {
                 for (let i = 0; i < scripts.length; i++) {
                     const script = scripts[i];
                     if ("textContent" in scriptTag) {
-                        if (script.textContent === scriptTag.textContent) {
+                        const textContent =
+                            typeof scriptTag.textContent === "function"
+                                ? scriptTag.textContent()
+                                : scriptTag.textContent;
+
+                        if (script.textContent === textContent) {
                             return;
                         }
                         continue;
@@ -90,7 +95,12 @@ export function useInsertScriptTags(params: {
 
             (() => {
                 if ("textContent" in scriptTag) {
-                    htmlElement.textContent = scriptTag.textContent;
+                    const textContent =
+                        typeof scriptTag.textContent === "function"
+                            ? scriptTag.textContent()
+                            : scriptTag.textContent;
+
+                    htmlElement.textContent = textContent;
                     return;
                 }
                 if ("src" in scriptTag) {
