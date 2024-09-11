@@ -37,15 +37,17 @@ export type CliCommandOptions = CliCommandOptions_common & {
 
 export async function command(params: { cliCommandOptions: CliCommandOptions }) {
     exit_if_docker_not_installed: {
-        let commandOutput: Buffer | undefined = undefined;
+        let commandOutput: string | undefined = undefined;
 
         try {
-            commandOutput = child_process.execSync("docker --version", {
-                stdio: ["ignore", "pipe", "ignore"]
-            });
+            commandOutput = child_process
+                .execSync("docker --version", {
+                    stdio: ["ignore", "pipe", "ignore"]
+                })
+                ?.toString("utf8");
         } catch {}
 
-        if (commandOutput?.toString("utf8").includes("Docker")) {
+        if (commandOutput?.includes("Docker") || commandOutput?.includes("podman")) {
             break exit_if_docker_not_installed;
         }
 
