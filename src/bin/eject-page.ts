@@ -23,6 +23,7 @@ import { assert, Equals } from "tsafe/assert";
 import type { CliCommandOptions } from "./main";
 import { getBuildContext } from "./shared/buildContext";
 import chalk from "chalk";
+import { addImportAndSwitchToKCPage } from "./tools/addImportAndSwitchToKCPage";
 
 export async function command(params: { cliCommandOptions: CliCommandOptions }) {
     const { cliCommandOptions } = params;
@@ -300,65 +301,31 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     const componentName = componentBasename.replace(/.tsx$/, "");
 
-    console.log(
-        [
-            ``,
-            `You now need to update your page router:`,
-            ``,
-            `${chalk.bold(
-                pathJoin(
-                    ".",
-                    pathRelative(process.cwd(), buildContext.themeSrcDirPath),
-                    themeType,
-                    "KcPage.tsx"
-                )
-            )}:`,
-            chalk.grey("```"),
-            `// ...`,
-            ``,
-            chalk.green(
-                `+const ${componentName} = lazy(() => import("./pages/${componentName}"));`
-            ),
-            ...[
-                ``,
-                ` export default function KcPage(props: { kcContext: KcContext; }) {`,
-                ``,
-                `     // ...`,
-                ``,
-                `     return (`,
-                `         <Suspense>`,
-                `             {(() => {`,
-                `                 switch (kcContext.pageId) {`,
-                `                     // ...`,
-                `+                    case "${pageIdOrComponent}": return (`,
-                `+                        <${componentName}`,
-                `+                            {...{ kcContext, i18n, classes }}`,
-                `+                            Template={Template}`,
-                `+                            doUseDefaultCss={true}`,
-                ...(!componentCode.includes(userProfileFormFieldComponentName)
-                    ? []
-                    : [
-                          `+                            ${userProfileFormFieldComponentName}={${userProfileFormFieldComponentName}}`,
-                          `+                            doMakeUserConfirmPassword={doMakeUserConfirmPassword}`
-                      ]),
-                `+                        />`,
-                `+                    );`,
-                `                     default: return <Fallback /* .. */ />;`,
-                `                 }`,
-                `             })()}`,
-                `         </Suspense>`,
-                `     );`,
-                ` }`
-            ].map(line => {
-                if (line.startsWith("+")) {
-                    return chalk.green(line);
-                }
-                if (line.startsWith("-")) {
-                    return chalk.red(line);
-                }
-                return chalk.grey(line);
-            }),
-            chalk.grey("```")
-        ].join("\n")
+    let kcPagePath = pathJoin(
+        ".",
+        pathRelative(process.cwd(), buildContext.themeSrcDirPath),
+        themeType,
+        "KcPage.tsx"
     );
+    console.log(`updating  ${kcPagePath}`);
+    /*
+        Load page from kcPagePath, find switch (kcContext.pageId)
+         Add a new case to it that return a react component(componentName)
+         default attributes for new component is
+           {...{ kcContext, i18n, classes }}`,
+           Template={Template}`,
+            doUseDefaultCss={true}`,
+         and in case componentCode.includes(userProfileFormFieldComponentName) is true two more attribute will be added
+           ${userProfileFormFieldComponentName}={${userProfileFormFieldComponentName}}`,
+           doMakeUserConfirmPassword={doMakeUserConfirmPassword}`
+       this will also add lazy import to file :
+       const componentName = lazy(() => import("./pages/componentName"));
+     */
+    await addImportAndSwitchToKCPage(
+        kcPagePath,
+        pageIdOrComponent,
+        componentName,
+        componentCode.includes(userProfileFormFieldComponentName)
+    );
+    console.log(`Update finished, new router added successfully to ${kcPagePath}`);
 }
