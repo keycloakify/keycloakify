@@ -188,6 +188,9 @@ export async function command(params: { cliCommandOptions: CliEjectPageCommandOp
                 ),
                 chalk.gray(
                     "You can also explicitly provide the pages e.g. `npx keycloakify eject-page --pages Template.tsx,Login.ftl,...`"
+                ),
+                chalk.gray(
+                    "You can also use `npx keycloakify eject-page --pages all` to add all pages"
                 )
             ].join("\n")
         );
@@ -199,6 +202,10 @@ export async function command(params: { cliCommandOptions: CliEjectPageCommandOp
         cliPagesToEject = [pageIdOrComponent];
     }
 
+    // Support for eject-page --pages all
+    if (cliPagesToEject.length == 1 && cliPagesToEject[0] == "all") {
+        cliPagesToEject = allowedPages;
+    }
     // if user input pages does not exist then show him some helpful tips about the allowed pages and exit
     for (const pageIdOrComponent of cliPagesToEject) {
         if (
