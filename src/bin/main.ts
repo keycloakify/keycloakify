@@ -138,9 +138,23 @@ program
     });
 
 program
-    .command({
+    .command<{
+        pages: string;
+    }>({
         name: "eject-page",
         description: "Eject a Keycloak page."
+    })
+    .option({
+        key: "pages",
+        name: (() => {
+            const name = "pages";
+
+            optionsKeys.push(name);
+
+            return name;
+        })(),
+        description: ["List of pages for eject", "Example `Login.tsx,...`"].join(" "),
+        defaultValue: undefined
     })
     .task({
         skip,
