@@ -2,16 +2,33 @@ import { useEffect, useState } from "react";
 import { createGetI18n, type GenericI18n_noJsx, type KcContextLike, type MessageKey_defaultSet } from "./i18n";
 import { GenericI18n } from "./GenericI18n";
 import { Reflect } from "tsafe/Reflect";
+import type { LanguageTag as LanguageTag_defaultSet } from "keycloakify/login/i18n/messages_defaultSet/LanguageTag";
 
-export function createUseI18n<MessageKey_themeDefined extends string = never>(messagesByLanguageTag: {
-    [languageTag: string]: { [key in MessageKey_themeDefined]: string };
+export const i18nApi = {
+    withThemeName: <ThemeName extends string>() => ({
+        withTranslations: <MessageKey_themeDefined extends string = never>(messagesByLanguageTag: {
+            [languageTag: string]: { [key in MessageKey_themeDefined]: string | Record<ThemeName, string> };
+        }) => ({
+            create: () => createUseI18n<MessageKey_themeDefined, ThemeName>(messagesByLanguageTag)
+        })
+    })
+};
+
+export function createUseI18n<
+    MessageKey_themeDefined extends string = never,
+    ThemeName extends string = string,
+    LanguageTag extends string = LanguageTag_defaultSet
+>(params: {
+    messagesByLanguageTag: {
+        [languageTag: string]: { [key in MessageKey_themeDefined]: string | Record<ThemeName, string> };
+    };
 }) {
     type MessageKey = MessageKey_defaultSet | MessageKey_themeDefined;
 
-    type I18n = GenericI18n<MessageKey>;
+    type I18n = GenericI18n<MessageKey, LanguageTag>;
 
     const { withJsx } = (() => {
-        const cache = new WeakMap<GenericI18n_noJsx<MessageKey>, GenericI18n<MessageKey>>();
+        const cache = new WeakMap<GenericI18n_noJsx<MessageKey, LanguageTag>, GenericI18n<MessageKey, LanguageTag>>();
 
         function renderHtmlString(params: { htmlString: string; msgKey: string }): JSX.Element {
             const { htmlString, msgKey } = params;
@@ -25,7 +42,7 @@ export function createUseI18n<MessageKey_themeDefined extends string = never>(me
             );
         }
 
-        function withJsx(i18n_noJsx: GenericI18n_noJsx<MessageKey>): I18n {
+        function withJsx(i18n_noJsx: GenericI18n_noJsx<MessageKey, LanguageTag>): I18n {
             use_cache: {
                 const i18n = cache.get(i18n_noJsx);
 
@@ -63,7 +80,7 @@ export function createUseI18n<MessageKey_themeDefined extends string = never>(me
         (styleElement.textContent = `[data-kc-msg] { display: inline-block; }`), document.head.prepend(styleElement);
     }
 
-    const { getI18n } = createGetI18n(messagesByLanguageTag);
+    const { getI18n } = createGetI18n({ messagesByLanguageTag, extraLanguageTranslations });
 
     function useI18n(params: { kcContext: KcContextLike }): { i18n: I18n } {
         const { kcContext } = params;
