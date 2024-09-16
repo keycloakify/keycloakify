@@ -4,7 +4,7 @@ import { id } from "tsafe/id";
 import type { KcContext } from "./KcContext";
 import { BASE_URL } from "keycloakify/lib/BASE_URL";
 
-const resourcesPath = `${BASE_URL}${WELL_KNOWN_DIRECTORY_BASE_NAME.DOT_KEYCLOAKIFY}/account`;
+const resourcesPath = `${BASE_URL}${WELL_KNOWN_DIRECTORY_BASE_NAME.KEYCLOAKIFY_DEV_RESOURCES}/account`;
 
 export const kcContextCommonMock: KcContext.Common = {
     themeVersion: "0.0.0",
