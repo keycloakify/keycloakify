@@ -61,7 +61,9 @@
         "bluehats"
     ],
     "homepage": "https://www.keycloakify.dev",
-    "dependencies": {},
+    "dependencies": {
+        "tsafe": "^1.6.6"
+    },
     "devDependencies": {
         "@babel/core": "^7.24.5",
         "@babel/generator": "^7.24.5",
@@ -86,7 +88,6 @@
         "chokidar-cli": "^3.0.0",
         "cli-select": "^1.1.2",
         "isomorphic-dompurify": "^2.15.0",
-        "tsafe": "^1.6.6",
         "eslint-plugin-storybook": "^0.6.7",
         "evt": "^2.5.7",
         "husky": "^4.3.8",
@@ -111,6 +112,5 @@
         "yauzl": "^2.10.0",
         "zod": "^3.17.10",
         "html-entities": "2.5.2"
-    },
-    "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+    }
 }
