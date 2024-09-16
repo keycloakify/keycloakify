@@ -57,6 +57,10 @@ export function copyKeycloakResourcesToPublic(params: {
         force: true,
         recursive: true
     });
+    rmSync(pathJoin(pathDirname(destDirPath), ".keycloakify"), {
+        force: true,
+        recursive: true
+    });
 
     fs.mkdirSync(destDirPath, { recursive: true });
 
