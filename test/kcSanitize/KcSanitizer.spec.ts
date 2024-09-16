@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
 import { KcSanitizer } from "keycloakify/tools/kcSanitize/KcSanitizer";
-// Adjust the import path as needed
 
 // Implementation of Keycloak Java method KeycloakSanitizerTest with bunch of more test for p tag styling
 // https://github.com/keycloak/keycloak/blob/8ce8a4ba089eef25a0e01f58e09890399477b9ef/services/src/test/java/org/keycloak/theme/KeycloakSanitizerTest.java#L32
