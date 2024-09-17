@@ -46,12 +46,12 @@ export class KcSanitizerPolicy {
     public static readonly NAME = new RegExp("[a-zA-Z0-9\\-_\\$]+");
 
     public static readonly ALIGN = new RegExp(
-        "center|left|right|justify|char",
+        "\\b(center|left|right|justify|char)\\b",
         "i" // Case-insensitive flag
     );
 
     public static readonly VALIGN = new RegExp(
-        "baseline|bottom|middle|top",
+        "\\b(baseline|bottom|middle|top)\\b",
         "i" // Case-insensitive flag
     );
 

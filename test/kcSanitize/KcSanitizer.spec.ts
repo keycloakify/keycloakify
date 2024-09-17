@@ -75,6 +75,20 @@ describe("KeycloakSanitizerMethod", () => {
             html
         );
     });
+
+    it("should handle ordinary texts correctly", () => {
+        let html: string = "";
+
+        html = "Some text";
+        assertResult("Some text", html);
+
+        html = `text with "double quotation"`;
+        assertResult(`text with "double quotation"`, html);
+
+        html = `text with 'single quotation'`;
+        assertResult(`text with 'single quotation'`, html);
+    });
+
     it("should handle text styles correctly", () => {
         let html: string = "";
 
@@ -90,6 +104,15 @@ describe("KeycloakSanitizerMethod", () => {
         html = `<p align="center"> <b>red text </b></p>`;
         assertResult(`<p align="center"> <b>red text </b></p>`, html);
 
+        html = `<p align="CenTer"> <b> Case-insensitive</b></p>`;
+        assertResult(`<p align="CenTer"> <b> Case-insensitive</b></p>`, html);
+
+        html = `<p align="xyz"> <b>wrong value for align</b></p>`;
+        assertResult(`<p> <b>wrong value for align</b></p>`, html);
+
+        html = `<p align="centercenter"> <b>wrong value for align</b></p>`;
+        assertResult(`<p> <b>wrong value for align</b></p>`, html);
+
         html = `<p style="font-size: 20px;">This is a paragraph with larger text.</p>`;
         assertResult(
             `<p style="font-size: 20px;">This is a paragraph with larger text.</p>`,
@@ -100,13 +123,23 @@ describe("KeycloakSanitizerMethod", () => {
         assertResult(`<h3> או נושא שתבחר</h3>`, html);
     });
 
+    it("should handle  styles correctly", () => {
+        let html = "";
+        html = `<table border="5"> </table>`;
+        assertResult(`<table border="5"> </table>`, html);
+
+        html = `<table border="xyz"> </table>`;
+        assertResult(`<table> </table>`, html);
+
+        html = `<font color = "red"> Content </font>`;
+        assertResult(`<font color="red"> Content </font>`, html);
+    });
+
     function assertResult(expectedResult: string | null, html: string | null): void {
         if (expectedResult === null) {
             expect(KcSanitizer.sanitize(html)).toThrow("Cannot escape null value.");
         } else {
             const result = KcSanitizer.sanitize(html);
-            console.log("expectedResult is ", expectedResult);
-            console.log("Result is ", result);
             expect(result).toBe(expectedResult);
         }
     }
