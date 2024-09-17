@@ -21,7 +21,7 @@ export function copyKeycloakResourcesToPublic(params: {
 
     const destDirPath = pathJoin(
         buildContext.publicDirPath,
-        WELL_KNOWN_DIRECTORY_BASE_NAME.DOT_KEYCLOAKIFY
+        WELL_KNOWN_DIRECTORY_BASE_NAME.KEYCLOAKIFY_DEV_RESOURCES
     );
 
     const keycloakifyBuildinfoFilePath = pathJoin(destDirPath, "keycloakify.buildinfo");
@@ -57,6 +57,10 @@ export function copyKeycloakResourcesToPublic(params: {
         force: true,
         recursive: true
     });
+    rmSync(pathJoin(pathDirname(destDirPath), ".keycloakify"), {
+        force: true,
+        recursive: true
+    });
 
     fs.mkdirSync(destDirPath, { recursive: true });
 
@@ -67,7 +71,7 @@ export function copyKeycloakResourcesToPublic(params: {
             getThisCodebaseRootDirPath(),
             "res",
             "public",
-            WELL_KNOWN_DIRECTORY_BASE_NAME.DOT_KEYCLOAKIFY
+            WELL_KNOWN_DIRECTORY_BASE_NAME.KEYCLOAKIFY_DEV_RESOURCES
         ),
         destDirPath
     });
