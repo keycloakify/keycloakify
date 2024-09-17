@@ -3,7 +3,7 @@ import * as fs from "fs";
 import { join } from "path";
 import { assert } from "tsafe/assert";
 import { transformCodebase } from "../../src/bin/tools/transformCodebase";
-import { createPublicDotKeycloakifyDir } from "./createPublicDotKeycloakifyDir";
+import { createPublicKeycloakifyDevResourcesDir } from "./createPublicKeycloakifyDevResourcesDir";
 import { createAccountV1Dir } from "./createAccountV1Dir";
 import chalk from "chalk";
 
@@ -144,7 +144,7 @@ import chalk from "chalk";
         fs.cpSync(dirBasename, destDirPath, { recursive: true });
     }
 
-    await createPublicDotKeycloakifyDir();
+    await createPublicKeycloakifyDevResourcesDir();
     await createAccountV1Dir();
 
     transformCodebase({
