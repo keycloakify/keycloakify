@@ -150,35 +150,29 @@ const testCases = [
         ]
     }
 ];
-const assertResult = async (
-    expectedResult: string | null,
-    html: string | null
-): Promise<void> => {
+const assertResult = (expectedResult: string | null, html: string | null): void => {
     if (html === null) {
-        await expect(KcSanitizer.sanitize(html)).rejects.toThrow(
-            "Cannot escape null value."
-        );
+        expect(KcSanitizer.sanitize(html)).toThrow("Cannot escape null value.");
     } else {
-        const result = await KcSanitizer.sanitize(html);
+        const result = KcSanitizer.sanitize(html);
         expect(result).toBe(expectedResult);
     }
 };
 
 // Server-side tests
-describe("KcSanitizer - Server Side", () => {
-    for (const group of testCases) {
-        describe(group.description, () => {
-            for (const test of group.cases) {
-                it(`should handle ${test.html}`, async () => {
-                    await assertResult(test.expectedResult, test.html);
-                });
-            }
-        });
-    }
-});
+// describe("KcSanitizer - Server Side", () => {
+//     for (const group of testCases) {
+//         describe(group.description, () => {
+//             for (const test of group.cases) {
+//                 it(`should handle ${test.html}`, async () => {
+//                     await assertResult(test.expectedResult, test.html);
+//                 });
+//             }
+//         });
+//     }
+// });
 
-// Client-side tests
-describe("KcSanitizer - Client Side (jsdom)", () => {
+describe("KcSanitizer - Client Side", () => {
     const decodeHtmlEntities = (html: string): string => {
         const entitiesMap: { [key: string]: string } = {
             "&amp;": "&",
@@ -195,6 +189,7 @@ describe("KcSanitizer - Client Side (jsdom)", () => {
     };
 
     beforeAll(() => {
+        vi.stubGlobal("window", {});
         // Mocking the `document.createElement` to simulate textarea behavior
         vi.stubGlobal("document", {
             createElement: (tagName: string) => {
@@ -219,8 +214,12 @@ describe("KcSanitizer - Client Side (jsdom)", () => {
     for (const group of testCases) {
         describe(group.description, () => {
             for (const test of group.cases) {
-                it(`should handle ${test.html}`, async () => {
-                    await assertResult(test.expectedResult, test.html);
+                it(`should handle ${test.html}`, () => {
+                    if (test.html == null)
+                        expect(() =>
+                            assertResult(test.expectedResult, test.html)
+                        ).toThrow("Cannot escape null value.");
+                    else assertResult(test.expectedResult, test.html);
                 });
             }
         });

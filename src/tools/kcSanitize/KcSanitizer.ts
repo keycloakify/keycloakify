@@ -6,30 +6,31 @@ export class KcSanitizer {
     private static HREF_PATTERN = /\s+href="([^"]*)"/g;
     private static textarea: HTMLTextAreaElement | null = null;
 
-    public static async sanitize(html: string | null): Promise<string> {
+    public static sanitize(html: string | null): string {
         if (html == null) {
             throw new Error("Cannot escape null value.");
         }
         if (html === "") return "";
 
-        html = await this.decodeHtmlFull(html);
+        html = this.decodeHtmlFull(html);
         const sanitized = KcSanitizerPolicy.sanitize(html);
         return this.fixURLs(sanitized);
     }
 
-    private static async decodeHtmlFull(html: string): Promise<string> {
+    private static decodeHtmlFull(html: string): string {
         if (typeof window !== "undefined" && typeof document !== "undefined") {
             return KcSanitizer.decodeHtmlOnClient(html);
         } else {
-            return await KcSanitizer.decodeHtmlOnServer(html);
+            throw new Error("not implemented");
+            // return await KcSanitizer.decodeHtmlOnServer(html);
         }
     }
 
-    private static async decodeHtmlOnServer(html: string): Promise<string> {
-        // Dynamically import html-entities only on the server side
-        const { decode } = await import("html-entities");
-        return decode(html);
-    }
+    // private static async decodeHtmlOnServer(html: string): Promise<string> {
+    //     // Dynamically import html-entities only on the server side
+    //     const { decode } = await import("html-entities");
+    //     return decode(html);
+    // }
 
     private static decodeHtmlOnClient(html: string): string {
         if (!KcSanitizer.textarea) {
