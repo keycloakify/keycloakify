@@ -216,7 +216,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         process.exit(-1);
     }
 
-    const componentCode = fs
+    let componentCode = fs
         .readFileSync(
             pathJoin(
                 getThisCodebaseRootDirPath(),
@@ -234,6 +234,37 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         if (!fs.existsSync(targetDirPath)) {
             fs.mkdirSync(targetDirPath, { recursive: true });
         }
+    }
+
+    //Remove spaces in case of file formatting change in future
+    const passwordWrapperRegex =
+        /import\s*{\s*PasswordWrapper\s*}\s*from\s*"keycloakify\/login\/pages\/PasswordWrapper";/;
+
+    // Copy PasswordWrapper in case the component need it
+    if (passwordWrapperRegex.test(componentCode)) {
+        //Change import path so that it works in user's project code base
+        componentCode = componentCode.replace(
+            passwordWrapperRegex,
+            `import { PasswordWrapper } from "./PasswordWrapper";`
+        );
+
+        const passwordWrapperFilePathInKeycloakify = pathJoin(
+            getThisCodebaseRootDirPath(),
+            "src",
+            themeType,
+            pagesOrDot,
+            "PasswordWrapper.tsx"
+        );
+        const passwordWrapperFilePathInUserProject = pathJoin(
+            buildContext.themeSrcDirPath,
+            themeType,
+            pagesOrDot,
+            "PasswordWrapper.tsx"
+        );
+        fs.copyFileSync(
+            passwordWrapperFilePathInKeycloakify,
+            passwordWrapperFilePathInUserProject
+        );
     }
 
     fs.writeFileSync(targetFilePath, Buffer.from(componentCode, "utf8"));
