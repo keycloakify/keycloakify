@@ -240,7 +240,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
     const passwordWrapperRegex =
         /import\s*{\s*PasswordWrapper\s*}\s*from\s*"keycloakify\/login\/pages\/PasswordWrapper";/;
 
-    // Copy PasswordWrapper in case the component need it
+    // Copy PasswordWrapper if it's imported
     if (passwordWrapperRegex.test(componentCode)) {
         //Change import path so that it works in user's project code base
         componentCode = componentCode.replace(
