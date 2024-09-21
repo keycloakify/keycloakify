@@ -4,7 +4,7 @@ import type {
 } from "../messages_defaultSet/types";
 import { type ReturnTypeOfCreateUseI18n, createUseI18n } from "../withJsx/useI18n";
 
-export type I18nInitializer<
+export type i18nBuilder<
     ThemeName extends string = never,
     MessageKey_themeDefined extends string = never,
     LanguageTag_notInDefaultSet extends string = never,
@@ -14,7 +14,7 @@ export type I18nInitializer<
         | "withCustomTranslations" = never
 > = Omit<
     {
-        withThemeName: <ThemeName extends string>() => I18nInitializer<
+        withThemeName: <ThemeName extends string>() => i18nBuilder<
             ThemeName,
             MessageKey_themeDefined,
             LanguageTag_notInDefaultSet,
@@ -29,7 +29,7 @@ export type I18nInitializer<
                     default: Record<MessageKey_defaultSet, string>;
                 }>;
             };
-        }) => I18nInitializer<
+        }) => i18nBuilder<
             ThemeName,
             MessageKey_themeDefined,
             LanguageTag_notInDefaultSet,
@@ -44,7 +44,7 @@ export type I18nInitializer<
                     string | Record<ThemeName, string>
                 >;
             }>
-        ) => I18nInitializer<
+        ) => i18nBuilder<
             ThemeName,
             MessageKey_themeDefined,
             LanguageTag_notInDefaultSet,
@@ -58,7 +58,7 @@ export type I18nInitializer<
     ExcludedMethod
 >;
 
-function createI18nInitializer<
+function createi18nBuilder<
     ThemeName extends string = never,
     MessageKey_themeDefined extends string = never,
     LanguageTag_notInDefaultSet extends string = never
@@ -77,26 +77,26 @@ function createI18nInitializer<
             string | Record<ThemeName, string>
         >;
     }>;
-}): I18nInitializer<ThemeName, MessageKey_themeDefined, LanguageTag_notInDefaultSet> {
-    const i18nInitializer: I18nInitializer<
+}): i18nBuilder<ThemeName, MessageKey_themeDefined, LanguageTag_notInDefaultSet> {
+    const i18nBuilder: i18nBuilder<
         ThemeName,
         MessageKey_themeDefined,
         LanguageTag_notInDefaultSet
     > = {
         withThemeName: () =>
-            createI18nInitializer({
+            createi18nBuilder({
                 extraLanguageTranslations: params.extraLanguageTranslations,
                 messagesByLanguageTag_themeDefined:
                     params.messagesByLanguageTag_themeDefined as any
             }),
         withExtraLanguages: extraLanguageTranslations =>
-            createI18nInitializer({
+            createi18nBuilder({
                 extraLanguageTranslations,
                 messagesByLanguageTag_themeDefined:
                     params.messagesByLanguageTag_themeDefined as any
             }),
         withCustomTranslations: messagesByLanguageTag_themeDefined =>
-            createI18nInitializer({
+            createi18nBuilder({
                 extraLanguageTranslations: params.extraLanguageTranslations,
                 messagesByLanguageTag_themeDefined
             }),
@@ -108,10 +108,10 @@ function createI18nInitializer<
             })
     };
 
-    return i18nInitializer;
+    return i18nBuilder;
 }
 
-export const i18nInitializer = createI18nInitializer({
+export const i18nBuilder = createi18nBuilder({
     extraLanguageTranslations: {},
     messagesByLanguageTag_themeDefined: {}
 });

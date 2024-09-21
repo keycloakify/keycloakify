@@ -1,8 +1,8 @@
-import { i18nInitializer } from "keycloakify/login/i18n";
+import { i18nBuilder } from "keycloakify/login/i18n";
 import { assert, type Equals } from "tsafe/assert";
 import { Reflect } from "tsafe/Reflect";
 
-const { useI18n, ofTypeI18n } = i18nInitializer
+const { useI18n, ofTypeI18n } = i18nBuilder
     .withThemeName<"my-theme-1" | "my-theme-2">()
     .withExtraLanguages({
         he: {
