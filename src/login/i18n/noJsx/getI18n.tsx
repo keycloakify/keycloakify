@@ -7,7 +7,11 @@ import { FALLBACK_LANGUAGE_TAG } from "keycloakify/bin/shared/constants";
 import { id } from "tsafe/id";
 import { is } from "tsafe/is";
 import { Reflect } from "tsafe/Reflect";
-import type { LanguageTag as LanguageTag_defaultSet, MessageKey as MessageKey_defaultSet } from "../messages_defaultSet/types";
+import {
+    type LanguageTag as LanguageTag_defaultSet,
+    type MessageKey as MessageKey_defaultSet,
+    languageTags as languageTags_defaultSet
+} from "../messages_defaultSet/types";
 import type { GenericI18n_noJsx } from "./GenericI18n_noJsx";
 
 export type KcContextLike = {
@@ -48,6 +52,17 @@ export function createGetI18n<
     }>;
 }): ReturnTypeOfCreateGetI18n<MessageKey_themeDefined, LanguageTag_notInDefaultSet> {
     const { extraLanguageTranslations, messagesByLanguageTag_themeDefined } = params;
+
+    Object.keys(extraLanguageTranslations).forEach(languageTag_notInDefaultSet => {
+        if (id<readonly string[]>(languageTags_defaultSet).includes(languageTag_notInDefaultSet)) {
+            throw new Error(
+                [
+                    `Language "${languageTag_notInDefaultSet}" is already in the default set, you don't need to provide your own base translations for it`,
+                    `If you want to override some translations for this language, you can use the "withCustomTranslations" method`
+                ].join(" ")
+            );
+        }
+    });
 
     type LanguageTag = LanguageTag_defaultSet | LanguageTag_notInDefaultSet;
 

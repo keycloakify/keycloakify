@@ -16,7 +16,7 @@ export type GenericI18n_noJsx<MessageKey extends string, LanguageTag extends str
      * Used to render a select that enable user to switch language.
      * ex: https://user-images.githubusercontent.com/6702424/186044799-38801eec-4e89-483b-81dd-8e9233e8c0eb.png
      * */
-    labelBySupportedLanguageTag: Record<string, string>;
+    labelBySupportedLanguageTag: Record<string /*LanguageTag*/, string>;
     /**
      *
      * Examples assuming currentLanguageTag === "en"
