@@ -23,6 +23,17 @@ if (require.main === module) {
 async function generateI18nMessages() {
     const thisCodebaseRootDirPath = getThisCodebaseRootDirPath();
 
+    const accountI18nDirPath = pathJoin(
+        thisCodebaseRootDirPath,
+        "src",
+        "account",
+        "i18n"
+    );
+
+    if (fs.existsSync(accountI18nDirPath)) {
+        fs.rmSync(accountI18nDirPath, { recursive: true });
+    }
+
     type Dictionary = { [idiomId: string]: string };
 
     const record: { [themeType: string]: { [language: string]: Dictionary } } = {};
@@ -140,6 +151,10 @@ async function generateI18nMessages() {
             "messages_defaultSet"
         );
 
+        if (!fs.existsSync(messagesDirPath)) {
+            fs.mkdirSync(messagesDirPath, { recursive: true });
+        }
+
         fs.writeFileSync(
             pathJoin(messagesDirPath, "types.ts"),
             Buffer.from(
@@ -219,6 +234,18 @@ async function generateI18nMessages() {
             )
         );
     }
+
+    transformCodebase({
+        srcDirPath: pathJoin(thisCodebaseRootDirPath, "src", "login", "i18n"),
+        destDirPath: accountI18nDirPath,
+        transformSourceCode: ({ fileRelativePath, sourceCode }) => {
+            if (fileRelativePath.startsWith("messages_defaultSet")) {
+                return undefined;
+            }
+
+            return { modifiedSourceCode: sourceCode };
+        }
+    });
 }
 
 const keycloakifyExtraMessages_login: Record<

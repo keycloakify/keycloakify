@@ -49,7 +49,7 @@ jspm_packages
 .idea
 
 /src/login/i18n/messages_defaultSet/
-/src/account/i18n/messages_defaultSet/
+/src/account/i18n/
 
 # VS Code devcontainers
 .devcontainer

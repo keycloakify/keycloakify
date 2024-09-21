@@ -1,7 +1,7 @@
 import type {
     LanguageTag as LanguageTag_defaultSet,
     MessageKey as MessageKey_defaultSet
-} from "keycloakify/login/i18n/messages_defaultSet/types";
+} from "../messages_defaultSet/types";
 import { type ReturnTypeOfCreateGetI18n, createGetI18n } from "./getI18n";
 
 export type I18nInitializer<
