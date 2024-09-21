@@ -43,7 +43,10 @@ export function createGetI18n<
     LanguageTag_notInDefaultSet extends string = never
 >(params: {
     extraLanguageTranslations: {
-        [languageTag in LanguageTag_notInDefaultSet]: () => Promise<{ default: Record<MessageKey_defaultSet, string> }>;
+        [languageTag in LanguageTag_notInDefaultSet]: {
+            label: string;
+            getMessages: () => Promise<{ default: Record<MessageKey_defaultSet, string> }>;
+        };
     };
     messagesByLanguageTag_themeDefined: Partial<{
         [languageTag in LanguageTag_defaultSet | LanguageTag_notInDefaultSet]: {
@@ -100,7 +103,44 @@ export function createGetI18n<
 
                 return targetSupportedLocale.url;
             },
-            labelBySupportedLanguageTag: Object.fromEntries((kcContext.locale?.supported ?? []).map(({ languageTag, label }) => [languageTag, label]))
+            labelBySupportedLanguageTag: (() => {
+                const labelBySupportedLanguageTag = Object.fromEntries(
+                    (kcContext.locale?.supported ?? []).map(({ languageTag, label }) => [languageTag, label])
+                );
+
+                // NOTE: For IE11
+                if (typeof Proxy === undefined) {
+                    return labelBySupportedLanguageTag;
+                }
+
+                // NOTE: This is for convenience in Storybook
+                return new Proxy<Record<string, string>>(
+                    {},
+                    {
+                        get: function (...args) {
+                            const [, languageTag] = args;
+
+                            if (typeof languageTag !== "string") {
+                                return window.Reflect.get(...args);
+                            }
+
+                            let label = labelBySupportedLanguageTag[languageTag];
+
+                            if (label === undefined) {
+                                assert(is<Exclude<LanguageTag, LanguageTag_defaultSet>>(languageTag));
+
+                                const entry = extraLanguageTranslations[languageTag];
+
+                                assert(entry !== undefined);
+
+                                label = entry.label;
+                            }
+
+                            return label;
+                        }
+                    }
+                );
+            })()
         };
 
         const { createI18nTranslationFunctions } = createI18nTranslationFunctionsFactory<MessageKey_themeDefined>({
@@ -147,12 +187,14 @@ export function createGetI18n<
                           if (isEmpty) {
                               assert(is<Exclude<LanguageTag, LanguageTag_defaultSet>>(currentLanguageTag));
 
-                              const asyncFunction = extraLanguageTranslations[currentLanguageTag];
+                              const entry = extraLanguageTranslations[currentLanguageTag];
 
-                              assert(asyncFunction !== undefined);
+                              assert(entry !== undefined);
 
-                              return asyncFunction().then(({ default: messages }) => messages);
+                              return entry.getMessages().then(({ default: messages }) => messages);
                           }
+
+                          return fromDefaultSet;
                       })();
 
                       const i18n_currentLanguage: I18n = {

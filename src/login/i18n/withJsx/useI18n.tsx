@@ -18,7 +18,10 @@ export function createUseI18n<
     LanguageTag_notInDefaultSet extends string = never
 >(params: {
     extraLanguageTranslations: {
-        [languageTag in LanguageTag_notInDefaultSet]: () => Promise<{ default: Record<MessageKey_defaultSet, string> }>;
+        [languageTag in LanguageTag_notInDefaultSet]: {
+            label: string;
+            getMessages: () => Promise<{ default: Record<MessageKey_defaultSet, string> }>;
+        };
     };
     messagesByLanguageTag_themeDefined: Partial<{
         [languageTag in LanguageTag_defaultSet | LanguageTag_notInDefaultSet]: {

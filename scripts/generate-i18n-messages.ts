@@ -13,6 +13,7 @@ import { downloadKeycloakDefaultTheme } from "./shared/downloadKeycloakDefaultTh
 import { getThisCodebaseRootDirPath } from "../src/bin/tools/getThisCodebaseRootDirPath";
 import { deepAssign } from "../src/tools/deepAssign";
 import { THEME_TYPES } from "../src/bin/shared/constants";
+import { transformCodebase } from "../src/bin/tools/transformCodebase";
 const propertiesParser: any = require("properties-parser");
 
 if (require.main === module) {
