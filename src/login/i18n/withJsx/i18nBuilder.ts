@@ -4,7 +4,7 @@ import type {
 } from "../messages_defaultSet/types";
 import { type ReturnTypeOfCreateUseI18n, createUseI18n } from "../withJsx/useI18n";
 
-export type i18nBuilder<
+export type I18nBuilder<
     ThemeName extends string = never,
     MessageKey_themeDefined extends string = never,
     LanguageTag_notInDefaultSet extends string = never,
@@ -14,7 +14,7 @@ export type i18nBuilder<
         | "withCustomTranslations" = never
 > = Omit<
     {
-        withThemeName: <ThemeName extends string>() => i18nBuilder<
+        withThemeName: <ThemeName extends string>() => I18nBuilder<
             ThemeName,
             MessageKey_themeDefined,
             LanguageTag_notInDefaultSet,
@@ -29,7 +29,7 @@ export type i18nBuilder<
                     default: Record<MessageKey_defaultSet, string>;
                 }>;
             };
-        }) => i18nBuilder<
+        }) => I18nBuilder<
             ThemeName,
             MessageKey_themeDefined,
             LanguageTag_notInDefaultSet,
@@ -44,13 +44,13 @@ export type i18nBuilder<
                     string | Record<ThemeName, string>
                 >;
             }>
-        ) => i18nBuilder<
+        ) => I18nBuilder<
             ThemeName,
             MessageKey_themeDefined,
             LanguageTag_notInDefaultSet,
             ExcludedMethod | "withCustomTranslations"
         >;
-        create: () => ReturnTypeOfCreateUseI18n<
+        build: () => ReturnTypeOfCreateUseI18n<
             MessageKey_themeDefined,
             LanguageTag_notInDefaultSet
         >;
@@ -58,7 +58,7 @@ export type i18nBuilder<
     ExcludedMethod
 >;
 
-function createi18nBuilder<
+function createI18nBuilder<
     ThemeName extends string = never,
     MessageKey_themeDefined extends string = never,
     LanguageTag_notInDefaultSet extends string = never
@@ -77,30 +77,30 @@ function createi18nBuilder<
             string | Record<ThemeName, string>
         >;
     }>;
-}): i18nBuilder<ThemeName, MessageKey_themeDefined, LanguageTag_notInDefaultSet> {
-    const i18nBuilder: i18nBuilder<
+}): I18nBuilder<ThemeName, MessageKey_themeDefined, LanguageTag_notInDefaultSet> {
+    const i18nBuilder: I18nBuilder<
         ThemeName,
         MessageKey_themeDefined,
         LanguageTag_notInDefaultSet
     > = {
         withThemeName: () =>
-            createi18nBuilder({
+            createI18nBuilder({
                 extraLanguageTranslations: params.extraLanguageTranslations,
                 messagesByLanguageTag_themeDefined:
                     params.messagesByLanguageTag_themeDefined as any
             }),
         withExtraLanguages: extraLanguageTranslations =>
-            createi18nBuilder({
+            createI18nBuilder({
                 extraLanguageTranslations,
                 messagesByLanguageTag_themeDefined:
                     params.messagesByLanguageTag_themeDefined as any
             }),
         withCustomTranslations: messagesByLanguageTag_themeDefined =>
-            createi18nBuilder({
+            createI18nBuilder({
                 extraLanguageTranslations: params.extraLanguageTranslations,
                 messagesByLanguageTag_themeDefined
             }),
-        create: () =>
+        build: () =>
             createUseI18n({
                 extraLanguageTranslations: params.extraLanguageTranslations,
                 messagesByLanguageTag_themeDefined:
@@ -111,7 +111,7 @@ function createi18nBuilder<
     return i18nBuilder;
 }
 
-export const i18nBuilder = createi18nBuilder({
+export const i18nBuilder = createI18nBuilder({
     extraLanguageTranslations: {},
     messagesByLanguageTag_themeDefined: {}
 });

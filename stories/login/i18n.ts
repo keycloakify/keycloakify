@@ -1,9 +1,7 @@
 import { i18nBuilder } from "../../dist/login";
-import type { ThemeName } from "../kc.gen";
 
-export const { useI18n, ofTypeI18n } = i18nBuilder
-    .withThemeName<ThemeName>()
-    .withCustomTranslations({})
-    .create();
+const { useI18n, ofTypeI18n } = i18nBuilder.build();
 
-export type I18n = typeof ofTypeI18n;
+type I18n = typeof ofTypeI18n;
+
+export { useI18n, I18n };

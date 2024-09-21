@@ -26,7 +26,7 @@ const { useI18n, ofTypeI18n } = i18nBuilder
             }
         }
     })
-    .create();
+    .build();
 
 type I18n = typeof ofTypeI18n;
 
