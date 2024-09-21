@@ -24,9 +24,9 @@ export type I18nInitializer<
         withExtraLanguages: <
             LanguageTag_notInDefaultSet extends string
         >(extraLanguageTranslations: {
-            [LanguageTag in LanguageTag_notInDefaultSet]: () => Promise<
-                Record<MessageKey_defaultSet, string>
-            >;
+            [LanguageTag in LanguageTag_notInDefaultSet]: () => Promise<{
+                default: Record<MessageKey_defaultSet, string>;
+            }>;
         }) => I18nInitializer<
             ThemeName,
             MessageKey_themeDefined,
@@ -62,9 +62,9 @@ function createI18nInitializer<
     LanguageTag_notInDefaultSet extends string = never
 >(params: {
     extraLanguageTranslations: {
-        [LanguageTag in LanguageTag_notInDefaultSet]: () => Promise<
-            Record<MessageKey_defaultSet, string>
-        >;
+        [LanguageTag in LanguageTag_notInDefaultSet]: () => Promise<{
+            default: Record<MessageKey_defaultSet, string>;
+        }>;
     };
     messagesByLanguageTag_themeDefined: Partial<{
         [LanguageTag in LanguageTag_defaultSet | LanguageTag_notInDefaultSet]: Record<
@@ -106,8 +106,12 @@ function createI18nInitializer<
     return i18nInitializer;
 }
 
-export const i18nInitializer = createI18nInitializer({});
+export const i18nInitializer = createI18nInitializer({
+    extraLanguageTranslations: {},
+    messagesByLanguageTag_themeDefined: {}
+});
 
+/*
 const i18n = i18nInitializer
     .withThemeName<"my-theme-1" | "my-theme-2">()
     .withExtraLanguages({
@@ -128,3 +132,4 @@ const i18n = i18nInitializer
         }
     })
     .create();
+*/
