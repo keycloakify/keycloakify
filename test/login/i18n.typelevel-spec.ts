@@ -5,7 +5,10 @@ import { Reflect } from "tsafe/Reflect";
 const { useI18n, ofTypeI18n } = i18nInitializer
     .withThemeName<"my-theme-1" | "my-theme-2">()
     .withExtraLanguages({
-        he: () => import("./he")
+        he: {
+            label: "עברית",
+            getMessages: () => import("./he")
+        }
     })
     .withCustomTranslations({
         en: {

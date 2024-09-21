@@ -10,7 +10,7 @@ import { useInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
 import type { PasswordPolicies, Attribute, Validators } from "keycloakify/login/KcContext";
 import type { KcContext } from "../KcContext";
 import type { MessageKey_defaultSet } from "keycloakify/login/i18n";
-import { KcContextLike as KcContextLike_i18n } from "keycloakify/login/i18n";
+import type { KcContextLike as KcContextLike_i18n } from "keycloakify/login/i18n";
 import type { I18n } from "../i18n";
 
 export type FormFieldError = {

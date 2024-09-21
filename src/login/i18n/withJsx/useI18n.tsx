@@ -12,6 +12,8 @@ export type ReturnTypeOfCreateUseI18n<MessageKey_themeDefined extends string, La
     ofTypeI18n: GenericI18n<MessageKey_defaultSet | MessageKey_themeDefined, LanguageTag_defaultSet | LanguageTag_notInDefaultSet>;
 };
 
+export { KcContextLike };
+
 export function createUseI18n<
     ThemeName extends string = string,
     MessageKey_themeDefined extends string = never,
