@@ -1,31 +1,40 @@
 import { useEffect, useState } from "react";
-import { createGetI18n, type GenericI18n_noJsx, type KcContextLike, type MessageKey_defaultSet } from "./i18n";
-import { GenericI18n } from "./GenericI18n";
+import { createGetI18n, type KcContextLike } from "../noJsx/getI18n";
+import type { GenericI18n_noJsx } from "../noJsx/GenericI18n_noJsx";
 import { Reflect } from "tsafe/Reflect";
-import type { LanguageTag as LanguageTag_defaultSet } from "keycloakify/login/i18n/messages_defaultSet/LanguageTag";
+import type { GenericI18n } from "./GenericI18n";
+import type { LanguageTag as LanguageTag_defaultSet, MessageKey as MessageKey_defaultSet } from "../messages_defaultSet/types";
 
-export const i18nApi = {
-    withThemeName: <ThemeName extends string>() => ({
-        withTranslations: <MessageKey_themeDefined extends string = never>(messagesByLanguageTag: {
-            [languageTag: string]: { [key in MessageKey_themeDefined]: string | Record<ThemeName, string> };
-        }) => ({
-            create: () => createUseI18n<MessageKey_themeDefined, ThemeName>(messagesByLanguageTag)
-        })
-    })
+export type ReturnTypeOfCreateUseI18n<MessageKey_themeDefined extends string, LanguageTag_notInDefaultSet extends string> = {
+    useI18n: (params: { kcContext: KcContextLike }) => {
+        i18n: GenericI18n<MessageKey_defaultSet | MessageKey_themeDefined, LanguageTag_defaultSet | LanguageTag_notInDefaultSet>;
+    };
+    ofTypeI18n: GenericI18n<MessageKey_defaultSet | MessageKey_themeDefined, LanguageTag_defaultSet | LanguageTag_notInDefaultSet>;
 };
 
 export function createUseI18n<
-    MessageKey_themeDefined extends string = never,
     ThemeName extends string = string,
-    LanguageTag extends string = LanguageTag_defaultSet
+    MessageKey_themeDefined extends string = never,
+    LanguageTag_notInDefaultSet extends string = never
 >(params: {
-    messagesByLanguageTag: {
-        [languageTag: string]: { [key in MessageKey_themeDefined]: string | Record<ThemeName, string> };
+    extraLanguageTranslations: {
+        [languageTag in LanguageTag_notInDefaultSet]: () => Promise<{ default: Record<MessageKey_defaultSet, string> }>;
     };
-}) {
+    messagesByLanguageTag_themeDefined: Partial<{
+        [languageTag in LanguageTag_defaultSet | LanguageTag_notInDefaultSet]: {
+            [key in MessageKey_themeDefined]: string | Record<ThemeName, string>;
+        };
+    }>;
+}): ReturnTypeOfCreateUseI18n<MessageKey_themeDefined, LanguageTag_notInDefaultSet> {
+    const { extraLanguageTranslations, messagesByLanguageTag_themeDefined } = params;
+
+    type LanguageTag = LanguageTag_defaultSet | LanguageTag_notInDefaultSet;
+
     type MessageKey = MessageKey_defaultSet | MessageKey_themeDefined;
 
     type I18n = GenericI18n<MessageKey, LanguageTag>;
+
+    type Result = { i18n: I18n };
 
     const { withJsx } = (() => {
         const cache = new WeakMap<GenericI18n_noJsx<MessageKey, LanguageTag>, GenericI18n<MessageKey, LanguageTag>>();
@@ -80,9 +89,9 @@ export function createUseI18n<
         (styleElement.textContent = `[data-kc-msg] { display: inline-block; }`), document.head.prepend(styleElement);
     }
 
-    const { getI18n } = createGetI18n({ messagesByLanguageTag, extraLanguageTranslations });
+    const { getI18n } = createGetI18n({ extraLanguageTranslations, messagesByLanguageTag_themeDefined });
 
-    function useI18n(params: { kcContext: KcContextLike }): { i18n: I18n } {
+    function useI18n(params: { kcContext: KcContextLike }): Result {
         const { kcContext } = params;
 
         const { i18n, prI18n_currentLanguage } = getI18n({ kcContext });

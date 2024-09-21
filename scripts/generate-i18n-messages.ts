@@ -140,13 +140,15 @@ async function generateI18nMessages() {
         );
 
         fs.writeFileSync(
-            pathJoin(messagesDirPath, "LanguageTag.ts"),
+            pathJoin(messagesDirPath, "types.ts"),
             Buffer.from(
                 [
                     ``,
                     `export const languageTags = ${JSON.stringify(languages, null, 2)} as const;`,
                     ``,
                     `export type LanguageTag = typeof languageTags[number];`,
+                    ``,
+                    `export type MessageKey = keyof typeof import("./en")["default"];`,
                     ``
                 ].join("\n"),
                 "utf8"

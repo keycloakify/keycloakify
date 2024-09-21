@@ -29,9 +29,7 @@ export function generateMessageProperties(params: {
         Object.fromEntries(
             fs
                 .readdirSync(baseMessagesDirPath)
-                .filter(
-                    basename => basename !== "index.ts" && basename !== "LanguageTag.ts"
-                )
+                .filter(basename => basename !== "index.ts" && basename !== "types.ts")
                 .map(basename => ({
                     languageTag: basename.replace(/\.ts$/, ""),
                     filePath: pathJoin(baseMessagesDirPath, basename)

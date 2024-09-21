@@ -1,13 +1,14 @@
 import "keycloakify/tools/Object.fromEntries";
 import { assert } from "tsafe/assert";
-import messages_defaultSet_fallbackLanguage from "./messages_defaultSet/en";
-import { fetchMessages_defaultSet } from "./messages_defaultSet";
-import type { KcContext } from "../KcContext";
+import messages_defaultSet_fallbackLanguage from "../messages_defaultSet/en";
+import { fetchMessages_defaultSet } from "../messages_defaultSet";
+import type { KcContext } from "../../KcContext";
 import { FALLBACK_LANGUAGE_TAG } from "keycloakify/bin/shared/constants";
 import { id } from "tsafe/id";
 import { is } from "tsafe/is";
 import { Reflect } from "tsafe/Reflect";
-import type { LanguageTag as LanguageTag_defaultSet } from "keycloakify/login/i18n/messages_defaultSet/LanguageTag";
+import type { LanguageTag as LanguageTag_defaultSet, MessageKey as MessageKey_defaultSet } from "../messages_defaultSet/types";
+import type { GenericI18n_noJsx } from "./GenericI18n_noJsx";
 
 export type KcContextLike = {
     themeName: string;
@@ -21,69 +22,6 @@ export type KcContextLike = {
 };
 
 assert<KcContext extends KcContextLike ? true : false>();
-
-export type GenericI18n_noJsx<MessageKey extends string, LanguageTag extends string> = {
-    /**
-     * e.g: "en", "fr", "zh-CN"
-     *
-     * The current language
-     */
-    currentLanguageTag: LanguageTag;
-    /**
-     * Redirect to this url to change the language.
-     * After reload currentLanguageTag === newLanguageTag
-     */
-    getChangeLocaleUrl: (newLanguageTag: LanguageTag) => string;
-    /**
-     * e.g. "en" => "English", "fr" => "Français", ...
-     *
-     * Used to render a select that enable user to switch language.
-     * ex: https://user-images.githubusercontent.com/6702424/186044799-38801eec-4e89-483b-81dd-8e9233e8c0eb.png
-     * */
-    labelBySupportedLanguageTag: Record<string, string>;
-    /**
-     *
-     * Examples assuming currentLanguageTag === "en"
-     * {
-     *   en: {
-     *     "access-denied": "Access denied",
-     *     "impersonateTitleHtml": "<strong>{0}</strong> Impersonate User",
-     *     "bar": "Bar {0}"
-     *   }
-     * }
-     *
-     * msgStr("access-denied") === "Access denied"
-     * msgStr("not-a-message-key") Throws an error
-     * msgStr("impersonateTitleHtml", "Foo") === "<strong>Foo</strong> Impersonate User"
-     * msgStr("${bar}", "<strong>c</strong>") === "Bar &lt;strong&gt;XXX&lt;/strong&gt;"
-     *  The html in the arg is partially escaped for security reasons, it might come from an untrusted source, it's not safe to render it as html.
-     */
-    msgStr: (key: MessageKey, ...args: (string | undefined)[]) => string;
-    /**
-     * This is meant to be used when the key argument is variable, something that might have been configured by the user
-     * in the Keycloak admin for example.
-     *
-     * Examples assuming currentLanguageTag === "en"
-     * {
-     *   en: {
-     *     "access-denied": "Access denied",
-     *   }
-     * }
-     *
-     * advancedMsgStr("${access-denied}") === advancedMsgStr("access-denied") === msgStr("access-denied") === "Access denied"
-     * advancedMsgStr("${not-a-message-key}") === advancedMsgStr("not-a-message-key") === "not-a-message-key"
-     */
-    advancedMsgStr: (key: string, ...args: (string | undefined)[]) => string;
-
-    /**
-     * Initially the messages are in english (fallback language).
-     * The translations in the current language are being fetched dynamically.
-     * This property is true while the translations are being fetched.
-     */
-    isFetchingTranslations: boolean;
-};
-
-export type MessageKey_defaultSet = keyof typeof messages_defaultSet_fallbackLanguage;
 
 export type ReturnTypeOfCreateGetI18n<MessageKey_themeDefined extends string, LanguageTag_notInDefaultSet extends string> = {
     getI18n: (params: { kcContext: KcContextLike }) => {
@@ -113,7 +51,9 @@ export function createGetI18n<
 
     type LanguageTag = LanguageTag_defaultSet | LanguageTag_notInDefaultSet;
 
-    type I18n = GenericI18n_noJsx<MessageKey_defaultSet | MessageKey_themeDefined, LanguageTag>;
+    type MessageKey = MessageKey_defaultSet | MessageKey_themeDefined;
+
+    type I18n = GenericI18n_noJsx<MessageKey, LanguageTag>;
 
     type Result = { i18n: I18n; prI18n_currentLanguage: Promise<I18n> | undefined };
 

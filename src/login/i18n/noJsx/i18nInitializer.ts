@@ -1,9 +1,8 @@
-import type { LanguageTag as LanguageTag_defaultSet } from "keycloakify/login/i18n/messages_defaultSet/LanguageTag";
-import {
-    type MessageKey_defaultSet,
-    type ReturnTypeOfCreateGetI18n,
-    createGetI18n
-} from "./i18n";
+import type {
+    LanguageTag as LanguageTag_defaultSet,
+    MessageKey as MessageKey_defaultSet
+} from "keycloakify/login/i18n/messages_defaultSet/types";
+import { type ReturnTypeOfCreateGetI18n, createGetI18n } from "./getI18n";
 
 export type I18nInitializer<
     ThemeName extends string = never,
@@ -110,26 +109,3 @@ export const i18nInitializer = createI18nInitializer({
     extraLanguageTranslations: {},
     messagesByLanguageTag_themeDefined: {}
 });
-
-/*
-const i18n = i18nInitializer
-    .withThemeName<"my-theme-1" | "my-theme-2">()
-    .withExtraLanguages({
-        xx: async () => ({}) as any
-    })
-    .withCustomTranslations({
-        en: {
-            myCustomKey: {
-                "my-theme-1": "my-theme-1-en",
-                "my-theme-2": "my-theme-2-en"
-            }
-        },
-        xx: {
-            myCustomKey: {
-                "my-theme-1": "my-theme-1-xx",
-                "my-theme-2": "my-theme-2-xx"
-            }
-        }
-    })
-    .create();
-*/
