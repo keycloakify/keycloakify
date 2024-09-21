@@ -1,5 +1,12 @@
-import { createUseI18n } from "keycloakify/account";
+import { i18nBuilder } from "keycloakify/account";
+import type { ThemeName } from "../kc.gen";
 
-export const { useI18n, ofTypeI18n } = createUseI18n({});
+const { useI18n, ofTypeI18n } = i18nBuilder
+    .withThemeName<ThemeName>()
+    .withExtraLanguages({})
+    .withCustomTranslations({})
+    .build();
 
-export type I18n = typeof ofTypeI18n;
+type I18n = typeof ofTypeI18n;
+
+export { useI18n, type I18n };
