@@ -201,7 +201,10 @@ export function keycloakify(params: keycloakify.Params) {
             assert(buildDirPath !== undefined);
 
             await rm(
-                pathJoin(buildDirPath, WELL_KNOWN_DIRECTORY_BASE_NAME.DOT_KEYCLOAKIFY),
+                pathJoin(
+                    buildDirPath,
+                    WELL_KNOWN_DIRECTORY_BASE_NAME.KEYCLOAKIFY_DEV_RESOURCES
+                ),
                 {
                     recursive: true,
                     force: true

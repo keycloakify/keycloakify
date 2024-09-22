@@ -76,7 +76,7 @@ const attributesByName = Object.fromEntries(
     ]).map(attribute => [attribute.name, attribute])
 );
 
-const resourcesPath = `${BASE_URL}${WELL_KNOWN_DIRECTORY_BASE_NAME.DOT_KEYCLOAKIFY}/login`;
+const resourcesPath = `${BASE_URL}${WELL_KNOWN_DIRECTORY_BASE_NAME.KEYCLOAKIFY_DEV_RESOURCES}/login`;
 
 export const kcContextCommonMock: KcContext.Common = {
     themeVersion: "0.0.0",

@@ -1,5 +1,5 @@
 export const WELL_KNOWN_DIRECTORY_BASE_NAME = {
-    DOT_KEYCLOAKIFY: ".keycloakify",
+    KEYCLOAKIFY_DEV_RESOURCES: "keycloakify-dev-resources",
     RESOURCES_COMMON: "resources-common",
     DIST: "dist"
 } as const;

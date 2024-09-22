@@ -6,7 +6,7 @@ import { BASE_URL } from "keycloakify/lib/BASE_URL";
 import { assert, type Equals } from "tsafe/assert";
 import type { LanguageTag } from "keycloakify/account/i18n/messages_defaultSet/types";
 
-const resourcesPath = `${BASE_URL}${WELL_KNOWN_DIRECTORY_BASE_NAME.DOT_KEYCLOAKIFY}/account`;
+const resourcesPath = `${BASE_URL}${WELL_KNOWN_DIRECTORY_BASE_NAME.KEYCLOAKIFY_DEV_RESOURCES}/account`;
 
 export const kcContextCommonMock: KcContext.Common = {
     themeVersion: "0.0.0",

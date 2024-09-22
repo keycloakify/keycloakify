@@ -40,14 +40,7 @@ export function useInitialize(params: {
     const { insertScriptTags } = useInsertScriptTags({
         componentOrHookName: "Template",
         scriptTags: [
-            {
-                type: "importmap",
-                textContent: JSON.stringify({
-                    imports: {
-                        rfc4648: `${url.resourcesCommonPath}/node_modules/rfc4648/lib/rfc4648.js`
-                    }
-                })
-            },
+            // NOTE: The importmap is added in by the FTL script because it's too late to add it here.
             {
                 type: "module",
                 src: `${url.resourcesPath}/js/menu-button-links.js`

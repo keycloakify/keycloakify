@@ -112,7 +112,7 @@ export async function generateResourcesForMainTheme(params: {
             {
                 const dirPath = pathJoin(
                     buildContext.projectBuildDirPath,
-                    WELL_KNOWN_DIRECTORY_BASE_NAME.DOT_KEYCLOAKIFY
+                    WELL_KNOWN_DIRECTORY_BASE_NAME.KEYCLOAKIFY_DEV_RESOURCES
                 );
 
                 if (fs.existsSync(dirPath)) {
@@ -120,7 +120,7 @@ export async function generateResourcesForMainTheme(params: {
 
                     throw new Error(
                         [
-                            `Keycloakify build error: The ${WELL_KNOWN_DIRECTORY_BASE_NAME.DOT_KEYCLOAKIFY} directory shouldn't exist in your build directory.`,
+                            `Keycloakify build error: The ${WELL_KNOWN_DIRECTORY_BASE_NAME.KEYCLOAKIFY_DEV_RESOURCES} directory shouldn't exist in your build directory.`,
                             `(${pathRelative(process.cwd(), dirPath)}).\n`,
                             `Theses assets are only required for local development with Storybook.",
                             "Please remove this directory as an additional step of your command.\n`,
@@ -266,7 +266,7 @@ export async function generateResourcesForMainTheme(params: {
                     getThisCodebaseRootDirPath(),
                     "res",
                     "public",
-                    WELL_KNOWN_DIRECTORY_BASE_NAME.DOT_KEYCLOAKIFY,
+                    WELL_KNOWN_DIRECTORY_BASE_NAME.KEYCLOAKIFY_DEV_RESOURCES,
                     themeType
                 ),
                 destDirPath: pathJoin(themeTypeDirPath, "resources")

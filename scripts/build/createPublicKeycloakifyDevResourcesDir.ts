@@ -7,7 +7,7 @@ import { WELL_KNOWN_DIRECTORY_BASE_NAME } from "../../src/bin/shared/constants";
 import { assert, type Equals } from "tsafe/assert";
 import * as fsPr from "fs/promises";
 
-export async function createPublicDotKeycloakifyDir() {
+export async function createPublicKeycloakifyDevResourcesDir() {
     await Promise.all(
         (["login", "account"] as const).map(async themeType => {
             const { extractedDirPath } = await downloadKeycloakDefaultTheme({
@@ -27,7 +27,7 @@ export async function createPublicDotKeycloakifyDir() {
                 "dist",
                 "res",
                 "public",
-                WELL_KNOWN_DIRECTORY_BASE_NAME.DOT_KEYCLOAKIFY,
+                WELL_KNOWN_DIRECTORY_BASE_NAME.KEYCLOAKIFY_DEV_RESOURCES,
                 themeType
             );
 
