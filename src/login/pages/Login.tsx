@@ -1,4 +1,5 @@
 import { useState, useEffect, useReducer } from "react";
+import { kcSanitize } from "keycloakify/lib/kcSanitize";
 import { assert } from "keycloakify/tools/assert";
 import { clsx } from "keycloakify/tools/clsx";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
@@ -62,7 +63,7 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
                                             {p.iconClasses && <i className={clsx(kcClsx("kcCommonLogoIdP"), p.iconClasses)} aria-hidden="true"></i>}
                                             <span
                                                 className={clsx(kcClsx("kcFormSocialAccountNameClass"), p.iconClasses && "kc-social-icon-text")}
-                                                dangerouslySetInnerHTML={{ __html: p.displayName }}
+                                                dangerouslySetInnerHTML={{ __html: kcSanitize(p.displayName) }}
                                             ></span>
                                         </a>
                                     </li>
@@ -111,7 +112,7 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
                                             className={kcClsx("kcInputErrorMessageClass")}
                                             aria-live="polite"
                                             dangerouslySetInnerHTML={{
-                                                __html: messagesPerField.getFirstError("username", "password")
+                                                __html: kcSanitize(messagesPerField.getFirstError("username", "password"))
                                             }}
                                         />
                                     )}
@@ -139,7 +140,7 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
                                         className={kcClsx("kcInputErrorMessageClass")}
                                         aria-live="polite"
                                         dangerouslySetInnerHTML={{
-                                            __html: messagesPerField.getFirstError("username", "password")
+                                            __html: kcSanitize(messagesPerField.getFirstError("username", "password"))
                                         }}
                                     />
                                 )}

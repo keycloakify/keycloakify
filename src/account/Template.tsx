@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { clsx } from "keycloakify/tools/clsx";
+import { kcSanitize } from "keycloakify/lib/kcSanitize";
 import { getKcClsx } from "keycloakify/account/lib/kcClsx";
 import { useSetClassName } from "keycloakify/tools/useSetClassName";
 import { useInitialize } from "keycloakify/account/Template.useInitialize";
@@ -126,7 +127,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                             <span
                                 className="kc-feedback-text"
                                 dangerouslySetInnerHTML={{
-                                    __html: message.summary
+                                    __html: kcSanitize(message.summary)
                                 }}
                             />
                         </div>

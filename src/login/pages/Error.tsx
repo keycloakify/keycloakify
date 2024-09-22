@@ -1,4 +1,5 @@
 import type { PageProps } from "keycloakify/login/pages/PageProps";
+import { kcSanitize } from "keycloakify/lib/kcSanitize";
 import type { KcContext } from "../KcContext";
 import type { I18n } from "../i18n";
 
@@ -19,7 +20,7 @@ export default function Error(props: PageProps<Extract<KcContext, { pageId: "err
             headerNode={msg("errorTitle")}
         >
             <div id="kc-error-message">
-                <p className="instruction" dangerouslySetInnerHTML={{ __html: message.summary }} />
+                <p className="instruction" dangerouslySetInnerHTML={{ __html: kcSanitize(message.summary) }} />
                 {!skipLink && client !== undefined && client.baseUrl !== undefined && (
                     <p>
                         <a id="backToApplication" href={client.baseUrl}>

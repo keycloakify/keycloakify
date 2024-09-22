@@ -1,4 +1,5 @@
 import type { PageProps } from "keycloakify/login/pages/PageProps";
+import { kcSanitize } from "keycloakify/lib/kcSanitize";
 import type { KcContext } from "../KcContext";
 import type { I18n } from "../i18n";
 
@@ -19,7 +20,7 @@ export default function Info(props: PageProps<Extract<KcContext, { pageId: "info
             headerNode={
                 <span
                     dangerouslySetInnerHTML={{
-                        __html: messageHeader ?? message.summary
+                        __html: kcSanitize(messageHeader ?? message.summary)
                     }}
                 />
             }
@@ -28,19 +29,21 @@ export default function Info(props: PageProps<Extract<KcContext, { pageId: "info
                 <p
                     className="instruction"
                     dangerouslySetInnerHTML={{
-                        __html: (() => {
-                            let html = message.summary;
+                        __html: kcSanitize(
+                            (() => {
+                                let html = message.summary;
 
-                            if (requiredActions) {
-                                html += "<b>";
+                                if (requiredActions) {
+                                    html += "<b>";
 
-                                html += requiredActions.map(requiredAction => advancedMsgStr(`requiredAction.${requiredAction}`)).join(", ");
+                                    html += requiredActions.map(requiredAction => advancedMsgStr(`requiredAction.${requiredAction}`)).join(", ");
 
-                                html += "</b>";
-                            }
+                                    html += "</b>";
+                                }
 
-                            return html;
-                        })()
+                                return html;
+                            })()
+                        )
                     }}
                 />
                 {(() => {

@@ -3,6 +3,7 @@ import { useMemo, useReducer, useEffect, Fragment, type Dispatch } from "react";
 import { assert, type Equals } from "tsafe/assert";
 import { id } from "tsafe/id";
 import { structuredCloneButFunctions } from "keycloakify/tools/structuredCloneButFunctions";
+import { kcSanitize } from "keycloakify/lib/kcSanitize";
 import { useConstCallback } from "keycloakify/tools/useConstCallback";
 import { emailRegexp } from "keycloakify/tools/emailRegExp";
 import { formatNumber } from "keycloakify/tools/formatNumber";
@@ -661,7 +662,7 @@ function useGetErrors(params: { kcContext: KcContextLike_useGetErrors; i18n: I18
                             <span
                                 key={0}
                                 dangerouslySetInnerHTML={{
-                                    __html: errorMessageStr
+                                    __html: kcSanitize(errorMessageStr)
                                 }}
                             />
                         ),

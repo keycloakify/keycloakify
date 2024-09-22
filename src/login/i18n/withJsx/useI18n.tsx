@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { kcSanitize } from "keycloakify/lib/kcSanitize";
 import { createGetI18n, type KcContextLike } from "../noJsx/getI18n";
 import type { GenericI18n_noJsx } from "../noJsx/GenericI18n_noJsx";
 import { Reflect } from "tsafe/Reflect";
@@ -50,7 +51,7 @@ export function createUseI18n<
                 <div
                     data-kc-msg={msgKey}
                     dangerouslySetInnerHTML={{
-                        __html: htmlString
+                        __html: kcSanitize(htmlString)
                     }}
                 />
             );

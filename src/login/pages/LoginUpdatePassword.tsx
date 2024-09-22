@@ -1,4 +1,5 @@
 import { useEffect, useReducer } from "react";
+import { kcSanitize } from "keycloakify/lib/kcSanitize";
 import { assert } from "keycloakify/tools/assert";
 import { getKcClsx, type KcClsx } from "keycloakify/login/lib/kcClsx";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
@@ -52,7 +53,7 @@ export default function LoginUpdatePassword(props: PageProps<Extract<KcContext, 
                                 className={kcClsx("kcInputErrorMessageClass")}
                                 aria-live="polite"
                                 dangerouslySetInnerHTML={{
-                                    __html: messagesPerField.get("password")
+                                    __html: kcSanitize(messagesPerField.get("password"))
                                 }}
                             />
                         )}
@@ -84,7 +85,7 @@ export default function LoginUpdatePassword(props: PageProps<Extract<KcContext, 
                                 className={kcClsx("kcInputErrorMessageClass")}
                                 aria-live="polite"
                                 dangerouslySetInnerHTML={{
-                                    __html: messagesPerField.get("password-confirm")
+                                    __html: kcSanitize(messagesPerField.get("password-confirm"))
                                 }}
                             />
                         )}
