@@ -64,6 +64,9 @@ export function vendorFrontendDependencies(params: { distDirPath: string }) {
                         `        }`,
                         `      }`,
                         `    ]`,
+                        `  },`,
+                        `  experiments: {`,
+                        `    outputModule: true`,
                         `  }`,
                         `};`
                     ].join("\n")

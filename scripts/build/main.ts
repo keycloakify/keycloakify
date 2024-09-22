@@ -89,7 +89,7 @@ import { vendorFrontendDependencies } from "./vendorFrontendDependencies";
 
     run(`npx tsc -p ${join("src", "tsconfig.json")}`);
     run(`npx tsc-alias -p ${join("src", "tsconfig.json")}`);
-    vendorFrontendDependencies({ distDirPath: join("dist") });
+    vendorFrontendDependencies({ distDirPath: join(process.cwd(), "dist") });
 
     if (fs.existsSync(join("dist", "vite-plugin", "index.original.js"))) {
         fs.renameSync(
