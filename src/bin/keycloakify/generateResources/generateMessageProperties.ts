@@ -418,6 +418,8 @@ export function generateMessageProperties(params: {
                     ""
                 ].join("\n");
 
+                fs.mkdirSync(messageDirPath, { recursive: true });
+
                 fs.writeFileSync(
                     pathJoin(messageDirPath, `messages_${languageTag}.properties`),
                     Buffer.from(propertiesFileSource, "utf8")
