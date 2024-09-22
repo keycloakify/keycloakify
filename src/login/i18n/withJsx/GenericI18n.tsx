@@ -2,24 +2,28 @@ import type { GenericI18n_noJsx } from "../noJsx/GenericI18n_noJsx";
 import { assert, type Equals } from "tsafe/assert";
 
 export type GenericI18n<MessageKey extends string, LanguageTag extends string> = {
+    currentLanguage: {
+        /**
+         * e.g: "en", "fr", "zh-CN"
+         *
+         * The current language
+         */
+        languageTag: LanguageTag;
+        /**
+         * e.g: "English", "Français", "中文（简体）"
+         *
+         * The current language
+         */
+        label: string;
+    };
     /**
-     * e.g: "en", "fr", "zh-CN"
-     *
-     * The current language
+     * Array of languages enabled on the realm.
      */
-    currentLanguageTag: LanguageTag;
-    /**
-     * Redirect to this url to change the language.
-     * After reload currentLanguageTag === newLanguageTag
-     */
-    getChangeLocaleUrl: (newLanguageTag: string /*LanguageTag*/) => string;
-    /**
-     * e.g. "en" => "English", "fr" => "Français", ...
-     *
-     * Used to render a select that enable user to switch language.
-     * ex: https://user-images.githubusercontent.com/6702424/186044799-38801eec-4e89-483b-81dd-8e9233e8c0eb.png
-     * */
-    labelBySupportedLanguageTag: Record<string /*LanguageTag*/, string>;
+    enabledLanguages: {
+        languageTag: LanguageTag;
+        label: string;
+        href: string;
+    }[];
     /**
      *
      * Examples assuming currentLanguageTag === "en"

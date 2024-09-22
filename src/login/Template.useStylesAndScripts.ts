@@ -10,9 +10,6 @@ export type KcContextLike = {
         resourcesPath: string;
         ssoLoginInOtherTabsUrl: string;
     };
-    locale?: {
-        currentLanguageTag: string;
-    };
     scripts: string[];
 };
 
@@ -25,19 +22,7 @@ export function useStylesAndScripts(params: {
 }) {
     const { kcContext, doUseDefaultCss } = params;
 
-    const { url, locale, scripts } = kcContext;
-
-    useEffect(() => {
-        const { currentLanguageTag } = locale ?? {};
-
-        if (currentLanguageTag === undefined) {
-            return;
-        }
-
-        const html = document.querySelector("html");
-        assert(html !== null);
-        html.lang = currentLanguageTag;
-    }, []);
+    const { url, scripts } = kcContext;
 
     const { areAllStyleSheetsLoaded } = useInsertLinkTags({
         componentOrHookName: "Template",

@@ -90,64 +90,89 @@ export function createGetI18n<
             return cachedResult;
         }
 
-        const partialI18n: Pick<I18n, "currentLanguageTag" | "getChangeLocaleUrl" | "labelBySupportedLanguageTag"> = {
-            currentLanguageTag: kcContext.locale?.currentLanguageTag ?? (FALLBACK_LANGUAGE_TAG as any),
-            getChangeLocaleUrl: newLanguageTag => {
-                const { locale } = kcContext;
+        {
+            const currentLanguageTag = kcContext.locale?.currentLanguageTag ?? FALLBACK_LANGUAGE_TAG;
+            const html = document.querySelector("html");
+            assert(html !== null);
+            html.lang = currentLanguageTag;
+        }
 
-                assert(locale !== undefined, "Internationalization not enabled");
+        const getLanguageLabel = (languageTag: LanguageTag) => {
+            form_user_added_languages: {
+                if (!(languageTag in extraLanguageTranslations)) {
+                    break form_user_added_languages;
+                }
+                assert(is<Exclude<LanguageTag, LanguageTag_defaultSet>>(languageTag));
 
-                const targetSupportedLocale = locale.supported.find(({ languageTag }) => languageTag === newLanguageTag);
+                const entry = extraLanguageTranslations[languageTag];
 
-                assert(targetSupportedLocale !== undefined, `${newLanguageTag} need to be enabled in Keycloak admin`);
+                return entry.label;
+            }
 
-                return targetSupportedLocale.url;
-            },
-            labelBySupportedLanguageTag: (() => {
-                const labelBySupportedLanguageTag = Object.fromEntries(
-                    (kcContext.locale?.supported ?? []).map(({ languageTag, label }) => [languageTag, label])
-                );
-
-                // NOTE: For IE11
-                if (typeof Proxy === undefined) {
-                    return labelBySupportedLanguageTag;
+            from_server: {
+                if (kcContext.locale === undefined) {
+                    break from_server;
                 }
 
-                // NOTE: This is for convenience in Storybook
-                return new Proxy<Record<string, string>>(
-                    {},
-                    {
-                        get: function (...args) {
-                            const [, languageTag] = args;
+                const supportedEntry = kcContext.locale.supported.find(entry => entry.languageTag === languageTag);
 
-                            if (typeof languageTag !== "string") {
-                                return window.Reflect.get(...args);
-                            }
+                if (supportedEntry === undefined) {
+                    break from_server;
+                }
 
-                            let label = labelBySupportedLanguageTag[languageTag];
+                // cspell: disable-next-line
+                // from "Espagnol (Español)" we want to extract "Español"
+                const match = supportedEntry.label.match(/[^(]+\(([^)]+)\)/);
 
-                            if (label === undefined || label === "" || label === languageTag) {
-                                assert(is<Exclude<LanguageTag, LanguageTag_defaultSet>>(languageTag));
+                if (match !== null) {
+                    return match[1];
+                }
 
-                                const entry = extraLanguageTranslations[languageTag];
+                return supportedEntry.label;
+            }
 
-                                assert(entry !== undefined);
-
-                                label = entry.label;
-                            }
-
-                            return label;
-                        }
-                    }
-                );
-            })()
+            // NOTE: This should never happen
+            return languageTag;
         };
+
+        const currentLanguage: I18n["currentLanguage"] = (() => {
+            const languageTag = id<string>(kcContext.locale?.currentLanguageTag ?? FALLBACK_LANGUAGE_TAG) as LanguageTag;
+
+            return {
+                languageTag,
+                label: getLanguageLabel(languageTag)
+            };
+        })();
+
+        const enabledLanguages: I18n["enabledLanguages"] = (() => {
+            const enabledLanguages: I18n["enabledLanguages"] = [];
+
+            if (kcContext.locale !== undefined) {
+                for (const { languageTag, label, url } of kcContext.locale.supported ?? []) {
+                    enabledLanguages.push({
+                        languageTag: id<string>(languageTag) as LanguageTag,
+                        label,
+                        href: url
+                    });
+                }
+            }
+
+            if (enabledLanguages.find(({ languageTag }) => languageTag === currentLanguage.languageTag) === undefined) {
+                enabledLanguages.push({
+                    languageTag: currentLanguage.languageTag,
+                    label: getLanguageLabel(currentLanguage.languageTag),
+                    href: "#"
+                });
+            }
+
+            return enabledLanguages;
+        })();
 
         const { createI18nTranslationFunctions } = createI18nTranslationFunctionsFactory<MessageKey_themeDefined>({
             themeName: kcContext.themeName,
             messages_themeDefined:
-                messagesByLanguageTag_themeDefined[partialI18n.currentLanguageTag] ??
-                messagesByLanguageTag_themeDefined[FALLBACK_LANGUAGE_TAG as LanguageTag] ??
+                messagesByLanguageTag_themeDefined[currentLanguage.languageTag] ??
+                messagesByLanguageTag_themeDefined[id<string>(FALLBACK_LANGUAGE_TAG) as LanguageTag] ??
                 (() => {
                     const firstLanguageTag = Object.keys(messagesByLanguageTag_themeDefined)[0];
                     if (firstLanguageTag === undefined) {
@@ -158,11 +183,12 @@ export function createGetI18n<
             messages_fromKcServer: kcContext["x-keycloakify"].messages
         });
 
-        const isCurrentLanguageFallbackLanguage = partialI18n.currentLanguageTag === FALLBACK_LANGUAGE_TAG;
+        const isCurrentLanguageFallbackLanguage = currentLanguage.languageTag === FALLBACK_LANGUAGE_TAG;
 
         const result: Result = {
             i18n: {
-                ...partialI18n,
+                currentLanguage,
+                enabledLanguages,
                 ...createI18nTranslationFunctions({
                     messages_defaultSet_currentLanguage: isCurrentLanguageFallbackLanguage ? messages_defaultSet_fallbackLanguage : undefined
                 }),
@@ -172,7 +198,7 @@ export function createGetI18n<
                 ? undefined
                 : (async () => {
                       const messages_defaultSet_currentLanguage = await (async () => {
-                          const currentLanguageTag = partialI18n.currentLanguageTag;
+                          const currentLanguageTag = currentLanguage.languageTag;
 
                           const fromDefaultSet = await fetchMessages_defaultSet(currentLanguageTag);
 
@@ -198,7 +224,8 @@ export function createGetI18n<
                       })();
 
                       const i18n_currentLanguage: I18n = {
-                          ...partialI18n,
+                          currentLanguage,
+                          enabledLanguages,
                           ...createI18nTranslationFunctions({ messages_defaultSet_currentLanguage }),
                           isFetchingTranslations: false
                       };
