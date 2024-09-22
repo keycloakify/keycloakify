@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import { assert } from "keycloakify/tools/assert";
 import { clsx } from "keycloakify/tools/clsx";
+import { kcSanitize } from "keycloakify/lib/kcSanitize";
 import { getKcClsx } from "keycloakify/account/lib/kcClsx";
-import { useInsertLinkTags } from "keycloakify/tools/useInsertLinkTags";
 import { useSetClassName } from "keycloakify/tools/useSetClassName";
+import { useInitialize } from "keycloakify/account/Template.useInitialize";
 import type { TemplateProps } from "keycloakify/account/TemplateProps";
 import type { I18n } from "./i18n";
 import type { KcContext } from "./KcContext";
@@ -13,9 +13,9 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
 
     const { kcClsx } = getKcClsx({ doUseDefaultCss, classes });
 
-    const { msg, msgStr, getChangeLocaleUrl, labelBySupportedLanguageTag, currentLanguageTag } = i18n;
+    const { msg, msgStr, currentLanguage, enabledLanguages } = i18n;
 
-    const { locale, url, features, realm, message, referrer } = kcContext;
+    const { url, features, realm, message, referrer } = kcContext;
 
     useEffect(() => {
         document.title = msgStr("accountManagementTitle");
@@ -31,30 +31,9 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
         className: clsx("admin-console", "user", kcClsx("kcBodyClass"))
     });
 
-    useEffect(() => {
-        const { currentLanguageTag } = locale ?? {};
+    const { isReadyToRender } = useInitialize({ kcContext, doUseDefaultCss });
 
-        if (currentLanguageTag === undefined) {
-            return;
-        }
-
-        const html = document.querySelector("html");
-        assert(html !== null);
-        html.lang = currentLanguageTag;
-    }, []);
-
-    const { areAllStyleSheetsLoaded } = useInsertLinkTags({
-        componentOrHookName: "Template",
-        hrefs: !doUseDefaultCss
-            ? []
-            : [
-                  `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly.min.css`,
-                  `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly-additions.min.css`,
-                  `${url.resourcesPath}/css/account.css`
-              ]
-    });
-
-    if (!areAllStyleSheetsLoaded) {
+    if (!isReadyToRender) {
         return null;
     }
 
@@ -70,16 +49,16 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                     <div className="navbar-collapse navbar-collapse-1">
                         <div className="container">
                             <ul className="nav navbar-nav navbar-utility">
-                                {realm.internationalizationEnabled && (assert(locale !== undefined), true) && locale.supported.length > 1 && (
+                                {enabledLanguages.length > 1 && (
                                     <li>
                                         <div className="kc-dropdown" id="kc-locale-dropdown">
                                             <a href="#" id="kc-current-locale-link">
-                                                {labelBySupportedLanguageTag[currentLanguageTag]}
+                                                {currentLanguage.label}
                                             </a>
                                             <ul>
-                                                {locale.supported.map(({ languageTag }) => (
+                                                {enabledLanguages.map(({ languageTag, label, href }) => (
                                                     <li key={languageTag} className="kc-dropdown-item">
-                                                        <a href={getChangeLocaleUrl(languageTag)}>{labelBySupportedLanguageTag[languageTag]}</a>
+                                                        <a href={href}>{label}</a>
                                                     </li>
                                                 ))}
                                             </ul>
@@ -148,7 +127,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                             <span
                                 className="kc-feedback-text"
                                 dangerouslySetInnerHTML={{
-                                    __html: message.summary
+                                    __html: kcSanitize(message.summary)
                                 }}
                             />
                         </div>

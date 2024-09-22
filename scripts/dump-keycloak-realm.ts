@@ -6,6 +6,7 @@ import chalk from "chalk";
 import { Deferred } from "evt/tools/Deferred";
 import { assert } from "tsafe/assert";
 import { is } from "tsafe/is";
+import { run } from "./shared/run";
 
 (async () => {
     {
@@ -84,9 +85,3 @@ import { is } from "tsafe/is";
 
     console.log(`${chalk.green(`✓ Exported realm to`)} ${chalk.bold(targetFilePath)}`);
 })();
-
-function run(command: string) {
-    console.log(chalk.grey(`$ ${command}`));
-
-    return child_process.execSync(command, { stdio: "inherit" });
-}

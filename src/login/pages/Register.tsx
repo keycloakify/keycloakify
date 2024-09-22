@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { LazyOrNot } from "keycloakify/tools/LazyOrNot";
+import { kcSanitize } from "keycloakify/lib/kcSanitize";
 import { getKcClsx, type KcClsx } from "keycloakify/login/lib/kcClsx";
 import { clsx } from "keycloakify/tools/clsx";
 import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFormFieldsProps";
@@ -145,7 +146,7 @@ function TermsAcceptance(props: {
                             className={kcClsx("kcInputErrorMessageClass")}
                             aria-live="polite"
                             dangerouslySetInnerHTML={{
-                                __html: messagesPerField.get("termsAccepted")
+                                __html: kcSanitize(messagesPerField.get("termsAccepted"))
                             }}
                         />
                     </div>

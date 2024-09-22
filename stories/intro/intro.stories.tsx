@@ -2,7 +2,6 @@ import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { KeycloakifyRotatingLogo } from "./KeycloakifyRotatingLogo";
 import { useInsertLinkTags } from "../../dist/tools/useInsertLinkTags";
-import { useOnFistMount } from "../../dist/tools/useOnFirstMount";
 import { tss } from "../tss";
 
 const meta = {

@@ -1,4 +1,5 @@
 import { getKcClsx } from "keycloakify/login/lib/kcClsx";
+import { kcSanitize } from "keycloakify/lib/kcSanitize";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
 import type { I18n } from "../i18n";
@@ -48,7 +49,7 @@ export default function LoginRecoveryAuthnCodeInput(props: PageProps<Extract<KcC
                                 className={kcClsx("kcInputErrorMessageClass")}
                                 aria-live="polite"
                                 dangerouslySetInnerHTML={{
-                                    __html: messagesPerField.get("recoveryCodeInput")
+                                    __html: kcSanitize(messagesPerField.get("recoveryCodeInput"))
                                 }}
                             />
                         )}

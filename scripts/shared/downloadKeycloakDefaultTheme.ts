@@ -2,8 +2,9 @@ import { relative as pathRelative } from "path";
 import { downloadAndExtractArchive } from "../../src/bin/tools/downloadAndExtractArchive";
 import { getProxyFetchOptions } from "../../src/bin/tools/fetchProxyOptions";
 import { join as pathJoin } from "path";
-import { getThisCodebaseRootDirPath } from "../../src/bin/tools/getThisCodebaseRootDirPath";
 import { assert, type Equals } from "tsafe/assert";
+import { cacheDirPath } from "./cacheDirPath";
+import { getThisCodebaseRootDirPath } from "../../src/bin/tools/getThisCodebaseRootDirPath";
 
 const KEYCLOAK_VERSION = {
     FOR_LOGIN_THEME: "25.0.4",
@@ -22,12 +23,7 @@ export async function downloadKeycloakDefaultTheme(params: {
 
     const { extractedDirPath } = await downloadAndExtractArchive({
         url: `https://repo1.maven.org/maven2/org/keycloak/keycloak-themes/${keycloakVersion}/keycloak-themes-${keycloakVersion}.jar`,
-        cacheDirPath: pathJoin(
-            getThisCodebaseRootDirPath(),
-            "node_modules",
-            ".cache",
-            "scripts"
-        ),
+        cacheDirPath,
         fetchOptions: getProxyFetchOptions({
             npmConfigGetCwd: getThisCodebaseRootDirPath()
         }),

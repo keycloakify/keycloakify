@@ -1,4 +1,3 @@
-import * as child_process from "child_process";
 import * as fs from "fs";
 import { join } from "path";
 import { assert } from "tsafe/assert";
@@ -6,6 +5,8 @@ import { transformCodebase } from "../../src/bin/tools/transformCodebase";
 import { createPublicKeycloakifyDevResourcesDir } from "./createPublicKeycloakifyDevResourcesDir";
 import { createAccountV1Dir } from "./createAccountV1Dir";
 import chalk from "chalk";
+import { run } from "../shared/run";
+import { vendorFrontendDependencies } from "./vendorFrontendDependencies";
 
 (async () => {
     console.log(chalk.cyan("Building Keycloakify..."));
@@ -88,6 +89,7 @@ import chalk from "chalk";
 
     run(`npx tsc -p ${join("src", "tsconfig.json")}`);
     run(`npx tsc-alias -p ${join("src", "tsconfig.json")}`);
+    vendorFrontendDependencies({ distDirPath: join(process.cwd(), "dist") });
 
     if (fs.existsSync(join("dist", "vite-plugin", "index.original.js"))) {
         fs.renameSync(
@@ -163,12 +165,6 @@ import chalk from "chalk";
         chalk.green(`✓ built in ${((Date.now() - startTime) / 1000).toFixed(2)}s`)
     );
 })();
-
-function run(command: string) {
-    console.log(chalk.grey(`$ ${command}`));
-
-    child_process.execSync(command, { stdio: "inherit" });
-}
 
 function patchDeprecatedBufferApiUsage(filePath: string) {
     const before = fs.readFileSync(filePath).toString("utf8");

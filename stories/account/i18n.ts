@@ -1,5 +1,7 @@
-import { createUseI18n } from "../../dist/account";
+import { i18nBuilder } from "../../dist/account";
 
-export const { useI18n, ofTypeI18n } = createUseI18n({});
+const { useI18n, ofTypeI18n } = i18nBuilder.build();
 
-export type I18n = typeof ofTypeI18n;
+type I18n = typeof ofTypeI18n;
+
+export { useI18n, type I18n };

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { assert } from "keycloakify/tools/assert";
 import { useInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
 import { useInsertLinkTags } from "keycloakify/tools/useInsertLinkTags";
-import { KcContext } from "keycloakify/login/KcContext/KcContext";
+import type { KcContext } from "keycloakify/login/KcContext";
 
 export type KcContextLike = {
     url: {
@@ -10,34 +10,19 @@ export type KcContextLike = {
         resourcesPath: string;
         ssoLoginInOtherTabsUrl: string;
     };
-    locale?: {
-        currentLanguageTag: string;
-    };
     scripts: string[];
 };
 
 assert<keyof KcContextLike extends keyof KcContext ? true : false>();
 assert<KcContext extends KcContextLike ? true : false>();
 
-export function useStylesAndScripts(params: {
+export function useInitialize(params: {
     kcContext: KcContextLike;
     doUseDefaultCss: boolean;
 }) {
     const { kcContext, doUseDefaultCss } = params;
 
-    const { url, locale, scripts } = kcContext;
-
-    useEffect(() => {
-        const { currentLanguageTag } = locale ?? {};
-
-        if (currentLanguageTag === undefined) {
-            return;
-        }
-
-        const html = document.querySelector("html");
-        assert(html !== null);
-        html.lang = currentLanguageTag;
-    }, []);
+    const { url, scripts } = kcContext;
 
     const { areAllStyleSheetsLoaded } = useInsertLinkTags({
         componentOrHookName: "Template",
@@ -69,9 +54,7 @@ export function useStylesAndScripts(params: {
                 textContent: `
                     import { checkCookiesAndSetTimer } from "${url.resourcesPath}/js/authChecker.js";
 
-                    checkCookiesAndSetTimer(
-                        "${url.ssoLoginInOtherTabsUrl}"
-                    );
+                    checkCookiesAndSetTimer("${url.ssoLoginInOtherTabsUrl}");
                 `
             }
         ]

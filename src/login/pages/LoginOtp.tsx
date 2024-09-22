@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import { getKcClsx } from "keycloakify/login/lib/kcClsx";
+import { kcSanitize } from "keycloakify/lib/kcSanitize";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
 import type { I18n } from "../i18n";
@@ -75,7 +76,7 @@ export default function LoginOtp(props: PageProps<Extract<KcContext, { pageId: "
                                 className={kcClsx("kcInputErrorMessageClass")}
                                 aria-live="polite"
                                 dangerouslySetInnerHTML={{
-                                    __html: messagesPerField.get("totp")
+                                    __html: kcSanitize(messagesPerField.get("totp"))
                                 }}
                             />
                         )}

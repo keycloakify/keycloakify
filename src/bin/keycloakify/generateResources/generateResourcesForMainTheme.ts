@@ -17,7 +17,10 @@ import type { BuildContext } from "../../shared/buildContext";
 import { assert, type Equals } from "tsafe/assert";
 import { readFieldNameUsage } from "./readFieldNameUsage";
 import { readExtraPagesNames } from "./readExtraPageNames";
-import { generateMessageProperties } from "./generateMessageProperties";
+import {
+    generateMessageProperties,
+    type BuildContextLike as BuildContextLike_generateMessageProperties
+} from "./generateMessageProperties";
 import { rmSync } from "../../tools/fs.rmSync";
 import { readThisNpmPackageVersion } from "../../tools/readThisNpmPackageVersion";
 import {
@@ -29,30 +32,40 @@ import { escapeStringForPropertiesFile } from "../../tools/escapeStringForProper
 import * as child_process from "child_process";
 import { getThisCodebaseRootDirPath } from "../../tools/getThisCodebaseRootDirPath";
 
-export type BuildContextLike = BuildContextLike_kcContextExclusionsFtlCode & {
-    extraThemeProperties: string[] | undefined;
-    projectDirPath: string;
-    projectBuildDirPath: string;
-    environmentVariables: { name: string; default: string }[];
-    implementedThemeTypes: BuildContext["implementedThemeTypes"];
-    themeSrcDirPath: string;
-    bundler: "vite" | "webpack";
-    packageJsonFilePath: string;
-};
+export type BuildContextLike = BuildContextLike_kcContextExclusionsFtlCode &
+    BuildContextLike_generateMessageProperties & {
+        extraThemeProperties: string[] | undefined;
+        projectDirPath: string;
+        projectBuildDirPath: string;
+        environmentVariables: { name: string; default: string }[];
+        implementedThemeTypes: BuildContext["implementedThemeTypes"];
+        themeSrcDirPath: string;
+        bundler: "vite" | "webpack";
+        packageJsonFilePath: string;
+    };
 
 assert<BuildContext extends BuildContextLike ? true : false>();
 
 export async function generateResourcesForMainTheme(params: {
+    buildContext: BuildContextLike;
     themeName: string;
     resourcesDirPath: string;
-    buildContext: BuildContextLike;
-}): Promise<void> {
+}): Promise<{
+    writeMessagePropertiesFilesForThemeVariant: (params: {
+        getMessageDirPath: (params: { themeType: ThemeType }) => string;
+        themeName: string;
+    }) => void;
+}> {
     const { themeName, resourcesDirPath, buildContext } = params;
 
     const getThemeTypeDirPath = (params: { themeType: ThemeType | "email" }) => {
         const { themeType } = params;
         return pathJoin(resourcesDirPath, "theme", themeName, themeType);
     };
+
+    const writeMessagePropertiesFilesByThemeType: Partial<
+        Record<ThemeType, (params: { messageDirPath: string; themeName: string }) => void>
+    > = {};
 
     for (const themeType of ["login", "account"] as const) {
         if (!buildContext.implementedThemeTypes[themeType].isImplemented) {
@@ -187,30 +200,27 @@ export async function generateResourcesForMainTheme(params: {
             );
         });
 
+        let languageTags: string[] | undefined = undefined;
+
         i18n_messages_generation: {
             if (isForAccountSpa) {
                 break i18n_messages_generation;
             }
 
-            generateMessageProperties({
-                themeSrcDirPath: buildContext.themeSrcDirPath,
+            const wrap = generateMessageProperties({
+                buildContext,
                 themeType
-            }).forEach(({ languageTag, propertiesFileSource }) => {
-                const messagesDirPath = pathJoin(themeTypeDirPath, "messages");
+            });
 
-                fs.mkdirSync(pathJoin(themeTypeDirPath, "messages"), {
-                    recursive: true
-                });
+            languageTags = wrap.languageTags;
+            const { writeMessagePropertiesFiles } = wrap;
 
-                const propertiesFilePath = pathJoin(
-                    messagesDirPath,
-                    `messages_${languageTag}.properties`
-                );
+            writeMessagePropertiesFilesByThemeType[themeType] =
+                writeMessagePropertiesFiles;
 
-                fs.writeFileSync(
-                    propertiesFilePath,
-                    Buffer.from(propertiesFileSource, "utf8")
-                );
+            writeMessagePropertiesFiles({
+                messageDirPath: pathJoin(themeTypeDirPath, "messages"),
+                themeName
             });
         }
 
@@ -281,7 +291,10 @@ export async function generateResourcesForMainTheme(params: {
                     ...buildContext.environmentVariables.map(
                         ({ name, default: defaultValue }) =>
                             `${name}=\${env.${name}:${escapeStringForPropertiesFile(defaultValue)}}`
-                    )
+                    ),
+                    ...(languageTags === undefined
+                        ? []
+                        : [`locales=${languageTags.join(",")}`])
                 ].join("\n\n"),
                 "utf8"
             )
@@ -338,4 +351,23 @@ export async function generateResourcesForMainTheme(params: {
             getNewMetaInfKeycloakTheme: () => metaInfKeycloakThemes
         });
     }
+
+    return {
+        writeMessagePropertiesFilesForThemeVariant: ({
+            getMessageDirPath,
+            themeName
+        }) => {
+            objectEntries(writeMessagePropertiesFilesByThemeType).forEach(
+                ([themeType, writeMessagePropertiesFiles]) => {
+                    if (writeMessagePropertiesFiles === undefined) {
+                        return;
+                    }
+                    writeMessagePropertiesFiles({
+                        messageDirPath: getMessageDirPath({ themeType }),
+                        themeName
+                    });
+                }
+            );
+        }
+    };
 }

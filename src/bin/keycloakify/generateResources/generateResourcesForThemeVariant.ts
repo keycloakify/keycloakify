@@ -1,27 +1,27 @@
 import { join as pathJoin, extname as pathExtname, sep as pathSep } from "path";
 import { transformCodebase } from "../../tools/transformCodebase";
-import type { BuildContext } from "../../shared/buildContext";
 import { writeMetaInfKeycloakThemes } from "../../shared/metaInfKeycloakThemes";
 import { assert } from "tsafe/assert";
-
-export type BuildContextLike = {
-    keycloakifyBuildDirPath: string;
-};
-
-assert<BuildContext extends BuildContextLike ? true : false>();
+import type { ThemeType } from "../../shared/constants";
 
 export function generateResourcesForThemeVariant(params: {
     resourcesDirPath: string;
     themeName: string;
     themeVariantName: string;
+    writeMessagePropertiesFiles: (params: {
+        getMessageDirPath: (params: { themeType: ThemeType }) => string;
+        themeName: string;
+    }) => void;
 }) {
-    const { resourcesDirPath, themeName, themeVariantName } = params;
+    const { resourcesDirPath, themeName, themeVariantName, writeMessagePropertiesFiles } =
+        params;
 
     const mainThemeDirPath = pathJoin(resourcesDirPath, "theme", themeName);
+    const themeVariantDirPath = pathJoin(mainThemeDirPath, "..", themeVariantName);
 
     transformCodebase({
         srcDirPath: mainThemeDirPath,
-        destDirPath: pathJoin(mainThemeDirPath, "..", themeVariantName),
+        destDirPath: themeVariantDirPath,
         transformSourceCode: ({ fileRelativePath, sourceCode }) => {
             if (
                 pathExtname(fileRelativePath) === ".ftl" &&
@@ -66,5 +66,11 @@ export function generateResourcesForThemeVariant(params: {
 
             return newMetaInfKeycloakTheme;
         }
+    });
+
+    writeMessagePropertiesFiles({
+        getMessageDirPath: ({ themeType }) =>
+            pathJoin(themeVariantDirPath, themeType, "messages"),
+        themeName: themeVariantName
     });
 }

@@ -87,15 +87,17 @@ attributes_to_attributesByName: {
 window.kcContext = kcContext;
 
 <#if xKeycloakify.themeType == "login" >
-    const script = document.createElement("script");
-    script.type = "importmap";
-    script.textContent = JSON.stringify({
-      imports: {
-        "rfc4648": kcContext.url.resourcesCommonPath + "/node_modules/rfc4648/lib/rfc4648.js"
-      }
-    }, null, 2); 
+    {
+        const script = document.createElement("script");
+        script.type = "importmap";
+        script.textContent = JSON.stringify({
+          imports: {
+            "rfc4648": kcContext.url.resourcesCommonPath + "/node_modules/rfc4648/lib/rfc4648.js"
+          }
+        }, null, 2); 
 
-    document.head.appendChild(script);
+        document.head.appendChild(script);
+    }
 </#if>
 
 function decodeHtmlEntities(htmlStr){

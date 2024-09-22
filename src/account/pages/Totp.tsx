@@ -1,5 +1,6 @@
 import { clsx } from "keycloakify/tools/clsx";
 import { getKcClsx } from "keycloakify/account/lib/kcClsx";
+import { kcSanitize } from "keycloakify/lib/kcSanitize";
 import type { PageProps } from "keycloakify/account/pages/PageProps";
 import type { KcContext } from "../KcContext";
 import type { I18n } from "../i18n";
@@ -159,7 +160,7 @@ export default function Totp(props: PageProps<Extract<KcContext, { pageId: "totp
                                             className={kcClsx("kcInputErrorMessageClass")}
                                             aria-live="polite"
                                             dangerouslySetInnerHTML={{
-                                                __html: messagesPerField.get("totp")
+                                                __html: kcSanitize(messagesPerField.get("totp"))
                                             }}
                                         />
                                     )}
@@ -190,7 +191,7 @@ export default function Totp(props: PageProps<Extract<KcContext, { pageId: "totp
                                             className={kcClsx("kcInputErrorMessageClass")}
                                             aria-live="polite"
                                             dangerouslySetInnerHTML={{
-                                                __html: messagesPerField.get("userLabel")
+                                                __html: kcSanitize(messagesPerField.get("userLabel"))
                                             }}
                                         />
                                     )}

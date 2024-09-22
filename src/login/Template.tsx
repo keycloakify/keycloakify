@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import { assert } from "keycloakify/tools/assert";
 import { clsx } from "keycloakify/tools/clsx";
+import { kcSanitize } from "keycloakify/lib/kcSanitize";
 import type { TemplateProps } from "keycloakify/login/TemplateProps";
 import { getKcClsx } from "keycloakify/login/lib/kcClsx";
 import { useSetClassName } from "keycloakify/tools/useSetClassName";
-import { useStylesAndScripts } from "keycloakify/login/Template.useStylesAndScripts";
+import { useInitialize } from "keycloakify/login/Template.useInitialize";
 import type { I18n } from "./i18n";
 import type { KcContext } from "./KcContext";
 
@@ -27,9 +27,9 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
 
     const { kcClsx } = getKcClsx({ doUseDefaultCss, classes });
 
-    const { msg, msgStr, getChangeLocaleUrl, labelBySupportedLanguageTag, currentLanguageTag } = i18n;
+    const { msg, msgStr, currentLanguage, enabledLanguages } = i18n;
 
-    const { realm, locale, auth, url, message, isAppInitiatedAction } = kcContext;
+    const { realm, auth, url, message, isAppInitiatedAction } = kcContext;
 
     useEffect(() => {
         document.title = documentTitle ?? msgStr("loginTitle", kcContext.realm.displayName);
@@ -45,7 +45,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
         className: bodyClassName ?? kcClsx("kcBodyClass")
     });
 
-    const { isReadyToRender } = useStylesAndScripts({ kcContext, doUseDefaultCss });
+    const { isReadyToRender } = useInitialize({ kcContext, doUseDefaultCss });
 
     if (!isReadyToRender) {
         return null;
@@ -58,10 +58,9 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                     {msg("loginTitleHtml", realm.displayNameHtml)}
                 </div>
             </div>
-
             <div className={kcClsx("kcFormCardClass")}>
                 <header className={kcClsx("kcFormHeaderClass")}>
-                    {realm.internationalizationEnabled && (assert(locale !== undefined), locale.supported.length > 1) && (
+                    {enabledLanguages.length > 1 && (
                         <div className={kcClsx("kcLocaleMainClass")} id="kc-locale">
                             <div id="kc-locale-wrapper" className={kcClsx("kcLocaleWrapperClass")}>
                                 <div id="kc-locale-dropdown" className={clsx("menu-button-links", kcClsx("kcLocaleDropDownClass"))}>
@@ -73,7 +72,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                                         aria-expanded="false"
                                         aria-controls="language-switch1"
                                     >
-                                        {labelBySupportedLanguageTag[currentLanguageTag]}
+                                        {currentLanguage.label}
                                     </button>
                                     <ul
                                         role="menu"
@@ -83,15 +82,10 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                                         id="language-switch1"
                                         className={kcClsx("kcLocaleListClass")}
                                     >
-                                        {locale.supported.map(({ languageTag }, i) => (
+                                        {enabledLanguages.map(({ languageTag, label, href }, i) => (
                                             <li key={languageTag} className={kcClsx("kcLocaleListItemClass")} role="none">
-                                                <a
-                                                    role="menuitem"
-                                                    id={`language-${i + 1}`}
-                                                    className={kcClsx("kcLocaleItemClass")}
-                                                    href={getChangeLocaleUrl(languageTag)}
-                                                >
-                                                    {labelBySupportedLanguageTag[languageTag]}
+                                                <a role="menuitem" id={`language-${i + 1}`} className={kcClsx("kcLocaleItemClass")} href={href}>
+                                                    {label}
                                                 </a>
                                             </li>
                                         ))}
@@ -152,7 +146,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                                 <span
                                     className={kcClsx("kcAlertTitleClass")}
                                     dangerouslySetInnerHTML={{
-                                        __html: message.summary
+                                        __html: kcSanitize(message.summary)
                                     }}
                                 />
                             </div>

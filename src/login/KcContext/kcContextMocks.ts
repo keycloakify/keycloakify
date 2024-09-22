@@ -7,6 +7,7 @@ import {
 import { id } from "tsafe/id";
 import { assert, type Equals } from "tsafe/assert";
 import { BASE_URL } from "keycloakify/lib/BASE_URL";
+import type { LanguageTag } from "keycloakify/login/i18n/messages_defaultSet/types";
 
 const attributesByName = Object.fromEntries(
     id<Attribute[]>([
@@ -116,35 +117,59 @@ export const kcContextCommonMock: KcContext.Common = {
         }
     },
     locale: {
-        supported: [
-            /* spell-checker: disable */
-            ["de", "Deutsch"],
-            ["no", "Norsk"],
-            ["ru", "Русский"],
-            ["sv", "Svenska"],
-            ["pt-BR", "Português (Brasil)"],
-            ["lt", "Lietuvių"],
-            ["en", "English"],
-            ["it", "Italiano"],
-            ["fr", "Français"],
-            ["zh-CN", "中文简体"],
-            ["es", "Español"],
-            ["cs", "Čeština"],
-            ["ja", "日本語"],
-            ["sk", "Slovenčina"],
-            ["pl", "Polski"],
-            ["ca", "Català"],
-            ["nl", "Nederlands"],
-            ["tr", "Türkçe"]
-            /* spell-checker: enable */
-        ].map(
-            ([languageTag, label]) =>
-                ({
-                    languageTag,
-                    label,
-                    url: "https://gist.github.com/garronej/52baaca1bb925f2296ab32741e062b8e"
-                }) as const
-        ),
+        supported: (
+            [
+                /* spell-checker: disable */
+                ["de", "Deutsch"],
+                ["no", "Norsk"],
+                ["ru", "Русский"],
+                ["sv", "Svenska"],
+                ["pt-BR", "Português (Brasil)"],
+                ["lt", "Lietuvių"],
+                ["en", "English"],
+                ["it", "Italiano"],
+                ["fr", "Français"],
+                ["zh-CN", "中文简体"],
+                ["es", "Español"],
+                ["cs", "Čeština"],
+                ["ja", "日本語"],
+                ["sk", "Slovenčina"],
+                ["pl", "Polski"],
+                ["ca", "Català"],
+                ["nl", "Nederlands"],
+                ["tr", "Türkçe"],
+                ["ar", "العربية"],
+                ["da", "Dansk"],
+                ["el", "Ελληνικά"],
+                ["fa", "فارسی"],
+                ["fi", "Suomi"],
+                ["hu", "Magyar"],
+                ["ka", "ქართული"],
+                ["lv", "Latviešu"],
+                ["pt", "Português"],
+                ["th", "ไทย"],
+                ["uk", "Українська"],
+                ["zh-TW", "中文繁體"]
+                /* spell-checker: enable */
+            ] as const
+        ).map(([languageTag, label]) => {
+            {
+                type Got = typeof languageTag;
+                type Expected = LanguageTag;
+
+                type Missing = Exclude<Expected, Got>;
+                type Unexpected = Exclude<Got, Expected>;
+
+                assert<Equals<Missing, never>>;
+                assert<Equals<Unexpected, never>>;
+            }
+
+            return {
+                languageTag,
+                label,
+                url: "https://gist.github.com/garronej/52baaca1bb925f2296ab32741e062b8e"
+            } as const;
+        }),
 
         currentLanguageTag: "en"
     },
