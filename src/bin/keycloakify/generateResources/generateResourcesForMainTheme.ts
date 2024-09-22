@@ -290,11 +290,11 @@ export async function generateResourcesForMainTheme(params: {
                     ...(buildContext.extraThemeProperties ?? []),
                     ...buildContext.environmentVariables.map(
                         ({ name, default: defaultValue }) =>
-                            `${name}=\${env.${name}:${escapeStringForPropertiesFile(defaultValue)}}`,
-                        ...(languageTags === undefined
-                            ? []
-                            : `locales=${languageTags.join(",")}`)
-                    )
+                            `${name}=\${env.${name}:${escapeStringForPropertiesFile(defaultValue)}}`
+                    ),
+                    ...(languageTags === undefined
+                        ? []
+                        : [`locales=${languageTags.join(",")}`])
                 ].join("\n\n"),
                 "utf8"
             )
