@@ -51,7 +51,7 @@ export async function generateResourcesForMainTheme(params: {
     themeName: string;
     resourcesDirPath: string;
 }): Promise<{
-    writeMessagePropertiesFiles: (params: {
+    writeMessagePropertiesFilesForThemeVariant: (params: {
         getMessageDirPath: (params: { themeType: ThemeType }) => string;
         themeName: string;
     }) => void;
@@ -353,7 +353,10 @@ export async function generateResourcesForMainTheme(params: {
     }
 
     return {
-        writeMessagePropertiesFiles: ({ getMessageDirPath, themeName }) => {
+        writeMessagePropertiesFilesForThemeVariant: ({
+            getMessageDirPath,
+            themeName
+        }) => {
             objectEntries(writeMessagePropertiesFilesByThemeType).forEach(
                 ([themeType, writeMessagePropertiesFiles]) => {
                     if (writeMessagePropertiesFiles === undefined) {
