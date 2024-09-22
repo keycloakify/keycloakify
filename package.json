@@ -111,6 +111,11 @@
         "evt": "^2.5.7",
         "tsx": "^4.15.5",
         "html-entities": "^2.5.2",
-        "isomorphic-dompurify": "^2.15.0"
+        "isomorphic-dompurify": "^2.15.0",
+        "dompurify": "^3.1.6",
+        "@types/dompurify": "^2.0.0",
+        "webpack": "5.93.0",
+        "webpack-cli": "5.1.4",
+        "@babel/preset-env": "7.24.8"
     }
 }

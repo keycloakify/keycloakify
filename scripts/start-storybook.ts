@@ -1,5 +1,6 @@
 import * as child_process from "child_process";
 import { startRebuildOnSrcChange } from "./shared/startRebuildOnSrcChange";
+import { run } from "./shared/run";
 
 (async () => {
     run("yarn build");
@@ -18,9 +19,3 @@ import { startRebuildOnSrcChange } from "./shared/startRebuildOnSrcChange";
 
     startRebuildOnSrcChange();
 })();
-
-function run(command: string, options?: { env?: NodeJS.ProcessEnv }) {
-    console.log(`$ ${command}`);
-
-    child_process.execSync(command, { stdio: "inherit", ...options });
-}

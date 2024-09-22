@@ -1,8 +1,8 @@
-import * as child_process from "child_process";
 import * as fs from "fs";
 import { join } from "path";
 import { startRebuildOnSrcChange } from "./shared/startRebuildOnSrcChange";
 import { crawl } from "../src/bin/tools/crawl";
+import { run } from "./shared/run";
 
 {
     const dirPath = "node_modules";
@@ -47,9 +47,3 @@ run("yarn install", { cwd: join("..", starterName) });
 run(`npx tsx ${join("scripts", "link-in-app.ts")} ${starterName}`);
 
 startRebuildOnSrcChange();
-
-function run(command: string, options?: { cwd: string }) {
-    console.log(`$ ${command}`);
-
-    child_process.execSync(command, { stdio: "inherit", ...options });
-}

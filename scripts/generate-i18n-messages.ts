@@ -1,4 +1,3 @@
-import "minimal-polyfills/Object.fromEntries";
 import * as fs from "fs";
 import {
     join as pathJoin,

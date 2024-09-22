@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { KcSanitizer } from "keycloakify/lib/kcSanitize/KcSanitizer";
 import { decode } from "html-entities";
+import DOMPurify from "isomorphic-dompurify";
 
 // Implementation of Keycloak Java method KeycloakSanitizerTest with bunch of more test for p tag styling
 // https://github.com/keycloak/keycloak/blob/8ce8a4ba089eef25a0e01f58e09890399477b9ef/services/src/test/java/org/keycloak/theme/KeycloakSanitizerTest.java#L32
@@ -131,7 +132,10 @@ describe("KeycloakSanitizerMethod", () => {
     });
 
     function assertResult(expectedResult: string, html: string): void {
-        const result = KcSanitizer.sanitize(html, decode);
+        const result = KcSanitizer.sanitize(html, {
+            DOMPurify: DOMPurify as any,
+            htmlEntitiesDecode: decode
+        });
         expect(result).toBe(expectedResult);
     }
 });

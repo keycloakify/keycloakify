@@ -1,4 +1,5 @@
 import { KcSanitizerPolicy } from "./KcSanitizerPolicy";
+import type { DOMPurify as ofTypeDomPurify } from "keycloakify/tools/vendor/dompurify";
 
 // implementation of keycloak java sanitize method ( KeycloakSanitizerMethod )
 // https://github.com/keycloak/keycloak/blob/8ce8a4ba089eef25a0e01f58e09890399477b9ef/services/src/main/java/org/keycloak/theme/KeycloakSanitizerMethod.java#L33
@@ -6,11 +7,20 @@ export class KcSanitizer {
     private static HREF_PATTERN = /\s+href="([^"]*)"/g;
     private static textarea: HTMLTextAreaElement | null = null;
 
-    public static sanitize(html: string, decodeHtml?: (html: string) => string): string {
+    public static sanitize(
+        html: string,
+        dependencyInjections: Partial<{
+            DOMPurify: typeof ofTypeDomPurify;
+            htmlEntitiesDecode: (html: string) => string;
+        }>
+    ): string {
         if (html === "") return "";
 
-        html = decodeHtml !== undefined ? decodeHtml(html) : this.decodeHtml(html);
-        const sanitized = KcSanitizerPolicy.sanitize(html);
+        html =
+            dependencyInjections?.htmlEntitiesDecode !== undefined
+                ? dependencyInjections.htmlEntitiesDecode(html)
+                : this.decodeHtml(html);
+        const sanitized = KcSanitizerPolicy.sanitize(html, dependencyInjections);
         return this.fixURLs(sanitized);
     }
 

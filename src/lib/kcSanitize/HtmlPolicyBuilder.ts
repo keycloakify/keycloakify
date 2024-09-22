@@ -1,4 +1,4 @@
-import { DOMPurify } from "keycloakify/lib/vendor/isomorphic-dompurify";
+import { DOMPurify } from "keycloakify/tools/vendor/dompurify";
 
 type TagType = {
     name: string;
@@ -22,6 +22,16 @@ export class HtmlPolicyBuilder {
     private isStylingAllowed: boolean = false;
     private allowedProtocols: Set<string> = new Set();
     private enforceRelNofollow: boolean = false;
+    private DOMPurify: typeof DOMPurify;
+
+    // add a constructor
+    constructor(
+        dependencyInjections: Partial<{
+            DOMPurify: typeof DOMPurify;
+        }>
+    ) {
+        this.DOMPurify = dependencyInjections.DOMPurify ?? DOMPurify;
+    }
 
     allowWithoutAttributes(tag: string): this {
         this.tagsAllowedWithNoAttribute.add(tag);
@@ -69,7 +79,10 @@ export class HtmlPolicyBuilder {
     onElements(...tags: string[]): this {
         if (this.currentAttribute) {
             tags.forEach(tag => {
-                const element = this.tagsAllowed.get(tag) || { name: tag, attributes: [] };
+                const element = this.tagsAllowed.get(tag) || {
+                    name: tag,
+                    attributes: []
+                };
                 element.attributes.push(this.currentAttribute!);
                 this.tagsAllowed.set(tag, element);
             });
@@ -104,10 +117,10 @@ export class HtmlPolicyBuilder {
 
     apply(html: string): string {
         //Clear all previous configs first ( in case we used DOMPurify somewhere else )
-        DOMPurify.clearConfig();
-        DOMPurify.removeAllHooks();
+        this.DOMPurify.clearConfig();
+        this.DOMPurify.removeAllHooks();
         this.setupHooks();
-        return DOMPurify.sanitize(html, {
+        return this.DOMPurify.sanitize(html, {
             ALLOWED_TAGS: Array.from(this.tagsAllowed.keys()),
             ALLOWED_ATTR: this.getAllowedAttributes(),
             ALLOWED_URI_REGEXP: this.getAllowedUriRegexp(),
@@ -118,7 +131,7 @@ export class HtmlPolicyBuilder {
 
     private setupHooks(): void {
         // Check allowed attribute and global attributes and it doesnt exist in them remove it
-        DOMPurify.addHook("uponSanitizeAttribute", (currentNode, hookEvent) => {
+        this.DOMPurify.addHook("uponSanitizeAttribute", (currentNode, hookEvent) => {
             if (!hookEvent) return;
 
             const tagName = currentNode.tagName.toLowerCase();
@@ -142,16 +155,24 @@ export class HtmlPolicyBuilder {
                 currentNode.removeAttribute(hookEvent.attrName);
                 return;
             } else {
-                const attributeType = allowedAttributes.find(attr => attr.name === hookEvent.attrName);
+                const attributeType = allowedAttributes.find(
+                    attr => attr.name === hookEvent.attrName
+                );
                 if (attributeType) {
                     //Check if attribute value is allowed
-                    if (attributeType.matchRegex && !attributeType.matchRegex.test(hookEvent.attrValue)) {
+                    if (
+                        attributeType.matchRegex &&
+                        !attributeType.matchRegex.test(hookEvent.attrValue)
+                    ) {
                         hookEvent.forceKeepAttr = false;
                         hookEvent.keepAttr = false;
                         currentNode.removeAttribute(hookEvent.attrName);
                         return;
                     }
-                    if (attributeType.matchFunction && !attributeType.matchFunction(hookEvent.attrValue)) {
+                    if (
+                        attributeType.matchFunction &&
+                        !attributeType.matchFunction(hookEvent.attrValue)
+                    ) {
                         hookEvent.forceKeepAttr = false;
                         hookEvent.keepAttr = false;
                         currentNode.removeAttribute(hookEvent.attrName);
@@ -168,9 +189,12 @@ export class HtmlPolicyBuilder {
             }
         });
 
-        DOMPurify.addHook("afterSanitizeAttributes", currentNode => {
+        this.DOMPurify.addHook("afterSanitizeAttributes", currentNode => {
             // if tag is not allowed to have no attribute then remove it completely
-            if (currentNode.attributes.length == 0 && currentNode.childNodes.length == 0) {
+            if (
+                currentNode.attributes.length == 0 &&
+                currentNode.childNodes.length == 0
+            ) {
                 if (!this.tagsAllowedWithNoAttribute.has(currentNode.tagName)) {
                     currentNode.remove();
                 }
@@ -180,7 +204,10 @@ export class HtmlPolicyBuilder {
                     if (currentNode.attributes.length == 0) {
                         //add currentNode children to parent node
                         while (currentNode.firstChild) {
-                            currentNode?.parentNode?.insertBefore(currentNode.firstChild, currentNode);
+                            currentNode?.parentNode?.insertBefore(
+                                currentNode.firstChild,
+                                currentNode
+                            );
                         }
                         // Remove the currentNode itself
                         currentNode.remove();
@@ -191,8 +218,13 @@ export class HtmlPolicyBuilder {
                     if (this.enforceRelNofollow) {
                         if (!currentNode.hasAttribute("rel")) {
                             currentNode.setAttribute("rel", "nofollow");
-                        } else if (!currentNode.getAttribute("rel")?.includes("nofollow")) {
-                            currentNode.setAttribute("rel", currentNode.getAttribute("rel") + " nofollow");
+                        } else if (
+                            !currentNode.getAttribute("rel")?.includes("nofollow")
+                        ) {
+                            currentNode.setAttribute(
+                                "rel",
+                                currentNode.getAttribute("rel") + " nofollow"
+                            );
                         }
                     }
                 }
