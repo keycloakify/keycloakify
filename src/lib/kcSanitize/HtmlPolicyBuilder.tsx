@@ -1,4 +1,4 @@
-import DOMPurify from "isomorphic-dompurify";
+import { DOMPurify } from "keycloakify/lib/vendor/isomorphic-dompurify";
 
 type TagType = {
     name: string;

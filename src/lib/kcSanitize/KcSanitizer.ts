@@ -1,4 +1,4 @@
-import { KcSanitizerPolicy } from "keycloakify/tools/kcSanitize/KcSanitizerPolicy";
+import { KcSanitizerPolicy } from "./KcSanitizerPolicy";
 
 // implementation of keycloak java sanitize method ( KeycloakSanitizerMethod )
 // https://github.com/keycloak/keycloak/blob/8ce8a4ba089eef25a0e01f58e09890399477b9ef/services/src/main/java/org/keycloak/theme/KeycloakSanitizerMethod.java#L33
@@ -6,33 +6,15 @@ export class KcSanitizer {
     private static HREF_PATTERN = /\s+href="([^"]*)"/g;
     private static textarea: HTMLTextAreaElement | null = null;
 
-    public static sanitize(html: string | null): string {
-        if (html == null) {
-            throw new Error("Cannot escape null value.");
-        }
+    public static sanitize(html: string, decodeHtml?: (html: string) => string): string {
         if (html === "") return "";
 
-        html = this.decodeHtmlFull(html);
+        html = decodeHtml !== undefined ? decodeHtml(html) : this.decodeHtml(html);
         const sanitized = KcSanitizerPolicy.sanitize(html);
         return this.fixURLs(sanitized);
     }
 
-    private static decodeHtmlFull(html: string): string {
-        if (typeof window !== "undefined" && typeof document !== "undefined") {
-            return KcSanitizer.decodeHtmlOnClient(html);
-        } else {
-            throw new Error("not implemented");
-            // return await KcSanitizer.decodeHtmlOnServer(html);
-        }
-    }
-
-    // private static async decodeHtmlOnServer(html: string): Promise<string> {
-    //     // Dynamically import html-entities only on the server side
-    //     const { decode } = await import("html-entities");
-    //     return decode(html);
-    // }
-
-    private static decodeHtmlOnClient(html: string): string {
+    private static decodeHtml(html: string): string {
         if (!KcSanitizer.textarea) {
             KcSanitizer.textarea = document.createElement("textarea");
         }
