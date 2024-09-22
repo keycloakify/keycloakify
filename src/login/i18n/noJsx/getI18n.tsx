@@ -126,7 +126,7 @@ export function createGetI18n<
 
                             let label = labelBySupportedLanguageTag[languageTag];
 
-                            if (label === undefined) {
+                            if (label === undefined || label === "" || label === languageTag) {
                                 assert(is<Exclude<LanguageTag, LanguageTag_defaultSet>>(languageTag));
 
                                 const entry = extraLanguageTranslations[languageTag];

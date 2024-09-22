@@ -26,7 +26,7 @@ export async function generateResources(params: {
         rmSync(resourcesDirPath, { recursive: true });
     }
 
-    await generateResourcesForMainTheme({
+    const { writeMessagePropertiesFiles } = await generateResourcesForMainTheme({
         resourcesDirPath,
         themeName,
         buildContext
@@ -36,7 +36,8 @@ export async function generateResources(params: {
         generateResourcesForThemeVariant({
             resourcesDirPath,
             themeName,
-            themeVariantName
+            themeVariantName,
+            writeMessagePropertiesFiles
         });
     }
 }
