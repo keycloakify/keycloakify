@@ -1,7 +1,7 @@
 {
     "name": "keycloakify",
-    "version": "10.1.4",
-    "description": "Create Keycloak themes using React",
+    "version": "11.0.0",
+    "description": "Framework to create custom Keycloak UIs",
     "repository": {
         "type": "git",
         "url": "git://github.com/keycloakify/keycloakify.git"
