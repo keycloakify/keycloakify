@@ -311,16 +311,7 @@ function createI18nTranslationFunctionsFactory<MessageKey_themeDefined extends s
                     return;
                 }
 
-                messageWithArgsInjected = messageWithArgsInjected.replace(
-                    new RegExp(`\\{${i + startIndex}\\}`, "g"),
-                    (() => {
-                        if (key === "loginTitleHtml") {
-                            return arg;
-                        }
-
-                        return arg.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                    })()
-                );
+                messageWithArgsInjected = messageWithArgsInjected.replace(new RegExp(`\\{${i + startIndex}\\}`, "g"), arg);
             });
 
             return messageWithArgsInjected;
