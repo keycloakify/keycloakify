@@ -293,8 +293,6 @@ export function generateMessageProperties(params: {
             )
         );
 
-        console.log(messages_defaultSet_by_languageTag_notInDefaultSet);
-
         return messages_defaultSet_by_languageTag_notInDefaultSet;
     })();
 
