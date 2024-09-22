@@ -20,12 +20,22 @@ import {
 } from "path";
 import { kebabCaseToCamelCase } from "./tools/kebabCaseToSnakeCase";
 import { assert, Equals } from "tsafe/assert";
-import type { CliCommandOptions } from "./main";
+import type { CliCommandOptions as CliCommandOptions_common } from "./main";
 import { getBuildContext } from "./shared/buildContext";
 import chalk from "chalk";
 
-export async function command(params: { cliCommandOptions: CliCommandOptions }) {
+export type CliEjectPageCommandOptions = CliCommandOptions_common & {
+    pages: string | undefined;
+};
+
+export async function command(params: { cliCommandOptions: CliEjectPageCommandOptions }) {
     const { cliCommandOptions } = params;
+
+    // The user passes a comma-separated string, but we split it based on spaces
+    // because it seems the Termost library does some unexpected manipulation of the string behind the scenes!
+    // It doesn't return a string[] but instead an ordinary string separated by spaces (even if we change the type of pages to string[]).
+    // This might be a bug in Termost.
+    let cliPagesToEject: string[] | undefined = cliCommandOptions.pages?.split(" ");
 
     const buildContext = getBuildContext({
         cliCommandOptions
@@ -144,252 +154,292 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     console.log(`→ ${themeType}`);
 
-    console.log(chalk.cyan("Select the page you want to customize:"));
+    const templateValue = "Template.tsx";
+    const userProfileFormFieldsValue = "UserProfileFormFields.tsx";
 
-    const templateValue = "Template.tsx (Layout common to every page)";
-    const userProfileFormFieldsValue =
-        "UserProfileFormFields.tsx (Renders the form of the register.ftl, login-update-profile.ftl, update-email.ftl and idp-review-user-profile.ftl)";
-
-    const { value: pageIdOrComponent } = await cliSelect<
+    type AllowedPagesType =
         | LoginThemePageId
         | AccountThemePageId
         | typeof templateValue
-        | typeof userProfileFormFieldsValue
-    >({
-        values: (() => {
-            switch (themeType) {
-                case "login":
-                    return [
-                        templateValue,
-                        userProfileFormFieldsValue,
-                        ...LOGIN_THEME_PAGE_IDS
-                    ];
-                case "account":
-                    return [templateValue, ...ACCOUNT_THEME_PAGE_IDS];
-            }
-            assert<Equals<typeof themeType, never>>(false);
-        })()
-    }).catch(() => {
-        process.exit(-1);
-    });
+        | typeof userProfileFormFieldsValue;
 
-    console.log(`→ ${pageIdOrComponent}`);
-
-    const componentBasename = (() => {
-        if (pageIdOrComponent === templateValue) {
-            return "Template.tsx";
+    let allowedPages: AllowedPagesType[] = (() => {
+        switch (themeType) {
+            case "login":
+                return [
+                    templateValue,
+                    userProfileFormFieldsValue,
+                    ...LOGIN_THEME_PAGE_IDS
+                ];
+            case "account":
+                return [templateValue, ...ACCOUNT_THEME_PAGE_IDS];
+            default:
+                assert<Equals<typeof themeType, never>>(false);
         }
-
-        if (pageIdOrComponent === userProfileFormFieldsValue) {
-            return "UserProfileFormFields.tsx";
-        }
-
-        return capitalize(kebabCaseToCamelCase(pageIdOrComponent)).replace(/ftl$/, "tsx");
     })();
 
-    const pagesOrDot = (() => {
-        if (
-            pageIdOrComponent === templateValue ||
-            pageIdOrComponent === userProfileFormFieldsValue
-        ) {
-            return ".";
-        }
-
-        return "pages";
-    })();
-
-    const targetFilePath = pathJoin(
-        buildContext.themeSrcDirPath,
-        themeType,
-        pagesOrDot,
-        componentBasename
-    );
-
-    if (fs.existsSync(targetFilePath)) {
+    if (!cliPagesToEject) {
         console.log(
-            `${pageIdOrComponent} is already ejected, ${pathRelative(
-                process.cwd(),
-                targetFilePath
-            )} already exists`
+            [
+                chalk.cyan("Select the page you want to customize:"),
+                chalk.gray("Layout is common to every page"),
+                chalk.gray(
+                    "UserProfileFormFields Renders the form of the register.ftl, login-update-profile.ftl, update-email.ftl and idp-review-user-profile.ftl"
+                ),
+                chalk.gray(
+                    "You can also explicitly provide the pages e.g. `npx keycloakify eject-page --pages Template.tsx,Login.ftl,...`"
+                ),
+                chalk.gray(
+                    "You can also use `npx keycloakify eject-page --pages all` to add all pages"
+                )
+            ].join("\n")
         );
-
-        process.exit(-1);
+        const { value: pageIdOrComponent } = await cliSelect<AllowedPagesType>({
+            values: (() => allowedPages)()
+        }).catch(() => {
+            process.exit(-1);
+        });
+        cliPagesToEject = [pageIdOrComponent];
     }
 
-    let componentCode = fs
-        .readFileSync(
-            pathJoin(
+    // Support for eject-page --pages all
+    if (cliPagesToEject.length == 1 && cliPagesToEject[0] == "all") {
+        cliPagesToEject = allowedPages;
+    }
+    // if user input pages does not exist then show him some helpful tips about the allowed pages and exit
+    for (const pageIdOrComponent of cliPagesToEject) {
+        if (
+            !allowedPages.some(
+                allowedPage => allowedPage.toString() === pageIdOrComponent
+            )
+        ) {
+            console.error(
+                `${pageIdOrComponent} not found in the list of allowed pages, exiting the eject-command`
+            );
+            console.error(`Allowed pages are : ${allowedPages}`);
+            process.exit(-1);
+        }
+    }
+    for (let pageIdOrComponent of cliPagesToEject) {
+        const componentBasename = (() => {
+            if (pageIdOrComponent === templateValue) {
+                return "Template.tsx";
+            }
+
+            if (pageIdOrComponent === userProfileFormFieldsValue) {
+                return "UserProfileFormFields.tsx";
+            }
+
+            return capitalize(kebabCaseToCamelCase(pageIdOrComponent)).replace(
+                /ftl$/,
+                "tsx"
+            );
+        })();
+
+        const pagesOrDot = (() => {
+            if (
+                pageIdOrComponent === templateValue ||
+                pageIdOrComponent === userProfileFormFieldsValue
+            ) {
+                return ".";
+            }
+
+            return "pages";
+        })();
+
+        const targetFilePath = pathJoin(
+            buildContext.themeSrcDirPath,
+            themeType,
+            pagesOrDot,
+            componentBasename
+        );
+
+        if (fs.existsSync(targetFilePath)) {
+            console.log(
+                `${pageIdOrComponent} is already ejected, ${pathRelative(
+                    process.cwd(),
+                    targetFilePath
+                )} already exists`
+            );
+
+            process.exit(-1);
+        }
+
+        const componentCode = fs
+            .readFileSync(
+                pathJoin(
+                    getThisCodebaseRootDirPath(),
+                    "src",
+                    themeType,
+                    pagesOrDot,
+                    componentBasename
+                )
+            )
+            .toString("utf8");
+
+        {
+            const targetDirPath = pathDirname(targetFilePath);
+
+            if (!fs.existsSync(targetDirPath)) {
+                fs.mkdirSync(targetDirPath, { recursive: true });
+            }
+        }
+
+        //Remove spaces in case of file formatting change in future
+        const passwordWrapperRegex =
+            /import\s*{\s*PasswordWrapper\s*}\s*from\s*"keycloakify\/login\/pages\/PasswordWrapper";/;
+
+        // Copy PasswordWrapper if it's imported
+        if (passwordWrapperRegex.test(componentCode)) {
+            //Change import path so that it works in user's project code base
+            componentCode = componentCode.replace(
+                passwordWrapperRegex,
+                `import { PasswordWrapper } from "./PasswordWrapper";`
+            );
+
+            const passwordWrapperFilePathInKeycloakify = pathJoin(
                 getThisCodebaseRootDirPath(),
                 "src",
                 themeType,
                 pagesOrDot,
-                componentBasename
-            )
-        )
-        .toString("utf8");
-
-    {
-        const targetDirPath = pathDirname(targetFilePath);
-
-        if (!fs.existsSync(targetDirPath)) {
-            fs.mkdirSync(targetDirPath, { recursive: true });
-        }
-    }
-
-    //Remove spaces in case of file formatting change in future
-    const passwordWrapperRegex =
-        /import\s*{\s*PasswordWrapper\s*}\s*from\s*"keycloakify\/login\/pages\/PasswordWrapper";/;
-
-    // Copy PasswordWrapper if it's imported
-    if (passwordWrapperRegex.test(componentCode)) {
-        //Change import path so that it works in user's project code base
-        componentCode = componentCode.replace(
-            passwordWrapperRegex,
-            `import { PasswordWrapper } from "./PasswordWrapper";`
-        );
-
-        const passwordWrapperFilePathInKeycloakify = pathJoin(
-            getThisCodebaseRootDirPath(),
-            "src",
-            themeType,
-            pagesOrDot,
-            "PasswordWrapper.tsx"
-        );
-        const passwordWrapperFilePathInUserProject = pathJoin(
-            buildContext.themeSrcDirPath,
-            themeType,
-            pagesOrDot,
-            "PasswordWrapper.tsx"
-        );
-        fs.copyFileSync(
-            passwordWrapperFilePathInKeycloakify,
-            passwordWrapperFilePathInUserProject
-        );
-    }
-
-    fs.writeFileSync(targetFilePath, Buffer.from(componentCode, "utf8"));
-
-    console.log(
-        `${chalk.green("✓")} ${chalk.bold(
-            pathJoin(".", pathRelative(process.cwd(), targetFilePath))
-        )} copy pasted from the Keycloakify source code into your project`
-    );
-
-    edit_KcApp: {
-        if (
-            pageIdOrComponent !== templateValue &&
-            pageIdOrComponent !== userProfileFormFieldsValue
-        ) {
-            break edit_KcApp;
-        }
-
-        const kcAppTsxPath = pathJoin(
-            buildContext.themeSrcDirPath,
-            themeType,
-            "KcPage.tsx"
-        );
-
-        const kcAppTsxCode = fs.readFileSync(kcAppTsxPath).toString("utf8");
-
-        const modifiedKcAppTsxCode = (() => {
-            switch (pageIdOrComponent) {
-                case templateValue:
-                    return kcAppTsxCode.replace(
-                        `keycloakify/${themeType}/Template`,
-                        "./Template"
-                    );
-                case userProfileFormFieldsValue:
-                    return kcAppTsxCode.replace(
-                        `keycloakify/login/UserProfileFormFields`,
-                        "./UserProfileFormFields"
-                    );
-            }
-            assert<Equals<typeof pageIdOrComponent, never>>(false);
-        })();
-
-        if (kcAppTsxCode === modifiedKcAppTsxCode) {
-            console.log(
-                chalk.red(
-                    "Unable to automatically update KcPage.tsx, please update it manually"
-                )
+                "PasswordWrapper.tsx"
             );
-            return;
+            const passwordWrapperFilePathInUserProject = pathJoin(
+                buildContext.themeSrcDirPath,
+                themeType,
+                pagesOrDot,
+                "PasswordWrapper.tsx"
+            );
+            fs.copyFileSync(
+                passwordWrapperFilePathInKeycloakify,
+                passwordWrapperFilePathInUserProject
+            );
         }
 
-        fs.writeFileSync(kcAppTsxPath, Buffer.from(modifiedKcAppTsxCode, "utf8"));
+        fs.writeFileSync(targetFilePath, Buffer.from(componentCode, "utf8"));
 
         console.log(
             `${chalk.green("✓")} ${chalk.bold(
-                pathJoin(".", pathRelative(process.cwd(), kcAppTsxPath))
-            )} Updated`
+                pathJoin(".", pathRelative(process.cwd(), targetFilePath))
+            )} copy pasted from the Keycloakify source code into your project`
         );
 
-        return;
+        edit_KcApp: {
+            if (
+                pageIdOrComponent !== templateValue &&
+                pageIdOrComponent !== userProfileFormFieldsValue
+            ) {
+                break edit_KcApp;
+            }
+
+            const kcAppTsxPath = pathJoin(
+                buildContext.themeSrcDirPath,
+                themeType,
+                "KcPage.tsx"
+            );
+
+            const kcAppTsxCode = fs.readFileSync(kcAppTsxPath).toString("utf8");
+
+            const modifiedKcAppTsxCode = (() => {
+                switch (pageIdOrComponent) {
+                    case templateValue:
+                        return kcAppTsxCode.replace(
+                            `keycloakify/${themeType}/Template`,
+                            "./Template"
+                        );
+                    case userProfileFormFieldsValue:
+                        return kcAppTsxCode.replace(
+                            `keycloakify/login/UserProfileFormFields`,
+                            "./UserProfileFormFields"
+                        );
+                }
+                assert<Equals<typeof pageIdOrComponent, never>>(false);
+            })();
+
+            if (kcAppTsxCode === modifiedKcAppTsxCode) {
+                console.log(
+                    chalk.red(
+                        "Unable to automatically update KcPage.tsx, please update it manually"
+                    )
+                );
+                continue;
+            }
+
+            fs.writeFileSync(kcAppTsxPath, Buffer.from(modifiedKcAppTsxCode, "utf8"));
+
+            console.log(
+                `${chalk.green("✓")} ${chalk.bold(
+                    pathJoin(".", pathRelative(process.cwd(), kcAppTsxPath))
+                )} Updated`
+            );
+
+            continue;
+        }
+
+        const userProfileFormFieldComponentName = "UserProfileFormFields";
+
+        const componentName = componentBasename.replace(/.tsx$/, "");
+
+        console.log(
+            [
+                ``,
+                `You now need to update your page router:`,
+                ``,
+                `${chalk.bold(
+                    pathJoin(
+                        ".",
+                        pathRelative(process.cwd(), buildContext.themeSrcDirPath),
+                        themeType,
+                        "KcPage.tsx"
+                    )
+                )}:`,
+                chalk.grey("```"),
+                `// ...`,
+                ``,
+                chalk.green(
+                    `+const ${componentName} = lazy(() => import("./pages/${componentName}"));`
+                ),
+                ...[
+                    ``,
+                    ` export default function KcPage(props: { kcContext: KcContext; }) {`,
+                    ``,
+                    `     // ...`,
+                    ``,
+                    `     return (`,
+                    `         <Suspense>`,
+                    `             {(() => {`,
+                    `                 switch (kcContext.pageId) {`,
+                    `                     // ...`,
+                    `+                    case "${pageIdOrComponent}": return (`,
+                    `+                        <${componentName}`,
+                    `+                            {...{ kcContext, i18n, classes }}`,
+                    `+                            Template={Template}`,
+                    `+                            doUseDefaultCss={true}`,
+                    ...(!componentCode.includes(userProfileFormFieldComponentName)
+                        ? []
+                        : [
+                              `+                            ${userProfileFormFieldComponentName}={${userProfileFormFieldComponentName}}`,
+                              `+                            doMakeUserConfirmPassword={doMakeUserConfirmPassword}`
+                          ]),
+                    `+                        />`,
+                    `+                    );`,
+                    `                     default: return <Fallback /* .. */ />;`,
+                    `                 }`,
+                    `             })()}`,
+                    `         </Suspense>`,
+                    `     );`,
+                    ` }`
+                ].map(line => {
+                    if (line.startsWith("+")) {
+                        return chalk.green(line);
+                    }
+                    if (line.startsWith("-")) {
+                        return chalk.red(line);
+                    }
+                    return chalk.grey(line);
+                }),
+                chalk.grey("```")
+            ].join("\n")
+        );
     }
-
-    const userProfileFormFieldComponentName = "UserProfileFormFields";
-
-    const componentName = componentBasename.replace(/.tsx$/, "");
-
-    console.log(
-        [
-            ``,
-            `You now need to update your page router:`,
-            ``,
-            `${chalk.bold(
-                pathJoin(
-                    ".",
-                    pathRelative(process.cwd(), buildContext.themeSrcDirPath),
-                    themeType,
-                    "KcPage.tsx"
-                )
-            )}:`,
-            chalk.grey("```"),
-            `// ...`,
-            ``,
-            chalk.green(
-                `+const ${componentName} = lazy(() => import("./pages/${componentName}"));`
-            ),
-            ...[
-                ``,
-                ` export default function KcPage(props: { kcContext: KcContext; }) {`,
-                ``,
-                `     // ...`,
-                ``,
-                `     return (`,
-                `         <Suspense>`,
-                `             {(() => {`,
-                `                 switch (kcContext.pageId) {`,
-                `                     // ...`,
-                `+                    case "${pageIdOrComponent}": return (`,
-                `+                        <${componentName}`,
-                `+                            {...{ kcContext, i18n, classes }}`,
-                `+                            Template={Template}`,
-                `+                            doUseDefaultCss={true}`,
-                ...(!componentCode.includes(userProfileFormFieldComponentName)
-                    ? []
-                    : [
-                          `+                            ${userProfileFormFieldComponentName}={${userProfileFormFieldComponentName}}`,
-                          `+                            doMakeUserConfirmPassword={doMakeUserConfirmPassword}`
-                      ]),
-                `+                        />`,
-                `+                    );`,
-                `                     default: return <Fallback /* .. */ />;`,
-                `                 }`,
-                `             })()}`,
-                `         </Suspense>`,
-                `     );`,
-                ` }`
-            ].map(line => {
-                if (line.startsWith("+")) {
-                    return chalk.green(line);
-                }
-                if (line.startsWith("-")) {
-                    return chalk.red(line);
-                }
-                return chalk.grey(line);
-            }),
-            chalk.grey("```")
-        ].join("\n")
-    );
 }
