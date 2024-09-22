@@ -148,11 +148,13 @@ export function createGetI18n<
             const enabledLanguages: I18n["enabledLanguages"] = [];
 
             if (kcContext.locale !== undefined) {
-                for (const { languageTag, label, url } of kcContext.locale.supported ?? []) {
+                for (const entry of kcContext.locale.supported ?? []) {
+                    const languageTag = id<string>(entry.languageTag) as LanguageTag;
+
                     enabledLanguages.push({
-                        languageTag: id<string>(languageTag) as LanguageTag,
-                        label,
-                        href: url
+                        languageTag,
+                        label: getLanguageLabel(languageTag),
+                        href: entry.url
                     });
                 }
             }
