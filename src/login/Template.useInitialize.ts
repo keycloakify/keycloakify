@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { assert } from "keycloakify/tools/assert";
 import { useInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
 import { useInsertLinkTags } from "keycloakify/tools/useInsertLinkTags";
-import { KcContext } from "keycloakify/login/KcContext/KcContext";
+import type { KcContext } from "keycloakify/login/KcContext";
 
 export type KcContextLike = {
     url: {
@@ -16,7 +16,7 @@ export type KcContextLike = {
 assert<keyof KcContextLike extends keyof KcContext ? true : false>();
 assert<KcContext extends KcContextLike ? true : false>();
 
-export function useStylesAndScripts(params: {
+export function useInitialize(params: {
     kcContext: KcContextLike;
     doUseDefaultCss: boolean;
 }) {
@@ -61,9 +61,7 @@ export function useStylesAndScripts(params: {
                 textContent: `
                     import { checkCookiesAndSetTimer } from "${url.resourcesPath}/js/authChecker.js";
 
-                    checkCookiesAndSetTimer(
-                        "${url.ssoLoginInOtherTabsUrl}"
-                    );
+                    checkCookiesAndSetTimer("${url.ssoLoginInOtherTabsUrl}");
                 `
             }
         ]

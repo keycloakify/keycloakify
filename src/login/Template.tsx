@@ -3,7 +3,7 @@ import { clsx } from "keycloakify/tools/clsx";
 import type { TemplateProps } from "keycloakify/login/TemplateProps";
 import { getKcClsx } from "keycloakify/login/lib/kcClsx";
 import { useSetClassName } from "keycloakify/tools/useSetClassName";
-import { useStylesAndScripts } from "keycloakify/login/Template.useStylesAndScripts";
+import { useInitialize } from "keycloakify/login/Template.useInitialize";
 import type { I18n } from "./i18n";
 import type { KcContext } from "./KcContext";
 
@@ -44,7 +44,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
         className: bodyClassName ?? kcClsx("kcBodyClass")
     });
 
-    const { isReadyToRender } = useStylesAndScripts({ kcContext, doUseDefaultCss });
+    const { isReadyToRender } = useInitialize({ kcContext, doUseDefaultCss });
 
     if (!isReadyToRender) {
         return null;
