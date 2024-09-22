@@ -136,32 +136,111 @@ export function generateMessageProperties(params: {
             return undefined;
         }
 
-        let firstArgumentCode: string | undefined = undefined;
+        let out: Record<string, { label: string; path: string }> = {};
 
         recast.visit(i18nTsRoot, {
             visitCallExpression: function (path) {
                 const node = path.node;
 
+                // Check if the callee is a MemberExpression with property 'withExtraLanguages'
                 if (
                     node.callee.type === "MemberExpression" &&
                     node.callee.property.type === "Identifier" &&
                     node.callee.property.name === "withExtraLanguages"
                 ) {
-                    firstArgumentCode = babelGenerate(node.arguments[0] as any).code;
-                    return false;
+                    const arg = node.arguments[0];
+                    if (arg && arg.type === "ObjectExpression") {
+                        // Iterate over the properties of the object
+                        arg.properties.forEach(prop => {
+                            if (
+                                prop.type === "ObjectProperty" &&
+                                prop.key.type === "Identifier"
+                            ) {
+                                const lang = prop.key.name;
+                                const value = prop.value;
+
+                                if (value.type === "ObjectExpression") {
+                                    let label: string | undefined = undefined;
+                                    let pathStr: string | undefined = undefined;
+
+                                    // Iterate over the properties of the language object
+                                    value.properties.forEach(p => {
+                                        if (
+                                            p.type === "ObjectProperty" &&
+                                            p.key.type === "Identifier"
+                                        ) {
+                                            if (
+                                                p.key.name === "label" &&
+                                                p.value.type === "StringLiteral"
+                                            ) {
+                                                label = p.value.value;
+                                            }
+                                            if (
+                                                p.key.name === "getMessages" &&
+                                                (p.value.type ===
+                                                    "ArrowFunctionExpression" ||
+                                                    p.value.type === "FunctionExpression")
+                                            ) {
+                                                // Extract the import path from the function body
+                                                const body = p.value.body;
+                                                if (
+                                                    body.type === "CallExpression" &&
+                                                    body.callee.type === "Import"
+                                                ) {
+                                                    const importArg = body.arguments[0];
+                                                    if (
+                                                        importArg.type === "StringLiteral"
+                                                    ) {
+                                                        pathStr = importArg.value;
+                                                    }
+                                                } else if (
+                                                    body.type === "BlockStatement"
+                                                ) {
+                                                    // If the function body is a block (e.g., function with braces {})
+                                                    // Look for return statement
+                                                    body.body.forEach(statement => {
+                                                        if (
+                                                            statement.type ===
+                                                                "ReturnStatement" &&
+                                                            statement.argument &&
+                                                            statement.argument.type ===
+                                                                "CallExpression" &&
+                                                            statement.argument.callee
+                                                                .type === "Import"
+                                                        ) {
+                                                            const importArg =
+                                                                statement.argument
+                                                                    .arguments[0];
+                                                            if (
+                                                                importArg.type ===
+                                                                "StringLiteral"
+                                                            ) {
+                                                                pathStr = importArg.value;
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        }
+                                    });
+
+                                    if (label && pathStr) {
+                                        out[lang] = { label, path: pathStr };
+                                    }
+                                }
+                            }
+                        });
+                    }
+
+                    return false; // Stop traversing this path
                 }
 
-                this.traverse(path);
+                this.traverse(path); // Continue traversing other paths
             }
         });
 
-        if (firstArgumentCode === undefined) {
-            return undefined;
-        }
+        console.log(out);
 
-        //todo
-
-        //TODO
         return {};
     })();
 
