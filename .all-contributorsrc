@@ -259,6 +259,16 @@
         "code",
         "doc"
       ]
+    },
+    {
+      "login": "uchar",
+      "name": "Omid",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5172296?v=4",
+      "profile": "https://www.linkedin.com/in/oes-rioniz/",
+      "contributions": [
+        "test",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
