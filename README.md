@@ -132,6 +132,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/oliviergoulet5"><img src="https://avatars.githubusercontent.com/u/17685861?v=4?s=100" width="100px;" alt="Olivier Goulet"/><br /><sub><b>Olivier Goulet</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=oliviergoulet5" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/liamlows"><img src="https://avatars.githubusercontent.com/u/1365914?v=4?s=100" width="100px;" alt="Liam Lowsley-Williams"/><br /><sub><b>Liam Lowsley-Williams</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=liamlows" title="Code">💻</a> <a href="https://github.com/keycloakify/keycloakify/commits?author=liamlows" title="Documentation">📖</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://www.linkedin.com/in/oes-rioniz/"><img src="https://avatars.githubusercontent.com/u/5172296?v=4?s=100" width="100px;" alt="Omid"/><br /><sub><b>Omid</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=uchar" title="Tests">⚠️</a> <a href="https://github.com/keycloakify/keycloakify/commits?author=uchar" title="Code">💻</a></td>
+    </tr>
   </tbody>
 </table>
 
