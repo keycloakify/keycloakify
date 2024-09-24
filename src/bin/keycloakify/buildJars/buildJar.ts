@@ -16,6 +16,7 @@ import { isInside } from "../../tools/isInside";
 import child_process from "child_process";
 import { rmSync } from "../../tools/fs.rmSync";
 import { writeMetaInfKeycloakThemes } from "../../shared/metaInfKeycloakThemes";
+import { existsAsync } from "../../tools/fs.existsAsync";
 
 export type BuildContextLike = BuildContextLike_generatePom & {
     keycloakifyBuildDirPath: string;
@@ -135,40 +136,49 @@ export async function buildJar(params: {
             break route_legacy_pages;
         }
 
-        (["register.ftl", "login-update-profile.ftl"] as const).forEach(pageId =>
-            buildContext.themeNames.map(themeName => {
-                const ftlFilePath = pathJoin(
-                    tmpResourcesDirPath,
-                    "theme",
-                    themeName,
-                    "login",
-                    pageId
-                );
+        await Promise.all(
+            (["register.ftl", "login-update-profile.ftl"] as const)
+                .map(pageId =>
+                    buildContext.themeNames.map(async themeName => {
+                        const ftlFilePath = pathJoin(
+                            tmpResourcesDirPath,
+                            "theme",
+                            themeName,
+                            "login",
+                            pageId
+                        );
 
-                const ftlFileContent = readFileSync(ftlFilePath).toString("utf8");
+                        // NOTE: https://github.com/keycloakify/keycloakify/issues/665
+                        if (!(await existsAsync(ftlFilePath))) {
+                            return;
+                        }
 
-                const ftlFileBasename = (() => {
-                    switch (pageId) {
-                        case "register.ftl":
-                            return "register-user-profile.ftl";
-                        case "login-update-profile.ftl":
-                            return "update-user-profile.ftl";
-                    }
-                    assert<Equals<typeof pageId, never>>(false);
-                })();
+                        const ftlFileContent = readFileSync(ftlFilePath).toString("utf8");
 
-                const modifiedFtlFileContent = ftlFileContent.replace(
-                    `"ftlTemplateFileName": "${pageId}"`,
-                    `"ftlTemplateFileName": "${ftlFileBasename}"`
-                );
+                        const ftlFileBasename = (() => {
+                            switch (pageId) {
+                                case "register.ftl":
+                                    return "register-user-profile.ftl";
+                                case "login-update-profile.ftl":
+                                    return "update-user-profile.ftl";
+                            }
+                            assert<Equals<typeof pageId, never>>(false);
+                        })();
 
-                assert(modifiedFtlFileContent !== ftlFileContent);
+                        const modifiedFtlFileContent = ftlFileContent.replace(
+                            `"ftlTemplateFileName": "${pageId}"`,
+                            `"ftlTemplateFileName": "${ftlFileBasename}"`
+                        );
 
-                fs.writeFile(
-                    pathJoin(pathDirname(ftlFilePath), ftlFileBasename),
-                    Buffer.from(modifiedFtlFileContent, "utf8")
-                );
-            })
+                        assert(modifiedFtlFileContent !== ftlFileContent);
+
+                        await fs.writeFile(
+                            pathJoin(pathDirname(ftlFilePath), ftlFileBasename),
+                            Buffer.from(modifiedFtlFileContent, "utf8")
+                        );
+                    })
+                )
+                .flat()
         );
     }
 
