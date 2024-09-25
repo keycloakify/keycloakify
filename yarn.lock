@@ -3722,6 +3722,13 @@
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.5.tgz#5f19d2b85a98e9558036f6a3cacc8819420f05cf"
   integrity sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==
 
+"@types/properties-parser@^0.3.3":
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/@types/properties-parser/-/properties-parser-0.3.3.tgz#107eef7e637c969ae1fe6ed86f373a57309bdd2c"
+  integrity sha512-VZhGpE+QQ2JNbaY4B4Y2iM/jdUsq3HO75uBKLk07VT6P2Kg1aifeYL6I3RosFniSdAb4PtuH5UaY8jXU7JeIYA==
+  dependencies:
+    "@types/node" "*"
+
 "@types/qs@^6.9.5":
   version "6.9.7"
   resolved "https://registry.yarnpkg.com/@types/qs/-/qs-6.9.7.tgz#63bb7d067db107cc1e457c303bc25d511febf6cb"
