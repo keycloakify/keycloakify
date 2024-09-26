@@ -73,9 +73,7 @@ export function vendorFrontendDependencies(params: { distDirPath: string }) {
                 )
             );
 
-            run(
-                `npx webpack --config ${pathRelative(process.cwd(), webpackConfigJsFilePath)}`
-            );
+            run(`npx webpack --config ${webpackConfigJsFilePath}`);
 
             fs.readdirSync(webpackOutputDirPath)
                 .filter(fileBasename => !fileBasename.endsWith(".txt"))
