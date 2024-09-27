@@ -60,7 +60,7 @@ export async function generateResources(params: {
 }): Promise<void> {
     const { resourcesDirPath, buildContext } = params;
 
-    const [themeName, ...themeVariantNames] = buildContext.themeNames;
+    const [themeName] = buildContext.themeNames;
 
     if (fs.existsSync(resourcesDirPath)) {
         rmSync(resourcesDirPath, { recursive: true });
@@ -412,7 +412,10 @@ export async function generateResources(params: {
         });
     }
 
-    for (const themeVariantName of themeVariantNames) {
+    for (const themeVariantName of buildContext.themeNames) {
+        if (themeVariantName === themeName) {
+            continue;
+        }
         const mainThemeDirPath = pathJoin(resourcesDirPath, "theme", themeName);
         const themeVariantDirPath = pathJoin(mainThemeDirPath, "..", themeVariantName);
 
@@ -476,5 +479,43 @@ export async function generateResources(params: {
                 });
             }
         );
+    }
+
+    email: {
+        if (!buildContext.implementedThemeTypes.email.isImplemented) {
+            break email;
+        }
+
+        for (const themeVariantName of buildContext.themeNames) {
+            const themeVariantDirPath = pathJoin(
+                resourcesDirPath,
+                "theme",
+                themeVariantName
+            );
+
+            const emailThemeDirPath = pathJoin(themeVariantDirPath, "email");
+
+            transformCodebase({
+                srcDirPath: emailThemeDirPath,
+                destDirPath: emailThemeDirPath,
+                transformSourceCode: ({ filePath, sourceCode }) => {
+                    if (!filePath.endsWith(".ftl")) {
+                        return { modifiedSourceCode: sourceCode };
+                    }
+
+                    return {
+                        modifiedSourceCode: Buffer.from(
+                            sourceCode
+                                .toString("utf8")
+                                .replace(
+                                    /xKeycloakify.themeName/g,
+                                    `"${themeVariantName}"`
+                                ),
+                            "utf8"
+                        )
+                    };
+                }
+            });
+        }
     }
 }
