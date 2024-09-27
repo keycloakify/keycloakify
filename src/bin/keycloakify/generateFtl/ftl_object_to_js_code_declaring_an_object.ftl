@@ -176,7 +176,7 @@ ${ftl_object_to_js_code_declaring_an_object(.data_model, [])?no_esc};
                         are_same_path(path, ["realm"])
                     ) || (
                         "smtpConfig" == key &&
-                        are_same_path(path, ["realm"]) &&
+                        are_same_path(path, ["realm"])
                     ) || (
                         "error.ftl" == pageId &&
                         are_same_path(path, ["realm"]) &&
