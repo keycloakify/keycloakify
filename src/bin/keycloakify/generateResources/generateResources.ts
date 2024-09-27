@@ -66,8 +66,11 @@ export async function generateResources(params: {
         rmSync(resourcesDirPath, { recursive: true });
     }
 
-    const getThemeTypeDirPath = (params: { themeType: ThemeType | "email" }) => {
-        const { themeType } = params;
+    const getThemeTypeDirPath = (params: {
+        themeType: ThemeType | "email";
+        themeName: string;
+    }) => {
+        const { themeType, themeName } = params;
         return pathJoin(resourcesDirPath, "theme", themeName, themeType);
     };
 
@@ -85,7 +88,7 @@ export async function generateResources(params: {
             (assert(buildContext.implementedThemeTypes.account.isImplemented),
             buildContext.implementedThemeTypes.account.type === "Single-Page");
 
-        const themeTypeDirPath = getThemeTypeDirPath({ themeType });
+        const themeTypeDirPath = getThemeTypeDirPath({ themeName, themeType });
 
         apply_replacers_and_move_to_theme_resources: {
             const destDirPath = pathJoin(
@@ -106,6 +109,7 @@ export async function generateResources(params: {
                 transformCodebase({
                     srcDirPath: pathJoin(
                         getThemeTypeDirPath({
+                            themeName,
                             themeType: "login"
                         }),
                         "resources",
@@ -251,7 +255,7 @@ export async function generateResources(params: {
             }
 
             const messagesDirPath_dest = pathJoin(
-                getThemeTypeDirPath({ themeType: "account" }),
+                getThemeTypeDirPath({ themeName, themeType: "account" }),
                 "messages"
             );
 
@@ -365,7 +369,7 @@ export async function generateResources(params: {
 
         transformCodebase({
             srcDirPath: emailThemeSrcDirPath,
-            destDirPath: getThemeTypeDirPath({ themeType: "email" })
+            destDirPath: getThemeTypeDirPath({ themeName, themeType: "email" })
         });
     }
 
@@ -380,7 +384,10 @@ export async function generateResources(params: {
 
         transformCodebase({
             srcDirPath: pathJoin(getThisCodebaseRootDirPath(), "res", "account-v1"),
-            destDirPath: pathJoin(resourcesDirPath, "theme", "account-v1", "account")
+            destDirPath: getThemeTypeDirPath({
+                themeName: "account-v1",
+                themeType: "account"
+            })
         });
     }
 
@@ -413,12 +420,10 @@ export async function generateResources(params: {
         if (themeVariantName === themeName) {
             continue;
         }
-        const mainThemeDirPath = pathJoin(resourcesDirPath, "theme", themeName);
-        const themeVariantDirPath = pathJoin(mainThemeDirPath, "..", themeVariantName);
 
         transformCodebase({
-            srcDirPath: mainThemeDirPath,
-            destDirPath: themeVariantDirPath,
+            srcDirPath: pathJoin(resourcesDirPath, "theme", themeName),
+            destDirPath: pathJoin(resourcesDirPath, "theme", themeVariantName),
             transformSourceCode: ({ fileRelativePath, sourceCode }) => {
                 if (
                     pathExtname(fileRelativePath) === ".ftl" &&
@@ -445,37 +450,34 @@ export async function generateResources(params: {
     }
 
     for (const themeName of buildContext.themeNames) {
-        objectEntries(writeMessagePropertiesFilesByThemeType).forEach(
-            ([themeType, writeMessagePropertiesFiles]) => {
-                if (writeMessagePropertiesFiles === undefined) {
-                    return;
-                }
-                writeMessagePropertiesFiles({
-                    messageDirPath: pathJoin(
-                        resourcesDirPath,
-                        "theme",
-                        themeName,
-                        themeType,
-                        "messages"
-                    ),
-                    themeName
-                });
+        for (const [themeType, writeMessagePropertiesFiles] of objectEntries(
+            writeMessagePropertiesFilesByThemeType
+        )) {
+            // NOTE: This is just a quirk of the type system: We can't really differentiate in a record
+            // between the case where the key isn't present and the case where the value is `undefined`.
+            if (writeMessagePropertiesFiles === undefined) {
+                return;
             }
-        );
+            writeMessagePropertiesFiles({
+                messageDirPath: pathJoin(
+                    getThemeTypeDirPath({ themeName, themeType }),
+                    "messages"
+                ),
+                themeName
+            });
+        }
     }
 
-    email: {
+    modify_email_theme_per_variant: {
         if (!buildContext.implementedThemeTypes.email.isImplemented) {
-            break email;
+            break modify_email_theme_per_variant;
         }
 
         for (const themeName of buildContext.themeNames) {
-            const emailThemeDirPath = pathJoin(
-                resourcesDirPath,
-                "theme",
+            const emailThemeDirPath = getThemeTypeDirPath({
                 themeName,
-                "email"
-            );
+                themeType: "email"
+            });
 
             transformCodebase({
                 srcDirPath: emailThemeDirPath,
@@ -489,7 +491,7 @@ export async function generateResources(params: {
                         modifiedSourceCode: Buffer.from(
                             sourceCode
                                 .toString("utf8")
-                                .replace(/xKeycloakify.themeName/g, `"${themeName}"`),
+                                .replace(/xKeycloakify\.themeName/g, `"${themeName}"`),
                             "utf8"
                         )
                     };
