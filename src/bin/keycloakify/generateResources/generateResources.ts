@@ -225,11 +225,6 @@ export async function generateResources(params: {
 
             writeMessagePropertiesFilesByThemeType[themeType] =
                 writeMessagePropertiesFiles;
-
-            writeMessagePropertiesFiles({
-                messageDirPath: pathJoin(themeTypeDirPath, "messages"),
-                themeName
-            });
         }
 
         bring_in_account_v3_i18n_messages: {
@@ -392,12 +387,14 @@ export async function generateResources(params: {
     {
         const metaInfKeycloakThemes: MetaInfKeycloakTheme = { themes: [] };
 
-        metaInfKeycloakThemes.themes.push({
-            name: themeName,
-            types: objectEntries(buildContext.implementedThemeTypes)
-                .filter(([, { isImplemented }]) => isImplemented)
-                .map(([themeType]) => themeType)
-        });
+        for (const themeName of buildContext.themeNames) {
+            metaInfKeycloakThemes.themes.push({
+                name: themeName,
+                types: objectEntries(buildContext.implementedThemeTypes)
+                    .filter(([, { isImplemented }]) => isImplemented)
+                    .map(([themeType]) => themeType)
+            });
+        }
 
         if (buildContext.implementedThemeTypes.account.isImplemented) {
             metaInfKeycloakThemes.themes.push({
@@ -445,36 +442,22 @@ export async function generateResources(params: {
                 return { modifiedSourceCode: sourceCode };
             }
         });
+    }
 
-        writeMetaInfKeycloakThemes({
-            resourcesDirPath,
-            getNewMetaInfKeycloakTheme: ({ metaInfKeycloakTheme }) => {
-                assert(metaInfKeycloakTheme !== undefined);
-
-                const newMetaInfKeycloakTheme = metaInfKeycloakTheme;
-
-                newMetaInfKeycloakTheme.themes.push({
-                    name: themeVariantName,
-                    types: (() => {
-                        const theme = newMetaInfKeycloakTheme.themes.find(
-                            ({ name }) => name === themeName
-                        );
-                        assert(theme !== undefined);
-                        return theme.types;
-                    })()
-                });
-
-                return newMetaInfKeycloakTheme;
-            }
-        });
-
+    for (const themeName of buildContext.themeNames) {
         objectEntries(writeMessagePropertiesFilesByThemeType).forEach(
             ([themeType, writeMessagePropertiesFiles]) => {
                 if (writeMessagePropertiesFiles === undefined) {
                     return;
                 }
                 writeMessagePropertiesFiles({
-                    messageDirPath: pathJoin(themeVariantDirPath, themeType, "messages"),
+                    messageDirPath: pathJoin(
+                        resourcesDirPath,
+                        "theme",
+                        themeName,
+                        themeType,
+                        "messages"
+                    ),
                     themeName
                 });
             }
@@ -486,14 +469,13 @@ export async function generateResources(params: {
             break email;
         }
 
-        for (const themeVariantName of buildContext.themeNames) {
-            const themeVariantDirPath = pathJoin(
+        for (const themeName of buildContext.themeNames) {
+            const emailThemeDirPath = pathJoin(
                 resourcesDirPath,
                 "theme",
-                themeVariantName
+                themeName,
+                "email"
             );
-
-            const emailThemeDirPath = pathJoin(themeVariantDirPath, "email");
 
             transformCodebase({
                 srcDirPath: emailThemeDirPath,
@@ -507,10 +489,7 @@ export async function generateResources(params: {
                         modifiedSourceCode: Buffer.from(
                             sourceCode
                                 .toString("utf8")
-                                .replace(
-                                    /xKeycloakify.themeName/g,
-                                    `"${themeVariantName}"`
-                                ),
+                                .replace(/xKeycloakify.themeName/g, `"${themeName}"`),
                             "utf8"
                         )
                     };
