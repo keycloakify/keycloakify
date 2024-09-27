@@ -240,8 +240,7 @@ export function getBuildContext(params: {
 
             if (
                 parsedPackageJson.dependencies?.keycloakify === undefined &&
-                parsedPackageJson.devDependencies?.keycloakify === undefined &&
-                parsedPackageJson.name !== "keycloakify" // NOTE: For local storybook build
+                parsedPackageJson.devDependencies?.keycloakify === undefined
             ) {
                 break success;
             }
