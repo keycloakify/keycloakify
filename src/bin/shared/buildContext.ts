@@ -469,26 +469,44 @@ export function getBuildContext(params: {
     }
 
     const themeNames = ((): [string, ...string[]] => {
-        if (buildOptions.themeName === undefined) {
-            return parsedPackageJson.name === undefined
-                ? ["keycloakify"]
-                : [
-                      parsedPackageJson.name
-                          .replace(/^@(.*)/, "$1")
-                          .split("/")
-                          .join("-")
-                  ];
+        const themeNames = ((): [string, ...string[]] => {
+            if (buildOptions.themeName === undefined) {
+                return parsedPackageJson.name === undefined
+                    ? ["keycloakify"]
+                    : [
+                          parsedPackageJson.name
+                              .replace(/^@(.*)/, "$1")
+                              .split("/")
+                              .join("-")
+                      ];
+            }
+
+            if (typeof buildOptions.themeName === "string") {
+                return [buildOptions.themeName];
+            }
+
+            const [mainThemeName, ...themeVariantNames] = buildOptions.themeName;
+
+            assert(mainThemeName !== undefined);
+
+            return [mainThemeName, ...themeVariantNames];
+        })();
+
+        for (const themeName of themeNames) {
+            if (!/^[a-zA-Z0-9_-]+$/.test(themeName)) {
+                console.error(
+                    chalk.red(
+                        [
+                            `Invalid theme name: ${themeName}`,
+                            `Theme names should only contain letters, numbers, and "_" or "-"`
+                        ].join(" ")
+                    )
+                );
+                process.exit(-1);
+            }
         }
 
-        if (typeof buildOptions.themeName === "string") {
-            return [buildOptions.themeName];
-        }
-
-        const [mainThemeName, ...themeVariantNames] = buildOptions.themeName;
-
-        assert(mainThemeName !== undefined);
-
-        return [mainThemeName, ...themeVariantNames];
+        return themeNames;
     })();
 
     const projectBuildDirPath = (() => {
