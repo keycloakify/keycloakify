@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { ClassKey } from "keycloakify/account/lib/kcClsx";
 
 export type TemplateProps<KcContext, I18n> = {
     kcContext: KcContext;
@@ -10,17 +11,4 @@ export type TemplateProps<KcContext, I18n> = {
     active: string;
 };
 
-export type ClassKey =
-    | "kcHtmlClass"
-    | "kcBodyClass"
-    | "kcButtonClass"
-    | "kcButtonPrimaryClass"
-    | "kcButtonLargeClass"
-    | "kcButtonDefaultClass"
-    | "kcContentWrapperClass"
-    | "kcFormClass"
-    | "kcFormGroupClass"
-    | "kcInputWrapperClass"
-    | "kcLabelClass"
-    | "kcInputClass"
-    | "kcInputErrorMessageClass";
+export type { ClassKey };
