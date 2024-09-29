@@ -231,3 +231,131 @@ export const WithErrorMessage: Story = {
         />
     )
 };
+
+export const WithOneSocialProvider: Story = {
+    render: args => (
+        <KcPageStory
+            {...args}
+            kcContext={{
+                social: {
+                    displayInfo: true,
+                    providers: [
+                        {
+                            loginUrl: "google",
+                            alias: "google",
+                            providerId: "google",
+                            displayName: "Google",
+                            iconClasses: "fa fa-google"
+                        }
+                    ]
+                }
+            }}
+        />
+    )
+};
+
+export const WithTwoSocialProviders: Story = {
+    render: args => (
+        <KcPageStory
+            {...args}
+            kcContext={{
+                social: {
+                    displayInfo: true,
+                    providers: [
+                        {
+                            loginUrl: "google",
+                            alias: "google",
+                            providerId: "google",
+                            displayName: "Google",
+                            iconClasses: "fa fa-google"
+                        },
+                        {
+                            loginUrl: "microsoft",
+                            alias: "microsoft",
+                            providerId: "microsoft",
+                            displayName: "Microsoft",
+                            iconClasses: "fa fa-windows"
+                        }
+                    ]
+                }
+            }}
+        />
+    )
+};
+export const WithNoSocialProviders: Story = {
+    render: args => (
+        <KcPageStory
+            {...args}
+            kcContext={{
+                social: {
+                    displayInfo: true,
+                    providers: []
+                }
+            }}
+        />
+    )
+};
+export const WithMoreThanTwoSocialProviders: Story = {
+    render: args => (
+        <KcPageStory
+            {...args}
+            kcContext={{
+                social: {
+                    displayInfo: true,
+                    providers: [
+                        {
+                            loginUrl: "google",
+                            alias: "google",
+                            providerId: "google",
+                            displayName: "Google",
+                            iconClasses: "fa fa-google"
+                        },
+                        {
+                            loginUrl: "microsoft",
+                            alias: "microsoft",
+                            providerId: "microsoft",
+                            displayName: "Microsoft",
+                            iconClasses: "fa fa-windows"
+                        },
+                        {
+                            loginUrl: "facebook",
+                            alias: "facebook",
+                            providerId: "facebook",
+                            displayName: "Facebook",
+                            iconClasses: "fa fa-facebook"
+                        },
+                        {
+                            loginUrl: "twitter",
+                            alias: "twitter",
+                            providerId: "twitter",
+                            displayName: "Twitter",
+                            iconClasses: "fa fa-twitter"
+                        }
+                    ]
+                }
+            }}
+        />
+    )
+};
+export const WithSocialProvidersAndWithoutRememberMe: Story = {
+    render: args => (
+        <KcPageStory
+            {...args}
+            kcContext={{
+                social: {
+                    displayInfo: true,
+                    providers: [
+                        {
+                            loginUrl: "google",
+                            alias: "google",
+                            providerId: "google",
+                            displayName: "Google",
+                            iconClasses: "fa fa-google"
+                        }
+                    ]
+                },
+                realm: { rememberMe: false }
+            }}
+        />
+    )
+};

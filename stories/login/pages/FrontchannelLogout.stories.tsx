@@ -16,3 +16,14 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     render: () => <KcPageStory />
 };
+export const WithoutRedirectUrl: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                logout: {
+                    clients: []
+                }
+            }}
+        />
+    )
+};

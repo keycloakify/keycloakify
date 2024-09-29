@@ -26,3 +26,38 @@ export const WithAnotherMessage: Story = {
         />
     )
 };
+
+export const WithHtmlErrorMessage: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                message: {
+                    summary: "<strong>Error:</strong> Something went wrong. <a href='https://example.com'>Go back</a>"
+                }
+            }}
+        />
+    )
+};
+export const FrenchError: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                locale: { currentLanguageTag: "fr" },
+                message: { summary: "Une erreur s'est produite" }
+            }}
+        />
+    )
+};
+export const WithSkipLink: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                message: { summary: "An error occurred" },
+                skipLink: true,
+                client: {
+                    baseUrl: "https://example.com"
+                }
+            }}
+        />
+    )
+};

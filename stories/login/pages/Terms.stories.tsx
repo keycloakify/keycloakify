@@ -45,3 +45,32 @@ export const French: Story = {
         />
     )
 };
+export const WithErrorMessage: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                messagesPerField: {
+                    existsError: () => true,
+                    get: () => "An error occurred while processing your request."
+                }
+            }}
+        />
+    )
+};
+
+export const Spanish: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                locale: {
+                    currentLanguageTag: "es"
+                },
+                "x-keycloakify": {
+                    messages: {
+                        termsText: "<p>Mis términos en <strong>Español</strong></p>"
+                    }
+                }
+            }}
+        />
+    )
+};
