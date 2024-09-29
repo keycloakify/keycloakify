@@ -1,5 +1,19 @@
 import { createGetKcClsx } from "keycloakify/lib/getKcClsx";
-import type { ClassKey } from "keycloakify/account/TemplateProps";
+
+export type ClassKey =
+    | "kcHtmlClass"
+    | "kcBodyClass"
+    | "kcButtonClass"
+    | "kcButtonPrimaryClass"
+    | "kcButtonLargeClass"
+    | "kcButtonDefaultClass"
+    | "kcContentWrapperClass"
+    | "kcFormClass"
+    | "kcFormGroupClass"
+    | "kcInputWrapperClass"
+    | "kcLabelClass"
+    | "kcInputClass"
+    | "kcInputErrorMessageClass";
 
 export const { getKcClsx } = createGetKcClsx<ClassKey>({
     defaultClasses: {
@@ -19,7 +33,5 @@ export const { getKcClsx } = createGetKcClsx<ClassKey>({
             "pf-c-form__helper-text pf-m-error required kc-feedback-text"
     }
 });
-
-export type { ClassKey };
 
 export type KcClsx = ReturnType<typeof getKcClsx>["kcClsx"];
