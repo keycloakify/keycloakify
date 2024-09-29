@@ -2,6 +2,7 @@ import { getKcClsx } from "keycloakify/login/lib/kcClsx";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
 import type { I18n } from "../i18n";
+import { kcSanitize } from "keycloakify/lib/kcSanitize";
 
 export default function Code(props: PageProps<Extract<KcContext, { pageId: "code.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
@@ -30,7 +31,14 @@ export default function Code(props: PageProps<Extract<KcContext, { pageId: "code
                         <input id="code" className={kcClsx("kcTextareaClass")} defaultValue={code.code} />
                     </>
                 ) : (
-                    <p id="error">{code.error}</p>
+                    code.error && (
+                        <p
+                            id="error"
+                            dangerouslySetInnerHTML={{
+                                __html: kcSanitize(code.error)
+                            }}
+                        />
+                    )
                 )}
             </div>
         </Template>
