@@ -471,7 +471,10 @@
                         key == "identityProviderBrokerCtx" && 
                         are_same_path(path, []) &&
                         ["login-idp-link-confirm.ftl", "login-idp-link-email.ftl" ]?seq_contains(pageId)
-                    ) ||  (
+                    ) || (
+                        "smtpConfig" == key &&
+                        are_same_path(path, ["realm"])
+                    ) || (
                         ["masterAdminClient", "delegateForUpdate", "defaultRole"]?seq_contains(key) &&
                         are_same_path(path, ["realm"])
                     ) || (
