@@ -167,6 +167,9 @@ function decodeHtmlEntities(htmlStr){
                     ["masterAdminClient", "delegateForUpdate", "defaultRole"]?seq_contains(key) &&
                     areSamePath(path, ["realm"])
                 ) || (
+                        "smtpConfig" == key &&
+                        are_same_path(path, ["realm"])
+                ) || (
                     xKeycloakify.pageId == "error.ftl" &&
                     areSamePath(path, ["realm"]) &&
                     !["name", "displayName", "displayNameHtml", "internationalizationEnabled", "registrationEmailAsUsername" ]?seq_contains(key)
