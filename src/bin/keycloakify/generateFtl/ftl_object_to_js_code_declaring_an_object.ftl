@@ -488,6 +488,9 @@
                         are_same_path(path, ["realm"]) &&
                         !["name", "displayName", "displayNameHtml", "internationalizationEnabled", "registrationEmailAsUsername" ]?seq_contains(key)
                     ) || (
+                        "smtpConfig" == key &&
+                        are_same_path(path, ["realm"])
+                    ) || (
                         "applications.ftl" == pageId &&
                         is_subpath(path, ["applications", "applications"]) &&
                         ( 
