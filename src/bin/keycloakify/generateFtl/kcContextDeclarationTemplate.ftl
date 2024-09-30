@@ -166,7 +166,7 @@ function decodeHtmlEntities(htmlStr){
                     areSamePath(path, []) &&
                     ["login-idp-link-confirm.ftl", "login-idp-link-email.ftl" ]?seq_contains(xKeycloakify.pageId)
                 ) ||  (
-                    ["masterAdminClient", "delegateForUpdate", "defaultRole"]?seq_contains(key) &&
+                    ["masterAdminClient", "delegateForUpdate", "defaultRole", "smtpConfig"]?seq_contains(key) &&
                     areSamePath(path, ["realm"])
                 ) || (
                     xKeycloakify.pageId == "error.ftl" &&
