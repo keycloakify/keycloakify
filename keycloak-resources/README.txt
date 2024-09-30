@@ -1,0 +1,1 @@
+This is just a test folder that helps develop the login and register page without having to run a Keycloak container
