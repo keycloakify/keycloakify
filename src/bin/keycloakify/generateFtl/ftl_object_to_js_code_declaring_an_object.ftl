@@ -484,6 +484,9 @@
                         ["masterAdminClient", "delegateForUpdate", "defaultRole"]?seq_contains(key) &&
                         are_same_path(path, ["realm"])
                     ) || (
+                        "smtpConfig" == key &&
+                        are_same_path(path, ["realm"])
+                    ) || (
                         "error.ftl" == pageId &&
                         are_same_path(path, ["realm"]) &&
                         !["name", "displayName", "displayNameHtml", "internationalizationEnabled", "registrationEmailAsUsername" ]?seq_contains(key)
