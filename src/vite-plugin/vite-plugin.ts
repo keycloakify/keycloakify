@@ -166,7 +166,7 @@ export function keycloakify(params: keycloakify.Params) {
                 [
                     `(`,
                     `(window.kcContext === undefined || import.meta.env.MODE === "development")?`,
-                    `"${urlPathname ?? "/"}":`,
+                    `import.meta.env.BASE_URL:`,
                     `(window.kcContext["x-keycloakify"].resourcesPath + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/")`,
                     `)`
                 ].join("")
