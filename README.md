@@ -134,6 +134,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://www.linkedin.com/in/oes-rioniz/"><img src="https://avatars.githubusercontent.com/u/5172296?v=4?s=100" width="100px;" alt="Omid"/><br /><sub><b>Omid</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=uchar" title="Tests">⚠️</a> <a href="https://github.com/keycloakify/keycloakify/commits?author=uchar" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/kathari00"><img src="https://avatars.githubusercontent.com/u/42547712?v=4?s=100" width="100px;" alt="Katharina Eiserfey"/><br /><sub><b>Katharina Eiserfey</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=kathari00" title="Code">💻</a> <a href="https://github.com/keycloakify/keycloakify/commits?author=kathari00" title="Tests">⚠️</a> <a href="https://github.com/keycloakify/keycloakify/commits?author=kathari00" title="Documentation">📖</a></td>
     </tr>
   </tbody>
 </table>
