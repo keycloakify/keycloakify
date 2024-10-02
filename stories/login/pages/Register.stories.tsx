@@ -115,6 +115,38 @@ export const WithFavoritePet: Story = {
     )
 };
 
+
+export const WithNewsletter: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                profile: {
+                    attributesByName: {
+                        newsletter: {
+                            name: "newsletter",
+                            displayName: "Sign up to the newsletter",
+                            validators: {
+                                options: {
+                                    options: ["yes"]
+                                }
+                            },
+                            annotations: {
+                                inputOptionLabels: {
+                                    "yes": "I want my email inbox filled with spam"
+                                },
+                                inputType: "multiselect-checkboxes"
+                            },
+                            required: false,
+                            readOnly: false
+                        } satisfies Attribute
+                    }
+                },
+            }}
+        />
+    )
+};
+
+
 export const WithEmailAsUsername: Story = {
     render: () => (
         <KcPageStory
