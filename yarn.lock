@@ -12579,10 +12579,10 @@ tsafe@^1.6.6:
   resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-1.6.6.tgz#fd93e64d6eb13ef83ed1650669cc24bad4f5df9f"
   integrity sha512-gzkapsdbMNwBnTIjgO758GujLCj031IgHK/PKr2mrmkCSJMhSOR5FeOuSxKLMUoYc0vAA4RGEYYbjt/v6afD3g==
 
-tsafe@^1.7.4:
-  version "1.7.4"
-  resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-1.7.4.tgz#7dd288b1a1be8d9c25e84ab8dd8a7df6094168d7"
-  integrity sha512-4BrLklZMJ14dEtA+CkhY9OtID3al4+/GJhaeocWPtUuoZPr4SJkaqoPemyFgkLC1Y3LRNXF9zxa94SwssRGMaQ==
+tsafe@^1.7.5:
+  version "1.7.5"
+  resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-1.7.5.tgz#0d3a31202b5ef87c7ba997e66e03fd80801278ef"
+  integrity sha512-tbNyyBSbwfbilFfiuXkSOj82a6++ovgANwcoqBAcO9/REPoZMEQoE8kWPeO0dy5A2D/2Lajr8Ohue5T0ifIvLQ==
 
 tsc-alias@^1.8.10:
   version "1.8.10"

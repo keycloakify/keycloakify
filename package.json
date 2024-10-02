@@ -62,7 +62,7 @@
     ],
     "homepage": "https://www.keycloakify.dev",
     "dependencies": {
-        "tsafe": "^1.7.4"
+        "tsafe": "^1.7.5"
     },
     "devDependencies": {
         "@babel/core": "^7.24.5",
