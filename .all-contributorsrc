@@ -280,6 +280,16 @@
         "test",
         "doc"
       ]
+    },
+    {
+      "login": "luca-peruzzo",
+      "name": "Luca Peruzzo",
+      "avatar_url": "https://avatars.githubusercontent.com/u/69015314?v=4",
+      "profile": "https://github.com/luca-peruzzo",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
