@@ -269,6 +269,17 @@
         "test",
         "code"
       ]
+    },
+    {
+      "login": "kathari00",
+      "name": "Katharina Eiserfey",
+      "avatar_url": "https://avatars.githubusercontent.com/u/42547712?v=4",
+      "profile": "https://github.com/kathari00",
+      "contributions": [
+        "code",
+        "test",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
