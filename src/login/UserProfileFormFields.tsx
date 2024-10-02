@@ -434,9 +434,7 @@ function AddRemoveButtonsMultiValuedAttribute(props: {
 }
 
 function InputTagSelects(props: InputFieldByTypeProps) {
-    const { attribute, dispatchFormAction, kcClsx, valueOrValues } = props;
-
-    const { advancedMsg } = props.i18n;
+    const { attribute, dispatchFormAction, kcClsx, i18n, valueOrValues } = props;
 
     const { classDiv, classInput, classLabel, inputType } = (() => {
         const { inputType } = attribute.annotations;
@@ -533,7 +531,7 @@ function InputTagSelects(props: InputFieldByTypeProps) {
                         htmlFor={`${attribute.name}-${option}`}
                         className={`${classLabel}${attribute.readOnly ? ` ${kcClsx("kcInputClassRadioCheckboxLabelDisabled")}` : ""}`}
                     >
-                        {advancedMsg(option)}
+                        {inputLabel(i18n, attribute, option)}
                     </label>
                 </div>
             ))}
@@ -579,8 +577,6 @@ function TextareaTag(props: InputFieldByTypeProps) {
 
 function SelectTag(props: InputFieldByTypeProps) {
     const { attribute, dispatchFormAction, kcClsx, displayableErrors, i18n, valueOrValues } = props;
-
-    const { advancedMsgStr } = i18n;
 
     const isMultiple = attribute.annotations.inputType === "multiselect";
 
@@ -645,22 +641,26 @@ function SelectTag(props: InputFieldByTypeProps) {
 
                 return options.map(option => (
                     <option key={option} value={option}>
-                        {(() => {
-                            if (attribute.annotations.inputOptionLabels !== undefined) {
-                                const { inputOptionLabels } = attribute.annotations;
-
-                                return advancedMsgStr(inputOptionLabels[option] ?? option);
-                            }
-
-                            if (attribute.annotations.inputOptionLabelsI18nPrefix !== undefined) {
-                                return advancedMsgStr(`${attribute.annotations.inputOptionLabelsI18nPrefix}.${option}`);
-                            }
-
-                            return option;
-                        })()}
+                        {inputLabel(i18n, attribute, option)}
                     </option>
                 ));
             })()}
         </select>
     );
+}
+
+function inputLabel(i18n: I18n, attribute: Attribute, option: string) {
+    const { advancedMsg } = i18n;
+
+    if (attribute.annotations.inputOptionLabels !== undefined) {
+        const { inputOptionLabels } = attribute.annotations;
+
+        return advancedMsg(inputOptionLabels[option] ?? option);
+    }
+
+    if (attribute.annotations.inputOptionLabelsI18nPrefix !== undefined) {
+        return advancedMsg(`${attribute.annotations.inputOptionLabelsI18nPrefix}.${option}`);
+    }
+
+    return option;
 }
