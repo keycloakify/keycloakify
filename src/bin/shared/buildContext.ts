@@ -277,7 +277,8 @@ export function getBuildContext(params: {
                         "21-and-below": z.union([z.boolean(), z.string()]),
                         "23": z.union([z.boolean(), z.string()]),
                         "24": z.union([z.boolean(), z.string()]),
-                        "25-and-above": z.union([z.boolean(), z.string()])
+                        "25": z.union([z.boolean(), z.string()]),
+                        "26-and-above": z.union([z.boolean(), z.string()])
                     })
                     .optional()
             });
@@ -767,7 +768,11 @@ export function getBuildContext(params: {
                                 return "24" as const;
                             }
 
-                            return "25-and-above" as const;
+                            if (buildForKeycloakMajorVersionNumber === 25) {
+                                return "25" as const;
+                            }
+
+                            return "26-and-above" as const;
                         })();
 
                         assert<
@@ -855,7 +860,8 @@ export function getBuildContext(params: {
                         "21-and-below",
                         "23",
                         "24",
-                        "25-and-above"
+                        "25",
+                        "26-and-above"
                     ] as const) {
                         assert<
                             Equals<
