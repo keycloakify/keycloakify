@@ -25,6 +25,7 @@ import { type ThemeType } from "./constants";
 import { id } from "tsafe/id";
 import chalk from "chalk";
 import { getProxyFetchOptions, type ProxyFetchOptions } from "../tools/fetchProxyOptions";
+import { is } from "tsafe/is";
 
 export type BuildContext = {
     themeVersion: string;
@@ -297,8 +298,8 @@ export function getBuildContext(params: {
                 ]),
                 keycloakVersionTargets: z
                     .object({
-                        "21-and-below": z.union([z.boolean(), z.string()]),
-                        "22-and-above": z.union([z.boolean(), z.string()])
+                        "22-to-25": z.union([z.boolean(), z.string()]),
+                        "all-other-versions": z.union([z.boolean(), z.string()])
                     })
                     .optional()
             });
@@ -779,11 +780,14 @@ export function getBuildContext(params: {
                         return keycloakVersionRange;
                     } else {
                         const keycloakVersionRange = (() => {
-                            if (buildForKeycloakMajorVersionNumber <= 21) {
-                                return "21-and-below" as const;
+                            if (
+                                buildForKeycloakMajorVersionNumber <= 21 ||
+                                buildForKeycloakMajorVersionNumber >= 26
+                            ) {
+                                return "all-other-versions" as const;
                             }
 
-                            return "22-and-above" as const;
+                            return "22-to-25" as const;
                         })();
 
                         assert<
@@ -800,6 +804,12 @@ export function getBuildContext(params: {
                 const jarFileBasename = (() => {
                     use_custom_jar_basename: {
                         const { keycloakVersionTargets } = buildOptions;
+
+                        assert(
+                            is<Record<KeycloakVersionRange, string | boolean>>(
+                                keycloakVersionTargets
+                            )
+                        );
 
                         if (keycloakVersionTargets === undefined) {
                             break use_custom_jar_basename;
@@ -861,8 +871,8 @@ export function getBuildContext(params: {
                     }
                 } else {
                     for (const keycloakVersionRange of [
-                        "21-and-below",
-                        "22-and-above"
+                        "22-to-25",
+                        "all-other-versions"
                     ] as const) {
                         assert<
                             Equals<
@@ -888,7 +898,17 @@ export function getBuildContext(params: {
             const jarTargets: BuildContext["jarTargets"] = [];
 
             for (const [keycloakVersionRange, jarNameOrBoolean] of objectEntries(
-                buildOptions.keycloakVersionTargets
+                (() => {
+                    const { keycloakVersionTargets } = buildOptions;
+
+                    assert(
+                        is<Record<KeycloakVersionRange, string | boolean>>(
+                            keycloakVersionTargets
+                        )
+                    );
+
+                    return keycloakVersionTargets;
+                })()
             )) {
                 if (jarNameOrBoolean === false) {
                     continue;

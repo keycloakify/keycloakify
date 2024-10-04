@@ -75,9 +75,9 @@ export function getKeycloakVersionRangeForJar(params: {
             }
             switch (keycloakThemeAdditionalInfoExtensionVersion) {
                 case null:
-                    return "21-and-below";
+                    return "all-other-versions";
                 case "1.1.5":
-                    return "22-and-above";
+                    return "22-to-25";
             }
             assert<Equals<typeof keycloakThemeAdditionalInfoExtensionVersion, never>>(
                 false
