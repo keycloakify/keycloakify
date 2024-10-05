@@ -43,7 +43,7 @@
         "dist/bin/*.node",
         "dist/bin/shared/constants.js",
         "dist/bin/shared/customHandler.js",
-        "dist/bin/shared/*.d.ts",
+        "dist/bin/*.d.ts",
         "dist/bin/shared/*.js.map",
         "!dist/vite-plugin/",
         "dist/vite-plugin/index.js",
