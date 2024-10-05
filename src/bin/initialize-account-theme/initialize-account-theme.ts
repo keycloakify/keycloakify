@@ -1,5 +1,4 @@
-import { getBuildContext } from "../shared/buildContext";
-import type { CliCommandOptions } from "../main";
+import type { BuildContext } from "../shared/buildContext";
 import cliSelect from "cli-select";
 import child_process from "child_process";
 import chalk from "chalk";
@@ -8,10 +7,8 @@ import * as fs from "fs";
 import { updateAccountThemeImplementationInConfig } from "./updateAccountThemeImplementationInConfig";
 import { generateKcGenTs } from "../shared/generateKcGenTs";
 
-export async function command(params: { cliCommandOptions: CliCommandOptions }) {
-    const { cliCommandOptions } = params;
-
-    const buildContext = getBuildContext({ cliCommandOptions });
+export async function command(params: { buildContext: BuildContext }) {
+    const { buildContext } = params;
 
     const accountThemeSrcDirPath = pathJoin(buildContext.themeSrcDirPath, "account");
 

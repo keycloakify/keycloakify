@@ -7,7 +7,6 @@ import {
     dirname as pathDirname
 } from "path";
 import { getAbsoluteAndInOsFormatPath } from "../tools/getAbsoluteAndInOsFormatPath";
-import type { CliCommandOptions } from "../main";
 import { z } from "zod";
 import * as fs from "fs";
 import { assert, type Equals } from "tsafe/assert";
@@ -129,14 +128,12 @@ export type ResolvedViteConfig = {
 };
 
 export function getBuildContext(params: {
-    cliCommandOptions: CliCommandOptions;
+    projectDirPath: string | undefined;
 }): BuildContext {
-    const { cliCommandOptions } = params;
-
     const projectDirPath =
-        cliCommandOptions.projectDirPath !== undefined
+        params.projectDirPath !== undefined
             ? getAbsoluteAndInOsFormatPath({
-                  pathIsh: cliCommandOptions.projectDirPath,
+                  pathIsh: params.projectDirPath,
                   cwd: process.cwd()
               })
             : process.cwd();

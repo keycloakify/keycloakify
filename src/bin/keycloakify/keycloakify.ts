@@ -2,19 +2,16 @@ import { generateResources } from "./generateResources";
 import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path";
 import * as child_process from "child_process";
 import * as fs from "fs";
-import { getBuildContext } from "../shared/buildContext";
+import type { BuildContext } from "../shared/buildContext";
 import { VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES } from "../shared/constants";
 import { buildJars } from "./buildJars";
-import type { CliCommandOptions } from "../main";
 import chalk from "chalk";
 import { readThisNpmPackageVersion } from "../tools/readThisNpmPackageVersion";
 import * as os from "os";
 import { rmSync } from "../tools/fs.rmSync";
 
-export async function command(params: { cliCommandOptions: CliCommandOptions }) {
-    const { cliCommandOptions } = params;
-
-    const buildContext = getBuildContext({ cliCommandOptions });
+export async function command(params: { buildContext: BuildContext }) {
+    const { buildContext } = params;
 
     exit_if_maven_not_installed: {
         let commandOutput: Buffer | undefined = undefined;

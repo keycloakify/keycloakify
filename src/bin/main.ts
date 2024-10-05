@@ -4,8 +4,10 @@ import { termost } from "termost";
 import { readThisNpmPackageVersion } from "./tools/readThisNpmPackageVersion";
 import * as child_process from "child_process";
 import { assertNoPnpmDlx } from "./tools/assertNoPnpmDlx";
+import { callHandlerIfAny } from "./shared/customHandler_caller";
+import { getBuildContext } from "./shared/buildContext";
 
-export type CliCommandOptions = {
+type CliCommandOptions = {
     projectDirPath: string | undefined;
 };
 
@@ -69,115 +71,154 @@ program
     })
     .task({
         skip,
-        handler: async cliCommandOptions => {
+        handler: async ({ projectDirPath }) => {
+            const buildContext = getBuildContext({ projectDirPath });
+
             const { command } = await import("./keycloakify");
 
-            await command({ cliCommandOptions });
+            await command({ buildContext });
         }
     });
 
-program
-    .command<{
-        port: number | undefined;
-        keycloakVersion: string | undefined;
-        realmJsonFilePath: string | undefined;
-    }>({
-        name: "start-keycloak",
-        description:
-            "Spin up a pre configured Docker image of Keycloak to test your theme."
-    })
-    .option({
-        key: "port",
-        name: (() => {
-            const name = "port";
+{
+    const commandName = "start-keycloak";
 
-            optionsKeys.push(name);
+    program
+        .command<{
+            port: number | undefined;
+            keycloakVersion: string | undefined;
+            realmJsonFilePath: string | undefined;
+        }>({
+            name: commandName,
+            description:
+                "Spin up a pre configured Docker image of Keycloak to test your theme."
+        })
+        .option({
+            key: "port",
+            name: (() => {
+                const name = "port";
 
-            return name;
-        })(),
-        description: ["Keycloak server port.", "Example `--port 8085`"].join(" "),
-        defaultValue: undefined
-    })
-    .option({
-        key: "keycloakVersion",
-        name: (() => {
-            const name = "keycloak-version";
+                optionsKeys.push(name);
 
-            optionsKeys.push(name);
+                return name;
+            })(),
+            description: ["Keycloak server port.", "Example `--port 8085`"].join(" "),
+            defaultValue: undefined
+        })
+        .option({
+            key: "keycloakVersion",
+            name: (() => {
+                const name = "keycloak-version";
 
-            return name;
-        })(),
-        description: [
-            "Use a specific version of Keycloak.",
-            "Example `--keycloak-version 21.1.1`"
-        ].join(" "),
-        defaultValue: undefined
-    })
-    .option({
-        key: "realmJsonFilePath",
-        name: (() => {
-            const name = "import";
+                optionsKeys.push(name);
 
-            optionsKeys.push(name);
+                return name;
+            })(),
+            description: [
+                "Use a specific version of Keycloak.",
+                "Example `--keycloak-version 21.1.1`"
+            ].join(" "),
+            defaultValue: undefined
+        })
+        .option({
+            key: "realmJsonFilePath",
+            name: (() => {
+                const name = "import";
 
-            return name;
-        })(),
-        defaultValue: undefined,
-        description: [
-            "Import your own realm configuration file",
-            "Example `--import path/to/myrealm-realm.json`"
-        ].join(" ")
-    })
-    .task({
-        skip,
-        handler: async cliCommandOptions => {
-            const { command } = await import("./start-keycloak");
+                optionsKeys.push(name);
 
-            await command({ cliCommandOptions });
-        }
-    });
+                return name;
+            })(),
+            defaultValue: undefined,
+            description: [
+                "Import your own realm configuration file",
+                "Example `--import path/to/myrealm-realm.json`"
+            ].join(" ")
+        })
+        .task({
+            skip,
+            handler: async ({
+                projectDirPath,
+                keycloakVersion,
+                port,
+                realmJsonFilePath
+            }) => {
+                const buildContext = getBuildContext({ projectDirPath });
 
-program
-    .command({
-        name: "eject-page",
-        description: "Eject a Keycloak page."
-    })
-    .task({
-        skip,
-        handler: async cliCommandOptions => {
-            const { command } = await import("./eject-page");
+                const { command } = await import("./start-keycloak");
 
-            await command({ cliCommandOptions });
-        }
-    });
+                await command({
+                    buildContext,
+                    cliCommandOptions: { keycloakVersion, port, realmJsonFilePath }
+                });
+            }
+        });
+}
 
-program
-    .command({
-        name: "add-story",
-        description: "Add *.stories.tsx file for a specific page to in your Storybook."
-    })
-    .task({
-        skip,
-        handler: async cliCommandOptions => {
-            const { command } = await import("./add-story");
+{
+    const commandName = "eject-page";
 
-            await command({ cliCommandOptions });
-        }
-    });
+    program
+        .command({
+            name: commandName,
+            description: "Eject a Keycloak page."
+        })
+        .task({
+            skip,
+            handler: async ({ projectDirPath }) => {
+                const buildContext = getBuildContext({ projectDirPath });
 
-program
-    .command({
-        name: "initialize-email-theme",
-        description: "Initialize an email theme."
-    })
-    .task({
-        skip,
-        handler: async cliCommandOptions => {
-            const { command } = await import("./initialize-email-theme");
+                callHandlerIfAny({ buildContext, commandName });
 
-            await command({ cliCommandOptions });
-        }
-    });
+                const { command } = await import("./eject-page");
+
+                await command({ buildContext });
+            }
+        });
+}
+
+{
+    const commandName = "add-story";
+
+    program
+        .command({
+            name: commandName,
+            description:
+                "Add *.stories.tsx file for a specific page to in your Storybook."
+        })
+        .task({
+            skip,
+            handler: async ({ projectDirPath }) => {
+                const buildContext = getBuildContext({ projectDirPath });
+
+                callHandlerIfAny({ buildContext, commandName });
+
+                const { command } = await import("./add-story");
+
+                await command({ buildContext });
+            }
+        });
+}
+
+{
+    const comandName = "initialize-login-theme";
+
+    program
+        .command({
+            name: comandName,
+            description: "Initialize an email theme."
+        })
+        .task({
+            skip,
+            handler: async ({ projectDirPath }) => {
+                const buildContext = getBuildContext({ projectDirPath });
+
+                const { command } = await import("./initialize-email-theme");
+
+                await command({ buildContext });
+            }
+        });
+}
 
 program
     .command({
@@ -186,42 +227,58 @@ program
     })
     .task({
         skip,
-        handler: async cliCommandOptions => {
+        handler: async ({ projectDirPath }) => {
+            const buildContext = getBuildContext({ projectDirPath });
+
             const { command } = await import("./initialize-account-theme");
 
-            await command({ cliCommandOptions });
+            await command({ buildContext });
         }
     });
 
-program
-    .command({
-        name: "copy-keycloak-resources-to-public",
-        description:
-            "(Webpack/Create-React-App only) Copy Keycloak default theme resources to the public directory."
-    })
-    .task({
-        skip,
-        handler: async cliCommandOptions => {
-            const { command } = await import("./copy-keycloak-resources-to-public");
+{
+    const commandName = "copy-keycloak-resources-to-public";
 
-            await command({ cliCommandOptions });
-        }
-    });
+    program
+        .command({
+            name: commandName,
+            description:
+                "(Webpack/Create-React-App only) Copy Keycloak default theme resources to the public directory."
+        })
+        .task({
+            skip,
+            handler: async ({ projectDirPath }) => {
+                const buildContext = getBuildContext({ projectDirPath });
 
-program
-    .command({
-        name: "update-kc-gen",
-        description:
-            "(Webpack/Create-React-App only) Create/update the kc.gen.ts file in your project."
-    })
-    .task({
-        skip,
-        handler: async cliCommandOptions => {
-            const { command } = await import("./update-kc-gen");
+                const { command } = await import("./copy-keycloak-resources-to-public");
 
-            await command({ cliCommandOptions });
-        }
-    });
+                await command({ buildContext });
+            }
+        });
+}
+
+{
+    const commandName = "update-kc-gen";
+
+    program
+        .command({
+            name: commandName,
+            description:
+                "(Webpack/Create-React-App only) Create/update the kc.gen.ts file in your project."
+        })
+        .task({
+            skip,
+            handler: async ({ projectDirPath }) => {
+                const buildContext = getBuildContext({ projectDirPath });
+
+                callHandlerIfAny({ buildContext, commandName });
+
+                const { command } = await import("./update-kc-gen");
+
+                await command({ buildContext });
+            }
+        });
+}
 
 // Fallback to build command if no command is provided
 {

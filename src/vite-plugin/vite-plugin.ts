@@ -122,9 +122,7 @@ export function keycloakify(params: keycloakify.Params) {
             }
 
             const buildContext = getBuildContext({
-                cliCommandOptions: {
-                    projectDirPath
-                }
+                projectDirPath
             });
 
             copyKeycloakResourcesToPublic({ buildContext }),
