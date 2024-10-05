@@ -1,16 +1,18 @@
-import { type FetchOptions } from "make-fetch-happen";
 import * as child_process from "child_process";
 import * as fs from "fs";
 import { exclude } from "tsafe/exclude";
 
-export type ProxyFetchOptions = Pick<
-    FetchOptions,
-    "proxy" | "noProxy" | "strictSSL" | "cert" | "ca"
->;
+export type FetchOptionsLike = {
+    proxy: string | undefined;
+    noProxy: string | string[];
+    strictSSL: boolean;
+    cert: string | string[] | undefined;
+    ca: string[] | undefined;
+};
 
 export function getProxyFetchOptions(params: {
     npmConfigGetCwd: string;
-}): ProxyFetchOptions {
+}): FetchOptionsLike {
     const { npmConfigGetCwd } = params;
 
     const cfg = (() => {

@@ -23,7 +23,7 @@ import { objectEntries } from "tsafe/objectEntries";
 import { type ThemeType } from "./constants";
 import { id } from "tsafe/id";
 import chalk from "chalk";
-import { getProxyFetchOptions, type ProxyFetchOptions } from "../tools/fetchProxyOptions";
+import { getProxyFetchOptions, type FetchOptionsLike } from "../tools/fetchProxyOptions";
 import { is } from "tsafe/is";
 
 export type BuildContext = {
@@ -42,7 +42,7 @@ export type BuildContext = {
      * In this case the urlPathname will be "/my-app/" */
     urlPathname: string | undefined;
     assetsDirPath: string;
-    fetchOptions: ProxyFetchOptions;
+    fetchOptions: FetchOptionsLike;
     kcContextExclusionsFtlCode: string | undefined;
     environmentVariables: { name: string; default: string }[];
     themeSrcDirPath: string;
