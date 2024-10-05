@@ -1,15 +1,12 @@
 import { join as pathJoin, relative as pathRelative } from "path";
 import { transformCodebase } from "./tools/transformCodebase";
 import { promptKeycloakVersion } from "./shared/promptKeycloakVersion";
-import { getBuildContext } from "./shared/buildContext";
+import type { BuildContext } from "./shared/buildContext";
 import * as fs from "fs";
-import type { CliCommandOptions } from "./main";
 import { downloadAndExtractArchive } from "./tools/downloadAndExtractArchive";
 
-export async function command(params: { cliCommandOptions: CliCommandOptions }) {
-    const { cliCommandOptions } = params;
-
-    const buildContext = getBuildContext({ cliCommandOptions });
+export async function command(params: { buildContext: BuildContext }) {
+    const { buildContext } = params;
 
     const emailThemeSrcDirPath = pathJoin(buildContext.themeSrcDirPath, "email");
 

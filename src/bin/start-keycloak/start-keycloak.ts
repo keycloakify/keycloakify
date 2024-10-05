@@ -1,6 +1,5 @@
-import { getBuildContext } from "../shared/buildContext";
+import type { BuildContext } from "../shared/buildContext";
 import { exclude } from "tsafe/exclude";
-import type { CliCommandOptions as CliCommandOptions_common } from "../main";
 import { promptKeycloakVersion } from "../shared/promptKeycloakVersion";
 import { CONTAINER_NAME } from "../shared/constants";
 import { SemVer } from "../tools/SemVer";
@@ -29,13 +28,14 @@ import { existsAsync } from "../tools/fs.existsAsync";
 import { rm } from "../tools/fs.rm";
 import { downloadAndExtractArchive } from "../tools/downloadAndExtractArchive";
 
-export type CliCommandOptions = CliCommandOptions_common & {
-    port: number | undefined;
-    keycloakVersion: string | undefined;
-    realmJsonFilePath: string | undefined;
-};
-
-export async function command(params: { cliCommandOptions: CliCommandOptions }) {
+export async function command(params: {
+    buildContext: BuildContext;
+    cliCommandOptions: {
+        port: number | undefined;
+        keycloakVersion: string | undefined;
+        realmJsonFilePath: string | undefined;
+    };
+}) {
     exit_if_docker_not_installed: {
         let commandOutput: string | undefined = undefined;
 
@@ -88,9 +88,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
         process.exit(1);
     }
 
-    const { cliCommandOptions } = params;
-
-    const buildContext = getBuildContext({ cliCommandOptions });
+    const { cliCommandOptions, buildContext } = params;
 
     const { dockerImageTag } = await (async () => {
         if (cliCommandOptions.keycloakVersion !== undefined) {
