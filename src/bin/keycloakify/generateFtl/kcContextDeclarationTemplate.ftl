@@ -236,6 +236,9 @@ function decodeHtmlEntities(htmlStr){
                         "identityFederationEnabled",
                         "userManagedAccessAllowed"
                     ]?seq_contains(key)
+                ) || (
+                    ["flowContext", "session", "realm"]?seq_contains(key) &&
+                    areSamePath(path, ["social"])
                 )
             >
                 <#-- <#local outSeq += ["/*" + path?join(".") + "." + key + " excluded*/"]> -->
