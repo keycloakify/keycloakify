@@ -129,7 +129,7 @@ jobs:
           echo "Can't publish on NPM, You must first create a secret called NPM_TOKEN that contains your NPM auth token. https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets"
           false
         fi
-        EXTRA_ARGS="--tag v10"
+        EXTRA_ARGS="--tag keycloakify_v10"
         npm publish $EXTRA_ARGS
       env:
         NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
