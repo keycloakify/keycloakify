@@ -71,6 +71,7 @@
         "@babel/preset-env": "7.24.8",
         "@babel/types": "^7.24.5",
         "@emotion/react": "^11.11.4",
+        "@keycloakify/angular": "^0.0.1-rc.19",
         "@octokit/rest": "^20.1.1",
         "@storybook/addon-a11y": "^6.5.16",
         "@storybook/builder-webpack5": "^6.5.13",
