@@ -168,7 +168,11 @@ program
             handler: async ({ projectDirPath }) => {
                 const buildContext = getBuildContext({ projectDirPath });
 
+                console.log("before callHandlerIfAny");
+
                 callHandlerIfAny({ buildContext, commandName });
+
+                console.log("after callHandlerIfAny");
 
                 const { command } = await import("./eject-page");
 

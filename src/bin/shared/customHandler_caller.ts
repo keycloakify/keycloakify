@@ -33,7 +33,10 @@ export function callHandlerIfAny(params: {
                 [CUSTOM_HANDLER_ENV_NAMES.BUILD_CONTEXT]: JSON.stringify(buildContext)
             }
         });
-    } catch (error) {
+    } catch (error: any) {
+        console.log(error.message);
+        console.log(error.status);
+
         assert(is<child_process.ExecException>(error));
 
         if (error.code === NOT_IMPLEMENTED_EXIT_CODE) {
