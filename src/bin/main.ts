@@ -4,8 +4,9 @@ import { termost } from "termost";
 import { readThisNpmPackageVersion } from "./tools/readThisNpmPackageVersion";
 import * as child_process from "child_process";
 import { assertNoPnpmDlx } from "./tools/assertNoPnpmDlx";
+import { getBuildContext } from "./shared/buildContext";
 
-export type CliCommandOptions = {
+type CliCommandOptions = {
     projectDirPath: string | undefined;
 };
 
@@ -69,10 +70,10 @@ program
     })
     .task({
         skip,
-        handler: async cliCommandOptions => {
+        handler: async ({ projectDirPath }) => {
             const { command } = await import("./keycloakify");
 
-            await command({ cliCommandOptions });
+            await command({ buildContext: getBuildContext({ projectDirPath }) });
         }
     });
 
@@ -130,10 +131,13 @@ program
     })
     .task({
         skip,
-        handler: async cliCommandOptions => {
+        handler: async ({ projectDirPath, keycloakVersion, port, realmJsonFilePath }) => {
             const { command } = await import("./start-keycloak");
 
-            await command({ cliCommandOptions });
+            await command({
+                buildContext: getBuildContext({ projectDirPath }),
+                cliCommandOptions: { keycloakVersion, port, realmJsonFilePath }
+            });
         }
     });
 
@@ -144,10 +148,10 @@ program
     })
     .task({
         skip,
-        handler: async cliCommandOptions => {
+        handler: async ({ projectDirPath }) => {
             const { command } = await import("./eject-page");
 
-            await command({ cliCommandOptions });
+            await command({ buildContext: getBuildContext({ projectDirPath }) });
         }
     });
 
@@ -158,24 +162,24 @@ program
     })
     .task({
         skip,
-        handler: async cliCommandOptions => {
+        handler: async ({ projectDirPath }) => {
             const { command } = await import("./add-story");
 
-            await command({ cliCommandOptions });
+            await command({ buildContext: getBuildContext({ projectDirPath }) });
         }
     });
 
 program
     .command({
-        name: "initialize-email-theme",
+        name: "initialize-login-theme",
         description: "Initialize an email theme."
     })
     .task({
         skip,
-        handler: async cliCommandOptions => {
+        handler: async ({ projectDirPath }) => {
             const { command } = await import("./initialize-email-theme");
 
-            await command({ cliCommandOptions });
+            await command({ buildContext: getBuildContext({ projectDirPath }) });
         }
     });
 
@@ -186,10 +190,10 @@ program
     })
     .task({
         skip,
-        handler: async cliCommandOptions => {
+        handler: async ({ projectDirPath }) => {
             const { command } = await import("./initialize-account-theme");
 
-            await command({ cliCommandOptions });
+            await command({ buildContext: getBuildContext({ projectDirPath }) });
         }
     });
 
@@ -201,10 +205,10 @@ program
     })
     .task({
         skip,
-        handler: async cliCommandOptions => {
+        handler: async ({ projectDirPath }) => {
             const { command } = await import("./copy-keycloak-resources-to-public");
 
-            await command({ cliCommandOptions });
+            await command({ buildContext: getBuildContext({ projectDirPath }) });
         }
     });
 
@@ -216,10 +220,10 @@ program
     })
     .task({
         skip,
-        handler: async cliCommandOptions => {
+        handler: async ({ projectDirPath }) => {
             const { command } = await import("./update-kc-gen");
 
-            await command({ cliCommandOptions });
+            await command({ buildContext: getBuildContext({ projectDirPath }) });
         }
     });
 

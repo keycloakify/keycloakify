@@ -1,15 +1,18 @@
 import { join as pathJoin, relative as pathRelative } from "path";
 import { transformCodebase } from "./tools/transformCodebase";
 import { promptKeycloakVersion } from "./shared/promptKeycloakVersion";
-import { getBuildContext } from "./shared/buildContext";
+import type { BuildContext } from "./shared/buildContext";
 import * as fs from "fs";
-import type { CliCommandOptions } from "./main";
 import { downloadAndExtractArchive } from "./tools/downloadAndExtractArchive";
+import { maybeDelegateCommandToCustomHandler } from "./shared/customHandler_delegate";
 
-export async function command(params: { cliCommandOptions: CliCommandOptions }) {
-    const { cliCommandOptions } = params;
+export async function command(params: { buildContext: BuildContext }) {
+    const { buildContext } = params;
 
-    const buildContext = getBuildContext({ cliCommandOptions });
+    maybeDelegateCommandToCustomHandler({
+        commandName: "initialize-email-theme",
+        buildContext
+    });
 
     const emailThemeSrcDirPath = pathJoin(buildContext.themeSrcDirPath, "email");
 

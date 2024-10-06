@@ -1,17 +1,20 @@
-import { getBuildContext } from "../shared/buildContext";
-import type { CliCommandOptions } from "../main";
+import type { BuildContext } from "../shared/buildContext";
 import cliSelect from "cli-select";
 import child_process from "child_process";
 import chalk from "chalk";
 import { join as pathJoin, relative as pathRelative } from "path";
 import * as fs from "fs";
 import { updateAccountThemeImplementationInConfig } from "./updateAccountThemeImplementationInConfig";
-import { generateKcGenTs } from "../shared/generateKcGenTs";
+import { command as updateKcGenCommand } from "../update-kc-gen";
+import { maybeDelegateCommandToCustomHandler } from "../shared/customHandler_delegate";
 
-export async function command(params: { cliCommandOptions: CliCommandOptions }) {
-    const { cliCommandOptions } = params;
+export async function command(params: { buildContext: BuildContext }) {
+    const { buildContext } = params;
 
-    const buildContext = getBuildContext({ cliCommandOptions });
+    maybeDelegateCommandToCustomHandler({
+        commandName: "initialize-account-theme",
+        buildContext
+    });
 
     const accountThemeSrcDirPath = pathJoin(buildContext.themeSrcDirPath, "account");
 
@@ -97,7 +100,7 @@ export async function command(params: { cliCommandOptions: CliCommandOptions }) 
 
     updateAccountThemeImplementationInConfig({ buildContext, accountThemeType });
 
-    await generateKcGenTs({
+    await updateKcGenCommand({
         buildContext: {
             ...buildContext,
             implementedThemeTypes: {

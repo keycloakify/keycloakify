@@ -7,7 +7,6 @@ import {
     dirname as pathDirname
 } from "path";
 import { getAbsoluteAndInOsFormatPath } from "../tools/getAbsoluteAndInOsFormatPath";
-import type { CliCommandOptions } from "../main";
 import { z } from "zod";
 import * as fs from "fs";
 import { assert, type Equals } from "tsafe/assert";
@@ -24,7 +23,7 @@ import { objectEntries } from "tsafe/objectEntries";
 import { type ThemeType } from "./constants";
 import { id } from "tsafe/id";
 import chalk from "chalk";
-import { getProxyFetchOptions, type ProxyFetchOptions } from "../tools/fetchProxyOptions";
+import { getProxyFetchOptions, type FetchOptionsLike } from "../tools/fetchProxyOptions";
 import { is } from "tsafe/is";
 
 export type BuildContext = {
@@ -43,7 +42,7 @@ export type BuildContext = {
      * In this case the urlPathname will be "/my-app/" */
     urlPathname: string | undefined;
     assetsDirPath: string;
-    fetchOptions: ProxyFetchOptions;
+    fetchOptions: FetchOptionsLike;
     kcContextExclusionsFtlCode: string | undefined;
     environmentVariables: { name: string; default: string }[];
     themeSrcDirPath: string;
@@ -129,14 +128,12 @@ export type ResolvedViteConfig = {
 };
 
 export function getBuildContext(params: {
-    cliCommandOptions: CliCommandOptions;
+    projectDirPath: string | undefined;
 }): BuildContext {
-    const { cliCommandOptions } = params;
-
     const projectDirPath =
-        cliCommandOptions.projectDirPath !== undefined
+        params.projectDirPath !== undefined
             ? getAbsoluteAndInOsFormatPath({
-                  pathIsh: cliCommandOptions.projectDirPath,
+                  pathIsh: params.projectDirPath,
                   cwd: process.cwd()
               })
             : process.cwd();

@@ -71,3 +71,8 @@ export type AccountThemePageId = (typeof ACCOUNT_THEME_PAGE_IDS)[number];
 export const CONTAINER_NAME = "keycloak-keycloakify";
 
 export const FALLBACK_LANGUAGE_TAG = "en";
+
+export const CUSTOM_HANDLER_ENV_NAMES = {
+    COMMAND_NAME: "KEYCLOAKIFY_COMMAND_NAME",
+    BUILD_CONTEXT: "KEYCLOAKIFY_BUILD_CONTEXT"
+};

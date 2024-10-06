@@ -13,16 +13,11 @@ import * as fs from "fs";
 import { join as pathJoin, relative as pathRelative, dirname as pathDirname } from "path";
 import { kebabCaseToCamelCase } from "./tools/kebabCaseToSnakeCase";
 import { assert, Equals } from "tsafe/assert";
-import type { CliCommandOptions } from "./main";
-import { getBuildContext } from "./shared/buildContext";
+import type { BuildContext } from "./shared/buildContext";
 import chalk from "chalk";
 
-export async function command(params: { cliCommandOptions: CliCommandOptions }) {
-    const { cliCommandOptions } = params;
-
-    const buildContext = getBuildContext({
-        cliCommandOptions
-    });
+export async function command(params: { buildContext: BuildContext }) {
+    const { buildContext } = params;
 
     console.log(chalk.cyan("Theme type:"));
 

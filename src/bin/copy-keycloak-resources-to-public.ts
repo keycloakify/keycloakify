@@ -1,11 +1,14 @@
 import { copyKeycloakResourcesToPublic } from "./shared/copyKeycloakResourcesToPublic";
-import { getBuildContext } from "./shared/buildContext";
-import type { CliCommandOptions } from "./main";
+import type { BuildContext } from "./shared/buildContext";
+import { maybeDelegateCommandToCustomHandler } from "./shared/customHandler_delegate";
 
-export async function command(params: { cliCommandOptions: CliCommandOptions }) {
-    const { cliCommandOptions } = params;
+export async function command(params: { buildContext: BuildContext }) {
+    const { buildContext } = params;
 
-    const buildContext = getBuildContext({ cliCommandOptions });
+    maybeDelegateCommandToCustomHandler({
+        commandName: "copy-keycloak-resources-to-public",
+        buildContext
+    });
 
     copyKeycloakResourcesToPublic({
         buildContext
