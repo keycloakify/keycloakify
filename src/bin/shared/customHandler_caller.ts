@@ -8,7 +8,6 @@ import {
     ApiVersion
 } from "./customHandler";
 import * as child_process from "child_process";
-import { is } from "tsafe/is";
 import { dirname as pathDirname } from "path";
 import * as fs from "fs";
 
@@ -34,16 +33,13 @@ export function callHandlerIfAny(params: {
             }
         });
     } catch (error: any) {
-        console.log(error.message);
-        console.log(error.status);
+        const status = error.status;
 
-        assert(is<child_process.ExecException>(error));
-
-        if (error.code === NOT_IMPLEMENTED_EXIT_CODE) {
+        if (status === NOT_IMPLEMENTED_EXIT_CODE) {
             return;
         }
 
-        process.exit(error.code);
+        process.exit(status);
     }
 
     process.exit(0);
