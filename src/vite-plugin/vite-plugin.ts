@@ -6,7 +6,7 @@ import {
 } from "../bin/shared/constants";
 import { id } from "tsafe/id";
 import { rm } from "../bin/tools/fs.rm";
-import { copyKeycloakResourcesToPublic } from "../bin/shared/copyKeycloakResourcesToPublic";
+import { command as copyKeycloakResourcesToPublicCommand } from "../bin/copy-keycloak-resources-to-public";
 import { assert } from "tsafe/assert";
 import {
     getBuildContext,
@@ -125,7 +125,7 @@ export function keycloakify(params: keycloakify.Params) {
                 projectDirPath
             });
 
-            copyKeycloakResourcesToPublic({ buildContext });
+            await copyKeycloakResourcesToPublicCommand({ buildContext });
 
             await updateKcGenCommand({ buildContext });
         },

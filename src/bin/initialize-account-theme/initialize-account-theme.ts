@@ -11,10 +11,14 @@ import { maybeDelegateCommandToCustomHandler } from "../shared/customHandler_del
 export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
 
-    maybeDelegateCommandToCustomHandler({
+    const { hasBeenHandled } = maybeDelegateCommandToCustomHandler({
         commandName: "initialize-account-theme",
         buildContext
     });
+
+    if (hasBeenHandled) {
+        return;
+    }
 
     const accountThemeSrcDirPath = pathJoin(buildContext.themeSrcDirPath, "account");
 
