@@ -6,7 +6,13 @@ export const BIN_NAME = "_keycloakify-custom-handler";
 
 export const NOT_IMPLEMENTED_EXIT_CODE = 78;
 
-export type CommandName = "update-kc-gen" | "eject-page" | "add-story";
+export type CommandName =
+    | "update-kc-gen"
+    | "eject-page"
+    | "add-story"
+    | "initialize-account-theme"
+    | "initialize-email-theme"
+    | "copy-keycloak-resources-to-public";
 
 export type ApiVersion = "v1";
 

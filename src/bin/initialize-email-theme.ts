@@ -4,9 +4,15 @@ import { promptKeycloakVersion } from "./shared/promptKeycloakVersion";
 import type { BuildContext } from "./shared/buildContext";
 import * as fs from "fs";
 import { downloadAndExtractArchive } from "./tools/downloadAndExtractArchive";
+import { maybeDelegateCommandToCustomHandler } from "./shared/customHandler_delegate";
 
 export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
+
+    maybeDelegateCommandToCustomHandler({
+        commandName: "initialize-email-theme",
+        buildContext
+    });
 
     const emailThemeSrcDirPath = pathJoin(buildContext.themeSrcDirPath, "email");
 
