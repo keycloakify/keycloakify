@@ -22,9 +22,15 @@ import { kebabCaseToCamelCase } from "./tools/kebabCaseToSnakeCase";
 import { assert, Equals } from "tsafe/assert";
 import type { BuildContext } from "./shared/buildContext";
 import chalk from "chalk";
+import { maybeDelegateCommandToCustomHandler } from "./shared/customHandler_delegate";
 
 export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
+
+    maybeDelegateCommandToCustomHandler({
+        commandName: "eject-page",
+        buildContext
+    });
 
     console.log(chalk.cyan("Theme type:"));
 
