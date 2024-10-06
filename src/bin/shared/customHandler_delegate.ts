@@ -16,11 +16,11 @@ assert<Equals<ApiVersion, "v1">>();
 export function maybeDelegateCommandToCustomHandler(params: {
     commandName: CommandName;
     buildContext: BuildContext;
-}) {
+}): { hasBeenHandled: boolean } {
     const { commandName, buildContext } = params;
 
     if (!fs.readdirSync(pathDirname(process.argv[1])).includes(BIN_NAME)) {
-        return;
+        return { hasBeenHandled: false };
     }
 
     try {
@@ -36,11 +36,11 @@ export function maybeDelegateCommandToCustomHandler(params: {
         const status = error.status;
 
         if (status === NOT_IMPLEMENTED_EXIT_CODE) {
-            return;
+            return { hasBeenHandled: false };
         }
 
         process.exit(status);
     }
 
-    process.exit(0);
+    return { hasBeenHandled: true };
 }

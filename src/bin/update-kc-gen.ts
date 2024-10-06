@@ -7,10 +7,14 @@ import { maybeDelegateCommandToCustomHandler } from "./shared/customHandler_dele
 export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
 
-    maybeDelegateCommandToCustomHandler({
+    const { hasBeenHandled } = maybeDelegateCommandToCustomHandler({
         commandName: "update-kc-gen",
         buildContext
     });
+
+    if (hasBeenHandled) {
+        return;
+    }
 
     const filePath = pathJoin(buildContext.themeSrcDirPath, `kc.gen.tsx`);
 

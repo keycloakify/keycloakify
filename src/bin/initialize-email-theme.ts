@@ -9,10 +9,14 @@ import { maybeDelegateCommandToCustomHandler } from "./shared/customHandler_dele
 export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
 
-    maybeDelegateCommandToCustomHandler({
+    const { hasBeenHandled } = maybeDelegateCommandToCustomHandler({
         commandName: "initialize-email-theme",
         buildContext
     });
+
+    if (hasBeenHandled) {
+        return;
+    }
 
     const emailThemeSrcDirPath = pathJoin(buildContext.themeSrcDirPath, "email");
 
