@@ -6,9 +6,15 @@ import { join as pathJoin, relative as pathRelative } from "path";
 import * as fs from "fs";
 import { updateAccountThemeImplementationInConfig } from "./updateAccountThemeImplementationInConfig";
 import { command as updateKcGenCommand } from "../update-kc-gen";
+import { maybeDelegateCommandToCustomHandler } from "../shared/customHandler_delegate";
 
 export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
+
+    maybeDelegateCommandToCustomHandler({
+        commandName: "initialize-account-theme",
+        buildContext
+    });
 
     const accountThemeSrcDirPath = pathJoin(buildContext.themeSrcDirPath, "account");
 
