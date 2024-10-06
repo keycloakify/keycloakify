@@ -239,12 +239,12 @@ export async function command(params: { buildContext: BuildContext }) {
         )} copy pasted from the Keycloakify source code into your project`
     );
 
-    edit_KcApp: {
+    edit_KcPage: {
         if (
             pageIdOrComponent !== templateValue &&
             pageIdOrComponent !== userProfileFormFieldsValue
         ) {
-            break edit_KcApp;
+            break edit_KcPage;
         }
 
         const kcAppTsxPath = pathJoin(
