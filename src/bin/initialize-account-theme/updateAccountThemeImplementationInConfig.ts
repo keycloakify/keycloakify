@@ -8,12 +8,14 @@ import { id } from "tsafe/id";
 
 export type BuildContextLike = {
     bundler: BuildContext["bundler"];
+    projectDirPath: string;
+    packageJsonFilePath: string;
 };
 
 assert<BuildContext extends BuildContextLike ? true : false>();
 
 export function updateAccountThemeImplementationInConfig(params: {
-    buildContext: BuildContext;
+    buildContext: BuildContextLike;
     accountThemeType: "Single-Page" | "Multi-Page";
 }) {
     const { buildContext, accountThemeType } = params;
