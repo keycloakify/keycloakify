@@ -5,7 +5,7 @@ import chalk from "chalk";
 import { join as pathJoin, relative as pathRelative } from "path";
 import * as fs from "fs";
 import { updateAccountThemeImplementationInConfig } from "./updateAccountThemeImplementationInConfig";
-import { generateKcGenTs } from "../shared/generateKcGenTs";
+import { command as updateKcGenCommand } from "../update-kc-gen";
 
 export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
@@ -94,7 +94,7 @@ export async function command(params: { buildContext: BuildContext }) {
 
     updateAccountThemeImplementationInConfig({ buildContext, accountThemeType });
 
-    await generateKcGenTs({
+    await updateKcGenCommand({
         buildContext: {
             ...buildContext,
             implementedThemeTypes: {

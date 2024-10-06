@@ -115,7 +115,6 @@ export const WithFavoritePet: Story = {
     )
 };
 
-
 export const WithNewsletter: Story = {
     render: () => (
         <KcPageStory
@@ -132,7 +131,7 @@ export const WithNewsletter: Story = {
                             },
                             annotations: {
                                 inputOptionLabels: {
-                                    "yes": "I want my email inbox filled with spam"
+                                    yes: "I want my email inbox filled with spam"
                                 },
                                 inputType: "multiselect-checkboxes"
                             },
@@ -140,12 +139,11 @@ export const WithNewsletter: Story = {
                             readOnly: false
                         } satisfies Attribute
                     }
-                },
+                }
             }}
         />
     )
 };
-
 
 export const WithEmailAsUsername: Story = {
     render: () => (

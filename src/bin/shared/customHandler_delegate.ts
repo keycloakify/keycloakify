@@ -13,7 +13,7 @@ import * as fs from "fs";
 
 assert<Equals<ApiVersion, "v1">>();
 
-export function callHandlerIfAny(params: {
+export function maybeDelegateCommandToCustomHandler(params: {
     commandName: CommandName;
     buildContext: BuildContext;
 }) {

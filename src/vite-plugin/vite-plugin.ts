@@ -15,7 +15,7 @@ import {
     type ResolvedViteConfig
 } from "../bin/shared/buildContext";
 import MagicString from "magic-string";
-import { generateKcGenTs } from "../bin/shared/generateKcGenTs";
+import { command as updateKcGenCommand } from "../bin/update-kc-gen";
 
 export namespace keycloakify {
     export type Params = BuildOptions & {
@@ -125,8 +125,9 @@ export function keycloakify(params: keycloakify.Params) {
                 projectDirPath
             });
 
-            copyKeycloakResourcesToPublic({ buildContext }),
-                await generateKcGenTs({ buildContext });
+            copyKeycloakResourcesToPublic({ buildContext });
+
+            await updateKcGenCommand({ buildContext });
         },
         transform: (code, id) => {
             assert(command !== undefined);
