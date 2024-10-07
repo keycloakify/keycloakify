@@ -171,7 +171,7 @@ program
 
 program
     .command({
-        name: "initialize-login-theme",
+        name: "initialize-email-theme",
         description: "Initialize an email theme."
     })
     .task({
