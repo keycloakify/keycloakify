@@ -43,6 +43,11 @@
 
 Keycloakify is fully compatible with Keycloak from version 11 to 26...[and beyond](https://github.com/keycloakify/keycloakify/discussions/346#discussioncomment-5889791)
 
+> 📣 **Keycloakify 26 Released**  
+> Themes built with Keycloakify versions **prior** to Keycloak 26 are **incompatible** with Keycloak 26.  
+> To ensure compatibility, simply upgrade to the latest Keycloakify version for your major release (v10 or v11) and rebuild your theme.  
+> No breaking changes have been introduced, but the target version ranges have been updated. For more details, see [this guide](https://docs.keycloakify.dev/targeting-specific-keycloak-versions).
+
 ## Sponsors
 
 Friends for the project, we trust and recommend their services.
