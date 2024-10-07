@@ -16,3 +16,49 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     render: () => <KcPageStory />
 };
+export const WithIdpAlias: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                idpAlias: "Google",
+                brokerContext: {
+                    username: "john.doe"
+                },
+                realm: {
+                    displayName: "MyRealm"
+                }
+            }}
+        />
+    )
+};
+export const WithoutIdpAlias: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                idpAlias: undefined,
+                brokerContext: {
+                    username: "john.doe"
+                },
+                realm: {
+                    displayName: "MyRealm"
+                }
+            }}
+        />
+    )
+};
+
+export const WithCustomRealmDisplayName: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                idpAlias: "Facebook",
+                brokerContext: {
+                    username: "jane.doe"
+                },
+                realm: {
+                    displayName: "CustomRealm"
+                }
+            }}
+        />
+    )
+};

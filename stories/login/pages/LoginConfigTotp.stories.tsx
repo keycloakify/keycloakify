@@ -41,3 +41,24 @@ export const WithError: Story = {
         />
     )
 };
+export const WithAppInitiatedAction: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                isAppInitiatedAction: true
+            }}
+        />
+    )
+};
+
+export const WithPreFilledUserLabel: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                totp: {
+                    otpCredentials: [{ userLabel: "MyDevice" }]
+                }
+            }}
+        />
+    )
+};
