@@ -240,8 +240,8 @@ export const WithFieldErrors: Story = {
                     }
                 },
                 messagesPerField: {
-                    existsError: fieldName => ["username", "email"].includes(fieldName),
-                    get: fieldName => {
+                    existsError: (fieldName: string) => ["username", "email"].includes(fieldName),
+                    get: (fieldName: string) => {
                         if (fieldName === "username") return "Username is required.";
                         if (fieldName === "email") return "Invalid email format.";
                     }
