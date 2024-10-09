@@ -93,6 +93,7 @@ export type BuildOptions = {
         realmJsonFilePath?: string;
         port?: number;
     };
+    skipRemoveDevResources?: boolean;
 } & BuildOptions.AccountThemeImplAndKeycloakVersionTargets;
 
 export namespace BuildOptions {
