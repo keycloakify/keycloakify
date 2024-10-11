@@ -5,6 +5,7 @@ import * as fs from "fs";
 import chalk from "chalk";
 import { z } from "zod";
 import { id } from "tsafe/id";
+import { is } from "tsafe/is";
 
 export type BuildContextLike = {
     bundler: BuildContext["bundler"];
@@ -82,6 +83,8 @@ export function updateAccountThemeImplementationInConfig(params: {
                     );
 
                     zParsedPackageJson.parse(parsedPackageJson);
+
+                    assert(is<ParsedPackageJson>(parsedPackageJson));
 
                     return parsedPackageJson;
                 })();
