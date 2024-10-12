@@ -19,6 +19,7 @@ export type KcContextLike = {
     locale?: {
         currentLanguageTag: string;
         supported: { languageTag: string; url: string; label: string }[];
+        rtl?: boolean;
     };
     "x-keycloakify": {
         messages: Record<string, string>;
@@ -95,6 +96,49 @@ export function createGetI18n<
             const html = document.querySelector("html");
             assert(html !== null);
             html.lang = currentLanguageTag;
+
+            const isRtl = (() => {
+                const { rtl } = kcContext.locale ?? {};
+
+                if (rtl !== undefined) {
+                    return rtl;
+                }
+
+                return [
+                    /* spell-checker: disable */
+                    // Common RTL languages
+                    "ar", // Arabic
+                    "fa", // Persian (Farsi)
+                    "he", // Hebrew
+                    "ur", // Urdu
+                    "ps", // Pashto
+                    "syr", // Syriac
+                    "dv", // Divehi (Maldivian)
+                    "ku", // Kurdish (Sorani)
+                    "ug", // Uighur
+                    "az", // Azerbaijani (Arabic script)
+                    "sd", // Sindhi
+
+                    // Less common RTL languages
+                    "yi", // Yiddish
+                    "ha", // Hausa (when written in Arabic script)
+                    "ks", // Kashmiri (written in the Perso-Arabic script)
+                    "bal", // Balochi (when written in Arabic script)
+                    "khw", // Khowar (Chitrali)
+                    "brh", // Brahui (when written in Arabic script)
+                    "tmh", // Tamashek (some dialects use Arabic script)
+                    "bgn", // Western Balochi
+                    "arc", // Aramaic
+                    "sam", // Samaritan Aramaic
+                    "prd", // Parsi-Dari (a dialect of Persian)
+                    "huz", // Hazaragi (a dialect of Persian)
+                    "gbz", // Zaza (written in Arabic script in some areas)
+                    "urj" // Urdu in Romanized script (not always RTL, but to account for edge cases)
+                    /* spell-checker: enable */
+                ].includes(currentLanguageTag);
+            })();
+
+            html.dir = isRtl ? "rtl" : "ltr";
         }
 
         const getLanguageLabel = (languageTag: LanguageTag) => {
