@@ -6,8 +6,8 @@ type I18nLike = {
     isFetchingTranslations: boolean;
 };
 
-export function useScript(params: { olRecoveryCodesListId: string; i18n: I18nLike }) {
-    const { olRecoveryCodesListId, i18n } = params;
+export function useScript(params: { olRecoveryCodesListId: string; i18n: I18nLike; isRecoveryCodesListPresent: boolean }) {
+    const { olRecoveryCodesListId, i18n, isRecoveryCodesListPresent } = params;
 
     const { msgStr, isFetchingTranslations } = i18n;
 
@@ -133,10 +133,10 @@ export function useScript(params: { olRecoveryCodesListId: string; i18n: I18nLik
     });
 
     useEffect(() => {
-        if (isFetchingTranslations) {
+        if (isFetchingTranslations || !isRecoveryCodesListPresent) {
             return;
         }
 
         insertScriptTags();
-    }, [isFetchingTranslations]);
+    }, [isFetchingTranslations, isRecoveryCodesListPresent]);
 }

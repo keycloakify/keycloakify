@@ -3,6 +3,7 @@ import { useScript } from "keycloakify/login/pages/WebauthnRegister.useScript";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
 import type { I18n } from "../i18n";
+import { useState } from "react";
 
 export default function WebauthnRegister(props: PageProps<Extract<KcContext, { pageId: "webauthn-register.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
@@ -14,12 +15,9 @@ export default function WebauthnRegister(props: PageProps<Extract<KcContext, { p
     const { msg, msgStr } = i18n;
 
     const authButtonId = "authenticateWebAuthnButton";
+    const [isAuthButtonPresent, setAuthButtonPresent] = useState(false);
 
-    useScript({
-        authButtonId,
-        kcContext,
-        i18n
-    });
+    useScript({ authButtonId, kcContext, i18n, isAuthButtonPresent });
 
     return (
         <Template
@@ -49,6 +47,7 @@ export default function WebauthnRegister(props: PageProps<Extract<KcContext, { p
                 type="submit"
                 className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonBlockClass", "kcButtonLargeClass")}
                 id={authButtonId}
+                ref={node => setAuthButtonPresent(!!node)}
                 value={msgStr("doRegisterSecurityKey")}
             />
 

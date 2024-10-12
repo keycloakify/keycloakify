@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { clsx } from "keycloakify/tools/clsx";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import { getKcClsx } from "keycloakify/login/lib/kcClsx";
@@ -21,8 +21,9 @@ export default function LoginPasskeysConditionalAuthenticate(
     });
 
     const authButtonId = "authenticateWebAuthnButton";
+    const [isAuthButtonPresent, setAuthButtonPresent] = useState(false);
 
-    useScript({ authButtonId, kcContext, i18n });
+    useScript({ authButtonId, kcContext, i18n, isAuthButtonPresent });
 
     return (
         <Template
@@ -162,7 +163,7 @@ export default function LoginPasskeysConditionalAuthenticate(
                                     <input
                                         id={authButtonId}
                                         type="button"
-                                        autoFocus
+                                        ref={node => setAuthButtonPresent(!!node)}
                                         value={msgStr("passkey-doAuthenticate")}
                                         className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonBlockClass", "kcButtonLargeClass")}
                                     />

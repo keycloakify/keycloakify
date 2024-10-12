@@ -29,8 +29,8 @@ type I18nLike = {
     isFetchingTranslations: boolean;
 };
 
-export function useScript(params: { authButtonId: string; kcContext: KcContextLike; i18n: I18nLike }) {
-    const { authButtonId, kcContext, i18n } = params;
+export function useScript(params: { authButtonId: string; kcContext: KcContextLike; i18n: I18nLike; isAuthButtonPresent: boolean }) {
+    const { authButtonId, kcContext, i18n, isAuthButtonPresent } = params;
 
     const {
         url,
@@ -84,10 +84,10 @@ export function useScript(params: { authButtonId: string; kcContext: KcContextLi
     });
 
     useEffect(() => {
-        if (isFetchingTranslations) {
+        if (isFetchingTranslations || !isAuthButtonPresent) {
             return;
         }
 
         insertScriptTags();
-    }, [isFetchingTranslations]);
+    }, [isFetchingTranslations, isAuthButtonPresent]);
 }
