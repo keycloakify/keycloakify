@@ -508,6 +508,15 @@ export function getBuildContext(params: {
         return themeNames;
     })();
 
+    const relativePathsCwd = (() => {
+        switch (bundler) {
+            case "vite":
+                return projectDirPath;
+            case "webpack":
+                return pathDirname(packageJsonFilePath);
+        }
+    })();
+
     const projectBuildDirPath = (() => {
         webpack: {
             if (bundler !== "webpack") {
@@ -519,7 +528,7 @@ export function getBuildContext(params: {
             if (parsedPackageJson.keycloakify.projectBuildDirPath !== undefined) {
                 return getAbsoluteAndInOsFormatPath({
                     pathIsh: parsedPackageJson.keycloakify.projectBuildDirPath,
-                    cwd: projectDirPath
+                    cwd: relativePathsCwd
                 });
             }
 
@@ -563,7 +572,7 @@ export function getBuildContext(params: {
             if (buildOptions.keycloakifyBuildDirPath !== undefined) {
                 return getAbsoluteAndInOsFormatPath({
                     pathIsh: buildOptions.keycloakifyBuildDirPath,
-                    cwd: projectDirPath
+                    cwd: relativePathsCwd
                 });
             }
 
@@ -592,7 +601,7 @@ export function getBuildContext(params: {
                 if (parsedPackageJson.keycloakify.publicDirPath !== undefined) {
                     return getAbsoluteAndInOsFormatPath({
                         pathIsh: parsedPackageJson.keycloakify.publicDirPath,
-                        cwd: projectDirPath
+                        cwd: relativePathsCwd
                     });
                 }
 
@@ -664,7 +673,7 @@ export function getBuildContext(params: {
                         pathIsh:
                             parsedPackageJson.keycloakify
                                 .staticDirPathInProjectBuildDirPath,
-                        cwd: projectBuildDirPath
+                        cwd: relativePathsCwd
                     });
                 }
 
@@ -992,7 +1001,7 @@ export function getBuildContext(params: {
                         type: "path",
                         path: getAbsoluteAndInOsFormatPath({
                             pathIsh: urlOrPath,
-                            cwd: projectDirPath
+                            cwd: relativePathsCwd
                         })
                     };
                 }
@@ -1002,7 +1011,7 @@ export function getBuildContext(params: {
                     ? undefined
                     : getAbsoluteAndInOsFormatPath({
                           pathIsh: buildOptions.startKeycloakOptions.realmJsonFilePath,
-                          cwd: projectDirPath
+                          cwd: relativePathsCwd
                       }),
             port: buildOptions.startKeycloakOptions?.port
         }
