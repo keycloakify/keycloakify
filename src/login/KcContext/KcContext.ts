@@ -94,6 +94,7 @@ export declare namespace KcContext {
                 languageTag: string;
             }[];
             currentLanguageTag: string;
+            rtl?: boolean;
         };
         auth?: {
             showUsername?: boolean;
