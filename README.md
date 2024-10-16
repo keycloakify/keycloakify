@@ -56,7 +56,7 @@ Project backers, we trust and recommend their services.
 
 <div align="center">
 
-![Logo Dark](https://github.com/user-attachments/assets/d8f6b6f5-3de4-4adc-ba15-cb4074e8309b)
+![Logo Dark](https://github.com/user-attachments/assets/d8f6b6f5-3de4-4adc-ba15-cb4074e8309b#gh-dark-mode-only)
 
 </div>
 
@@ -78,7 +78,7 @@ Project backers, we trust and recommend their services.
 
 <div align="center">
 
-![Logo Dark](https://github.com/user-attachments/assets/dd3925fb-a58a-4e91-b360-69c2fa1f1087)
+![Logo Dark](https://github.com/user-attachments/assets/dd3925fb-a58a-4e91-b360-69c2fa1f1087#gh-dark-mode-only)
 
 </div>
 
