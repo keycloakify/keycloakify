@@ -50,19 +50,19 @@ Keycloakify is fully compatible with Keycloak from version 11 to 26...[and beyon
 
 ## Sponsors
 
-Friends for the project, we trust and recommend their services.
+Project backers, we trust and recommend their services.
 
 <br/>
 
 <div align="center">
 
-![Logo Dark](https://github.com/user-attachments/assets/088f6631-b7ef-42ad-812b-df4870dc16ae#gh-dark-mode-only)
+![Logo Dark](https://github.com/user-attachments/assets/dd3925fb-a58a-4e91-b360-69c2fa1f1087)
 
 </div>
 
 <div align="center">
 
-![Logo Light](https://github.com/user-attachments/assets/53fb16f8-02ef-4523-9c36-b42d6e59837e#gh-light-mode-only)
+![Logo Light](https://github.com/user-attachments/assets/6c00c201-eed7-485a-a887-70891559d69b#gh-light-mode-only)
 
 </div>
 
