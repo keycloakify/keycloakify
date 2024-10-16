@@ -56,6 +56,28 @@ Project backers, we trust and recommend their services.
 
 <div align="center">
 
+![Logo Dark](https://github.com/user-attachments/assets/d8f6b6f5-3de4-4adc-ba15-cb4074e8309b)
+
+</div>
+
+<div align="center">
+
+![Logo Light](https://github.com/user-attachments/assets/20736d6f-f22d-4a9d-9dfe-93be209a8191#gh-light-mode-only)
+
+</div>
+
+<br/>
+
+<p align="center">
+    <i><a href="https://phasetwo.io/"><strong>Keycloak on Steroids as a Service</strong></a> - Keycloak community contributors of popular <a href="https://github.com/p2-inc#our-extensions-">extensions</a> providing free and dedicated <a href="https://phasetwo.io/hosting/">Keycloak hosting</a> and enterprise <a href="https://phasetwo.io/support/">Keycloak support</a> to businesses of all sizes.</i>
+</p>
+
+<br/>
+<br/>
+<br/>
+
+<div align="center">
+
 ![Logo Dark](https://github.com/user-attachments/assets/dd3925fb-a58a-4e91-b360-69c2fa1f1087)
 
 </div>
@@ -87,7 +109,7 @@ Project backers, we trust and recommend their services.
 </div>
 
 <p align="center">
-<a href="https://cloud-iam.com/?mtm_campaign=keycloakify-deal&mtm_source=keycloakify-github"><strong>Managed Keycloak Provider</strong> - With Cloud-IAM powering your Keycloak clusters, you can sleep easy knowing you've got the software and the experts you need for operational excellence.  </a>
+<a href="https://cloud-iam.com/?mtm_campaign=keycloakify-deal&mtm_source=keycloakify-github"><strong>Managed Keycloak Provider</strong> - With Cloud-IAM powering your Keycloak clusters, you can sleep easy knowing you've got the software and the experts you need for operational excellence. Cloud IAM is a french company. </a>
 <br/>
 Use code <code>keycloakify5</code> at checkout for a 5% discount.
 </p>
