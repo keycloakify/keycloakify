@@ -5,6 +5,9 @@ import type { BuildContext } from "./shared/buildContext";
 import * as fs from "fs";
 import { downloadAndExtractArchive } from "./tools/downloadAndExtractArchive";
 import { maybeDelegateCommandToCustomHandler } from "./shared/customHandler_delegate";
+import fetch from "make-fetch-happen";
+import { SemVer } from "./tools/SemVer";
+import { assert } from "tsafe/assert";
 
 export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
@@ -36,7 +39,7 @@ export async function command(params: { buildContext: BuildContext }) {
 
     console.log("Initialize with the base email theme from which version of Keycloak?");
 
-    const { keycloakVersion } = await promptKeycloakVersion({
+    let { keycloakVersion } = await promptKeycloakVersion({
         // NOTE: This is arbitrary
         startingFromMajor: 17,
         excludeMajorVersions: [],
@@ -44,8 +47,32 @@ export async function command(params: { buildContext: BuildContext }) {
         buildContext
     });
 
+    const getUrl = (keycloakVersion: string) => {
+        return `https://repo1.maven.org/maven2/org/keycloak/keycloak-themes/${keycloakVersion}/keycloak-themes-${keycloakVersion}.jar`;
+    };
+
+    keycloakVersion = await (async () => {
+        const keycloakVersionParsed = SemVer.parse(keycloakVersion);
+
+        while (true) {
+            const url = getUrl(SemVer.stringify(keycloakVersionParsed));
+
+            const response = await fetch(url, buildContext.fetchOptions);
+
+            if (response.ok) {
+                break;
+            }
+
+            assert(keycloakVersionParsed.patch !== 0);
+
+            keycloakVersionParsed.patch--;
+        }
+
+        return SemVer.stringify(keycloakVersionParsed);
+    })();
+
     const { extractedDirPath } = await downloadAndExtractArchive({
-        url: `https://repo1.maven.org/maven2/org/keycloak/keycloak-themes/${keycloakVersion}/keycloak-themes-${keycloakVersion}.jar`,
+        url: getUrl(keycloakVersion),
         cacheDirPath: buildContext.cacheDirPath,
         fetchOptions: buildContext.fetchOptions,
         uniqueIdOfOnArchiveFile: "extractOnlyEmailTheme",
