@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { clsx } from "keycloakify/tools/clsx";
 import { getKcClsx } from "keycloakify/login/lib/kcClsx";
 import { useScript } from "keycloakify/login/pages/WebauthnAuthenticate.useScript";
@@ -16,12 +16,9 @@ export default function WebauthnAuthenticate(props: PageProps<Extract<KcContext,
     const { msg, msgStr, advancedMsg } = i18n;
 
     const authButtonId = "authenticateWebAuthnButton";
+    const [isAuthButtonPresent, setAuthButtonPresent] = useState(false);
 
-    useScript({
-        authButtonId,
-        kcContext,
-        i18n
-    });
+    useScript({ authButtonId, kcContext, i18n, isAuthButtonPresent });
 
     return (
         <Template
@@ -126,7 +123,7 @@ export default function WebauthnAuthenticate(props: PageProps<Extract<KcContext,
                         <input
                             id={authButtonId}
                             type="button"
-                            autoFocus
+                            ref={node => setAuthButtonPresent(!!node)}
                             value={msgStr("webauthn-doAuthenticate")}
                             className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonBlockClass", "kcButtonLargeClass")}
                         />
