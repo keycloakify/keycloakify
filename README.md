@@ -69,7 +69,7 @@ Project backers, we trust and recommend their services.
 <br/>
 
 <p align="center">
-    <i><a href="https://phasetwo.io/"><strong>Keycloak on Steroids as a Service</strong></a> - Keycloak community contributors of popular <a href="https://github.com/p2-inc#our-extensions-">extensions</a> providing free and dedicated <a href="https://phasetwo.io/hosting/">Keycloak hosting</a> and enterprise <a href="https://phasetwo.io/support/">Keycloak support</a> to businesses of all sizes.</i>
+    <i><a href="https://phasetwo.io/?utm_source=keycloakify"><strong>Keycloak as a Service</strong></a> - Keycloak community contributors of popular <a href="https://github.com/p2-inc#our-extensions-?utm_source=keycloakify">extensions</a> providing free and dedicated <a href="https://phasetwo.io/hosting/?utm_source=keycloakify">Keycloak hosting</a> and enterprise <a href="https://phasetwo.io/support/?utm_source=keycloakify">Keycloak support</a> to businesses of all sizes.</i>
 </p>
 
 <br/>
