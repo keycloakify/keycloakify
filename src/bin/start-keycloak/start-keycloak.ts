@@ -396,12 +396,12 @@ export async function command(params: {
         ...(realmJsonFilePath === undefined
             ? []
             : [
-                  `-v${SPACE_PLACEHOLDER}".${pathSep}${pathRelative(process.cwd(), realmJsonFilePath)}":/opt/keycloak/data/import/myrealm-realm.json`
+                  `-v${SPACE_PLACEHOLDER}"${realmJsonFilePath}":/opt/keycloak/data/import/myrealm-realm.json`
               ]),
-        `-v${SPACE_PLACEHOLDER}".${pathSep}${pathRelative(process.cwd(), jarFilePath_cacheDir)}":/opt/keycloak/providers/keycloak-theme.jar`,
+        `-v${SPACE_PLACEHOLDER}"${jarFilePath_cacheDir}":/opt/keycloak/providers/keycloak-theme.jar`,
         ...extensionJarFilePaths.map(
             jarFilePath =>
-                `-v${SPACE_PLACEHOLDER}".${pathSep}${pathRelative(process.cwd(), jarFilePath)}":/opt/keycloak/providers/${pathBasename(jarFilePath)}`
+                `-v${SPACE_PLACEHOLDER}"${jarFilePath}":/opt/keycloak/providers/${pathBasename(jarFilePath)}`
         ),
         ...(keycloakMajorVersionNumber <= 20
             ? [`-e${SPACE_PLACEHOLDER}JAVA_OPTS=-Dkeycloak.profile=preview`]
@@ -424,7 +424,7 @@ export async function command(params: {
             }))
             .map(
                 ({ localDirPath, containerDirPath }) =>
-                    `-v${SPACE_PLACEHOLDER}".${pathSep}${pathRelative(process.cwd(), localDirPath)}":${containerDirPath}:rw`
+                    `-v${SPACE_PLACEHOLDER}"${localDirPath}":${containerDirPath}:rw`
             ),
         ...buildContext.environmentVariables
             .map(({ name }) => ({ name, envValue: process.env[name] }))
@@ -450,6 +450,10 @@ export async function command(params: {
                   )
               ])
     ];
+
+    console.log("DEBUG issue #694");
+
+    console.log(JSON.stringify(dockerRunArgs, null, 2));
 
     console.log(
         chalk.blue(
