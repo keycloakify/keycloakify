@@ -4,6 +4,7 @@ import { useScript } from "keycloakify/login/pages/LoginRecoveryAuthnCodeConfig.
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
 import type { I18n } from "../i18n";
+import { useState } from "react";
 
 export default function LoginRecoveryAuthnCodeConfig(props: PageProps<Extract<KcContext, { pageId: "login-recovery-authn-code-config.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
@@ -18,8 +19,9 @@ export default function LoginRecoveryAuthnCodeConfig(props: PageProps<Extract<Kc
     const { msg, msgStr } = i18n;
 
     const olRecoveryCodesListId = "kc-recovery-codes-list";
+    const [isRecoveryCodesListPresent, setRecoveryCodesListPresent] = useState(false);
 
-    useScript({ olRecoveryCodesListId, i18n });
+    useScript({ olRecoveryCodesListId, i18n, isRecoveryCodesListPresent });
 
     return (
         <Template
@@ -42,7 +44,7 @@ export default function LoginRecoveryAuthnCodeConfig(props: PageProps<Extract<Kc
                 </div>
             </div>
 
-            <ol id={olRecoveryCodesListId} className={kcClsx("kcRecoveryCodesList")}>
+            <ol id={olRecoveryCodesListId} ref={node => setRecoveryCodesListPresent(!!node)} className={kcClsx("kcRecoveryCodesList")}>
                 {recoveryAuthnCodesConfigBean.generatedRecoveryAuthnCodesList.map((code, index) => (
                     <li key={index}>
                         <span>{index + 1}:</span> {code.slice(0, 4)}-{code.slice(4, 8)}-{code.slice(8)}
