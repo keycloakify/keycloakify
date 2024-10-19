@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
 import { assert } from "keycloakify/tools/assert";
 import { KcContext } from "keycloakify/login/KcContext/KcContext";
+import { waitForElementMountedOnDom } from "keycloakify/tools/waitForElementMountedOnDom";
 
 type KcContextLike = {
     url: {
@@ -67,6 +68,12 @@ export function useScript(params: { authButtonId: string; kcContext: KcContextLi
             return;
         }
 
-        insertScriptTags();
+        (async () => {
+            await waitForElementMountedOnDom({
+                elementId: authButtonId
+            });
+
+            insertScriptTags();
+        })();
     }, [isFetchingTranslations]);
 }
