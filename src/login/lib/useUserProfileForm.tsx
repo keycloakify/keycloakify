@@ -1,8 +1,9 @@
-import * as reactlessApi from "./getUserProfileApi";
+import * as reactlessApi from "./getUserProfileApi/index";
 import type { PasswordPolicies, Attribute, Validators } from "keycloakify/login/KcContext";
 import { useEffect, useState, useMemo, Fragment } from "react";
 import { assert, type Equals } from "tsafe/assert";
 import type { I18n } from "../i18n";
+export { getButtonToDisplayForMultivaluedAttributeField } from "./getUserProfileApi/index";
 
 export type FormFieldError = {
     errorMessage: JSX.Element;
