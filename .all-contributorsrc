@@ -300,6 +300,15 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "marvinruder",
+      "name": "Marvin A. Ruder",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18495294?v=4",
+      "profile": "https://mruder.dev",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
