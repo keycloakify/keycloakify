@@ -145,9 +145,7 @@ namespace internal {
     };
 }
 
-export function getUserProfileApi_noCache(
-    params: ParamsOfGetUserProfileApi
-): UserProfileApi {
+function getUserProfileApi_noCache(params: ParamsOfGetUserProfileApi): UserProfileApi {
     const { kcContext, doMakeUserConfirmPassword } = params;
 
     unFormatNumberOnSubmit();
