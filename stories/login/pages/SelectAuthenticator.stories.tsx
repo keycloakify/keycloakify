@@ -82,3 +82,24 @@ export const WithRealmTranslations: Story = {
         />
     )
 };
+
+/**
+ * WithoutAuthenticationSelections:
+ * - Purpose: Tests when no authentication methods are available for selection.
+ * - Scenario: The component renders without any authentication options, providing a default message or fallback.
+ * - Key Aspect: Ensures that the component gracefully handles the absence of available authentication methods.
+ */
+export const WithoutAuthenticationSelections: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                url: {
+                    loginAction: "/mock-login-action"
+                },
+                auth: {
+                    authenticationSelections: [] // No authentication methods available
+                }
+            }}
+        />
+    )
+};

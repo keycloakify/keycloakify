@@ -29,3 +29,33 @@ export const WithEmailAsUsername: Story = {
         />
     )
 };
+/**
+ * WithUsernameError:
+ * - Purpose: Tests behavior when an error occurs with the username input (e.g., invalid username).
+ * - Scenario: The component displays an error message next to the username input field.
+ * - Key Aspect: Ensures the username input shows error messages when validation fails.
+ */
+export const WithUsernameError: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                realm: {
+                    loginWithEmailAllowed: false,
+                    registrationEmailAsUsername: false,
+                    duplicateEmailsAllowed: false
+                },
+                url: {
+                    loginAction: "/mock-login-action",
+                    loginUrl: "/mock-login-url"
+                },
+                messagesPerField: {
+                    existsError: (field: string) => field === "username",
+                    get: () => "Invalid username"
+                },
+                auth: {
+                    attemptedUsername: "invalid_user"
+                }
+            }}
+        />
+    )
+};
