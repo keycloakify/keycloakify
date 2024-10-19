@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
+import { waitForElementMountedOnDom } from "keycloakify/tools/waitForElementMountedOnDom";
 
 type I18nLike = {
     msgStr: (key: "recovery-codes-download-file-header" | "recovery-codes-download-file-description" | "recovery-codes-download-file-date") => string;
@@ -137,6 +138,12 @@ export function useScript(params: { olRecoveryCodesListId: string; i18n: I18nLik
             return;
         }
 
-        insertScriptTags();
+        (async () => {
+            await waitForElementMountedOnDom({
+                elementId: olRecoveryCodesListId
+            });
+
+            insertScriptTags();
+        })();
     }, [isFetchingTranslations]);
 }
