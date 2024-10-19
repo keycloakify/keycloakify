@@ -57,3 +57,97 @@ export const WithError: Story = {
         />
     )
 };
+/**
+ * No active sessions scenario:
+ * - Simulates the scenario where no sessions are active for the user.
+ */
+export const NoActiveSessions: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                sessions: {
+                    sessions: []
+                },
+                stateChecker: "randomStateCheckerValue"
+            }}
+        />
+    )
+};
+
+/**
+ * Single session scenario:
+ * - Displays only one active session with session details.
+ */
+export const SingleSession: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                sessions: {
+                    sessions: [
+                        {
+                            expires: "2024-04-26T18:14:19Z",
+                            clients: ["account"],
+                            ipAddress: "172.20.0.1",
+                            started: "2024-04-26T08:14:19Z",
+                            lastAccess: "2024-04-26T08:30:54Z",
+                            id: "single-session-id"
+                        }
+                    ]
+                },
+                stateChecker: "anotherStateChecker"
+            }}
+        />
+    )
+};
+
+/**
+ * Multiple clients per session scenario:
+ * - Displays sessions where each session has multiple associated clients.
+ */
+export const MultipleClientsSession: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                sessions: {
+                    sessions: [
+                        {
+                            expires: "2024-04-26T18:14:19Z",
+                            clients: ["account", "admin-console", "another-client"],
+                            ipAddress: "172.20.0.1",
+                            started: "2024-04-26T08:14:19Z",
+                            lastAccess: "2024-04-26T08:30:54Z",
+                            id: "multiple-clients-session"
+                        }
+                    ]
+                },
+                stateChecker: "multiClientsStateChecker"
+            }}
+        />
+    )
+};
+
+/**
+ * Session without client details scenario:
+ * - Simulates a session where no client information is provided.
+ */
+export const SessionWithoutClients: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                sessions: {
+                    sessions: [
+                        {
+                            expires: "2024-04-26T18:14:19Z",
+                            clients: [], // No clients information
+                            ipAddress: "172.20.0.1",
+                            started: "2024-04-26T08:14:19Z",
+                            lastAccess: "2024-04-26T08:30:54Z",
+                            id: "no-clients-session"
+                        }
+                    ]
+                },
+                stateChecker: "noClientsStateChecker"
+            }}
+        />
+    )
+};
