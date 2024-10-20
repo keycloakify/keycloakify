@@ -67,9 +67,6 @@ export const LongMessage: Story = {
     render: () => (
         <KcPageStory
             kcContext={{
-                locale: {
-                    currentLanguageTag: "en"
-                },
                 "x-keycloakify": {
                     messages: {
                         termsText: `
