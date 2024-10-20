@@ -180,3 +180,64 @@ export const MoreThanOneTotpProviders: Story = {
         />
     )
 };
+
+// TOTP Enabled but No Existing OTP Credentials
+export const TotpEnabledNoOtpCredentials: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                totp: {
+                    enabled: true,
+                    totpSecretEncoded: "HE4W MSTC OBKU CY2M",
+                    otpCredentials: [] // No OTP Credentials
+                },
+                stateChecker: "stateChecker123",
+                url: {
+                    totpUrl: "http://localhost:8080/realms/myrealm/account/totp"
+                }
+            }}
+        />
+    )
+};
+
+// Manual Mode TOTP without Scanning
+export const ManualModeTotp: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                mode: "manual", // Manual mode
+                totp: {
+                    enabled: false,
+                    totpSecretEncoded: "HE4W MSTC OBKU CY2M",
+                    otpCredentials: []
+                },
+                stateChecker: "stateChecker123",
+                url: {
+                    totpUrl: "http://localhost:8080/realms/myrealm/account/totp"
+                }
+            }}
+        />
+    )
+};
+
+// Multiple OTP Devices Scenario
+export const MultipleOtpDevices: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                totp: {
+                    enabled: true,
+                    totpSecretEncoded: "G55E MZKC JFUD",
+                    otpCredentials: [
+                        { id: "1", userLabel: "Phone 1" },
+                        { id: "2", userLabel: "Tablet" }
+                    ]
+                },
+                stateChecker: "stateChecker123",
+                url: {
+                    totpUrl: "http://localhost:8080/realms/myrealm/account/totp"
+                }
+            }}
+        />
+    )
+};

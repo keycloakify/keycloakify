@@ -36,3 +36,61 @@ export const NotConnected: Story = {
         />
     )
 };
+
+/**
+ * RemoveLinkNotPossible:
+ * - Federated identities are connected, but the user cannot remove them due to restrictions.
+ */
+export const RemoveLinkNotPossible: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                pageId: "federatedIdentity.ftl",
+                federatedIdentity: {
+                    identities: [
+                        {
+                            providerId: "google",
+                            displayName: "Google",
+                            userName: "john.doe@gmail.com",
+                            connected: true
+                        }
+                    ],
+                    removeLinkPossible: false
+                },
+                stateChecker: "1234",
+                url: {
+                    socialUrl: "/social"
+                }
+            }}
+        />
+    )
+};
+
+/**
+ * AddLinkForUnconnectedIdentity:
+ * - The user has an identity that is not connected and can add it.
+ */
+export const AddLinkForUnconnectedIdentity: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                pageId: "federatedIdentity.ftl",
+                federatedIdentity: {
+                    identities: [
+                        {
+                            providerId: "github",
+                            displayName: "GitHub",
+                            userName: "",
+                            connected: false
+                        }
+                    ],
+                    removeLinkPossible: true
+                },
+                stateChecker: "1234",
+                url: {
+                    socialUrl: "/social"
+                }
+            }}
+        />
+    )
+};
