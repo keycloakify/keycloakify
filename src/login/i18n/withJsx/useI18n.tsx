@@ -92,7 +92,8 @@ export function createUseI18n<
 
         const styleElement = document.createElement("style");
         styleElement.attributes.setNamedItem(document.createAttribute(attributeName));
-        (styleElement.textContent = `[data-kc-msg] { display: inline-block; }`), document.head.prepend(styleElement);
+        styleElement.textContent = `[data-kc-msg] { display: inline-block; }`;
+        document.head.prepend(styleElement);
     }
 
     const { getI18n } = createGetI18n({ extraLanguageTranslations, messagesByLanguageTag_themeDefined });
