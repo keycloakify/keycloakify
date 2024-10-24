@@ -55,7 +55,6 @@ const commonThirdPartyDeps = [
         Buffer.from(modifiedPackageJsonContent, "utf8")
     );
 }
-
 const yarnGlobalDirPath = pathJoin(rootDirPath, ".yarn_home");
 
 fs.rmSync(yarnGlobalDirPath, { recursive: true, force: true });
@@ -63,6 +62,21 @@ fs.mkdirSync(yarnGlobalDirPath);
 
 const execYarnLink = (params: { targetModuleName?: string; cwd: string }) => {
     const { targetModuleName, cwd } = params;
+
+    if (targetModuleName === undefined) {
+        const packageJsonFilePath = pathJoin(cwd, "package.json");
+
+        const packageJson = JSON.parse(
+            fs.readFileSync(packageJsonFilePath).toString("utf8")
+        );
+
+        delete packageJson["packageManager"];
+
+        fs.writeFileSync(
+            packageJsonFilePath,
+            Buffer.from(JSON.stringify(packageJson, null, 2))
+        );
+    }
 
     const cmd = [
         "yarn",

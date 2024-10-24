@@ -1,11 +1,5 @@
 import * as fs from "fs";
-import {
-    join as pathJoin,
-    relative as pathRelative,
-    basename as pathBasename,
-    dirname as pathDirname,
-    sep as pathSep
-} from "path";
+import { join as pathJoin, basename as pathBasename, dirname as pathDirname } from "path";
 import { assert } from "tsafe/assert";
 import { run } from "../shared/run";
 import { cacheDirPath as cacheDirPath_base } from "../shared/cacheDirPath";
