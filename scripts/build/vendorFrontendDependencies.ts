@@ -3,7 +3,8 @@ import {
     join as pathJoin,
     relative as pathRelative,
     basename as pathBasename,
-    dirname as pathDirname
+    dirname as pathDirname,
+    sep as pathSep
 } from "path";
 import { assert } from "tsafe/assert";
 import { run } from "../shared/run";
@@ -45,9 +46,21 @@ export function vendorFrontendDependencies(params: { distDirPath: string }) {
                         ``,
                         `module.exports = {`,
                         `   mode: 'production',`,
-                        `  entry: '${filePath}',`,
+                        `  entry: path.join(...[__dirname, ${pathRelative(
+                            pathDirname(webpackConfigJsFilePath),
+                            filePath
+                        )
+                            .split(pathSep)
+                            .map(segment => `"${segment}"`)
+                            .join(", ")}]),`,
                         `  output: {`,
-                        `    path: '${webpackOutputDirPath}',`,
+                        `    path: path.join(...[__dirname, ${pathRelative(
+                            pathDirname(webpackConfigJsFilePath),
+                            webpackOutputDirPath
+                        )
+                            .split(pathSep)
+                            .map(segment => `"${segment}"`)
+                            .join(", ")}]),`,
                         `    filename: '${pathBasename(webpackOutputFilePath)}',`,
                         `    libraryTarget: 'module',`,
                         `  },`,
