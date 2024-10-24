@@ -91,7 +91,10 @@ const execYarnLink = (params: { targetModuleName?: string; cwd: string }) => {
         env: {
             ...process.env,
             ...(os.platform() === "win32"
-                ? { USERPROFILE: yarnGlobalDirPath }
+                ? {
+                      USERPROFILE: yarnGlobalDirPath,
+                      LOCALAPPDATA: yarnGlobalDirPath
+                  }
                 : { HOME: yarnGlobalDirPath })
         }
     });
