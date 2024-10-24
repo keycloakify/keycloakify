@@ -42,25 +42,12 @@ export function vendorFrontendDependencies(params: { distDirPath: string }) {
                 webpackConfigJsFilePath,
                 Buffer.from(
                     [
-                        `const path = require('path');`,
                         ``,
                         `module.exports = {`,
                         `   mode: 'production',`,
-                        `  entry: path.join(...[__dirname, ${pathRelative(
-                            pathDirname(webpackConfigJsFilePath),
-                            filePath
-                        )
-                            .split(pathSep)
-                            .map(segment => `"${segment}"`)
-                            .join(", ")}]),`,
+                        `  entry: Buffer.from("${Buffer.from(filePath, "utf8").toString("base64")}", "base64").toString("utf8"),`,
                         `  output: {`,
-                        `    path: path.join(...[__dirname, ${pathRelative(
-                            pathDirname(webpackConfigJsFilePath),
-                            webpackOutputDirPath
-                        )
-                            .split(pathSep)
-                            .map(segment => `"${segment}"`)
-                            .join(", ")}]),`,
+                        `    path: Buffer.from("${Buffer.from(webpackOutputDirPath, "utf8").toString("base64")}", "base64").toString("utf8"),`,
                         `    filename: '${pathBasename(webpackOutputFilePath)}',`,
                         `    libraryTarget: 'module',`,
                         `  },`,
