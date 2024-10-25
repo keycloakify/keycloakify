@@ -215,6 +215,19 @@ export declare namespace KcContext {
         recaptchaAction?: string;
         termsAcceptanceRequired?: boolean;
         messageHeader?: string;
+        realm: {
+            password: boolean;
+        };
+        social?: {
+            displayInfo: boolean;
+            providers?: {
+                loginUrl: string;
+                alias: string;
+                providerId: string;
+                displayName: string;
+                iconClasses?: string;
+            }[];
+        };
     };
 
     export type Info = Common & {
@@ -247,6 +260,7 @@ export declare namespace KcContext {
         };
         url: {
             loginResetCredentialsUrl: string;
+            registrationUrl: string;
         };
         auth: {
             attemptedUsername?: string;
