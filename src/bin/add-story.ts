@@ -16,9 +16,19 @@ import { assert, Equals } from "tsafe/assert";
 import type { BuildContext } from "./shared/buildContext";
 import chalk from "chalk";
 import { runFormat } from "./tools/runFormat";
+import { maybeDelegateCommandToCustomHandler } from "./shared/customHandler_delegate";
 
 export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
+
+    const { hasBeenHandled } = maybeDelegateCommandToCustomHandler({
+        commandName: "add-story",
+        buildContext
+    });
+
+    if (hasBeenHandled) {
+        return;
+    }
 
     console.log(chalk.cyan("Theme type:"));
 
