@@ -16,7 +16,7 @@ import { startRebuildOnSrcChange } from "./shared/startRebuildOnSrcChange";
             .filter(
                 basename =>
                     basename.includes("starter") &&
-                    basename.includes("angular") &&
+                    basename.includes("keycloakify") &&
                     fs.statSync(pathJoin(parentDirPath, basename)).isDirectory()
             );
 
