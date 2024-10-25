@@ -15,6 +15,7 @@ import { kebabCaseToCamelCase } from "./tools/kebabCaseToSnakeCase";
 import { assert, Equals } from "tsafe/assert";
 import type { BuildContext } from "./shared/buildContext";
 import chalk from "chalk";
+import { runFormat } from "./tools/runFormat";
 
 export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
@@ -120,6 +121,10 @@ export async function command(params: { buildContext: BuildContext }) {
     }
 
     fs.writeFileSync(targetFilePath, Buffer.from(componentCode, "utf8"));
+
+    runFormat({
+        packageJsonFilePath: buildContext.packageJsonFilePath
+    });
 
     console.log(
         [
