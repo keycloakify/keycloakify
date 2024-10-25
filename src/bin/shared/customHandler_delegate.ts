@@ -47,7 +47,6 @@ export function maybeDelegateCommandToCustomHandler(params: {
     })();
 
     if (!fs.readdirSync(nodeModulesBinDirPath).includes(BIN_NAME)) {
-        console.log(`Custom handler not found`);
         return { hasBeenHandled: false };
     }
 
