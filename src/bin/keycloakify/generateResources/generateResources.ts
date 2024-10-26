@@ -197,10 +197,13 @@ export async function generateResources(params: {
             buildContext,
             keycloakifyVersion: readThisNpmPackageVersion(),
             themeType,
-            fieldNames: readFieldNameUsage({
-                themeSrcDirPath: buildContext.themeSrcDirPath,
-                themeType
-            })
+            fieldNames: isSpa
+                ? []
+                : (assert(themeType !== "admin"),
+                  readFieldNameUsage({
+                      themeSrcDirPath: buildContext.themeSrcDirPath,
+                      themeType
+                  }))
         });
 
         [
