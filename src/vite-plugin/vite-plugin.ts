@@ -16,6 +16,7 @@ import {
 } from "../bin/shared/buildContext";
 import MagicString from "magic-string";
 import { command as updateKcGenCommand } from "../bin/update-kc-gen";
+import { replaceAll } from "../bin/tools/String.prototype.replaceAll";
 
 export namespace keycloakify {
     export type Params = BuildOptions & {
@@ -130,6 +131,8 @@ export function keycloakify(params: keycloakify.Params) {
             await updateKcGenCommand({ buildContext });
         },
         transform: (code, id) => {
+            id = replaceAll(id, "/", pathSep);
+
             assert(command !== undefined);
             assert(shouldGenerateSourcemap !== undefined);
 
