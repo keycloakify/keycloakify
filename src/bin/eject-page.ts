@@ -91,36 +91,27 @@ export async function command(params: { buildContext: BuildContext }) {
         );
 
         eject_entrypoint: {
-            const kcAccountUiTsxFileRelativePath =
-                `Kc${capitalize(themeType)}Ui.tsx` as const;
+            const kcUiTsxFileRelativePath = `Kc${capitalize(themeType)}Ui.tsx` as const;
 
-            const accountThemeSrcDirPath = pathJoin(
-                buildContext.themeSrcDirPath,
-                "account"
-            );
+            const themeSrcDirPath = pathJoin(buildContext.themeSrcDirPath, themeType);
 
-            const targetFilePath = pathJoin(
-                accountThemeSrcDirPath,
-                kcAccountUiTsxFileRelativePath
-            );
+            const targetFilePath = pathJoin(themeSrcDirPath, kcUiTsxFileRelativePath);
 
             if (fs.existsSync(targetFilePath)) {
                 break eject_entrypoint;
             }
 
-            fs.cpSync(
-                pathJoin(srcDirPath, kcAccountUiTsxFileRelativePath),
-                targetFilePath
-            );
+            fs.cpSync(pathJoin(srcDirPath, kcUiTsxFileRelativePath), targetFilePath);
 
             {
-                const kcPageTsxFilePath = pathJoin(accountThemeSrcDirPath, "KcPage.tsx");
+                const kcPageTsxFilePath = pathJoin(themeSrcDirPath, "KcPage.tsx");
 
                 const kcPageTsxCode = fs.readFileSync(kcPageTsxFilePath).toString("utf8");
 
-                const componentName = pathBasename(
-                    kcAccountUiTsxFileRelativePath
-                ).replace(/.tsx$/, "");
+                const componentName = pathBasename(kcUiTsxFileRelativePath).replace(
+                    /.tsx$/,
+                    ""
+                );
 
                 const modifiedKcPageTsxCode = kcPageTsxCode.replace(
                     `@keycloakify/keycloak-${themeType}-ui/${componentName}`,
@@ -142,8 +133,8 @@ export async function command(params: { buildContext: BuildContext }) {
                 [
                     `To help you get started ${chalk.bold(pathRelative(process.cwd(), targetFilePath))} has been copied into your project.`,
                     `The next step is usually to eject ${chalk.bold(routesTsxFilePath)}`,
-                    `with \`cp ${routesTsxFilePath} ${pathRelative(process.cwd(), accountThemeSrcDirPath)}\``,
-                    `then update the import of routes in ${kcAccountUiTsxFileRelativePath}.`
+                    `with \`cp ${routesTsxFilePath} ${pathRelative(process.cwd(), themeSrcDirPath)}\``,
+                    `then update the import of routes in ${kcUiTsxFileRelativePath}.`
                 ].join("\n")
             );
         }
