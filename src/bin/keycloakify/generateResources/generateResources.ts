@@ -19,7 +19,8 @@ import {
     type ThemeType,
     LOGIN_THEME_PAGE_IDS,
     ACCOUNT_THEME_PAGE_IDS,
-    WELL_KNOWN_DIRECTORY_BASE_NAME
+    WELL_KNOWN_DIRECTORY_BASE_NAME,
+    THEME_TYPES
 } from "../../shared/constants";
 import { assert, type Equals } from "tsafe/assert";
 import { readFieldNameUsage } from "./readFieldNameUsage";
@@ -78,15 +79,29 @@ export async function generateResources(params: {
         Record<ThemeType, (params: { messageDirPath: string; themeName: string }) => void>
     > = {};
 
-    for (const themeType of ["login", "account"] as const) {
+    for (const themeType of THEME_TYPES) {
         if (!buildContext.implementedThemeTypes[themeType].isImplemented) {
             continue;
         }
 
-        const isForAccountSpa =
-            themeType === "account" &&
-            (assert(buildContext.implementedThemeTypes.account.isImplemented),
-            buildContext.implementedThemeTypes.account.type === "Single-Page");
+        const getAccountThemeType = () => {
+            assert(themeType === "account");
+
+            assert(buildContext.implementedThemeTypes.account.isImplemented);
+
+            return buildContext.implementedThemeTypes.account.type;
+        };
+
+        const isSpa = (() => {
+            switch (themeType) {
+                case "login":
+                    return false;
+                case "account":
+                    return getAccountThemeType() === "Single-Page";
+                case "admin":
+                    return true;
+            }
+        })();
 
         const themeTypeDirPath = getThemeTypeDirPath({ themeName, themeType });
 
@@ -101,7 +116,7 @@ export async function generateResources(params: {
             rmSync(destDirPath, { recursive: true, force: true });
 
             if (
-                themeType === "account" &&
+                themeType !== "login" &&
                 buildContext.implementedThemeTypes.login.isImplemented
             ) {
                 // NOTE: We prevent doing it twice, it has been done for the login theme.
@@ -194,10 +209,14 @@ export async function generateResources(params: {
                     case "login":
                         return LOGIN_THEME_PAGE_IDS;
                     case "account":
-                        return isForAccountSpa ? ["index.ftl"] : ACCOUNT_THEME_PAGE_IDS;
+                        return getAccountThemeType() === "Single-Page"
+                            ? ["index.ftl"]
+                            : ACCOUNT_THEME_PAGE_IDS;
+                    case "admin":
+                        return ["index.ftl"];
                 }
             })(),
-            ...(isForAccountSpa
+            ...(isSpa
                 ? []
                 : readExtraPagesNames({
                       themeType,
@@ -215,9 +234,11 @@ export async function generateResources(params: {
         let languageTags: string[] | undefined = undefined;
 
         i18n_messages_generation: {
-            if (isForAccountSpa) {
+            if (isSpa) {
                 break i18n_messages_generation;
             }
+
+            assert(themeType !== "admin");
 
             const wrap = generateMessageProperties({
                 buildContext,
@@ -231,16 +252,15 @@ export async function generateResources(params: {
                 writeMessagePropertiesFiles;
         }
 
-        bring_in_account_v3_i18n_messages: {
-            if (!buildContext.implementedThemeTypes.account.isImplemented) {
-                break bring_in_account_v3_i18n_messages;
-            }
-            if (buildContext.implementedThemeTypes.account.type !== "Single-Page") {
-                break bring_in_account_v3_i18n_messages;
+        bring_in_spas_messages: {
+            if (!isSpa) {
+                break bring_in_spas_messages;
             }
 
+            assert(themeType !== "login");
+
             const accountUiDirPath = child_process
-                .execSync("npm list @keycloakify/keycloak-account-ui --parseable", {
+                .execSync(`npm list @keycloakify/keycloak-${themeType}-ui --parseable`, {
                     cwd: pathDirname(buildContext.packageJsonFilePath)
                 })
                 .toString("utf8")
@@ -255,7 +275,7 @@ export async function generateResources(params: {
             }
 
             const messagesDirPath_dest = pathJoin(
-                getThemeTypeDirPath({ themeName, themeType: "account" }),
+                getThemeTypeDirPath({ themeName, themeType }),
                 "messages"
             );
 
@@ -267,7 +287,7 @@ export async function generateResources(params: {
             apply_theme_changes: {
                 const messagesDirPath_theme = pathJoin(
                     buildContext.themeSrcDirPath,
-                    "account",
+                    themeType,
                     "messages"
                 );
 
@@ -316,7 +336,7 @@ export async function generateResources(params: {
         }
 
         keycloak_static_resources: {
-            if (isForAccountSpa) {
+            if (isSpa) {
                 break keycloak_static_resources;
             }
 
@@ -339,13 +359,22 @@ export async function generateResources(params: {
                     `parent=${(() => {
                         switch (themeType) {
                             case "account":
-                                return isForAccountSpa ? "base" : "account-v1";
+                                switch (getAccountThemeType()) {
+                                    case "Multi-Page":
+                                        return "account-v1";
+                                    case "Single-Page":
+                                        return "base";
+                                }
                             case "login":
                                 return "keycloak";
+                            case "admin":
+                                return "base";
                         }
                         assert<Equals<typeof themeType, never>>(false);
                     })()}`,
-                    ...(isForAccountSpa ? ["deprecatedMode=false"] : []),
+                    ...(themeType === "account" && getAccountThemeType() === "Single-Page"
+                        ? ["deprecatedMode=false"]
+                        : []),
                     ...(buildContext.extraThemeProperties ?? []),
                     ...buildContext.environmentVariables.map(
                         ({ name, default: defaultValue }) =>

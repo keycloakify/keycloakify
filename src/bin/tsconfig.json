@@ -10,5 +10,5 @@
         "rootDir": "."
     },
     "include": ["**/*.ts", "**/*.tsx"],
-    "exclude": ["initialize-account-theme/src"]
+    "exclude": ["initialize-account-theme/src", "initialize-admin-theme/src"]
 }

@@ -1,0 +1,150 @@
+import { join as pathJoin, relative as pathRelative, dirname as pathDirname } from "path";
+import type { BuildContext } from "../shared/buildContext";
+import * as fs from "fs";
+import chalk from "chalk";
+import {
+    getLatestsSemVersionedTag,
+    type BuildContextLike as BuildContextLike_getLatestsSemVersionedTag
+} from "../shared/getLatestsSemVersionedTag";
+import { SemVer } from "../tools/SemVer";
+import fetch from "make-fetch-happen";
+import { z } from "zod";
+import { assert, type Equals } from "tsafe/assert";
+import { is } from "tsafe/is";
+import { id } from "tsafe/id";
+import { npmInstall } from "../tools/npmInstall";
+import { copyBoilerplate } from "./copyBoilerplate";
+import { getThisCodebaseRootDirPath } from "../tools/getThisCodebaseRootDirPath";
+
+type BuildContextLike = BuildContextLike_getLatestsSemVersionedTag & {
+    fetchOptions: BuildContext["fetchOptions"];
+    packageJsonFilePath: string;
+};
+
+assert<BuildContext extends BuildContextLike ? true : false>();
+
+export async function initializeAdminTheme(params: {
+    adminThemeSrcDirPath: string;
+    buildContext: BuildContextLike;
+}) {
+    const { adminThemeSrcDirPath, buildContext } = params;
+
+    const OWNER = "keycloakify";
+    const REPO = "keycloak-admin-ui";
+
+    const [semVersionedTag] = await getLatestsSemVersionedTag({
+        owner: OWNER,
+        repo: REPO,
+        count: 1,
+        doIgnoreReleaseCandidates: false,
+        buildContext
+    });
+
+    const dependencies = await fetch(
+        `https://raw.githubusercontent.com/${OWNER}/${REPO}/${semVersionedTag.tag}/dependencies.gen.json`,
+        buildContext.fetchOptions
+    )
+        .then(r => r.json())
+        .then(
+            (() => {
+                type Dependencies = {
+                    dependencies: Record<string, string>;
+                    devDependencies?: Record<string, string>;
+                };
+
+                const zDependencies = (() => {
+                    type TargetType = Dependencies;
+
+                    const zTargetType = z.object({
+                        dependencies: z.record(z.string()),
+                        devDependencies: z.record(z.string()).optional()
+                    });
+
+                    assert<Equals<z.infer<typeof zTargetType>, TargetType>>();
+
+                    return id<z.ZodType<TargetType>>(zTargetType);
+                })();
+
+                return o => zDependencies.parse(o);
+            })()
+        );
+
+    dependencies.dependencies["@keycloakify/keycloak-admin-ui"] = SemVer.stringify(
+        semVersionedTag.version
+    );
+
+    const parsedPackageJson = (() => {
+        type ParsedPackageJson = {
+            dependencies?: Record<string, string>;
+            devDependencies?: Record<string, string>;
+        };
+
+        const zParsedPackageJson = (() => {
+            type TargetType = ParsedPackageJson;
+
+            const zTargetType = z.object({
+                dependencies: z.record(z.string()).optional(),
+                devDependencies: z.record(z.string()).optional()
+            });
+
+            assert<Equals<z.infer<typeof zTargetType>, TargetType>>();
+
+            return id<z.ZodType<TargetType>>(zTargetType);
+        })();
+        const parsedPackageJson = JSON.parse(
+            fs.readFileSync(buildContext.packageJsonFilePath).toString("utf8")
+        );
+
+        zParsedPackageJson.parse(parsedPackageJson);
+
+        assert(is<ParsedPackageJson>(parsedPackageJson));
+
+        return parsedPackageJson;
+    })();
+
+    parsedPackageJson.dependencies = {
+        ...parsedPackageJson.dependencies,
+        ...dependencies.dependencies
+    };
+
+    parsedPackageJson.devDependencies = {
+        ...parsedPackageJson.devDependencies,
+        ...dependencies.devDependencies
+    };
+
+    if (Object.keys(parsedPackageJson.devDependencies).length === 0) {
+        delete parsedPackageJson.devDependencies;
+    }
+
+    fs.writeFileSync(
+        buildContext.packageJsonFilePath,
+        JSON.stringify(parsedPackageJson, undefined, 4)
+    );
+
+    run_npm_install: {
+        if (
+            JSON.parse(
+                fs
+                    .readFileSync(pathJoin(getThisCodebaseRootDirPath(), "package.json"))
+                    .toString("utf8")
+            )["version"] === "0.0.0"
+        ) {
+            //NOTE: Linked version
+            break run_npm_install;
+        }
+
+        npmInstall({ packageJsonDirPath: pathDirname(buildContext.packageJsonFilePath) });
+    }
+
+    copyBoilerplate({ adminThemeSrcDirPath });
+
+    console.log(
+        [
+            chalk.green("The Admin theme has been successfully initialized."),
+            `Using Admin UI of Keycloak version: ${chalk.bold(semVersionedTag.tag.split("-")[0])}`,
+            `Directory created: ${chalk.bold(pathRelative(process.cwd(), adminThemeSrcDirPath))}`,
+            `Dependencies added to your project's package.json: `,
+            chalk.bold(JSON.stringify(dependencies, null, 2))
+        ].join("\n")
+    );
+}

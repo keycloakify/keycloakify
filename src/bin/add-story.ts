@@ -5,8 +5,7 @@ import {
     ACCOUNT_THEME_PAGE_IDS,
     type LoginThemePageId,
     type AccountThemePageId,
-    THEME_TYPES,
-    type ThemeType
+    THEME_TYPES
 } from "./shared/constants";
 import { capitalize } from "tsafe/capitalize";
 import * as fs from "fs";
@@ -39,6 +38,8 @@ export async function command(params: { buildContext: BuildContext }) {
                     return buildContext.implementedThemeTypes.account.isImplemented;
                 case "login":
                     return buildContext.implementedThemeTypes.login.isImplemented;
+                case "admin":
+                    return buildContext.implementedThemeTypes.admin.isImplemented;
             }
             assert<Equals<typeof themeType, never>>(false);
         });
@@ -49,7 +50,7 @@ export async function command(params: { buildContext: BuildContext }) {
             return values[0];
         }
 
-        const { value } = await cliSelect<ThemeType>({
+        const { value } = await cliSelect({
             values
         }).catch(() => {
             process.exit(-1);
@@ -68,6 +69,16 @@ export async function command(params: { buildContext: BuildContext }) {
         );
 
         process.exit(0);
+        return;
+    }
+
+    if (themeType === "admin") {
+        console.log(
+            `${chalk.red("✗")} Sorry, there is no Storybook support for the Account UI.`
+        );
+
+        process.exit(0);
+        return;
     }
 
     console.log(`→ ${themeType}`);

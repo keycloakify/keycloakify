@@ -1,12 +1,12 @@
 import type { BuildContext } from "../shared/buildContext";
 import cliSelect from "cli-select";
-import child_process from "child_process";
 import chalk from "chalk";
 import { join as pathJoin, relative as pathRelative } from "path";
 import * as fs from "fs";
 import { updateAccountThemeImplementationInConfig } from "./updateAccountThemeImplementationInConfig";
 import { command as updateKcGenCommand } from "../update-kc-gen";
 import { maybeDelegateCommandToCustomHandler } from "../shared/customHandler_delegate";
+import { exitIfUncommittedChanges } from "../shared/exitIfUncommittedChanges";
 
 export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
@@ -38,37 +38,9 @@ export async function command(params: { buildContext: BuildContext }) {
         process.exit(-1);
     }
 
-    exit_if_uncommitted_changes: {
-        let hasUncommittedChanges: boolean | undefined = undefined;
-
-        try {
-            hasUncommittedChanges =
-                child_process
-                    .execSync(`git status --porcelain`, {
-                        cwd: buildContext.projectDirPath
-                    })
-                    .toString()
-                    .trim() !== "";
-        } catch {
-            // Probably not a git repository
-            break exit_if_uncommitted_changes;
-        }
-
-        if (!hasUncommittedChanges) {
-            break exit_if_uncommitted_changes;
-        }
-        console.warn(
-            [
-                chalk.red(
-                    "Please commit or stash your changes before running this command.\n"
-                ),
-                "This command will modify your project's files so it's better to have a clean working directory",
-                "so that you can easily see what has been changed and revert if needed."
-            ].join(" ")
-        );
-
-        process.exit(-1);
-    }
+    exitIfUncommittedChanges({
+        projectDirPath: buildContext.projectDirPath
+    });
 
     const { value: accountThemeType } = await cliSelect({
         values: ["Single-Page" as const, "Multi-Page" as const]

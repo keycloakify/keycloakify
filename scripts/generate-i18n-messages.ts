@@ -37,7 +37,7 @@ async function generateI18nMessages() {
 
     const record: { [themeType: string]: { [language: string]: Dictionary } } = {};
 
-    for (const themeType of THEME_TYPES) {
+    for (const themeType of THEME_TYPES.filter(themeType => themeType !== "admin")) {
         const { extractedDirPath } = await downloadKeycloakDefaultTheme({
             keycloakVersionId: (() => {
                 switch (themeType) {

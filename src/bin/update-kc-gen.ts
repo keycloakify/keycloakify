@@ -22,6 +22,7 @@ export async function command(params: { buildContext: BuildContext }) {
 
     const hasLoginTheme = buildContext.implementedThemeTypes.login.isImplemented;
     const hasAccountTheme = buildContext.implementedThemeTypes.account.isImplemented;
+    const hasAdminTheme = buildContext.implementedThemeTypes.admin.isImplemented;
 
     const newContent = [
         ``,
@@ -54,6 +55,7 @@ export async function command(params: { buildContext: BuildContext }) {
         `export type KcContext =`,
         hasLoginTheme && `    | import("./login/KcContext").KcContext`,
         hasAccountTheme && `    | import("./account/KcContext").KcContext`,
+        hasAdminTheme && `    | import("./admin/KcContext").KcContext`,
         `    ;`,
         ``,
         `declare global {`,
@@ -66,6 +68,8 @@ export async function command(params: { buildContext: BuildContext }) {
             `export const KcLoginPage = lazy(() => import("./login/KcPage"));`,
         hasAccountTheme &&
             `export const KcAccountPage = lazy(() => import("./account/KcPage"));`,
+        hasAdminTheme &&
+            `export const KcAdminPage = lazy(() => import("./admin/KcPage"));`,
         ``,
         `export function KcPage(`,
         `    props: {`,
@@ -82,6 +86,8 @@ export async function command(params: { buildContext: BuildContext }) {
             `                    case "login": return <KcLoginPage kcContext={kcContext} />;`,
         hasAccountTheme &&
             `                    case "account": return <KcAccountPage kcContext={kcContext} />;`,
+        hasAdminTheme &&
+            `                    case "admin": return <KcAdminPage kcContext={kcContext} />;`,
         `                }`,
         `            })()}`,
         `        </Suspense>`,

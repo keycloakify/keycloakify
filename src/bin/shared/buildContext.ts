@@ -52,6 +52,7 @@ export type BuildContext = {
         account:
             | { isImplemented: false }
             | { isImplemented: true; type: "Single-Page" | "Multi-Page" };
+        admin: { isImplemented: boolean };
     };
     packageJsonFilePath: string;
     bundler: "vite" | "webpack";
@@ -448,7 +449,10 @@ export function getBuildContext(params: {
                 isImplemented: true,
                 type: buildOptions.accountThemeImplementation
             };
-        })()
+        })(),
+        admin: {
+            isImplemented: fs.existsSync(pathJoin(themeSrcDirPath, "admin"))
+        }
     };
 
     if (

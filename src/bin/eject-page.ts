@@ -7,8 +7,7 @@ import {
     ACCOUNT_THEME_PAGE_IDS,
     type LoginThemePageId,
     type AccountThemePageId,
-    THEME_TYPES,
-    type ThemeType
+    THEME_TYPES
 } from "./shared/constants";
 import { capitalize } from "tsafe/capitalize";
 import * as fs from "fs";
@@ -46,6 +45,8 @@ export async function command(params: { buildContext: BuildContext }) {
                     return buildContext.implementedThemeTypes.account.isImplemented;
                 case "login":
                     return buildContext.implementedThemeTypes.login.isImplemented;
+                case "admin":
+                    return buildContext.implementedThemeTypes.admin.isImplemented;
             }
             assert<Equals<typeof themeType, never>>(false);
         });
@@ -56,7 +57,7 @@ export async function command(params: { buildContext: BuildContext }) {
             return values[0];
         }
 
-        const { value } = await cliSelect<ThemeType>({
+        const { value } = await cliSelect({
             values
         }).catch(() => {
             process.exit(-1);
@@ -66,21 +67,22 @@ export async function command(params: { buildContext: BuildContext }) {
     })();
 
     if (
-        themeType === "account" &&
-        (assert(buildContext.implementedThemeTypes.account.isImplemented),
-        buildContext.implementedThemeTypes.account.type === "Single-Page")
+        themeType === "admin" ||
+        (themeType === "account" &&
+            (assert(buildContext.implementedThemeTypes.account.isImplemented),
+            buildContext.implementedThemeTypes.account.type === "Single-Page"))
     ) {
         const srcDirPath = pathJoin(
             pathDirname(buildContext.packageJsonFilePath),
             "node_modules",
             "@keycloakify",
-            "keycloak-account-ui",
+            `keycloak-${themeType}-ui`,
             "src"
         );
 
         console.log(
             [
-                `There isn't an interactive CLI to eject components of the Single-Page Account theme.`,
+                `There isn't an interactive CLI to eject components of the ${themeType} UI.`,
                 `You can however copy paste into your codebase the any file or directory from the following source directory:`,
                 ``,
                 `${chalk.bold(pathJoin(pathRelative(process.cwd(), srcDirPath)))}`,
@@ -89,7 +91,8 @@ export async function command(params: { buildContext: BuildContext }) {
         );
 
         eject_entrypoint: {
-            const kcAccountUiTsxFileRelativePath = "KcAccountUi.tsx";
+            const kcAccountUiTsxFileRelativePath =
+                `Kc${capitalize(themeType)}Ui.tsx` as const;
 
             const accountThemeSrcDirPath = pathJoin(
                 buildContext.themeSrcDirPath,
@@ -120,7 +123,7 @@ export async function command(params: { buildContext: BuildContext }) {
                 ).replace(/.tsx$/, "");
 
                 const modifiedKcPageTsxCode = kcPageTsxCode.replace(
-                    `@keycloakify/keycloak-account-ui/${componentName}`,
+                    `@keycloakify/keycloak-${themeType}-ui/${componentName}`,
                     `./${componentName}`
                 );
 
@@ -146,6 +149,7 @@ export async function command(params: { buildContext: BuildContext }) {
         }
 
         process.exit(0);
+        return;
     }
 
     console.log(`→ ${themeType}`);

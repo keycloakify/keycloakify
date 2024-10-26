@@ -11,6 +11,7 @@ export type CommandName =
     | "eject-page"
     | "add-story"
     | "initialize-account-theme"
+    | "initialize-admin-theme"
     | "initialize-email-theme"
     | "copy-keycloak-resources-to-public";
 

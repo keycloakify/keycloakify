@@ -4,7 +4,7 @@ export const WELL_KNOWN_DIRECTORY_BASE_NAME = {
     DIST: "dist"
 } as const;
 
-export const THEME_TYPES = ["login", "account"] as const;
+export const THEME_TYPES = ["login", "account", "admin"] as const;
 
 export type ThemeType = (typeof THEME_TYPES)[number];
 
