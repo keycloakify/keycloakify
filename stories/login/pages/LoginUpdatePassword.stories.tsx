@@ -13,9 +13,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-    render: () => <KcPageStory />
-};
+export const Default: Story = {};
 
 /**
  * WithPasswordError:
@@ -24,20 +22,18 @@ export const Default: Story = {
  * - Key Aspect: Ensures the password input field shows an error message when validation fails.
  */
 export const WithPasswordError: Story = {
-    render: () => (
-        <KcPageStory
-            kcContext={{
-                url: {
-                    loginAction: "/mock-login-action"
-                },
-                messagesPerField: {
-                    existsError: (field: string) => field === "password",
-                    get: () => "Password must be at least 8 characters long."
-                },
-                isAppInitiatedAction: false
-            }}
-        />
-    )
+    args: {
+        kcContext: {
+            url: {
+                loginAction: "/mock-login-action"
+            },
+            messagesPerField: {
+                existsError: (field: string) => field === "password",
+                get: () => "Password must be at least 8 characters long."
+            },
+            isAppInitiatedAction: false
+        }
+    }
 };
 
 /**
@@ -47,18 +43,16 @@ export const WithPasswordError: Story = {
  * - Key Aspect: Ensures that the password confirmation field shows an error when passwords do not match.
  */
 export const WithPasswordConfirmError: Story = {
-    render: () => (
-        <KcPageStory
-            kcContext={{
-                url: {
-                    loginAction: "/mock-login-action"
-                },
-                messagesPerField: {
-                    existsError: (field: string) => field === "password-confirm",
-                    get: () => "Passwords do not match."
-                },
-                isAppInitiatedAction: false
-            }}
-        />
-    )
+    args: {
+        kcContext: {
+            url: {
+                loginAction: "/mock-login-action"
+            },
+            messagesPerField: {
+                existsError: (field: string) => field === "password-confirm",
+                get: () => "Passwords do not match."
+            },
+            isAppInitiatedAction: false
+        }
+    }
 };

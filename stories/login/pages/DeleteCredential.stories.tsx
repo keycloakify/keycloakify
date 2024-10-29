@@ -13,16 +13,12 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-    render: () => <KcPageStory />
-};
+export const Default: Story = {};
 export const WithCustomCredentialLabel: Story = {
-    render: () => (
-        <KcPageStory
-            kcContext={{
-                credentialLabel: "Test Credential",
-                url: { loginAction: "/login-action" }
-            }}
-        />
-    )
+    args: {
+        kcContext: {
+            credentialLabel: "Test Credential",
+            url: { loginAction: "/login-action" }
+        }
+    }
 };

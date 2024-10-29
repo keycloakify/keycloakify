@@ -49,17 +49,15 @@ export const Default: Story = {
  * - Key Aspect: Ensures the component renders correctly when there are no requested scopes.
  */
 export const WithoutScopes: Story = {
-    render: () => (
-        <KcPageStory
-            kcContext={{
-                ...mockKcContext,
-                oauth: {
-                    ...mockKcContext.oauth,
-                    clientScopesRequested: []
-                }
-            }}
-        />
-    )
+    args: {
+        kcContext: {
+            ...mockKcContext,
+            oauth: {
+                ...mockKcContext.oauth,
+                clientScopesRequested: []
+            }
+        }
+    }
 };
 
 /**
@@ -69,18 +67,16 @@ export const WithoutScopes: Story = {
  * - Key Aspect: Ensures that the component can display error messages when form submission fails.
  */
 export const WithFormSubmissionError: Story = {
-    render: () => (
-        <KcPageStory
-            kcContext={{
-                ...mockKcContext,
-                url: {
-                    oauthAction: "/error"
-                },
-                message: {
-                    type: "error",
-                    summary: "An error occurred during form submission."
-                }
-            }}
-        />
-    )
+    args: {
+        kcContext: {
+            ...mockKcContext,
+            url: {
+                oauthAction: "/error"
+            },
+            message: {
+                type: "error",
+                summary: "An error occurred during form submission."
+            }
+        }
+    }
 };

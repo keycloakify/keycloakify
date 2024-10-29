@@ -13,52 +13,42 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-    render: () => <KcPageStory />
-};
+export const Default: Story = {};
 
 export const WithManualSetUp: Story = {
-    render: () => (
-        <KcPageStory
-            kcContext={{
-                mode: "manual"
-            }}
-        />
-    )
+    args: {
+        kcContext: {
+            mode: "manual"
+        }
+    }
 };
 
 export const WithError: Story = {
-    render: () => (
-        <KcPageStory
-            kcContext={{
-                messagesPerField: {
-                    get: (fieldName: string) => (fieldName === "totp" ? "Invalid TOTP" : undefined),
-                    exists: (fieldName: string) => fieldName === "totp",
-                    existsError: (fieldName: string) => fieldName === "totp",
-                    printIfExists: <T,>(fieldName: string, x: T) => (fieldName === "totp" ? x : undefined)
-                }
-            }}
-        />
-    )
+    args: {
+        kcContext: {
+            messagesPerField: {
+                get: (fieldName: string) => (fieldName === "totp" ? "Invalid TOTP" : undefined),
+                exists: (fieldName: string) => fieldName === "totp",
+                existsError: (fieldName: string) => fieldName === "totp",
+                printIfExists: <T,>(fieldName: string, x: T) => (fieldName === "totp" ? x : undefined)
+            }
+        }
+    }
 };
 export const WithAppInitiatedAction: Story = {
-    render: () => (
-        <KcPageStory
-            kcContext={{
-                isAppInitiatedAction: true
-            }}
-        />
-    )
+    args: {
+        kcContext: {
+            isAppInitiatedAction: true
+        }
+    }
 };
 
 export const WithPreFilledUserLabel: Story = {
-    render: () => (
-        <KcPageStory
-            kcContext={{
-                totp: {
-                    otpCredentials: [{ userLabel: "MyDevice" }]
-                }
-            }}
-        />
-    )
+    args: {
+        kcContext: {
+            totp: {
+                otpCredentials: [{ userLabel: "MyDevice" }]
+            }
+        }
+    }
 };

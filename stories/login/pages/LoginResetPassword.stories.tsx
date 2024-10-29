@@ -13,21 +13,17 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-    render: () => <KcPageStory />
-};
+export const Default: Story = {};
 
 export const WithEmailAsUsername: Story = {
-    render: () => (
-        <KcPageStory
-            kcContext={{
-                realm: {
-                    loginWithEmailAllowed: true,
-                    registrationEmailAsUsername: true
-                }
-            }}
-        />
-    )
+    args: {
+        kcContext: {
+            realm: {
+                loginWithEmailAllowed: true,
+                registrationEmailAsUsername: true
+            }
+        }
+    }
 };
 /**
  * WithUsernameError:
@@ -36,26 +32,24 @@ export const WithEmailAsUsername: Story = {
  * - Key Aspect: Ensures the username input shows error messages when validation fails.
  */
 export const WithUsernameError: Story = {
-    render: () => (
-        <KcPageStory
-            kcContext={{
-                realm: {
-                    loginWithEmailAllowed: false,
-                    registrationEmailAsUsername: false,
-                    duplicateEmailsAllowed: false
-                },
-                url: {
-                    loginAction: "/mock-login-action",
-                    loginUrl: "/mock-login-url"
-                },
-                messagesPerField: {
-                    existsError: (field: string) => field === "username",
-                    get: () => "Invalid username"
-                },
-                auth: {
-                    attemptedUsername: "invalid_user"
-                }
-            }}
-        />
-    )
+    args: {
+        kcContext: {
+            realm: {
+                loginWithEmailAllowed: false,
+                registrationEmailAsUsername: false,
+                duplicateEmailsAllowed: false
+            },
+            url: {
+                loginAction: "/mock-login-action",
+                loginUrl: "/mock-login-url"
+            },
+            messagesPerField: {
+                existsError: (field: string) => field === "username",
+                get: () => "Invalid username"
+            },
+            auth: {
+                attemptedUsername: "invalid_user"
+            }
+        }
+    }
 };

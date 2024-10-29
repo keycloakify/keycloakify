@@ -13,9 +13,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-    render: () => <KcPageStory />
-};
+export const Default: Story = {};
 
 /**
  * WithErrorMessage:
@@ -24,19 +22,17 @@ export const Default: Story = {
  * - Key Aspect: Ensures the error message is properly shown when the user enters an invalid code.
  */
 export const WithErrorMessage: Story = {
-    render: () => (
-        <KcPageStory
-            kcContext={{
-                url: {
-                    oauth2DeviceVerificationAction: "/mock-oauth2-device-verification"
-                },
-                message: {
-                    summary: "The user code you entered is invalid. Please try again.",
-                    type: "error"
-                }
-            }}
-        />
-    )
+    args: {
+        kcContext: {
+            url: {
+                oauth2DeviceVerificationAction: "/mock-oauth2-device-verification"
+            },
+            message: {
+                summary: "The user code you entered is invalid. Please try again.",
+                type: "error"
+            }
+        }
+    }
 };
 
 /**
@@ -46,17 +42,15 @@ export const WithErrorMessage: Story = {
  * - Key Aspect: Ensures the form displays validation errors when the field is left empty.
  */
 export const WithEmptyInputField: Story = {
-    render: () => (
-        <KcPageStory
-            kcContext={{
-                url: {
-                    oauth2DeviceVerificationAction: "/mock-oauth2-device-verification"
-                },
-                message: {
-                    summary: "User code cannot be empty. Please enter a valid code.",
-                    type: "error"
-                }
-            }}
-        />
-    )
+    args: {
+        kcContext: {
+            url: {
+                oauth2DeviceVerificationAction: "/mock-oauth2-device-verification"
+            },
+            message: {
+                summary: "User code cannot be empty. Please enter a valid code.",
+                type: "error"
+            }
+        }
+    }
 };

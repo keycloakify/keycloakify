@@ -13,18 +13,14 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-    render: () => <KcPageStory />
-};
+export const Default: Story = {};
 
 export const WithMessage: Story = {
-    render: () => (
-        <KcPageStory
-            kcContext={{
-                message: { type: "success", summary: "This is a test message" }
-            }}
-        />
-    )
+    args: {
+        kcContext: {
+            message: { type: "success", summary: "This is a test message" }
+        }
+    }
 };
 /**
  * FirstTimePasswordSetup:
@@ -33,22 +29,20 @@ export const WithMessage: Story = {
  * - Key Aspect: Ensures the page only displays fields for setting a new password.
  */
 export const FirstTimePasswordSetup: Story = {
-    render: () => (
-        <KcPageStory
-            kcContext={{
-                account: {
-                    username: "john_doe"
-                },
-                password: {
-                    passwordSet: false
-                },
-                url: {
-                    passwordUrl: "/password"
-                },
-                stateChecker: "state-checker"
-            }}
-        />
-    )
+    args: {
+        kcContext: {
+            account: {
+                username: "john_doe"
+            },
+            password: {
+                passwordSet: false
+            },
+            url: {
+                passwordUrl: "/password"
+            },
+            stateChecker: "state-checker"
+        }
+    }
 };
 
 /**
@@ -58,23 +52,21 @@ export const FirstTimePasswordSetup: Story = {
  * - Key Aspect: Validates that an error message is correctly displayed for the current password input.
  */
 export const IncorrectCurrentPassword: Story = {
-    render: () => (
-        <KcPageStory
-            kcContext={{
-                message: { type: "error", summary: "Incorrect current password." },
-                account: {
-                    username: "john_doe"
-                },
-                password: {
-                    passwordSet: true
-                },
-                url: {
-                    passwordUrl: "/password"
-                },
-                stateChecker: "state-checker"
-            }}
-        />
-    )
+    args: {
+        kcContext: {
+            message: { type: "error", summary: "Incorrect current password." },
+            account: {
+                username: "john_doe"
+            },
+            password: {
+                passwordSet: true
+            },
+            url: {
+                passwordUrl: "/password"
+            },
+            stateChecker: "state-checker"
+        }
+    }
 };
 
 /**
@@ -84,21 +76,19 @@ export const IncorrectCurrentPassword: Story = {
  * - Key Aspect: Verifies the handling of successful submissions.
  */
 export const SubmissionSuccessWithRedirect: Story = {
-    render: () => (
-        <KcPageStory
-            kcContext={{
-                message: { type: "success", summary: "Password successfully changed." },
-                account: {
-                    username: "john_doe"
-                },
-                password: {
-                    passwordSet: true
-                },
-                url: {
-                    passwordUrl: "/password"
-                },
-                stateChecker: "state-checker"
-            }}
-        />
-    )
+    args: {
+        kcContext: {
+            message: { type: "success", summary: "Password successfully changed." },
+            account: {
+                username: "john_doe"
+            },
+            password: {
+                passwordSet: true
+            },
+            url: {
+                passwordUrl: "/password"
+            },
+            stateChecker: "state-checker"
+        }
+    }
 };
