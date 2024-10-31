@@ -51,7 +51,7 @@ export async function command(params: { buildContext: BuildContext }) {
             2
         )};`,
         ``,
-        `export type KcContext =`,
+        `type KcContext =`,
         hasLoginTheme && `    | import("./login/KcContext").KcContext`,
         hasAccountTheme && `    | import("./account/KcContext").KcContext`,
         `    ;`,
