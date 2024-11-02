@@ -1,5 +1,4 @@
 import type { BuildContext } from "./shared/buildContext";
-import { KC_GEN_FILE_PATH_RELATIVE_TO_THEME_SRC_DIR } from "./shared/constants";
 import * as fs from "fs/promises";
 import { join as pathJoin } from "path";
 import { existsAsync } from "./tools/fs.existsAsync";
@@ -19,10 +18,7 @@ export async function command(params: { buildContext: BuildContext }) {
         return;
     }
 
-    const filePath = pathJoin(
-        buildContext.themeSrcDirPath,
-        KC_GEN_FILE_PATH_RELATIVE_TO_THEME_SRC_DIR
-    );
+    const filePath = pathJoin(buildContext.themeSrcDirPath, "kc-gen.tsx");
 
     const hasLoginTheme = buildContext.implementedThemeTypes.login.isImplemented;
     const hasAccountTheme = buildContext.implementedThemeTypes.account.isImplemented;
