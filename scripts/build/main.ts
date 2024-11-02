@@ -40,7 +40,9 @@ import { vendorFrontendDependencies } from "./vendorFrontendDependencies";
         );
     }
 
-    run(`npx ncc build ${join("dist", "bin", "main.js")} -o ${join("dist", "ncc_out")}`);
+    run(
+        `npx ncc build ${join("dist", "bin", "main.js")} --external prettier -o ${join("dist", "ncc_out")}`
+    );
 
     transformCodebase({
         srcDirPath: join("dist", "ncc_out"),
