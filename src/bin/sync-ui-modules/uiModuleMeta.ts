@@ -1,7 +1,7 @@
 import { assert, type Equals } from "tsafe/assert";
 import { id } from "tsafe/id";
 import { z } from "zod";
-import { join as pathJoin } from "path";
+import { join as pathJoin, sep as pathSep, dirname as pathDirname } from "path";
 import * as fsPr from "fs/promises";
 import type { BuildContext } from "../shared/buildContext";
 import { is } from "tsafe/is";
@@ -16,25 +16,18 @@ import {
 } from "./getSourceCodeToCopyInUserCodebase";
 import * as crypto from "crypto";
 
-export type UiModulesMeta = {
-    keycloakifyVersion: string;
-    prettierConfigHash: string | null;
-    entries: UiModulesMeta.Entry[];
+export type UiModuleMeta = {
+    moduleName: string;
+    version: string;
+    files: {
+        fileRelativePath: string;
+        hash: string;
+    }[];
+    peerDependencies: Record<string, string>;
 };
 
-export namespace UiModulesMeta {
-    export type Entry = {
-        moduleName: string;
-        version: string;
-        files: {
-            fileRelativePath: string;
-            hash: string;
-        }[];
-    };
-}
-
-const zUiModuleMetasEntry = (() => {
-    type ExpectedType = UiModulesMeta.Entry;
+const zUiModuleMeta = (() => {
+    type ExpectedType = UiModuleMeta;
 
     const zTargetType = z.object({
         moduleName: z.string(),
@@ -44,7 +37,8 @@ const zUiModuleMetasEntry = (() => {
                 fileRelativePath: z.string(),
                 hash: z.string()
             })
-        )
+        ),
+        peerDependencies: z.record(z.string())
     });
 
     type InferredType = z.infer<typeof zTargetType>;
@@ -54,13 +48,21 @@ const zUiModuleMetasEntry = (() => {
     return id<z.ZodType<ExpectedType>>(zTargetType);
 })();
 
-const zUiModulesMeta = (() => {
-    type ExpectedType = UiModulesMeta;
+type ParsedCacheFile = {
+    keycloakifyVersion: string;
+    prettierConfigHash: string | null;
+    pathSep: string;
+    uiModuleMetas: UiModuleMeta[];
+};
+
+const zParsedCacheFile = (() => {
+    type ExpectedType = ParsedCacheFile;
 
     const zTargetType = z.object({
         keycloakifyVersion: z.string(),
         prettierConfigHash: z.union([z.string(), z.null()]),
-        entries: z.array(zUiModuleMetasEntry)
+        pathSep: z.string(),
+        uiModuleMetas: z.array(zUiModuleMeta)
     });
 
     type InferredType = z.infer<typeof zTargetType>;
@@ -70,7 +72,7 @@ const zUiModulesMeta = (() => {
     return id<z.ZodType<ExpectedType>>(zTargetType);
 })();
 
-const RELATIVE_FILE_PATH = pathJoin("uiModulesMeta.json");
+const CACHE_FILE_BASENAME = "uiModulesMeta.json";
 
 export type BuildContextLike = BuildContextLike_getSourceCodeToCopyInUserCodebase & {
     cacheDirPath: string;
@@ -80,12 +82,12 @@ export type BuildContextLike = BuildContextLike_getSourceCodeToCopyInUserCodebas
 
 assert<BuildContext extends BuildContextLike ? true : false>();
 
-export async function readOrCreateUiModulesMeta(params: {
+export async function getUiModuleMetas(params: {
     buildContext: BuildContextLike;
-}): Promise<UiModulesMeta> {
+}): Promise<UiModuleMeta[]> {
     const { buildContext } = params;
 
-    const filePath = pathJoin(buildContext.cacheDirPath, RELATIVE_FILE_PATH);
+    const cacheFilePath = pathJoin(buildContext.cacheDirPath, CACHE_FILE_BASENAME);
 
     const keycloakifyVersion = readThisNpmPackageVersion();
 
@@ -106,76 +108,96 @@ export async function readOrCreateUiModulesMeta(params: {
             moduleName.includes("keycloakify") && moduleName.endsWith("-ui")
     });
 
-    const upToDateEntries: UiModulesMeta.Entry[] = await (async () => {
-        const uiModulesMeta_cache: UiModulesMeta | undefined = await (async () => {
-            if (!(await existsAsync(filePath))) {
-                return undefined;
-            }
-
-            const contentStr = (await fsPr.readFile(filePath)).toString("utf8");
-
-            let uiModuleMeta: unknown;
-
-            try {
-                uiModuleMeta = JSON.parse(contentStr);
-            } catch {
-                return undefined;
-            }
-
-            try {
-                zUiModulesMeta.parse(uiModuleMeta);
-            } catch {
-                return undefined;
-            }
-
-            assert(is<UiModulesMeta>(uiModuleMeta));
-
-            return uiModuleMeta;
-        })();
-
-        if (uiModulesMeta_cache === undefined) {
-            return [];
+    const cacheContent = await (async () => {
+        if (!(await existsAsync(cacheFilePath))) {
+            return undefined;
         }
 
-        if (uiModulesMeta_cache.keycloakifyVersion !== keycloakifyVersion) {
-            return [];
-        }
-
-        if (uiModulesMeta_cache.prettierConfigHash !== prettierConfigHash) {
-            return [];
-        }
-
-        const upToDateEntries = uiModulesMeta_cache.entries.filter(entry => {
-            const correspondingInstalledUiModule = installedUiModules.find(
-                installedUiModule => installedUiModule.moduleName === entry.moduleName
-            );
-
-            if (correspondingInstalledUiModule === undefined) {
-                return false;
-            }
-
-            return correspondingInstalledUiModule.version === entry.version;
-        });
-
-        return upToDateEntries;
+        return await fsPr.readFile(cacheFilePath);
     })();
 
-    const entries = await Promise.all(
+    const uiModuleMetas_cacheUpToDate: UiModuleMeta[] = await (async () => {
+        const parsedCacheFile: ParsedCacheFile | undefined = await (async () => {
+            if (cacheContent === undefined) {
+                return undefined;
+            }
+
+            const cacheContentStr = cacheContent.toString("utf8");
+
+            let parsedCacheFile: unknown;
+
+            try {
+                parsedCacheFile = JSON.parse(cacheContentStr);
+            } catch {
+                return undefined;
+            }
+
+            try {
+                zParsedCacheFile.parse(parsedCacheFile);
+            } catch {
+                return undefined;
+            }
+
+            assert(is<ParsedCacheFile>(parsedCacheFile));
+
+            return parsedCacheFile;
+        })();
+
+        if (parsedCacheFile === undefined) {
+            return [];
+        }
+
+        if (parsedCacheFile.keycloakifyVersion !== keycloakifyVersion) {
+            return [];
+        }
+
+        if (parsedCacheFile.prettierConfigHash !== prettierConfigHash) {
+            return [];
+        }
+
+        if (parsedCacheFile.pathSep !== pathSep) {
+            return [];
+        }
+
+        const uiModuleMetas_cacheUpToDate = parsedCacheFile.uiModuleMetas.filter(
+            uiModuleMeta => {
+                const correspondingInstalledUiModule = installedUiModules.find(
+                    installedUiModule =>
+                        installedUiModule.moduleName === uiModuleMeta.moduleName
+                );
+
+                if (correspondingInstalledUiModule === undefined) {
+                    return false;
+                }
+
+                return correspondingInstalledUiModule.version === uiModuleMeta.version;
+            }
+        );
+
+        return uiModuleMetas_cacheUpToDate;
+    })();
+
+    const uiModuleMetas = await Promise.all(
         installedUiModules.map(
-            async ({ moduleName, version, dirPath }): Promise<UiModulesMeta.Entry> => {
+            async ({
+                moduleName,
+                version,
+                peerDependencies,
+                dirPath
+            }): Promise<UiModuleMeta> => {
                 use_cache: {
-                    const cachedEntry = upToDateEntries.find(
-                        entry => entry.moduleName === moduleName
+                    const uiModuleMeta_cache = uiModuleMetas_cacheUpToDate.find(
+                        uiModuleMeta => uiModuleMeta.moduleName === moduleName
                     );
 
-                    if (cachedEntry === undefined) {
+                    if (uiModuleMeta_cache === undefined) {
                         break use_cache;
                     }
 
-                    return cachedEntry;
+                    return uiModuleMeta_cache;
                 }
 
-                const files: UiModulesMeta.Entry["files"] = [];
+                const files: UiModuleMeta["files"] = [];
 
                 {
                     const srcDirPath = pathJoin(dirPath, "src");
@@ -208,18 +230,45 @@ export async function readOrCreateUiModulesMeta(params: {
                     });
                 }
 
-                return id<UiModulesMeta.Entry>({
-                    files,
+                return id<UiModuleMeta>({
                     moduleName,
-                    version
+                    version,
+                    files,
+                    peerDependencies
                 });
             }
         )
     );
 
-    return id<UiModulesMeta>({
-        keycloakifyVersion,
-        prettierConfigHash,
-        entries
-    });
+    update_cache: {
+        const parsedCacheFile = id<ParsedCacheFile>({
+            keycloakifyVersion,
+            prettierConfigHash,
+            pathSep,
+            uiModuleMetas
+        });
+
+        const cacheContent_new = Buffer.from(
+            JSON.stringify(parsedCacheFile, null, 2),
+            "utf8"
+        );
+
+        if (cacheContent !== undefined && cacheContent_new.equals(cacheContent)) {
+            break update_cache;
+        }
+
+        create_dir: {
+            const dirPath = pathDirname(cacheFilePath);
+
+            if (await existsAsync(dirPath)) {
+                break create_dir;
+            }
+
+            await fsPr.mkdir(dirPath, { recursive: true });
+        }
+
+        await fsPr.writeFile(cacheFilePath, cacheContent_new);
+    }
+
+    return uiModuleMetas;
 }

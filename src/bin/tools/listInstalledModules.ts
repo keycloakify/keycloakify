@@ -10,7 +10,14 @@ export async function listInstalledModules(params: {
     packageJsonFilePath: string;
     projectDirPath: string;
     filter: (params: { moduleName: string }) => boolean;
-}): Promise<{ moduleName: string; version: string; dirPath: string }[]> {
+}): Promise<
+    {
+        moduleName: string;
+        version: string;
+        dirPath: string;
+        peerDependencies: Record<string, string>;
+    }[]
+> {
     const { packageJsonFilePath, projectDirPath, filter } = params;
 
     const parsedPackageJson = await readPackageJsonDependencies({
@@ -24,6 +31,7 @@ export async function listInstalledModules(params: {
         .map(obj => Object.keys(obj))
         .flat()
         .filter(moduleName => filter({ moduleName }));
+
     const result = await Promise.all(
         uiModuleNames.map(async moduleName => {
             const dirPath = await getInstalledModuleDirPath({
@@ -32,11 +40,12 @@ export async function listInstalledModules(params: {
                 projectDirPath
             });
 
-            const { version } = await readPackageJsonVersion({
-                packageJsonFilePath: pathJoin(dirPath, "package.json")
-            });
+            const { version, peerDependencies } =
+                await readPackageJsonVersionAndPeerDependencies({
+                    packageJsonFilePath: pathJoin(dirPath, "package.json")
+                });
 
-            return { moduleName, version, dirPath } as const;
+            return { moduleName, version, peerDependencies, dirPath } as const;
         })
     );
 
@@ -79,16 +88,18 @@ const { readPackageJsonDependencies } = (() => {
     return { readPackageJsonDependencies };
 })();
 
-const { readPackageJsonVersion } = (() => {
+const { readPackageJsonVersionAndPeerDependencies } = (() => {
     type ParsedPackageJson = {
         version: string;
+        peerDependencies?: Record<string, string>;
     };
 
     const zParsedPackageJson = (() => {
         type TargetType = ParsedPackageJson;
 
         const zTargetType = z.object({
-            version: z.string()
+            version: z.string(),
+            peerDependencies: z.record(z.string()).optional()
         });
 
         assert<Equals<z.infer<typeof zTargetType>, TargetType>>();
@@ -96,7 +107,9 @@ const { readPackageJsonVersion } = (() => {
         return id<z.ZodType<TargetType>>(zTargetType);
     })();
 
-    async function readPackageJsonVersion(params: { packageJsonFilePath: string }) {
+    async function readPackageJsonVersionAndPeerDependencies(params: {
+        packageJsonFilePath: string;
+    }): Promise<{ version: string; peerDependencies: Record<string, string> }> {
         const { packageJsonFilePath } = params;
 
         const parsedPackageJson = JSON.parse(
@@ -107,8 +120,11 @@ const { readPackageJsonVersion } = (() => {
 
         assert(is<ParsedPackageJson>(parsedPackageJson));
 
-        return parsedPackageJson;
+        return {
+            version: parsedPackageJson.version,
+            peerDependencies: parsedPackageJson.peerDependencies ?? {}
+        };
     }
 
-    return { readPackageJsonVersion };
+    return { readPackageJsonVersionAndPeerDependencies };
 })();
