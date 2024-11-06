@@ -23,11 +23,8 @@ export default function LoginRecoveryAuthnCodeConfig(props: PageProps<Extract<Kc
     useScript({ olRecoveryCodesListId, i18n });
 
     const handleCheckboxChange = () => {
-        console.log("handleCheckboxChange");
         setIsRecoveryCodeSavedConfirmChecked(isRecoveryCodeSavedConfirmChecked => !isRecoveryCodeSavedConfirmChecked);
-        console.log("isRecoveryCodeSavedConfirmChecked", isRecoveryCodeSavedConfirmChecked);
         const saveButton = document.getElementById("saveRecoveryAuthnCodesBtn");
-        console.log("saveButton", saveButton);
         if (saveButton) {
             (saveButton as HTMLInputElement).disabled = isRecoveryCodeSavedConfirmChecked;
         }
