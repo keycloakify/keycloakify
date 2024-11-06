@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { clsx } from "keycloakify/tools/clsx";
 import { getKcClsx, type KcClsx } from "keycloakify/login/lib/kcClsx";
 import { useScript } from "keycloakify/login/pages/LoginRecoveryAuthnCodeConfig.useScript";
@@ -7,7 +8,7 @@ import type { I18n } from "../i18n";
 
 export default function LoginRecoveryAuthnCodeConfig(props: PageProps<Extract<KcContext, { pageId: "login-recovery-authn-code-config.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
-
+    const [isRecoveryCodeSavedConfirmChecked, setIsRecoveryCodeSavedConfirmChecked] = useState(false);
     const { kcClsx } = getKcClsx({
         doUseDefaultCss,
         classes
@@ -20,6 +21,17 @@ export default function LoginRecoveryAuthnCodeConfig(props: PageProps<Extract<Kc
     const olRecoveryCodesListId = "kc-recovery-codes-list";
 
     useScript({ olRecoveryCodesListId, i18n });
+
+    const handleCheckboxChange = () => {
+        console.log("handleCheckboxChange");
+        setIsRecoveryCodeSavedConfirmChecked(isRecoveryCodeSavedConfirmChecked => !isRecoveryCodeSavedConfirmChecked);
+        console.log("isRecoveryCodeSavedConfirmChecked", isRecoveryCodeSavedConfirmChecked);
+        const saveButton = document.getElementById("saveRecoveryAuthnCodesBtn");
+        console.log("saveButton", saveButton);
+        if (saveButton) {
+            (saveButton as HTMLInputElement).disabled = isRecoveryCodeSavedConfirmChecked;
+        }
+    };
 
     return (
         <Template
@@ -38,7 +50,7 @@ export default function LoginRecoveryAuthnCodeConfig(props: PageProps<Extract<Kc
                     {msg("recovery-code-config-warning-title")}
                 </h4>
                 <div className="pf-c-alert__description">
-                    <p>{msg("recovery-code-config-warning-message")}</p>
+                    <div>{msg("recovery-code-config-warning-message")}</div>
                 </div>
             </div>
 
@@ -68,12 +80,10 @@ export default function LoginRecoveryAuthnCodeConfig(props: PageProps<Extract<Kc
                 <input
                     className={kcClsx("kcCheckInputClass")}
                     type="checkbox"
+                    checked={isRecoveryCodeSavedConfirmChecked}
                     id="kcRecoveryCodesConfirmationCheck"
                     name="kcRecoveryCodesConfirmationCheck"
-                    onChange={function () {
-                        //@ts-expect-error: This is code from the original theme, we trust it.
-                        document.getElementById("saveRecoveryAuthnCodesBtn").disabled = !this.checked;
-                    }}
+                    onChange={handleCheckboxChange}
                 />
                 <label htmlFor="kcRecoveryCodesConfirmationCheck">{msg("recovery-codes-confirmation-message")}</label>
             </div>
