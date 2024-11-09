@@ -241,6 +241,39 @@ program
         }
     });
 
+program
+    .command<{
+        file: string;
+    }>({
+        name: "eject-file",
+        description: "Take ownership over a given file"
+    })
+    .option({
+        key: "file",
+        name: (() => {
+            const name = "file";
+
+            optionsKeys.push(name);
+
+            return name;
+        })(),
+        description: [
+            "Relative path of the file relative to the directory of your keycloak theme source",
+            "Example `--file src/login/page/Login.tsx`"
+        ].join(" ")
+    })
+    .task({
+        skip,
+        handler: async ({ projectDirPath, file }) => {
+            const { command } = await import("./eject-file");
+
+            await command({
+                buildContext: getBuildContext({ projectDirPath }),
+                cliCommandOptions: { file }
+            });
+        }
+    });
+
 // Fallback to build command if no command is provided
 {
     const [, , ...rest] = process.argv;
