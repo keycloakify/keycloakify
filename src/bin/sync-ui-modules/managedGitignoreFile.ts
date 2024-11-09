@@ -1,9 +1,15 @@
 import * as fsPr from "fs/promises";
-import { join as pathJoin, sep as pathSep, dirname as pathDirname } from "path";
+import {
+    join as pathJoin,
+    sep as pathSep,
+    dirname as pathDirname,
+    relative as pathRelative
+} from "path";
 import { assert } from "tsafe/assert";
 import type { BuildContext } from "../shared/buildContext";
 import type { UiModuleMeta } from "./uiModuleMeta";
 import { existsAsync } from "../tools/fs.existsAsync";
+import { getAbsoluteAndInOsFormatPath } from "../tools/getAbsoluteAndInOsFormatPath";
 
 export type BuildContextLike = {
     themeSrcDirPath: string;
@@ -81,4 +87,49 @@ export async function writeManagedGitignoreFile(params: {
     }
 
     await fsPr.writeFile(filePath, content_new);
+}
+
+export async function readManagedGitignoreFile(params: {
+    buildContext: BuildContextLike;
+}): Promise<{
+    ejectedFilesRelativePaths: string[];
+}> {
+    const { buildContext } = params;
+
+    const filePath = pathJoin(buildContext.themeSrcDirPath, ".gitignore");
+
+    if (!(await existsAsync(filePath))) {
+        return { ejectedFilesRelativePaths: [] };
+    }
+
+    const contentStr = (await fsPr.readFile(filePath)).toString("utf8");
+
+    const payload = (() => {
+        const index_start = contentStr.indexOf(DELIMITER_START);
+        const index_end = contentStr.indexOf(DELIMITER_END);
+
+        if (index_start === -1 || index_end === -1) {
+            return undefined;
+        }
+
+        return contentStr.slice(index_start + DELIMITER_START.length, index_end).trim();
+    })();
+
+    if (payload === undefined) {
+        return { ejectedFilesRelativePaths: [] };
+    }
+
+    const ejectedFilesRelativePaths = payload
+        .split("\n")
+        .map(line => line.trim())
+        .filter(line => line !== "")
+        .map(line =>
+            getAbsoluteAndInOsFormatPath({
+                cwd: buildContext.themeSrcDirPath,
+                pathIsh: line
+            })
+        )
+        .map(filePath => pathRelative(buildContext.themeSrcDirPath, filePath));
+
+    return { ejectedFilesRelativePaths };
 }

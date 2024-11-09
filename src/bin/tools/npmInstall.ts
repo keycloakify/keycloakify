@@ -23,6 +23,10 @@ export function npmInstall(params: { packageJsonDirPath: string }) {
             {
                 binName: "bun",
                 lockFileBasename: "bun.lockdb"
+            },
+            {
+                binName: "deno",
+                lockFileBasename: "deno.lock"
             }
         ] as const;
 
@@ -37,27 +41,23 @@ export function npmInstall(params: { packageJsonDirPath: string }) {
             }
         }
 
-        return undefined;
+        throw new Error(
+            "No lock file found, cannot tell which package manager to use for installing dependencies."
+        );
     })();
 
-    install_dependencies: {
-        if (packageManagerBinName === undefined) {
-            break install_dependencies;
-        }
+    console.log(`Installing the new dependencies...`);
 
-        console.log(`Installing the new dependencies...`);
-
-        try {
-            child_process.execSync(`${packageManagerBinName} install`, {
-                cwd: packageJsonDirPath,
-                stdio: "inherit"
-            });
-        } catch {
-            console.log(
-                chalk.yellow(
-                    `\`${packageManagerBinName} install\` failed, continuing anyway...`
-                )
-            );
-        }
+    try {
+        child_process.execSync(`${packageManagerBinName} install`, {
+            cwd: packageJsonDirPath,
+            stdio: "inherit"
+        });
+    } catch {
+        console.log(
+            chalk.yellow(
+                `\`${packageManagerBinName} install\` failed, continuing anyway...`
+            )
+        );
     }
 }
