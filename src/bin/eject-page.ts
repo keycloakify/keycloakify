@@ -22,7 +22,7 @@ import { assert, Equals } from "tsafe/assert";
 import type { BuildContext } from "./shared/buildContext";
 import chalk from "chalk";
 import { maybeDelegateCommandToCustomHandler } from "./shared/customHandler_delegate";
-import { runFormat } from "./tools/runFormat";
+import { runPrettier, getIsPrettierAvailable } from "./tools/runPrettier";
 
 export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
@@ -217,7 +217,7 @@ export async function command(params: { buildContext: BuildContext }) {
         process.exit(-1);
     }
 
-    const componentCode = fs
+    let componentCode = fs
         .readFileSync(
             pathJoin(
                 getThisCodebaseRootDirPath(),
@@ -229,6 +229,17 @@ export async function command(params: { buildContext: BuildContext }) {
         )
         .toString("utf8");
 
+    run_prettier: {
+        if (!(await getIsPrettierAvailable())) {
+            break run_prettier;
+        }
+
+        componentCode = await runPrettier({
+            filePath: targetFilePath,
+            sourceCode: componentCode
+        });
+    }
+
     {
         const targetDirPath = pathDirname(targetFilePath);
 
@@ -238,10 +249,6 @@ export async function command(params: { buildContext: BuildContext }) {
     }
 
     fs.writeFileSync(targetFilePath, Buffer.from(componentCode, "utf8"));
-
-    runFormat({
-        packageJsonFilePath: buildContext.packageJsonFilePath
-    });
 
     console.log(
         `${chalk.green("✓")} ${chalk.bold(

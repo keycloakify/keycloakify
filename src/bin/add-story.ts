@@ -14,7 +14,7 @@ import { kebabCaseToCamelCase } from "./tools/kebabCaseToSnakeCase";
 import { assert, Equals } from "tsafe/assert";
 import type { BuildContext } from "./shared/buildContext";
 import chalk from "chalk";
-import { runFormat } from "./tools/runFormat";
+import { runPrettier, getIsPrettierAvailable } from "./tools/runPrettier";
 import { maybeDelegateCommandToCustomHandler } from "./shared/customHandler_delegate";
 
 export async function command(params: { buildContext: BuildContext }) {
@@ -119,7 +119,7 @@ export async function command(params: { buildContext: BuildContext }) {
         process.exit(-1);
     }
 
-    const componentCode = fs
+    let sourceCode = fs
         .readFileSync(
             pathJoin(
                 getThisCodebaseRootDirPath(),
@@ -133,6 +133,17 @@ export async function command(params: { buildContext: BuildContext }) {
         .replace('import React from "react";\n', "")
         .replace(/from "[./]+dist\//, 'from "keycloakify/');
 
+    run_prettier: {
+        if (!(await getIsPrettierAvailable())) {
+            break run_prettier;
+        }
+
+        sourceCode = await runPrettier({
+            filePath: targetFilePath,
+            sourceCode: sourceCode
+        });
+    }
+
     {
         const targetDirPath = pathDirname(targetFilePath);
 
@@ -141,11 +152,7 @@ export async function command(params: { buildContext: BuildContext }) {
         }
     }
 
-    fs.writeFileSync(targetFilePath, Buffer.from(componentCode, "utf8"));
-
-    runFormat({
-        packageJsonFilePath: buildContext.packageJsonFilePath
-    });
+    fs.writeFileSync(targetFilePath, Buffer.from(sourceCode, "utf8"));
 
     console.log(
         [

@@ -3,6 +3,7 @@ import * as fsPr from "fs/promises";
 import { join as pathJoin, sep as pathSep } from "path";
 import { assert } from "tsafe/assert";
 import type { BuildContext } from "../shared/buildContext";
+import { KEYCLOAK_THEME } from "../shared/constants";
 
 export type BuildContextLike = {
     themeSrcDirPath: string;
@@ -10,27 +11,32 @@ export type BuildContextLike = {
 
 assert<BuildContext extends BuildContextLike ? true : false>();
 
-export async function getSourceCodeToCopyInUserCodebase(params: {
+export async function getUiModuleFileSourceCodeReadyToBeCopied(params: {
     buildContext: BuildContextLike;
-    relativeFromDirPath: string;
     fileRelativePath: string;
-    commentData: {
-        isForEjection: boolean;
-        uiModuleName: string;
-        uiModuleVersion: string;
-    };
-}): Promise<string> {
-    const { buildContext, relativeFromDirPath, fileRelativePath, commentData } = params;
+    isForEjection: boolean;
+    uiModuleDirPath: string;
+    uiModuleName: string;
+    uiModuleVersion: string;
+}): Promise<Buffer> {
+    const {
+        buildContext,
+        uiModuleDirPath,
+        fileRelativePath,
+        isForEjection,
+        uiModuleName,
+        uiModuleVersion
+    } = params;
 
     let sourceCode = (
-        await fsPr.readFile(pathJoin(relativeFromDirPath, fileRelativePath))
+        await fsPr.readFile(pathJoin(uiModuleDirPath, KEYCLOAK_THEME, fileRelativePath))
     ).toString("utf8");
 
     const comment = (() => {
-        if (commentData.isForEjection) {
+        if (isForEjection) {
             return [
                 `/*`,
-                `    This file was ejected from ${commentData.uiModuleName} version ${commentData.uiModuleVersion}.`,
+                `    This file was ejected from ${uiModuleName} version ${uiModuleVersion}.`,
                 `*/`
             ].join("\n");
         } else {
@@ -39,7 +45,7 @@ export async function getSourceCodeToCopyInUserCodebase(params: {
                 `    WARNING: Before modifying this file run the following command:`,
                 `    \`npx keycloakify eject-file ${fileRelativePath.split(pathSep).join("/")}\``,
                 `    `,
-                `    This file comes from ${commentData.uiModuleName} version ${commentData.uiModuleVersion}.`,
+                `    This file comes from ${uiModuleName} version ${uiModuleVersion}.`,
                 `*/`
             ];
         }
@@ -47,16 +53,18 @@ export async function getSourceCodeToCopyInUserCodebase(params: {
 
     sourceCode = [comment, ``, sourceCode].join("\n");
 
+    const destFilePath = pathJoin(buildContext.themeSrcDirPath, fileRelativePath);
+
     format: {
         if (!(await getIsPrettierAvailable())) {
             break format;
         }
 
         sourceCode = await runPrettier({
-            filePath: pathJoin(buildContext.themeSrcDirPath, fileRelativePath),
+            filePath: destFilePath,
             sourceCode
         });
     }
 
-    return sourceCode;
+    return Buffer.from(sourceCode, "utf8");
 }

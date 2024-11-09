@@ -115,7 +115,7 @@ import { vendorFrontendDependencies } from "./vendorFrontendDependencies";
     }
 
     run(
-        `npx ncc build ${join("dist", "vite-plugin", "index.js")} -o ${join(
+        `npx ncc build ${join("dist", "vite-plugin", "index.js")} --external prettier -o ${join(
             "dist",
             "ncc_out"
         )}`

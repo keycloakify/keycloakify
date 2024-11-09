@@ -1,16 +1,14 @@
-import { dirname as pathDirname, join as pathJoin } from "path";
+import { join as pathJoin } from "path";
 import { existsAsync } from "./fs.existsAsync";
 import * as child_process from "child_process";
 import { assert } from "tsafe/assert";
 
 export async function getInstalledModuleDirPath(params: {
     moduleName: string;
-    packageJsonFilePath: string;
+    packageJsonDirPath: string;
     projectDirPath: string;
 }) {
-    const { moduleName, packageJsonFilePath, projectDirPath } = params;
-
-    const packageJsonDirPath = pathDirname(packageJsonFilePath);
+    const { moduleName, packageJsonDirPath, projectDirPath } = params;
 
     common_case: {
         const dirPath = pathJoin(

@@ -1,10 +1,11 @@
 import { assert, type Equals } from "tsafe/assert";
 import { id } from "tsafe/id";
 import { z } from "zod";
-import { join as pathJoin } from "path";
+import { join as pathJoin, dirname as pathDirname } from "path";
 import * as fsPr from "fs/promises";
 import { is } from "tsafe/is";
 import { getInstalledModuleDirPath } from "../tools/getInstalledModuleDirPath";
+import { exclude } from "tsafe/exclude";
 
 export async function listInstalledModules(params: {
     packageJsonFilePath: string;
@@ -27,7 +28,7 @@ export async function listInstalledModules(params: {
     const uiModuleNames = (
         [parsedPackageJson.dependencies, parsedPackageJson.devDependencies] as const
     )
-        .filter(obj => obj !== undefined)
+        .filter(exclude(undefined))
         .map(obj => Object.keys(obj))
         .flat()
         .filter(moduleName => filter({ moduleName }));
@@ -36,7 +37,7 @@ export async function listInstalledModules(params: {
         uiModuleNames.map(async moduleName => {
             const dirPath = await getInstalledModuleDirPath({
                 moduleName,
-                packageJsonFilePath,
+                packageJsonDirPath: pathDirname(packageJsonFilePath),
                 projectDirPath
             });
 

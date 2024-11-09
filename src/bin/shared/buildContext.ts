@@ -18,9 +18,8 @@ import {
 import type { KeycloakVersionRange } from "./KeycloakVersionRange";
 import { exclude } from "tsafe";
 import { crawl } from "../tools/crawl";
-import { THEME_TYPES } from "./constants";
+import { THEME_TYPES, KEYCLOAK_THEME, type ThemeType } from "./constants";
 import { objectEntries } from "tsafe/objectEntries";
-import { type ThemeType } from "./constants";
 import { id } from "tsafe/id";
 import chalk from "chalk";
 import { getProxyFetchOptions, type FetchOptionsLike } from "../tools/fetchProxyOptions";
@@ -147,7 +146,10 @@ export function getBuildContext(params: {
             returnedPathsType: "relative to dirPath"
         })
             .map(fileRelativePath => {
-                for (const themeSrcDirBasename of ["keycloak-theme", "keycloak_theme"]) {
+                for (const themeSrcDirBasename of [
+                    KEYCLOAK_THEME,
+                    KEYCLOAK_THEME.replace(/-/g, "_")
+                ]) {
                     const split = fileRelativePath.split(themeSrcDirBasename);
                     if (split.length === 2) {
                         return pathJoin(srcDirPath, split[0] + themeSrcDirBasename);
@@ -173,7 +175,7 @@ export function getBuildContext(params: {
                 [
                     `Can't locate your Keycloak theme source directory in .${pathSep}${pathRelative(process.cwd(), srcDirPath)}`,
                     `Make sure to either use the Keycloakify CLI in the root of your Keycloakify project or use the --project CLI option`,
-                    `If you are collocating your Keycloak theme with your app you must have a directory named 'keycloak-theme' or 'keycloak_theme' in your 'src' directory`
+                    `If you are collocating your Keycloak theme with your app you must have a directory named '${KEYCLOAK_THEME}' or '${KEYCLOAK_THEME.replace(/-/g, "_")}' in your 'src' directory`
                 ].join("\n")
             )
         );

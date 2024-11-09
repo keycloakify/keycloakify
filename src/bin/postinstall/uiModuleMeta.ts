@@ -1,7 +1,7 @@
 import { assert, type Equals } from "tsafe/assert";
 import { id } from "tsafe/id";
 import { z } from "zod";
-import { join as pathJoin, sep as pathSep, dirname as pathDirname } from "path";
+import { join as pathJoin, dirname as pathDirname } from "path";
 import * as fsPr from "fs/promises";
 import type { BuildContext } from "../shared/buildContext";
 import { is } from "tsafe/is";
@@ -11,10 +11,11 @@ import { crawlAsync } from "../tools/crawlAsync";
 import { getIsPrettierAvailable, getPrettierAndConfig } from "../tools/runPrettier";
 import { readThisNpmPackageVersion } from "../tools/readThisNpmPackageVersion";
 import {
-    getSourceCodeToCopyInUserCodebase,
-    type BuildContextLike as BuildContextLike_getSourceCodeToCopyInUserCodebase
-} from "./getSourceCodeToCopyInUserCodebase";
+    getUiModuleFileSourceCodeReadyToBeCopied,
+    type BuildContextLike as BuildContextLike_getUiModuleFileSourceCodeReadyToBeCopied
+} from "./getUiModuleFileSourceCodeReadyToBeCopied";
 import * as crypto from "crypto";
+import { KEYCLOAK_THEME } from "../shared/constants";
 
 export type UiModuleMeta = {
     moduleName: string;
@@ -22,6 +23,7 @@ export type UiModuleMeta = {
     files: {
         fileRelativePath: string;
         hash: string;
+        copyableFilePath: string;
     }[];
     peerDependencies: Record<string, string>;
 };
@@ -35,7 +37,8 @@ const zUiModuleMeta = (() => {
         files: z.array(
             z.object({
                 fileRelativePath: z.string(),
-                hash: z.string()
+                hash: z.string(),
+                copyableFilePath: z.string()
             })
         ),
         peerDependencies: z.record(z.string())
@@ -51,7 +54,7 @@ const zUiModuleMeta = (() => {
 type ParsedCacheFile = {
     keycloakifyVersion: string;
     prettierConfigHash: string | null;
-    pathSep: string;
+    thisFilePath: string;
     uiModuleMetas: UiModuleMeta[];
 };
 
@@ -61,7 +64,7 @@ const zParsedCacheFile = (() => {
     const zTargetType = z.object({
         keycloakifyVersion: z.string(),
         prettierConfigHash: z.union([z.string(), z.null()]),
-        pathSep: z.string(),
+        thisFilePath: z.string(),
         uiModuleMetas: z.array(zUiModuleMeta)
     });
 
@@ -72,13 +75,14 @@ const zParsedCacheFile = (() => {
     return id<z.ZodType<ExpectedType>>(zTargetType);
 })();
 
-const CACHE_FILE_BASENAME = "uiModulesMeta.json";
+const CACHE_FILE_RELATIVE_PATH = pathJoin("ui-modules", "cache.json");
 
-export type BuildContextLike = BuildContextLike_getSourceCodeToCopyInUserCodebase & {
-    cacheDirPath: string;
-    packageJsonFilePath: string;
-    projectDirPath: string;
-};
+export type BuildContextLike =
+    BuildContextLike_getUiModuleFileSourceCodeReadyToBeCopied & {
+        cacheDirPath: string;
+        packageJsonFilePath: string;
+        projectDirPath: string;
+    };
 
 assert<BuildContext extends BuildContextLike ? true : false>();
 
@@ -87,7 +91,7 @@ export async function getUiModuleMetas(params: {
 }): Promise<UiModuleMeta[]> {
     const { buildContext } = params;
 
-    const cacheFilePath = pathJoin(buildContext.cacheDirPath, CACHE_FILE_BASENAME);
+    const cacheFilePath = pathJoin(buildContext.cacheDirPath, CACHE_FILE_RELATIVE_PATH);
 
     const keycloakifyVersion = readThisNpmPackageVersion();
 
@@ -101,12 +105,20 @@ export async function getUiModuleMetas(params: {
         return crypto.createHash("sha256").update(JSON.stringify(config)).digest("hex");
     })();
 
-    const installedUiModules = await listInstalledModules({
-        packageJsonFilePath: buildContext.packageJsonFilePath,
-        projectDirPath: buildContext.packageJsonFilePath,
-        filter: ({ moduleName }) =>
-            moduleName.includes("keycloakify") && moduleName.endsWith("-ui")
-    });
+    const installedUiModules = await (async () => {
+        const installedModulesWithKeycloakifyInTheName = await listInstalledModules({
+            packageJsonFilePath: buildContext.packageJsonFilePath,
+            projectDirPath: buildContext.packageJsonFilePath,
+            filter: ({ moduleName }) =>
+                moduleName.includes("keycloakify") && moduleName !== "keycloakify"
+        });
+
+        return Promise.all(
+            installedModulesWithKeycloakifyInTheName.filter(async ({ dirPath }) =>
+                existsAsync(pathJoin(dirPath, KEYCLOAK_THEME))
+            )
+        );
+    })();
 
     const cacheContent = await (async () => {
         if (!(await existsAsync(cacheFilePath))) {
@@ -155,7 +167,7 @@ export async function getUiModuleMetas(params: {
             return [];
         }
 
-        if (parsedCacheFile.pathSep !== pathSep) {
+        if (parsedCacheFile.thisFilePath !== cacheFilePath) {
             return [];
         }
 
@@ -200,31 +212,44 @@ export async function getUiModuleMetas(params: {
                 const files: UiModuleMeta["files"] = [];
 
                 {
-                    const srcDirPath = pathJoin(dirPath, "src");
+                    const srcDirPath = pathJoin(dirPath, KEYCLOAK_THEME);
 
                     await crawlAsync({
                         dirPath: srcDirPath,
                         returnedPathsType: "relative to dirPath",
                         onFileFound: async fileRelativePath => {
-                            const sourceCode = await getSourceCodeToCopyInUserCodebase({
-                                buildContext,
-                                relativeFromDirPath: srcDirPath,
-                                fileRelativePath,
-                                commentData: {
+                            const sourceCode =
+                                await getUiModuleFileSourceCodeReadyToBeCopied({
+                                    buildContext,
+                                    fileRelativePath,
                                     isForEjection: false,
+                                    uiModuleDirPath: dirPath,
                                     uiModuleName: moduleName,
                                     uiModuleVersion: version
-                                }
-                            });
+                                });
 
-                            const hash = crypto
-                                .createHash("sha256")
-                                .update(sourceCode)
-                                .digest("hex");
+                            const hash = computeHash(sourceCode);
+
+                            const copyableFilePath = pathJoin(
+                                pathDirname(cacheFilePath),
+                                KEYCLOAK_THEME,
+                                fileRelativePath
+                            );
+
+                            {
+                                const dirPath = pathDirname(copyableFilePath);
+
+                                if (!(await existsAsync(dirPath))) {
+                                    await fsPr.mkdir(dirPath, { recursive: true });
+                                }
+                            }
+
+                            fsPr.writeFile(copyableFilePath, sourceCode);
 
                             files.push({
                                 fileRelativePath,
-                                hash
+                                hash,
+                                copyableFilePath
                             });
                         }
                     });
@@ -244,7 +269,7 @@ export async function getUiModuleMetas(params: {
         const parsedCacheFile = id<ParsedCacheFile>({
             keycloakifyVersion,
             prettierConfigHash,
-            pathSep,
+            thisFilePath: cacheFilePath,
             uiModuleMetas
         });
 
@@ -271,4 +296,8 @@ export async function getUiModuleMetas(params: {
     }
 
     return uiModuleMetas;
+}
+
+export function computeHash(data: Buffer) {
+    return crypto.createHash("sha256").update(data).digest("hex");
 }

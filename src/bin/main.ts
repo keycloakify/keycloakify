@@ -199,20 +199,6 @@ program
 
 program
     .command({
-        name: "initialize-admin-theme",
-        description: "Initialize the admin theme."
-    })
-    .task({
-        skip,
-        handler: async ({ projectDirPath }) => {
-            const { command } = await import("./initialize-admin-theme");
-
-            await command({ buildContext: getBuildContext({ projectDirPath }) });
-        }
-    });
-
-program
-    .command({
         name: "copy-keycloak-resources-to-public",
         description:
             "(Webpack/Create-React-App only) Copy Keycloak default theme resources to the public directory."
@@ -236,6 +222,20 @@ program
         skip,
         handler: async ({ projectDirPath }) => {
             const { command } = await import("./update-kc-gen");
+
+            await command({ buildContext: getBuildContext({ projectDirPath }) });
+        }
+    });
+
+program
+    .command({
+        name: "postinstall",
+        description: "Initialize all the Keycloakify UI modules installed in the project."
+    })
+    .task({
+        skip,
+        handler: async ({ projectDirPath }) => {
+            const { command } = await import("./postinstall");
 
             await command({ buildContext: getBuildContext({ projectDirPath }) });
         }
