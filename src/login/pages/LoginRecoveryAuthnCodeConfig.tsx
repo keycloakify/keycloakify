@@ -70,9 +70,9 @@ export default function LoginRecoveryAuthnCodeConfig(props: PageProps<Extract<Kc
                     type="checkbox"
                     id="kcRecoveryCodesConfirmationCheck"
                     name="kcRecoveryCodesConfirmationCheck"
-                    onChange={function () {
-                        //@ts-expect-error: This is code from the original theme, we trust it.
-                        document.getElementById("saveRecoveryAuthnCodesBtn").disabled = !this.checked;
+                    onChange={event => {
+                        //@ts-expect-error: This is inherited from the original code
+                        document.getElementById("saveRecoveryAuthnCodesBtn").disabled = !event.target.checked;
                     }}
                 />
                 <label htmlFor="kcRecoveryCodesConfirmationCheck">{msg("recovery-codes-confirmation-message")}</label>
