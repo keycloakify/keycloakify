@@ -10,7 +10,7 @@ export type KcContextLike = {
         resourcesPath: string;
         ssoLoginInOtherTabsUrl: string;
     };
-    scripts: string[];
+    scripts?: string[];
 };
 
 assert<keyof KcContextLike extends keyof KcContext ? true : false>();
@@ -45,10 +45,12 @@ export function useInitialize(params: {
                 type: "module",
                 src: `${url.resourcesPath}/js/menu-button-links.js`
             },
-            ...scripts.map(src => ({
-                type: "text/javascript" as const,
-                src
-            })),
+            ...(scripts === undefined
+                ? []
+                : scripts.map(src => ({
+                      type: "text/javascript" as const,
+                      src
+                  }))),
             {
                 type: "module",
                 textContent: `

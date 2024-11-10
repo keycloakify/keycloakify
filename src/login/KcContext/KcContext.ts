@@ -102,7 +102,7 @@ export declare namespace KcContext {
             showTryAnotherWayLink?: boolean;
             attemptedUsername?: string;
         };
-        scripts: string[];
+        scripts?: string[];
         message?: {
             type: "success" | "warning" | "error" | "info";
             summary: string;

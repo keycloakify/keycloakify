@@ -16,6 +16,9 @@ import type { GenericI18n_noJsx } from "./GenericI18n_noJsx";
 
 export type KcContextLike = {
     themeName: string;
+    realm: {
+        internationalizationEnabled: boolean;
+    };
     locale?: {
         currentLanguageTag: string;
         supported: { languageTag: string; url: string; label: string }[];
@@ -91,14 +94,16 @@ export function createGetI18n<
             return cachedResult;
         }
 
+        const kcContextLocale = params.kcContext.realm.internationalizationEnabled ? params.kcContext.locale : undefined;
+
         {
-            const currentLanguageTag = kcContext.locale?.currentLanguageTag ?? FALLBACK_LANGUAGE_TAG;
+            const currentLanguageTag = kcContextLocale?.currentLanguageTag ?? FALLBACK_LANGUAGE_TAG;
             const html = document.querySelector("html");
             assert(html !== null);
             html.lang = currentLanguageTag;
 
             const isRtl = (() => {
-                const { rtl } = kcContext.locale ?? {};
+                const { rtl } = kcContextLocale ?? {};
 
                 if (rtl !== undefined) {
                     return rtl;
@@ -154,11 +159,11 @@ export function createGetI18n<
             }
 
             from_server: {
-                if (kcContext.locale === undefined) {
+                if (kcContextLocale === undefined) {
                     break from_server;
                 }
 
-                const supportedEntry = kcContext.locale.supported.find(entry => entry.languageTag === languageTag);
+                const supportedEntry = kcContextLocale.supported.find(entry => entry.languageTag === languageTag);
 
                 if (supportedEntry === undefined) {
                     break from_server;
@@ -180,7 +185,7 @@ export function createGetI18n<
         };
 
         const currentLanguage: I18n["currentLanguage"] = (() => {
-            const languageTag = id<string>(kcContext.locale?.currentLanguageTag ?? FALLBACK_LANGUAGE_TAG) as LanguageTag;
+            const languageTag = id<string>(kcContextLocale?.currentLanguageTag ?? FALLBACK_LANGUAGE_TAG) as LanguageTag;
 
             return {
                 languageTag,
@@ -191,8 +196,8 @@ export function createGetI18n<
         const enabledLanguages: I18n["enabledLanguages"] = (() => {
             const enabledLanguages: I18n["enabledLanguages"] = [];
 
-            if (kcContext.locale !== undefined) {
-                for (const entry of kcContext.locale.supported ?? []) {
+            if (kcContextLocale !== undefined) {
+                for (const entry of kcContextLocale.supported ?? []) {
                     const languageTag = id<string>(entry.languageTag) as LanguageTag;
 
                     enabledLanguages.push({
