@@ -44,7 +44,12 @@ export function runFormat(params: { packageJsonFilePath: string }) {
         return;
     }
 
-    for (const scriptName of ["format", "lint"]) {
+    const scriptKeys = Object.keys(scripts);
+    const scriptNames = scriptKeys.filter(scriptKey =>
+        scriptKey.trim().match(/^(lint|format)/)
+    );
+
+    for (const scriptName of scriptNames) {
         if (!(scriptName in scripts)) {
             continue;
         }
