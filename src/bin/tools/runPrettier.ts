@@ -62,7 +62,19 @@ export async function runPrettier(params: {
     try {
         const { prettier, config } = await getPrettierAndConfig();
 
-        formattedSourceCode = await prettier.format(sourceCode, { ...config, filePath });
+        const { ignored, inferredParser } = await prettier.getFileInfo(filePath, {
+            resolveConfig: true
+        });
+
+        if (ignored) {
+            return sourceCode;
+        }
+
+        formattedSourceCode = await prettier.format(sourceCode, {
+            ...config,
+            filePath,
+            parser: inferredParser ?? undefined
+        });
     } catch (error) {
         console.log(
             chalk.red(
