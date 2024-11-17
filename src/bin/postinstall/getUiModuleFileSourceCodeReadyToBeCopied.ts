@@ -32,29 +32,37 @@ export async function getUiModuleFileSourceCodeReadyToBeCopied(params: {
         await fsPr.readFile(pathJoin(uiModuleDirPath, KEYCLOAK_THEME, fileRelativePath))
     ).toString("utf8");
 
-    const comment = (() => {
-        if (isForEjection) {
-            return [
-                `/*`,
-                ` * This file was ejected from ${uiModuleName} version ${uiModuleVersion}.`,
-                ` */`
-            ].join("\n");
-        } else {
-            return [
-                `/*`,
-                ` *`,
-                ` * WARNING: Before modifying this file run the following command:`,
-                ` * `,
-                ` * $ npx keycloakify eject-file --file ${fileRelativePath.split(pathSep).join("/")}`,
-                ` * `,
-                ` * This file comes from ${uiModuleName} version ${uiModuleVersion}.`,
-                ` *`,
-                ` */`
-            ].join("\n");
-        }
-    })();
+    const toComment = (lines: string[]) => {
+        for (const ext of [".ts", ".tsx", ".css", ".less", ".sass", ".js", ".jsx"]) {
+            if (!fileRelativePath.endsWith(ext)) {
+                continue;
+            }
 
-    sourceCode = [comment, ``, sourceCode].join("\n");
+            return [`/**`, ...lines.map(line => ` * ${line}`), ` */`].join("\n");
+        }
+
+        if (fileRelativePath.endsWith(".html")) {
+            return [`<!--`, ...lines.map(line => ` ${line}`), `-->`].join("\n");
+        }
+
+        return undefined;
+    };
+
+    const comment = toComment(
+        isForEjection
+            ? [`This file was ejected from ${uiModuleName} version ${uiModuleVersion}.`]
+            : [
+                  `WARNING: Before modifying this file run the following command:`,
+                  ``,
+                  `$ npx keycloakify eject-file --file ${fileRelativePath.split(pathSep).join("/")}`,
+                  ``,
+                  `This file comes from ${uiModuleName} version ${uiModuleVersion}.`
+              ]
+    );
+
+    if (comment !== undefined) {
+        sourceCode = [comment, ``, sourceCode].join("\n");
+    }
 
     const destFilePath = pathJoin(buildContext.themeSrcDirPath, fileRelativePath);
 
