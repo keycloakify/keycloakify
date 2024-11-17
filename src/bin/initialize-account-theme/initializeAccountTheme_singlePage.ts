@@ -1,4 +1,4 @@
-import { join as pathJoin, relative as pathRelative, dirname as pathDirname } from "path";
+import { relative as pathRelative, dirname as pathDirname } from "path";
 import type { BuildContext } from "../shared/buildContext";
 import * as fs from "fs";
 import chalk from "chalk";
@@ -14,7 +14,6 @@ import { is } from "tsafe/is";
 import { id } from "tsafe/id";
 import { npmInstall } from "../tools/npmInstall";
 import { copyBoilerplate } from "./copyBoilerplate";
-import { getThisCodebaseRootDirPath } from "../tools/getThisCodebaseRootDirPath";
 
 type BuildContextLike = BuildContextLike_getLatestsSemVersionedTag & {
     fetchOptions: BuildContext["fetchOptions"];
@@ -121,20 +120,7 @@ export async function initializeAccountTheme_singlePage(params: {
         JSON.stringify(parsedPackageJson, undefined, 4)
     );
 
-    run_npm_install: {
-        if (
-            JSON.parse(
-                fs
-                    .readFileSync(pathJoin(getThisCodebaseRootDirPath(), "package.json"))
-                    .toString("utf8")
-            )["version"] === "0.0.0"
-        ) {
-            //NOTE: Linked version
-            break run_npm_install;
-        }
-
-        npmInstall({ packageJsonDirPath: pathDirname(buildContext.packageJsonFilePath) });
-    }
+    npmInstall({ packageJsonDirPath: pathDirname(buildContext.packageJsonFilePath) });
 
     copyBoilerplate({
         accountThemeType: "Single-Page",
