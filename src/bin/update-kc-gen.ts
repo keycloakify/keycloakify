@@ -18,7 +18,7 @@ export async function command(params: { buildContext: BuildContext }) {
         return;
     }
 
-    const filePath = pathJoin(buildContext.themeSrcDirPath, "kc-gen.tsx");
+    const filePath = pathJoin(buildContext.themeSrcDirPath, "kc.gen.tsx");
 
     const hasLoginTheme = buildContext.implementedThemeTypes.login.isImplemented;
     const hasAccountTheme = buildContext.implementedThemeTypes.account.isImplemented;
