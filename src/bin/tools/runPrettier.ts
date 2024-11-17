@@ -4,6 +4,7 @@ import * as fsPr from "fs/promises";
 import { id } from "tsafe/id";
 import { assert } from "tsafe/assert";
 import chalk from "chalk";
+import * as crypto from "crypto";
 
 getIsPrettierAvailable.cache = id<boolean | undefined>(undefined);
 
@@ -25,28 +26,42 @@ export async function getIsPrettierAvailable(): Promise<boolean> {
     return isPrettierAvailable;
 }
 
-type PrettierAndConfig = {
+type PrettierAndConfigHash = {
     prettier: typeof import("prettier");
-    config: import("prettier").Options | null;
+    configHash: string;
 };
 
-getPrettierAndConfig.cache = id<PrettierAndConfig | undefined>(undefined);
+getPrettier.cache = id<PrettierAndConfigHash | undefined>(undefined);
 
-export async function getPrettierAndConfig(): Promise<PrettierAndConfig> {
+export async function getPrettier(): Promise<PrettierAndConfigHash> {
     assert(getIsPrettierAvailable());
 
-    if (getPrettierAndConfig.cache !== undefined) {
-        return getPrettierAndConfig.cache;
+    if (getPrettier.cache !== undefined) {
+        return getPrettier.cache;
     }
 
     const prettier = await import("prettier");
 
-    const prettierAndConfig: PrettierAndConfig = {
+    const configHash = await (async () => {
+        const configFilePath = await prettier.resolveConfigFile(
+            pathJoin(getNodeModulesBinDirPath(), "..")
+        );
+
+        if (configFilePath === null) {
+            return "";
+        }
+
+        const data = await fsPr.readFile(configFilePath);
+
+        return crypto.createHash("sha256").update(data).digest("hex");
+    })();
+
+    const prettierAndConfig: PrettierAndConfigHash = {
         prettier,
-        config: await prettier.resolveConfig(pathJoin(getNodeModulesBinDirPath(), ".."))
+        configHash
     };
 
-    getPrettierAndConfig.cache = prettierAndConfig;
+    getPrettier.cache = prettierAndConfig;
 
     return prettierAndConfig;
 }
@@ -60,7 +75,7 @@ export async function runPrettier(params: {
     let formattedSourceCode: string;
 
     try {
-        const { prettier, config } = await getPrettierAndConfig();
+        const { prettier } = await getPrettier();
 
         const { ignored, inferredParser } = await prettier.getFileInfo(filePath, {
             resolveConfig: true
@@ -69,6 +84,8 @@ export async function runPrettier(params: {
         if (ignored) {
             return sourceCode;
         }
+
+        const config = await prettier.resolveConfig(filePath);
 
         formattedSourceCode = await prettier.format(sourceCode, {
             ...config,

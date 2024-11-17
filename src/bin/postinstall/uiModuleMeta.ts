@@ -8,7 +8,7 @@ import { is } from "tsafe/is";
 import { existsAsync } from "../tools/fs.existsAsync";
 import { listInstalledModules } from "../tools/listInstalledModules";
 import { crawlAsync } from "../tools/crawlAsync";
-import { getIsPrettierAvailable, getPrettierAndConfig } from "../tools/runPrettier";
+import { getIsPrettierAvailable, getPrettier } from "../tools/runPrettier";
 import { readThisNpmPackageVersion } from "../tools/readThisNpmPackageVersion";
 import {
     getUiModuleFileSourceCodeReadyToBeCopied,
@@ -100,9 +100,9 @@ export async function getUiModuleMetas(params: {
             return null;
         }
 
-        const { config } = await getPrettierAndConfig();
+        const { configHash } = await getPrettier();
 
-        return crypto.createHash("sha256").update(JSON.stringify(config)).digest("hex");
+        return configHash;
     })();
 
     const installedUiModules = await (async () => {
