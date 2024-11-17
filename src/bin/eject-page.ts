@@ -83,13 +83,13 @@ export async function command(params: { buildContext: BuildContext }) {
             pathDirname(buildContext.packageJsonFilePath),
             "node_modules",
             "@keycloakify",
-            `keycloak-${themeType}-ui`,
+            `keycloak-account-ui`,
             "src"
         );
 
         console.log(
             [
-                `There isn't an interactive CLI to eject components of the ${themeType} UI.`,
+                `There isn't an interactive CLI to eject components of the Account SPA UI.`,
                 `You can however copy paste into your codebase the any file or directory from the following source directory:`,
                 ``,
                 `${chalk.bold(pathJoin(pathRelative(process.cwd(), srcDirPath)))}`,
@@ -98,9 +98,9 @@ export async function command(params: { buildContext: BuildContext }) {
         );
 
         eject_entrypoint: {
-            const kcUiTsxFileRelativePath = `Kc${capitalize(themeType)}Ui.tsx` as const;
+            const kcUiTsxFileRelativePath = `KcAccountUi.tsx` as const;
 
-            const themeSrcDirPath = pathJoin(buildContext.themeSrcDirPath, themeType);
+            const themeSrcDirPath = pathJoin(buildContext.themeSrcDirPath, "account");
 
             const targetFilePath = pathJoin(themeSrcDirPath, kcUiTsxFileRelativePath);
 
@@ -120,10 +120,21 @@ export async function command(params: { buildContext: BuildContext }) {
                     ""
                 );
 
-                const modifiedKcPageTsxCode = kcPageTsxCode.replace(
-                    `@keycloakify/keycloak-${themeType}-ui/${componentName}`,
+                let modifiedKcPageTsxCode = kcPageTsxCode.replace(
+                    `@keycloakify/keycloak-account-ui/${componentName}`,
                     `./${componentName}`
                 );
+
+                run_prettier: {
+                    if (!(await getIsPrettierAvailable())) {
+                        break run_prettier;
+                    }
+
+                    modifiedKcPageTsxCode = await runPrettier({
+                        filePath: kcPageTsxFilePath,
+                        sourceCode: modifiedKcPageTsxCode
+                    });
+                }
 
                 fs.writeFileSync(
                     kcPageTsxFilePath,
