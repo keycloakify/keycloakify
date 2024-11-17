@@ -62,7 +62,7 @@ export async function command(params: { buildContext: BuildContext }) {
                             }
 
                             {
-                                const dirName = pathDirname(copyableFilePath);
+                                const dirName = pathDirname(destFilePath);
 
                                 if (!(await existsAsync(dirName))) {
                                     await fsPr.mkdir(dirName, { recursive: true });
