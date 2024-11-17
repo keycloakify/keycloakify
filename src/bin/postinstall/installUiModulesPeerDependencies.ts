@@ -9,6 +9,7 @@ import { SemVer } from "../tools/SemVer";
 import { same } from "evt/tools/inDepth/same";
 import { runPrettier, getIsPrettierAvailable } from "../tools/runPrettier";
 import { npmInstall } from "../tools/npmInstall";
+import { dirname as pathDirname } from "path";
 
 export type BuildContextLike = {
     packageJsonFilePath: string;
@@ -150,7 +151,7 @@ export async function installUiModulesPeerDependencies(params: {
     await fsPr.writeFile(buildContext.packageJsonFilePath, packageJsonContentStr);
 
     npmInstall({
-        packageJsonDirPath: buildContext.packageJsonFilePath
+        packageJsonDirPath: pathDirname(buildContext.packageJsonFilePath)
     });
 
     process.exit(0);
