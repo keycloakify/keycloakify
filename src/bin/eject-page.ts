@@ -66,11 +66,18 @@ export async function command(params: { buildContext: BuildContext }) {
         return value;
     })();
 
+    if (themeType === "admin") {
+        console.log(
+            "Use `npx keycloakify eject-file` command instead, see documentation"
+        );
+
+        process.exit(-1);
+    }
+
     if (
-        themeType === "admin" ||
-        (themeType === "account" &&
-            (assert(buildContext.implementedThemeTypes.account.isImplemented),
-            buildContext.implementedThemeTypes.account.type === "Single-Page"))
+        themeType === "account" &&
+        (assert(buildContext.implementedThemeTypes.account.isImplemented),
+        buildContext.implementedThemeTypes.account.type === "Single-Page")
     ) {
         const srcDirPath = pathJoin(
             pathDirname(buildContext.packageJsonFilePath),

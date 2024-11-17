@@ -246,7 +246,10 @@ program
         file: string;
     }>({
         name: "eject-file",
-        description: "Take ownership over a given file"
+        description: [
+            "WARNING: Not usable yet, will be used for future features",
+            "Take ownership over a given file"
+        ].join(" ")
     })
     .option({
         key: "file",
