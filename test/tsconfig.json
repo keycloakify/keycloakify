@@ -17,8 +17,5 @@
         "skipLibCheck": true
     },
     "include": ["../src", "."],
-    "exclude": [
-        "../src/bin/initialize-account-theme/src",
-        "../src/bin/initialize-admin-theme/src"
-    ]
+    "exclude": ["../src/bin/initialize-account-theme/src"]
 }
