@@ -9,6 +9,7 @@ import { is } from "tsafe/is";
 import { objectKeys } from "tsafe/objectKeys";
 import { getAbsoluteAndInOsFormatPath } from "./getAbsoluteAndInOsFormatPath";
 import { exclude } from "tsafe/exclude";
+import { rmSync } from "./fs.rmSync";
 
 export function npmInstall(params: { packageJsonDirPath: string }) {
     const { packageJsonDirPath } = params;
@@ -244,7 +245,7 @@ function installWithoutBreakingLinks(params: {
     const tmpProjectDirPath = pathJoin(yarnHomeDirPath, "tmpProject");
 
     if (fs.existsSync(tmpProjectDirPath)) {
-        fs.rmdirSync(tmpProjectDirPath, { recursive: true });
+        rmSync(tmpProjectDirPath, { recursive: true });
     }
 
     fs.mkdirSync(tmpProjectDirPath, { recursive: true });
@@ -403,7 +404,15 @@ function installWithoutBreakingLinks(params: {
             }
 
             if (doesTargetModuleExist) {
-                fs.rmdirSync(moduleDirPath, { recursive: true });
+                rmSync(moduleDirPath, { recursive: true });
+            }
+
+            {
+                const dirPath = pathDirname(moduleDirPath);
+
+                if (!fs.existsSync(dirPath)) {
+                    fs.mkdirSync(dirPath, { recursive: true });
+                }
             }
 
             fs.renameSync(moduleDirPath_tmpProject, moduleDirPath);
@@ -435,7 +444,7 @@ function installWithoutBreakingLinks(params: {
         pathJoin(packageJsonDirPath, YARN_LOCK)
     );
 
-    fs.rmdirSync(tmpProjectDirPath, { recursive: true });
+    rmSync(tmpProjectDirPath, { recursive: true });
 
     for (const scriptName of objectKeys(isImplementedScriptByName)) {
         if (!isImplementedScriptByName[scriptName]) {
