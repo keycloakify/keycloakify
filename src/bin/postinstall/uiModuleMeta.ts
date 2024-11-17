@@ -16,6 +16,7 @@ import {
 } from "./getUiModuleFileSourceCodeReadyToBeCopied";
 import * as crypto from "crypto";
 import { KEYCLOAK_THEME } from "../shared/constants";
+import { exclude } from "tsafe/exclude";
 
 export type UiModuleMeta = {
     moduleName: string;
@@ -113,11 +114,16 @@ export async function getUiModuleMetas(params: {
                 moduleName.includes("keycloakify") && moduleName !== "keycloakify"
         });
 
-        return Promise.all(
-            installedModulesWithKeycloakifyInTheName.filter(async ({ dirPath }) =>
-                existsAsync(pathJoin(dirPath, KEYCLOAK_THEME))
+        return (
+            await Promise.all(
+                installedModulesWithKeycloakifyInTheName.map(async entry => {
+                    if (!(await existsAsync(pathJoin(entry.dirPath, KEYCLOAK_THEME)))) {
+                        return undefined;
+                    }
+                    return entry;
+                })
             )
-        );
+        ).filter(exclude(undefined));
     })();
 
     const cacheContent = await (async () => {
