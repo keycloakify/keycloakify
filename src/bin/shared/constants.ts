@@ -4,7 +4,7 @@ export const WELL_KNOWN_DIRECTORY_BASE_NAME = {
     DIST: "dist"
 } as const;
 
-export const THEME_TYPES = ["login", "account"] as const;
+export const THEME_TYPES = ["login", "account", "admin"] as const;
 
 export type ThemeType = (typeof THEME_TYPES)[number];
 
@@ -76,3 +76,5 @@ export const CUSTOM_HANDLER_ENV_NAMES = {
     COMMAND_NAME: "KEYCLOAKIFY_COMMAND_NAME",
     BUILD_CONTEXT: "KEYCLOAKIFY_BUILD_CONTEXT"
 };
+
+export const KEYCLOAK_THEME = "keycloak-theme";

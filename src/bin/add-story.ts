@@ -5,8 +5,7 @@ import {
     ACCOUNT_THEME_PAGE_IDS,
     type LoginThemePageId,
     type AccountThemePageId,
-    THEME_TYPES,
-    type ThemeType
+    THEME_TYPES
 } from "./shared/constants";
 import { capitalize } from "tsafe/capitalize";
 import * as fs from "fs";
@@ -15,7 +14,7 @@ import { kebabCaseToCamelCase } from "./tools/kebabCaseToSnakeCase";
 import { assert, Equals } from "tsafe/assert";
 import type { BuildContext } from "./shared/buildContext";
 import chalk from "chalk";
-import { runFormat } from "./tools/runFormat";
+import { runPrettier, getIsPrettierAvailable } from "./tools/runPrettier";
 import { maybeDelegateCommandToCustomHandler } from "./shared/customHandler_delegate";
 
 export async function command(params: { buildContext: BuildContext }) {
@@ -39,6 +38,8 @@ export async function command(params: { buildContext: BuildContext }) {
                     return buildContext.implementedThemeTypes.account.isImplemented;
                 case "login":
                     return buildContext.implementedThemeTypes.login.isImplemented;
+                case "admin":
+                    return buildContext.implementedThemeTypes.admin.isImplemented;
             }
             assert<Equals<typeof themeType, never>>(false);
         });
@@ -49,7 +50,7 @@ export async function command(params: { buildContext: BuildContext }) {
             return values[0];
         }
 
-        const { value } = await cliSelect<ThemeType>({
+        const { value } = await cliSelect({
             values
         }).catch(() => {
             process.exit(-1);
@@ -68,6 +69,16 @@ export async function command(params: { buildContext: BuildContext }) {
         );
 
         process.exit(0);
+        return;
+    }
+
+    if (themeType === "admin") {
+        console.log(
+            `${chalk.red("✗")} Sorry, there is no Storybook support for the Account UI.`
+        );
+
+        process.exit(0);
+        return;
     }
 
     console.log(`→ ${themeType}`);
@@ -108,7 +119,7 @@ export async function command(params: { buildContext: BuildContext }) {
         process.exit(-1);
     }
 
-    const componentCode = fs
+    let sourceCode = fs
         .readFileSync(
             pathJoin(
                 getThisCodebaseRootDirPath(),
@@ -122,6 +133,17 @@ export async function command(params: { buildContext: BuildContext }) {
         .replace('import React from "react";\n', "")
         .replace(/from "[./]+dist\//, 'from "keycloakify/');
 
+    run_prettier: {
+        if (!(await getIsPrettierAvailable())) {
+            break run_prettier;
+        }
+
+        sourceCode = await runPrettier({
+            filePath: targetFilePath,
+            sourceCode: sourceCode
+        });
+    }
+
     {
         const targetDirPath = pathDirname(targetFilePath);
 
@@ -130,11 +152,7 @@ export async function command(params: { buildContext: BuildContext }) {
         }
     }
 
-    fs.writeFileSync(targetFilePath, Buffer.from(componentCode, "utf8"));
-
-    runFormat({
-        packageJsonFilePath: buildContext.packageJsonFilePath
-    });
+    fs.writeFileSync(targetFilePath, Buffer.from(sourceCode, "utf8"));
 
     console.log(
         [

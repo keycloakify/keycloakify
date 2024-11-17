@@ -22,7 +22,7 @@ assert<BuildContext extends BuildContextLike ? true : false>();
 
 export function generateMessageProperties(params: {
     buildContext: BuildContextLike;
-    themeType: ThemeType;
+    themeType: Exclude<ThemeType, "admin">;
 }): {
     languageTags: string[];
     writeMessagePropertiesFiles: (params: {

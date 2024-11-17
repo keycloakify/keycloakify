@@ -7,7 +7,7 @@ import { getThisCodebaseRootDirPath } from "../../tools/getThisCodebaseRootDirPa
 /** Assumes the theme type exists */
 export function readFieldNameUsage(params: {
     themeSrcDirPath: string;
-    themeType: ThemeType;
+    themeType: Exclude<ThemeType, "admin">;
 }): string[] {
     const { themeSrcDirPath, themeType } = params;
 

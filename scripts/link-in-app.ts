@@ -125,7 +125,54 @@ if (testAppPaths.length === 0) {
     process.exit(-1);
 }
 
-testAppPaths.forEach(testAppPath => execSync("yarn install", { cwd: testAppPath }));
+testAppPaths.forEach(testAppPath => {
+    const packageJsonFilePath = pathJoin(testAppPath, "package.json");
+
+    const packageJsonContent = fs.readFileSync(packageJsonFilePath);
+
+    const parsedPackageJson = JSON.parse(packageJsonContent.toString("utf8")) as {
+        scripts?: Record<string, string>;
+    };
+
+    let hasPostInstallOrPrepareScript = false;
+
+    if (parsedPackageJson.scripts !== undefined) {
+        for (const scriptName of ["postinstall", "prepare"]) {
+            if (parsedPackageJson.scripts[scriptName] === undefined) {
+                continue;
+            }
+
+            hasPostInstallOrPrepareScript = true;
+
+            delete parsedPackageJson.scripts[scriptName];
+        }
+    }
+
+    if (hasPostInstallOrPrepareScript) {
+        fs.writeFileSync(
+            packageJsonFilePath,
+            Buffer.from(JSON.stringify(parsedPackageJson, null, 2), "utf8")
+        );
+    }
+
+    const restorePackageJson = () => {
+        if (!hasPostInstallOrPrepareScript) {
+            return;
+        }
+
+        fs.writeFileSync(packageJsonFilePath, packageJsonContent);
+    };
+
+    try {
+        execSync("yarn install", { cwd: testAppPath });
+    } catch (error) {
+        restorePackageJson();
+
+        throw error;
+    }
+
+    restorePackageJson();
+});
 
 console.log("=== Linking common dependencies ===");
 
@@ -171,5 +218,21 @@ testAppPaths.forEach(testAppPath =>
         )["name"]
     })
 );
+
+testAppPaths.forEach(testAppPath => {
+    const { scripts = {} } = JSON.parse(
+        fs.readFileSync(pathJoin(testAppPath, "package.json")).toString("utf8")
+    ) as {
+        scripts?: Record<string, string>;
+    };
+
+    for (const scriptName of ["postinstall", "prepare"]) {
+        if (scripts[scriptName] === undefined) {
+            continue;
+        }
+
+        execSync(`yarn run ${scriptName}`, { cwd: testAppPath });
+    }
+});
 
 export {};

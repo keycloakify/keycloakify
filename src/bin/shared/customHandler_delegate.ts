@@ -8,7 +8,7 @@ import {
     ApiVersion
 } from "./customHandler";
 import * as child_process from "child_process";
-import { sep as pathSep } from "path";
+import { getNodeModulesBinDirPath } from "../tools/nodeModulesBinDirPath";
 import * as fs from "fs";
 
 assert<Equals<ApiVersion, "v1">>();
@@ -19,32 +19,7 @@ export function maybeDelegateCommandToCustomHandler(params: {
 }): { hasBeenHandled: boolean } {
     const { commandName, buildContext } = params;
 
-    const nodeModulesBinDirPath = (() => {
-        const binPath = process.argv[1];
-
-        const segments: string[] = [".bin"];
-
-        let foundNodeModules = false;
-
-        for (const segment of binPath.split(pathSep).reverse()) {
-            skip_segment: {
-                if (foundNodeModules) {
-                    break skip_segment;
-                }
-
-                if (segment === "node_modules") {
-                    foundNodeModules = true;
-                    break skip_segment;
-                }
-
-                continue;
-            }
-
-            segments.unshift(segment);
-        }
-
-        return segments.join(pathSep);
-    })();
+    const nodeModulesBinDirPath = getNodeModulesBinDirPath();
 
     if (!fs.readdirSync(nodeModulesBinDirPath).includes(BIN_NAME)) {
         return { hasBeenHandled: false };

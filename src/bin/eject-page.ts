@@ -7,8 +7,7 @@ import {
     ACCOUNT_THEME_PAGE_IDS,
     type LoginThemePageId,
     type AccountThemePageId,
-    THEME_TYPES,
-    type ThemeType
+    THEME_TYPES
 } from "./shared/constants";
 import { capitalize } from "tsafe/capitalize";
 import * as fs from "fs";
@@ -23,7 +22,7 @@ import { assert, Equals } from "tsafe/assert";
 import type { BuildContext } from "./shared/buildContext";
 import chalk from "chalk";
 import { maybeDelegateCommandToCustomHandler } from "./shared/customHandler_delegate";
-import { runFormat } from "./tools/runFormat";
+import { runPrettier, getIsPrettierAvailable } from "./tools/runPrettier";
 
 export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
@@ -46,6 +45,8 @@ export async function command(params: { buildContext: BuildContext }) {
                     return buildContext.implementedThemeTypes.account.isImplemented;
                 case "login":
                     return buildContext.implementedThemeTypes.login.isImplemented;
+                case "admin":
+                    return buildContext.implementedThemeTypes.admin.isImplemented;
             }
             assert<Equals<typeof themeType, never>>(false);
         });
@@ -56,7 +57,7 @@ export async function command(params: { buildContext: BuildContext }) {
             return values[0];
         }
 
-        const { value } = await cliSelect<ThemeType>({
+        const { value } = await cliSelect({
             values
         }).catch(() => {
             process.exit(-1);
@@ -64,6 +65,14 @@ export async function command(params: { buildContext: BuildContext }) {
 
         return value;
     })();
+
+    if (themeType === "admin") {
+        console.log(
+            "Use `npx keycloakify eject-file` command instead, see documentation"
+        );
+
+        process.exit(-1);
+    }
 
     if (
         themeType === "account" &&
@@ -74,13 +83,13 @@ export async function command(params: { buildContext: BuildContext }) {
             pathDirname(buildContext.packageJsonFilePath),
             "node_modules",
             "@keycloakify",
-            "keycloak-account-ui",
+            `keycloak-account-ui`,
             "src"
         );
 
         console.log(
             [
-                `There isn't an interactive CLI to eject components of the Single-Page Account theme.`,
+                `There isn't an interactive CLI to eject components of the Account SPA UI.`,
                 `You can however copy paste into your codebase the any file or directory from the following source directory:`,
                 ``,
                 `${chalk.bold(pathJoin(pathRelative(process.cwd(), srcDirPath)))}`,
@@ -89,40 +98,43 @@ export async function command(params: { buildContext: BuildContext }) {
         );
 
         eject_entrypoint: {
-            const kcAccountUiTsxFileRelativePath = "KcAccountUi.tsx";
+            const kcUiTsxFileRelativePath = `KcAccountUi.tsx` as const;
 
-            const accountThemeSrcDirPath = pathJoin(
-                buildContext.themeSrcDirPath,
-                "account"
-            );
+            const themeSrcDirPath = pathJoin(buildContext.themeSrcDirPath, "account");
 
-            const targetFilePath = pathJoin(
-                accountThemeSrcDirPath,
-                kcAccountUiTsxFileRelativePath
-            );
+            const targetFilePath = pathJoin(themeSrcDirPath, kcUiTsxFileRelativePath);
 
             if (fs.existsSync(targetFilePath)) {
                 break eject_entrypoint;
             }
 
-            fs.cpSync(
-                pathJoin(srcDirPath, kcAccountUiTsxFileRelativePath),
-                targetFilePath
-            );
+            fs.cpSync(pathJoin(srcDirPath, kcUiTsxFileRelativePath), targetFilePath);
 
             {
-                const kcPageTsxFilePath = pathJoin(accountThemeSrcDirPath, "KcPage.tsx");
+                const kcPageTsxFilePath = pathJoin(themeSrcDirPath, "KcPage.tsx");
 
                 const kcPageTsxCode = fs.readFileSync(kcPageTsxFilePath).toString("utf8");
 
-                const componentName = pathBasename(
-                    kcAccountUiTsxFileRelativePath
-                ).replace(/.tsx$/, "");
+                const componentName = pathBasename(kcUiTsxFileRelativePath).replace(
+                    /.tsx$/,
+                    ""
+                );
 
-                const modifiedKcPageTsxCode = kcPageTsxCode.replace(
+                let modifiedKcPageTsxCode = kcPageTsxCode.replace(
                     `@keycloakify/keycloak-account-ui/${componentName}`,
                     `./${componentName}`
                 );
+
+                run_prettier: {
+                    if (!(await getIsPrettierAvailable())) {
+                        break run_prettier;
+                    }
+
+                    modifiedKcPageTsxCode = await runPrettier({
+                        filePath: kcPageTsxFilePath,
+                        sourceCode: modifiedKcPageTsxCode
+                    });
+                }
 
                 fs.writeFileSync(
                     kcPageTsxFilePath,
@@ -139,13 +151,14 @@ export async function command(params: { buildContext: BuildContext }) {
                 [
                     `To help you get started ${chalk.bold(pathRelative(process.cwd(), targetFilePath))} has been copied into your project.`,
                     `The next step is usually to eject ${chalk.bold(routesTsxFilePath)}`,
-                    `with \`cp ${routesTsxFilePath} ${pathRelative(process.cwd(), accountThemeSrcDirPath)}\``,
-                    `then update the import of routes in ${kcAccountUiTsxFileRelativePath}.`
+                    `with \`cp ${routesTsxFilePath} ${pathRelative(process.cwd(), themeSrcDirPath)}\``,
+                    `then update the import of routes in ${kcUiTsxFileRelativePath}.`
                 ].join("\n")
             );
         }
 
         process.exit(0);
+        return;
     }
 
     console.log(`→ ${themeType}`);
@@ -222,7 +235,7 @@ export async function command(params: { buildContext: BuildContext }) {
         process.exit(-1);
     }
 
-    const componentCode = fs
+    let componentCode = fs
         .readFileSync(
             pathJoin(
                 getThisCodebaseRootDirPath(),
@@ -234,6 +247,17 @@ export async function command(params: { buildContext: BuildContext }) {
         )
         .toString("utf8");
 
+    run_prettier: {
+        if (!(await getIsPrettierAvailable())) {
+            break run_prettier;
+        }
+
+        componentCode = await runPrettier({
+            filePath: targetFilePath,
+            sourceCode: componentCode
+        });
+    }
+
     {
         const targetDirPath = pathDirname(targetFilePath);
 
@@ -243,10 +267,6 @@ export async function command(params: { buildContext: BuildContext }) {
     }
 
     fs.writeFileSync(targetFilePath, Buffer.from(componentCode, "utf8"));
-
-    runFormat({
-        packageJsonFilePath: buildContext.packageJsonFilePath
-    });
 
     console.log(
         `${chalk.green("✓")} ${chalk.bold(

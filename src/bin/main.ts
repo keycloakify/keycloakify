@@ -227,6 +227,56 @@ program
         }
     });
 
+program
+    .command({
+        name: "postinstall",
+        description: "Initialize all the Keycloakify UI modules installed in the project."
+    })
+    .task({
+        skip,
+        handler: async ({ projectDirPath }) => {
+            const { command } = await import("./postinstall");
+
+            await command({ buildContext: getBuildContext({ projectDirPath }) });
+        }
+    });
+
+program
+    .command<{
+        file: string;
+    }>({
+        name: "eject-file",
+        description: [
+            "WARNING: Not usable yet, will be used for future features",
+            "Take ownership over a given file"
+        ].join(" ")
+    })
+    .option({
+        key: "file",
+        name: (() => {
+            const name = "file";
+
+            optionsKeys.push(name);
+
+            return name;
+        })(),
+        description: [
+            "Relative path of the file relative to the directory of your keycloak theme source",
+            "Example `--file src/login/page/Login.tsx`"
+        ].join(" ")
+    })
+    .task({
+        skip,
+        handler: async ({ projectDirPath, file }) => {
+            const { command } = await import("./eject-file");
+
+            await command({
+                buildContext: getBuildContext({ projectDirPath }),
+                cliCommandOptions: { file }
+            });
+        }
+    });
+
 // Fallback to build command if no command is provided
 {
     const [, , ...rest] = process.argv;
