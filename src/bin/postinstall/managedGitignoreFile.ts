@@ -38,9 +38,9 @@ export async function writeManagedGitignoreFile(params: {
             `# This file is managed by Keycloakify, do not edit it manually.`,
             ``,
             DELIMITER_START,
-            ...ejectedFilesRelativePaths.map(fileRelativePath =>
-                fileRelativePath.split(pathSep).join("/")
-            ),
+            ...ejectedFilesRelativePaths
+                .map(fileRelativePath => fileRelativePath.split(pathSep).join("/"))
+                .map(line => `# ${line}`),
             DELIMITER_END,
             ``,
             ...uiModuleMetas
@@ -122,6 +122,7 @@ export async function readManagedGitignoreFile(params: {
     const ejectedFilesRelativePaths = payload
         .split("\n")
         .map(line => line.trim())
+        .map(line => line.replace(/^# /, ""))
         .filter(line => line !== "")
         .map(line =>
             getAbsoluteAndInOsFormatPath({
