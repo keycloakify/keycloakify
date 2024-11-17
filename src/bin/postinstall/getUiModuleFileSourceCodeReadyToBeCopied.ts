@@ -36,19 +36,21 @@ export async function getUiModuleFileSourceCodeReadyToBeCopied(params: {
         if (isForEjection) {
             return [
                 `/*`,
-                `This file was ejected from ${uiModuleName} version ${uiModuleVersion}.`,
-                `*/`
+                ` * This file was ejected from ${uiModuleName} version ${uiModuleVersion}.`,
+                ` */`
             ].join("\n");
         } else {
             return [
                 `/*`,
-                `WARNING: Before modifying this file run the following command:`,
-                ``,
-                `npx keycloakify eject-file --file ${fileRelativePath.split(pathSep).join("/")}\``,
-                ``,
-                `This file comes from ${uiModuleName} version ${uiModuleVersion}.`,
-                `*/`
-            ];
+                ` *`,
+                ` * WARNING: Before modifying this file run the following command:`,
+                ` * `,
+                ` * $ npx keycloakify eject-file --file ${fileRelativePath.split(pathSep).join("/")}`,
+                ` * `,
+                ` * This file comes from ${uiModuleName} version ${uiModuleVersion}.`,
+                ` *`,
+                ` */`
+            ].join("\n");
         }
     })();
 
