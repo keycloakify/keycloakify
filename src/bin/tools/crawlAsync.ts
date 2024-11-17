@@ -6,19 +6,19 @@ import { assert, type Equals } from "tsafe/assert";
 export async function crawlAsync(params: {
     dirPath: string;
     returnedPathsType: "absolute" | "relative to dirPath";
-    onFileFound: (filePath: string) => void;
+    onFileFound: (filePath: string) => Promise<void>;
 }) {
     const { dirPath, returnedPathsType, onFileFound } = params;
 
     await crawlAsyncRec({
         dirPath,
-        onFileFound: ({ filePath }) => {
+        onFileFound: async ({ filePath }) => {
             switch (returnedPathsType) {
                 case "absolute":
-                    onFileFound(filePath);
+                    await onFileFound(filePath);
                     return;
                 case "relative to dirPath":
-                    onFileFound(pathRelative(dirPath, filePath));
+                    await onFileFound(pathRelative(dirPath, filePath));
                     return;
             }
             assert<Equals<typeof returnedPathsType, never>>();
@@ -28,7 +28,7 @@ export async function crawlAsync(params: {
 
 async function crawlAsyncRec(params: {
     dirPath: string;
-    onFileFound: (params: { filePath: string }) => void;
+    onFileFound: (params: { filePath: string }) => Promise<void>;
 }) {
     const { dirPath, onFileFound } = params;
 
@@ -45,7 +45,7 @@ async function crawlAsyncRec(params: {
                 return;
             }
 
-            onFileFound({ filePath: fileOrDirPath });
+            await onFileFound({ filePath: fileOrDirPath });
         })
     );
 }
