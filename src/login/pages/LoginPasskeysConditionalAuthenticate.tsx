@@ -115,62 +115,61 @@ export default function LoginPasskeysConditionalAuthenticate(
                                 </div>
                             </>
                         )}
-                        <div id="kc-form">
-                            <div id="kc-form-wrapper">
-                                {realm.password && (
-                                    <form
-                                        id="kc-form-passkey"
-                                        action={url.loginAction}
-                                        method="post"
-                                        style={{ display: "none" }}
-                                        onSubmit={event => {
-                                            try {
-                                                // @ts-expect-error
-                                                event.target.login.disabled = true;
-                                            } catch {}
-
-                                            return true;
-                                        }}
-                                    >
-                                        {!usernameHidden && (
-                                            <div className={kcClsx("kcFormGroupClass")}>
-                                                <label htmlFor="username" className={kcClsx("kcLabelClass")}>
-                                                    {msg("passkey-autofill-select")}
-                                                </label>
-                                                <input
-                                                    tabIndex={1}
-                                                    id="username"
-                                                    aria-invalid={messagesPerField.existsError("username")}
-                                                    className={kcClsx("kcInputClass")}
-                                                    name="username"
-                                                    defaultValue={login.username ?? ""}
-                                                    //autoComplete="username webauthn"
-                                                    type="text"
-                                                    autoFocus
-                                                    autoComplete="off"
-                                                />
-                                                {messagesPerField.existsError("username") && (
-                                                    <span id="input-error-username" className={kcClsx("kcInputErrorMessageClass")} aria-live="polite">
-                                                        {messagesPerField.get("username")}
-                                                    </span>
-                                                )}
-                                            </div>
-                                        )}
-                                    </form>
-                                )}
-                                <div id="kc-form-passkey-button" className={kcClsx("kcFormButtonsClass")} style={{ display: "none" }}>
-                                    <input
-                                        id={authButtonId}
-                                        type="button"
-                                        autoFocus
-                                        value={msgStr("passkey-doAuthenticate")}
-                                        className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonBlockClass", "kcButtonLargeClass")}
-                                    />
-                                </div>
-                            </div>
-                        </div>
                     </>
                 )}
+                <div id="kc-form">
+                    <div id="kc-form-wrapper">
+                        {realm.password && (
+                            <form
+                                id="kc-form-login"
+                                action={url.loginAction}
+                                method="post"
+                                style={{ display: "none" }}
+                                onSubmit={event => {
+                                    try {
+                                        // @ts-expect-error
+                                        event.target.login.disabled = true;
+                                    } catch {}
+
+                                    return true;
+                                }}
+                            >
+                                {!usernameHidden && (
+                                    <div className={kcClsx("kcFormGroupClass")}>
+                                        <label htmlFor="username" className={kcClsx("kcLabelClass")}>
+                                            {msg("passkey-autofill-select")}
+                                        </label>
+                                        <input
+                                            tabIndex={1}
+                                            id="username"
+                                            aria-invalid={messagesPerField.existsError("username")}
+                                            className={kcClsx("kcInputClass")}
+                                            name="username"
+                                            defaultValue={login.username ?? ""}
+                                            autoComplete="username webauthn"
+                                            type="text"
+                                            autoFocus
+                                        />
+                                        {messagesPerField.existsError("username") && (
+                                            <span id="input-error-username" className={kcClsx("kcInputErrorMessageClass")} aria-live="polite">
+                                                {messagesPerField.get("username")}
+                                            </span>
+                                        )}
+                                    </div>
+                                )}
+                            </form>
+                        )}
+                        <div id="kc-form-passkey-button" className={kcClsx("kcFormButtonsClass")} style={{ display: "none" }}>
+                            <input
+                                id={authButtonId}
+                                type="button"
+                                autoFocus
+                                value={msgStr("passkey-doAuthenticate")}
+                                className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonBlockClass", "kcButtonLargeClass")}
+                            />
+                        </div>
+                    </div>
+                </div>
             </div>
         </Template>
     );
