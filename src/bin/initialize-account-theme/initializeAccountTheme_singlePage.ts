@@ -9,8 +9,7 @@ import {
 import { SemVer } from "../tools/SemVer";
 import fetch from "make-fetch-happen";
 import { z } from "zod";
-import { assert, type Equals } from "tsafe/assert";
-import { is } from "tsafe/is";
+import { assert, type Equals, is } from "tsafe/assert";
 import { id } from "tsafe/id";
 import { npmInstall } from "../tools/npmInstall";
 import { copyBoilerplate } from "./copyBoilerplate";

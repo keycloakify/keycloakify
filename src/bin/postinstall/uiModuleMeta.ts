@@ -1,10 +1,9 @@
-import { assert, type Equals } from "tsafe/assert";
+import { assert, type Equals, is } from "tsafe/assert";
 import { id } from "tsafe/id";
 import { z } from "zod";
 import { join as pathJoin, dirname as pathDirname } from "path";
 import * as fsPr from "fs/promises";
 import type { BuildContext } from "../shared/buildContext";
-import { is } from "tsafe/is";
 import { existsAsync } from "../tools/fs.existsAsync";
 import { listInstalledModules } from "../tools/listInstalledModules";
 import { crawlAsync } from "../tools/crawlAsync";

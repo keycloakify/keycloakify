@@ -1,11 +1,10 @@
 import "keycloakify/tools/Object.fromEntries";
-import { assert } from "tsafe/assert";
+import { assert, is } from "tsafe/assert";
 import messages_defaultSet_fallbackLanguage from "../messages_defaultSet/en";
 import { fetchMessages_defaultSet } from "../messages_defaultSet";
 import type { KcContext } from "../../KcContext";
 import { FALLBACK_LANGUAGE_TAG } from "keycloakify/bin/shared/constants";
 import { id } from "tsafe/id";
-import { is } from "tsafe/is";
 import { Reflect } from "tsafe/Reflect";
 import {
     type LanguageTag as LanguageTag_defaultSet,

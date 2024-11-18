@@ -4,8 +4,7 @@ import { SemVer } from "../src/bin/tools/SemVer";
 import { join as pathJoin, relative as pathRelative } from "path";
 import chalk from "chalk";
 import { Deferred } from "evt/tools/Deferred";
-import { assert } from "tsafe/assert";
-import { is } from "tsafe/is";
+import { assert, is } from "tsafe/assert";
 import { run } from "./shared/run";
 
 (async () => {

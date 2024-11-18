@@ -9,7 +9,7 @@ import {
 import { getAbsoluteAndInOsFormatPath } from "../tools/getAbsoluteAndInOsFormatPath";
 import { z } from "zod";
 import * as fs from "fs";
-import { assert, type Equals } from "tsafe/assert";
+import { assert, type Equals, is } from "tsafe/assert";
 import * as child_process from "child_process";
 import {
     VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES,
@@ -23,7 +23,6 @@ import { objectEntries } from "tsafe/objectEntries";
 import { id } from "tsafe/id";
 import chalk from "chalk";
 import { getProxyFetchOptions, type FetchOptionsLike } from "../tools/fetchProxyOptions";
-import { is } from "tsafe/is";
 
 export type BuildContext = {
     themeVersion: string;

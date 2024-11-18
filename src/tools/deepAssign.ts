@@ -1,5 +1,4 @@
-import { assert } from "tsafe/assert";
-import { is } from "tsafe/is";
+import { assert, is } from "tsafe/assert";
 import { structuredCloneButFunctions } from "./structuredCloneButFunctions";
 
 /** NOTE: Array a copied over, not merged. */

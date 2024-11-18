@@ -1,9 +1,8 @@
-import { assert, type Equals } from "tsafe/assert";
+import { assert, type Equals, is } from "tsafe/assert";
 import { id } from "tsafe/id";
 import { z } from "zod";
 import { join as pathJoin, dirname as pathDirname } from "path";
 import * as fsPr from "fs/promises";
-import { is } from "tsafe/is";
 import { getInstalledModuleDirPath } from "../tools/getInstalledModuleDirPath";
 import { exclude } from "tsafe/exclude";
 

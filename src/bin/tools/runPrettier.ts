@@ -2,10 +2,9 @@ import { getNodeModulesBinDirPath } from "./nodeModulesBinDirPath";
 import { join as pathJoin, resolve as pathResolve } from "path";
 import * as fsPr from "fs/promises";
 import { id } from "tsafe/id";
-import { assert } from "tsafe/assert";
+import { assert, is } from "tsafe/assert";
 import chalk from "chalk";
 import * as crypto from "crypto";
-import { is } from "tsafe/is";
 import { symToStr } from "tsafe/symToStr";
 import { readThisNpmPackageVersion } from "./readThisNpmPackageVersion";
 

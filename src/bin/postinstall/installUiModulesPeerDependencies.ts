@@ -1,5 +1,4 @@
-import { assert, type Equals } from "tsafe/assert";
-import { is } from "tsafe/is";
+import { assert, type Equals, is } from "tsafe/assert";
 import type { BuildContext } from "../shared/buildContext";
 import type { UiModuleMeta } from "./uiModuleMeta";
 import { z } from "zod";
