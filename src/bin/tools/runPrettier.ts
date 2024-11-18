@@ -50,7 +50,7 @@ export async function getPrettier(): Promise<PrettierAndConfigHash> {
         // of prettier, that is the one of the project, not the one of this repo.
         // So we do a sketchy eval to bypass ncc.
         // We make sure to only do that when linking, otherwise we import properly.
-        if (readThisNpmPackageVersion() === "0.0.0") {
+        if (readThisNpmPackageVersion().startsWith("0.0.0")) {
             eval(
                 `${symToStr({ prettier })} = require("${pathResolve(pathJoin(getNodeModulesBinDirPath(), "..", "prettier"))}")`
             );
