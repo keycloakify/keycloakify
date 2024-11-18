@@ -9,6 +9,8 @@ import { dirname as pathDirname } from "path";
 import { join as pathJoin } from "path";
 import { existsAsync } from "../tools/fs.existsAsync";
 import * as fsPr from "fs/promises";
+import { getIsTrackedByGit } from "../tools/isTrackedByGit";
+import { untrackFromGit } from "../tools/untrackFromGit";
 
 export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
@@ -45,8 +47,10 @@ export async function command(params: { buildContext: BuildContext }) {
                                 fileRelativePath
                             );
 
+                            const doesFileExist = await existsAsync(destFilePath);
+
                             skip_condition: {
-                                if (!(await existsAsync(destFilePath))) {
+                                if (!doesFileExist) {
                                     break skip_condition;
                                 }
 
@@ -59,6 +63,24 @@ export async function command(params: { buildContext: BuildContext }) {
                                 }
 
                                 return;
+                            }
+
+                            git_untrack: {
+                                if (!destFilePath) {
+                                    break git_untrack;
+                                }
+
+                                const isTracked = await getIsTrackedByGit({
+                                    filePath: destFilePath
+                                });
+
+                                if (!isTracked) {
+                                    break git_untrack;
+                                }
+
+                                await untrackFromGit({
+                                    filePath: destFilePath
+                                });
                             }
 
                             {
