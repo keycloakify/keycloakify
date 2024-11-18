@@ -56,7 +56,8 @@ export async function getUiModuleFileSourceCodeReadyToBeCopied(params: {
                   ``,
                   `$ npx keycloakify eject-file --file ${fileRelativePath.split(pathSep).join("/")}`,
                   ``,
-                  `This file comes from ${uiModuleName} version ${uiModuleVersion}.`
+                  `This file comes from ${uiModuleName} version ${uiModuleVersion}.`,
+                  `This file has been copied over to your repo by your postinstall script: \`npx keycloakify postinstall\``
               ]
     );
 
