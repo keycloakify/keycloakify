@@ -66,7 +66,7 @@ export async function command(params: { buildContext: BuildContext }) {
                             }
 
                             git_untrack: {
-                                if (!destFilePath) {
+                                if (!doesFileExist) {
                                     break git_untrack;
                                 }
 
