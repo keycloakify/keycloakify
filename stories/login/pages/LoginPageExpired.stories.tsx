@@ -13,9 +13,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-    render: () => <KcPageStory />
-};
+export const Default: Story = {};
 
 /**
  * WithErrorMessage:
@@ -24,18 +22,16 @@ export const Default: Story = {
  * - Key Aspect: Ensures that error messages are displayed correctly in addition to the page expiration notice.
  */
 export const WithErrorMessage: Story = {
-    render: () => (
-        <KcPageStory
-            kcContext={{
-                url: {
-                    loginRestartFlowUrl: "/mock-restart-flow",
-                    loginAction: "/mock-continue-login"
-                },
-                message: {
-                    type: "error",
-                    summary: "An error occurred while processing your session."
-                }
-            }}
-        />
-    )
+    args: {
+        kcContext: {
+            url: {
+                loginRestartFlowUrl: "/mock-restart-flow",
+                loginAction: "/mock-continue-login"
+            },
+            message: {
+                type: "error",
+                summary: "An error occurred while processing your session."
+            }
+        }
+    }
 };

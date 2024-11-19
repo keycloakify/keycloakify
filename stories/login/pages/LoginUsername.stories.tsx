@@ -13,19 +13,15 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-    render: () => <KcPageStory />
-};
+export const Default: Story = {};
 
 export const WithEmailAsUsername: Story = {
-    render: () => (
-        <KcPageStory
-            kcContext={{
-                realm: {
-                    loginWithEmailAllowed: true,
-                    registrationEmailAsUsername: true
-                }
-            }}
-        />
-    )
+    args: {
+        kcContext: {
+            realm: {
+                loginWithEmailAllowed: true,
+                registrationEmailAsUsername: true
+            }
+        }
+    }
 };

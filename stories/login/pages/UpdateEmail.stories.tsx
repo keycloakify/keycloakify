@@ -13,9 +13,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-    render: () => <KcPageStory />
-};
+export const Default: Story = {};
 
 /**
  * WithAppInitiatedAction:
@@ -24,17 +22,15 @@ export const Default: Story = {
  * - Key Aspect: Ensures the "Cancel" button is visible and functional during app-initiated actions.
  */
 export const WithAppInitiatedAction: Story = {
-    render: () => (
-        <KcPageStory
-            kcContext={{
-                url: {
-                    loginAction: "/mock-login-action"
-                },
-                messagesPerField: {
-                    exists: () => false
-                },
-                isAppInitiatedAction: true
-            }}
-        />
-    )
+    args: {
+        kcContext: {
+            url: {
+                loginAction: "/mock-login-action"
+            },
+            messagesPerField: {
+                exists: () => false
+            },
+            isAppInitiatedAction: true
+        }
+    }
 };

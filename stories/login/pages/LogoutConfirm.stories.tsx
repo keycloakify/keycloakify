@@ -13,9 +13,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-    render: () => <KcPageStory />
-};
+export const Default: Story = {};
 
 /**
  * WithCustomLogoutMessage:
@@ -24,24 +22,22 @@ export const Default: Story = {
  * - Key Aspect: Ensures the custom logout message is displayed correctly.
  */
 export const WithCustomLogoutMessage: Story = {
-    render: () => (
-        <KcPageStory
-            kcContext={{
-                url: {
-                    logoutConfirmAction: "/mock-logout-action"
-                },
-                client: {
-                    baseUrl: "/mock-client-url"
-                },
-                logoutConfirm: {
-                    code: "mock-session-code",
-                    skipLink: false
-                },
-                message: {
-                    summary: "Are you sure you want to log out from all sessions?",
-                    type: "warning"
-                }
-            }}
-        />
-    )
+    args: {
+        kcContext: {
+            url: {
+                logoutConfirmAction: "/mock-logout-action"
+            },
+            client: {
+                baseUrl: "/mock-client-url"
+            },
+            logoutConfirm: {
+                code: "mock-session-code",
+                skipLink: false
+            },
+            message: {
+                summary: "Are you sure you want to log out from all sessions?",
+                type: "warning"
+            }
+        }
+    }
 };
