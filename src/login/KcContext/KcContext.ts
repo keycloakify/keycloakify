@@ -33,7 +33,7 @@ export type KcContext =
     | KcContext.LoginResetPassword
     | KcContext.LoginVerifyEmail
     | KcContext.Terms
-    | KcContext.LoginDeviceVerifyUserCode
+    | KcContext.LoginOauth2DeviceVerifyUserCode
     | KcContext.LoginOauthGrant
     | KcContext.LoginOtp
     | KcContext.LoginUsername
@@ -277,7 +277,7 @@ export declare namespace KcContext {
         __localizationRealmOverridesTermsText?: string;
     };
 
-    export type LoginDeviceVerifyUserCode = Common & {
+    export type LoginOauth2DeviceVerifyUserCode = Common & {
         pageId: "login-oauth2-device-verify-user-code.ftl";
         url: {
             oauth2DeviceVerificationAction: string;

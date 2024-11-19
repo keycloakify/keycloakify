@@ -290,7 +290,7 @@ export const kcContextMocks = [
         ...kcContextCommonMock,
         pageId: "terms.ftl"
     }),
-    id<KcContext.LoginDeviceVerifyUserCode>({
+    id<KcContext.LoginOauth2DeviceVerifyUserCode>({
         ...kcContextCommonMock,
         pageId: "login-oauth2-device-verify-user-code.ftl",
         url: loginUrl
