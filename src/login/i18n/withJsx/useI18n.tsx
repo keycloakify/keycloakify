@@ -47,11 +47,25 @@ export function createUseI18n<
 
         function renderHtmlString(params: { htmlString: string; msgKey: string }): JSX.Element {
             const { htmlString, msgKey } = params;
+
+            const htmlString_sanitized = kcSanitize(htmlString);
+
+            const Element = (() => {
+                if (htmlString_sanitized.includes("<") && htmlString_sanitized.includes(">")) {
+                    for (const tagName of ["div", "section", "article", "ul", "ol"]) {
+                        if (htmlString_sanitized.includes(`<${tagName}`)) {
+                            return "div";
+                        }
+                    }
+                }
+                return "span";
+            })();
+
             return (
-                <div
+                <Element
                     data-kc-msg={msgKey}
                     dangerouslySetInnerHTML={{
-                        __html: kcSanitize(htmlString)
+                        __html: htmlString_sanitized
                     }}
                 />
             );
@@ -83,7 +97,7 @@ export function createUseI18n<
     })();
 
     add_style: {
-        const attributeName = "data-kc-i18n";
+        const attributeName = "data-kc-msg";
 
         // Check if already exists in head
         if (document.querySelector(`style[${attributeName}]`) !== null) {
@@ -92,7 +106,7 @@ export function createUseI18n<
 
         const styleElement = document.createElement("style");
         styleElement.attributes.setNamedItem(document.createAttribute(attributeName));
-        styleElement.textContent = `[data-kc-msg] { display: inline-block; }`;
+        styleElement.textContent = `div[${attributeName}] { display: inline-block; }`;
         document.head.prepend(styleElement);
     }
 

@@ -52,28 +52,26 @@ export default function LoginConfigTotp(props: PageProps<Extract<KcContext, { pa
                             </li>
                             <li>
                                 <p>{msg("loginTotpManualStep3")}</p>
-                                <p>
-                                    <ul>
-                                        <li id="kc-totp-type">
-                                            {msg("loginTotpType")}: {msg(`loginTotp.${totp.policy.type}`)}
+                                <ul>
+                                    <li id="kc-totp-type">
+                                        {msg("loginTotpType")}: {msg(`loginTotp.${totp.policy.type}`)}
+                                    </li>
+                                    <li id="kc-totp-algorithm">
+                                        {msg("loginTotpAlgorithm")}: {totp.policy.getAlgorithmKey()}
+                                    </li>
+                                    <li id="kc-totp-digits">
+                                        {msg("loginTotpDigits")}: {totp.policy.digits}
+                                    </li>
+                                    {totp.policy.type === "totp" ? (
+                                        <li id="kc-totp-period">
+                                            {msg("loginTotpInterval")}: {totp.policy.period}
                                         </li>
-                                        <li id="kc-totp-algorithm">
-                                            {msg("loginTotpAlgorithm")}: {totp.policy.getAlgorithmKey()}
+                                    ) : (
+                                        <li id="kc-totp-counter">
+                                            {msg("loginTotpCounter")}: {totp.policy.initialCounter}
                                         </li>
-                                        <li id="kc-totp-digits">
-                                            {msg("loginTotpDigits")}: {totp.policy.digits}
-                                        </li>
-                                        {totp.policy.type === "totp" ? (
-                                            <li id="kc-totp-period">
-                                                {msg("loginTotpInterval")}: {totp.policy.period}
-                                            </li>
-                                        ) : (
-                                            <li id="kc-totp-counter">
-                                                {msg("loginTotpCounter")}: {totp.policy.initialCounter}
-                                            </li>
-                                        )}
-                                    </ul>
-                                </p>
+                                    )}
+                                </ul>
                             </li>
                         </>
                     ) : (
