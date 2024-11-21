@@ -1,5 +1,6 @@
 import "keycloakify/tools/Object.fromEntries";
 import { assert, is } from "tsafe/assert";
+import { extractLastParenthesisContent } from "keycloakify/tools/extractLastParenthesisContent";
 import messages_defaultSet_fallbackLanguage from "../messages_defaultSet/en";
 import { fetchMessages_defaultSet } from "../messages_defaultSet";
 import type { KcContext } from "../../KcContext";
@@ -168,12 +169,10 @@ export function createGetI18n<
                     break from_server;
                 }
 
-                // cspell: disable-next-line
-                // from "Espagnol (Español)" we want to extract "Español"
-                const match = supportedEntry.label.match(/[^(]+\(([^)]+)\)/);
+                const lastParenthesisContent = extractLastParenthesisContent(supportedEntry.label);
 
-                if (match !== null) {
-                    return match[1];
+                if (lastParenthesisContent !== undefined) {
+                    return lastParenthesisContent;
                 }
 
                 return supportedEntry.label;
