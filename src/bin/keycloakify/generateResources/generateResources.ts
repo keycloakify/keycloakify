@@ -38,7 +38,9 @@ import { objectEntries } from "tsafe/objectEntries";
 import { escapeStringForPropertiesFile } from "../../tools/escapeStringForPropertiesFile";
 import * as child_process from "child_process";
 import { getThisCodebaseRootDirPath } from "../../tools/getThisCodebaseRootDirPath";
-import propertiesParser from "properties-parser";
+import { mergePropertiesFiles } from "./mergePropertiesFiles";
+import { getThemeTypeDirPath } from "./getThemeTypeDirPath";
+import { generateEmailResources } from "./steps/genereateEmailResources";
 
 export type BuildContextLike = BuildContextLike_kcContextExclusionsFtlCode &
     BuildContextLike_generateMessageProperties & {
@@ -66,14 +68,6 @@ export async function generateResources(params: {
     if (fs.existsSync(resourcesDirPath)) {
         rmSync(resourcesDirPath, { recursive: true });
     }
-
-    const getThemeTypeDirPath = (params: {
-        themeType: ThemeType | "email";
-        themeName: string;
-    }) => {
-        const { themeType, themeName } = params;
-        return pathJoin(resourcesDirPath, "theme", themeName, themeType);
-    };
 
     const writeMessagePropertiesFilesByThemeType: Partial<
         Record<ThemeType, (params: { messageDirPath: string; themeName: string }) => void>
@@ -103,7 +97,11 @@ export async function generateResources(params: {
             }
         })();
 
-        const themeTypeDirPath = getThemeTypeDirPath({ themeName, themeType });
+        const themeTypeDirPath = getThemeTypeDirPath({
+            resourcesDirPath,
+            themeName,
+            themeType
+        });
 
         apply_replacers_and_move_to_theme_resources: {
             const destDirPath = pathJoin(
@@ -124,6 +122,7 @@ export async function generateResources(params: {
                 transformCodebase({
                     srcDirPath: pathJoin(
                         getThemeTypeDirPath({
+                            resourcesDirPath,
                             themeName,
                             themeType: "login"
                         }),
@@ -278,7 +277,7 @@ export async function generateResources(params: {
             }
 
             const messagesDirPath_dest = pathJoin(
-                getThemeTypeDirPath({ themeName, themeType }),
+                getThemeTypeDirPath({ resourcesDirPath, themeName, themeType }),
                 "messages"
             );
 
@@ -306,28 +305,9 @@ export async function generateResources(params: {
                         fs.cpSync(filePath_src, filePath_dest);
                     }
 
-                    const messages_src = propertiesParser.parse(
-                        fs.readFileSync(filePath_src).toString("utf8")
-                    );
-                    const messages_dest = propertiesParser.parse(
-                        fs.readFileSync(filePath_dest).toString("utf8")
-                    );
+                    const properties = mergePropertiesFiles(filePath_dest, filePath_src);
 
-                    const messages = {
-                        ...messages_dest,
-                        ...messages_src
-                    };
-
-                    const editor = propertiesParser.createEditor();
-
-                    Object.entries(messages).forEach(([key, value]) => {
-                        editor.set(key, value);
-                    });
-
-                    fs.writeFileSync(
-                        filePath_dest,
-                        Buffer.from(editor.toString(), "utf8")
-                    );
+                    fs.writeFileSync(filePath_dest, Buffer.from(properties, "utf8"));
                 });
             }
 
@@ -392,16 +372,11 @@ export async function generateResources(params: {
         );
     }
 
-    email: {
-        if (!buildContext.implementedThemeTypes.email.isImplemented) {
-            break email;
-        }
-
-        const emailThemeSrcDirPath = pathJoin(buildContext.themeSrcDirPath, "email");
-
-        transformCodebase({
-            srcDirPath: emailThemeSrcDirPath,
-            destDirPath: getThemeTypeDirPath({ themeName, themeType: "email" })
+    if (buildContext.implementedThemeTypes.email.isImplemented) {
+        generateEmailResources({
+            resourcesDirPath,
+            themeNames: buildContext.themeNames,
+            themeSrcDirPath: pathJoin(buildContext.themeSrcDirPath, "email")
         });
     }
 
@@ -417,6 +392,7 @@ export async function generateResources(params: {
         transformCodebase({
             srcDirPath: pathJoin(getThisCodebaseRootDirPath(), "res", "account-v1"),
             destDirPath: getThemeTypeDirPath({
+                resourcesDirPath,
                 themeName: "account-v1",
                 themeType: "account"
             })
@@ -492,42 +468,10 @@ export async function generateResources(params: {
             }
             writeMessagePropertiesFiles({
                 messageDirPath: pathJoin(
-                    getThemeTypeDirPath({ themeName, themeType }),
+                    getThemeTypeDirPath({ resourcesDirPath, themeName, themeType }),
                     "messages"
                 ),
                 themeName
-            });
-        }
-    }
-
-    modify_email_theme_per_variant: {
-        if (!buildContext.implementedThemeTypes.email.isImplemented) {
-            break modify_email_theme_per_variant;
-        }
-
-        for (const themeName of buildContext.themeNames) {
-            const emailThemeDirPath = getThemeTypeDirPath({
-                themeName,
-                themeType: "email"
-            });
-
-            transformCodebase({
-                srcDirPath: emailThemeDirPath,
-                destDirPath: emailThemeDirPath,
-                transformSourceCode: ({ filePath, sourceCode }) => {
-                    if (!filePath.endsWith(".ftl")) {
-                        return { modifiedSourceCode: sourceCode };
-                    }
-
-                    return {
-                        modifiedSourceCode: Buffer.from(
-                            sourceCode
-                                .toString("utf8")
-                                .replace(/xKeycloakify\.themeName/g, `"${themeName}"`),
-                            "utf8"
-                        )
-                    };
-                }
             });
         }
     }
