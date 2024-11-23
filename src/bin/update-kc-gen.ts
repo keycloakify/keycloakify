@@ -9,6 +9,16 @@ import { getIsPrettierAvailable, runPrettier } from "./tools/runPrettier";
 export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
 
+    run_copy_assets_to_public: {
+        if (buildContext.bundler !== "webpack") {
+            break run_copy_assets_to_public;
+        }
+
+        const { command } = await import("./copy-keycloak-resources-to-public");
+
+        await command({ buildContext });
+    }
+
     const { hasBeenHandled } = maybeDelegateCommandToCustomHandler({
         commandName: "update-kc-gen",
         buildContext

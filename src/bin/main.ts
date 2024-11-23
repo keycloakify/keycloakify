@@ -245,7 +245,7 @@ program
     .command({
         name: "copy-keycloak-resources-to-public",
         description:
-            "(Webpack/Create-React-App only) Copy Keycloak default theme resources to the public directory."
+            "(Internal) Copy Keycloak default theme resources to the public directory."
     })
     .task({
         skip,
