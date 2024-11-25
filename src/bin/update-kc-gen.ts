@@ -62,7 +62,12 @@ export async function command(params: { buildContext: BuildContext }) {
             2
         )};`,
         ``,
-        `type KcContext =`,
+        `/**`,
+        ` * NOTE: Do not import this type except maybe in your entrypoint. `,
+        ` * If you need to import the KcContext import it either from src/login/KcContext.ts or src/account/KcContext.ts.`,
+        ` * Depending on the theme type you are working on.`,
+        ` */`,
+        `export type KcContext =`,
         hasLoginTheme && `    | import("./login/KcContext").KcContext`,
         hasAccountTheme && `    | import("./account/KcContext").KcContext`,
         hasAdminTheme && `    | import("./admin/KcContext").KcContext`,
