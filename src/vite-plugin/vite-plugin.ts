@@ -212,6 +212,73 @@ export function keycloakify(params: keycloakify.Params) {
                     force: true
                 }
             );
+        },
+        transformIndexHtml: html => {
+            const doReadKcContextFromUrl =
+                process.env.NODE_ENV === "development" &&
+                process.env[
+                    VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES.READ_KC_CONTEXT_FROM_URL
+                ] === "true";
+
+            if (!doReadKcContextFromUrl) {
+                return html;
+            }
+
+            const scriptContent = `
+(()=>{
+
+    const kcContext = (()=>{
+
+        const paramName= "kcContext";
+
+        read_from_url_case: {
+
+            const url = new URL(window.location.href);
+
+            const paramValue = url.searchParams.get(paramName);
+
+            if( paramValue === null ){
+                break read_from_url_case;
+            }
+
+            url.searchParams.delete(paramName);
+
+            window.history.replaceState({}, "", url);
+
+            const kcContext = JSON.parse(decodeURIComponent(paramValue));
+
+            sessionStorage.setItem(paramName, JSON.stringify(kcContext));
+
+            return kcContext;
+
+        }
+
+        read_from_session_storage_case: {
+
+            const paramValue = sessionStorage.getItem(paramName);
+
+            if( paramValue === null ){
+                break read_from_session_storage_case;
+            }
+
+            return JSON.parse(paramValue);
+
+        }
+
+        return undefined;
+    
+    })();
+
+    if( kcContext === undefined ){
+            return;
+    }
+
+    window.kcContext = kcContext;
+
+})();
+`;
+
+            return html.replace(/<head>/, `<head><script>${scriptContent}</script>`);
         }
     } satisfies Plugin;
 
