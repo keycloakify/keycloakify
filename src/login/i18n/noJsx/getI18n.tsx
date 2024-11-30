@@ -94,7 +94,7 @@ export function createGetI18n<
             return cachedResult;
         }
 
-        const kcContextLocale = params.kcContext.realm.internationalizationEnabled ? params.kcContext.locale : undefined;
+        const kcContextLocale = kcContext.locale;
 
         {
             const currentLanguageTag = kcContextLocale?.currentLanguageTag ?? FALLBACK_LANGUAGE_TAG;
@@ -212,6 +212,14 @@ export function createGetI18n<
                     label: getLanguageLabel(currentLanguage.languageTag),
                     href: "#"
                 });
+            }
+
+            if (!kcContext.realm.internationalizationEnabled) {
+                const enabledLanguage = enabledLanguages.find(({ languageTag }) => languageTag === currentLanguage.languageTag);
+
+                assert(enabledLanguage !== undefined);
+
+                return [enabledLanguage];
             }
 
             return enabledLanguages;
