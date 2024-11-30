@@ -20,7 +20,8 @@ import {
     LOGIN_THEME_PAGE_IDS,
     ACCOUNT_THEME_PAGE_IDS,
     WELL_KNOWN_DIRECTORY_BASE_NAME,
-    THEME_TYPES
+    THEME_TYPES,
+    KEYCLOAKIFY_SPA_DEV_SERVER_PORT
 } from "../../shared/constants";
 import { assert, type Equals } from "tsafe/assert";
 import { readFieldNameUsage } from "./readFieldNameUsage";
@@ -379,7 +380,10 @@ export async function generateResources(params: {
                         ? ["deprecatedMode=false"]
                         : []),
                     ...(buildContext.extraThemeProperties ?? []),
-                    ...buildContext.environmentVariables.map(
+                    ...[
+                        ...buildContext.environmentVariables,
+                        { name: KEYCLOAKIFY_SPA_DEV_SERVER_PORT, default: "" }
+                    ].map(
                         ({ name, default: defaultValue }) =>
                             `${name}=\${env.${name}:${escapeStringForPropertiesFile(defaultValue)}}`
                     ),

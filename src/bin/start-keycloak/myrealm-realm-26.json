@@ -38,6 +38,7 @@
     "bruteForceProtected": false,
     "permanentLockout": false,
     "maxTemporaryLockouts": 0,
+    "bruteForceStrategy": "MULTIPLE",
     "maxFailureWaitSeconds": 900,
     "minimumQuickLoginWaitSeconds": 60,
     "waitIncrementSeconds": 60,
@@ -604,6 +605,7 @@
             "frontchannelLogout": false,
             "protocol": "openid-connect",
             "attributes": {
+                "realm_client": "false",
                 "post.logout.redirect.uris": "+"
             },
             "authenticationFlowBindingOverrides": {},
@@ -628,14 +630,16 @@
             "id": "d8f14dc4-5f0f-4a1d-8c0b-cfe78ee55cb3",
             "clientId": "account-console",
             "name": "${client_account-console}",
+            "description": "",
             "rootUrl": "${authBaseUrl}",
+            "adminUrl": "",
             "baseUrl": "/realms/myrealm/account/",
             "surrogateAuthRequired": false,
             "enabled": true,
             "alwaysDisplayInConsole": false,
             "clientAuthenticatorType": "client-secret",
-            "redirectUris": ["/realms/myrealm/account/*"],
-            "webOrigins": [],
+            "redirectUris": ["*"],
+            "webOrigins": ["*"],
             "notBefore": 0,
             "bearerOnly": false,
             "consentRequired": false,
@@ -647,8 +651,14 @@
             "frontchannelLogout": false,
             "protocol": "openid-connect",
             "attributes": {
+                "realm_client": "false",
+                "oidc.ciba.grant.enabled": "false",
+                "backchannel.logout.session.required": "true",
                 "post.logout.redirect.uris": "+",
-                "pkce.code.challenge.method": "S256"
+                "oauth2.device.authorization.grant.enabled": "false",
+                "display.on.consent.screen": "false",
+                "pkce.code.challenge.method": "S256",
+                "backchannel.logout.revoke.offline.tokens": "false"
             },
             "authenticationFlowBindingOverrides": {},
             "fullScopeAllowed": false,
@@ -699,10 +709,12 @@
             "frontchannelLogout": false,
             "protocol": "openid-connect",
             "attributes": {
+                "realm_client": "false",
+                "client.use.lightweight.access.token.enabled": "true",
                 "post.logout.redirect.uris": "+"
             },
             "authenticationFlowBindingOverrides": {},
-            "fullScopeAllowed": false,
+            "fullScopeAllowed": true,
             "nodeReRegistrationTimeout": 0,
             "defaultClientScopes": [
                 "web-origins",
@@ -740,6 +752,7 @@
             "frontchannelLogout": false,
             "protocol": "openid-connect",
             "attributes": {
+                "realm_client": "true",
                 "post.logout.redirect.uris": "+"
             },
             "authenticationFlowBindingOverrides": {},
@@ -789,6 +802,7 @@
             "frontchannelLogout": true,
             "protocol": "openid-connect",
             "attributes": {
+                "realm_client": "false",
                 "oidc.ciba.grant.enabled": "false",
                 "backchannel.logout.session.required": "true",
                 "login_theme": "keycloakify-starter",
@@ -855,6 +869,7 @@
             "frontchannelLogout": false,
             "protocol": "openid-connect",
             "attributes": {
+                "realm_client": "true",
                 "post.logout.redirect.uris": "+"
             },
             "authenticationFlowBindingOverrides": {},
@@ -898,11 +913,13 @@
             "frontchannelLogout": false,
             "protocol": "openid-connect",
             "attributes": {
+                "realm_client": "false",
+                "client.use.lightweight.access.token.enabled": "true",
                 "post.logout.redirect.uris": "+",
                 "pkce.code.challenge.method": "S256"
             },
             "authenticationFlowBindingOverrides": {},
-            "fullScopeAllowed": false,
+            "fullScopeAllowed": true,
             "nodeReRegistrationTimeout": 0,
             "protocolMappers": [
                 {
@@ -1574,14 +1591,14 @@
                 "subComponents": {},
                 "config": {
                     "allowed-protocol-mapper-types": [
-                        "oidc-full-name-mapper",
-                        "oidc-usermodel-attribute-mapper",
-                        "oidc-address-mapper",
                         "saml-user-attribute-mapper",
-                        "oidc-usermodel-property-mapper",
+                        "oidc-sha256-pairwise-sub-mapper",
+                        "oidc-full-name-mapper",
                         "saml-user-property-mapper",
+                        "oidc-address-mapper",
+                        "oidc-usermodel-property-mapper",
                         "saml-role-list-mapper",
-                        "oidc-sha256-pairwise-sub-mapper"
+                        "oidc-usermodel-attribute-mapper"
                     ]
                 }
             },
@@ -1611,14 +1628,14 @@
                 "subComponents": {},
                 "config": {
                     "allowed-protocol-mapper-types": [
-                        "oidc-sha256-pairwise-sub-mapper",
-                        "oidc-usermodel-property-mapper",
-                        "oidc-address-mapper",
                         "oidc-usermodel-attribute-mapper",
                         "oidc-full-name-mapper",
-                        "saml-user-attribute-mapper",
+                        "oidc-usermodel-property-mapper",
+                        "oidc-address-mapper",
                         "saml-user-property-mapper",
-                        "saml-role-list-mapper"
+                        "saml-role-list-mapper",
+                        "saml-user-attribute-mapper",
+                        "oidc-sha256-pairwise-sub-mapper"
                     ]
                 }
             },
@@ -1671,13 +1688,6 @@
                 "providerId": "rsa-generated",
                 "subComponents": {},
                 "config": {
-                    "privateKey": [
-                        "MIIEowIBAAKCAQEAsYUWzVfZMd6ywpBmLJYeF1U9Mgd/z3xWvl1Yq76oRPPfpcqQitN+cktWqu0hPerCVSl2ltwXDMrUwFzswG9MiM9hb+BLEld7kYiYkcFNt3lCtmmeRQEae7JwWimzeNV96Qlz0tHY8f9Zh0ffPDsLTN1HGAeRJJhI7mNQm6qCJNMCfVA/O5SWumsIn2XLnSMiQ05AACVHOLUq6rAZ2zCCaYmXTmJkuSOb8e26V303P6l63DSe5HSNXDdI00tjfFFf37q870zhvfsotrjjx0RMijy9Kjj8OZF+pFHpDRaGEi8tpQxZDnCTofTieB/Vp3QP+aTlvAyD3Q1ZnJxGQCLygwIDAQABAoIBABUJ9XMJGNQzamiVwuOWN7ht4UP8ezYvgdEA8NaLUO0PIYVIKyD7l4OwkHPPM9PfRACM2qG0MZp8sCyg4WxIeepy+D979oRqJYUmNRLSipqWlASuItRXIPjiY99uYXdjh2R8Os5pvCD+MZxPX9KHGuaVXmzSJMO7YAAPeYkMHcLYTp/U0c65Ztaaz1zz1FeyvpjkLr9SHiMcIN51zFmhvT1tcRIqy4zidisjrTSUr/KPVxeJtrEfyhTGk3z41yJf5YbeaxaMjJR5x0WXzt1fWVmA/V1bWa2Zlj9d8AxDReA1p7Lpstz34PRoCMj9bmFguI2+RTw6K0D++Jydfxmh8vUCgYEA5Zwk2r3TFO3i3V70LOn6CLzn15yLeuSIJ9p2os70jQOmFMCreLdcUbCaiUe7UV/IIVftbcxhFm9zECXZXX0wubcmHZqyptlbuAn1de4QkLJixXo1A7ZQXBEZk22WN2naXHQF5oK6lh/VSLcZBajTsyvBm5JWXrd8djjG06MugA8CgYEAxexKI5IwcLhpMDV9UPQb/+lDWHVqCT2xwYxnZ85y+5gmrOyyT7mIChz3DFYiaw4CHJWmBkIDBaiDgLEgQk4QXWzYshXawShBHnv1h08bVMMw98Ivec7ZRkV+/ET30YRwC2Uyk4bm4HpwVV5GCFhC4aAvRcCA1CIJk3MwcOwksk0CgYEAqxyaOomMbOR7VQ4WWgJkW26sOHppV8RH06tzDhG9HfnCI2USZHwBSL+b6wKSDiqbMn4cat8M23NjBH2wZ4OMdFqRBS7sRHtnZtfFHYW0wqCuCwzvxTxw1qvHq57Xe6RfHtc4LnjuJELE59PLyfPvEG9jcVS1GREUp+XYBpBtbvECgYAMhWBDU9JAr0noRNoCrw6+Z9Fc3UCyCPcf2XQJOyRHCl8X/XliVchna2GtpB1VTHORv13bc32hdAGtuIbj6vBaGLK0wXEvWw6TkR/9SWHfQOHuKpi6Sf2w1mCsMOjElm5IKkTC1Hvyo4xLukUP7hV9FJcpAH6l7OlSLK1Z13aS2QKBgB6w4gvmVEQruHV5+K60OatuFojr+kxJwmzCb5uKOULUFezT2pA3p3l6IWxGL2XtM+LD0SiZE3KZJUzf+LatYlBU9ek4F1krkVNUTRZpzUa0oADbymCL1chM4oPIs7sISQlFIH2wOSZt6Blvcw0E0wfjd9Gv/LHxcMnlRb1t1sLk"
-                    ],
-                    "keyUse": ["SIG"],
-                    "certificate": [
-                        "MIICnTCCAYUCBgGQBsyplzANBgkqhkiG9w0BAQsFADASMRAwDgYDVQQDDAdteXJlYWxtMB4XDTI0MDYxMTEwMTQ1NFoXDTM0MDYxMTEwMTYzNFowEjEQMA4GA1UEAwwHbXlyZWFsbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALGFFs1X2THessKQZiyWHhdVPTIHf898Vr5dWKu+qETz36XKkIrTfnJLVqrtIT3qwlUpdpbcFwzK1MBc7MBvTIjPYW/gSxJXe5GImJHBTbd5QrZpnkUBGnuycFops3jVfekJc9LR2PH/WYdH3zw7C0zdRxgHkSSYSO5jUJuqgiTTAn1QPzuUlrprCJ9ly50jIkNOQAAlRzi1KuqwGdswgmmJl05iZLkjm/Htuld9Nz+petw0nuR0jVw3SNNLY3xRX9+6vO9M4b37KLa448dETIo8vSo4/DmRfqRR6Q0WhhIvLaUMWQ5wk6H04ngf1ad0D/mk5bwMg90NWZycRkAi8oMCAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAVS+gJshIFX6cmBGI8UaOOI/9+XFb4Gi+DHaHVWVVHTd14MoqNK1bmmyTHbGIZbvK8UqgJ9+FhJX1ejx17d4KBzkZI3tYvPnVacHvaw1CIUMZ1Ini6u+UGUTnIlnQzCG0pcTKjOZXf3ih1B2CKdwyC7XeXyEJHicAIG7XfzYfYd9DYHvA+h6hrXaQcNJMW7WFNbtb3fJhtlv5P1Iw+ZEGdj15ukMI0bg2OEQA0F3jIw6QZpigSAGuai3HOY6OgoPO82d7TyTYlNhuwyutWr9izl6QMc2R7BmRfW9XQj4ICR2VWJiL9nqz+SOyqnjQiOObuw8Vywb8c36R1Ym1aaGjOw=="
-                    ],
                     "priority": ["100"]
                 }
             },
@@ -1687,13 +1697,6 @@
                 "providerId": "rsa-enc-generated",
                 "subComponents": {},
                 "config": {
-                    "privateKey": [
-                        "MIIEogIBAAKCAQEAkQtefHy82e8d5dVWN00LnGI5YmBOTKh0tgqayVRjqLH6u3NfgJVVIe0tFnxa7Wka/ySHrn1KSsW52czZ4uPXLUo4sXBkQxyyFXeZiWN8H+9WiUQ+0hefZF4es5ZPhY2VpeMK9XAnphC362LFLVycXulkpJcQ+4DjI99To4LLyJmjQvsVaJ7amoVJ5xd62eUv+D7f2+jwuaTwjGE3+MWZADXjVxsUY1qJuGLGKnLkNNxJNMDhvnKYw+aa3Z4V90fQVyjN1Volgw3DdA59o4wrWEy+2xHc6j2ESi8+cM60fWzZU9sp2XkyJoCnV7nmwk7pZkDy3zvAkeOWzrr3OWeR3wIDAQABAoIBACWMcet8R0+L7YuATQ+H7IeRjhV/pQWHXp9541RXem1DlgtM9N5Oynk78z4s90Uavphqlo1/deohgdl2hLmODjh1THPzCqGtHhUcnyzICmwiA58JgdHVt7e9/eiz8uY6HxGQ01dyr3D4RwSyzyTNItYXSayqRwU0+phgykA8LhFCAQM/UkRXDf6UCFKBhDyE7VPBaDv0xyxNb7dKtE7C6Qo5t5D40xCfQ8ni8OcD5RvshQq5xOWcw7igxAhlmXCu1fuO2CDiSiqXLMENs4NlwilQ3caMXAIzUiblaKwCrrK2noBoitx6vuOR2tKmIZSlTyDAG4vLQQtOHk53hBoupGECgYEAx4jSmLM9uUzNwNY1zfs8iNswxbU3YibNe2Q+IFmOQofvTaq1jBBxdPWX5ifIbuTvOAA33pmJRh+BtWzOBBQC7Z4i9mdfvyWB6s8t9nnTnWIY5Hj+hV5gaqae59MjdudsORR887fxzPIeAwwaETfKaZnYpC6zLaE3BXwhIcjlFTcCgYEAuhcKf16JkEYNIwanVHpUXjFxwAThAogHWZAngRokmai67Iulx+rSUhhtOIXtmjj/EaObsrqo5yCKAVZ5EbPTOajdd9RtFzH6q3bRjRdp8o8ZVx4c1vMNaOnLbvK4YzJlKSZN9N7m255Mg+/ea3veKVZsSVHDMnuYmH8GjncjPJkCgYAOIUlQmPjZA3BapJDA2nbJ9kO47IFUiQzqHQotPkpNudSfemRK2+s87htoqA6Qk9PA8nsCX3sSJS8JSwA317bxXs55Bo8IOT6/AxbtKmlq7sR2gX78sNdBFjWQkyoixHasgB/tHmyYJ9kqPBQoffvuiH+H+OqlY5JC6CxseQ6H9wKBgF69Hj4MDjLiRwve9k9+2/b8azHcCgX05PEG/+WtPpbwHQIScnseJKdhAjH1lSqf+9OqHLlYaGcK3Nejg42spEvFmcLI5iUZ78lde3++PNUdX0RH81zHbrtL06MPdSojXPcfJi8VUCjdJY1CEFVeQZOACS8mrh7EZ8KzYM4k/055AoGAYqjBv3WS8ul7kAsjpZKpIw1QZZaTjBSmLpjB6X8InF+Zihjgm80Dd4RMFnMnEawhFBvnpklvyw5Ce6NSwcC137kN3NVpJypykkXuYkimg7OxgJjR7YFdbQWJWlc+1eB81WTHcEOHVI/DmeV2yVJcv6kA2iC+3/JA0VoJxvrRBKc="
-                    ],
-                    "keyUse": ["ENC"],
-                    "certificate": [
-                        "MIICnTCCAYUCBgGQBsyq0jANBgkqhkiG9w0BAQsFADASMRAwDgYDVQQDDAdteXJlYWxtMB4XDTI0MDYxMTEwMTQ1NFoXDTM0MDYxMTEwMTYzNFowEjEQMA4GA1UEAwwHbXlyZWFsbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAJELXnx8vNnvHeXVVjdNC5xiOWJgTkyodLYKmslUY6ix+rtzX4CVVSHtLRZ8Wu1pGv8kh659SkrFudnM2eLj1y1KOLFwZEMcshV3mYljfB/vVolEPtIXn2ReHrOWT4WNlaXjCvVwJ6YQt+tixS1cnF7pZKSXEPuA4yPfU6OCy8iZo0L7FWie2pqFSecXetnlL/g+39vo8Lmk8IxhN/jFmQA141cbFGNaibhixipy5DTcSTTA4b5ymMPmmt2eFfdH0FcozdVaJYMNw3QOfaOMK1hMvtsR3Oo9hEovPnDOtH1s2VPbKdl5MiaAp1e55sJO6WZA8t87wJHjls669zlnkd8CAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAD9wQ+CJ0FRgls3JrUzxwHLgrJ3Yo4+mDFpSe1rh2XYK5FEIWDWSqxaXI3p0cOZq75RZmI2xV8oaiJMUz9WMZkbNe/KtGRzHY1N9AZooicGIsnFu1t++b8taFxxpvKWZgnbOum2PZlfcNiXL0QeMv0wwhfn9zKA9W1DRcqYGbIamoyVlumvbNyIjqXJKwGYIOW6GNt7v3wJl5AJw8qAU/O/DQwWwmzcnFGNRxRxAwI7we8EiQ5JlG0Wi+nyAQn74o3RhNr3zsY0ndmFx9bFV4BBo2AiYGozCDOCCG5HvrmoDbrm//wmGRv0tCwueBzWHL2mhtbZ6sGWmMWfiTJ2HPpg=="
-                    ],
                     "priority": ["100"],
                     "algorithm": ["RSA-OAEP"]
                 }
@@ -1704,8 +1707,6 @@
                 "providerId": "aes-generated",
                 "subComponents": {},
                 "config": {
-                    "kid": ["1c1d0c8a-6f0b-48a9-a66f-488489137d85"],
-                    "secret": ["N4wzheVYYBWxFn9VGWTPQQ"],
                     "priority": ["100"]
                 }
             },
@@ -1715,10 +1716,6 @@
                 "providerId": "hmac-generated",
                 "subComponents": {},
                 "config": {
-                    "kid": ["ce43821c-6cfd-4ea9-a29a-a724a37e6955"],
-                    "secret": [
-                        "j_8WeQHYt5R6coay0IOUeu9hGvCoJsgnENSoYm0gDlDx6IHOg-f6p17QIaesNmgrzXtJDRpYMhSjpTMHOnHCHLxwUM4eVg9TcszffndB850Yj3PHPeCc5aoHcpYzWN9NDZZ02nBYA04nfbkdlLXiGlpS3I3e502e4DX3rFtbFZ0"
-                    ],
                     "priority": ["100"],
                     "algorithm": ["HS512"]
                 }
@@ -2388,7 +2385,7 @@
         "clientSessionMaxLifespan": "0",
         "organizationsEnabled": "false"
     },
-    "keycloakVersion": "25.0.0",
+    "keycloakVersion": "26.0.6",
     "userManagedAccessAllowed": false,
     "organizationsEnabled": false,
     "clientProfiles": {

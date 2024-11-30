@@ -1,7 +1,7 @@
 import type { BuildContext } from "../shared/buildContext";
 import { exclude } from "tsafe/exclude";
 import { promptKeycloakVersion } from "../shared/promptKeycloakVersion";
-import { CONTAINER_NAME } from "../shared/constants";
+import { CONTAINER_NAME, KEYCLOAKIFY_SPA_DEV_SERVER_PORT } from "../shared/constants";
 import { SemVer } from "../tools/SemVer";
 import { assert, type Equals } from "tsafe/assert";
 import * as fs from "fs";
@@ -27,6 +27,7 @@ import { isInside } from "../tools/isInside";
 import { existsAsync } from "../tools/fs.existsAsync";
 import { rm } from "../tools/fs.rm";
 import { downloadAndExtractArchive } from "../tools/downloadAndExtractArchive";
+import { startViteDevServer } from "./startViteDevServer";
 
 export async function command(params: {
     buildContext: BuildContext;
@@ -379,6 +380,54 @@ export async function command(params: {
     const port =
         cliCommandOptions.port ?? buildContext.startKeycloakOptions.port ?? DEFAULT_PORT;
 
+    const devServerPort = (() => {
+        const hasSpaUi =
+            buildContext.implementedThemeTypes.admin.isImplemented ||
+            (buildContext.implementedThemeTypes.account.isImplemented &&
+                buildContext.implementedThemeTypes.account.type === "Single-Page");
+
+        if (!hasSpaUi) {
+            return undefined;
+        }
+
+        if (buildContext.bundler !== "vite") {
+            console.log(
+                chalk.yellow(
+                    [
+                        `WARNING: Since you are using ${buildContext.bundler} instead of Vite,`,
+                        `you'll have to wait serval seconds for the changes you made on your account or admin theme to be reflected in the browser.\n`,
+                        `For a better development experience, consider migrating to Vite.`
+                    ].join(" ")
+                )
+            );
+
+            return undefined;
+        }
+
+        if (keycloakMajorVersionNumber < 25) {
+            console.log(
+                chalk.yellow(
+                    [
+                        `WARNING: Your account or admin theme can't be tested with hot module replacement on Keycloak ${keycloakMajorVersionNumber}.`,
+                        `This mean that you'll have to wait serval seconds for the changes to be reflected in the browser.`,
+                        `For a better development experience, select a more recent version of Keycloak.`
+                    ].join("\n")
+                )
+            );
+
+            return undefined;
+        }
+
+        return port + 1;
+    })();
+
+    if (devServerPort !== undefined) {
+        startViteDevServer({
+            buildContext,
+            port: devServerPort
+        });
+    }
+
     const SPACE_PLACEHOLDER = "SPACE_PLACEHOLDER_xKLmdPd";
 
     const dockerRunArgs: string[] = [
@@ -386,6 +435,11 @@ export async function command(params: {
         `--name${SPACE_PLACEHOLDER}${CONTAINER_NAME}`,
         `-e${SPACE_PLACEHOLDER}KEYCLOAK_ADMIN=admin`,
         `-e${SPACE_PLACEHOLDER}KEYCLOAK_ADMIN_PASSWORD=admin`,
+        ...(devServerPort === undefined
+            ? []
+            : [
+                  `-e${SPACE_PLACEHOLDER}${KEYCLOAKIFY_SPA_DEV_SERVER_PORT}=${devServerPort}`
+              ]),
         ...(buildContext.startKeycloakOptions.dockerExtraArgs.length === 0
             ? []
             : [
@@ -592,6 +646,44 @@ export async function command(params: {
                 }
             )
             .on("all", async (...[, filePath]) => {
+                ignore_account_spa: {
+                    const doImplementAccountSpa =
+                        buildContext.implementedThemeTypes.account.isImplemented &&
+                        buildContext.implementedThemeTypes.account.type === "Single-Page";
+
+                    if (!doImplementAccountSpa) {
+                        break ignore_account_spa;
+                    }
+
+                    if (
+                        !isInside({
+                            dirPath: pathJoin(buildContext.themeSrcDirPath, "account"),
+                            filePath
+                        })
+                    ) {
+                        break ignore_account_spa;
+                    }
+
+                    return;
+                }
+
+                ignore_admin: {
+                    if (!buildContext.implementedThemeTypes.admin.isImplemented) {
+                        break ignore_admin;
+                    }
+
+                    if (
+                        !isInside({
+                            dirPath: pathJoin(buildContext.themeSrcDirPath, "admin"),
+                            filePath
+                        })
+                    ) {
+                        break ignore_admin;
+                    }
+
+                    return;
+                }
+
                 console.log(`Detected changes in ${filePath}`);
 
                 await waitForDebounce();

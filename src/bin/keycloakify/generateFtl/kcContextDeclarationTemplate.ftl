@@ -84,7 +84,46 @@ attributes_to_attributesByName: {
         kcContext.profile.attributesByName[attribute.name] = attribute;
     });
 }
+
+redirect_to_dev_server: {
+
+    switch(kcContext.themeType){
+        case "login":
+            break redirect_to_dev_server;
+        case "account":
+            if( kcContext.pageId !== "index.ftl" ){
+                break redirect_to_dev_server;
+            }
+            break;
+        case "admin":
+            break;
+        default: 
+            break redirect_to_dev_server;
+    }
+
+    const devSeverPort = kcContext.properties.KEYCLOAKIFY_SPA_DEV_SERVER_PORT;
+
+    if( !devSeverPort ){
+        break redirect_to_dev_server;
+    }
+
+    const redirectUrl = new URL(window.location.href);
+
+    redirectUrl.port = devSeverPort;
+
+    delete kcContext.msgJSON;
+
+    console.log(kcContext);
+
+    redirectUrl.searchParams.set("kcContext", encodeURIComponent(JSON.stringify(kcContext)) );
+
+    window.location.href = redirectUrl.toString();
+
+}
+
+
 window.kcContext = kcContext;
+
 
 <#if xKeycloakify.themeType == "login" >
     {
