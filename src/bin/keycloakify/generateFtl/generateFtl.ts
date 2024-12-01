@@ -11,7 +11,11 @@ import * as fs from "fs";
 import { join as pathJoin } from "path";
 import type { BuildContext } from "../../shared/buildContext";
 import { assert } from "tsafe/assert";
-import { type ThemeType, WELL_KNOWN_DIRECTORY_BASE_NAME } from "../../shared/constants";
+import {
+    type ThemeType,
+    WELL_KNOWN_DIRECTORY_BASE_NAME,
+    KEYCLOAKIFY_SPA_DEV_SERVER_PORT
+} from "../../shared/constants";
 import { getThisCodebaseRootDirPath } from "../../tools/getThisCodebaseRootDirPath";
 
 export type BuildContextLike = BuildContextLike_replaceImportsInJsCode &
@@ -116,6 +120,7 @@ export function generateFtlFilesCodeFactory(params: {
         .replace("{{themeVersion}}", buildContext.themeVersion)
         .replace("{{fieldNames}}", fieldNames.map(name => `"${name}"`).join(", "))
         .replace("{{RESOURCES_COMMON}}", WELL_KNOWN_DIRECTORY_BASE_NAME.RESOURCES_COMMON)
+        .replace("{{KEYCLOAKIFY_SPA_DEV_SERVER_PORT}}", KEYCLOAKIFY_SPA_DEV_SERVER_PORT)
         .replace(
             "{{userDefinedExclusions}}",
             buildContext.kcContextExclusionsFtlCode ?? ""

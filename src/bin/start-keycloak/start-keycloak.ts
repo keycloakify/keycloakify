@@ -380,14 +380,14 @@ export async function command(params: {
     const port =
         cliCommandOptions.port ?? buildContext.startKeycloakOptions.port ?? DEFAULT_PORT;
 
-    const devServerPort = (() => {
+    const doStartDevServer = (() => {
         const hasSpaUi =
             buildContext.implementedThemeTypes.admin.isImplemented ||
             (buildContext.implementedThemeTypes.account.isImplemented &&
                 buildContext.implementedThemeTypes.account.type === "Single-Page");
 
         if (!hasSpaUi) {
-            return undefined;
+            return false;
         }
 
         if (buildContext.bundler !== "vite") {
@@ -401,7 +401,7 @@ export async function command(params: {
                 )
             );
 
-            return undefined;
+            return false;
         }
 
         if (keycloakMajorVersionNumber < 25) {
@@ -415,17 +415,18 @@ export async function command(params: {
                 )
             );
 
-            return undefined;
+            return false;
         }
 
-        return port + 1;
+        return true;
     })();
 
-    if (devServerPort !== undefined) {
-        startViteDevServer({
-            buildContext,
-            port: devServerPort
-        });
+    let devServerPort: number | undefined = undefined;
+
+    if (doStartDevServer) {
+        const { port } = await startViteDevServer({ buildContext });
+
+        devServerPort = port;
     }
 
     const SPACE_PLACEHOLDER = "SPACE_PLACEHOLDER_xKLmdPd";

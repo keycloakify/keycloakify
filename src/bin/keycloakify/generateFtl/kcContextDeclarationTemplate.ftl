@@ -101,7 +101,7 @@ redirect_to_dev_server: {
             break redirect_to_dev_server;
     }
 
-    const devSeverPort = kcContext.properties.KEYCLOAKIFY_SPA_DEV_SERVER_PORT;
+    const devSeverPort = kcContext.properties.{{KEYCLOAKIFY_SPA_DEV_SERVER_PORT}};
 
     if( !devSeverPort ){
         break redirect_to_dev_server;
@@ -115,7 +115,7 @@ redirect_to_dev_server: {
 
     console.log(kcContext);
 
-    redirectUrl.searchParams.set("kcContext", encodeURIComponent(JSON.stringify(kcContext)) );
+    redirectUrl.searchParams.set("kcContext", encodeURIComponent(JSON.stringify(kcContext)));
 
     window.location.href = redirectUrl.toString();
 
