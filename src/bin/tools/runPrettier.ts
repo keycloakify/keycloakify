@@ -101,7 +101,7 @@ export async function runPrettier(params: {
             resolveConfig: true
         });
 
-        if (ignored) {
+        if (ignored || inferredParser === null) {
             return sourceCode;
         }
 
@@ -110,7 +110,7 @@ export async function runPrettier(params: {
         formattedSourceCode = await prettier.format(sourceCode, {
             ...config,
             filePath,
-            parser: inferredParser ?? undefined
+            parser: inferredParser
         });
     } catch (error) {
         console.log(
