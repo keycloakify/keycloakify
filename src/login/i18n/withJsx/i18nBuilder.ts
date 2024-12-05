@@ -46,7 +46,7 @@ export type I18nBuilder<
             }>
         ) => I18nBuilder<
             ThemeName,
-            MessageKey_themeDefined,
+            string extends MessageKey_themeDefined ? never : MessageKey_themeDefined,
             LanguageTag_notInDefaultSet,
             ExcludedMethod | "withCustomTranslations"
         >;

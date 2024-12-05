@@ -62,3 +62,65 @@ type I18n = typeof ofTypeI18n;
 
     assert<Equals<typeof node, JSX.Element>>;
 }
+
+{
+    const i18n = Reflect<I18n>();
+
+    i18n.msg("passwordConfirm");
+}
+
+{
+    const i18n = Reflect<I18n>();
+
+    // @ts-expect-error
+    i18n.msg("iDoNotExist");
+}
+
+{
+    const { ofTypeI18n } = i18nBuilder
+        .withThemeName<"keycloakify-starter">()
+        .withCustomTranslations({})
+        .build();
+
+    type I18n = typeof ofTypeI18n;
+
+    {
+        const i18n = Reflect<I18n>();
+
+        // @ts-expect-error
+        const node = i18n.msg("iDoNotExist");
+
+        assert<Equals<typeof node, JSX.Element>>;
+    }
+}
+
+i18nBuilder.withThemeName<"my-theme-1" | "my-theme-2">().withCustomTranslations({
+    en: {
+        myCustomKey1: "my-custom-key-1-en",
+        // @ts-expect-error
+        myCustomKey2: {
+            "my-theme-1": "my-theme-1-en"
+            //"my-theme-2": "my-theme-2-en"
+        }
+    }
+});
+
+i18nBuilder
+    .withThemeName<"my-theme-1" | "my-theme-2">()
+    .withExtraLanguages({
+        he: {
+            label: "עברית",
+            getMessages: () => import("./he")
+        }
+    })
+    .withCustomTranslations({
+        en: {
+            myCustomKey1: "my-custom-key-1-en",
+            myCustomKey2: "my-custom-key-2-en"
+        },
+        // @ts-expect-error
+        he: {
+            myCustomKey1: "my-custom-key-1-he"
+            //myCustomKey2: "my-custom-key-2-he"
+        }
+    });
