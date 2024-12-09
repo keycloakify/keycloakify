@@ -1,3 +1,4 @@
+import type { JSX } from "keycloakify/tools/JSX";
 import { lazy, Suspense } from "react";
 import { assert, type Equals } from "tsafe/assert";
 import type { LazyOrNot } from "keycloakify/tools/LazyOrNot";

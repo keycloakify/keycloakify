@@ -1,3 +1,4 @@
+import type { JSX } from "keycloakify/tools/JSX";
 import * as reactlessApi from "./getUserProfileApi/index";
 import type { PasswordPolicies, Attribute, Validators } from "keycloakify/login/KcContext";
 import { useEffect, useState, useMemo, Fragment } from "react";

@@ -1,3 +1,4 @@
+import type { JSX } from "keycloakify/tools/JSX";
 import { useState } from "react";
 import type { LazyOrNot } from "keycloakify/tools/LazyOrNot";
 import { kcSanitize } from "keycloakify/lib/kcSanitize";

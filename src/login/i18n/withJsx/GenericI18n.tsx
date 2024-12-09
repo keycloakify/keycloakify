@@ -1,3 +1,4 @@
+import type { JSX } from "keycloakify/tools/JSX";
 import type { GenericI18n_noJsx } from "../noJsx/GenericI18n_noJsx";
 import { assert, type Equals } from "tsafe/assert";
 

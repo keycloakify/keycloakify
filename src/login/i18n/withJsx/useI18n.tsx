@@ -1,3 +1,4 @@
+import type { JSX } from "keycloakify/tools/JSX";
 import { useEffect, useState } from "react";
 import { kcSanitize } from "keycloakify/lib/kcSanitize";
 import { createGetI18n, type KcContextLike } from "../noJsx/getI18n";

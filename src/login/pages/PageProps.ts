@@ -1,3 +1,4 @@
+import type { JSX } from "keycloakify/tools/JSX";
 import { type TemplateProps, type ClassKey } from "keycloakify/login/TemplateProps";
 import type { LazyOrNot } from "keycloakify/tools/LazyOrNot";
 

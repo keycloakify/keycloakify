@@ -1,3 +1,4 @@
+import type { JSX } from "keycloakify/tools/JSX";
 import { type FormAction, type FormFieldError } from "keycloakify/login/lib/useUserProfileForm";
 import type { KcClsx } from "keycloakify/login/lib/kcClsx";
 import type { Attribute } from "keycloakify/login/KcContext";

@@ -1,3 +1,4 @@
+import type { JSX } from "keycloakify/tools/JSX";
 import { useState, useEffect, useReducer } from "react";
 import { kcSanitize } from "keycloakify/lib/kcSanitize";
 import { assert } from "keycloakify/tools/assert";
