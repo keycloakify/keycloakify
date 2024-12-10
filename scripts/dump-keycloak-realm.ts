@@ -8,7 +8,24 @@ import { assert, is } from "tsafe/assert";
 import { run } from "./shared/run";
 
 (async () => {
+    const keycloakMajorVersionNumber = SemVer.parse(
+        child_process
+            .execSync(`docker inspect --format '{{.Config.Image}}' ${CONTAINER_NAME}`)
+            .toString("utf8")
+            .trim()
+            .split(":")[1]
+    ).major;
+
     {
+        // https://github.com/keycloak/keycloak/issues/33800
+        const doesUseLockedH2Database = keycloakMajorVersionNumber >= 26;
+
+        if (doesUseLockedH2Database) {
+            child_process.execSync(
+                `docker exec ${CONTAINER_NAME} sh -c "cp -rp /opt/keycloak/data/h2 /tmp"`
+            );
+        }
+
         const dCompleted = new Deferred<void>();
 
         const child = child_process.spawn(
@@ -18,7 +35,16 @@ import { run } from "./shared/run";
                 ...["/opt/keycloak/bin/kc.sh", "export"],
                 ...["--dir", "/tmp"],
                 ...["--realm", "myrealm"],
-                ...["--users", "realm_file"]
+                ...["--users", "realm_file"],
+                ...(!doesUseLockedH2Database
+                    ? []
+                    : [
+                          ...["--db", "dev-file"],
+                          ...[
+                              "--db-url",
+                              "'jdbc:h2:file:/tmp/h2/keycloakdb;NON_KEYWORDS=VALUE'"
+                          ]
+                      ])
             ],
             { shell: true }
         );
@@ -29,7 +55,7 @@ import { run } from "./shared/run";
             dCompleted.reject(new Error(`Exited with code ${code}`));
         };
 
-        child.on("exit", onExit);
+        child.once("exit", onExit);
 
         child.stdout.on("data", data => {
             const outputStr = data.toString("utf8");
@@ -37,9 +63,19 @@ import { run } from "./shared/run";
             if (outputStr.includes("Export finished successfully")) {
                 child.removeListener("exit", onExit);
 
-                child.kill();
+                // NOTE: On older Keycloak versions the process keeps running after the export is done.
+                const timer = setTimeout(() => {
+                    child.removeListener("exit", onExit2);
+                    child.kill();
+                    dCompleted.resolve();
+                }, 1500);
 
-                dCompleted.resolve();
+                const onExit2 = () => {
+                    clearTimeout(timer);
+                    dCompleted.resolve();
+                };
+
+                child.once("exit", onExit2);
             }
 
             output += outputStr;
@@ -58,15 +94,11 @@ import { run } from "./shared/run";
 
             process.exit(1);
         }
-    }
 
-    const keycloakMajorVersionNumber = SemVer.parse(
-        child_process
-            .execSync(`docker inspect --format '{{.Config.Image}}' ${CONTAINER_NAME}`)
-            .toString("utf8")
-            .trim()
-            .split(":")[1]
-    ).major;
+        if (doesUseLockedH2Database) {
+            run(`docker exec ${CONTAINER_NAME} sh -c "rm -rf /tmp/h2"`);
+        }
+    }
 
     const targetFilePath = pathRelative(
         process.cwd(),
