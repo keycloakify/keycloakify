@@ -1,7 +1,11 @@
 import type { BuildContext } from "../shared/buildContext";
 import { exclude } from "tsafe/exclude";
 import { promptKeycloakVersion } from "../shared/promptKeycloakVersion";
-import { CONTAINER_NAME, KEYCLOAKIFY_SPA_DEV_SERVER_PORT } from "../shared/constants";
+import {
+    CONTAINER_NAME,
+    KEYCLOAKIFY_SPA_DEV_SERVER_PORT,
+    KEYCLOAKIFY_LOGIN_JAR_BASENAME
+} from "../shared/constants";
 import { SemVer } from "../tools/SemVer";
 import { assert, type Equals } from "tsafe/assert";
 import * as fs from "fs";
@@ -214,16 +218,18 @@ export async function command(params: {
         })
     );
 
+    const thisDirPath = pathJoin(
+        getThisCodebaseRootDirPath(),
+        "src",
+        "bin",
+        "start-keycloak"
+    );
+
+    extensionJarFilePaths.unshift(pathJoin(thisDirPath, KEYCLOAKIFY_LOGIN_JAR_BASENAME));
+
     const getRealmJsonFilePath_defaultForKeycloakMajor = (
         keycloakMajorVersionNumber: number
-    ) =>
-        pathJoin(
-            getThisCodebaseRootDirPath(),
-            "src",
-            "bin",
-            "start-keycloak",
-            `myrealm-realm-${keycloakMajorVersionNumber}.json`
-        );
+    ) => pathJoin(thisDirPath, `myrealm-realm-${keycloakMajorVersionNumber}.json`);
 
     const realmJsonFilePath = await (async () => {
         if (cliCommandOptions.realmJsonFilePath !== undefined) {

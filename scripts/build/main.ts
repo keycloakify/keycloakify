@@ -7,6 +7,7 @@ import { createAccountV1Dir } from "./createAccountV1Dir";
 import chalk from "chalk";
 import { run } from "../shared/run";
 import { vendorFrontendDependencies } from "./vendorFrontendDependencies";
+import { downloadKeycloakifyLogging } from "./downloadKeycloakifyLogging";
 
 (async () => {
     console.log(chalk.cyan("Building Keycloakify..."));
@@ -148,9 +149,6 @@ import { vendorFrontendDependencies } from "./vendorFrontendDependencies";
         fs.cpSync(dirBasename, destDirPath, { recursive: true });
     }
 
-    await createPublicKeycloakifyDevResourcesDir();
-    await createAccountV1Dir();
-
     transformCodebase({
         srcDirPath: join("stories"),
         destDirPath: join("dist", "stories"),
@@ -161,6 +159,12 @@ import { vendorFrontendDependencies } from "./vendorFrontendDependencies";
 
             return { modifiedSourceCode: sourceCode };
         }
+    });
+
+    await createPublicKeycloakifyDevResourcesDir();
+    await createAccountV1Dir();
+    await downloadKeycloakifyLogging({
+        distDirPath: join(process.cwd(), "dist")
     });
 
     console.log(

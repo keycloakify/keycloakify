@@ -81,3 +81,7 @@ export const CUSTOM_HANDLER_ENV_NAMES = {
 export const KEYCLOAK_THEME = "keycloak-theme";
 
 export const KEYCLOAKIFY_SPA_DEV_SERVER_PORT = "KEYCLOAKIFY_SPA_DEV_SERVER_PORT";
+
+export const KEYCLOAKIFY_LOGGING_VERSION = "1.0.1";
+
+export const KEYCLOAKIFY_LOGIN_JAR_BASENAME = `keycloakify-login-${KEYCLOAKIFY_LOGGING_VERSION}.jar`;
