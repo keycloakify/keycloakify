@@ -1,6 +1,35 @@
 import { assert } from "tsafe/assert";
 import { getDefaultConfig, type ParsedRealmJson } from "./ParsedRealmJson";
 
+export function prepareRealmConfig(params: {
+    parsedRealmJson: ParsedRealmJson;
+    keycloakMajorVersionNumber: number;
+}): {
+    realmName: string;
+    clientName: string;
+    username: string;
+} {
+    const { parsedRealmJson, keycloakMajorVersionNumber } = params;
+
+    const { username } = addOrEditTestUser({
+        parsedRealmJson,
+        keycloakMajorVersionNumber
+    });
+
+    const { clientId } = addOrEditClient({
+        parsedRealmJson,
+        keycloakMajorVersionNumber
+    });
+
+    editAccountConsoleAndSecurityAdminConsole({ parsedRealmJson });
+
+    return {
+        realmName: parsedRealmJson.name,
+        clientName: clientId,
+        username
+    };
+}
+
 function addOrEditTestUser(params: {
     parsedRealmJson: ParsedRealmJson;
     keycloakMajorVersionNumber: number;
@@ -239,33 +268,4 @@ function editAccountConsoleAndSecurityAdminConsole(params: {
             }
         }
     }
-}
-
-export function makeRealmConfigTestable(params: {
-    parsedRealmJson: ParsedRealmJson;
-    keycloakMajorVersionNumber: number;
-}): {
-    realmName: string;
-    clientName: string;
-    username: string;
-} {
-    const { parsedRealmJson, keycloakMajorVersionNumber } = params;
-
-    const { username } = addOrEditTestUser({
-        parsedRealmJson,
-        keycloakMajorVersionNumber
-    });
-
-    const { clientId } = addOrEditClient({
-        parsedRealmJson,
-        keycloakMajorVersionNumber
-    });
-
-    editAccountConsoleAndSecurityAdminConsole({ parsedRealmJson });
-
-    return {
-        realmName: parsedRealmJson.name,
-        clientName: clientId,
-        username
-    };
 }

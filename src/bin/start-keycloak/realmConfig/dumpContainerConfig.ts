@@ -1,11 +1,11 @@
-import { runPrettier, getIsPrettierAvailable } from "../tools/runPrettier";
-import { CONTAINER_NAME } from "../shared/constants";
+import { runPrettier, getIsPrettierAvailable } from "../../tools/runPrettier";
+import { CONTAINER_NAME } from "../../shared/constants";
 import child_process from "child_process";
 import { join as pathJoin } from "path";
 import chalk from "chalk";
 import { Deferred } from "evt/tools/Deferred";
 import { assert, is } from "tsafe/assert";
-import type { BuildContext } from "../shared/buildContext";
+import type { BuildContext } from "../../shared/buildContext";
 import * as fs from "fs/promises";
 
 export type BuildContextLike = {
@@ -14,7 +14,7 @@ export type BuildContextLike = {
 
 assert<BuildContext extends BuildContextLike ? true : false>();
 
-export async function dumpRealmConfig(params: {
+export async function dumpContainerConfig(params: {
     realmName: string;
     keycloakMajorVersionNumber: number;
     targetRealmConfigJsonFilePath: string;
