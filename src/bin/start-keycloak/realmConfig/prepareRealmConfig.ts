@@ -1,15 +1,26 @@
 import { assert } from "tsafe/assert";
-import { getDefaultConfig, type ParsedRealmJson } from "./ParsedRealmJson";
+import type { ParsedRealmJson } from "./ParsedRealmJson";
+import { getDefaultConfig } from "./defaultConfig";
+import type { BuildContext } from "../../shared/buildContext";
+import { objectKeys } from "tsafe/objectKeys";
+
+export type BuildContextLike = {
+    themeNames: BuildContext["themeNames"];
+    implementedThemeTypes: BuildContext["implementedThemeTypes"];
+};
+
+assert<BuildContext extends BuildContextLike ? true : false>;
 
 export function prepareRealmConfig(params: {
     parsedRealmJson: ParsedRealmJson;
     keycloakMajorVersionNumber: number;
+    buildContext: BuildContextLike;
 }): {
     realmName: string;
     clientName: string;
     username: string;
 } {
-    const { parsedRealmJson, keycloakMajorVersionNumber } = params;
+    const { parsedRealmJson, keycloakMajorVersionNumber, buildContext } = params;
 
     const { username } = addOrEditTestUser({
         parsedRealmJson,
@@ -23,11 +34,42 @@ export function prepareRealmConfig(params: {
 
     editAccountConsoleAndSecurityAdminConsole({ parsedRealmJson });
 
+    enableCustomThemes({
+        parsedRealmJson,
+        themeName: buildContext.themeNames[0],
+        implementedThemeTypes: buildContext.implementedThemeTypes
+    });
+
+    enable_custom_events_listeners: {
+        const name = "keycloakify-logging";
+
+        if (parsedRealmJson.eventsListeners.includes(name)) {
+            break enable_custom_events_listeners;
+        }
+
+        parsedRealmJson.eventsListeners.push(name);
+    }
+
     return {
         realmName: parsedRealmJson.name,
         clientName: clientId,
         username
     };
+}
+
+function enableCustomThemes(params: {
+    parsedRealmJson: ParsedRealmJson;
+    themeName: string;
+    implementedThemeTypes: BuildContextLike["implementedThemeTypes"];
+}) {
+    const { parsedRealmJson, themeName, implementedThemeTypes } = params;
+
+    for (const themeType of objectKeys(implementedThemeTypes)) {
+        parsedRealmJson[`${themeType}Theme` as const] = implementedThemeTypes[themeType]
+            .isImplemented
+            ? themeName
+            : "";
+    }
 }
 
 function addOrEditTestUser(params: {

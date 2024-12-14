@@ -1,6 +1,5 @@
 import type { BuildContext } from "../shared/buildContext";
 import { exclude } from "tsafe/exclude";
-import { promptKeycloakVersion } from "../shared/promptKeycloakVersion";
 import {
     CONTAINER_NAME,
     KEYCLOAKIFY_SPA_DEV_SERVER_PORT,
@@ -13,8 +12,7 @@ import {
     join as pathJoin,
     relative as pathRelative,
     sep as pathSep,
-    basename as pathBasename,
-    dirname as pathDirname
+    basename as pathBasename
 } from "path";
 import * as child_process from "child_process";
 import chalk from "chalk";
@@ -32,6 +30,9 @@ import { existsAsync } from "../tools/fs.existsAsync";
 import { rm } from "../tools/fs.rm";
 import { downloadAndExtractArchive } from "../tools/downloadAndExtractArchive";
 import { startViteDevServer } from "./startViteDevServer";
+import { getSupportedKeycloakMajorVersions } from "./realmConfig/defaultConfig";
+import { getKeycloakDockerImageLatestSemVerTagsForEveryMajors } from "./getQuayIoKeycloakDockerImageTags";
+import { getRealmConfig } from "./realmConfig";
 
 export async function command(params: {
     buildContext: BuildContext;
@@ -95,9 +96,32 @@ export async function command(params: {
 
     const { cliCommandOptions, buildContext } = params;
 
+    const availableTags = await getKeycloakDockerImageLatestSemVerTagsForEveryMajors({
+        buildContext
+    });
+
     const { dockerImageTag } = await (async () => {
         if (cliCommandOptions.keycloakVersion !== undefined) {
-            return { dockerImageTag: cliCommandOptions.keycloakVersion };
+            const cliCommandOptions_keycloakVersion = cliCommandOptions.keycloakVersion;
+
+            const tag = availableTags.find(tag =>
+                tag.startsWith(cliCommandOptions_keycloakVersion)
+            );
+
+            if (tag === undefined) {
+                console.log(
+                    chalk.red(
+                        [
+                            `We could not find a Keycloak Docker image for ${cliCommandOptions_keycloakVersion}`,
+                            `Example of valid values: --keycloak-version 26, --keycloak-version 26.0.7`
+                        ].join("\n")
+                    )
+                );
+
+                process.exit(1);
+            }
+
+            return { dockerImageTag: tag };
         }
 
         if (buildContext.startKeycloakOptions.dockerImage !== undefined) {
@@ -112,49 +136,80 @@ export async function command(params: {
                     "On which version of Keycloak do you want to test your theme?"
                 ),
                 chalk.gray(
-                    "You can also explicitly provide the version with `npx keycloakify start-keycloak --keycloak-version 25.0.2` (or any other version)"
+                    "You can also explicitly provide the version with `npx keycloakify start-keycloak --keycloak-version 26` (or any other version)"
                 )
             ].join("\n")
         );
 
-        const { keycloakVersion } = await promptKeycloakVersion({
-            startingFromMajor: 18,
-            excludeMajorVersions: [22],
-            doOmitPatch: true,
-            buildContext
+        const { value: tag } = await cliSelect<string>({
+            values: availableTags
+        }).catch(() => {
+            process.exit(-1);
         });
 
-        console.log(`→ ${keycloakVersion}`);
+        console.log(`→ ${tag}`);
 
-        return { dockerImageTag: keycloakVersion };
+        return { dockerImageTag: tag };
     })();
 
     const keycloakMajorVersionNumber = (() => {
-        if (buildContext.startKeycloakOptions.dockerImage === undefined) {
-            return SemVer.parse(dockerImageTag).major;
-        }
-
-        const { tag } = buildContext.startKeycloakOptions.dockerImage;
-
-        const [wrap] = [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]
+        const [wrap] = getSupportedKeycloakMajorVersions()
             .map(majorVersionNumber => ({
                 majorVersionNumber,
-                index: tag.indexOf(`${majorVersionNumber}`)
+                index: dockerImageTag.indexOf(`${majorVersionNumber}`)
             }))
             .filter(({ index }) => index !== -1)
             .sort((a, b) => a.index - b.index);
 
         if (wrap === undefined) {
-            console.warn(
-                chalk.yellow(
-                    `Could not determine the major Keycloak version number from the docker image tag ${tag}. Assuming 25`
-                )
-            );
-            return 25;
+            try {
+                const version = SemVer.parse(dockerImageTag);
+
+                console.error(
+                    chalk.yellow(
+                        `Keycloak version ${version.major} is not supported, supported versions are ${getSupportedKeycloakMajorVersions().join(", ")}`
+                    )
+                );
+
+                process.exit(1);
+            } catch {
+                console.warn(
+                    chalk.yellow(
+                        `Could not determine the major Keycloak version number from the docker image tag ${dockerImageTag}. Assuming 26`
+                    )
+                );
+                return 26;
+            }
         }
 
         return wrap.majorVersionNumber;
     })();
+
+    const { clientName, onRealmConfigChange, realmJsonFilePath, realmName, username } =
+        await getRealmConfig({
+            keycloakMajorVersionNumber,
+            realmJsonFilePath_userProvided: await (async () => {
+                if (cliCommandOptions.realmJsonFilePath !== undefined) {
+                    return getAbsoluteAndInOsFormatPath({
+                        pathIsh: cliCommandOptions.realmJsonFilePath,
+                        cwd: process.cwd()
+                    });
+                }
+
+                if (buildContext.startKeycloakOptions.realmJsonFilePath !== undefined) {
+                    assert(
+                        await existsAsync(
+                            buildContext.startKeycloakOptions.realmJsonFilePath
+                        ),
+                        `${pathRelative(process.cwd(), buildContext.startKeycloakOptions.realmJsonFilePath)} does not exist`
+                    );
+                    return buildContext.startKeycloakOptions.realmJsonFilePath;
+                }
+
+                return undefined;
+            })(),
+            buildContext
+        });
 
     {
         const { isAppBuildSuccess } = await appBuild({
@@ -193,156 +248,39 @@ export async function command(params: {
 
     assert(jarFilePath !== undefined);
 
-    const extensionJarFilePaths = await Promise.all(
-        buildContext.startKeycloakOptions.extensionJars.map(async extensionJar => {
-            switch (extensionJar.type) {
-                case "path": {
-                    assert(
-                        await existsAsync(extensionJar.path),
-                        `${extensionJar.path} does not exist`
-                    );
-                    return extensionJar.path;
+    const extensionJarFilePaths = [
+        pathJoin(
+            getThisCodebaseRootDirPath(),
+            "src",
+            "bin",
+            "start-keycloak",
+            KEYCLOAKIFY_LOGIN_JAR_BASENAME
+        ),
+        ...(await Promise.all(
+            buildContext.startKeycloakOptions.extensionJars.map(async extensionJar => {
+                switch (extensionJar.type) {
+                    case "path": {
+                        assert(
+                            await existsAsync(extensionJar.path),
+                            `${extensionJar.path} does not exist`
+                        );
+                        return extensionJar.path;
+                    }
+                    case "url": {
+                        const { archiveFilePath } = await downloadAndExtractArchive({
+                            cacheDirPath: buildContext.cacheDirPath,
+                            fetchOptions: buildContext.fetchOptions,
+                            url: extensionJar.url,
+                            uniqueIdOfOnArchiveFile: "no extraction",
+                            onArchiveFile: async () => {}
+                        });
+                        return archiveFilePath;
+                    }
                 }
-                case "url": {
-                    const { archiveFilePath } = await downloadAndExtractArchive({
-                        cacheDirPath: buildContext.cacheDirPath,
-                        fetchOptions: buildContext.fetchOptions,
-                        url: extensionJar.url,
-                        uniqueIdOfOnArchiveFile: "no extraction",
-                        onArchiveFile: async () => {}
-                    });
-                    return archiveFilePath;
-                }
-            }
-            assert<Equals<typeof extensionJar, never>>(false);
-        })
-    );
-
-    const thisDirPath = pathJoin(
-        getThisCodebaseRootDirPath(),
-        "src",
-        "bin",
-        "start-keycloak"
-    );
-
-    extensionJarFilePaths.unshift(pathJoin(thisDirPath, KEYCLOAKIFY_LOGIN_JAR_BASENAME));
-
-    const getRealmJsonFilePath_defaultForKeycloakMajor = (
-        keycloakMajorVersionNumber: number
-    ) => pathJoin(thisDirPath, `myrealm-realm-${keycloakMajorVersionNumber}.json`);
-
-    const realmJsonFilePath = await (async () => {
-        if (cliCommandOptions.realmJsonFilePath !== undefined) {
-            if (cliCommandOptions.realmJsonFilePath === "none") {
-                return undefined;
-            }
-            return getAbsoluteAndInOsFormatPath({
-                pathIsh: cliCommandOptions.realmJsonFilePath,
-                cwd: process.cwd()
-            });
-        }
-
-        if (buildContext.startKeycloakOptions.realmJsonFilePath !== undefined) {
-            assert(
-                await existsAsync(buildContext.startKeycloakOptions.realmJsonFilePath),
-                `${pathRelative(process.cwd(), buildContext.startKeycloakOptions.realmJsonFilePath)} does not exist`
-            );
-            return buildContext.startKeycloakOptions.realmJsonFilePath;
-        }
-
-        const internalFilePath = await (async () => {
-            const defaultFilePath = getRealmJsonFilePath_defaultForKeycloakMajor(
-                keycloakMajorVersionNumber
-            );
-
-            if (fs.existsSync(defaultFilePath)) {
-                return defaultFilePath;
-            }
-
-            console.log(
-                `${chalk.yellow(
-                    `Keycloakify do not have a realm configuration for Keycloak ${keycloakMajorVersionNumber} yet.`
-                )}`
-            );
-
-            console.log(chalk.cyan("Select what configuration to use:"));
-
-            const dirPath = pathDirname(defaultFilePath);
-
-            const { value } = await cliSelect<string>({
-                values: [
-                    ...fs
-                        .readdirSync(dirPath)
-                        .filter(fileBasename => fileBasename.endsWith(".json")),
-                    "none"
-                ]
-            }).catch(() => {
-                process.exit(-1);
-            });
-
-            if (value === "none") {
-                return undefined;
-            }
-
-            return pathJoin(dirPath, value);
-        })();
-
-        if (internalFilePath === undefined) {
-            return undefined;
-        }
-
-        const filePath = pathJoin(
-            buildContext.cacheDirPath,
-            pathBasename(internalFilePath)
-        );
-
-        fs.writeFileSync(
-            filePath,
-            Buffer.from(
-                fs
-                    .readFileSync(internalFilePath)
-                    .toString("utf8")
-                    .replace(/keycloakify\-starter/g, buildContext.themeNames[0])
-            ),
-            "utf8"
-        );
-
-        return filePath;
-    })();
-
-    add_test_user_if_missing: {
-        if (realmJsonFilePath === undefined) {
-            break add_test_user_if_missing;
-        }
-
-        const realm: Record<string, unknown> = JSON.parse(
-            fs.readFileSync(realmJsonFilePath).toString("utf8")
-        );
-
-        if (realm.users !== undefined) {
-            break add_test_user_if_missing;
-        }
-
-        const realmJsonFilePath_internal = (() => {
-            const filePath = getRealmJsonFilePath_defaultForKeycloakMajor(
-                keycloakMajorVersionNumber
-            );
-
-            if (!fs.existsSync(filePath)) {
-                return getRealmJsonFilePath_defaultForKeycloakMajor(25);
-            }
-
-            return filePath;
-        })();
-
-        const users = JSON.parse(
-            fs.readFileSync(realmJsonFilePath_internal).toString("utf8")
-        ).users;
-
-        realm.users = users;
-
-        fs.writeFileSync(realmJsonFilePath, JSON.stringify(realm, null, 2), "utf8");
-    }
+                assert<Equals<typeof extensionJar, never>>(false);
+            })
+        ))
+    ];
 
     async function extractThemeResourcesFromJar() {
         await extractArchive({
@@ -382,9 +320,7 @@ export async function command(params: {
         });
     } catch {}
 
-    const DEFAULT_PORT = 8080;
-    const port =
-        cliCommandOptions.port ?? buildContext.startKeycloakOptions.port ?? DEFAULT_PORT;
+    const port = cliCommandOptions.port ?? buildContext.startKeycloakOptions.port ?? 8080;
 
     const doStartDevServer = (() => {
         const hasSpaUi =
@@ -457,7 +393,7 @@ export async function command(params: {
         ...(realmJsonFilePath === undefined
             ? []
             : [
-                  `-v${SPACE_PLACEHOLDER}"${realmJsonFilePath}":/opt/keycloak/data/import/myrealm-realm.json`
+                  `-v${SPACE_PLACEHOLDER}"${realmJsonFilePath}":/opt/keycloak/data/import/${realmName}-realm.json`
               ]),
         `-v${SPACE_PLACEHOLDER}"${jarFilePath_cacheDir}":/opt/keycloak/providers/keycloak-theme.jar`,
         ...extensionJarFilePaths.map(
@@ -532,7 +468,14 @@ export async function command(params: {
         { shell: true }
     );
 
-    child.stdout.on("data", data => process.stdout.write(data));
+    child.stdout.on("data", async data => {
+        if (data.toString("utf8").includes("keycloakify-logging: REALM_CONFIG_CHANGED")) {
+            await onRealmConfigChange();
+            return;
+        }
+
+        process.stdout.write(data);
+    });
 
     child.stderr.on("data", data => process.stderr.write(data));
 
@@ -581,7 +524,7 @@ export async function command(params: {
                         (() => {
                             const url = new URL("https://my-theme.keycloakify.dev");
 
-                            if (port !== DEFAULT_PORT) {
+                            if (port !== 8080) {
                                 url.searchParams.set("port", `${port}`);
                             }
                             if (kcHttpRelativePath !== undefined) {
@@ -590,13 +533,20 @@ export async function command(params: {
                                     kcHttpRelativePath
                                 );
                             }
+                            if (realmName !== "myrealm") {
+                                url.searchParams.set("realm", realmName);
+                            }
+
+                            if (clientName !== "myclient") {
+                                url.searchParams.set("client", clientName);
+                            }
 
                             return url.href;
                         })()
                     )}`,
                     "",
                     "You can login with the following credentials:",
-                    `- username: ${chalk.cyan.bold("testuser")}`,
+                    `- username: ${chalk.cyan.bold(username)}`,
                     `- password: ${chalk.cyan.bold("password123")}`,
                     "",
                     `Watching for changes in ${chalk.bold(

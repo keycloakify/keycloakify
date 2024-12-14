@@ -3,11 +3,14 @@ import { assert, type Equals } from "tsafe/assert";
 import { is } from "tsafe/is";
 import { id } from "tsafe/id";
 import * as fs from "fs";
-import { join as pathJoin } from "path";
-import { getThisCodebaseRootDirPath } from "../../tools/getThisCodebaseRootDirPath";
 
 export type ParsedRealmJson = {
     name: string;
+    loginTheme?: string;
+    accountTheme?: string;
+    adminTheme?: string;
+    emailTheme?: string;
+    eventsListeners: string[];
     users: {
         id: string;
         email: string;
@@ -52,6 +55,11 @@ export function readRealmJsonFile(params: {
 
         const zTargetType = z.object({
             name: z.string(),
+            loginTheme: z.string().optional(),
+            accountTheme: z.string().optional(),
+            adminTheme: z.string().optional(),
+            emailTheme: z.string().optional(),
+            eventsListeners: z.array(z.string()),
             users: z.array(
                 z.object({
                     id: z.string(),
@@ -104,20 +112,4 @@ export function readRealmJsonFile(params: {
     assert(is<ParsedRealmJson>(parsedRealmJson));
 
     return parsedRealmJson;
-}
-
-export function getDefaultConfig(params: {
-    keycloakMajorVersionNumber: number;
-}): ParsedRealmJson {
-    const { keycloakMajorVersionNumber } = params;
-
-    const realmJsonFilePath = pathJoin(
-        getThisCodebaseRootDirPath(),
-        "src",
-        "bin",
-        "start-keycloak",
-        `myrealm-realm-${keycloakMajorVersionNumber}.json`
-    );
-
-    return readRealmJsonFile({ realmJsonFilePath });
 }

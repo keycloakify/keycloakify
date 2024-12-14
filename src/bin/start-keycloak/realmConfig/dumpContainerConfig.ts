@@ -1,4 +1,3 @@
-import { runPrettier, getIsPrettierAvailable } from "../../tools/runPrettier";
 import { CONTAINER_NAME } from "../../shared/constants";
 import child_process from "child_process";
 import { join as pathJoin } from "path";
@@ -6,7 +5,7 @@ import chalk from "chalk";
 import { Deferred } from "evt/tools/Deferred";
 import { assert, is } from "tsafe/assert";
 import type { BuildContext } from "../../shared/buildContext";
-import * as fs from "fs/promises";
+import { type ParsedRealmJson, readRealmJsonFile } from "./ParsedRealmJson";
 
 export type BuildContextLike = {
     cacheDirPath: string;
@@ -17,15 +16,9 @@ assert<BuildContext extends BuildContextLike ? true : false>();
 export async function dumpContainerConfig(params: {
     realmName: string;
     keycloakMajorVersionNumber: number;
-    targetRealmConfigJsonFilePath: string;
     buildContext: BuildContextLike;
-}) {
-    const {
-        realmName,
-        keycloakMajorVersionNumber,
-        targetRealmConfigJsonFilePath,
-        buildContext
-    } = params;
+}): Promise<ParsedRealmJson> {
+    const { realmName, keycloakMajorVersionNumber, buildContext } = params;
 
     {
         // https://github.com/keycloak/keycloak/issues/33800
@@ -148,20 +141,7 @@ export async function dumpContainerConfig(params: {
         await dCompleted.pr;
     }
 
-    let sourceCode = (await fs.readFile(targetRealmConfigJsonFilePath_tmp)).toString(
-        "utf8"
-    );
-
-    run_prettier: {
-        if (!(await getIsPrettierAvailable())) {
-            break run_prettier;
-        }
-
-        sourceCode = await runPrettier({
-            filePath: targetRealmConfigJsonFilePath,
-            sourceCode: sourceCode
-        });
-    }
-
-    await fs.writeFile(targetRealmConfigJsonFilePath, Buffer.from(sourceCode, "utf8"));
+    return readRealmJsonFile({
+        realmJsonFilePath: targetRealmConfigJsonFilePath_tmp
+    });
 }
