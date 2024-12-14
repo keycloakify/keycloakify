@@ -173,12 +173,15 @@ export async function command(params: {
 
                 process.exit(1);
             } catch {
+                // NOTE: Latest version
+                const [n] = getSupportedKeycloakMajorVersions();
+
                 console.warn(
                     chalk.yellow(
-                        `Could not determine the major Keycloak version number from the docker image tag ${dockerImageTag}. Assuming 26`
+                        `Could not determine the major Keycloak version number from the docker image tag ${dockerImageTag}. Assuming ${n}`
                     )
                 );
-                return 26;
+                return n;
             }
         }
 

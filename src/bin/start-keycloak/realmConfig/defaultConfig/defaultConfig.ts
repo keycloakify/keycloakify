@@ -48,7 +48,8 @@ export const { getSupportedKeycloakMajorVersions } = (() => {
 
                 return n;
             })
-            .filter(exclude(undefined));
+            .filter(exclude(undefined))
+            .sort((a, b) => b - a);
 
         return cache;
     }
