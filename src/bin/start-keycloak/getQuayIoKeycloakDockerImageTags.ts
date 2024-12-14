@@ -23,18 +23,44 @@ export async function getKeycloakDockerImageLatestSemVerTagsForEveryMajors(param
 
     const { buildContext } = params;
 
-    const { tags } = await fetch(
-        "https://quay.io/v2/keycloak/keycloak/tags/list",
-        buildContext.fetchOptions
-    )
-        .then(r => r.json())
-        .then(j =>
-            z
-                .object({
-                    tags: z.array(z.string())
-                })
-                .parse(j)
-        );
+    const tags: string[] = [];
+
+    await (async function callee(url: string) {
+        const r = await fetch(url, buildContext.fetchOptions);
+
+        await Promise.all([
+            (async () => {
+                tags.push(
+                    ...z
+                        .object({
+                            tags: z.array(z.string())
+                        })
+                        .parse(await r.json()).tags
+                );
+            })(),
+            (async () => {
+                const link = r.headers.get("link");
+
+                if (link === null) {
+                    return;
+                }
+
+                const split = link.split(";").map(s => s.trim());
+
+                assert(split.length === 2);
+
+                assert(split[1] === 'rel="next"');
+
+                const match = split[0].match(/^<(.+)>$/);
+
+                assert(match !== null);
+
+                const nextUrl = new URL(url).origin + match[1];
+
+                await callee(nextUrl);
+            })()
+        ]);
+    })("https://quay.io/v2/keycloak/keycloak/tags/list");
 
     const arr = tags
         .map(tag => ({
@@ -73,7 +99,9 @@ export async function getKeycloakDockerImageLatestSemVerTagsForEveryMajors(param
 
     const supportedKeycloakMajorVersions = getSupportedKeycloakMajorVersions();
 
-    cache = Object.values(versionByMajor)
+    cache = Object.entries(versionByMajor)
+        .sort(([a], [b]) => parseInt(b) - parseInt(a))
+        .map(([, version]) => version)
         .map(version => {
             assert(version !== undefined);
 
