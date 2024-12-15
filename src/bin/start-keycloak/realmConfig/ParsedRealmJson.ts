@@ -5,7 +5,7 @@ import { id } from "tsafe/id";
 import * as fs from "fs";
 
 export type ParsedRealmJson = {
-    name: string;
+    realm: string;
     loginTheme?: string;
     accountTheme?: string;
     adminTheme?: string;
@@ -22,10 +22,13 @@ export type ParsedRealmJson = {
         clientRoles: Record<string, string[]>;
     }[];
     roles: {
-        client: {
-            name: string;
-            containerId: string; // client id
-        }[];
+        client: Record<
+            string,
+            {
+                name: string;
+                containerId: string; // client id
+            }[]
+        >;
     };
     clients: {
         id: string;
@@ -41,6 +44,65 @@ export type ParsedRealmJson = {
     }[];
 };
 
+const zParsedRealmJson = (() => {
+    type TargetType = ParsedRealmJson;
+
+    const zTargetType = z.object({
+        realm: z.string(),
+        loginTheme: z.string().optional(),
+        accountTheme: z.string().optional(),
+        adminTheme: z.string().optional(),
+        emailTheme: z.string().optional(),
+        eventsListeners: z.array(z.string()),
+        users: z.array(
+            z.object({
+                id: z.string(),
+                email: z.string(),
+                username: z.string(),
+                attributes: z.record(z.unknown()),
+                credentials: z.array(
+                    z.object({
+                        type: z.string()
+                    })
+                ),
+                clientRoles: z.record(z.array(z.string()))
+            })
+        ),
+        roles: z.object({
+            client: z.record(
+                z.array(
+                    z.object({
+                        name: z.string(),
+                        containerId: z.string()
+                    })
+                )
+            )
+        }),
+        clients: z.array(
+            z.object({
+                id: z.string(),
+                clientId: z.string(),
+                baseUrl: z.string().optional(),
+                redirectUris: z.array(z.string()).optional(),
+                webOrigins: z.array(z.string()).optional(),
+                attributes: z
+                    .object({
+                        "post.logout.redirect.uris": z.string().optional()
+                    })
+                    .optional(),
+                protocol: z.string().optional(),
+                protocolMappers: z.array(z.unknown()).optional()
+            })
+        )
+    });
+
+    type InferredType = z.infer<typeof zTargetType>;
+
+    assert<Equals<TargetType, InferredType>>;
+
+    return id<z.ZodType<TargetType>>(zTargetType);
+})();
+
 export function readRealmJsonFile(params: {
     realmJsonFilePath: string;
 }): ParsedRealmJson {
@@ -49,63 +111,6 @@ export function readRealmJsonFile(params: {
     const parsedRealmJson = JSON.parse(
         fs.readFileSync(realmJsonFilePath).toString("utf8")
     ) as unknown;
-
-    const zParsedRealmJson = (() => {
-        type TargetType = ParsedRealmJson;
-
-        const zTargetType = z.object({
-            name: z.string(),
-            loginTheme: z.string().optional(),
-            accountTheme: z.string().optional(),
-            adminTheme: z.string().optional(),
-            emailTheme: z.string().optional(),
-            eventsListeners: z.array(z.string()),
-            users: z.array(
-                z.object({
-                    id: z.string(),
-                    email: z.string(),
-                    username: z.string(),
-                    attributes: z.record(z.unknown()),
-                    credentials: z.array(
-                        z.object({
-                            type: z.string()
-                        })
-                    ),
-                    clientRoles: z.record(z.array(z.string()))
-                })
-            ),
-            roles: z.object({
-                client: z.array(
-                    z.object({
-                        name: z.string(),
-                        containerId: z.string()
-                    })
-                )
-            }),
-            clients: z.array(
-                z.object({
-                    id: z.string(),
-                    clientId: z.string(),
-                    baseUrl: z.string().optional(),
-                    redirectUris: z.array(z.string()).optional(),
-                    webOrigins: z.array(z.string()).optional(),
-                    attributes: z
-                        .object({
-                            "post.logout.redirect.uris": z.string().optional()
-                        })
-                        .optional(),
-                    protocol: z.string().optional(),
-                    protocolMappers: z.array(z.unknown()).optional()
-                })
-            )
-        });
-
-        type InferredType = z.infer<typeof zTargetType>;
-
-        assert<Equals<TargetType, InferredType>>;
-
-        return id<z.ZodType<TargetType>>(zTargetType);
-    })();
 
     zParsedRealmJson.parse(parsedRealmJson);
 

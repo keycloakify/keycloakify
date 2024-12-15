@@ -51,7 +51,7 @@ export function prepareRealmConfig(params: {
     }
 
     return {
-        realmName: parsedRealmJson.name,
+        realmName: parsedRealmJson.realm,
         clientName: clientId,
         username
     };
@@ -138,7 +138,7 @@ function addOrEditTestUser(params: {
 
         newUser.clientRoles = {};
 
-        for (const clientRole of parsedRealmJson.roles.client) {
+        for (const clientRole of Object.values(parsedRealmJson.roles.client).flat()) {
             const clientName = nameByClientId[clientRole.containerId];
 
             assert(clientName !== undefined);
