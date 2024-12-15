@@ -253,13 +253,22 @@ export async function command(params: {
     assert(jarFilePath !== undefined);
 
     const extensionJarFilePaths = [
-        pathJoin(
-            getThisCodebaseRootDirPath(),
-            "src",
-            "bin",
-            "start-keycloak",
-            KEYCLOAKIFY_LOGIN_JAR_BASENAME
-        ),
+        ...(keycloakMajorVersionNumber <= 20
+            ? (console.log(
+                  chalk.yellow(
+                      "WARNING: With older version of keycloak your changes to the realm configuration are not persisted"
+                  )
+              ),
+              [])
+            : [
+                  pathJoin(
+                      getThisCodebaseRootDirPath(),
+                      "src",
+                      "bin",
+                      "start-keycloak",
+                      KEYCLOAKIFY_LOGIN_JAR_BASENAME
+                  )
+              ]),
         ...(await Promise.all(
             buildContext.startKeycloakOptions.extensionJars.map(async extensionJar => {
                 switch (extensionJar.type) {

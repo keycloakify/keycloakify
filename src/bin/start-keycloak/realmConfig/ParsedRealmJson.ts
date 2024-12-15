@@ -15,7 +15,6 @@ export type ParsedRealmJson = {
         id: string;
         email: string;
         username: string;
-        attributes: Record<string, unknown>;
         credentials: {
             type: string /* "password" or something else */;
         }[];
@@ -59,7 +58,6 @@ const zParsedRealmJson = (() => {
                 id: z.string(),
                 email: z.string(),
                 username: z.string(),
-                attributes: z.record(z.unknown()),
                 credentials: z.array(
                     z.object({
                         type: z.string()
