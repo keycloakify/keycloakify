@@ -31,7 +31,7 @@ import { rm } from "../tools/fs.rm";
 import { downloadAndExtractArchive } from "../tools/downloadAndExtractArchive";
 import { startViteDevServer } from "./startViteDevServer";
 import { getSupportedKeycloakMajorVersions } from "./realmConfig/defaultConfig";
-import { getKeycloakDockerImageLatestSemVerTagsForEveryMajors } from "./getQuayIoKeycloakDockerImageTags";
+import { getSupportedDockerImageTags } from "./getSupportedDockerImageTags";
 import { getRealmConfig } from "./realmConfig";
 
 export async function command(params: {
@@ -96,7 +96,7 @@ export async function command(params: {
 
     const { cliCommandOptions, buildContext } = params;
 
-    const availableTags = await getKeycloakDockerImageLatestSemVerTagsForEveryMajors({
+    const availableTags = await getSupportedDockerImageTags({
         buildContext
     });
 
