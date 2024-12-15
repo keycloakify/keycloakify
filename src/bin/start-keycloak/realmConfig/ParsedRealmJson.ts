@@ -19,7 +19,7 @@ export type ParsedRealmJson = {
         credentials: {
             type: string /* "password" or something else */;
         }[];
-        clientRoles: Record<string, string[]>;
+        clientRoles?: Record<string, string[]>;
     }[];
     roles: {
         client: Record<
@@ -65,7 +65,7 @@ const zParsedRealmJson = (() => {
                         type: z.string()
                     })
                 ),
-                clientRoles: z.record(z.array(z.string()))
+                clientRoles: z.record(z.array(z.string())).optional()
             })
         ),
         roles: z.object({
