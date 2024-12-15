@@ -380,8 +380,15 @@ export async function command(params: {
     const dockerRunArgs: string[] = [
         `-p${SPACE_PLACEHOLDER}${port}:8080`,
         `--name${SPACE_PLACEHOLDER}${CONTAINER_NAME}`,
-        `-e${SPACE_PLACEHOLDER}KEYCLOAK_ADMIN=admin`,
-        `-e${SPACE_PLACEHOLDER}KEYCLOAK_ADMIN_PASSWORD=admin`,
+        ...(keycloakMajorVersionNumber >= 25
+            ? [
+                  `-e${SPACE_PLACEHOLDER}KC_BOOTSTRAP_ADMIN_USERNAME=admin`,
+                  `-e${SPACE_PLACEHOLDER}KC_BOOTSTRAP_ADMIN_PASSWORD=admin`
+              ]
+            : [
+                  `-e${SPACE_PLACEHOLDER}KEYCLOAK_ADMIN=admin`,
+                  `-e${SPACE_PLACEHOLDER}KEYCLOAK_ADMIN_PASSWORD=admin`
+              ]),
         ...(devServerPort === undefined
             ? []
             : [
