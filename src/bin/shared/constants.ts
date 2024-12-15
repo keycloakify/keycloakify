@@ -84,6 +84,6 @@ export const KEYCLOAKIFY_SPA_DEV_SERVER_PORT = "KEYCLOAKIFY_SPA_DEV_SERVER_PORT"
 
 export const KEYCLOAKIFY_LOGGING_VERSION = "1.0.1";
 
-export const KEYCLOAKIFY_LOGIN_JAR_BASENAME = `keycloakify-login-${KEYCLOAKIFY_LOGGING_VERSION}.jar`;
+export const KEYCLOAKIFY_LOGIN_JAR_BASENAME = `keycloakify-logging-${KEYCLOAKIFY_LOGGING_VERSION}.jar`;
 
 export const TEST_APP_URL = "https://my-theme.keycloakify.dev";
