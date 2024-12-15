@@ -574,8 +574,8 @@
                     "view-events",
                     "realm-admin",
                     "manage-authorization",
-                    "manage-events",
                     "view-authorization",
+                    "manage-events",
                     "manage-clients",
                     "query-users",
                     "query-groups",
@@ -672,8 +672,18 @@
             "enabled": true,
             "alwaysDisplayInConsole": false,
             "clientAuthenticatorType": "client-secret",
-            "redirectUris": ["*"],
-            "webOrigins": ["*"],
+            "redirectUris": [
+                "https://my-theme.keycloakify.dev/*",
+                "http://localhost*",
+                "http://127.0.0.1*",
+                "*"
+            ],
+            "webOrigins": [
+                "https://my-theme.keycloakify.dev/*",
+                "http://localhost*",
+                "http://127.0.0.1*",
+                "*"
+            ],
             "notBefore": 0,
             "bearerOnly": false,
             "consentRequired": false,
@@ -688,7 +698,7 @@
                 "realm_client": "false",
                 "oidc.ciba.grant.enabled": "false",
                 "backchannel.logout.session.required": "true",
-                "post.logout.redirect.uris": "*",
+                "post.logout.redirect.uris": "*##https://my-theme.keycloakify.dev/*##http://localhost*##http://127.0.0.1*",
                 "oauth2.device.authorization.grant.enabled": "false",
                 "display.on.consent.screen": "false",
                 "pkce.code.challenge.method": "S256",
@@ -824,7 +834,12 @@
                 "http://localhost*",
                 "http://127.0.0.1*"
             ],
-            "webOrigins": ["*"],
+            "webOrigins": [
+                "https://my-theme.keycloakify.dev/*",
+                "http://localhost*",
+                "http://127.0.0.1*",
+                "*"
+            ],
             "notBefore": 0,
             "bearerOnly": false,
             "consentRequired": false,
@@ -936,8 +951,18 @@
             "enabled": true,
             "alwaysDisplayInConsole": false,
             "clientAuthenticatorType": "client-secret",
-            "redirectUris": ["*"],
-            "webOrigins": ["*"],
+            "redirectUris": [
+                "https://my-theme.keycloakify.dev/*",
+                "http://localhost*",
+                "http://127.0.0.1*",
+                "*"
+            ],
+            "webOrigins": [
+                "https://my-theme.keycloakify.dev/*",
+                "http://localhost*",
+                "http://127.0.0.1*",
+                "*"
+            ],
             "notBefore": 0,
             "bearerOnly": false,
             "consentRequired": false,
@@ -953,7 +978,7 @@
                 "oidc.ciba.grant.enabled": "false",
                 "client.use.lightweight.access.token.enabled": "true",
                 "backchannel.logout.session.required": "true",
-                "post.logout.redirect.uris": "*",
+                "post.logout.redirect.uris": "*##https://my-theme.keycloakify.dev/*##http://localhost*##http://127.0.0.1*",
                 "oauth2.device.authorization.grant.enabled": "false",
                 "display.on.consent.screen": "false",
                 "pkce.code.challenge.method": "S256",
@@ -1602,7 +1627,7 @@
     },
     "smtpServer": {},
     "loginTheme": "keycloakify-starter",
-    "accountTheme": "keycloakify-starter",
+    "accountTheme": "",
     "adminTheme": "",
     "emailTheme": "",
     "eventsEnabled": false,
@@ -1724,14 +1749,14 @@
                 "subComponents": {},
                 "config": {
                     "allowed-protocol-mapper-types": [
-                        "oidc-full-name-mapper",
-                        "saml-user-property-mapper",
-                        "saml-role-list-mapper",
-                        "oidc-usermodel-attribute-mapper",
+                        "oidc-sha256-pairwise-sub-mapper",
                         "oidc-address-mapper",
                         "oidc-usermodel-property-mapper",
+                        "saml-role-list-mapper",
+                        "oidc-usermodel-attribute-mapper",
+                        "saml-user-property-mapper",
                         "saml-user-attribute-mapper",
-                        "oidc-sha256-pairwise-sub-mapper"
+                        "oidc-full-name-mapper"
                     ]
                 }
             },
@@ -1761,14 +1786,14 @@
                 "subComponents": {},
                 "config": {
                     "allowed-protocol-mapper-types": [
-                        "oidc-usermodel-property-mapper",
-                        "oidc-usermodel-attribute-mapper",
                         "saml-user-property-mapper",
-                        "saml-user-attribute-mapper",
-                        "oidc-sha256-pairwise-sub-mapper",
-                        "oidc-address-mapper",
                         "saml-role-list-mapper",
-                        "oidc-full-name-mapper"
+                        "oidc-sha256-pairwise-sub-mapper",
+                        "oidc-full-name-mapper",
+                        "saml-user-attribute-mapper",
+                        "oidc-address-mapper",
+                        "oidc-usermodel-attribute-mapper",
+                        "oidc-usermodel-property-mapper"
                     ]
                 }
             },
