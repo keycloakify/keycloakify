@@ -380,7 +380,7 @@ export async function command(params: {
     const dockerRunArgs: string[] = [
         `-p${SPACE_PLACEHOLDER}${port}:8080`,
         `--name${SPACE_PLACEHOLDER}${CONTAINER_NAME}`,
-        ...(keycloakMajorVersionNumber >= 25
+        ...(keycloakMajorVersionNumber >= 26
             ? [
                   `-e${SPACE_PLACEHOLDER}KC_BOOTSTRAP_ADMIN_USERNAME=admin`,
                   `-e${SPACE_PLACEHOLDER}KC_BOOTSTRAP_ADMIN_PASSWORD=admin`

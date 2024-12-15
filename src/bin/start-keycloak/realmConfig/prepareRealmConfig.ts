@@ -69,10 +69,11 @@ function enableCustomThemes(params: {
     const { parsedRealmJson, themeName, implementedThemeTypes } = params;
 
     for (const themeType of objectKeys(implementedThemeTypes)) {
-        parsedRealmJson[`${themeType}Theme` as const] = implementedThemeTypes[themeType]
-            .isImplemented
-            ? themeName
-            : "";
+        if (!implementedThemeTypes[themeType].isImplemented) {
+            continue;
+        }
+
+        parsedRealmJson[`${themeType}Theme` as const] = themeName;
     }
 }
 
