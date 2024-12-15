@@ -38,6 +38,7 @@ export async function getRealmConfig(params: {
 
     const realmJsonFilePath = pathJoin(
         buildContext.projectDirPath,
+        ".keycloakify",
         `realm-kc-${keycloakMajorVersionNumber}.json`
     );
 
