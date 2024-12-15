@@ -73,7 +73,7 @@
                 "composites": {
                     "realm": ["offline_access", "uma_authorization"],
                     "client": {
-                        "account": ["delete-account", "view-profile", "manage-account"]
+                        "account": ["view-profile", "manage-account", "delete-account"]
                     }
                 },
                 "clientRole": false,
@@ -456,6 +456,40 @@
             "disableableCredentialTypes": [],
             "requiredActions": [],
             "realmRoles": ["default-roles-myrealm"],
+            "clientRoles": {
+                "realm-management": [
+                    "create-client",
+                    "view-identity-providers",
+                    "manage-realm",
+                    "query-groups",
+                    "manage-clients",
+                    "query-users",
+                    "realm-admin",
+                    "view-authorization",
+                    "view-events",
+                    "view-clients",
+                    "view-realm",
+                    "manage-events",
+                    "query-realms",
+                    "query-clients",
+                    "manage-identity-providers",
+                    "manage-users",
+                    "view-users",
+                    "impersonation",
+                    "manage-authorization"
+                ],
+                "broker": ["read-token"],
+                "account": [
+                    "view-profile",
+                    "manage-account-links",
+                    "view-applications",
+                    "manage-consent",
+                    "delete-account",
+                    "manage-account",
+                    "view-groups",
+                    "view-consent"
+                ]
+            },
             "notBefore": 0,
             "groups": []
         }
@@ -521,8 +555,12 @@
             "enabled": true,
             "alwaysDisplayInConsole": false,
             "clientAuthenticatorType": "client-secret",
-            "redirectUris": ["/realms/myrealm/account/*"],
-            "webOrigins": [],
+            "redirectUris": [
+                "http://localhost*",
+                "http://127.0.0.1*",
+                "/realms/myrealm/account/*"
+            ],
+            "webOrigins": ["*"],
             "notBefore": 0,
             "bearerOnly": false,
             "consentRequired": false,
@@ -657,7 +695,6 @@
             "attributes": {
                 "oidc.ciba.grant.enabled": "false",
                 "backchannel.logout.session.required": "true",
-                "login_theme": "keycloakify-starter",
                 "post.logout.redirect.uris": "+",
                 "display.on.consent.screen": "false",
                 "oauth2.device.authorization.grant.enabled": "false",
@@ -718,8 +755,12 @@
             "enabled": true,
             "alwaysDisplayInConsole": false,
             "clientAuthenticatorType": "client-secret",
-            "redirectUris": ["/admin/myrealm/console/*"],
-            "webOrigins": ["+"],
+            "redirectUris": [
+                "http://localhost*",
+                "http://127.0.0.1*",
+                "/admin/myrealm/console/*"
+            ],
+            "webOrigins": ["*"],
             "notBefore": 0,
             "bearerOnly": false,
             "consentRequired": false,
@@ -1298,11 +1339,11 @@
     },
     "smtpServer": {},
     "loginTheme": "keycloakify-starter",
-    "accountTheme": "keycloakify-starter",
+    "accountTheme": "",
     "adminTheme": "",
     "emailTheme": "",
     "eventsEnabled": false,
-    "eventsListeners": ["jboss-logging"],
+    "eventsListeners": ["keycloakify-logging", "jboss-logging"],
     "enabledEventTypes": [],
     "adminEventsEnabled": false,
     "adminEventsDetailsEnabled": false,
@@ -1318,13 +1359,13 @@
                 "subComponents": {},
                 "config": {
                     "allowed-protocol-mapper-types": [
-                        "oidc-usermodel-property-mapper",
+                        "saml-user-attribute-mapper",
+                        "saml-user-property-mapper",
+                        "oidc-sha256-pairwise-sub-mapper",
+                        "saml-role-list-mapper",
                         "oidc-usermodel-attribute-mapper",
                         "oidc-full-name-mapper",
-                        "saml-user-property-mapper",
-                        "saml-role-list-mapper",
-                        "saml-user-attribute-mapper",
-                        "oidc-sha256-pairwise-sub-mapper",
+                        "oidc-usermodel-property-mapper",
                         "oidc-address-mapper"
                     ]
                 }
@@ -1374,14 +1415,14 @@
                 "subComponents": {},
                 "config": {
                     "allowed-protocol-mapper-types": [
-                        "oidc-sha256-pairwise-sub-mapper",
                         "oidc-address-mapper",
-                        "oidc-full-name-mapper",
                         "oidc-usermodel-property-mapper",
                         "oidc-usermodel-attribute-mapper",
-                        "saml-user-attribute-mapper",
+                        "oidc-full-name-mapper",
+                        "oidc-sha256-pairwise-sub-mapper",
+                        "saml-user-property-mapper",
                         "saml-role-list-mapper",
-                        "saml-user-property-mapper"
+                        "saml-user-attribute-mapper"
                     ]
                 }
             },
