@@ -3,6 +3,7 @@ import type { ParsedRealmJson } from "./ParsedRealmJson";
 import { getDefaultConfig } from "./defaultConfig";
 import type { BuildContext } from "../../shared/buildContext";
 import { objectKeys } from "tsafe/objectKeys";
+import { TEST_APP_URL } from "../../shared/constants";
 
 export type BuildContextLike = {
     themeNames: BuildContext["themeNames"];
@@ -157,8 +158,6 @@ function addOrEditTestUser(params: {
 
     return { username: newUser.username };
 }
-
-const TEST_APP_URL = "https://my-theme.keycloakify.dev";
 
 function addOrEditClient(params: {
     parsedRealmJson: ParsedRealmJson;

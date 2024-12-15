@@ -3,7 +3,8 @@ import { exclude } from "tsafe/exclude";
 import {
     CONTAINER_NAME,
     KEYCLOAKIFY_SPA_DEV_SERVER_PORT,
-    KEYCLOAKIFY_LOGIN_JAR_BASENAME
+    KEYCLOAKIFY_LOGIN_JAR_BASENAME,
+    TEST_APP_URL
 } from "../shared/constants";
 import { SemVer } from "../tools/SemVer";
 import { assert, type Equals } from "tsafe/assert";
@@ -525,7 +526,7 @@ export async function command(params: {
                     `${chalk.green("Your theme is accessible at:")}`,
                     `${chalk.green("➜")} ${chalk.cyan.bold(
                         (() => {
-                            const url = new URL("https://my-theme.keycloakify.dev");
+                            const url = new URL(TEST_APP_URL);
 
                             if (port !== 8080) {
                                 url.searchParams.set("port", `${port}`);
