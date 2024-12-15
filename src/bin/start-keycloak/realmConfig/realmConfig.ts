@@ -115,14 +115,14 @@ export async function getRealmConfig(params: {
 
             console.log(
                 [
-                    chalk.green(
-                        `✓ '${realmName}' config backed up completed in ${Date.now() - start}ms`
-                    ),
                     chalk.grey(
                         `Save changed to \`.${pathSep}${pathRelative(buildContext.projectDirPath, realmJsonFilePath)}\``
                     ),
                     chalk.grey(
                         `Next time you'll be running \`keycloakify start-keycloak\`, the realm '${realmName}' will be restored to this state.`
+                    ),
+                    chalk.green(
+                        `✓ '${realmName}' config backed up completed in ${Date.now() - start}ms`
                     )
                 ].join("\n")
             );

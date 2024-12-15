@@ -22,7 +22,7 @@ export async function dumpContainerConfig(params: {
 
     {
         // https://github.com/keycloak/keycloak/issues/33800
-        const doesUseLockedH2Database = keycloakMajorVersionNumber >= 26;
+        const doesUseLockedH2Database = keycloakMajorVersionNumber >= 25;
 
         if (doesUseLockedH2Database) {
             child_process.execSync(
