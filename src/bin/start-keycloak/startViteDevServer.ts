@@ -44,6 +44,7 @@ export function startViteDevServer(params: {
             //Local:   http://localhost:8083/
             const match = data
                 .toString("utf8")
+                .replace(/\x1b[[0-9;]*m/g, "")
                 .match(/Local:\s*http:\/\/(?:localhost|127\.0\.0\.1):(\d+)\//);
 
             if (match === null) {
