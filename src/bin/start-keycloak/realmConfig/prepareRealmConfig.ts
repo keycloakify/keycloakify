@@ -4,6 +4,7 @@ import { getDefaultConfig } from "./defaultConfig";
 import type { BuildContext } from "../../shared/buildContext";
 import { objectKeys } from "tsafe/objectKeys";
 import { TEST_APP_URL } from "../../shared/constants";
+import { sameFactory } from "evt/tools/inDepth/same";
 
 export type BuildContextLike = {
     themeNames: BuildContext["themeNames"];
@@ -139,18 +140,38 @@ function addOrEditTestUser(params: {
             parsedRealmJson.clients.map(client => [client.id, client.clientId] as const)
         );
 
-        newUser.clientRoles = {};
+        const newClientRoles: NonNullable<
+            ParsedRealmJson["users"][number]["clientRoles"]
+        > = {};
 
         for (const clientRole of Object.values(parsedRealmJson.roles.client).flat()) {
             const clientName = nameByClientId[clientRole.containerId];
 
             assert(clientName !== undefined);
 
-            (newUser.clientRoles[clientName] ??= []).push(clientRole.name);
+            (newClientRoles[clientName] ??= []).push(clientRole.name);
         }
 
-        for (const clientName of Object.keys(newUser.clientRoles)) {
-            newUser.clientRoles[clientName].sort().reverse();
+        const { same: sameSet } = sameFactory({
+            takeIntoAccountArraysOrdering: false
+        });
+
+        for (const [clientName, roles] of Object.entries(newClientRoles)) {
+            keep_previous_ordering_if_possible: {
+                const roles_previous = newUser.clientRoles?.[clientName];
+
+                if (roles_previous === undefined) {
+                    break keep_previous_ordering_if_possible;
+                }
+
+                if (!sameSet(roles_previous, roles)) {
+                    break keep_previous_ordering_if_possible;
+                }
+
+                continue;
+            }
+
+            (newUser.clientRoles ??= {})[clientName] = roles;
         }
     }
 
@@ -234,39 +255,17 @@ function addOrEditClient(params: {
         parsedRealmJson.clients.push(testClient);
     }
 
-    for (const redirectUri of [
+    testClient.redirectUris = [
         `${TEST_APP_URL}/*`,
         "http://localhost*",
         "http://127.0.0.1*"
-    ]) {
-        for (const propertyName of ["webOrigins", "redirectUris"] as const) {
-            const arr = (testClient[propertyName] ??= []);
+    ]
+        .sort()
+        .reverse();
 
-            if (arr.includes(redirectUri)) {
-                continue;
-            }
+    (testClient.attributes ??= {})["post.logout.redirect.uris"] = "+";
 
-            arr.push(redirectUri);
-        }
-
-        {
-            if (testClient.attributes === undefined) {
-                testClient.attributes = {};
-            }
-
-            const arr = (testClient.attributes["post.logout.redirect.uris"] ?? "")
-                .split("##")
-                .map(s => s.trim());
-
-            if (!arr.includes(redirectUri)) {
-                arr.push(redirectUri);
-                testClient.attributes["post.logout.redirect.uris"] = arr.join("##");
-            }
-        }
-    }
-
-    testClient.webOrigins?.sort().reverse();
-    testClient.redirectUris?.sort().reverse();
+    testClient.webOrigins = ["*"];
 
     return { clientId: testClient.clientId };
 }
@@ -283,38 +282,20 @@ function editAccountConsoleAndSecurityAdminConsole(params: {
 
         assert(client !== undefined);
 
-        for (const redirectUri of [
-            `${TEST_APP_URL}/*`,
-            "http://localhost*",
-            "http://127.0.0.1*"
-        ]) {
-            for (const propertyName of ["webOrigins", "redirectUris"] as const) {
-                const arr = (client[propertyName] ??= []);
+        {
+            const arr = (client.redirectUris ??= []);
 
-                if (arr.includes(redirectUri)) {
-                    continue;
-                }
-
-                arr.push(redirectUri);
-            }
-
-            {
-                if (client.attributes === undefined) {
-                    client.attributes = {};
-                }
-
-                const arr = (client.attributes["post.logout.redirect.uris"] ?? "")
-                    .split("##")
-                    .map(s => s.trim());
-
-                if (!arr.includes(redirectUri)) {
-                    arr.push(redirectUri);
-                    client.attributes["post.logout.redirect.uris"] = arr.join("##");
+            for (const value of ["http://localhost*", "http://127.0.0.1*"]) {
+                if (!arr.includes(value)) {
+                    arr.push(value);
                 }
             }
+
+            client.redirectUris?.sort().reverse();
         }
 
-        client.webOrigins?.sort().reverse();
-        client.redirectUris?.sort().reverse();
+        (client.attributes ??= {})["post.logout.redirect.uris"] = "+";
+
+        client.webOrigins = ["*"];
     }
 }
