@@ -49,6 +49,8 @@ export function prepareRealmConfig(params: {
         }
 
         parsedRealmJson.eventsListeners.push(name);
+
+        parsedRealmJson.eventsListeners.sort();
     }
 
     return {
@@ -146,6 +148,10 @@ function addOrEditTestUser(params: {
 
             (newUser.clientRoles[clientName] ??= []).push(clientRole.name);
         }
+
+        for (const clientName of Object.keys(newUser.clientRoles)) {
+            newUser.clientRoles[clientName].sort().reverse();
+        }
     }
 
     if (defaultUser_preexisting === undefined) {
@@ -228,38 +234,39 @@ function addOrEditClient(params: {
         parsedRealmJson.clients.push(testClient);
     }
 
-    {
-        for (const redirectUri of [
-            `${TEST_APP_URL}/*`,
-            "http://localhost*",
-            "http://127.0.0.1*"
-        ]) {
-            for (const propertyName of ["webOrigins", "redirectUris"] as const) {
-                const arr = (testClient[propertyName] ??= []);
+    for (const redirectUri of [
+        `${TEST_APP_URL}/*`,
+        "http://localhost*",
+        "http://127.0.0.1*"
+    ]) {
+        for (const propertyName of ["webOrigins", "redirectUris"] as const) {
+            const arr = (testClient[propertyName] ??= []);
 
-                if (arr.includes(redirectUri)) {
-                    continue;
-                }
-
-                arr.push(redirectUri);
+            if (arr.includes(redirectUri)) {
+                continue;
             }
 
-            {
-                if (testClient.attributes === undefined) {
-                    testClient.attributes = {};
-                }
+            arr.push(redirectUri);
+        }
 
-                const arr = (testClient.attributes["post.logout.redirect.uris"] ?? "")
-                    .split("##")
-                    .map(s => s.trim());
+        {
+            if (testClient.attributes === undefined) {
+                testClient.attributes = {};
+            }
 
-                if (!arr.includes(redirectUri)) {
-                    arr.push(redirectUri);
-                    testClient.attributes["post.logout.redirect.uris"] = arr.join("##");
-                }
+            const arr = (testClient.attributes["post.logout.redirect.uris"] ?? "")
+                .split("##")
+                .map(s => s.trim());
+
+            if (!arr.includes(redirectUri)) {
+                arr.push(redirectUri);
+                testClient.attributes["post.logout.redirect.uris"] = arr.join("##");
             }
         }
     }
+
+    testClient.webOrigins?.sort().reverse();
+    testClient.redirectUris?.sort().reverse();
 
     return { clientId: testClient.clientId };
 }
@@ -276,37 +283,38 @@ function editAccountConsoleAndSecurityAdminConsole(params: {
 
         assert(client !== undefined);
 
-        {
-            for (const redirectUri of [
-                `${TEST_APP_URL}/*`,
-                "http://localhost*",
-                "http://127.0.0.1*"
-            ]) {
-                for (const propertyName of ["webOrigins", "redirectUris"] as const) {
-                    const arr = (client[propertyName] ??= []);
+        for (const redirectUri of [
+            `${TEST_APP_URL}/*`,
+            "http://localhost*",
+            "http://127.0.0.1*"
+        ]) {
+            for (const propertyName of ["webOrigins", "redirectUris"] as const) {
+                const arr = (client[propertyName] ??= []);
 
-                    if (arr.includes(redirectUri)) {
-                        continue;
-                    }
-
-                    arr.push(redirectUri);
+                if (arr.includes(redirectUri)) {
+                    continue;
                 }
 
-                {
-                    if (client.attributes === undefined) {
-                        client.attributes = {};
-                    }
+                arr.push(redirectUri);
+            }
 
-                    const arr = (client.attributes["post.logout.redirect.uris"] ?? "")
-                        .split("##")
-                        .map(s => s.trim());
+            {
+                if (client.attributes === undefined) {
+                    client.attributes = {};
+                }
 
-                    if (!arr.includes(redirectUri)) {
-                        arr.push(redirectUri);
-                        client.attributes["post.logout.redirect.uris"] = arr.join("##");
-                    }
+                const arr = (client.attributes["post.logout.redirect.uris"] ?? "")
+                    .split("##")
+                    .map(s => s.trim());
+
+                if (!arr.includes(redirectUri)) {
+                    arr.push(redirectUri);
+                    client.attributes["post.logout.redirect.uris"] = arr.join("##");
                 }
             }
         }
+
+        client.webOrigins?.sort().reverse();
+        client.redirectUris?.sort().reverse();
     }
 }
