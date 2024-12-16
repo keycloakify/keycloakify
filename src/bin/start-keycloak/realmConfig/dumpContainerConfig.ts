@@ -1,6 +1,6 @@
 import { CONTAINER_NAME } from "../../shared/constants";
 import child_process from "child_process";
-import { join as pathJoin } from "path";
+import { join as pathJoin, dirname as pathDirname, basename as pathBasename } from "path";
 import chalk from "chalk";
 import { Deferred } from "evt/tools/Deferred";
 import { assert, is } from "tsafe/assert";
@@ -20,16 +20,37 @@ export async function dumpContainerConfig(params: {
 }): Promise<ParsedRealmJson> {
     const { realmName, keycloakMajorVersionNumber, buildContext } = params;
 
-    {
-        // https://github.com/keycloak/keycloak/issues/33800
-        const doesUseLockedH2Database = keycloakMajorVersionNumber >= 25;
+    // https://github.com/keycloak/keycloak/issues/33800
+    const doesUseLockedH2Database = keycloakMajorVersionNumber >= 25;
 
-        if (doesUseLockedH2Database) {
-            child_process.execSync(
-                `docker exec ${CONTAINER_NAME} sh -c "cp -rp /opt/keycloak/data/h2 /tmp"`
-            );
+    if (doesUseLockedH2Database) {
+        const dCompleted = new Deferred<void>();
+
+        const cmd = `docker exec ${CONTAINER_NAME} sh -c "cp -rp /opt/keycloak/data/h2 /tmp"`;
+
+        child_process.exec(cmd, error => {
+            if (error !== null) {
+                dCompleted.reject(error);
+                return;
+            }
+
+            dCompleted.resolve();
+        });
+
+        try {
+            await dCompleted.pr;
+        } catch (error) {
+            assert(is<Error>(error));
+
+            console.log(chalk.red(`Docker command failed: ${cmd}`));
+
+            console.log(chalk.red(error.message));
+
+            throw error;
         }
+    }
 
+    {
         const dCompleted = new Deferred<void>();
 
         const child = child_process.spawn(
@@ -56,7 +77,9 @@ export async function dumpContainerConfig(params: {
         let output = "";
 
         const onExit = (code: number | null) => {
-            dCompleted.reject(new Error(`Exited with code ${code}`));
+            dCompleted.reject(
+                new Error(`docker exec kc.sh export command failed with code ${code}`)
+            );
         };
 
         child.once("exit", onExit);
@@ -96,25 +119,34 @@ export async function dumpContainerConfig(params: {
 
             console.log(output);
 
-            process.exit(1);
+            throw error;
         }
+    }
 
-        if (doesUseLockedH2Database) {
-            const dCompleted = new Deferred<void>();
+    if (doesUseLockedH2Database) {
+        const dCompleted = new Deferred<void>();
 
-            child_process.exec(
-                `docker exec ${CONTAINER_NAME} sh -c "rm -rf /tmp/h2"`,
-                error => {
-                    if (error !== null) {
-                        dCompleted.reject(error);
-                        return;
-                    }
+        const cmd = `docker exec ${CONTAINER_NAME} sh -c "rm -rf /tmp/h2"`;
 
-                    dCompleted.resolve();
-                }
-            );
+        child_process.exec(cmd, error => {
+            if (error !== null) {
+                dCompleted.reject(error);
+                return;
+            }
 
+            dCompleted.resolve();
+        });
+
+        try {
             await dCompleted.pr;
+        } catch (error) {
+            assert(is<Error>(error));
+
+            console.log(chalk.red(`Docker command failed: ${cmd}`));
+
+            console.log(chalk.red(error.message));
+
+            throw error;
         }
     }
 
@@ -126,8 +158,13 @@ export async function dumpContainerConfig(params: {
     {
         const dCompleted = new Deferred<void>();
 
+        const cmd = `docker cp ${CONTAINER_NAME}:/tmp/${realmName}-realm.json ${pathBasename(targetRealmConfigJsonFilePath_tmp)}`;
+
         child_process.exec(
-            `docker cp ${CONTAINER_NAME}:/tmp/${realmName}-realm.json ${targetRealmConfigJsonFilePath_tmp}`,
+            cmd,
+            {
+                cwd: pathDirname(targetRealmConfigJsonFilePath_tmp)
+            },
             error => {
                 if (error !== null) {
                     dCompleted.reject(error);
@@ -138,7 +175,17 @@ export async function dumpContainerConfig(params: {
             }
         );
 
-        await dCompleted.pr;
+        try {
+            await dCompleted.pr;
+        } catch (error) {
+            assert(is<Error>(error));
+
+            console.log(chalk.red(`Docker command failed: ${cmd}`));
+
+            console.log(chalk.red(error.message));
+
+            throw error;
+        }
     }
 
     return readRealmJsonFile({

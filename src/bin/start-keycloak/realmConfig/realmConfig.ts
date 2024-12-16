@@ -105,11 +105,19 @@ export async function getRealmConfig(params: {
                 chalk.grey(`Changes detected to the '${realmName}' config, backing up...`)
             );
 
-            const parsedRealmJson = await dumpContainerConfig({
-                buildContext,
-                realmName,
-                keycloakMajorVersionNumber
-            });
+            let parsedRealmJson: ParsedRealmJson;
+
+            try {
+                parsedRealmJson = await dumpContainerConfig({
+                    buildContext,
+                    realmName,
+                    keycloakMajorVersionNumber
+                });
+            } catch (error) {
+                console.log(chalk.red(`Failed to backup '${realmName}' config:`));
+
+                return;
+            }
 
             await writeRealmJsonFile({ parsedRealmJson });
 
