@@ -39,7 +39,14 @@ export type ParsedRealmJson = {
             "post.logout.redirect.uris"?: string;
         };
         protocol?: string;
-        protocolMappers?: unknown[];
+        protocolMappers?: {
+            id: string;
+            name: string;
+            protocol: string; // "openid-connect" or something else
+            protocolMapper: string; // "oidc-hardcoded-claim-mapper" or something else
+            consentRequired: boolean;
+            config?: Record<string, string>;
+        }[];
     }[];
 };
 
@@ -89,7 +96,18 @@ const zParsedRealmJson = (() => {
                     })
                     .optional(),
                 protocol: z.string().optional(),
-                protocolMappers: z.array(z.unknown()).optional()
+                protocolMappers: z
+                    .array(
+                        z.object({
+                            id: z.string(),
+                            name: z.string(),
+                            protocol: z.string(),
+                            protocolMapper: z.string(),
+                            consentRequired: z.boolean(),
+                            config: z.record(z.string()).optional()
+                        })
+                    )
+                    .optional()
             })
         )
     });

@@ -276,7 +276,7 @@ function editAccountConsoleAndSecurityAdminConsole(params: {
 }) {
     const { parsedRealmJson } = params;
 
-    for (const clientId of ["account-console", "security-admin-console"]) {
+    for (const clientId of ["account-console", "security-admin-console"] as const) {
         const client = parsedRealmJson.clients.find(
             client => client.clientId === clientId
         );
@@ -298,5 +298,68 @@ function editAccountConsoleAndSecurityAdminConsole(params: {
         (client.attributes ??= {})["post.logout.redirect.uris"] = "+";
 
         client.webOrigins = ["*"];
+
+        admin_specific: {
+            if (clientId !== "security-admin-console") {
+                break admin_specific;
+            }
+
+            const protocolMapper_preexisting = client.protocolMappers?.find(
+                protocolMapper => {
+                    if (protocolMapper.protocolMapper !== "oidc-hardcoded-claim-mapper") {
+                        return false;
+                    }
+
+                    if (protocolMapper.protocol !== "openid-connect") {
+                        return false;
+                    }
+
+                    if (protocolMapper.config === undefined) {
+                        return false;
+                    }
+
+                    if (protocolMapper.config["claim.name"] !== "allowed-origins") {
+                        return false;
+                    }
+
+                    return true;
+                }
+            );
+
+            let protocolMapper: NonNullable<typeof protocolMapper_preexisting>;
+
+            const config = {
+                "introspection.token.claim": "true",
+                "claim.value": '["*"]',
+                "userinfo.token.claim": "true",
+                "id.token.claim": "false",
+                "lightweight.claim": "false",
+                "access.token.claim": "true",
+                "claim.name": "allowed-origins",
+                "jsonType.label": "JSON",
+                "access.tokenResponse.claim": "false"
+            };
+
+            if (protocolMapper_preexisting !== undefined) {
+                protocolMapper = protocolMapper_preexisting;
+            } else {
+                protocolMapper = {
+                    id: "8fd0d584-7052-4d04-a615-d18a71050873",
+                    name: "allowed-origins",
+                    protocol: "openid-connect",
+                    protocolMapper: "oidc-hardcoded-claim-mapper",
+                    consentRequired: false,
+                    config
+                };
+
+                (client.protocolMappers ??= []).push(protocolMapper);
+            }
+
+            assert(protocolMapper.config !== undefined);
+
+            if (config !== protocolMapper.config) {
+                Object.assign(protocolMapper.config, config);
+            }
+        }
     }
 }
