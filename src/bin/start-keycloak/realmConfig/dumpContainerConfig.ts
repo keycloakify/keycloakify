@@ -67,7 +67,7 @@ export async function dumpContainerConfig(params: {
                           ...["--db", "dev-file"],
                           ...[
                               "--db-url",
-                              "'jdbc:h2:file:/tmp/h2/keycloakdb;NON_KEYWORDS=VALUE'"
+                              '"jdbc:h2:file:/tmp/h2/keycloakdb;NON_KEYWORDS=VALUE"'
                           ]
                       ])
             ],
