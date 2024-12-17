@@ -5,9 +5,6 @@ import { readThisNpmPackageVersion } from "./tools/readThisNpmPackageVersion";
 import * as child_process from "child_process";
 import { assertNoPnpmDlx } from "./tools/assertNoPnpmDlx";
 import { getBuildContext } from "./shared/buildContext";
-import { SemVer } from "./tools/SemVer";
-import { assert, is } from "tsafe/assert";
-import chalk from "chalk";
 
 type CliCommandOptions = {
     projectDirPath: string | undefined;
@@ -137,47 +134,11 @@ program
         handler: async ({ projectDirPath, keycloakVersion, port, realmJsonFilePath }) => {
             const { command } = await import("./start-keycloak");
 
-            validate_keycloak_version: {
-                if (keycloakVersion === undefined) {
-                    break validate_keycloak_version;
-                }
-
-                const isValidVersion = (() => {
-                    if (typeof keycloakVersion === "number") {
-                        return false;
-                    }
-
-                    try {
-                        SemVer.parse(keycloakVersion);
-                    } catch {
-                        return false;
-                    }
-
-                    return;
-                })();
-
-                if (isValidVersion) {
-                    break validate_keycloak_version;
-                }
-
-                console.log(
-                    chalk.red(
-                        [
-                            `Invalid Keycloak version: ${keycloakVersion}`,
-                            "It should be a valid semver version example: 26.0.4"
-                        ].join(" ")
-                    )
-                );
-
-                process.exit(1);
-            }
-
-            assert(is<string | undefined>(keycloakVersion));
-
             await command({
                 buildContext: getBuildContext({ projectDirPath }),
                 cliCommandOptions: {
-                    keycloakVersion,
+                    keycloakVersion:
+                        keycloakVersion === undefined ? undefined : `${keycloakVersion}`,
                     port,
                     realmJsonFilePath
                 }

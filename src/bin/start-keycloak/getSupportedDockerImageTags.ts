@@ -10,6 +10,7 @@ import { join as pathJoin, dirname as pathDirname } from "path";
 import * as fs from "fs/promises";
 import { existsAsync } from "../tools/fs.existsAsync";
 import { readThisNpmPackageVersion } from "../tools/readThisNpmPackageVersion";
+import type { ReturnType } from "tsafe";
 
 export type BuildContextLike = {
     fetchOptions: BuildContext["fetchOptions"];
@@ -20,7 +21,10 @@ assert<BuildContext extends BuildContextLike ? true : false>;
 
 export async function getSupportedDockerImageTags(params: {
     buildContext: BuildContextLike;
-}) {
+}): Promise<{
+    allSupportedTags: string[];
+    latestMajorTags: string[];
+}> {
     const { buildContext } = params;
 
     {
@@ -31,14 +35,14 @@ export async function getSupportedDockerImageTags(params: {
         }
     }
 
-    const tags: string[] = [];
+    const tags_queryResponse: string[] = [];
 
     await (async function callee(url: string) {
         const r = await fetch(url, buildContext.fetchOptions);
 
         await Promise.all([
             (async () => {
-                tags.push(
+                tags_queryResponse.push(
                     ...z
                         .object({
                             tags: z.array(z.string())
@@ -70,7 +74,9 @@ export async function getSupportedDockerImageTags(params: {
         ]);
     })("https://quay.io/v2/keycloak/keycloak/tags/list");
 
-    const arr = tags
+    const supportedKeycloakMajorVersions = getSupportedKeycloakMajorVersions();
+
+    const allSupportedTags_withVersion = tags_queryResponse
         .map(tag => ({
             tag,
             version: (() => {
@@ -86,28 +92,35 @@ export async function getSupportedDockerImageTags(params: {
                     return undefined;
                 }
 
+                if (tag.split(".").length !== 3) {
+                    return undefined;
+                }
+
+                if (!supportedKeycloakMajorVersions.includes(version.major)) {
+                    return undefined;
+                }
+
                 return version;
             })()
         }))
         .map(({ tag, version }) => (version === undefined ? undefined : { tag, version }))
-        .filter(exclude(undefined));
+        .filter(exclude(undefined))
+        .sort(({ version: a }, { version: b }) => SemVer.compare(b, a));
 
-    const versionByMajor: Record<number, SemVer | undefined> = {};
+    const latestTagByMajor: Record<number, SemVer | undefined> = {};
 
-    for (const { version } of arr) {
-        const version_current = versionByMajor[version.major];
+    for (const { version } of allSupportedTags_withVersion) {
+        const version_current = latestTagByMajor[version.major];
 
         if (
             version_current === undefined ||
             SemVer.compare(version_current, version) === -1
         ) {
-            versionByMajor[version.major] = version;
+            latestTagByMajor[version.major] = version;
         }
     }
 
-    const supportedKeycloakMajorVersions = getSupportedKeycloakMajorVersions();
-
-    const result = Object.entries(versionByMajor)
+    const latestMajorTags = Object.entries(latestTagByMajor)
         .sort(([a], [b]) => parseInt(b) - parseInt(a))
         .map(([, version]) => version)
         .map(version => {
@@ -121,16 +134,40 @@ export async function getSupportedDockerImageTags(params: {
         })
         .filter(exclude(undefined));
 
+    const allSupportedTags = allSupportedTags_withVersion.map(({ tag }) => tag);
+
+    const result = {
+        latestMajorTags,
+        allSupportedTags
+    };
+
     await setCachedValue({ cacheDirPath: buildContext.cacheDirPath, result });
 
     return result;
 }
 
 const { getCachedValue, setCachedValue } = (() => {
+    type Result = ReturnType<typeof getSupportedDockerImageTags>;
+
+    const zResult = (() => {
+        type TargetType = Result;
+
+        const zTargetType = z.object({
+            allSupportedTags: z.array(z.string()),
+            latestMajorTags: z.array(z.string())
+        });
+
+        type InferredType = z.infer<typeof zTargetType>;
+
+        assert<Equals<TargetType, InferredType>>;
+
+        return id<z.ZodType<TargetType>>(zTargetType);
+    })();
+
     type Cache = {
         keycloakifyVersion: string;
         time: number;
-        result: string[];
+        result: Result;
     };
 
     const zCache = (() => {
@@ -139,7 +176,7 @@ const { getCachedValue, setCachedValue } = (() => {
         const zTargetType = z.object({
             keycloakifyVersion: z.string(),
             time: z.number(),
-            result: z.array(z.string())
+            result: zResult
         });
 
         type InferredType = z.infer<typeof zTargetType>;

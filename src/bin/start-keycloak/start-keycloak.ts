@@ -97,7 +97,7 @@ export async function command(params: {
 
     const { cliCommandOptions, buildContext } = params;
 
-    const availableTags = await getSupportedDockerImageTags({
+    const { allSupportedTags, latestMajorTags } = await getSupportedDockerImageTags({
         buildContext
     });
 
@@ -105,7 +105,7 @@ export async function command(params: {
         if (cliCommandOptions.keycloakVersion !== undefined) {
             const cliCommandOptions_keycloakVersion = cliCommandOptions.keycloakVersion;
 
-            const tag = availableTags.find(tag =>
+            const tag = allSupportedTags.find(tag =>
                 tag.startsWith(cliCommandOptions_keycloakVersion)
             );
 
@@ -143,7 +143,7 @@ export async function command(params: {
         );
 
         const { value: tag } = await cliSelect<string>({
-            values: availableTags
+            values: latestMajorTags
         }).catch(() => {
             process.exit(-1);
         });
