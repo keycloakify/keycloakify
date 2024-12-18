@@ -333,7 +333,7 @@ function editAccountConsoleAndSecurityAdminConsole(params: {
                 "claim.value": '["*"]',
                 "userinfo.token.claim": "true",
                 "id.token.claim": "false",
-                "lightweight.claim": "false",
+                "lightweight.claim": "true",
                 "access.token.claim": "true",
                 "claim.name": "allowed-origins",
                 "jsonType.label": "JSON",
