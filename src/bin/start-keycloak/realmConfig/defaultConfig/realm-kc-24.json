@@ -919,6 +919,24 @@
                         "claim.name": "locale",
                         "jsonType.label": "String"
                     }
+                },
+                {
+                    "id": "8fd0d584-7052-4d04-a615-d18a71050873",
+                    "name": "allowed-origins",
+                    "protocol": "openid-connect",
+                    "protocolMapper": "oidc-hardcoded-claim-mapper",
+                    "consentRequired": false,
+                    "config": {
+                        "introspection.token.claim": "true",
+                        "userinfo.token.claim": "true",
+                        "id.token.claim": "false",
+                        "access.token.claim": "true",
+                        "claim.name": "allowed-origins",
+                        "jsonType.label": "JSON",
+                        "access.tokenResponse.claim": "false",
+                        "claim.value": "[\"*\"]",
+                        "lightweight.claim": "true"
+                    }
                 }
             ],
             "defaultClientScopes": ["web-origins", "acr", "profile", "roles", "email"],
@@ -1545,14 +1563,14 @@
                 "subComponents": {},
                 "config": {
                     "allowed-protocol-mapper-types": [
+                        "oidc-full-name-mapper",
                         "saml-role-list-mapper",
+                        "saml-user-attribute-mapper",
+                        "oidc-usermodel-attribute-mapper",
                         "oidc-address-mapper",
                         "oidc-usermodel-property-mapper",
-                        "saml-user-attribute-mapper",
                         "saml-user-property-mapper",
-                        "oidc-sha256-pairwise-sub-mapper",
-                        "oidc-usermodel-attribute-mapper",
-                        "oidc-full-name-mapper"
+                        "oidc-sha256-pairwise-sub-mapper"
                     ]
                 }
             },
@@ -1584,14 +1602,14 @@
                 "subComponents": {},
                 "config": {
                     "allowed-protocol-mapper-types": [
+                        "oidc-sha256-pairwise-sub-mapper",
+                        "oidc-address-mapper",
                         "oidc-full-name-mapper",
                         "oidc-usermodel-property-mapper",
                         "saml-user-attribute-mapper",
-                        "oidc-sha256-pairwise-sub-mapper",
                         "saml-role-list-mapper",
-                        "oidc-address-mapper",
-                        "oidc-usermodel-attribute-mapper",
-                        "saml-user-property-mapper"
+                        "saml-user-property-mapper",
+                        "oidc-usermodel-attribute-mapper"
                     ]
                 }
             },

@@ -1,6 +1,5 @@
 import type { BuildContext } from "../../shared/buildContext";
 import { assert } from "tsafe/assert";
-import { runPrettier, getIsPrettierAvailable } from "../../tools/runPrettier";
 import { getDefaultConfig } from "./defaultConfig";
 import {
     prepareRealmConfig,
@@ -14,7 +13,11 @@ import {
     sep as pathSep
 } from "path";
 import { existsAsync } from "../../tools/fs.existsAsync";
-import { readRealmJsonFile, type ParsedRealmJson } from "./ParsedRealmJson";
+import {
+    readRealmJsonFile,
+    writeRealmJsonFile,
+    type ParsedRealmJson
+} from "./ParsedRealmJson";
 import {
     dumpContainerConfig,
     type BuildContextLike as BuildContextLike_dumpContainerConfig
@@ -80,22 +83,11 @@ export async function getRealmConfig(params: {
         }
     }
 
-    const writeRealmJsonFile = async (params: { parsedRealmJson: ParsedRealmJson }) => {
-        const { parsedRealmJson } = params;
-
-        let sourceCode = JSON.stringify(parsedRealmJson, null, 2);
-
-        if (await getIsPrettierAvailable()) {
-            sourceCode = await runPrettier({
-                sourceCode,
-                filePath: realmJsonFilePath
-            });
-        }
-
-        fs.writeFileSync(realmJsonFilePath, sourceCode);
-    };
-
-    await writeRealmJsonFile({ parsedRealmJson });
+    await writeRealmJsonFile({
+        realmJsonFilePath,
+        parsedRealmJson,
+        keycloakMajorVersionNumber
+    });
 
     const { onRealmConfigChange } = (() => {
         const run = runExclusive.build(async () => {
@@ -119,7 +111,11 @@ export async function getRealmConfig(params: {
                 return;
             }
 
-            await writeRealmJsonFile({ parsedRealmJson });
+            await writeRealmJsonFile({
+                realmJsonFilePath,
+                parsedRealmJson,
+                keycloakMajorVersionNumber
+            });
 
             console.log(
                 [

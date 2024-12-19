@@ -3,11 +3,10 @@ import { getThisCodebaseRootDirPath } from "../../../tools/getThisCodebaseRootDi
 import * as fs from "fs";
 import { exclude } from "tsafe/exclude";
 import { assert } from "tsafe/assert";
-import { type ParsedRealmJson, readRealmJsonFile } from "../ParsedRealmJson";
+import { readRealmJsonFile } from "../ParsedRealmJson/readRealmJsonFile";
+import type { ParsedRealmJson } from "../ParsedRealmJson/ParsedRealmJson";
 
-export function getDefaultRealmJsonFilePath(params: {
-    keycloakMajorVersionNumber: number;
-}) {
+function getDefaultRealmJsonFilePath(params: { keycloakMajorVersionNumber: number }) {
     const { keycloakMajorVersionNumber } = params;
 
     return pathJoin(

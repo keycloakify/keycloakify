@@ -1,8 +1,6 @@
 import { z } from "zod";
 import { assert, type Equals } from "tsafe/assert";
-import { is } from "tsafe/is";
 import { id } from "tsafe/id";
-import * as fs from "fs";
 
 export type ParsedRealmJson = {
     realm: string;
@@ -50,7 +48,7 @@ export type ParsedRealmJson = {
     }[];
 };
 
-const zParsedRealmJson = (() => {
+export const zParsedRealmJson = (() => {
     type TargetType = ParsedRealmJson;
 
     const zTargetType = z.object({
@@ -118,19 +116,3 @@ const zParsedRealmJson = (() => {
 
     return id<z.ZodType<TargetType>>(zTargetType);
 })();
-
-export function readRealmJsonFile(params: {
-    realmJsonFilePath: string;
-}): ParsedRealmJson {
-    const { realmJsonFilePath } = params;
-
-    const parsedRealmJson = JSON.parse(
-        fs.readFileSync(realmJsonFilePath).toString("utf8")
-    ) as unknown;
-
-    zParsedRealmJson.parse(parsedRealmJson);
-
-    assert(is<ParsedRealmJson>(parsedRealmJson));
-
-    return parsedRealmJson;
-}

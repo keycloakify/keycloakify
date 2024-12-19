@@ -3,10 +3,9 @@ import child_process from "child_process";
 import { SemVer } from "../src/bin/tools/SemVer";
 import { dumpContainerConfig } from "../src/bin/start-keycloak/realmConfig/dumpContainerConfig";
 import { cacheDirPath } from "./shared/cacheDirPath";
-import { runPrettier } from "../src/bin/tools/runPrettier";
 import { getThisCodebaseRootDirPath } from "../src/bin/tools/getThisCodebaseRootDirPath";
+import { writeRealmJsonFile } from "../src/bin/start-keycloak/realmConfig/ParsedRealmJson";
 import { join as pathJoin } from "path";
-import * as fs from "fs";
 import chalk from "chalk";
 
 (async () => {
@@ -26,9 +25,7 @@ import chalk from "chalk";
         realmName: "myrealm"
     });
 
-    let sourceCode = JSON.stringify(parsedRealmJson, null, 2);
-
-    const filePath = pathJoin(
+    const realmJsonFilePath = pathJoin(
         getThisCodebaseRootDirPath(),
         "src",
         "bin",
@@ -38,12 +35,11 @@ import chalk from "chalk";
         `realm-kc-${keycloakMajorVersionNumber}.json`
     );
 
-    sourceCode = await runPrettier({
-        sourceCode,
-        filePath
+    await writeRealmJsonFile({
+        parsedRealmJson,
+        realmJsonFilePath,
+        keycloakMajorVersionNumber
     });
 
-    fs.writeFileSync(filePath, Buffer.from(sourceCode, "utf8"));
-
-    console.log(chalk.green(`Realm config dumped to ${filePath}`));
+    console.log(chalk.green(`Realm config dumped to ${realmJsonFilePath}`));
 })();
