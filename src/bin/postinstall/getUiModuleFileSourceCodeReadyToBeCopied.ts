@@ -45,6 +45,10 @@ export async function getUiModuleFileSourceCodeReadyToBeCopied(params: {
             return [`<!--`, ...lines.map(line => ` ${line}`), `-->`].join("\n");
         }
 
+        if (fileRelativePath.endsWith(".properties")) {
+            return lines.map(line => `# ${line}`).join("\n");
+        }
+
         return undefined;
     };
 
