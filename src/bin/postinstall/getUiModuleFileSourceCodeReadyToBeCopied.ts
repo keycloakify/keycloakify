@@ -41,7 +41,7 @@ export async function getUiModuleFileSourceCodeReadyToBeCopied(params: {
             return [`/**`, ...lines.map(line => ` * ${line}`), ` */`].join("\n");
         }
 
-        if (fileRelativePath.endsWith(".html")) {
+        if (fileRelativePath.endsWith(".html") || fileRelativePath.endsWith(".svg")) {
             return [`<!--`, ...lines.map(line => ` ${line}`), `-->`].join("\n");
         }
 
