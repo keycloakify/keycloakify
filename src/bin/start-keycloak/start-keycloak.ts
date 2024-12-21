@@ -623,9 +623,13 @@ export async function command(params: {
                 }
             )
             .on("all", async (...[, filePath]) => {
-                ignore_conditions: {
+                ignore_path_covered_by_hmr: {
                     if (filePath.endsWith(".properties")) {
-                        break ignore_conditions;
+                        break ignore_path_covered_by_hmr;
+                    }
+
+                    if (!doStartDevServer) {
+                        break ignore_path_covered_by_hmr;
                     }
 
                     ignore_account_spa: {
