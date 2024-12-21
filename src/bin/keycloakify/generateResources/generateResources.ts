@@ -40,6 +40,7 @@ import { escapeStringForPropertiesFile } from "../../tools/escapeStringForProper
 import * as child_process from "child_process";
 import { getThisCodebaseRootDirPath } from "../../tools/getThisCodebaseRootDirPath";
 import propertiesParser from "properties-parser";
+import { createObjectThatThrowsIfAccessed } from "../../tools/createObjectThatThrowsIfAccessed";
 
 export type BuildContextLike = BuildContextLike_kcContextExclusionsFtlCode &
     BuildContextLike_generateMessageProperties & {
@@ -256,15 +257,17 @@ export async function generateResources(params: {
                 writeMessagePropertiesFiles;
         }
 
-        bring_in_spas_messages: {
+        bring_in_account_spa_messages: {
             if (!isSpa) {
-                break bring_in_spas_messages;
+                break bring_in_account_spa_messages;
             }
 
-            assert(themeType !== "login");
+            if (themeType !== "account") {
+                break bring_in_account_spa_messages;
+            }
 
             const accountUiDirPath = child_process
-                .execSync(`npm list @keycloakify/keycloak-${themeType}-ui --parseable`, {
+                .execSync(`npm list @keycloakify/keycloak-account-ui --parseable`, {
                     cwd: pathDirname(buildContext.packageJsonFilePath)
                 })
                 .toString("utf8")
@@ -279,7 +282,7 @@ export async function generateResources(params: {
             }
 
             const messagesDirPath_dest = pathJoin(
-                getThemeTypeDirPath({ themeName, themeType }),
+                getThemeTypeDirPath({ themeName, themeType: "account" }),
                 "messages"
             );
 
@@ -291,7 +294,7 @@ export async function generateResources(params: {
             apply_theme_changes: {
                 const messagesDirPath_theme = pathJoin(
                     buildContext.themeSrcDirPath,
-                    themeType,
+                    "account",
                     "messages"
                 );
 
@@ -337,6 +340,159 @@ export async function generateResources(params: {
                 .map(basename =>
                     basename.replace(/^messages_/, "").replace(/\.properties$/, "")
                 );
+        }
+
+        bring_in_admin_messages: {
+            if (themeType !== "admin") {
+                break bring_in_admin_messages;
+            }
+
+            const messagesDirPath_theme = pathJoin(
+                buildContext.themeSrcDirPath,
+                "admin",
+                "i18n"
+            );
+
+            assert(
+                fs.existsSync(messagesDirPath_theme),
+                `${messagesDirPath_theme} is supposed to exist`
+            );
+
+            const propertiesByLang: Record<
+                string,
+                {
+                    base: Buffer;
+                    override: Buffer | undefined;
+                    overrideByThemeName: Record<string, Buffer>;
+                }
+            > = {};
+
+            fs.readdirSync(messagesDirPath_theme).forEach(basename => {
+                type ParsedBasename = { lang: string } & (
+                    | {
+                          isOverride: false;
+                      }
+                    | {
+                          isOverride: true;
+                          themeName: string | undefined;
+                      }
+                );
+
+                const parsedBasename = ((): ParsedBasename | undefined => {
+                    const match = basename.match(/^messages_([^.]+)\.properties$/);
+
+                    if (match === null) {
+                        return undefined;
+                    }
+
+                    const discriminator = match[1];
+
+                    const split = discriminator.split("_override");
+
+                    if (split.length === 1) {
+                        return {
+                            lang: discriminator,
+                            isOverride: false
+                        };
+                    }
+
+                    assert(split.length === 2);
+
+                    if (split[1] === "") {
+                        return {
+                            lang: split[0],
+                            isOverride: true,
+                            themeName: undefined
+                        };
+                    }
+
+                    const match2 = split[1].match(/^_(.+)$/);
+
+                    assert(match2 !== null);
+
+                    return {
+                        lang: split[0],
+                        isOverride: true,
+                        themeName: match2[1]
+                    };
+                })();
+
+                if (parsedBasename === undefined) {
+                    return;
+                }
+
+                propertiesByLang[parsedBasename.lang] ??= {
+                    base: createObjectThatThrowsIfAccessed<Buffer>({
+                        debugMessage: `No base ${parsedBasename.lang} translation for admin theme`
+                    }),
+                    override: undefined,
+                    overrideByThemeName: {}
+                };
+
+                const buffer = fs.readFileSync(pathJoin(messagesDirPath_theme, basename));
+
+                if (parsedBasename.isOverride === false) {
+                    propertiesByLang[parsedBasename.lang].base = buffer;
+                    return;
+                }
+
+                if (parsedBasename.themeName === undefined) {
+                    propertiesByLang[parsedBasename.lang].override = buffer;
+                    return;
+                }
+
+                propertiesByLang[parsedBasename.lang].overrideByThemeName[
+                    parsedBasename.themeName
+                ] = buffer;
+            });
+
+            writeMessagePropertiesFilesByThemeType.admin = ({
+                messageDirPath,
+                themeName
+            }) => {
+                if (!fs.existsSync(messageDirPath)) {
+                    fs.mkdirSync(messageDirPath, { recursive: true });
+                }
+
+                Object.entries(propertiesByLang).forEach(
+                    ([lang, { base, override, overrideByThemeName }]) => {
+                        (languageTags ??= []).push(lang);
+
+                        const messages = propertiesParser.parse(base.toString("utf8"));
+
+                        if (override !== undefined) {
+                            const overrideMessages = propertiesParser.parse(
+                                override.toString("utf8")
+                            );
+
+                            Object.entries(overrideMessages).forEach(
+                                ([key, value]) => (messages[key] = value)
+                            );
+                        }
+
+                        if (themeName in overrideByThemeName) {
+                            const overrideMessages = propertiesParser.parse(
+                                overrideByThemeName[themeName].toString("utf8")
+                            );
+
+                            Object.entries(overrideMessages).forEach(
+                                ([key, value]) => (messages[key] = value)
+                            );
+                        }
+
+                        const editor = propertiesParser.createEditor();
+
+                        Object.entries(messages).forEach(([key, value]) => {
+                            editor.set(key, value);
+                        });
+
+                        fs.writeFileSync(
+                            pathJoin(messageDirPath, `messages_${lang}.properties`),
+                            Buffer.from(editor.toString(), "utf8")
+                        );
+                    }
+                );
+            };
         }
 
         keycloak_static_resources: {

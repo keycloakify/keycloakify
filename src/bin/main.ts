@@ -259,11 +259,12 @@ program
     .option({
         key: "file",
         name: (() => {
-            const name = "file";
+            const long = "file";
+            const short = "f";
 
-            optionsKeys.push(name);
+            optionsKeys.push(long, short);
 
-            return name;
+            return { long, short };
         })(),
         description: [
             "Relative path of the file relative to the directory of your keycloak theme source",

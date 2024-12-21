@@ -41,8 +41,16 @@ export async function getUiModuleFileSourceCodeReadyToBeCopied(params: {
             return [`/**`, ...lines.map(line => ` * ${line}`), ` */`].join("\n");
         }
 
-        if (fileRelativePath.endsWith(".html") || fileRelativePath.endsWith(".svg")) {
+        if (fileRelativePath.endsWith(".html")) {
             return [`<!--`, ...lines.map(line => ` ${line}`), `-->`].join("\n");
+        }
+
+        if (fileRelativePath.endsWith(".svg")) {
+            return [
+                `<!--`,
+                ...lines.map(line => ` ${line.replace("--file", "-f")}`),
+                `-->`
+            ].join("\n");
         }
 
         if (fileRelativePath.endsWith(".properties")) {
