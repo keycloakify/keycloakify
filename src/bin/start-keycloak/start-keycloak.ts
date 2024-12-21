@@ -142,15 +142,96 @@ export async function command(params: {
             ].join("\n")
         );
 
-        const { value: tag } = await cliSelect<string>({
-            values: latestMajorTags
-        }).catch(() => {
-            process.exit(-1);
-        });
+        const tag_userSelected = await (async () => {
+            let tag: string;
 
-        console.log(`→ ${tag}`);
+            let latestMajorTags_copy = [...latestMajorTags];
 
-        return { dockerImageTag: tag };
+            while (true) {
+                const { value } = await cliSelect<string>({
+                    values: latestMajorTags_copy
+                }).catch(() => {
+                    process.exit(-1);
+                });
+
+                tag = value;
+
+                {
+                    const doImplementAccountMpa =
+                        buildContext.implementedThemeTypes.account.isImplemented &&
+                        buildContext.implementedThemeTypes.account.type === "Multi-Page";
+
+                    if (doImplementAccountMpa && tag.startsWith("22.")) {
+                        console.log(
+                            chalk.yellow(
+                                `You are implementing a Multi-Page Account theme. Keycloak 22 is not supported, select another version`
+                            )
+                        );
+                        latestMajorTags_copy = latestMajorTags_copy.filter(
+                            tag => !tag.startsWith("22.")
+                        );
+                        continue;
+                    }
+                }
+
+                const readMajor = (tag: string) => {
+                    const major = parseInt(tag.split(".")[0]);
+                    assert(!isNaN(major));
+                    return major;
+                };
+
+                {
+                    const major = readMajor(tag);
+
+                    const doImplementAdminTheme =
+                        buildContext.implementedThemeTypes.admin.isImplemented;
+
+                    const getIsSupported = (major: number) => major >= 23;
+
+                    if (doImplementAdminTheme && !getIsSupported(major)) {
+                        console.log(
+                            chalk.yellow(
+                                `You are implementing an Admin theme. Only Keycloak 23 and later are supported, select another version`
+                            )
+                        );
+                        latestMajorTags_copy = latestMajorTags_copy.filter(tag =>
+                            getIsSupported(readMajor(tag))
+                        );
+                        continue;
+                    }
+                }
+
+                {
+                    const doImplementAccountSpa =
+                        buildContext.implementedThemeTypes.account.isImplemented &&
+                        buildContext.implementedThemeTypes.account.type === "Single-Page";
+
+                    const major = readMajor(tag);
+
+                    const getIsSupported = (major: number) => major >= 19;
+
+                    if (doImplementAccountSpa && !getIsSupported(major)) {
+                        console.log(
+                            chalk.yellow(
+                                `You are implementing a Single-Page Account theme. Only Keycloak 19 and later are supported, select another version`
+                            )
+                        );
+                        latestMajorTags_copy = latestMajorTags_copy.filter(tag =>
+                            getIsSupported(readMajor(tag))
+                        );
+                        continue;
+                    }
+                }
+
+                break;
+            }
+
+            return tag;
+        })();
+
+        console.log(`→ ${tag_userSelected}`);
+
+        return { dockerImageTag: tag_userSelected };
     })();
 
     const keycloakMajorVersionNumber = (() => {
