@@ -623,42 +623,52 @@ export async function command(params: {
                 }
             )
             .on("all", async (...[, filePath]) => {
-                ignore_account_spa: {
-                    const doImplementAccountSpa =
-                        buildContext.implementedThemeTypes.account.isImplemented &&
-                        buildContext.implementedThemeTypes.account.type === "Single-Page";
-
-                    if (!doImplementAccountSpa) {
-                        break ignore_account_spa;
+                ignore_conditions: {
+                    if (filePath.endsWith(".properties")) {
+                        break ignore_conditions;
                     }
 
-                    if (
-                        !isInside({
-                            dirPath: pathJoin(buildContext.themeSrcDirPath, "account"),
-                            filePath
-                        })
-                    ) {
-                        break ignore_account_spa;
+                    ignore_account_spa: {
+                        const doImplementAccountSpa =
+                            buildContext.implementedThemeTypes.account.isImplemented &&
+                            buildContext.implementedThemeTypes.account.type ===
+                                "Single-Page";
+
+                        if (!doImplementAccountSpa) {
+                            break ignore_account_spa;
+                        }
+
+                        if (
+                            !isInside({
+                                dirPath: pathJoin(
+                                    buildContext.themeSrcDirPath,
+                                    "account"
+                                ),
+                                filePath
+                            })
+                        ) {
+                            break ignore_account_spa;
+                        }
+
+                        return;
                     }
 
-                    return;
-                }
+                    ignore_admin: {
+                        if (!buildContext.implementedThemeTypes.admin.isImplemented) {
+                            break ignore_admin;
+                        }
 
-                ignore_admin: {
-                    if (!buildContext.implementedThemeTypes.admin.isImplemented) {
-                        break ignore_admin;
+                        if (
+                            !isInside({
+                                dirPath: pathJoin(buildContext.themeSrcDirPath, "admin"),
+                                filePath
+                            })
+                        ) {
+                            break ignore_admin;
+                        }
+
+                        return;
                     }
-
-                    if (
-                        !isInside({
-                            dirPath: pathJoin(buildContext.themeSrcDirPath, "admin"),
-                            filePath
-                        })
-                    ) {
-                        break ignore_admin;
-                    }
-
-                    return;
                 }
 
                 console.log(`Detected changes in ${filePath}`);
