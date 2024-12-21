@@ -32,50 +32,20 @@ export async function getUiModuleFileSourceCodeReadyToBeCopied(params: {
         await fsPr.readFile(pathJoin(uiModuleDirPath, KEYCLOAK_THEME, fileRelativePath))
     ).toString("utf8");
 
-    const toComment = (lines: string[]) => {
-        for (const ext of [".ts", ".tsx", ".css", ".less", ".sass", ".js", ".jsx"]) {
-            if (!fileRelativePath.endsWith(ext)) {
-                continue;
-            }
-
-            return [`/**`, ...lines.map(line => ` * ${line}`), ` */`].join("\n");
-        }
-
-        if (fileRelativePath.endsWith(".html")) {
-            return [`<!--`, ...lines.map(line => ` ${line}`), `-->`].join("\n");
-        }
-
-        if (fileRelativePath.endsWith(".svg")) {
-            return [
-                `<!--`,
-                ...lines.map(line => ` ${line.replace("--file", "-f")}`),
-                `-->`
-            ].join("\n");
-        }
-
-        if (fileRelativePath.endsWith(".properties")) {
-            return lines.map(line => `# ${line}`).join("\n");
-        }
-
-        return undefined;
-    };
-
-    const comment = toComment(
-        isForEjection
+    sourceCode = addCommentToSourceCode({
+        sourceCode,
+        fileRelativePath,
+        commentLines: isForEjection
             ? [`This file was ejected from ${uiModuleName} version ${uiModuleVersion}.`]
             : [
                   `WARNING: Before modifying this file run the following command:`,
                   ``,
-                  `$ npx keycloakify eject-file --file ${fileRelativePath.split(pathSep).join("/")}`,
+                  `$ npx keycloakify eject-file --file '${fileRelativePath.split(pathSep).join("/")}'`,
                   ``,
                   `This file comes from ${uiModuleName} version ${uiModuleVersion}.`,
                   `This file has been copied over to your repo by your postinstall script: \`npx keycloakify postinstall\``
               ]
-    );
-
-    if (comment !== undefined) {
-        sourceCode = [comment, ``, sourceCode].join("\n");
-    }
+    });
 
     const destFilePath = pathJoin(buildContext.themeSrcDirPath, fileRelativePath);
 
@@ -91,4 +61,61 @@ export async function getUiModuleFileSourceCodeReadyToBeCopied(params: {
     }
 
     return Buffer.from(sourceCode, "utf8");
+}
+
+function addCommentToSourceCode(params: {
+    sourceCode: string;
+    fileRelativePath: string;
+    commentLines: string[];
+}): string {
+    const { sourceCode, fileRelativePath, commentLines } = params;
+
+    const toResult = (comment: string) => {
+        return [comment, ``, sourceCode].join("\n");
+    };
+
+    for (const ext of [".ts", ".tsx", ".css", ".less", ".sass", ".js", ".jsx"]) {
+        if (!fileRelativePath.endsWith(ext)) {
+            continue;
+        }
+
+        return toResult(
+            [`/**`, ...commentLines.map(line => ` * ${line}`), ` */`].join("\n")
+        );
+    }
+
+    if (fileRelativePath.endsWith(".properties")) {
+        return toResult(commentLines.map(line => `# ${line}`).join("\n"));
+    }
+
+    if (fileRelativePath.endsWith(".html") || fileRelativePath.endsWith(".svg")) {
+        const comment = [
+            `<!--`,
+            ...commentLines.map(
+                line =>
+                    ` ${line.replace("--file", "-f").replace("Before modifying", "Before modifying or replacing")}`
+            ),
+            `-->`
+        ].join("\n");
+
+        if (fileRelativePath.endsWith(".html") && sourceCode.trim().startsWith("<!")) {
+            const [first, ...rest] = sourceCode.split(">");
+
+            const last = rest.join(">");
+
+            return [`${first}>`, comment, last].join("\n");
+        }
+
+        if (fileRelativePath.endsWith(".svg") && sourceCode.trim().startsWith("<?")) {
+            const [first, ...rest] = sourceCode.split("?>");
+
+            const last = rest.join("?>");
+
+            return [`${first}?>`, comment, last].join("\n");
+        }
+
+        return toResult(comment);
+    }
+
+    return sourceCode;
 }

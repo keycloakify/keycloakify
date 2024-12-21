@@ -45,7 +45,10 @@ const commonThirdPartyDeps = [
         .replace(/"!\.\/dist\//g, '"!./');
 
     modifiedPackageJsonContent = JSON.stringify(
-        { ...JSON.parse(modifiedPackageJsonContent), version: "0.0.0" },
+        {
+            ...JSON.parse(modifiedPackageJsonContent),
+            version: `0.0.0-rc.${~~(Math.random() * 1000000)}`
+        },
         null,
         4
     );
