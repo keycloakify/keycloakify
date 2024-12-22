@@ -12,6 +12,7 @@ export type CommandName =
     | "add-story"
     | "initialize-account-theme"
     | "initialize-admin-theme"
+    | "initialize-admin-theme"
     | "initialize-email-theme"
     | "copy-keycloak-resources-to-public";
 

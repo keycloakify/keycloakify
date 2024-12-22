@@ -119,7 +119,9 @@ export async function initializeAccountTheme_singlePage(params: {
         JSON.stringify(parsedPackageJson, undefined, 4)
     );
 
-    npmInstall({ packageJsonDirPath: pathDirname(buildContext.packageJsonFilePath) });
+    await npmInstall({
+        packageJsonDirPath: pathDirname(buildContext.packageJsonFilePath)
+    });
 
     copyBoilerplate({
         accountThemeType: "Single-Page",

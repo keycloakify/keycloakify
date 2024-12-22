@@ -9,8 +9,9 @@ import { objectKeys } from "tsafe/objectKeys";
 import { getAbsoluteAndInOsFormatPath } from "./getAbsoluteAndInOsFormatPath";
 import { exclude } from "tsafe/exclude";
 import { rmSync } from "./fs.rmSync";
+import { Deferred } from "evt/tools/Deferred";
 
-export function npmInstall(params: { packageJsonDirPath: string }) {
+export async function npmInstall(params: { packageJsonDirPath: string }) {
     const { packageJsonDirPath } = params;
 
     const packageManagerBinName = (() => {
@@ -68,7 +69,7 @@ export function npmInstall(params: { packageJsonDirPath: string }) {
 
         console.log(chalk.green("Installing in a way that won't break the links..."));
 
-        installWithoutBreakingLinks({
+        await installWithoutBreakingLinks({
             packageJsonDirPath,
             garronejLinkInfos
         });
@@ -77,9 +78,9 @@ export function npmInstall(params: { packageJsonDirPath: string }) {
     }
 
     try {
-        child_process.execSync(`${packageManagerBinName} install`, {
-            cwd: packageJsonDirPath,
-            stdio: "inherit"
+        await runPackageManagerInstall({
+            packageManagerBinName,
+            cwd: packageJsonDirPath
         });
     } catch {
         console.log(
@@ -88,6 +89,42 @@ export function npmInstall(params: { packageJsonDirPath: string }) {
             )
         );
     }
+}
+
+async function runPackageManagerInstall(params: {
+    packageManagerBinName: string;
+    cwd: string;
+}) {
+    const { packageManagerBinName, cwd } = params;
+
+    const dCompleted = new Deferred<void>();
+
+    const child = child_process.spawn(packageManagerBinName, ["install"], {
+        cwd,
+        env: process.env,
+        shell: true
+    });
+
+    child.stdout.on("data", data => {
+        if (data.toString("utf8").includes("has unmet peer dependency")) {
+            return;
+        }
+
+        process.stdout.write(data);
+    });
+
+    child.stderr.on("data", data => process.stderr.write(data));
+
+    child.on("exit", code => {
+        if (code !== 0) {
+            dCompleted.reject(new Error(`Failed with code ${code}`));
+            return;
+        }
+
+        dCompleted.resolve();
+    });
+
+    await dCompleted.pr;
 }
 
 function getGarronejLinkInfos(params: {
@@ -180,7 +217,7 @@ function getGarronejLinkInfos(params: {
     return { linkedModuleNames, yarnHomeDirPath };
 }
 
-function installWithoutBreakingLinks(params: {
+async function installWithoutBreakingLinks(params: {
     packageJsonDirPath: string;
     garronejLinkInfos: Exclude<ReturnType<typeof getGarronejLinkInfos>, undefined>;
 }) {
@@ -261,9 +298,9 @@ function installWithoutBreakingLinks(params: {
         pathJoin(tmpProjectDirPath, YARN_LOCK)
     );
 
-    child_process.execSync(`yarn install`, {
-        cwd: tmpProjectDirPath,
-        stdio: "inherit"
+    await runPackageManagerInstall({
+        packageManagerBinName: "yarn",
+        cwd: tmpProjectDirPath
     });
 
     // NOTE: Moving the modules from the tmp project to the actual project

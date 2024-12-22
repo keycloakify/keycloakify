@@ -149,7 +149,7 @@ export async function installUiModulesPeerDependencies(params: {
 
     await fsPr.writeFile(buildContext.packageJsonFilePath, packageJsonContentStr);
 
-    npmInstall({
+    await npmInstall({
         packageJsonDirPath: pathDirname(buildContext.packageJsonFilePath)
     });
 

@@ -191,12 +191,26 @@ program
 program
     .command({
         name: "initialize-account-theme",
-        description: "Initialize the account theme."
+        description: "Initialize an Account Single-Page or Multi-Page custom Account UI."
     })
     .task({
         skip,
         handler: async ({ projectDirPath }) => {
             const { command } = await import("./initialize-account-theme");
+
+            await command({ buildContext: getBuildContext({ projectDirPath }) });
+        }
+    });
+
+program
+    .command({
+        name: "initialize-admin-theme",
+        description: "Initialize an Admin Console custom UI."
+    })
+    .task({
+        skip,
+        handler: async ({ projectDirPath }) => {
+            const { command } = await import("./initialize-admin-theme");
 
             await command({ buildContext: getBuildContext({ projectDirPath }) });
         }
