@@ -109,9 +109,12 @@ export async function command(params: { buildContext: BuildContext }) {
                 .toString("utf8")
                 .trim()
         ) as string[]
-    ).find(version =>
-        uiSharedMajor === undefined ? true : version.startsWith(`${uiSharedMajor}.`)
-    );
+    )
+        .reverse()
+        .filter(version => !version.includes("-"))
+        .find(version =>
+            uiSharedMajor === undefined ? true : version.startsWith(`${uiSharedMajor}.`)
+        );
 
     assert(version !== undefined);
 

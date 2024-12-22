@@ -105,15 +105,15 @@ async function runPackageManagerInstall(params: {
         shell: true
     });
 
-    child.stdout.on("data", data => {
+    child.stdout.on("data", data => process.stdout.write(data));
+
+    child.stderr.on("data", data => {
         if (data.toString("utf8").includes("has unmet peer dependency")) {
             return;
         }
 
-        process.stdout.write(data);
+        process.stderr.write(data);
     });
-
-    child.stderr.on("data", data => process.stderr.write(data));
 
     child.on("exit", code => {
         if (code !== 0) {
