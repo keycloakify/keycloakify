@@ -16,6 +16,7 @@ import {
 import * as crypto from "crypto";
 import { KEYCLOAK_THEME } from "../shared/constants";
 import { exclude } from "tsafe/exclude";
+import { isAmong } from "tsafe/isAmong";
 
 export type UiModuleMeta = {
     moduleName: string;
@@ -264,7 +265,12 @@ export async function getUiModuleMetas(params: {
                     moduleName,
                     version,
                     files,
-                    peerDependencies
+                    peerDependencies: Object.fromEntries(
+                        Object.entries(peerDependencies).filter(
+                            ([moduleName]) =>
+                                !isAmong(["react", "@types/react"], moduleName)
+                        )
+                    )
                 });
             }
         )
