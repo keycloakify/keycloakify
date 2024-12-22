@@ -15,8 +15,6 @@ export function addPostinstallScriptIfNotPresent(params: {
 }) {
     const { parsedPackageJson, buildContext } = params;
 
-    const scripts = (parsedPackageJson.scripts ??= {});
-
     const cmd_base = "keycloakify postinstall";
 
     const projectCliOptionValue = (() => {
@@ -48,18 +46,25 @@ export function addPostinstallScriptIfNotPresent(params: {
         return cmd;
     };
 
-    for (const scriptName of ["postinstall", "prepare"]) {
-        const cmd_preexisting = scripts[scriptName];
+    {
+        const scripts = (parsedPackageJson.scripts ??= {});
 
-        if (cmd_preexisting === undefined) {
-            continue;
-        }
+        for (const scriptName of ["postinstall", "prepare"]) {
+            const cmd_preexisting = scripts[scriptName];
 
-        if (cmd_preexisting.includes(cmd_base)) {
-            scripts[scriptName] = generateCmd({ cmd_preexisting });
-            return;
+            if (cmd_preexisting === undefined) {
+                continue;
+            }
+
+            if (cmd_preexisting.includes(cmd_base)) {
+                scripts[scriptName] = generateCmd({ cmd_preexisting });
+                return;
+            }
         }
     }
 
-    scripts["postinstall"] = generateCmd({ cmd_preexisting: scripts["postinstall"] });
+    parsedPackageJson.scripts = {
+        postinstall: generateCmd({ cmd_preexisting: undefined }),
+        ...parsedPackageJson.scripts
+    };
 }
