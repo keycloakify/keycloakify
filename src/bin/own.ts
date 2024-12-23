@@ -60,6 +60,8 @@ export async function command(params: {
 
     const ownedFilesRelativePaths_toAdd: string[] = [];
 
+    const writeActions: (() => Promise<void>)[] = [];
+
     for (const { uiModuleMeta, fileRelativePaths } of arr) {
         const uiModuleDirPath = await getInstalledModuleDirPath({
             moduleName: uiModuleMeta.moduleName,
@@ -84,9 +86,11 @@ export async function command(params: {
                 uiModuleVersion: uiModuleMeta.version
             });
 
-            await fsPr.writeFile(
-                pathJoin(buildContext.themeSrcDirPath, fileRelativePath),
-                sourceCode
+            writeActions.push(() =>
+                fsPr.writeFile(
+                    pathJoin(buildContext.themeSrcDirPath, fileRelativePath),
+                    sourceCode
+                )
             );
 
             ownedFilesRelativePaths_toAdd.push(fileRelativePath);
@@ -97,6 +101,8 @@ export async function command(params: {
         console.log(chalk.yellow("No new file claimed."));
         process.exit(1);
     }
+
+    await Promise.all(writeActions.map(action => action()));
 
     await writeManagedGitignoreFile({
         buildContext,
