@@ -14,7 +14,7 @@ assert<BuildContext extends BuildContextLike ? true : false>();
 export async function getUiModuleFileSourceCodeReadyToBeCopied(params: {
     buildContext: BuildContextLike;
     fileRelativePath: string;
-    isForEjection: boolean;
+    isOwnershipAction: boolean;
     uiModuleDirPath: string;
     uiModuleName: string;
     uiModuleVersion: string;
@@ -23,7 +23,7 @@ export async function getUiModuleFileSourceCodeReadyToBeCopied(params: {
         buildContext,
         uiModuleDirPath,
         fileRelativePath,
-        isForEjection,
+        isOwnershipAction,
         uiModuleName,
         uiModuleVersion
     } = params;
@@ -35,8 +35,10 @@ export async function getUiModuleFileSourceCodeReadyToBeCopied(params: {
     sourceCode = addCommentToSourceCode({
         sourceCode,
         fileRelativePath,
-        commentLines: isForEjection
-            ? [`This file was ejected from ${uiModuleName} version ${uiModuleVersion}.`]
+        commentLines: isOwnershipAction
+            ? [
+                  `This file was claimed for ownership from ${uiModuleName} version ${uiModuleVersion}.`
+              ]
             : [
                   `WARNING: Before modifying this file run the following command:`,
                   ``,

@@ -22,13 +22,13 @@ export async function command(params: { buildContext: BuildContext }) {
         uiModuleMetas
     });
 
-    const { ejectedFilesRelativePaths } = await readManagedGitignoreFile({
+    const { ownedFilesRelativePaths } = await readManagedGitignoreFile({
         buildContext
     });
 
     await writeManagedGitignoreFile({
         buildContext,
-        ejectedFilesRelativePaths,
+        ownedFilesRelativePaths,
         uiModuleMetas
     });
 
@@ -38,7 +38,7 @@ export async function command(params: { buildContext: BuildContext }) {
                 Promise.all(
                     uiModuleMeta.files.map(
                         async ({ fileRelativePath, copyableFilePath, hash }) => {
-                            if (ejectedFilesRelativePaths.includes(fileRelativePath)) {
+                            if (ownedFilesRelativePaths.includes(fileRelativePath)) {
                                 return;
                             }
 

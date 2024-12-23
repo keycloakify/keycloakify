@@ -228,7 +228,7 @@ export async function getUiModuleMetas(params: {
                                 await getUiModuleFileSourceCodeReadyToBeCopied({
                                     buildContext,
                                     fileRelativePath,
-                                    isForEjection: false,
+                                    isOwnershipAction: false,
                                     uiModuleDirPath: dirPath,
                                     uiModuleName: moduleName,
                                     uiModuleVersion: version

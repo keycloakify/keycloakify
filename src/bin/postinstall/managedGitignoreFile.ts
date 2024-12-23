@@ -17,15 +17,15 @@ export type BuildContextLike = {
 
 assert<BuildContext extends BuildContextLike ? true : false>();
 
-const DELIMITER_START = `# === Ejected files start ===`;
-const DELIMITER_END = `# === Ejected files end =====`;
+const DELIMITER_START = `# === Owned files start ===`;
+const DELIMITER_END = `# === Owned files end =====`;
 
 export async function writeManagedGitignoreFile(params: {
     buildContext: BuildContextLike;
     uiModuleMetas: UiModuleMeta[];
-    ejectedFilesRelativePaths: string[];
+    ownedFilesRelativePaths: string[];
 }): Promise<void> {
-    const { buildContext, uiModuleMetas, ejectedFilesRelativePaths } = params;
+    const { buildContext, uiModuleMetas, ownedFilesRelativePaths } = params;
 
     if (uiModuleMetas.length === 0) {
         return;
@@ -38,7 +38,7 @@ export async function writeManagedGitignoreFile(params: {
             `# This file is managed by Keycloakify, do not edit it manually.`,
             ``,
             DELIMITER_START,
-            ...ejectedFilesRelativePaths
+            ...ownedFilesRelativePaths
                 .map(fileRelativePath => fileRelativePath.split(pathSep).join("/"))
                 .map(line => `# ${line}`),
             DELIMITER_END,
@@ -50,7 +50,7 @@ export async function writeManagedGitignoreFile(params: {
                         .map(({ fileRelativePath }) => fileRelativePath)
                         .filter(
                             fileRelativePath =>
-                                !ejectedFilesRelativePaths.includes(fileRelativePath)
+                                !ownedFilesRelativePaths.includes(fileRelativePath)
                         )
                         .map(
                             fileRelativePath =>
@@ -92,14 +92,14 @@ export async function writeManagedGitignoreFile(params: {
 export async function readManagedGitignoreFile(params: {
     buildContext: BuildContextLike;
 }): Promise<{
-    ejectedFilesRelativePaths: string[];
+    ownedFilesRelativePaths: string[];
 }> {
     const { buildContext } = params;
 
     const filePath = pathJoin(buildContext.themeSrcDirPath, ".gitignore");
 
     if (!(await existsAsync(filePath))) {
-        return { ejectedFilesRelativePaths: [] };
+        return { ownedFilesRelativePaths: [] };
     }
 
     const contentStr = (await fsPr.readFile(filePath)).toString("utf8");
@@ -116,10 +116,10 @@ export async function readManagedGitignoreFile(params: {
     })();
 
     if (payload === undefined) {
-        return { ejectedFilesRelativePaths: [] };
+        return { ownedFilesRelativePaths: [] };
     }
 
-    const ejectedFilesRelativePaths = payload
+    const ownedFilesRelativePaths = payload
         .split("\n")
         .map(line => line.trim())
         .map(line => line.replace(/^# /, ""))
@@ -132,5 +132,5 @@ export async function readManagedGitignoreFile(params: {
         )
         .map(filePath => pathRelative(buildContext.themeSrcDirPath, filePath));
 
-    return { ejectedFilesRelativePaths };
+    return { ownedFilesRelativePaths };
 }

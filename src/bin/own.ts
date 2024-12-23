@@ -30,9 +30,10 @@ export async function command(params: {
 
     const uiModuleMetas = await getUiModuleMetas({ buildContext });
 
-    const fileRelativePaths = uiModuleMetas
-        .map(({ files }) =>
-            files
+    const arr = uiModuleMetas
+        .map(uiModuleMeta => ({
+            uiModuleMeta,
+            fileRelativePaths: uiModuleMeta.files
                 .map(({ fileRelativePath }) => fileRelativePath)
                 .filter(
                     fileRelativePath =>
@@ -42,55 +43,67 @@ export async function command(params: {
                             filePath: fileRelativePath
                         })
                 )
-        )
-        .flat();
+        }))
+        .filter(({ fileRelativePaths }) => fileRelativePaths.length !== 0);
 
-    if (fileRelativePaths.length === 0) {
+    if (arr.length === 0) {
         console.log(
             chalk.yellow("There is no UI module files matching the provided path.")
         );
         process.exit(1);
     }
 
-    for (const fileRelativePath of fileRelativePaths) {
-        const uiModuleMeta = uiModuleMetas.find(({ files }) =>
-            files
-                .map(({ fileRelativePath }) => fileRelativePath)
-                .includes(fileRelativePath)
-        );
+    const { ownedFilesRelativePaths: ownedFilesRelativePaths_before } =
+        await readManagedGitignoreFile({
+            buildContext
+        });
 
-        if (!uiModuleMeta) {
-            throw new Error(`No UI module found for the file ${fileRelativePath}`);
-        }
+    const ownedFilesRelativePaths_toAdd: string[] = [];
 
+    for (const { uiModuleMeta, fileRelativePaths } of arr) {
         const uiModuleDirPath = await getInstalledModuleDirPath({
             moduleName: uiModuleMeta.moduleName,
             packageJsonDirPath: pathDirname(buildContext.packageJsonFilePath),
             projectDirPath: buildContext.projectDirPath
         });
 
-        const sourceCode = await getUiModuleFileSourceCodeReadyToBeCopied({
-            buildContext,
-            fileRelativePath,
-            isForEjection: true,
-            uiModuleName: uiModuleMeta.moduleName,
-            uiModuleDirPath,
-            uiModuleVersion: uiModuleMeta.version
-        });
+        for (const fileRelativePath of fileRelativePaths) {
+            if (ownedFilesRelativePaths_before.includes(fileRelativePath)) {
+                console.log(
+                    chalk.yellow(`You already have ownership over "${fileRelativePath}".`)
+                );
+                continue;
+            }
 
-        await fsPr.writeFile(
-            pathJoin(buildContext.themeSrcDirPath, fileRelativePath),
-            sourceCode
-        );
+            const sourceCode = await getUiModuleFileSourceCodeReadyToBeCopied({
+                buildContext,
+                fileRelativePath,
+                isOwnershipAction: true,
+                uiModuleName: uiModuleMeta.moduleName,
+                uiModuleDirPath,
+                uiModuleVersion: uiModuleMeta.version
+            });
 
-        const { ejectedFilesRelativePaths } = await readManagedGitignoreFile({
-            buildContext
-        });
+            await fsPr.writeFile(
+                pathJoin(buildContext.themeSrcDirPath, fileRelativePath),
+                sourceCode
+            );
 
-        await writeManagedGitignoreFile({
-            buildContext,
-            uiModuleMetas,
-            ejectedFilesRelativePaths: [...ejectedFilesRelativePaths, fileRelativePath]
-        });
+            ownedFilesRelativePaths_toAdd.push(fileRelativePath);
+        }
     }
+
+    if (ownedFilesRelativePaths_toAdd.length === 0) {
+        console.log(chalk.yellow("No new file claimed."));
+        process.exit(1);
+    }
+
+    await writeManagedGitignoreFile({
+        buildContext,
+        uiModuleMetas,
+        ownedFilesRelativePaths: [
+            ...ownedFilesRelativePaths_before,
+            ...ownedFilesRelativePaths_toAdd
+        ]
+    });
 }
