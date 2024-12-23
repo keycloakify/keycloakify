@@ -262,37 +262,38 @@ program
 
 program
     .command<{
-        file: string;
+        path: string;
     }>({
-        name: "eject-file",
+        name: "own",
         description: [
             "WARNING: Not usable yet, will be used for future features",
             "Take ownership over a given file"
         ].join(" ")
     })
     .option({
-        key: "file",
+        key: "path",
         name: (() => {
-            const long = "file";
-            const short = "f";
+            const long = "path";
+            const short = "p";
 
             optionsKeys.push(long, short);
 
             return { long, short };
         })(),
         description: [
-            "Relative path of the file relative to the directory of your keycloak theme source",
-            "Example `--file src/login/page/Login.tsx`"
+            "Relative path of the file or the directory that you want to take ownership over.",
+            "The path is relative to your theme directory.",
+            "Example `--path admin/page/Login.tsx`"
         ].join(" ")
     })
     .task({
         skip,
-        handler: async ({ projectDirPath, file }) => {
-            const { command } = await import("./eject-file");
+        handler: async ({ projectDirPath, path }) => {
+            const { command } = await import("./own");
 
             await command({
                 buildContext: getBuildContext({ projectDirPath }),
-                cliCommandOptions: { file }
+                cliCommandOptions: { path }
             });
         }
     });

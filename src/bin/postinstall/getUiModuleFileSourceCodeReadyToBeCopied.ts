@@ -40,7 +40,7 @@ export async function getUiModuleFileSourceCodeReadyToBeCopied(params: {
             : [
                   `WARNING: Before modifying this file run the following command:`,
                   ``,
-                  `$ npx keycloakify eject-file --file '${fileRelativePath.split(pathSep).join("/")}'`,
+                  `$ npx keycloakify own --path '${fileRelativePath.split(pathSep).join("/")}'`,
                   ``,
                   `This file comes from ${uiModuleName} version ${uiModuleVersion}.`,
                   `This file has been copied over to your repo by your postinstall script: \`npx keycloakify postinstall\``
@@ -93,7 +93,7 @@ function addCommentToSourceCode(params: {
             `<!--`,
             ...commentLines.map(
                 line =>
-                    ` ${line.replace("--file", "-f").replace("Before modifying", "Before modifying or replacing")}`
+                    ` ${line.replace("--path", "-p").replace("Before modifying", "Before modifying or replacing")}`
             ),
             `-->`
         ].join("\n");

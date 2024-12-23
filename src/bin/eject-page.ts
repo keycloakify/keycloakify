@@ -67,9 +67,7 @@ export async function command(params: { buildContext: BuildContext }) {
     })();
 
     if (themeType === "admin") {
-        console.log(
-            "Use `npx keycloakify eject-file` command instead, see documentation"
-        );
+        console.log("Use `npx keycloakify own` command instead, see documentation");
 
         process.exit(-1);
     }
