@@ -11,58 +11,109 @@ import {
 } from "./postinstall/managedGitignoreFile";
 import { isInside } from "./tools/isInside";
 import chalk from "chalk";
+import type { UiModuleMeta } from "./postinstall/uiModuleMeta";
+import { command as command_postinstall } from "./postinstall";
 
 export async function command(params: {
     buildContext: BuildContext;
     cliCommandOptions: {
         path: string;
+        isRevert: boolean;
     };
 }) {
     const { buildContext, cliCommandOptions } = params;
 
-    const fileOrDirectoryRelativePath = pathRelative(
-        buildContext.themeSrcDirPath,
-        getAbsoluteAndInOsFormatPath({
-            cwd: buildContext.themeSrcDirPath,
-            pathIsh: cliCommandOptions.path
-        })
-    );
-
     const uiModuleMetas = await getUiModuleMetas({ buildContext });
 
-    const arr = uiModuleMetas
-        .map(uiModuleMeta => ({
-            uiModuleMeta,
-            fileRelativePaths: uiModuleMeta.files
-                .map(({ fileRelativePath }) => fileRelativePath)
-                .filter(
-                    fileRelativePath =>
-                        fileRelativePath === fileOrDirectoryRelativePath ||
-                        isInside({
-                            dirPath: fileOrDirectoryRelativePath,
-                            filePath: fileRelativePath
-                        })
-                )
-        }))
-        .filter(({ fileRelativePaths }) => fileRelativePaths.length !== 0);
+    const { targetFileRelativePathsByUiModuleMeta } = await (async () => {
+        const fileOrDirectoryRelativePath = pathRelative(
+            buildContext.themeSrcDirPath,
+            getAbsoluteAndInOsFormatPath({
+                cwd: buildContext.themeSrcDirPath,
+                pathIsh: cliCommandOptions.path
+            })
+        );
 
-    if (arr.length === 0) {
+        const arr = uiModuleMetas
+            .map(uiModuleMeta => ({
+                uiModuleMeta,
+                fileRelativePaths: uiModuleMeta.files
+                    .map(({ fileRelativePath }) => fileRelativePath)
+                    .filter(
+                        fileRelativePath =>
+                            fileRelativePath === fileOrDirectoryRelativePath ||
+                            isInside({
+                                dirPath: fileOrDirectoryRelativePath,
+                                filePath: fileRelativePath
+                            })
+                    )
+            }))
+            .filter(({ fileRelativePaths }) => fileRelativePaths.length !== 0);
+
+        const targetFileRelativePathsByUiModuleMeta = new Map<UiModuleMeta, string[]>();
+
+        for (const { uiModuleMeta, fileRelativePaths } of arr) {
+            targetFileRelativePathsByUiModuleMeta.set(uiModuleMeta, fileRelativePaths);
+        }
+
+        return { targetFileRelativePathsByUiModuleMeta };
+    })();
+
+    if (targetFileRelativePathsByUiModuleMeta.size === 0) {
         console.log(
             chalk.yellow("There is no UI module files matching the provided path.")
         );
         process.exit(1);
     }
 
-    const { ownedFilesRelativePaths: ownedFilesRelativePaths_before } =
+    const { ownedFilesRelativePaths: ownedFilesRelativePaths_current } =
         await readManagedGitignoreFile({
             buildContext
         });
 
-    const ownedFilesRelativePaths_toAdd: string[] = [];
+    await (cliCommandOptions.isRevert ? command_revert : command_own)({
+        uiModuleMetas,
+        targetFileRelativePathsByUiModuleMeta,
+        ownedFilesRelativePaths_current,
+        buildContext
+    });
+}
+
+type Params_subcommands = {
+    uiModuleMetas: UiModuleMeta[];
+    targetFileRelativePathsByUiModuleMeta: Map<UiModuleMeta, string[]>;
+    ownedFilesRelativePaths_current: string[];
+    buildContext: BuildContext;
+};
+
+async function command_own(params: Params_subcommands) {
+    const {
+        uiModuleMetas,
+        targetFileRelativePathsByUiModuleMeta,
+        ownedFilesRelativePaths_current,
+        buildContext
+    } = params;
+
+    await writeManagedGitignoreFile({
+        buildContext,
+        uiModuleMetas,
+        ownedFilesRelativePaths: [
+            ...ownedFilesRelativePaths_current,
+            ...Array.from(targetFileRelativePathsByUiModuleMeta.values())
+                .flat()
+                .filter(
+                    fileRelativePath =>
+                        !ownedFilesRelativePaths_current.includes(fileRelativePath)
+                )
+        ]
+    });
 
     const writeActions: (() => Promise<void>)[] = [];
 
-    for (const { uiModuleMeta, fileRelativePaths } of arr) {
+    for (const [
+        uiModuleMeta,
+        fileRelativePaths
+    ] of targetFileRelativePathsByUiModuleMeta.entries()) {
         const uiModuleDirPath = await getInstalledModuleDirPath({
             moduleName: uiModuleMeta.moduleName,
             packageJsonDirPath: pathDirname(buildContext.packageJsonFilePath),
@@ -70,46 +121,81 @@ export async function command(params: {
         });
 
         for (const fileRelativePath of fileRelativePaths) {
-            if (ownedFilesRelativePaths_before.includes(fileRelativePath)) {
+            if (ownedFilesRelativePaths_current.includes(fileRelativePath)) {
                 console.log(
-                    chalk.yellow(`You already have ownership over "${fileRelativePath}".`)
+                    chalk.grey(`You already have ownership over '${fileRelativePath}'.`)
                 );
                 continue;
             }
 
-            const sourceCode = await getUiModuleFileSourceCodeReadyToBeCopied({
-                buildContext,
-                fileRelativePath,
-                isOwnershipAction: true,
-                uiModuleName: uiModuleMeta.moduleName,
-                uiModuleDirPath,
-                uiModuleVersion: uiModuleMeta.version
-            });
+            writeActions.push(async () => {
+                const sourceCode = await getUiModuleFileSourceCodeReadyToBeCopied({
+                    buildContext,
+                    fileRelativePath,
+                    isOwnershipAction: true,
+                    uiModuleName: uiModuleMeta.moduleName,
+                    uiModuleDirPath,
+                    uiModuleVersion: uiModuleMeta.version
+                });
 
-            writeActions.push(() =>
-                fsPr.writeFile(
+                await fsPr.writeFile(
                     pathJoin(buildContext.themeSrcDirPath, fileRelativePath),
                     sourceCode
-                )
-            );
+                );
 
-            ownedFilesRelativePaths_toAdd.push(fileRelativePath);
+                console.log(chalk.green(`Ownership over '${fileRelativePath}' claimed.`));
+            });
         }
     }
 
-    if (ownedFilesRelativePaths_toAdd.length === 0) {
+    if (writeActions.length === 0) {
         console.log(chalk.yellow("No new file claimed."));
-        process.exit(1);
+        return;
     }
 
     await Promise.all(writeActions.map(action => action()));
+}
+
+async function command_revert(params: Params_subcommands) {
+    const {
+        uiModuleMetas,
+        targetFileRelativePathsByUiModuleMeta,
+        ownedFilesRelativePaths_current,
+        buildContext
+    } = params;
+
+    const ownedFilesRelativePaths_toRemove = Array.from(
+        targetFileRelativePathsByUiModuleMeta.values()
+    )
+        .flat()
+        .filter(fileRelativePath => {
+            if (!ownedFilesRelativePaths_current.includes(fileRelativePath)) {
+                console.log(
+                    chalk.grey(`Ownership over '${fileRelativePath}' wasn't claimed.`)
+                );
+                return false;
+            }
+
+            console.log(
+                chalk.green(`Ownership over '${fileRelativePath}' relinquished.`)
+            );
+
+            return true;
+        });
+
+    if (ownedFilesRelativePaths_toRemove.length === 0) {
+        console.log(chalk.yellow("No file relinquished."));
+        return;
+    }
 
     await writeManagedGitignoreFile({
         buildContext,
         uiModuleMetas,
-        ownedFilesRelativePaths: [
-            ...ownedFilesRelativePaths_before,
-            ...ownedFilesRelativePaths_toAdd
-        ]
+        ownedFilesRelativePaths: ownedFilesRelativePaths_current.filter(
+            fileRelativePath =>
+                !ownedFilesRelativePaths_toRemove.includes(fileRelativePath)
+        )
     });
+
+    await command_postinstall({ buildContext });
 }

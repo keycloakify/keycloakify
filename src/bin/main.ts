@@ -263,6 +263,7 @@ program
 program
     .command<{
         path: string;
+        revert: boolean;
     }>({
         name: "own",
         description: [
@@ -286,14 +287,26 @@ program
             "Example `--path admin/page/Login.tsx`"
         ].join(" ")
     })
+    .option({
+        key: "revert",
+        name: (() => {
+            const name = "revert";
+
+            optionsKeys.push(name);
+
+            return name;
+        })(),
+        description: "Revert ownership claim over a given file or directory.",
+        defaultValue: false
+    })
     .task({
         skip,
-        handler: async ({ projectDirPath, path }) => {
+        handler: async ({ projectDirPath, path, revert }) => {
             const { command } = await import("./own");
 
             await command({
                 buildContext: getBuildContext({ projectDirPath }),
-                cliCommandOptions: { path }
+                cliCommandOptions: { path, isRevert: revert }
             });
         }
     });

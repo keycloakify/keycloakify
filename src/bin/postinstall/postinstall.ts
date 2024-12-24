@@ -9,7 +9,7 @@ import { dirname as pathDirname } from "path";
 import { join as pathJoin } from "path";
 import { existsAsync } from "../tools/fs.existsAsync";
 import * as fsPr from "fs/promises";
-import { getIsTrackedByGit } from "../tools/isTrackedByGit";
+import { getIsKnownByGit } from "../tools/isKnownByGit";
 import { untrackFromGit } from "../tools/untrackFromGit";
 
 export async function command(params: { buildContext: BuildContext }) {
@@ -65,19 +65,7 @@ export async function command(params: { buildContext: BuildContext }) {
                                 return;
                             }
 
-                            git_untrack: {
-                                if (!doesFileExist) {
-                                    break git_untrack;
-                                }
-
-                                const isTracked = await getIsTrackedByGit({
-                                    filePath: destFilePath
-                                });
-
-                                if (!isTracked) {
-                                    break git_untrack;
-                                }
-
+                            if (await getIsKnownByGit({ filePath: destFilePath })) {
                                 await untrackFromGit({
                                     filePath: destFilePath
                                 });

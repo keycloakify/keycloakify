@@ -35,18 +35,25 @@ export async function getUiModuleFileSourceCodeReadyToBeCopied(params: {
     sourceCode = addCommentToSourceCode({
         sourceCode,
         fileRelativePath,
-        commentLines: isOwnershipAction
-            ? [
-                  `This file was claimed for ownership from ${uiModuleName} version ${uiModuleVersion}.`
-              ]
-            : [
-                  `WARNING: Before modifying this file run the following command:`,
-                  ``,
-                  `$ npx keycloakify own --path '${fileRelativePath.split(pathSep).join("/")}'`,
-                  ``,
-                  `This file comes from ${uiModuleName} version ${uiModuleVersion}.`,
-                  `This file has been copied over to your repo by your postinstall script: \`npx keycloakify postinstall\``
-              ]
+        commentLines: (() => {
+            const path = fileRelativePath.split(pathSep).join("/");
+
+            return isOwnershipAction
+                ? [
+                      `This file has been claimed for ownership from ${uiModuleName} version ${uiModuleVersion}.`,
+                      `To relinquish ownership and restore this file to its original content, run the following command:`,
+                      ``,
+                      `$ npx keycloakify own --revert --path '${path}'`
+                  ]
+                : [
+                      `WARNING: Before modifying this file, run the following command:`,
+                      ``,
+                      `$ npx keycloakify own --path '${path}'`,
+                      ``,
+                      `This file is provided by ${uiModuleName} version ${uiModuleVersion}.`,
+                      `It was copied into your repository by the postinstall script: \`keycloakify postinstall\`.`
+                  ];
+        })()
     });
 
     const destFilePath = pathJoin(buildContext.themeSrcDirPath, fileRelativePath);
