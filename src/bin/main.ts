@@ -248,13 +248,30 @@ program
 
 program
     .command({
-        name: "postinstall",
-        description: "Initialize all the Keycloakify UI modules installed in the project."
+        name: "sync-extensions",
+        description: [
+            "Synchronizes all installed Keycloakify extension modules with your project.",
+            "",
+            "Example of extension modules: '@keycloakify/keycloak-account-ui', '@keycloakify/keycloak-admin-ui', '@keycloakify/keycloak-ui-shared'",
+            "",
+            "This command ensures that:",
+            "- All required files from installed extensions are copied into your project.",
+            "- The copied files are correctly ignored by Git to help you distinguish between your custom source files",
+            "  and those provided by the extensions.",
+            "- Peer dependencies declared by the extensions are automatically added to your package.json.",
+            "",
+            "You can safely run this command multiple times. It will only update the files and dependencies if needed,",
+            "ensuring your project stays in sync with the installed extensions.",
+            "",
+            "Typical usage:",
+            "- Should be run as a postinstall script of your project.",
+            ""
+        ].join("\n")
     })
     .task({
         skip,
         handler: async ({ projectDirPath }) => {
-            const { command } = await import("./postinstall");
+            const { command } = await import("./sync-extensions");
 
             await command({ buildContext: getBuildContext({ projectDirPath }) });
         }
@@ -267,9 +284,20 @@ program
     }>({
         name: "own",
         description: [
-            "WARNING: Not usable yet, will be used for future features",
-            "Take ownership over a given file"
-        ].join(" ")
+            "Manages ownership of auto-generated files provided by Keycloakify extensions.",
+            "",
+            "This command allows you to take ownership of a specific file or directory generated",
+            "by an extension. Once owned, you can freely modify and version-control the file.",
+            "",
+            "You can also use the --revert flag to relinquish ownership and restore the file",
+            "or directory to its original auto-generated state.",
+            "",
+            "For convenience, the exact command to take ownership of any file is included as a comment",
+            "in the header of each extension-generated file.",
+            "",
+            "Examples:",
+            "$ npx keycloakify own --path admin/KcPage.tsx"
+        ].join("\n")
     })
     .option({
         key: "path",
@@ -282,9 +310,9 @@ program
             return { long, short };
         })(),
         description: [
-            "Relative path of the file or the directory that you want to take ownership over.",
-            "The path is relative to your theme directory.",
-            "Example `--path admin/page/Login.tsx`"
+            "Specifies the relative path of the file or directory to take ownership of.",
+            "This path should be relative to your theme directory.",
+            "Example: `--path 'admin/KcPage.tsx'`"
         ].join(" ")
     })
     .option({
@@ -296,7 +324,10 @@ program
 
             return name;
         })(),
-        description: "Revert ownership claim over a given file or directory.",
+        description: [
+            "Restores a file or directory to its original auto-generated state,",
+            "removing your ownership claim and reverting any modifications."
+        ].join(" "),
         defaultValue: false
     })
     .task({

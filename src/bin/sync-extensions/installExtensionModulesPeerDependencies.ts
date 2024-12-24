@@ -1,6 +1,6 @@
 import { assert, type Equals, is } from "tsafe/assert";
 import type { BuildContext } from "../shared/buildContext";
-import type { UiModuleMeta } from "./uiModuleMeta";
+import type { ExtensionModuleMeta } from "./extensionModuleMeta";
 import { z } from "zod";
 import { id } from "tsafe/id";
 import * as fsPr from "fs/promises";
@@ -16,29 +16,29 @@ export type BuildContextLike = {
 
 assert<BuildContext extends BuildContextLike ? true : false>();
 
-export type UiModuleMetaLike = {
+export type ExtensionModuleMetaLike = {
     moduleName: string;
     peerDependencies: Record<string, string>;
 };
 
-assert<UiModuleMeta extends UiModuleMetaLike ? true : false>();
+assert<ExtensionModuleMeta extends ExtensionModuleMetaLike ? true : false>();
 
-export async function installUiModulesPeerDependencies(params: {
+export async function installExtensionModulesPeerDependencies(params: {
     buildContext: BuildContextLike;
-    uiModuleMetas: UiModuleMetaLike[];
+    extensionModuleMetas: ExtensionModuleMetaLike[];
 }): Promise<void | never> {
-    const { buildContext, uiModuleMetas } = params;
+    const { buildContext, extensionModuleMetas } = params;
 
-    const { uiModulesPerDependencies } = (() => {
-        const uiModulesPerDependencies: Record<string, string> = {};
+    const { extensionModulesPerDependencies } = (() => {
+        const extensionModulesPerDependencies: Record<string, string> = {};
 
-        for (const { peerDependencies } of uiModuleMetas) {
+        for (const { peerDependencies } of extensionModuleMetas) {
             for (const [peerDependencyName, versionRange_candidate] of Object.entries(
                 peerDependencies
             )) {
                 const versionRange = (() => {
                     const versionRange_current =
-                        uiModulesPerDependencies[peerDependencyName];
+                        extensionModulesPerDependencies[peerDependencyName];
 
                     if (versionRange_current === undefined) {
                         return versionRange_candidate;
@@ -76,11 +76,11 @@ export async function installUiModulesPeerDependencies(params: {
                     return versionRange;
                 })();
 
-                uiModulesPerDependencies[peerDependencyName] = versionRange;
+                extensionModulesPerDependencies[peerDependencyName] = versionRange;
             }
         }
 
-        return { uiModulesPerDependencies };
+        return { extensionModulesPerDependencies };
     })();
 
     const parsedPackageJson = await (async () => {
@@ -117,7 +117,9 @@ export async function installUiModulesPeerDependencies(params: {
 
     const parsedPackageJson_before = JSON.parse(JSON.stringify(parsedPackageJson));
 
-    for (const [moduleName, versionRange] of Object.entries(uiModulesPerDependencies)) {
+    for (const [moduleName, versionRange] of Object.entries(
+        extensionModulesPerDependencies
+    )) {
         if (moduleName.startsWith("@types/")) {
             (parsedPackageJson.devDependencies ??= {})[moduleName] = versionRange;
             continue;

@@ -4,7 +4,7 @@ import * as fs from "fs";
 import { maybeDelegateCommandToCustomHandler } from "./shared/customHandler_delegate";
 import { assert, is, type Equals } from "tsafe/assert";
 import { id } from "tsafe/id";
-import { addPostinstallScriptIfNotPresent } from "./shared/addPostinstallScriptIfNotPresent";
+import { addSyncExtensionsToPostinstallScript } from "./shared/addSyncExtensionsToPostinstallScript";
 import { getIsPrettierAvailable, runPrettier } from "./tools/runPrettier";
 import { npmInstall } from "./tools/npmInstall";
 import * as child_process from "child_process";
@@ -74,7 +74,7 @@ export async function command(params: { buildContext: BuildContext }) {
         return parsedPackageJson;
     })();
 
-    addPostinstallScriptIfNotPresent({
+    addSyncExtensionsToPostinstallScript({
         parsedPackageJson,
         buildContext
     });

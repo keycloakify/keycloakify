@@ -1,18 +1,18 @@
 import type { BuildContext } from "./shared/buildContext";
-import { getUiModuleFileSourceCodeReadyToBeCopied } from "./postinstall/getUiModuleFileSourceCodeReadyToBeCopied";
-import { getAbsoluteAndInOsFormatPath } from "./tools/getAbsoluteAndInOsFormatPath";
-import { relative as pathRelative, dirname as pathDirname, join as pathJoin } from "path";
-import { getUiModuleMetas } from "./postinstall/uiModuleMeta";
-import { getInstalledModuleDirPath } from "./tools/getInstalledModuleDirPath";
-import * as fsPr from "fs/promises";
+import { getExtensionModuleFileSourceCodeReadyToBeCopied } from "./sync-extensions/getExtensionModuleFileSourceCodeReadyToBeCopied";
+import type { ExtensionModuleMeta } from "./sync-extensions/extensionModuleMeta";
+import { command as command_syncExtensions } from "./sync-extensions/sync-extension";
 import {
     readManagedGitignoreFile,
     writeManagedGitignoreFile
-} from "./postinstall/managedGitignoreFile";
+} from "./sync-extensions/managedGitignoreFile";
+import { getExtensionModuleMetas } from "./sync-extensions/extensionModuleMeta";
+import { getAbsoluteAndInOsFormatPath } from "./tools/getAbsoluteAndInOsFormatPath";
+import { relative as pathRelative, dirname as pathDirname, join as pathJoin } from "path";
+import { getInstalledModuleDirPath } from "./tools/getInstalledModuleDirPath";
+import * as fsPr from "fs/promises";
 import { isInside } from "./tools/isInside";
 import chalk from "chalk";
-import type { UiModuleMeta } from "./postinstall/uiModuleMeta";
-import { command as command_postinstall } from "./postinstall";
 
 export async function command(params: {
     buildContext: BuildContext;
@@ -23,9 +23,9 @@ export async function command(params: {
 }) {
     const { buildContext, cliCommandOptions } = params;
 
-    const uiModuleMetas = await getUiModuleMetas({ buildContext });
+    const extensionModuleMetas = await getExtensionModuleMetas({ buildContext });
 
-    const { targetFileRelativePathsByUiModuleMeta } = await (async () => {
+    const { targetFileRelativePathsByExtensionModuleMeta } = await (async () => {
         const fileOrDirectoryRelativePath = pathRelative(
             buildContext.themeSrcDirPath,
             getAbsoluteAndInOsFormatPath({
@@ -34,10 +34,10 @@ export async function command(params: {
             })
         );
 
-        const arr = uiModuleMetas
-            .map(uiModuleMeta => ({
-                uiModuleMeta,
-                fileRelativePaths: uiModuleMeta.files
+        const arr = extensionModuleMetas
+            .map(extensionModuleMeta => ({
+                extensionModuleMeta,
+                fileRelativePaths: extensionModuleMeta.files
                     .map(({ fileRelativePath }) => fileRelativePath)
                     .filter(
                         fileRelativePath =>
@@ -50,18 +50,26 @@ export async function command(params: {
             }))
             .filter(({ fileRelativePaths }) => fileRelativePaths.length !== 0);
 
-        const targetFileRelativePathsByUiModuleMeta = new Map<UiModuleMeta, string[]>();
+        const targetFileRelativePathsByExtensionModuleMeta = new Map<
+            ExtensionModuleMeta,
+            string[]
+        >();
 
-        for (const { uiModuleMeta, fileRelativePaths } of arr) {
-            targetFileRelativePathsByUiModuleMeta.set(uiModuleMeta, fileRelativePaths);
+        for (const { extensionModuleMeta, fileRelativePaths } of arr) {
+            targetFileRelativePathsByExtensionModuleMeta.set(
+                extensionModuleMeta,
+                fileRelativePaths
+            );
         }
 
-        return { targetFileRelativePathsByUiModuleMeta };
+        return { targetFileRelativePathsByExtensionModuleMeta };
     })();
 
-    if (targetFileRelativePathsByUiModuleMeta.size === 0) {
+    if (targetFileRelativePathsByExtensionModuleMeta.size === 0) {
         console.log(
-            chalk.yellow("There is no UI module files matching the provided path.")
+            chalk.yellow(
+                "There is no Keycloakify extension modules files matching the provided path."
+            )
         );
         process.exit(1);
     }
@@ -72,34 +80,34 @@ export async function command(params: {
         });
 
     await (cliCommandOptions.isRevert ? command_revert : command_own)({
-        uiModuleMetas,
-        targetFileRelativePathsByUiModuleMeta,
+        extensionModuleMetas,
+        targetFileRelativePathsByExtensionModuleMeta,
         ownedFilesRelativePaths_current,
         buildContext
     });
 }
 
 type Params_subcommands = {
-    uiModuleMetas: UiModuleMeta[];
-    targetFileRelativePathsByUiModuleMeta: Map<UiModuleMeta, string[]>;
+    extensionModuleMetas: ExtensionModuleMeta[];
+    targetFileRelativePathsByExtensionModuleMeta: Map<ExtensionModuleMeta, string[]>;
     ownedFilesRelativePaths_current: string[];
     buildContext: BuildContext;
 };
 
 async function command_own(params: Params_subcommands) {
     const {
-        uiModuleMetas,
-        targetFileRelativePathsByUiModuleMeta,
+        extensionModuleMetas,
+        targetFileRelativePathsByExtensionModuleMeta,
         ownedFilesRelativePaths_current,
         buildContext
     } = params;
 
     await writeManagedGitignoreFile({
         buildContext,
-        uiModuleMetas,
+        extensionModuleMetas,
         ownedFilesRelativePaths: [
             ...ownedFilesRelativePaths_current,
-            ...Array.from(targetFileRelativePathsByUiModuleMeta.values())
+            ...Array.from(targetFileRelativePathsByExtensionModuleMeta.values())
                 .flat()
                 .filter(
                     fileRelativePath =>
@@ -111,11 +119,11 @@ async function command_own(params: Params_subcommands) {
     const writeActions: (() => Promise<void>)[] = [];
 
     for (const [
-        uiModuleMeta,
+        extensionModuleMeta,
         fileRelativePaths
-    ] of targetFileRelativePathsByUiModuleMeta.entries()) {
-        const uiModuleDirPath = await getInstalledModuleDirPath({
-            moduleName: uiModuleMeta.moduleName,
+    ] of targetFileRelativePathsByExtensionModuleMeta.entries()) {
+        const extensionModuleDirPath = await getInstalledModuleDirPath({
+            moduleName: extensionModuleMeta.moduleName,
             packageJsonDirPath: pathDirname(buildContext.packageJsonFilePath),
             projectDirPath: buildContext.projectDirPath
         });
@@ -129,13 +137,13 @@ async function command_own(params: Params_subcommands) {
             }
 
             writeActions.push(async () => {
-                const sourceCode = await getUiModuleFileSourceCodeReadyToBeCopied({
+                const sourceCode = await getExtensionModuleFileSourceCodeReadyToBeCopied({
                     buildContext,
                     fileRelativePath,
                     isOwnershipAction: true,
-                    uiModuleName: uiModuleMeta.moduleName,
-                    uiModuleDirPath,
-                    uiModuleVersion: uiModuleMeta.version
+                    extensionModuleName: extensionModuleMeta.moduleName,
+                    extensionModuleDirPath,
+                    extensionModuleVersion: extensionModuleMeta.version
                 });
 
                 await fsPr.writeFile(
@@ -158,14 +166,14 @@ async function command_own(params: Params_subcommands) {
 
 async function command_revert(params: Params_subcommands) {
     const {
-        uiModuleMetas,
-        targetFileRelativePathsByUiModuleMeta,
+        extensionModuleMetas,
+        targetFileRelativePathsByExtensionModuleMeta,
         ownedFilesRelativePaths_current,
         buildContext
     } = params;
 
     const ownedFilesRelativePaths_toRemove = Array.from(
-        targetFileRelativePathsByUiModuleMeta.values()
+        targetFileRelativePathsByExtensionModuleMeta.values()
     )
         .flat()
         .filter(fileRelativePath => {
@@ -190,12 +198,12 @@ async function command_revert(params: Params_subcommands) {
 
     await writeManagedGitignoreFile({
         buildContext,
-        uiModuleMetas,
+        extensionModuleMetas,
         ownedFilesRelativePaths: ownedFilesRelativePaths_current.filter(
             fileRelativePath =>
                 !ownedFilesRelativePaths_toRemove.includes(fileRelativePath)
         )
     });
 
-    await command_postinstall({ buildContext });
+    await command_syncExtensions({ buildContext });
 }

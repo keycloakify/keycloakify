@@ -9,13 +9,13 @@ export type BuildContextLike = {
 
 assert<BuildContext extends BuildContextLike ? true : false>();
 
-export function addPostinstallScriptIfNotPresent(params: {
+export function addSyncExtensionsToPostinstallScript(params: {
     parsedPackageJson: { scripts?: Record<string, string | undefined> };
     buildContext: BuildContextLike;
 }) {
     const { parsedPackageJson, buildContext } = params;
 
-    const cmd_base = "keycloakify postinstall";
+    const cmd_base = "keycloakify sync-extensions";
 
     const projectCliOptionValue = (() => {
         const packageJsonDirPath = pathDirname(buildContext.packageJsonFilePath);

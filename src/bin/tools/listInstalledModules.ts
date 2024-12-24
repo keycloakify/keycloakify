@@ -24,7 +24,7 @@ export async function listInstalledModules(params: {
         packageJsonFilePath
     });
 
-    const uiModuleNames = (
+    const extensionModuleNames = (
         [parsedPackageJson.dependencies, parsedPackageJson.devDependencies] as const
     )
         .filter(exclude(undefined))
@@ -33,7 +33,7 @@ export async function listInstalledModules(params: {
         .filter(moduleName => filter({ moduleName }));
 
     const result = await Promise.all(
-        uiModuleNames.map(async moduleName => {
+        extensionModuleNames.map(async moduleName => {
             const dirPath = await getInstalledModuleDirPath({
                 moduleName,
                 packageJsonDirPath: pathDirname(packageJsonFilePath),

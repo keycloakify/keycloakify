@@ -1,6 +1,6 @@
 import type { BuildContext } from "../shared/buildContext";
-import { getUiModuleMetas, computeHash } from "./uiModuleMeta";
-import { installUiModulesPeerDependencies } from "./installUiModulesPeerDependencies";
+import { getExtensionModuleMetas, computeHash } from "./extensionModuleMeta";
+import { installExtensionModulesPeerDependencies } from "./installExtensionModulesPeerDependencies";
 import {
     readManagedGitignoreFile,
     writeManagedGitignoreFile
@@ -15,11 +15,11 @@ import { untrackFromGit } from "../tools/untrackFromGit";
 export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
 
-    const uiModuleMetas = await getUiModuleMetas({ buildContext });
+    const extensionModuleMetas = await getExtensionModuleMetas({ buildContext });
 
-    await installUiModulesPeerDependencies({
+    await installExtensionModulesPeerDependencies({
         buildContext,
-        uiModuleMetas
+        extensionModuleMetas
     });
 
     const { ownedFilesRelativePaths } = await readManagedGitignoreFile({
@@ -29,14 +29,14 @@ export async function command(params: { buildContext: BuildContext }) {
     await writeManagedGitignoreFile({
         buildContext,
         ownedFilesRelativePaths,
-        uiModuleMetas
+        extensionModuleMetas
     });
 
     await Promise.all(
-        uiModuleMetas
-            .map(uiModuleMeta =>
+        extensionModuleMetas
+            .map(extensionModuleMeta =>
                 Promise.all(
-                    uiModuleMeta.files.map(
+                    extensionModuleMeta.files.map(
                         async ({ fileRelativePath, copyableFilePath, hash }) => {
                             if (ownedFilesRelativePaths.includes(fileRelativePath)) {
                                 return;

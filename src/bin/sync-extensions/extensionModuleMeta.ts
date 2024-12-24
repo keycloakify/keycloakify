@@ -10,15 +10,15 @@ import { crawlAsync } from "../tools/crawlAsync";
 import { getIsPrettierAvailable, getPrettier } from "../tools/runPrettier";
 import { readThisNpmPackageVersion } from "../tools/readThisNpmPackageVersion";
 import {
-    getUiModuleFileSourceCodeReadyToBeCopied,
-    type BuildContextLike as BuildContextLike_getUiModuleFileSourceCodeReadyToBeCopied
-} from "./getUiModuleFileSourceCodeReadyToBeCopied";
+    getExtensionModuleFileSourceCodeReadyToBeCopied,
+    type BuildContextLike as BuildContextLike_getExtensionModuleFileSourceCodeReadyToBeCopied
+} from "./getExtensionModuleFileSourceCodeReadyToBeCopied";
 import * as crypto from "crypto";
 import { KEYCLOAK_THEME } from "../shared/constants";
 import { exclude } from "tsafe/exclude";
 import { isAmong } from "tsafe/isAmong";
 
-export type UiModuleMeta = {
+export type ExtensionModuleMeta = {
     moduleName: string;
     version: string;
     files: {
@@ -29,8 +29,8 @@ export type UiModuleMeta = {
     peerDependencies: Record<string, string>;
 };
 
-const zUiModuleMeta = (() => {
-    type ExpectedType = UiModuleMeta;
+const zExtensionModuleMeta = (() => {
+    type ExpectedType = ExtensionModuleMeta;
 
     const zTargetType = z.object({
         moduleName: z.string(),
@@ -56,7 +56,7 @@ type ParsedCacheFile = {
     keycloakifyVersion: string;
     prettierConfigHash: string | null;
     thisFilePath: string;
-    uiModuleMetas: UiModuleMeta[];
+    extensionModuleMetas: ExtensionModuleMeta[];
 };
 
 const zParsedCacheFile = (() => {
@@ -66,7 +66,7 @@ const zParsedCacheFile = (() => {
         keycloakifyVersion: z.string(),
         prettierConfigHash: z.union([z.string(), z.null()]),
         thisFilePath: z.string(),
-        uiModuleMetas: z.array(zUiModuleMeta)
+        extensionModuleMetas: z.array(zExtensionModuleMeta)
     });
 
     type InferredType = z.infer<typeof zTargetType>;
@@ -76,10 +76,10 @@ const zParsedCacheFile = (() => {
     return id<z.ZodType<ExpectedType>>(zTargetType);
 })();
 
-const CACHE_FILE_RELATIVE_PATH = pathJoin("ui-modules", "cache.json");
+const CACHE_FILE_RELATIVE_PATH = pathJoin("extension-modules", "cache.json");
 
 export type BuildContextLike =
-    BuildContextLike_getUiModuleFileSourceCodeReadyToBeCopied & {
+    BuildContextLike_getExtensionModuleFileSourceCodeReadyToBeCopied & {
         cacheDirPath: string;
         packageJsonFilePath: string;
         projectDirPath: string;
@@ -87,9 +87,9 @@ export type BuildContextLike =
 
 assert<BuildContext extends BuildContextLike ? true : false>();
 
-export async function getUiModuleMetas(params: {
+export async function getExtensionModuleMetas(params: {
     buildContext: BuildContextLike;
-}): Promise<UiModuleMeta[]> {
+}): Promise<ExtensionModuleMeta[]> {
     const { buildContext } = params;
 
     const cacheFilePath = pathJoin(buildContext.cacheDirPath, CACHE_FILE_RELATIVE_PATH);
@@ -106,7 +106,7 @@ export async function getUiModuleMetas(params: {
         return configHash;
     })();
 
-    const installedUiModules = await (async () => {
+    const installedExtensionModules = await (async () => {
         const installedModulesWithKeycloakifyInTheName = await listInstalledModules({
             packageJsonFilePath: buildContext.packageJsonFilePath,
             projectDirPath: buildContext.packageJsonFilePath,
@@ -134,7 +134,7 @@ export async function getUiModuleMetas(params: {
         return await fsPr.readFile(cacheFilePath);
     })();
 
-    const uiModuleMetas_cacheUpToDate: UiModuleMeta[] = await (async () => {
+    const extensionModuleMetas_cacheUpToDate: ExtensionModuleMeta[] = await (async () => {
         const parsedCacheFile: ParsedCacheFile | undefined = await (async () => {
             if (cacheContent === undefined) {
                 return undefined;
@@ -177,45 +177,51 @@ export async function getUiModuleMetas(params: {
             return [];
         }
 
-        const uiModuleMetas_cacheUpToDate = parsedCacheFile.uiModuleMetas.filter(
-            uiModuleMeta => {
-                const correspondingInstalledUiModule = installedUiModules.find(
-                    installedUiModule =>
-                        installedUiModule.moduleName === uiModuleMeta.moduleName
-                );
+        const extensionModuleMetas_cacheUpToDate =
+            parsedCacheFile.extensionModuleMetas.filter(extensionModuleMeta => {
+                const correspondingInstalledExtensionModule =
+                    installedExtensionModules.find(
+                        installedExtensionModule =>
+                            installedExtensionModule.moduleName ===
+                            extensionModuleMeta.moduleName
+                    );
 
-                if (correspondingInstalledUiModule === undefined) {
+                if (correspondingInstalledExtensionModule === undefined) {
                     return false;
                 }
 
-                return correspondingInstalledUiModule.version === uiModuleMeta.version;
-            }
-        );
+                return (
+                    correspondingInstalledExtensionModule.version ===
+                    extensionModuleMeta.version
+                );
+            });
 
-        return uiModuleMetas_cacheUpToDate;
+        return extensionModuleMetas_cacheUpToDate;
     })();
 
-    const uiModuleMetas = await Promise.all(
-        installedUiModules.map(
+    const extensionModuleMetas = await Promise.all(
+        installedExtensionModules.map(
             async ({
                 moduleName,
                 version,
                 peerDependencies,
                 dirPath
-            }): Promise<UiModuleMeta> => {
+            }): Promise<ExtensionModuleMeta> => {
                 use_cache: {
-                    const uiModuleMeta_cache = uiModuleMetas_cacheUpToDate.find(
-                        uiModuleMeta => uiModuleMeta.moduleName === moduleName
-                    );
+                    const extensionModuleMeta_cache =
+                        extensionModuleMetas_cacheUpToDate.find(
+                            extensionModuleMeta =>
+                                extensionModuleMeta.moduleName === moduleName
+                        );
 
-                    if (uiModuleMeta_cache === undefined) {
+                    if (extensionModuleMeta_cache === undefined) {
                         break use_cache;
                     }
 
-                    return uiModuleMeta_cache;
+                    return extensionModuleMeta_cache;
                 }
 
-                const files: UiModuleMeta["files"] = [];
+                const files: ExtensionModuleMeta["files"] = [];
 
                 {
                     const srcDirPath = pathJoin(dirPath, KEYCLOAK_THEME);
@@ -225,13 +231,13 @@ export async function getUiModuleMetas(params: {
                         returnedPathsType: "relative to dirPath",
                         onFileFound: async fileRelativePath => {
                             const sourceCode =
-                                await getUiModuleFileSourceCodeReadyToBeCopied({
+                                await getExtensionModuleFileSourceCodeReadyToBeCopied({
                                     buildContext,
                                     fileRelativePath,
                                     isOwnershipAction: false,
-                                    uiModuleDirPath: dirPath,
-                                    uiModuleName: moduleName,
-                                    uiModuleVersion: version
+                                    extensionModuleDirPath: dirPath,
+                                    extensionModuleName: moduleName,
+                                    extensionModuleVersion: version
                                 });
 
                             const hash = computeHash(sourceCode);
@@ -261,7 +267,7 @@ export async function getUiModuleMetas(params: {
                     });
                 }
 
-                return id<UiModuleMeta>({
+                return id<ExtensionModuleMeta>({
                     moduleName,
                     version,
                     files,
@@ -281,7 +287,7 @@ export async function getUiModuleMetas(params: {
             keycloakifyVersion,
             prettierConfigHash,
             thisFilePath: cacheFilePath,
-            uiModuleMetas
+            extensionModuleMetas
         });
 
         const cacheContent_new = Buffer.from(
@@ -306,7 +312,7 @@ export async function getUiModuleMetas(params: {
         await fsPr.writeFile(cacheFilePath, cacheContent_new);
     }
 
-    return uiModuleMetas;
+    return extensionModuleMetas;
 }
 
 export function computeHash(data: Buffer) {

@@ -7,7 +7,7 @@ import {
 } from "path";
 import { assert } from "tsafe/assert";
 import type { BuildContext } from "../shared/buildContext";
-import type { UiModuleMeta } from "./uiModuleMeta";
+import type { ExtensionModuleMeta } from "./extensionModuleMeta";
 import { existsAsync } from "../tools/fs.existsAsync";
 import { getAbsoluteAndInOsFormatPath } from "../tools/getAbsoluteAndInOsFormatPath";
 
@@ -22,12 +22,12 @@ const DELIMITER_END = `# === Owned files end =====`;
 
 export async function writeManagedGitignoreFile(params: {
     buildContext: BuildContextLike;
-    uiModuleMetas: UiModuleMeta[];
+    extensionModuleMetas: ExtensionModuleMeta[];
     ownedFilesRelativePaths: string[];
 }): Promise<void> {
-    const { buildContext, uiModuleMetas, ownedFilesRelativePaths } = params;
+    const { buildContext, extensionModuleMetas, ownedFilesRelativePaths } = params;
 
-    if (uiModuleMetas.length === 0) {
+    if (extensionModuleMetas.length === 0) {
         return;
     }
 
@@ -43,10 +43,10 @@ export async function writeManagedGitignoreFile(params: {
                 .map(line => `# ${line}`),
             DELIMITER_END,
             ``,
-            ...uiModuleMetas
-                .map(uiModuleMeta => [
-                    `# === ${uiModuleMeta.moduleName} v${uiModuleMeta.version} ===`,
-                    ...uiModuleMeta.files
+            ...extensionModuleMetas
+                .map(extensionModuleMeta => [
+                    `# === ${extensionModuleMeta.moduleName} v${extensionModuleMeta.version} ===`,
+                    ...extensionModuleMeta.files
                         .map(({ fileRelativePath }) => fileRelativePath)
                         .filter(
                             fileRelativePath =>

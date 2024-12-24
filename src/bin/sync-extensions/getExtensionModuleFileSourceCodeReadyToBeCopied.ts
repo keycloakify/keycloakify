@@ -11,25 +11,27 @@ export type BuildContextLike = {
 
 assert<BuildContext extends BuildContextLike ? true : false>();
 
-export async function getUiModuleFileSourceCodeReadyToBeCopied(params: {
+export async function getExtensionModuleFileSourceCodeReadyToBeCopied(params: {
     buildContext: BuildContextLike;
     fileRelativePath: string;
     isOwnershipAction: boolean;
-    uiModuleDirPath: string;
-    uiModuleName: string;
-    uiModuleVersion: string;
+    extensionModuleDirPath: string;
+    extensionModuleName: string;
+    extensionModuleVersion: string;
 }): Promise<Buffer> {
     const {
         buildContext,
-        uiModuleDirPath,
+        extensionModuleDirPath,
         fileRelativePath,
         isOwnershipAction,
-        uiModuleName,
-        uiModuleVersion
+        extensionModuleName,
+        extensionModuleVersion
     } = params;
 
     let sourceCode = (
-        await fsPr.readFile(pathJoin(uiModuleDirPath, KEYCLOAK_THEME, fileRelativePath))
+        await fsPr.readFile(
+            pathJoin(extensionModuleDirPath, KEYCLOAK_THEME, fileRelativePath)
+        )
     ).toString("utf8");
 
     sourceCode = addCommentToSourceCode({
@@ -40,18 +42,18 @@ export async function getUiModuleFileSourceCodeReadyToBeCopied(params: {
 
             return isOwnershipAction
                 ? [
-                      `This file has been claimed for ownership from ${uiModuleName} version ${uiModuleVersion}.`,
+                      `This file has been claimed for ownership from ${extensionModuleName} version ${extensionModuleVersion}.`,
                       `To relinquish ownership and restore this file to its original content, run the following command:`,
                       ``,
-                      `$ npx keycloakify own --revert --path '${path}'`
+                      `$ npx keycloakify own --path '${path}' --revert`
                   ]
                 : [
                       `WARNING: Before modifying this file, run the following command:`,
                       ``,
                       `$ npx keycloakify own --path '${path}'`,
                       ``,
-                      `This file is provided by ${uiModuleName} version ${uiModuleVersion}.`,
-                      `It was copied into your repository by the postinstall script: \`keycloakify postinstall\`.`
+                      `This file is provided by ${extensionModuleName} version ${extensionModuleVersion}.`,
+                      `It was copied into your repository by the postinstall script: \`keycloakify sync-extensions\`.`
                   ];
         })()
     });
