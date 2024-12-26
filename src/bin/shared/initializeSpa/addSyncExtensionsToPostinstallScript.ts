@@ -1,6 +1,6 @@
 import { dirname as pathDirname, relative as pathRelative, sep as pathSep } from "path";
 import { assert } from "tsafe/assert";
-import type { BuildContext } from "./buildContext";
+import type { BuildContext } from "../buildContext";
 
 export type BuildContextLike = {
     projectDirPath: string;

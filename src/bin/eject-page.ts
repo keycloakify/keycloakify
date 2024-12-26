@@ -11,12 +11,7 @@ import {
 } from "./shared/constants";
 import { capitalize } from "tsafe/capitalize";
 import * as fs from "fs";
-import {
-    join as pathJoin,
-    relative as pathRelative,
-    dirname as pathDirname,
-    basename as pathBasename
-} from "path";
+import { join as pathJoin, relative as pathRelative, dirname as pathDirname } from "path";
 import { kebabCaseToCamelCase } from "./tools/kebabCaseToSnakeCase";
 import { assert, Equals } from "tsafe/assert";
 import type { BuildContext } from "./shared/buildContext";
@@ -77,85 +72,16 @@ export async function command(params: { buildContext: BuildContext }) {
         (assert(buildContext.implementedThemeTypes.account.isImplemented),
         buildContext.implementedThemeTypes.account.type === "Single-Page")
     ) {
-        const srcDirPath = pathJoin(
-            pathDirname(buildContext.packageJsonFilePath),
-            "node_modules",
-            "@keycloakify",
-            `keycloak-account-ui`,
-            "src"
-        );
-
         console.log(
-            [
-                `There isn't an interactive CLI to eject components of the Account SPA UI.`,
-                `You can however copy paste into your codebase the any file or directory from the following source directory:`,
-                ``,
-                `${chalk.bold(pathJoin(pathRelative(process.cwd(), srcDirPath)))}`,
-                ``
-            ].join("\n")
+            chalk.yellow(
+                [
+                    "You are implementing a Single-Page Account theme.",
+                    "The eject-page command isn't applicable in this context"
+                ].join("\n")
+            )
         );
 
-        eject_entrypoint: {
-            const kcUiTsxFileRelativePath = `KcAccountUi.tsx` as const;
-
-            const themeSrcDirPath = pathJoin(buildContext.themeSrcDirPath, "account");
-
-            const targetFilePath = pathJoin(themeSrcDirPath, kcUiTsxFileRelativePath);
-
-            if (fs.existsSync(targetFilePath)) {
-                break eject_entrypoint;
-            }
-
-            fs.cpSync(pathJoin(srcDirPath, kcUiTsxFileRelativePath), targetFilePath);
-
-            {
-                const kcPageTsxFilePath = pathJoin(themeSrcDirPath, "KcPage.tsx");
-
-                const kcPageTsxCode = fs.readFileSync(kcPageTsxFilePath).toString("utf8");
-
-                const componentName = pathBasename(kcUiTsxFileRelativePath).replace(
-                    /.tsx$/,
-                    ""
-                );
-
-                let modifiedKcPageTsxCode = kcPageTsxCode.replace(
-                    `@keycloakify/keycloak-account-ui/${componentName}`,
-                    `./${componentName}`
-                );
-
-                run_prettier: {
-                    if (!(await getIsPrettierAvailable())) {
-                        break run_prettier;
-                    }
-
-                    modifiedKcPageTsxCode = await runPrettier({
-                        filePath: kcPageTsxFilePath,
-                        sourceCode: modifiedKcPageTsxCode
-                    });
-                }
-
-                fs.writeFileSync(
-                    kcPageTsxFilePath,
-                    Buffer.from(modifiedKcPageTsxCode, "utf8")
-                );
-            }
-
-            const routesTsxFilePath = pathRelative(
-                process.cwd(),
-                pathJoin(srcDirPath, "routes.tsx")
-            );
-
-            console.log(
-                [
-                    `To help you get started ${chalk.bold(pathRelative(process.cwd(), targetFilePath))} has been copied into your project.`,
-                    `The next step is usually to eject ${chalk.bold(routesTsxFilePath)}`,
-                    `with \`cp ${routesTsxFilePath} ${pathRelative(process.cwd(), themeSrcDirPath)}\``,
-                    `then update the import of routes in ${kcUiTsxFileRelativePath}.`
-                ].join("\n")
-            );
-        }
-
-        process.exit(0);
+        process.exit(1);
         return;
     }
 

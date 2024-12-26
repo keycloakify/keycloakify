@@ -7,6 +7,7 @@ import { updateAccountThemeImplementationInConfig } from "./updateAccountThemeIm
 import { command as updateKcGenCommand } from "../update-kc-gen";
 import { maybeDelegateCommandToCustomHandler } from "../shared/customHandler_delegate";
 import { exitIfUncommittedChanges } from "../shared/exitIfUncommittedChanges";
+import { getThisCodebaseRootDirPath } from "../tools/getThisCodebaseRootDirPath";
 
 export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
@@ -50,24 +51,24 @@ export async function command(params: { buildContext: BuildContext }) {
 
     switch (accountThemeType) {
         case "Multi-Page":
-            {
-                const { initializeAccountTheme_multiPage } = await import(
-                    "./initializeAccountTheme_multiPage"
-                );
-
-                await initializeAccountTheme_multiPage({
-                    accountThemeSrcDirPath
-                });
-            }
+            fs.cpSync(
+                pathJoin(
+                    getThisCodebaseRootDirPath(),
+                    "src",
+                    "bin",
+                    "initialize-account-theme",
+                    "multi-page-boilerplate"
+                ),
+                accountThemeSrcDirPath,
+                { recursive: true }
+            );
             break;
         case "Single-Page":
             {
-                const { initializeAccountTheme_singlePage } = await import(
-                    "./initializeAccountTheme_singlePage"
-                );
+                const { initializeSpa } = await import("../shared/initializeSpa");
 
-                await initializeAccountTheme_singlePage({
-                    accountThemeSrcDirPath,
+                await initializeSpa({
+                    themeType: "account",
                     buildContext
                 });
             }
