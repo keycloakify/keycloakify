@@ -2,11 +2,6 @@ import { relative as pathRelative, dirname as pathDirname } from "path";
 import type { BuildContext } from "../shared/buildContext";
 import * as fs from "fs";
 import chalk from "chalk";
-import {
-    getLatestsSemVersionedTag,
-    type BuildContextLike as BuildContextLike_getLatestsSemVersionedTag
-} from "../shared/getLatestsSemVersionedTag";
-import { SemVer } from "../tools/SemVer";
 import fetch from "make-fetch-happen";
 import { z } from "zod";
 import { assert, type Equals, is } from "tsafe/assert";
@@ -14,7 +9,7 @@ import { id } from "tsafe/id";
 import { npmInstall } from "../tools/npmInstall";
 import { copyBoilerplate } from "./copyBoilerplate";
 
-type BuildContextLike = BuildContextLike_getLatestsSemVersionedTag & {
+type BuildContextLike = {
     fetchOptions: BuildContext["fetchOptions"];
     packageJsonFilePath: string;
 };
@@ -30,16 +25,10 @@ export async function initializeAccountTheme_singlePage(params: {
     const OWNER = "keycloakify";
     const REPO = "keycloak-account-ui";
 
-    const [semVersionedTag] = await getLatestsSemVersionedTag({
-        owner: OWNER,
-        repo: REPO,
-        count: 1,
-        doIgnoreReleaseCandidates: false,
-        buildContext
-    });
+    const version = "26.0.6-rc.1";
 
     const dependencies = await fetch(
-        `https://raw.githubusercontent.com/${OWNER}/${REPO}/${semVersionedTag.tag}/dependencies.gen.json`,
+        `https://raw.githubusercontent.com/${OWNER}/${REPO}/v${version}/dependencies.gen.json`,
         buildContext.fetchOptions
     )
         .then(r => r.json())
@@ -67,9 +56,7 @@ export async function initializeAccountTheme_singlePage(params: {
             })()
         );
 
-    dependencies.dependencies["@keycloakify/keycloak-account-ui"] = SemVer.stringify(
-        semVersionedTag.version
-    );
+    dependencies.dependencies["@keycloakify/keycloak-account-ui"] = version;
 
     const parsedPackageJson = (() => {
         type ParsedPackageJson = {
@@ -133,7 +120,7 @@ export async function initializeAccountTheme_singlePage(params: {
             chalk.green(
                 "The Single-Page account theme has been successfully initialized."
             ),
-            `Using Account UI of Keycloak version: ${chalk.bold(semVersionedTag.tag.split("-")[0])}`,
+            `Using Account UI of Keycloak version: ${chalk.bold(version.split("-")[0])}`,
             `Directory created: ${chalk.bold(pathRelative(process.cwd(), accountThemeSrcDirPath))}`,
             `Dependencies added to your project's package.json: `,
             chalk.bold(JSON.stringify(dependencies, null, 2))
