@@ -1,13 +1,11 @@
 import { join as pathJoin, relative as pathRelative } from "path";
 import { transformCodebase } from "./tools/transformCodebase";
-import { promptKeycloakVersion } from "./shared/promptKeycloakVersion";
 import type { BuildContext } from "./shared/buildContext";
 import * as fs from "fs";
 import { downloadAndExtractArchive } from "./tools/downloadAndExtractArchive";
 import { maybeDelegateCommandToCustomHandler } from "./shared/customHandler_delegate";
-import fetch from "make-fetch-happen";
-import { SemVer } from "./tools/SemVer";
 import { assert } from "tsafe/assert";
+import { getSupportedDockerImageTags } from "./start-keycloak/getSupportedDockerImageTags";
 
 export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
@@ -39,40 +37,18 @@ export async function command(params: { buildContext: BuildContext }) {
 
     console.log("Initialize with the base email theme from which version of Keycloak?");
 
-    let { keycloakVersion } = await promptKeycloakVersion({
-        // NOTE: This is arbitrary
-        startingFromMajor: 17,
-        excludeMajorVersions: [],
-        doOmitPatch: false,
-        buildContext
-    });
-
-    const getUrl = (keycloakVersion: string) => {
-        return `https://repo1.maven.org/maven2/org/keycloak/keycloak-themes/${keycloakVersion}/keycloak-themes-${keycloakVersion}.jar`;
-    };
-
-    keycloakVersion = await (async () => {
-        const keycloakVersionParsed = SemVer.parse(keycloakVersion);
-
-        while (true) {
-            const url = getUrl(SemVer.stringify(keycloakVersionParsed));
-
-            const response = await fetch(url, buildContext.fetchOptions);
-
-            if (response.ok) {
-                break;
-            }
-
-            assert(keycloakVersionParsed.patch !== 0);
-
-            keycloakVersionParsed.patch--;
-        }
-
-        return SemVer.stringify(keycloakVersionParsed);
-    })();
-
     const { extractedDirPath } = await downloadAndExtractArchive({
-        url: getUrl(keycloakVersion),
+        url: await (async () => {
+            const { latestMajorTags } = await getSupportedDockerImageTags({
+                buildContext
+            });
+
+            const keycloakVersion = latestMajorTags[0];
+
+            assert(keycloakVersion !== undefined);
+
+            return `https://repo1.maven.org/maven2/org/keycloak/keycloak-themes/${keycloakVersion}/keycloak-themes-${keycloakVersion}.jar`;
+        })(),
         cacheDirPath: buildContext.cacheDirPath,
         fetchOptions: buildContext.fetchOptions,
         uniqueIdOfOnArchiveFile: "extractOnlyEmailTheme",
