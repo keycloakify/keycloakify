@@ -17,5 +17,5 @@
         "skipLibCheck": true
     },
     "include": ["../src", "."],
-    "exclude": ["../src/bin/initialize-account-theme/src"]
+    "exclude": ["../src/bin/initialize-account-theme/multi-page-boilerplate"]
 }
