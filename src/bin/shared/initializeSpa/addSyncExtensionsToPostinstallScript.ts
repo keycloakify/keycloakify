@@ -56,7 +56,7 @@ export function addSyncExtensionsToPostinstallScript(params: {
                 continue;
             }
 
-            if (cmd_preexisting.includes(cmd_base)) {
+            if (!cmd_preexisting.includes(cmd_base)) {
                 scripts[scriptName] = generateCmd({ cmd_preexisting });
                 return;
             }
