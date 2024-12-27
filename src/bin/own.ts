@@ -124,8 +124,7 @@ async function command_own(params: Params_subcommands) {
     ] of targetFileRelativePathsByExtensionModuleMeta.entries()) {
         const extensionModuleDirPath = await getInstalledModuleDirPath({
             moduleName: extensionModuleMeta.moduleName,
-            packageJsonDirPath: pathDirname(buildContext.packageJsonFilePath),
-            projectDirPath: buildContext.projectDirPath
+            packageJsonDirPath: pathDirname(buildContext.packageJsonFilePath)
         });
 
         for (const fileRelativePath of fileRelativePaths) {

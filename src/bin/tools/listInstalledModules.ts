@@ -8,7 +8,6 @@ import { exclude } from "tsafe/exclude";
 
 export async function listInstalledModules(params: {
     packageJsonFilePath: string;
-    projectDirPath: string;
     filter: (params: { moduleName: string }) => boolean;
 }): Promise<
     {
@@ -18,7 +17,7 @@ export async function listInstalledModules(params: {
         peerDependencies: Record<string, string>;
     }[]
 > {
-    const { packageJsonFilePath, projectDirPath, filter } = params;
+    const { packageJsonFilePath, filter } = params;
 
     const parsedPackageJson = await readPackageJsonDependencies({
         packageJsonFilePath
@@ -36,8 +35,7 @@ export async function listInstalledModules(params: {
         extensionModuleNames.map(async moduleName => {
             const dirPath = await getInstalledModuleDirPath({
                 moduleName,
-                packageJsonDirPath: pathDirname(packageJsonFilePath),
-                projectDirPath
+                packageJsonDirPath: pathDirname(packageJsonFilePath)
             });
 
             const { version, peerDependencies } =

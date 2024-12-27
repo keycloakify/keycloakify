@@ -37,10 +37,10 @@ import {
 } from "../../shared/metaInfKeycloakThemes";
 import { objectEntries } from "tsafe/objectEntries";
 import { escapeStringForPropertiesFile } from "../../tools/escapeStringForPropertiesFile";
-import * as child_process from "child_process";
 import { getThisCodebaseRootDirPath } from "../../tools/getThisCodebaseRootDirPath";
 import propertiesParser from "properties-parser";
 import { createObjectThatThrowsIfAccessed } from "../../tools/createObjectThatThrowsIfAccessed";
+import { listInstalledModules } from "../../tools/listInstalledModules";
 
 export type BuildContextLike = BuildContextLike_kcContextExclusionsFtlCode &
     BuildContextLike_generateMessageProperties & {
@@ -238,9 +238,9 @@ export async function generateResources(params: {
 
         let languageTags: string[] | undefined = undefined;
 
-        i18n_messages_generation: {
+        i18n_multi_page: {
             if (isSpa) {
-                break i18n_messages_generation;
+                break i18n_multi_page;
             }
 
             assert(themeType !== "admin");
@@ -257,29 +257,51 @@ export async function generateResources(params: {
                 writeMessagePropertiesFiles;
         }
 
-        bring_in_account_spa_messages: {
+        let isLegacyAccountSpa = false;
+
+        // NOTE: Eventually remove this block.
+        i18n_single_page_account_legacy: {
             if (!isSpa) {
-                break bring_in_account_spa_messages;
+                break i18n_single_page_account_legacy;
             }
 
             if (themeType !== "account") {
-                break bring_in_account_spa_messages;
+                break i18n_single_page_account_legacy;
             }
 
-            const accountUiDirPath = child_process
-                .execSync(`npm list @keycloakify/keycloak-account-ui --parseable`, {
-                    cwd: pathDirname(buildContext.packageJsonFilePath)
-                })
-                .toString("utf8")
-                .trim();
+            const [moduleMeta] = await listInstalledModules({
+                packageJsonFilePath: buildContext.packageJsonFilePath,
+                filter: ({ moduleName }) =>
+                    moduleName === "@keycloakify/keycloak-account-ui"
+            });
 
-            const messageDirPath_defaults = pathJoin(accountUiDirPath, "messages");
+            assert(
+                moduleMeta !== undefined,
+                `@keycloakify/keycloak-account-ui is supposed to be installed`
+            );
+
+            {
+                const [majorStr] = moduleMeta.version.split(".");
+
+                if (majorStr.length === 6) {
+                    // NOTE: Now we use the format MMmmpp (Major, minor, patch) for example for
+                    // 26.0.7 it would be 260007.
+                    break i18n_single_page_account_legacy;
+                } else {
+                    // 25.0.4-rc.5 or later
+                    isLegacyAccountSpa = true;
+                }
+            }
+
+            const messageDirPath_defaults = pathJoin(moduleMeta.dirPath, "messages");
 
             if (!fs.existsSync(messageDirPath_defaults)) {
                 throw new Error(
                     `Please update @keycloakify/keycloak-account-ui to 25.0.4-rc.5 or later.`
                 );
             }
+
+            isLegacyAccountSpa = true;
 
             const messagesDirPath_dest = pathJoin(
                 getThemeTypeDirPath({ themeName, themeType: "account" }),
@@ -342,14 +364,20 @@ export async function generateResources(params: {
                 );
         }
 
-        bring_in_admin_messages: {
-            if (themeType !== "admin") {
-                break bring_in_admin_messages;
+        i18n_single_page: {
+            if (!isSpa) {
+                break i18n_single_page;
             }
+
+            if (isLegacyAccountSpa) {
+                break i18n_single_page;
+            }
+
+            assert(themeType === "account" || themeType === "admin");
 
             const messagesDirPath_theme = pathJoin(
                 buildContext.themeSrcDirPath,
-                "admin",
+                themeType,
                 "i18n"
             );
 
@@ -423,7 +451,7 @@ export async function generateResources(params: {
 
                 propertiesByLang[parsedBasename.lang] ??= {
                     base: createObjectThatThrowsIfAccessed<Buffer>({
-                        debugMessage: `No base ${parsedBasename.lang} translation for admin theme`
+                        debugMessage: `No base ${parsedBasename.lang} translation for ${themeType} theme`
                     }),
                     override: undefined,
                     overrideByThemeName: {}
@@ -446,7 +474,9 @@ export async function generateResources(params: {
                 ] = buffer;
             });
 
-            writeMessagePropertiesFilesByThemeType.admin = ({
+            languageTags = Object.keys(propertiesByLang);
+
+            writeMessagePropertiesFilesByThemeType[themeType] = ({
                 messageDirPath,
                 themeName
             }) => {
@@ -456,8 +486,6 @@ export async function generateResources(params: {
 
                 Object.entries(propertiesByLang).forEach(
                     ([lang, { base, override, overrideByThemeName }]) => {
-                        (languageTags ??= []).push(lang);
-
                         const messages = propertiesParser.parse(base.toString("utf8"));
 
                         if (override !== undefined) {

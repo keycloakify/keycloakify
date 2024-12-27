@@ -109,7 +109,6 @@ export async function getExtensionModuleMetas(params: {
     const installedExtensionModules = await (async () => {
         const installedModulesWithKeycloakifyInTheName = await listInstalledModules({
             packageJsonFilePath: buildContext.packageJsonFilePath,
-            projectDirPath: buildContext.packageJsonFilePath,
             filter: ({ moduleName }) =>
                 moduleName.includes("keycloakify") && moduleName !== "keycloakify"
         });

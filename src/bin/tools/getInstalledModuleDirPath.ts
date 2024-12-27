@@ -2,40 +2,42 @@ import { join as pathJoin } from "path";
 import { existsAsync } from "./fs.existsAsync";
 import * as child_process from "child_process";
 import { assert } from "tsafe/assert";
+import { getIsRootPath } from "../tools/isRootPath";
 
 export async function getInstalledModuleDirPath(params: {
     moduleName: string;
     packageJsonDirPath: string;
-    projectDirPath: string;
 }) {
-    const { moduleName, packageJsonDirPath, projectDirPath } = params;
+    const { moduleName, packageJsonDirPath } = params;
 
-    common_case: {
-        const dirPath = pathJoin(
-            ...[packageJsonDirPath, "node_modules", ...moduleName.split("/")]
-        );
+    {
+        let dirPath = packageJsonDirPath;
 
-        if (!(await existsAsync(dirPath))) {
-            break common_case;
+        while (true) {
+            const dirPath_candidate = pathJoin(
+                dirPath,
+                "node_modules",
+                ...moduleName.split("/")
+            );
+
+            let doesExist: boolean;
+
+            try {
+                doesExist = await existsAsync(dirPath_candidate);
+            } catch {
+                doesExist = false;
+            }
+
+            if (doesExist) {
+                return dirPath_candidate;
+            }
+
+            if (getIsRootPath(dirPath)) {
+                break;
+            }
+
+            dirPath = pathJoin(dirPath, "..");
         }
-
-        return dirPath;
-    }
-
-    node_modules_at_root_case: {
-        if (projectDirPath === packageJsonDirPath) {
-            break node_modules_at_root_case;
-        }
-
-        const dirPath = pathJoin(
-            ...[projectDirPath, "node_modules", ...moduleName.split("/")]
-        );
-
-        if (!(await existsAsync(dirPath))) {
-            break node_modules_at_root_case;
-        }
-
-        return dirPath;
     }
 
     const dirPath = child_process
