@@ -303,7 +303,7 @@ program
         key: "path",
         name: (() => {
             const long = "path";
-            const short = "p";
+            const short = "t";
 
             optionsKeys.push(long, short);
 
@@ -318,11 +318,12 @@ program
     .option({
         key: "revert",
         name: (() => {
-            const name = "revert";
+            const long = "revert";
+            const short = "r";
 
-            optionsKeys.push(name);
+            optionsKeys.push(long, short);
 
-            return name;
+            return { long, short };
         })(),
         description: [
             "Restores a file or directory to its original auto-generated state,",

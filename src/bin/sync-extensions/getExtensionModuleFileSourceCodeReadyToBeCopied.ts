@@ -104,7 +104,10 @@ function addCommentToSourceCode(params: {
             `<!--`,
             ...commentLines.map(
                 line =>
-                    ` ${line.replace("--path", "-p").replace("Before modifying", "Before modifying or replacing")}`
+                    ` ${line
+                        .replace("--path", "-t")
+                        .replace("--revert", "-r")
+                        .replace("Before modifying", "Before modifying or replacing")}`
             ),
             `-->`
         ].join("\n");
