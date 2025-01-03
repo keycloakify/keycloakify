@@ -155,8 +155,9 @@ export function keycloakify(params: keycloakify.Params) {
             {
                 const isJavascriptFile = id.endsWith(".js") || id.endsWith(".jsx");
                 const isTypeScriptFile = id.endsWith(".ts") || id.endsWith(".tsx");
+                const isSvelteFile = id.endsWith(".svelte");
 
-                if (!isTypeScriptFile && !isJavascriptFile) {
+                if (!isTypeScriptFile && !isJavascriptFile && !isSvelteFile) {
                     return;
                 }
             }
