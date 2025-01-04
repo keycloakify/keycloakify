@@ -45,12 +45,16 @@ export type BuildContext = {
     environmentVariables: { name: string; default: string }[];
     themeSrcDirPath: string;
     implementedThemeTypes: {
-        login: { isImplemented: boolean };
-        email: { isImplemented: boolean };
+        login:
+            | { isImplemented: true }
+            | { isImplemented: false; isImplemented_native: boolean };
+        email: { isImplemented: false; isImplemented_native: boolean };
         account:
-            | { isImplemented: false }
+            | { isImplemented: false; isImplemented_native: boolean }
             | { isImplemented: true; type: "Single-Page" | "Multi-Page" };
-        admin: { isImplemented: boolean };
+        admin:
+            | { isImplemented: true }
+            | { isImplemented: false; isImplemented_native: boolean };
     };
     packageJsonFilePath: string;
     bundler: "vite" | "webpack";
@@ -434,27 +438,68 @@ export function getBuildContext(params: {
         assert<Equals<typeof bundler, never>>(false);
     })();
 
-    const implementedThemeTypes: BuildContext["implementedThemeTypes"] = {
-        login: {
-            isImplemented: fs.existsSync(pathJoin(themeSrcDirPath, "login"))
-        },
-        email: {
-            isImplemented: fs.existsSync(pathJoin(themeSrcDirPath, "email"))
-        },
-        account: (() => {
-            if (buildOptions.accountThemeImplementation === "none") {
-                return { isImplemented: false };
-            }
+    const implementedThemeTypes: BuildContext["implementedThemeTypes"] = (() => {
+        const getIsNative = (dirPath: string) =>
+            fs.existsSync(pathJoin(dirPath, "theme.properties"));
 
-            return {
-                isImplemented: true,
-                type: buildOptions.accountThemeImplementation
-            };
-        })(),
-        admin: {
-            isImplemented: fs.existsSync(pathJoin(themeSrcDirPath, "admin"))
-        }
-    };
+        return {
+            login: (() => {
+                const dirPath = pathJoin(themeSrcDirPath, "login");
+
+                if (!fs.existsSync(dirPath)) {
+                    return { isImplemented: false, isImplemented_native: false };
+                }
+
+                if (getIsNative(dirPath)) {
+                    return { isImplemented: false, isImplemented_native: true };
+                }
+
+                return { isImplemented: true };
+            })(),
+            email: (() => {
+                const dirPath = pathJoin(themeSrcDirPath, "email");
+
+                if (!fs.existsSync(dirPath) || !getIsNative(dirPath)) {
+                    return { isImplemented: false, isImplemented_native: false };
+                }
+
+                return { isImplemented: false, isImplemented_native: true };
+            })(),
+            account: (() => {
+                const dirPath = pathJoin(themeSrcDirPath, "account");
+
+                if (!fs.existsSync(dirPath)) {
+                    return { isImplemented: false, isImplemented_native: false };
+                }
+
+                if (getIsNative(dirPath)) {
+                    return { isImplemented: false, isImplemented_native: true };
+                }
+
+                if (buildOptions.accountThemeImplementation === "none") {
+                    return { isImplemented: false, isImplemented_native: false };
+                }
+
+                return {
+                    isImplemented: true,
+                    type: buildOptions.accountThemeImplementation
+                };
+            })(),
+            admin: (() => {
+                const dirPath = pathJoin(themeSrcDirPath, "admin");
+
+                if (!fs.existsSync(dirPath)) {
+                    return { isImplemented: false, isImplemented_native: false };
+                }
+
+                if (getIsNative(dirPath)) {
+                    return { isImplemented: false, isImplemented_native: true };
+                }
+
+                return { isImplemented: true };
+            })()
+        };
+    })();
 
     if (
         implementedThemeTypes.account.isImplemented &&

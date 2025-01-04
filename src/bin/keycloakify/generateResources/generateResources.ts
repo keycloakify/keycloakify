@@ -41,6 +41,7 @@ import { getThisCodebaseRootDirPath } from "../../tools/getThisCodebaseRootDirPa
 import propertiesParser from "properties-parser";
 import { createObjectThatThrowsIfAccessed } from "../../tools/createObjectThatThrowsIfAccessed";
 import { listInstalledModules } from "../../tools/listInstalledModules";
+import { isInside } from "../../tools/isInside";
 
 export type BuildContextLike = BuildContextLike_kcContextExclusionsFtlCode &
     BuildContextLike_generateMessageProperties & {
@@ -78,12 +79,23 @@ export async function generateResources(params: {
     };
 
     const writeMessagePropertiesFilesByThemeType: Partial<
-        Record<ThemeType, (params: { messageDirPath: string; themeName: string }) => void>
+        Record<
+            ThemeType | "email",
+            (params: { messageDirPath: string; themeName: string }) => void
+        >
     > = {};
 
-    for (const themeType of THEME_TYPES) {
-        if (!buildContext.implementedThemeTypes[themeType].isImplemented) {
-            continue;
+    for (const themeType of [...THEME_TYPES, "email"] as const) {
+        let isNative: boolean;
+
+        {
+            const v = buildContext.implementedThemeTypes[themeType];
+
+            if (!v.isImplemented && !v.isImplemented_native) {
+                continue;
+            }
+
+            isNative = !v.isImplemented && v.isImplemented_native;
         }
 
         const getAccountThemeType = () => {
@@ -102,12 +114,18 @@ export async function generateResources(params: {
                     return getAccountThemeType() === "Single-Page";
                 case "admin":
                     return true;
+                case "email":
+                    return false;
             }
         })();
 
         const themeTypeDirPath = getThemeTypeDirPath({ themeName, themeType });
 
         apply_replacers_and_move_to_theme_resources: {
+            if (isNative) {
+                break apply_replacers_and_move_to_theme_resources;
+            }
+
             const destDirPath = pathJoin(
                 themeTypeDirPath,
                 "resources",
@@ -191,59 +209,93 @@ export async function generateResources(params: {
             });
         }
 
-        const { generateFtlFilesCode } = generateFtlFilesCodeFactory({
-            themeName,
-            indexHtmlCode: fs
-                .readFileSync(pathJoin(buildContext.projectBuildDirPath, "index.html"))
-                .toString("utf8"),
-            buildContext,
-            keycloakifyVersion: readThisNpmPackageVersion(),
-            themeType,
-            fieldNames: isSpa
-                ? []
-                : (assert(themeType !== "admin"),
-                  readFieldNameUsage({
-                      themeSrcDirPath: buildContext.themeSrcDirPath,
-                      themeType
-                  }))
-        });
+        generate_ftl_files: {
+            if (isNative) {
+                break generate_ftl_files;
+            }
 
-        [
-            ...(() => {
-                switch (themeType) {
-                    case "login":
-                        return LOGIN_THEME_PAGE_IDS;
-                    case "account":
-                        return getAccountThemeType() === "Single-Page"
-                            ? ["index.ftl"]
-                            : ACCOUNT_THEME_PAGE_IDS;
-                    case "admin":
-                        return ["index.ftl"];
+            assert(themeType !== "email");
+
+            const { generateFtlFilesCode } = generateFtlFilesCodeFactory({
+                themeName,
+                indexHtmlCode: fs
+                    .readFileSync(
+                        pathJoin(buildContext.projectBuildDirPath, "index.html")
+                    )
+                    .toString("utf8"),
+                buildContext,
+                keycloakifyVersion: readThisNpmPackageVersion(),
+                themeType,
+                fieldNames: isSpa
+                    ? []
+                    : (assert(themeType !== "admin"),
+                      readFieldNameUsage({
+                          themeSrcDirPath: buildContext.themeSrcDirPath,
+                          themeType
+                      }))
+            });
+
+            [
+                ...(() => {
+                    switch (themeType) {
+                        case "login":
+                            return LOGIN_THEME_PAGE_IDS;
+                        case "account":
+                            return getAccountThemeType() === "Single-Page"
+                                ? ["index.ftl"]
+                                : ACCOUNT_THEME_PAGE_IDS;
+                        case "admin":
+                            return ["index.ftl"];
+                    }
+                })(),
+                ...(isSpa
+                    ? []
+                    : readExtraPagesNames({
+                          themeType,
+                          themeSrcDirPath: buildContext.themeSrcDirPath
+                      }))
+            ].forEach(pageId => {
+                const { ftlCode } = generateFtlFilesCode({ pageId });
+
+                fs.writeFileSync(
+                    pathJoin(themeTypeDirPath, pageId),
+                    Buffer.from(ftlCode, "utf8")
+                );
+            });
+        }
+
+        copy_native_theme: {
+            if (!isNative) {
+                break copy_native_theme;
+            }
+
+            const dirPath = pathJoin(buildContext.themeSrcDirPath, themeType);
+
+            transformCodebase({
+                srcDirPath: dirPath,
+                destDirPath: getThemeTypeDirPath({ themeName, themeType }),
+                transformSourceCode: ({ fileRelativePath, sourceCode }) => {
+                    if (isInside({ dirPath: "messages", filePath: fileRelativePath })) {
+                        return undefined;
+                    }
+
+                    return { modifiedSourceCode: sourceCode };
                 }
-            })(),
-            ...(isSpa
-                ? []
-                : readExtraPagesNames({
-                      themeType,
-                      themeSrcDirPath: buildContext.themeSrcDirPath
-                  }))
-        ].forEach(pageId => {
-            const { ftlCode } = generateFtlFilesCode({ pageId });
-
-            fs.writeFileSync(
-                pathJoin(themeTypeDirPath, pageId),
-                Buffer.from(ftlCode, "utf8")
-            );
-        });
+            });
+        }
 
         let languageTags: string[] | undefined = undefined;
 
         i18n_multi_page: {
+            if (isNative) {
+                break i18n_multi_page;
+            }
+
             if (isSpa) {
                 break i18n_multi_page;
             }
 
-            assert(themeType !== "admin");
+            assert(themeType !== "admin" && themeType !== "email");
 
             const wrap = generateMessageProperties({
                 buildContext,
@@ -364,27 +416,24 @@ export async function generateResources(params: {
                 );
         }
 
-        i18n_single_page: {
-            if (!isSpa) {
-                break i18n_single_page;
+        i18n_for_spas_and_native: {
+            if (!isSpa && !isNative) {
+                break i18n_for_spas_and_native;
             }
 
             if (isLegacyAccountSpa) {
-                break i18n_single_page;
+                break i18n_for_spas_and_native;
             }
-
-            assert(themeType === "account" || themeType === "admin");
 
             const messagesDirPath_theme = pathJoin(
                 buildContext.themeSrcDirPath,
                 themeType,
-                "i18n"
+                isNative ? "messages" : "i18n"
             );
 
-            assert(
-                fs.existsSync(messagesDirPath_theme),
-                `${messagesDirPath_theme} is supposed to exist`
-            );
+            if (!fs.existsSync(messagesDirPath_theme)) {
+                break i18n_for_spas_and_native;
+            }
 
             const propertiesByLang: Record<
                 string,
@@ -524,6 +573,10 @@ export async function generateResources(params: {
         }
 
         keycloak_static_resources: {
+            if (isNative) {
+                break keycloak_static_resources;
+            }
+
             if (isSpa) {
                 break keycloak_static_resources;
             }
@@ -540,77 +593,185 @@ export async function generateResources(params: {
             });
         }
 
-        fs.writeFileSync(
-            pathJoin(themeTypeDirPath, "theme.properties"),
-            Buffer.from(
-                [
-                    `parent=${(() => {
-                        switch (themeType) {
-                            case "account":
-                                switch (getAccountThemeType()) {
-                                    case "Multi-Page":
-                                        return "account-v1";
-                                    case "Single-Page":
-                                        return "base";
-                                }
-                            case "login":
-                                return "keycloak";
-                            case "admin":
-                                return "base";
-                        }
-                        assert<Equals<typeof themeType, never>>(false);
-                    })()}`,
-                    ...(themeType === "account" && getAccountThemeType() === "Single-Page"
-                        ? ["deprecatedMode=false"]
-                        : []),
-                    ...(buildContext.extraThemeProperties ?? []),
-                    ...[
-                        ...buildContext.environmentVariables,
-                        { name: KEYCLOAKIFY_SPA_DEV_SERVER_PORT, default: "" }
-                    ].map(
-                        ({ name, default: defaultValue }) =>
-                            `${name}=\${env.${name}:${escapeStringForPropertiesFile(defaultValue)}}`
+        bring_in_account_v1: {
+            if (isNative) {
+                break bring_in_account_v1;
+            }
+
+            if (themeType !== "account") {
+                break bring_in_account_v1;
+            }
+
+            assert(buildContext.implementedThemeTypes.account.isImplemented);
+
+            if (buildContext.implementedThemeTypes.account.type !== "Multi-Page") {
+                break bring_in_account_v1;
+            }
+
+            transformCodebase({
+                srcDirPath: pathJoin(getThisCodebaseRootDirPath(), "res", "account-v1"),
+                destDirPath: getThemeTypeDirPath({
+                    themeName: "account-v1",
+                    themeType: "account"
+                })
+            });
+        }
+
+        generate_theme_properties: {
+            if (isNative) {
+                break generate_theme_properties;
+            }
+
+            assert(themeType !== "email");
+
+            fs.writeFileSync(
+                pathJoin(themeTypeDirPath, "theme.properties"),
+                Buffer.from(
+                    [
+                        `parent=${(() => {
+                            switch (themeType) {
+                                case "account":
+                                    switch (getAccountThemeType()) {
+                                        case "Multi-Page":
+                                            return "account-v1";
+                                        case "Single-Page":
+                                            return "base";
+                                    }
+                                case "login":
+                                    return "keycloak";
+                                case "admin":
+                                    return "base";
+                            }
+                            assert<Equals<typeof themeType, never>>;
+                        })()}`,
+                        ...(themeType === "account" &&
+                        getAccountThemeType() === "Single-Page"
+                            ? ["deprecatedMode=false"]
+                            : []),
+                        ...(buildContext.extraThemeProperties ?? []),
+                        ...[
+                            ...buildContext.environmentVariables,
+                            { name: KEYCLOAKIFY_SPA_DEV_SERVER_PORT, default: "" }
+                        ].map(
+                            ({ name, default: defaultValue }) =>
+                                `${name}=\${env.${name}:${escapeStringForPropertiesFile(defaultValue)}}`
+                        ),
+                        ...(languageTags === undefined
+                            ? []
+                            : [`locales=${languageTags.join(",")}`])
+                    ].join("\n\n"),
+                    "utf8"
+                )
+            );
+        }
+    }
+
+    for (const themeVariantName of buildContext.themeNames) {
+        for (const themeType of [...THEME_TYPES, "email"] as const) {
+            copy_main_theme_to_theme_variant_theme: {
+                let isNative: boolean;
+
+                {
+                    const v = buildContext.implementedThemeTypes[themeType];
+
+                    if (!v.isImplemented && !v.isImplemented_native) {
+                        break copy_main_theme_to_theme_variant_theme;
+                    }
+
+                    isNative = !v.isImplemented && v.isImplemented_native;
+                }
+
+                if (themeVariantName === themeName) {
+                    break copy_main_theme_to_theme_variant_theme;
+                }
+
+                transformCodebase({
+                    srcDirPath: pathJoin(resourcesDirPath, "theme", themeName),
+                    destDirPath: pathJoin(resourcesDirPath, "theme", themeVariantName),
+                    transformSourceCode: isNative
+                        ? undefined
+                        : ({ fileRelativePath, sourceCode }) => {
+                              if (
+                                  pathExtname(fileRelativePath) === ".ftl" &&
+                                  fileRelativePath.split(pathSep).length === 2
+                              ) {
+                                  const modifiedSourceCode = Buffer.from(
+                                      Buffer.from(sourceCode)
+                                          .toString("utf-8")
+                                          .replace(
+                                              `"themeName": "${themeName}"`,
+                                              `"themeName": "${themeVariantName}"`
+                                          ),
+                                      "utf8"
+                                  );
+
+                                  assert(
+                                      Buffer.compare(modifiedSourceCode, sourceCode) !== 0
+                                  );
+
+                                  return { modifiedSourceCode };
+                              }
+
+                              return { modifiedSourceCode: sourceCode };
+                          }
+                });
+            }
+            run_writeMessagePropertiesFiles: {
+                const writeMessagePropertiesFiles =
+                    writeMessagePropertiesFilesByThemeType[themeType];
+
+                if (writeMessagePropertiesFiles === undefined) {
+                    break run_writeMessagePropertiesFiles;
+                }
+
+                writeMessagePropertiesFiles({
+                    messageDirPath: pathJoin(
+                        getThemeTypeDirPath({ themeName: themeVariantName, themeType }),
+                        "messages"
                     ),
-                    ...(languageTags === undefined
-                        ? []
-                        : [`locales=${languageTags.join(",")}`])
-                ].join("\n\n"),
-                "utf8"
-            )
-        );
+                    themeName: themeVariantName
+                });
+            }
+            replace_xKeycloakify_themeName_in_native_ftl_files: {
+                {
+                    const v = buildContext.implementedThemeTypes[themeType];
+
+                    if (v.isImplemented || !v.isImplemented_native) {
+                        break replace_xKeycloakify_themeName_in_native_ftl_files;
+                    }
+                }
+
+                const emailThemeDirPath = getThemeTypeDirPath({
+                    themeName,
+                    themeType
+                });
+
+                transformCodebase({
+                    srcDirPath: emailThemeDirPath,
+                    destDirPath: emailThemeDirPath,
+                    transformSourceCode: ({ filePath, sourceCode }) => {
+                        if (!filePath.endsWith(".ftl")) {
+                            return { modifiedSourceCode: sourceCode };
+                        }
+
+                        return {
+                            modifiedSourceCode: Buffer.from(
+                                sourceCode
+                                    .toString("utf8")
+                                    .replace(
+                                        /xKeycloakify\.themeName/g,
+                                        `"${themeName}"`
+                                    ),
+                                "utf8"
+                            )
+                        };
+                    }
+                });
+            }
+        }
     }
 
-    email: {
-        if (!buildContext.implementedThemeTypes.email.isImplemented) {
-            break email;
-        }
-
-        const emailThemeSrcDirPath = pathJoin(buildContext.themeSrcDirPath, "email");
-
-        transformCodebase({
-            srcDirPath: emailThemeSrcDirPath,
-            destDirPath: getThemeTypeDirPath({ themeName, themeType: "email" })
-        });
-    }
-
-    bring_in_account_v1: {
-        if (!buildContext.implementedThemeTypes.account.isImplemented) {
-            break bring_in_account_v1;
-        }
-
-        if (buildContext.implementedThemeTypes.account.type !== "Multi-Page") {
-            break bring_in_account_v1;
-        }
-
-        transformCodebase({
-            srcDirPath: pathJoin(getThisCodebaseRootDirPath(), "res", "account-v1"),
-            destDirPath: getThemeTypeDirPath({
-                themeName: "account-v1",
-                themeType: "account"
-            })
-        });
-    }
-
+    // Generate meta-inf/keycloak-themes.json
     {
         const metaInfKeycloakThemes: MetaInfKeycloakTheme = { themes: [] };
 
@@ -618,12 +779,15 @@ export async function generateResources(params: {
             metaInfKeycloakThemes.themes.push({
                 name: themeName,
                 types: objectEntries(buildContext.implementedThemeTypes)
-                    .filter(([, { isImplemented }]) => isImplemented)
+                    .filter(([, v]) => v.isImplemented || v.isImplemented_native)
                     .map(([themeType]) => themeType)
             });
         }
 
-        if (buildContext.implementedThemeTypes.account.isImplemented) {
+        if (
+            buildContext.implementedThemeTypes.account.isImplemented &&
+            buildContext.implementedThemeTypes.account.type === "Multi-Page"
+        ) {
             metaInfKeycloakThemes.themes.push({
                 name: "account-v1",
                 types: ["account"]
@@ -634,89 +798,5 @@ export async function generateResources(params: {
             resourcesDirPath,
             getNewMetaInfKeycloakTheme: () => metaInfKeycloakThemes
         });
-    }
-
-    for (const themeVariantName of buildContext.themeNames) {
-        if (themeVariantName === themeName) {
-            continue;
-        }
-
-        transformCodebase({
-            srcDirPath: pathJoin(resourcesDirPath, "theme", themeName),
-            destDirPath: pathJoin(resourcesDirPath, "theme", themeVariantName),
-            transformSourceCode: ({ fileRelativePath, sourceCode }) => {
-                if (
-                    pathExtname(fileRelativePath) === ".ftl" &&
-                    fileRelativePath.split(pathSep).length === 2
-                ) {
-                    const modifiedSourceCode = Buffer.from(
-                        Buffer.from(sourceCode)
-                            .toString("utf-8")
-                            .replace(
-                                `"themeName": "${themeName}"`,
-                                `"themeName": "${themeVariantName}"`
-                            ),
-                        "utf8"
-                    );
-
-                    assert(Buffer.compare(modifiedSourceCode, sourceCode) !== 0);
-
-                    return { modifiedSourceCode };
-                }
-
-                return { modifiedSourceCode: sourceCode };
-            }
-        });
-    }
-
-    for (const themeName of buildContext.themeNames) {
-        for (const [themeType, writeMessagePropertiesFiles] of objectEntries(
-            writeMessagePropertiesFilesByThemeType
-        )) {
-            // NOTE: This is just a quirk of the type system: We can't really differentiate in a record
-            // between the case where the key isn't present and the case where the value is `undefined`.
-            if (writeMessagePropertiesFiles === undefined) {
-                return;
-            }
-            writeMessagePropertiesFiles({
-                messageDirPath: pathJoin(
-                    getThemeTypeDirPath({ themeName, themeType }),
-                    "messages"
-                ),
-                themeName
-            });
-        }
-    }
-
-    modify_email_theme_per_variant: {
-        if (!buildContext.implementedThemeTypes.email.isImplemented) {
-            break modify_email_theme_per_variant;
-        }
-
-        for (const themeName of buildContext.themeNames) {
-            const emailThemeDirPath = getThemeTypeDirPath({
-                themeName,
-                themeType: "email"
-            });
-
-            transformCodebase({
-                srcDirPath: emailThemeDirPath,
-                destDirPath: emailThemeDirPath,
-                transformSourceCode: ({ filePath, sourceCode }) => {
-                    if (!filePath.endsWith(".ftl")) {
-                        return { modifiedSourceCode: sourceCode };
-                    }
-
-                    return {
-                        modifiedSourceCode: Buffer.from(
-                            sourceCode
-                                .toString("utf8")
-                                .replace(/xKeycloakify\.themeName/g, `"${themeName}"`),
-                            "utf8"
-                        )
-                    };
-                }
-            });
-        }
     }
 }
