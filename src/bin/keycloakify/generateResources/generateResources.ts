@@ -57,6 +57,8 @@ export async function generateResources(params: {
     buildContext: BuildContextLike;
     resourcesDirPath: string;
 }): Promise<void> {
+    const start = Date.now();
+
     const { resourcesDirPath, buildContext } = params;
 
     const [themeName] = buildContext.themeNames;
@@ -742,7 +744,7 @@ export async function generateResources(params: {
                 }
 
                 const emailThemeDirPath = getThemeTypeDirPath({
-                    themeName,
+                    themeName: themeVariantName,
                     themeType
                 });
 
@@ -760,7 +762,7 @@ export async function generateResources(params: {
                                     .toString("utf8")
                                     .replace(
                                         /xKeycloakify\.themeName/g,
-                                        `"${themeName}"`
+                                        `"${themeVariantName}"`
                                     ),
                                 "utf8"
                             )
@@ -770,4 +772,6 @@ export async function generateResources(params: {
             }
         }
     }
+
+    console.log(`Generated resources in ${Date.now() - start}ms`);
 }
