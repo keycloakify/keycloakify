@@ -1,23 +1,34 @@
-import { join as pathJoin, relative as pathRelative } from "path";
-import { transformCodebase } from "./tools/transformCodebase";
 import type { BuildContext } from "./shared/buildContext";
-import * as fs from "fs";
-import { downloadAndExtractArchive } from "./tools/downloadAndExtractArchive";
+import cliSelect from "cli-select";
 import { maybeDelegateCommandToCustomHandler } from "./shared/customHandler_delegate";
-import { assert } from "tsafe/assert";
-import { getSupportedDockerImageTags } from "./start-keycloak/getSupportedDockerImageTags";
+import { exitIfUncommittedChanges } from "./shared/exitIfUncommittedChanges";
+
+import { dirname as pathDirname, join as pathJoin, relative as pathRelative } from "path";
+import * as fs from "fs";
+import { assert, is, type Equals } from "tsafe/assert";
+import { id } from "tsafe/id";
+import { addSyncExtensionsToPostinstallScript } from "./shared/addSyncExtensionsToPostinstallScript";
+import { getIsPrettierAvailable, runPrettier } from "./tools/runPrettier";
+import { npmInstall } from "./tools/npmInstall";
+import * as child_process from "child_process";
+import { z } from "zod";
+import chalk from "chalk";
 
 export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
 
     const { hasBeenHandled } = maybeDelegateCommandToCustomHandler({
-        commandName: "initialize-email-theme",
+        commandName: "initialize-account-theme",
         buildContext
     });
 
     if (hasBeenHandled) {
         return;
     }
+
+    exitIfUncommittedChanges({
+        projectDirPath: buildContext.projectDirPath
+    });
 
     const emailThemeSrcDirPath = pathJoin(buildContext.themeSrcDirPath, "email");
 
@@ -26,71 +37,110 @@ export async function command(params: { buildContext: BuildContext }) {
         fs.readdirSync(emailThemeSrcDirPath).length > 0
     ) {
         console.warn(
-            `There is already a non empty ${pathRelative(
-                process.cwd(),
-                emailThemeSrcDirPath
-            )} directory in your project. Aborting.`
+            chalk.red(
+                `There is already a ${pathRelative(
+                    process.cwd(),
+                    emailThemeSrcDirPath
+                )} directory in your project. Aborting.`
+            )
         );
 
         process.exit(-1);
     }
 
-    console.log("Initialize with the base email theme from which version of Keycloak?");
+    const { value: emailThemeType } = await cliSelect({
+        values: ["native (FreeMarker)" as const, "jsx-email (React)" as const]
+    }).catch(() => {
+        process.exit(-1);
+    });
 
-    const { extractedDirPath } = await downloadAndExtractArchive({
-        url: await (async () => {
-            const { latestMajorTags } = await getSupportedDockerImageTags({
-                buildContext
+    if (emailThemeType === "jsx-email (React)") {
+        console.log(
+            [
+                "There is currently no automated support for keycloakify-email, it has to be done manually, see documentation:",
+                "https://docs.keycloakify.dev/theme-types/email-theme"
+            ].join("\n")
+        );
+
+        process.exit(0);
+    }
+
+    const parsedPackageJson = (() => {
+        type ParsedPackageJson = {
+            scripts?: Record<string, string | undefined>;
+            dependencies?: Record<string, string | undefined>;
+            devDependencies?: Record<string, string | undefined>;
+        };
+
+        const zParsedPackageJson = (() => {
+            type TargetType = ParsedPackageJson;
+
+            const zTargetType = z.object({
+                scripts: z.record(z.union([z.string(), z.undefined()])).optional(),
+                dependencies: z.record(z.union([z.string(), z.undefined()])).optional(),
+                devDependencies: z.record(z.union([z.string(), z.undefined()])).optional()
             });
 
-            const keycloakVersion = latestMajorTags[0];
+            assert<Equals<z.infer<typeof zTargetType>, TargetType>>;
 
-            assert(keycloakVersion !== undefined);
+            return id<z.ZodType<TargetType>>(zTargetType);
+        })();
+        const parsedPackageJson = JSON.parse(
+            fs.readFileSync(buildContext.packageJsonFilePath).toString("utf8")
+        );
 
-            return `https://repo1.maven.org/maven2/org/keycloak/keycloak-themes/${keycloakVersion}/keycloak-themes-${keycloakVersion}.jar`;
-        })(),
-        cacheDirPath: buildContext.cacheDirPath,
-        fetchOptions: buildContext.fetchOptions,
-        uniqueIdOfOnArchiveFile: "extractOnlyEmailTheme",
-        onArchiveFile: async ({ fileRelativePath, writeFile }) => {
-            const fileRelativePath_target = pathRelative(
-                pathJoin("theme", "base", "email"),
-                fileRelativePath
-            );
+        zParsedPackageJson.parse(parsedPackageJson);
 
-            if (fileRelativePath_target.startsWith("..")) {
-                return;
-            }
+        assert(is<ParsedPackageJson>(parsedPackageJson));
 
-            await writeFile({ fileRelativePath: fileRelativePath_target });
-        }
+        return parsedPackageJson;
+    })();
+
+    addSyncExtensionsToPostinstallScript({
+        parsedPackageJson,
+        buildContext
     });
 
-    transformCodebase({
-        srcDirPath: extractedDirPath,
-        destDirPath: emailThemeSrcDirPath
-    });
+    const moduleName = `@keycloakify/email-native`;
+
+    const [version] = (
+        JSON.parse(
+            child_process
+                .execSync(`npm show ${moduleName} versions --json`)
+                .toString("utf8")
+                .trim()
+        ) as string[]
+    )
+        .reverse()
+        .filter(version => !version.includes("-"));
+
+    assert(version !== undefined);
+
+    (parsedPackageJson.dependencies ??= {})[moduleName] = `~${version}`;
+
+    if (parsedPackageJson.devDependencies !== undefined) {
+        delete parsedPackageJson.devDependencies[moduleName];
+    }
 
     {
-        const themePropertyFilePath = pathJoin(emailThemeSrcDirPath, "theme.properties");
+        let sourceCode = JSON.stringify(parsedPackageJson, undefined, 2);
+
+        if (await getIsPrettierAvailable()) {
+            sourceCode = await runPrettier({
+                sourceCode,
+                filePath: buildContext.packageJsonFilePath
+            });
+        }
 
         fs.writeFileSync(
-            themePropertyFilePath,
-            Buffer.from(
-                [
-                    `parent=base`,
-                    fs.readFileSync(themePropertyFilePath).toString("utf8")
-                ].join("\n"),
-                "utf8"
-            )
+            buildContext.packageJsonFilePath,
+            Buffer.from(sourceCode, "utf8")
         );
     }
 
-    console.log(
-        `The \`${pathJoin(
-            ".",
-            pathRelative(process.cwd(), emailThemeSrcDirPath)
-        )}\` directory have been created.`
-    );
-    console.log("You can delete any file you don't modify.");
+    await npmInstall({
+        packageJsonDirPath: pathDirname(buildContext.packageJsonFilePath)
+    });
+
+    console.log(chalk.green("Email theme initialized."));
 }

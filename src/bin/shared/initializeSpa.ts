@@ -1,5 +1,5 @@
 import { dirname as pathDirname, join as pathJoin, relative as pathRelative } from "path";
-import type { BuildContext } from "../buildContext";
+import type { BuildContext } from "./buildContext";
 import * as fs from "fs";
 import { assert, is, type Equals } from "tsafe/assert";
 import { id } from "tsafe/id";
@@ -7,8 +7,8 @@ import {
     addSyncExtensionsToPostinstallScript,
     type BuildContextLike as BuildContextLike_addSyncExtensionsToPostinstallScript
 } from "./addSyncExtensionsToPostinstallScript";
-import { getIsPrettierAvailable, runPrettier } from "../../tools/runPrettier";
-import { npmInstall } from "../../tools/npmInstall";
+import { getIsPrettierAvailable, runPrettier } from "../tools/runPrettier";
+import { npmInstall } from "../tools/npmInstall";
 import * as child_process from "child_process";
 import { z } from "zod";
 import chalk from "chalk";

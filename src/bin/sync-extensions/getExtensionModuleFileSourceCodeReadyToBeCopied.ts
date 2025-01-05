@@ -99,6 +99,12 @@ function addCommentToSourceCode(params: {
         return toResult(commentLines.map(line => `# ${line}`).join("\n"));
     }
 
+    if (fileRelativePath.endsWith(".ftl")) {
+        return toResult(
+            [`<#--`, ...commentLines.map(line => `  ${line}`), `-->`].join("\n")
+        );
+    }
+
     if (fileRelativePath.endsWith(".html") || fileRelativePath.endsWith(".svg")) {
         const comment = [
             `<!--`,

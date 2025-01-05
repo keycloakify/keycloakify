@@ -23,22 +23,6 @@ export async function command(params: { buildContext: BuildContext }) {
 
     const accountThemeSrcDirPath = pathJoin(buildContext.themeSrcDirPath, "account");
 
-    if (
-        fs.existsSync(accountThemeSrcDirPath) &&
-        fs.readdirSync(accountThemeSrcDirPath).length > 0
-    ) {
-        console.warn(
-            chalk.red(
-                `There is already a ${pathRelative(
-                    process.cwd(),
-                    accountThemeSrcDirPath
-                )} directory in your project. Aborting.`
-            )
-        );
-
-        process.exit(-1);
-    }
-
     exitIfUncommittedChanges({
         projectDirPath: buildContext.projectDirPath
     });
@@ -51,17 +35,35 @@ export async function command(params: { buildContext: BuildContext }) {
 
     switch (accountThemeType) {
         case "Multi-Page":
-            fs.cpSync(
-                pathJoin(
-                    getThisCodebaseRootDirPath(),
-                    "src",
-                    "bin",
-                    "initialize-account-theme",
-                    "multi-page-boilerplate"
-                ),
-                accountThemeSrcDirPath,
-                { recursive: true }
-            );
+            {
+                if (
+                    fs.existsSync(accountThemeSrcDirPath) &&
+                    fs.readdirSync(accountThemeSrcDirPath).length > 0
+                ) {
+                    console.warn(
+                        chalk.red(
+                            `There is already a ${pathRelative(
+                                process.cwd(),
+                                accountThemeSrcDirPath
+                            )} directory in your project. Aborting.`
+                        )
+                    );
+
+                    process.exit(-1);
+                }
+
+                fs.cpSync(
+                    pathJoin(
+                        getThisCodebaseRootDirPath(),
+                        "src",
+                        "bin",
+                        "initialize-account-theme",
+                        "multi-page-boilerplate"
+                    ),
+                    accountThemeSrcDirPath,
+                    { recursive: true }
+                );
+            }
             break;
         case "Single-Page":
             {
