@@ -31,11 +31,6 @@ import {
     type BuildContextLike as BuildContextLike_generateMessageProperties
 } from "./generateMessageProperties";
 import { readThisNpmPackageVersion } from "../../tools/readThisNpmPackageVersion";
-import {
-    writeMetaInfKeycloakThemes,
-    type MetaInfKeycloakTheme
-} from "../../shared/metaInfKeycloakThemes";
-import { objectEntries } from "tsafe/objectEntries";
 import { escapeStringForPropertiesFile } from "../../tools/escapeStringForPropertiesFile";
 import { getThisCodebaseRootDirPath } from "../../tools/getThisCodebaseRootDirPath";
 import propertiesParser from "properties-parser";
@@ -769,34 +764,5 @@ export async function generateResources(params: {
                 });
             }
         }
-    }
-
-    // Generate meta-inf/keycloak-themes.json
-    {
-        const metaInfKeycloakThemes: MetaInfKeycloakTheme = { themes: [] };
-
-        for (const themeName of buildContext.themeNames) {
-            metaInfKeycloakThemes.themes.push({
-                name: themeName,
-                types: objectEntries(buildContext.implementedThemeTypes)
-                    .filter(([, v]) => v.isImplemented || v.isImplemented_native)
-                    .map(([themeType]) => themeType)
-            });
-        }
-
-        if (
-            buildContext.implementedThemeTypes.account.isImplemented &&
-            buildContext.implementedThemeTypes.account.type === "Multi-Page"
-        ) {
-            metaInfKeycloakThemes.themes.push({
-                name: "account-v1",
-                types: ["account"]
-            });
-        }
-
-        writeMetaInfKeycloakThemes({
-            resourcesDirPath,
-            getNewMetaInfKeycloakTheme: () => metaInfKeycloakThemes
-        });
     }
 }

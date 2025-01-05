@@ -15,7 +15,6 @@ import { readFileSync } from "fs";
 import { isInside } from "../../tools/isInside";
 import child_process from "child_process";
 import { rmSync } from "../../tools/fs.rmSync";
-import { writeMetaInfKeycloakThemes } from "../../shared/metaInfKeycloakThemes";
 import { existsAsync } from "../../tools/fs.existsAsync";
 
 export type BuildContextLike = BuildContextLike_generatePom & {
@@ -106,29 +105,45 @@ export async function buildJar(params: {
                   }
     });
 
-    remove_account_v1_in_meta_inf: {
-        if (!doesImplementAccountV1Theme) {
-            // NOTE: We do not have account v1 anyway
-            break remove_account_v1_in_meta_inf;
-        }
+    {
+        const filePath = pathJoin(
+            tmpResourcesDirPath,
+            "META-INF",
+            "keycloak-themes.json"
+        );
 
-        if (keycloakAccountV1Version !== null) {
-            // NOTE: No, we need to keep account-v1 in meta-inf
-            break remove_account_v1_in_meta_inf;
-        }
+        await fs.mkdir(pathDirname(filePath));
 
-        writeMetaInfKeycloakThemes({
-            resourcesDirPath: tmpResourcesDirPath,
-            getNewMetaInfKeycloakTheme: ({ metaInfKeycloakTheme }) => {
-                assert(metaInfKeycloakTheme !== undefined);
+        await fs.writeFile(
+            filePath,
+            Buffer.from(
+                JSON.stringify(
+                    {
+                        themes: await (async () => {
+                            const dirPath = pathJoin(tmpResourcesDirPath, "theme");
 
-                metaInfKeycloakTheme.themes = metaInfKeycloakTheme.themes.filter(
-                    ({ name }) => name !== "account-v1"
-                );
+                            const themeNames = await fs.readdir(dirPath);
 
-                return metaInfKeycloakTheme;
-            }
-        });
+                            return Promise.all(
+                                themeNames.map(async themeName => {
+                                    const types = await fs.readdir(
+                                        pathJoin(dirPath, themeName)
+                                    );
+
+                                    return {
+                                        name: themeName,
+                                        types
+                                    };
+                                })
+                            );
+                        })()
+                    },
+                    null,
+                    2
+                ),
+                "utf8"
+            )
+        );
     }
 
     route_legacy_pages: {
