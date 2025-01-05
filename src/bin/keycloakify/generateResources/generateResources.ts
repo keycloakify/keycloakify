@@ -681,14 +681,19 @@ export async function generateResources(params: {
                 }
 
                 transformCodebase({
-                    srcDirPath: pathJoin(resourcesDirPath, "theme", themeName),
-                    destDirPath: pathJoin(resourcesDirPath, "theme", themeVariantName),
+                    srcDirPath: pathJoin(resourcesDirPath, "theme", themeName, themeType),
+                    destDirPath: pathJoin(
+                        resourcesDirPath,
+                        "theme",
+                        themeVariantName,
+                        themeType
+                    ),
                     transformSourceCode: isNative
                         ? undefined
                         : ({ fileRelativePath, sourceCode }) => {
                               if (
                                   pathExtname(fileRelativePath) === ".ftl" &&
-                                  fileRelativePath.split(pathSep).length === 2
+                                  fileRelativePath.split(pathSep).length === 1
                               ) {
                                   const modifiedSourceCode = Buffer.from(
                                       Buffer.from(sourceCode)
