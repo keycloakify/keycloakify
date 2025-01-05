@@ -6,8 +6,7 @@ import {
     join as pathJoin,
     relative as pathRelative,
     dirname as pathDirname,
-    extname as pathExtname,
-    sep as pathSep
+    basename as pathBasename
 } from "path";
 import { replaceImportsInJsCode } from "../replacers/replaceImportsInJsCode";
 import { replaceImportsInCssCode } from "../replacers/replaceImportsInCssCode";
@@ -37,6 +36,7 @@ import propertiesParser from "properties-parser";
 import { createObjectThatThrowsIfAccessed } from "../../tools/createObjectThatThrowsIfAccessed";
 import { listInstalledModules } from "../../tools/listInstalledModules";
 import { isInside } from "../../tools/isInside";
+import { id } from "tsafe/id";
 
 export type BuildContextLike = BuildContextLike_kcContextExclusionsFtlCode &
     BuildContextLike_generateMessageProperties & {
@@ -663,7 +663,7 @@ export async function generateResources(params: {
         }
     }
 
-    for (const themeVariantName of buildContext.themeNames) {
+    for (const themeVariantName of [...buildContext.themeNames].reverse()) {
         for (const themeType of [...THEME_TYPES, "email"] as const) {
             copy_main_theme_to_theme_variant_theme: {
                 let isNative: boolean;
@@ -678,44 +678,59 @@ export async function generateResources(params: {
                     isNative = !v.isImplemented && v.isImplemented_native;
                 }
 
-                if (themeVariantName === themeName) {
+                if (!isNative && themeVariantName === themeName) {
                     break copy_main_theme_to_theme_variant_theme;
                 }
 
                 transformCodebase({
-                    srcDirPath: pathJoin(resourcesDirPath, "theme", themeName, themeType),
-                    destDirPath: pathJoin(
-                        resourcesDirPath,
-                        "theme",
-                        themeVariantName,
+                    srcDirPath: getThemeTypeDirPath({ themeName, themeType }),
+                    destDirPath: getThemeTypeDirPath({
+                        themeName: themeVariantName,
                         themeType
-                    ),
-                    transformSourceCode: isNative
-                        ? undefined
-                        : ({ fileRelativePath, sourceCode }) => {
-                              if (
-                                  pathExtname(fileRelativePath) === ".ftl" &&
-                                  fileRelativePath.split(pathSep).length === 1
-                              ) {
-                                  const modifiedSourceCode = Buffer.from(
-                                      Buffer.from(sourceCode)
-                                          .toString("utf-8")
-                                          .replace(
-                                              `"themeName": "${themeName}"`,
-                                              `"themeName": "${themeVariantName}"`
-                                          ),
-                                      "utf8"
-                                  );
+                    }),
+                    transformSourceCode: ({ fileRelativePath, sourceCode }) => {
+                        patch_xKeycloakify_themeName: {
+                            if (!fileRelativePath.endsWith(".ftl")) {
+                                break patch_xKeycloakify_themeName;
+                            }
 
-                                  assert(
-                                      Buffer.compare(modifiedSourceCode, sourceCode) !== 0
-                                  );
+                            if (
+                                !isNative &&
+                                pathBasename(fileRelativePath) !== fileRelativePath
+                            ) {
+                                break patch_xKeycloakify_themeName;
+                            }
 
-                                  return { modifiedSourceCode };
-                              }
+                            const modifiedSourceCode = Buffer.from(
+                                Buffer.from(sourceCode)
+                                    .toString("utf-8")
+                                    .replace(
+                                        ...id<[string | RegExp, string]>(
+                                            isNative
+                                                ? [
+                                                      /xKeycloakify\.themeName/g,
+                                                      `"${themeVariantName}"`
+                                                  ]
+                                                : [
+                                                      `"themeName": "${themeName}"`,
+                                                      `"themeName": "${themeVariantName}"`
+                                                  ]
+                                        )
+                                    ),
+                                "utf8"
+                            );
 
-                              return { modifiedSourceCode: sourceCode };
-                          }
+                            if (!isNative) {
+                                assert(
+                                    Buffer.compare(modifiedSourceCode, sourceCode) !== 0
+                                );
+                            }
+
+                            return { modifiedSourceCode };
+                        }
+
+                        return { modifiedSourceCode: sourceCode };
+                    }
                 });
             }
             run_writeMessagePropertiesFiles: {
@@ -732,42 +747,6 @@ export async function generateResources(params: {
                         "messages"
                     ),
                     themeName: themeVariantName
-                });
-            }
-            replace_xKeycloakify_themeName_in_native_ftl_files: {
-                {
-                    const v = buildContext.implementedThemeTypes[themeType];
-
-                    if (v.isImplemented || !v.isImplemented_native) {
-                        break replace_xKeycloakify_themeName_in_native_ftl_files;
-                    }
-                }
-
-                const emailThemeDirPath = getThemeTypeDirPath({
-                    themeName: themeVariantName,
-                    themeType
-                });
-
-                transformCodebase({
-                    srcDirPath: emailThemeDirPath,
-                    destDirPath: emailThemeDirPath,
-                    transformSourceCode: ({ filePath, sourceCode }) => {
-                        if (!filePath.endsWith(".ftl")) {
-                            return { modifiedSourceCode: sourceCode };
-                        }
-
-                        return {
-                            modifiedSourceCode: Buffer.from(
-                                sourceCode
-                                    .toString("utf8")
-                                    .replace(
-                                        /xKeycloakify\.themeName/g,
-                                        `"${themeVariantName}"`
-                                    ),
-                                "utf8"
-                            )
-                        };
-                    }
                 });
             }
         }
