@@ -122,7 +122,17 @@ export async function buildJar(params: {
                         themes: await (async () => {
                             const dirPath = pathJoin(tmpResourcesDirPath, "theme");
 
-                            const themeNames = await fs.readdir(dirPath);
+                            const themeNames = (await fs.readdir(dirPath)).sort(
+                                (a, b) => {
+                                    const indexA = buildContext.themeNames.indexOf(a);
+                                    const indexB = buildContext.themeNames.indexOf(b);
+
+                                    const orderA = indexA === -1 ? Infinity : indexA;
+                                    const orderB = indexB === -1 ? Infinity : indexB;
+
+                                    return orderA - orderB;
+                                }
+                            );
 
                             return Promise.all(
                                 themeNames.map(async themeName => {

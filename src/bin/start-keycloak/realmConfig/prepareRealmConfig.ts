@@ -1,28 +1,20 @@
 import { assert } from "tsafe/assert";
 import type { ParsedRealmJson } from "./ParsedRealmJson";
 import { getDefaultConfig } from "./defaultConfig";
-import type { BuildContext } from "../../shared/buildContext";
-import { objectKeys } from "tsafe/objectKeys";
-import { TEST_APP_URL } from "../../shared/constants";
+import { TEST_APP_URL, type ThemeType, THEME_TYPES } from "../../shared/constants";
 import { sameFactory } from "evt/tools/inDepth/same";
-
-export type BuildContextLike = {
-    themeNames: BuildContext["themeNames"];
-    implementedThemeTypes: BuildContext["implementedThemeTypes"];
-};
-
-assert<BuildContext extends BuildContextLike ? true : false>;
 
 export function prepareRealmConfig(params: {
     parsedRealmJson: ParsedRealmJson;
     keycloakMajorVersionNumber: number;
-    buildContext: BuildContextLike;
+    parsedKeycloakThemesJsonEntry: { name: string; types: (ThemeType | "email")[] };
 }): {
     realmName: string;
     clientName: string;
     username: string;
 } {
-    const { parsedRealmJson, keycloakMajorVersionNumber, buildContext } = params;
+    const { parsedRealmJson, keycloakMajorVersionNumber, parsedKeycloakThemesJsonEntry } =
+        params;
 
     const { username } = addOrEditTestUser({
         parsedRealmJson,
@@ -38,8 +30,7 @@ export function prepareRealmConfig(params: {
 
     enableCustomThemes({
         parsedRealmJson,
-        themeName: buildContext.themeNames[0],
-        implementedThemeTypes: buildContext.implementedThemeTypes
+        parsedKeycloakThemesJsonEntry
     });
 
     enable_custom_events_listeners: {
@@ -63,17 +54,15 @@ export function prepareRealmConfig(params: {
 
 function enableCustomThemes(params: {
     parsedRealmJson: ParsedRealmJson;
-    themeName: string;
-    implementedThemeTypes: BuildContextLike["implementedThemeTypes"];
+    parsedKeycloakThemesJsonEntry: { name: string; types: (ThemeType | "email")[] };
 }) {
-    const { parsedRealmJson, themeName, implementedThemeTypes } = params;
+    const { parsedRealmJson, parsedKeycloakThemesJsonEntry } = params;
 
-    for (const themeType of objectKeys(implementedThemeTypes)) {
-        if (!implementedThemeTypes[themeType].isImplemented) {
-            continue;
-        }
-
-        parsedRealmJson[`${themeType}Theme` as const] = themeName;
+    for (const themeType of [...THEME_TYPES, "email"] as const) {
+        parsedRealmJson[`${themeType}Theme` as const] =
+            !parsedKeycloakThemesJsonEntry.types.includes(themeType)
+                ? ""
+                : parsedKeycloakThemesJsonEntry.name;
     }
 }
 

@@ -1,10 +1,7 @@
 import type { BuildContext } from "../../shared/buildContext";
 import { assert } from "tsafe/assert";
 import { getDefaultConfig } from "./defaultConfig";
-import {
-    prepareRealmConfig,
-    type BuildContextLike as BuildContextLike_prepareRealmConfig
-} from "./prepareRealmConfig";
+import { prepareRealmConfig } from "./prepareRealmConfig";
 import * as fs from "fs";
 import {
     join as pathJoin,
@@ -24,18 +21,19 @@ import {
 } from "./dumpContainerConfig";
 import * as runExclusive from "run-exclusive";
 import { waitForDebounceFactory } from "powerhooks/tools/waitForDebounce";
+import type { ThemeType } from "../../shared/constants";
 import chalk from "chalk";
 
-export type BuildContextLike = BuildContextLike_dumpContainerConfig &
-    BuildContextLike_prepareRealmConfig & {
-        projectDirPath: string;
-    };
+export type BuildContextLike = BuildContextLike_dumpContainerConfig & {
+    projectDirPath: string;
+};
 
 assert<BuildContext extends BuildContextLike ? true : false>;
 
 export async function getRealmConfig(params: {
     keycloakMajorVersionNumber: number;
     realmJsonFilePath_userProvided: string | undefined;
+    parsedKeycloakThemesJsonEntry: { name: string; types: (ThemeType | "email")[] };
     buildContext: BuildContextLike;
 }): Promise<{
     realmJsonFilePath: string;
@@ -44,8 +42,12 @@ export async function getRealmConfig(params: {
     username: string;
     onRealmConfigChange: () => Promise<void>;
 }> {
-    const { keycloakMajorVersionNumber, realmJsonFilePath_userProvided, buildContext } =
-        params;
+    const {
+        keycloakMajorVersionNumber,
+        realmJsonFilePath_userProvided,
+        parsedKeycloakThemesJsonEntry,
+        buildContext
+    } = params;
 
     const realmJsonFilePath = pathJoin(
         buildContext.projectDirPath,
@@ -71,8 +73,8 @@ export async function getRealmConfig(params: {
 
     const { clientName, realmName, username } = prepareRealmConfig({
         parsedRealmJson,
-        buildContext,
-        keycloakMajorVersionNumber
+        keycloakMajorVersionNumber,
+        parsedKeycloakThemesJsonEntry
     });
 
     {

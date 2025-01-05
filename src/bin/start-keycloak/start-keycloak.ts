@@ -4,7 +4,8 @@ import {
     CONTAINER_NAME,
     KEYCLOAKIFY_SPA_DEV_SERVER_PORT,
     KEYCLOAKIFY_LOGIN_JAR_BASENAME,
-    TEST_APP_URL
+    TEST_APP_URL,
+    ThemeType
 } from "../shared/constants";
 import { SemVer } from "../tools/SemVer";
 import { assert, type Equals } from "tsafe/assert";
@@ -34,6 +35,7 @@ import { startViteDevServer } from "./startViteDevServer";
 import { getSupportedKeycloakMajorVersions } from "./realmConfig/defaultConfig";
 import { getSupportedDockerImageTags } from "./getSupportedDockerImageTags";
 import { getRealmConfig } from "./realmConfig";
+import { id } from "tsafe/id";
 
 export async function command(params: {
     buildContext: BuildContext;
@@ -270,32 +272,6 @@ export async function command(params: {
         return wrap.majorVersionNumber;
     })();
 
-    const { clientName, onRealmConfigChange, realmJsonFilePath, realmName, username } =
-        await getRealmConfig({
-            keycloakMajorVersionNumber,
-            realmJsonFilePath_userProvided: await (async () => {
-                if (cliCommandOptions.realmJsonFilePath !== undefined) {
-                    return getAbsoluteAndInOsFormatPath({
-                        pathIsh: cliCommandOptions.realmJsonFilePath,
-                        cwd: process.cwd()
-                    });
-                }
-
-                if (buildContext.startKeycloakOptions.realmJsonFilePath !== undefined) {
-                    assert(
-                        await existsAsync(
-                            buildContext.startKeycloakOptions.realmJsonFilePath
-                        ),
-                        `${pathRelative(process.cwd(), buildContext.startKeycloakOptions.realmJsonFilePath)} does not exist`
-                    );
-                    return buildContext.startKeycloakOptions.realmJsonFilePath;
-                }
-
-                return undefined;
-            })(),
-            buildContext
-        });
-
     {
         const { isAppBuildSuccess } = await appBuild({
             buildContext
@@ -376,10 +352,24 @@ export async function command(params: {
         ))
     ];
 
+    let parsedKeycloakThemesJson = id<
+        { themes: { name: string; types: (ThemeType | "email")[] }[] } | undefined
+    >(undefined);
+
     async function extractThemeResourcesFromJar() {
         await extractArchive({
             archiveFilePath: jarFilePath,
-            onArchiveFile: async ({ relativeFilePathInArchive, writeFile }) => {
+            onArchiveFile: async ({ relativeFilePathInArchive, writeFile, readFile }) => {
+                if (
+                    relativeFilePathInArchive ===
+                        pathJoin("META-INF", "keycloak-themes.json") &&
+                    parsedKeycloakThemesJson === undefined
+                ) {
+                    parsedKeycloakThemesJson = JSON.parse(
+                        (await readFile()).toString("utf8")
+                    );
+                }
+
                 if (isInside({ dirPath: "theme", filePath: relativeFilePathInArchive })) {
                     await writeFile({
                         filePath: pathJoin(
@@ -400,6 +390,43 @@ export async function command(params: {
     }
 
     await extractThemeResourcesFromJar();
+
+    assert(parsedKeycloakThemesJson !== undefined);
+
+    const { clientName, onRealmConfigChange, realmJsonFilePath, realmName, username } =
+        await getRealmConfig({
+            keycloakMajorVersionNumber,
+            parsedKeycloakThemesJsonEntry: (() => {
+                const entry = parsedKeycloakThemesJson.themes.find(
+                    ({ name }) => name === buildContext.themeNames[0]
+                );
+
+                assert(entry !== undefined);
+
+                return entry;
+            })(),
+            realmJsonFilePath_userProvided: await (async () => {
+                if (cliCommandOptions.realmJsonFilePath !== undefined) {
+                    return getAbsoluteAndInOsFormatPath({
+                        pathIsh: cliCommandOptions.realmJsonFilePath,
+                        cwd: process.cwd()
+                    });
+                }
+
+                if (buildContext.startKeycloakOptions.realmJsonFilePath !== undefined) {
+                    assert(
+                        await existsAsync(
+                            buildContext.startKeycloakOptions.realmJsonFilePath
+                        ),
+                        `${pathRelative(process.cwd(), buildContext.startKeycloakOptions.realmJsonFilePath)} does not exist`
+                    );
+                    return buildContext.startKeycloakOptions.realmJsonFilePath;
+                }
+
+                return undefined;
+            })(),
+            buildContext
+        });
 
     const jarFilePath_cacheDir = pathJoin(
         buildContext.cacheDirPath,
