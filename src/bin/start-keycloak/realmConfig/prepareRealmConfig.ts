@@ -101,7 +101,6 @@ function addOrEditTestUser(params: {
     );
 
     newUser.username = defaultUser_default.username;
-    newUser.email = defaultUser_default.email;
 
     delete_existing_password_credential_if_any: {
         const i = newUser.credentials.findIndex(
