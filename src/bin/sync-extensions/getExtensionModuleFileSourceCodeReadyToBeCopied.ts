@@ -100,9 +100,19 @@ function addCommentToSourceCode(params: {
     }
 
     if (fileRelativePath.endsWith(".ftl")) {
-        return toResult(
-            [`<#--`, ...commentLines.map(line => `  ${line}`), `-->`].join("\n")
+        const comment = [`<#--`, ...commentLines.map(line => `  ${line}`), `-->`].join(
+            "\n"
         );
+
+        if (sourceCode.trim().startsWith("<#ftl")) {
+            const [first, ...rest] = sourceCode.split(">");
+
+            const last = rest.join(">");
+
+            return [`${first}>`, comment, last].join("\n");
+        }
+
+        return toResult(comment);
     }
 
     if (fileRelativePath.endsWith(".html") || fileRelativePath.endsWith(".svg")) {
