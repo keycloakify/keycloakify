@@ -1,6 +1,7 @@
 import type { JSX } from "keycloakify/tools/JSX";
-import { useEffect, useReducer, Fragment } from "react";
+import { useEffect, Fragment } from "react";
 import { assert } from "keycloakify/tools/assert";
+import { useIsPasswordRevealed } from "keycloakify/tools/useIsPasswordRevealed";
 import type { KcClsx } from "keycloakify/login/lib/kcClsx";
 import {
     useUserProfileForm,
@@ -249,15 +250,7 @@ function PasswordWrapper(props: { kcClsx: KcClsx; i18n: I18n; passwordInputId: s
 
     const { msgStr } = i18n;
 
-    const [isPasswordRevealed, toggleIsPasswordRevealed] = useReducer((isPasswordRevealed: boolean) => !isPasswordRevealed, false);
-
-    useEffect(() => {
-        const passwordInputElement = document.getElementById(passwordInputId);
-
-        assert(passwordInputElement instanceof HTMLInputElement);
-
-        passwordInputElement.type = isPasswordRevealed ? "text" : "password";
-    }, [isPasswordRevealed]);
+    const { isPasswordRevealed, toggleIsPasswordRevealed } = useIsPasswordRevealed({ passwordInputId });
 
     return (
         <div className={kcClsx("kcInputGroup")}>
