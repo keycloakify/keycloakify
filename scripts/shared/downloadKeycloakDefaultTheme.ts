@@ -280,6 +280,24 @@ export async function downloadKeycloakDefaultTheme(params: {
                                 "fonts",
                                 "OpenSans-Semibold-webfont.woff2"
                             ),
+                            pathJoin(
+                                "patternfly",
+                                "dist",
+                                "fonts",
+                                "OpenSans-SemiboldItalic-webfont.woff2"
+                            ),
+                            pathJoin(
+                                "patternfly",
+                                "dist",
+                                "fonts",
+                                "OpenSans-SemiboldItalic-webfont.woff"
+                            ),
+                            pathJoin(
+                                "patternfly",
+                                "dist",
+                                "fonts",
+                                "OpenSans-SemiboldItalic-webfont.ttf"
+                            ),
                             pathJoin("patternfly", "dist", "img", "bg-login.jpg"),
                             pathJoin("jquery", "dist", "jquery.min.js"),
                             pathJoin("rfc4648", "lib", "rfc4648.js")
