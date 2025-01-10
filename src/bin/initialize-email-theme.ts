@@ -103,14 +103,21 @@ export async function command(params: { buildContext: BuildContext }) {
 
     const moduleName = `@keycloakify/email-native`;
 
-    const [version] = (
-        JSON.parse(
-            child_process
-                .execSync(`npm show ${moduleName} versions --json`)
-                .toString("utf8")
-                .trim()
-        ) as string[]
-    )
+    const [version] = ((): string[] => {
+        const cmdOutput = child_process
+            .execSync(`npm show ${moduleName} versions --json`)
+            .toString("utf8")
+            .trim();
+
+        const versions = JSON.parse(cmdOutput) as string | string[];
+
+        // NOTE: Bug in some older npm versions
+        if (typeof versions === "string") {
+            return [versions];
+        }
+
+        return versions;
+    })()
         .reverse()
         .filter(version => !version.includes("-"));
 
