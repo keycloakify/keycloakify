@@ -781,6 +781,40 @@ export async function command(params: {
 
                         return;
                     }
+
+                    ignore_patternfly: {
+                        if (
+                            !isInside({
+                                dirPath: pathJoin(
+                                    buildContext.themeSrcDirPath,
+                                    "shared",
+                                    "@patternfly"
+                                ),
+                                filePath
+                            })
+                        ) {
+                            break ignore_patternfly;
+                        }
+
+                        return;
+                    }
+
+                    ignore_keycloak_ui_shared: {
+                        if (
+                            !isInside({
+                                dirPath: pathJoin(
+                                    buildContext.themeSrcDirPath,
+                                    "shared",
+                                    "keycloak-ui-shared"
+                                ),
+                                filePath
+                            })
+                        ) {
+                            break ignore_keycloak_ui_shared;
+                        }
+
+                        return;
+                    }
                 }
 
                 console.log(`Detected changes in ${filePath}`);
