@@ -53,10 +53,12 @@ export async function command(params: {
                 .execSync("docker --version", {
                     stdio: ["ignore", "pipe", "ignore"]
                 })
-                ?.toString("utf8");
-        } catch {}
+                .toString("utf8");
+        } catch {
+            commandOutput = "";
+        }
 
-        if (["Docker", "docker", "podman"].includes(commandOutput?)) {
+        if (["docker", "podman"].includes(commandOutput.toLowerCase())) {
             break exit_if_docker_not_installed;
         }
 
