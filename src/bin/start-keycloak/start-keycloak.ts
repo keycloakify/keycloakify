@@ -56,7 +56,11 @@ export async function command(params: {
                 ?.toString("utf8");
         } catch {}
 
-        if (commandOutput?.includes("Docker") || commandOutput?.includes("podman")) {
+        if (
+            commandOutput?.includes("Docker") ||
+            commandOutput?.includes("docker") ||
+            commandOutput?.includes("podman")
+        ) {
             break exit_if_docker_not_installed;
         }
 
