@@ -58,8 +58,12 @@ export async function command(params: {
             commandOutput = "";
         }
 
-        if (["docker", "podman"].includes(commandOutput.toLowerCase())) {
-            break exit_if_docker_not_installed;
+        commandOutput = commandOutput.trim().toLowerCase();
+
+        for (const term of ["docker", "podman"]) {
+            if (commandOutput.includes(term)) {
+                break exit_if_docker_not_installed;
+            }
         }
 
         console.log(
