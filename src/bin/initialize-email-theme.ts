@@ -49,12 +49,15 @@ export async function command(params: { buildContext: BuildContext }) {
     }
 
     const { value: emailThemeType } = await cliSelect({
-        values: ["native (FreeMarker)" as const, "jsx-email (React)" as const]
+        values: [
+            "native (FreeMarker)" as const,
+            "Another email templating solution" as const
+        ]
     }).catch(() => {
         process.exit(-1);
     });
 
-    if (emailThemeType === "jsx-email (React)") {
+    if (emailThemeType === "Another email templating solution") {
         console.log(
             [
                 "There is currently no automated support for keycloakify-email, it has to be done manually, see documentation:",
