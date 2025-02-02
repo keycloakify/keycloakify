@@ -74,7 +74,7 @@ export async function command(params: { buildContext: BuildContext }) {
 
     if (themeType === "admin") {
         console.log(
-            `${chalk.red("✗")} Sorry, there is no Storybook support for the Account UI.`
+            `${chalk.red("✗")} Sorry, there is no Storybook support for the Admin UI.`
         );
 
         process.exit(0);
