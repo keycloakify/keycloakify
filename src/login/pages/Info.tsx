@@ -20,7 +20,7 @@ export default function Info(props: PageProps<Extract<KcContext, { pageId: "info
             headerNode={
                 <span
                     dangerouslySetInnerHTML={{
-                        __html: kcSanitize(messageHeader ?? message.summary)
+                        __html: kcSanitize(messageHeader ? advancedMsgStr(messageHeader) : message.summary)
                     }}
                 />
             }
