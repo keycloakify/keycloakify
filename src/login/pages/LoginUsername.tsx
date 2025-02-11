@@ -98,7 +98,7 @@ export default function LoginUsername(props: PageProps<Extract<KcContext, { page
                                         defaultValue={login.username ?? ""}
                                         type="text"
                                         autoFocus
-                                        autoComplete="off"
+                                        autoComplete="username"
                                         aria-invalid={messagesPerField.existsError("username")}
                                     />
                                     {messagesPerField.existsError("username") && (
