@@ -509,6 +509,8 @@ function formStateSelector(params: { state: internal.State }): FormState {
                             switch (error.source.name) {
                                 case "length":
                                     return hasLostFocusAtLeastOnce;
+                                case "maxLength":
+                                    return hasLostFocusAtLeastOnce;
                                 case "digits":
                                     return hasLostFocusAtLeastOnce;
                                 case "lowerCase":
@@ -958,6 +960,34 @@ function createGetErrors(params: { kcContext: KcContextLike_useGetErrors }) {
                     advancedMsgArgs: [
                         "invalidPasswordMinLengthMessage" satisfies MessageKey_defaultSet,
                         `${minLength}`
+                    ] as const,
+                    fieldIndex: undefined,
+                    source: {
+                        type: "passwordPolicy",
+                        name: policyName
+                    }
+                });
+            }
+
+            check_password_policy_x: {
+                const policyName = "maxLength";
+
+                const policy = passwordPolicies[policyName];
+
+                if (!policy) {
+                    break check_password_policy_x;
+                }
+
+                const maxLength = policy;
+
+                if (value.length <= maxLength) {
+                    break check_password_policy_x;
+                }
+
+                errors.push({
+                    advancedMsgArgs: [
+                        "invalidPasswordMaxLengthMessage" satisfies MessageKey_defaultSet,
+                        `${maxLength}`
                     ] as const,
                     fieldIndex: undefined,
                     source: {
