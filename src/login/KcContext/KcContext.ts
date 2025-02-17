@@ -769,6 +769,8 @@ export declare namespace Validators {
 export type PasswordPolicies = {
     /** The minimum length of the password */
     length?: number;
+    /** The maximum length of the password */
+    maxLength?: number;
     /** The minimum number of digits required in the password */
     digits?: number;
     /** The minimum number of lowercase characters required in the password */
