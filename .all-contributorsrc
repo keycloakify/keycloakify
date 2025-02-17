@@ -327,6 +327,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "EternalSide",
+      "name": "Lesha",
+      "avatar_url": "https://avatars.githubusercontent.com/u/118743608?v=4",
+      "profile": "http://t.me/AAT_L",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

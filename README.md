@@ -168,6 +168,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/zvn2060"><img src="https://avatars.githubusercontent.com/u/45450852?v=4?s=100" width="100px;" alt="HI_OuO"/><br /><sub><b>HI_OuO</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=zvn2060" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/tripheo0412"><img src="https://avatars.githubusercontent.com/u/25382052?v=4?s=100" width="100px;" alt="Tri Hoang"/><br /><sub><b>Tri Hoang</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=tripheo0412" title="Documentation">📖</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="http://t.me/AAT_L"><img src="https://avatars.githubusercontent.com/u/118743608?v=4?s=100" width="100px;" alt="Lesha"/><br /><sub><b>Lesha</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=EternalSide" title="Code">💻</a></td>
+    </tr>
   </tbody>
 </table>
 
