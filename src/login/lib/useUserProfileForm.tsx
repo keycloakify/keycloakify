@@ -116,6 +116,7 @@ export type ParamsOfUseUserProfileForm = {
 export type ReturnTypeOfUseUserProfileForm = {
     formState: FormState;
     dispatchFormAction: (action: FormAction) => void;
+    onFormSubmit: reactlessApi.UserProfileFormSubmit;
 };
 
 export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTypeOfUseUserProfileForm {
@@ -161,6 +162,7 @@ export function useUserProfileForm(params: ParamsOfUseUserProfileForm): ReturnTy
 
     return {
         formState,
-        dispatchFormAction: api.dispatchFormAction
+        dispatchFormAction: api.dispatchFormAction,
+        onFormSubmit: api.onFormSubmit
     };
 }

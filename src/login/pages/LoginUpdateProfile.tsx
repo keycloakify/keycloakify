@@ -1,11 +1,12 @@
 import type { JSX } from "keycloakify/tools/JSX";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import type { LazyOrNot } from "keycloakify/tools/LazyOrNot";
 import { getKcClsx } from "keycloakify/login/lib/kcClsx";
 import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFormFieldsProps";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
 import type { I18n } from "../i18n";
+import { FormData } from "../lib/getUserProfileApi";
 
 type LoginUpdateProfileProps = PageProps<Extract<KcContext, { pageId: "login-update-profile.ftl" }>, I18n> & {
     UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
@@ -24,7 +25,18 @@ export default function LoginUpdateProfile(props: LoginUpdateProfileProps) {
 
     const { msg, msgStr } = i18n;
 
-    const [isFormSubmittable, setIsFormSubmittable] = useState(false);
+    const [formData, setFormData] = useState<FormData>({
+        mode: "disabledButton",
+        isFormSubmittable: false,
+        onFormSubmit: null
+    });
+
+    const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
+        const { onFormSubmit } = formData;
+        if (onFormSubmit) {
+            onFormSubmit(evt);
+        }
+    };
 
     return (
         <Template
@@ -36,13 +48,14 @@ export default function LoginUpdateProfile(props: LoginUpdateProfileProps) {
             headerNode={msg("loginProfileTitle")}
             displayMessage={messagesPerField.exists("global")}
         >
-            <form id="kc-update-profile-form" className={kcClsx("kcFormClass")} action={url.loginAction} method="post">
+            <form id="kc-update-profile-form" className={kcClsx("kcFormClass")} action={url.loginAction} method="post" onSubmit={handleFormSubmit}>
                 <UserProfileFormFields
                     kcContext={kcContext}
                     i18n={i18n}
                     kcClsx={kcClsx}
-                    onIsFormSubmittableValueChange={setIsFormSubmittable}
                     doMakeUserConfirmPassword={doMakeUserConfirmPassword}
+                    onFormData={setFormData}
+                    mode={formData.mode}
                 />
                 <div className={kcClsx("kcFormGroupClass")}>
                     <div id="kc-form-options" className={kcClsx("kcFormOptionsClass")}>
@@ -50,7 +63,7 @@ export default function LoginUpdateProfile(props: LoginUpdateProfileProps) {
                     </div>
                     <div id="kc-form-buttons" className={kcClsx("kcFormButtonsClass")}>
                         <input
-                            disabled={!isFormSubmittable}
+                            disabled={!formData?.isFormSubmittable}
                             className={kcClsx(
                                 "kcButtonClass",
                                 "kcButtonPrimaryClass",

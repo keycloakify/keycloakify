@@ -1,11 +1,12 @@
 import type { JSX } from "keycloakify/tools/JSX";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import type { LazyOrNot } from "keycloakify/tools/LazyOrNot";
 import { getKcClsx, type KcClsx } from "keycloakify/login/lib/kcClsx";
 import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFormFieldsProps";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
 import type { I18n } from "../i18n";
+import { FormData } from "../lib/getUserProfileApi";
 
 type UpdateEmailProps = PageProps<Extract<KcContext, { pageId: "update-email.ftl" }>, I18n> & {
     UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
@@ -22,7 +23,18 @@ export default function UpdateEmail(props: UpdateEmailProps) {
 
     const { msg, msgStr } = i18n;
 
-    const [isFormSubmittable, setIsFormSubmittable] = useState(false);
+    const [formData, setFormData] = useState<FormData>({
+        mode: "disabledButton",
+        isFormSubmittable: false,
+        onFormSubmit: null
+    });
+
+    const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
+        const { onFormSubmit } = formData;
+        if (onFormSubmit) {
+            onFormSubmit(evt);
+        }
+    };
 
     const { url, messagesPerField, isAppInitiatedAction } = kcContext;
 
@@ -36,13 +48,14 @@ export default function UpdateEmail(props: UpdateEmailProps) {
             displayRequiredFields
             headerNode={msg("updateEmailTitle")}
         >
-            <form id="kc-update-email-form" className={kcClsx("kcFormClass")} action={url.loginAction} method="post">
+            <form id="kc-update-email-form" className={kcClsx("kcFormClass")} action={url.loginAction} method="post" onSubmit={handleFormSubmit}>
                 <UserProfileFormFields
                     kcContext={kcContext}
                     i18n={i18n}
                     kcClsx={kcClsx}
-                    onIsFormSubmittableValueChange={setIsFormSubmittable}
                     doMakeUserConfirmPassword={doMakeUserConfirmPassword}
+                    onFormData={setFormData}
+                    mode={formData.mode}
                 />
 
                 <div className={kcClsx("kcFormGroupClass")}>
@@ -54,7 +67,7 @@ export default function UpdateEmail(props: UpdateEmailProps) {
 
                     <div id="kc-form-buttons" className={kcClsx("kcFormButtonsClass")}>
                         <input
-                            disabled={!isFormSubmittable}
+                            disabled={!formData?.isFormSubmittable}
                             className={kcClsx(
                                 "kcButtonClass",
                                 "kcButtonPrimaryClass",

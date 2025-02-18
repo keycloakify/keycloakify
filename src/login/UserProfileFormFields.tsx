@@ -15,13 +15,14 @@ import type { KcContext } from "./KcContext";
 import type { I18n } from "./i18n";
 
 export default function UserProfileFormFields(props: UserProfileFormFieldsProps<KcContext, I18n>) {
-    const { kcContext, i18n, kcClsx, onIsFormSubmittableValueChange, doMakeUserConfirmPassword, BeforeField, AfterField } = props;
+    const { kcContext, i18n, kcClsx, doMakeUserConfirmPassword, BeforeField, AfterField, mode, onFormData } = props;
 
     const { advancedMsg } = i18n;
 
     const {
         formState: { formFieldStates, isFormSubmittable },
-        dispatchFormAction
+        dispatchFormAction,
+        onFormSubmit
     } = useUserProfileForm({
         kcContext,
         i18n,
@@ -29,8 +30,22 @@ export default function UserProfileFormFields(props: UserProfileFormFieldsProps<
     });
 
     useEffect(() => {
-        onIsFormSubmittableValueChange(isFormSubmittable);
+        if (mode === "disabledButton") {
+            onFormData(prev => ({
+                ...prev,
+                isFormSubmittable
+            }));
+        }
     }, [isFormSubmittable]);
+
+    useEffect(() => {
+        if (mode === "activeButton") {
+            onFormData(prev => ({
+                ...prev,
+                onFormSubmit
+            }));
+        }
+    }, [onFormData]);
 
     const groupNameRef = { current: "" };
 

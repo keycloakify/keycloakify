@@ -1,5 +1,5 @@
 import type { JSX } from "keycloakify/tools/JSX";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import type { LazyOrNot } from "keycloakify/tools/LazyOrNot";
 import { kcSanitize } from "keycloakify/lib/kcSanitize";
 import { getKcClsx, type KcClsx } from "keycloakify/login/lib/kcClsx";
@@ -8,6 +8,7 @@ import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFo
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
 import type { I18n } from "../i18n";
+import { FormData } from "../lib/getUserProfileApi";
 
 type RegisterProps = PageProps<Extract<KcContext, { pageId: "register.ftl" }>, I18n> & {
     UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
@@ -27,7 +28,19 @@ export default function Register(props: RegisterProps) {
 
     const { msg, msgStr, advancedMsg } = i18n;
 
-    const [isFormSubmittable, setIsFormSubmittable] = useState(false);
+    const [formData, setFormData] = useState<FormData>({
+        mode: "disabledButton",
+        isFormSubmittable: false,
+        onFormSubmit: null
+    });
+
+    const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
+        const { onFormSubmit } = formData;
+        if (onFormSubmit) {
+            onFormSubmit(evt);
+        }
+    };
+
     const [areTermsAccepted, setAreTermsAccepted] = useState(false);
 
     return (
@@ -40,13 +53,14 @@ export default function Register(props: RegisterProps) {
             displayMessage={messagesPerField.exists("global")}
             displayRequiredFields
         >
-            <form id="kc-register-form" className={kcClsx("kcFormClass")} action={url.registrationAction} method="post">
+            <form id="kc-register-form" className={kcClsx("kcFormClass")} action={url.registrationAction} method="post" onSubmit={handleFormSubmit}>
                 <UserProfileFormFields
                     kcContext={kcContext}
                     i18n={i18n}
                     kcClsx={kcClsx}
-                    onIsFormSubmittableValueChange={setIsFormSubmittable}
                     doMakeUserConfirmPassword={doMakeUserConfirmPassword}
+                    onFormData={setFormData}
+                    mode={formData.mode}
                 />
                 {termsAcceptanceRequired && (
                     <TermsAcceptance
@@ -93,7 +107,7 @@ export default function Register(props: RegisterProps) {
                     ) : (
                         <div id="kc-form-buttons" className={kcClsx("kcFormButtonsClass")}>
                             <input
-                                disabled={!isFormSubmittable || (termsAcceptanceRequired && !areTermsAccepted)}
+                                disabled={!formData?.isFormSubmittable || (termsAcceptanceRequired && !areTermsAccepted)}
                                 className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonBlockClass", "kcButtonLargeClass")}
                                 type="submit"
                                 value={msgStr("doRegister")}

@@ -13,6 +13,7 @@ import { emailRegexp } from "keycloakify/tools/emailRegExp";
 import { unFormatNumberOnSubmit } from "./kcNumberUnFormat";
 import { structuredCloneButFunctions } from "keycloakify/tools/structuredCloneButFunctions";
 import { id } from "tsafe/id";
+import { FormEvent } from "react";
 
 export type FormFieldError = {
     advancedMsgArgs: readonly [string, ...string[]];
@@ -99,10 +100,24 @@ assert<
         : false
 >();
 
+export type UserProfileFormSubmit = (
+    event: FormEvent<HTMLFormElement>,
+    options?: {
+        shouldSubmit?: boolean;
+    }
+) => void;
+
+export type FormData = {
+    mode: "activeButton" | "disabledButton";
+    isFormSubmittable: boolean;
+    onFormSubmit: UserProfileFormSubmit | null;
+};
+
 export type UserProfileApi = {
     getFormState: () => FormState;
     subscribeToFormState: (callback: () => void) => { unsubscribe: () => void };
     dispatchFormAction: (action: FormAction) => void;
+    onFormSubmit: UserProfileFormSubmit;
 };
 
 const cachedUserProfileApiByKcContext = new WeakMap<KcContextLike, UserProfileApi>();
@@ -167,6 +182,85 @@ function getUserProfileApi_noCache(params: ParamsOfGetUserProfileApi): UserProfi
                     callbacks.delete(callback);
                 }
             };
+        },
+        onFormSubmit: (
+            event: FormEvent<HTMLFormElement>,
+            options?: {
+                shouldSubmit?: boolean;
+            }
+        ) => {
+            event && event.preventDefault();
+            state.formFieldStates.forEach(formFieldState => {
+                if (Array.isArray(formFieldState.valueOrValues)) {
+                    formFieldState.valueOrValues.forEach((_, index) => {
+                        state = reducer({
+                            state,
+                            kcContext,
+                            doMakeUserConfirmPassword,
+                            action: {
+                                action: "focus lost",
+                                name: formFieldState.attribute.name,
+                                fieldIndex: index
+                            }
+                        });
+                    });
+                } else {
+                    state = reducer({
+                        state,
+                        kcContext,
+                        doMakeUserConfirmPassword,
+                        action: {
+                            action: "focus lost",
+                            name: formFieldState.attribute.name,
+                            fieldIndex: undefined
+                        }
+                    });
+                }
+            });
+
+            callbacks.forEach(callback => callback());
+
+            const formState = formStateSelector({ state });
+
+            find_first_error: {
+                if (formState.isFormSubmittable) break find_first_error;
+
+                const firstErrorField = formState.formFieldStates.find(
+                    fieldState => fieldState.displayableErrors.length > 0
+                );
+
+                if (!firstErrorField) {
+                    break find_first_error;
+                }
+
+                const inputElement = document.querySelector(
+                    `[name="${firstErrorField.attribute.name}"]`
+                );
+
+                if (!inputElement) {
+                    break find_first_error;
+                }
+
+                assert(inputElement instanceof HTMLInputElement);
+                return inputElement.focus();
+            }
+
+            submit_form: {
+                const _noNeedToSubmit = options?.shouldSubmit === false;
+
+                if (_noNeedToSubmit) {
+                    break submit_form;
+                }
+
+                const currentForm = document.getElementById(event.currentTarget.id);
+
+                if (!currentForm) {
+                    break submit_form;
+                }
+
+                assert(currentForm instanceof HTMLFormElement);
+                return currentForm.submit();
+            }
         }
     };
 }
