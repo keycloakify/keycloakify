@@ -336,6 +336,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "bacongobbler",
+      "name": "Matthew Fisher",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1360539?v=4",
+      "profile": "https://blog.bacongobbler.com",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
