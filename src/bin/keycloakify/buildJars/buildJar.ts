@@ -220,31 +220,39 @@ export async function buildJar(params: {
         );
     }
 
-    await new Promise<void>((resolve, reject) =>
-        child_process.exec(
-            `mvn clean install -Dmaven.repo.local="${pathJoin(keycloakifyBuildCacheDirPath, ".m2")}"`,
-            { cwd: keycloakifyBuildCacheDirPath },
-            error => {
-                if (error !== null) {
-                    console.error(
-                        `Build jar failed: ${JSON.stringify(
-                            {
-                                jarFileBasename,
-                                keycloakAccountV1Version,
-                                keycloakThemeAdditionalInfoExtensionVersion
-                            },
-                            null,
-                            2
-                        )}`
-                    );
+    {
+        const mvnBuildCmd = `mvn clean install -Dmaven.repo.local="${pathJoin(keycloakifyBuildCacheDirPath, ".m2")}"`;
 
-                    reject(error);
-                    return;
+        await new Promise<void>((resolve, reject) =>
+            child_process.exec(
+                mvnBuildCmd,
+                { cwd: keycloakifyBuildCacheDirPath },
+                error => {
+                    if (error !== null) {
+                        console.error(
+                            [
+                                `Build jar failed: ${JSON.stringify(
+                                    {
+                                        jarFileBasename,
+                                        keycloakAccountV1Version,
+                                        keycloakThemeAdditionalInfoExtensionVersion
+                                    },
+                                    null,
+                                    2
+                                )}`,
+                                "Try running the following command to debug the issue (you are probably under a restricted network and you need to configure your proxy):",
+                                `cd ${keycloakifyBuildCacheDirPath} && ${mvnBuildCmd}`
+                            ].join("\n")
+                        );
+
+                        reject(error);
+                        return;
+                    }
+                    resolve();
                 }
-                resolve();
-            }
-        )
-    );
+            )
+        );
+    }
 
     await fs.rename(
         pathJoin(
