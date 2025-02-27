@@ -190,7 +190,7 @@ function decodeHtmlEntities(htmlStr){
                     <#-- https://github.com/keycloakify/keycloakify/discussions/406#discussioncomment-7514787 -->
                     key == "loginAction" && 
                     areSamePath(path, ["url"]) && 
-                    ["saml-post-form.ftl", "error.ftl", "info.ftl", "login-oauth-grant.ftl", "logout-confirm.ftl", "login-oauth2-device-verify-user-code.ftl"]?seq_contains(xKeycloakify.pageId) &&
+                    ["saml-post-form.ftl", "error.ftl", "info.ftl", "login-oauth-grant.ftl", "logout-confirm.ftl", "login-oauth2-device-verify-user-code.ftl", "frontchannel-logout.ftl"]?seq_contains(xKeycloakify.pageId) &&
                     !(auth?has_content && auth.showTryAnotherWayLink())
                 ) || (
                     <#-- https://github.com/keycloakify/keycloakify/issues/362 -->
