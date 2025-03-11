@@ -217,6 +217,25 @@ export function createGetI18n<
             return enabledLanguages;
         })();
 
+        // See: https://github.com/keycloak/keycloak/issues/38029
+        patch_keycloak_issue_38029: {
+            const enabledLanguage_current = enabledLanguages.find(({ languageTag }) => languageTag === currentLanguage.languageTag);
+
+            assert(enabledLanguage_current !== undefined);
+
+            if (!enabledLanguage_current.href.includes("kc_locale=")) {
+                // NOTE: Probably a mock
+                break patch_keycloak_issue_38029;
+            }
+
+            // NOTE: Best effort, we don't wait for it to be done
+            // and we don't handle errors
+            fetch(enabledLanguage_current.href).then(
+                () => {},
+                () => {}
+            );
+        }
+
         const { createI18nTranslationFunctions } = createI18nTranslationFunctionsFactory<MessageKey_themeDefined>({
             themeName: kcContext.themeName,
             messages_themeDefined:
