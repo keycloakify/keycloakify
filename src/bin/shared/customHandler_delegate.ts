@@ -13,13 +13,15 @@ import * as fs from "fs";
 
 assert<Equals<ApiVersion, "v1">>();
 
-export function maybeDelegateCommandToCustomHandler(params: {
+export async function maybeDelegateCommandToCustomHandler(params: {
     commandName: CommandName;
     buildContext: BuildContext;
-}): { hasBeenHandled: boolean } {
+}): Promise<{ hasBeenHandled: boolean }> {
     const { commandName, buildContext } = params;
 
-    const nodeModulesBinDirPath = getNodeModulesBinDirPath();
+    const nodeModulesBinDirPath = await getNodeModulesBinDirPath({
+        packageJsonFilePath: buildContext.packageJsonFilePath
+    });
 
     if (!fs.readdirSync(nodeModulesBinDirPath).includes(BIN_NAME)) {
         return { hasBeenHandled: false };

@@ -17,7 +17,7 @@ import chalk from "chalk";
 export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
 
-    const { hasBeenHandled } = maybeDelegateCommandToCustomHandler({
+    const { hasBeenHandled } = await maybeDelegateCommandToCustomHandler({
         commandName: "initialize-account-theme",
         buildContext
     });

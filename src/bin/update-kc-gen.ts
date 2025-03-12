@@ -19,7 +19,7 @@ export async function command(params: { buildContext: BuildContext }) {
         await command({ buildContext });
     }
 
-    const { hasBeenHandled } = maybeDelegateCommandToCustomHandler({
+    const { hasBeenHandled } = await maybeDelegateCommandToCustomHandler({
         commandName: "update-kc-gen",
         buildContext
     });

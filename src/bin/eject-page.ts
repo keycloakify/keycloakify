@@ -22,7 +22,7 @@ import { runPrettier, getIsPrettierAvailable } from "./tools/runPrettier";
 export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
 
-    const { hasBeenHandled } = maybeDelegateCommandToCustomHandler({
+    const { hasBeenHandled } = await maybeDelegateCommandToCustomHandler({
         commandName: "eject-page",
         buildContext
     });

@@ -7,7 +7,7 @@ import { command as updateKcGenCommand } from "./update-kc-gen";
 export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
 
-    const { hasBeenHandled } = maybeDelegateCommandToCustomHandler({
+    const { hasBeenHandled } = await maybeDelegateCommandToCustomHandler({
         commandName: "initialize-admin-theme",
         buildContext
     });

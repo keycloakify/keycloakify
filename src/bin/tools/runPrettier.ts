@@ -15,7 +15,9 @@ export async function getIsPrettierAvailable(): Promise<boolean> {
         return getIsPrettierAvailable.cache;
     }
 
-    const nodeModulesBinDirPath = getNodeModulesBinDirPath();
+    const nodeModulesBinDirPath = getNodeModulesBinDirPath({
+        packageJsonFilePath: undefined
+    });
 
     const prettierBinPath = pathJoin(nodeModulesBinDirPath, "prettier");
 
@@ -51,7 +53,7 @@ export async function getPrettier(): Promise<PrettierAndConfigHash> {
         // We make sure to only do that when linking, otherwise we import properly.
         if (readThisNpmPackageVersion().startsWith("0.0.0")) {
             eval(
-                `${symToStr({ prettier })} = require("${pathResolve(pathJoin(getNodeModulesBinDirPath(), "..", "prettier"))}")`
+                `${symToStr({ prettier })} = require("${pathResolve(pathJoin(getNodeModulesBinDirPath({ packageJsonFilePath: undefined }), "..", "prettier"))}")`
             );
 
             assert(!is<undefined>(prettier));
@@ -64,7 +66,7 @@ export async function getPrettier(): Promise<PrettierAndConfigHash> {
 
     const configHash = await (async () => {
         const configFilePath = await prettier.resolveConfigFile(
-            pathJoin(getNodeModulesBinDirPath(), "..")
+            pathJoin(getNodeModulesBinDirPath({ packageJsonFilePath: undefined }), "..")
         );
 
         if (configFilePath === null) {

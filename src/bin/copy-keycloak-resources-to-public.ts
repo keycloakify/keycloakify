@@ -11,7 +11,7 @@ import { getThisCodebaseRootDirPath } from "./tools/getThisCodebaseRootDirPath";
 export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
 
-    const { hasBeenHandled } = maybeDelegateCommandToCustomHandler({
+    const { hasBeenHandled } = await maybeDelegateCommandToCustomHandler({
         commandName: "copy-keycloak-resources-to-public",
         buildContext
     });

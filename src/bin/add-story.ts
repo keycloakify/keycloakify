@@ -20,7 +20,7 @@ import { maybeDelegateCommandToCustomHandler } from "./shared/customHandler_dele
 export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
 
-    const { hasBeenHandled } = maybeDelegateCommandToCustomHandler({
+    const { hasBeenHandled } = await maybeDelegateCommandToCustomHandler({
         commandName: "add-story",
         buildContext
     });
