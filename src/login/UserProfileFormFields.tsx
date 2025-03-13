@@ -90,7 +90,6 @@ export default function UserProfileFormFields(props: UserProfileFormFieldsProps<
                                         {advancedMsg(attribute.annotations.inputHelperTextAfter)}
                                     </div>
                                 )}
-
                                 {AfterField !== undefined && (
                                     <AfterField
                                         attribute={attribute}
@@ -107,6 +106,10 @@ export default function UserProfileFormFields(props: UserProfileFormFieldsProps<
                     </Fragment>
                 );
             })}
+            {/* See: https://github.com/keycloak/keycloak/issues/38029 */}
+            {kcContext.locale !== undefined && formFieldStates.find(x => x.attribute.name === "locale") === undefined && (
+                <input type="hidden" name="locale" value={i18n.currentLanguage.languageTag} />
+            )}
         </>
     );
 }
