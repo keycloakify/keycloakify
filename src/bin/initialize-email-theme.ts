@@ -18,7 +18,7 @@ export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
 
     const { hasBeenHandled } = await maybeDelegateCommandToCustomHandler({
-        commandName: "initialize-account-theme",
+        commandName: "initialize-email-theme",
         buildContext
     });
 
