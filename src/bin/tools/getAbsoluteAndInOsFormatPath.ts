@@ -14,6 +14,8 @@ export function getAbsoluteAndInOsFormatPath(params: {
 
     let pathOut = pathIsh;
 
+    pathOut = pathOut.replace(/^['"]/, "").replace(/['"]$/, "");
+
     pathOut = pathOut.replace(/\//g, pathSep);
 
     if (pathOut.startsWith("~")) {

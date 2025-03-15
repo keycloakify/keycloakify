@@ -45,12 +45,12 @@ export async function getExtensionModuleFileSourceCodeReadyToBeCopied(params: {
                       `This file has been claimed for ownership from ${extensionModuleName} version ${extensionModuleVersion}.`,
                       `To relinquish ownership and restore this file to its original content, run the following command:`,
                       ``,
-                      `$ npx keycloakify own --path '${path}' --revert`
+                      `$ npx keycloakify own --path "${path}" --revert`
                   ]
                 : [
                       `WARNING: Before modifying this file, run the following command:`,
                       ``,
-                      `$ npx keycloakify own --path '${path}'`,
+                      `$ npx keycloakify own --path "${path}"`,
                       ``,
                       `This file is provided by ${extensionModuleName} version ${extensionModuleVersion}.`,
                       `It was copied into your repository by the postinstall script: \`keycloakify sync-extensions\`.`
