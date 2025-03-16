@@ -52,9 +52,25 @@ export async function getPrettier(): Promise<PrettierAndConfigHash> {
         // So we do a sketchy eval to bypass ncc.
         // We make sure to only do that when linking, otherwise we import properly.
         if (readThisNpmPackageVersion().startsWith("0.0.0")) {
-            eval(
-                `${symToStr({ prettier })} = require("${pathResolve(pathJoin(getNodeModulesBinDirPath({ packageJsonFilePath: undefined }), "..", "prettier"))}")`
+            const prettierDirPath = pathResolve(
+                pathJoin(
+                    getNodeModulesBinDirPath({ packageJsonFilePath: undefined }),
+                    "..",
+                    "prettier"
+                )
             );
+
+            const isCJS = typeof module !== "undefined" && module.exports;
+
+            if (isCJS) {
+                eval(`${symToStr({ prettier })} = require("${prettierDirPath}")`);
+            } else {
+                prettier = await new Promise(_resolve => {
+                    eval(
+                        `import("file:///${pathJoin(prettierDirPath, "index.mjs").replace(/\\/g, "/")}").then(prettier => _resolve(prettier))`
+                    );
+                });
+            }
 
             assert(!is<undefined>(prettier));
 
