@@ -46,7 +46,7 @@ export const WithRequiredActions: Story = {
             kcContext={{
                 messageHeader: "Message header",
                 message: {
-                    summary: "Required actions: "
+                    summary: "Required actions:"
                 },
                 requiredActions: ["CONFIGURE_TOTP", "UPDATE_PROFILE", "VERIFY_EMAIL", "CUSTOM_ACTION"],
                 "x-keycloakify": {
