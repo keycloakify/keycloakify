@@ -31,10 +31,10 @@ export default function Info(props: PageProps<Extract<KcContext, { pageId: "info
                     dangerouslySetInnerHTML={{
                         __html: kcSanitize(
                             (() => {
-                                let html = message.summary;
+                                let html = message.summary?.trim();
 
                                 if (requiredActions) {
-                                    html += "<b>";
+                                    html += " <b>";
 
                                     html += requiredActions.map(requiredAction => advancedMsgStr(`requiredAction.${requiredAction}`)).join(", ");
 
