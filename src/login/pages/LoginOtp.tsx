@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useRef } from "react";
+import { Fragment, useState } from "react";
 import { getKcClsx } from "keycloakify/login/lib/kcClsx";
 import { kcSanitize } from "keycloakify/lib/kcSanitize";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
@@ -17,14 +17,7 @@ export default function LoginOtp(props: PageProps<Extract<KcContext, { pageId: "
 
     const { msg, msgStr } = i18n;
 
-    const loginButtonRef = useRef<HTMLInputElement>(null);
-
-    const onSubmitForm = useCallback(() => {
-        if (loginButtonRef.current !== null) {
-            loginButtonRef.current.disabled = true;
-        }
-        return true;
-    }, [loginButtonRef]);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     return (
         <Template
@@ -35,7 +28,16 @@ export default function LoginOtp(props: PageProps<Extract<KcContext, { pageId: "
             displayMessage={!messagesPerField.existsError("totp")}
             headerNode={msg("doLogIn")}
         >
-            <form id="kc-otp-login-form" className={kcClsx("kcFormClass")} action={url.loginAction} onSubmit={onSubmitForm} method="post">
+            <form
+                id="kc-otp-login-form"
+                className={kcClsx("kcFormClass")}
+                action={url.loginAction}
+                onSubmit={() => {
+                    setIsSubmitting(true);
+                    return true;
+                }}
+                method="post"
+            >
                 {otpLogin.userOtpCredentials.length > 1 && (
                     <div className={kcClsx("kcFormGroupClass")}>
                         <div className={kcClsx("kcInputWrapperClass")}>
@@ -103,7 +105,7 @@ export default function LoginOtp(props: PageProps<Extract<KcContext, { pageId: "
                             id="kc-login"
                             type="submit"
                             value={msgStr("doLogIn")}
-                            ref={loginButtonRef}
+                            disabled={isSubmitting}
                         />
                     </div>
                 </div>
