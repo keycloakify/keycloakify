@@ -62,3 +62,22 @@ export const WithPasswordConfirmError: Story = {
         />
     )
 };
+
+/**
+ * WithAppInitiatedAction:
+ * - Purpose: Tests when the update password action was triggered by an app.
+ * - Scenario: Simulates the case where the user presses a 'change password' button in an app and is redirected to Keycloak to change it.
+ * - Key Aspect: Ensures the 'Cancel' button is shown correctly, which displays only when the action is app initiated.
+ */
+export const WithAppInitiatedAction: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                url: {
+                    loginAction: "/mock-login-action"
+                },
+                isAppInitiatedAction: true
+            }}
+        />
+    )
+};
