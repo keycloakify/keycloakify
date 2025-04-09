@@ -6,7 +6,7 @@
     <br>
     <br>
     <a href="https://github.com/garronej/keycloakify/actions">
-      <img src="https://github.com/garronej/keycloakify/workflows/ci/badge.svg?branch=main">
+      <img src="https://github.com/keycloakify/keycloakify/workflows/ci/badge.svg?branch=main">
     </a>
     <a href="https://www.npmjs.com/package/keycloakify">
       <img src="https://img.shields.io/npm/dm/keycloakify">
