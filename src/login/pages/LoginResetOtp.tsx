@@ -1,5 +1,6 @@
-import { Fragment } from "react";
-import { getKcClsx } from "keycloakify/login/lib/kcClsx";
+import { getKcClsx } from 'keycloakify/login/lib/kcClsx';
+import { Fragment } from 'react';
+
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
 import type { I18n } from "../i18n";
@@ -62,6 +63,7 @@ export default function LoginResetOtp(props: PageProps<Extract<KcContext, { page
                     </div>
                 </div>
             </form>
+            <div className="clearfix" />
         </Template>
     );
 }
