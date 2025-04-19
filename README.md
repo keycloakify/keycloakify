@@ -96,16 +96,10 @@ Project backers, we trust and recommend their services.
   </a>
 </p>
 
-<div align="center">
-
-![Logo Dark](https://user-images.githubusercontent.com/6702424/234135797-c84d0a90-0526-43e5-a186-70cbebdeb278.png#gh-dark-mode-only)
-
-</div>
+# Past sponsors
 
 <div align="center">
-
-![Logo Light](https://user-images.githubusercontent.com/6702424/234135799-68684c33-4ec5-48d4-8763-0f3922c86643.png#gh-light-mode-only)
-
+  <img width="200" src="https://user-images.githubusercontent.com/6702424/234135799-68684c33-4ec5-48d4-8763-0f3922c86643.png">
 </div>
 
 <p align="center">
