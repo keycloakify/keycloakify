@@ -228,53 +228,46 @@ export function keycloakify(params: keycloakify.Params) {
             const scriptContent = `
 (()=>{
 
-    const kcContext = (()=>{
+    const url = new URL(window.location.href);
 
-        const paramName= "kcContext";
+    const kcContext_str = url.searchParams.get("kcContext");
 
-        read_from_url_case: {
+    if( kcContext_str === null ){
 
-            const url = new URL(window.location.href);
+        const keycloakServerPort = sessionStorage.getItem("keycloakServerPort");
 
-            const paramValue = url.searchParams.get(paramName);
-
-            if( paramValue === null ){
-                break read_from_url_case;
-            }
-
-            url.searchParams.delete(paramName);
-
-            window.history.replaceState({}, "", url);
-
-            const kcContext = JSON.parse(decodeURIComponent(paramValue));
-
-            sessionStorage.setItem(paramName, JSON.stringify(kcContext));
-
-            return kcContext;
-
-        }
-
-        read_from_session_storage_case: {
-
-            const paramValue = sessionStorage.getItem(paramName);
-
-            if( paramValue === null ){
-                break read_from_session_storage_case;
-            }
-
-            return JSON.parse(paramValue);
-
-        }
-
-        return undefined;
-    
-    })();
-
-    if( kcContext === undefined ){
+        if( keycloakServerPort === null ){
             return;
+        }
+
+        const redirectUrl = new URL(window.location.href);
+
+        redirectUrl.port = keycloakServerPort;
+
+        window.location.href = redirectUrl;
+
+        return;
+
     }
 
-    window.kcContext = kcContext;
+    url.searchParams.delete("kcContext");
+
+    {
+
+        const keycloakServerPort = url.searchParams.get("keycloakServerPort");
+
+        if( keycloakServerPort === null ){
+            throw new Error("Wrong assertion");
+        }
+
+        sessionStorage.setItem("keycloakServerPort", keycloakServerPort);
+        url.searchParams.delete("keycloakServerPort");
+
+    }
+
+    window.history.replaceState({}, "", url);
+
+    window.kcContext = JSON.parse(kcContext_str);
 
 })();
 `;

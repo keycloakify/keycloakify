@@ -109,13 +109,16 @@ redirect_to_dev_server: {
 
     const redirectUrl = new URL(window.location.href);
 
+    const keycloakServerPort = redirectUrl.port;
+
     redirectUrl.port = devSeverPort;
 
     delete kcContext.msgJSON;
 
     console.log(kcContext);
 
-    redirectUrl.searchParams.set("kcContext", encodeURIComponent(JSON.stringify(kcContext)));
+    redirectUrl.searchParams.set("kcContext", JSON.stringify(kcContext));
+    redirectUrl.searchParams.set("keycloakServerPort", keycloakServerPort);
 
     window.location.href = redirectUrl.toString();
 
