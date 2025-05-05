@@ -8,6 +8,7 @@ import chalk from "chalk";
 import { run } from "../shared/run";
 import { vendorFrontendDependencies } from "./vendorFrontendDependencies";
 import { downloadKeycloakifyLogging } from "./downloadKeycloakifyLogging";
+import { patchJsxElement } from "./patchJsxElement";
 
 (async () => {
     console.log(chalk.cyan("Building Keycloakify..."));
@@ -164,6 +165,9 @@ import { downloadKeycloakifyLogging } from "./downloadKeycloakifyLogging";
     await createPublicKeycloakifyDevResourcesDir();
     await createAccountV1Dir();
     await downloadKeycloakifyLogging({
+        distDirPath: join(process.cwd(), "dist")
+    });
+    patchJsxElement({
         distDirPath: join(process.cwd(), "dist")
     });
 
