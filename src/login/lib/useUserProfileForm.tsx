@@ -1,4 +1,4 @@
-import type { JSX } from "keycloakify/tools/JSX";
+import type { JSXElement } from "keycloakify/tools/JSX";
 import * as reactlessApi from "./getUserProfileApi/index";
 import type { PasswordPolicies, Attribute, Validators } from "keycloakify/login/KcContext";
 import { useEffect, useState, useMemo, Fragment } from "react";
@@ -7,7 +7,7 @@ import type { I18n } from "../i18n";
 export { getButtonToDisplayForMultivaluedAttributeField } from "./getUserProfileApi/index";
 
 export type FormFieldError = {
-    errorMessage: JSX.Element;
+    errorMessage: JSXElement;
     errorMessageStr: string;
     source: FormFieldError.Source;
     fieldIndex: number | undefined;

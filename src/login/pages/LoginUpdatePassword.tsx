@@ -1,4 +1,4 @@
-import type { JSX } from "keycloakify/tools/JSX";
+import type { JSXElement } from "keycloakify/tools/JSX";
 import { useIsPasswordRevealed } from "keycloakify/tools/useIsPasswordRevealed";
 import { kcSanitize } from "keycloakify/lib/kcSanitize";
 import { getKcClsx, type KcClsx } from "keycloakify/login/lib/kcClsx";
@@ -140,7 +140,7 @@ function LogoutOtherSessions(props: { kcClsx: KcClsx; i18n: I18n }) {
     );
 }
 
-function PasswordWrapper(props: { kcClsx: KcClsx; i18n: I18n; passwordInputId: string; children: JSX.Element }) {
+function PasswordWrapper(props: { kcClsx: KcClsx; i18n: I18n; passwordInputId: string; children: JSXElement }) {
     const { kcClsx, i18n, passwordInputId, children } = props;
 
     const { msgStr } = i18n;

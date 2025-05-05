@@ -1,9 +1,9 @@
-import type { JSX } from "keycloakify/tools/JSX";
+import type { JSXElement } from "keycloakify/tools/JSX";
 import { type TemplateProps, type ClassKey } from "keycloakify/account/TemplateProps";
 import type { LazyOrNot } from "keycloakify/tools/LazyOrNot";
 
 export type PageProps<NarrowedKcContext, I18n> = {
-    Template: LazyOrNot<(props: TemplateProps<any, any>) => JSX.Element | null>;
+    Template: LazyOrNot<(props: TemplateProps<any, any>) => JSXElement | null>;
     kcContext: NarrowedKcContext;
     i18n: I18n;
     doUseDefaultCss: boolean;

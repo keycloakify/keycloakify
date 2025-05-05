@@ -1,4 +1,4 @@
-import type { JSX } from "keycloakify/tools/JSX";
+import type { JSXElement } from "keycloakify/tools/JSX";
 import { useState } from "react";
 import { kcSanitize } from "keycloakify/lib/kcSanitize";
 import { useIsPasswordRevealed } from "keycloakify/tools/useIsPasswordRevealed";
@@ -195,7 +195,7 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
     );
 }
 
-function PasswordWrapper(props: { kcClsx: KcClsx; i18n: I18n; passwordInputId: string; children: JSX.Element }) {
+function PasswordWrapper(props: { kcClsx: KcClsx; i18n: I18n; passwordInputId: string; children: JSXElement }) {
     const { kcClsx, i18n, passwordInputId, children } = props;
 
     const { msgStr } = i18n;
