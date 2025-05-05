@@ -1,4 +1,4 @@
-import type { JSXElement } from "keycloakify/tools/JSX";
+import type { JSX } from "keycloakify/tools/JSX";
 import { useEffect, useState } from "react";
 import { kcSanitize } from "keycloakify/lib/kcSanitize";
 import { createGetI18n, type KcContextLike } from "../noJsx/getI18n";
@@ -46,7 +46,7 @@ export function createUseI18n<
     const { withJsx } = (() => {
         const cache = new WeakMap<GenericI18n_noJsx<MessageKey, LanguageTag>, GenericI18n<MessageKey, LanguageTag>>();
 
-        function renderHtmlString(params: { htmlString: string; msgKey: string }): JSXElement {
+        function renderHtmlString(params: { htmlString: string; msgKey: string }): JSX.Element {
             const { htmlString, msgKey } = params;
 
             const htmlString_sanitized = kcSanitize(htmlString);

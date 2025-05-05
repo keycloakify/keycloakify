@@ -1,4 +1,4 @@
-import type { JSXElement } from "keycloakify/tools/JSX";
+import type { JSX } from "keycloakify/tools/JSX";
 import type { GenericI18n_noJsx } from "../noJsx/GenericI18n_noJsx";
 import { assert, type Equals } from "tsafe/assert";
 
@@ -65,13 +65,13 @@ export type GenericI18n<MessageKey extends string, LanguageTag extends string> =
      */
     isFetchingTranslations: boolean;
     /**
-     * Same as msgStr but returns a JSXElement with the html string rendered as html.
+     * Same as msgStr but returns a JSX.Element with the html string rendered as html.
      */
-    msg: (key: MessageKey, ...args: (string | undefined)[]) => JSXElement;
+    msg: (key: MessageKey, ...args: (string | undefined)[]) => JSX.Element;
     /**
-     * Same as advancedMsgStr but returns a JSXElement with the html string rendered as html.
+     * Same as advancedMsgStr but returns a JSX.Element with the html string rendered as html.
      */
-    advancedMsg: (key: string, ...args: (string | undefined)[]) => JSXElement;
+    advancedMsg: (key: string, ...args: (string | undefined)[]) => JSX.Element;
 };
 
 {

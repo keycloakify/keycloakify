@@ -1,4 +1,4 @@
-import type { JSXElement } from "keycloakify/tools/JSX";
+import type { JSX } from "keycloakify/tools/JSX";
 import { useEffect, Fragment } from "react";
 import { assert } from "keycloakify/tools/assert";
 import { useIsPasswordRevealed } from "keycloakify/tools/useIsPasswordRevealed";
@@ -248,7 +248,7 @@ function InputFieldByType(props: InputFieldByTypeProps) {
     }
 }
 
-function PasswordWrapper(props: { kcClsx: KcClsx; i18n: I18n; passwordInputId: string; children: JSXElement }) {
+function PasswordWrapper(props: { kcClsx: KcClsx; i18n: I18n; passwordInputId: string; children: JSX.Element }) {
     const { kcClsx, i18n, passwordInputId, children } = props;
 
     const { msgStr } = i18n;

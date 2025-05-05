@@ -1,4 +1,4 @@
-import type { JSXElement } from "keycloakify/tools/JSX";
+import type { JSX } from "keycloakify/tools/JSX";
 import { lazy, Suspense } from "react";
 import { assert, type Equals } from "tsafe/assert";
 import type { LazyOrNot } from "keycloakify/tools/LazyOrNot";
@@ -45,7 +45,7 @@ const LoginPasskeysConditionalAuthenticate = lazy(() => import("keycloakify/logi
 const LoginIdpLinkConfirmOverride = lazy(() => import("keycloakify/login/pages/LoginIdpLinkConfirmOverride"));
 
 type DefaultPageProps = PageProps<KcContext, I18n> & {
-    UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSXElement>;
+    UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
     doMakeUserConfirmPassword: boolean;
 };
 
