@@ -31,10 +31,10 @@ export const MultipleOtpCredentials: Story = {
                     userOtpCredentials: [
                         { id: "credential1", userLabel: "Device 1" },
                         { id: "credential2", userLabel: "Device 2" },
-                        { id: "credential2", userLabel: "Device 3" },
-                        { id: "credential2", userLabel: "Device 4" },
-                        { id: "credential2", userLabel: "Device 5" },
-                        { id: "credential2", userLabel: "Device 6" }
+                        { id: "credential3", userLabel: "Device 3" },
+                        { id: "credential4", userLabel: "Device 4" },
+                        { id: "credential5", userLabel: "Device 5" },
+                        { id: "credential6", userLabel: "Device 6" }
                     ],
                     selectedCredentialId: "credential1"
                 },
