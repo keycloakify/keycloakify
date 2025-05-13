@@ -53,7 +53,11 @@ export default function UserProfileFormFields(props: UserProfileFormFieldsProps<
                         <div
                             className={kcClsx("kcFormGroupClass")}
                             style={{
-                                display: attribute.name === "password-confirm" && !doMakeUserConfirmPassword ? "none" : undefined
+                                display:
+                                    attribute.annotations.inputType === "hidden" ||
+                                    (attribute.name === "password-confirm" && !doMakeUserConfirmPassword)
+                                        ? "none"
+                                        : undefined
                             }}
                         >
                             <div className={kcClsx("kcLabelWrapperClass")}>
@@ -106,10 +110,6 @@ export default function UserProfileFormFields(props: UserProfileFormFieldsProps<
                     </Fragment>
                 );
             })}
-            {/* See: https://github.com/keycloak/keycloak/issues/38029 */}
-            {kcContext.locale !== undefined && formFieldStates.find(x => x.attribute.name === "locale") === undefined && (
-                <input type="hidden" name="locale" value={i18n.currentLanguage.languageTag} />
-            )}
         </>
     );
 }
@@ -214,6 +214,10 @@ function InputFieldByType(props: InputFieldByTypeProps) {
     const { attribute, valueOrValues } = props;
 
     switch (attribute.annotations.inputType) {
+        // NOTE: Unfortunately, keycloak won't let you define input type="hidden" in the Admin Console.
+        // sometimes in the future it might.
+        case "hidden":
+            return <input type="hidden" name={attribute.name} value={valueOrValues} />;
         case "textarea":
             return <TextareaTag {...props} />;
         case "select":

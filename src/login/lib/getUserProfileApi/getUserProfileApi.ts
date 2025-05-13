@@ -286,8 +286,40 @@ function getInitialState(params: { kcContext: KcContextLike }): internal.State {
         );
     })();
 
+    /* See: https://github.com/keycloak/keycloak/issues/38029 and https://github.com/keycloakify/keycloakify/issues/837 */
+    add_locale_attribute_for_keycloak_prior_to_26_2_0: {
+        if (kcContext.locale === undefined) {
+            break add_locale_attribute_for_keycloak_prior_to_26_2_0;
+        }
+
+        if (attributes.find(attribute => attribute.name === "locale") !== undefined) {
+            break add_locale_attribute_for_keycloak_prior_to_26_2_0;
+        }
+
+        attributes.push(
+            id<Attribute>({
+                validators: {},
+                displayName: "locale",
+                values: [],
+                annotations: {},
+                required: false,
+                html5DataAnnotations: {},
+                multivalued: false,
+                readOnly: false,
+                name: "locale"
+            })
+        );
+    }
+
     // Retro-compatibility and consistency patches
     attributes.forEach(attribute => {
+        if (attribute.name === "locale") {
+            assert(kcContext.locale !== undefined);
+            attribute.annotations.inputType = "hidden";
+            attribute.value = kcContext.locale.currentLanguageTag;
+            delete attribute.values;
+        }
+
         patch_legacy_group: {
             if (typeof attribute.group !== "string") {
                 break patch_legacy_group;
