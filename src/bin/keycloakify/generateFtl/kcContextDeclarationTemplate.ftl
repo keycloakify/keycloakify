@@ -250,10 +250,7 @@ function decodeHtmlEntities(htmlStr){
                         key?starts_with("kc") || 
                         key == "locales" || 
                         key == "import" || 
-                        key == "parent" || 
                         key == "meta" ||
-                        key == "stylesCommon" ||
-                        key == "styles" ||
                         key == "accountResourceProvider"
                     )
                 ) || (
