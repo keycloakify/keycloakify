@@ -73,7 +73,6 @@ export default function LoginUpdatePassword(props: PageProps<Extract<KcContext, 
                                 id="password-confirm"
                                 name="password-confirm"
                                 className={kcClsx("kcInputClass")}
-                                autoFocus
                                 autoComplete="new-password"
                                 aria-invalid={messagesPerField.existsError("password", "password-confirm")}
                             />
