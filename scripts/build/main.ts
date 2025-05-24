@@ -83,14 +83,6 @@ import { patchJsxElement } from "./patchJsxElement";
         assert(hasBeenPatched);
     }
 
-    fs.chmodSync(
-        join("dist", "bin", "main.js"),
-        fs.statSync(join("dist", "bin", "main.js")).mode |
-            fs.constants.S_IXUSR |
-            fs.constants.S_IXGRP |
-            fs.constants.S_IXOTH
-    );
-
     run(`npx tsc -p ${join("src", "tsconfig.json")}`);
     run(`npx tsc-alias -p ${join("src", "tsconfig.json")}`);
     vendorFrontendDependencies({ distDirPath: join(process.cwd(), "dist") });
@@ -170,6 +162,14 @@ import { patchJsxElement } from "./patchJsxElement";
     patchJsxElement({
         distDirPath: join(process.cwd(), "dist")
     });
+
+    fs.chmodSync(
+        join("dist", "bin", "main.js"),
+        fs.statSync(join("dist", "bin", "main.js")).mode |
+            fs.constants.S_IXUSR |
+            fs.constants.S_IXGRP |
+            fs.constants.S_IXOTH
+    );
 
     console.log(
         chalk.green(`✓ built in ${((Date.now() - startTime) / 1000).toFixed(2)}s`)
