@@ -1,5 +1,8 @@
 import { sep as pathSep, dirname as pathDirname, join as pathJoin } from "path";
-import { getThisCodebaseRootDirPath } from "./getThisCodebaseRootDirPath";
+import {
+    getThisCodebaseRootDirPath,
+    getNearestPackageJsonDirPath
+} from "./getThisCodebaseRootDirPath";
 import { getInstalledModuleDirPath } from "./getInstalledModuleDirPath";
 import { existsAsync } from "./fs.existsAsync";
 import { z } from "zod";
@@ -27,6 +30,22 @@ function getNodeModulesBinDirPath_bestEffort() {
     }
 
     const binPath = process.argv[1];
+
+    special_case_running_not_from_distribution: {
+        if (!binPath.endsWith(".ts")) {
+            break special_case_running_not_from_distribution;
+        }
+
+        const packageJsonDirPath = getNearestPackageJsonDirPath(pathDirname(binPath));
+
+        const nodeModulesBinDirPath = pathJoin(
+            packageJsonDirPath,
+            "node_modules",
+            ".bin"
+        );
+
+        return nodeModulesBinDirPath;
+    }
 
     const segments: string[] = [".bin"];
 

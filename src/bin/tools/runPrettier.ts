@@ -82,7 +82,11 @@ export async function getPrettier(): Promise<PrettierAndConfigHash> {
 
     const configHash = await (async () => {
         const configFilePath = await prettier.resolveConfigFile(
-            pathJoin(getNodeModulesBinDirPath({ packageJsonFilePath: undefined }), "..")
+            pathJoin(
+                getNodeModulesBinDirPath({ packageJsonFilePath: undefined }),
+                "..",
+                ".."
+            )
         );
 
         if (configFilePath === null) {
