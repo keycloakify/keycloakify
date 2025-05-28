@@ -190,6 +190,20 @@ program
 
 program
     .command({
+        name: "initialize-login-theme",
+        description: "(BETA) Initialize an Login theme"
+    })
+    .task({
+        skip,
+        handler: async ({ projectDirPath }) => {
+            const { command } = await import("./initialize-login-theme");
+
+            await command({ buildContext: getBuildContext({ projectDirPath }) });
+        }
+    });
+
+program
+    .command({
         name: "initialize-account-theme",
         description: "Initialize an Account Single-Page or Multi-Page custom Account UI."
     })

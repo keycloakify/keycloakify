@@ -1,5 +1,5 @@
 import { dirname as pathDirname, join as pathJoin, relative as pathRelative } from "path";
-import type { BuildContext } from "./buildContext";
+import type { BuildContext } from "../buildContext";
 import * as fs from "fs";
 import { assert, is, type Equals } from "tsafe/assert";
 import { id } from "tsafe/id";
@@ -7,11 +7,12 @@ import {
     addSyncExtensionsToPostinstallScript,
     type BuildContextLike as BuildContextLike_addSyncExtensionsToPostinstallScript
 } from "./addSyncExtensionsToPostinstallScript";
-import { getIsPrettierAvailable, runPrettier } from "../tools/runPrettier";
-import { npmInstall } from "../tools/npmInstall";
+import { getIsPrettierAvailable, runPrettier } from "../../tools/runPrettier";
+import { npmInstall } from "../../tools/npmInstall";
 import * as child_process from "child_process";
 import { z } from "zod";
 import chalk from "chalk";
+import { isAmong } from "tsafe/isAmong";
 
 export type BuildContextLike = BuildContextLike_addSyncExtensionsToPostinstallScript & {
     themeSrcDirPath: string;
@@ -20,11 +21,28 @@ export type BuildContextLike = BuildContextLike_addSyncExtensionsToPostinstallSc
 
 assert<BuildContext extends BuildContextLike ? true : false>();
 
-export async function initializeSpa(params: {
-    themeType: "account" | "admin";
+export async function installExtension(params: {
+    moduleName:
+        | "@keycloakify/keycloak-account-ui"
+        | "@keycloakify/keycloak-admin-ui"
+        | "@keycloakify/email-native"
+        | "@keycloakify/keycloak-login-ui";
     buildContext: BuildContextLike;
 }) {
-    const { themeType, buildContext } = params;
+    const { moduleName, buildContext } = params;
+
+    const themeType: string = (() => {
+        switch (moduleName) {
+            case "@keycloakify/keycloak-account-ui":
+                return "account";
+            case "@keycloakify/keycloak-admin-ui":
+                return "admin";
+            case "@keycloakify/email-native":
+                return "email";
+            case "@keycloakify/keycloak-login-ui":
+                return "login";
+        }
+    })();
 
     {
         const themeTypeSrcDirPath = pathJoin(buildContext.themeSrcDirPath, themeType);
@@ -83,6 +101,15 @@ export async function initializeSpa(params: {
     });
 
     const uiSharedMajor = (() => {
+        if (
+            !isAmong(
+                ["@keycloakify/keycloak-account-ui", "@keycloakify/keycloak-admin-ui"],
+                moduleName
+            )
+        ) {
+            return undefined;
+        }
+
         const dependencies = {
             ...parsedPackageJson.devDependencies,
             ...parsedPackageJson.dependencies
@@ -102,8 +129,6 @@ export async function initializeSpa(params: {
 
         return match[1];
     })();
-
-    const moduleName = `@keycloakify/keycloak-${themeType}-ui`;
 
     const version = ((): string[] => {
         const cmdOutput = child_process

@@ -10,6 +10,7 @@ export type CommandName =
     | "update-kc-gen"
     | "eject-page"
     | "add-story"
+    | "initialize-login-theme"
     | "initialize-account-theme"
     | "initialize-admin-theme"
     | "initialize-admin-theme"

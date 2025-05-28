@@ -8,7 +8,7 @@ export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
 
     const { hasBeenHandled } = await maybeDelegateCommandToCustomHandler({
-        commandName: "initialize-admin-theme",
+        commandName: "initialize-login-theme",
         buildContext
     });
 
@@ -21,7 +21,7 @@ export async function command(params: { buildContext: BuildContext }) {
     });
 
     await installExtension({
-        moduleName: "@keycloakify/keycloak-admin-ui",
+        moduleName: "@keycloakify/keycloak-login-ui",
         buildContext
     });
 
@@ -30,7 +30,7 @@ export async function command(params: { buildContext: BuildContext }) {
             ...buildContext,
             implementedThemeTypes: {
                 ...buildContext.implementedThemeTypes,
-                admin: {
+                login: {
                     isImplemented: true
                 }
             }

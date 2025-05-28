@@ -67,10 +67,10 @@ export async function command(params: { buildContext: BuildContext }) {
             break;
         case "Single-Page":
             {
-                const { initializeSpa } = await import("../shared/initializeSpa");
+                const { installExtension } = await import("../shared/installExtension");
 
-                await initializeSpa({
-                    themeType: "account",
+                await installExtension({
+                    moduleName: "@keycloakify/keycloak-account-ui",
                     buildContext
                 });
             }
