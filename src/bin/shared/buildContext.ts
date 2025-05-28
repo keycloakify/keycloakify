@@ -18,7 +18,7 @@ import {
 import type { KeycloakVersionRange } from "./KeycloakVersionRange";
 import { exclude } from "tsafe";
 import { crawl } from "../tools/crawl";
-import { THEME_TYPES, KEYCLOAK_THEME, type ThemeType } from "./constants";
+import { KEYCLOAK_THEME, type ThemeType } from "./constants";
 import { objectEntries } from "tsafe/objectEntries";
 import { id } from "tsafe/id";
 import chalk from "chalk";
@@ -166,11 +166,20 @@ export function getBuildContext(params: {
             return { themeSrcDirPath };
         }
 
-        for (const themeType of [...THEME_TYPES, "email"]) {
-            if (!fs.existsSync(pathJoin(srcDirPath, themeType))) {
-                continue;
+        {
+            const basenames = fs.readdirSync(srcDirPath);
+
+            for (const basename of basenames) {
+                const path = pathJoin(srcDirPath, basename);
+
+                if (!fs.statSync(path).isFile()) {
+                    continue;
+                }
+
+                if (fs.readFileSync(path).toString("utf8").includes("./kc.gen")) {
+                    return { themeSrcDirPath: srcDirPath };
+                }
             }
-            return { themeSrcDirPath: srcDirPath };
         }
 
         console.log(
