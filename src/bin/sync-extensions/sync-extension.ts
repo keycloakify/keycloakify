@@ -9,8 +9,7 @@ import { dirname as pathDirname } from "path";
 import { join as pathJoin } from "path";
 import { existsAsync } from "../tools/fs.existsAsync";
 import * as fsPr from "fs/promises";
-import { getIsKnownByGit } from "../tools/isKnownByGit";
-import { untrackFromGit } from "../tools/untrackFromGit";
+import { getIsKnownByGit, untrackFromGit } from "../tools/gitUtils";
 
 export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
