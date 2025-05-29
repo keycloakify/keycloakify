@@ -34,6 +34,22 @@ export async function getExtensionModuleFileSourceCodeReadyToBeCopied(params: {
         )
     ).toString("utf8");
 
+    add_eslint_disable: {
+        if (isOwnershipAction) {
+            break add_eslint_disable;
+        }
+
+        if (!fileRelativePath.endsWith(".ts") && !fileRelativePath.endsWith(".tsx")) {
+            break add_eslint_disable;
+        }
+
+        if (sourceCode.includes("/* eslint-disable */")) {
+            break add_eslint_disable;
+        }
+
+        sourceCode = ["/* eslint-disable */", "", sourceCode].join("\n");
+    }
+
     sourceCode = addCommentToSourceCode({
         sourceCode,
         fileRelativePath,
