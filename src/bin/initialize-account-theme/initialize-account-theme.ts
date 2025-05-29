@@ -4,7 +4,6 @@ import chalk from "chalk";
 import { join as pathJoin, relative as pathRelative } from "path";
 import * as fs from "fs";
 import { updateAccountThemeImplementationInConfig } from "./updateAccountThemeImplementationInConfig";
-import { command as updateKcGenCommand } from "../update-kc-gen";
 import { maybeDelegateCommandToCustomHandler } from "../shared/customHandler_delegate";
 import { exitIfUncommittedChanges } from "../shared/exitIfUncommittedChanges";
 import { getThisCodebaseRootDirPath } from "../tools/getThisCodebaseRootDirPath";
@@ -52,6 +51,11 @@ export async function command(params: { buildContext: BuildContext }) {
                     process.exit(-1);
                 }
 
+                updateAccountThemeImplementationInConfig({
+                    buildContext,
+                    accountThemeType
+                });
+
                 fs.cpSync(
                     pathJoin(
                         getThisCodebaseRootDirPath(),
@@ -67,6 +71,11 @@ export async function command(params: { buildContext: BuildContext }) {
             break;
         case "Single-Page":
             {
+                updateAccountThemeImplementationInConfig({
+                    buildContext,
+                    accountThemeType
+                });
+
                 const { initializeSpa } = await import("../shared/initializeSpa");
 
                 await initializeSpa({
@@ -76,19 +85,4 @@ export async function command(params: { buildContext: BuildContext }) {
             }
             break;
     }
-
-    updateAccountThemeImplementationInConfig({ buildContext, accountThemeType });
-
-    await updateKcGenCommand({
-        buildContext: {
-            ...buildContext,
-            implementedThemeTypes: {
-                ...buildContext.implementedThemeTypes,
-                account: {
-                    isImplemented: true,
-                    type: accountThemeType
-                }
-            }
-        }
-    });
 }
