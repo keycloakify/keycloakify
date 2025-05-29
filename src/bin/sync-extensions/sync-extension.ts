@@ -10,6 +10,8 @@ import { join as pathJoin } from "path";
 import { existsAsync } from "../tools/fs.existsAsync";
 import * as fsPr from "fs/promises";
 import { getIsKnownByGit, untrackFromGit } from "../tools/gitUtils";
+import { command as updateKcGenCommand } from "../update-kc-gen";
+import { getBuildContext } from "../shared/buildContext";
 
 export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
@@ -85,4 +87,10 @@ export async function command(params: { buildContext: BuildContext }) {
             )
             .flat()
     );
+
+    await updateKcGenCommand({
+        buildContext: getBuildContext({
+            projectDirPath: buildContext.projectDirPath
+        })
+    });
 }
