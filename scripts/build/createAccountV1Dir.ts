@@ -1,17 +1,15 @@
-import * as fs from "fs";
-import { join as pathJoin } from "path";
-import { transformCodebase } from "../../src/bin/tools/transformCodebase";
-import { downloadKeycloakDefaultTheme } from "../shared/downloadKeycloakDefaultTheme";
-import { WELL_KNOWN_DIRECTORY_BASE_NAME } from "../../src/bin/shared/constants";
+import { join as pathJoin, sep as pathSep, relative as pathRelative } from "path";
 import { getThisCodebaseRootDirPath } from "../../src/bin/tools/getThisCodebaseRootDirPath";
-import { accountMultiPageSupportedLanguages } from "../generate-i18n-messages";
+import { downloadAndExtractArchive } from "../../src/bin/tools/downloadAndExtractArchive";
+import { getProxyFetchOptions } from "../../src/bin/tools/fetchProxyOptions";
+import { transformCodebase } from "../../src/bin/tools/transformCodebase";
+import { cacheDirPath } from "../shared/cacheDirPath";
 import * as fsPr from "fs/promises";
 
-export async function createAccountV1Dir() {
-    const { extractedDirPath } = await downloadKeycloakDefaultTheme({
-        keycloakVersionId: "FOR_ACCOUNT_MULTI_PAGE"
-    });
+const KEYCLOAKIFY_KEYCLOAK_ACCOUNT_MULTI_PAGE_UI_SHA =
+    "718b76c9b63ef0448c3318fce78b5e7c92ea23b8";
 
+export async function createAccountV1Dir() {
     const destDirPath = pathJoin(
         getThisCodebaseRootDirPath(),
         "dist",
@@ -21,59 +19,33 @@ export async function createAccountV1Dir() {
 
     await fsPr.rm(destDirPath, { recursive: true, force: true });
 
+    const { extractedDirPath } = await downloadAndExtractArchive({
+        cacheDirPath,
+        fetchOptions: getProxyFetchOptions({
+            npmConfigGetCwd: getThisCodebaseRootDirPath()
+        }),
+        url: `https://github.com/keycloakify/keycloak-account-multi-page-ui/archive/${KEYCLOAKIFY_KEYCLOAK_ACCOUNT_MULTI_PAGE_UI_SHA}.zip`,
+        uniqueIdOfOnArchiveFile: "extract_account_v1",
+        onArchiveFile: async params => {
+            const { writeFile } = params;
+
+            let fileRelativePath = params.fileRelativePath
+                .split(pathSep)
+                .splice(1)
+                .join(pathSep);
+
+            fileRelativePath = pathRelative("account-v1", fileRelativePath);
+
+            if (fileRelativePath.startsWith("..")) {
+                return;
+            }
+
+            await writeFile({ fileRelativePath });
+        }
+    });
+
     transformCodebase({
-        srcDirPath: pathJoin(extractedDirPath, "base", "account"),
+        srcDirPath: extractedDirPath,
         destDirPath
     });
-
-    transformCodebase({
-        srcDirPath: pathJoin(extractedDirPath, "keycloak", "account", "resources"),
-        destDirPath: pathJoin(destDirPath, "resources")
-    });
-
-    transformCodebase({
-        srcDirPath: pathJoin(extractedDirPath, "keycloak", "common", "resources"),
-        destDirPath: pathJoin(
-            destDirPath,
-            "resources",
-            WELL_KNOWN_DIRECTORY_BASE_NAME.RESOURCES_COMMON
-        )
-    });
-
-    fs.writeFileSync(
-        pathJoin(destDirPath, "theme.properties"),
-        Buffer.from(
-            [
-                "accountResourceProvider=account-v1",
-                "",
-                `locales=${accountMultiPageSupportedLanguages.join(",")}`,
-                "",
-                "styles=" +
-                    [
-                        "css/account.css",
-                        "img/icon-sidebar-active.png",
-                        "img/logo.png",
-                        ...[
-                            "patternfly.min.css",
-                            "patternfly-additions.min.css",
-                            "patternfly-additions.min.css"
-                        ].map(
-                            fileBasename =>
-                                `${WELL_KNOWN_DIRECTORY_BASE_NAME.RESOURCES_COMMON}/node_modules/patternfly/dist/css/${fileBasename}`
-                        )
-                    ].join(" "),
-                "",
-                "##### css classes for form buttons",
-                "# main class used for all buttons",
-                "kcButtonClass=btn",
-                "# classes defining priority of the button - primary or default (there is typically only one priority button for the form)",
-                "kcButtonPrimaryClass=btn-primary",
-                "kcButtonDefaultClass=btn-default",
-                "# classes defining size of the button",
-                "kcButtonLargeClass=btn-lg",
-                ""
-            ].join("\n"),
-            "utf8"
-        )
-    );
 }

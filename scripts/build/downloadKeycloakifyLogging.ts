@@ -31,7 +31,7 @@ export async function downloadKeycloakifyLogging(params: { distDirPath: string }
             npmConfigGetCwd: getThisCodebaseRootDirPath()
         }),
         url: `https://github.com/keycloakify/keycloakify-logging/releases/download/${KEYCLOAKIFY_LOGGING_VERSION}/keycloakify-logging-${KEYCLOAKIFY_LOGGING_VERSION}.jar`,
-        uniqueIdOfOnArchiveFile: "no extraction",
+        uniqueIdOfOnArchiveFile: "no_extraction",
         onArchiveFile: async () => {}
     });
 

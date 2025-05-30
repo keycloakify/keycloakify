@@ -1,73 +1,64 @@
-import { join as pathJoin } from "path";
-import { downloadKeycloakDefaultTheme } from "../shared/downloadKeycloakDefaultTheme";
+import { join as pathJoin, sep as pathSep, relative as pathRelative } from "path";
 import { transformCodebase } from "../../src/bin/tools/transformCodebase";
-import { existsAsync } from "../../src/bin/tools/fs.existsAsync";
 import { getThisCodebaseRootDirPath } from "../../src/bin/tools/getThisCodebaseRootDirPath";
 import { WELL_KNOWN_DIRECTORY_BASE_NAME } from "../../src/bin/shared/constants";
-import { assert, type Equals } from "tsafe/assert";
+import { cacheDirPath } from "../shared/cacheDirPath";
+import { getProxyFetchOptions } from "../../src/bin/tools/fetchProxyOptions";
 import * as fsPr from "fs/promises";
+import { downloadAndExtractArchive } from "../../src/bin/tools/downloadAndExtractArchive";
 
 export async function createPublicKeycloakifyDevResourcesDir() {
-    await Promise.all(
-        (["login", "account"] as const).map(async themeType => {
-            const { extractedDirPath } = await downloadKeycloakDefaultTheme({
-                keycloakVersionId: (() => {
-                    switch (themeType) {
-                        case "login":
-                            return "FOR_LOGIN_THEME";
-                        case "account":
-                            return "FOR_ACCOUNT_MULTI_PAGE";
-                    }
-                    assert<Equals<typeof themeType, never>>();
-                })()
-            });
+    const destDirPath = pathJoin(
+        getThisCodebaseRootDirPath(),
+        "dist",
+        "res",
+        "public",
+        WELL_KNOWN_DIRECTORY_BASE_NAME.KEYCLOAKIFY_DEV_RESOURCES
+    );
 
-            const destDirPath = pathJoin(
-                getThisCodebaseRootDirPath(),
-                "dist",
-                "res",
-                "public",
-                WELL_KNOWN_DIRECTORY_BASE_NAME.KEYCLOAKIFY_DEV_RESOURCES,
-                themeType
-            );
+    await fsPr.rm(destDirPath, { recursive: true, force: true });
 
-            await fsPr.rm(destDirPath, { recursive: true, force: true });
+    for (const [url, themeType] of [
+        [
+            "https://github.com/keycloakify/keycloak-login-ui/archive/1c64024a06b5f8deae3eded68863268ff9791e60.zip",
+            "login"
+        ],
+        [
+            "https://github.com/keycloakify/keycloak-account-multi-page-ui/archive/718b76c9b63ef0448c3318fce78b5e7c92ea23b8.zip",
+            "account"
+        ]
+    ]) {
+        const { extractedDirPath } = await downloadAndExtractArchive({
+            cacheDirPath,
+            fetchOptions: getProxyFetchOptions({
+                npmConfigGetCwd: getThisCodebaseRootDirPath()
+            }),
+            url,
+            uniqueIdOfOnArchiveFile: "extract_keycloak_theme_resources",
+            onArchiveFile: async params => {
+                const { writeFile } = params;
 
-            base_resources: {
-                const srcDirPath = pathJoin(
-                    extractedDirPath,
-                    "base",
-                    themeType,
-                    "resources"
+                let fileRelativePath = params.fileRelativePath
+                    .split(pathSep)
+                    .splice(1)
+                    .join(pathSep);
+
+                fileRelativePath = pathRelative(
+                    pathJoin("keycloak-theme-resources", themeType),
+                    fileRelativePath
                 );
 
-                if (!(await existsAsync(srcDirPath))) {
-                    break base_resources;
+                if (fileRelativePath.startsWith("..")) {
+                    return;
                 }
 
-                transformCodebase({
-                    srcDirPath,
-                    destDirPath
-                });
+                await writeFile({ fileRelativePath });
             }
+        });
 
-            transformCodebase({
-                srcDirPath: pathJoin(
-                    extractedDirPath,
-                    "keycloak",
-                    themeType,
-                    "resources"
-                ),
-                destDirPath
-            });
-
-            transformCodebase({
-                srcDirPath: pathJoin(extractedDirPath, "keycloak", "common", "resources"),
-                destDirPath: pathJoin(
-                    destDirPath,
-                    WELL_KNOWN_DIRECTORY_BASE_NAME.RESOURCES_COMMON
-                )
-            });
-        })
-    );
+        transformCodebase({
+            srcDirPath: extractedDirPath,
+            destDirPath: pathJoin(destDirPath, themeType)
+        });
+    }
 }
