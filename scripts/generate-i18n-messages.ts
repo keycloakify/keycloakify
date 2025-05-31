@@ -59,4 +59,16 @@ async function generateI18nMessages() {
             )
         });
     }
+
+    transformCodebase({
+        srcDirPath: pathJoin(getThisCodebaseRootDirPath(), "src", "login", "i18n"),
+        destDirPath: pathJoin(getThisCodebaseRootDirPath(), "src", "account", "i18n"),
+        transformSourceCode: ({ fileRelativePath, sourceCode }) => {
+            if (fileRelativePath.startsWith("messages_defaultSet")) {
+                return undefined;
+            }
+
+            return { modifiedSourceCode: sourceCode };
+        }
+    });
 }
