@@ -40,7 +40,7 @@ async function generateI18nMessages() {
                     fileRelativePath
                 );
 
-                if (fileRelativePath === "..") {
+                if (fileRelativePath.startsWith("..")) {
                     return;
                 }
 
