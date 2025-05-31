@@ -20,11 +20,11 @@ export async function createPublicKeycloakifyDevResourcesDir() {
 
     for (const [url, themeType] of [
         [
-            "https://github.com/keycloakify/keycloak-login-ui/archive/1c64024a06b5f8deae3eded68863268ff9791e60.zip",
+            "https://github.com/keycloakify/keycloak-login-ui/archive/d5aee279e30f7cc2f37c2910516590ebdad950fc.zip",
             "login"
         ],
         [
-            "https://github.com/keycloakify/keycloak-account-multi-page-ui/archive/718b76c9b63ef0448c3318fce78b5e7c92ea23b8.zip",
+            "https://github.com/keycloakify/keycloak-account-multi-page-ui/archive/19bd49bdc1a8b962471e9d2dafdeba1228c3e160.zip",
             "account"
         ]
     ]) {
