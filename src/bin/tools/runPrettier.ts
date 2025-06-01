@@ -111,7 +111,15 @@ export async function getPrettier(): Promise<PrettierAndConfigHash> {
 export async function runPrettier(params: {
     sourceCode: string;
     filePath: string;
-}): Promise<string> {
+}): Promise<string>;
+export async function runPrettier(params: {
+    sourceCode: Buffer;
+    filePath: string;
+}): Promise<Buffer>;
+export async function runPrettier(params: {
+    sourceCode: string | Buffer;
+    filePath: string;
+}): Promise<string | Buffer> {
     const { sourceCode, filePath } = params;
 
     let formattedSourceCode: string;
@@ -129,11 +137,14 @@ export async function runPrettier(params: {
 
         const config = await prettier.resolveConfig(filePath);
 
-        formattedSourceCode = await prettier.format(sourceCode, {
-            ...config,
-            filePath,
-            parser: inferredParser
-        });
+        formattedSourceCode = await prettier.format(
+            typeof sourceCode === "string" ? sourceCode : sourceCode.toString("utf8"),
+            {
+                ...config,
+                filePath,
+                parser: inferredParser
+            }
+        );
     } catch (error) {
         console.log(
             chalk.red(
@@ -144,5 +155,7 @@ export async function runPrettier(params: {
         throw error;
     }
 
-    return formattedSourceCode;
+    return typeof sourceCode === "string"
+        ? formattedSourceCode
+        : Buffer.from(formattedSourceCode, "utf8");
 }
