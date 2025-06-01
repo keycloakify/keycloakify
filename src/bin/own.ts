@@ -3,15 +3,17 @@ import { getExtensionModuleFileSourceCodeReadyToBeCopied } from "./sync-extensio
 import type { ExtensionModuleMeta } from "./sync-extensions/extensionModuleMeta";
 import { command as command_syncExtensions } from "./sync-extensions/sync-extension";
 import {
-    readManagedGitignoreFile,
-    writeManagedGitignoreFile
-} from "./sync-extensions/managedGitignoreFile";
+    readManagedGitignoresFile,
+    writeManagedGitignoreFiles
+} from "./sync-extensions/managedGitignoreFiles";
 import { getExtensionModuleMetas } from "./sync-extensions/extensionModuleMeta";
 import { getAbsoluteAndInOsFormatPath } from "./tools/getAbsoluteAndInOsFormatPath";
 import { relative as pathRelative, dirname as pathDirname, join as pathJoin } from "path";
 import { getInstalledModuleDirPath } from "./tools/getInstalledModuleDirPath";
 import * as fsPr from "fs/promises";
 import { isInside } from "./tools/isInside";
+import { KEYCLOAK_THEME } from "./shared/constants";
+import { same } from "evt/tools/inDepth/same";
 import chalk from "chalk";
 
 export async function command(params: {
@@ -19,6 +21,7 @@ export async function command(params: {
     cliCommandOptions: {
         path: string;
         isRevert: boolean;
+        isPublic: boolean;
     };
 }) {
     const { buildContext, cliCommandOptions } = params;
@@ -26,27 +29,34 @@ export async function command(params: {
     const extensionModuleMetas = await getExtensionModuleMetas({ buildContext });
 
     const { targetFileRelativePathsByExtensionModuleMeta } = await (async () => {
-        const fileOrDirectoryRelativePath = pathRelative(
-            buildContext.themeSrcDirPath,
-            getAbsoluteAndInOsFormatPath({
-                cwd: buildContext.themeSrcDirPath,
-                pathIsh: cliCommandOptions.path
-            })
-        );
+        const fileOrDirectoryRelativePath = (() => {
+            const dirPath_ctx = cliCommandOptions.isPublic
+                ? pathJoin(buildContext.publicDirPath, KEYCLOAK_THEME)
+                : buildContext.themeSrcDirPath;
+
+            return pathRelative(
+                dirPath_ctx,
+                getAbsoluteAndInOsFormatPath({
+                    cwd: dirPath_ctx,
+                    pathIsh: cliCommandOptions.path
+                })
+            );
+        })();
 
         const arr = extensionModuleMetas
             .map(extensionModuleMeta => ({
                 extensionModuleMeta,
                 fileRelativePaths: extensionModuleMeta.files
-                    .map(({ fileRelativePath }) => fileRelativePath)
                     .filter(
-                        fileRelativePath =>
-                            fileRelativePath === fileOrDirectoryRelativePath ||
-                            isInside({
-                                dirPath: fileOrDirectoryRelativePath,
-                                filePath: fileRelativePath
-                            })
+                        ({ fileRelativePath, isPublic }) =>
+                            cliCommandOptions.isPublic === isPublic &&
+                            (fileRelativePath === fileOrDirectoryRelativePath ||
+                                isInside({
+                                    dirPath: fileOrDirectoryRelativePath,
+                                    filePath: fileRelativePath
+                                }))
                     )
+                    .map(({ fileRelativePath }) => fileRelativePath)
             }))
             .filter(({ fileRelativePaths }) => fileRelativePaths.length !== 0);
 
@@ -75,12 +85,13 @@ export async function command(params: {
     }
 
     const { ownedFilesRelativePaths: ownedFilesRelativePaths_current } =
-        await readManagedGitignoreFile({
+        await readManagedGitignoresFile({
             buildContext
         });
 
     await (cliCommandOptions.isRevert ? command_revert : command_own)({
         extensionModuleMetas,
+        isPublic: cliCommandOptions.isPublic,
         targetFileRelativePathsByExtensionModuleMeta,
         ownedFilesRelativePaths_current,
         buildContext
@@ -89,20 +100,22 @@ export async function command(params: {
 
 type Params_subcommands = {
     extensionModuleMetas: ExtensionModuleMeta[];
+    isPublic: boolean;
     targetFileRelativePathsByExtensionModuleMeta: Map<ExtensionModuleMeta, string[]>;
-    ownedFilesRelativePaths_current: string[];
+    ownedFilesRelativePaths_current: { isPublic: boolean; fileRelativePath: string }[];
     buildContext: BuildContext;
 };
 
 async function command_own(params: Params_subcommands) {
     const {
         extensionModuleMetas,
+        isPublic,
         targetFileRelativePathsByExtensionModuleMeta,
         ownedFilesRelativePaths_current,
         buildContext
     } = params;
 
-    await writeManagedGitignoreFile({
+    await writeManagedGitignoreFiles({
         buildContext,
         extensionModuleMetas,
         ownedFilesRelativePaths: [
@@ -111,8 +124,11 @@ async function command_own(params: Params_subcommands) {
                 .flat()
                 .filter(
                     fileRelativePath =>
-                        !ownedFilesRelativePaths_current.includes(fileRelativePath)
+                        !ownedFilesRelativePaths_current.some(entry =>
+                            same(entry, { isPublic, fileRelativePath })
+                        )
                 )
+                .map(fileRelativePath => ({ isPublic, fileRelativePath }))
         ]
     });
 
@@ -128,7 +144,11 @@ async function command_own(params: Params_subcommands) {
         });
 
         for (const fileRelativePath of fileRelativePaths) {
-            if (ownedFilesRelativePaths_current.includes(fileRelativePath)) {
+            if (
+                ownedFilesRelativePaths_current.some(entry =>
+                    same(entry, { isPublic, fileRelativePath })
+                )
+            ) {
                 console.log(
                     chalk.grey(`You already have ownership over '${fileRelativePath}'.`)
                 );
@@ -138,6 +158,7 @@ async function command_own(params: Params_subcommands) {
             writeActions.push(async () => {
                 const sourceCode = await getExtensionModuleFileSourceCodeReadyToBeCopied({
                     buildContext,
+                    isPublic,
                     fileRelativePath,
                     isOwnershipAction: true,
                     extensionModuleName: extensionModuleMeta.moduleName,
@@ -146,7 +167,12 @@ async function command_own(params: Params_subcommands) {
                 });
 
                 await fsPr.writeFile(
-                    pathJoin(buildContext.themeSrcDirPath, fileRelativePath),
+                    pathJoin(
+                        isPublic
+                            ? pathJoin(buildContext.publicDirPath, KEYCLOAK_THEME)
+                            : buildContext.themeSrcDirPath,
+                        fileRelativePath
+                    ),
                     sourceCode
                 );
 
@@ -166,6 +192,7 @@ async function command_own(params: Params_subcommands) {
 async function command_revert(params: Params_subcommands) {
     const {
         extensionModuleMetas,
+        isPublic,
         targetFileRelativePathsByExtensionModuleMeta,
         ownedFilesRelativePaths_current,
         buildContext
@@ -176,7 +203,11 @@ async function command_revert(params: Params_subcommands) {
     )
         .flat()
         .filter(fileRelativePath => {
-            if (!ownedFilesRelativePaths_current.includes(fileRelativePath)) {
+            if (
+                !ownedFilesRelativePaths_current.some(entry =>
+                    same(entry, { isPublic, fileRelativePath })
+                )
+            ) {
                 console.log(
                     chalk.grey(`Ownership over '${fileRelativePath}' wasn't claimed.`)
                 );
@@ -195,12 +226,14 @@ async function command_revert(params: Params_subcommands) {
         return;
     }
 
-    await writeManagedGitignoreFile({
+    await writeManagedGitignoreFiles({
         buildContext,
         extensionModuleMetas,
         ownedFilesRelativePaths: ownedFilesRelativePaths_current.filter(
-            fileRelativePath =>
-                !ownedFilesRelativePaths_toRemove.includes(fileRelativePath)
+            entry =>
+                !ownedFilesRelativePaths_toRemove.some(fileRelativePath =>
+                    same(entry, { isPublic, fileRelativePath })
+                )
         )
     });
 

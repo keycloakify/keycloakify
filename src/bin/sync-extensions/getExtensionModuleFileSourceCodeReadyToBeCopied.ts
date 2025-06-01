@@ -7,12 +7,14 @@ import { KEYCLOAK_THEME } from "../shared/constants";
 
 export type BuildContextLike = {
     themeSrcDirPath: string;
+    publicDirPath: string;
 };
 
 assert<BuildContext extends BuildContextLike ? true : false>();
 
 export async function getExtensionModuleFileSourceCodeReadyToBeCopied(params: {
     buildContext: BuildContextLike;
+    isPublic: boolean;
     fileRelativePath: string;
     isOwnershipAction: boolean;
     extensionModuleDirPath: string;
@@ -22,6 +24,7 @@ export async function getExtensionModuleFileSourceCodeReadyToBeCopied(params: {
     const {
         buildContext,
         extensionModuleDirPath,
+        isPublic,
         fileRelativePath,
         isOwnershipAction,
         extensionModuleName,
@@ -61,12 +64,12 @@ export async function getExtensionModuleFileSourceCodeReadyToBeCopied(params: {
                       `This file has been claimed for ownership from ${extensionModuleName} version ${extensionModuleVersion}.`,
                       `To relinquish ownership and restore this file to its original content, run the following command:`,
                       ``,
-                      `$ npx keycloakify own --path "${path}" --revert`
+                      `$ npx keycloakify own --path "${path}"${isPublic ? " --public " : ""}--revert`
                   ]
                 : [
                       `WARNING: Before modifying this file, run the following command:`,
                       ``,
-                      `$ npx keycloakify own --path "${path}"`,
+                      `$ npx keycloakify own --path "${path}"${isPublic ? " --public" : ""}`,
                       ``,
                       `This file is provided by ${extensionModuleName} version ${extensionModuleVersion}.`,
                       `It was copied into your repository by the postinstall script: \`keycloakify sync-extensions\`.`
@@ -74,7 +77,12 @@ export async function getExtensionModuleFileSourceCodeReadyToBeCopied(params: {
         })()
     });
 
-    const destFilePath = pathJoin(buildContext.themeSrcDirPath, fileRelativePath);
+    const destFilePath = pathJoin(
+        isPublic
+            ? pathJoin(buildContext.publicDirPath, KEYCLOAK_THEME)
+            : buildContext.themeSrcDirPath,
+        fileRelativePath
+    );
 
     format: {
         if (!(await getIsPrettierAvailable())) {

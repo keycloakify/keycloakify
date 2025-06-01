@@ -37,6 +37,7 @@ import { createObjectThatThrowsIfAccessed } from "../../tools/createObjectThatTh
 import { listInstalledModules } from "../../tools/listInstalledModules";
 import { isInside } from "../../tools/isInside";
 import { id } from "tsafe/id";
+import { KEYCLOAK_THEME } from "../../shared/constants";
 
 export type BuildContextLike = BuildContextLike_kcContextExclusionsFtlCode &
     BuildContextLike_generateMessageProperties & {
@@ -44,6 +45,7 @@ export type BuildContextLike = BuildContextLike_kcContextExclusionsFtlCode &
         extraThemeProperties: string[] | undefined;
         projectDirPath: string;
         projectBuildDirPath: string;
+        publicDirPath: string;
         environmentVariables: { name: string; default: string }[];
         implementedThemeTypes: BuildContext["implementedThemeTypes"];
         themeSrcDirPath: string;
@@ -153,10 +155,14 @@ export async function generateResources(params: {
                 break apply_replacers_and_move_to_theme_resources;
             }
 
-            {
+            for (const directoryBasename of [
+                KEYCLOAK_THEME,
+                // NOTE: This is legacy and should eventually be removed
+                WELL_KNOWN_DIRECTORY_BASE_NAME.KEYCLOAKIFY_DEV_RESOURCES
+            ]) {
                 const dirPath = pathJoin(
                     buildContext.projectBuildDirPath,
-                    WELL_KNOWN_DIRECTORY_BASE_NAME.KEYCLOAKIFY_DEV_RESOURCES
+                    directoryBasename
                 );
 
                 if (fs.existsSync(dirPath)) {
@@ -164,7 +170,7 @@ export async function generateResources(params: {
 
                     throw new Error(
                         [
-                            `Keycloakify build error: The ${WELL_KNOWN_DIRECTORY_BASE_NAME.KEYCLOAKIFY_DEV_RESOURCES} directory shouldn't exist in your build directory.`,
+                            `Keycloakify build error: The ${directoryBasename} directory shouldn't exist in your build directory.`,
                             `(${pathRelative(process.cwd(), dirPath)}).\n`,
                             `Theses assets are only required for local development with Storybook.",
                             "Please remove this directory as an additional step of your command.\n`,
@@ -569,6 +575,7 @@ export async function generateResources(params: {
             };
         }
 
+        // NOTE: Legacy
         keycloak_static_resources: {
             if (isNative) {
                 break keycloak_static_resources;
@@ -577,6 +584,8 @@ export async function generateResources(params: {
             if (isSpa) {
                 break keycloak_static_resources;
             }
+
+            // TODO: Implement a check to skip that.
 
             transformCodebase({
                 srcDirPath: pathJoin(
@@ -587,6 +596,37 @@ export async function generateResources(params: {
                     themeType
                 ),
                 destDirPath: pathJoin(themeTypeDirPath, "resources")
+            });
+        }
+
+        extensions_static_resources: {
+            if (isNative) {
+                break extensions_static_resources;
+            }
+
+            if (isSpa) {
+                break extensions_static_resources;
+            }
+
+            const dirPath = pathJoin(
+                buildContext.publicDirPath,
+                KEYCLOAK_THEME,
+                themeType
+            );
+
+            if (!fs.existsSync(dirPath)) {
+                break extensions_static_resources;
+            }
+
+            transformCodebase({
+                srcDirPath: dirPath,
+                destDirPath: pathJoin(
+                    themeTypeDirPath,
+                    "resources",
+                    WELL_KNOWN_DIRECTORY_BASE_NAME.DIST,
+                    KEYCLOAK_THEME,
+                    themeType
+                )
             });
         }
 

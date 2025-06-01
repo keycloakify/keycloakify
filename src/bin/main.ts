@@ -281,6 +281,7 @@ program
     .command<{
         path: string;
         revert: boolean;
+        public: boolean;
     }>({
         name: "own",
         description: [
@@ -331,14 +332,30 @@ program
         ].join(" "),
         defaultValue: false
     })
+    .option({
+        key: "public",
+        name: (() => {
+            const long = "public";
+            const short = "p";
+
+            optionsKeys.push(long, short);
+
+            return { long, short };
+        })(),
+        description: [
+            "Flag to use when targeting a file or directory in the public directory",
+            "instead of the src"
+        ].join(" "),
+        defaultValue: false
+    })
     .task({
         skip,
-        handler: async ({ projectDirPath, path, revert }) => {
+        handler: async ({ projectDirPath, path, revert, public: public_params }) => {
             const { command } = await import("./own");
 
             await command({
                 buildContext: getBuildContext({ projectDirPath }),
-                cliCommandOptions: { path, isRevert: revert }
+                cliCommandOptions: { path, isRevert: revert, isPublic: public_params }
             });
         }
     });

@@ -2,7 +2,8 @@ import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path
 import type { Plugin } from "vite";
 import {
     WELL_KNOWN_DIRECTORY_BASE_NAME,
-    VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES
+    VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES,
+    KEYCLOAK_THEME
 } from "../bin/shared/constants";
 import { id } from "tsafe/id";
 import { rm } from "../bin/tools/fs.rm";
@@ -203,6 +204,7 @@ export function keycloakify(params: keycloakify.Params) {
 
             assert(buildDirPath !== undefined);
 
+            // NOTE: This is legacy and should eventually be removed
             await rm(
                 pathJoin(
                     buildDirPath,
@@ -213,6 +215,11 @@ export function keycloakify(params: keycloakify.Params) {
                     force: true
                 }
             );
+
+            await rm(pathJoin(buildDirPath, KEYCLOAK_THEME), {
+                recursive: true,
+                force: true
+            });
         },
         transformIndexHtml: html => {
             const doReadKcContextFromUrl =
