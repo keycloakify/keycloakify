@@ -12,6 +12,7 @@ import * as fs from "fs";
 import { assert } from "tsafe/assert";
 import type { BuildContext } from "../../shared/buildContext";
 import { getAbsoluteAndInOsFormatPath } from "../../tools/getAbsoluteAndInOsFormatPath";
+import JSON5 from "json5";
 
 export type BuildContextLike = {
     themeNames: string[];
@@ -74,7 +75,7 @@ export function generateMessageProperties(params: {
                     messagesJson += line;
                 }
 
-                const messages = JSON.parse(messagesJson) as Record<string, string>;
+                const messages = JSON5.parse(messagesJson) as Record<string, string>;
 
                 return [languageTag, messages];
             })
