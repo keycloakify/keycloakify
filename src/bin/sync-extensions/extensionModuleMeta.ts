@@ -232,18 +232,20 @@ export async function getExtensionModuleMetas(params: {
                 await crawlAsync({
                     dirPath: pathJoin(dirPath, KEYCLOAK_THEME),
                     returnedPathsType: "relative to dirPath",
-                    onFileFound: async fileRelativePath => {
-                        const isPublic = fileRelativePath.startsWith(`public${pathSep}`);
+                    onFileFound: async fileRelativePath_fromReservedDir => {
+                        const isPublic = fileRelativePath_fromReservedDir.startsWith(
+                            `public${pathSep}`
+                        );
 
-                        const fileRelativePath_contextual = isPublic
-                            ? pathRelative("public", fileRelativePath)
-                            : fileRelativePath;
+                        const fileRelativePath = isPublic
+                            ? pathRelative("public", fileRelativePath_fromReservedDir)
+                            : fileRelativePath_fromReservedDir;
 
                         const sourceCode =
                             await getExtensionModuleFileSourceCodeReadyToBeCopied({
                                 buildContext,
                                 isPublic,
-                                fileRelativePath: fileRelativePath_contextual,
+                                fileRelativePath,
                                 isOwnershipAction: false,
                                 extensionModuleDirPath: dirPath,
                                 extensionModuleName: moduleName,
@@ -255,7 +257,7 @@ export async function getExtensionModuleMetas(params: {
                         const copyableFilePath = pathJoin(
                             pathDirname(cacheFilePath),
                             KEYCLOAK_THEME,
-                            fileRelativePath
+                            fileRelativePath_fromReservedDir
                         );
 
                         {
@@ -270,7 +272,7 @@ export async function getExtensionModuleMetas(params: {
 
                         files.push({
                             isPublic,
-                            fileRelativePath: fileRelativePath_contextual,
+                            fileRelativePath,
                             hash,
                             copyableFilePath
                         });

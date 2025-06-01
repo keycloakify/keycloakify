@@ -33,7 +33,12 @@ export async function getExtensionModuleFileSourceCodeReadyToBeCopied(params: {
 
     let sourceCode = (
         await fsPr.readFile(
-            pathJoin(extensionModuleDirPath, KEYCLOAK_THEME, fileRelativePath)
+            pathJoin(
+                extensionModuleDirPath,
+                KEYCLOAK_THEME,
+                isPublic ? "public" : ".",
+                fileRelativePath
+            )
         )
     ).toString("utf8");
 
