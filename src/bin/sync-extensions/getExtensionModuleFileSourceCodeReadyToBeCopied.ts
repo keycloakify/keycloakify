@@ -7,12 +7,14 @@ import { KEYCLOAK_THEME } from "../shared/constants";
 
 export type BuildContextLike = {
     themeSrcDirPath: string;
+    publicDirPath: string;
 };
 
 assert<BuildContext extends BuildContextLike ? true : false>();
 
 export async function getExtensionModuleFileSourceCodeReadyToBeCopied(params: {
     buildContext: BuildContextLike;
+    isPublic: boolean;
     fileRelativePath: string;
     isOwnershipAction: boolean;
     extensionModuleDirPath: string;
@@ -22,17 +24,50 @@ export async function getExtensionModuleFileSourceCodeReadyToBeCopied(params: {
     const {
         buildContext,
         extensionModuleDirPath,
+        isPublic,
         fileRelativePath,
         isOwnershipAction,
         extensionModuleName,
         extensionModuleVersion
     } = params;
 
-    let sourceCode = (
-        await fsPr.readFile(
-            pathJoin(extensionModuleDirPath, KEYCLOAK_THEME, fileRelativePath)
-        )
-    ).toString("utf8");
+    const { refSourceCode } = await (async () => {
+        let sourceCode: string | undefined = undefined;
+
+        const sourceCode_originalBuffer = await fsPr.readFile(
+            pathJoin(
+                extensionModuleDirPath,
+                KEYCLOAK_THEME,
+                isPublic ? "public" : ".",
+                fileRelativePath
+            )
+        );
+
+        let hasBeenUpdated = false;
+
+        const refSourceCode = {
+            get current(): string {
+                if (sourceCode === undefined) {
+                    sourceCode = sourceCode_originalBuffer.toString("utf8");
+                }
+
+                return sourceCode;
+            },
+            set current(value: string) {
+                hasBeenUpdated = true;
+                sourceCode = value;
+            },
+            getAsBuffer: () => {
+                if (!hasBeenUpdated) {
+                    return sourceCode_originalBuffer;
+                }
+
+                return Buffer.from(refSourceCode.current, "utf8");
+            }
+        };
+
+        return { refSourceCode };
+    })();
 
     add_eslint_disable: {
         if (isOwnershipAction) {
@@ -43,15 +78,17 @@ export async function getExtensionModuleFileSourceCodeReadyToBeCopied(params: {
             break add_eslint_disable;
         }
 
-        if (sourceCode.includes("/* eslint-disable */")) {
+        if (refSourceCode.current.includes("/* eslint-disable */")) {
             break add_eslint_disable;
         }
 
-        sourceCode = ["/* eslint-disable */", "", sourceCode].join("\n");
+        refSourceCode.current = ["/* eslint-disable */", "", refSourceCode.current].join(
+            "\n"
+        );
     }
 
-    sourceCode = addCommentToSourceCode({
-        sourceCode,
+    addCommentToSourceCode({
+        refSourceCode,
         fileRelativePath,
         commentLines: (() => {
             const path = fileRelativePath.split(pathSep).join("/");
@@ -61,12 +98,12 @@ export async function getExtensionModuleFileSourceCodeReadyToBeCopied(params: {
                       `This file has been claimed for ownership from ${extensionModuleName} version ${extensionModuleVersion}.`,
                       `To relinquish ownership and restore this file to its original content, run the following command:`,
                       ``,
-                      `$ npx keycloakify own --path "${path}" --revert`
+                      `$ npx keycloakify own --path "${path}" ${isPublic ? "--public " : ""}--revert`
                   ]
                 : [
                       `WARNING: Before modifying this file, run the following command:`,
                       ``,
-                      `$ npx keycloakify own --path "${path}"`,
+                      `$ npx keycloakify own --path "${path}"${isPublic ? " --public" : ""}`,
                       ``,
                       `This file is provided by ${extensionModuleName} version ${extensionModuleVersion}.`,
                       `It was copied into your repository by the postinstall script: \`keycloakify sync-extensions\`.`
@@ -74,31 +111,41 @@ export async function getExtensionModuleFileSourceCodeReadyToBeCopied(params: {
         })()
     });
 
-    const destFilePath = pathJoin(buildContext.themeSrcDirPath, fileRelativePath);
-
     format: {
         if (!(await getIsPrettierAvailable())) {
             break format;
         }
 
-        sourceCode = await runPrettier({
-            filePath: destFilePath,
-            sourceCode
+        const sourceCode_buffer_before = refSourceCode.getAsBuffer();
+        const sourceCode_buffer_after = await runPrettier({
+            filePath: pathJoin(
+                isPublic
+                    ? pathJoin(buildContext.publicDirPath, KEYCLOAK_THEME)
+                    : buildContext.themeSrcDirPath,
+                fileRelativePath
+            ),
+            sourceCode: sourceCode_buffer_before
         });
+
+        if (sourceCode_buffer_before.compare(sourceCode_buffer_after) === 0) {
+            break format;
+        }
+
+        refSourceCode.current = sourceCode_buffer_after.toString("utf8");
     }
 
-    return Buffer.from(sourceCode, "utf8");
+    return refSourceCode.getAsBuffer();
 }
 
 function addCommentToSourceCode(params: {
-    sourceCode: string;
+    refSourceCode: { current: string };
     fileRelativePath: string;
     commentLines: string[];
-}): string {
-    const { sourceCode, fileRelativePath, commentLines } = params;
+}): void {
+    const { refSourceCode, fileRelativePath, commentLines } = params;
 
-    const toResult = (comment: string) => {
-        return [comment, ``, sourceCode].join("\n");
+    const updateRef = (comment: string) => {
+        refSourceCode.current = [comment, ``, refSourceCode.current].join("\n");
     };
 
     for (const ext of [".ts", ".tsx", ".css", ".less", ".sass", ".js", ".jsx"]) {
@@ -106,13 +153,13 @@ function addCommentToSourceCode(params: {
             continue;
         }
 
-        return toResult(
-            [`/**`, ...commentLines.map(line => ` * ${line}`), ` */`].join("\n")
-        );
+        updateRef([`/**`, ...commentLines.map(line => ` * ${line}`), ` */`].join("\n"));
+        return;
     }
 
     if (fileRelativePath.endsWith(".properties")) {
-        return toResult(commentLines.map(line => `# ${line}`).join("\n"));
+        updateRef(commentLines.map(line => `# ${line}`).join("\n"));
+        return;
     }
 
     if (fileRelativePath.endsWith(".ftl")) {
@@ -120,15 +167,17 @@ function addCommentToSourceCode(params: {
             "\n"
         );
 
-        if (sourceCode.trim().startsWith("<#ftl")) {
-            const [first, ...rest] = sourceCode.split(">");
+        if (refSourceCode.current.trim().startsWith("<#ftl")) {
+            const [first, ...rest] = refSourceCode.current.split(">");
 
             const last = rest.join(">");
 
-            return [`${first}>`, comment, last].join("\n");
+            refSourceCode.current = [`${first}>`, comment, last].join("\n");
+            return;
         }
 
-        return toResult(comment);
+        updateRef(comment);
+        return;
     }
 
     if (fileRelativePath.endsWith(".html") || fileRelativePath.endsWith(".svg")) {
@@ -144,24 +193,31 @@ function addCommentToSourceCode(params: {
             `-->`
         ].join("\n");
 
-        if (fileRelativePath.endsWith(".html") && sourceCode.trim().startsWith("<!")) {
-            const [first, ...rest] = sourceCode.split(">");
+        if (
+            fileRelativePath.endsWith(".html") &&
+            refSourceCode.current.trim().startsWith("<!")
+        ) {
+            const [first, ...rest] = refSourceCode.current.split(">");
 
             const last = rest.join(">");
 
-            return [`${first}>`, comment, last].join("\n");
+            refSourceCode.current = [`${first}>`, comment, last].join("\n");
+            return;
         }
 
-        if (fileRelativePath.endsWith(".svg") && sourceCode.trim().startsWith("<?")) {
-            const [first, ...rest] = sourceCode.split("?>");
+        if (
+            fileRelativePath.endsWith(".svg") &&
+            refSourceCode.current.trim().startsWith("<?")
+        ) {
+            const [first, ...rest] = refSourceCode.current.split("?>");
 
             const last = rest.join("?>");
 
-            return [`${first}?>`, comment, last].join("\n");
+            refSourceCode.current = [`${first}?>`, comment, last].join("\n");
+            return;
         }
 
-        return toResult(comment);
+        updateRef(comment);
+        return;
     }
-
-    return sourceCode;
 }

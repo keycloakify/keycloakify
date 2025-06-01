@@ -2,9 +2,9 @@ import type { BuildContext } from "../shared/buildContext";
 import { getExtensionModuleMetas, computeHash } from "./extensionModuleMeta";
 import { installExtensionModulesPeerDependencies } from "./installExtensionModulesPeerDependencies";
 import {
-    readManagedGitignoreFile,
-    writeManagedGitignoreFile
-} from "./managedGitignoreFile";
+    readManagedGitignoresFile,
+    writeManagedGitignoreFiles
+} from "./managedGitignoreFiles";
 import { dirname as pathDirname } from "path";
 import { join as pathJoin } from "path";
 import { existsAsync } from "../tools/fs.existsAsync";
@@ -12,6 +12,8 @@ import * as fsPr from "fs/promises";
 import { getIsKnownByGit, untrackFromGit } from "../tools/gitUtils";
 import { command as updateKcGenCommand } from "../update-kc-gen";
 import { getBuildContext } from "../shared/buildContext";
+import { KEYCLOAK_THEME } from "../shared/constants";
+import { same } from "evt/tools/inDepth/same";
 
 export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
@@ -23,11 +25,11 @@ export async function command(params: { buildContext: BuildContext }) {
         extensionModuleMetas
     });
 
-    const { ownedFilesRelativePaths } = await readManagedGitignoreFile({
+    const { ownedFilesRelativePaths } = await readManagedGitignoresFile({
         buildContext
     });
 
-    await writeManagedGitignoreFile({
+    await writeManagedGitignoreFiles({
         buildContext,
         ownedFilesRelativePaths,
         extensionModuleMetas
@@ -38,13 +40,24 @@ export async function command(params: { buildContext: BuildContext }) {
             .map(extensionModuleMeta =>
                 Promise.all(
                     extensionModuleMeta.files.map(
-                        async ({ fileRelativePath, copyableFilePath, hash }) => {
-                            if (ownedFilesRelativePaths.includes(fileRelativePath)) {
+                        async ({
+                            isPublic,
+                            fileRelativePath,
+                            copyableFilePath,
+                            hash
+                        }) => {
+                            if (
+                                ownedFilesRelativePaths.some(entry =>
+                                    same(entry, { isPublic, fileRelativePath })
+                                )
+                            ) {
                                 return;
                             }
 
                             const destFilePath = pathJoin(
-                                buildContext.themeSrcDirPath,
+                                isPublic
+                                    ? pathJoin(buildContext.publicDirPath, KEYCLOAK_THEME)
+                                    : buildContext.themeSrcDirPath,
                                 fileRelativePath
                             );
 

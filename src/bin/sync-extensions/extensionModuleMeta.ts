@@ -1,7 +1,12 @@
 import { assert, type Equals, is } from "tsafe/assert";
 import { id } from "tsafe/id";
 import { z } from "zod";
-import { join as pathJoin, dirname as pathDirname } from "path";
+import {
+    join as pathJoin,
+    dirname as pathDirname,
+    relative as pathRelative,
+    sep as pathSep
+} from "path";
 import * as fsPr from "fs/promises";
 import type { BuildContext } from "../shared/buildContext";
 import { existsAsync } from "../tools/fs.existsAsync";
@@ -22,6 +27,7 @@ export type ExtensionModuleMeta = {
     moduleName: string;
     version: string;
     files: {
+        isPublic: boolean;
         fileRelativePath: string;
         hash: string;
         copyableFilePath: string;
@@ -37,6 +43,7 @@ const zExtensionModuleMeta = (() => {
         version: z.string(),
         files: z.array(
             z.object({
+                isPublic: z.boolean(),
                 fileRelativePath: z.string(),
                 hash: z.string(),
                 copyableFilePath: z.string()
@@ -222,49 +229,55 @@ export async function getExtensionModuleMetas(params: {
 
                 const files: ExtensionModuleMeta["files"] = [];
 
-                {
-                    const srcDirPath = pathJoin(dirPath, KEYCLOAK_THEME);
+                await crawlAsync({
+                    dirPath: pathJoin(dirPath, KEYCLOAK_THEME),
+                    returnedPathsType: "relative to dirPath",
+                    onFileFound: async fileRelativePath_fromReservedDir => {
+                        const isPublic = fileRelativePath_fromReservedDir.startsWith(
+                            `public${pathSep}`
+                        );
 
-                    await crawlAsync({
-                        dirPath: srcDirPath,
-                        returnedPathsType: "relative to dirPath",
-                        onFileFound: async fileRelativePath => {
-                            const sourceCode =
-                                await getExtensionModuleFileSourceCodeReadyToBeCopied({
-                                    buildContext,
-                                    fileRelativePath,
-                                    isOwnershipAction: false,
-                                    extensionModuleDirPath: dirPath,
-                                    extensionModuleName: moduleName,
-                                    extensionModuleVersion: version
-                                });
+                        const fileRelativePath = isPublic
+                            ? pathRelative("public", fileRelativePath_fromReservedDir)
+                            : fileRelativePath_fromReservedDir;
 
-                            const hash = computeHash(sourceCode);
-
-                            const copyableFilePath = pathJoin(
-                                pathDirname(cacheFilePath),
-                                KEYCLOAK_THEME,
-                                fileRelativePath
-                            );
-
-                            {
-                                const dirPath = pathDirname(copyableFilePath);
-
-                                if (!(await existsAsync(dirPath))) {
-                                    await fsPr.mkdir(dirPath, { recursive: true });
-                                }
-                            }
-
-                            fsPr.writeFile(copyableFilePath, sourceCode);
-
-                            files.push({
+                        const sourceCode =
+                            await getExtensionModuleFileSourceCodeReadyToBeCopied({
+                                buildContext,
+                                isPublic,
                                 fileRelativePath,
-                                hash,
-                                copyableFilePath
+                                isOwnershipAction: false,
+                                extensionModuleDirPath: dirPath,
+                                extensionModuleName: moduleName,
+                                extensionModuleVersion: version
                             });
+
+                        const hash = computeHash(sourceCode);
+
+                        const copyableFilePath = pathJoin(
+                            pathDirname(cacheFilePath),
+                            KEYCLOAK_THEME,
+                            fileRelativePath_fromReservedDir
+                        );
+
+                        {
+                            const dirPath = pathDirname(copyableFilePath);
+
+                            if (!(await existsAsync(dirPath))) {
+                                await fsPr.mkdir(dirPath, { recursive: true });
+                            }
                         }
-                    });
-                }
+
+                        fsPr.writeFile(copyableFilePath, sourceCode);
+
+                        files.push({
+                            isPublic,
+                            fileRelativePath,
+                            hash,
+                            copyableFilePath
+                        });
+                    }
+                });
 
                 return id<ExtensionModuleMeta>({
                     moduleName,
