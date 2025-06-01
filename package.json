@@ -1,6 +1,6 @@
 {
     "name": "keycloakify",
-    "version": "11.8.37-rc.1",
+    "version": "11.8.37",
     "description": "Framework to create custom Keycloak UIs",
     "repository": {
         "type": "git",
@@ -120,6 +120,7 @@
         "webpack": "5.93.0",
         "webpack-cli": "5.1.4",
         "yauzl": "^2.10.0",
-        "zod": "^3.17.10"
+        "zod": "^3.17.10",
+        "json5": "^2.2.3"
     }
 }
