@@ -64,7 +64,7 @@ export async function getExtensionModuleFileSourceCodeReadyToBeCopied(params: {
                       `This file has been claimed for ownership from ${extensionModuleName} version ${extensionModuleVersion}.`,
                       `To relinquish ownership and restore this file to its original content, run the following command:`,
                       ``,
-                      `$ npx keycloakify own --path "${path}"${isPublic ? " --public " : ""}--revert`
+                      `$ npx keycloakify own --path "${path}" ${isPublic ? "--public " : ""}--revert`
                   ]
                 : [
                       `WARNING: Before modifying this file, run the following command:`,
