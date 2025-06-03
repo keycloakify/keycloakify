@@ -13,7 +13,8 @@ import { assert, type Equals, is } from "tsafe/assert";
 import * as child_process from "child_process";
 import {
     VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES,
-    BUILD_FOR_KEYCLOAK_MAJOR_VERSION_ENV_NAME
+    BUILD_FOR_KEYCLOAK_MAJOR_VERSION_ENV_NAME,
+    THEME_TYPES
 } from "./constants";
 import type { KeycloakVersionRange } from "./KeycloakVersionRange";
 import { exclude } from "tsafe";
@@ -180,6 +181,13 @@ export function getBuildContext(params: {
                     return { themeSrcDirPath: srcDirPath };
                 }
             }
+        }
+
+        for (const themeType of [...THEME_TYPES, "email"]) {
+            if (!fs.existsSync(pathJoin(srcDirPath, themeType))) {
+                continue;
+            }
+            return { themeSrcDirPath: srcDirPath };
         }
 
         console.log(
