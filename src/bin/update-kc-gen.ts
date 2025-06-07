@@ -49,6 +49,12 @@ export async function command(params: { buildContext: BuildContext }) {
                 `export function KcPage(_props: { kcContext: any; }){`,
                 `    return null;`,
                 `}`,
+                ``,
+                `declare global {`,
+                `    interface Window {`,
+                `        kcContext?: KcContext;`,
+                `    }`,
+                `}`,
                 ``
             ].join("\n");
 
