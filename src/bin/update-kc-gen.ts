@@ -34,89 +34,106 @@ export async function command(params: { buildContext: BuildContext }) {
     const hasAccountTheme = buildContext.implementedThemeTypes.account.isImplemented;
     const hasAdminTheme = buildContext.implementedThemeTypes.admin.isImplemented;
 
-    if (!hasLoginTheme && !hasAccountTheme && !hasAdminTheme) {
-        await fs.unlink(filePath);
-        return;
-    }
+    let newContent: string;
 
-    let newContent = [
-        ``,
-        `/* eslint-disable */`,
-        ``,
-        `// @ts-nocheck`,
-        ``,
-        `// noinspection JSUnusedGlobalSymbols`,
-        ``,
-        `import { lazy, Suspense, type ReactNode } from "react";`,
-        ``,
-        `export type ThemeName = ${buildContext.themeNames.map(themeName => `"${themeName}"`).join(" | ")};`,
-        ``,
-        `export const themeNames: ThemeName[] = [${buildContext.themeNames.map(themeName => `"${themeName}"`).join(", ")}];`,
-        ``,
-        `export type KcEnvName = ${buildContext.environmentVariables.length === 0 ? "never" : buildContext.environmentVariables.map(({ name }) => `"${name}"`).join(" | ")};`,
-        ``,
-        `export const kcEnvNames: KcEnvName[] = [${buildContext.environmentVariables.map(({ name }) => `"${name}"`).join(", ")}];`,
-        ``,
-        `export const kcEnvDefaults: Record<KcEnvName, string> = ${JSON.stringify(
-            Object.fromEntries(
-                buildContext.environmentVariables.map(
-                    ({ name, default: defaultValue }) => [name, defaultValue]
-                )
-            ),
-            null,
-            2
-        )};`,
-        ``,
-        `/**`,
-        ` * NOTE: Do not import this type except maybe in your entrypoint. `,
-        ` * If you need to import the KcContext import it either from src/login/KcContext.ts or src/account/KcContext.ts.`,
-        ` * Depending on the theme type you are working on.`,
-        ` */`,
-        `export type KcContext =`,
-        hasLoginTheme && `    | import("./login/KcContext").KcContext`,
-        hasAccountTheme && `    | import("./account/KcContext").KcContext`,
-        hasAdminTheme && `    | import("./admin/KcContext").KcContext`,
-        `    ;`,
-        ``,
-        `declare global {`,
-        `    interface Window {`,
-        `        kcContext?: KcContext;`,
-        `    }`,
-        `}`,
-        ``,
-        hasLoginTheme &&
-            `export const KcLoginPage = lazy(() => import("./login/KcPage"));`,
-        hasAccountTheme &&
-            `export const KcAccountPage = lazy(() => import("./account/KcPage"));`,
-        hasAdminTheme &&
-            `export const KcAdminPage = lazy(() => import("./admin/KcPage"));`,
-        ``,
-        `export function KcPage(`,
-        `    props: {`,
-        `        kcContext: KcContext;`,
-        `        fallback?: ReactNode;`,
-        `    }`,
-        `) {`,
-        `    const { kcContext, fallback } = props;`,
-        `    return (`,
-        `        <Suspense fallback={fallback}>`,
-        `            {(() => {`,
-        `                switch (kcContext.themeType) {`,
-        hasLoginTheme &&
-            `                    case "login": return <KcLoginPage kcContext={kcContext} />;`,
-        hasAccountTheme &&
-            `                    case "account": return <KcAccountPage kcContext={kcContext} />;`,
-        hasAdminTheme &&
-            `                    case "admin": return <KcAdminPage kcContext={kcContext} />;`,
-        `                }`,
-        `            })()}`,
-        `        </Suspense>`,
-        `    );`,
-        `}`,
-        ``
-    ]
-        .filter(item => typeof item === "string")
-        .join("\n");
+    set_new_content: {
+        if (!hasLoginTheme && !hasAccountTheme && !hasAdminTheme) {
+            newContent = [
+                ``,
+                `/* eslint-disable */`,
+                ``,
+                `// @ts-nocheck`,
+                ``,
+                `// noinspection JSUnusedGlobalSymbols`,
+                ``,
+                `export function KcPage(_props: { kcContext: any; }){`,
+                `    return null;`,
+                `}`,
+                ``
+            ].join("\n");
+
+            break set_new_content;
+        }
+
+        newContent = [
+            ``,
+            `/* eslint-disable */`,
+            ``,
+            `// @ts-nocheck`,
+            ``,
+            `// noinspection JSUnusedGlobalSymbols`,
+            ``,
+            `import { lazy, Suspense, type ReactNode } from "react";`,
+            ``,
+            `export type ThemeName = ${buildContext.themeNames.map(themeName => `"${themeName}"`).join(" | ")};`,
+            ``,
+            `export const themeNames: ThemeName[] = [${buildContext.themeNames.map(themeName => `"${themeName}"`).join(", ")}];`,
+            ``,
+            `export type KcEnvName = ${buildContext.environmentVariables.length === 0 ? "never" : buildContext.environmentVariables.map(({ name }) => `"${name}"`).join(" | ")};`,
+            ``,
+            `export const kcEnvNames: KcEnvName[] = [${buildContext.environmentVariables.map(({ name }) => `"${name}"`).join(", ")}];`,
+            ``,
+            `export const kcEnvDefaults: Record<KcEnvName, string> = ${JSON.stringify(
+                Object.fromEntries(
+                    buildContext.environmentVariables.map(
+                        ({ name, default: defaultValue }) => [name, defaultValue]
+                    )
+                ),
+                null,
+                2
+            )};`,
+            ``,
+            `/**`,
+            ` * NOTE: Do not import this type except maybe in your entrypoint. `,
+            ` * If you need to import the KcContext import it either from src/login/KcContext.ts or src/account/KcContext.ts.`,
+            ` * Depending on the theme type you are working on.`,
+            ` */`,
+            `export type KcContext =`,
+            hasLoginTheme && `    | import("./login/KcContext").KcContext`,
+            hasAccountTheme && `    | import("./account/KcContext").KcContext`,
+            hasAdminTheme && `    | import("./admin/KcContext").KcContext`,
+            `    ;`,
+            ``,
+            `declare global {`,
+            `    interface Window {`,
+            `        kcContext?: KcContext;`,
+            `    }`,
+            `}`,
+            ``,
+            hasLoginTheme &&
+                `export const KcLoginPage = lazy(() => import("./login/KcPage"));`,
+            hasAccountTheme &&
+                `export const KcAccountPage = lazy(() => import("./account/KcPage"));`,
+            hasAdminTheme &&
+                `export const KcAdminPage = lazy(() => import("./admin/KcPage"));`,
+            ``,
+            `export function KcPage(`,
+            `    props: {`,
+            `        kcContext: KcContext;`,
+            `        fallback?: ReactNode;`,
+            `    }`,
+            `) {`,
+            `    const { kcContext, fallback } = props;`,
+            `    return (`,
+            `        <Suspense fallback={fallback}>`,
+            `            {(() => {`,
+            `                switch (kcContext.themeType) {`,
+            hasLoginTheme &&
+                `                    case "login": return <KcLoginPage kcContext={kcContext} />;`,
+            hasAccountTheme &&
+                `                    case "account": return <KcAccountPage kcContext={kcContext} />;`,
+            hasAdminTheme &&
+                `                    case "admin": return <KcAdminPage kcContext={kcContext} />;`,
+            `                }`,
+            `            })()}`,
+            `        </Suspense>`,
+            `    );`,
+            `}`,
+            ``
+        ]
+            .filter(item => typeof item === "string")
+            .join("\n");
+    }
 
     const hash = crypto.createHash("sha256").update(newContent).digest("hex");
 
