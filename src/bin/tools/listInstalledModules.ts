@@ -50,7 +50,7 @@ export async function listInstalledModules(params: {
     return result;
 }
 
-const { readPackageJsonDependencies } = (() => {
+export const { readPackageJsonDependencies } = (() => {
     type ParsedPackageJson = {
         dependencies?: Record<string, string>;
         devDependencies?: Record<string, string>;

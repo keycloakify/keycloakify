@@ -5,6 +5,9 @@ import { existsAsync } from "./tools/fs.existsAsync";
 import { maybeDelegateCommandToCustomHandler } from "./shared/customHandler_delegate";
 import * as crypto from "crypto";
 import { getIsPrettierAvailable, runPrettier } from "./tools/runPrettier";
+import { assert, type Equals } from "tsafe/assert";
+import { WELL_KNOWN_DIRECTORY_BASE_NAME } from "./shared/constants";
+import { readPackageJsonDependencies } from "./tools/listInstalledModules";
 
 export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
@@ -135,9 +138,71 @@ export async function command(params: { buildContext: BuildContext }) {
             `        </Suspense>`,
             `    );`,
             `}`,
-            ``
+            ``,
+            ...(() => {
+                const { bundler } = buildContext;
+                switch (bundler) {
+                    case "vite":
+                        return [
+                            "NOTE: This is exported here only because in Webpack environnement it works differently",
+                            `export const BASE_URL = import.meta.env.BASE_URL`
+                        ];
+                    case "webpack":
+                        return [
+                            "// NOTE: This is a polyfill for `import.meta.env.BASE_URL` as it's not available in Webpack environment.",
+                            "export const BASE_URL =",
+                            `    window.kcContext === undefined || process.env.NODE_ENV === "development"`,
+                            `        ? process.env.PUBLIC_URL === ""`,
+                            `            ? "/"`,
+                            `            : \`${process.env.PUBLIC_URL}/\``,
+                            `        : \`\${kcContext["x-keycloakify"].resourcesPath}/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/\`;`,
+                            ""
+                        ];
+                    default:
+                        assert<Equals<typeof bundler, never>>(false);
+                }
+            })(),
+            await (async () => {
+                const { dependencies, devDependencies } =
+                    await readPackageJsonDependencies({
+                        packageJsonFilePath: buildContext.packageJsonFilePath
+                    });
+
+                const moduleNames = Object.keys({
+                    ...dependencies,
+                    ...devDependencies
+                });
+
+                const moduleName = (() => {
+                    for (const moduleName_candidate of [
+                        "@storybook/react-vite",
+                        "@storybook/react-webpack5",
+                        "@storybook/react"
+                    ]) {
+                        if (moduleNames.includes(moduleName_candidate)) {
+                            return moduleName_candidate;
+                        }
+                    }
+
+                    return undefined;
+                })();
+
+                if (moduleName === undefined) {
+                    return false as const;
+                }
+
+                return [
+                    `// NOTE: This is only exported here because you're supposed to import type from different packages`,
+                    `// Depending of if you are using Vite, Webpack, ect...`,
+                    `export type { Meta, StoryObj } from "${moduleName}";`,
+                    ``
+                ].join("\n");
+            })()
         ]
-            .filter(item => typeof item === "string")
+            .filter(item => {
+                assert<Equals<typeof item, string | false>>;
+                return typeof item === "string";
+            })
             .join("\n");
     }
 
