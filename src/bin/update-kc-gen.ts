@@ -144,7 +144,7 @@ export async function command(params: { buildContext: BuildContext }) {
                 switch (bundler) {
                     case "vite":
                         return [
-                            "NOTE: This is exported here only because in Webpack environnement it works differently",
+                            "// NOTE: This is exported here only because in Webpack environnement it works differently",
                             `export const BASE_URL = import.meta.env.BASE_URL`
                         ];
                     case "webpack":
