@@ -34,6 +34,11 @@ export async function command(params: { buildContext: BuildContext }) {
     const hasAccountTheme = buildContext.implementedThemeTypes.account.isImplemented;
     const hasAdminTheme = buildContext.implementedThemeTypes.admin.isImplemented;
 
+    if (!hasLoginTheme && !hasAccountTheme && !hasAdminTheme) {
+        await fs.unlink(filePath);
+        return;
+    }
+
     let newContent = [
         ``,
         `/* eslint-disable */`,
