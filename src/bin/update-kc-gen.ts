@@ -145,7 +145,8 @@ export async function command(params: { buildContext: BuildContext }) {
                     case "vite":
                         return [
                             "// NOTE: This is exported here only because in Webpack environnement it works differently",
-                            `export const BASE_URL = import.meta.env.BASE_URL`
+                            `export const BASE_URL = import.meta.env.BASE_URL`,
+                            ""
                         ];
                     case "webpack":
                         return [
