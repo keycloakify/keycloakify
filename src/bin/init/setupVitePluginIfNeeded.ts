@@ -17,17 +17,15 @@ export async function setupVitePluginIfNeeded(params: { projectDirPath: string }
         return;
     }
 
-    {
-        const viteConfigTsContent = (await fs.readFile(viteConfigTsFilePath)).toString(
-            "utf8"
-        );
+    const viteConfigTsContent = (await fs.readFile(viteConfigTsFilePath)).toString(
+        "utf8"
+    );
 
-        if (viteConfigTsContent.includes("keycloakify")) {
-            return;
-        }
+    if (viteConfigTsContent.includes("keycloakify")) {
+        return;
     }
 
-    const root = recast.parse(viteConfigTsFilePath, {
+    const root = recast.parse(viteConfigTsContent, {
         parser: {
             parse: (code: string) =>
                 babelParser.parse(code, {
