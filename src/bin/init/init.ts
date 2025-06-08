@@ -98,11 +98,13 @@ export async function command(params: { projectDirPath: string }) {
 
             const YES = "Yes — this project is only for the Keycloak theme (recommended)";
             const NO =
-                "No — I'm building an app and a Keycloak theme in the same project (advanced)";
+                "No  — I'm building an app and a Keycloak theme in the same project (advanced)";
 
             const { value } = await cliSelect({ values: [YES, NO] }).catch(() => {
                 process.exit(-1);
             });
+
+            console.log(value);
 
             return value === YES;
         })();
@@ -301,6 +303,8 @@ export async function command(params: { projectDirPath: string }) {
         }).catch(() => {
             process.exit(-1);
         });
+
+        console.log(value);
 
         return value;
     })();
