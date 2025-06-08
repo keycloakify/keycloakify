@@ -42,7 +42,7 @@ export async function createPublicKeycloakifyDevResourcesDir() {
                     .join(pathSep);
 
                 fileRelativePath = pathRelative(
-                    pathJoin("keycloak-theme", "public"),
+                    pathJoin("keycloak-theme", "public", themeType),
                     fileRelativePath
                 );
 
