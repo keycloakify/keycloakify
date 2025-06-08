@@ -148,6 +148,20 @@ program
 
 program
     .command({
+        name: "init",
+        description: "Initialize a new theme type (login/account/admin/email)"
+    })
+    .task({
+        skip,
+        handler: async ({ projectDirPath }) => {
+            const { command } = await import("./init");
+
+            await command({ projectDirPath: projectDirPath ?? process.cwd() });
+        }
+    });
+
+program
+    .command({
         name: "eject-page",
         description: "Eject a Keycloak page."
     })

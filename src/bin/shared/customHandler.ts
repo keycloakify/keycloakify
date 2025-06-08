@@ -10,11 +10,13 @@ export type CommandName =
     | "update-kc-gen"
     | "eject-page"
     | "add-story"
+    | "initialize-login-theme"
     | "initialize-account-theme"
     | "initialize-admin-theme"
     | "initialize-admin-theme"
     | "initialize-email-theme"
-    | "copy-keycloak-resources-to-public";
+    | "copy-keycloak-resources-to-public"
+    | "init";
 
 export type ApiVersion = "v1";
 
