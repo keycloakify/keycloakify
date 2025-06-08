@@ -149,7 +149,7 @@ program
 program
     .command({
         name: "init",
-        description: "Initialize a new theme type (login/account/admin/email)"
+        description: "(BETA) Initialize a new theme type (login/account/admin/email)"
     })
     .task({
         skip,
