@@ -36,7 +36,7 @@ export async function command(params: { projectDirPath: string }) {
             break setup_src;
         }
 
-        const srcDirPath = pathJoin(buildContext.themeSrcDirPath, "src");
+        const srcDirPath = pathJoin(buildContext.projectDirPath, "src");
 
         const mainTsxFilePath = pathJoin(srcDirPath, "main.tsx");
 
