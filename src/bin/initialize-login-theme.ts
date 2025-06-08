@@ -82,6 +82,8 @@ export async function command(params: { buildContext: BuildContext }) {
             process.exit(-1);
         });
 
+        console.log(value);
+
         return value === YES;
     })();
 
@@ -103,8 +105,11 @@ export async function command(params: { buildContext: BuildContext }) {
             break install_storybook;
         }
 
+        (parsedPackageJson.scripts ??= {})["storybook"] = "storybook dev -p 6006";
+        parsedPackageJson.scripts["build-storybook"] = "storybook build";
+
         (parsedPackageJson.devDependencies ??= {})["storybook"] = "^9.0.4";
-        (parsedPackageJson.devDependencies ??= {})["@storybook/react-vite"] = "^9.0.4";
+        parsedPackageJson.devDependencies["@storybook/react-vite"] = "^9.0.4";
 
         const files: { relativeFilePath: string; fileContent: string }[] = [
             {
@@ -160,10 +165,9 @@ export async function command(params: { buildContext: BuildContext }) {
         }
     }
 
-    for (const moduleName of [
-        "@keycloakify/login-ui",
-        ...(!doInstallStories ? [] : ["@keycloakify/login-ui-storybook"])
-    ]) {
+    {
+        const moduleName = "@keycloakify/login-ui";
+
         const latestVersion = await getModuleLatestVersion({ moduleName });
 
         (parsedPackageJson.dependencies ??= {})[moduleName] = `~${latestVersion}`;
@@ -171,6 +175,20 @@ export async function command(params: { buildContext: BuildContext }) {
         if (parsedPackageJson.devDependencies !== undefined) {
             delete parsedPackageJson.devDependencies[moduleName];
         }
+    }
+
+    install_stories: {
+        if (!doInstallStories) {
+            break install_stories;
+        }
+
+        const moduleName = "@keycloakify/login-ui-storybook";
+
+        const latestVersion = await getModuleLatestVersion({ moduleName });
+
+        (parsedPackageJson.devDependencies ??= {})[moduleName] = `~${latestVersion}`;
+
+        delete parsedPackageJson.dependencies[moduleName];
     }
 
     {
