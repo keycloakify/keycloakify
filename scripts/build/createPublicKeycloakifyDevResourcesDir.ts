@@ -6,6 +6,10 @@ import { cacheDirPath } from "../shared/cacheDirPath";
 import { getProxyFetchOptions } from "../../src/bin/tools/fetchProxyOptions";
 import * as fsPr from "fs/promises";
 import { downloadAndExtractArchive } from "../../src/bin/tools/downloadAndExtractArchive";
+import {
+    KEYCLOAKIFY_LOGIN_UI_ZIP_URL,
+    KEYCLOAKIFY_ACCOUNT_MULTI_PAGE_UI_ZIP_URL
+} from "../shared/constants";
 
 export async function createPublicKeycloakifyDevResourcesDir() {
     const destDirPath = pathJoin(
@@ -19,14 +23,8 @@ export async function createPublicKeycloakifyDevResourcesDir() {
     await fsPr.rm(destDirPath, { recursive: true, force: true });
 
     for (const [url, themeType] of [
-        [
-            "https://github.com/keycloakify/keycloak-login-ui/archive/d5aee279e30f7cc2f37c2910516590ebdad950fc.zip",
-            "login"
-        ],
-        [
-            "https://github.com/keycloakify/keycloak-account-multi-page-ui/archive/19bd49bdc1a8b962471e9d2dafdeba1228c3e160.zip",
-            "account"
-        ]
+        [KEYCLOAKIFY_LOGIN_UI_ZIP_URL, "login"],
+        [KEYCLOAKIFY_ACCOUNT_MULTI_PAGE_UI_ZIP_URL, "account"]
     ]) {
         const { extractedDirPath } = await downloadAndExtractArchive({
             cacheDirPath,
@@ -44,7 +42,7 @@ export async function createPublicKeycloakifyDevResourcesDir() {
                     .join(pathSep);
 
                 fileRelativePath = pathRelative(
-                    pathJoin("keycloak-theme-resources", themeType),
+                    pathJoin("keycloak-theme", "public"),
                     fileRelativePath
                 );
 

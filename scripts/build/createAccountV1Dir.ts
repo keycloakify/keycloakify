@@ -5,9 +5,7 @@ import { getProxyFetchOptions } from "../../src/bin/tools/fetchProxyOptions";
 import { transformCodebase } from "../../src/bin/tools/transformCodebase";
 import { cacheDirPath } from "../shared/cacheDirPath";
 import * as fsPr from "fs/promises";
-
-const KEYCLOAKIFY_KEYCLOAK_ACCOUNT_MULTI_PAGE_UI_SHA =
-    "718b76c9b63ef0448c3318fce78b5e7c92ea23b8";
+import { KEYCLOAKIFY_ACCOUNT_MULTI_PAGE_UI_ZIP_URL } from "../shared/constants";
 
 export async function createAccountV1Dir() {
     const destDirPath = pathJoin(
@@ -24,7 +22,7 @@ export async function createAccountV1Dir() {
         fetchOptions: getProxyFetchOptions({
             npmConfigGetCwd: getThisCodebaseRootDirPath()
         }),
-        url: `https://github.com/keycloakify/keycloak-account-multi-page-ui/archive/${KEYCLOAKIFY_KEYCLOAK_ACCOUNT_MULTI_PAGE_UI_SHA}.zip`,
+        url: KEYCLOAKIFY_ACCOUNT_MULTI_PAGE_UI_ZIP_URL,
         uniqueIdOfOnArchiveFile: "extract_account_v1",
         onArchiveFile: async params => {
             const { writeFile } = params;
