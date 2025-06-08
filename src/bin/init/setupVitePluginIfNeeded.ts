@@ -12,24 +12,22 @@ export async function setupVitePluginIfNeeded(params: { projectDirPath: string }
     const { projectDirPath } = params;
 
     const viteConfigTsFilePath = pathJoin(projectDirPath, "vite.config.ts");
-    const packageJsonFilePath = pathJoin(projectDirPath, "package.json");
 
-    if (
-        !(await existsAsync(viteConfigTsFilePath)) ||
-        !(await existsAsync(packageJsonFilePath))
-    ) {
+    if (!(await existsAsync(viteConfigTsFilePath))) {
         return;
     }
 
-    const viteConfigTsContent = (await fs.readFile(viteConfigTsFilePath)).toString(
-        "utf8"
-    );
+    {
+        const viteConfigTsContent = (await fs.readFile(viteConfigTsFilePath)).toString(
+            "utf8"
+        );
 
-    if (viteConfigTsContent.includes("keycloakify")) {
-        return;
+        if (viteConfigTsContent.includes("keycloakify")) {
+            return;
+        }
     }
 
-    const root = recast.parse(viteConfigTsContent, {
+    const root = recast.parse(viteConfigTsFilePath, {
         parser: {
             parse: (code: string) =>
                 babelParser.parse(code, {
@@ -66,8 +64,6 @@ export default defineConfig({
     ]
 });
         */
-
-    recast.visit(root /*...*/);
 
     recast.visit(root, {
         visitProgram(path) {
@@ -138,12 +134,12 @@ export default defineConfig({
 
         viteConfigTsContent_modified = await runPrettier({
             sourceCode: viteConfigTsContent_modified,
-            filePath: packageJsonFilePath
+            filePath: viteConfigTsFilePath
         });
     }
 
     await fs.writeFile(
-        viteConfigTsContent,
+        viteConfigTsFilePath,
         Buffer.from(viteConfigTsContent_modified, "utf8")
     );
 }
