@@ -26,11 +26,15 @@ export async function command(params: { buildContext: BuildContext }) {
         projectDirPath: buildContext.projectDirPath
     });
 
+    console.log(chalk.cyan("Which account theme type?"));
+
     const { value: accountThemeType } = await cliSelect({
         values: ["Single-Page" as const, "Multi-Page" as const]
     }).catch(() => {
         process.exit(-1);
     });
+
+    console.log(`${accountThemeType}\n`);
 
     switch (accountThemeType) {
         case "Multi-Page":
