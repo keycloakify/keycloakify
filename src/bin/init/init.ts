@@ -129,7 +129,7 @@ export async function command(params: { projectDirPath: string }) {
                 {
                     relativeFilePath: "main.tsx",
                     fileContent: [
-                        `if (import.meta.env.PROD) {`,
+                        `if (window.kcContext !== undefined) {`,
                         `    import("./main-kc");`,
                         `} else {`,
                         `    import("./main-kc.dev");`,
