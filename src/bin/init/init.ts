@@ -299,7 +299,7 @@ export async function command(params: { projectDirPath: string }) {
             return undefined;
         }
 
-        console.log(chalk.cyan(`\nWhich theme theme type would you like to initialize?`));
+        console.log(chalk.cyan(`Which theme theme type would you like to initialize?`));
 
         const { value } = await cliSelect({
             values
