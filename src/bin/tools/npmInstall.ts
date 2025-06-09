@@ -99,24 +99,31 @@ async function runPackageManagerInstall(params: {
 
     const dCompleted = new Deferred<void>();
 
-    const child = child_process.spawn(packageManagerBinName, ["install"], {
-        cwd,
-        env: process.env,
-        shell: true
-    });
+    const child = child_process.spawn(
+        packageManagerBinName,
+        ["install", ...(packageManagerBinName !== "npm" ? [] : ["--force"])],
+        {
+            cwd,
+            env: process.env,
+            shell: true
+        }
+    );
 
     child.stdout.on("data", data => process.stdout.write(data));
+
+    let errorLog = "";
 
     child.stderr.on("data", data => {
         if (data.toString("utf8").includes("peer dependency")) {
             return;
         }
 
-        process.stderr.write(data);
+        errorLog += data.toString("utf8");
     });
 
     child.on("exit", code => {
         if (code !== 0) {
+            console.log(errorLog);
             dCompleted.reject(new Error(`Failed with code ${code}`));
             return;
         }

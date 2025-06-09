@@ -2,7 +2,6 @@ import { parse as urlParse } from "url";
 import {
     join as pathJoin,
     sep as pathSep,
-    relative as pathRelative,
     resolve as pathResolve,
     dirname as pathDirname
 } from "path";
@@ -13,8 +12,7 @@ import { assert, type Equals, is } from "tsafe/assert";
 import * as child_process from "child_process";
 import {
     VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES,
-    BUILD_FOR_KEYCLOAK_MAJOR_VERSION_ENV_NAME,
-    THEME_TYPES
+    BUILD_FOR_KEYCLOAK_MAJOR_VERSION_ENV_NAME
 } from "./constants";
 import type { KeycloakVersionRange } from "./KeycloakVersionRange";
 import { exclude } from "tsafe";
@@ -167,40 +165,7 @@ export function getBuildContext(params: {
             return { themeSrcDirPath };
         }
 
-        {
-            const basenames = fs.readdirSync(srcDirPath);
-
-            for (const basename of basenames) {
-                const path = pathJoin(srcDirPath, basename);
-
-                if (!fs.statSync(path).isFile()) {
-                    continue;
-                }
-
-                if (fs.readFileSync(path).toString("utf8").includes("./kc.gen")) {
-                    return { themeSrcDirPath: srcDirPath };
-                }
-            }
-        }
-
-        for (const themeType of [...THEME_TYPES, "email"]) {
-            if (!fs.existsSync(pathJoin(srcDirPath, themeType))) {
-                continue;
-            }
-            return { themeSrcDirPath: srcDirPath };
-        }
-
-        console.log(
-            chalk.red(
-                [
-                    `Can't locate your Keycloak theme source directory in .${pathSep}${pathRelative(process.cwd(), srcDirPath)}`,
-                    `Make sure to either use the Keycloakify CLI in the root of your Keycloakify project or use the --project CLI option`,
-                    `If you are collocating your Keycloak theme with your app you must have a directory named '${KEYCLOAK_THEME}' or '${KEYCLOAK_THEME.replace(/-/g, "_")}' in your 'src' directory`
-                ].join("\n")
-            )
-        );
-
-        process.exit(1);
+        return { themeSrcDirPath: srcDirPath };
     })();
 
     const { resolvedViteConfig } = (() => {
@@ -213,15 +178,22 @@ export function getBuildContext(params: {
             return { resolvedViteConfig: undefined };
         }
 
-        const output = child_process
-            .execSync("npx vite", {
-                cwd: projectDirPath,
-                env: {
-                    ...process.env,
-                    [VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES.RESOLVE_VITE_CONFIG]: "true"
-                }
-            })
-            .toString("utf8");
+        let output: string;
+
+        try {
+            output = child_process
+                .execSync("npx vite", {
+                    cwd: projectDirPath,
+                    stdio: ["pipe", "pipe", "ignore"],
+                    env: {
+                        ...process.env,
+                        [VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES.RESOLVE_VITE_CONFIG]: "true"
+                    }
+                })
+                .toString("utf8");
+        } catch (error) {
+            throw new Error(`Failed to run \`npx vite\`: ${error}`);
+        }
 
         assert(
             output.includes(VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES.RESOLVE_VITE_CONFIG),
@@ -770,33 +742,36 @@ export function getBuildContext(params: {
         environmentVariables: buildOptions.environmentVariables ?? [],
         implementedThemeTypes,
         themeSrcDirPath,
-        fetchOptions: getProxyFetchOptions({
-            npmConfigGetCwd: (function callee(upCount: number): string {
-                const dirPath = pathResolve(
-                    pathJoin(...[projectDirPath, ...Array(upCount).fill("..")])
-                );
+        get fetchOptions() {
+            return getProxyFetchOptions({
+                npmConfigGetCwd: (function callee(upCount: number): string {
+                    const dirPath = pathResolve(
+                        pathJoin(...[projectDirPath, ...Array(upCount).fill("..")])
+                    );
 
-                assert(
-                    dirPath !== pathSep,
-                    "Couldn't find a place to run 'npm config get'"
-                );
+                    assert(
+                        dirPath !== pathSep,
+                        "Couldn't find a place to run 'npm config get'"
+                    );
 
-                try {
-                    child_process.execSync("npm config get", {
-                        cwd: dirPath,
-                        stdio: "pipe"
-                    });
-                } catch (error) {
-                    if (String(error).includes("ENOWORKSPACES")) {
-                        return callee(upCount + 1);
+                    try {
+                        child_process.execSync("npm config get", {
+                            cwd: dirPath,
+                            stdio: "pipe"
+                        });
+                    } catch (error) {
+                        if (String(error).includes("ENOWORKSPACES")) {
+                            return callee(upCount + 1);
+                        }
+
+                        throw error;
                     }
 
-                    throw error;
-                }
+                    return dirPath;
+                })(0)
+            });
+        },
 
-                return dirPath;
-            })(0)
-        }),
         jarTargets: (() => {
             const getDefaultJarFileBasename = (range: string) =>
                 `keycloak-theme-for-kc-${range}.jar`;
