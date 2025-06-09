@@ -1,4 +1,5 @@
 import { setupVitePluginIfNeeded } from "./setupVitePluginIfNeeded";
+import { setupEslint } from "./setupEslint";
 import { getBuildContext } from "../shared/buildContext";
 import { maybeDelegateCommandToCustomHandler } from "../shared/customHandler_delegate";
 import { z } from "zod";
@@ -28,6 +29,8 @@ export async function command(params: { projectDirPath: string }) {
     if (hasBeenHandled) {
         return;
     }
+
+    await setupEslint({ projectDirPath });
 
     let doAddRunDevScript = false;
 
@@ -104,7 +107,7 @@ export async function command(params: { projectDirPath: string }) {
                 process.exit(-1);
             });
 
-            console.log(value);
+            console.log(`${value}\n`);
 
             return value === YES;
         })();
