@@ -168,7 +168,7 @@ export async function command(params: { buildContext: BuildContext }) {
     {
         const moduleName = "@keycloakify/login-ui";
 
-        const latestVersion = await getModuleLatestVersion({ moduleName });
+        const latestVersion = getModuleLatestVersion({ moduleName });
 
         (parsedPackageJson.dependencies ??= {})[moduleName] = `~${latestVersion}`;
 
@@ -184,7 +184,7 @@ export async function command(params: { buildContext: BuildContext }) {
 
         const moduleName = "@keycloakify/login-ui-storybook";
 
-        const latestVersion = await getModuleLatestVersion({ moduleName });
+        const latestVersion = getModuleLatestVersion({ moduleName });
 
         (parsedPackageJson.devDependencies ??= {})[moduleName] = `~${latestVersion}`;
 
@@ -212,7 +212,7 @@ export async function command(params: { buildContext: BuildContext }) {
     });
 }
 
-async function getModuleLatestVersion(params: { moduleName: string }) {
+function getModuleLatestVersion(params: { moduleName: string }) {
     const { moduleName } = params;
 
     const versions = ((): string[] => {
