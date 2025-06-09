@@ -178,16 +178,22 @@ export function getBuildContext(params: {
             return { resolvedViteConfig: undefined };
         }
 
-        const output = child_process
-            .execSync("npx vite", {
-                cwd: projectDirPath,
-                stdio: ["pipe", "pipe", "ignore"],
-                env: {
-                    ...process.env,
-                    [VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES.RESOLVE_VITE_CONFIG]: "true"
-                }
-            })
-            .toString("utf8");
+        let output: string;
+
+        try {
+            output = child_process
+                .execSync("npx vite", {
+                    cwd: projectDirPath,
+                    stdio: ["pipe", "pipe", "ignore"],
+                    env: {
+                        ...process.env,
+                        [VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES.RESOLVE_VITE_CONFIG]: "true"
+                    }
+                })
+                .toString("utf8");
+        } catch (error) {
+            throw new Error(`Failed to run \`npx vite\`: ${error}`);
+        }
 
         assert(
             output.includes(VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES.RESOLVE_VITE_CONFIG),
