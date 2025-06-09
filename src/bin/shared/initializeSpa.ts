@@ -1,6 +1,7 @@
 import { dirname as pathDirname, join as pathJoin, relative as pathRelative } from "path";
 import type { BuildContext } from "./buildContext";
 import * as fs from "fs";
+import * as fsPr from "fs/promises";
 import { assert, is, type Equals } from "tsafe/assert";
 import { id } from "tsafe/id";
 import {
@@ -12,6 +13,7 @@ import { npmInstall } from "../tools/npmInstall";
 import * as child_process from "child_process";
 import { z } from "zod";
 import chalk from "chalk";
+import { existsAsync } from "../tools/fs.existsAsync";
 
 export type BuildContextLike = BuildContextLike_addSyncExtensionsToPostinstallScript & {
     themeSrcDirPath: string;
@@ -80,6 +82,10 @@ export async function initializeSpa(params: {
     addSyncExtensionsToPostinstallScript({
         parsedPackageJson,
         buildContext
+    });
+
+    await disableVerbatimModuleSyntax({
+        projectDirPath: buildContext.projectDirPath
     });
 
     const uiSharedMajor = (() => {
@@ -153,4 +159,26 @@ export async function initializeSpa(params: {
     await npmInstall({
         packageJsonDirPath: pathDirname(buildContext.packageJsonFilePath)
     });
+}
+
+async function disableVerbatimModuleSyntax(params: { projectDirPath: string }) {
+    const { projectDirPath } = params;
+
+    const filePath = pathJoin(projectDirPath, "tsconfig.app.json");
+
+    if (!(await existsAsync(filePath))) {
+        return;
+    }
+
+    let content = (await fsPr.readFile(filePath)).toString("utf8");
+
+    const regExp = /"verbatimModuleSyntax"\s*:\s*true\s*(,?)/m;
+
+    if (!regExp.test(content)) {
+        return;
+    }
+
+    content = content.replace(regExp, `"verbatimModuleSyntax": false$1`);
+
+    await fsPr.writeFile(filePath, Buffer.from(content, "utf8"));
 }
