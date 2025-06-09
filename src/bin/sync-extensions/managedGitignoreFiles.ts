@@ -73,10 +73,16 @@ export async function writeManagedGitignoreFiles(params: {
                 ...ownedFilesRelativePaths_ctx
                     .map(({ fileRelativePath }) => fileRelativePath)
                     .map(fileRelativePath => fileRelativePath.split(pathSep).join("/"))
+                    .sort(posixPathCompareFn)
                     .map(line => `# ${line}`),
                 DELIMITER_END,
                 ``,
-                ...extensionModuleMetas_ctx
+                ...[...extensionModuleMetas_ctx]
+                    .sort((a, b) => {
+                        const n = a.moduleName.length - b.moduleName.length;
+
+                        return n !== 0 ? n : a.moduleName.localeCompare(b.moduleName);
+                    })
                     .map(extensionModuleMeta => [
                         `# === ${extensionModuleMeta.moduleName} v${extensionModuleMeta.version} ===`,
                         ...extensionModuleMeta.files
@@ -90,7 +96,8 @@ export async function writeManagedGitignoreFiles(params: {
                             .map(
                                 fileRelativePath =>
                                     `/${fileRelativePath.split(pathSep).join("/").replace(/^\.\//, "")}`
-                            ),
+                            )
+                            .sort(posixPathCompareFn),
 
                         ``
                     ])
@@ -186,4 +193,27 @@ export async function readManagedGitignoresFile(params: {
     }
 
     return { ownedFilesRelativePaths };
+}
+
+function posixPathCompareFn(a: string, b: string) {
+    const aParts = a.split("/");
+    const bParts = b.split("/");
+
+    const diff = aParts.length - bParts.length;
+
+    if (diff !== 0) {
+        return diff;
+    }
+
+    const len = Math.min(aParts.length, bParts.length);
+
+    for (let i = 0; i < len; i++) {
+        const cmp = aParts[i].localeCompare(bParts[i], undefined, {
+            numeric: true,
+            sensitivity: "base"
+        });
+        if (cmp !== 0) return cmp;
+    }
+
+    return 0;
 }

@@ -206,92 +206,108 @@ export async function getExtensionModuleMetas(params: {
     })();
 
     const extensionModuleMetas = await Promise.all(
-        installedExtensionModules.map(
-            async ({
-                moduleName,
-                version,
-                peerDependencies,
-                dirPath
-            }): Promise<ExtensionModuleMeta> => {
-                use_cache: {
-                    const extensionModuleMeta_cache =
-                        extensionModuleMetas_cacheUpToDate.find(
-                            extensionModuleMeta =>
-                                extensionModuleMeta.moduleName === moduleName
-                        );
-
-                    if (extensionModuleMeta_cache === undefined) {
-                        break use_cache;
-                    }
-
-                    return extensionModuleMeta_cache;
-                }
-
-                const files: ExtensionModuleMeta["files"] = [];
-
-                await crawlAsync({
-                    dirPath: pathJoin(dirPath, KEYCLOAK_THEME),
-                    returnedPathsType: "relative to dirPath",
-                    onFileFound: async fileRelativePath_fromReservedDir => {
-                        const isPublic = fileRelativePath_fromReservedDir.startsWith(
-                            `public${pathSep}`
-                        );
-
-                        const fileRelativePath = isPublic
-                            ? pathRelative("public", fileRelativePath_fromReservedDir)
-                            : fileRelativePath_fromReservedDir;
-
-                        const sourceCode =
-                            await getExtensionModuleFileSourceCodeReadyToBeCopied({
-                                buildContext,
-                                isPublic,
-                                fileRelativePath,
-                                isOwnershipAction: false,
-                                extensionModuleDirPath: dirPath,
-                                extensionModuleName: moduleName,
-                                extensionModuleVersion: version
-                            });
-
-                        const hash = computeHash(sourceCode);
-
-                        const copyableFilePath = pathJoin(
-                            pathDirname(cacheFilePath),
-                            KEYCLOAK_THEME,
-                            fileRelativePath_fromReservedDir
-                        );
-
-                        {
-                            const dirPath = pathDirname(copyableFilePath);
-
-                            if (!(await existsAsync(dirPath))) {
-                                await fsPr.mkdir(dirPath, { recursive: true });
-                            }
-                        }
-
-                        fsPr.writeFile(copyableFilePath, sourceCode);
-
-                        files.push({
-                            isPublic,
-                            fileRelativePath,
-                            hash,
-                            copyableFilePath
-                        });
-                    }
-                });
-
-                return id<ExtensionModuleMeta>({
+        [...installedExtensionModules]
+            .sort((a, b) => a.moduleName.localeCompare(b.moduleName))
+            .map(
+                async ({
                     moduleName,
                     version,
-                    files,
-                    peerDependencies: Object.fromEntries(
-                        Object.entries(peerDependencies).filter(
-                            ([moduleName]) =>
-                                !isAmong(["react", "@types/react"], moduleName)
+                    peerDependencies,
+                    dirPath
+                }): Promise<ExtensionModuleMeta> => {
+                    use_cache: {
+                        const extensionModuleMeta_cache =
+                            extensionModuleMetas_cacheUpToDate.find(
+                                extensionModuleMeta =>
+                                    extensionModuleMeta.moduleName === moduleName
+                            );
+
+                        if (extensionModuleMeta_cache === undefined) {
+                            break use_cache;
+                        }
+
+                        return extensionModuleMeta_cache;
+                    }
+
+                    const files: ExtensionModuleMeta["files"] = [];
+
+                    await crawlAsync({
+                        dirPath: pathJoin(dirPath, KEYCLOAK_THEME),
+                        returnedPathsType: "relative to dirPath",
+                        onFileFound: async fileRelativePath_fromReservedDir => {
+                            const isPublic = fileRelativePath_fromReservedDir.startsWith(
+                                `public${pathSep}`
+                            );
+
+                            const fileRelativePath = isPublic
+                                ? pathRelative("public", fileRelativePath_fromReservedDir)
+                                : fileRelativePath_fromReservedDir;
+
+                            const sourceCode =
+                                await getExtensionModuleFileSourceCodeReadyToBeCopied({
+                                    buildContext,
+                                    isPublic,
+                                    fileRelativePath,
+                                    isOwnershipAction: false,
+                                    extensionModuleDirPath: dirPath,
+                                    extensionModuleName: moduleName,
+                                    extensionModuleVersion: version
+                                });
+
+                            const hash = computeHash(sourceCode);
+
+                            const copyableFilePath = pathJoin(
+                                pathDirname(cacheFilePath),
+                                KEYCLOAK_THEME,
+                                fileRelativePath_fromReservedDir
+                            );
+
+                            {
+                                const dirPath = pathDirname(copyableFilePath);
+
+                                if (!(await existsAsync(dirPath))) {
+                                    await fsPr.mkdir(dirPath, { recursive: true });
+                                }
+                            }
+
+                            fsPr.writeFile(copyableFilePath, sourceCode);
+
+                            files.push({
+                                isPublic,
+                                fileRelativePath,
+                                hash,
+                                copyableFilePath
+                            });
+                        }
+                    });
+
+                    {
+                        const getId = (file: {
+                            isPublic: boolean;
+                            fileRelativePath: string;
+                        }) =>
+                            `${file.isPublic ? "public" : "src"} - ${file.fileRelativePath}`;
+
+                        files.sort((a, b) => getId(a).localeCompare(getId(b)));
+                    }
+
+                    return id<ExtensionModuleMeta>({
+                        moduleName,
+                        version,
+                        files,
+                        peerDependencies: Object.fromEntries(
+                            Object.entries(peerDependencies)
+                                .filter(
+                                    ([moduleName]) =>
+                                        !isAmong(["react", "@types/react"], moduleName)
+                                )
+                                .sort(([moduleName_a], [moduleName_b]) =>
+                                    moduleName_a.localeCompare(moduleName_b)
+                                )
                         )
-                    )
-                });
-            }
-        )
+                    });
+                }
+            )
     );
 
     update_cache: {
