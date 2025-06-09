@@ -82,7 +82,7 @@ export async function command(params: { buildContext: BuildContext }) {
             process.exit(-1);
         });
 
-        console.log(value);
+        console.log(`${value}\n`);
 
         return value === YES;
     })();
