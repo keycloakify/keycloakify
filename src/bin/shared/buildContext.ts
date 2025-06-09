@@ -181,6 +181,7 @@ export function getBuildContext(params: {
         const output = child_process
             .execSync("npx vite", {
                 cwd: projectDirPath,
+                stdio: ["pipe", "pipe", "ignore"],
                 env: {
                     ...process.env,
                     [VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES.RESOLVE_VITE_CONFIG]: "true"
@@ -735,33 +736,36 @@ export function getBuildContext(params: {
         environmentVariables: buildOptions.environmentVariables ?? [],
         implementedThemeTypes,
         themeSrcDirPath,
-        fetchOptions: getProxyFetchOptions({
-            npmConfigGetCwd: (function callee(upCount: number): string {
-                const dirPath = pathResolve(
-                    pathJoin(...[projectDirPath, ...Array(upCount).fill("..")])
-                );
+        get fetchOptions() {
+            return getProxyFetchOptions({
+                npmConfigGetCwd: (function callee(upCount: number): string {
+                    const dirPath = pathResolve(
+                        pathJoin(...[projectDirPath, ...Array(upCount).fill("..")])
+                    );
 
-                assert(
-                    dirPath !== pathSep,
-                    "Couldn't find a place to run 'npm config get'"
-                );
+                    assert(
+                        dirPath !== pathSep,
+                        "Couldn't find a place to run 'npm config get'"
+                    );
 
-                try {
-                    child_process.execSync("npm config get", {
-                        cwd: dirPath,
-                        stdio: "pipe"
-                    });
-                } catch (error) {
-                    if (String(error).includes("ENOWORKSPACES")) {
-                        return callee(upCount + 1);
+                    try {
+                        child_process.execSync("npm config get", {
+                            cwd: dirPath,
+                            stdio: "pipe"
+                        });
+                    } catch (error) {
+                        if (String(error).includes("ENOWORKSPACES")) {
+                            return callee(upCount + 1);
+                        }
+
+                        throw error;
                     }
 
-                    throw error;
-                }
+                    return dirPath;
+                })(0)
+            });
+        },
 
-                return dirPath;
-            })(0)
-        }),
         jarTargets: (() => {
             const getDefaultJarFileBasename = (range: string) =>
                 `keycloak-theme-for-kc-${range}.jar`;

@@ -18,7 +18,8 @@ export function getProxyFetchOptions(params: {
     const cfg = (() => {
         const output = child_process
             .execSync("npm config get", {
-                cwd: npmConfigGetCwd
+                cwd: npmConfigGetCwd,
+                stdio: ["pipe", "pipe", "ignore"]
             })
             .toString("utf8");
 
