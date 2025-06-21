@@ -19,7 +19,7 @@ export async function command(params: { projectDirPath: string }) {
 
     await setupVitePluginIfNeeded({ projectDirPath });
 
-    const buildContext = getBuildContext({ projectDirPath });
+    let buildContext = getBuildContext({ projectDirPath });
 
     const { hasBeenHandled } = await maybeDelegateCommandToCustomHandler({
         commandName: "init",
@@ -326,6 +326,8 @@ export async function command(params: { projectDirPath: string }) {
         );
         process.exit(0);
     }
+
+    buildContext = getBuildContext({ projectDirPath });
 
     switch (themeType) {
         case "account":
