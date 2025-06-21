@@ -10,7 +10,7 @@ import { runPrettier, getIsPrettierAvailable } from "../tools/runPrettier";
 import cliSelect from "cli-select";
 import { THEME_TYPES } from "../shared/constants";
 import chalk from "chalk";
-import { join as pathJoin, relative as pathRelative } from "path";
+import { join as pathJoin, relative as pathRelative, dirname as pathDirname } from "path";
 import { existsAsync } from "../tools/fs.existsAsync";
 import { KEYCLOAK_THEME } from "../shared/constants";
 
@@ -212,6 +212,14 @@ export async function command(params: { projectDirPath: string }) {
 
         for (let { relativeFilePath, fileContent } of files) {
             const filePath = pathJoin(srcDirPath, relativeFilePath);
+
+            {
+                const dirPath = pathDirname(filePath);
+
+                if (!(await existsAsync(dirPath))) {
+                    await fs.mkdir(dirPath, { recursive: true });
+                }
+            }
 
             run_prettier: {
                 if (!(await getIsPrettierAvailable())) {
