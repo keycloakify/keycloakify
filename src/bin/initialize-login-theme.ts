@@ -191,16 +191,22 @@ export async function command(params: { buildContext: BuildContext }) {
         delete parsedPackageJson.dependencies[moduleName];
     }
 
+    console.log("====>", buildContext.themeSrcDirPath);
+
     for (const fileBasename of ["main-kc.dev.tsx", "main.dev.tsx"]) {
+        console.log("====>", fileBasename);
+
         const filePath = pathJoin(buildContext.themeSrcDirPath, fileBasename);
 
         if (!(await existsAsync(filePath))) {
+            console.log("continue");
             continue;
         }
 
         const content = (await fs.readFile(filePath)).toString("utf8");
 
         if (!content.includes("export {}")) {
+            console.log("!!! break");
             break;
         }
 
