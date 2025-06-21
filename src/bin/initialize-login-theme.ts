@@ -191,50 +191,48 @@ export async function command(params: { buildContext: BuildContext }) {
         delete parsedPackageJson.dependencies[moduleName];
     }
 
-    update_main_dev: {
-        for (const fileBasename of ["main-kc.dev.tsx", "main.dev.tsx"]) {
-            const filePath = pathJoin(buildContext.themeSrcDirPath, fileBasename);
+    for (const fileBasename of ["main-kc.dev.tsx", "main.dev.tsx"]) {
+        const filePath = pathJoin(buildContext.themeSrcDirPath, fileBasename);
 
-            if (!(await existsAsync(filePath))) {
-                continue;
-            }
+        if (!(await existsAsync(filePath))) {
+            continue;
+        }
 
-            const content = (await fs.readFile(filePath)).toString("utf8");
+        const content = (await fs.readFile(filePath)).toString("utf8");
 
-            if (!content.includes("export {}")) {
-                break update_main_dev;
-            }
-
-            let content_new = [
-                `import { createRoot } from "react-dom/client";`,
-                `import { StrictMode } from "react";`,
-                `import { KcPage } from "./kc.gen";`,
-                `import { getKcContextMock } from "./login/mocks/getKcContextMock";`,
-                ``,
-                `const kcContext = getKcContextMock({`,
-                `    pageId: "login.ftl",`,
-                `    overrides: {}`,
-                `});`,
-                ``,
-                `createRoot(document.getElementById("root")!).render(`,
-                `    <StrictMode>`,
-                `        <KcPage kcContext={kcContext} />`,
-                `    </StrictMode>`,
-                `);`,
-                ``
-            ].join("\n");
-
-            if (await getIsPrettierAvailable()) {
-                content_new = await runPrettier({
-                    sourceCode: content_new,
-                    filePath
-                });
-            }
-
-            await fs.writeFile(filePath, content_new);
-
+        if (!content.includes("export {}")) {
             break;
         }
+
+        let content_new = [
+            `import { createRoot } from "react-dom/client";`,
+            `import { StrictMode } from "react";`,
+            `import { KcPage } from "./kc.gen";`,
+            `import { getKcContextMock } from "./login/mocks/getKcContextMock";`,
+            ``,
+            `const kcContext = getKcContextMock({`,
+            `    pageId: "login.ftl",`,
+            `    overrides: {}`,
+            `});`,
+            ``,
+            `createRoot(document.getElementById("root")!).render(`,
+            `    <StrictMode>`,
+            `        <KcPage kcContext={kcContext} />`,
+            `    </StrictMode>`,
+            `);`,
+            ``
+        ].join("\n");
+
+        if (await getIsPrettierAvailable()) {
+            content_new = await runPrettier({
+                sourceCode: content_new,
+                filePath
+            });
+        }
+
+        await fs.writeFile(filePath, content_new);
+
+        break;
     }
 
     {
