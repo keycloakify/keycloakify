@@ -1,6 +1,6 @@
 {
     "name": "keycloakify",
-    "version": "11.8.49",
+    "version": "11.8.50",
     "description": "Framework to create custom Keycloak UIs",
     "repository": {
         "type": "git",
