@@ -363,6 +363,15 @@
       "contributions": [
         "test"
       ]
+    },
+    {
+      "login": "DerIch27",
+      "name": "Lars Gottfriedsen",
+      "avatar_url": "https://avatars.githubusercontent.com/u/62176944?v=4",
+      "profile": "https://github.com/DerIch27",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
