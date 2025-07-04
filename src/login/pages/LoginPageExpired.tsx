@@ -14,7 +14,7 @@ export default function LoginPageExpired(props: PageProps<Extract<KcContext, { p
             <p id="instruction1" className="instruction">
                 {msg("pageExpiredMsg1")}
                 <a id="loginRestartLink" href={url.loginRestartFlowUrl}>
-                    {msg("doClickHere")}
+                    {msg("doClickHere")}{" "}
                 </a>{" "}
                 .<br />
                 {msg("pageExpiredMsg2")}{" "}
