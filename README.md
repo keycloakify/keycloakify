@@ -167,6 +167,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://blog.bacongobbler.com"><img src="https://avatars.githubusercontent.com/u/1360539?v=4?s=100" width="100px;" alt="Matthew Fisher"/><br /><sub><b>Matthew Fisher</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=bacongobbler" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/kodebach"><img src="https://avatars.githubusercontent.com/u/23529132?v=4?s=100" width="100px;" alt="Klemens Böswirth"/><br /><sub><b>Klemens Böswirth</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=kodebach" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/wnmzzzz"><img src="https://avatars.githubusercontent.com/u/117174301?v=4?s=100" width="100px;" alt="wnmzzzz"/><br /><sub><b>wnmzzzz</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=wnmzzzz" title="Tests">⚠️</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/DerIch27"><img src="https://avatars.githubusercontent.com/u/62176944?v=4?s=100" width="100px;" alt="Lars Gottfriedsen"/><br /><sub><b>Lars Gottfriedsen</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=DerIch27" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
