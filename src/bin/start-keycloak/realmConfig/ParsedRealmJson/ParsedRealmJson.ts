@@ -8,6 +8,7 @@ export type ParsedRealmJson = {
     accountTheme?: string;
     adminTheme?: string;
     emailTheme?: string;
+    sslRequired?: string;
     eventsListeners: string[];
     users: {
         id: string;
@@ -57,6 +58,7 @@ export const zParsedRealmJson = (() => {
         accountTheme: z.string().optional(),
         adminTheme: z.string().optional(),
         emailTheme: z.string().optional(),
+        sslRequired: z.string().optional(),
         eventsListeners: z.array(z.string()),
         users: z.array(
             z.object({
