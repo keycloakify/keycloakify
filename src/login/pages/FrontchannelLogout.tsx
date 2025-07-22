@@ -11,9 +11,28 @@ export default function FrontchannelLogout(props: PageProps<Extract<KcContext, {
     const { msg, msgStr } = i18n;
 
     useEffect(() => {
-        if (logout.logoutRedirectUri) {
-            window.location.replace(logout.logoutRedirectUri);
+        const { logoutRedirectUri } = logout;
+
+        if (logoutRedirectUri === undefined) {
+            return;
         }
+
+        if (document.readyState === "complete") {
+            window.location.replace(logoutRedirectUri);
+            return;
+        }
+
+        const onReadystatechange = () => {
+            if (document.readyState === "complete") {
+                window.location.replace(logoutRedirectUri);
+            }
+        };
+
+        document.addEventListener("readystatechange", onReadystatechange);
+
+        return () => {
+            document.removeEventListener("readystatechange", onReadystatechange);
+        };
     }, []);
 
     return (
@@ -34,7 +53,7 @@ export default function FrontchannelLogout(props: PageProps<Extract<KcContext, {
                     </li>
                 ))}
             </ul>
-            {logout.logoutRedirectUri && (
+            {logout.logoutRedirectUri !== undefined && (
                 <a id="continue" className="btn btn-primary" href={logout.logoutRedirectUri}>
                     {msg("doContinue")}
                 </a>
