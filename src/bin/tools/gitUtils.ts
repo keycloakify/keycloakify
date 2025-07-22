@@ -43,7 +43,8 @@ export const getIsKnownByGit = runExclusive.build(
                     return;
                 }
 
-                dIsKnownByGit.reject(error);
+                // For building without git
+                dIsKnownByGit.resolve(false);
             }
         );
 
