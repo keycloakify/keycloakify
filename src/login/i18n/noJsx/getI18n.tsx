@@ -219,16 +219,7 @@ export function createGetI18n<
 
         const { createI18nTranslationFunctions } = createI18nTranslationFunctionsFactory<MessageKey_themeDefined>({
             themeName: kcContext.themeName,
-            messages_themeDefined:
-                messagesByLanguageTag_themeDefined[currentLanguage.languageTag] ??
-                messagesByLanguageTag_themeDefined[id<string>(FALLBACK_LANGUAGE_TAG) as LanguageTag] ??
-                (() => {
-                    const firstLanguageTag = Object.keys(messagesByLanguageTag_themeDefined)[0];
-                    if (firstLanguageTag === undefined) {
-                        return undefined;
-                    }
-                    return messagesByLanguageTag_themeDefined[firstLanguageTag as LanguageTag];
-                })(),
+            messages_themeDefined: messagesByLanguageTag_themeDefined[currentLanguage.languageTag],
             messages_fromKcServer: kcContext["x-keycloakify"].messages
         });
 
