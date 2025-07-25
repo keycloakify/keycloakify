@@ -420,7 +420,10 @@ export function generateMessageProperties(params: {
                 fs.mkdirSync(messageDirPath, { recursive: true });
 
                 fs.writeFileSync(
-                    pathJoin(messageDirPath, `messages_${languageTag}.properties`),
+                    pathJoin(
+                        messageDirPath,
+                        `messages_${languageTag.replace(/\-/g, "_")}.properties`
+                    ),
                     Buffer.from(propertiesFileSource, "utf8")
                 );
             }
