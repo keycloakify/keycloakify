@@ -681,6 +681,7 @@ export async function generateResources(params: {
                             }
                             assert<Equals<typeof themeType, never>>;
                         })()}`,
+                        "darkMode=true",
                         ...(themeType === "account" &&
                         getAccountThemeType() === "Single-Page"
                             ? ["deprecatedMode=false"]
