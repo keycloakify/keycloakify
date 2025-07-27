@@ -101,6 +101,8 @@ export function generateFtlFilesCodeFactory(params: {
         );
     }
 
+    $("head base").remove();
+
     //FTL is no valid html, we can't insert with cheerio, we put placeholder for injecting later.
     const kcContextDeclarationTemplateFtl = fs
         .readFileSync(
@@ -130,7 +132,10 @@ export function generateFtlFilesCodeFactory(params: {
         '{ "x": "vIdLqMeOed9sdLdIdOxdK0d" }';
 
     $("head").prepend(
-        `<script>\n${ftlObjectToJsCodeDeclaringAnObjectPlaceholder}\n</script>`
+        [
+            `<script>\n${ftlObjectToJsCodeDeclaringAnObjectPlaceholder}\n</script>`,
+            `<base href="\${xKeycloakify.resourcesPath}/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/" />`
+        ].join("\n")
     );
 
     // Remove part of the document marked as ignored.
