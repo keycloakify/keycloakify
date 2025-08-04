@@ -113,6 +113,23 @@ export async function command(params: {
         if (cliCommandOptions.keycloakVersion !== undefined) {
             const cliCommandOptions_keycloakVersion = cliCommandOptions.keycloakVersion;
 
+            if (
+                buildContext.implementedThemeTypes.account.isImplemented &&
+                buildContext.implementedThemeTypes.account.type === "Multi-Page" &&
+                (cliCommandOptions_keycloakVersion.startsWith("26.0") ||
+                    cliCommandOptions_keycloakVersion.startsWith("26.1"))
+            ) {
+                console.error(
+                    chalk.red(
+                        [
+                            `Sorry, for internal technical reasons you can't test your theme`,
+                            `with Keycloak 26.0 and 26.1, use 26.2 or newer.`
+                        ].join(" ")
+                    )
+                );
+                process.exit(-1);
+            }
+
             const tag = allSupportedTags.find(tag =>
                 tag.startsWith(cliCommandOptions_keycloakVersion)
             );
