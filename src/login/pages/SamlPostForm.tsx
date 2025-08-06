@@ -23,7 +23,7 @@ export default function SamlPostForm(props: PageProps<Extract<KcContext, { pageI
             return;
         }
 
-        htmlFormElement.submit();
+        htmlFormElement.requestSubmit();
     }, [htmlFormElement]);
     return (
         <Template kcContext={kcContext} i18n={i18n} doUseDefaultCss={doUseDefaultCss} classes={classes} headerNode={msg("saml.post-form.title")}>

@@ -160,7 +160,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                                         href="#"
                                         id="try-another-way"
                                         onClick={() => {
-                                            document.forms["kc-select-try-another-way-form" as never].submit();
+                                            document.forms["kc-select-try-another-way-form" as never].requestSubmit();
                                             return false;
                                         }}
                                     >
