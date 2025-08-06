@@ -1,4 +1,6 @@
-import { base64url } from "rfc4648";
+
+
+import { base64url } from "./rfc4648.js";
 
 export async function registerByWebAuthn(input) {
 
@@ -131,10 +133,13 @@ function returnSuccess(result, initLabel, initLabelPrompt) {
     }
     document.getElementById("authenticatorLabel").value = labelResult;
 
-    document.getElementById("register").submit();
+    document.getElementById("register").requestSubmit();
 }
 
 function returnFailure(err) {
     document.getElementById("error").value = err;
-    document.getElementById("register").submit();
+    document.getElementById("register").requestSubmit();
 }
+
+    
+    
