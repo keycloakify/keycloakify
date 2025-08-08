@@ -144,11 +144,17 @@ export function generateMessageProperties(params: {
                     if (arg && arg.type === "ObjectExpression") {
                         // Iterate over the properties of the object
                         arg.properties.forEach(prop => {
-                            if (
-                                prop.type === "ObjectProperty" &&
-                                prop.key.type === "Identifier"
-                            ) {
-                                const lang = prop.key.name;
+                            if (prop.type === "ObjectProperty") {
+                                if (
+                                    prop.key.type !== "Identifier" &&
+                                    prop.key.type !== "StringLiteral"
+                                ) {
+                                    return;
+                                }
+                                const lang =
+                                    prop.key.type === "Identifier"
+                                        ? prop.key.name
+                                        : prop.key.value;
                                 const value = prop.value;
 
                                 if (value.type === "ObjectExpression") {
