@@ -1,7 +1,5 @@
 
 
-// Updated version see: https://github.com/keycloak/keycloak/commit/687223f3b17f1804ddea1b74cacdc6b3564b73e6#diff-5a9ff6592fed58c35e85ac4e917f1ea50fa27592d63728292c7f1e6798a430b5
-
 const SESSION_POLLING_INTERVAL = 2000;
 const AUTH_SESSION_TIMEOUT_MILLISECS = 1000;
 const initialSession = getSession();
@@ -84,6 +82,7 @@ function getCookieByName(name) {
   }
   return null;
 }
+
 
     
     
