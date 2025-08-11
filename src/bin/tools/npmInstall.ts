@@ -18,34 +18,34 @@ export async function npmInstall(params: { packageJsonDirPath: string }) {
         const packageMangers = [
             {
                 binName: "yarn",
-                lockFileBasename: "yarn.lock"
+                lockFileBasenames: ["yarn.lock"]
             },
             {
                 binName: "npm",
-                lockFileBasename: "package-lock.json"
+                lockFileBasenames: ["package-lock.json"]
             },
             {
                 binName: "pnpm",
-                lockFileBasename: "pnpm-lock.yaml"
+                lockFileBasenames: ["pnpm-lock.yaml"]
             },
             {
                 binName: "bun",
-                lockFileBasename: "bun.lockdb"
+                lockFileBasenames: ["bun.lock", "bun.lockb", "bun.lockdb"]
             },
             {
                 binName: "deno",
-                lockFileBasename: "deno.lock"
+                lockFileBasenames: ["deno.lock"]
             }
         ] as const;
 
         for (const packageManager of packageMangers) {
-            if (
-                fs.existsSync(
-                    pathJoin(packageJsonDirPath, packageManager.lockFileBasename)
-                ) ||
-                fs.existsSync(pathJoin(process.cwd(), packageManager.lockFileBasename))
-            ) {
-                return packageManager.binName;
+            for (const lockFile of packageManager.lockFileBasenames) {
+                if (
+                    fs.existsSync(pathJoin(packageJsonDirPath, lockFile)) ||
+                    fs.existsSync(pathJoin(process.cwd(), lockFile))
+                ) {
+                    return packageManager.binName;
+                }
             }
         }
 
