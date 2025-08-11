@@ -160,7 +160,10 @@ function decodeHtmlEntities(htmlStr){
         <#local outSeq = []>
 
         <#list keys as key>
-            <#if ["class","declaredConstructors","superclass","declaringClass" ]?seq_contains(key) >
+            <#-- Exclude Java reflection-related properties that can cause issues -->
+            <#-- TypeVariableImpl properties cause IllegalAccessException with Java module system -->
+            <#if ["class","declaredConstructors","superclass","declaringClass","annotations",
+                  "genericDeclaration","annotatedBounds","declaredAnnotations","bounds","typeName" ]?seq_contains(key) >
                 <#continue>
             </#if>
 
