@@ -137,6 +137,23 @@ function decodeHtmlEntities(htmlStr){
     return element.value;
 }
 
+<#-- Keys that must be excluded during JS serialization to avoid reflection traps -->
+<#-- These are Java reflection internals that cause IllegalAccessException in Java 9+ -->
+<#-- Note: "annotations" is NOT in this list as frontend code needs attribute.annotations.* -->
+<#assign reflectionExclusionKeys = [
+    "class",                <#-- Java Class object reference -->
+    "declaredConstructors", <#-- Class constructors via reflection -->
+    "declaredMethods",      <#-- Class methods via reflection -->
+    "declaredFields",       <#-- Class fields via reflection -->
+    "superclass",           <#-- Parent class reference -->
+    "declaringClass",       <#-- Enclosing class for nested types -->
+    "genericDeclaration",   <#-- TypeVariableImpl: Generic type container -->
+    "annotatedBounds",      <#-- TypeVariableImpl: Type bounds with annotations -->
+    "declaredAnnotations",  <#-- TypeVariableImpl: Annotations on the type -->
+    "bounds",               <#-- TypeVariableImpl: Type parameter bounds -->
+    "typeName"              <#-- TypeVariableImpl: String representation -->
+]>
+
 <#function toJsDeclarationString object path>
     <#local isHash = -1>
     <#attempt>
@@ -160,10 +177,8 @@ function decodeHtmlEntities(htmlStr){
         <#local outSeq = []>
 
         <#list keys as key>
-            <#-- Exclude Java reflection-related properties that can cause issues -->
-            <#-- TypeVariableImpl properties cause IllegalAccessException with Java module system -->
-            <#if ["class","declaredConstructors","superclass","declaringClass","annotations",
-                  "genericDeclaration","annotatedBounds","declaredAnnotations","bounds","typeName" ]?seq_contains(key) >
+            <#-- Check if this key should be excluded for reflection safety -->
+            <#if reflectionExclusionKeys?seq_contains(key) >
                 <#continue>
             </#if>
 
