@@ -137,23 +137,6 @@ function decodeHtmlEntities(htmlStr){
     return element.value;
 }
 
-<#-- Keys that must be excluded during JS serialization to avoid reflection traps -->
-<#-- These are Java reflection internals that cause IllegalAccessException in Java 9+ -->
-<#-- Note: "annotations" is NOT in this list as frontend code needs attribute.annotations.* -->
-<#assign reflectionExclusionKeys = [
-    "class",                <#-- Java Class object reference -->
-    "declaredConstructors", <#-- Class constructors via reflection -->
-    "declaredMethods",      <#-- Class methods via reflection -->
-    "declaredFields",       <#-- Class fields via reflection -->
-    "superclass",           <#-- Parent class reference -->
-    "declaringClass",       <#-- Enclosing class for nested types -->
-    "genericDeclaration",   <#-- TypeVariableImpl: Generic type container -->
-    "annotatedBounds",      <#-- TypeVariableImpl: Type bounds with annotations -->
-    "declaredAnnotations",  <#-- TypeVariableImpl: Annotations on the type -->
-    "bounds",               <#-- TypeVariableImpl: Type parameter bounds -->
-    "typeName"              <#-- TypeVariableImpl: String representation -->
-]>
-
 <#function toJsDeclarationString object path>
     <#local isHash = -1>
     <#attempt>
@@ -177,8 +160,7 @@ function decodeHtmlEntities(htmlStr){
         <#local outSeq = []>
 
         <#list keys as key>
-            <#-- Check if this key should be excluded for reflection safety -->
-            <#if reflectionExclusionKeys?seq_contains(key) >
+            <#if ["class","declaredConstructors","superclass","declaringClass" ]?seq_contains(key) >
                 <#continue>
             </#if>
 
@@ -217,6 +199,20 @@ function decodeHtmlEntities(htmlStr){
                     xKeycloakify.pageId == "error.ftl" &&
                     areSamePath(path, ["realm"]) &&
                     !["name", "displayName", "displayNameHtml", "internationalizationEnabled", "registrationEmailAsUsername" ]?seq_contains(key)
+                ) || (
+                    <#-- Fix for StackOverflowError on terms.ftl with incomplete user profiles (e.g., X/Twitter IdP) -->
+                    <#-- These properties create circular references: realm->masterAdminClient->realm, etc. -->
+                    <#-- See: https://github.com/keycloakify/keycloakify/issues/658 -->
+                    xKeycloakify.pageId == "terms.ftl" && (
+                        key == "masterAdminClient" ||
+                        key == "delegateForUpdate" ||
+                        key == "keycloakSession" ||
+                        key == "entity" ||
+                        key == "realmModel" ||
+                        key == "userModel" ||
+                        (key == "defaultRole" && path?size > 2) ||
+                        (key == "container" && path?size > 2)
+                    )
                 ) || (
                     xKeycloakify.pageId == "applications.ftl" &&
                     ( 
