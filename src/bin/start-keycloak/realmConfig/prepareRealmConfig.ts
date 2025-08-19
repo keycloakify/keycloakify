@@ -45,6 +45,8 @@ export function prepareRealmConfig(params: {
         parsedRealmJson.eventsListeners.sort();
     }
 
+    parsedRealmJson.sslRequired = "none";
+
     return {
         realmName: parsedRealmJson.realm,
         clientName: clientId,

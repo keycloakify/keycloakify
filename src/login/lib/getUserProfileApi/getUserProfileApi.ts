@@ -1184,7 +1184,8 @@ function createGetErrors(params: { kcContext: KcContextLike_useGetErrors }) {
                     assert(typeof valueOrValues === "string");
 
                     unFormat_number: {
-                        const { kcNumberUnFormat } = attribute.html5DataAnnotations ?? {};
+                        const { kcNumberUnFormat } =
+                            usernameFormFieldState.attribute.html5DataAnnotations ?? {};
 
                         if (!kcNumberUnFormat) {
                             break unFormat_number;

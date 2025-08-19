@@ -48,9 +48,7 @@ Keycloakify is fully compatible with Keycloak from version 11 to 26...[and beyon
 > To ensure compatibility, simply upgrade to the latest Keycloakify version for your major release (v10 or v11) and rebuild your theme.  
 > No breaking changes have been introduced, but the target version ranges have been updated. For more details, see [this guide](https://docs.keycloakify.dev/features/compiler-options/keycloakversiontargets).
 
-## Sponsors
-
-Project backers, we trust and recommend their services.
+## Sponsor
 
 <br/>
 
@@ -70,42 +68,6 @@ Project backers, we trust and recommend their services.
 
 <p align="center">
     <i><a href="https://phasetwo.io/?utm_source=keycloakify"><strong>Keycloak as a Service</strong></a> - Keycloak community contributors of popular <a href="https://github.com/p2-inc#our-extensions-?utm_source=keycloakify">extensions</a> providing free and dedicated <a href="https://phasetwo.io/hosting/?utm_source=keycloakify">Keycloak hosting</a> and enterprise <a href="https://phasetwo.io/support/?utm_source=keycloakify">Keycloak support</a> to businesses of all sizes.</i>
-</p>
-
-<br/>
-<br/>
-<br/>
-
-<div align="center">
-
-![Logo Dark](https://github.com/user-attachments/assets/dd3925fb-a58a-4e91-b360-69c2fa1f1087#gh-dark-mode-only)
-
-</div>
-
-<div align="center">
-
-![Logo Light](https://github.com/user-attachments/assets/6c00c201-eed7-485a-a887-70891559d69b#gh-light-mode-only)
-
-</div>
-
-<br/>
-
-<p align="center">
-  <a href="https://www.zone2.tech/services/keycloak-consulting">
-    <i><strong>Keycloak Consulting Services</strong> - Your partner in Keycloak deployment, configuration, and extension development for optimized identity management solutions.</i>
-  </a>
-</p>
-
-# Past sponsors
-
-<div align="center">
-  <img width="200" src="https://user-images.githubusercontent.com/6702424/234135799-68684c33-4ec5-48d4-8763-0f3922c86643.png">
-</div>
-
-<p align="center">
-<a href="https://cloud-iam.com/?mtm_campaign=keycloakify-deal&mtm_source=keycloakify-github"><strong>Managed Keycloak Provider</strong> - With Cloud-IAM powering your Keycloak clusters, you can sleep easy knowing you've got the software and the experts you need for operational excellence. Cloud IAM is a french company. </a>
-<br/>
-Use code <code>keycloakify5</code> at checkout for a 5% discount.
 </p>
 
 ## Contributors ✨
@@ -167,6 +129,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://blog.bacongobbler.com"><img src="https://avatars.githubusercontent.com/u/1360539?v=4?s=100" width="100px;" alt="Matthew Fisher"/><br /><sub><b>Matthew Fisher</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=bacongobbler" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/kodebach"><img src="https://avatars.githubusercontent.com/u/23529132?v=4?s=100" width="100px;" alt="Klemens Böswirth"/><br /><sub><b>Klemens Böswirth</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=kodebach" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/wnmzzzz"><img src="https://avatars.githubusercontent.com/u/117174301?v=4?s=100" width="100px;" alt="wnmzzzz"/><br /><sub><b>wnmzzzz</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=wnmzzzz" title="Tests">⚠️</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/DerIch27"><img src="https://avatars.githubusercontent.com/u/62176944?v=4?s=100" width="100px;" alt="Lars Gottfriedsen"/><br /><sub><b>Lars Gottfriedsen</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=DerIch27" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>

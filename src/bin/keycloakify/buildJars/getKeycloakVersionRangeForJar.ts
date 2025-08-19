@@ -25,39 +25,73 @@ export function getKeycloakVersionRangeForJar(params: {
                             return "21-and-below" as const;
                         case "1.1.5":
                             return undefined;
+                        default:
+                            assert<
+                                Equals<
+                                    typeof keycloakThemeAdditionalInfoExtensionVersion,
+                                    never
+                                >
+                            >(false);
                     }
-                    assert<
-                        Equals<typeof keycloakThemeAdditionalInfoExtensionVersion, never>
-                    >(false);
                 case "0.3":
                     switch (keycloakThemeAdditionalInfoExtensionVersion) {
                         case null:
                             return undefined;
                         case "1.1.5":
                             return "23" as const;
+                        default:
+                            assert<
+                                Equals<
+                                    typeof keycloakThemeAdditionalInfoExtensionVersion,
+                                    never
+                                >
+                            >(false);
                     }
-                    assert<
-                        Equals<typeof keycloakThemeAdditionalInfoExtensionVersion, never>
-                    >(false);
                 case "0.4":
                     switch (keycloakThemeAdditionalInfoExtensionVersion) {
                         case null:
                             return undefined;
                         case "1.1.5":
                             return "24" as const;
+                        default:
+                            assert<
+                                Equals<
+                                    typeof keycloakThemeAdditionalInfoExtensionVersion,
+                                    never
+                                >
+                            >(false);
                     }
-                    assert<
-                        Equals<typeof keycloakThemeAdditionalInfoExtensionVersion, never>
-                    >(false);
                 case "0.6":
                     switch (keycloakThemeAdditionalInfoExtensionVersion) {
                         case null:
-                            return "26-and-above" as const;
+                            return "26.0-to-26.1" as const;
                         case "1.1.5":
                             return "25" as const;
+                        default:
+                            assert<
+                                Equals<
+                                    typeof keycloakThemeAdditionalInfoExtensionVersion,
+                                    never
+                                >
+                            >(false);
                     }
+                case "0.7":
+                    switch (keycloakThemeAdditionalInfoExtensionVersion) {
+                        case null:
+                            return "26.2-and-above" as const;
+                        case "1.1.5":
+                            return undefined;
+                        default:
+                            assert<
+                                Equals<
+                                    typeof keycloakThemeAdditionalInfoExtensionVersion,
+                                    never
+                                >
+                            >(false);
+                    }
+                default:
+                    assert<Equals<typeof keycloakAccountV1Version, never>>(false);
             }
-            assert<Equals<typeof keycloakAccountV1Version, never>>(false);
         })();
 
         assert<

@@ -36,7 +36,7 @@ export default function WebauthnError(props: PageProps<Extract<KcContext, { page
                     // @ts-expect-error: Trusted Keycloak's code
                     document.getElementById("executionValue").value = "${execution}";
                     // @ts-expect-error: Trusted Keycloak's code
-                    document.getElementById("kc-error-credential-form").submit();
+                    document.getElementById("kc-error-credential-form").requestSubmit();
                 }}
                 type="button"
                 className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonBlockClass", "kcButtonLargeClass")}

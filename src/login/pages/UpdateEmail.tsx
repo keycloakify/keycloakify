@@ -58,7 +58,7 @@ export default function UpdateEmail(props: UpdateEmailProps) {
                             className={kcClsx(
                                 "kcButtonClass",
                                 "kcButtonPrimaryClass",
-                                isAppInitiatedAction && "kcButtonBlockClass",
+                                (!isAppInitiatedAction) && "kcButtonBlockClass",
                                 "kcButtonLargeClass"
                             )}
                             type="submit"

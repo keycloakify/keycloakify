@@ -270,7 +270,8 @@ export function getBuildContext(params: {
                         "23": z.union([z.boolean(), z.string()]),
                         "24": z.union([z.boolean(), z.string()]),
                         "25": z.union([z.boolean(), z.string()]),
-                        "26-and-above": z.union([z.boolean(), z.string()])
+                        "26.0-to-26.1": z.union([z.boolean(), z.string()]),
+                        "26.2-and-above": z.union([z.boolean(), z.string()])
                     })
                     .optional()
             });
@@ -820,13 +821,16 @@ export function getBuildContext(params: {
                                 return "25" as const;
                             }
 
-                            return "26-and-above" as const;
+                            return "26.2-and-above" as const;
                         })();
 
                         assert<
                             Equals<
                                 typeof keycloakVersionRange,
-                                KeycloakVersionRange.WithAccountV1Theme
+                                Exclude<
+                                    KeycloakVersionRange.WithAccountV1Theme,
+                                    "26.0-to-26.1"
+                                >
                             >
                         >();
 
@@ -909,7 +913,8 @@ export function getBuildContext(params: {
                         "23",
                         "24",
                         "25",
-                        "26-and-above"
+                        "26.0-to-26.1",
+                        "26.2-and-above"
                     ] as const) {
                         assert<
                             Equals<
