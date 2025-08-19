@@ -1,4 +1,4 @@
-import { base64url } from "rfc4648";
+import { base64url } from "./rfc4648.js";
 import { returnSuccess, returnFailure } from "./webauthnAuthenticate.js";
 
 export function initAuthenticate(input) {
