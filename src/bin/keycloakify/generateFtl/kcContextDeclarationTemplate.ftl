@@ -200,6 +200,20 @@ function decodeHtmlEntities(htmlStr){
                     areSamePath(path, ["realm"]) &&
                     !["name", "displayName", "displayNameHtml", "internationalizationEnabled", "registrationEmailAsUsername" ]?seq_contains(key)
                 ) || (
+                    <#-- Fix for StackOverflowError on terms.ftl with incomplete user profiles (e.g., X/Twitter IdP) -->
+                    <#-- These properties create circular references: realm->masterAdminClient->realm, etc. -->
+                    <#-- See: https://github.com/keycloakify/keycloakify/issues/658 -->
+                    xKeycloakify.pageId == "terms.ftl" && (
+                        key == "masterAdminClient" ||
+                        key == "delegateForUpdate" ||
+                        key == "keycloakSession" ||
+                        key == "entity" ||
+                        key == "realmModel" ||
+                        key == "userModel" ||
+                        (key == "defaultRole" && path?size > 2) ||
+                        (key == "container" && path?size > 2)
+                    )
+                ) || (
                     xKeycloakify.pageId == "applications.ftl" &&
                     ( 
                         key == "realm" || 
