@@ -504,6 +504,10 @@ export async function command(params: {
             return false;
         }
 
+        if (process.env.NO_DEV_SERVER === "true") {
+            return false;
+        }
+
         return true;
     })();
 
