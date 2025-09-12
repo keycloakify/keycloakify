@@ -559,7 +559,7 @@ export async function command(params: {
             ? [`-e${SPACE_PLACEHOLDER}JAVA_OPTS=-Dkeycloak.profile=preview`]
             : []),
         ...(keycloakMajorVersionNumber < 25
-            ? `-e${SPACE_PLACEHOLDER}KC_HOSTNAME_STRICT_HTTPS=false`
+            ? [`-e${SPACE_PLACEHOLDER}KC_HOSTNAME_STRICT_HTTPS=false`]
             : []),
         ...[
             ...buildContext.themeNames,
