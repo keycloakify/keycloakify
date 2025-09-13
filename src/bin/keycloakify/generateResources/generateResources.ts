@@ -655,7 +655,29 @@ export async function generateResources(params: {
         }
 
         generate_theme_properties: {
+            const getEnvironmentVariableLines = (
+                environmentVariables: { name: string; default: string }[]
+            ) =>
+                environmentVariables.map(
+                    ({ name, default: defaultValue }) =>
+                        `${name}=\${env.${name}:${escapeStringForPropertiesFile(defaultValue)}}`
+                );
+
             if (isNative) {
+                fs.writeFileSync(
+                    pathJoin(themeTypeDirPath, "theme.properties"),
+                    Buffer.from(
+                        [
+                            fs.readFileSync(
+                                pathJoin(themeTypeDirPath, "theme.properties")
+                            ),
+                            ...getEnvironmentVariableLines(
+                                buildContext.environmentVariables
+                            )
+                        ].join("\n\n"),
+                        "utf8"
+                    )
+                );
                 break generate_theme_properties;
             }
 
@@ -687,13 +709,10 @@ export async function generateResources(params: {
                             ? ["deprecatedMode=false"]
                             : []),
                         ...(buildContext.extraThemeProperties ?? []),
-                        ...[
+                        ...getEnvironmentVariableLines([
                             ...buildContext.environmentVariables,
                             { name: KEYCLOAKIFY_SPA_DEV_SERVER_PORT, default: "" }
-                        ].map(
-                            ({ name, default: defaultValue }) =>
-                                `${name}=\${env.${name}:${escapeStringForPropertiesFile(defaultValue)}}`
-                        ),
+                        ]),
                         ...(languageTags === undefined
                             ? []
                             : [`locales=${languageTags.join(",")}`])
@@ -772,6 +791,8 @@ export async function generateResources(params: {
 
                         return { modifiedSourceCode: sourceCode };
                     }
+
+                    //TODO: Env var
                 });
             }
             run_writeMessagePropertiesFiles: {
