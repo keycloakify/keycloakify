@@ -12,7 +12,8 @@ import { assert, type Equals, is } from "tsafe/assert";
 import * as child_process from "child_process";
 import {
     VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES,
-    BUILD_FOR_KEYCLOAK_MAJOR_VERSION_ENV_NAME
+    BUILD_FOR_KEYCLOAK_MAJOR_VERSION_ENV_NAME,
+    KEYCLOAKIFY_PREDEFINED_BUILD_CONTEXT
 } from "./constants";
 import type { KeycloakVersionRange } from "./KeycloakVersionRange";
 import { exclude } from "tsafe";
@@ -132,6 +133,12 @@ export type ResolvedViteConfig = {
 export function getBuildContext(params: {
     projectDirPath: string | undefined;
 }): BuildContext {
+
+    if (process.env[KEYCLOAKIFY_PREDEFINED_BUILD_CONTEXT]){
+        console.log("Using predefined build context from env variable");
+        return JSON.parse(process.env[KEYCLOAKIFY_PREDEFINED_BUILD_CONTEXT]);
+    }
+
     const projectDirPath =
         params.projectDirPath !== undefined
             ? getAbsoluteAndInOsFormatPath({
