@@ -558,7 +558,9 @@ export async function command(params: {
         ...(keycloakMajorVersionNumber <= 20
             ? [`-e${SPACE_PLACEHOLDER}JAVA_OPTS=-Dkeycloak.profile=preview`]
             : []),
-        `-e${SPACE_PLACEHOLDER}KC_HOSTNAME_STRICT_HTTPS=false`,
+        ...(keycloakMajorVersionNumber < 25
+            ? [`-e${SPACE_PLACEHOLDER}KC_HOSTNAME_STRICT_HTTPS=false`]
+            : []),
         ...[
             ...buildContext.themeNames,
             ...(fs.existsSync(
