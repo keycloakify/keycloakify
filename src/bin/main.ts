@@ -64,16 +64,40 @@ function skip(_context: any, argv: { options: Record<string, unknown> }) {
 }
 
 program
-    .command({
+    .command<{ skipJar: boolean; skipPostBuild: boolean }>({
         name: "build",
         description: "Build the theme (default subcommand)."
     })
+    .option({
+        key: "skipJar",
+        name: (() => {
+            const name = "skip-jar";
+            optionsKeys.push(name);
+            return name;
+        })(),
+        description: "Skip output JAR file generation.",
+        defaultValue: false
+    })
+    .option({
+        key: "skipPostBuild",
+        name: (() => {
+            const name = "skip-post-build";
+            optionsKeys.push(name);
+            return name;
+        })(),
+        description: "Skip post-build steps.",
+        defaultValue: false
+    })
     .task({
         skip,
-        handler: async ({ projectDirPath }) => {
+        handler: async ({ projectDirPath, skipJar, skipPostBuild }) => {
             const { command } = await import("./keycloakify");
 
-            await command({ buildContext: getBuildContext({ projectDirPath }) });
+            await command({
+                buildContext: getBuildContext({ projectDirPath }),
+                skipJar,
+                skipPostBuild
+            });
         }
     });
 
@@ -373,6 +397,19 @@ program
             });
         }
     });
+
+program.command({
+    name: "print-build-context",
+    description: "print a build context for non npx build runners. pass the result to KEYCLOAKIFY_PREDEFINED_BUILD_CONTEXT env variable",
+})
+.task({
+    skip,
+    handler: async ({ projectDirPath }) => {
+        const buildContext = getBuildContext({ projectDirPath });
+        console.log(JSON.stringify(buildContext))
+    }
+})
+
 
 // Fallback to build command if no command is provided
 {
