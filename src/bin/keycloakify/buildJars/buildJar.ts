@@ -3,13 +3,13 @@ import type {
     KeycloakAccountV1Version,
     KeycloakThemeAdditionalInfoExtensionVersion
 } from "./extensionVersions";
-import { join as pathJoin, dirname as pathDirname } from "path";
+import { dirname as pathDirname, join as pathJoin } from "path";
 import { transformCodebase } from "../../tools/transformCodebase";
 import type { BuildContext } from "../../shared/buildContext";
 import * as fs from "fs/promises";
 import {
-    generatePom,
-    BuildContextLike as BuildContextLike_generatePom
+    BuildContextLike as BuildContextLike_generatePom,
+    generatePom
 } from "./generatePom";
 import { readFileSync } from "fs";
 import { isInside } from "../../tools/isInside";
@@ -25,6 +25,7 @@ export type BuildContextLike = BuildContextLike_generatePom & {
     themeVersion: string;
     cacheDirPath: string;
     implementedThemeTypes: BuildContext["implementedThemeTypes"];
+    useDefaultMavenRepo?: boolean;
 };
 
 assert<BuildContext extends BuildContextLike ? true : false>();
@@ -222,7 +223,9 @@ export async function buildJar(params: {
     }
 
     {
-        const mvnBuildCmd = `mvn -B -ntp clean install -Dmaven.repo.local="${pathJoin(keycloakifyBuildCacheDirPath, ".m2")}"`;
+        const mvnBuildCmd = buildContext.useDefaultMavenRepo
+            ? "mvn -B -ntp clean install"
+            : `mvn -B -ntp clean install -Dmaven.repo.local="${pathJoin(keycloakifyBuildCacheDirPath, ".m2")}"`;
 
         await new Promise<void>((resolve, reject) =>
             child_process.exec(
