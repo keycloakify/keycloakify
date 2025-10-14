@@ -227,7 +227,7 @@ export async function buildJar(params: {
             child_process.exec(
                 mvnBuildCmd,
                 { cwd: keycloakifyBuildCacheDirPath },
-                (error, stdout, stderr) => {
+                (error, _stdout, stderr) => {
                     if (error !== null) {
                         console.log(
                             [
@@ -241,9 +241,8 @@ export async function buildJar(params: {
                                     2
                                 )}`,
                                 "",
-                                "Output of the `mvn clean install` command:",
+                                "stderr `mvn clean install` command:",
                                 "---",
-                                stdout,
                                 stderr,
                                 "---",
                                 "",
