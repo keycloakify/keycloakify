@@ -16,6 +16,7 @@ import { isInside } from "../../tools/isInside";
 import child_process from "child_process";
 import { rmSync } from "../../tools/fs.rmSync";
 import { existsAsync } from "../../tools/fs.existsAsync";
+import { tailVisualLines } from "../../tools/tailVisualLines";
 
 export type BuildContextLike = BuildContextLike_generatePom & {
     keycloakifyBuildDirPath: string;
@@ -221,7 +222,7 @@ export async function buildJar(params: {
     }
 
     {
-        const mvnBuildCmd = `mvn clean install -Dmaven.repo.local="${pathJoin(keycloakifyBuildCacheDirPath, ".m2")}"`;
+        const mvnBuildCmd = `mvn -B -ntp clean install -Dmaven.repo.local="${pathJoin(keycloakifyBuildCacheDirPath, ".m2")}"`;
 
         await new Promise<void>((resolve, reject) =>
             child_process.exec(
@@ -243,9 +244,9 @@ export async function buildJar(params: {
                                 "",
                                 "Output of the `mvn clean install` command:",
                                 "---stdout---",
-                                stdout.split("\n").slice(-50).join("\n"),
+                                tailVisualLines(stdout, 50),
                                 "---stderr---",
-                                stderr,
+                                tailVisualLines(stderr, 200),
                                 "------------",
                                 "",
                                 "Try running the following command to debug the issue (you are probably under a restricted network and you need to configure your proxy):",
