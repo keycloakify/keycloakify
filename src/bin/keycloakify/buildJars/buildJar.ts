@@ -227,7 +227,7 @@ export async function buildJar(params: {
             child_process.exec(
                 mvnBuildCmd,
                 { cwd: keycloakifyBuildCacheDirPath },
-                (error, _stdout, stderr) => {
+                (error, stdout, stderr) => {
                     if (error !== null) {
                         console.log(
                             [
@@ -241,10 +241,12 @@ export async function buildJar(params: {
                                     2
                                 )}`,
                                 "",
-                                "stderr `mvn clean install` command:",
-                                "---",
+                                "Output of the `mvn clean install` command:",
+                                "---stdout---",
+                                stdout.split("\n").slice(-50).join("\n"),
+                                "---stderr---",
                                 stderr,
-                                "---",
+                                "------------",
                                 "",
                                 "Try running the following command to debug the issue (you are probably under a restricted network and you need to configure your proxy):",
                                 `cd ${keycloakifyBuildCacheDirPath} && ${mvnBuildCmd}`
