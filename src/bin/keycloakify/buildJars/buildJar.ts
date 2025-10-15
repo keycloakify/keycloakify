@@ -227,7 +227,15 @@ export async function buildJar(params: {
         await new Promise<void>((resolve, reject) =>
             child_process.exec(
                 mvnBuildCmd,
-                { cwd: keycloakifyBuildCacheDirPath },
+                {
+                    cwd: keycloakifyBuildCacheDirPath,
+                    env: {
+                        ...process.env,
+                        MAVEN_OPTS: [process.env.MAVEN_OPTS, "-Xmx4096m"]
+                            .filter(x => !!x)
+                            .join(" ")
+                    }
+                },
                 (error, stdout, stderr) => {
                     if (error !== null) {
                         console.log(
