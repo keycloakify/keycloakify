@@ -177,7 +177,7 @@ function decodeHtmlEntities(htmlStr){
                 <#break>
             </#if>
 
-            <#local abort = "ABORT: should not be exposed">
+            <#local abort = "ABORT:Should not be exposed ">
 
             <#if stringified?starts_with("java.util.stream.")>
                 <#return abort>
@@ -232,7 +232,7 @@ function decodeHtmlEntities(htmlStr){
 
             </#list>
 
-            <#local outSeq += ["/* class: " + stringified?replace("@\\s*[0-9a-fA-F]+$", "") + "*/"]>
+            <#local outSeq += ["/* class: " + stringified?replace("@\\s*[0-9a-fA-F]+$", "", "r") + " */"]>
 
         </#list>
 
