@@ -1,9 +1,9 @@
 import { parse as urlParse } from "url";
 import {
+    dirname as pathDirname,
     join as pathJoin,
-    sep as pathSep,
     resolve as pathResolve,
-    dirname as pathDirname
+    sep as pathSep
 } from "path";
 import { getAbsoluteAndInOsFormatPath } from "../tools/getAbsoluteAndInOsFormatPath";
 import { z } from "zod";
@@ -11,17 +11,18 @@ import * as fs from "fs";
 import { assert, type Equals, is } from "tsafe/assert";
 import * as child_process from "child_process";
 import {
-    VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES,
-    BUILD_FOR_KEYCLOAK_MAJOR_VERSION_ENV_NAME
+    BUILD_FOR_KEYCLOAK_MAJOR_VERSION_ENV_NAME,
+    KEYCLOAK_THEME,
+    type ThemeType,
+    VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES
 } from "./constants";
 import type { KeycloakVersionRange } from "./KeycloakVersionRange";
 import { exclude } from "tsafe";
 import { crawl } from "../tools/crawl";
-import { KEYCLOAK_THEME, type ThemeType } from "./constants";
 import { objectEntries } from "tsafe/objectEntries";
 import { id } from "tsafe/id";
 import chalk from "chalk";
-import { getProxyFetchOptions, type FetchOptionsLike } from "../tools/fetchProxyOptions";
+import { type FetchOptionsLike, getProxyFetchOptions } from "../tools/fetchProxyOptions";
 
 export type BuildContext = {
     themeVersion: string;
@@ -74,6 +75,7 @@ export type BuildContext = {
         realmJsonFilePath: string | undefined;
         port: number | undefined;
     };
+    useDefaultMavenRepo?: boolean;
 };
 
 assert<Equals<keyof BuildContext["implementedThemeTypes"], ThemeType | "email">>();

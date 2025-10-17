@@ -64,16 +64,38 @@ function skip(_context: any, argv: { options: Record<string, unknown> }) {
 }
 
 program
-    .command({
+    .command<{
+        useDefaultMavenRepo: boolean | undefined;
+    }>({
         name: "build",
         description: "Build the theme (default subcommand)."
     })
+    .option({
+        key: "useDefaultMavenRepo",
+        name: (() => {
+            const name = "use-default-maven-repo";
+
+            optionsKeys.push(name);
+
+            return name;
+        })(),
+        description: [
+            "Use the global Maven repository instead of a local one.",
+            "Example: `--use-default-maven-repo`"
+        ].join(" "),
+        defaultValue: false
+    })
     .task({
         skip,
-        handler: async ({ projectDirPath }) => {
+        handler: async ({ projectDirPath, useDefaultMavenRepo }) => {
             const { command } = await import("./keycloakify");
 
-            await command({ buildContext: getBuildContext({ projectDirPath }) });
+            const buildContext = {
+                ...getBuildContext({ projectDirPath }),
+                useDefaultMavenRepo: useDefaultMavenRepo ?? false
+            };
+
+            await command({ buildContext });
         }
     });
 
