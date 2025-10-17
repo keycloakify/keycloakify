@@ -145,19 +145,96 @@ function decodeHtmlEntities(htmlStr){
         <#return "ABORT: Can't evaluate if " + path?join(".") + " is a hash">
     </#attempt>
 
+    <#local outSeq = []>
+
     <#if isHash>
         <#if path?size gt 10>
             <#return "ABORT: Too many recursive calls, path: " + path?join(".")>
         </#if>
-        <#local keys = -1>
 
+        <#local keys = -1>
         <#attempt>
             <#local keys = object?keys>
         <#recover>
             <#return "ABORT: We can't list keys on object">
         </#attempt>
 
-        <#local outSeq = []>
+        <#list [1] as _>
+            <#if !keys?seq_contains("toString")>
+                <#break>
+            </#if>
+
+            <#local stringified = "">
+            <#attempt>
+                <#local stringified = object?string>
+            <#recover>
+                <#break>
+            </#attempt>
+
+            <#local stringified = stringified?trim>
+
+            <#if !stringified?matches(".*@\\s*[0-9a-fA-F]+$")>
+                <#break>
+            </#if>
+
+            <#local abort = "ABORT: should not be exposed">
+
+            <#if stringified?starts_with("java.util.stream.")>
+                <#return abort>
+            </#if>
+
+            <#if stringified?starts_with("org.keycloak.")>
+                <#list ["models", "services", "authentication", "quarkus.runtime", "transaction", "connections", "utils.ClosingStream"] as namespacePortion>
+                    <#if stringified?starts_with("org.keycloak." + namespacePortion)>
+                        <#return abort>
+                    </#if>
+                </#list>
+            </#if>
+
+            <#if stringified?matches("^session\\s*@\\s*[0-9a-fA-F]+$")>
+                <#return abort>
+            </#if>
+
+            <#-- Catch realm internal representation -->
+            <#list [1] as __>
+
+                <#if !stringified?matches("^[0-9a-fA-F\\-]{36}@[0-9a-f]+$")>
+                    <#break>
+                </#if>
+
+                <#if !keys?seq_contains("id") >
+                    <#break>
+                </#if>
+
+                <#local realmId = "">
+                <#attempt>
+                    <#local realmId = object["id"]>
+                <#recover>
+                    <#break>
+                </#attempt>
+
+                <#local isString = -1>
+                <#attempt>
+                    <#local isString = realmId?is_string>
+                <#recover>
+                    <#break>
+                </#attempt>
+
+                <#if !isString >
+                    <#break>
+                </#if>
+
+                <#if !stringified?starts_with(realmId + "@")>
+                    <#break>
+                </#if>
+
+                <#return abort>
+
+            </#list>
+
+            <#local outSeq += ["/* class: " + stringified?replace("@\\s*[0-9a-fA-F]+$", "") + "*/"]>
+
+        </#list>
 
         <#list keys as key>
             <#if ["class","declaredConstructors","superclass","declaringClass" ]?seq_contains(key) >
@@ -200,6 +277,8 @@ function decodeHtmlEntities(htmlStr){
                     areSamePath(path, ["realm"]) &&
                     !["name", "displayName", "displayNameHtml", "internationalizationEnabled", "registrationEmailAsUsername" ]?seq_contains(key)
                 ) || (
+                    <#-- NOTE: Should not be necessary anymore since we introduced
+                         the mechanism to exclude Keycloak's internal -->
                     <#-- Fix for StackOverflowError on terms.ftl with incomplete user profiles (e.g., X/Twitter IdP) -->
                     <#-- These properties create circular references: realm->masterAdminClient->realm, etc. -->
                     <#-- See: https://github.com/keycloakify/keycloakify/issues/658 -->
@@ -274,6 +353,8 @@ function decodeHtmlEntities(htmlStr){
                         "userManagedAccessAllowed"
                     ]?seq_contains(key)
                 ) || (
+                    <#-- NOTE: Should not be necessary anymore since we introduced
+                         the mechanism to exclude Keycloak's internal -->
                     ["flowContext", "session", "realm"]?seq_contains(key) &&
                     areSamePath(path, ["social"])
                 )
