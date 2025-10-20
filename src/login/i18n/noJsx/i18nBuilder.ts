@@ -2,22 +2,29 @@ import type {
     LanguageTag as LanguageTag_defaultSet,
     MessageKey as MessageKey_defaultSet
 } from "../messages_defaultSet/types";
-import { type ReturnTypeOfCreateGetI18n, createGetI18n } from "./getI18n";
+import {
+    type ReturnTypeOfCreateGetI18n,
+    type MessageFormatter as MessageFormatter_I18n,
+    createGetI18n
+} from "./getI18n";
 
 export type I18nBuilder<
     ThemeName extends string = never,
     MessageKey_themeDefined extends string = never,
     LanguageTag_notInDefaultSet extends string = never,
+    MessageFormatter extends MessageFormatter_I18n = never,
     ExcludedMethod extends
         | "withThemeName"
         | "withExtraLanguages"
-        | "withCustomTranslations" = never
+        | "withCustomTranslations"
+        | "withMessageFormatter" = never
 > = Omit<
     {
         withThemeName: <ThemeName extends string>() => I18nBuilder<
             ThemeName,
             MessageKey_themeDefined,
             LanguageTag_notInDefaultSet,
+            MessageFormatter,
             ExcludedMethod | "withThemeName"
         >;
         withExtraLanguages: <
@@ -33,6 +40,7 @@ export type I18nBuilder<
             ThemeName,
             MessageKey_themeDefined,
             LanguageTag_notInDefaultSet,
+            MessageFormatter,
             ExcludedMethod | "withExtraLanguages"
         >;
         withCustomTranslations: <MessageKey_themeDefined extends string>(
@@ -48,7 +56,17 @@ export type I18nBuilder<
             ThemeName,
             MessageKey_themeDefined,
             LanguageTag_notInDefaultSet,
+            MessageFormatter,
             ExcludedMethod | "withCustomTranslations"
+        >;
+        withMessageFormatter: (
+            formatter: (message: string, args: (string | undefined)[]) => string
+        ) => I18nBuilder<
+            ThemeName,
+            MessageKey_themeDefined,
+            LanguageTag_notInDefaultSet,
+            MessageFormatter,
+            ExcludedMethod | "withMessageFormatter"
         >;
         build: () => ReturnTypeOfCreateGetI18n<
             MessageKey_themeDefined,
@@ -61,7 +79,8 @@ export type I18nBuilder<
 function createI18nBuilder<
     ThemeName extends string = never,
     MessageKey_themeDefined extends string = never,
-    LanguageTag_notInDefaultSet extends string = never
+    LanguageTag_notInDefaultSet extends string = never,
+    MessageFormatter extends MessageFormatter_I18n = never
 >(params: {
     extraLanguageTranslations: {
         [LanguageTag in LanguageTag_notInDefaultSet]: {
@@ -77,11 +96,18 @@ function createI18nBuilder<
             string | Record<ThemeName, string>
         >;
     }>;
-}): I18nBuilder<ThemeName, MessageKey_themeDefined, LanguageTag_notInDefaultSet> {
+    messageFormatter?: MessageFormatter;
+}): I18nBuilder<
+    ThemeName,
+    MessageKey_themeDefined,
+    LanguageTag_notInDefaultSet,
+    MessageFormatter
+> {
     const i18nBuilder: I18nBuilder<
         ThemeName,
         MessageKey_themeDefined,
-        LanguageTag_notInDefaultSet
+        LanguageTag_notInDefaultSet,
+        MessageFormatter
     > = {
         withThemeName: () =>
             createI18nBuilder({
@@ -100,11 +126,19 @@ function createI18nBuilder<
                 extraLanguageTranslations: params.extraLanguageTranslations,
                 messagesByLanguageTag_themeDefined
             }),
+        withMessageFormatter: formatter =>
+            createI18nBuilder({
+                extraLanguageTranslations: params.extraLanguageTranslations,
+                messagesByLanguageTag_themeDefined:
+                    params.messagesByLanguageTag_themeDefined,
+                messageFormatter: formatter
+            }),
         build: () =>
             createGetI18n({
                 extraLanguageTranslations: params.extraLanguageTranslations,
                 messagesByLanguageTag_themeDefined:
-                    params.messagesByLanguageTag_themeDefined
+                    params.messagesByLanguageTag_themeDefined,
+                messageFormatter: params.messageFormatter
             })
     };
 

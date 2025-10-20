@@ -1,7 +1,7 @@
 import type { JSX } from "keycloakify/tools/JSX";
 import { useEffect, useState } from "react";
 import { kcSanitize } from "keycloakify/lib/kcSanitize";
-import { createGetI18n, type KcContextLike } from "../noJsx/getI18n";
+import { createGetI18n, type KcContextLike, type MessageFormatter as MessageFormatter_I18n } from "../noJsx/getI18n";
 import type { GenericI18n_noJsx } from "../noJsx/GenericI18n_noJsx";
 import { Reflect } from "tsafe/Reflect";
 import type { GenericI18n } from "./GenericI18n";
@@ -16,10 +16,13 @@ export type ReturnTypeOfCreateUseI18n<MessageKey_themeDefined extends string, La
 
 export { KcContextLike };
 
+export { MessageFormatter_I18n as MessageFormatter };
+
 export function createUseI18n<
     ThemeName extends string = string,
     MessageKey_themeDefined extends string = never,
-    LanguageTag_notInDefaultSet extends string = never
+    LanguageTag_notInDefaultSet extends string = never,
+    MessageFormatter extends MessageFormatter_I18n = never
 >(params: {
     extraLanguageTranslations: {
         [languageTag in LanguageTag_notInDefaultSet]: {
@@ -32,8 +35,9 @@ export function createUseI18n<
             [key in MessageKey_themeDefined]: string | Record<ThemeName, string>;
         };
     }>;
+    messageFormatter?: MessageFormatter;
 }): ReturnTypeOfCreateUseI18n<MessageKey_themeDefined, LanguageTag_notInDefaultSet> {
-    const { extraLanguageTranslations, messagesByLanguageTag_themeDefined } = params;
+    const { extraLanguageTranslations, messagesByLanguageTag_themeDefined, messageFormatter } = params;
 
     type LanguageTag = LanguageTag_defaultSet | LanguageTag_notInDefaultSet;
 
@@ -111,7 +115,7 @@ export function createUseI18n<
         document.head.prepend(styleElement);
     }
 
-    const { getI18n } = createGetI18n({ extraLanguageTranslations, messagesByLanguageTag_themeDefined });
+    const { getI18n } = createGetI18n({ extraLanguageTranslations, messagesByLanguageTag_themeDefined, messageFormatter });
 
     function useI18n(params: { kcContext: KcContextLike }): Result {
         const { kcContext } = params;

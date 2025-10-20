@@ -13,6 +13,9 @@ import {
     languageTags as languageTags_defaultSet
 } from "../messages_defaultSet/types";
 import type { GenericI18n_noJsx } from "./GenericI18n_noJsx";
+import { formatChoiceMessage } from "./formatMessageChoiceFormat";
+
+export type MessageFormatter = (message: string, args: (any | undefined)[]) => string;
 
 export type KcContextLike = {
     themeName: string;
@@ -44,7 +47,8 @@ export type ReturnTypeOfCreateGetI18n<MessageKey_themeDefined extends string, La
 export function createGetI18n<
     ThemeName extends string = string,
     MessageKey_themeDefined extends string = never,
-    LanguageTag_notInDefaultSet extends string = never
+    LanguageTag_notInDefaultSet extends string = never,
+    MessageFormatter_extended extends MessageFormatter = never
 >(params: {
     extraLanguageTranslations: {
         [languageTag in LanguageTag_notInDefaultSet]: {
@@ -57,8 +61,9 @@ export function createGetI18n<
             [key in MessageKey_themeDefined]: string | Record<ThemeName, string>;
         };
     }>;
+    messageFormatter?: MessageFormatter_extended;
 }): ReturnTypeOfCreateGetI18n<MessageKey_themeDefined, LanguageTag_notInDefaultSet> {
-    const { extraLanguageTranslations, messagesByLanguageTag_themeDefined } = params;
+    const { extraLanguageTranslations, messagesByLanguageTag_themeDefined, messageFormatter } = params;
 
     Object.keys(extraLanguageTranslations).forEach(languageTag_notInDefaultSet => {
         if (id<readonly string[]>(languageTags_defaultSet).includes(languageTag_notInDefaultSet)) {
@@ -229,7 +234,8 @@ export function createGetI18n<
                     }
                     return messagesByLanguageTag_themeDefined[firstLanguageTag as LanguageTag];
                 })(),
-            messages_fromKcServer: kcContext["x-keycloakify"].messages
+            messages_fromKcServer: kcContext["x-keycloakify"].messages,
+            messageFormatter
         });
 
         const isCurrentLanguageFallbackLanguage = currentLanguage.languageTag === FALLBACK_LANGUAGE_TAG;
@@ -305,8 +311,9 @@ function createI18nTranslationFunctionsFactory<MessageKey_themeDefined extends s
     themeName: string;
     messages_themeDefined: Record<MessageKey_themeDefined, string | Record<string, string>> | undefined;
     messages_fromKcServer: Record<string, string>;
+    messageFormatter?: MessageFormatter;
 }) {
-    const { themeName, messages_themeDefined, messages_fromKcServer } = params;
+    const { themeName, messages_themeDefined, messages_fromKcServer, messageFormatter } = params;
 
     function createI18nTranslationFunctions(params: {
         messages_defaultSet_currentLanguage: Partial<Record<MessageKey_defaultSet, string>> | undefined;
@@ -342,28 +349,11 @@ function createI18nTranslationFunctionsFactory<MessageKey_themeDefined extends s
                 return undefined;
             }
 
-            const startIndex = message
-                .match(/{[0-9]+}/g)
-                ?.map(g => g.match(/{([0-9]+)}/)![1])
-                .map(indexStr => parseInt(indexStr))
-                .sort((a, b) => a - b)[0];
-
-            if (startIndex === undefined) {
-                // No {0} in message (no arguments expected)
-                return message;
+            if (messageFormatter) {
+                return messageFormatter(message, args);
             }
 
-            let messageWithArgsInjected = message;
-
-            args.forEach((arg, i) => {
-                if (arg === undefined) {
-                    return;
-                }
-
-                messageWithArgsInjected = messageWithArgsInjected.replace(new RegExp(`\\{${i + startIndex}\\}`, "g"), arg);
-            });
-
-            return messageWithArgsInjected;
+            return formatChoiceMessage(message, args);
         }
 
         function resolveMsgAdvanced(props: { key: string; args: (string | undefined)[] }): string {
