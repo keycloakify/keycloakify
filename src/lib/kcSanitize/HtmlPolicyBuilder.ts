@@ -197,6 +197,7 @@ export class HtmlPolicyBuilder {
             ) {
                 const tag = currentNode.tagName.toLowerCase();
                 if (
+                    // see OWASP Java HTML Sanitizer documentation > Custom Policies
                     ["a", "font", "img", "input", "span"].includes(tag) &&
                     !this.tagsAllowedWithNoAttribute.has(tag)
                 ) {
