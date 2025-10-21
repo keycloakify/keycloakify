@@ -34,7 +34,7 @@ export class HtmlPolicyBuilder {
     }
 
     allowWithoutAttributes(tag: string): this {
-        this.tagsAllowedWithNoAttribute.add(tag);
+        this.tagsAllowedWithNoAttribute.add(tag.toLowerCase());
         return this;
     }
 
@@ -195,7 +195,12 @@ export class HtmlPolicyBuilder {
                 currentNode.attributes.length == 0 &&
                 currentNode.childNodes.length == 0
             ) {
-                if (!this.tagsAllowedWithNoAttribute.has(currentNode.tagName)) {
+                const tag = currentNode.tagName.toLowerCase();
+                if (
+                    // see OWASP Java HTML Sanitizer documentation > Custom Policies
+                    ["a", "font", "img", "input", "span"].includes(tag) &&
+                    !this.tagsAllowedWithNoAttribute.has(tag)
+                ) {
                     currentNode.remove();
                 }
             } else {
