@@ -195,8 +195,14 @@ export class HtmlPolicyBuilder {
                 currentNode.attributes.length == 0 &&
                 currentNode.childNodes.length == 0
             ) {
-                if (!this.tagsAllowedWithNoAttribute.has(currentNode.tagName)) {
-                    currentNode.remove();
+                if (["A", "FONT", "IMG", "INPUT", "SPAN"].includes(currentNode.tagName)) {
+                    if (
+                        !this.tagsAllowedWithNoAttribute.has(
+                            currentNode.tagName.toLowerCase()
+                        )
+                    ) {
+                        currentNode.remove();
+                    }
                 }
             } else {
                 //in case of <a> or <img> if we have no attribute we need to remove them even if they have child

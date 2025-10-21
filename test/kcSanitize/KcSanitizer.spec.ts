@@ -117,6 +117,9 @@ describe("KeycloakSanitizerMethod", () => {
 
         html = `<h3> או נושא שתבחר</h3>`;
         assertResult(`<h3> או נושא שתבחר</h3>`, html);
+
+        html = `<br> Text after break`;
+        assertResult(`<br> Text after break`, html);
     });
 
     it("should handle  styles correctly", () => {
