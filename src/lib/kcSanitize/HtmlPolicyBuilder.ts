@@ -34,7 +34,7 @@ export class HtmlPolicyBuilder {
     }
 
     allowWithoutAttributes(tag: string): this {
-        this.tagsAllowedWithNoAttribute.add(tag.toLocaleLowerCase());
+        this.tagsAllowedWithNoAttribute.add(tag.toLowerCase());
         return this;
     }
 
