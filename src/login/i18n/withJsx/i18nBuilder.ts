@@ -59,8 +59,8 @@ export type I18nBuilder<
             MessageFormatter,
             ExcludedMethod | "withCustomTranslations"
         >;
-        withMessageFormatter: (
-            formatter: (message: string, args: (string | undefined)[]) => string
+        withMessageFormatter: <MessageFormatter extends MessageFormatter_I18n>(
+            formatter: MessageFormatter
         ) => I18nBuilder<
             ThemeName,
             MessageKey_themeDefined,

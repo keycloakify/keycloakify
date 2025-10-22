@@ -59,8 +59,8 @@ export type I18nBuilder<
             MessageFormatter,
             ExcludedMethod | "withCustomTranslations"
         >;
-        withMessageFormatter: (
-            formatter: (message: string, args: (string | undefined)[]) => string
+        withMessageFormatter: <MessageFormatter extends MessageFormatter_I18n>(
+            formatter: MessageFormatter
         ) => I18nBuilder<
             ThemeName,
             MessageKey_themeDefined,
@@ -113,18 +113,21 @@ function createI18nBuilder<
             createI18nBuilder({
                 extraLanguageTranslations: params.extraLanguageTranslations,
                 messagesByLanguageTag_themeDefined:
-                    params.messagesByLanguageTag_themeDefined as any
+                    params.messagesByLanguageTag_themeDefined as any,
+                messageFormatter: params.messageFormatter
             }),
         withExtraLanguages: extraLanguageTranslations =>
             createI18nBuilder({
                 extraLanguageTranslations,
                 messagesByLanguageTag_themeDefined:
-                    params.messagesByLanguageTag_themeDefined as any
+                    params.messagesByLanguageTag_themeDefined as any,
+                messageFormatter: params.messageFormatter
             }),
         withCustomTranslations: messagesByLanguageTag_themeDefined =>
             createI18nBuilder({
                 extraLanguageTranslations: params.extraLanguageTranslations,
-                messagesByLanguageTag_themeDefined
+                messagesByLanguageTag_themeDefined,
+                messageFormatter: params.messageFormatter
             }),
         withMessageFormatter: formatter =>
             createI18nBuilder({

@@ -307,5 +307,23 @@ describe("formatChoiceMessage", () => {
         ).toEqual(
             "Message with multiple multiple items choice placeholders: first multiple items, second multiple items."
         );
+
+        expect(
+            formatChoiceMessage("{0,choice,5#five|10#ten|10<more than ten}", [7])
+        ).toEqual("ten");
+
+        expect(
+            formatChoiceMessage("{0,choice,5#five|10#ten|10<more than ten}", [-1])
+        ).toEqual("five");
+
+        expect(
+            formatChoiceMessage("{0,choice,5#five|10#ten|10<more than ten}", [5.6])
+        ).toEqual("ten");
+
+        expect(formatChoiceMessage("{0} {10}", [1])).toEqual("1 {10}");
+
+        expect(
+            formatChoiceMessage("{0} {10}", [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
+        ).toEqual("1 11");
     });
 });

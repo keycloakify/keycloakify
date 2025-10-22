@@ -15,7 +15,7 @@ import {
 import type { GenericI18n_noJsx } from "./GenericI18n_noJsx";
 import { formatChoiceMessage } from "./formatMessageChoiceFormat";
 
-export type MessageFormatter = (message: string, args: (any | undefined)[]) => string;
+export type MessageFormatter = (message: string, args: (unknown | undefined)[]) => string;
 
 export type KcContextLike = {
     themeName: string;
@@ -350,9 +350,12 @@ function createI18nTranslationFunctionsFactory<MessageKey_themeDefined extends s
             }
 
             if (messageFormatter) {
-                return messageFormatter(message, args);
+                try {
+                    return messageFormatter(message, args);
+                } catch (e) {
+                    console.warn("keycloakify:i18n messageFormatter error; falling back to ChoiceFormat", e);
+                }
             }
-
             return formatChoiceMessage(message, args);
         }
 

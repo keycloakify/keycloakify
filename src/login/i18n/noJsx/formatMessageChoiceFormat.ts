@@ -52,10 +52,10 @@ function chooseOption(options: string[], value: number | undefined): string {
         const limit = Number(optMatch[1]);
         const op = optMatch[2];
         const text = optMatch[3];
-        if (
-            (op === "#" && value === limit) ||
-            (op === "<" && (!value || value > limit))
-        ) {
+        if (value === undefined) {
+            continue;
+        }
+        if ((op === "#" && value <= limit) || (op === "<" && value > limit)) {
             return text;
         }
     }
