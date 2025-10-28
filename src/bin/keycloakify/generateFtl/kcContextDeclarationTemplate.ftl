@@ -198,6 +198,17 @@ function decodeHtmlEntities(htmlStr){
             <#-- Catch realm internal representation -->
             <#list [1] as __>
 
+                <#-- 
+                    In the Account SPA, the realm object is actually passed and used... 
+                    We cherry pick what we use in it in the exclusion section.
+                -->
+                <#if (
+                    xKeycloakify.pageId == "index.ftl" &&
+                    xKeycloakify.themeType == "account"
+                )>
+                    <#break>
+                </#if>
+
                 <#if !stringified?matches("^[0-9a-fA-F\\-]{36}@[0-9a-f]+$")>
                     <#break>
                 </#if>
