@@ -623,6 +623,29 @@ export const kcContextMocks = [
             loginRestartFlowUrl: "#"
         },
         idpDisplayName: "Google"
+    }),
+    id<KcContext.SelectOrganization>({
+        pageId: "select-organization.ftl",
+        ...kcContextCommonMock,
+        user: {
+            organizations: [
+                {
+                    alias: "acme-inc",
+                    name: "Acme Incorporated"
+                },
+                {
+                    alias: "northwind-traders",
+                    name: "Northwind Traders"
+                },
+                {
+                    alias: "contoso-labs",
+                    name: "Contoso Labs"
+                },
+                {
+                    alias: "shared-services"
+                }
+            ]
+        }
     })
 ];
 

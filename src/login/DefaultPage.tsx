@@ -43,6 +43,7 @@ const LoginX509Info = lazy(() => import("keycloakify/login/pages/LoginX509Info")
 const WebauthnError = lazy(() => import("keycloakify/login/pages/WebauthnError"));
 const LoginPasskeysConditionalAuthenticate = lazy(() => import("keycloakify/login/pages/LoginPasskeysConditionalAuthenticate"));
 const LoginIdpLinkConfirmOverride = lazy(() => import("keycloakify/login/pages/LoginIdpLinkConfirmOverride"));
+const SelectOrganization = lazy(() => import("keycloakify/login/pages/SelectOrganization"));
 
 type DefaultPageProps = PageProps<KcContext, I18n> & {
     UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
@@ -128,6 +129,8 @@ export default function DefaultPage(props: DefaultPageProps) {
                         return <LoginPasskeysConditionalAuthenticate kcContext={kcContext} {...rest} />;
                     case "login-idp-link-confirm-override.ftl":
                         return <LoginIdpLinkConfirmOverride kcContext={kcContext} {...rest} />;
+                    case "select-organization.ftl":
+                        return <SelectOrganization kcContext={kcContext} {...rest} />;
                 }
                 assert<Equals<typeof kcContext, never>>(false);
             })()}

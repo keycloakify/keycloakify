@@ -61,7 +61,8 @@ export type KcContext =
     | KcContext.LoginX509Info
     | KcContext.WebauthnError
     | KcContext.LoginPasskeysConditionalAuthenticate
-    | KcContext.LoginIdpLinkConfirmOverride;
+    | KcContext.LoginIdpLinkConfirmOverride
+    | KcContext.SelectOrganization;
 
 assert<KcContext["themeType"] extends ThemeType ? true : false>();
 
@@ -619,6 +620,16 @@ export declare namespace KcContext {
             loginRestartFlowUrl: string;
         };
         idpDisplayName: string;
+    };
+
+    export type SelectOrganization = Common & {
+        pageId: "select-organization.ftl";
+        user: {
+            organizations: {
+                alias: string;
+                name?: string;
+            }[];
+        };
     };
 }
 

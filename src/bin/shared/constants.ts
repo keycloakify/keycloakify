@@ -53,7 +53,8 @@ export const LOGIN_THEME_PAGE_IDS = [
     "login-x509-info.ftl",
     "webauthn-error.ftl",
     "login-passkeys-conditional-authenticate.ftl",
-    "login-idp-link-confirm-override.ftl"
+    "login-idp-link-confirm-override.ftl",
+    "select-organization.ftl"
 ] as const;
 
 export const ACCOUNT_THEME_PAGE_IDS = [
