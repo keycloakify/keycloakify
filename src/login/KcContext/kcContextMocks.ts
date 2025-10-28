@@ -342,7 +342,13 @@ export const kcContextMocks = [
         },
         usernameHidden: false,
         login: {},
-        registrationDisabled: false
+        registrationDisabled: false,
+
+        challenge: "",
+        userVerification: "not specified",
+        rpId: "",
+        createTimeout: "0",
+        isUserIdentified: "false"
     }),
     id<KcContext.LoginPassword>({
         ...kcContextCommonMock,
