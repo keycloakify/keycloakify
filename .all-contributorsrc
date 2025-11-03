@@ -400,6 +400,15 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "lleirborras",
+      "name": "Lleïr Borràs Metje",
+      "avatar_url": "https://avatars.githubusercontent.com/u/34919?v=4",
+      "profile": "http://about.me/lleir",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
