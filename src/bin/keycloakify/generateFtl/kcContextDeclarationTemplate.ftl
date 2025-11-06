@@ -184,6 +184,9 @@ function decodeHtmlEntities(htmlStr){
             </#if>
 
             <#if stringified?starts_with("org.keycloak.")>
+                <#if stringified?starts_with("org.keycloak.models.OTPPolicy") >
+                    <#break>
+                </#if>
                 <#list ["models", "services", "authentication", "quarkus.runtime", "transaction", "connections", "utils.ClosingStream"] as namespacePortion>
                     <#if stringified?starts_with("org.keycloak." + namespacePortion)>
                         <#return abort>

@@ -135,6 +135,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/rgrosjean"><img src="https://avatars.githubusercontent.com/u/39985706?v=4?s=100" width="100px;" alt="rgrosjean"/><br /><sub><b>rgrosjean</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=rgrosjean" title="Code">💻</a> <a href="https://github.com/keycloakify/keycloakify/commits?author=rgrosjean" title="Tests">⚠️</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://about.me/lleir"><img src="https://avatars.githubusercontent.com/u/34919?v=4?s=100" width="100px;" alt="Lleïr Borràs Metje"/><br /><sub><b>Lleïr Borràs Metje</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/issues?q=author%3Alleirborras" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
 </table>
