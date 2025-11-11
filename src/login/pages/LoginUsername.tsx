@@ -174,9 +174,13 @@ export default function LoginUsername(props: PageProps<Extract<KcContext, { page
                         </>
                     )}
                     <br />
-                    <a id={authButtonId} href="#" className={kcClsx("kcButtonSecondaryClass", "kcButtonBlockClass")}>
-                        {msg("passkey-doAuthenticate")}
-                    </a>
+                    
+                    <input
+                        id={authButtonId}
+                        type="button"
+                        className={kcClsx("kcButtonClass", "kcButtonDefaultClass", "kcButtonBlockClass", "kcButtonLargeClass")}
+                        value={msgStr("passkey-doAuthenticate")}
+                        />
                 </>
             )}
         </Template>
