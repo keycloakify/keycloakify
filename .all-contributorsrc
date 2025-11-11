@@ -409,6 +409,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "waynemorphic",
+      "name": "Wayne Kirimi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/37283450?v=4",
+      "profile": "https://waynekirimi.netlify.app/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
