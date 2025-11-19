@@ -1,0 +1,92 @@
+import { useEffect } from "react";
+import { useInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
+import { assert } from "keycloakify/tools/assert";
+import { KcContext } from "keycloakify/login/KcContext/KcContext";
+import { waitForElementMountedOnDom } from "keycloakify/tools/waitForElementMountedOnDom";
+
+type KcContextLike = {
+    url: {
+        resourcesPath: string;
+    };
+    isUserIdentified?: "true" | "false" | boolean;
+    challenge?: string;
+    userVerification?: string;
+    rpId?: string;
+    createTimeout?: number | string;
+};
+
+assert<keyof KcContextLike extends keyof KcContext.LoginPassword ? true : false>();
+assert<KcContext.LoginPassword extends KcContextLike ? true : false>();
+
+type I18nLike = {
+    msgStr: (key: "webauthn-unsupported-browser-text") => string;
+    isFetchingTranslations: boolean;
+};
+
+/**
+ * Injects a module script that wires WebAuthn authentication to the DOM button with the given id.
+ *
+ * The hook prepares a module script that imports `authenticateByWebAuthn` from `kcContext.url.resourcesPath`
+ * and attaches a click handler to the element identified by `authButtonId`. The handler passes a composed
+ * input object (including `isUserIdentified`, `challenge`, `userVerification`, `rpId`, `createTimeout`, and an
+ * `errmsg` from `i18n.msgStr`) to `authenticateByWebAuthn`. Script insertion is deferred until translations are
+ * available, the required Keycloak fields (`challenge`, `userVerification`, `rpId`, `createTimeout`) are present,
+ * and the target element exists in the DOM.
+ *
+ * @param params.authButtonId - The DOM id of the authentication button to bind the WebAuthn handler to.
+ * @param params.kcContext - Keycloak-like context; must provide `url.resourcesPath` and may include `isUserIdentified`,
+ * `challenge`, `userVerification`, `rpId`, and `createTimeout` used by the injected script.
+ * @param params.i18n - Internationalization helper exposing `msgStr` (for the unsupported-browser message)
+ * and `isFetchingTranslations` (used to delay script insertion until translations are ready).
+ */
+export function useScript(params: { authButtonId: string; kcContext: KcContextLike; i18n: I18nLike }) {
+    const { authButtonId, kcContext, i18n } = params;
+
+    const { url, isUserIdentified, challenge, userVerification, rpId, createTimeout } = kcContext;
+
+    const { msgStr, isFetchingTranslations } = i18n;
+
+    const { insertScriptTags } = useInsertScriptTags({
+        componentOrHookName: "LoginPassword",
+        scriptTags: [
+            {
+                type: "module",
+                textContent: () => `
+
+                    import { authenticateByWebAuthn } from "${url.resourcesPath}/js/webauthnAuthenticate.js";
+                    const authButton = document.getElementById('${authButtonId}');
+                    authButton.addEventListener("click", function() {
+                        const input = {
+                            isUserIdentified : ${isUserIdentified ?? false},
+                            challenge : '${challenge ?? ""}',
+                            userVerification : '${userVerification ?? ""}',
+                            rpId : '${rpId ?? ""}',
+                            createTimeout : ${createTimeout ?? 0},
+                            errmsg : ${JSON.stringify(msgStr("webauthn-unsupported-browser-text"))}
+                        };
+                        authenticateByWebAuthn(input);
+                    });
+                `
+            }
+        ]
+    });
+
+    useEffect(() => {
+        if (isFetchingTranslations) {
+            return;
+        }
+
+        // Only insert script if enableWebAuthnConditionalUI is true
+        if (!challenge || !userVerification || !rpId || createTimeout === undefined) {
+            return;
+        }
+
+        (async () => {
+            await waitForElementMountedOnDom({
+                elementId: authButtonId
+            });
+
+            insertScriptTags();
+        })();
+    }, [isFetchingTranslations, challenge, userVerification, rpId, createTimeout]);
+}

@@ -7,7 +7,15 @@ import { getKcClsx, type KcClsx } from "keycloakify/login/lib/kcClsx";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
 import type { I18n } from "../i18n";
+import { useScript } from "keycloakify/login/pages/LoginPassword.useScript";
 
+/**
+ * Render the "login-password" page: a password-based login form with optional WebAuthn/passkey UI.
+ *
+ * Renders the password input (with a visibility toggle), displays field-specific error messages, disables the submit button after form submission to prevent duplicate submissions, and — when enabled by context — appends hidden WebAuthn fields, an optional authenticator selector, and a passkey authenticate button.
+ *
+ * @returns The React element for the login-password page
+ */
 export default function LoginPassword(props: PageProps<Extract<KcContext, { pageId: "login-password.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
@@ -16,11 +24,19 @@ export default function LoginPassword(props: PageProps<Extract<KcContext, { page
         classes
     });
 
-    const { realm, url, messagesPerField } = kcContext;
+    const { realm, url, messagesPerField, enableWebAuthnConditionalUI, authenticators } = kcContext;
 
     const { msg, msgStr } = i18n;
 
     const [isLoginButtonDisabled, setIsLoginButtonDisabled] = useState(false);
+
+    const authButtonId = "authenticateWebAuthnButton";
+
+    useScript({
+        authButtonId,
+        kcContext,
+        i18n
+    });
 
     return (
         <Template
@@ -98,6 +114,36 @@ export default function LoginPassword(props: PageProps<Extract<KcContext, { page
                     </form>
                 </div>
             </div>
+            {enableWebAuthnConditionalUI && (
+                <>
+                    <form id="webauth" action={url.loginAction} method="post">
+                        <input type="hidden" id="clientDataJSON" name="clientDataJSON" />
+                        <input type="hidden" id="authenticatorData" name="authenticatorData" />
+                        <input type="hidden" id="signature" name="signature" />
+                        <input type="hidden" id="credentialId" name="credentialId" />
+                        <input type="hidden" id="userHandle" name="userHandle" />
+                        <input type="hidden" id="error" name="error" />
+                    </form>
+
+                    {authenticators !== undefined && Object.keys(authenticators).length !== 0 && (
+                        <>
+                            <form id="authn_select" className={kcClsx("kcFormClass")}>
+                                {authenticators.authenticators.map((authenticator, i) => (
+                                    <input key={i} type="hidden" name="authn_use_chk" readOnly value={authenticator.credentialId} />
+                                ))}
+                            </form>
+                        </>
+                    )}
+                    <br />
+
+                    <input
+                        id={authButtonId}
+                        type="button"
+                        className={kcClsx("kcButtonClass", "kcButtonDefaultClass", "kcButtonBlockClass", "kcButtonLargeClass")}
+                        value={msgStr("passkey-doAuthenticate")}
+                    />
+                </>
+            )}
         </Template>
     );
 }
