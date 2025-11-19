@@ -47,11 +47,11 @@ export function useScript(params: { authButtonId: string; kcContext: KcContextLi
                     const authButton = document.getElementById('${authButtonId}');
                     authButton.addEventListener("click", function() {
                         const input = {
-                            isUserIdentified : ${isUserIdentified ?? false},
-                            challenge : '${challenge ?? ""}',
-                            userVerification : '${userVerification ?? ""}',
-                            rpId : '${rpId ?? ""}',
-                            createTimeout : ${createTimeout ?? 0},
+                            isUserIdentified : ${JSON.stringify(isUserIdentified ?? false)},
+                            challenge : ${JSON.stringify(challenge ?? "")},
+                            userVerification : ${JSON.stringify(userVerification ?? "")},
+                            rpId : ${JSON.stringify(rpId ?? "")},
+                            createTimeout : ${JSON.stringify(createTimeout ?? 0)},
                             errmsg : ${JSON.stringify(msgStr("webauthn-unsupported-browser-text"))}
                         };
                         authenticateByWebAuthn(input);
@@ -66,7 +66,7 @@ export function useScript(params: { authButtonId: string; kcContext: KcContextLi
             return;
         }
 
-        // Only insert script if enableWebAuthnConditionalUI is true
+        // Only insert script if required WebAuthn parameters are present
         if (!challenge || !userVerification || !rpId || createTimeout === undefined) {
             return;
         }
