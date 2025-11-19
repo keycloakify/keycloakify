@@ -205,6 +205,16 @@ export declare namespace KcContext {
                 iconClasses?: string;
             }[];
         };
+        enableWebAuthnConditionalUI?: boolean;
+        authenticators?: {
+            authenticators: WebauthnAuthenticate.WebauthnAuthenticator[];
+        };
+        challenge?: string;
+        userVerification?: string;
+        rpId?: string;
+        createTimeout?: number | string;
+        isUserIdentified?: boolean | "true" | "false";
+        shouldDisplayAuthenticators?: boolean;
     };
 
     export type Register = Common & {
@@ -363,6 +373,16 @@ export declare namespace KcContext {
             showTryAnotherWayLink?: boolean;
             attemptedUsername?: string;
         };
+        enableWebAuthnConditionalUI?: boolean;
+        authenticators?: {
+            authenticators: WebauthnAuthenticate.WebauthnAuthenticator[];
+        };
+        challenge?: string;
+        userVerification?: string;
+        rpId?: string;
+        createTimeout?: number | string;
+        isUserIdentified?: boolean | "true" | "false";
+        shouldDisplayAuthenticators?: boolean;
     };
 
     export type WebauthnAuthenticate = Common & {
