@@ -77,5 +77,5 @@ export function useScript(params: { authButtonId: string; kcContext: KcContextLi
 
             insertScriptTags();
         })();
-    }, [isFetchingTranslations, challenge, userVerification, rpId, createTimeout]);
+    }, [isFetchingTranslations, challenge, userVerification, rpId, createTimeout, authButtonId, insertScriptTags]);
 }
