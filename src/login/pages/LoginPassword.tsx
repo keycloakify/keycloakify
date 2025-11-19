@@ -1,3 +1,7 @@
+/**
+ * Password step (login-password.ftl) for flows where username is already captured.
+ * Adds conditional WebAuthn passkey authenticate section when enabled.
+ */
 import type { JSX } from "keycloakify/tools/JSX";
 import { useState } from "react";
 import { kcSanitize } from "keycloakify/lib/kcSanitize";

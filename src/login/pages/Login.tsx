@@ -1,3 +1,7 @@
+/**
+ * Combined Username + Password login page (login.ftl) with optional WebAuthn passkey support.
+ * Renders standard login form plus conditional passkey authenticator section.
+ */
 import type { JSX } from "keycloakify/tools/JSX";
 import { useState } from "react";
 import { kcSanitize } from "keycloakify/lib/kcSanitize";

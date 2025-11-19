@@ -1,3 +1,7 @@
+/**
+ * Hook to wire WebAuthn passkey authentication on the password step (login-password.ftl).
+ * Mirrors Login.useScript but scoped to the second step of the flow.
+ */
 import { useEffect } from "react";
 import { useInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
 import { assert } from "keycloakify/tools/assert";
@@ -23,6 +27,7 @@ type I18nLike = {
     isFetchingTranslations: boolean;
 };
 
+/** Injects the WebAuthn authentication script and binds click listener to the passkey button. */
 export function useScript(params: { authButtonId: string; kcContext: KcContextLike; i18n: I18nLike }) {
     const { authButtonId, kcContext, i18n } = params;
 

@@ -1,3 +1,8 @@
+/**
+ * Hook to wire WebAuthn passkey authentication on the combined login form (login.ftl).
+ * It injects a script that triggers navigator.credentials.get() via Keycloak's webauthnAuthenticate.js
+ * only once translations are ready and required WebAuthn parameters are present.
+ */
 import { useEffect } from "react";
 import { useInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
 import { assert } from "keycloakify/tools/assert";
@@ -23,6 +28,7 @@ type I18nLike = {
     isFetchingTranslations: boolean;
 };
 
+/** Injects the WebAuthn authentication script and binds click listener to the passkey button. */
 export function useScript(params: { authButtonId: string; kcContext: KcContextLike; i18n: I18nLike }) {
     const { authButtonId, kcContext, i18n } = params;
 

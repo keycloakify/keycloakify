@@ -210,7 +210,8 @@ export declare namespace KcContext {
             authenticators: WebauthnAuthenticate.WebauthnAuthenticator[];
         };
         challenge?: string;
-        userVerification?: string;
+        /** WebAuthn user verification requirement as provided by Keycloak. */
+        userVerification?: WebauthnAuthenticate["userVerification"];
         rpId?: string;
         createTimeout?: number | string;
         isUserIdentified?: boolean | "true" | "false";
@@ -378,7 +379,8 @@ export declare namespace KcContext {
             authenticators: WebauthnAuthenticate.WebauthnAuthenticator[];
         };
         challenge?: string;
-        userVerification?: string;
+        /** WebAuthn user verification requirement as provided by Keycloak. */
+        userVerification?: WebauthnAuthenticate["userVerification"];
         rpId?: string;
         createTimeout?: number | string;
         isUserIdentified?: boolean | "true" | "false";
