@@ -209,12 +209,11 @@ export declare namespace KcContext {
         authenticators?: {
             authenticators: WebauthnAuthenticate.WebauthnAuthenticator[];
         };
-        challenge?: string;
-        /** WebAuthn user verification requirement as provided by Keycloak. */
-        userVerification?: WebauthnAuthenticate["userVerification"];
-        rpId?: string;
-        createTimeout?: number | string;
-        isUserIdentified?: boolean | "true" | "false";
+        challenge: string;
+        userVerification: WebauthnAuthenticate["userVerification"];
+        rpId: string;
+        createTimeout: number | string;
+        isUserIdentified: boolean | "true" | "false";
         shouldDisplayAuthenticators?: boolean;
     };
 
@@ -378,12 +377,11 @@ export declare namespace KcContext {
         authenticators?: {
             authenticators: WebauthnAuthenticate.WebauthnAuthenticator[];
         };
-        challenge?: string;
-        /** WebAuthn user verification requirement as provided by Keycloak. */
-        userVerification?: WebauthnAuthenticate["userVerification"];
-        rpId?: string;
-        createTimeout?: number | string;
-        isUserIdentified?: boolean | "true" | "false";
+        challenge: string;
+        userVerification: WebauthnAuthenticate["userVerification"];
+        rpId: string;
+        createTimeout: number | string;
+        isUserIdentified: boolean | "true" | "false";
         shouldDisplayAuthenticators?: boolean;
     };
 

@@ -1,8 +1,3 @@
-/**
- * Hook to wire WebAuthn passkey authentication on the combined login form (login.ftl).
- * It injects a script that triggers navigator.credentials.get() via Keycloak's webauthnAuthenticate.js
- * only once translations are ready and required WebAuthn parameters are present.
- */
 import { useEffect } from "react";
 import { useInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
 import { assert } from "keycloakify/tools/assert";
@@ -13,11 +8,11 @@ type KcContextLike = {
     url: {
         resourcesPath: string;
     };
-    isUserIdentified?: "true" | "false" | boolean;
-    challenge?: string;
-    userVerification?: string;
-    rpId?: string;
-    createTimeout?: number | string;
+    isUserIdentified: "true" | "false" | boolean;
+    challenge: string;
+    userVerification: KcContext.WebauthnAuthenticate["userVerification"];
+    rpId: string;
+    createTimeout: number | string;
 };
 
 assert<keyof KcContextLike extends keyof KcContext.Login ? true : false>();
@@ -28,7 +23,6 @@ type I18nLike = {
     isFetchingTranslations: boolean;
 };
 
-/** Injects the WebAuthn authentication script and binds click listener to the passkey button. */
 export function useScript(params: { authButtonId: string; kcContext: KcContextLike; i18n: I18nLike }) {
     const { authButtonId, kcContext, i18n } = params;
 
@@ -47,11 +41,11 @@ export function useScript(params: { authButtonId: string; kcContext: KcContextLi
                     const authButton = document.getElementById('${authButtonId}');
                     authButton.addEventListener("click", function() {
                         const input = {
-                            isUserIdentified : ${JSON.stringify(isUserIdentified ?? false)},
-                            challenge : ${JSON.stringify(challenge ?? "")},
-                            userVerification : ${JSON.stringify(userVerification ?? "")},
-                            rpId : ${JSON.stringify(rpId ?? "")},
-                            createTimeout : ${JSON.stringify(createTimeout ?? 0)},
+                            isUserIdentified : ${isUserIdentified},
+                            challenge : '${challenge}',
+                            userVerification : '${userVerification}',
+                            rpId : '${rpId}',
+                            createTimeout : ${createTimeout},
                             errmsg : ${JSON.stringify(msgStr("webauthn-unsupported-browser-text"))}
                         };
                         authenticateByWebAuthn(input);
@@ -66,11 +60,6 @@ export function useScript(params: { authButtonId: string; kcContext: KcContextLi
             return;
         }
 
-        // Only insert script if required WebAuthn parameters are present
-        if (!challenge || !userVerification || !rpId || createTimeout === undefined) {
-            return;
-        }
-
         (async () => {
             await waitForElementMountedOnDom({
                 elementId: authButtonId
@@ -78,5 +67,5 @@ export function useScript(params: { authButtonId: string; kcContext: KcContextLi
 
             insertScriptTags();
         })();
-    }, [isFetchingTranslations, challenge, userVerification, rpId, createTimeout, authButtonId, insertScriptTags]);
+    }, [isFetchingTranslations]);
 }
