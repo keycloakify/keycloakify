@@ -213,7 +213,7 @@ export declare namespace KcContext {
         userVerification: WebauthnAuthenticate["userVerification"];
         rpId: string;
         createTimeout: number | string;
-        isUserIdentified: boolean | "true" | "false";
+        isUserIdentified: "true" | "false";
         shouldDisplayAuthenticators?: boolean;
     };
 
@@ -381,7 +381,7 @@ export declare namespace KcContext {
         userVerification: WebauthnAuthenticate["userVerification"];
         rpId: string;
         createTimeout: number | string;
-        isUserIdentified: boolean | "true" | "false";
+        isUserIdentified: "true" | "false";
         shouldDisplayAuthenticators?: boolean;
     };
 

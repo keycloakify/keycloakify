@@ -27,10 +27,10 @@ export default function LoginPassword(props: PageProps<Extract<KcContext, { page
 
     const [isLoginButtonDisabled, setIsLoginButtonDisabled] = useState(false);
 
-    const authButtonId = "authenticateWebAuthnButton";
+    const webAuthnButtonId = "authenticateWebAuthnButton";
 
     useScript({
-        authButtonId,
+        webAuthnButtonId,
         kcContext,
         i18n
     });
@@ -134,7 +134,7 @@ export default function LoginPassword(props: PageProps<Extract<KcContext, { page
                     <br />
 
                     <input
-                        id={authButtonId}
+                        id={webAuthnButtonId}
                         type="button"
                         className={kcClsx("kcButtonClass", "kcButtonDefaultClass", "kcButtonBlockClass", "kcButtonLargeClass")}
                         value={msgStr("passkey-doAuthenticate")}

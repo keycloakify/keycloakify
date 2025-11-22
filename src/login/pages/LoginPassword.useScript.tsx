@@ -8,7 +8,7 @@ type KcContextLike = {
     url: {
         resourcesPath: string;
     };
-    isUserIdentified: "true" | "false" | boolean;
+    isUserIdentified: "true" | "false";
     challenge: string;
     userVerification: KcContext.WebauthnAuthenticate["userVerification"];
     rpId: string;
@@ -23,8 +23,8 @@ type I18nLike = {
     isFetchingTranslations: boolean;
 };
 
-export function useScript(params: { authButtonId: string; kcContext: KcContextLike; i18n: I18nLike }) {
-    const { authButtonId, kcContext, i18n } = params;
+export function useScript(params: { webAuthnButtonId: string; kcContext: KcContextLike; i18n: I18nLike }) {
+    const { webAuthnButtonId, kcContext, i18n } = params;
 
     const { url, isUserIdentified, challenge, userVerification, rpId, createTimeout } = kcContext;
 
@@ -38,7 +38,7 @@ export function useScript(params: { authButtonId: string; kcContext: KcContextLi
                 textContent: () => `
 
                     import { authenticateByWebAuthn } from "${url.resourcesPath}/js/webauthnAuthenticate.js";
-                    const authButton = document.getElementById('${authButtonId}');
+                    const authButton = document.getElementById('${webAuthnButtonId}');
                     authButton.addEventListener("click", function() {
                         const input = {
                             isUserIdentified : ${isUserIdentified},
@@ -62,7 +62,7 @@ export function useScript(params: { authButtonId: string; kcContext: KcContextLi
 
         (async () => {
             await waitForElementMountedOnDom({
-                elementId: authButtonId
+                elementId: webAuthnButtonId
             });
 
             insertScriptTags();
