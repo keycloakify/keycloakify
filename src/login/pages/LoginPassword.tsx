@@ -122,7 +122,7 @@ export default function LoginPassword(props: PageProps<Extract<KcContext, { page
                         <input type="hidden" id="error" name="error" />
                     </form>
 
-                    {authenticators !== undefined && Object.keys(authenticators).length !== 0 && (
+                    {authenticators !== undefined && authenticators.authenticators.length !== 0 && (
                         <>
                             <form id="authn_select" className={kcClsx("kcFormClass")}>
                                 {authenticators.authenticators.map((authenticator, i) => (
