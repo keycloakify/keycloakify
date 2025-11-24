@@ -3,7 +3,7 @@ import { exclude } from "tsafe/exclude";
 import {
     CONTAINER_NAME,
     KEYCLOAKIFY_SPA_DEV_SERVER_PORT,
-    KEYCLOAKIFY_LOGIN_JAR_BASENAME,
+    KEYCLOAKIFY_LOGGING_JAR_BASENAME,
     TEST_APP_URL,
     ThemeType
 } from "../shared/constants";
@@ -346,7 +346,7 @@ export async function command(params: {
                       "src",
                       "bin",
                       "start-keycloak",
-                      KEYCLOAKIFY_LOGIN_JAR_BASENAME
+                      KEYCLOAKIFY_LOGGING_JAR_BASENAME
                   )
               ]),
         ...(await Promise.all(
