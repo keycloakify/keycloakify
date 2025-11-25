@@ -418,6 +418,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "discostur",
+      "name": "Kilian Ries",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2615420?v=4",
+      "profile": "https://github.com/discostur",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
