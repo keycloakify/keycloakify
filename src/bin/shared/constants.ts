@@ -34,6 +34,7 @@ export const LOGIN_THEME_PAGE_IDS = [
     "login-otp.ftl",
     "login-update-profile.ftl",
     "login-update-password.ftl",
+    "link-idp-action.ftl",
     "login-idp-link-confirm.ftl",
     "login-idp-link-email.ftl",
     "login-page-expired.ftl",

@@ -402,6 +402,11 @@ export const kcContextMocks = [
         ...kcContextCommonMock,
         pageId: "login-update-password.ftl"
     }),
+    id<KcContext.LinkIdpAction>({
+        ...kcContextCommonMock,
+        pageId: "link-idp-action.ftl",
+        idpDisplayName: "FranceConnect"
+    }),
     id<KcContext.LoginUpdateProfile>({
         ...kcContextCommonMock,
         pageId: "login-update-profile.ftl",

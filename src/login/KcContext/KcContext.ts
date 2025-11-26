@@ -41,6 +41,7 @@ export type KcContext =
     | KcContext.WebauthnRegister
     | KcContext.LoginPassword
     | KcContext.LoginUpdatePassword
+    | KcContext.LinkIdpAction
     | KcContext.LoginUpdateProfile
     | KcContext.LoginIdpLinkConfirm
     | KcContext.LoginIdpLinkEmail
@@ -439,6 +440,11 @@ export declare namespace KcContext {
 
     export type LoginUpdatePassword = Common & {
         pageId: "login-update-password.ftl";
+    };
+
+    export type LinkIdpAction = Common & {
+        pageId: "link-idp-action.ftl";
+        idpDisplayName: string;
     };
 
     export type LoginIdpLinkConfirm = Common & {

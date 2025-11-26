@@ -22,6 +22,7 @@ const LoginUsername = lazy(() => import("keycloakify/login/pages/LoginUsername")
 const WebauthnAuthenticate = lazy(() => import("keycloakify/login/pages/WebauthnAuthenticate"));
 const WebauthnRegister = lazy(() => import("keycloakify/login/pages/WebauthnRegister"));
 const LoginUpdatePassword = lazy(() => import("keycloakify/login/pages/LoginUpdatePassword"));
+const LinkIdpAction = lazy(() => import("keycloakify/login/pages/LinkIdpAction"));
 const LoginUpdateProfile = lazy(() => import("keycloakify/login/pages/LoginUpdateProfile"));
 const LoginIdpLinkConfirm = lazy(() => import("keycloakify/login/pages/LoginIdpLinkConfirm"));
 const LoginPageExpired = lazy(() => import("keycloakify/login/pages/LoginPageExpired"));
@@ -87,6 +88,8 @@ export default function DefaultPage(props: DefaultPageProps) {
                         return <WebauthnRegister kcContext={kcContext} {...rest} />;
                     case "login-update-password.ftl":
                         return <LoginUpdatePassword kcContext={kcContext} {...rest} />;
+                    case "link-idp-action.ftl":
+                        return <LinkIdpAction kcContext={kcContext} {...rest} />;
                     case "login-update-profile.ftl":
                         return <LoginUpdateProfile kcContext={kcContext} {...rest} />;
                     case "login-idp-link-confirm.ftl":
