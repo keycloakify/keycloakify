@@ -35,7 +35,7 @@ export const WithEmailAsUsername: Story = {
  * - Scenario: Simulates a scenario where the `Sign In with Passkey` button is rendered below `Sign In` button.
  * - Key Aspect: Ensure that it is displayed correctly.
  */
-export const WithAuthPasskey: Story = {
+export const WithAuthPassKey: Story = {
     render: args => (
         <KcPageStory
             {...args}
