@@ -138,6 +138,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="http://about.me/lleir"><img src="https://avatars.githubusercontent.com/u/34919?v=4?s=100" width="100px;" alt="Lleïr Borràs Metje"/><br /><sub><b>Lleïr Borràs Metje</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/issues?q=author%3Alleirborras" title="Bug reports">🐛</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://waynekirimi.netlify.app/"><img src="https://avatars.githubusercontent.com/u/37283450?v=4?s=100" width="100px;" alt="Wayne Kirimi"/><br /><sub><b>Wayne Kirimi</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=waynemorphic" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/discostur"><img src="https://avatars.githubusercontent.com/u/2615420?v=4?s=100" width="100px;" alt="Kilian Ries"/><br /><sub><b>Kilian Ries</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=discostur" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://phasetwo.io/"><img src="https://avatars.githubusercontent.com/u/93841792?v=4?s=100" width="100px;" alt="pnzrr"/><br /><sub><b>pnzrr</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=pnzrr" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
