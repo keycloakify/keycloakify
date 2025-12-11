@@ -113,6 +113,7 @@ jobs:
         ref: ${{ github.ref }}
     - uses: actions/setup-node@v4
       with:
+        node-version: '20'
         registry-url: https://registry.npmjs.org/
     - uses: bahmutov/npm-install@v1
     - run: npm run build
@@ -124,6 +125,7 @@ jobs:
         action_name: remove_dark_mode_specific_images_from_readme
     - name: Publishing on NPM
       run: |
+        npm install -g npm@latest
         if [ "$(npm show . version)" = "$VERSION" ]; then
           echo "This version is already published"
           exit 0
