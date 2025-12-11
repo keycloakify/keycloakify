@@ -115,7 +115,8 @@ jobs:
       with:
         node-version: '20'
         registry-url: https://registry.npmjs.org/
-    - uses: bahmutov/npm-install@v1
+    - run: npm install -g npm@latest
+    - run: yarn install --frozen-lockfile
     - run: npm run build
     - run: npx -y -p denoify@1.6.13 enable_short_npm_import_path
       env:
@@ -125,7 +126,6 @@ jobs:
         action_name: remove_dark_mode_specific_images_from_readme
     - name: Publishing on NPM
       run: |
-        npm install -g npm@latest
         if [ "$(npm show . version)" = "$VERSION" ]; then
           echo "This version is already published"
           exit 0
