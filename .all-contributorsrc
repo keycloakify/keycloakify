@@ -436,6 +436,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "acreations",
+      "name": "Aaron Wong",
+      "avatar_url": "https://avatars.githubusercontent.com/u/450741?v=4",
+      "profile": "http://www.aaronwong.se",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
