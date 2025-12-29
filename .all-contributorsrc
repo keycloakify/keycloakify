@@ -372,6 +372,79 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "antonioacg",
+      "name": "Antonio Casagrande",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8991621?v=4",
+      "profile": "http://www.linkedin.com/in/antonioacg/",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "emouty",
+      "name": "emouty",
+      "avatar_url": "https://avatars.githubusercontent.com/u/16755668?v=4",
+      "profile": "https://github.com/emouty",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "rgrosjean",
+      "name": "rgrosjean",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39985706?v=4",
+      "profile": "https://github.com/rgrosjean",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "lleirborras",
+      "name": "Lleïr Borràs Metje",
+      "avatar_url": "https://avatars.githubusercontent.com/u/34919?v=4",
+      "profile": "http://about.me/lleir",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "waynemorphic",
+      "name": "Wayne Kirimi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/37283450?v=4",
+      "profile": "https://waynekirimi.netlify.app/",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "discostur",
+      "name": "Kilian Ries",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2615420?v=4",
+      "profile": "https://github.com/discostur",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "pnzrr",
+      "name": "pnzrr",
+      "avatar_url": "https://avatars.githubusercontent.com/u/93841792?v=4",
+      "profile": "https://phasetwo.io/",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "acreations",
+      "name": "Aaron Wong",
+      "avatar_url": "https://avatars.githubusercontent.com/u/450741?v=4",
+      "profile": "http://www.aaronwong.se",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

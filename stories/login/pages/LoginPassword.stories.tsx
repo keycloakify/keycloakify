@@ -67,3 +67,22 @@ export const WithoutResetPasswordOption: Story = {
         />
     )
 };
+/**
+ * WithAuthPassKey:
+ * - Purpose: Test usage of Sign In With Pass Key integration
+ * - Scenario: Simulates a scenario where the `Sign In with Passkey` button is rendered below `Sign In` button.
+ * - Key Aspect: Ensure that it is displayed correctly.
+ */
+export const WithAuthPassKey: Story = {
+    render: args => (
+        <KcPageStory
+            {...args}
+            kcContext={{
+                url: {
+                    loginAction: "/mock-login-action"
+                },
+                enableWebAuthnConditionalUI: true
+            }}
+        />
+    )
+};

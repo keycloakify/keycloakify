@@ -34,6 +34,7 @@ export const LOGIN_THEME_PAGE_IDS = [
     "login-otp.ftl",
     "login-update-profile.ftl",
     "login-update-password.ftl",
+    "link-idp-action.ftl",
     "login-idp-link-confirm.ftl",
     "login-idp-link-email.ftl",
     "login-page-expired.ftl",
@@ -53,7 +54,8 @@ export const LOGIN_THEME_PAGE_IDS = [
     "login-x509-info.ftl",
     "webauthn-error.ftl",
     "login-passkeys-conditional-authenticate.ftl",
-    "login-idp-link-confirm-override.ftl"
+    "login-idp-link-confirm-override.ftl",
+    "select-organization.ftl"
 ] as const;
 
 export const ACCOUNT_THEME_PAGE_IDS = [
@@ -84,6 +86,6 @@ export const KEYCLOAKIFY_SPA_DEV_SERVER_PORT = "KEYCLOAKIFY_SPA_DEV_SERVER_PORT"
 
 export const KEYCLOAKIFY_LOGGING_VERSION = "1.0.3";
 
-export const KEYCLOAKIFY_LOGIN_JAR_BASENAME = `keycloakify-logging-${KEYCLOAKIFY_LOGGING_VERSION}.jar`;
+export const KEYCLOAKIFY_LOGGING_JAR_BASENAME = `keycloakify-logging-${KEYCLOAKIFY_LOGGING_VERSION}.jar`;
 
 export const TEST_APP_URL = "https://my-theme.keycloakify.dev";

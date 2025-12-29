@@ -3,7 +3,7 @@ import { exclude } from "tsafe/exclude";
 import {
     CONTAINER_NAME,
     KEYCLOAKIFY_SPA_DEV_SERVER_PORT,
-    KEYCLOAKIFY_LOGIN_JAR_BASENAME,
+    KEYCLOAKIFY_LOGGING_JAR_BASENAME,
     TEST_APP_URL,
     ThemeType
 } from "../shared/constants";
@@ -346,7 +346,7 @@ export async function command(params: {
                       "src",
                       "bin",
                       "start-keycloak",
-                      KEYCLOAKIFY_LOGIN_JAR_BASENAME
+                      KEYCLOAKIFY_LOGGING_JAR_BASENAME
                   )
               ]),
         ...(await Promise.all(
@@ -504,6 +504,10 @@ export async function command(params: {
             return false;
         }
 
+        if (process.env.NO_DEV_SERVER === "true") {
+            return false;
+        }
+
         return true;
     })();
 
@@ -554,7 +558,9 @@ export async function command(params: {
         ...(keycloakMajorVersionNumber <= 20
             ? [`-e${SPACE_PLACEHOLDER}JAVA_OPTS=-Dkeycloak.profile=preview`]
             : []),
-        `-e${SPACE_PLACEHOLDER}KC_HOSTNAME_STRICT_HTTPS=false`,
+        ...(keycloakMajorVersionNumber < 25
+            ? [`-e${SPACE_PLACEHOLDER}KC_HOSTNAME_STRICT_HTTPS=false`]
+            : []),
         ...[
             ...buildContext.themeNames,
             ...(fs.existsSync(

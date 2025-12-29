@@ -7,6 +7,10 @@ on:
     branches:
       - main
 
+permissions:
+  id-token: write
+  contents: write
+
 jobs:
 
   test_lint:
@@ -109,8 +113,10 @@ jobs:
         ref: ${{ github.ref }}
     - uses: actions/setup-node@v4
       with:
+        node-version: '20'
         registry-url: https://registry.npmjs.org/
-    - uses: bahmutov/npm-install@v1
+    - run: npm install -g npm@latest
+    - run: yarn install --frozen-lockfile
     - run: npm run build
     - run: npx -y -p denoify@1.6.13 enable_short_npm_import_path
       env:
@@ -124,16 +130,11 @@ jobs:
           echo "This version is already published"
           exit 0
         fi
-        if [ "$NODE_AUTH_TOKEN" = "" ]; then
-          echo "Can't publish on NPM, You must first create a secret called NPM_TOKEN that contains your NPM auth token. https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets"
-          false
-        fi
         EXTRA_ARGS=""
         if [ "$IS_PRE_RELEASE" = "true" ]; then
             EXTRA_ARGS="--tag next"
         fi
         npm publish $EXTRA_ARGS
       env:
-        NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
         VERSION: ${{ needs.check_if_version_upgraded.outputs.to_version }}
         IS_PRE_RELEASE: ${{ needs.check_if_version_upgraded.outputs.is_pre_release }}
