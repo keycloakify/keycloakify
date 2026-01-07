@@ -206,8 +206,14 @@ function decodeHtmlEntities(htmlStr){
                     We cherry pick what we use in it in the exclusion section.
                 -->
                 <#if (
-                    xKeycloakify.pageId == "index.ftl" &&
-                    xKeycloakify.themeType == "account"
+                    (
+                        xKeycloakify.pageId == "index.ftl" &&
+                        xKeycloakify.themeType == "account"
+                    ) || (
+                        <#-- For some reason it's also the case for error.ftl -->
+                        xKeycloakify.pageId == "error.ftl" &&
+                        xKeycloakify.themeType == "login"
+                    )
                 )>
                     <#break>
                 </#if>
@@ -284,6 +290,10 @@ function decodeHtmlEntities(htmlStr){
                     areSamePath(path, []) &&
                     ["login-idp-link-confirm.ftl", "login-idp-link-email.ftl" ]?seq_contains(xKeycloakify.pageId)
                 ) ||  (
+                    <#-- NOTE: This condition is almost certainly dead code since we exclude the realm prop
+                         when it's an internal representation.
+                         And when we bypass (account index.ftl, error.ftl) we cherry pick...
+                     -->
                     ["masterAdminClient", "delegateForUpdate", "defaultRole", "smtpConfig"]?seq_contains(key) &&
                     areSamePath(path, ["realm"])
                 ) || (
