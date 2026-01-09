@@ -159,8 +159,9 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                                     <a
                                         href="#"
                                         id="try-another-way"
-                                        onClick={() => {
+                                        onClick={event => {
                                             document.forms["kc-select-try-another-way-form" as never].requestSubmit();
+                                            event.preventDefault();
                                             return false;
                                         }}
                                     >
