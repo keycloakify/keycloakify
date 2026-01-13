@@ -3,7 +3,11 @@ import * as fsPr from "fs/promises";
 import { join as pathJoin, sep as pathSep } from "path";
 import { assert } from "tsafe/assert";
 import type { BuildContext } from "../shared/buildContext";
-import { KEYCLOAK_THEME } from "../shared/constants";
+import {
+    KEYCLOAK_THEME,
+    THEME_TYPES,
+    EARLY_COLOR_SCHEME_SCRIPT_BASENAME
+} from "../shared/constants";
 
 export type BuildContextLike = {
     themeSrcDirPath: string;
@@ -93,12 +97,28 @@ export async function getExtensionModuleFileSourceCodeReadyToBeCopied(params: {
         commentLines: (() => {
             const path = fileRelativePath.split(pathSep).join("/");
 
+            const isEarlyColorSchemeScript =
+                isPublic &&
+                THEME_TYPES.find(
+                    themeType =>
+                        pathJoin(themeType, EARLY_COLOR_SCHEME_SCRIPT_BASENAME) ===
+                        fileRelativePath
+                ) !== undefined;
+
+            const common = !isEarlyColorSchemeScript
+                ? []
+                : [
+                      ``,
+                      `${EARLY_COLOR_SCHEME_SCRIPT_BASENAME} is a special file that will be imported in the head automatically by Keycloakify.`
+                  ];
+
             return isOwnershipAction
                 ? [
                       `This file has been claimed for ownership from ${extensionModuleName} version ${extensionModuleVersion}.`,
                       `To relinquish ownership and restore this file to its original content, run the following command:`,
                       ``,
-                      `$ npx keycloakify own --path "${path}" ${isPublic ? "--public " : ""}--revert`
+                      `$ npx keycloakify own --path "${path}" ${isPublic ? "--public " : ""}--revert`,
+                      ...common
                   ]
                 : [
                       `WARNING: Before modifying this file, run the following command:`,
@@ -106,7 +126,8 @@ export async function getExtensionModuleFileSourceCodeReadyToBeCopied(params: {
                       `$ npx keycloakify own --path "${path}"${isPublic ? " --public" : ""}`,
                       ``,
                       `This file is provided by ${extensionModuleName} version ${extensionModuleVersion}.`,
-                      `It was copied into your repository by the postinstall script: \`keycloakify sync-extensions\`.`
+                      `It was copied into your repository by the postinstall script: \`keycloakify sync-extensions\`.`,
+                      ...common
                   ];
         })()
     });
