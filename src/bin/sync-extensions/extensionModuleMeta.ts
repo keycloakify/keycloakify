@@ -144,7 +144,10 @@ export async function getExtensionModuleMetas(params: {
 
             const shouldExcludeLoginUi = await (async () => {
                 for (const entry of installedExtensionModules) {
-                    if (entry.moduleName === LOGIN_UI_MODULE_NAME) {
+                    if (
+                        entry.moduleName === LOGIN_UI_MODULE_NAME ||
+                        entry.moduleName === "@keycloakify/login-ui-storybook"
+                    ) {
                         continue;
                     }
 
