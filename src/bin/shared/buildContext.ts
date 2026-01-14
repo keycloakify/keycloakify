@@ -12,7 +12,8 @@ import { assert, type Equals, is } from "tsafe/assert";
 import * as child_process from "child_process";
 import {
     VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES,
-    BUILD_FOR_KEYCLOAK_MAJOR_VERSION_ENV_NAME
+    BUILD_FOR_KEYCLOAK_MAJOR_VERSION_ENV_NAME,
+    EARLY_COLOR_SCHEME_SCRIPT_BASENAME
 } from "./constants";
 import type { KeycloakVersionRange } from "./KeycloakVersionRange";
 import { exclude } from "tsafe";
@@ -45,14 +46,18 @@ export type BuildContext = {
     themeSrcDirPath: string;
     implementedThemeTypes: {
         login:
-            | { isImplemented: true }
+            | { isImplemented: true; hasEarlyColorSchemeScript: boolean }
             | { isImplemented: false; isImplemented_native: boolean };
         email: { isImplemented: false; isImplemented_native: boolean };
         account:
             | { isImplemented: false; isImplemented_native: boolean }
-            | { isImplemented: true; type: "Single-Page" | "Multi-Page" };
+            | {
+                  isImplemented: true;
+                  type: "Single-Page" | "Multi-Page";
+                  hasEarlyColorSchemeScript: boolean;
+              };
         admin:
-            | { isImplemented: true }
+            | { isImplemented: true; hasEarlyColorSchemeScript: boolean }
             | { isImplemented: false; isImplemented_native: boolean };
     };
     packageJsonFilePath: string;
@@ -428,9 +433,59 @@ export function getBuildContext(params: {
         assert<Equals<typeof bundler, never>>(false);
     })();
 
+    const relativePathsCwd = (() => {
+        switch (bundler) {
+            case "vite":
+                return projectDirPath;
+            case "webpack":
+                return pathDirname(packageJsonFilePath);
+        }
+    })();
+
+    const publicDirPath = (() => {
+        if (process.env.PUBLIC_DIR_PATH !== undefined) {
+            return getAbsoluteAndInOsFormatPath({
+                pathIsh: process.env.PUBLIC_DIR_PATH,
+                cwd: projectDirPath
+            });
+        }
+
+        webpack: {
+            if (bundler !== "webpack") {
+                break webpack;
+            }
+
+            assert(parsedPackageJson.keycloakify !== undefined);
+
+            if (parsedPackageJson.keycloakify.publicDirPath !== undefined) {
+                return getAbsoluteAndInOsFormatPath({
+                    pathIsh: parsedPackageJson.keycloakify.publicDirPath,
+                    cwd: relativePathsCwd
+                });
+            }
+
+            return pathJoin(projectDirPath, "public");
+        }
+
+        assert(bundler === "vite");
+        assert(resolvedViteConfig !== undefined);
+
+        return pathJoin(projectDirPath, resolvedViteConfig.publicDir);
+    })();
+
     const implementedThemeTypes: BuildContext["implementedThemeTypes"] = (() => {
         const getIsNative = (dirPath: string) =>
             fs.existsSync(pathJoin(dirPath, "theme.properties"));
+
+        const getHasEarlyColorSchemeScript = (themeType: ThemeType) =>
+            fs.existsSync(
+                pathJoin(
+                    publicDirPath,
+                    KEYCLOAK_THEME,
+                    themeType,
+                    EARLY_COLOR_SCHEME_SCRIPT_BASENAME
+                )
+            );
 
         return {
             login: (() => {
@@ -444,7 +499,10 @@ export function getBuildContext(params: {
                     return { isImplemented: false, isImplemented_native: true };
                 }
 
-                return { isImplemented: true };
+                return {
+                    isImplemented: true,
+                    hasEarlyColorSchemeScript: getHasEarlyColorSchemeScript("login")
+                };
             })(),
             email: (() => {
                 const dirPath = pathJoin(themeSrcDirPath, "email");
@@ -472,7 +530,8 @@ export function getBuildContext(params: {
 
                 return {
                     isImplemented: true,
-                    type: buildOptions.accountThemeImplementation
+                    type: buildOptions.accountThemeImplementation,
+                    hasEarlyColorSchemeScript: getHasEarlyColorSchemeScript("account")
                 };
             })(),
             admin: (() => {
@@ -486,7 +545,10 @@ export function getBuildContext(params: {
                     return { isImplemented: false, isImplemented_native: true };
                 }
 
-                return { isImplemented: true };
+                return {
+                    isImplemented: true,
+                    hasEarlyColorSchemeScript: getHasEarlyColorSchemeScript("admin")
+                };
             })()
         };
     })();
@@ -546,15 +608,6 @@ export function getBuildContext(params: {
         }
 
         return themeNames;
-    })();
-
-    const relativePathsCwd = (() => {
-        switch (bundler) {
-            case "vite":
-                return projectDirPath;
-            case "webpack":
-                return pathDirname(packageJsonFilePath);
-        }
     })();
 
     const projectBuildDirPath = (() => {
@@ -623,36 +676,7 @@ export function getBuildContext(params: {
                     : `${resolvedViteConfig.buildDir}_keycloak`
             );
         })(),
-        publicDirPath: (() => {
-            if (process.env.PUBLIC_DIR_PATH !== undefined) {
-                return getAbsoluteAndInOsFormatPath({
-                    pathIsh: process.env.PUBLIC_DIR_PATH,
-                    cwd: projectDirPath
-                });
-            }
-
-            webpack: {
-                if (bundler !== "webpack") {
-                    break webpack;
-                }
-
-                assert(parsedPackageJson.keycloakify !== undefined);
-
-                if (parsedPackageJson.keycloakify.publicDirPath !== undefined) {
-                    return getAbsoluteAndInOsFormatPath({
-                        pathIsh: parsedPackageJson.keycloakify.publicDirPath,
-                        cwd: relativePathsCwd
-                    });
-                }
-
-                return pathJoin(projectDirPath, "public");
-            }
-
-            assert(bundler === "vite");
-            assert(resolvedViteConfig !== undefined);
-
-            return pathJoin(projectDirPath, resolvedViteConfig.publicDir);
-        })(),
+        publicDirPath,
         cacheDirPath: pathJoin(
             (() => {
                 if (process.env.XDG_CACHE_HOME !== undefined) {

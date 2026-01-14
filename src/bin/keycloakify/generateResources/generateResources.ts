@@ -604,10 +604,6 @@ export async function generateResources(params: {
                 break extensions_static_resources;
             }
 
-            if (isSpa) {
-                break extensions_static_resources;
-            }
-
             const dirPath = pathJoin(
                 buildContext.publicDirPath,
                 KEYCLOAK_THEME,
