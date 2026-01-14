@@ -109,7 +109,9 @@ export async function getExtensionModuleFileSourceCodeReadyToBeCopied(params: {
                 ? []
                 : [
                       ``,
-                      `${EARLY_COLOR_SCHEME_SCRIPT_BASENAME} is a special file that will be imported in the head automatically by Keycloakify.`
+                      `${EARLY_COLOR_SCHEME_SCRIPT_BASENAME} is a special file that will be imported in the head automatically by Keycloakify.`,
+                      `Note that this file is not loaded in Storybook or when using the Vite DEV server.`,
+                      "To test it you can use `NO_DEV_SERVER=true npx keycloakify start-keycloak` (NO_DEV_SERVER is only relevant for Account SPA and Admin themes)"
                   ];
 
             return isOwnershipAction
