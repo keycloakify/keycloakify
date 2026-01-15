@@ -46,7 +46,7 @@ export class KcSanitizerPolicy {
     );
     public static readonly NAME = new RegExp("[a-zA-Z0-9\\-_\\$]+");
 
-    public static readonly TARGET = new RegExp("_blank");
+    public static readonly TARGET = new RegExp("^_blank$");
 
     public static readonly ALIGN = new RegExp(
         "\\b(center|left|right|justify|char)\\b",
