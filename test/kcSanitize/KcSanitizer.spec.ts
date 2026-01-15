@@ -137,6 +137,36 @@ describe("KeycloakSanitizerMethod", () => {
         assertResult(`<font color="red"> Content </font>`, html);
     });
 
+    it('should allow target="_blank"', () => {
+        let html = "";
+
+        html = '<a href="https://www.example.org/sub-page">Link text</a>';
+        assertResult(
+            '<a href="https://www.example.org/sub-page" rel="nofollow">Link text</a>',
+            html
+        );
+
+        html =
+            '<a href="https://www.example.org/terms-of-service" target="_blank">Link text</a>';
+        assertResult(
+            '<a target="_blank" href="https://www.example.org/terms-of-service" rel="nofollow">Link text</a>',
+            html
+        );
+
+        html = '<a href="https://www.example.org/sub-page" target="_top">Link text</a>';
+        assertResult(
+            '<a href="https://www.example.org/sub-page" rel="nofollow">Link text</a>',
+            html
+        );
+
+        html =
+            '<a href="https://www.example.org/sub-page" target="someframe">Link text</a>';
+        assertResult(
+            '<a href="https://www.example.org/sub-page" rel="nofollow">Link text</a>',
+            html
+        );
+    });
+  
     it("should remove non whitelisted tag without attribute", () => {
         let html = "";
         html = `<a>Tag should be removed</a>`;
