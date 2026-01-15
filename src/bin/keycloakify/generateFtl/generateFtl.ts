@@ -23,6 +23,20 @@ export type BuildContextLike = BuildContextLike_replaceImportsInJsCode &
         urlPathname: string | undefined;
         themeVersion: string;
         kcContextExclusionsFtlCode: string | undefined;
+        implementedThemeTypes: {
+            login:
+                | { isImplemented: true; hasEarlyColorSchemeScript: boolean }
+                | { isImplemented: false };
+            account:
+                | { isImplemented: false }
+                | {
+                      isImplemented: true;
+                      hasEarlyColorSchemeScript: boolean;
+                  };
+            admin:
+                | { isImplemented: true; hasEarlyColorSchemeScript: boolean }
+                | { isImplemented: false };
+        };
     };
 
 assert<BuildContext extends BuildContextLike ? true : false>();
@@ -134,6 +148,19 @@ export function generateFtlFilesCodeFactory(params: {
     $("head").prepend(
         [
             `<script>\n${ftlObjectToJsCodeDeclaringAnObjectPlaceholder}\n</script>`,
+            ...(() => {
+                const wrap = buildContext.implementedThemeTypes[themeType];
+
+                assert(wrap.isImplemented);
+
+                if (!wrap.hasEarlyColorSchemeScript) {
+                    return [];
+                }
+
+                return [
+                    `<script src="\${xKeycloakify.resourcesPath}/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/keycloak-theme/${themeType}/early-color-scheme.js"></script>`
+                ];
+            })(),
             `<base href="\${xKeycloakify.resourcesPath}/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/" />`
         ].join("\n")
     );

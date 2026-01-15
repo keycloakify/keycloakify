@@ -114,15 +114,15 @@ export async function getExtensionModuleMetas(params: {
     })();
 
     const installedExtensionModules = await (async () => {
-        const installedModulesWithKeycloakifyInTheName = await listInstalledModules({
+        let installedExtensionModules = await listInstalledModules({
             packageJsonFilePath: buildContext.packageJsonFilePath,
             filter: ({ moduleName }) =>
                 moduleName.includes("keycloakify") && moduleName !== "keycloakify"
         });
 
-        return (
+        installedExtensionModules = (
             await Promise.all(
-                installedModulesWithKeycloakifyInTheName.map(async entry => {
+                installedExtensionModules.map(async entry => {
                     if (!(await existsAsync(pathJoin(entry.dirPath, KEYCLOAK_THEME)))) {
                         return undefined;
                     }
@@ -130,6 +130,55 @@ export async function getExtensionModuleMetas(params: {
                 })
             )
         ).filter(exclude(undefined));
+
+        maybe_exclude_login_ui: {
+            const LOGIN_UI_MODULE_NAME = "@keycloakify/login-ui";
+
+            if (
+                !installedExtensionModules
+                    .map(({ moduleName }) => moduleName)
+                    .includes(LOGIN_UI_MODULE_NAME)
+            ) {
+                break maybe_exclude_login_ui;
+            }
+
+            const shouldExcludeLoginUi = await (async () => {
+                for (const entry of installedExtensionModules) {
+                    if (
+                        entry.moduleName === LOGIN_UI_MODULE_NAME ||
+                        entry.moduleName === "@keycloakify/login-ui-storybook"
+                    ) {
+                        continue;
+                    }
+
+                    if (
+                        await existsAsync(
+                            pathJoin(
+                                entry.dirPath,
+                                KEYCLOAK_THEME,
+                                "login",
+                                "pages",
+                                "login"
+                            )
+                        )
+                    ) {
+                        return true;
+                    }
+                }
+
+                return false;
+            })();
+
+            if (!shouldExcludeLoginUi) {
+                break maybe_exclude_login_ui;
+            }
+
+            installedExtensionModules = installedExtensionModules.filter(
+                ({ moduleName }) => moduleName !== LOGIN_UI_MODULE_NAME
+            );
+        }
+
+        return installedExtensionModules;
     })();
 
     const cacheContent = await (async () => {

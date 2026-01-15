@@ -117,6 +117,12 @@ describe("KeycloakSanitizerMethod", () => {
 
         html = `<h3> או נושא שתבחר</h3>`;
         assertResult(`<h3> או נושא שתבחר</h3>`, html);
+
+        html = `<br>Line 1<br/>Line 2`;
+        assertResult(`<br>Line 1<br>Line 2`, html);
+
+        html = `Line before horizontal rule<hr>Line after horizontal rule`;
+        assertResult(`Line before horizontal rule<hr>Line after horizontal rule`, html);
     });
 
     it("should handle  styles correctly", () => {
@@ -159,6 +165,12 @@ describe("KeycloakSanitizerMethod", () => {
             '<a href="https://www.example.org/sub-page" rel="nofollow">Link text</a>',
             html
         );
+    });
+  
+    it("should remove non whitelisted tag without attribute", () => {
+        let html = "";
+        html = `<a>Tag should be removed</a>`;
+        assertResult(`Tag should be removed`, html);
     });
 
     function assertResult(expectedResult: string, html: string): void {

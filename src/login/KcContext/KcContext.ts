@@ -41,6 +41,7 @@ export type KcContext =
     | KcContext.WebauthnRegister
     | KcContext.LoginPassword
     | KcContext.LoginUpdatePassword
+    | KcContext.LinkIdpAction
     | KcContext.LoginUpdateProfile
     | KcContext.LoginIdpLinkConfirm
     | KcContext.LoginIdpLinkEmail
@@ -61,7 +62,8 @@ export type KcContext =
     | KcContext.LoginX509Info
     | KcContext.WebauthnError
     | KcContext.LoginPasskeysConditionalAuthenticate
-    | KcContext.LoginIdpLinkConfirmOverride;
+    | KcContext.LoginIdpLinkConfirmOverride
+    | KcContext.SelectOrganization;
 
 assert<KcContext["themeType"] extends ThemeType ? true : false>();
 
@@ -204,6 +206,16 @@ export declare namespace KcContext {
                 iconClasses?: string;
             }[];
         };
+        enableWebAuthnConditionalUI?: boolean;
+        authenticators?: {
+            authenticators: WebauthnAuthenticate.WebauthnAuthenticator[];
+        };
+        challenge: string;
+        userVerification: WebauthnAuthenticate["userVerification"];
+        rpId: string;
+        createTimeout: number | string;
+        isUserIdentified: "true" | "false";
+        shouldDisplayAuthenticators?: boolean;
     };
 
     export type Register = Common & {
@@ -335,6 +347,16 @@ export declare namespace KcContext {
         };
         usernameHidden?: boolean;
         social?: Login["social"];
+
+        enableWebAuthnConditionalUI?: boolean;
+        authenticators?: {
+            authenticators: WebauthnAuthenticate.WebauthnAuthenticator[];
+        };
+        isUserIdentified: "true" | "false";
+        challenge: string;
+        userVerification: UserVerificationRequirement | "not specified";
+        rpId: string;
+        createTimeout: string | number;
     };
 
     export type LoginPassword = Common & {
@@ -352,6 +374,16 @@ export declare namespace KcContext {
             showTryAnotherWayLink?: boolean;
             attemptedUsername?: string;
         };
+        enableWebAuthnConditionalUI?: boolean;
+        authenticators?: {
+            authenticators: WebauthnAuthenticate.WebauthnAuthenticator[];
+        };
+        challenge: string;
+        userVerification: WebauthnAuthenticate["userVerification"];
+        rpId: string;
+        createTimeout: number | string;
+        isUserIdentified: "true" | "false";
+        shouldDisplayAuthenticators?: boolean;
     };
 
     export type WebauthnAuthenticate = Common & {
@@ -408,6 +440,11 @@ export declare namespace KcContext {
 
     export type LoginUpdatePassword = Common & {
         pageId: "login-update-password.ftl";
+    };
+
+    export type LinkIdpAction = Common & {
+        pageId: "link-idp-action.ftl";
+        idpDisplayName: string;
     };
 
     export type LoginIdpLinkConfirm = Common & {
@@ -609,6 +646,16 @@ export declare namespace KcContext {
             loginRestartFlowUrl: string;
         };
         idpDisplayName: string;
+    };
+
+    export type SelectOrganization = Common & {
+        pageId: "select-organization.ftl";
+        user: {
+            organizations: {
+                alias: string;
+                name?: string;
+            }[];
+        };
     };
 }
 

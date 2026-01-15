@@ -22,6 +22,7 @@ const LoginUsername = lazy(() => import("keycloakify/login/pages/LoginUsername")
 const WebauthnAuthenticate = lazy(() => import("keycloakify/login/pages/WebauthnAuthenticate"));
 const WebauthnRegister = lazy(() => import("keycloakify/login/pages/WebauthnRegister"));
 const LoginUpdatePassword = lazy(() => import("keycloakify/login/pages/LoginUpdatePassword"));
+const LinkIdpAction = lazy(() => import("keycloakify/login/pages/LinkIdpAction"));
 const LoginUpdateProfile = lazy(() => import("keycloakify/login/pages/LoginUpdateProfile"));
 const LoginIdpLinkConfirm = lazy(() => import("keycloakify/login/pages/LoginIdpLinkConfirm"));
 const LoginPageExpired = lazy(() => import("keycloakify/login/pages/LoginPageExpired"));
@@ -43,6 +44,7 @@ const LoginX509Info = lazy(() => import("keycloakify/login/pages/LoginX509Info")
 const WebauthnError = lazy(() => import("keycloakify/login/pages/WebauthnError"));
 const LoginPasskeysConditionalAuthenticate = lazy(() => import("keycloakify/login/pages/LoginPasskeysConditionalAuthenticate"));
 const LoginIdpLinkConfirmOverride = lazy(() => import("keycloakify/login/pages/LoginIdpLinkConfirmOverride"));
+const SelectOrganization = lazy(() => import("keycloakify/login/pages/SelectOrganization"));
 
 type DefaultPageProps = PageProps<KcContext, I18n> & {
     UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
@@ -86,6 +88,8 @@ export default function DefaultPage(props: DefaultPageProps) {
                         return <WebauthnRegister kcContext={kcContext} {...rest} />;
                     case "login-update-password.ftl":
                         return <LoginUpdatePassword kcContext={kcContext} {...rest} />;
+                    case "link-idp-action.ftl":
+                        return <LinkIdpAction kcContext={kcContext} {...rest} />;
                     case "login-update-profile.ftl":
                         return <LoginUpdateProfile kcContext={kcContext} {...rest} />;
                     case "login-idp-link-confirm.ftl":
@@ -128,6 +132,8 @@ export default function DefaultPage(props: DefaultPageProps) {
                         return <LoginPasskeysConditionalAuthenticate kcContext={kcContext} {...rest} />;
                     case "login-idp-link-confirm-override.ftl":
                         return <LoginIdpLinkConfirmOverride kcContext={kcContext} {...rest} />;
+                    case "select-organization.ftl":
+                        return <SelectOrganization kcContext={kcContext} {...rest} />;
                 }
                 assert<Equals<typeof kcContext, never>>(false);
             })()}

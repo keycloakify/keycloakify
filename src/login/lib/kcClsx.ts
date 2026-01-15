@@ -122,6 +122,7 @@ export type ClassKey =
     | "kcFormHeaderClass"
     | "kcFormSocialAccountGridItem"
     | "kcButtonPrimaryClass"
+    | "kcButtonSecondaryClass"
     | "kcInputHelperTextBeforeClass"
     | "kcLogoIdP-github"
     | "kcLabelClass";
@@ -256,6 +257,7 @@ export const { getKcClsx } = createGetKcClsx<ClassKey>({
         kcFormHeaderClass: "login-pf-header",
         kcFormSocialAccountGridItem: "pf-l-grid__item",
         kcButtonPrimaryClass: "pf-m-primary",
+        kcButtonSecondaryClass: "pf-m-secondary",
         kcInputHelperTextBeforeClass:
             "pf-c-form__helper-text pf-c-form__helper-text-before",
         "kcLogoIdP-github": "fa fa-github",

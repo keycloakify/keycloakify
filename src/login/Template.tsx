@@ -32,7 +32,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
     const { realm, auth, url, message, isAppInitiatedAction } = kcContext;
 
     useEffect(() => {
-        document.title = documentTitle ?? msgStr("loginTitle", realm.displayName);
+        document.title = documentTitle ?? msgStr("loginTitle", realm.displayName || realm.name);
     }, []);
 
     useSetClassName({
@@ -55,7 +55,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
         <div className={kcClsx("kcLoginClass")}>
             <div id="kc-header" className={kcClsx("kcHeaderClass")}>
                 <div id="kc-header-wrapper" className={kcClsx("kcHeaderWrapperClass")}>
-                    {msg("loginTitleHtml", realm.displayNameHtml)}
+                    {msg("loginTitleHtml", realm.displayNameHtml || realm.name)}
                 </div>
             </div>
             <div className={kcClsx("kcFormCardClass")}>
@@ -159,8 +159,9 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                                     <a
                                         href="#"
                                         id="try-another-way"
-                                        onClick={() => {
+                                        onClick={event => {
                                             document.forms["kc-select-try-another-way-form" as never].requestSubmit();
+                                            event.preventDefault();
                                             return false;
                                         }}
                                     >

@@ -6,7 +6,7 @@ import { existsAsync } from "../../src/bin/tools/fs.existsAsync";
 import * as fs from "fs/promises";
 import {
     KEYCLOAKIFY_LOGGING_VERSION,
-    KEYCLOAKIFY_LOGIN_JAR_BASENAME
+    KEYCLOAKIFY_LOGGING_JAR_BASENAME
 } from "../../src/bin/shared/constants";
 import { join as pathJoin } from "path";
 
@@ -18,7 +18,7 @@ export async function downloadKeycloakifyLogging(params: { distDirPath: string }
         "src",
         "bin",
         "start-keycloak",
-        KEYCLOAKIFY_LOGIN_JAR_BASENAME
+        KEYCLOAKIFY_LOGGING_JAR_BASENAME
     );
 
     if (await existsAsync(jarFilePath)) {

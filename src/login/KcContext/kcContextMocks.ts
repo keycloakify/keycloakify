@@ -217,7 +217,17 @@ export const kcContextMocks = [
         },
         usernameHidden: false,
         login: {},
-        registrationDisabled: false
+        registrationDisabled: false,
+        enableWebAuthnConditionalUI: false,
+        authenticators: {
+            authenticators: []
+        },
+        challenge: "",
+        userVerification: "not specified",
+        rpId: "",
+        createTimeout: "0",
+        isUserIdentified: "false",
+        shouldDisplayAuthenticators: false
     }),
     id<KcContext.Register>({
         ...kcContextCommonMock,
@@ -342,7 +352,13 @@ export const kcContextMocks = [
         },
         usernameHidden: false,
         login: {},
-        registrationDisabled: false
+        registrationDisabled: false,
+
+        challenge: "",
+        userVerification: "not specified",
+        rpId: "",
+        createTimeout: "0",
+        isUserIdentified: "false"
     }),
     id<KcContext.LoginPassword>({
         ...kcContextCommonMock,
@@ -351,7 +367,17 @@ export const kcContextMocks = [
         realm: {
             ...kcContextCommonMock.realm,
             resetPasswordAllowed: true
-        }
+        },
+        enableWebAuthnConditionalUI: false,
+        authenticators: {
+            authenticators: []
+        },
+        challenge: "",
+        userVerification: "not specified",
+        rpId: "",
+        createTimeout: "0",
+        isUserIdentified: "false",
+        shouldDisplayAuthenticators: false
     }),
     id<KcContext.WebauthnAuthenticate>({
         ...kcContextCommonMock,
@@ -375,6 +401,11 @@ export const kcContextMocks = [
     id<KcContext.LoginUpdatePassword>({
         ...kcContextCommonMock,
         pageId: "login-update-password.ftl"
+    }),
+    id<KcContext.LinkIdpAction>({
+        ...kcContextCommonMock,
+        pageId: "link-idp-action.ftl",
+        idpDisplayName: "FranceConnect"
     }),
     id<KcContext.LoginUpdateProfile>({
         ...kcContextCommonMock,
@@ -617,6 +648,29 @@ export const kcContextMocks = [
             loginRestartFlowUrl: "#"
         },
         idpDisplayName: "Google"
+    }),
+    id<KcContext.SelectOrganization>({
+        pageId: "select-organization.ftl",
+        ...kcContextCommonMock,
+        user: {
+            organizations: [
+                {
+                    alias: "acme-inc",
+                    name: "Acme Incorporated"
+                },
+                {
+                    alias: "northwind-traders",
+                    name: "Northwind Traders"
+                },
+                {
+                    alias: "contoso-labs",
+                    name: "Contoso Labs"
+                },
+                {
+                    alias: "shared-services"
+                }
+            ]
+        }
     })
 ];
 

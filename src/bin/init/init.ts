@@ -120,7 +120,9 @@ export async function command(params: { projectDirPath: string }) {
                 "vite-env.d.ts"
             );
 
-            const viteEnvDTsContent = await fs.readFile(viteEnvDTsFilePath);
+            const viteEnvDTsContent = (await existsAsync(viteEnvDTsFilePath))
+                ? await fs.readFile(viteEnvDTsFilePath)
+                : `/// <reference types="vite/client" />\n`;
 
             await fs.rm(srcDirPath, { recursive: true });
 
