@@ -454,6 +454,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "Langsdorf",
+      "name": "Thiago",
+      "avatar_url": "https://avatars.githubusercontent.com/u/13462281?v=4",
+      "profile": "https://th.wtf",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
