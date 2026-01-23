@@ -124,3 +124,26 @@ i18nBuilder
             //myCustomKey2: "my-custom-key-2-he"
         }
     });
+
+i18nBuilder
+    .withThemeName<"my-theme-1" | "my-theme-2">()
+    .withExtraLanguages({
+        he: {
+            label: "עברית",
+            getMessages: () => import("./he")
+        }
+    })
+    .withCustomTranslations({
+        en: {
+            myCustomKey1: "my-custom-key-1-en",
+            myCustomKey2: "my-custom-key-2-en"
+        },
+        // @ts-expect-error
+        he: {
+            myCustomKey1: "my-custom-key-1-he"
+            //myCustomKey2: "my-custom-key-2-he"
+        }
+    })
+    .withMessageFormatter((msg, _args) => {
+        return msg;
+    });
