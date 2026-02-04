@@ -73,6 +73,42 @@ export const WithMoreFields: Story = {
                             multivalued: false,
                             readOnly: false,
                             name: "favouritePet"
+                        },
+                        age: {
+                            validators: {
+                                multivalued: {
+                                    max: "1"
+                                },
+                                integer: {
+                                    min: 0,
+                                    max: 99
+                                }
+                            },
+                            displayName: "Age",
+                            values: [],
+                            annotations: {
+                                inputType: "html5-number"
+                            },
+                            required: false,
+                            multivalued: false,
+                            readOnly: false,
+                            name: "age"
+                        },
+                        birthdate: {
+                            validators: {
+                                multivalued: {
+                                    max: 1
+                                }
+                            },
+                            displayName: "Birthdate",
+                            values: [],
+                            annotations: {
+                                inputType: "html5-date"
+                            },
+                            required: false,
+                            multivalued: false,
+                            readOnly: false,
+                            name: "birthdate"
                         }
                     }
                 }
