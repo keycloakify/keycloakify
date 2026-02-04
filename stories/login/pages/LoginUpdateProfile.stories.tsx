@@ -119,7 +119,7 @@ export const WithMoreFieldsPrefilled: Story = {
                             annotations: {
                                 inputType: "select"
                             },
-                            value: "dog",
+                            value: "Dog",
                             name: "favouritePet"
                         },
                         age: {
