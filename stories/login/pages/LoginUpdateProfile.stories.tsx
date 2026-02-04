@@ -173,7 +173,7 @@ export const WithGroups: Story = {
                             },
                             multivalued: false,
                             readOnly: false,
-                            name: "divison"
+                            name: "division"
                         }
                     }
                 }
