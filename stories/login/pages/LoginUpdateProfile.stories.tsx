@@ -39,3 +39,44 @@ export const WithProfileError: Story = {
         />
     )
 };
+
+export const WithMoreFields: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                profile: {
+                    attributesByName: {
+                        multiAttribute: {
+                            validators: {},
+                            displayName: "Multi-Attribute Field",
+                            annotations: {},
+                            required: false,
+                            multivalued: true,
+                            readOnly: false,
+                            name: "multiAttribute"
+                        },
+                        favouritePet: {
+                            validators: {
+                                options: {
+                                    options: ["Cat", "Dog", "Bird"]
+                                },
+                                multivalued: {
+                                    max: "1"
+                                }
+                            },
+                            displayName: "Favourite Pet",
+                            values: [],
+                            annotations: {
+                                inputType: "select"
+                            },
+                            required: false,
+                            multivalued: false,
+                            readOnly: false,
+                            name: "favouritePet"
+                        }
+                    }
+                }
+            }}
+        />
+    )
+};
