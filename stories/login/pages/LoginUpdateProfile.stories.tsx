@@ -123,7 +123,7 @@ export const WithGroups: Story = {
             kcContext={{
                 profile: {
                     attributesByName: {
-                        cardId: {
+                        division: {
                             validators: {},
                             displayName: "Division",
                             annotations: {},
