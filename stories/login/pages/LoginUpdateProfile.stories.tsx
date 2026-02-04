@@ -80,3 +80,33 @@ export const WithMoreFields: Story = {
         />
     )
 };
+
+export const WithGroups: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                profile: {
+                    attributesByName: {
+                        cardId: {
+                            validators: {},
+                            displayName: "Division",
+                            annotations: {},
+                            required: false,
+                            html5DataAnnotations: {},
+                            group: {
+                                displayDescription: "Attributes, which refer to user metadata",
+                                annotations: {},
+                                displayHeader: "User metadata",
+                                html5DataAnnotations: {},
+                                name: "user-metadata"
+                            },
+                            multivalued: false,
+                            readOnly: false,
+                            name: "divison"
+                        }
+                    }
+                }
+            }}
+        />
+    )
+};
