@@ -50,64 +50,99 @@ export const WithMoreFields: Story = {
                             validators: {},
                             displayName: "Multi-Attribute Field",
                             annotations: {},
-                            required: false,
                             multivalued: true,
-                            readOnly: false,
                             name: "multiAttribute"
                         },
                         favouritePet: {
                             validators: {
                                 options: {
                                     options: ["Cat", "Dog", "Bird"]
-                                },
-                                multivalued: {
-                                    max: "1"
                                 }
                             },
                             displayName: "Favourite Pet",
-                            values: [],
                             annotations: {
                                 inputType: "select"
                             },
-                            required: false,
-                            multivalued: false,
-                            readOnly: false,
+                            value: "dog",
+                            values: ["dog"],
                             name: "favouritePet"
                         },
                         age: {
                             validators: {
-                                multivalued: {
-                                    max: "1"
-                                },
                                 integer: {
                                     min: 0,
                                     max: 99
                                 }
                             },
                             displayName: "Age",
-                            values: [],
                             annotations: {
                                 inputType: "html5-number"
                             },
-                            required: false,
-                            multivalued: false,
-                            readOnly: false,
                             name: "age"
                         },
                         birthdate: {
-                            validators: {
-                                multivalued: {
-                                    max: 1
-                                }
-                            },
+                            validators: {},
                             displayName: "Birthdate",
-                            values: [],
                             annotations: {
                                 inputType: "html5-date"
                             },
-                            required: false,
-                            multivalued: false,
-                            readOnly: false,
+                            name: "birthdate"
+                        }
+                    }
+                }
+            }}
+        />
+    )
+};
+
+export const WithMoreFieldsPrefilled: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                profile: {
+                    attributesByName: {
+                        multiAttribute: {
+                            validators: {},
+                            displayName: "Multi-Attribute Field",
+                            annotations: {},
+                            multivalued: true,
+                            values: ["value 1", "value 2"],
+                            name: "multiAttribute"
+                        },
+                        favouritePet: {
+                            validators: {
+                                options: {
+                                    options: ["Cat", "Dog", "Bird"]
+                                }
+                            },
+                            displayName: "Favourite Pet",
+                            annotations: {
+                                inputType: "select"
+                            },
+                            value: "dog",
+                            name: "favouritePet"
+                        },
+                        age: {
+                            validators: {
+                                integer: {
+                                    min: 0,
+                                    max: 99
+                                }
+                            },
+                            displayName: "Age",
+                            annotations: {
+                                inputType: "html5-number"
+                            },
+                            value: "22",
+                            name: "age"
+                        },
+                        birthdate: {
+                            validators: {},
+                            displayName: "Birthdate",
+                            annotations: {
+                                inputType: "html5-date"
+                            },
+                            value: "2000-01-01",
                             name: "birthdate"
                         }
                     }
