@@ -47,7 +47,7 @@ export async function command(params: { buildContext: BuildContext }) {
                     case "darwin":
                         return "brew install mvn";
                     case "win32":
-                        return "choco install mvn";
+                        return "choco install maven";
                     case "linux":
                     default:
                         return "sudo apt-get install mvn";
