@@ -144,6 +144,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://th.wtf"><img src="https://avatars.githubusercontent.com/u/13462281?v=4?s=100" width="100px;" alt="Thiago"/><br /><sub><b>Thiago</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=Langsdorf" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/LennartMart"><img src="https://avatars.githubusercontent.com/u/1591933?v=4?s=100" width="100px;" alt="LennartMart"/><br /><sub><b>LennartMart</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=LennartMart" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
