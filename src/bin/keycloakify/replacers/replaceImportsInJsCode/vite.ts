@@ -1,7 +1,7 @@
-import { WELL_KNOWN_DIRECTORY_BASE_NAME } from "../../../shared/constants";
+import * as nodePath from "path";
 import { assert } from "tsafe/assert";
 import type { BuildContext } from "../../../shared/buildContext";
-import * as nodePath from "path";
+import { WELL_KNOWN_DIRECTORY_BASE_NAME } from "../../../shared/constants";
 import { replaceAll } from "../../../tools/String.prototype.replaceAll";
 
 export type BuildContextLike = {
@@ -82,19 +82,41 @@ export function replaceImportsInJsCode_vite(params: {
         basenameOfAssetsFiles
             .map(basenameOfAssetsFile => `${staticDir}${basenameOfAssetsFile}`)
             .forEach(relativePathOfAssetFile => {
-                fixedJsCode = replaceAll(
-                    fixedJsCode,
-                    `"${relativePathOfAssetFile}"`,
-                    `(window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/${relativePathOfAssetFile}")`
-                );
+                fixedJsCode = replaceJsStringLiteral({
+                    code: fixedJsCode,
+                    literal: relativePathOfAssetFile,
+                    replacement: `(window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/${relativePathOfAssetFile}")`
+                });
 
-                fixedJsCode = replaceAll(
-                    fixedJsCode,
-                    `"${buildContext.urlPathname ?? "/"}${relativePathOfAssetFile}"`,
-                    `(window.kcContext["x-keycloakify"].resourcesPath + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/${relativePathOfAssetFile}")`
-                );
+                fixedJsCode = replaceJsStringLiteral({
+                    code: fixedJsCode,
+                    literal: `${buildContext.urlPathname ?? "/"}${relativePathOfAssetFile}`,
+                    replacement: `(window.kcContext["x-keycloakify"].resourcesPath + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/${relativePathOfAssetFile}")`
+                });
             });
     }
 
     return { fixedJsCode };
+}
+
+function escapeRegExp(str: string) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function replaceJsStringLiteral(params: {
+    code: string;
+    literal: string;
+    replacement: string;
+}) {
+    const { code, literal, replacement } = params;
+
+    const escapedLiteral = escapeRegExp(literal);
+
+    return code.replace(
+        new RegExp(
+            `(?:"${escapedLiteral}"|'${escapedLiteral}'|\`${escapedLiteral}\`)`,
+            "g"
+        ),
+        replacement
+    );
 }
