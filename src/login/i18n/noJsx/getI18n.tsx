@@ -219,8 +219,8 @@ export function createGetI18n<
 
         const { createI18nTranslationFunctions } = createI18nTranslationFunctionsFactory<MessageKey_themeDefined>({
             themeName: kcContext.themeName,
-            messages_themeDefined:
-                messagesByLanguageTag_themeDefined[currentLanguage.languageTag] ??
+            messages_themeDefined: messagesByLanguageTag_themeDefined[currentLanguage.languageTag],
+            messages_themeDefined_fallback:
                 messagesByLanguageTag_themeDefined[id<string>(FALLBACK_LANGUAGE_TAG) as LanguageTag] ??
                 (() => {
                     const firstLanguageTag = Object.keys(messagesByLanguageTag_themeDefined)[0];
@@ -304,9 +304,10 @@ export function createGetI18n<
 function createI18nTranslationFunctionsFactory<MessageKey_themeDefined extends string>(params: {
     themeName: string;
     messages_themeDefined: Record<MessageKey_themeDefined, string | Record<string, string>> | undefined;
+    messages_themeDefined_fallback: Record<MessageKey_themeDefined, string | Record<string, string>> | undefined;
     messages_fromKcServer: Record<string, string>;
 }) {
-    const { themeName, messages_themeDefined, messages_fromKcServer } = params;
+    const { themeName, messages_themeDefined, messages_themeDefined_fallback, messages_fromKcServer } = params;
 
     function createI18nTranslationFunctions(params: {
         messages_defaultSet_currentLanguage: Partial<Record<MessageKey_defaultSet, string>> | undefined;
@@ -318,24 +319,9 @@ function createI18nTranslationFunctionsFactory<MessageKey_themeDefined extends s
 
             const message =
                 id<Record<string, string | undefined>>(messages_fromKcServer)[key] ??
-                (() => {
-                    const messageOrMap = id<Record<string, string | Record<string, string> | undefined> | undefined>(messages_themeDefined)?.[key];
-
-                    if (messageOrMap === undefined) {
-                        return undefined;
-                    }
-
-                    if (typeof messageOrMap === "string") {
-                        return messageOrMap;
-                    }
-
-                    const message = messageOrMap[themeName];
-
-                    assert(message !== undefined, `No translation for theme variant "${themeName}" for key "${key}"`);
-
-                    return message;
-                })() ??
+                getThemeDefinedMessage(messages_themeDefined, key) ??
                 id<Record<string, string | undefined> | undefined>(messages_defaultSet_currentLanguage)?.[key] ??
+                getThemeDefinedMessage(messages_themeDefined_fallback, key) ??
                 id<Record<string, string | undefined>>(messages_defaultSet_fallbackLanguage)[key];
 
             if (message === undefined) {
@@ -364,6 +350,25 @@ function createI18nTranslationFunctionsFactory<MessageKey_themeDefined extends s
             });
 
             return messageWithArgsInjected;
+        }
+
+        // Retrieves a message for a certain key from the given set of theme-defined custom translations
+        function getThemeDefinedMessage(messages: Record<MessageKey_themeDefined, string | Record<string, string>> | undefined, key: string) {
+            const messageOrMap = id<Record<string, string | Record<string, string> | undefined> | undefined>(messages)?.[key];
+
+            if (messageOrMap === undefined) {
+                return undefined;
+            }
+
+            if (typeof messageOrMap === "string") {
+                return messageOrMap;
+            }
+
+            const message = messageOrMap[themeName];
+
+            assert(message !== undefined, `No translation for theme variant "${themeName}" for key "${key}"`);
+
+            return message;
         }
 
         function resolveMsgAdvanced(props: { key: string; args: (string | undefined)[] }): string {
