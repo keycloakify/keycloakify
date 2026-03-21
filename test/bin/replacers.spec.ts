@@ -1,8 +1,8 @@
+import { replaceImportsInCssCode } from "keycloakify/bin/keycloakify/replacers/replaceImportsInCssCode";
 import { replaceImportsInJsCode_vite } from "keycloakify/bin/keycloakify/replacers/replaceImportsInJsCode/vite";
 import { replaceImportsInJsCode_webpack } from "keycloakify/bin/keycloakify/replacers/replaceImportsInJsCode/webpack";
-import { replaceImportsInCssCode } from "keycloakify/bin/keycloakify/replacers/replaceImportsInCssCode";
-import { expect, it, describe } from "vitest";
 import { WELL_KNOWN_DIRECTORY_BASE_NAME } from "keycloakify/bin/shared/constants";
+import { describe, expect, it } from "vitest";
 
 describe("js replacer - vite", () => {
     it("replaceImportsInJsCode_vite - 1", () => {
@@ -217,6 +217,240 @@ describe("js replacer - vite", () => {
                         return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
                     }
                 `;
+
+            expect(isSameCode(fixedJsCode, fixedJsCodeExpected)).toBe(true);
+        }
+    });
+
+    it("replaceImportsInJsCode_vite - 6", () => {
+        const jsCodeUntransformed = `
+            S=\`/assets/keycloakify-logo-mqjydaoZ.png\`,H=(()=>{
+
+            function __vite__mapDeps(indexes) {
+                if (!__vite__mapDeps.viteFileDeps) {
+                    __vite__mapDeps.viteFileDeps = [\`assets/Login-dJpPRzM4.js\`, \`assets/index-XwzrZ5Gu.js\`]
+                }
+                return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
+            }
+        `;
+
+        for (const { projectBuildDirPath, assetsDirPath, systemType } of [
+            {
+                systemType: "posix",
+                projectBuildDirPath: "/Users/someone/github/keycloakify-starter/dist",
+                assetsDirPath: "/Users/someone/github/keycloakify-starter/dist/assets"
+            },
+            {
+                systemType: "win32",
+                projectBuildDirPath:
+                    "C:\\\\Users\\someone\\github\\keycloakify-starter\\dist",
+                assetsDirPath:
+                    "C:\\\\Users\\someone\\github\\keycloakify-starter\\dist\\assets"
+            }
+        ] as const) {
+            const { fixedJsCode } = replaceImportsInJsCode_vite({
+                jsCode: jsCodeUntransformed,
+                basenameOfAssetsFiles: [
+                    "Login-dJpPRzM4.js",
+                    "index-XwzrZ5Gu.js",
+                    "keycloakify-logo-mqjydaoZ.png"
+                ],
+                buildContext: {
+                    projectBuildDirPath,
+                    assetsDirPath,
+                    urlPathname: undefined
+                },
+                systemType
+            });
+
+            const fixedJsCodeExpected = `
+                S=(window.kcContext["x-keycloakify"].resourcesPath + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/assets/keycloakify-logo-mqjydaoZ.png"),H=(()=>{
+
+                function __vite__mapDeps(indexes) {
+                    if (!__vite__mapDeps.viteFileDeps) {
+                        __vite__mapDeps.viteFileDeps = [
+                            (window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/assets/Login-dJpPRzM4.js"),
+                            (window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/assets/index-XwzrZ5Gu.js")
+                        ]
+                    }
+                    return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
+                }
+            `;
+
+            expect(isSameCode(fixedJsCode, fixedJsCodeExpected)).toBe(true);
+        }
+    });
+    it("replaceImportsInJsCode_vite - 7", () => {
+        const jsCodeUntransformed = `
+            S=\`/foo-bar-baz/assets/keycloakify-logo-mqjydaoZ.png\`,H=(()=>{
+
+            function __vite__mapDeps(indexes) {
+                if (!__vite__mapDeps.viteFileDeps) {
+                    __vite__mapDeps.viteFileDeps = [\`assets/Login-dJpPRzM4.js\`, \`assets/index-XwzrZ5Gu.js\`]
+                }
+                return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
+            }
+        `;
+
+        for (const { projectBuildDirPath, assetsDirPath, systemType } of [
+            {
+                systemType: "posix",
+                projectBuildDirPath: "/Users/someone/github/keycloakify-starter/dist",
+                assetsDirPath: "/Users/someone/github/keycloakify-starter/dist/assets"
+            },
+            {
+                systemType: "win32",
+                projectBuildDirPath:
+                    "C:\\\\Users\\someone\\github\\keycloakify-starter\\dist",
+                assetsDirPath:
+                    "C:\\\\Users\\someone\\github\\keycloakify-starter\\dist\\assets"
+            }
+        ] as const) {
+            const { fixedJsCode } = replaceImportsInJsCode_vite({
+                jsCode: jsCodeUntransformed,
+                basenameOfAssetsFiles: [
+                    "Login-dJpPRzM4.js",
+                    "index-XwzrZ5Gu.js",
+                    "keycloakify-logo-mqjydaoZ.png"
+                ],
+                buildContext: {
+                    projectBuildDirPath,
+                    assetsDirPath,
+                    urlPathname: "/foo-bar-baz/"
+                },
+                systemType
+            });
+
+            const fixedJsCodeExpected = `
+                S=(window.kcContext["x-keycloakify"].resourcesPath + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/assets/keycloakify-logo-mqjydaoZ.png"),H=(()=>{
+
+                function __vite__mapDeps(indexes) {
+                    if (!__vite__mapDeps.viteFileDeps) {
+                        __vite__mapDeps.viteFileDeps = [
+                            (window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/assets/Login-dJpPRzM4.js"),
+                            (window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/assets/index-XwzrZ5Gu.js")
+                        ]
+                    }
+                    return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
+                }
+            `;
+
+            expect(isSameCode(fixedJsCode, fixedJsCodeExpected)).toBe(true);
+        }
+    });
+    it("replaceImportsInJsCode_vite - 8", () => {
+        const jsCodeUntransformed = `
+            S='/assets/keycloakify-logo-mqjydaoZ.png',H=(()=>{
+
+            function __vite__mapDeps(indexes) {
+                if (!__vite__mapDeps.viteFileDeps) {
+                    __vite__mapDeps.viteFileDeps = ['assets/Login-dJpPRzM4.js', 'assets/index-XwzrZ5Gu.js']
+                }
+                return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
+            }
+        `;
+
+        for (const { projectBuildDirPath, assetsDirPath, systemType } of [
+            {
+                systemType: "posix",
+                projectBuildDirPath: "/Users/someone/github/keycloakify-starter/dist",
+                assetsDirPath: "/Users/someone/github/keycloakify-starter/dist/assets"
+            },
+            {
+                systemType: "win32",
+                projectBuildDirPath:
+                    "C:\\\\Users\\someone\\github\\keycloakify-starter\\dist",
+                assetsDirPath:
+                    "C:\\\\Users\\someone\\github\\keycloakify-starter\\dist\\assets"
+            }
+        ] as const) {
+            const { fixedJsCode } = replaceImportsInJsCode_vite({
+                jsCode: jsCodeUntransformed,
+                basenameOfAssetsFiles: [
+                    "Login-dJpPRzM4.js",
+                    "index-XwzrZ5Gu.js",
+                    "keycloakify-logo-mqjydaoZ.png"
+                ],
+                buildContext: {
+                    projectBuildDirPath,
+                    assetsDirPath,
+                    urlPathname: undefined
+                },
+                systemType
+            });
+
+            const fixedJsCodeExpected = `
+                S=(window.kcContext["x-keycloakify"].resourcesPath + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/assets/keycloakify-logo-mqjydaoZ.png"),H=(()=>{
+
+                function __vite__mapDeps(indexes) {
+                    if (!__vite__mapDeps.viteFileDeps) {
+                        __vite__mapDeps.viteFileDeps = [
+                            (window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/assets/Login-dJpPRzM4.js"),
+                            (window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/assets/index-XwzrZ5Gu.js")
+                        ]
+                    }
+                    return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
+                }
+            `;
+
+            expect(isSameCode(fixedJsCode, fixedJsCodeExpected)).toBe(true);
+        }
+    });
+
+    it("replaceImportsInJsCode_vite - 9", () => {
+        const jsCodeUntransformed = `
+            S='/foo-bar-baz/assets/keycloakify-logo-mqjydaoZ.png',H=(()=>{
+
+            function __vite__mapDeps(indexes) {
+                if (!__vite__mapDeps.viteFileDeps) {
+                    __vite__mapDeps.viteFileDeps = ['assets/Login-dJpPRzM4.js', 'assets/index-XwzrZ5Gu.js']
+                }
+                return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
+            }
+        `;
+
+        for (const { projectBuildDirPath, assetsDirPath, systemType } of [
+            {
+                systemType: "posix",
+                projectBuildDirPath: "/Users/someone/github/keycloakify-starter/dist",
+                assetsDirPath: "/Users/someone/github/keycloakify-starter/dist/assets"
+            },
+            {
+                systemType: "win32",
+                projectBuildDirPath:
+                    "C:\\\\Users\\someone\\github\\keycloakify-starter\\dist",
+                assetsDirPath:
+                    "C:\\\\Users\\someone\\github\\keycloakify-starter\\dist\\assets"
+            }
+        ] as const) {
+            const { fixedJsCode } = replaceImportsInJsCode_vite({
+                jsCode: jsCodeUntransformed,
+                basenameOfAssetsFiles: [
+                    "Login-dJpPRzM4.js",
+                    "index-XwzrZ5Gu.js",
+                    "keycloakify-logo-mqjydaoZ.png"
+                ],
+                buildContext: {
+                    projectBuildDirPath,
+                    assetsDirPath,
+                    urlPathname: "/foo-bar-baz/"
+                },
+                systemType
+            });
+
+            const fixedJsCodeExpected = `
+                S=(window.kcContext["x-keycloakify"].resourcesPath + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/assets/keycloakify-logo-mqjydaoZ.png"),H=(()=>{
+
+                function __vite__mapDeps(indexes) {
+                    if (!__vite__mapDeps.viteFileDeps) {
+                        __vite__mapDeps.viteFileDeps = [
+                            (window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/assets/Login-dJpPRzM4.js"),
+                            (window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/assets/index-XwzrZ5Gu.js")
+                        ]
+                    }
+                    return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
+                }
+            `;
 
             expect(isSameCode(fixedJsCode, fixedJsCodeExpected)).toBe(true);
         }

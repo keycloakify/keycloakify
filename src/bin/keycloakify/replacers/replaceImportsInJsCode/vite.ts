@@ -82,41 +82,21 @@ export function replaceImportsInJsCode_vite(params: {
         basenameOfAssetsFiles
             .map(basenameOfAssetsFile => `${staticDir}${basenameOfAssetsFile}`)
             .forEach(relativePathOfAssetFile => {
-                fixedJsCode = replaceJsStringLiteral({
-                    code: fixedJsCode,
-                    literal: relativePathOfAssetFile,
-                    replacement: `(window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/${relativePathOfAssetFile}")`
-                });
+                for (const quoteSymbol of ['"', "'", "`"]) {
+                    fixedJsCode = replaceAll(
+                        fixedJsCode,
+                        `${quoteSymbol}${relativePathOfAssetFile}${quoteSymbol}`,
+                        `(window.kcContext["x-keycloakify"].resourcesPath.substring(1) + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/${relativePathOfAssetFile}")`
+                    );
 
-                fixedJsCode = replaceJsStringLiteral({
-                    code: fixedJsCode,
-                    literal: `${buildContext.urlPathname ?? "/"}${relativePathOfAssetFile}`,
-                    replacement: `(window.kcContext["x-keycloakify"].resourcesPath + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/${relativePathOfAssetFile}")`
-                });
+                    fixedJsCode = replaceAll(
+                        fixedJsCode,
+                        `${quoteSymbol}${buildContext.urlPathname ?? "/"}${relativePathOfAssetFile}${quoteSymbol}`,
+                        `(window.kcContext["x-keycloakify"].resourcesPath + "/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/${relativePathOfAssetFile}")`
+                    );
+                }
             });
     }
 
     return { fixedJsCode };
-}
-
-function escapeRegExp(str: string) {
-    return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-
-function replaceJsStringLiteral(params: {
-    code: string;
-    literal: string;
-    replacement: string;
-}) {
-    const { code, literal, replacement } = params;
-
-    const escapedLiteral = escapeRegExp(literal);
-
-    return code.replace(
-        new RegExp(
-            `(?:"${escapedLiteral}"|'${escapedLiteral}'|\`${escapedLiteral}\`)`,
-            "g"
-        ),
-        replacement
-    );
 }
