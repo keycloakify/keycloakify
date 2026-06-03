@@ -18,7 +18,7 @@ export function startViteDevServer(params: {
 
     console.log(chalk.blue(`$ npx vite dev`));
 
-    const child = child_process.spawn("npx", ["vite", "dev"], {
+    const child = child_process.spawn("npx vite dev", {
         cwd: buildContext.projectDirPath,
         env: {
             ...process.env,

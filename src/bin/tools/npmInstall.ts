@@ -98,10 +98,10 @@ async function runPackageManagerInstall(params: {
     const { packageManagerBinName, cwd } = params;
 
     const dCompleted = new Deferred<void>();
+    const packageManagerArguments = ["install", ...(packageManagerBinName !== "npm" ? [] : ["--force"])];
 
     const child = child_process.spawn(
-        packageManagerBinName,
-        ["install", ...(packageManagerBinName !== "npm" ? [] : ["--force"])],
+        packageManagerBinName + " " + packageManagerArguments.join(" "),
         {
             cwd,
             env: process.env,

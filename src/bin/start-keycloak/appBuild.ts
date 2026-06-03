@@ -152,7 +152,7 @@ export async function appBuild(params: {
 
         console.log(chalk.blue("$ npx vite build"));
 
-        const child = child_process.spawn("npx", ["vite", "build"], {
+        const child = child_process.spawn("npx vite build", {
             cwd: buildContext.projectDirPath,
             shell: true
         });

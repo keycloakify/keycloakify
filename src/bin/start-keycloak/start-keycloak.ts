@@ -621,8 +621,8 @@ export async function command(params: {
     );
 
     const child = child_process.spawn(
-        "docker",
-        ["run", ...dockerRunArgs.map(line => line.split(SPACE_PLACEHOLDER)).flat()],
+        "docker run " +
+        dockerRunArgs.map(line => line.split(SPACE_PLACEHOLDER)).flat().join(" "),
         { shell: true }
     );
 

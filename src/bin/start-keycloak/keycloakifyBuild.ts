@@ -22,7 +22,7 @@ export async function keycloakifyBuild(params: {
 
     console.log(chalk.blue("$ npx keycloakify build"));
 
-    const child = child_process.spawn("npx", ["keycloakify", "build"], {
+    const child = child_process.spawn("npx keycloakify build", {
         cwd: buildContext.projectDirPath,
         env: {
             ...process.env,
