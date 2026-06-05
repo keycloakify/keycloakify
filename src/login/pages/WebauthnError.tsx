@@ -15,6 +15,8 @@ export default function WebauthnError(props: PageProps<Extract<KcContext, { page
         classes
     });
 
+    const execution = getExecutionFromLoginAction(url.loginAction);
+
     return (
         <Template
             kcContext={kcContext}
@@ -34,7 +36,7 @@ export default function WebauthnError(props: PageProps<Extract<KcContext, { page
                     // @ts-expect-error: Trusted Keycloak's code
                     document.getElementById("isSetRetry").value = "retry";
                     // @ts-expect-error: Trusted Keycloak's code
-                    document.getElementById("executionValue").value = "${execution}";
+                    document.getElementById("executionValue").value = execution;
                     // @ts-expect-error: Trusted Keycloak's code
                     document.getElementById("kc-error-credential-form").requestSubmit();
                 }}
@@ -59,4 +61,10 @@ export default function WebauthnError(props: PageProps<Extract<KcContext, { page
             )}
         </Template>
     );
+}
+
+function getExecutionFromLoginAction(loginAction: string): string {
+    return new URL(loginAction, window.location.origin)
+        .searchParams
+        .get("execution") ?? "";
 }
