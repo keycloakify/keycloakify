@@ -31,14 +31,28 @@ export type KcContextLike = {
 
 assert<KcContext extends KcContextLike ? true : false>();
 
-export type ReturnTypeOfCreateGetI18n<MessageKey_themeDefined extends string, LanguageTag_notInDefaultSet extends string> = {
+export type ReturnTypeOfCreateGetI18n<
+    MessageKey_themeDefined extends string,
+    LanguageTag_notInDefaultSet extends string
+> = {
     getI18n: (params: { kcContext: KcContextLike }) => {
-        i18n: GenericI18n_noJsx<MessageKey_defaultSet | MessageKey_themeDefined, LanguageTag_defaultSet | LanguageTag_notInDefaultSet>;
+        i18n: GenericI18n_noJsx<
+            MessageKey_defaultSet | MessageKey_themeDefined,
+            LanguageTag_defaultSet | LanguageTag_notInDefaultSet
+        >;
         prI18n_currentLanguage:
-            | Promise<GenericI18n_noJsx<MessageKey_defaultSet | MessageKey_themeDefined, LanguageTag_defaultSet | LanguageTag_notInDefaultSet>>
+            | Promise<
+                  GenericI18n_noJsx<
+                      MessageKey_defaultSet | MessageKey_themeDefined,
+                      LanguageTag_defaultSet | LanguageTag_notInDefaultSet
+                  >
+              >
             | undefined;
     };
-    ofTypeI18n: GenericI18n_noJsx<MessageKey_defaultSet | MessageKey_themeDefined, LanguageTag_defaultSet | LanguageTag_notInDefaultSet>;
+    ofTypeI18n: GenericI18n_noJsx<
+        MessageKey_defaultSet | MessageKey_themeDefined,
+        LanguageTag_defaultSet | LanguageTag_notInDefaultSet
+    >;
 };
 
 export function createGetI18n<
@@ -49,7 +63,9 @@ export function createGetI18n<
     extraLanguageTranslations: {
         [languageTag in LanguageTag_notInDefaultSet]: {
             label: string;
-            getMessages: () => Promise<{ default: Record<MessageKey_defaultSet, string> }>;
+            getMessages: () => Promise<{
+                default: Record<MessageKey_defaultSet, string>;
+            }>;
         };
     };
     messagesByLanguageTag_themeDefined: Partial<{
@@ -61,7 +77,11 @@ export function createGetI18n<
     const { extraLanguageTranslations, messagesByLanguageTag_themeDefined } = params;
 
     Object.keys(extraLanguageTranslations).forEach(languageTag_notInDefaultSet => {
-        if (id<readonly string[]>(languageTags_defaultSet).includes(languageTag_notInDefaultSet)) {
+        if (
+            id<readonly string[]>(languageTags_defaultSet).includes(
+                languageTag_notInDefaultSet
+            )
+        ) {
             throw new Error(
                 [
                     `Language "${languageTag_notInDefaultSet}" is already in the default set, you don't need to provide your own base translations for it`,
@@ -94,10 +114,13 @@ export function createGetI18n<
             return cachedResult;
         }
 
-        const kcContextLocale = params.kcContext.realm.internationalizationEnabled ? params.kcContext.locale : undefined;
+        const kcContextLocale = params.kcContext.realm.internationalizationEnabled
+            ? params.kcContext.locale
+            : undefined;
 
         {
-            const currentLanguageTag = kcContextLocale?.currentLanguageTag ?? FALLBACK_LANGUAGE_TAG;
+            const currentLanguageTag =
+                kcContextLocale?.currentLanguageTag ?? FALLBACK_LANGUAGE_TAG;
             const html = document.querySelector("html");
             assert(html !== null);
             html.lang = currentLanguageTag;
@@ -163,13 +186,17 @@ export function createGetI18n<
                     break from_server;
                 }
 
-                const supportedEntry = kcContextLocale.supported.find(entry => entry.languageTag === languageTag);
+                const supportedEntry = kcContextLocale.supported.find(
+                    entry => entry.languageTag === languageTag
+                );
 
                 if (supportedEntry === undefined) {
                     break from_server;
                 }
 
-                const lastParenthesisContent = extractLastParenthesisContent(supportedEntry.label);
+                const lastParenthesisContent = extractLastParenthesisContent(
+                    supportedEntry.label
+                );
 
                 if (lastParenthesisContent !== undefined) {
                     return lastParenthesisContent;
@@ -183,7 +210,9 @@ export function createGetI18n<
         };
 
         const currentLanguage: I18n["currentLanguage"] = (() => {
-            const languageTag = id<string>(kcContextLocale?.currentLanguageTag ?? FALLBACK_LANGUAGE_TAG) as LanguageTag;
+            const languageTag = id<string>(
+                kcContextLocale?.currentLanguageTag ?? FALLBACK_LANGUAGE_TAG
+            ) as LanguageTag;
 
             return {
                 languageTag,
@@ -206,7 +235,11 @@ export function createGetI18n<
                 }
             }
 
-            if (enabledLanguages.find(({ languageTag }) => languageTag === currentLanguage.languageTag) === undefined) {
+            if (
+                enabledLanguages.find(
+                    ({ languageTag }) => languageTag === currentLanguage.languageTag
+                ) === undefined
+            ) {
                 enabledLanguages.push({
                     languageTag: currentLanguage.languageTag,
                     label: getLanguageLabel(currentLanguage.languageTag),
@@ -217,29 +250,39 @@ export function createGetI18n<
             return enabledLanguages;
         })();
 
-        const { createI18nTranslationFunctions } = createI18nTranslationFunctionsFactory<MessageKey_themeDefined>({
-            themeName: kcContext.themeName,
-            messages_themeDefined:
-                messagesByLanguageTag_themeDefined[currentLanguage.languageTag] ??
-                messagesByLanguageTag_themeDefined[id<string>(FALLBACK_LANGUAGE_TAG) as LanguageTag] ??
-                (() => {
-                    const firstLanguageTag = Object.keys(messagesByLanguageTag_themeDefined)[0];
-                    if (firstLanguageTag === undefined) {
-                        return undefined;
-                    }
-                    return messagesByLanguageTag_themeDefined[firstLanguageTag as LanguageTag];
-                })(),
-            messages_fromKcServer: kcContext["x-keycloakify"].messages
-        });
+        const { createI18nTranslationFunctions } =
+            createI18nTranslationFunctionsFactory<MessageKey_themeDefined>({
+                themeName: kcContext.themeName,
+                messages_themeDefined:
+                    messagesByLanguageTag_themeDefined[currentLanguage.languageTag] ??
+                    messagesByLanguageTag_themeDefined[
+                        id<string>(FALLBACK_LANGUAGE_TAG) as LanguageTag
+                    ] ??
+                    (() => {
+                        const firstLanguageTag = Object.keys(
+                            messagesByLanguageTag_themeDefined
+                        )[0];
+                        if (firstLanguageTag === undefined) {
+                            return undefined;
+                        }
+                        return messagesByLanguageTag_themeDefined[
+                            firstLanguageTag as LanguageTag
+                        ];
+                    })(),
+                messages_fromKcServer: kcContext["x-keycloakify"].messages
+            });
 
-        const isCurrentLanguageFallbackLanguage = currentLanguage.languageTag === FALLBACK_LANGUAGE_TAG;
+        const isCurrentLanguageFallbackLanguage =
+            currentLanguage.languageTag === FALLBACK_LANGUAGE_TAG;
 
         const result: Result = {
             i18n: {
                 currentLanguage,
                 enabledLanguages,
                 ...createI18nTranslationFunctions({
-                    messages_defaultSet_currentLanguage: isCurrentLanguageFallbackLanguage ? messages_defaultSet_fallbackLanguage : undefined
+                    messages_defaultSet_currentLanguage: isCurrentLanguageFallbackLanguage
+                        ? messages_defaultSet_fallbackLanguage
+                        : undefined
                 }),
                 isFetchingTranslations: !isCurrentLanguageFallbackLanguage
             },
@@ -249,7 +292,8 @@ export function createGetI18n<
                       const messages_defaultSet_currentLanguage = await (async () => {
                           const currentLanguageTag = currentLanguage.languageTag;
 
-                          const fromDefaultSet = await fetchMessages_defaultSet(currentLanguageTag);
+                          const fromDefaultSet =
+                              await fetchMessages_defaultSet(currentLanguageTag);
 
                           const isEmpty = (() => {
                               for (let _key in fromDefaultSet) {
@@ -260,13 +304,19 @@ export function createGetI18n<
                           })();
 
                           if (isEmpty) {
-                              assert(is<Exclude<LanguageTag, LanguageTag_defaultSet>>(currentLanguageTag));
+                              assert(
+                                  is<Exclude<LanguageTag, LanguageTag_defaultSet>>(
+                                      currentLanguageTag
+                                  )
+                              );
 
                               const entry = extraLanguageTranslations[currentLanguageTag];
 
                               assert(entry !== undefined);
 
-                              return entry.getMessages().then(({ default: messages }) => messages);
+                              return entry
+                                  .getMessages()
+                                  .then(({ default: messages }) => messages);
                           }
 
                           return fromDefaultSet;
@@ -275,7 +325,9 @@ export function createGetI18n<
                       const i18n_currentLanguage: I18n = {
                           currentLanguage,
                           enabledLanguages,
-                          ...createI18nTranslationFunctions({ messages_defaultSet_currentLanguage }),
+                          ...createI18nTranslationFunctions({
+                              messages_defaultSet_currentLanguage
+                          }),
                           isFetchingTranslations: false
                       };
 
@@ -301,25 +353,40 @@ export function createGetI18n<
     };
 }
 
-function createI18nTranslationFunctionsFactory<MessageKey_themeDefined extends string>(params: {
+function createI18nTranslationFunctionsFactory<
+    MessageKey_themeDefined extends string
+>(params: {
     themeName: string;
-    messages_themeDefined: Record<MessageKey_themeDefined, string | Record<string, string>> | undefined;
+    messages_themeDefined:
+        | Record<MessageKey_themeDefined, string | Record<string, string>>
+        | undefined;
     messages_fromKcServer: Record<string, string>;
 }) {
     const { themeName, messages_themeDefined, messages_fromKcServer } = params;
 
     function createI18nTranslationFunctions(params: {
-        messages_defaultSet_currentLanguage: Partial<Record<MessageKey_defaultSet, string>> | undefined;
-    }): Pick<GenericI18n_noJsx<MessageKey_defaultSet | MessageKey_themeDefined, string>, "msgStr" | "advancedMsgStr"> {
+        messages_defaultSet_currentLanguage:
+            | Partial<Record<MessageKey_defaultSet, string>>
+            | undefined;
+    }): Pick<
+        GenericI18n_noJsx<MessageKey_defaultSet | MessageKey_themeDefined, string>,
+        "msgStr" | "advancedMsgStr"
+    > {
         const { messages_defaultSet_currentLanguage } = params;
 
-        function resolveMsg(props: { key: string; args: (string | undefined)[] }): string | undefined {
+        function resolveMsg(props: {
+            key: string;
+            args: (string | undefined)[];
+        }): string | undefined {
             const { key, args } = props;
 
             const message =
                 id<Record<string, string | undefined>>(messages_fromKcServer)[key] ??
                 (() => {
-                    const messageOrMap = id<Record<string, string | Record<string, string> | undefined> | undefined>(messages_themeDefined)?.[key];
+                    const messageOrMap = id<
+                        | Record<string, string | Record<string, string> | undefined>
+                        | undefined
+                    >(messages_themeDefined)?.[key];
 
                     if (messageOrMap === undefined) {
                         return undefined;
@@ -331,12 +398,19 @@ function createI18nTranslationFunctionsFactory<MessageKey_themeDefined extends s
 
                     const message = messageOrMap[themeName];
 
-                    assert(message !== undefined, `No translation for theme variant "${themeName}" for key "${key}"`);
+                    assert(
+                        message !== undefined,
+                        `No translation for theme variant "${themeName}" for key "${key}"`
+                    );
 
                     return message;
                 })() ??
-                id<Record<string, string | undefined> | undefined>(messages_defaultSet_currentLanguage)?.[key] ??
-                id<Record<string, string | undefined>>(messages_defaultSet_fallbackLanguage)[key];
+                id<Record<string, string | undefined> | undefined>(
+                    messages_defaultSet_currentLanguage
+                )?.[key] ??
+                id<Record<string, string | undefined>>(
+                    messages_defaultSet_fallbackLanguage
+                )[key];
 
             if (message === undefined) {
                 return undefined;
@@ -360,13 +434,19 @@ function createI18nTranslationFunctionsFactory<MessageKey_themeDefined extends s
                     return;
                 }
 
-                messageWithArgsInjected = messageWithArgsInjected.replace(new RegExp(`\\{${i + startIndex}\\}`, "g"), arg);
+                messageWithArgsInjected = messageWithArgsInjected.replace(
+                    new RegExp(`\\{${i + startIndex}\\}`, "g"),
+                    arg
+                );
             });
 
             return messageWithArgsInjected;
         }
 
-        function resolveMsgAdvanced(props: { key: string; args: (string | undefined)[] }): string {
+        function resolveMsgAdvanced(props: {
+            key: string;
+            args: (string | undefined)[];
+        }): string {
             const { key, args } = props;
 
             const match = key.match(/^\$\{(.+)\}$/);
@@ -377,7 +457,10 @@ function createI18nTranslationFunctionsFactory<MessageKey_themeDefined extends s
         return {
             msgStr: (key, ...args) => {
                 const resolvedMessage = resolveMsg({ key, args });
-                assert(resolvedMessage !== undefined, `Message with key "${key}" not found`);
+                assert(
+                    resolvedMessage !== undefined,
+                    `Message with key "${key}" not found`
+                );
                 return resolvedMessage;
             },
             advancedMsgStr: (key, ...args) => resolveMsgAdvanced({ key, args })
