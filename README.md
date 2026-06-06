@@ -147,6 +147,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/LennartMart"><img src="https://avatars.githubusercontent.com/u/1591933?v=4?s=100" width="100px;" alt="LennartMart"/><br /><sub><b>LennartMart</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=LennartMart" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://federicobartoli.it/"><img src="https://avatars.githubusercontent.com/u/27234034?v=4?s=100" width="100px;" alt="Federico Bartoli"/><br /><sub><b>Federico Bartoli</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=federicobartoli" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://www.oussemasahbeni.com"><img src="https://avatars.githubusercontent.com/u/104161749?v=4?s=100" width="100px;" alt="Oussema Sahbeni"/><br /><sub><b>Oussema Sahbeni</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=Oussemasahbeni" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Lexachoc"><img src="https://avatars.githubusercontent.com/u/20377719?v=4?s=100" width="100px;" alt="Ya-Fan Chen"/><br /><sub><b>Ya-Fan Chen</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=Lexachoc" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
