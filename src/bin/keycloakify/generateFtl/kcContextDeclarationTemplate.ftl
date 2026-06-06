@@ -360,7 +360,8 @@ function decodeHtmlEntities(htmlStr){
                     )
                 ) || (
                     key == "execution" &&
-                    areSamePath(path, [])
+                    areSamePath(path, []) &&
+                    xKeycloakify.pageId != "webauthn-error.ftl"
                 ) || (
                     key == "entity" &&
                     areSamePath(path, ["user"])

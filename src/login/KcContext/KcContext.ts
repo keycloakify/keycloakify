@@ -612,6 +612,7 @@ export declare namespace KcContext {
     export type WebauthnError = Common & {
         pageId: "webauthn-error.ftl";
         isAppInitiatedAction?: boolean;
+        execution: string;
     };
 
     export type LoginPasskeysConditionalAuthenticate = Common & {

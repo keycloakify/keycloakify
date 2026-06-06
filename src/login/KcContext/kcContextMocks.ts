@@ -614,7 +614,8 @@ export const kcContextMocks = [
     id<KcContext.WebauthnError>({
         pageId: "webauthn-error.ftl",
         ...kcContextCommonMock,
-        isAppInitiatedAction: true
+        isAppInitiatedAction: true,
+        execution: "a2b85f17-3c8e-4e39-a1e5-bb4d6aef11e7"
     }),
     id<KcContext.LoginPasskeysConditionalAuthenticate>({
         pageId: "login-passkeys-conditional-authenticate.ftl",

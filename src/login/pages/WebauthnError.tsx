@@ -6,7 +6,7 @@ import type { I18n } from "../i18n";
 export default function WebauthnError(props: PageProps<Extract<KcContext, { pageId: "webauthn-error.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
-    const { url, isAppInitiatedAction } = kcContext;
+    const { url, isAppInitiatedAction, execution } = kcContext;
 
     const { msg, msgStr } = i18n;
 
@@ -34,7 +34,7 @@ export default function WebauthnError(props: PageProps<Extract<KcContext, { page
                     // @ts-expect-error: Trusted Keycloak's code
                     document.getElementById("isSetRetry").value = "retry";
                     // @ts-expect-error: Trusted Keycloak's code
-                    document.getElementById("executionValue").value = "${execution}";
+                    document.getElementById("executionValue").value = execution;
                     // @ts-expect-error: Trusted Keycloak's code
                     document.getElementById("kc-error-credential-form").requestSubmit();
                 }}
