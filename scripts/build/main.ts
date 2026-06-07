@@ -63,26 +63,6 @@ import { patchJsxElement } from "./patchJsxElement";
 
     fs.rmSync(join("dist", "ncc_out"), { recursive: true });
 
-    {
-        let hasBeenPatched = false;
-
-        fs.readdirSync(join("dist", "bin")).forEach(fileBasename => {
-            if (fileBasename !== "main.js" && !fileBasename.endsWith(".index.js")) {
-                return;
-            }
-
-            const { hasBeenPatched: hasBeenPatched_i } = patchDeprecatedBufferApiUsage(
-                join("dist", "bin", fileBasename)
-            );
-
-            if (hasBeenPatched_i) {
-                hasBeenPatched = true;
-            }
-        });
-
-        assert(hasBeenPatched);
-    }
-
     run(`npx tsc -p ${join("src", "tsconfig.json")}`);
     run(`npx tsc-alias -p ${join("src", "tsconfig.json")}`);
     vendorFrontendDependencies({ distDirPath: join(process.cwd(), "dist") });
@@ -175,18 +155,3 @@ import { patchJsxElement } from "./patchJsxElement";
         chalk.green(`✓ built in ${((Date.now() - startTime) / 1000).toFixed(2)}s`)
     );
 })();
-
-function patchDeprecatedBufferApiUsage(filePath: string) {
-    const before = fs.readFileSync(filePath).toString("utf8");
-
-    const after = before.replace(
-        `var buffer = new Buffer(toRead);`,
-        `var buffer = Buffer.allocUnsafe ? Buffer.allocUnsafe(toRead) : new Buffer(toRead);`
-    );
-
-    fs.writeFileSync(filePath, Buffer.from(after, "utf8"));
-
-    const hasBeenPatched = after !== before;
-
-    return { hasBeenPatched };
-}

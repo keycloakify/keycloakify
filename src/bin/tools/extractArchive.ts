@@ -2,9 +2,20 @@ import fs from "fs/promises";
 import fsSync from "fs";
 import yauzl from "yauzl";
 import stream from "stream";
-import { Deferred } from "evt/tools/Deferred";
 import { dirname as pathDirname, sep as pathSep } from "path";
 import { existsAsync } from "./fs.existsAsync";
+
+type ZipFileWithPromises = yauzl.ZipFile & {
+    eachEntry: () => AsyncIterable<yauzl.Entry>;
+    openReadStreamPromise: (
+        entry: yauzl.Entry,
+        options?: yauzl.ZipFileOptions
+    ) => Promise<stream.Readable>;
+};
+
+type YauzlWithPromises = typeof yauzl & {
+    openPromise: (path: string, options?: yauzl.Options) => Promise<ZipFileWithPromises>;
+};
 
 export async function extractArchive(params: {
     archiveFilePath: string;
@@ -18,22 +29,7 @@ export async function extractArchive(params: {
 }) {
     const { archiveFilePath, onArchiveFile } = params;
 
-    const zipFile = await new Promise<yauzl.ZipFile>((resolve, reject) => {
-        yauzl.open(archiveFilePath, { lazyEntries: true }, async (error, zipFile) => {
-            if (error) {
-                reject(error);
-                return;
-            }
-            resolve(zipFile);
-        });
-    });
-
-    const dDone = new Deferred<void>();
-
-    zipFile.once("end", () => {
-        zipFile.close();
-        dDone.resolve();
-    });
+    const zipFile = await (yauzl as YauzlWithPromises).openPromise(archiveFilePath);
 
     const writeFile = async (
         entry: yauzl.Entry,
@@ -57,56 +53,39 @@ export async function extractArchive(params: {
             return;
         }
 
-        const readStream = await new Promise<stream.Readable>(resolve =>
-            zipFile.openReadStream(entry, async (error, readStream) => {
+        const readStream = await zipFile.openReadStreamPromise(entry);
+
+        await new Promise<void>((resolve, reject) => {
+            stream.pipeline(readStream, fsSync.createWriteStream(filePath), error => {
                 if (error) {
-                    dDone.reject(error);
+                    reject(error);
                     return;
                 }
 
-                resolve(readStream);
-            })
-        );
-
-        const dDoneWithFile = new Deferred<void>();
-
-        stream.pipeline(readStream, fsSync.createWriteStream(filePath), error => {
-            if (error) {
-                dDone.reject(error);
-                return;
-            }
-
-            dDoneWithFile.resolve();
+                resolve();
+            });
         });
-
-        await dDoneWithFile.pr;
     };
 
-    const readFile = (entry: yauzl.Entry) =>
-        new Promise<Buffer>(resolve =>
-            zipFile.openReadStream(entry, async (error, readStream) => {
-                if (error) {
-                    dDone.reject(error);
-                    return;
-                }
+    const readFile = async (entry: yauzl.Entry) => {
+        const readStream = await zipFile.openReadStreamPromise(entry);
 
-                const chunks: Buffer[] = [];
+        return new Promise<Buffer>((resolve, reject) => {
+            const chunks: Buffer[] = [];
 
-                readStream.on("data", chunk => {
-                    chunks.push(chunk);
-                });
+            readStream.on("data", chunk => {
+                chunks.push(chunk);
+            });
 
-                readStream.on("end", () => {
-                    resolve(Buffer.concat(chunks));
-                });
+            readStream.on("end", () => {
+                resolve(Buffer.concat(chunks));
+            });
 
-                readStream.on("error", error => {
-                    dDone.reject(error);
-                });
-            })
-        );
+            readStream.on("error", reject);
+        });
+    };
 
-    zipFile.on("entry", async (entry: yauzl.Entry) => {
+    for await (const entry of zipFile.eachEntry()) {
         handle_file: {
             // NOTE: Skip directories
             if (entry.fileName.endsWith("/")) {
@@ -126,15 +105,8 @@ export async function extractArchive(params: {
 
             if (hasEarlyExitBeenCalled) {
                 zipFile.close();
-                dDone.resolve();
                 return;
             }
         }
-
-        zipFile.readEntry();
-    });
-
-    zipFile.readEntry();
-
-    await dDone.pr;
+    }
 }
