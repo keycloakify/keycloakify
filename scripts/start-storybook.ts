@@ -6,7 +6,7 @@ import { run } from "./shared/run";
     run("yarn build");
 
     {
-        const child = child_process.spawn("npx", ["start-storybook", "-p", "6006"], {
+        const child = child_process.spawn("npx start-storybook -p 6006", {
             shell: true
         });
 

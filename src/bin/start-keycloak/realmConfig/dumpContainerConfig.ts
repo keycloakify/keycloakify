@@ -52,27 +52,24 @@ export async function dumpContainerConfig(params: {
 
     {
         const dCompleted = new Deferred<void>();
+        const dockerArguments = [
+            ...["exec", CONTAINER_NAME],
+            ...["/opt/keycloak/bin/kc.sh", "export"],
+            ...["--dir", "/tmp"],
+            ...["--realm", realmName],
+            ...["--users", "realm_file"],
+            ...(!doesUseLockedH2Database
+                ? []
+                : [
+                        ...["--db", "dev-file"],
+                        ...[
+                            "--db-url",
+                            '"jdbc:h2:file:/tmp/h2/keycloakdb;NON_KEYWORDS=VALUE"'
+                        ]
+                    ])
+        ];
 
-        const child = child_process.spawn(
-            "docker",
-            [
-                ...["exec", CONTAINER_NAME],
-                ...["/opt/keycloak/bin/kc.sh", "export"],
-                ...["--dir", "/tmp"],
-                ...["--realm", realmName],
-                ...["--users", "realm_file"],
-                ...(!doesUseLockedH2Database
-                    ? []
-                    : [
-                          ...["--db", "dev-file"],
-                          ...[
-                              "--db-url",
-                              '"jdbc:h2:file:/tmp/h2/keycloakdb;NON_KEYWORDS=VALUE"'
-                          ]
-                      ])
-            ],
-            { shell: true }
-        );
+        const child = child_process.spawn("docker " + dockerArguments.join(" "), { shell: true });
 
         let output = "";
 
