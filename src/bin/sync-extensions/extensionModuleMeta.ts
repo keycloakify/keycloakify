@@ -319,7 +319,7 @@ export async function getExtensionModuleMetas(params: {
                                 }
                             }
 
-                            fsPr.writeFile(copyableFilePath, sourceCode);
+                            await fsPr.writeFile(copyableFilePath, sourceCode);
 
                             files.push({
                                 isPublic,

@@ -1,5 +1,5 @@
 import { maybeDelegateCommandToCustomHandler } from "./shared/customHandler_delegate";
-import { dirname as pathDirname, join as pathJoin } from "path";
+import { dirname as pathDirname, join as pathJoin, sep as pathSep } from "path";
 import type { BuildContext } from "./shared/buildContext";
 import * as fs from "fs/promises";
 import { assert, is, type Equals } from "tsafe/assert";
@@ -12,6 +12,7 @@ import { z } from "zod";
 import chalk from "chalk";
 import cliSelect from "cli-select";
 import { existsAsync } from "./tools/fs.existsAsync";
+import { getExtensionModuleMetas } from "./sync-extensions/extensionModuleMeta";
 
 export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
@@ -183,6 +184,23 @@ export async function command(params: { buildContext: BuildContext }) {
         }
 
         const moduleName = "@keycloakify/login-ui-storybook";
+
+        const extensionModuleMetas = await getExtensionModuleMetas({ buildContext });
+
+        const hasLoginStoriesProvidedFromOtherModule =
+            extensionModuleMetas.find(
+                meta =>
+                    meta.files.find(
+                        file =>
+                            file.fileRelativePath.startsWith(
+                                ["login", "pages"].join(pathSep)
+                            ) && file.copyableFilePath.endsWith("stories.tsx")
+                    ) !== undefined
+            ) !== undefined;
+
+        if (hasLoginStoriesProvidedFromOtherModule) {
+            break install_stories;
+        }
 
         const latestVersion = getModuleLatestVersion({ moduleName });
 
