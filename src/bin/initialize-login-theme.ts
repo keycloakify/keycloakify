@@ -108,8 +108,8 @@ export async function command(params: { buildContext: BuildContext }) {
         (parsedPackageJson.scripts ??= {})["storybook"] = "storybook dev -p 6006";
         parsedPackageJson.scripts["build-storybook"] = "storybook build";
 
-        (parsedPackageJson.devDependencies ??= {})["storybook"] = "^9.0.4";
-        parsedPackageJson.devDependencies["@storybook/react-vite"] = "^9.0.4";
+        (parsedPackageJson.devDependencies ??= {})["storybook"] = "^10.4.2";
+        parsedPackageJson.devDependencies["@storybook/react-vite"] = "^10.4.2";
 
         const files: { relativeFilePath: string; fileContent: string }[] = [
             {
