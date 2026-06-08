@@ -12,6 +12,7 @@ import { z } from "zod";
 import chalk from "chalk";
 import cliSelect from "cli-select";
 import { existsAsync } from "./tools/fs.existsAsync";
+import { getExtensionModuleMetas } from "./sync-extensions/extensionModuleMeta";
 
 export async function command(params: { buildContext: BuildContext }) {
     const { buildContext } = params;
@@ -183,6 +184,10 @@ export async function command(params: { buildContext: BuildContext }) {
         }
 
         const moduleName = "@keycloakify/login-ui-storybook";
+
+        const extensionModuleMetas = await getExtensionModuleMetas({ buildContext });
+
+        console.log(JSON.stringify(extensionModuleMetas, null, 2));
 
         const latestVersion = getModuleLatestVersion({ moduleName });
 
