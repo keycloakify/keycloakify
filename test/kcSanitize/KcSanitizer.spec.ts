@@ -149,7 +149,7 @@ describe("KeycloakSanitizerMethod", () => {
         html =
             '<a href="https://www.example.org/terms-of-service" target="_blank">Link text</a>';
         assertResult(
-            '<a target="_blank" href="https://www.example.org/terms-of-service" rel="nofollow">Link text</a>',
+            '<a href="https://www.example.org/terms-of-service" target="_blank" rel="nofollow">Link text</a>',
             html
         );
 
@@ -166,7 +166,7 @@ describe("KeycloakSanitizerMethod", () => {
             html
         );
     });
-  
+
     it("should remove non whitelisted tag without attribute", () => {
         let html = "";
         html = `<a>Tag should be removed</a>`;
