@@ -77,6 +77,15 @@ program
         }
     });
 
+program.command({ name: "generate-resources", description: "Generate resources" }).task({
+    skip,
+    handler: async cliCommandOptions => {
+        const { command } = await import("./keycloakify/keycloakifyext");
+
+        await command({ cliCommandOptions });
+    }
+});
+
 program
     .command<{
         port: number | undefined;
