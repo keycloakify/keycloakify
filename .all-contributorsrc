@@ -508,6 +508,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "xremming",
+      "name": "Maximilian Remming",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7122178?v=4",
+      "profile": "http://remming.fi",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
