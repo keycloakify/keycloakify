@@ -112,6 +112,7 @@ export class HtmlPolicyBuilder {
         this.allowedProtocols.add("http");
         this.allowedProtocols.add("https");
         this.allowedProtocols.add("mailto");
+        this.allowedProtocols.add("tel");
         return this;
     }
 
@@ -251,7 +252,26 @@ export class HtmlPolicyBuilder {
     }
 
     private getAllowedUriRegexp(): RegExp {
-        const protocols = Array.from(this.allowedProtocols).join("|");
-        return new RegExp(`^(?:${protocols})://`, "i");
+        // Protocols like `mailto:` and `tel:` use a `scheme:opaque` form without
+        // the `//` authority, so they must be matched separately from network
+        // protocols such as `http://` and `https://`.
+        const schemeOnlyProtocols = new Set(["mailto", "tel"]);
+        const allowed = Array.from(this.allowedProtocols);
+        const withAuthority = allowed.filter(p => !schemeOnlyProtocols.has(p));
+        const schemeOnly = allowed.filter(p => schemeOnlyProtocols.has(p));
+        const alternatives: string[] = [];
+        if (withAuthority.length) {
+            alternatives.push(`(?:${withAuthority.join("|")})://`);
+        }
+        if (schemeOnly.length) {
+            alternatives.push(`(?:${schemeOnly.join("|")}):`);
+        }
+        if (alternatives.length === 0) {
+            // With no allowed protocols an empty alternation would match the
+            // start of every string, permissively allowing all URIs, so match
+            // nothing instead.
+            return new RegExp("^$");
+        }
+        return new RegExp(`^(?:${alternatives.join("|")})`, "i");
     }
 }
