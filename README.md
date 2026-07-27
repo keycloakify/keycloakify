@@ -149,6 +149,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://www.oussemasahbeni.com"><img src="https://avatars.githubusercontent.com/u/104161749?v=4?s=100" width="100px;" alt="Oussema Sahbeni"/><br /><sub><b>Oussema Sahbeni</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=Oussemasahbeni" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/githrdw"><img src="https://avatars.githubusercontent.com/u/1455140?v=4?s=100" width="100px;" alt="githrdw"/><br /><sub><b>githrdw</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=githrdw" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/whawker"><img src="https://avatars.githubusercontent.com/u/2003804?v=4?s=100" width="100px;" alt="Will Hawker"/><br /><sub><b>Will Hawker</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=whawker" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Sorry"><img src="https://avatars.githubusercontent.com/u/43435134?v=4?s=100" width="100px;" alt="danny hogan"/><br /><sub><b>danny hogan</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/pulls?q=is%3Apr+reviewed-by%3ASorry" title="Reviewed Pull Requests">👀</a></td>
     </tr>
   </tbody>
 </table>
