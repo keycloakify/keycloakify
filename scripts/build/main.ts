@@ -112,6 +112,34 @@ import { patchJsxElement } from "./patchJsxElement";
 
     fs.rmSync(join("dist", "ncc_out"), { recursive: true });
 
+    // Flat `dist/api.js`, not `dist/api/index.js`: Node's ESM loader doesn't resolve
+    // directory imports (ERR_UNSUPPORTED_DIR_IMPORT).
+    {
+        const stagingDirPath = join("dist", "api");
+
+        fs.rmSync(stagingDirPath, { recursive: true, force: true });
+
+        run(`npx tsc -p ${join("src", "api", "tsconfig.json")}`);
+
+        run(
+            `npx ncc build ${join(stagingDirPath, "index.js")} --external prettier -o ${join(
+                "dist",
+                "ncc_out"
+            )}`
+        );
+
+        // A flat entry point can't reference sibling chunks.
+        fs.readdirSync(join("dist", "ncc_out")).forEach(fileBasename => {
+            assert(fileBasename === "index.js");
+        });
+
+        fs.cpSync(join("dist", "ncc_out", "index.js"), join("dist", "api.js"));
+        fs.cpSync(join(stagingDirPath, "index.d.ts"), join("dist", "api.d.ts"));
+
+        fs.rmSync(join("dist", "ncc_out"), { recursive: true });
+        fs.rmSync(stagingDirPath, { recursive: true });
+    }
+
     {
         const dirBasename = "src";
 

@@ -3,7 +3,7 @@ import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path
 import * as child_process from "child_process";
 import * as fs from "fs";
 import type { BuildContext } from "../shared/buildContext";
-import { VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES } from "../shared/constants";
+import { runPostBuildScript } from "./runPostBuildScript";
 import { buildJars } from "./buildJars";
 import chalk from "chalk";
 import { readThisNpmPackageVersion } from "../tools/readThisNpmPackageVersion";
@@ -98,24 +98,10 @@ export async function command(params: { buildContext: BuildContext }) {
         buildContext
     });
 
-    run_post_build_script: {
-        if (buildContext.bundler !== "vite") {
-            break run_post_build_script;
-        }
-
-        child_process.execSync("npx vite", {
-            cwd: buildContext.projectDirPath,
-            env: {
-                ...process.env,
-                [VITE_PLUGIN_SUB_SCRIPTS_ENV_NAMES.RUN_POST_BUILD_SCRIPT]: JSON.stringify(
-                    {
-                        resourcesDirPath,
-                        buildContext
-                    }
-                )
-            }
-        });
-    }
+    runPostBuildScript({
+        resourcesDirPath,
+        buildContext
+    });
 
     await buildJars({
         resourcesDirPath,

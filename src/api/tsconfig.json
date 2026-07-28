@@ -1,0 +1,20 @@
+{
+    "extends": "../../tsproject.json",
+    "compilerOptions": {
+        // Load bearing: from ESM input, ncc exposes the exports through webpack
+        // getters that cjs-module-lexer can't see, breaking named ESM imports.
+        "module": "CommonJS",
+        "target": "ES2019",
+        "esModuleInterop": true,
+        "lib": ["es2019", "es2020.bigint", "es2020.string", "es2020.symbol.wellknown"],
+        "outDir": "../../dist/api",
+        "rootDir": ".",
+        "skipLibCheck": true,
+        "sourceMap": false
+    },
+    "references": [
+        {
+            "path": "../bin"
+        }
+    ]
+}
