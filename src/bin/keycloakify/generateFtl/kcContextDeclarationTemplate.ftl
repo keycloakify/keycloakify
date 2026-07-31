@@ -124,6 +124,56 @@ redirect_to_dev_server: {
 
 }
 
+// See: https://github.com/keycloakify/keycloakify/issues/1044
+normalize_current_language_tag: {
+    const locale = kcContext.locale;
+
+    if( !locale ){
+        break normalize_current_language_tag;
+    }
+
+    const currentLanguageTag = locale.currentLanguageTag;
+    const supported = locale.supported;
+
+    if( typeof currentLanguageTag !== "string" || !Array.isArray(supported) ){
+        break normalize_current_language_tag;
+    }
+
+    const supportedLanguageTags = supported
+        .map(function(supportedLocale){
+            return supportedLocale && supportedLocale.languageTag;
+        })
+        .filter(function(languageTag){
+            return typeof languageTag === "string";
+        });
+
+    if( supportedLanguageTags.indexOf(currentLanguageTag) !== -1 ){
+        break normalize_current_language_tag;
+    }
+
+    const normalizedCurrentLanguageTag = currentLanguageTag
+        .toLowerCase()
+        .replace(/_/g, "-");
+    const matchingLanguageTags = supportedLanguageTags.filter(function(languageTag){
+        return languageTag.toLowerCase().replace(/_/g, "-") === normalizedCurrentLanguageTag;
+    });
+
+    if( matchingLanguageTags.length === 1 ){
+        locale.currentLanguageTag = matchingLanguageTags[0];
+        break normalize_current_language_tag;
+    }
+
+    console.error(
+        "Keycloak returned a locale.currentLanguageTag that does not exactly match a supported locale, and Keycloakify could not correct it unambiguously. Please open an issue with Keycloak and include this diagnostic context.",
+        {
+            currentLanguageTag: currentLanguageTag,
+            normalizedCurrentLanguageTag: normalizedCurrentLanguageTag,
+            matchingLanguageTags: matchingLanguageTags,
+            supportedLanguageTags: supportedLanguageTags,
+            locale: locale
+        }
+    );
+}
 
 window.kcContext = kcContext;
 
