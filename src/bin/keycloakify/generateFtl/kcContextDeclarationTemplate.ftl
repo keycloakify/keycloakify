@@ -240,6 +240,19 @@ function decodeHtmlEntities(htmlStr){
                 <#if stringified?starts_with("org.keycloak.models.RequiredActionProviderModel") >
                     <#break>
                 </#if>
+                <#--
+                    On the applications.ftl page of the multi page account theme, each
+                    application.client is a ClientModel. It's not a Keycloak internal leaking
+                    into the kcContext, the page is meant to expose it.
+                    See: https://github.com/keycloakify/keycloakify/issues/1040
+                -->
+                <#if
+                    xKeycloakify.themeType == "account" &&
+                    xKeycloakify.pageId == "applications.ftl" &&
+                    areSamePath(path, [ "applications", "applications", "*", "client" ])
+                >
+                    <#break>
+                </#if>
                 <#list ["models", "services", "authentication", "quarkus.runtime", "transaction", "connections", "utils.ClosingStream"] as namespacePortion>
                     <#if stringified?starts_with("org.keycloak." + namespacePortion)>
                         <#return abort>
