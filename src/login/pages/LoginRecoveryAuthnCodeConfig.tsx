@@ -65,17 +65,21 @@ export default function LoginRecoveryAuthnCodeConfig(props: PageProps<Extract<Kc
 
             {/* confirmation checkbox */}
             <div className={kcClsx("kcFormOptionsClass")}>
-                <input
-                    className={kcClsx("kcCheckInputClass")}
-                    type="checkbox"
-                    id="kcRecoveryCodesConfirmationCheck"
-                    name="kcRecoveryCodesConfirmationCheck"
-                    onChange={event => {
-                        //@ts-expect-error: This is inherited from the original code
-                        document.getElementById("saveRecoveryAuthnCodesBtn").disabled = !event.target.checked;
-                    }}
-                />
-                <label htmlFor="kcRecoveryCodesConfirmationCheck">{msg("recovery-codes-confirmation-message")}</label>
+                <div className="checkbox">
+                    <label>
+                        <input
+                            className={kcClsx("kcCheckInputClass")}
+                            type="checkbox"
+                            id="kcRecoveryCodesConfirmationCheck"
+                            name="kcRecoveryCodesConfirmationCheck"
+                            onChange={event => {
+                                //@ts-expect-error: This is inherited from the original code
+                                document.getElementById("saveRecoveryAuthnCodesBtn").disabled = !event.target.checked;
+                            }}
+                        />
+                        {msg("recovery-codes-confirmation-message")}
+                    </label>
+                </div>
             </div>
 
             <form action={kcContext.url.loginAction} className={kcClsx("kcFormGroupClass")} id="kc-recovery-codes-settings-form" method="post">
