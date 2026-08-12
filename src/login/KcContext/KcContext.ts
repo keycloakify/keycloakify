@@ -431,7 +431,7 @@ export declare namespace KcContext {
         attestationConveyancePreference: string;
         authenticatorAttachment: string;
         requireResidentKey: string;
-        residentKey: string;
+        residentKey?: string;
         userVerificationRequirement: string;
         createTimeout: number | string;
         excludeCredentialIds: string;
