@@ -17,6 +17,7 @@ type KcContextLike = {
     attestationConveyancePreference: string;
     authenticatorAttachment: string;
     requireResidentKey: string;
+    residentKey: string;
     userVerificationRequirement: string;
     createTimeout: number | string;
     excludeCredentialIds: string;
@@ -44,6 +45,7 @@ export function useScript(params: { authButtonId: string; kcContext: KcContextLi
         attestationConveyancePreference,
         authenticatorAttachment,
         requireResidentKey,
+        residentKey,
         userVerificationRequirement,
         createTimeout,
         excludeCredentialIds
@@ -70,6 +72,7 @@ export function useScript(params: { authButtonId: string; kcContext: KcContextLi
                             attestationConveyancePreference : ${JSON.stringify(attestationConveyancePreference)},
                             authenticatorAttachment : ${JSON.stringify(authenticatorAttachment)},
                             requireResidentKey : ${JSON.stringify(requireResidentKey)},
+                            residentKey : ${JSON.stringify(residentKey)},
                             userVerificationRequirement : ${JSON.stringify(userVerificationRequirement)},
                             createTimeout : ${createTimeout},
                             excludeCredentialIds : ${JSON.stringify(excludeCredentialIds)},

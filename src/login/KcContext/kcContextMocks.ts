@@ -540,6 +540,7 @@ export const kcContextMocks = [
         attestationConveyancePreference: "direct",
         authenticatorAttachment: "platform",
         requireResidentKey: "required",
+        residentKey: "required",
         userVerificationRequirement: "preferred",
         createTimeout: 60000,
         excludeCredentialIds: "credId123,credId456",
