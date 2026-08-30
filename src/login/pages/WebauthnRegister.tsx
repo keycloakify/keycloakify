@@ -41,6 +41,7 @@ export default function WebauthnRegister(props: PageProps<Extract<KcContext, { p
                     <input type="hidden" id="publicKeyCredentialId" name="publicKeyCredentialId" />
                     <input type="hidden" id="authenticatorLabel" name="authenticatorLabel" />
                     <input type="hidden" id="transports" name="transports" />
+                    <input type="hidden" id="authenticatorAttachment" name="authenticatorAttachment" />
                     <input type="hidden" id="error" name="error" />
                     <LogoutOtherSessions kcClsx={kcClsx} i18n={i18n} />
                 </div>

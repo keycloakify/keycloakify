@@ -16,7 +16,8 @@ type KcContextLike = {
     rpId: string;
     attestationConveyancePreference: string;
     authenticatorAttachment: string;
-    requireResidentKey: string;
+    requireResidentKey?: string;
+    residentKey?: string;
     userVerificationRequirement: string;
     createTimeout: number | string;
     excludeCredentialIds: string;
@@ -44,6 +45,7 @@ export function useScript(params: { authButtonId: string; kcContext: KcContextLi
         attestationConveyancePreference,
         authenticatorAttachment,
         requireResidentKey,
+        residentKey,
         userVerificationRequirement,
         createTimeout,
         excludeCredentialIds
@@ -61,24 +63,25 @@ export function useScript(params: { authButtonId: string; kcContext: KcContextLi
                     const registerButton = document.getElementById('${authButtonId}');
                     registerButton.addEventListener("click", function() {
                         const input = {
-                            challenge : '${challenge}',
-                            userid : '${userid}',
-                            username : '${username}',
+                            challenge : ${JSON.stringify(challenge)},
+                            userid : ${JSON.stringify(userid)},
+                            username : ${JSON.stringify(username)},
                             signatureAlgorithms : ${JSON.stringify(signatureAlgorithms)},
                             rpEntityName : ${JSON.stringify(rpEntityName)},
                             rpId : ${JSON.stringify(rpId)},
                             attestationConveyancePreference : ${JSON.stringify(attestationConveyancePreference)},
                             authenticatorAttachment : ${JSON.stringify(authenticatorAttachment)},
                             requireResidentKey : ${JSON.stringify(requireResidentKey)},
+                            residentKey : ${JSON.stringify(residentKey)},
                             userVerificationRequirement : ${JSON.stringify(userVerificationRequirement)},
-                            createTimeout : ${createTimeout},
+                            createTimeout : ${JSON.stringify(createTimeout)},
                             excludeCredentialIds : ${JSON.stringify(excludeCredentialIds)},
                             initLabel : ${JSON.stringify(msgStr("webauthn-registration-init-label"))},
                             initLabelPrompt : ${JSON.stringify(msgStr("webauthn-registration-init-label-prompt"))},
                             errmsg : ${JSON.stringify(msgStr("webauthn-unsupported-browser-text"))}
                         };
                         registerByWebAuthn(input);
-                    });
+                    }, { once: true });
                 `
             }
         ]

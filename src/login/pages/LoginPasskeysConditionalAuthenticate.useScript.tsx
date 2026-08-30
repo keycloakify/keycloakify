@@ -45,7 +45,7 @@ export function useScript(params: { authButtonId: string; kcContext: KcContextLi
                         challenge : ${JSON.stringify(challenge)},
                         userVerification : ${JSON.stringify(userVerification)},
                         rpId : ${JSON.stringify(rpId)},
-                        createTimeout : ${createTimeout}
+                        createTimeout : ${JSON.stringify(createTimeout)}
                     };
                     authButton.addEventListener("click", () => {
                         authenticateByWebAuthn({

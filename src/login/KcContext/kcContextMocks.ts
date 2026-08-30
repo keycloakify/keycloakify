@@ -226,6 +226,8 @@ export const kcContextMocks = [
         userVerification: "not specified",
         rpId: "",
         createTimeout: "0",
+        mediation: "conditional",
+        authenticatorAttachment: "not specified",
         isUserIdentified: "false",
         shouldDisplayAuthenticators: false
     }),
@@ -358,6 +360,8 @@ export const kcContextMocks = [
         userVerification: "not specified",
         rpId: "",
         createTimeout: "0",
+        mediation: "conditional",
+        authenticatorAttachment: "not specified",
         isUserIdentified: "false"
     }),
     id<KcContext.LoginPassword>({
@@ -376,6 +380,8 @@ export const kcContextMocks = [
         userVerification: "not specified",
         rpId: "",
         createTimeout: "0",
+        mediation: "conditional",
+        authenticatorAttachment: "not specified",
         isUserIdentified: "false",
         shouldDisplayAuthenticators: false
     }),
@@ -539,7 +545,8 @@ export const kcContextMocks = [
         rpId: "example.com",
         attestationConveyancePreference: "direct",
         authenticatorAttachment: "platform",
-        requireResidentKey: "required",
+        requireResidentKey: "Yes",
+        residentKey: "required",
         userVerificationRequirement: "preferred",
         createTimeout: 60000,
         excludeCredentialIds: "credId123,credId456",

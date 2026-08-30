@@ -214,6 +214,8 @@ export declare namespace KcContext {
         userVerification: WebauthnAuthenticate["userVerification"];
         rpId: string;
         createTimeout: number | string;
+        mediation?: string;
+        authenticatorAttachment?: string;
         isUserIdentified: "true" | "false";
         shouldDisplayAuthenticators?: boolean;
     };
@@ -357,6 +359,8 @@ export declare namespace KcContext {
         userVerification: UserVerificationRequirement | "not specified";
         rpId: string;
         createTimeout: string | number;
+        mediation?: string;
+        authenticatorAttachment?: string;
     };
 
     export type LoginPassword = Common & {
@@ -382,6 +386,8 @@ export declare namespace KcContext {
         userVerification: WebauthnAuthenticate["userVerification"];
         rpId: string;
         createTimeout: number | string;
+        mediation?: string;
+        authenticatorAttachment?: string;
         isUserIdentified: "true" | "false";
         shouldDisplayAuthenticators?: boolean;
     };
@@ -430,7 +436,8 @@ export declare namespace KcContext {
         rpId: string;
         attestationConveyancePreference: string;
         authenticatorAttachment: string;
-        requireResidentKey: string;
+        requireResidentKey?: string;
+        residentKey?: string;
         userVerificationRequirement: string;
         createTimeout: number | string;
         excludeCredentialIds: string;

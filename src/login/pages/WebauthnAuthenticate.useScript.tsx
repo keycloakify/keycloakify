@@ -42,14 +42,14 @@ export function useScript(params: { authButtonId: string; kcContext: KcContextLi
                     authButton.addEventListener("click", function() {
                         const input = {
                             isUserIdentified : ${isUserIdentified},
-                            challenge : '${challenge}',
-                            userVerification : '${userVerification}',
-                            rpId : '${rpId}',
-                            createTimeout : ${createTimeout},
+                            challenge : ${JSON.stringify(challenge)},
+                            userVerification : ${JSON.stringify(userVerification)},
+                            rpId : ${JSON.stringify(rpId)},
+                            createTimeout : ${JSON.stringify(createTimeout)},
                             errmsg : ${JSON.stringify(msgStr("webauthn-unsupported-browser-text"))}
                         };
                         authenticateByWebAuthn(input);
-                    });
+                    }, { once: true });
                 `
             }
         ]
