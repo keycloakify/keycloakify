@@ -1,6 +1,6 @@
 {
     "name": "keycloakify",
-    "version": "11.16.0",
+    "version": "11.16.1-rc.1",
     "description": "Framework to create custom Keycloak UIs",
     "repository": {
         "type": "git",
@@ -51,6 +51,26 @@
         "dist/vite-plugin/index.d.ts",
         "dist/vite-plugin/vite-plugin.d.ts"
     ],
+    "exports": {
+        "./*": "./dist/*.js",
+        "./vite-plugin": "./dist/vite-plugin/index.js",
+        "./login": "./dist/login/index.js",
+        "./login/KcContext": "./dist/login/KcContext/index.js",
+        "./login/i18n": "./dist/login/i18n/index.js",
+        "./login/i18n/messages_defaultSet": "./dist/login/i18n/messages_defaultSet/index.js",
+        "./login/i18n/noJsx": "./dist/login/i18n/noJsx/index.js",
+        "./login/i18n/withJsx": "./dist/login/i18n/withJsx/index.js",
+        "./login/lib/getUserProfileApi": "./dist/login/lib/getUserProfileApi/index.js",
+        "./account": "./dist/account/index.js",
+        "./account/KcContext": "./dist/account/KcContext/index.js",
+        "./account/i18n": "./dist/account/i18n/index.js",
+        "./account/i18n/messages_defaultSet": "./dist/account/i18n/messages_defaultSet/index.js",
+        "./account/i18n/noJsx": "./dist/account/i18n/noJsx/index.js",
+        "./account/i18n/withJsx": "./dist/account/i18n/withJsx/index.js",
+        "./lib/kcSanitize": "./dist/lib/kcSanitize/index.js",
+        "./tools/StatefulObservable": "./dist/tools/StatefulObservable/index.js",
+        "./tools/StatefulObservable/hooks": "./dist/tools/StatefulObservable/hooks/index.js"
+    },
     "keywords": [
         "keycloak",
         "react",

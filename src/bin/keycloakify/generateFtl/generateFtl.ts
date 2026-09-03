@@ -14,7 +14,8 @@ import { assert } from "tsafe/assert";
 import {
     type ThemeType,
     WELL_KNOWN_DIRECTORY_BASE_NAME,
-    KEYCLOAKIFY_SPA_DEV_SERVER_PORT
+    KEYCLOAKIFY_SPA_DEV_SERVER_PORT,
+    EARLY_COLOR_SCHEME_SCRIPT_BASENAME
 } from "../../shared/constants";
 import { getThisCodebaseRootDirPath } from "../../tools/getThisCodebaseRootDirPath";
 
@@ -158,7 +159,7 @@ export function generateFtlFilesCodeFactory(params: {
                 }
 
                 return [
-                    `<script src="\${xKeycloakify.resourcesPath}/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/keycloak-theme/${themeType}/early-color-scheme.js"></script>`
+                    `<script src="\${xKeycloakify.resourcesPath}/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/keycloak-theme/${themeType}/${EARLY_COLOR_SCHEME_SCRIPT_BASENAME}"></script>`
                 ];
             })(),
             `<base href="\${xKeycloakify.resourcesPath}/${WELL_KNOWN_DIRECTORY_BASE_NAME.DIST}/" />`
