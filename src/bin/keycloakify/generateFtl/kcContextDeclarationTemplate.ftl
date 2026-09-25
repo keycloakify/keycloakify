@@ -870,6 +870,7 @@ function decodeHtmlEntities(htmlStr){
     </#if>
     <#if xKeycloakify.pageId == "terms.ftl" || termsAcceptanceRequired?? && termsAcceptanceRequired>
         <@addToXKeycloakifyMessagesIfMessageKey str="termsText" />
+        <@addToXKeycloakifyMessagesIfMessageKey str="termsTitle" />
     </#if>
     <#if requiredActions?? && requiredActions?is_enumerable>
         <#list requiredActions as requiredAction>
