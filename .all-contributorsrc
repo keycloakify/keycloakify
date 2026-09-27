@@ -517,6 +517,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "Adam-Doria",
+      "name": "Adam Drici",
+      "avatar_url": "https://avatars.githubusercontent.com/u/123974951?v=4",
+      "profile": "https://github.com/Adam-Doria",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
