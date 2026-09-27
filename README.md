@@ -151,6 +151,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/whawker"><img src="https://avatars.githubusercontent.com/u/2003804?v=4?s=100" width="100px;" alt="Will Hawker"/><br /><sub><b>Will Hawker</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=whawker" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://remming.fi"><img src="https://avatars.githubusercontent.com/u/7122178?v=4?s=100" width="100px;" alt="Maximilian Remming"/><br /><sub><b>Maximilian Remming</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=xremming" title="Code">💻</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Adam-Doria"><img src="https://avatars.githubusercontent.com/u/123974951?v=4?s=100" width="100px;" alt="Adam Drici"/><br /><sub><b>Adam Drici</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=Adam-Doria" title="Code">💻</a></td>
+    </tr>
   </tbody>
 </table>
 
