@@ -10,6 +10,7 @@ import {
 import * as child_process from "child_process";
 import { getNodeModulesBinDirPath } from "../tools/nodeModulesBinDirPath";
 import * as fs from "fs";
+import { join as pathJoin } from "path";
 
 assert<Equals<ApiVersion, "v1">>();
 
@@ -27,8 +28,18 @@ export async function maybeDelegateCommandToCustomHandler(params: {
         return { hasBeenHandled: false };
     }
 
+    // NOTE: Run the binary we just checked rather than resolving it through npx,
+    // npx resolves from process.cwd() which, in a monorepo, can be a different
+    // directory (and pick up a global binary with the same name, or none at all).
+    const binFilePath = pathJoin(
+        nodeModulesBinDirPath,
+        process.platform === "win32" ? `${BIN_NAME}.cmd` : BIN_NAME
+    );
+
+    const command = fs.existsSync(binFilePath) ? `"${binFilePath}"` : `npx ${BIN_NAME}`;
+
     try {
-        child_process.execSync(`npx ${BIN_NAME}`, {
+        child_process.execSync(command, {
             stdio: "inherit",
             env: {
                 ...process.env,
