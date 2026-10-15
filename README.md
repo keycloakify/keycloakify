@@ -153,6 +153,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Adam-Doria"><img src="https://avatars.githubusercontent.com/u/123974951?v=4?s=100" width="100px;" alt="Adam Drici"/><br /><sub><b>Adam Drici</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=Adam-Doria" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://www.linkedin.com/in/hsuanyou-lin/"><img src="https://avatars.githubusercontent.com/u/20944449?v=4?s=100" width="100px;" alt="Shaun Lin"/><br /><sub><b>Shaun Lin</b></sub></a><br /><a href="https://github.com/keycloakify/keycloakify/commits?author=ShaunLinTW" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
