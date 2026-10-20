@@ -824,8 +824,8 @@ export declare namespace Validators {
 }
 
 /**
- * Theses values are added by: https://github.com/jcputney/keycloak-theme-additional-info-extension
- * A Keycloak Java extension used as dependency in Keycloakify.
+ * Theses values are added by keycloak (26+)
+ * Source: https://github.com/keycloak/keycloak/blob/7c62788efa63ebe99531f29de41ba9c7bf753c5c/services/src/main/java/org/keycloak/forms/login/freemarker/model/PasswordPoliciesBean.java
  */
 export type PasswordPolicies = {
     /** The minimum length of the password */
@@ -844,4 +844,8 @@ export type PasswordPolicies = {
     notUsername?: boolean;
     /** Whether the password can be the email address */
     notEmail?: boolean;
+    /** The number of previous passwords that cannot be reused */
+    passwordHistory?: number;
+    /** The number of days before the password expires */
+    forceExpiredPasswordChange?: number;
 };
