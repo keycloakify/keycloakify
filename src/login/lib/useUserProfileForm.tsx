@@ -30,7 +30,7 @@ export namespace FormFieldError {
         };
         export type PasswordPolicy = {
             type: "passwordPolicy";
-            name: keyof PasswordPolicies;
+            name: Exclude<keyof PasswordPolicies, "passwordHistory" | "forceExpiredPasswordChange">;
         };
         export type Server = {
             type: "server";
