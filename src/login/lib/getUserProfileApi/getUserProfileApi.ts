@@ -443,7 +443,11 @@ function getInitialState(params: { kcContext: KcContextLike }): internal.State {
                 break handle_multi_valued_attribute;
             }
 
-            const values = attribute.values?.length ? attribute.values : [""];
+            const values = attribute.values?.length
+                ? attribute.values
+                : getIsMultivaluedSingleField({ attribute })
+                  ? []
+                  : [""];
 
             apply_validator_min_range: {
                 if (getIsMultivaluedSingleField({ attribute })) {
@@ -782,7 +786,15 @@ function createGetErrors(params: { kcContext: KcContextLike_useGetErrors }) {
 
         server_side_error: {
             if (attribute.multivalued) {
-                const defaultValues = attribute.values?.length ? attribute.values : [""];
+                const isMultivaluedSingleField = getIsMultivaluedSingleField({
+                    attribute
+                });
+
+                const defaultValues = attribute.values?.length
+                    ? attribute.values
+                    : isMultivaluedSingleField
+                      ? []
+                      : [""];
 
                 assert(valueOrValues instanceof Array);
 
@@ -790,7 +802,11 @@ function createGetErrors(params: { kcContext: KcContextLike_useGetErrors }) {
 
                 if (
                     JSON.stringify(defaultValues) !==
-                    JSON.stringify(values.slice(0, defaultValues.length))
+                    JSON.stringify(
+                        isMultivaluedSingleField
+                            ? values
+                            : values.slice(0, defaultValues.length)
+                    )
                 ) {
                     break server_side_error;
                 }
