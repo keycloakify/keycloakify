@@ -1,4 +1,5 @@
 import { getKcClsx } from "keycloakify/login/lib/kcClsx";
+import { clsx } from "keycloakify/tools/clsx";
 import { PageProps } from "keycloakify/login/pages/PageProps";
 import { KcContext } from "../KcContext";
 import type { I18n } from "../i18n";
@@ -20,7 +21,7 @@ export default function LoginOauthGrant(props: PageProps<Extract<KcContext, { pa
             i18n={i18n}
             doUseDefaultCss={doUseDefaultCss}
             classes={classes}
-            bodyClassName="oauth"
+            bodyClassName={clsx(kcClsx("kcBodyClass"), "oauth")}
             headerNode={
                 <>
                     {client.attributes.logoUri && <img src={client.attributes.logoUri} />}
