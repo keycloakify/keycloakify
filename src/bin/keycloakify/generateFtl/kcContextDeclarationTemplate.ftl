@@ -204,7 +204,7 @@ function decodeHtmlEntities(htmlStr){
 
         <#local keys = -1>
         <#attempt>
-            <#local keys = object?keys>
+            <#local keys = object?keys?sort>
         <#recover>
             <#return "ABORT: We can't list keys on object">
         </#attempt>
