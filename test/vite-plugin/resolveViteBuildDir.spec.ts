@@ -1,5 +1,5 @@
 import { resolveViteBuildDir } from "keycloakify/vite-plugin/resolveViteBuildDir";
-import { join as pathJoin, resolve as pathResolve } from "path";
+import { join as pathJoin, resolve as pathResolve, sep as pathSep } from "path";
 import { describe, expect, it } from "vitest";
 
 describe("resolveViteBuildDir", () => {
@@ -28,6 +28,13 @@ describe("resolveViteBuildDir", () => {
         expect(resolveViteBuildDir({ projectDirPath, outDir: "../dist" })).toEqual({
             buildDirPath: pathResolve(projectDirPath, "..", "dist"),
             buildDirRelativePath: pathJoin("..", "dist")
+        });
+    });
+
+    it("keeps a trailing separator on the outDir", () => {
+        expect(resolveViteBuildDir({ projectDirPath, outDir: "dist/" })).toEqual({
+            buildDirPath: pathJoin(projectDirPath, "dist"),
+            buildDirRelativePath: `dist${pathSep}`
         });
     });
 });
