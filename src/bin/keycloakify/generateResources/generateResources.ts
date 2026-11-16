@@ -166,8 +166,6 @@ export async function generateResources(params: {
                 );
 
                 if (fs.existsSync(dirPath)) {
-                    assert(buildContext.bundler === "webpack");
-
                     throw new Error(
                         [
                             `Keycloakify build error: The ${directoryBasename} directory shouldn't exist in your build directory.`,

@@ -18,6 +18,7 @@ import {
 import MagicString from "magic-string";
 import { command as updateKcGenCommand } from "../bin/update-kc-gen";
 import { replaceAll } from "../bin/tools/String.prototype.replaceAll";
+import { resolveViteBuildDir } from "./resolveViteBuildDir";
 
 export namespace keycloakify {
     export type Params = BuildOptions & {
@@ -93,7 +94,12 @@ export function keycloakify(params: keycloakify.Params) {
                 return out;
             })();
 
-            buildDirPath = pathJoin(projectDirPath, resolvedConfig.build.outDir);
+            const resolvedBuildDir = resolveViteBuildDir({
+                projectDirPath,
+                outDir: resolvedConfig.build.outDir
+            });
+
+            buildDirPath = resolvedBuildDir.buildDirPath;
 
             resolve_vite_config_case: {
                 const envValue =
@@ -113,7 +119,7 @@ export function keycloakify(params: keycloakify.Params) {
                                 resolvedConfig.publicDir
                             ),
                             assetsDir: resolvedConfig.build.assetsDir,
-                            buildDir: resolvedConfig.build.outDir,
+                            buildDir: resolvedBuildDir.buildDirRelativePath,
                             urlPathname,
                             buildOptions
                         })
