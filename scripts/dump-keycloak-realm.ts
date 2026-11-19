@@ -7,17 +7,26 @@ import { getThisCodebaseRootDirPath } from "../src/bin/tools/getThisCodebaseRoot
 import { writeRealmJsonFile } from "../src/bin/start-keycloak/realmConfig/ParsedRealmJson";
 import { join as pathJoin } from "path";
 import chalk from "chalk";
+import { assert } from "tsafe/assert";
+import { getContainerRuntime } from "../src/bin/start-keycloak/getContainerRuntime";
 
 (async () => {
+    const containerRuntime = getContainerRuntime();
+
+    assert(containerRuntime !== undefined, "Docker or Podman is required");
+
     const keycloakMajorVersionNumber = SemVer.parse(
         child_process
-            .execSync(`docker inspect --format '{{.Config.Image}}' ${CONTAINER_NAME}`)
+            .execSync(
+                `${containerRuntime} inspect --format '{{.Config.Image}}' ${CONTAINER_NAME}`
+            )
             .toString("utf8")
             .trim()
             .split(":")[1]
     ).major;
 
     const parsedRealmJson = await dumpContainerConfig({
+        containerRuntime,
         buildContext: {
             cacheDirPath
         },

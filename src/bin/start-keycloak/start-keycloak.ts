@@ -35,6 +35,7 @@ import { startViteDevServer } from "./startViteDevServer";
 import { getSupportedKeycloakMajorVersions } from "./realmConfig/defaultConfig";
 import { getSupportedDockerImageTags } from "./getSupportedDockerImageTags";
 import { getRealmConfig } from "./realmConfig";
+import { getContainerRuntime } from "./getContainerRuntime";
 import { id } from "tsafe/id";
 
 export async function command(params: {
@@ -45,59 +46,46 @@ export async function command(params: {
         realmJsonFilePath: string | undefined;
     };
 }) {
-    exit_if_docker_not_installed: {
-        let commandOutput: string | undefined = undefined;
+    const containerRuntime = getContainerRuntime();
 
-        try {
-            commandOutput = child_process
-                .execSync("docker --version", {
-                    stdio: ["ignore", "pipe", "ignore"]
-                })
-                .toString("utf8");
-        } catch {
-            commandOutput = "";
-        }
-
-        commandOutput = commandOutput.trim().toLowerCase();
-
-        for (const term of ["docker", "podman"]) {
-            if (commandOutput.includes(term)) {
-                break exit_if_docker_not_installed;
-            }
-        }
-
+    if (containerRuntime === undefined) {
         console.log(
             [
-                `${chalk.red("Docker required.")}`,
-                `Install it with Docker Desktop: ${chalk.bold.underline(
+                `${chalk.red("Docker or Podman required.")}`,
+                `Install Docker Desktop: ${chalk.bold.underline(
                     "https://www.docker.com/products/docker-desktop/"
                 )}`,
-                `(or any other way)`
+                `or Podman: ${chalk.bold.underline("https://podman.io/")}`
             ].join(" ")
         );
 
         process.exit(1);
     }
 
-    exit_if_docker_not_running: {
-        let isDockerRunning: boolean;
+    exit_if_container_runtime_not_running: {
+        let isRunning: boolean;
 
         try {
-            child_process.execSync("docker info", { stdio: "ignore" });
-            isDockerRunning = true;
+            child_process.execSync(`${containerRuntime} info`, { stdio: "ignore" });
+            isRunning = true;
         } catch {
-            isDockerRunning = false;
+            isRunning = false;
         }
 
-        if (isDockerRunning) {
-            break exit_if_docker_not_running;
+        if (isRunning) {
+            break exit_if_container_runtime_not_running;
         }
 
         console.log(
-            [
-                `${chalk.red("Docker daemon is not running.")}`,
-                `Please start Docker Desktop and try again.`
-            ].join(" ")
+            containerRuntime === "docker"
+                ? [
+                      `${chalk.red("Docker daemon is not running.")}`,
+                      `Please start Docker Desktop and try again.`
+                  ].join(" ")
+                : [
+                      `${chalk.red("Podman is not running.")}`,
+                      `Please start Podman (e.g. \`podman machine start\`) and try again.`
+                  ].join(" ")
         );
 
         process.exit(1);
@@ -418,6 +406,7 @@ export async function command(params: {
 
     const { clientName, onRealmConfigChange, realmJsonFilePath, realmName, username } =
         await getRealmConfig({
+            containerRuntime,
             keycloakMajorVersionNumber,
             parsedKeycloakThemesJsonEntry: (() => {
                 const entry = parsedKeycloakThemesJson.themes.find(
@@ -459,7 +448,7 @@ export async function command(params: {
     fs.copyFileSync(jarFilePath, jarFilePath_cacheDir);
 
     try {
-        child_process.execSync(`docker rm --force ${CONTAINER_NAME}`, {
+        child_process.execSync(`${containerRuntime} rm --force ${CONTAINER_NAME}`, {
             stdio: "ignore"
         });
     } catch {}
@@ -609,7 +598,7 @@ export async function command(params: {
     console.log(
         chalk.blue(
             [
-                `$ docker run \\`,
+                `$ ${containerRuntime} run \\`,
                 ...dockerRunArgs
                     .map(arg => arg.replace(new RegExp(SPACE_PLACEHOLDER, "g"), " "))
                     .map(
@@ -621,8 +610,11 @@ export async function command(params: {
     );
 
     const child = child_process.spawn(
-        "docker run " +
-        dockerRunArgs.map(line => line.split(SPACE_PLACEHOLDER)).flat().join(" "),
+        `${containerRuntime} run ` +
+            dockerRunArgs
+                .map(line => line.split(SPACE_PLACEHOLDER))
+                .flat()
+                .join(" "),
         { shell: true }
     );
 
