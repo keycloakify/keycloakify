@@ -22,6 +22,7 @@ import {
 import * as runExclusive from "run-exclusive";
 import { waitForDebounceFactory } from "powerhooks/tools/waitForDebounce";
 import type { ThemeType } from "../../shared/constants";
+import type { ContainerRuntime } from "../getContainerRuntime";
 import chalk from "chalk";
 
 export type BuildContextLike = BuildContextLike_dumpContainerConfig & {
@@ -31,6 +32,7 @@ export type BuildContextLike = BuildContextLike_dumpContainerConfig & {
 assert<BuildContext extends BuildContextLike ? true : false>;
 
 export async function getRealmConfig(params: {
+    containerRuntime: ContainerRuntime;
     keycloakMajorVersionNumber: number;
     realmJsonFilePath_userProvided: string | undefined;
     parsedKeycloakThemesJsonEntry: { name: string; types: (ThemeType | "email")[] };
@@ -43,6 +45,7 @@ export async function getRealmConfig(params: {
     onRealmConfigChange: () => Promise<void>;
 }> {
     const {
+        containerRuntime,
         keycloakMajorVersionNumber,
         realmJsonFilePath_userProvided,
         parsedKeycloakThemesJsonEntry,
@@ -103,6 +106,7 @@ export async function getRealmConfig(params: {
 
             try {
                 parsedRealmJson = await dumpContainerConfig({
+                    containerRuntime,
                     buildContext,
                     realmName,
                     keycloakMajorVersionNumber
