@@ -631,7 +631,7 @@ export function getBuildContext(params: {
         assert(bundler === "vite");
         assert(resolvedViteConfig !== undefined);
 
-        return pathJoin(projectDirPath, resolvedViteConfig.buildDir);
+        return pathResolve(projectDirPath, resolvedViteConfig.buildDir);
     })();
 
     return {
@@ -669,7 +669,7 @@ export function getBuildContext(params: {
                 });
             }
 
-            return pathJoin(
+            return pathResolve(
                 projectDirPath,
                 resolvedViteConfig?.buildDir === undefined
                     ? "build_keycloak"
