@@ -119,7 +119,7 @@ export function keycloakify(params: keycloakify.Params) {
                                 resolvedConfig.publicDir
                             ),
                             assetsDir: resolvedConfig.build.assetsDir,
-                            buildDir: resolvedBuildDir.buildDirRelativePath,
+                            buildDir: resolvedBuildDir.serializedBuildDir,
                             urlPathname,
                             buildOptions
                         })

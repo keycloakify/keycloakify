@@ -8,7 +8,7 @@ describe("resolveViteBuildDir", () => {
     it("handles a relative outDir", () => {
         expect(resolveViteBuildDir({ projectDirPath, outDir: "dist" })).toEqual({
             buildDirPath: pathJoin(projectDirPath, "dist"),
-            buildDirRelativePath: "dist"
+            serializedBuildDir: pathJoin(projectDirPath, "dist")
         });
     });
 
@@ -20,21 +20,50 @@ describe("resolveViteBuildDir", () => {
             })
         ).toEqual({
             buildDirPath: pathJoin(projectDirPath, "dist", "client"),
-            buildDirRelativePath: pathJoin("dist", "client")
+            serializedBuildDir: pathJoin(projectDirPath, "dist", "client")
         });
     });
 
     it("handles an outDir outside the project", () => {
         expect(resolveViteBuildDir({ projectDirPath, outDir: "../dist" })).toEqual({
             buildDirPath: pathResolve(projectDirPath, "..", "dist"),
-            buildDirRelativePath: pathJoin("..", "dist")
+            serializedBuildDir: pathResolve(projectDirPath, "..", "dist")
         });
     });
 
     it("keeps a trailing separator on the outDir", () => {
         expect(resolveViteBuildDir({ projectDirPath, outDir: "dist/" })).toEqual({
             buildDirPath: pathJoin(projectDirPath, "dist"),
-            buildDirRelativePath: `dist${pathSep}`
+            serializedBuildDir: `${pathJoin(projectDirPath, "dist")}${pathSep}`
         });
+    });
+
+    it("keeps a trailing backslash on the outDir", () => {
+        expect(
+            resolveViteBuildDir({
+                projectDirPath,
+                outDir: "dist\\"
+            }).serializedBuildDir.endsWith(pathSep)
+        ).toBe(true);
+    });
+
+    it("keeps the project directory for a root-relative outDir", () => {
+        expect(resolveViteBuildDir({ projectDirPath, outDir: "./" })).toEqual({
+            buildDirPath: projectDirPath,
+            serializedBuildDir: `${projectDirPath}${pathSep}`
+        });
+    });
+
+    it("stays absolute when the CLI runs from another directory", () => {
+        const viteRootDirPath = pathJoin(projectDirPath, "app");
+
+        const { serializedBuildDir } = resolveViteBuildDir({
+            projectDirPath: viteRootDirPath,
+            outDir: "dist"
+        });
+
+        expect(pathResolve(projectDirPath, serializedBuildDir)).toBe(
+            pathJoin(viteRootDirPath, "dist")
+        );
     });
 });
