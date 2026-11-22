@@ -1,14 +1,20 @@
-import { resolve as pathResolve, sep as pathSep } from "path";
+import * as nodePath from "path";
 
-export function resolveViteBuildDir(params: { projectDirPath: string; outDir: string }) {
-    const { projectDirPath, outDir } = params;
+export function resolveViteBuildDir(params: {
+    projectDirPath: string;
+    outDir: string;
+    path?: nodePath.PlatformPath;
+}) {
+    const { projectDirPath, outDir, path = nodePath } = params;
 
-    const buildDirPath = pathResolve(projectDirPath, outDir);
+    const buildDirPath = path.resolve(projectDirPath, outDir);
 
-    const hasTrailingSeparator = /[\\/]$/.test(outDir) && !buildDirPath.endsWith(pathSep);
+    const hasTrailingSeparator =
+        (outDir.endsWith("/") || outDir.endsWith(path.sep)) &&
+        !buildDirPath.endsWith(path.sep);
 
     return {
         buildDirPath,
-        serializedBuildDir: hasTrailingSeparator ? buildDirPath + pathSep : buildDirPath
+        serializedBuildDir: hasTrailingSeparator ? buildDirPath + path.sep : buildDirPath
     };
 }
