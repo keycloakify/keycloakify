@@ -114,8 +114,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                                 <div className={kcClsx("kcContentWrapperClass")}>
                                     <div className={clsx(kcClsx("kcLabelWrapperClass"), "subtitle")}>
                                         <span className="subtitle">
-                                            <span className="required">*</span>
-                                            {msg("requiredFields")}
+                                            <span className="required">*</span> {msg("requiredFields")}
                                         </span>
                                     </div>
                                     <div className="col-md-10">{node}</div>

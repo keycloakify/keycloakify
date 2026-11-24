@@ -105,7 +105,7 @@ export default function LoginPasskeysConditionalAuthenticate(
                                                         </div>
                                                     )}
                                                 <div className={kcClsx("kcSelectAuthListItemDescriptionClass")}>
-                                                    <span id={`kc-webauthn-authenticator-createdlabel-${i}`}>{msg("passkey-createdAt-label")}</span>
+                                                    <span id={`kc-webauthn-authenticator-createdlabel-${i}`}>{msg("passkey-createdAt-label")}</span>{" "}
                                                     <span id={`kc-webauthn-authenticator-created-${i}`}>{authenticator.createdAt}</span>
                                                 </div>
                                             </div>
