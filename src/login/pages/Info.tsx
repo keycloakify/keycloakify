@@ -66,7 +66,7 @@ export default function Info(props: PageProps<Extract<KcContext, { pageId: "info
                         );
                     }
 
-                    if (client.baseUrl) {
+                    if (client?.baseUrl) {
                         return (
                             <p>
                                 <a href={client.baseUrl}>{msg("backToApplication")}</a>
