@@ -110,7 +110,7 @@ export default function WebauthnAuthenticate(props: PageProps<Extract<KcContext,
                                                     <div className={kcClsx("kcSelectAuthListItemDescriptionClass")}>
                                                         <span id={`kc-webauthn-authenticator-createdlabel-${i}`}>
                                                             {msg("webauthn-createdAt-label")}
-                                                        </span>
+                                                        </span>{" "}
                                                         <span id={`kc-webauthn-authenticator-created-${i}`}>{authenticator.createdAt}</span>
                                                     </div>
                                                     <div className={kcClsx("kcSelectAuthListItemFillClass")} />

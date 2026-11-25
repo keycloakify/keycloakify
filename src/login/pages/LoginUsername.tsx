@@ -40,7 +40,7 @@ export default function LoginUsername(props: PageProps<Extract<KcContext, { page
             infoNode={
                 <div id="kc-registration">
                     <span>
-                        {msg("noAccount")}
+                        {msg("noAccount")}{" "}
                         <a tabIndex={6} href={url.registrationUrl}>
                             {msg("doRegister")}
                         </a>
